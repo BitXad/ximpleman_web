@@ -457,8 +457,8 @@ function get_busqueda($condicion)
         
         $detalle_venta = $this->db->query("
             SELECT
-                dv.*, v.*, i.*, SUM(dv.detalleven_cantidad) as cantidades, SUM(dv.detalleven_total) as totales
-
+                dv.*, v.*, i.*, SUM(dv.detalleven_cantidad) as cantidades, SUM(dv.detalleven_total) as totales,
+                avg(dv.detalleven_tc) as tipo_cambio
             FROM
                 detalle_venta dv 
             LEFT JOIN venta v on dv.venta_id = v.venta_id

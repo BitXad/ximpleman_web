@@ -2300,36 +2300,32 @@ function anular_venta($venta_id){
     
   function busquedacombi()
     {
+        if($this->acceso(144)){
+            //**************** inicio contenido ***************   
+            $config = $this->config->item('pagination');
+            $config['total_rows'] = $this->Venta_model->get_all_venta_count();
+            $this->pagination->initialize($config);
+            $this->load->model('Usuario_model');
+            $this->load->model('Detalle_venta_model');
+            $filtro = $this->input->post('filtro');
+            if ($filtro == null){
+               //$data['venta'] = $this->Venta_model->get_all_ventas($params);
+            }
+            else{
+                 $data['venta'] = $this->Venta_model->get_busqueda($filtro);            
+            }
 
-       if($this->acceso(144)){
-        //**************** inicio contenido ***************          
-
-                
-        
-        $config = $this->config->item('pagination');
-       
-        $config['total_rows'] = $this->Venta_model->get_all_venta_count();
-        $this->pagination->initialize($config);
-        $this->load->model('Usuario_model');
-        $this->load->model('Detalle_venta_model');
-        $filtro = $this->input->post('filtro');
-        
-        if ($filtro == null){
-           //$data['venta'] = $this->Venta_model->get_all_ventas($params);
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuactivo();
+            $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+            
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+            $data['_view'] = 'venta/combinados';
+            $this->load->view('layouts/main',$data);
+            //**************** fin contenido ***************
         }
-        else{
-             $data['venta'] = $this->Venta_model->get_busqueda($filtro);            
-        }
-        
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuactivo();
-        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
-      
-        $data['_view'] = 'venta/combinados';
-        $this->load->view('layouts/main',$data);
-        //**************** fin contenido ***************
-        			}
-        		     
-
     }
 
     function comision()
@@ -3263,7 +3259,7 @@ function anular_venta($venta_id){
                 'detallefact_codigo' => '',
                 'detallefact_unidad' => 'UNIDAD',
                 'detallefact_descripcion' => $detalle_servfact,
-                'detallefact_precio' => 0,
+                'detallefact_precio' => $detalle_fact['detalleserv_total'],
                 'detallefact_subtotal' => $detalle_fact['detalleserv_total'],
                 'detallefact_descuento' => 0,
                 'detallefact_total' => $detalle_fact['detalleserv_total'],

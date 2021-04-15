@@ -922,16 +922,22 @@ function torta3($anio,$mes)
      function ingresorep()
     {
         if($this->acceso(140)){
-        $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
-        $data['usuario_id'] = $this->session_data['usuario_id'];
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['page_title'] = "Reportes";
-        $data['_view'] = 'reportes/ingresorep';
-
-        $this->load->view('layouts/main',$data);
-        }
+            $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
+            $data['usuario_id'] = $this->session_data['usuario_id'];
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
             
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+            $data['page_title'] = "Reportes";
+            $data['_view'] = 'reportes/ingresorep';
+
+            $this->load->view('layouts/main',$data);
+        }
     }
     function reporteingreso()
     {

@@ -128,6 +128,11 @@ class Compra extends CI_Controller{
             $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
+            
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             $data['_view'] = 'compra/compraProveedor';
             $this->load->view('layouts/main',$data);
         }
@@ -157,6 +162,11 @@ class Compra extends CI_Controller{
             $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['proveedor'] = $this->Proveedor_model->get_all_proveedor();
+            
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             $data['_view'] = 'compra/compraProducto';
             $this->load->view('layouts/main',$data);
         }

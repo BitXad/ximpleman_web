@@ -175,7 +175,7 @@ border-bottom : 1px solid #aaa;
                     <b>TOTAL<br>
                     <?php
                         if ($parametro[0]["moneda_id"]==1){
-                            echo $moneda["descripcion_id"];
+                            echo $moneda["moneda_descripcion"];
                         }else{
                             echo "Bs";
                         }

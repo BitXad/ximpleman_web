@@ -119,7 +119,11 @@ function ventacombi(filtro)
                     usuarios = "<b>Vendedor(es): </b>";
                    if (n <= limite) x = n; 
                    else x = limite;
-                    
+                    //var nombre_moneda = document.getElementById('nombre_moneda').value;
+                    var lamoneda_id = document.getElementById('lamoneda_id').value;
+                    //var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                    var total_otramoneda = Number(0);
+                    var total_otram = Number(0);
                     for (var i = 0; i < x ; i++){
                         
                         
@@ -136,8 +140,18 @@ function ventacombi(filtro)
                         
                        // html += "<td align='right' >"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<br></td>";                                          
                         html += "<td align='right' >"+Number(total/canti).toFixed(2)+"<br></td>";                                          
-                        html += "<td align='center' >"+Number(registros[i]["cantidades"])+"<br></td>";
+                        html += "<td align='right' >"+Number(registros[i]["cantidades"])+"<br></td>";
                         html += "<td align='right'><b>"+Number(registros[i]["totales"]).toFixed(2)+"</b></td>";
+                        html += "<td class='text-right'> ";
+                        if(lamoneda_id == 1){
+                            total_otram = Number(registros[i]["totales"])/Number(registros[i]["tipo_cambio"]);
+                            total_otramoneda += total_otram;
+                        }else{
+                            total_otram = Number(registros[i]["totales"])*Number(registros[i]["tipo_cambio"]);
+                            total_otramoneda += total_otram;
+                        }
+                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += "</td>";
                      // html += "<td>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         //usuarios += "<b>"+registros[i]["usuario_id"]+"</b>";                       
             
@@ -165,6 +179,7 @@ function ventacombi(filtro)
                        
                         html += "<td style= 'font-size:13px;' align='right'><b> "+Number(totalCan)+"</td>";
                         html += "<td style= 'font-size:13px;' align='right'><b> "+Number(totalTo).toFixed(2)+"</td>";
+                        html += "<td style= 'font-size:13px;' align='right'><b> "+Number(total_otramoneda).toFixed(2)+"</td>";
                        
                         html += "</tr>";
 
@@ -240,11 +255,42 @@ function asignar()
             document.getElementById('botoness').style.display = 'block';
              
              },
-          
-        
-    });   
- 
-
-    
-    
+    });
 }
+
+function numberFormat(numero){
+        // Variable que contendra el resultado final
+        var resultado = "";
+ 
+        // Si el numero empieza por el valor "-" (numero negativo)
+        if(numero[0]=="-")
+        {
+            // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+            // el signo negativo
+            nuevoNumero=numero.replace(/\,/g,'').substring(1);
+        }else{
+            // Cogemos el numero eliminando los posibles puntos que tenga
+            nuevoNumero=numero.replace(/\,/g,'');
+        }
+ 
+        // Si tiene decimales, se los quitamos al numero
+        if(numero.indexOf(".")>=0)
+            nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+ 
+        // Ponemos un punto cada 3 caracteres
+        for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+ 
+        // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+        // los separadores de miles
+        if(numero.indexOf(".")>=0)
+            resultado+=numero.substring(numero.indexOf("."));
+ 
+        if(numero[0]=="-")
+        {
+            // Devolvemos el valor añadiendo al inicio el signo negativo
+            return "-"+resultado;
+        }else{
+            return resultado;
+        }
+    }

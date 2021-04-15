@@ -1,4 +1,3 @@
-
 <script src="<?php echo base_url('resources/js/pasar.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     function final(){
@@ -58,6 +57,9 @@
 </table>
 </div>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<!--<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php //echo $parametro[0]['moneda_descripcion']; ?>" />-->
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<!--<input type="hidden" name="lamoneda" id="lamoneda" value='<?php //echo json_encode($lamoneda); ?>' />-->
 <div class="row">
 <div class="col-md-12">
 
@@ -203,9 +205,17 @@
                     <tr>
                         <th>#</th>
                         <th>Producto</th>
-                        <th>Precio</th>
+                        <th>Precio (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                         <th>Cantidad</th>
-                        <th>Total</th>
+                        <th>Total (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th>Total (<?php
+                                        if($parametro[0]["moneda_id"] == 1){
+                                            echo $lamoneda[1]['moneda_descripcion'];
+                                        }else{
+                                            echo $lamoneda[0]['moneda_descripcion'];
+                                        }
+                                    ?>)
+                        </th>
                         
                     </tr>
                     <tbody class="buscar" id="ventacombi">

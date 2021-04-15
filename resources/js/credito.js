@@ -373,7 +373,7 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         if (registros[i]['factura_id']>0) {
                         html += " <a href='"+base_url+"factura/imprimir_factura_id/"+registros[i]['factura_id']+"/2' target='_blank' class='btn btn-warning btn-xs' title='IMPRIMIR FACTURA'><span class='fa fa-list'></span></a>";
                       }else{
-                        html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+registros[i]['venta_id']+","+registros[i]['credito_id']+");'><span class='fa fa-modx'></span></button> ";
+                        //html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+registros[i]['venta_id']+","+registros[i]['credito_id']+");'><span class='fa fa-modx'></span></button> ";
                       }
 
                         if (registros[i]["estado_id"]==9){

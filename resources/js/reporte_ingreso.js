@@ -257,6 +257,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    
                     //para mostrar saldo en caja
                     saldoencaja= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:60%;'>SALDO EFECTIVO EN CAJA: </td><td style='width:35%;' id='alinearder'>"+numberFormat(Number(totalingreso).toFixed(2))+"</td></tr></table>";
+                    saldoencajaotramoneda= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:60%;'>SALDO EFECTIVO EN CAJA: </td><td style='width:35%;' id='alinearder'>"+numberFormat(Number(totalingreso).toFixed(2))+"</td></tr></table>";
                     /* *****************INICIO para reporte TOTAL****************** */
                     cabecerahtmlt= "<label  class='control-label'><a href='#' class='btn btn-success btn-sm no-print' id='mostotal' onclick='mostrartotal(); return false'>REPORTE TOTAL</a></label>";
                     cabecerahtmlt += "<div id='ocultot' style='visibility: hidden; width: 0; height: 0;'>";
@@ -277,6 +278,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    $("#tablaventaresultados").html(cabecerahtml2+html2+piehtml2);
                    $("#tablacobroresultados").html(cabecerahtml3+html3+piehtml3);
                    $("#saldoencaja").html(saldoencaja);
+                   $("#saldoencajaotramoneda").html(saldoencajaotramoneda);
                    $("#tablatotalresultados").html(cabecerahtmlt+html+htmls+piehtmlt);
                    
             }

@@ -936,39 +936,37 @@ function buscar_reporte_proveedor()
 {
 
     var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"compra";
+    //var controlador = base_url+"compra";
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var proveedor_id = document.getElementById('proveedor_id').value;
     
    if (fecha_desde =='' && fecha_hasta ==''){
 
-    filtro =  " and p.proveedor_nombre = '"+proveedor_id+"' "
+    filtro =  " and p.proveedor_nombre = '"+proveedor_id+"' ";
     reportefechadecompra(filtro);
     }else{ 
     filtro = " and date(compra_fecha) >= '"+fecha_desde+"'  and  date(compra_fecha) <='"+fecha_hasta+
-            "' and p.proveedor_nombre = '"+proveedor_id+"' "
+            "' and p.proveedor_nombre = '"+proveedor_id+"' ";
     reportefechadecompra(filtro);
 }
 }
 function buscar_reporte_producto(producto_id)
 {
-
     var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"compra";
+    //var controlador = base_url+"compra";
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     //var producto_id = document.getElementById('producto_id').value;
     
    if (fecha_desde =='' && fecha_hasta ==''){
-
-    filtro =  " and dc.producto_id = "+producto_id+" "
-    reportefechadecompra(filtro);
-    }else{ 
-    filtro = " and date(compra_fecha) >= '"+fecha_desde+"'  and  date(compra_fecha) <='"+fecha_hasta+
-            "' and dc.producto_id = "+producto_id+" "
-    reportefechadecompra(filtro);
-}
+        filtro =  " and dc.producto_id = "+producto_id+" ";
+        reportefechadecompra(filtro);
+    }else{
+        filtro = " and date(compra_fecha) >= '"+fecha_desde+"'  and  date(compra_fecha) <='"+fecha_hasta+
+                "' and dc.producto_id = "+producto_id+" ";
+        reportefechadecompra(filtro);
+    }
 }
 
 //Selecciona los datos del nit
@@ -1611,9 +1609,9 @@ function reportefechadecompra(filtro)
                     var cant = Number(0);
                     var total = Number(0);
                     //var total_detalle = 0;
-                    var nombre_moneda = document.getElementById('nombre_moneda').value;
+                    //var nombre_moneda = document.getElementById('nombre_moneda').value;
                     var lamoneda_id = document.getElementById('lamoneda_id').value;
-                    var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                    //var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
                     var total_otramoneda = Number(0);
                     var total_otram = Number(0);
                     var n = registros.length; //tama«Ðo del arreglo de la consulta
@@ -1635,7 +1633,7 @@ function reportefechadecompra(filtro)
                         html += "<td align='center'> "+registros[i]["compra_id"]+" </td>";  
                          html += "<td align='center'> "+registros[i]["tipotrans_nombre"]+" </td>";  
                         html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                                                                    
-                        html += "<td>"+convertDateFormat(registros[i]["compra_fecha"])+""+registros[i]['compra_hora']+"</td>" ;                                          
+                        html += "<td align='center'>"+convertDateFormat(registros[i]["compra_fecha"])+" "+registros[i]['compra_hora']+"</td>" ;                                          
                         html += "<td align='right'> "+registros[i]["detallecomp_cantidad"]+" </td>"; 
                         html += "<td align='right'> "+Number(registros[i]["detallecomp_costo"]).toFixed(2)+" </td>"; 
                         html += "<td align='right'><b>"+numberFormat(Number(registros[i]["detallecomp_total"]).toFixed(2))+"</b></td>";
