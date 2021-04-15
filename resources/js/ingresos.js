@@ -100,9 +100,13 @@ function fechadeingreso(filtro)
                 $("#pillados").val("- 0 -");
                var registros =  JSON.parse(resul);
            
-               if (registros != null){
-                   
-                   
+                if (registros != null){
+                    var nombre_moneda = document.getElementById('nombre_moneda').value;
+                    var lamoneda_id = document.getElementById('lamoneda_id').value;
+                    var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                    var total_otramoneda = Number(0);
+                    var total_otram = Number(0);
+                    
                     var cont = 0;
                     var total = Number(0);
                     
@@ -124,9 +128,26 @@ function fechadeingreso(filtro)
                         html += "<td align='center'>"+moment(registros[i]["ingreso_fecha"]).format('DD/MM/YYYY HH:mm:ss')+"</td>"; 
                         html += "<td>"+registros[i]["ingreso_categoria"]+"</br>"; 
                         html += "<b>"+registros[i]["ingreso_concepto"]+"</b></td>"; 
-                        html += "<td align='right'>"+Number(registros[i]["ingreso_monto"]).toFixed(2)+"</td>"; 
-                        html += "<td>"+registros[i]["ingreso_moneda"]+"</td>"; 
-                        html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
+                        html += "<td align='right'>"+numberFormat(Number(registros[i]["ingreso_monto"]).toFixed(2));
+                        html += "<br>";
+                        if(lamoneda_id == 1){
+                            total_otram = Number(registros[i]["ingreso_monto"])/Number(registros[i]["ingreso_tc"]);
+                            total_otramoneda += total_otram;
+                        }else{
+                            total_otram = Number(registros[i]["ingreso_monto"])*Number(registros[i]["ingreso_tc"]);
+                            total_otramoneda += total_otram;
+                        }
+                        html += "<span style='font-size: 8px'>"+numberFormat(Number(total_otram).toFixed(2))+"</span>";
+                        html += "</td>"; 
+                        html += "<td>"+registros[i]["ingreso_moneda"];
+                        html += "<br>";
+                        if(lamoneda_id == 1){
+                            html += "<span style='font-size: 8px'>"+lamoneda[1]['moneda_descripcion']+"</span>";
+                        }else{
+                            html += "<span style='font-size: 8px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
+                        }
+                        html += "</td>";
+                        html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
                         html += "<td  class='no-print'><a href='"+base_url+"ingreso/imprimir/"+registros[i]["ingreso_id"]+"' title='Carta' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
                        
 //                        html += "<a href='"+base_url+"ingreso/boucher/"+registros[i]["ingreso_id"]+"' title='Bouche' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
@@ -168,9 +189,19 @@ function fechadeingreso(filtro)
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "<td></td>";
-                        html += "<td align='right'><b>TOTAL</b></td>";
-                        html += "<td align='right'><font size='4'><b>"+Number(total).toFixed(2)+"</b></font></td>";
-                        html += "<td></td>";
+                        html += "<td align='right'><font size='4'><b>TOTAL</b></font></td>";
+                        html += "<td align='right'><font size='4'><b>"+numberFormat(Number(total).toFixed(2))+"</b></font>";
+                        html += "<br>";
+                        html += "<span style='font-size: 9px'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</span>"
+                        html += "</td>";
+                        html += "<td><font size='4'><b>"+nombre_moneda+"</b></font>";
+                        html += "<br>";
+                        if(lamoneda_id == 1){
+                            html += "<span style='font-size: 9px'>"+lamoneda[1]['moneda_descripcion']+"</span>";
+                        }else{
+                            html += "<span style='font-size: 9px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
+                        }
+                        html += "</td>";
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "</tr>";
@@ -188,4 +219,40 @@ function fechadeingreso(filtro)
         
     });   
 
-} 
+}
+function numberFormat(numero){
+    // Variable que contendra el resultado final
+    var resultado = "";
+
+    // Si el numero empieza por el valor "-" (numero negativo)
+    if(numero[0]=="-")
+    {
+        // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+        // el signo negativo
+        nuevoNumero=numero.replace(/\,/g,'').substring(1);
+    }else{
+        // Cogemos el numero eliminando los posibles puntos que tenga
+        nuevoNumero=numero.replace(/\,/g,'');
+    }
+
+    // Si tiene decimales, se los quitamos al numero
+    if(numero.indexOf(".")>=0)
+        nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+
+    // Ponemos un punto cada 3 caracteres
+    for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+        resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+
+    // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+    // los separadores de miles
+    if(numero.indexOf(".")>=0)
+        resultado+=numero.substring(numero.indexOf("."));
+
+    if(numero[0]=="-")
+    {
+        // Devolvemos el valor añadiendo al inicio el signo negativo
+        return "-"+resultado;
+    }else{
+        return resultado;
+    }
+}

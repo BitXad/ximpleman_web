@@ -41,16 +41,21 @@ class Ingreso extends CI_Controller{
      */
     function index()
     {
-         if($this->acceso(53)){
+        if($this->acceso(53)){
             $usuario_id = $this->session_data['usuario_id'];
             $data['rol'] = $this->session_data['rol'];
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['ingresos'] = $this->Ingreso_model->get_all_ingresos();
-        $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
-        $data['page_title'] = "Ingreso";
-        $data['_view'] = 'ingreso/index';
-        $this->load->view('layouts/main',$data);
-            }
+            $data['ingresos'] = $this->Ingreso_model->get_all_ingresos();
+            $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+            $data['page_title'] = "Ingreso";
+            //$this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['_view'] = 'ingreso/index';
+            $this->load->view('layouts/main',$data);
+        }
            
     } 
 
@@ -89,20 +94,47 @@ class Ingreso extends CI_Controller{
             $usuario_id = $this->session_data['usuario_id'];
             $this->load->library('form_validation');
             $this->form_validation->set_rules('ingreso_nombre', 'ingreso_nombre', 'required');
+            //$this->load->model('Parametro_model');
+            $parametro = $this->Parametro_model->get_all_parametro();
+            $data['parametro'] = $parametro;
+            $this->load->model('Moneda_model');
+            $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
+            $data['all_moneda'] = $all_moneda;
             if($this->form_validation->run())
             {
+                $ingreso_monto  = $this->input->post('ingreso_monto');
+                $ingreso_moneda = $this->input->post('ingreso_moneda');
+                $ingreso_tc     = $all_moneda[1]["moneda_tc"];
+                $total_final = 0;
+                if($parametro[0]["moneda_id"]==1){ //Si es bolivianos
+                    $lamoneda = $all_moneda[0]["moneda_descripcion"];
+                    if($ingreso_moneda != "Bs"){
+                        $total_final += $ingreso_monto*$all_moneda[1]["moneda_tc"];
+                    }else{
+                        $total_final += $ingreso_monto;
+                    }
+                }else{ // Si no se multiplica
+                    $lamoneda = $all_moneda[1]["moneda_descripcion"];
+                    if($ingreso_moneda != "Bs"){
+                        $total_final += $ingreso_monto;
+                    }else{
+                        $total_final += $ingreso_monto/$all_moneda[1]["moneda_tc"];
+                    }
+                }
+                
                 $numrec = $this->Ingreso_model->numero();
                 $numero = $numrec[0]['parametro_numrecing'] + 1;
                 $params = array(
-				'usuario_id' => $usuario_id,
-				'ingreso_categoria' => $this->input->post('ingreso_categoria'),
-                                'ingreso_numero' => $numero,
-                                'ingreso_nombre' => $this->input->post('ingreso_nombre'),
-				'ingreso_monto' => $this->input->post('ingreso_monto'),
-				'ingreso_moneda' => $this->input->post('ingreso_moneda'),
-				'ingreso_concepto' => $this->input->post('ingreso_concepto'),
-				'ingreso_fecha' => $this->input->post('ingreso_fecha'),
-                            );
+                    'usuario_id' => $usuario_id,
+                    'ingreso_categoria' => $this->input->post('ingreso_categoria'),
+                    'ingreso_numero' => $numero,
+                    'ingreso_nombre' => $this->input->post('ingreso_nombre'),
+                    'ingreso_monto' => $total_final,
+                    'ingreso_moneda' => $lamoneda, //$this->input->post('ingreso_moneda'),
+                    'ingreso_concepto' => $this->input->post('ingreso_concepto'),
+                    'ingreso_fecha' => $this->input->post('ingreso_fecha'),
+                    'ingreso_tc' => $ingreso_tc,
+                );
                 $ingreso_id = $this->Ingreso_model->add_ingreso($params);
                 $sql = "UPDATE parametros SET parametro_numrecing=parametro_numrecing+1 WHERE parametro_id = '1'"; 
                 $this->db->query($sql);
@@ -114,17 +146,18 @@ class Ingreso extends CI_Controller{
                     //$fecha = $this->input->post('ingreso_fecha');
                     $estado_id = 1; 
 
-                    $venta_efectivo    = $this->input->post('ingreso_monto');
+                    //$venta_efectivo    = $this->input->post('ingreso_monto');
+                    $venta_efectivo    = $total_final;
                     $factura_fechaventa    = date("Y-m-d");
                     $factura_fecha         = "date(now())";
                     $factura_hora          = "time(now())";
-                    $factura_subtotal      = $this->input->post('ingreso_monto');
+                    $factura_subtotal      = $total_final;
                     $factura_nit           = $this->input->post('nit');
                     $factura_razonsocial   = $this->input->post('razon');
                     $factura_ice           = 0;
                     $factura_exento        = 0;
                     $factura_descuento     = 0;
-                    $factura_total         = $this->input->post('ingreso_monto');
+                    $factura_total         = $total_final;
                     $factura_numero        = $dosificacion[0]['dosificacion_numfact']+1;
                     $factura_autorizacion  = $dosificacion[0]['dosificacion_autorizacion'];
                     $factura_llave         = $dosificacion[0]['dosificacion_llave'];
@@ -166,7 +199,8 @@ class Ingreso extends CI_Controller{
                 $detallefact_descripcion = $this->input->post('ingreso_concepto');
                 $unidad = "";
 
-                $precio = $this->input->post('ingreso_monto');
+                //$precio = $this->input->post('ingreso_monto');
+                $precio = $total_final;
                 $detallefact_precio = $precio;
                 $detallefact_subtotal =  $precio;
                 $detallefact_descuento = 0;
@@ -216,10 +250,7 @@ class Ingreso extends CI_Controller{
                 $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion_activa();
                 $this->load->model('Categoria_ingreso_model');
                 $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
-                $this->load->model('Parametro_model');
-                $data['parametro'] = $this->Parametro_model->get_all_parametro();
-                $this->load->model('Moneda_model');
-                $data['all_moneda'] = $this->Moneda_model->getalls_monedasact_asc();
+                
                 $data['page_title'] = "Ingreso";
                 $data['_view'] = 'ingreso/add';
                 $this->load->view('layouts/main',$data);
@@ -246,46 +277,61 @@ class Ingreso extends CI_Controller{
      * Editing a ingreso
      */
     function edit($ingreso_id)
-    {   
-        
+    {
         if($this->acceso(55)){
-            
-                $usuario_id = $this->session_data['usuario_id'];
-        // check if the ingreso exists before trying to edit it
-        $data['ingreso'] = $this->Ingreso_model->get_ingreso($ingreso_id);
-        
-        if(isset($data['ingreso']['ingreso_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'usuario_id' => $usuario_id,
-        'ingreso_categoria' => $this->input->post('ingreso_categoria'),
-        'ingreso_numero' => $this->input->post('ingreso_numero'),
-        'ingreso_nombre' => $this->input->post('ingreso_nombre'),
-        'ingreso_monto' => $this->input->post('ingreso_monto'),
-        'ingreso_moneda' => $this->input->post('ingreso_moneda'),
-        'ingreso_concepto' => $this->input->post('ingreso_concepto'),
-        //'ingreso_fecha' => $this->input->post('ingreso_fecha'),
-				
-                );
-
-                $this->Ingreso_model->update_ingreso($ingreso_id,$params);            
-                redirect('ingreso/index');
-            }
-            else
+            $usuario_id = $this->session_data['usuario_id'];
+            // check if the ingreso exists before trying to edit it
+            $data['ingreso'] = $this->Ingreso_model->get_ingreso($ingreso_id);
+            $parametro = $this->Parametro_model->get_all_parametro();
+            $data['parametro'] = $parametro;
+            $this->load->model('Moneda_model');
+            $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
+            //$data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['all_moneda'] = $all_moneda;
+            if(isset($data['ingreso']['ingreso_id']))
             {
-                $this->load->model('Categoria_ingreso_model');
-                $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
-                $data['page_title'] = "Ingreso";
-                $data['_view'] = 'ingreso/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
+                if(isset($_POST) && count($_POST) > 0)     
+                {
+                    $ingreso_monto  = $this->input->post('ingreso_monto');
+                    $ingreso_moneda = $this->input->post('ingreso_moneda');
+                    $ingreso_tc     = $all_moneda[1]["moneda_tc"];
+                    if($parametro[0]["moneda_id"]==1){ //Si es bolivianos
+                        $lamoneda = $all_moneda[0]["moneda_descripcion"];
+                        if($ingreso_moneda != "Bs"){
+                            $total_final += $ingreso_monto*$all_moneda[1]["moneda_tc"];
+                        }else{
+                            $total_final += $ingreso_monto;
+                        }
+                    }else{ // Si no se multiplica
+                        $lamoneda = $all_moneda[1]["moneda_descripcion"];
+                        if($ingreso_moneda != "Bs"){
+                            $total_final += $ingreso_monto;
+                        }else{
+                            $total_final += $ingreso_monto/$all_moneda[1]["moneda_tc"];
+                        }
+                    }
+                    $params = array(
+                        'usuario_id' => $usuario_id,
+                        'ingreso_categoria' => $this->input->post('ingreso_categoria'),
+                        'ingreso_numero' => $this->input->post('ingreso_numero'),
+                        'ingreso_nombre' => $this->input->post('ingreso_nombre'),
+                        'ingreso_monto' => $total_final, //$this->input->post('ingreso_monto'),
+                        'ingreso_moneda' => $lamoneda, //$this->input->post('ingreso_moneda'),
+                        'ingreso_concepto' => $this->input->post('ingreso_concepto'),
+                        //'ingreso_fecha' => $this->input->post('ingreso_fecha'),
+                    );
+                    $this->Ingreso_model->update_ingreso($ingreso_id,$params);            
+                    redirect('ingreso/index');
+                }else{
+                    $this->load->model('Categoria_ingreso_model');
+                    $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+                    $data['page_title'] = "Ingreso";
+                    $data['_view'] = 'ingreso/edit';
+                    $this->load->view('layouts/main',$data);
+                }
+            }else
             show_error('The ingreso you are trying to edit does not exist.');
-    }
-            
+        }
     }
     
 
