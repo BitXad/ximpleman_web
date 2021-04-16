@@ -2067,9 +2067,9 @@ function ver_operacionproceso(producto_id){
                 html += "	<th style='padding: 0'>Producto</th>";
                 html += "</tr>";
                 html += "<tbody class='buscar'>";
-                var totalventa_aux = 0;
+                var totalventa_aux = Number(0);
                 for (var i = 0; i < tamventa ; i++){
-                    totalventa_aux += enventa[i]["detalleven_cantidad"];
+                    totalventa_aux += Number(enventa[i]["detalleven_cantidad"]);
                     
                     html += "<td style='padding: 0' class='text-center'>"+enventa[i]["usuario_nombre"]+"</td>";
                     html += "<td style='padding: 0' class='text-right'>"+enventa[i]["detalleven_cantidad"]+"</td>";
@@ -2102,9 +2102,9 @@ function ver_operacionproceso(producto_id){
                 html += "	<th style='padding: 0'>Producto</th>";
                 html += "</tr>";
                 html += "<tbody class='buscar'>";
-                var totalpedido_nofin = 0;
+                var totalpedido_nofin = Number(0);
                 for (var i = 0; i < tampedido ; i++){
-                    totalpedido_nofin += enpedido[i]["detalleped_cantidad"];
+                    totalpedido_nofin += Number(enpedido[i]["detalleped_cantidad"]);
                     
                     html += "<td style='padding: 0' class='text-center'>"+enpedido[i]["usuario_nombre"]+"</td>";
                     html += "<td style='padding: 0' class='text-right'>"+enpedido[i]["detalleped_cantidad"]+"</td>";

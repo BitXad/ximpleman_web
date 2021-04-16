@@ -381,7 +381,8 @@ class Inventario_model extends CI_Model
                   0 as importe_salida,
                   c.compra_hora as hora,
                   '' as detalleobs,
-                  d.detallecomp_tc as tipo_cambio
+                  d.detallecomp_tc as tipo_cambio,
+                  d.detallecomp_id as id
                 from
                   compra c,
                   detalle_compra d
@@ -390,7 +391,7 @@ class Inventario_model extends CI_Model
                   c.compra_id = d.compra_id and 
                   c.compra_fecha >= '".$desde."' and 
                   c.compra_fecha <= '".$hasta."'
-
+                  
 
                 union
 
@@ -406,7 +407,8 @@ class Inventario_model extends CI_Model
                   t.detalleven_subtotal as importe_salida,
                   v.venta_hora as hora,
                   '' as detalleobs,
-                  t.detalleven_tc as tipo_cambio
+                  t.detalleven_tc as tipo_cambio,
+                  t.detalleven_id as id
                 from
                   venta v,
                   detalle_venta t
@@ -415,7 +417,7 @@ class Inventario_model extends CI_Model
                   v.venta_id = t.venta_id and 
                   v.venta_fecha >= '".$desde."' and 
                   v.venta_fecha <= '".$hasta."'
-                
+                  
                 union
                 
                 select 
@@ -430,7 +432,8 @@ class Inventario_model extends CI_Model
                   t.detalleven_subtotal as importe_salida,
                   ds.detalleserv_horaterminado as hora,
                   concat('SERV. TECNICO N° ', ds.servicio_id) as detalleobs,
-                  t.detalleven_tc as tipo_cambio
+                  t.detalleven_tc as tipo_cambio,
+                  t.detalleven_id as id
                 from
                   detalle_serv ds,
                   detalle_venta t

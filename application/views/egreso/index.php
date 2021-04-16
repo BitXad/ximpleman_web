@@ -22,115 +22,87 @@
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <div class="row micontenedorep" style="display: none" id="cabeceraprint">
     <table class="table" style="width: 100%; padding: 0;" >
-    <tr>
-        <td style="width: 25%; padding: 0; line-height:10px;" >
-                
-            <center>
-                               
+        <tr>
+            <td style="width: 25%; padding: 0; line-height:10px;" >
+                <center>
                     <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
-                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
-                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <!--<font size="2" face="Arial"><b><?php //echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><b><?php //echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php //echo $factura[0]['factura_sucursal'];?><br>-->
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
-                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
-                
-
-            </center>                      
-        </td>
-                   
-        <td style="width: 35%; padding: 0" > 
-            <center>
-            
-                <br><br>
-                <font size="3" face="arial"><b>EGRESOS</b></font> <br>
-                
-                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
-
-            </center>
-        </td>
-        <td style="width: 20%; padding: 0" >
+                    <!--<font size="1" face="Arial"><?php //echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                </center>
+            </td>
+            <td style="width: 35%; padding: 0" > 
                 <center>
-                         
-                             
-                            
-                         
-                        
-                    </center>
-        </td>
-    </tr>
-     
-    
-    
-</table>       
-        
+                    <br><br>
+                    <font size="3" face="arial"><b>EGRESOS</b></font> <br>
+                    <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+                </center>
+            </td>
+            <td style="width: 20%; padding: 0" >
+                <center></center>
+            </td>
+        </tr>
+    </table>
 </div>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
- <div class="col-md-6 no-print">
-             <div class="box-header">
-                <font size='4' face='Arial'><b>Egresos</b></font>
-                <br><font size='2' face='Arial' id="pillados"></font>
-        </div>
-        
-           <div class="row">
-        <div class="col-md-6 no-print">
-       <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
-                  </div>
-            <!--------------------- fin parametro de buscador --------------------->
-          </div>
-      <div class="col-md-3 no-print">
-      <div  class="box-tools" >
-                          
-                    <select  class="btn btn-primary btn-sm" id="select_compra" onchange="buscar_egresos()">
-                        <option value="0">Elija Fechas</option>
-                        <option value="1">Egresos de Hoy</option>
-                        <option value="2">Egresos de Ayer</option>
-                        <option value="3">Egresos de la semana</option>                                               
-                                                                 
-                        <option value="5">Egresos por Fecha</option>
-                    </select>
-            
-
-      </div>
+ <div class="col-md-8 no-print">
+    <div class="box-header">
+        <font size='4' face='Arial'><b>Egresos</b></font>
+        <br><font size='2' face='Arial' id="pillados"></font>
     </div>
-    <div class="col-md-">
-                                    
-                                    <div class="form-group">
-                                        
-                                        <select name="categoria_id" id="categoria_id" class="btn btn-primary btn-sm">
-                <option value="0">- Todas -</option>
-                <?php 
-                foreach($all_categoria_egreso as $categoria_egreso)
-                {
-                  $selected = ($categoria_egreso['categoria_categr'] == $this->input->post('egreso_categoria')) ? ' selected="selected"' : "";
-
-                  echo '<option value="'.$categoria_egreso['categoria_categr'].'" '.$selected.'>'.$categoria_egreso['categoria_categr'].'</option>';
-                } 
-                ?>
-              </select>
-                                    </div>
-                                </div>
+    <div class="row">
+        <div class="col-md-6 no-print">
+            <!--------------------- parametro de buscador --------------------->
+                <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
+                </div>
+            <!--------------------- fin parametro de buscador --------------------->
+        </div>
+        <div class="col-md-3 no-print">
+            <div  class="box-tools" >
+                <select  class="btn btn-primary btn-sm form-control" id="select_compra" onchange="buscar_egresos()">
+                    <option value="0">Elija Fechas</option>
+                    <option value="1">Egresos de Hoy</option>
+                    <option value="2">Egresos de Ayer</option>
+                    <option value="3">Egresos de la semana</option>
+                    <option value="5">Egresos por Fecha</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-3 no-print">
+            <div class="form-group">
+                <select name="categoria_id" id="categoria_id" class="btn btn-primary btn-sm form-control">
+                    <option value="0">- Todas -</option>
+                    <?php 
+                    foreach($all_categoria_egreso as $categoria_egreso)
+                    {
+                      $selected = ($categoria_egreso['categoria_categr'] == $this->input->post('egreso_categoria')) ? ' selected="selected"' : "";
+                      echo '<option value="'.$categoria_egreso['categoria_categr'].'" '.$selected.'>'.$categoria_egreso['categoria_categr'].'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-<div class="col-md-6 no-print">
-        
+<div class="col-md-4 no-print">
     <div class="box-tools">
         <center>    
             <a href="<?php echo site_url('egreso/add'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-money"></span></font><br><small>Registrar Egreso</small></a>
-            
-            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadeegreso('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
-            
+            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadeegreso('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>            
             <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
-             
         </center>            
     </div>
-    </div> 
-     
+</div>
 <div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none;'>
     <br>
     <center>            
@@ -140,9 +112,6 @@
         <div class="col-md-2">
             Hasta: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
         </div>
-        
-      
-        
         <div class="col-md-3">
             <?php if($rol[63-1]['rolusuario_asignado'] == 1){ ?>
             <button class="btn btn-sm btn-primary btn-sm btn-block"  onclick="buscar_por_fechas()">
@@ -153,36 +122,30 @@
             <?php } ?>
             <br>
         </div>
-        
-    </center>    
-    <br>    
+    </center>
+    <br>
 </div>
-
 <br>
-  <div class="col-md-12">
-  <div class="box">
-            
-            <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">     
-                        <tr>
-							<th>#</th>
-                            <th>NOMBRE</th>
-                            <th># RECIBO</th>
-                            <th>FECHA</th>
-                            <th>CONCEPTO</th>
-                            <th>MONTO</th>
-                            <th>MONEDA</th>
-                            <th>USUARIO</th>
-                            <th class="no-print"></th>
-                            
-                        </tr>
-                           <tbody class="buscar" id="fechadeegreso">
-                       
-                </table>
-                
-            </div>
-            <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>                
+<div class="col-md-12">
+    <div class="box">
+        <div class="box-body table-responsive">
+            <table class="table table-striped table-condensed" id="mitabla">     
+                <tr>
+                    <th>#</th>
+                    <th>NOMBRE</th>
+                    <th># RECIBO</th>
+                    <th>FECHA</th>
+                    <th>CONCEPTO</th>
+                    <th>MONTO</th>
+                    <th>MONEDA</th>
+                    <th>USUARIO</th>
+                    <th class="no-print"></th>
+                </tr>
+                <tbody class="buscar" id="fechadeegreso">
+            </table>
         </div>
+        <div class="pull-right">
+            <?php echo $this->pagination->create_links(); ?>                    
+        </div>                
     </div>
+</div>

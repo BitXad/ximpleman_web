@@ -42,7 +42,11 @@ class Egreso extends CI_Controller{
             $data['rol'] = $this->session_data['rol'];
             $data['egreso'] = $this->Egreso_model->get_all_egreso();
             $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
-            $data['empresa'] = $this->Empresa_model->get_empresa(1);    
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             $data['_view'] = 'egreso/index';
             $this->load->view('layouts/main',$data);
         }
@@ -77,49 +81,63 @@ class Egreso extends CI_Controller{
     {   
         if($this->acceso(60)){
             $data['page_title'] = "Egreso";
-                $usuario_id = $this->session_data['usuario_id'];
+            $usuario_id = $this->session_data['usuario_id'];
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('egreso_nombre', 'egreso_nombre', 'required');
+            //$this->load->model('Parametro_model');
+            $parametro = $this->Parametro_model->get_all_parametro();
+            $data['parametro'] = $parametro;
+            $this->load->model('Moneda_model');
+            $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
+            $data['all_moneda'] = $all_moneda;
+            if($this->form_validation->run())
+            {
+                $numrec = $this->Egreso_model->numero();
+                $numero = $numrec[0]['parametro_numrecegr'] + 1;
+                $egreso_monto  = $this->input->post('egreso_monto');
+                $egreso_moneda = $this->input->post('egreso_moneda');
+                $egreso_tc     = $all_moneda[1]["moneda_tc"];
+                $total_final = 0;
+                if($parametro[0]["moneda_id"]==1){ //Si es bolivianos
+                    $lamoneda = $all_moneda[0]["moneda_descripcion"];
+                    if($egreso_moneda != "Bs"){
+                        $total_final += $egreso_monto*$all_moneda[1]["moneda_tc"];
+                    }else{
+                        $total_final += $egreso_monto;
+                    }
+                }else{ // Si no se multiplica
+                    $lamoneda = $all_moneda[1]["moneda_descripcion"];
+                    if($egreso_moneda != "Bs"){
+                        $total_final += $egreso_monto;
+                    }else{
+                        $total_final += $egreso_monto/$all_moneda[1]["moneda_tc"];
+                    }
+                }
                 
-      $this->load->library('form_validation');
-      $this->form_validation->set_rules(
-        'egreso_nombre', 'egreso_nombre',
-        'required');
-       
-       if($this->form_validation->run())      
-        {   
-          $numrec = $this->Egreso_model->numero();
-           $numero = $numrec[0]['parametro_numrecegr'] + 1;
-           
-
-            $params = array(
-        'usuario_id' => $usuario_id,
-        'egreso_categoria' => $this->input->post('egreso_categoria'),
-        'egreso_numero' => $numero,
-        'egreso_nombre' => $this->input->post('egreso_nombre'),
-        'egreso_monto' => $this->input->post('egreso_monto'),
-        'egreso_moneda' => $this->input->post('egreso_moneda'),
-        'egreso_concepto' => $this->input->post('egreso_concepto'),
-        'egreso_fecha' => $this->input->post('egreso_fecha'),
-        
-            );
-
-            
-            
-            $egreso_id = $this->Egreso_model->add_egreso($params);
-            $sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
-            $this->db->query($sql);
-            redirect('egreso/index');
-           
-        }
-        else
-        {
-         $this->load->model('Categoria_egreso_model');
-           $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
-           $this->load->model('Parametro_model');
-           $data['parametro'] = $this->Parametro_model->get_all_parametro();
-            $data['_view'] = 'egreso/add';
-            $this->load->view('layouts/main',$data);
-        }
+                $params = array(
+                    'usuario_id' => $usuario_id,
+                    'egreso_categoria' => $this->input->post('egreso_categoria'),
+                    'egreso_numero' => $numero,
+                    'egreso_nombre' => $this->input->post('egreso_nombre'),
+                    'egreso_monto' => $total_final,
+                    'egreso_moneda' => $lamoneda,
+                    'egreso_concepto' => $this->input->post('egreso_concepto'),
+                    'egreso_fecha' => $this->input->post('egreso_fecha'),
+                    'egreso_tc' => $egreso_tc,
+                );
+                $egreso_id = $this->Egreso_model->add_egreso($params);
+                $sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
+                $this->db->query($sql);
+                redirect('egreso/index');
+            }else{
+                $this->load->model('Categoria_egreso_model');
+                $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
+                $this->load->model('Parametro_model');
+                $data['parametro'] = $this->Parametro_model->get_all_parametro();
+                $data['_view'] = 'egreso/add';
+                $this->load->view('layouts/main',$data);
             }
+        }
     } 
 
     /*
@@ -130,39 +148,61 @@ class Egreso extends CI_Controller{
         if($this->acceso(61)){
             $data['page_title'] = "Egreso";
             $usuario_id = $this->session_data['usuario_id'];
-        // check if the egreso exists before tryegr to edit it
-        $data['egreso'] = $this->Egreso_model->get_egreso($egreso_id);
-        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        
-        if(isset($data['egreso']['egreso_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
+            // check if the egreso exists before tryegr to edit it
+            $data['egreso'] = $this->Egreso_model->get_egreso($egreso_id);
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $parametro = $this->Parametro_model->get_all_parametro();
+            $data['parametro'] = $parametro;
+            $this->load->model('Moneda_model');
+            $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
+            $data['all_moneda'] = $all_moneda;
+            if(isset($data['egreso']['egreso_id']))
             {
-                if($this->session_data['tipousuario_id'] == 1){
-                    $params = array(
-                        'usuario_id' => $this->input->post('usuario_id'),
-                        'egreso_categoria' => $this->input->post('egreso_categoria'),
-                        'egreso_numero' => $this->input->post('egreso_numero'),
-                        'egreso_nombre' => $this->input->post('egreso_nombre'),
-                        'egreso_monto' => $this->input->post('egreso_monto'),
-                        'egreso_moneda' => $this->input->post('egreso_moneda'),
-                        'egreso_concepto' => $this->input->post('egreso_concepto'),
-                        'egreso_fecha' => $this->input->post('egreso_fecha'),		
-                    );
-                }else{
+                if(isset($_POST) && count($_POST) > 0)     
+                {
+                    $egreso_monto  = $this->input->post('egreso_monto');
+                    $egreso_moneda = $this->input->post('egreso_moneda');
+                    $egreso_tc     = $all_moneda[1]["moneda_tc"];
+                    $total_final = 0;
+                    if($parametro[0]["moneda_id"]==1){ //Si es bolivianos
+                        $lamoneda = $all_moneda[0]["moneda_descripcion"];
+                        if($egreso_moneda != "Bs"){
+                            $total_final += $egreso_monto*$all_moneda[1]["moneda_tc"];
+                        }else{
+                            $total_final += $egreso_monto;
+                        }
+                    }else{ // Si no se multiplica
+                        $lamoneda = $all_moneda[1]["moneda_descripcion"];
+                        if($egreso_moneda != "Bs"){
+                            $total_final += $egreso_monto;
+                        }else{
+                            $total_final += $egreso_monto/$all_moneda[1]["moneda_tc"];
+                        }
+                    }
+                    if($this->session_data['tipousuario_id'] == 1){
+                        $params = array(
+                            'usuario_id' => $this->input->post('usuario_id'),
+                            'egreso_categoria' => $this->input->post('egreso_categoria'),
+                            'egreso_numero' => $this->input->post('egreso_numero'),
+                            'egreso_nombre' => $this->input->post('egreso_nombre'),
+                            'egreso_monto' => $total_final,
+                            'egreso_moneda' => $lamoneda, //$this->input->post('egreso_moneda'),
+                            'egreso_concepto' => $this->input->post('egreso_concepto'),
+                            'egreso_fecha' => $this->input->post('egreso_fecha'),
+                        );
+                    }else{
                     $params = array(
                         'usuario_id' => $usuario_id,
                         'egreso_categoria' => $this->input->post('egreso_categoria'),
                         'egreso_numero' => $this->input->post('egreso_numero'),
                         'egreso_nombre' => $this->input->post('egreso_nombre'),
-                        'egreso_monto' => $this->input->post('egreso_monto'),
-                        'egreso_moneda' => $this->input->post('egreso_moneda'),
+                        'egreso_monto' => $total_final,
+                        'egreso_moneda' => $lamoneda, //$this->input->post('egreso_moneda'),
                         'egreso_concepto' => $this->input->post('egreso_concepto'),
                         //'egreso_fecha' => $this->input->post('egreso_fecha'),		
                     );
                 }
                 
-
                 $this->Egreso_model->update_egreso($egreso_id,$params);            
                 redirect('egreso/index');
             }
@@ -185,15 +225,16 @@ class Egreso extends CI_Controller{
      * Deletegr egreso
      */
 
-public function pdf($egreso_id){
-
-    if($this->acceso(64)){        
-        $data['page_title'] = "Egreso";
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['egresos'] = $this->Egreso_model->get_egresos($egreso_id);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);    
-        $data['_view'] = 'egreso/recibo';
-        $this->load->view('layouts/main',$data);
+    public function pdf($egreso_id){
+        if($this->acceso(64)){
+            $data['page_title'] = "Egreso";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['egresos'] = $this->Egreso_model->get_egresos($egreso_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $this->load->model('Moneda_model');
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['_view'] = 'egreso/recibo';
+            $this->load->view('layouts/main',$data);
         }
     }
 
@@ -204,7 +245,9 @@ public function pdf($egreso_id){
             $data['page_title'] = "Egreso";
             $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['egreso'] = $this->Egreso_model->get_egresos($egreso_id);
-            $data['empresa'] = $this->Empresa_model->get_empresa(1);    
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $this->load->model('Moneda_model');
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             $data['_view'] = 'egreso/reciboboucher';
             $this->load->view('layouts/main',$data);
         }

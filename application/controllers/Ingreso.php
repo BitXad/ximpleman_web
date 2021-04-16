@@ -335,53 +335,47 @@ class Ingreso extends CI_Controller{
     }
     
 
-public function pdf($ingreso_id){
-    if($this->acceso(58)){
-        $data['parametro'] =  $parametros = $this->Parametro_model->get_parametros();
-        $data['ingresos'] = $this->Ingreso_model->get_ingresos($ingreso_id);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['page_title'] = "Ingreso"; 
-             $data['_view'] = 'ingreso/recibo';
-            $this->load->view('layouts/main',$data);
-       
-            }
-    }
-
-public function boucher($ingreso_id){
-            
-    if($this->acceso(58)){
-
-       $data['parametro'] =  $parametros = $this->Parametro_model->get_parametros();
-       $data['ingreso'] = $this->Ingreso_model->get_ingresos($ingreso_id);
-       $data['empresa'] = $this->Empresa_model->get_empresa(1);
-       $data['page_title'] = "Ingreso"; 
-             $data['_view'] = 'ingreso/reciboboucher';
-            $this->load->view('layouts/main',$data);
-            }
-            
-    }
-    
-/*************** funcion para mostrar la vista de la factura******************/
-function imprimir($ingreso_id){
-    
+    public function pdf($ingreso_id){
         if($this->acceso(58)){
-        //**************** inicio contenido ***************            
-                
-            $parametros = $this->Parametro_model->get_parametros();
+            $data['parametro'] =  $parametros = $this->Parametro_model->get_parametros();
+            $data['ingresos'] = $this->Ingreso_model->get_ingresos($ingreso_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $this->load->model('Moneda_model');
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['page_title'] = "Ingreso"; 
+            $data['_view'] = 'ingreso/recibo';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
+    public function boucher($ingreso_id){
+        if($this->acceso(58)){
+            $data['parametro'] =  $parametros = $this->Parametro_model->get_parametros();
+            $data['ingreso'] = $this->Ingreso_model->get_ingresos($ingreso_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $this->load->model('Moneda_model');
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['page_title'] = "Ingreso"; 
+            $data['_view'] = 'ingreso/reciboboucher';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    
+    /*************** funcion para mostrar la vista de la factura******************/
+    function imprimir($ingreso_id){
+        if($this->acceso(58)){
+            //**************** inicio contenido ***************
+            $parametros = $this->Parametro_model->get_parametros();
             if (sizeof($parametros)>0){
-                
                 if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
                     $this->boucher($ingreso_id);
                 else
                     $this->pdf($ingreso_id);
             }
+            //**************** fin contenido ***************
+        }
+    } 
 
-        //**************** fin contenido ***************
-        } 
-                
-} 
-    
     /*
      * Deleting ingreso
      */

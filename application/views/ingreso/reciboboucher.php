@@ -156,11 +156,19 @@ border-bottom : 1px solid #aaa;
     <td align="right" colspan="3">
         <font size="2">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($ingreso[0]['ingreso_monto'] ,2,'.',','); ?><br>
+                <?php echo "TOTAL FINAL ".$ingreso[0]['ingreso_moneda'].": ".number_format($ingreso[0]['ingreso_monto'] ,2,'.',','); ?><br>
             </b>
             </font>
             <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($ingreso[0]['ingreso_monto'],' Bolivianos'); ?>           
+                <?php
+                echo "SON: ";
+                if($parametro[0]['moneda_id'] == 1){
+                    echo num_to_letras($ingreso[0]['ingreso_monto']);
+                }else{
+                    echo num_to_letras($ingreso[0]['ingreso_monto'], $lamoneda[1]['moneda_descripcion']);
+                }
+                ?> 
+                <?php //echo "SON: ".num_to_letras($ingreso[0]['ingreso_monto'],' Bolivianos'); ?>           
             </font>
            
             

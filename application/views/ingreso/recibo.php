@@ -226,7 +226,7 @@ border-bottom : 1px solid #aaa;
                                 <td style="width: 4cm; text-align: right; background-color: #aaa !important; -webkit-print-color-adjust: exact;" nowrap >
                                     <b>LA SUMA DE: </b></td><td></td> 
                                 <td style="width: 10cm; background-color: #ddd !important; -webkit-print-color-adjust: exact;">
-                                        <?php echo number_format($ingresos[0]['ingreso_monto'],'2','.',',');?> <?php echo$ingresos[0]['ingreso_moneda'];?>
+                                        <?php echo number_format($ingresos[0]['ingreso_monto'],'2','.',',');?> <?php echo $ingresos[0]['ingreso_moneda'];?>
                                 </td>
                                 <td style="width: 2cm;"></td> 
                         </tr>
@@ -240,7 +240,13 @@ border-bottom : 1px solid #aaa;
                                 <td style="width: 4cm; text-align: right; background-color: #aaa !important; -webkit-print-color-adjust: exact;" nowrap >
                                     <b>LITERAL: </b></td><td></td> 
                                 <td style="width: 10cm; background-color: #ddd !important; -webkit-print-color-adjust: exact;">
-                                    <?php echo num_to_letras($ingresos[0]['ingreso_monto']);?> 
+                                    <?php
+                                    if($parametro[0]['moneda_id'] == 1){
+                                        echo num_to_letras($ingresos[0]['ingreso_monto']);
+                                    }else{
+                                        echo num_to_letras($ingresos[0]['ingreso_monto'], $lamoneda[1]['moneda_descripcion']);
+                                    }
+                                    //echo num_to_letras($ingresos[0]['ingreso_monto']);?> 
                                 </td>
                                 <td style="width: 2cm;"></td> 
                         </tr>

@@ -170,11 +170,19 @@ border-bottom : 1px solid #aaa;
             
             <font size="2">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($egreso[0]['egreso_monto'] ,2,'.',','); ?><br>
+                <?php echo "TOTAL FINAL ".$egreso[0]['egreso_moneda'].": ".number_format($egreso[0]['egreso_monto'] ,2,'.',','); ?><br>
             </b>
             </font>
             <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($egreso[0]['egreso_monto'],' Bolivianos'); ?>           
+                <?php
+                echo "SON: ";
+                if($parametro[0]['moneda_id'] == 1){
+                    echo num_to_letras($egreso[0]['egreso_monto']);
+                }else{
+                    echo num_to_letras($egreso[0]['egreso_monto'], $lamoneda[1]['moneda_descripcion']);
+                }
+                //echo num_to_letras($egresos[0]['egreso_monto']);?> 
+                <?php //echo "SON: ".num_to_letras($egreso[0]['egreso_monto'],' Bolivianos'); ?>           
             </font>
            
             
