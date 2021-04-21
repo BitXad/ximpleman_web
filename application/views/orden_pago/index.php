@@ -1,6 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/ordenpago.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php // echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <div class="box-header">
@@ -19,7 +19,8 @@
                     <?php }
                     if($rol[92-1]['rolusuario_asignado'] == 1){ ?>
                     <button class="btn btn-success btn-sm" onclick="buscarorden(2)">Pagadas</button> 
-                    <button class="btn btn-danger btn-sm" onclick="buscarorden(3)">Pag. Antes</button> 
+                    <button class="btn btn-facebook btn-sm" onclick="buscarorden(3)">Pag. Antes</button> 
+                    <button class="btn btn-danger btn-sm" onclick="buscarorden(4)">Anuladas</button> 
                     <?php } ?>
                 </div>
             </div>

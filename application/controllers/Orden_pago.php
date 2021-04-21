@@ -70,15 +70,20 @@ class Orden_pago extends CI_Controller{
     function pagadas_antes()
     {
         if($this->acceso(89)) {
-        $filtro = $this->input->post('filtro');
-        $data = $this->Orden_pago_model->get_pagadas_antes($filtro);
-        echo json_encode($data);
-        /*$data['usuario'] = $this->Orden_pago_model->get_usuarios();
-        $data['page_title'] = "Orden Pago";
-        $data['_view'] = 'orden_pago/index';
-        $this->load->view('layouts/main',$data);*/
+            $filtro = $this->input->post('filtro');
+            $data = $this->Orden_pago_model->get_pagadas_antes($filtro);
+            echo json_encode($data);
+        }
     }
-}
+    /* muestra ordenes de pagos anuladas */
+    function mostrar_anuladas()
+    {
+        if($this->acceso(89)) {
+            $filtro = $this->input->post('filtro');
+            $data = $this->Orden_pago_model->get_anuladas($filtro);
+            echo json_encode($data);
+        }
+    }
 
     /*
      * Adding a new orden_pago
@@ -394,7 +399,17 @@ class Orden_pago extends CI_Controller{
         }
     }
     
-
-    
+    function anular_orden(){
+        if($this->acceso(89)){
+            $orden_id = $this->input->post('orden_id');
+            $estado_id = 27;
+            $params = array(
+                'estado_id' => $estado_id,
+                'orden_monto' => $this->input->post('tipocliente_id'),
+            );
+            $this->Orden_pago_model->update_orden_pago($orden_id, $params);
+            echo json_encode("ok");
+        }
+    }
     
 }

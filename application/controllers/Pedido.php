@@ -1470,4 +1470,78 @@ function registrarpedido()
             //**************** fin contenido ***************
         // }
     }
+    /*
+    * mapa de pedidos por fechas, por prevendedor/vendedor
+    */
+    function mapa_pedidos()
+    {
+        if($this->acceso(30)) {
+            $data['page_title'] = "Mapa de pedidos";
+            $data['parametros'] = $this->Parametro_model->get_parametro(1);
+
+            //$data['all_cliente'] = $this->Cliente_model->get_clientes_por_pedidos($zona_id);
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
+            $data['_view'] = 'pedido/mapa_pedidos';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    function pedidos_pendientes(){
+        if($this->acceso(30)) {
+            if ($this->input->is_ajax_request()) {
+                $usuario_id = $this->input->post('usuario_id');
+                $desde      = $this->input->post('desde');
+                $hasta      = $this->input->post('hasta');
+                $resultado = $this->Pedido_model->get_pedidos_pendientes($usuario_id, $desde, $hasta);
+                echo json_encode($resultado);
+            }else{
+                show_404();
+            }
+        }
+    }
+    function mapapedido_a_ventas(){
+        if($this->acceso(30)){ //12 ventas o 30 pedidos
+            //**************** inicio contenido ***************    
+            $usuario_id = $this->session_data['usuario_id'];
+            if ($this->input->is_ajax_request()){
+
+                $pedido_id = $this->input->post('pedido_id');
+                
+                $moneda = $this->Moneda_model->get_moneda(2); //Obtener moneda extrangera
+                $sql = "insert into venta(forma_id, tipotrans_id, usuario_id, cliente_id, moneda_id, estado_id, 
+                venta_fecha, venta_hora, venta_subtotal, venta_descuento, venta_total, venta_efectivo, 
+                venta_cambio, venta_glosa, venta_comision, venta_tipocambio, detalleserv_id,entrega_estadoid, pedido_id, usuarioprev_id)
+
+                (select 1 as forma_id,1 as tipotrans_id, ".$usuario_id.", cliente_id, 1 as moneda_id, 1 as estado_id, 
+                date(now()) as venta_fecha, time(now()) as venta_hora, pedido_subtotal as venta_subtotal, pedido_descuento as venta_descuento, pedido_total as venta_total, pedido_total as venta_efectivo, 
+                0 as venta_cambio, pedido_glosa as venta_glosa, 0 as venta_comision,1 as venta_tipocambio,'' as  detalleserv_id, 1 as entrega_estadoid, ".$pedido_id.", usuario_id
+                from pedido
+                where pedido_id=".$pedido_id." ) ";            
+                $venta_id = $this->Pedido_model->ejecutar($sql);
+
+                $sql = "insert into detalle_venta
+                        (producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, 
+                        detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, detalleven_descuento, 
+                        detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, 
+                        detalleven_tipocambio, usuario_id, detalleven_tc)
+                        (select
+                        producto_id, ".$venta_id." as venta_id, 1 as moneda_id, detalleped_codigo, detalleped_cantidad,
+                        detalleped_unidad, detalleped_costo, detalleped_precio, detalleped_subtotal, detalleped_descuento,
+                        detalleped_total,'' as detalleven_caracteristicas, detalleped_preferencia, detalleped_comision,
+                        1 as detalleven_tipocambio, ".$usuario_id.", ".$moneda['moneda_tc']."
+                        from detalle_pedido
+                        where pedido_id = ".$pedido_id.")";
+                $detalleven_id = $this->Pedido_model->modificar($sql);
+
+
+
+                //actualizar el estado de la del pedido
+                $sql = "update pedido set estado_id = 13 where pedido_id = ".$pedido_id; //como vendido y entregado
+                //echo $sql;
+
+                $pedido_idx = $this->Pedido_model->modificar($sql);
+                echo json_encode("ok");
+            }
+        }
+    }
 }

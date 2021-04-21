@@ -1,11 +1,8 @@
 $(document).on("ready",inicio);
 function inicio(){
-        
-        
-        buscarorden(1); 
-       
-        
+    buscarorden(1);
 }
+
 function buscarorden(num){
     if (num==1) {
         var control    = "orden_pago/pendientes";
@@ -16,6 +13,8 @@ function buscarorden(num){
     }
     else if (num==3) {
         var control    = "orden_pago/pagadas_antes";
+    }else if (num==4) {
+        var control    = "orden_pago/mostrar_anuladas";
     }
 
     buscar(control);
@@ -78,14 +77,15 @@ function buscar(control){
                         //html += "<a href='"+base_url+"egreso/edit/"+registros[i]["egreso_id"]+"'  class='btn btn-primary btn-xs'><span class='fa fa-pencil'></a>";
                        if (registros[i]["estado_id"]==8) {
                             //registros[i]["estado_nombre"]
-                        html += "<span class='btn btn-danger btn-xs'>"+registros[i]["estado_descripcion"]+"</span><br><a class='btn btn-primary no-print' data-toggle='modal' data-target='#modalpagar"+registros[i]["orden_id"]+"' title=''><span class='fa fa-money'></span> Pagar</a>";
-                        html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
+                        html += "<span class='btn btn-facebook btn-xs'>"+registros[i]["estado_descripcion"]+"</span><br><a class='btn btn-success no-print' data-toggle='modal' data-target='#modalpagar"+registros[i]["orden_id"]+"' title=''><span class='fa fa-money'></span> Pagar</a>";
+                        html += "<a class='btn btn-danger no-print' data-toggle='modal' data-target='#modalanular"+registros[i]["orden_id"]+"' title='Anular orden de pago'><span class='fa fa-trash'></span> Anular</a>";
+                        html += "<!------------------------ INICIO modal para COBRAR ------------------->";
                         html += "<div class='modal fade' id='modalpagar"+registros[i]["orden_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>";
                         html += "<div class='modal-dialog' role='document'>";
                         html += "<br>";
                         html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'><h3 class='modal-title' id='exampleModalLongTitle'>Pagar Orden: 00"+registros[i]["orden_id"]+"</h3>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "<div class='modal-header text-center'><h3 class='modal-title' id='exampleModalLongTitle'>Pagar Orden: 00"+registros[i]["orden_id"];
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button></h3>";
                         html += "</div>";
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
@@ -114,11 +114,40 @@ function buscar(control){
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
-                        html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
+                        html += "<!------------------------ FIN modal para COBRAR ------------------->";
+                        html += "<!------------------------ INICIO modal para confirmar anulacion ------------------->";
+                        html += "<div class='modal fade' id='modalanular"+registros[i]["orden_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        //html += "<br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header text-center'><h3 class='modal-title' id='exampleModalLongTitle'>Anular Orden: 00"+registros[i]["orden_id"];
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button></h3>";
+                        html += "</div>";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<div style='font-size: 14pt'>";
+                        html += "¿Esta seguro de anular este pedido?";
+                        html += "</div>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+                        html += "<div class='modal-footer' style='text-align: center'>";
+                        html += "<button type='button' onclick='anular("+registros[i]["orden_id"]+")' class='btn btn-success' data-dismiss='modal'><span class='fa fa-check'></span> Si </button>";
+                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para confirmar anulacion ------------------->";
                         html += "</td>";
                         }else{
-                        html += ""+registros[i]["orden_cobradapor"]+"<br>"+registros[i]["orden_ci"]+"<br><span class='btn btn-facebook btn-xs'>"+registros[i]["estado_descripcion"]+"</span>";
-                        html += "<a href='"+base_url+"orden_pago/imprimir/"+registros[i]["orden_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Reimprimir comprobante de pago'><span class='fa fa-print'></span></a>";
+                            if(registros[i]["orden_cobradapor"]!= null && registros[i]["orden_cobradapor"]!= ""){
+                                html += ""+registros[i]["orden_cobradapor"]+"<br>"+registros[i]["orden_ci"]+"<br>";
+                            }
+                        html += "<span class='btn btn-facebook btn-xs'>"+registros[i]["estado_descripcion"]+"</span>";
+                        if(registros[i]["estado_id"]!=27) {
+                            html += "<a href='"+base_url+"orden_pago/imprimir/"+registros[i]["orden_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Reimprimir comprobante de pago'><span class='fa fa-print'></span></a>";
+                        }
+                        
                         html += "</td>";
                         }
                         html += "</tr>";
@@ -174,4 +203,29 @@ function pagar(orden){
     });   
 
 }
+/* anular orden de epago */
+function anular(orden_id){
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"orden_pago/anular_orden/";
+    
+    $("#modalanular"+orden_id).modal('hide');
+    /*var base_url    = document.getElementById('base_url').value;
+    var cancelado    = document.getElementById('orden_cancelado'+orden).value;
+    var cobrado    = document.getElementById('orden_cobradapor'+orden).value;
+    var cicobra    = document.getElementById('orden_ci'+orden).value;
+    */
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{orden_id:orden_id},
+            success:function(resul){
+                alert("Orden de pago anulado con exito!");
+                buscarorden(1);
+            },
+            error:function(resul){
+                // alert("Algo salio mal...!!!");
+                html = "";
+                $("#tablaresultados").html(html);
+            }
+        });   
 
+}

@@ -75,6 +75,20 @@ class Orden_pago_model extends CI_Model
         return $resultado;
     }
     /*
+     * Anuladas
+     */
+    function get_anuladas($filtro)
+    {
+        $sql = "select o.*,e.*, u.usuario_imagen as 'usuario_imagen1', y.usuario_imagen as 'usuario_imagen2', u.usuario_nombre as 'usuario_nombre1', y.usuario_nombre as 'usuario_nombre2'
+                from orden_pago o
+                left join estado e on o.estado_id = e.estado_id 
+                left join usuario u on o.usuario_id1=u.usuario_id
+                left join usuario y on o.usuario_id2=y.usuario_id
+                where e.estado_id = 27 and ".$filtro." ";
+        $resultado = $this->db->query($sql)->result_array();
+        return $resultado;
+    }
+    /*
      * Pagados antes
      */
     function get_todos()

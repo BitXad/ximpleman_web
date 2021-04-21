@@ -368,23 +368,46 @@ class Pedido_model extends CI_Model
         return $result;        
     }    
     
-function get_pedido_id($pedido_id)
-{
+    function get_pedido_id($pedido_id)
+    {
 
-    $sql = "select *
-            from pedido p
-            left join detalle_pedido d on d.pedido_id = p.pedido_id
-            left join cliente c on c.cliente_id = p.cliente_id
-            left join usuario u on u.usuario_id = p.usuario_id
-            left join producto t on t.producto_id = d.producto_id
-            left join zona z on z.zona_id = c.zona_id
+        $sql = "select *
+                from pedido p
+                left join detalle_pedido d on d.pedido_id = p.pedido_id
+                left join cliente c on c.cliente_id = p.cliente_id
+                left join usuario u on u.usuario_id = p.usuario_id
+                left join producto t on t.producto_id = d.producto_id
+                left join zona z on z.zona_id = c.zona_id
 
-            where p.pedido_id = ".$pedido_id;
-    
-    $pedido = $this->db->query($sql)->result_array();
+                where p.pedido_id = ".$pedido_id;
 
-    return $pedido;
-}
+        $pedido = $this->db->query($sql)->result_array();
+
+        return $pedido;
+    }
+    /*
+     * Funcion para obtener todos los pedidos pendientes
+     */
+    function get_pedidos_pendientes($usuario_id, $desde, $hasta)
+    {
+        $usuario = "";
+        if($usuario_id > 0){
+            $usuario = " and v.usuario_id = ".$usuario_id;
+        }
+        $sql = "select distinct(c.cliente_id),c.cliente_nombre, c.cliente_codigo, 
+                c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio,
+                c.cliente_latitud, c.cliente_longitud, 0 as cliente_visitado, v.pedido_id
+                from pedido v, cliente c
+                where 
+                v.cliente_id = c.cliente_id and
+                date(v.pedido_fecha) >= '".$desde."' and
+                date(v.pedido_fecha) <= '".$hasta."' and
+                v.estado_id = 11
+                ".$usuario." 
+                group by v.pedido_id
+                ";
+        return $this->db->query($sql)->result_array();
+    }
 }
 
     

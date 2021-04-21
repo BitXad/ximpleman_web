@@ -659,6 +659,14 @@
                             <a href="<?php echo site_url('venta/busquedacombi');?>"><i class="fa fa-file"></i>Reporte de Embarque</a>
                         </li>
                         <?php
+                        } ?>
+                        <?php
+                        if($rolusuario[144-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('pedido/mapa_pedidos');?>"><i class="fa fa-map"></i>Mapa de Pedidos</a>
+                        </li>
+                        <?php
                         }
                         if($rolusuario[24-1]['rolusuario_asignado'] == 1){
                         ?>

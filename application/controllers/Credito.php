@@ -132,7 +132,7 @@ class Credito extends CI_Controller{
             $condicion = " and ve.usuario_id=".$usuario_id." or s.usuario_id=".$usuario_id." ";
             $data['page_title'] = "Cuentas x Cobrar";
             $data['rol'] = $this->session_data['rol'];
-            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['_view'] = 'credito/indexCuentas';
@@ -143,7 +143,7 @@ class Credito extends CI_Controller{
            
             $data['page_title'] = "Cuentas x Cobrar";
             $data['rol'] = $this->session_data['rol'];
-            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
             $data['cuota'] = $this->Cuotum_model->get_cuota_venta();
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['_view'] = 'credito/indexCuentas';

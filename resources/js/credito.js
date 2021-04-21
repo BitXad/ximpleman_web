@@ -254,11 +254,11 @@ function buscar_fecha_cuenta()
 
 function tablacuentas(filtro) //Cuentas por cobrar
 {
-     var controlador = "";
-     var base_url = document.getElementById('base_url').value;
+    var controlador = "";
+    var base_url = document.getElementById('base_url').value;
      
-     controlador = base_url+'credito/buscarCuenta/';
-
+    controlador = base_url+'credito/buscarCuenta/';
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
      $.ajax({url: controlador,
            type:"POST",
            data:{filtro:filtro},
@@ -393,12 +393,16 @@ function tablacuentas(filtro) //Cuentas por cobrar
                    html += "<td colspan=5 align=right></td><tr>"; 
                    $("#tablacuentas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
-                   
+                   document.getElementById('loader').style.display = 'none';
                 }
-
+                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
         error:function(respuesta){
           
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
         }
         
     });
@@ -484,7 +488,7 @@ function tablacuentasagrupado(filtro)
      var base_url = document.getElementById('base_url').value;
      
      controlador = base_url+'credito/buscarCuentaAgrupado/';
-
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
      $.ajax({url: controlador,
            type:"POST",
            data:{filtro:filtro},
@@ -557,12 +561,16 @@ function tablacuentasagrupado(filtro)
                    
                    $("#tablacuentas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
-                   
+                   document.getElementById('loader').style.display = 'none';
                 }
-
+                document.getElementById('loader').style.display = 'none';
         },
         error:function(respuesta){
           
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
         }
         
     });
