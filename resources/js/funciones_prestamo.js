@@ -62,12 +62,16 @@ function buscar_prestamos(kardex,producto_id){
     //alert(usuario_id);
     
     $.ajax({url: controlador,
-           type:"POST",
-           data:{fecha_desde:fecha_desde, fecha_hasta:fecha_hasta, usuario_id:usuario_id, 
-               tipo_prestamo:tipo_prestamo,kardex:kardex,producto_id:producto_id},
-           async: false, 
-           success:function(respuesta){
-               
+            type:"POST",
+            data:{fecha_desde:fecha_desde, fecha_hasta:fecha_hasta, usuario_id:usuario_id, 
+                tipo_prestamo:tipo_prestamo,kardex:kardex,producto_id:producto_id},
+                async: false, 
+                success:function(respuesta){
+                    var nombre_moneda = document.getElementById('nombre_moneda').value;
+                    var lamoneda_id = document.getElementById('lamoneda_id').value;
+                    var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                    var total_otramoneda = Number(0);
+                    var total_otram = Number(0);
                var prestamo = JSON.parse(respuesta); 
                var html = "";
                var cantidad_prestados = 0;
@@ -116,7 +120,7 @@ function buscar_prestamos(kardex,producto_id){
                html+= "<th>"+total_garantia.toFixed(2)+"</th>";
                html+= "<th></th>";
                html+= "<th>"+total_devuelto.toFixed(2)+"</th>";
-               html+= "<th colspan='2'><b>GARATIA POR DEVOLVER Bs: "+(total_garantia - total_devuelto).toFixed(2)+
+               html+= "<th colspan='2'><b>GARATIA POR DEVOLVER ("+nombre_moneda+"):"+(total_garantia - total_devuelto).toFixed(2)+
                        "<br>ENVASES EN PRESTAMO: "+(cantidad_prestados - cantidad_devueltos).toFixed(2)+"</b></th>";
                html+= "</tr>";
                
@@ -158,7 +162,7 @@ function buscar_prestamos(kardex,producto_id){
                     html += "<tr>";
                     html += "<td style='padding:0;'>4</td>";
                     html += "<td style='padding:0;'>TOTAL GARANTIAS POR DEVOLVER </td>";
-                    html += "<td style='padding:0;'>Bs</td>";
+                    html += "<td style='padding:0;'>"+nombre_moneda+"</td>";
                     html += "<td style='padding:0;'>"+Number(total_garantia - total_devuelto).toFixed(2)+"</td>";
                     html += "</tr>";
                     
@@ -194,7 +198,7 @@ function inventario_envases(){
            async: false, 
            success:function(respuesta){
                 var prestamo = JSON.parse(respuesta); 
-                var nombre_moneda = document.getElementById('nombre_moneda').value;
+                //var nombre_moneda = document.getElementById('nombre_moneda').value;
                 var lamoneda_id = document.getElementById('lamoneda_id').value;
                 var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
                 var total_otramoneda = Number(0);

@@ -2331,29 +2331,26 @@ function anular_venta($venta_id){
     function comision()
     {
         if($this->acceso(143)){
-        //**************** inicio contenido ***************           
-        
-        $this->load->model('Usuario_model');
-        //$this->load->model('Detalle_venta_model');
-        $filtro = $this->input->post('filtro');
-        
-        if ($filtro == null){
-           //$data['venta'] = $this->Venta_model->get_all_venta(1);
+            //**************** inicio contenido ***************
+            $this->load->model('Usuario_model');
+            //$this->load->model('Detalle_venta_model');
+            $filtro = $this->input->post('filtro');
+            if ($filtro == null){
+               //$data['venta'] = $this->Venta_model->get_all_venta(1);
+            }
+            else{
+                 $data['venta'] = $this->Venta_model->get_busqueda($filtro);            
+            }
+            
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            $data['_view'] = 'venta/comisiones';
+            $this->load->view('layouts/main',$data);
+            //**************** fin contenido ***************
         }
-        else{
-             $data['venta'] = $this->Venta_model->get_busqueda($filtro);            
-        }
-        
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-         
-      
-        $data['_view'] = 'venta/comisiones';
-        $this->load->view('layouts/main',$data);
-        
-       //**************** fin contenido ***************
-        			}
-        		          
-        
     }
     
     function buscarporvendedores()
@@ -2856,37 +2853,37 @@ function anular_venta($venta_id){
     //Muestra la lista de vencimientos
     function prestamos()
     {
-        
         if($this->acceso(30)) {
-                
-        //**************** inicio contenido ***************            
-        $usuario_id = $this->session_data['usuario_id'];
-        $usuario_nombre = $this->session_data['usuario_nombre'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];
-        
-        $rolusuario = $this->session_data['rol'];
+            //**************** inicio contenido ***************            
+            $usuario_id = $this->session_data['usuario_id'];
+            $usuario_nombre = $this->session_data['usuario_nombre'];
+            $tipousuario_id = $this->session_data['tipousuario_id'];
 
-        $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
-        $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
-        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
-        
-        $data['page_title'] = "Envases y Prestamos"
-                . "";
-        $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
-        //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
-        $data['usuario_id'] = $usuario_id; //el usuario logueado
-        
-        $data['tipousuario_id'] = $tipousuario_id; 
-        $data['usuario_nombre'] = $usuario_nombre;
-        
+            $rolusuario = $this->session_data['rol'];
 
-        
-        //$data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
-        $data['estado'] = $this->Estado_model->get_tipo_estado(5);
-        
-        $data['_view'] = 'venta/prestamos';
-        $this->load->view('layouts/main',$data);
-        //**************** fin contenido ***************
+            $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
+            $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
+            $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+
+            $data['page_title'] = "Envases y Prestamos"
+                    . "";
+            $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+            //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
+            $data['usuario_id'] = $usuario_id; //el usuario logueado
+
+            $data['tipousuario_id'] = $tipousuario_id; 
+            $data['usuario_nombre'] = $usuario_nombre;
+
+            $data['estado'] = $this->Estado_model->get_tipo_estado(5);
+            
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+            $data['_view'] = 'venta/prestamos';
+            $this->load->view('layouts/main',$data);
+            //**************** fin contenido ***************
         }    
     }
 

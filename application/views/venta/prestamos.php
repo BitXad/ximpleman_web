@@ -31,8 +31,11 @@
 
 <input id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>" hidden>
 <input id="pedido_id" name="pedido_id" value="0" hidden>
-<!--<input id="usuarios" name="usuarios" value='<?php echo json_encode($usuarios); ?>' hidden >-->
+<!--<input id="usuarios" name="usuarios" value='<?php //echo json_encode($usuarios); ?>' hidden >-->
 <input id='tipo_transaccion' name='tipo_transaccion' value='<?php echo json_encode($tipo_transaccion); ?>' hidden>
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 
 <table class="table" style="width: 20cm; padding: 0;" >
     <tr>
@@ -133,13 +136,13 @@
                         <th  rowspan="2"align="center">Detalle</th>
                         <th rowspan="2">Prestados</th>
                         <th rowspan="2">Devueltos</th>
-                        <th rowspan="2">Garantia</th>
+                        <th rowspan="2">Garantia<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                         <th rowspan="2">Vendedor</th>
                         <th colspan="3">Devolución</th>
                         
                     </tr>
                     <tr>                       
-                        <th>Monto</th>
+                        <th>Monto (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                         <th>Fecha</th>
                         <th>Usuario</th>
 

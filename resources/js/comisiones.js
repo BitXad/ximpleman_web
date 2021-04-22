@@ -64,24 +64,22 @@ function buscar_fecha_ven()
 }
 
 function ventacombi(filtro)
-{   
-   
+{
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"venta/buscarporvendedores";
-    var limite = 500;
-    
+    //var limite = 500;
     $.ajax({url: controlador,
-           type:"POST",
-           data:{filtro:filtro},
-          
-           success:function(resul){     
-               
-
+            type:"POST",
+            data:{filtro:filtro},
+            success:function(resul){
                 $("#pillados").val("- 0 -");
-               var registros =  JSON.parse(resul);
-           
-               if (registros != null){
-                   
+                var registros =  JSON.parse(resul);
+                if (registros != null){
+                    //var nombre_moneda = document.getElementById('nombre_moneda').value;
+                    var lamoneda_id = document.getElementById('lamoneda_id').value;
+                    var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                    var total_otramoneda = Number(0);
+                    var total_otram = Number(0);
                   //  alert(filtro);
                     var totalCo = 0;
                     var totalCan = 0;
@@ -89,13 +87,10 @@ function ventacombi(filtro)
 
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#pillados").val("- "+n+" -");
-                   var perra = registros["usuario_id"];
+                   var usuario_id = registros["usuario_id"];
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
-                    
-                    for (var i = 0; i < x ; i++){
-                        
+                   
+                    for (var i = 0; i < n ; i++){
                         var comision = Number(registros[i]["totales"])*Number(registros[i]["producto_comision"])/100;
                         var totalCo = Number(comision+totalCo);
                         var canti = Number(registros[i]["cantidades"]);
@@ -116,6 +111,16 @@ function ventacombi(filtro)
                         html += "<td align='right'> <b>"+Number(registros[i]["totales"]).toFixed(2)+"</b> </td>";
                         html += "<td align='right'> <b>"+Number(registros[i]["producto_comision"]).toFixed(2)+"</b> </td>";
                         html += "<td align='right'> <b>"+Number(comision).toFixed(2)+"</b> </td>";
+                        html += "<td class='text-right'> ";
+                        if(lamoneda_id == 1){
+                            total_otram = Number(comision)/Number(lamoneda[1]["moneda_tc"]);
+                            total_otramoneda += total_otram;
+                        }else{
+                            total_otram = Number(comision)*Number(lamoneda[1]["moneda_tc"]);
+                            total_otramoneda += total_otram;
+                        }
+                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += "</td>";
                      // html += "<td>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                                                
             
@@ -129,14 +134,15 @@ function ventacombi(filtro)
                         html += "<td style= 'font-size:12px;' ><b>TOTAL</b></td>";
                         html += "<td></td>";
                         html += "<td></td>";
-                        html += "<td style= 'font-size:12px;' align='right'><b> "+Number(totalCan).toFixed(2)+"</td>";
-                        html += "<td style= 'font-size:12px;' align='right'><b> "+Number(totalTo).toFixed(2)+"</td>";
+                        html += "<td style= 'font-size:12px;' align='right'><b> "+numberFormat(Number(totalCan).toFixed(2))+"</td>";
+                        html += "<td style= 'font-size:12px;' align='right'><b> "+numberFormat(Number(totalTo).toFixed(2))+"</td>";
                         html += "<td></td>";
-                        html += "<td style= 'font-size:12px;' align='right'><b>"+Number(totalCo).toFixed(2)+"</b></td> ";
+                        html += "<td style= 'font-size:12px;' align='right'><b>"+numberFormat(Number(totalCo).toFixed(2))+"</b></td> ";
+                        html += "<td style= 'font-size:12px;' align='right'><b>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</b></td> ";
                         html += "</tr>";
                    
                    $("#ventacombi").html(html);
-                   $("#usuario1").html(perra);
+                   $("#usuario1").html(usuario_id);
                    document.getElementById('loader').style.display = 'none';
             }
                 
@@ -149,4 +155,41 @@ function ventacombi(filtro)
         
     });   
 
-} 
+}
+
+function numberFormat(numero){
+    // Variable que contendra el resultado final
+    var resultado = "";
+
+    // Si el numero empieza por el valor "-" (numero negativo)
+    if(numero[0]=="-")
+    {
+        // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+        // el signo negativo
+        nuevoNumero=numero.replace(/\,/g,'').substring(1);
+    }else{
+        // Cogemos el numero eliminando los posibles puntos que tenga
+        nuevoNumero=numero.replace(/\,/g,'');
+    }
+
+    // Si tiene decimales, se los quitamos al numero
+    if(numero.indexOf(".")>=0)
+        nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+
+    // Ponemos un punto cada 3 caracteres
+    for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+        resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+
+    // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+    // los separadores de miles
+    if(numero.indexOf(".")>=0)
+        resultado+=numero.substring(numero.indexOf("."));
+
+    if(numero[0]=="-")
+    {
+        // Devolvemos el valor añadiendo al inicio el signo negativo
+        return "-"+resultado;
+    }else{
+        return resultado;
+    }
+}
