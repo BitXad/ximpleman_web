@@ -69,7 +69,7 @@ class Credito extends CI_Controller{
             $data['rol'] = $this->session_data['rol'];
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
-            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
             $data['_view'] = 'credito/indexDeuda';
             $this->load->view('layouts/main',$data);
         }
@@ -79,7 +79,7 @@ class Credito extends CI_Controller{
             $data['rol'] = $this->session_data['rol'];
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
-            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
             $data['_view'] = 'credito/indexDeuda';
             $this->load->view('layouts/main',$data);
         }

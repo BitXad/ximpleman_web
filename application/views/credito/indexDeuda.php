@@ -93,6 +93,11 @@
             <span class="fa fa-search"></span>   Busqueda  
         </button>
     </div>
+    <!-- *********** INICIO de BUSCADOR select y productos encontrados ****** -->
+    <div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
+        <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+    </div>
+    <!-- *********** FIN de BUSCADOR select y productos encontrados ****** -->
 </div>
 <div class=" col-md-12 cuerpo" id="ocultar" style="display: none">
     <div class="columna_derecha">
