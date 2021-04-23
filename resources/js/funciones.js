@@ -3033,13 +3033,13 @@ function tabla_ventas(filtro)
                     html += "                       </td>";
 
                     html += "                       <td style='withe-space:nowrap; padding:0;' align='right'>";
-                    html += "                           Sub Total "+signo_moneda+': '+Number(v[i]['venta_subtotal']).toFixed(2)+"<br>";
-                    html += "                           Desc. "+signo_moneda+': '+Number(v[i]['venta_descuento']).toFixed(2)+"<br>";
+                    html += "                           Sub Total "+parametro_moneda_descripcion+': '+Number(v[i]['venta_subtotal']).toFixed(2)+"<br>";
+                    html += "                           Desc. "+parametro_moneda_descripcion+': '+Number(v[i]['venta_descuento']).toFixed(2)+"<br>";
                     html += "                           <!--<span class='btn btn-facebook'>-->";
-                    html += "                           <font size='3' face='Arial narrow'> <b>Total "+signo_moneda+': '+Number(v[i]['venta_total']).toFixed(2)+"</b></font><br>";
+                    html += "                           <font size='3' face='Arial narrow'> <b>Total "+parametro_moneda_descripcion+': '+Number(v[i]['venta_total']).toFixed(2)+"</b></font><br>";
                     html += "                           <!--</span>-->";
-                    html += "                               Efectivo "+signo_moneda+": "+Number(v[i]['venta_efectivo']).toFixed(2)+"<br>";
-                    html += "                               Cambio "+signo_moneda+": "+Number(v[i]['venta_cambio']).toFixed(2);
+                    html += "                               Efectivo "+parametro_moneda_descripcion+": "+Number(v[i]['venta_efectivo']).toFixed(2)+"<br>";
+                    html += "                               Cambio "+parametro_moneda_descripcion+": "+Number(v[i]['venta_cambio']).toFixed(2);
                     html += "                       </td>";
 
                     html += "                       <td align='center' style='padding:0;'><font size='3'><b> 00"+v[i]['venta_id']+"</b></font>";

@@ -2217,7 +2217,7 @@ function registrarpedido(cliente_id)
     var tipotrans_id = document.getElementById('tipo_transaccion').value; 
     
     var usuario_id = document.getElementById('usuario_id').value; //usuario a quien va dirigido el pedido
-    var estado_id = 11;// revisar el estado 
+    var estado_id = 11;// estado: PENDIENTE, tipo 5
     //ya esta el cliente id
     var tipo_trans = document.getElementById('tipo_transaccion').value; //
 
@@ -2300,7 +2300,7 @@ function registrarpedido(cliente_id)
                
                 } else {
                     eliminardetalleventa();
-                    window.opener.location.reload(); 
+                    window.opener.location.reload();
                     window.close();                        
                 }
                 

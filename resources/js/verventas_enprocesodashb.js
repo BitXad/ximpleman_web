@@ -20,15 +20,12 @@ function tabladetalle_venta(){
                     html2 = "";
                     //html += "<br>";
                     for (var i = 0; i < n ; i++){
-                        /*cant_total    = Number(cant_total)  + Number(registros[i]['detalleven_cantidad']);
-                        total_detalle = Number(total_detalle)   + Number(registros[i]['detalleven_total']);*/
                         html += "<tr>";
                         html += "<td class='text-center' style='padding: 0'>"+(i+1)+"</td>";
                         html += "<td style='padding: 0;'>";
                         html += "<div style='/*color:white;*/ text-align: left'>"
                         if((registros[i]["producto_nombre"]).length >23){
                             res = (registros[i]["producto_nombre"]).substr(0, 21)+"...";
-                            //res = "<span style='font-weight: bold; font-size: 12px' title='"+registros[i]["producto_nombre"]+"'>"+res1+"</span>";
                             eltitulo = "title='"+registros[i]["producto_nombre"]+"'";
                         }else{
                             res = registros[i]["producto_nombre"];
@@ -50,7 +47,6 @@ function tabladetalle_venta(){
                         html += "<td style='padding: 0' align='center'>";
                         if((registros[i]["usuario_nombre"]).length >8){
                             resu = (registros[i]["usuario_nombre"]).substr(0, 8)+"..";
-                            //resu = "<span style='font-weight: bold; font-size: 12px' title='"+registros[i]["usuario_nombre"]+"'>"+resu1+"</span>";
                             eltitulou = "title='"+registros[i]["usuario_nombre"]+"'";
                         }else{
                             resu = registros[i]["usuario_nombre"];
@@ -62,17 +58,13 @@ function tabladetalle_venta(){
                         html += "</td>";    
                         html += "</tr>";
                         }
-                        //html2 += "<h4 style='color: white;'><font size='8'><b> Total Bs.&nbsp;&nbsp; "+numberFormat(Number(total_detalle).toFixed(2))+"</b></font></h4>          ";
                     $("#tablaresultados").html(html);
-                    //$("#estotal").html(html2);
-                    
             }
                 
         },
         error:function(resul){
            html = "";
            $("#tablaresultados").html(html);
-           //$("#estotal").html(html);
         }
         
     });   

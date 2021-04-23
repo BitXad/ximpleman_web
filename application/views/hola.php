@@ -27,12 +27,14 @@
   <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">-->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
+
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
 <!--
 <button onclick="mostrar_grafica()">
  graficos    

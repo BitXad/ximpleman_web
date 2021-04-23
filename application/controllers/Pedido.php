@@ -802,6 +802,7 @@ function registrarpedido()
         if ($this->input->is_ajax_request()){
             
             $pedido_id = $this->input->post('pedido_id');
+            $moneda = $this->Moneda_model->get_moneda(2); //Obtener moneda extrangera
             $tipotrans_id = $this->input->post('tipotrans_id');
             $venta_total = $this->input->post('pedido_total');
             $cuotas = 1;
@@ -823,12 +824,12 @@ function registrarpedido()
                     (producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, 
                     detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, detalleven_descuento, 
                     detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, 
-                    detalleven_tipocambio, usuario_id)
+                    detalleven_tipocambio, usuario_id, detalleven_tc)
                     (select
                     producto_id, ".$venta_id." as venta_id, 1 as moneda_id, detalleped_codigo, detalleped_cantidad,
                     detalleped_unidad, detalleped_costo, detalleped_precio, detalleped_subtotal, detalleped_descuento,
                     detalleped_total,'' as detalleven_caracteristicas, detalleped_preferencia, detalleped_comision,
-                    1 as detalleven_tipocambio, ".$usuario_id."
+                    1 as detalleven_tipocambio, ".$usuario_id.", ".$moneda['moneda_tc']."
                     from detalle_pedido
                     where pedido_id = ".$pedido_id.")";
             $detalleven_id = $this->Pedido_model->modificar($sql);
