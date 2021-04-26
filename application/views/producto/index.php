@@ -106,7 +106,7 @@
             </div>
             <div class="col-md-3">
                 <div class="box-tools">
-                    <select name="categoria_id" class="btn-primary btn-sm" id="categoria_id" onchange="tablaresultadosproducto(2)">
+                    <select name="categoria_id" class="btn-primary btn-sm" id="categoria_id" onchange="mostrar_subcategoria(this.value); tablaresultadosproducto(2)">
                         <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
                         <option value="0"> Todas Las Categorias </option>
                         <?php 
@@ -115,6 +115,11 @@
                             echo '<option value="'.$categoria['categoria_id'].'">'.$categoria['categoria_nombre'].'</option>';
                         } 
                         ?>
+                    </select>
+                </div>
+                <div class="box-tools">
+                    <select name="subcategoria_id" class="btn-primary btn-sm" id="subcategoria_id">
+                        <option value="" disabled selected >-- BUSCAR SUB CATEGORIA --</option>
                     </select>
                 </div>
                 <br>
@@ -155,7 +160,7 @@
                 <tr>
                     <td>
                         <label style="font: normal; font-size: 10px">
-                            <input class="btn" type="checkbox" name="escatalogo" id="escatalogo" title="Catalogo de Productos" onclick="catalogoproducto()" >
+                            <input class="btn" type="checkbox" name="escatalogo" id="escatalogo" title="Catalogo de Productos" onclick="modalcatalogo()" >
                             Catalogo
                         </label>
                     </td>
@@ -163,7 +168,7 @@
                 <tr>
                     <td>
                         <label style="font: normal; font-size: 10px">
-                            <input class="btn" type="checkbox" name="listaprecios" id="listaprecios" title="Lista de Precios" onclick="listaprecios()" >
+                            <input class="btn" type="checkbox" name="listaprecios" id="listaprecios" title="Lista de Precios" onclick="modalprecio()" >
                             Precios
                         </label>
                     </td>
@@ -929,3 +934,52 @@ echo '<script type="text/javascript">
     </div>
 </div>
 <!------------------------ FIN modal para CRUD Clasificador ------------------->
+<!------------------------ INICIO modal para elegir # imagenes en Catalogo ------------------->
+<div class="modal fade" id="modalcatalogo" tabindex="-1" role="dialog" aria-labelledby="modalcatalogolabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">NUMERO DE IMAGENES POR FILA</span>
+            </div>
+            <div class="modal-body">
+                <span class="text-red" id="mensaje_numimagen"></span>
+                <input type="text" class="form-control" name="num_imagenes" id="num_imagenes" />
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a class="btn btn-success" onclick="verificarnumero()"><span class="fa fa-check"></span> Aceptar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para elegir # imagenes en Catalogo ------------------->
+<!------------------------ INICIO modal para elegir precio factor en PRECIOS ------------------->
+<div class="modal fade" id="modalprecio" tabindex="-1" role="dialog" aria-labelledby="modalpreciolabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">PRECIOS</span>
+            </div>
+            <div class="modal-body">
+                <span class="text-red" id="mensaje_precio"></span>
+                <select name="elegir_preciofactor" class=" form-control" id="elegir_preciofactor">
+                    <option value="0" selected> PRECIO NORMAL </option>
+                    <option value="1"> PRECIO (NIVEL 1) </option>
+                    <option value="2"> PRECIO (NIVEL 2) </option>
+                    <option value="3"> PRECIO (NIVEL 3) </option>
+                    <option value="4"> PRECIO (NIVEL 4) </option>
+                    <option value="5"> PRECIO (NIVEL 5) </option>
+                </select>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a class="btn btn-success" onclick="listaprecios()"><span class="fa fa-check"></span> Aceptar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para elegir precio factor en PRECIOS ------------------->

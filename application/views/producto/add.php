@@ -417,7 +417,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                            <label for="producto_foto" class="control-label">Foto</label>
+                            <label for="producto_foto" class="control-label">Foto (800x600; 4:3)</label>
                             <div class="form-group">
                                     <input type="file" name="producto_foto" value="<?php echo "producto.jpg"; ?>" class="btn btn-success btn-sm form-control" id="producto_foto" accept="image/png, image/jpeg, jpg, image/gif" />
                             </div>

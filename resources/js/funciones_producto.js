@@ -64,6 +64,7 @@ function tablaresultadosproducto(limite){
     }else{
         controlador = base_url+'producto/buscarproductos/';
         var categoria = document.getElementById('categoria_id').value;
+        var subcategoria = document.getElementById('subcategoria_id').value;
         var estado    = document.getElementById('estado_id').value;
         if(categoria == 0){
            categoriaestado = "";
@@ -71,6 +72,13 @@ function tablaresultadosproducto(limite){
            categoriaestado = " and p.categoria_id = cp.categoria_id and p.categoria_id = "+categoria+" ";
            categoriatext = $('select[name="categoria_id"] option:selected').text();
            categoriatext = "Categoria: "+categoriatext;
+        }
+        if(subcategoria == ""){
+           categoriaestado += "";
+        }else{
+           categoriaestado += " and p.subcategoria_id = "+subcategoria+" ";
+           /*categoriatext = $('select[name="categoria_id"] option:selected').text();
+           categoriatext = "Categoria: "+categoriatext;*/
         }
         if(estado == 0){
            categoriaestado += "";
@@ -294,7 +302,28 @@ function tablaresultadosproducto(limite){
 
 }
 
-function catalogoproducto() {
+/* muestra el modal para elegir numero de imagenes por fila */
+function modalcatalogo() {
+    var catalogo = $('#escatalogo').is(':checked');
+    if(catalogo){
+        $("#num_imagenes").val("");
+        $("#mensaje_numimagen").html("");
+        $("#modalcatalogo").modal("show");
+    }else{
+        busqueda_inicial();
+    }
+}
+/* verifica si lo ingresado es un numero valido */
+function verificarnumero() {
+    var num_imagenes = document.getElementById('num_imagenes').value;
+    if (num_imagenes <= 0 || isNaN(num_imagenes)) {
+        $("#mensaje_numimagen").html("Por favor ingrese Numeros validos");
+    }else{
+        $("#modalcatalogo").modal("hide");
+        catalogoproducto(num_imagenes);
+    }
+}
+function catalogoproducto(num_imagenes) {
     $("#listaprecios").prop("checked", false);
     $("#listcodigobarras").prop("checked", false);
     $('#titcatalogo').text("CATALOGO DE ");
@@ -306,7 +335,7 @@ function catalogoproducto() {
     var registros =  JSON.parse(respuesta);
     var n = registros.length; //tamaño del arreglo de la consulta
     if(catalogo){
-        var numcolumna = 3;
+        var numcolumna = num_imagenes;
         var inifila = "";
         var finfila = "";
         var contcol = 1;
@@ -322,7 +351,7 @@ function catalogoproducto() {
                     finfila = "";
                     contcol++;
                     //bandfila = false;
-                }else if(i+1== n || contcol == 3){
+                }else if(i+1== n || contcol == num_imagenes){
                     inifila = "";
                     finfila ="</tr>";
                     contcol = 1;
@@ -343,16 +372,16 @@ function catalogoproducto() {
             var mimagen = "";
             if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
                 mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
-                mimagen += "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' class='img img-"+formaimagen+"' width='100%' height='100%' />";
+                mimagen += "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' class='img img-"+formaimagen+"' width='160px' height='120px' />";
                 mimagen += "</a>";
                 //mimagen = nomfoto.split(".").join("_thumb.");77
             }else{
-                mimagen = "<img src='"+base_url+"resources/images/productos/producto.jpg' class='img img-"+formaimagen+"' width='100%' height='100%' />";
+                mimagen = "<img src='"+base_url+"resources/images/productos/producto.jpg' class='img img-"+formaimagen+"' width='160px' height='120px' />";
             }
             html += mimagen;
             //html += "</div>";
             html += "<div style='padding-left: 4px'>";
-            var tamaniofont = 3;
+            var tamaniofont = 2;
             if(registros[i]["producto_nombre"].length >50){
                 tamaniofont = 1;
             }
@@ -380,13 +409,24 @@ function catalogoproducto() {
     }
     //cabcatalogo
 }
+/* muestra el modal para elegir lista de precios */
+function modalprecio() {
+    var precios = $('#listaprecios').is(':checked');
+    if(precios){
+        $('#elegir_preciofactor').prop('selectedIndex',0);
+        $("#modalprecio").modal("show");
+    }else{
+        busqueda_inicial();
+    }
+}
+
 function listaprecios() {
+    var preciofactor = document.getElementById('elegir_preciofactor').value;
     $("#escatalogo").prop("checked", false);
     $("#listcodigobarras").prop("checked", false);
     $('#titcatalogo').text("LISTA DE PRECIOS DE ");
-    var base_url = document.getElementById('base_url').value;
-    //var checkBox = document.getElementById("myCheck");
-    var formaimagen = document.getElementById('formaimagen').value;
+    $("#modalprecio").modal("hide");
+    
     var catalogo = $('#listaprecios').is(':checked');
     var respuesta = document.getElementById('resproducto').value;
     var registros =  JSON.parse(respuesta);
@@ -425,15 +465,107 @@ function listaprecios() {
             html += "";
             html += "</div>";*/
             html += "</td>";
-            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
-            html += registros[i]["producto_unidad"];
-            html += "</td>";
-            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
-            html += registros[i]["producto_codigobarra"];
-            html += "</td>";
-            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
-            html += registros[i]["producto_precio"];
-            html += "</td>";
+            if(preciofactor == 0){
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
+                html += registros[i]["producto_unidad"];
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                html += registros[i]["producto_codigobarra"];
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                html += registros[i]["producto_precio"];
+                html += "</td>";
+            }else if(preciofactor == 1){
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
+                if(registros[i]["producto_unidadfactor"] != null){
+                    html += registros[i]["producto_unidadfactor"];
+                }
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                if(registros[i]["producto_codigofactor"] != null){
+                    html += registros[i]["producto_codigofactor"];
+                }
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                if(registros[i]["producto_preciofactor"] != null){
+                    html += registros[i]["producto_preciofactor"];
+                }else{
+                    html += "0";
+                }
+                html += "</td>";
+            }else if(preciofactor == 2){
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
+                if(registros[i]["producto_unidadfactor1"] != null){
+                    html += registros[i]["producto_unidadfactor1"];
+                }
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                if(registros[i]["producto_codigofactor1"] != null){
+                    html += registros[i]["producto_codigofactor1"];
+                }
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                if(registros[i]["producto_preciofactor1"] != null){
+                    html += registros[i]["producto_preciofactor1"];
+                }else{
+                    html += "0";
+                }
+                html += "</td>";
+            }else if(preciofactor == 3){
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
+                if(registros[i]["producto_unidadfactor2"] != null){
+                    html += registros[i]["producto_unidadfactor2"];
+                }
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                if(registros[i]["producto_codigofactor2"] != null){
+                    html += registros[i]["producto_codigofactor2"];
+                }
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                if(registros[i]["producto_preciofactor2"] != null){
+                    html += registros[i]["producto_preciofactor2"];
+                }else{
+                    html += "0";
+                }
+                html += "</td>";
+            }else if(preciofactor == 4){
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
+                if(registros[i]["producto_unidadfactor3"] != null){
+                    html += registros[i]["producto_unidadfactor3"];
+                }
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                if(registros[i]["producto_codigofactor3"] != null){
+                    html += registros[i]["producto_codigofactor3"];
+                }
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                if(registros[i]["producto_preciofactor3"] != null){
+                    html += registros[i]["producto_preciofactor3"];
+                }else{
+                    html += "0";
+                }
+                html += "</td>";
+            }else if(preciofactor == 5){
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
+                if(registros[i]["producto_unidadfactor4"] != null){
+                    html += registros[i]["producto_unidadfactor4"];
+                }
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                if(registros[i]["producto_codigofactor4"] != null){
+                    html += registros[i]["producto_codigofactor4"];
+                }
+                html += "</td>";
+                html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
+                if(registros[i]["producto_preciofactor4"] != null){
+                    html += registros[i]["producto_preciofactor4"];
+                }else{
+                    html += "0";
+                }
+                html += "</td>";
+            }
             html += "</tr>";
         }
         $("#cabcatalogo").html(chtml);
@@ -832,4 +964,35 @@ function agregar_clasificador(){
         
     });   
 
+}
+/* funcion que recupera las subcategorias de una categoria de producto */
+function mostrar_subcategoria(categoria_id){
+    var controlador = "";
+    var base_url  = document.getElementById('base_url').value;
+    controlador = base_url+'producto/obtener_subcategoria/';
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{categoria_id:categoria_id},
+           success:function(respuesta){
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    html = "";
+                    html += "<select name='subcategoria_id' class='btn-primary btn-sm' id='subcategoria_id' onchange='tablaresultadosproducto(2)'>";
+                    html += "<option value='' selected>-- BUSCAR SUB CATEGORIA --</option>";
+                    for (var i = 0; i < n ; i++){
+                        html += "<option value='"+registros[i]["subcategoria_id"]+"'>";
+                        html += registros[i]["subcategoria_nombre"];
+                        html += "</option>";
+                    }
+                    html += "</select>";
+                    //$("#subcategoria_id").append(html);
+                    $("#subcategoria_id").replaceWith(html);
+            }
+        },
+        error:function(respuesta){
+           html = "";
+           //$("#producto_nombreenvase").html(html);
+        }
+    });   
 }
