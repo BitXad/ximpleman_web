@@ -191,7 +191,7 @@ class Producto_model extends CI_Model
                            or p.producto_principioact like '%".$parametro."%' or p.producto_accionterap like '%".$parametro."%')
                            ".$categoriaestado."
                       GROUP By p.producto_id
-                      ORDER By p.producto_nombre
+                      ORDER By p.categoria_id, p.producto_nombre
                 ) as x, consinventario i
                 where x.producto_id = i.producto_id";
 
@@ -247,7 +247,7 @@ class Producto_model extends CI_Model
                       WHERE 
                            p.estado_id = e.estado_id
 
-                      ORDER By p.producto_nombre LIMIT 50
+                      ORDER By p.categoria_id, p.producto_nombre LIMIT 50
                       ) as x, consinventario i
                 where x.producto_id = i.producto_id";
 
@@ -274,7 +274,7 @@ class Producto_model extends CI_Model
                       LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
                       WHERE 
                            p.estado_id = e.estado_id
-                      ORDER By p.producto_nombre
+                      ORDER By p.categoria_id, p.producto_nombre
                       ) as x, consinventario i
                 where x.producto_id = i.producto_id";
 

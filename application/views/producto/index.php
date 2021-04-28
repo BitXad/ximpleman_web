@@ -1,19 +1,17 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/funciones_producto.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/JsBarcode.all.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/plugins/datatables/dataTables.bootstrap.css'); ?>" type="text/javascript"></script>
+<!--<script src="<?php /*echo base_url('resources/plugins/datatables/dataTables.bootstrap.css'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/plugins/datatables/jquery.dataTables.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/plugins/datatables/dataTables.bootstrap.min.js'); ?>" type="text/javascript"></script>
-<link rel="stylesheet" href="<?php echo base_url('resources/css/bootstrap.min.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('resources/css/bootstrap.min.css');*/ ?>">-->
   <!-- Ionicons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">-->
   
 <!-- jQuery 2.2.3 -->
-<script src="<?php echo base_url('resources/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
+<!--<script src="<?php //echo base_url('resources/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>-->
 <!-- Bootstrap 3.3.6 -->
 
-   
-        
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -58,116 +56,104 @@
 <input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php  echo $tipousuario_id; ?>" />
 <input type="hidden" name="resproducto" id="resproducto" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
+<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <!--<input type="hidden" name="lapresentacion" id="lapresentacion" value='<?php /*echo json_encode($all_presentacion); ?>' />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($all_moneda); */ ?>' /> -->
 
 <div class="row micontenedorep" style="display: none" id="cabeceraprint" >
     <table class="table" style="width: 100%; padding: 0;" >
-    <tr>
-        <td style="width: 25%; padding: 0; line-height:10px; text-align: center" >
-                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
-                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
-        </td>
-                   
-        <td style="width: 35%; padding: 0" > 
-            <center>
-            
-                <br><br>
-                <font size="3" face="arial"><b><span id="titcatalogo"></span>PRODUCTOS</b></font> <br>
-                
-                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
-
-            </center>
-        </td>
-        <td style="width: 20%; padding: 0" >
+        <tr>
+            <td style="width: 25%; padding: 0; line-height:10px; text-align: center" >
+                <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+            </td>
+            <td style="width: 35%; padding: 0" > 
                 <center>
-                    </center>
-        </td>
-    </tr>
-</table>       
-        
+                    <br><br>
+                    <font size="3" face="arial"><b><span id="titcatalogo"></span>PRODUCTOS</b></font> <br>
+                    <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+                </center>
+            </td>
+            <td style="width: 20%; padding: 0" >
+                <center></center>
+            </td>
+        </tr>
+    </table>
 </div>
-
 <br>
 <div class="row no-print">
-    <div class="col-md-6">
-        <div class="col-md-12" style="padding: 0px">
-            <div class="col-md-9">
-                <div class="box-header" style="padding-left: 0px">
-                    <font size='4' face='Arial'><b>Productos</b></font>
-                    <br><font size='2' face='Arial' id="encontrados"></font> 
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon"> Buscar </span>           
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." onkeypress="buscarproducto(event)" autocomplete="off">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="box-tools">
-                    <select name="categoria_id" class="btn-primary btn-sm" id="categoria_id" onchange="mostrar_subcategoria(this.value); tablaresultadosproducto(2)">
-                        <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
-                        <option value="0"> Todas Las Categorias </option>
-                        <?php 
-                        foreach($all_categoria as $categoria)
-                        {
-                            echo '<option value="'.$categoria['categoria_id'].'">'.$categoria['categoria_nombre'].'</option>';
-                        } 
-                        ?>
-                    </select>
-                </div>
-                <div class="box-tools">
-                    <select name="subcategoria_id" class="btn-primary btn-sm" id="subcategoria_id">
-                        <option value="" disabled selected >-- BUSCAR SUB CATEGORIA --</option>
-                    </select>
-                </div>
-                <br>
-                <div class="box-tools">
-                    <select name="estado_id" class="btn-primary btn-sm" id="estado_id" onchange="tablaresultadosproducto(2)">
-                        <option value="" disabled selected >-- BUSCAR POR ESTADOS --</option>
-                        <option value="0">Todos Los Estados</option>
-                        <?php 
-                        foreach($all_estado as $estado)
-                        {
-                            echo '<option value="'.$estado['estado_id'].'">'.$estado['estado_descripcion'].'</option>';
-                        } 
-                        ?>
-                    </select>
-                </div>
-            </div>
+    <div class="col-md-5">
+        <div class="box-header" style="padding-left: 0px">
+            <font size='4' face='Arial'><b>Productos</b></font>
+            <br><font size='2' face='Arial' id="encontrados"></font> 
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon"> Buscar </span>           
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." onkeypress="buscarproducto(event)" autocomplete="off">
+            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaresultadosproducto(2)" title="Buscar"><span class="fa fa-search"></span></div>
+            <div style="border-color: #d58512; background: #e08e0b !important; color: white" class="btn btn-warning input-group-addon" onclick="tablaresultadosproducto(3)" title="Mostrar todos los productos"><span class="fa fa-globe"></span></div>
         </div>
     </div>
-    
-    <!---------------- BOTONES --------->
-    <div class="col-md-4" style="padding-right: 0px">
-        <div class="box-tools text-right">
-            <a href="<?php echo site_url('producto/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
-            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="tablaresultadosproducto(3)" title="Mostrar todos los Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
-            <a href="<?php echo site_url('producto/existenciaminima'); ?>" class="btn btn-info btn-foursquarexs" target="_blank" ><font size="5" title="Productos con Existencia minima"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
-            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->
+    <div class="col-md-3">
+        <div class="box-tools">
+            <select name="categoria_id" class="btn-primary btn-sm btn-block" id="categoria_id" onchange="mostrar_subcategoria(this.value); tablaresultadosproducto(2)">
+                <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
+                <option value="0"> Todas Las Categorias </option>
+                <?php 
+                foreach($all_categoria as $categoria)
+                {
+                    echo '<option value="'.$categoria['categoria_id'].'">'.$categoria['categoria_nombre'].'</option>';
+                } 
+                ?>
+            </select>
+        </div>
+        <div class="box-tools">
+            <select name="subcategoria_id" class="btn-primary btn-sm btn-block" id="subcategoria_id">
+                <option value="" disabled selected >-- BUSCAR SUB CATEGORIA --</option>
+            </select>
+        </div>
+        <div class="box-tools">
+            <select name="estado_id" class="btn-primary btn-sm btn-block" id="estado_id" onchange="tablaresultadosproducto(2)">
+                <option value="" disabled selected >-- BUSCAR POR ESTADOS --</option>
+                <option value="0">Todos Los Estados</option>
+                <?php 
+                foreach($all_estado as $estado)
+                {
+                    echo '<option value="'.$estado['estado_id'].'">'.$estado['estado_descripcion'].'</option>';
+                } 
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="box-tools" style="display: flex">
+            <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('producto/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
+            <a style="width: 75px; margin-right: 1px; margin-top: 1px" onclick="modalcatalogo()" class="btn btn-info btn-foursquarexs" title="Catalogo de Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Catálogo</small></a>
+            <!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalprecio" class="btn btn-facebook btn-foursquarexs" title="Lista de Precios" ><font size="5"><span class="fa fa-dollar"></span></font><br><small>Precios</small></a>-->
+            <!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalprecio" class="btn btn-soundcloud btn-foursquarexs" title="Codigo de Barras" ><font size="5"><span class="fa fa-barcode"></span></font><br><small>Cod. Barras</small></a>-->
             <?php
             if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
-            <a onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <a style="width: 75px; margin-right: 1px; margin-top: 1px" onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
             <?php
             } ?>
-        </div>
-    </div>
-    <div class="col-md-2">
+        <!--</div>-->
         <?php
             if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
-            <table >
-                <tr>
+            <table>
+                <!--<tr>
                     <td>
                         <label style="font: normal; font-size: 10px">
                             <input class="btn" type="checkbox" name="escatalogo" id="escatalogo" title="Catalogo de Productos" onclick="modalcatalogo()" >
                             Catalogo
                         </label>
                     </td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td>
-                        <label style="font: normal; font-size: 10px">
+                        <label style="font: normal; font-size: 10px; margin: 0px">
                             <input class="btn" type="checkbox" name="listaprecios" id="listaprecios" title="Lista de Precios" onclick="modalprecio()" >
                             Precios
                         </label>
@@ -175,7 +161,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label style="font: normal; font-size: 10px">
+                        <label style="font: normal; font-size: 10px; margin: 0px">
                             <input class="btn" type="checkbox" name="listcodigobarras" id="listcodigobarras" title="Lista de Codigos de Barras" onclick="listacodbarras()" >
                             Cod. Barras
                         </label>
@@ -183,6 +169,7 @@
                 </tr>
             </table>
             <?php } ?>
+        </div>
     </div>
     <!---------------- FIN BOTONES --------->
     <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
@@ -233,660 +220,6 @@ echo '<script type="text/javascript">
 </script>';
 ?>
 
-
-
-
-
-<!----------------------------------------->
-<!----------------------------------------->
-<!----------------------------------------->
-<!----------------------------------------->
-
-<!--<div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
-            </div>
-             /.box-header 
-            <div class="box-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0
-                  </td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.0
-                  </td>
-                  <td>Win 95+</td>
-                  <td>5</td>
-                  <td>C</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.5
-                  </td>
-                  <td>Win 95+</td>
-                  <td>5.5</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 6
-                  </td>
-                  <td>Win 98+</td>
-                  <td>6</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet Explorer 7</td>
-                  <td>Win XP SP2+</td>
-                  <td>7</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>AOL browser (AOL desktop)</td>
-                  <td>Win XP</td>
-                  <td>6</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Firefox 1.0</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.7</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Firefox 1.5</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Firefox 2.0</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Firefox 3.0</td>
-                  <td>Win 2k+ / OSX.3+</td>
-                  <td>1.9</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Camino 1.0</td>
-                  <td>OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Camino 1.5</td>
-                  <td>OSX.3+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Netscape 7.2</td>
-                  <td>Win 95+ / Mac OS 8.6-9.2</td>
-                  <td>1.7</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Netscape Browser 8</td>
-                  <td>Win 98SE+</td>
-                  <td>1.7</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Netscape Navigator 9</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Mozilla 1.0</td>
-                  <td>Win 95+ / OSX.1+</td>
-                  <td>1</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Mozilla 1.1</td>
-                  <td>Win 95+ / OSX.1+</td>
-                  <td>1.1</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Mozilla 1.2</td>
-                  <td>Win 95+ / OSX.1+</td>
-                  <td>1.2</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Mozilla 1.3</td>
-                  <td>Win 95+ / OSX.1+</td>
-                  <td>1.3</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Mozilla 1.4</td>
-                  <td>Win 95+ / OSX.1+</td>
-                  <td>1.4</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Mozilla 1.5</td>
-                  <td>Win 95+ / OSX.1+</td>
-                  <td>1.5</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Mozilla 1.6</td>
-                  <td>Win 95+ / OSX.1+</td>
-                  <td>1.6</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Mozilla 1.7</td>
-                  <td>Win 98+ / OSX.1+</td>
-                  <td>1.7</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Mozilla 1.8</td>
-                  <td>Win 98+ / OSX.1+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Seamonkey 1.1</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Gecko</td>
-                  <td>Epiphany 2.20</td>
-                  <td>Gnome</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Webkit</td>
-                  <td>Safari 1.2</td>
-                  <td>OSX.3</td>
-                  <td>125.5</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Webkit</td>
-                  <td>Safari 1.3</td>
-                  <td>OSX.3</td>
-                  <td>312.8</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Webkit</td>
-                  <td>Safari 2.0</td>
-                  <td>OSX.4+</td>
-                  <td>419.3</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Webkit</td>
-                  <td>Safari 3.0</td>
-                  <td>OSX.4+</td>
-                  <td>522.1</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Webkit</td>
-                  <td>OmniWeb 5.5</td>
-                  <td>OSX.4+</td>
-                  <td>420</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Webkit</td>
-                  <td>iPod Touch / iPhone</td>
-                  <td>iPod</td>
-                  <td>420.1</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Webkit</td>
-                  <td>S60</td>
-                  <td>S60</td>
-                  <td>413</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Presto</td>
-                  <td>Opera 7.0</td>
-                  <td>Win 95+ / OSX.1+</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Presto</td>
-                  <td>Opera 7.5</td>
-                  <td>Win 95+ / OSX.2+</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Presto</td>
-                  <td>Opera 8.0</td>
-                  <td>Win 95+ / OSX.2+</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Presto</td>
-                  <td>Opera 8.5</td>
-                  <td>Win 95+ / OSX.2+</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Presto</td>
-                  <td>Opera 9.0</td>
-                  <td>Win 95+ / OSX.3+</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Presto</td>
-                  <td>Opera 9.2</td>
-                  <td>Win 88+ / OSX.3+</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Presto</td>
-                  <td>Opera 9.5</td>
-                  <td>Win 88+ / OSX.3+</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Presto</td>
-                  <td>Opera for Wii</td>
-                  <td>Wii</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Presto</td>
-                  <td>Nokia N800</td>
-                  <td>N800</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Presto</td>
-                  <td>Nintendo DS browser</td>
-                  <td>Nintendo DS</td>
-                  <td>8.5</td>
-                  <td>C/A<sup>1</sup></td>
-                </tr>
-                <tr>
-                  <td>KHTML</td>
-                  <td>Konqureror 3.1</td>
-                  <td>KDE 3.1</td>
-                  <td>3.1</td>
-                  <td>C</td>
-                </tr>
-                <tr>
-                  <td>KHTML</td>
-                  <td>Konqureror 3.3</td>
-                  <td>KDE 3.3</td>
-                  <td>3.3</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>KHTML</td>
-                  <td>Konqureror 3.5</td>
-                  <td>KDE 3.5</td>
-                  <td>3.5</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Tasman</td>
-                  <td>Internet Explorer 4.5</td>
-                  <td>Mac OS 8-9</td>
-                  <td>-</td>
-                  <td>X</td>
-                </tr>
-                <tr>
-                  <td>Tasman</td>
-                  <td>Internet Explorer 5.1</td>
-                  <td>Mac OS 7.6-9</td>
-                  <td>1</td>
-                  <td>C</td>
-                </tr>
-                <tr>
-                  <td>Tasman</td>
-                  <td>Internet Explorer 5.2</td>
-                  <td>Mac OS 8-X</td>
-                  <td>1</td>
-                  <td>C</td>
-                </tr>
-                <tr>
-                  <td>Misc</td>
-                  <td>NetFront 3.1</td>
-                  <td>Embedded devices</td>
-                  <td>-</td>
-                  <td>C</td>
-                </tr>
-                <tr>
-                  <td>Misc</td>
-                  <td>NetFront 3.4</td>
-                  <td>Embedded devices</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Misc</td>
-                  <td>Dillo 0.8</td>
-                  <td>Embedded devices</td>
-                  <td>-</td>
-                  <td>X</td>
-                </tr>
-                <tr>
-                  <td>Misc</td>
-                  <td>Links</td>
-                  <td>Text only</td>
-                  <td>-</td>
-                  <td>X</td>
-                </tr>
-                <tr>
-                  <td>Misc</td>
-                  <td>Lynx</td>
-                  <td>Text only</td>
-                  <td>-</td>
-                  <td>X</td>
-                </tr>
-                <tr>
-                  <td>Misc</td>
-                  <td>IE Mobile</td>
-                  <td>Windows Mobile 6</td>
-                  <td>-</td>
-                  <td>C</td>
-                </tr>
-                <tr>
-                  <td>Misc</td>
-                  <td>PSP browser</td>
-                  <td>PSP</td>
-                  <td>-</td>
-                  <td>C</td>
-                </tr>
-                <tr>
-                  <td>Other browsers</td>
-                  <td>All others</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>U</td>
-                </tr>
-                </tbody>
-                <tfoot>
-                <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
-                </tr>
-                </tfoot>
-              </table>
-            </div>
-             /.box-body 
-          </div>-->
-
-
-<script>
-  $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
-    });
-  });
-</script>
-
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Create the tabs -->
-    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-      <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-    </ul>
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <!-- Home tab content -->
-      <div class="tab-pane" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">Recent Activity</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-
-                <p>Will be 23 on April 24th</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-user bg-yellow"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
-
-                <p>New phone +1(800)555-1234</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
-
-                <p>nora@example.com</p>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <i class="menu-icon fa fa-file-code-o bg-green"></i>
-
-              <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
-
-                <p>Execution time 5 seconds</p>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
-
-        <h3 class="control-sidebar-heading">Tasks Progress</h3>
-        <ul class="control-sidebar-menu">
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Custom Template Design
-                <span class="label label-danger pull-right">70%</span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Update Resume
-                <span class="label label-success pull-right">95%</span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-success" style="width: 95%"></div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Laravel Integration
-                <span class="label label-warning pull-right">50%</span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-warning" style="width: 50%"></div>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:void(0)">
-              <h4 class="control-sidebar-subheading">
-                Back End Framework
-                <span class="label label-primary pull-right">68%</span>
-              </h4>
-
-              <div class="progress progress-xxs">
-                <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
-              </div>
-            </a>
-          </li>
-        </ul>
-        <!-- /.control-sidebar-menu -->
-
-      </div>
-      <!-- /.tab-pane -->
-      <!-- Stats tab content -->
-      <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-      <!-- /.tab-pane -->
-      <!-- Settings tab content -->
-      <div class="tab-pane" id="control-sidebar-settings-tab">
-        <form method="post">
-          <h3 class="control-sidebar-heading">General Settings</h3>
-
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Report panel usage
-              <input type="checkbox" class="pull-right" checked>
-            </label>
-
-            <p>
-              Some information about this general settings option
-            </p>
-          </div>
-          <!-- /.form-group -->
-
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Allow mail redirect
-              <input type="checkbox" class="pull-right" checked>
-            </label>
-
-            <p>
-              Other sets of options are available
-            </p>
-          </div>
-          <!-- /.form-group -->
-
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Expose author name in posts
-              <input type="checkbox" class="pull-right" checked>
-            </label>
-
-            <p>
-              Allow the user to show his name in blog posts
-            </p>
-          </div>
-          <!-- /.form-group -->
-
-          <h3 class="control-sidebar-heading">Chat Settings</h3>
-
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Show me as online
-              <input type="checkbox" class="pull-right" checked>
-            </label>
-          </div>
-          <!-- /.form-group -->
-
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Turn off notifications
-              <input type="checkbox" class="pull-right">
-            </label>
-          </div>
-          <!-- /.form-group -->
-
-          <div class="form-group">
-            <label class="control-sidebar-subheading">
-              Delete chat history
-              <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
-            </label>
-          </div>
-          <!-- /.form-group -->
-        </form>
-      </div>
-      <!-- /.tab-pane -->
-    </div>
-  </aside>
-  
   <!------------------------ INICIO modal para CRUD Clasificador ------------------->
 <div class="modal fade" id="modalclasificador" tabindex="-1" role="dialog" aria-labelledby="modalclasificadorlabel">
     <div class="modal-dialog" role="document">
@@ -936,19 +269,115 @@ echo '<script type="text/javascript">
 <!------------------------ FIN modal para CRUD Clasificador ------------------->
 <!------------------------ INICIO modal para elegir # imagenes en Catalogo ------------------->
 <div class="modal fade" id="modalcatalogo" tabindex="-1" role="dialog" aria-labelledby="modalcatalogolabel">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                <span class="text-bold">NUMERO DE IMAGENES POR FILA</span>
+                <span class="text-bold">CATALOGO DE PRODUCTOS</span>
             </div>
             <div class="modal-body">
-                <span class="text-red" id="mensaje_numimagen"></span>
-                <input type="text" class="form-control" name="num_imagenes" id="num_imagenes" />
+                <span>
+                    <div class="col-md-6">
+                        <label for="num_imagenes" class="control-label"><span class="text-danger">*</span>Nro. Filas</label>
+                        <span class="text-red" id="mensaje_numimagen"></span>
+                        <div class="form-group">
+                            <input type="text" name="num_imagenes" class="form-control" id="num_imagenes" required placeholder="# entre 1 y 20" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="tipo_imagen" class="control-label"><span class="text-danger">*</span>Tipo Imagen</label>
+                        <!--<span class="text-red" id="mensaje_numimagen"></span>-->
+                        <div class="form-group">
+                            <select name="tipo_imagen" class="form-control" id="tipo_imagen">
+                                <option value="circle">Circular</option>
+                                <option value="rounded">Rectangular</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <table>
+                            <tr>
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="nombre_check" id="nombre_check" title="Mostrar el nombre del producto" >
+                                        Nombre Producto
+                                    </label>
+                                </td>
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="codigo_check" id="codigo_check" title="Mostrar el código de productos" >
+                                        Código
+                                    </label>
+                                </td>
+                                <!--<td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="unidad_check" id="unidad_check" title="Mostrar la unidad de productos" >
+                                        Unidad
+                                    </label>
+                                </td>-->
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="marca_check" id="marca_check" title="Mostrar la marca del producto" >
+                                        Marca
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="industria_check" id="industria_check" title="Mostrar la industria del producto" >
+                                        Industria
+                                    </label>
+                                </td>
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="precio_check" id="precio_check" title="Mostrar el precio unitario" >
+                                        Precio Unitario
+                                    </label>
+                                </td>
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="precio1_check" id="precio1_check" title="Mostrar el precio nivel 1" >
+                                        Precio (Nivel 1)
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="precio2_check" id="precio2_check" title="Mostrar el precio nivel 2" >
+                                        Precio (Nivel 2)
+                                    </label>
+                                </td>
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="precio3_check" id="precio3_check" title="Mostrar el precio nivel 3" >
+                                        Precio (Nivel 3)
+                                    </label>
+                                </td>
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="precio4_check" id="precio4_check" title="Mostrar el precio nivel 4" >
+                                        Precio (Nivel 4)
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="precio5_check" id="precio5_check" title="Mostrar el precio nivel 5" >
+                                        Precio (Nivel 5)
+                                    </label>
+                                </td>
+                                <td style="padding-right: 10px"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </span>
             </div>
             <div class="modal-footer" style="text-align: center">
-                <a class="btn btn-success" onclick="verificarnumero()"><span class="fa fa-check"></span> Aceptar</a>
+                <a class="btn btn-success" onclick="verificarnumero()"><span class="fa fa-check"></span> Generar</a>
                 <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>

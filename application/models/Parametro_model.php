@@ -32,11 +32,10 @@ class Parametro_model extends CI_Model
         if (isset($this->session_data['usuario_id'])){
         
             $usuario_id = $this->session_data['usuario_id'];  
-            $sql = "select p.* from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
+            $sql = "select p.*,m.moneda_tc, m.moneda_descripcion from parametros p, usuario u, moneda m  where p.parametro_id = u.parametro_id and p.moneda_id = m.moneda_id and u.usuario_id = ".$usuario_id;
         
         }else{
-            
-            $sql = "select p.* from parametros p where parametro_id = (select min(parametro_id) from parametros)";            
+            $sql = "select p.*,m.moneda_tc, m.moneda_descripcion  from parametros p, moneda m where p.moneda_id = m.moneda_id and parametro_id = (select min(parametro_id) from parametros)";
         }        
         //return $this->db->get_where('parametros',array('parametro_id'=>$parametro_id))->row_array();
         return $this->db->query($sql)->row_array();

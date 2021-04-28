@@ -668,6 +668,13 @@
                         </li>
                         <?php
                         }
+                        if($rolusuario[144-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('producto/existenciaminima');?>"><i class="fa fa-eye"></i>Prod. Existencia Min.</a>
+                        </li>
+                        <?php
+                        }
                         if($rolusuario[24-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>

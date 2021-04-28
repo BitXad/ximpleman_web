@@ -44,6 +44,9 @@ class Producto extends CI_Controller{
         $this->load->model('Moneda_model');
         $data['all_moneda'] = $this->Moneda_model->get_alls_moneda_asc();
         */
+        $this->load->model('Moneda_model');
+        //$data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
         $this->load->model('Estado_model');
         $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
         
