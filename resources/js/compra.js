@@ -1346,6 +1346,8 @@ function tablaresultados(opcion)
                     var n = registros.length; //tama«Ðo del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
+                    var anchoinput = 50; // ancho de los campos en compras
+                    
                    if (n <= limite) x = n; 
                    else x = limite;
                     
@@ -1369,7 +1371,7 @@ function tablaresultados(opcion)
                             
                         html += "<div class='col-md-12' style='padding-left: 0px;'>";
 
-                        html += "<b><font size=2>"+registros[i]["producto_nombre"]+"</font>    ("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>"+Number(registros[i]["existencia"]).toFixed(2)+"</span>";
+                        html += "<b><font size='2'>"+registros[i]["producto_nombre"]+"</font> ("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>"+Number(registros[i]["existencia"]).toFixed(2)+"</span>";
 //                        html += " <span class='btn btn-danger btn-xs' style='font-size:10px; face=arial narrow;' title='Historial de precios de compra'><i class='fa fa-book'></i> </span>";
 
                        
@@ -1451,17 +1453,71 @@ function tablaresultados(opcion)
                         }
                         else{
                             
-                        html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                        html += "<label  class='control-label' style='margin-bottom :0px'>PREC. </label><input class='input-sm' style='padding-left: 1px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
-                        html += "<div class='col-md-2' style='padding-left: 0px;'>";
-                        html += "<label  class='control-label' style='margin-bottom :0px'>COSTO </label><input class='input-sm' style='padding-left: 1px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
-                        html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                        html += "<label  class='control-label' style='margin-bottom :0px'>DESC. </label><input class='input-sm' style='padding-left: 1px;' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
-                        html += "<div class='col-md-2'style='padding-left: 0px;'  >";
-                        html += "<label  class='control-label' style='margin-bottom :0px'>CANT. </label><input class='input-sm ' style='padding-left: 1px; width:70px' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' onkeypress='pasardetalle(event,"+compra_id+","+registros[i]["producto_id"]+")' class='form-control' placeholder='cantidad' required value='1'> </div>";
-                        html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                        html += "<label  class='control-label' style='margin-bottom :0px'>FEC.VENC. </label><input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'  class='form-control' ></div></td>";
-                       
+//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
+//                            html += "<label  class='control-label' style='margin-bottom :0px'>PREC. </label><input class='input-sm' style='padding-left: 1px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+//                            html += "<div class='col-md-2' style='padding-left: 0px;'>";
+//                            html += "<label  class='control-label' style='margin-bottom :0px'>COSTO </label><input class='input-sm' style='padding-left: 1px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
+//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
+//                            html += "<label  class='control-label' style='margin-bottom :0px'>DESC. </label><input class='input-sm' style='padding-left: 1px;' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
+//                            html += "<div class='col-md-2'style='padding-left: 0px;'  >";
+//                            html += "<label  class='control-label' style='margin-bottom :0px'>CANT. </label><input class='input-sm ' style='padding-left: 1px; width:70px' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' onkeypress='pasardetalle(event,"+compra_id+","+registros[i]["producto_id"]+")' class='form-control' placeholder='cantidad' required value='1'> </div>";
+//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
+//                            html += "<label  class='control-label' style='margin-bottom :0px'>FEC.VENC. </label><input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'  class='form-control' ></div></td>";
+//                       
+                              html += "<table style='font-size: 10pt' id='tablares'>"
+                                html += "<tr style='font-size: 10px;'>"
+                                  html += "<td><b>PRECIO</b></td>"
+                                  html += "<td><b>COSTO</b></td>"
+                                  html += "<td><b>DESC.</b></td>"
+                                  html += "<td><b>CANT.</b></td>"
+                                  html += "<td><b>FECHA VENC.</b></td>"
+
+                                html += "</tr>"
+                              
+                              html += "<tr>"
+                                html += "<td>"
+                                      html += "<input style='width:"+anchoinput+"px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01'  value='"+registros[i]["producto_precio"]+"' >";                              
+                                html += "</td>"
+                                
+                                html += "<td>"
+                                      html += "<input style='width:"+anchoinput+"px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01'  value='"+registros[i]["producto_ultimocosto"]+"' >";
+                                html += "</td>"
+                                
+                                html += "<td>"
+                                      html += "<input style='width:"+anchoinput+"px;' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number'  value='0.00' step='.01' required >";
+                                html += "</td>"
+                                
+                                html += "<td>"
+                                      html += "<input style='width:"+anchoinput+"px;' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' onkeypress='pasardetalle(event,"+compra_id+","+registros[i]["producto_id"]+")'  placeholder='cantidad' required value='1'>";
+                                html += "</td>"
+                                
+                                html += "<td>"
+                                      html += "<input style='width:"+(anchoinput+70)+"px; font-size: 12px;' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'   >";
+                                html += "</td>"
+                                
+                              html += "</tr>"
+                              
+                            html += "</table>"
+                            html += "<br>";
+
+                            
+
+//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
+//                            html += "<label   style='margin-bottom :0px'>PREC. </label><input class='input-sm' style='padding-left: 1px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01'  value='"+registros[i]["producto_precio"]+"' ></div>";
+//                            html += "<div class='col-md-2' style='padding-left: 0px;'>";
+//                            
+//                           html += "<label   style='margin-bottom :0px'>COSTO </label><input class='input-sm' style='padding-left: 1px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01'  value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
+//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
+//
+//                           html += "<label   style='margin-bottom :0px'>DESC. </label><input class='input-sm' style='padding-left: 1px;' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number'  value='0.00' step='.01' required ></div>";
+//                            html += "<div class='col-md-2'style='padding-left: 0px;'  >";
+//                            html += "<label   style='margin-bottom :0px'>CANT. </label><input class='input-sm ' style='padding-left: 1px; width:70px' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' onkeypress='pasardetalle(event,"+compra_id+","+registros[i]["producto_id"]+")'  placeholder='cantidad' required value='1'> </div>";
+//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
+//                            html += "<label   style='margin-bottom :0px'>FEC.VENC. </label><input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'   ></div></td>";
+ 
+
+
+
                        }
                         
                        

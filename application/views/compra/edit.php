@@ -110,9 +110,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Arial, arial;
 
-    font-size: 15px;}
+    font-size: 12px;}
 </style> 
 <!----------------------------- fin script buscador --------------------------------------->
+
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
