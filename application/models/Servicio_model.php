@@ -96,41 +96,32 @@ class Servicio_model extends CI_Model
     {
         $servicio = $this->db->query("
             SELECT
-                s.*, e.estado_color, e.estado_descripcion, e.estado_id, ts.tiposerv_descripcion,
-                u.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
-                c.cliente_nit, c.cliente_razon, f.factura_id
+                s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
+                i.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
+                c.cliente_nit, c.cliente_razon, f.factura_id,
+                ds.responsable_id,
+                ds.detalleserv_id, ds.detalleserv_descripcion,
+                ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
+                ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
+                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,
+                es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
+                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
             LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
             LEFT JOIN cliente c on s.cliente_id = c.cliente_id
-            LEFT JOIN usuario u on s.usuario_id = u.usuario_id
+            LEFT JOIN usuario i on s.usuario_id = i.usuario_id
             LEFT JOIN factura f on s.servicio_id = f.servicio_id
+            LEFT JOIN detalle_serv ds on s.servicio_id = ds.servicio_id
+            LEFT JOIN estado es on ds.estado_id = es.estado_id
+            LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
             WHERE
                (c.cliente_nombre like '%".$parametro."%' or s.servicio_id = '".$parametro."'
                    or e.estado_descripcion like '%".$parametro."%')
 
             ORDER BY s.servicio_id desc 
-
-
-        /*
-            SELECT
-                s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
-                u.usuario_nombre, c.cliente_nombre
-            FROM
-                servicio s, estado e, tipo_servicio ts, cliente c, usuario u
-
-            WHERE
-                s.estado_id = e.estado_id
-                and(c.cliente_nombre like '%".$parametro."%' or s.servicio_id like '%".$parametro."%'
-                   or e.estado_descripcion like '%".$parametro."%')
-                and s.tiposerv_id = ts.tiposerv_id
-                and s.cliente_id = c.cliente_id
-                and s.usuario_id = u.usuario_id
-
-            GROUP BY
-                s.servicio_id 
-              ORDER By s.servicio_id desc*/
         ")->result_array();
 
         return $servicio;
@@ -144,16 +135,27 @@ class Servicio_model extends CI_Model
         }
         $servicio = $this->db->query("
             SELECT
-                s.*, e.estado_color, e.estado_descripcion, e.estado_id, ts.tiposerv_descripcion,
-                u.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
-                c.cliente_nit, c.cliente_razon, f.factura_id
+                s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
+                i.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
+                c.cliente_nit, c.cliente_razon, f.factura_id,
+                ds.responsable_id,
+                ds.detalleserv_id, ds.detalleserv_descripcion,
+                ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
+                ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
+                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,
+                es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
+                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
             LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
             LEFT JOIN cliente c on s.cliente_id = c.cliente_id
-            LEFT JOIN usuario u on s.usuario_id = u.usuario_id
+            LEFT JOIN usuario i on s.usuario_id = i.usuario_id
             LEFT JOIN factura f on s.servicio_id = f.servicio_id
+            LEFT JOIN detalle_serv ds on s.servicio_id = ds.servicio_id
+            LEFT JOIN estado es on ds.estado_id = es.estado_id
+            LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
                 ".$where." ".$filtro."
 
             ORDER BY s.servicio_id desc            
@@ -214,7 +216,15 @@ class Servicio_model extends CI_Model
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
                 i.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
-                c.cliente_nit, c.cliente_razon, f.factura_id
+                c.cliente_nit, c.cliente_razon, f.factura_id,
+                ds.responsable_id,
+                ds.detalleserv_id, ds.detalleserv_descripcion,
+                ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
+                ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
+                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,
+                es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
+                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -222,6 +232,9 @@ class Servicio_model extends CI_Model
             LEFT JOIN cliente c on s.cliente_id = c.cliente_id
             LEFT JOIN usuario i on s.usuario_id = i.usuario_id
             LEFT JOIN factura f on s.servicio_id = f.servicio_id
+            LEFT JOIN detalle_serv ds on s.servicio_id = ds.servicio_id
+            LEFT JOIN estado es on ds.estado_id = es.estado_id
+            LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
             WHERE
                 s.estado_id = 5
 
