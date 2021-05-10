@@ -121,7 +121,7 @@ class Servicio_model extends CI_Model
                (c.cliente_nombre like '%".$parametro."%' or s.servicio_id = '".$parametro."'
                    or e.estado_descripcion like '%".$parametro."%')
 
-            ORDER BY s.servicio_id desc 
+            ORDER BY s.servicio_id desc, ds.detalleserv_id desc 
         ")->result_array();
 
         return $servicio;
@@ -158,7 +158,7 @@ class Servicio_model extends CI_Model
             LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
                 ".$where." ".$filtro."
 
-            ORDER BY s.servicio_id desc            
+            ORDER BY s.servicio_id desc, ds.detalleserv_id desc 
 
         ")->result_array();
 
@@ -238,7 +238,7 @@ class Servicio_model extends CI_Model
             WHERE
                 s.estado_id = 5
 
-            ORDER BY s.servicio_id desc
+            ORDER BY s.servicio_id desc, ds.detalleserv_id desc 
         ")->result_array();
 
         return $servicio;
