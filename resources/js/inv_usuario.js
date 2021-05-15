@@ -9,7 +9,7 @@ function tablaresul()
     }else{
     	filtro = " and iu.usuario_id = "+usuario_id+" and iu.inventario_fecha = '"+fecha+"' ";
     }
- 
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
     $.ajax({url: controlador,
             type:"POST",
@@ -133,9 +133,9 @@ function tablaresul()
                    
                    
                    $("#inv_usu").html(html);
-                   
+                   document.getElementById('loader').style.display = 'none';
             }
-                
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
         error:function(resul){
           // alert("Algo salio mal...!!!");
@@ -155,7 +155,7 @@ function actualizar_invusuario(){
     var fecha    = document.getElementById('inventario_fecha').value;
     var tipo    = document.getElementById('tipo_inventario').value;
 
-    if (usuario_id>=1){
+    if (usuario_id>=1 && tipo >0){
 
         $.ajax({url: controlador,
            type:"POST",
@@ -168,7 +168,7 @@ function actualizar_invusuario(){
        });
    }
    else{
-       alert('ADVERTENCIA: Debe seleccionar un usuario/fecha..!');
+       alert('ADVERTENCIA: Debe seleccionar un usuario/fecha/tipo..!');
    }
              
 }

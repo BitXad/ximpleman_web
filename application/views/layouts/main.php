@@ -675,7 +675,7 @@
                         </li>
                         <?php
                         }
-                        if($rolusuario[24-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[193-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('inventario_usuario');?>"><i class="fa fa-cubes"></i>Inventario Individual</a>

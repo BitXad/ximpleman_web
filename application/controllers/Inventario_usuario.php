@@ -11,6 +11,20 @@ class Inventario_usuario extends CI_Controller{
         $this->load->model('Inventario_usuario_model');
         $this->load->model('Venta_model');
         $this->load->model('Usuario_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            return false;
+        }
     } 
 
     /*
@@ -18,15 +32,20 @@ class Inventario_usuario extends CI_Controller{
      */
     function index()
     {
-        //$data['inventario_usuario'] = $this->Inventario_usuario_model->get_all_inventario_usuario();
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-        $this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $this->load->model('Moneda_model');
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
-        $data['_view'] = 'inventario_usuario/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(193)){
+            $data['rolusuario'] = $this->session_data['rol'];
+            $data['usuario_id'] = $this->session_data['usuario_id'];
+            $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
+            $data['page_title'] = "Inventario Individual";
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['_view'] = 'inventario_usuario/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     function buscar()

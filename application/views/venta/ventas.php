@@ -738,7 +738,7 @@ window.onkeydown = compruebaTecla;
             </a>
             <?php } ?>
 
-            <?php if($rolusuario[30-1]['rolusuario_asignado'] == 1){ ?>
+            <?php if($rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
@@ -1234,7 +1234,7 @@ window.onkeydown = compruebaTecla;
                             </button>
                             <center>
                                 <h4 class="modal-title" id="myModalLabel"><b>Asignar Inventario</b></h4>
-                                <b>ADVERTENCIA: El inventario actual, remplazara algun invenario asignado previamente.</b>                                
+                                <b>ADVERTENCIA: El inventario actual, remplazara algun inventario asignado previamente.</b>                                
                             </center>
 
                                 

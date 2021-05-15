@@ -3269,6 +3269,7 @@ function asignar_inventario(){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'/venta/asignar_inventario';
     var usuario_id = document.getElementById('usuario_idx').value;
+    var moneda_tc = document.getElementById('moneda_tc').value;
     var venta_totalfinal = document.getElementById('venta_totalfinal').value;
 
     document.getElementById('botones').style.display = 'none'; //ocultar botones
@@ -3279,7 +3280,7 @@ function asignar_inventario(){
             $.ajax({
                 url:controlador,
                 type:"POST",
-                data:{usuario_id:usuario_id},
+                data:{usuario_id:usuario_id, moneda_tc:moneda_tc},
                 success:function(respuesta){
                     quitartodo();
                     $('#cerrar_modalasignar').click();
