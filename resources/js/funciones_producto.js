@@ -1196,7 +1196,7 @@ function codbarra_producto(num_imagenes) {
             }
             
             html += inifila;
-            html += "<td style='width: "+num_imagenes[2]+"cm; height: "+num_imagenes[3]+"cm'>";
+            html += "<td style='padding:4px; width: "+num_imagenes[2]+"cm; height: "+num_imagenes[3]+"cm'>";
             html += "<div>";
             if(codigo_barra != null && codigo_barra !=""){
                 html += "<img id='barcode"+i+"' width='100%' height='100%' />";
