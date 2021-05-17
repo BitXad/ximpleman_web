@@ -58,6 +58,9 @@
 <input type="hidden" name="resproducto" id="resproducto" />
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
+<input type="hidden" name="esesteproducto" id="esesteproducto" /> <!-- usado en el modal para numero de imgs. para codigo barra -->
+<input type="hidden" name="esestecodigobarra" id="esestecodigobarra" /> <!-- usado en el modal para numero de imgs. para codigo barra -->
+<input type="hidden" name="eselnombreproducto" id="eselnombreproducto" /> <!-- valor dado cuando mostramo el modal para codigo barra -->
 <!--<input type="hidden" name="lapresentacion" id="lapresentacion" value='<?php /*echo json_encode($all_presentacion); ?>' />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($all_moneda); */ ?>' /> -->
 
@@ -279,7 +282,7 @@ echo '<script type="text/javascript">
             <div class="modal-body">
                 <span>
                     <div class="col-md-6">
-                        <label for="num_imagenes" class="control-label"><span class="text-danger">*</span>Nro. Filas</label>
+                        <label for="num_imagenes" class="control-label"><span class="text-danger">*</span>Nro. Columnas por Fila</label>
                         <span class="text-red" id="mensaje_numimagen"></span>
                         <div class="form-group">
                             <input type="text" name="num_imagenes" class="form-control" id="num_imagenes" required placeholder="# entre 1 y 20" />
@@ -412,3 +415,51 @@ echo '<script type="text/javascript">
     </div>
 </div>
 <!------------------------ FIN modal para elegir precio factor en PRECIOS ------------------->
+<!------------------------ INICIO modal para elegir # imagenes(codigo de barras de un producto) para su impresion! ------------------->
+<div class="modal fade" id="modalcodigobarra" tabindex="-1" role="dialog" aria-labelledby="modalcodigobarralabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span>CODIGO DE BARRAS DEL PRODUCTO</span><br>
+                <span class="text-bold" id="elnombreproducto"></span>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-6">
+                    <label for="num_impresiones" class="control-label"><span class="text-danger">*</span>Nro. de Etiquetas</label>
+                    <span class="text-red" id="mensaje_num_impresiones"></span>
+                    <div class="form-group">
+                        <input type="text" name="num_impresiones" class="form-control" id="num_impresiones" required value="100" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="num_imagenes" class="control-label"><span class="text-danger">*</span>Nro. Columnas por Fila</label>
+                    <span class="text-red" id="mensaje_numcodigobarra"></span>
+                    <div class="form-group">
+                        <input type="text" name="num_imagenescodbarra" class="form-control" id="num_imagenescodbarra" required value="10" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="anchoimagen_codbarra" class="control-label"><span class="text-danger">*</span>Ancho de Imagen (cm)</label>
+                    <span class="text-red" id="mensaje_anchoimagen_codbarra"></span>
+                    <div class="form-group">
+                        <input type="text" name="anchoimagen_codbarra" class="form-control" id="anchoimagen_codbarra" required value="3" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="altoimagen_codbarra" class="control-label"><span class="text-danger">*</span>Alto de Imagen (cm)</label>
+                    <span class="text-red" id="mensaje_altoimagen_codbarra"></span>
+                    <div class="form-group">
+                        <input type="text" name="altoimagen_codbarra" class="form-control" id="altoimagen_codbarra" required value="1" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a class="btn btn-success" onclick="verificarnumero_codbarra()"><span class="fa fa-check"></span> Generar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para elegir # imagenes(codigo de barras de un producto) para su impresion! ------------------->

@@ -235,6 +235,7 @@ function tablaresultadosproducto(limite){
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
                         html += "<a class='btn btn-facebook btn-xs' onclick='buscarclasificador("+registros[i]["miprod_id"]+")' title='Ver Clasificador'><span class='fa fa-list-ol'></span></a>";
                         html += "<a href='"+base_url+"producto/productoasignado/"+registros[i]["miprod_id"]+"' class='btn btn-soundcloud btn-xs' title='Ver si esta asignado a subcategorias' target='_blank' ><span class='fa fa-list'></span></a>";
+                        html += "<a class='btn btn-warning btn-xs' onclick='mostrarmodalcodigobarra("+registros[i]["miprod_id"]+", "+JSON.stringify(registros[i]["producto_nombre"])+", "+JSON.stringify(registros[i]["producto_codigobarra"])+")' title='Código de barras para impresión'><span class='fa fa-barcode'></span></a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
@@ -934,7 +935,9 @@ function busqueda_inicial() {
         html += "<a href='"+base_url+"producto/edit/"+registros[i]["miprod_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Información'><span class='fa fa-pencil'></span></a>";
         html += "<a href='"+base_url+"imagen_producto/catalogoprod/"+registros[i]["miprod_id"]+"' class='btn btn-success btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
+        html += "<a class='btn btn-facebook btn-xs' onclick='buscarclasificador("+registros[i]["miprod_id"]+")' title='Ver Clasificador'><span class='fa fa-list-ol'></span></a>";
         html += "<a href='"+base_url+"producto/productoasignado/"+registros[i]["miprod_id"]+"' class='btn btn-soundcloud btn-xs' title='Ver si esta asignado a subcategorias' target='_blank' ><span class='fa fa-list'></span></a>";
+        html += "<a class='btn btn-warning btn-xs' onclick='mostrarmodalcodigobarra("+registros[i]["miprod_id"]+", "+JSON.stringify(registros[i]["producto_nombre"])+", "+JSON.stringify(registros[i]["producto_codigobarra"])+")' title='Código de barras para impresión'><span class='fa fa-barcode'></span></a>";
         html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
         html += "<div class='modal-dialog' role='document'>";
@@ -1120,4 +1123,94 @@ function mostrar_subcategoria(categoria_id){
            //$("#producto_nombreenvase").html(html);
         }
     });   
+}
+
+function mostrarmodalcodigobarra(producto_id, producto_nombre, producto_codigobarra){
+    $("#esesteproducto").val(producto_id);
+    $("#esestecodigobarra").val(producto_codigobarra);
+    $("#eselnombreproducto").val(producto_nombre);
+    $("#elnombreproducto").html(producto_nombre);
+    $("#modalcodigobarra").modal("show");
+}
+/* verifica si lo ingresado es un numero valido */
+function verificarnumero_codbarra() {
+    $("#mensaje_num_impresiones").html("");
+    $("#mensaje_numcodigobarra").html("");
+    $("#mensaje_anchoimagen_codbarra").html("");
+    $("#mensaje_altoimagen_codbarra").html("");
+    var num_impresiones = document.getElementById('num_impresiones').value;
+    var num_imagenescodbarra = document.getElementById('num_imagenescodbarra').value;
+    var anchoimagen_codbarra = document.getElementById('anchoimagen_codbarra').value;
+    var altoimagen_codbarra = document.getElementById('altoimagen_codbarra').value;
+    if(num_impresiones <= 0 || isNaN(num_impresiones)) {
+        $("#mensaje_num_impresiones").html("<br>Por favor ingrese un número valido");
+    }else if(num_imagenescodbarra <= 0 || isNaN(num_imagenescodbarra)) {
+        $("#mensaje_numcodigobarra").html("<br>Por favor ingrese un número valido que este entre 1 y 20");
+    }else if(anchoimagen_codbarra <= 0 || anchoimagen_codbarra >20 || isNaN(anchoimagen_codbarra)){
+        $("#mensaje_anchoimagen_codbarra").html("<br>Por favor ingrese un número valido");
+    }else if(altoimagen_codbarra <= 0 || altoimagen_codbarra >20 || isNaN(altoimagen_codbarra)){
+        $("#mensaje_altoimagen_codbarra").html("<br>Por favor ingrese un número valido");
+    }else{
+        const arreglo = [];
+        arreglo.push(num_impresiones); // 0
+        arreglo.push(num_imagenescodbarra); // 1
+        arreglo.push(anchoimagen_codbarra); // 2
+        arreglo.push(altoimagen_codbarra); // 3
+        $("#modalcodigobarra").modal("hide");
+        codbarra_producto(arreglo);
+    }
+}
+function codbarra_producto(num_imagenes) {
+    //$('#titcatalogo').text("CODIGO DE BARRAS DE ");
+    var codigo_barra = document.getElementById('esestecodigobarra').value;
+    var eselnombreproducto = document.getElementById('eselnombreproducto').value;
+    var n = num_imagenes[0];
+        var numcolumna = num_imagenes[1];
+        var inifila = "";
+        var finfila = "";
+        var contcol = 1;
+        chtml = "";
+        chtml += "<tr role='row'  style='width: 19cm !important'>";
+        chtml += "<th colspan='"+numcolumna+"'  role='columnheader' >"+eselnombreproducto;
+        chtml += " <a class='btn btn-danger btn-xs no-print' onclick='busqueda_inicial()' title='Cerrar generador de código'><span class='fa fa-times'></span></a></th>";
+        chtml += "</tr>";
+        html = "";
+        //var categoria = "";
+        for (var i = 0; i < num_imagenes[0] ; i++){
+            if(contcol <= numcolumna){
+                if(contcol == 1){
+                    inifila ="<tr style='width: 19cm !important'>";
+                    finfila = "";
+                    contcol++;
+                }else if(i+1== n || contcol == numcolumna){
+                    inifila = "";
+                    finfila ="</tr>";
+                    contcol = 1;
+                }else{
+                    inifila = "";
+                    finfila = "";
+                    contcol++;
+                }
+            }else{
+                contcol = 1;
+            }
+            
+            html += inifila;
+            html += "<td style='width: "+num_imagenes[2]+"cm; height: "+num_imagenes[3]+"cm'>";
+            html += "<div>";
+            if(codigo_barra != null && codigo_barra !=""){
+                html += "<img id='barcode"+i+"' width='100%' height='100%' />";
+            }
+            
+            html += "</div>";
+            html += "</td>";
+            html += finfila;
+        }
+        $("#cabcatalogo").html(chtml);
+        $("#tablaresultados").html(html);
+        for (var i = 0; i < num_imagenes[0] ; i++){
+            if(codigo_barra != null && codigo_barra !=""){
+                JsBarcode("#barcode"+i, codigo_barra);
+            }
+        }
 }
