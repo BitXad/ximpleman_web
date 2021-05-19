@@ -125,6 +125,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="compra_idie" id="compra_idie" value="<?php echo $compra_id; ?>">
 <input type="hidden" name="bandera" id="bandera" value="<?php echo $bandera; ?>">
+<input type="hidden" name="moneda_tc" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>">
 <input type="hidden" name="modificar_detalle" id="modificar_detalle" value="<?php echo $rolusuario[6-1]['rolusuario_asignado']; ?>">
 <input type="hidden" name="eliminar_detalle" id="eliminar_detalle" value="<?php echo $rolusuario[7-1]['rolusuario_asignado']; ?>">
 

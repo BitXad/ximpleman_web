@@ -439,7 +439,8 @@ class Compra extends CI_Controller{
     detallecomp_descglobal,
     detallecomp_fechavencimiento,
     detallecomp_tipocambio,
-    cambio_id
+    cambio_id,
+    detallecomp_tc
     )
     (SELECT 
     ".$compra_id.",
@@ -456,7 +457,8 @@ class Compra extends CI_Controller{
     detallecomp_descglobal,
     detallecomp_fechavencimiento,
     detallecomp_tipocambio,
-    cambio_id
+    cambio_id,
+    detallecomp_tc
     FROM 
     detalle_compra
     WHERE 
@@ -729,142 +731,132 @@ class Compra extends CI_Controller{
 
     function finalizarcompra($compra_id)
     {
-
         if($this->acceso(1)){
-                    
             $usuario_id = $this->session_data['usuario_id'];
-         $this->load->model('Compra_model');
-         $null = NULL;
-         $num = $this->Compra_model->numero();
-         $maximo = $num[0]['parametro_montomax'];
-         $diasgra = $num[0]['parametro_diasgracia'];
-         $diapago = $num[0]['parametro_diapago'];
-         $periodo = $num[0]['parametro_periododias'];
-         $numcuota =$this->input->post('credito_numpagos');
-         $interes = $num[0]['parametro_interes'];
-         $nroDia = date('N');
-         $proxima_semana = time() + (7 * 24 * 60 * 60); 
-         $proximo_martes = time() + ( ($diasgra-($nroDia-$diapago)) * 24 * 60 * 60 );
-         $proximo_martes2 = time() + ( ($diasgra+$periodo-($nroDia-$diapago)) * 24 * 60 * 60 );
-         $patron = ($numcuota*0.5) + 0.5;
-         $totalcompra=$this->input->post('compra_total');
-         $descglobal=$this->input->post('compra_descglobal');
-         $banderafin=$this->input->post('banderafin');
-         $nueva_fecha = date("Y-m-d"); 
-         $nueva_hora = date("H:i:s"); 
-         
-         if ($descglobal>0) {
-            $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";
-
+            //$this->load->model('Compra_model');
+            $null = NULL;
+            $num = $this->Compra_model->numero();
+            $maximo = $num[0]['parametro_montomax'];
+            $diasgra = $num[0]['parametro_diasgracia'];
+            $diapago = $num[0]['parametro_diapago'];
+            $periodo = $num[0]['parametro_periododias'];
+            $numcuota =$this->input->post('credito_numpagos');
+            $interes = $num[0]['parametro_interes'];
+            $nroDia = date('N');
+            $proxima_semana = time() + (7 * 24 * 60 * 60); 
+            $proximo_martes = time() + ( ($diasgra-($nroDia-$diapago)) * 24 * 60 * 60 );
+            $proximo_martes2 = time() + ( ($diasgra+$periodo-($nroDia-$diapago)) * 24 * 60 * 60 );
+            $patron = ($numcuota*0.5) + 0.5;
+            $totalcompra=$this->input->post('compra_total');
+            $descglobal=$this->input->post('compra_descglobal');
+            $banderafin=$this->input->post('banderafin');
+            $nueva_fecha = date("Y-m-d"); 
+            $nueva_hora = date("H:i:s"); 
+            if ($descglobal>0) {
+                $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";
                 $this->db->query($descontar);
-         }
-         
-         if(isset($_POST) && count($_POST) > 0)     
-         {   
-             if ($banderafin==0) {
-            $params = array(
-                'compra_glosa' => $this->input->post('compra_glosa'),
-                'compra_numdoc' => $this->input->post('compra_numdoc'),
-                'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
-                'tipotrans_id' => $this->input->post('tipotrans_id'),                       
-                'forma_id' => $this->input->post('forma_id'),
-                'compra_subtotal' => $this->input->post('compra_subtotal'),
-                'compra_descuento' => $this->input->post('compra_descuento'),
-                'compra_descglobal' => $this->input->post('compra_descglobal'),
-                'compra_total' => $this->input->post('compra_total'),
-                'compra_totalfinal' => $this->input->post('compra_totalfinal'),
-                'usuario_id' => $usuario_id,
-                'compra_efectivo' => $this->input->post('compra_efectivo'),
-                'compra_cambio' => $this->input->post('compra_cambio'),
-                'compra_caja' => $this->input->post('compra_caja'),
-                'compra_placamovil' => $null,
-                'compra_codcontrol' => $this->input->post('compra_codcontrol'),
-                'compra_fecha' => $nueva_fecha,
-                'compra_hora' => $nueva_hora,
-            );  
-                } else{
-            $params = array(
+             }
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+            if ($banderafin==0) {
+                $params = array(
+                    'compra_glosa' => $this->input->post('compra_glosa'),
+                    'compra_numdoc' => $this->input->post('compra_numdoc'),
+                    'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
+                    'tipotrans_id' => $this->input->post('tipotrans_id'),                       
+                    'forma_id' => $this->input->post('forma_id'),
+                    'compra_subtotal' => $this->input->post('compra_subtotal'),
+                    'compra_descuento' => $this->input->post('compra_descuento'),
+                    'compra_descglobal' => $this->input->post('compra_descglobal'),
+                    'compra_total' => $this->input->post('compra_total'),
+                    'compra_totalfinal' => $this->input->post('compra_totalfinal'),
+                    'usuario_id' => $usuario_id,
+                    'compra_efectivo' => $this->input->post('compra_efectivo'),
+                    'compra_cambio' => $this->input->post('compra_cambio'),
+                    'compra_caja' => $this->input->post('compra_caja'),
+                    'compra_placamovil' => $null,
+                    'compra_codcontrol' => $this->input->post('compra_codcontrol'),
+                    'compra_fecha' => $nueva_fecha,
+                    'compra_hora' => $nueva_hora,
+                );
+            }else{
+                $params = array(
+                    'compra_glosa' => $this->input->post('compra_glosa'),
+                    'compra_numdoc' => $this->input->post('compra_numdoc'),
+                    'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
+                    'tipotrans_id' => $this->input->post('tipotrans_id'),                       
+                    'forma_id' => $this->input->post('forma_id'),
+                    'compra_subtotal' => $this->input->post('compra_subtotal'),
+                    'compra_descuento' => $this->input->post('compra_descuento'),
+                    'compra_descglobal' => $this->input->post('compra_descglobal'),
+                    'compra_total' => $this->input->post('compra_total'),
+                    'compra_totalfinal' => $this->input->post('compra_totalfinal'),
+                    'usuario_id' => $usuario_id,
+                    'compra_efectivo' => $this->input->post('compra_efectivo'),
+                    'compra_cambio' =>$this->input->post('compra_cambio'),
+                    'compra_caja' => $this->input->post('compra_caja'),
+                    'compra_placamovil' => $null,
+                    'compra_codcontrol' => $this->input->post('compra_codcontrol'),
 
-                'compra_glosa' => $this->input->post('compra_glosa'),
-                'compra_numdoc' => $this->input->post('compra_numdoc'),
-                'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
-                'tipotrans_id' => $this->input->post('tipotrans_id'),                       
-                'forma_id' => $this->input->post('forma_id'),
-                'compra_subtotal' => $this->input->post('compra_subtotal'),
-                'compra_descuento' => $this->input->post('compra_descuento'),
-                'compra_descglobal' => $this->input->post('compra_descglobal'),
-                'compra_total' => $this->input->post('compra_total'),
-                'compra_totalfinal' => $this->input->post('compra_totalfinal'),
-                'usuario_id' => $usuario_id,
-                'compra_efectivo' => $this->input->post('compra_efectivo'),
-                'compra_cambio' =>$this->input->post('compra_cambio'),
-                'compra_caja' => $this->input->post('compra_caja'),
-                'compra_placamovil' => $null,
-                'compra_codcontrol' => $this->input->post('compra_codcontrol'),
-
-            );  
-                }
-
+                );
+            }
             $this->Compra_model->update_compra($compra_id,$params);
             $facturation=$this->input->post('documento_respaldo_id');
             if ($facturation==1){
                  $yafactu = "SELECT COUNT(factura_id) as 'facturas_compra', factura_id as facturanga FROM factura_compra WHERE factura_compra.compra_id=".$compra_id;
-             $tiene_factura = $this->db->query($yafactu)->result_array();
-             $fac_id = $tiene_factura[0]['facturanga'];
-             if ($tiene_factura[0]['facturas_compra']<1) {
+                $tiene_factura = $this->db->query($yafactu)->result_array();
+                $fac_id = $tiene_factura[0]['facturanga'];
+                if ($tiene_factura[0]['facturas_compra']<1) {
+                    $factur =  $params = array(
+                        'estado_id' => 1,
+                        'compra_id' => $compra_id,
+                        'factura_tipo' => 0,
+                        'factura_nit' => $this->input->post('factura_nit'),
+                        'factura_razonsocial' => $this->input->post('factura_razonsocial'),
+                        'factura_poliza' => 0,
+                        'factura_fecha' => $this->input->post('factura_fecha'),
+                        'factura_fechacompra' => $this->input->post('factura_fechacompra'),
+                        'factura_hora' => $this->input->post('factura_hora'),
+                        'factura_subtotal' => $this->input->post('compra_total'),
+                        'factura_ice' => 0,
 
-              $factur =  $params = array(
-                'estado_id' => 1,
-                'compra_id' => $compra_id,
-                'factura_tipo' => 0,
-                'factura_nit' => $this->input->post('factura_nit'),
-                'factura_razonsocial' => $this->input->post('factura_razonsocial'),
-                'factura_poliza' => 0,
-                'factura_fecha' => $this->input->post('factura_fecha'),
-                'factura_fechacompra' => $this->input->post('factura_fechacompra'),
-                'factura_hora' => $this->input->post('factura_hora'),
-                'factura_subtotal' => $this->input->post('compra_total'),
-                'factura_ice' => 0,
-
-                'factura_exento' => 0,
-                'factura_descuento' => $this->input->post('compra_descglobal'),
-                'factura_total' => $this->input->post('compra_totalfinal'),
-                'factura_numero' => $this->input->post('compra_numdoc'),
-                'factura_autorizacion' => $this->input->post('autori'),
-                //'factura_llave' => $this->input->post('factura_llave'),
-                //'factura_fechalimite' => $this->input->post('factura_fechalimite'),
-                'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
-                //'factura_leyenda' => $this->input->post('factura_leyenda'),
-                    );
-              $factura_id = $this->Compra_model->add_facturacompra($params);
-                 }else{
-                  $factur =  $params = array(
-                'estado_id' => 1,
-                'compra_id' => $compra_id,
-                'factura_tipo' => 0,
-                'factura_nit' => $this->input->post('factura_nit'),
-                'factura_razonsocial' => $this->input->post('factura_razonsocial'),
-                'factura_poliza' => 0,
-                'factura_fecha' => $this->input->post('factura_fecha'),
-                'factura_fechacompra' => $this->input->post('factura_fechacompra'),
-                'factura_hora' => $this->input->post('factura_hora'),
-                'factura_subtotal' => $this->input->post('compra_total'),
-                'factura_ice' => 0,
-
-                'factura_exento' => 0,
-                'factura_descuento' => $this->input->post('compra_descglobal'),
-                'factura_total' => $this->input->post('compra_totalfinal'),
-                'factura_numero' => $this->input->post('compra_numdoc'),
-                'factura_autorizacion' => $this->input->post('autori'),
-                //'factura_llave' => $this->input->post('factura_llave'),
-                //'factura_fechalimite' => $this->input->post('factura_fechalimite'),
-                'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
-                //'factura_leyenda' => $this->input->post('factura_leyenda'),
-                    );
+                        'factura_exento' => 0,
+                        'factura_descuento' => $this->input->post('compra_descglobal'),
+                        'factura_total' => $this->input->post('compra_totalfinal'),
+                        'factura_numero' => $this->input->post('compra_numdoc'),
+                        'factura_autorizacion' => $this->input->post('autori'),
+                        //'factura_llave' => $this->input->post('factura_llave'),
+                        //'factura_fechalimite' => $this->input->post('factura_fechalimite'),
+                        'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
+                        //'factura_leyenda' => $this->input->post('factura_leyenda'),
+                        );
+                    $factura_id = $this->Compra_model->add_facturacompra($params);
+                }else{
+                    $factur =  $params = array(
+                        'estado_id' => 1,
+                        'compra_id' => $compra_id,
+                        'factura_tipo' => 0,
+                        'factura_nit' => $this->input->post('factura_nit'),
+                        'factura_razonsocial' => $this->input->post('factura_razonsocial'),
+                        'factura_poliza' => 0,
+                        'factura_fecha' => $this->input->post('factura_fecha'),
+                        'factura_fechacompra' => $this->input->post('factura_fechacompra'),
+                        'factura_hora' => $this->input->post('factura_hora'),
+                        'factura_subtotal' => $this->input->post('compra_total'),
+                        'factura_ice' => 0,
+                        'factura_exento' => 0,
+                        'factura_descuento' => $this->input->post('compra_descglobal'),
+                        'factura_total' => $this->input->post('compra_totalfinal'),
+                        'factura_numero' => $this->input->post('compra_numdoc'),
+                        'factura_autorizacion' => $this->input->post('autori'),
+                        //'factura_llave' => $this->input->post('factura_llave'),
+                        //'factura_fechalimite' => $this->input->post('factura_fechalimite'),
+                        'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
+                        //'factura_leyenda' => $this->input->post('factura_leyenda'),
+                        );
                     $this->Compra_model->update_facturacompra($fac_id,$params);
-                 }
-           }
-
+                }
+            }
             $actualizarprecios = $this->input->post('actualizarprecios');
             $fechalimite = $this->input->post('credito_fechalimite');
             $fecha = $this->Compra_model->normalize_date($fechalimite);
@@ -886,20 +878,12 @@ class Compra extends CI_Controller{
 
             $credito_numpagos = $numcuota;
             $this->load->model('Inventario_model');
-        // actualizar inventario //
-
-
-
+            // actualizar inventario //
             $sacar = "SELECT dc.producto_id, dc.detallecomp_cantidad from detalle_compra dc WHERE dc.compra_id=".$compra_id;
             $sacar_id=$this->db->query($sacar)->result_array();
-
             foreach ($sacar_id as $saca) {
-
-
                $this->Inventario_model->rebajar_cantidad_producto($saca['producto_id'],$saca['detallecomp_cantidad']);
-
-           }   
-
+           }
                    ///////////4. ELIMINAR DETALLE COMPRA////////////
            $borrar_detalle = "DELETE from detalle_compra WHERE  detalle_compra.compra_id = ".$compra_id." "; 
            $this->db->query($borrar_detalle); 
@@ -919,7 +903,8 @@ class Compra extends CI_Controller{
            detallecomp_descglobal,
            detallecomp_fechavencimiento,
            detallecomp_tipocambio,
-           cambio_id
+           cambio_id,
+           detallecomp_tc
            )
            (SELECT 
            ".$compra_id.",
@@ -936,33 +921,24 @@ class Compra extends CI_Controller{
            detallecomp_descglobal,
            detallecomp_fechavencimiento,
            detallecomp_tipocambio,
-           cambio_id
+           cambio_id,
+           detallecomp_tc
            FROM 
            detalle_compra_aux
            WHERE
            compra_id=".$compra_id.")";
            $this->db->query($vaciar_detalle);
-
            
-           
-           
-
-//////////////////////////// insertar clasificador //////////////
-
-           
+            //////////////////////////// insertar clasificador //////////////
            $sql_clasificador = "insert into detalle_clasificador(detallecomp_id,producto_id,clasificador_id,detalleclas_cantidad)
                
                                 (select detallecomp_id,producto_id,clasificador_id,detalleclas_cantidad from detalle_clasificador_aux
                                 where detallecomp_id in (select detallecomp_id from detalle_compra_aux where compra_id =".$compra_id."))";
            $this->db->query($sql_clasificador);
            
-           
            $sql_clasificador = " delete from detalle_clasificador_aux where detallecomp_id in (select detallecomp_id from detalle_compra_aux where compra_id =".$compra_id.")";
            $this->db->query($sql_clasificador);
-           
-                   
-
-/////////////////////////// fin clasificador                  //////////////////
+            /////////////////////////// fin clasificador                  //////////////////
            
            
            
@@ -986,12 +962,6 @@ class Compra extends CI_Controller{
                 
             }  
               
-              
-              
-              
-              
-              
-            
             //detalle producto compra actual
             
             
@@ -1325,20 +1295,19 @@ class Compra extends CI_Controller{
 
 function detallecompra()
 {
-   if ($this->input->is_ajax_request()) {
-    $compra_id = $this->input->post('compra_id');
-    $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
-    if(isset($datos)){
-        echo json_encode($datos);
-    }else echo json_encode(null);
+    if ($this->input->is_ajax_request()) {
+        $compra_id = $this->input->post('compra_id');
+        $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
+        if(isset($datos)){
+            echo json_encode($datos);
+        }else echo json_encode(null);
     }else{                 
         show_404();
     }
-    }
+}
 function ingresarproducto()
 {
     if ($this->input->is_ajax_request()) {
-     
         $compra_id = $this->input->post('compra_id');
         $producto_id = $this->input->post('producto_id');
         $cantidad = $this->input->post('cantidad'); 
@@ -1348,6 +1317,7 @@ function ingresarproducto()
         $agrupar = $this->input->post('agrupar');
         $fecha_venc = $this->input->post('producto_fechavenc');
         $factor = $this->input->post('producto_factor');
+        $moneda_tc = $this->input->post('moneda_tc');
         $nuevacan = $cantidad * $factor;
       if ($agrupar==1) {
 
@@ -1374,7 +1344,8 @@ function ingresarproducto()
         detallecomp_fechavencimiento,
         detallecomp_descuento,
         detallecomp_subtotal,
-        detallecomp_total              
+        detallecomp_total,
+        detallecomp_tc
         )
         (
         SELECT
@@ -1388,7 +1359,8 @@ function ingresarproducto()
         '".$fecha_venc."',
         ".$descuento.",
         (".$producto_costo.") * ".$nuevacan.",
-        (".$producto_costo." - ".$descuento.") * ".$nuevacan."
+        (".$producto_costo." - ".$descuento.") * ".$nuevacan.",
+         ".$moneda_tc."
         
         from producto where producto_id = ".$producto_id."
     )";
@@ -1409,7 +1381,8 @@ function ingresarproducto()
         detallecomp_precio,
         detallecomp_descuento,
         detallecomp_subtotal,
-        detallecomp_total              
+        detallecomp_total,
+        detallecomp_tc
         )
         (
         SELECT
@@ -1422,23 +1395,22 @@ function ingresarproducto()
         ".$producto_precio.",
         ".$descuento.",
         ".$nuevacan." * ".$producto_costo.",
-        (".$nuevacan." * ".$producto_costo.") - ".$descuento."
+        (".$nuevacan." * ".$producto_costo.") - ".$descuento.",
+        ".$moneda_tc."
         
         from producto where producto_id = ".$producto_id."
     )";
     $this->db->query($sql);
     $detalles = $this->db->insert_id();
    
-}
-    $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
-    if(isset($datos)){
-        echo json_encode($datos);
-    }else echo json_encode(null);
-}
-else
-{                 
-    show_404();
-}          
+        }
+        $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
+        if(isset($datos)){
+            echo json_encode($datos);
+        }else echo json_encode(null);
+    }else{                 
+        show_404();
+    }          
 }
 
 function updateDetalle()

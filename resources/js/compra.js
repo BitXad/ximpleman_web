@@ -498,39 +498,32 @@ $('#compra_descuento').val(descuento.toFixed(2));
 
 
 function detallecompra(compra_id,producto_id){
-       
-        var controlador = "";
-        if(document.getElementById("agrupar").checked==true){
-        var agrupar = 1; } else{
+    var controlador = "";
+    if(document.getElementById("agrupar").checked==true){
+        var agrupar = 1;
+    }else{
         var agrupar = 0;
-        }
-        var cantidad = document.getElementById('cantidaddetalle'+producto_id).value; 
-        var descuento = document.getElementById('descuentodetalle'+producto_id).value;
-        var producto_costo = document.getElementById('producto_costodetalle'+producto_id).value;
-        var producto_precio = document.getElementById('producto_preciodetalle'+producto_id).value;
-        var producto_fechavenc = document.getElementById('detallecomp_fechavencimiento'+producto_id).value;
-        var producto_factor = document.getElementById('select_factor'+producto_id).value;
-     
-
-    var base_url = document.getElementById('base_url').value;
+    }
+    var cantidad = document.getElementById('cantidaddetalle'+producto_id).value; 
+    var descuento = document.getElementById('descuentodetalle'+producto_id).value;
+    var producto_costo = document.getElementById('producto_costodetalle'+producto_id).value;
+    var producto_precio = document.getElementById('producto_preciodetalle'+producto_id).value;
+    var producto_fechavenc = document.getElementById('detallecomp_fechavencimiento'+producto_id).value;
+    var producto_factor = document.getElementById('select_factor'+producto_id).value;
+    var moneda_tc = document.getElementById('moneda_tc').value;
     
+    var base_url = document.getElementById('base_url').value;
     controlador = base_url+'compra/ingresarproducto/';
-  
-     document.getElementById('producto'+producto_id).style.display = 'none';
-     
+    document.getElementById('producto'+producto_id).style.display = 'none';
     $.ajax({url: controlador,
-           type:"POST",
-           data:{compra_id:compra_id, producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_costo:producto_costo, producto_precio:producto_precio, agrupar:agrupar, producto_fechavenc:producto_fechavenc,producto_factor:producto_factor},
-           success:function(respuesta){     
-               
-                tabladetallecompra(); 
-                
-                                                         
-                
-        }
-        
+            type:"POST",
+            data:{compra_id:compra_id, producto_id:producto_id, cantidad:cantidad, descuento:descuento,
+                  producto_costo:producto_costo, producto_precio:producto_precio, agrupar:agrupar,
+                  producto_fechavenc:producto_fechavenc, producto_factor:producto_factor, moneda_tc:moneda_tc},
+            success:function(respuesta){
+                tabladetallecompra();
+            }
     });
-
 }
  
 function quitardetalle(detallecomp_id){
