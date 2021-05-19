@@ -1720,6 +1720,7 @@ function compra_rapida(){
         
 $producto_id = $this->input->post('producto_id');
 $cantidad = $this->input->post('cantidad');
+$moneda_tc = $this->input->post('moneda_tc');
 $usuario_id = $this->session_data['usuario_id'];
 $compra_fecha = date('Y-m-d');               
 $compra_hora = date('H:i:s');
@@ -1762,7 +1763,8 @@ $detalle = "INSERT INTO detalle_compra
     detallecomp_total,
     detallecomp_descuento, 
     detallecomp_descglobal,
-    moneda_id
+    moneda_id,
+    detallecomp_tc
     )
     (SELECT
     ".$compra_id.", 
@@ -1776,7 +1778,8 @@ $detalle = "INSERT INTO detalle_compra
     ".$cantidad."*producto_costo,
     0,
     0,
-    1
+    1,
+    ".$moneda_tc."
 
     FROM 
     inventario
