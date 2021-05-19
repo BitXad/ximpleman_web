@@ -1708,10 +1708,11 @@ function guardar_ingreso_rapido(){
     var controlador = base_url+"compra/compra_rapida";
     var producto_id = document.getElementById("ingresorapido_producto_id").value;
     var cantidad = document.getElementById("ingresorapido_cantidad").value;
+    var moneda_tc = document.getElementById("moneda_tc").value;
    
     $.ajax({url: controlador,
         type:"POST",
-        data:{producto_id:producto_id,cantidad:cantidad },
+        data:{producto_id:producto_id, cantidad:cantidad, moneda_tc:moneda_tc },
         success:function(respuesta){     
                         
             tablaresultados(1);
