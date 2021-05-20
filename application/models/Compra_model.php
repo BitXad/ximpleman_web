@@ -298,7 +298,7 @@ class Compra_model extends CI_Model
     }
     function get_detalle_compra_aux($compra_id)
     {
-        $sql = "SELECT d.*, p.* from detalle_compra_aux d, producto p
+        $sql = "SELECT d.*, p.*, p.moneda_id as estamoneda_id from detalle_compra_aux d, producto p
                where d.producto_id=p.producto_id and d.compra_id = ".$compra_id."
                order by d.detallecomp_id desc";
         $result = $this->db->query($sql)->result_array();

@@ -75,19 +75,22 @@ function actualizadetalle(e,detalle_id,producto_id,compra_id) {
 
 
 function tabladetallecompra(){
-     var controlador = "";
-     //var limite = 1000;
-     var base_url = document.getElementById('base_url').value;
-     var compra_id = document.getElementById('compra_idie').value;
-     var bandera = document.getElementById('bandera').value;
-     var modificar_detalle = document.getElementById('modificar_detalle').value;
-     var eliminar_detalle = document.getElementById('eliminar_detalle').value;
-     controlador = base_url+'compra/detallecompra/';
+    var controlador = "";
+    //var limite = 1000;
+    var base_url = document.getElementById('base_url').value;
+    var compra_id = document.getElementById('compra_idie').value;
+    var bandera = document.getElementById('bandera').value;
+    var modificar_detalle = document.getElementById('modificar_detalle').value;
+    var eliminar_detalle = document.getElementById('eliminar_detalle').value;
+    var monedaparam_id = document.getElementById('monedaparam_id').value; // de prametro
+    var moneda_descripcion = document.getElementById('moneda_descripcion').value; // de parametro
+    var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+    controlador = base_url+'compra/detallecompra/';
 
-     $.ajax({url: controlador,
-           type:"POST",
-           data:{compra_id:compra_id},
-           success:function(respuesta){     
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{compra_id:compra_id},
+            success:function(respuesta){     
                
                 var registros =  JSON.parse(respuesta);
                 
@@ -99,12 +102,90 @@ function tabladetallecompra(){
                     var descuento = Number(0);
                     var descglo = Number(0);
                     var descuentosum = Number(0);
+                    var subtotal_otramoneda = Number(0);
+                    var subtotal_otram = Number(0);
+                    var subtotal_estamoneda = Number(0);
+                    var subtotal_estam = Number(0);
+                    var total_otramoneda = Number(0);
+                    var total_otram = Number(0);
+                    var total_estamoneda = Number(0);
+                    var total_estam = Number(0);
+                    var totaldescuento_estamoneda = Number(0);
+                    var totaldescuento_otram = Number(0);
+                    var totaldescuento_otramoneda = Number(0);
+                    var mon_secundaria = "";
                     html = "";
+                    if(monedaparam_id == 1){
+                        mon_secundaria = lamoneda[1]["moneda_descripcion"];
+                    }else{
+                        mon_secundaria = lamoneda[0]["moneda_descripcion"];
+                    }
                    /*if (n <= limite) x = n; 
                    else x = limite;*/
                     
                     for (var i = 0; i < n ; i++){
-                        
+                        if(monedaparam_id == registros[i]["estamoneda_id"]){
+                            total_estam = Number(registros[i]["detallecomp_total"]);
+                            total_estamoneda += total_estam;
+                            subtotal_estam = Number(registros[i]["detallecomp_subtotal"]);
+                            subtotal_estamoneda += subtotal_estam;
+                            totaldescuento_estamoneda += Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]));
+                            if(registros[i]["estamoneda_id"] == 1){
+                                total_otram = Number(registros[i]["detallecomp_total"])/Number(registros[i]["detallecomp_tc"]);
+                                total_otramoneda += total_otram;
+                                subtotal_otram = Number(registros[i]["detallecomp_subtotal"])/Number(registros[i]["detallecomp_tc"]);
+                                subtotal_otramoneda += subtotal_otram;
+                                totaldescuento_otram = Number(Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]))/Number(registros[i]["detallecomp_tc"]));
+                                totaldescuento_otramoneda += totaldescuento_otram;
+                            }else{
+                                total_otram = Number(registros[i]["detallecomp_total"])*Number(registros[i]["detallecomp_tc"]);
+                                total_otramoneda += total_otram;
+                                subtotal_otram = Number(registros[i]["detallecomp_subtotal"])*Number(registros[i]["detallecomp_tc"]);
+                                subtotal_otramoneda += subtotal_otram;
+                                totaldescuento_otram = Number(Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]))*Number(registros[i]["detallecomp_tc"]));
+                                totaldescuento_otramoneda += totaldescuento_otram;
+                            }
+                        }else{
+                            if(registros[i]["estamoneda_id"] == 1){
+                                total_estam = Number(registros[i]["detallecomp_total"])/Number(registros[i]["detallecomp_tc"]);
+                                total_otram = Number(total_estam)*Number(registros[i]["detallecomp_tc"]);
+                                total_estamoneda += total_estam;
+                                total_otramoneda += total_otram;
+                                subtotal_estam = Number(registros[i]["detallecomp_subtotal"])/Number(registros[i]["detallecomp_tc"]);
+                                subtotal_otram = Number(subtotal_estam)*Number(registros[i]["detallecomp_tc"]);
+                                subtotal_estamoneda += subtotal_estam;
+                                subtotal_otramoneda += subtotal_otram;
+                                totaldescuento_estamoneda += Number(Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]))/Number(registros[i]["detallecomp_tc"]));
+                                totaldescuento_otram = Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]));
+                                totaldescuento_otramoneda += Number(Number(totaldescuento_otram)*Number(registros[i]["detallecomp_tc"]));
+                            }else{
+                                total_estam = Number(registros[i]["detallecomp_total"])*Number(registros[i]["detallecomp_tc"]);
+                                total_otram = Number(total_estam)/Number(registros[i]["detallecomp_tc"]);
+                                total_estamoneda += total_estam;
+                                total_otramoneda += total_otram;
+                                subtotal_estam = Number(registros[i]["detallecomp_subtotal"])*Number(registros[i]["detallecomp_tc"]);
+                                subtotal_otram = Number(subtotal_estam)/Number(registros[i]["detallecomp_tc"]);
+                                subtotal_estamoneda += subtotal_estam;
+                                subtotal_otramoneda += subtotal_otram;
+                                totaldescuento_estamoneda += Number(Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]))*Number(registros[i]["detallecomp_tc"]));
+                                totaldescuento_otram = Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]));
+                                totaldescuento_otramoneda += Number(totaldescuento_otram)/Number(registros[i]["detallecomp_tc"]);
+                            }
+                        }
+                        //alert(totaldescuento_otram);
+                        alert(totaldescuento_estamoneda);
+                        alert(totaldescuento_otramoneda);
+                        /*if(monedaparam_id == registros[i]["estamoneda_id"]){
+                            total_otramoneda += Number(registros[i]["detallecomp_total"]);
+                        }else{*/
+                            /*if(monedaparam_id == 1){
+                                total_otram = Number(registros[i]["detallecomp_total"])/Number(lamoneda[1]["moneda_tc"]);
+                                total_otramoneda += total_otram;
+                            }else{
+                                total_otram = Number(registros[i]["detallecomp_total"])*Number(lamoneda[1]["moneda_tc"]);
+                                total_otramoneda += total_otram;
+                            }*/
+                        //}
                         //var suma = Number(registros[i]["detallecomp_total"]);
                         descuento += Number(registros[i]["detallecomp_descuento"]);
                         descglo += Number(registros[i]["detallecomp_descglobal"]);
@@ -164,9 +245,6 @@ function tabladetallecompra(){
 
 
                      }else{
-
-
-
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
@@ -185,7 +263,11 @@ function tabladetallecompra(){
                         html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-sm' style='font-size:13px;width:65px;' id='detallecomp_cantidad"+registros[i]["detallecomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detallecomp_cantidad"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' >";
                         html += "<input id='detallecomp_id'  name='detallecomp_id' type='hidden' class='form-control' value='"+registros[i]["detallecomp_id"]+"'>";
                        
-                        html += "<td style='font-size:13px; text-align:center;'>"+Number(registros[i]["detallecomp_subtotal"]).toFixed(2)+"</b></td>";
+                        //html += "<td style='font-size:13px; text-align:center;'>"+Number(registros[i]["detallecomp_subtotal"]).toFixed(2)+"</b></td>";
+                        html += "<td style='font-size:13px; text-align:center;'>";
+                        html += Number(subtotal_estam).toFixed(2)+"</b>";
+                        html += "<br><span style='white-space: nowrap; font-size: 9px' class='text-bold'>";
+                        html += mon_secundaria+" "+Number(subtotal_otram).toFixed(2)+"</span></td>";
                         html += "<td><input  class='input-sm' style='font-size:13px; width:55px;' id='detallecomp_descuento"+registros[i]["detallecomp_id"]+"'  name='descuento'  type='text' autocomplete='off' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' value='"+Number(registros[i]["detallecomp_descuento"]).toFixed(2)+"' >";
                        
                         
@@ -195,9 +277,18 @@ function tabladetallecompra(){
 
                         html += "<td>"+Number(registros[i]["detallecomp_descglobal"]).toFixed(2)+"</td>";
                         html += "<td><center>";
-                        html += "<span class='badge badge-success'>";
+                        /*html += "<span class='badge badge-success'>";
                         html += "<font size='2'> <b>"+Number(registros[i]["detallecomp_total"]).toFixed(2)+"</b></font> <br>";
-                        html += "</span></center></td>";
+                        html += "</span>";
+                        */
+                        html += "<span class='badge badge-success'>";
+                        html += "<font size='2'> <b>";
+                        html += Number(total_estam).toFixed(2);
+                        html += "</b></font>";
+                        html += "</span>";
+                        html += "<br><span class='text-bold' style='white-space: nowrap; font-size: 9px'>";
+                        html += mon_secundaria+" "+Number(total_otram).toFixed(2)+"</span>";
+                        html += "</center></td>";
                         ////////////////////////////formu////////////////
                         html += "<td style='padding-left:4px; padding-right:4px;'>";
                         if(modificar_detalle == 1){
@@ -221,16 +312,23 @@ function tabladetallecompra(){
                      }
                     }
                     
-                    html += "<th colspan='6' ><font size='3' face='Arial'<b>TOTAL</b></th>";
-                    html += "<th align='right'><font size='2' face='Arial'<b>"+Number(subtotal).toFixed(2)+"</b></th>";
-                    html += "<th align='right'><font size='2' face='Arial'<b>"+Number(descuentosum).toFixed(2)+"</b></th>";
+                    html += "<th style='text-align: right' colspan='6' ><font size='3' face='Arial'<b>TOTAL "+moneda_descripcion+"</b></th>";
+                    html += "<th align='right'><font size='2' face='Arial'<b>";
+                    html += Number(subtotal_estamoneda).toFixed(2)+"</b>";
+                    html += "<br><span style='white-space: nowrap; font-size: 10px'>";
+                    html += mon_secundaria+" "+Number(subtotal_otramoneda).toFixed(2)+"</span></th>";
+                    html += "<th align='right'><font size='2' face='Arial'<b>"+Number(totaldescuento_estamoneda).toFixed(2)+"</b>";
+                    html += "<br><span style='white-space: nowrap; font-size: 10px'>";
+                    html += mon_secundaria+" "+Number(totaldescuento_otramoneda).toFixed(2)+"</span></th>";
                     html += "<th align='right'><font size='2' face='Arial'<b>"+Number(descglo).toFixed(2)+"</b></th>";
-                    html += "<th align='right'><font size='2' face='Arial'<b>"+Number(total_detalle).toFixed(2)+"</b></th>";
+                    html += "<th align='right' style='padding: 0px'><font size='2' face='Arial'<b>"+Number(total_estamoneda).toFixed(2)+"</b>";
+                    html += "<br><span style='white-space: nowrap; font-size: 10px'>";
+                    html += mon_secundaria+" "+Number(total_otramoneda).toFixed(2)+"</span></th>";
                     html += "<th colspan='2'></th>";
                     html += "</font></tr>";
 
                    $("#detallecompringa").html(html);
-                   tablatotales(total_detalle,descuentosum,subtotal);
+                   tablatotales(total_estamoneda,descuentosum,subtotal_estamoneda);
                    
                 }
 
@@ -510,6 +608,7 @@ function detallecompra(compra_id,producto_id){
     var producto_precio = document.getElementById('producto_preciodetalle'+producto_id).value;
     var producto_fechavenc = document.getElementById('detallecomp_fechavencimiento'+producto_id).value;
     var producto_factor = document.getElementById('select_factor'+producto_id).value;
+    var moneda_id = document.getElementById('moneda_id'+producto_id).value;
     var moneda_tc = document.getElementById('moneda_tc').value;
     
     var base_url = document.getElementById('base_url').value;
@@ -519,7 +618,8 @@ function detallecompra(compra_id,producto_id){
             type:"POST",
             data:{compra_id:compra_id, producto_id:producto_id, cantidad:cantidad, descuento:descuento,
                   producto_costo:producto_costo, producto_precio:producto_precio, agrupar:agrupar,
-                  producto_fechavenc:producto_fechavenc, producto_factor:producto_factor, moneda_tc:moneda_tc},
+                  producto_fechavenc:producto_fechavenc, producto_factor:producto_factor,
+                  moneda_id:moneda_id, moneda_tc:moneda_tc},
             success:function(respuesta){
                 tabladetallecompra();
             }
@@ -1358,6 +1458,7 @@ function tablaresultados(opcion)
                         html += "<input id='producto_iddetalle'  name='producto_id' type='text' class='form-control' value='"+registros[i]["producto_id"]+"'>";
                         html += "<input id='descripcion'  name='descripcion' type='text' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
                         html += "<input id='detalle_costo'  name='detalle_costo' type='text' class='form-control' value='"+registros[i]["producto_costo"]+"'>";
+                        html += "<input id='moneda_id"+registros[i]["producto_id"]+"'  name='moneda_id"+registros[i]["producto_id"]+"' type='text' class='form-control' value='"+registros[i]["moneda_id"]+"'>";
                         //html += "<input id='producto_codigue'  name='producto_codigo' type='hidden' class='form-control' value='"+registros[i]["producto_codigo"]+"'>";
                         //html += "<input id='producto_unidade'  name='producto_unidad' type='hidden' class='form-control' value='"+registros[i]["producto_unidad"]+"'>";
                         html += "</div>";
@@ -1376,7 +1477,7 @@ function tablaresultados(opcion)
                         html += "   <select class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1'>";
                         precio_unidad = registros[i]["producto_precio"];
-                        html += "           "+registros[i]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";
+                        html += "           "+registros[i]["producto_unidad"]+" "+registros[i]["moneda_descripcion"]+": "+precio_unidad.fixed(2)+"";
                         html += "       </option>";
                         
                         if(registros[i]["producto_factor"]>0){
@@ -1384,7 +1485,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
 
                             html += "       <option value='"+registros[i]["producto_factor"]+"'>";
-                            html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "           "+registros[i]["producto_unidadfactor"]+" "+registros[i]["moneda_descripcion"]+": "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                             html += "       </option>";
                         }
                             if(registros[i]["producto_factor1"]>0){
@@ -1392,7 +1493,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor1"]) * parseFloat(registros[i]["producto_factor1"]);
 
                             html += "       <option value='"+registros[i]["producto_factor1"]+"'>";
-                            html += "           "+registros[i]["producto_unidadfactor1"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "           "+registros[i]["producto_unidadfactor1"]+" "+registros[i]["moneda_descripcion"]+": "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                             html += "       </option>";
                         }
 
@@ -1401,7 +1502,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor2"]) * parseFloat(registros[i]["producto_factor2"]);
 
                             html += "       <option value='"+registros[i]["producto_factor2"]+"'>";
-                            html += "           "+registros[i]["producto_unidadfactor2"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "           "+registros[i]["producto_unidadfactor2"]+" "+registros[i]["moneda_descripcion"]+": "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                             html += "       </option>";
                         }
 
@@ -1410,7 +1511,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor3"]) * parseFloat(registros[i]["producto_factor3"]);
 
                             html += "       <option value='"+registros[i]["producto_factor3"]+"'>";
-                            html += "           "+registros[i]["producto_unidadfactor3"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "           "+registros[i]["producto_unidadfactor3"]+" "+registros[i]["moneda_descripcion"]+": "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                             html += "       </option>";
                         }
 
@@ -1419,7 +1520,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor4"]) * parseFloat(registros[i]["producto_factor4"]);
 
                             html += "       <option value='"+registros[i]["producto_factor4"]+"'>";
-                            html += "           "+registros[i]["producto_unidadfactor4"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "           "+registros[i]["producto_unidadfactor4"]+" "+registros[i]["moneda_descripcion"]+": "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                             html += "       </option>";
                         }
                         
@@ -1432,11 +1533,11 @@ function tablaresultados(opcion)
                             html += "<div align='right'>";
 
                             html += "<div class='col-md-2' style='padding-left: 0px;'>";
-                            html += "Costo Bs: <input class='input-sm' id='producto_costodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
+                            html += "Costo "+registros[i]["moneda_descripcion"]+": <input class='input-sm' id='producto_costodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
                             html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                            html += "Prec.Venta Bs: <input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+                            html += "Prec.Venta "+registros[i]["moneda_descripcion"]+": <input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
                             html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                            html += "Desc.Unit. Bs: <input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off'  name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
+                            html += "Desc.Unit. "+registros[i]["moneda_descripcion"]+": <input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off'  name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
                             html += "<div class='col-md-2'style='padding-left: 0px;'  >";
                             html += "Cantidad: <input class='input-sm ' id='cantidaddetalle"+registros[i]["producto_id"]+"' style='width: 100px;' name='cantidad' type='number' autocomplete='off' class='form-control' placeholder='cantidad' required value='1'> </div>";
                             html += "<div class='col-md-2' style='padding-left: 0px;' >";

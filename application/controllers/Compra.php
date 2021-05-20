@@ -484,6 +484,7 @@ class Compra extends CI_Controller{
              $proveedor_id = $compra[0]['proveedor_id'];
              $data['parametro'] = $this->Parametro_model->get_parametros();
              $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc(); //0-->bs; 1-->USD
              
              if ($bandera==0) {
               $this->Compra_model->volvermal($compra_id);
@@ -1318,7 +1319,24 @@ function ingresarproducto()
         $fecha_venc = $this->input->post('producto_fechavenc');
         $factor = $this->input->post('producto_factor');
         $moneda_tc = $this->input->post('moneda_tc');
+        $moneda_id = $this->input->post('moneda_id'); // moneda de producto
         $nuevacan = $cantidad * $factor;
+        
+        /*if (parametro_moneda_id == producto.moneda_id){ // Si la moneda del sistema es igual al del producto
+                precio = precio * 1;
+                
+        }else{
+        
+            if (parametro_moneda_id == 1){
+                    precio = precio * tipo_cambio;                
+                    costo = costo * tipo_cambio;                
+            }else{
+                    precio = precio / tipo_cambio;                
+                    costo = costo / tipo_cambio;                
+            }
+        
+        }*/
+        
       if ($agrupar==1) {
 
 

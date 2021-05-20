@@ -126,6 +126,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <input type="hidden" name="compra_idie" id="compra_idie" value="<?php echo $compra_id; ?>">
 <input type="hidden" name="bandera" id="bandera" value="<?php echo $bandera; ?>">
 <input type="hidden" name="moneda_tc" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>">
+<input type="hidden" name="moneda_descripcion" id="moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>">
+<input type="hidden" name="monedaparam_id" id="monedaparam_id" value="<?php echo $parametro[0]['moneda_id']; ?>"> <!-- moneda_id de parametro!.. -->
+<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <input type="hidden" name="modificar_detalle" id="modificar_detalle" value="<?php echo $rolusuario[6-1]['rolusuario_asignado']; ?>">
 <input type="hidden" name="eliminar_detalle" id="eliminar_detalle" value="<?php echo $rolusuario[7-1]['rolusuario_asignado']; ?>">
 
@@ -408,10 +411,14 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <th>Precio</th>
                             <th>Costo</th>
                             <th>Cant.</th>
-                            <th>Subtotal</th>
+                            <th>Subtotal<br>
+                                <?php echo $parametro[0]["moneda_descripcion"]; ?>
+                            </th>
                             <th>Unit.</th>
                             <th>Global</th>
-                            <th>Total</th>
+                            <th>Total<br>
+                                <?php echo $parametro[0]["moneda_descripcion"]; ?>
+                            </th>
                             <?php if($rolusuario[7-1]['rolusuario_asignado'] == 1){ ?>
                             <th colspan="2"><a  onclick="borrartodo()" class="btn btn-xs btn-danger" ><i class="fa fa-trash "></i></a></th>
                             <?php }else{ echo "<th colspan='2'></th>"; } ?>
