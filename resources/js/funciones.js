@@ -3540,10 +3540,12 @@ function buscar_clientes()
 }
 
 function seleccionar_cliente(){
+    
     var cliente_id = document.getElementById('razon_social').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/seleccionar_cliente/"+cliente_id;
     //alert(controlador);
+    
         $.ajax({url: controlador,
             type:"POST",
             data:{},
@@ -3552,7 +3554,6 @@ function seleccionar_cliente(){
                 resultado = JSON.parse(respuesta);
                 tam = resultado.length;
                 
-//                alert(resultado[0]["cliente_nit"]);
                 
                 if (tam>=1){
                     $("#cliente_id").val(resultado[0]["cliente_id"]);
@@ -3608,7 +3609,6 @@ function seleccionar_cliente(){
                         $("#zona_id").val(0);
                     }
                     
-                    //$("#zona_id").val(resultado[0]["zona_id"]);
                     $("#codigo").select();
                 }
        

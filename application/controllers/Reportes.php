@@ -124,8 +124,10 @@ function mes($anio,$mes)
         $ultimo_dia=$this->getUltimoDiaMes($anio,$mes);
         $fecha_inicial=date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$primer_dia) );
         $fecha_final=date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$ultimo_dia) );
+        
         $fechas = "SELECT compra_fecha, round(compra_totalfinal,2) as compra_totalfinal FROM compra where compra.compra_fecha >= '".$anio."-".$mes."-01' and  compra.compra_fecha <= '".$anio."-".$mes."-31' ";
         $result= $this->db->query($fechas)->result_array();
+        
         $fechasven = "SELECT venta_fecha, round(venta_total,2) as venta_total FROM venta where venta.venta_fecha >= '".$anio."-".$mes."-01' and  venta.venta_fecha <= '".$anio."-".$mes."-31' ";
         $resultven= $this->db->query($fechasven)->result_array();
         //$result=$data['result'];
