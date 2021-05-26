@@ -124,26 +124,29 @@ function tabladetallecompra(){
                    else x = limite;*/
                     
                     for (var i = 0; i < n ; i++){
+                        eldescuento = Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]));
                         if(monedaparam_id == registros[i]["estamoneda_id"]){
                             total_estam = Number(registros[i]["detallecomp_total"]);
                             total_estamoneda += total_estam;
                             subtotal_estam = Number(registros[i]["detallecomp_subtotal"]);
                             subtotal_estamoneda += subtotal_estam;
-                            totaldescuento_estamoneda += Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]));
+                            totaldescuento_estamoneda += eldescuento;
                             if(registros[i]["estamoneda_id"] == 1){
                                 total_otram = Number(registros[i]["detallecomp_total"])/Number(registros[i]["detallecomp_tc"]);
                                 total_otramoneda += total_otram;
                                 subtotal_otram = Number(registros[i]["detallecomp_subtotal"])/Number(registros[i]["detallecomp_tc"]);
                                 subtotal_otramoneda += subtotal_otram;
-                                totaldescuento_otram = Number(Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]))/Number(registros[i]["detallecomp_tc"]));
-                                totaldescuento_otramoneda += totaldescuento_otram;
+                                //totaldescuento_otram = Number(Number(eldescuento)/Number(registros[i]["detallecomp_tc"]));
+                                //totaldescuento_otramoneda += Number(Number(totaldescuento_otram)*Number(registros[i]["detallecomp_tc"]));
+                                totaldescuento_otramoneda += Number(Number(eldescuento)/Number(registros[i]["detallecomp_tc"]));
                             }else{
                                 total_otram = Number(registros[i]["detallecomp_total"])*Number(registros[i]["detallecomp_tc"]);
                                 total_otramoneda += total_otram;
                                 subtotal_otram = Number(registros[i]["detallecomp_subtotal"])*Number(registros[i]["detallecomp_tc"]);
                                 subtotal_otramoneda += subtotal_otram;
-                                totaldescuento_otram = Number(Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]))*Number(registros[i]["detallecomp_tc"]));
-                                totaldescuento_otramoneda += totaldescuento_otram;
+                                //totaldescuento_otram = Number(Number(eldescuento)*Number(registros[i]["detallecomp_tc"]));
+                                //totaldescuento_otramoneda += Number(Number(totaldescuento_otram)/Number(registros[i]["detallecomp_tc"]));
+                                totaldescuento_otramoneda += Number(Number(eldescuento)*Number(registros[i]["detallecomp_tc"]));
                             }
                         }else{
                             if(registros[i]["estamoneda_id"] == 1){
@@ -155,8 +158,8 @@ function tabladetallecompra(){
                                 subtotal_otram = Number(subtotal_estam)*Number(registros[i]["detallecomp_tc"]);
                                 subtotal_estamoneda += subtotal_estam;
                                 subtotal_otramoneda += subtotal_otram;
-                                totaldescuento_estamoneda += Number(Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]))/Number(registros[i]["detallecomp_tc"]));
-                                totaldescuento_otram = Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]));
+                                totaldescuento_estamoneda += Number(Number(eldescuento)/Number(registros[i]["detallecomp_tc"]));
+                                totaldescuento_otram = Number(Number(eldescuento)/Number(registros[i]["detallecomp_tc"]));
                                 totaldescuento_otramoneda += Number(Number(totaldescuento_otram)*Number(registros[i]["detallecomp_tc"]));
                             }else{
                                 total_estam = Number(registros[i]["detallecomp_total"])*Number(registros[i]["detallecomp_tc"]);
@@ -167,14 +170,14 @@ function tabladetallecompra(){
                                 subtotal_otram = Number(subtotal_estam)/Number(registros[i]["detallecomp_tc"]);
                                 subtotal_estamoneda += subtotal_estam;
                                 subtotal_otramoneda += subtotal_otram;
-                                totaldescuento_estamoneda += Number(Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]))*Number(registros[i]["detallecomp_tc"]));
-                                totaldescuento_otram = Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]));
-                                totaldescuento_otramoneda += Number(totaldescuento_otram)/Number(registros[i]["detallecomp_tc"]);
+                                totaldescuento_estamoneda += Number(Number(eldescuento)*Number(registros[i]["detallecomp_tc"]));
+                                totaldescuento_otram = Number(Number(eldescuento)*Number(registros[i]["detallecomp_tc"]));
+                                totaldescuento_otramoneda += Number(Number(totaldescuento_otram)/Number(registros[i]["detallecomp_tc"]));
                             }
                         }
                         //alert(totaldescuento_otram);
-                        alert(totaldescuento_estamoneda);
-                        alert(totaldescuento_otramoneda);
+                        //alert(totaldescuento_estamoneda);
+                        //alert(totaldescuento_otramoneda);
                         /*if(monedaparam_id == registros[i]["estamoneda_id"]){
                             total_otramoneda += Number(registros[i]["detallecomp_total"]);
                         }else{*/
@@ -328,7 +331,7 @@ function tabladetallecompra(){
                     html += "</font></tr>";
 
                    $("#detallecompringa").html(html);
-                   tablatotales(total_estamoneda,descuentosum,subtotal_estamoneda);
+                   tablatotales(total_estamoneda,totaldescuento_estamoneda,subtotal_estamoneda);
                    
                 }
 
