@@ -76,4 +76,23 @@ class Detalle_formula_model extends CI_Model
     {
         return $this->db->delete('detalle_formula',array('detalleformula_id'=>$detalleformula_id));
     }
+    
+    /*
+     * obtiene detalle_formula de Formula
+     */
+    function get_all_detalles_deuna_formula($formula_id)
+    {
+        $detalle_formula = $this->db->query("
+            SELECT
+                df.*, p.*
+            FROM
+                `detalle_formula` df
+            LEFT JOIN producto p on df.producto_id = p.producto_id
+            WHERE
+                df.formula_id = $formula_id
+            ORDER BY `detalleformula_id` DESC
+        ")->result_array();
+
+        return $detalle_formula;
+    }
 }

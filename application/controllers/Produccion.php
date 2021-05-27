@@ -121,4 +121,29 @@ class Produccion extends CI_Controller{
             show_error('The produccion you are trying to delete does not exist.');
     }
     
+    function producir()
+    {
+        $this->load->model('Formula_model');
+        $data['all_formula'] = $this->Formula_model->get_all_formula();
+        
+        $data['_view'] = 'produccion/producir';
+        $this->load->view('layouts/main',$data);
+    }
+    /* busca los deudores */
+    function buscardetalleformula()
+    {
+        //if($this->acceso(118)){
+            if ($this->input->is_ajax_request()) {
+                $formula_id = $this->input->post('formula_id');
+                $this->load->model('Detalle_formula_model');
+                $datos = $this->Detalle_formula_model->get_all_detalles_deuna_formula($formula_id);
+                echo json_encode($datos);
+            }   
+            else
+            {                 
+                show_404();
+            }
+        //}
+    }
+    
 }
