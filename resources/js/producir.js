@@ -8,7 +8,7 @@ function elegirformula(){
             $("#formula_unidad").val(laformula[i]["formula_unidad"]);
             $("#formula_cantidad").val(laformula[i]["formula_cantidad"]);
             $("#formula_costounidad").val(laformula[i]["formula_costounidad"]);
-            $("#formula_preciounidad").val(laformula[i]["formular_preciounidad"]);
+            $("#formula_preciounidad").val(laformula[i]["formula_preciounidad"]);
             break;
         }
     }
@@ -18,12 +18,17 @@ function elegirformula(){
 function calcularformula(){
     var base_url    = document.getElementById('base_url').value;
     var formula_id  = document.getElementById('formula_id').value;
+    var formula_unidad  = document.getElementById('formula_unidad').value;
+    var formula_cantidad  = document.getElementById('formula_cantidad').value;
+    var formula_costounidad  = document.getElementById('formula_costounidad').value;
+    var formula_preciounidad = document.getElementById('formula_preciounidad').value;
     var controlador = base_url+'produccion/buscardetalleformula';
     if(formula_id >0){
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
             type:"POST",
-            data:{formula_id:formula_id},
+            data:{formula_id:formula_id, formula_unidad:formula_unidad, formula_cantidad:formula_cantidad,
+                  formula_costounidad:formula_costounidad, formula_preciounidad:formula_preciounidad},
             success:function(respuesta){
                 //$("#encontrados").val("- 0 -");
                 var registros =  JSON.parse(respuesta);
@@ -86,15 +91,16 @@ function calcularformula(){
     }
 }
 
+/* funcion que registra el producto producido */
 function producir(){
     var base_url    = document.getElementById('base_url').value;
     var formula_id  = document.getElementById('formula_id').value;
-    var controlador = base_url+'produccion/buscardetalleformula';
+    var controlador = base_url+'produccion/registrar_productoproducido';
     if(formula_id >0){
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
             type:"POST",
-            data:{formula_id:formula_id},
+            data:{formula_id:formula_id, },
             success:function(respuesta){
                 //$("#encontrados").val("- 0 -");
                 var registros =  JSON.parse(respuesta);
