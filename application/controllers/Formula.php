@@ -9,7 +9,48 @@ class Formula extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Formula_model');
+        $this->load->model('Venta_model');
+        $this->load->model('Inventario_model');
+        $this->load->model('Pedido_model');
+        $this->load->model('Tipo_transaccion_model');
+        $this->load->model('Forma_pago_model');
+        $this->load->model('Pedido_model');
+        $this->load->model('Tipo_cliente_model');
+        $this->load->model('Dosificacion_model');
+        $this->load->model('Factura_model'); 
+        $this->load->library('ControlCode');
+        $this->load->model('Empresa_model');
+        $this->load->model('Detalle_venta_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Estado_model');
+        $this->load->model('Usuario_model');
+        $this->load->model('Cliente_model');
+        $this->load->model('Tipo_servicio_model');
+        $this->load->model('Preferencia_model');
+        $this->load->model('Credito_model');
+        $this->load->model('Categoria_clientezona_model');
+        $this->load->model('Promocion_model');
+        $this->load->model('Mesa_model');
+        $this->load->model('Moneda_model');
+                
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
+    
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+//            $data['_view'] = 'login/mensajeacceso';
+//            $this->load->view('layouts/main',$data);
+            return false;
+        }
+    }
 
     /*
      * Listing of formula
@@ -27,23 +68,56 @@ class Formula extends CI_Controller{
      */
     function add()
     {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'formula_nombre' => $this->input->post('formula_nombre'),
-				'formula_unidad' => $this->input->post('formula_unidad'),
-				'formula_cantidad' => $this->input->post('formula_cantidad'),
-				'formula_costounidad' => $this->input->post('formula_costounidad'),
-				'formular_preciounidad' => $this->input->post('formular_preciounidad'),
-            );
+        
+          
+        if($this->acceso(12)){
+            //**************** inicio contenido ***************               
+
+            $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
             
-            $formula_id = $this->Formula_model->add_formula($params);
-            redirect('formula/index');
-        }
-        else
-        {            
-            $data['_view'] = 'formula/add';
-            $this->load->view('layouts/main',$data);
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                                    'formula_nombre' => $this->input->post('formula_nombre'),
+                                    'formula_unidad' => $this->input->post('formula_unidad'),
+                                    'formula_cantidad' => $this->input->post('formula_cantidad'),
+                                    'formula_costounidad' => $this->input->post('formula_costounidad'),
+                                    'formular_preciounidad' => $this->input->post('formular_preciounidad'),
+                );
+
+                $formula_id = $this->Formula_model->add_formula($params);
+                redirect('formula/index');
+            }
+            else
+            {
+                
+                $data['rolusuario'] = $this->session_data['rol'];
+                $usuario_id = $this->session_data['usuario_id'];
+                $tipousuario_id = $this->session_data['tipousuario_id'];        
+
+                $data['page_title'] = "Ventas";
+                $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+                $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+                $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+                $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+                $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+                $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+                $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+                $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+                $data['parametro'] = $this->Parametro_model->get_parametros();
+                $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+                $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+                $data['promociones'] = $this->Promocion_model->get_promociones();
+                $data['mesas'] = $this->Mesa_model->get_all_mesa();
+                $data['usuario_id'] = $usuario_id;
+                $data['tipousuario_id'] = $tipousuario_id;
+
+        
+                $data['_view'] = 'formula/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -52,32 +126,41 @@ class Formula extends CI_Controller{
      */
     function edit($formula_id)
     {   
-        // check if the formula exists before trying to edit it
-        $data['formula'] = $this->Formula_model->get_formula($formula_id);
-        
-        if(isset($data['formula']['formula_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'formula_nombre' => $this->input->post('formula_nombre'),
-					'formula_unidad' => $this->input->post('formula_unidad'),
-					'formula_cantidad' => $this->input->post('formula_cantidad'),
-					'formula_costounidad' => $this->input->post('formula_costounidad'),
-					'formular_preciounidad' => $this->input->post('formular_preciounidad'),
-                );
+        if($this->acceso(12)){
+            //**************** inicio contenido ***************        
+            $data['rolusuario'] = $this->session_data['rol'];
+            $usuario_id = $this->session_data['usuario_id'];
+            $tipousuario_id = $this->session_data['tipousuario_id'];           
 
-                $this->Formula_model->update_formula($formula_id,$params);            
-                redirect('formula/index');
+            // check if the formula exists before trying to edit it
+            $data['formula'] = $this->Formula_model->get_formula($formula_id);
+
+            if(isset($data['formula']['formula_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                                            'formula_nombre' => $this->input->post('formula_nombre'),
+                                            'formula_unidad' => $this->input->post('formula_unidad'),
+                                            'formula_cantidad' => $this->input->post('formula_cantidad'),
+                                            'formula_costounidad' => $this->input->post('formula_costounidad'),
+                                            'formular_preciounidad' => $this->input->post('formular_preciounidad'),
+                    );
+
+                    $this->Formula_model->update_formula($formula_id,$params);            
+                    redirect('formula/index');
+                }
+                else
+                {
+                    $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+                    $data['_view'] = 'formula/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'formula/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The formula you are trying to edit does not exist.');
+
         }
-        else
-            show_error('The formula you are trying to edit does not exist.');
     } 
 
     /*
