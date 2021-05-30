@@ -121,4 +121,74 @@ class Produccion extends CI_Controller{
             show_error('The produccion you are trying to delete does not exist.');
     }
     
+    function producir()
+    {
+        $this->load->model('Formula_model');
+        $data['all_formula'] = $this->Formula_model->get_all_formula();
+        
+        $data['_view'] = 'produccion/producir';
+        $this->load->view('layouts/main',$data);
+    }
+    /* busca los deudores */
+    function buscardetalleformula()
+    {
+        //if($this->acceso(118)){
+            if ($this->input->is_ajax_request()) {
+                $formula_id = $this->input->post('formula_id');
+                $this->load->model('Detalle_formula_model');
+                $datos = $this->Detalle_formula_model->get_all_detalles_deuna_formula($formula_id);
+                echo json_encode($datos);
+            }   
+            else
+            {                 
+                show_404();
+            }
+        //}
+    }
+    
+    /* Funcion que hace la salida(venta) de los insumos;
+     * y el registro (en compras) del producto producido */
+    function registrar_productoproducido()
+    {
+        //if($this->acceso(118)){
+            if ($this->input->is_ajax_request()) {
+                $formula_id = $this->input->post('formula_id');
+                $usuario_id = $this->session_data['usuario_id'];
+                $produccion_fecha = date("Y-m-d");
+                $produccion_hora = date("H:i:s");
+                
+                $this->load->model('Parametro_model');
+                $parametro = $this->Parametro_model->get_parametro(1);
+                $produccion_numeroorden = $parametro['parametro_numordenproduccion']+1;
+                $produccion_total = $this->input->post('formula_cantidad')*$this->input->post('formula_preciounidad');
+                $params = array(
+                    'formula_id' => $formula_id,
+                    'usuario_id' => $usuario_id,
+                    'produccion_numeroorden' => $produccion_numeroorden,
+                    'produccion_fecha' => $produccion_fecha,
+                    'produccion_hora' => $produccion_hora,
+                    'produccion_unidad' => $this->input->post('formula_unidad'),
+                    'produccion_cantidad' => $this->input->post('formula_cantidad'),
+                    'produccion_total' => $produccion_total,
+                    'produccion_costounidad' => $this->input->post('formula_costounidad'),
+                    'produccion_preciounidad' => $this->input->post('formula_preciounidad'),
+                );
+                $produccion_id = $this->Produccion_model->add_produccion($params);
+                
+                $paramsp = array(
+                    'parametro_numordenproduccion' => $produccion_numeroorden,
+                );
+                $this->Parametro_model->update_parametro($parametro['parametro_id'],$paramsp);
+                
+                $this->load->model('Detalle_formula_model');
+                $datos = $this->Detalle_formula_model->get_all_detalles_deuna_formula($formula_id);
+                echo json_encode($datos);
+            }
+            else
+            {                 
+                show_404();
+            }
+        //}
+    }
+    
 }

@@ -184,7 +184,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                   $total_ultimo = $totalfinal;
                                 }     ?>  
               <div class="row">
-           <div class="panel panel-primary col-md-12" id="detalleco" style="font-family: "Arial", Arial, Arial, arial;">
+           <div class="panel panel-primary col-md-12" id="detalleco" style="font-family: 'Arial', Arial, Arial, arial;">
                <table>       
                 
                 <tr>
