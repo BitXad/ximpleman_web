@@ -180,4 +180,36 @@ class Formula extends CI_Controller{
             show_error('The formula you are trying to delete does not exist.');
     }
     
+    function registrar_formula(){
+        
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];    
+        
+        $formula_nombre = $this->input->post("formula_nombre");
+        $formula_unidad = $this->input->post("formula_unidad");
+        $formula_cantidad = $this->input->post("formula_cantidad");
+        $formula_costounidad = $this->input->post("formula_costounidad");
+        $formula_preciounidad = $this->input->post("formula_preciounidad");
+        
+        $sql = "insert into formula(formula_nombre, formula_unidad, formula_cantidad, formula_costounidad, formula_preciounidad) value(".
+                "'".$formula_nombre."','".$formula_unidad."',".$formula_cantidad.",".$formula_costounidad.",".$formula_preciounidad.")"; 
+        $this->Formula_model->ejecutar($sql);
+        
+        $sql = "select max(formula_id) as formulaid from formula"; 
+        $resultado = $this->Formula_model->consultar($sql);
+        $formula_id = $resultado[0]["formulaid"];
+        
+        $sql = "insert into detalle_formula(producto_id, formula_id, detalleformula_costo, detalleformula_cantidad)
+                ( 
+                    select d.producto_id, ".$formula_id.", d.detalleven_precio, d.detalleven_cantidad
+                    from detalle_venta_aux d
+                    where d.usuario_id = ".$usuario_id."
+                )";
+        $this->Formula_model->ejecutar($sql);
+        
+        $result = 1;    
+        echo '[{"cliente_id":"'.$result.'"}]';
+        
+    }
+    
 }

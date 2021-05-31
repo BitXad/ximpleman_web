@@ -62,7 +62,7 @@
 						<td><?php echo $f['formula_unidad']; ?></td>
 						<td><?php echo $f['formula_cantidad']; ?></td>
 						<td><?php echo $f['formula_costounidad']; ?></td>
-						<td><?php echo $f['formular_preciounidad']; ?></td>
+						<td><?php echo $f['formula_preciounidad']; ?></td>
 						<td>
                             <a href="<?php echo site_url('formula/edit/'.$f['formula_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
                             <a href="<?php echo site_url('formula/remove/'.$f['formula_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>

@@ -76,4 +76,18 @@ class Formula_model extends CI_Model
     {
         return $this->db->delete('formula',array('formula_id'=>$formula_id));
     }
+
+    function consultar($sql)
+    {
+        return $this->db->query($sql)->result_array();
+        
+    }
+    
+
+    function ejecutar($sql)
+    {
+        $this->db->query($sql);
+        return true;
+    }
+    
 }
