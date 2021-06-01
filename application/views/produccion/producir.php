@@ -87,6 +87,39 @@
 <div class="col-md-12 text-center">
     <!--<label for="producir" class="control-label">&nbsp;</label>-->
     <div class="form-group">
-        <a class="btn btn-success" onclick="producir()"><span class="fa fa-cogs"></span> Producir</a>
+        <a class="btn btn-success disabled" onclick="producir()" id="paraproducir"><span class="fa fa-cogs"></span> Producir</a>
     </div>
 </div>
+
+<!------------------------ INICIO modal para mostrar mensaje ------------------->
+<div class="modal fade" id="modalmensaje" tabindex="-1" role="dialog" aria-labelledby="modalmensajelabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold text-danger" style="font-size: 15pt">PRODUCTOS QUE NO HAY EN INVENTARIO (ALMACEN)</span>
+            </div>
+            <div class="modal-body">
+                <!------------------------------------------------------------------->
+                <div class="box-body table-responsive">
+                    <table class="table table-striped" id="mitabla">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Existencia</th>
+                            <th>Falta</th>
+                        </tr>
+                        <tbody class="buscar" id="tablamensaje" >
+                        </tbody>
+                    </table>
+                </div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para mostrar mensaje ------------------->

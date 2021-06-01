@@ -9,6 +9,7 @@ class Produccion extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Produccion_model');
+        $this->session_data = $this->session->userdata('logged_in');
     } 
 
     /*
@@ -129,7 +130,7 @@ class Produccion extends CI_Controller{
         $data['_view'] = 'produccion/producir';
         $this->load->view('layouts/main',$data);
     }
-    /* busca los deudores */
+    /* busca insumos de una formula */
     function buscardetalleformula()
     {
         //if($this->acceso(118)){
@@ -138,6 +139,29 @@ class Produccion extends CI_Controller{
                 $this->load->model('Detalle_formula_model');
                 $datos = $this->Detalle_formula_model->get_all_detalles_deuna_formula($formula_id);
                 echo json_encode($datos);
+            }   
+            else
+            {                 
+                show_404();
+            }
+        //}
+    }
+    
+    /* verifica que la cantidad de insumos exista en Inventario(Almacen) */
+    function verificar_existencia()
+    {
+        //if($this->acceso(118)){
+            if ($this->input->is_ajax_request()) {
+                $verif_existencia = $this->input->post('verif_existencia');
+                $this->load->model('Inventario_model');
+                $cadena =array();
+                foreach ($verif_existencia as $verif) {
+                    $prod_inv = $this->Inventario_model->get_productoinventario($verif["producto_id"]);
+                    if($verif["cantidad"] > $prod_inv['existencia']){
+                       $cadena[] = array("producto_nombre" => $prod_inv['producto_nombre'], "existencia" => $prod_inv['existencia'], "falta" =>$verif["cantidad"]-$prod_inv['existencia'], "cantidad" => $verif["cantidad"]);
+                    }
+                }
+                echo json_encode($cadena);
             }   
             else
             {                 

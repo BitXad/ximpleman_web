@@ -24,6 +24,8 @@ function calcularformula(){
     var formula_preciounidad = document.getElementById('formula_preciounidad').value;
     var controlador = base_url+'produccion/buscardetalleformula';
     if(formula_id >0){
+        if(formula_cantidad >0){
+        var verif_existencia =[];
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
             type:"POST",
@@ -39,6 +41,7 @@ function calcularformula(){
                     //$("#encontrados").html("Registros Encontrados: "+n+" ");
                     html = "";
                     for (var i = 0; i < n ; i++){
+                        verif_existencia.push({producto_id:registros[i]["producto_id"], cantidad:Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad)});
                         eltotal += Number(registros[i]["detalleformula_costo"])*Number(Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad));
                         total = Number(Number(registros[i]["detalleformula_costo"])*Number(Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad))).toFixed(2);
                         html += "<tr>";
@@ -71,7 +74,11 @@ function calcularformula(){
                    html += "<th colspan='3' style='text-align: right; font-size: 13px'>"+Number(eltotal).toFixed(2)+"</th>";
                    html += "</tr>";
                    $("#detalle_deformula").html(html);
+                   verificar_existencia(verif_existencia);
                    document.getElementById('loader').style.display = 'none';
+            }else{
+                $("#detalle_deformula").html("");
+                alert("La Formula elegida no tiene insumos!.");
             }
             document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
@@ -87,20 +94,71 @@ function calcularformula(){
         
     });
     }else{
+        alert("Cantidad a Producir debe ser mayor a 0");
+    }
+    }else{
         alert("Por favor primero elija una Fórmula");
     }
+}
+/* verifica la existencia de todos los insumos en Inventario (Almacen) */
+function verificar_existencia(verif_existencia){
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+'produccion/verificar_existencia';
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{verif_existencia:verif_existencia},
+            success:function(respuesta){
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){
+                    var max = registros.length;
+                    var mensaje = ""
+                    html = "";
+                    for (var i = 0; i < max; i++) {
+                        html += "<tr>";
+                        html += "<td>"+registros[i]["producto_nombre"]+"</td>";
+                        html += "<td class='text-right'>"+registros[i]["cantidad"]+"</td>";
+                        html += "<td class='text-right'>"+registros[i]["existencia"]+"</td>";
+                        html += "<td class='text-right'>"+registros[i]["falta"]+"</td>";
+                        html += "</tr>";
+                    }
+                    $("#tablamensaje").html(html);
+                    $('#modalmensaje').modal('show');
+                   document.getElementById('loader').style.display = 'none';
+                }else{
+                    $("#paraproducir").removeClass("disabled");
+                    //$("#parrafo").removeClass("rojo");
+                }
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           //$("#detalle_deformula").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+        
+    });
 }
 
 /* funcion que registra el producto producido */
 function producir(){
-    var base_url    = document.getElementById('base_url').value;
     var formula_id  = document.getElementById('formula_id').value;
-    var controlador = base_url+'produccion/registrar_productoproducido';
     if(formula_id >0){
+        var formula_unidad = document.getElementById('formula_unidad').value;
+        var formula_cantidad = document.getElementById('formula_cantidad').value;
+        var formula_preciounidad = document.getElementById('formula_preciounidad').value;
+        var formula_costounidad = document.getElementById('formula_costounidad').value;
+        var base_url    = document.getElementById('base_url').value;
+        var controlador = base_url+'produccion/registrar_productoproducido';
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
             type:"POST",
-            data:{formula_id:formula_id, },
+            data:{formula_id:formula_id, formula_unidad:formula_unidad, formula_cantidad:formula_cantidad,
+                  formula_preciounidad:formula_preciounidad, formula_costounidad:formula_costounidad},
             success:function(respuesta){
                 //$("#encontrados").val("- 0 -");
                 var registros =  JSON.parse(respuesta);
