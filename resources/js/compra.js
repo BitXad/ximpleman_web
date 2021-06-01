@@ -1563,11 +1563,11 @@ function tablaresultados(opcion)
 //                       
                               html += "<table style='font-size: 10pt' id='tablares'>"
                                 html += "<tr style='font-size: 10px;'>"
-                                  html += "<td><b>PRECIO</b></td>"
-                                  html += "<td><b>COSTO</b></td>"
-                                  html += "<td><b>DESC.</b></td>"
-                                  html += "<td><b>CANT.</b></td>"
-                                  html += "<td><b>FECHA VENC.</b></td>"
+                                  html += "<td style='text-align: center;'><b>PRECIO</b></td>"
+                                  html += "<td style='text-align: center;'><b>COSTO</b></td>"
+                                  html += "<td style='text-align: center;'><b>DESC.</b></td>"
+                                  html += "<td style='text-align: center;'><b>CANT.</b></td>"
+                                  html += "<td style='text-align: center;'><b>FECHA VENC.</b></td>"
 
                                 html += "</tr>"
                               

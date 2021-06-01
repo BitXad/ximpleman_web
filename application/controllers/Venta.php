@@ -31,6 +31,7 @@ class Venta extends CI_Controller{
         $this->load->model('Promocion_model');
         $this->load->model('Mesa_model');
         $this->load->model('Moneda_model');
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {

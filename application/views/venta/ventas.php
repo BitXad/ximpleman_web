@@ -360,7 +360,7 @@ window.onkeydown = compruebaTecla;
             if ($parametro[0]["parametro_agruparitems"] == 1 )
                     { $agrupar = "checked='true'";}
               else {$agrupar = " ";}
-        ?>
+            ?>
             <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> <button class="btn btn-default btn-xs"> Agrupar</button> 
         </h4>
 
@@ -738,7 +738,7 @@ window.onkeydown = compruebaTecla;
             </a>
             <?php } ?>
 
-            <?php if($rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
+            <?php if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
