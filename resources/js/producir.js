@@ -1,5 +1,19 @@
+function calcularsiesenter(e){
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){
+        calcularformula();
+    }
+}
+
 function elegirformula(){
+    $("#detalle_deformula").html("");
     var formula_id = document.getElementById('formula_id').value;
+    if(formula_id == ""){
+        $("#formula_unidad").val("");
+        $("#formula_cantidad").val("");
+        $("#formula_costounidad").val("");
+        $("#formula_preciounidad").val("");
+    }
     var laformula = JSON.parse(document.getElementById('laformula').value);
     
     var n = laformula.length;
@@ -9,41 +23,69 @@ function elegirformula(){
             $("#formula_cantidad").val(laformula[i]["formula_cantidad"]);
             $("#formula_costounidad").val(laformula[i]["formula_costounidad"]);
             $("#formula_preciounidad").val(laformula[i]["formula_preciounidad"]);
+            cargar_detalleformula_aux(formula_id);
             break;
         }
     }
     
 }
-
-function calcularformula(){
+/* carga el detalle de la formula en detalleformula_aux */
+function cargar_detalleformula_aux(formula_id){
     var base_url    = document.getElementById('base_url').value;
-    var formula_id  = document.getElementById('formula_id').value;
-    var formula_unidad  = document.getElementById('formula_unidad').value;
-    var formula_cantidad  = document.getElementById('formula_cantidad').value;
-    var formula_costounidad  = document.getElementById('formula_costounidad').value;
-    var formula_preciounidad = document.getElementById('formula_preciounidad').value;
-    var controlador = base_url+'produccion/buscardetalleformula';
-    if(formula_id >0){
-        if(formula_cantidad >0){
-        var verif_existencia =[];
+    var controlador = base_url+'produccion/cargar_detalleformula_aux';
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
             type:"POST",
-            data:{formula_id:formula_id, formula_unidad:formula_unidad, formula_cantidad:formula_cantidad,
-                  formula_costounidad:formula_costounidad, formula_preciounidad:formula_preciounidad},
+            data:{formula_id:formula_id},
+            success:function(respuesta){
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){
+                   document.getElementById('loader').style.display = 'none';
+                }else{
+                    
+                }
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+        
+    });
+}
+function calcularformula(){
+    var base_url    = document.getElementById('base_url').value;
+    var formula_id  = document.getElementById('formula_id').value;
+    var formula_cantidad  = document.getElementById('formula_cantidad').value;
+    /*var formula_unidad  = document.getElementById('formula_unidad').value;
+    var formula_costounidad  = document.getElementById('formula_costounidad').value;
+    var formula_preciounidad = document.getElementById('formula_preciounidad').value;
+    */
+    var controlador = base_url+'produccion/buscardetalleformula';
+    if(formula_id >0){
+        if(formula_cantidad >0){
+        //var verif_existencia =[];
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{formula_id:formula_id, formula_cantidad:formula_cantidad},
             success:function(respuesta){
                 //$("#encontrados").val("- 0 -");
                 var registros =  JSON.parse(respuesta);
                 if (registros != null){
-                    var formula_cantidad  = document.getElementById('formula_cantidad').value;
+                    //var formula_cantidad  = document.getElementById('formula_cantidad').value;
                     var eltotal = Number(0);
                     var n = registros.length; //tamaño del arreglo de la consulta
                     //$("#encontrados").html("Registros Encontrados: "+n+" ");
                     html = "";
                     for (var i = 0; i < n ; i++){
-                        verif_existencia.push({producto_id:registros[i]["producto_id"], cantidad:Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad)});
-                        eltotal += Number(registros[i]["detalleformula_costo"])*Number(Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad));
-                        total = Number(Number(registros[i]["detalleformula_costo"])*Number(Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad))).toFixed(2);
+                        //verif_existencia.push({producto_id:registros[i]["producto_id"], cantidad:Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad)});
+                        eltotal += Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"]);
+                        //total = Number(Number(registros[i]["detalleformula_costo"])*Number(Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad))).toFixed(2);
                         html += "<tr>";
                         //html += "<td>"+(i+1)+"</td>";
                         html += "<td>";
@@ -59,13 +101,13 @@ function calcularformula(){
                         html += "</div>";
                         html += "</td>";
                         html += "<td class='text-right'>";
-                        html += Number(registros[i]["detalleformula_costo"]).toFixed(2);
+                        html += Number(registros[i]["detalleven_costo"]).toFixed(2);
                         html += "</td>";
                         html += "<td class='text-center'>";
-                        html += Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad);
+                        html += registros[i]["detalleven_cantidad"];
                         html += "</td>";
                         html += "<td class='text-right'>";
-                        html += total;
+                        html += registros[i]["detalleven_total"];
                         html += "</td>";
                         html += "</tr>";
                    }
@@ -97,6 +139,7 @@ function calcularformula(){
         alert("Cantidad a Producir debe ser mayor a 0");
     }
     }else{
+        //$("#formula_cantidad").val("");
         alert("Por favor primero elija una Fórmula");
     }
 }
@@ -110,9 +153,8 @@ function verificar_existencia(verif_existencia){
             data:{verif_existencia:verif_existencia},
             success:function(respuesta){
                 var registros =  JSON.parse(respuesta);
-                if (registros != null){
+                if (registros != null && registros != ""){
                     var max = registros.length;
-                    var mensaje = ""
                     html = "";
                     for (var i = 0; i < max; i++) {
                         html += "<tr>";
@@ -127,7 +169,6 @@ function verificar_existencia(verif_existencia){
                    document.getElementById('loader').style.display = 'none';
                 }else{
                     $("#paraproducir").removeClass("disabled");
-                    //$("#parrafo").removeClass("rojo");
                 }
             document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
@@ -146,14 +187,14 @@ function verificar_existencia(verif_existencia){
 
 /* funcion que registra el producto producido */
 function producir(){
-    var formula_id  = document.getElementById('formula_id').value;
+    var formula_id = document.getElementById('formula_id').value;
     if(formula_id >0){
         var formula_unidad = document.getElementById('formula_unidad').value;
         var formula_cantidad = document.getElementById('formula_cantidad').value;
         var formula_preciounidad = document.getElementById('formula_preciounidad').value;
         var formula_costounidad = document.getElementById('formula_costounidad').value;
         var base_url    = document.getElementById('base_url').value;
-        var controlador = base_url+'produccion/registrar_productoproducido';
+        var controlador = base_url+'produccion/registrar_produccion';
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
             type:"POST",
