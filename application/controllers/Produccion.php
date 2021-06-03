@@ -131,7 +131,7 @@ class Produccion extends CI_Controller{
         $this->load->view('layouts/main',$data);
     }
     /* carga los detalles de la formula en detalleformula_aux */
-    function cargar_detalleformula_aux()
+    /*function cargar_detalleformula_aux()
     {
         //if($this->acceso(118)){
             if ($this->input->is_ajax_request()) {
@@ -154,15 +154,24 @@ class Produccion extends CI_Controller{
                 show_404();
             }
         //}
-    }
+    }*/
     /* busca insumos de una formula */
     function buscardetalleformula()
     {
         //if($this->acceso(118)){
             if ($this->input->is_ajax_request()) {
-                $formula_cantidad = $this->input->post('formula_cantidad');
                 $usuario_id = $this->session_data['usuario_id'];
                 $this->load->model('Detalle_formula_aux_model');
+                $this->Detalle_formula_aux_model->delete_detalle_formula_aux($usuario_id);
+                
+                $this->load->model('Moneda_model');
+                $moneda = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                $tipo_cambio = $moneda["moneda_tc"];
+                $formula_id = $this->input->post('formula_id');
+                $this->Detalle_formula_aux_model->insertar_detalle_formula_aux($formula_id, $usuario_id, $tipo_cambio);
+
+                $formula_cantidad = $this->input->post('formula_cantidad');
+                
                 $detalle_formaux = $this->Detalle_formula_aux_model->get_all_detalles_porusuario($usuario_id);
                 foreach ($detalle_formaux as $detalle){
                     $lacantidad = $detalle["detalleven_cantidad"]*$formula_cantidad;
@@ -188,13 +197,15 @@ class Produccion extends CI_Controller{
     {
         //if($this->acceso(118)){
             if ($this->input->is_ajax_request()) {
-                $verif_existencia = $this->input->post('verif_existencia');
+                $usuario_id = $this->session_data['usuario_id'];
+                $this->load->model('Detalle_formula_aux_model');
+                $verif_existencia = $this->Detalle_formula_aux_model->get_all_detalles_porusuario($usuario_id);
                 $this->load->model('Inventario_model');
                 $cadena =array();
                 foreach ($verif_existencia as $verif) {
                     $prod_inv = $this->Inventario_model->get_productoinventario($verif["producto_id"]);
-                    if($verif["cantidad"] > $prod_inv['existencia']){
-                       $cadena[] = array("producto_nombre" => $prod_inv['producto_nombre'], "existencia" => $prod_inv['existencia'], "falta" =>$verif["cantidad"]-$prod_inv['existencia'], "cantidad" => $verif["cantidad"]);
+                    if($verif["detalleven_cantidad"] > $prod_inv['existencia']){
+                       $cadena[] = array("producto_nombre" => $prod_inv['producto_nombre'], "existencia" => $prod_inv['existencia'], "falta" =>$verif["detalleven_cantidad"]-$prod_inv['existencia'], "cantidad" => $verif["detalleven_cantidad"]);
                     }
                 }
                 echo json_encode($cadena);
@@ -211,74 +222,16 @@ class Produccion extends CI_Controller{
     function registrar_produccion()
     {
         //if($this->acceso(118)){
-            if ($this->input->is_ajax_request()) {
+            if ($this->input->is_ajax_request()){
                 $formula_id = $this->input->post('formula_id');
                 $usuario_id = $this->session_data['usuario_id'];
-                $produccion_fecha = date("Y-m-d");
-                $produccion_hora = date("H:i:s");
-                /* ********** INICIO registrar detalle venta ********** */
-                $params = array(
-                    'producto_id' => $formula_id,
-                    'venta_id' => 0,
-                    'detalleven_codigo' => $produccion_numeroorden,
-                    'detalleven_cantidad' => $produccion_fecha,
-                    'detalleven_unidad' => $produccion_hora,
-                    'detalleven_costo' => $this->input->post('formula_unidad'),
-                    'detalleven_precio' => $this->input->post('formula_cantidad'),
-                    'detalleven_subtotal' => $produccion_total,
-                    'detalleven_descuento' => $this->input->post('formula_costounidad'),
-                    'detalleven_total' => $this->input->post('formula_preciounidad'),
-                    'detalleven_caracteristicas' => $this->input->post('formula_preciounidad'),
-                    'detalleven_preferencia' => $this->input->post('formula_preciounidad'),
-                    'detalleven_comision' => $this->input->post('formula_preciounidad'),
-                    'detalleven_tipocambio' => $this->input->post('formula_preciounidad'),
-                    'detalleven_envase' => $this->input->post('formula_preciounidad'),
-                    'detalleven_nombreenvase' => $this->input->post('formula_preciounidad'),
-                    'detalleven_costoenvase' => $this->input->post('formula_preciounidad'),
-                    'detalleven_precioenvase' => $this->input->post('formula_preciounidad'),
-                    'detalleven_cantidadenvase' => $this->input->post('formula_preciounidad'),
-                    'detalleven_garantiaenvase' => $this->input->post('formula_preciounidad'),
-                    'detalleven_devueltoenvase' => $this->input->post('formula_preciounidad'),
-                    'detalleven_fechadevolucion' => $this->input->post('formula_preciounidad'),
-                    'detalleven_horadevolucion' => $this->input->post('formula_preciounidad'),
-                    'detalleven_montodevolucion' => $this->input->post('formula_preciounidad'),
-                    'detalleven_prestamoenvase' => $this->input->post('formula_preciounidad'),
-                    'detalleven_fechavenc' => $this->input->post('formula_preciounidad'),
-                    'usuario_id' => $this->input->post('formula_preciounidad'),
-                    'factura_id' => $this->input->post('formula_preciounidad'),
-                    'clasificador_id' => $this->input->post('formula_preciounidad'),
-                    'detalleven_unidadfactor' => $this->input->post('formula_preciounidad'),
-                    'preferencia_id' => $this->input->post('formula_preciounidad'),
-                    'detalleven_tc' => $this->input->post('formula_preciounidad'),
-                );
-                $sql =  "insert into detalle_venta";
-
-        //$sqldetalle = $sql;
-        $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
-        
-        
-        //************* reducri inventario
-        
-        $this->Inventario_model->reducir_inventario_aux($usuario_id);
-        
-                $params = array(
-                    'formula_id' => $formula_id,
-                    'usuario_id' => $usuario_id,
-                    'produccion_numeroorden' => $produccion_numeroorden,
-                    'produccion_fecha' => $produccion_fecha,
-                    'produccion_hora' => $produccion_hora,
-                    'produccion_unidad' => $this->input->post('formula_unidad'),
-                    'produccion_cantidad' => $this->input->post('formula_cantidad'),
-                    'produccion_total' => $produccion_total,
-                    'produccion_costounidad' => $this->input->post('formula_costounidad'),
-                    'produccion_preciounidad' => $this->input->post('formula_preciounidad'),
-                );
-                $produccion_id = $this->Produccion_model->add_produccion($params);
-                /* ********** F I N  registrar detalle venta ********** */
+                /* ********** INICIO registrar produccion ********** */
                 $this->load->model('Parametro_model');
                 $parametro = $this->Parametro_model->get_parametro(1);
                 $produccion_numeroorden = $parametro['parametro_numordenproduccion']+1;
                 $produccion_total = $this->input->post('formula_cantidad')*$this->input->post('formula_preciounidad');
+                $produccion_fecha = date("Y-m-d");
+                $produccion_hora = date("H:i:s");
                 $params = array(
                     'formula_id' => $formula_id,
                     'usuario_id' => $usuario_id,
@@ -297,16 +250,31 @@ class Produccion extends CI_Controller{
                     'parametro_numordenproduccion' => $produccion_numeroorden,
                 );
                 $this->Parametro_model->update_parametro($parametro['parametro_id'],$paramsp);
+                /* ********** F I N  registrar produccion ********** */
                 
-                $this->load->model('Detalle_formula_model');
-                $datos = $this->Detalle_formula_model->get_all_detalles_deuna_formula($formula_id);
-                echo json_encode($datos);
+                /* ********** INICIO registrar en detalle venta ********** */
+                $this->load->model('Detalle_formula_aux_model');
+                $this->Detalle_formula_aux_model->insertar_detallef_aux_endetalleventa($usuario_id, $produccion_id);
+                
+                $this->load->model('Inventario_model');
+                $this->Inventario_model->reducir_inventario_formula_aux($usuario_id);
+                /* ********** F I N  registrar en detalle venta ********** */
+                /* ********** INICIO registrar en detalle compra ********** */
+                $this->load->model('Moneda_model');
+                $moneda = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                $tipo_cambio = $moneda["moneda_tc"];
+                $this->Produccion_model->insertar_prodproducido_endetallecompra($produccion_id, $tipo_cambio);
+                $producto = $this->Produccion_model->get_producto_cantidad($produccion_id);
+                
+                $this->Inventario_model->incrementar_inventario($producto["produccion_cantidad"],$producto["producto_id"]);
+                /* ********** F I N  registrar en detalle compra ********** */
+                
+                echo json_encode("ok");
             }
             else
-            {                 
+            {
                 show_404();
             }
         //}
     }
-    
 }

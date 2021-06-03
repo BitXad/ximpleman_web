@@ -78,95 +78,32 @@ class Detalle_formula_aux_model extends CI_Model
         return $this->db->update('detalle_formula_aux',$params);
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /*
-     * Get detalle_formula by detalleformula_id
+     * inserta el detalle_formula_aux de una Formula en detalle_venta
      */
-    function get_detalle_formula($detalleformula_id)
+    function insertar_detallef_aux_endetalleventa($usuario_id, $produccion_id)
     {
         $detalle_formula = $this->db->query("
-            SELECT
-                *
-
+            insert into detalle_venta
+            (
+            producto_id, venta_id, moneda_id, detalleven_codigo,
+            detalleven_cantidad, detalleven_unidad, detalleven_costo, detalleven_precio,
+            detalleven_subtotal, detalleven_descuento, detalleven_total, detalleven_caracteristicas,
+            detalleven_preferencia, detalleven_comision, detalleven_tipocambio, usuario_id,
+            factura_id, detalleven_tc, produccion_id
+            )
+            (SELECT
+                df.producto_id, 0 as venta_id, df.moneda_id, df.detalleven_codigo,
+                df.detalleven_cantidad, df.detalleven_unidad, df.detalleven_costo, df.detalleven_precio,
+                df.detalleven_subtotal, 0, df.detalleven_total, df.detalleven_caracteristicas,
+                df.detalleven_preferencia, df.detalleven_comision, df.detalleven_tipocambio, df.usuario_id,
+                0, df.detalleven_tc, $produccion_id
             FROM
-                `detalle_formula`
+              `detalle_formula_aux` df
+            WHERE 
+              df.usuario_id = $usuario_id)"
+            ); //->result_array();
 
-            WHERE
-                `detalleformula_id` = ?
-        ",array($detalleformula_id))->row_array();
-
-        return $detalle_formula;
-    }
-        
-    /*
-     * Get all detalle_formula
-     */
-    function get_all_detalle_formula()
-    {
-        $detalle_formula = $this->db->query("
-            SELECT
-                *
-
-            FROM
-                `detalle_formula`
-
-            WHERE
-                1 = 1
-
-            ORDER BY `detalleformula_id` DESC
-        ")->result_array();
-
-        return $detalle_formula;
-    }
-        
-    /*
-     * function to add new detalle_formula
-     */
-    function add_detalle_formula($params)
-    {
-        $this->db->insert('detalle_formula',$params);
-        return $this->db->insert_id();
-    }
-    
-    
-    
-    
-    
-    /*
-     * obtiene detalle_formula de Formula
-     */
-    function get_all_detalles_deuna_formula($formula_id)
-    {
-        $detalle_formula = $this->db->query("
-            SELECT
-                df.*, p.*
-            FROM
-                `detalle_formula` df
-            LEFT JOIN producto p on df.producto_id = p.producto_id
-            WHERE
-                df.formula_id = $formula_id
-            ORDER BY `detalleformula_id` DESC
-        ")->result_array();
-
-        return $detalle_formula;
+        return true;
     }
 }

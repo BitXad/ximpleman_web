@@ -580,4 +580,13 @@ class Inventario_model extends CI_Model
         $producto = $this->db->query($sql)->result_array();
         return $producto;
     }
+    /* reduce de inventario atravez de: detalle formula_aux; se usa en producción */
+    function reducir_inventario_formula_aux($usuario_id){
+        $sql = "update inventario i, detalle_formula_aux d set".
+               " i.existencia = i.existencia - d.detalleven_cantidad ".
+               " where i.producto_id = d.producto_id and d.usuario_id = ".$usuario_id.
+               "  ";
+        $this->db->query($sql);
+        return true;
+    }
 }
