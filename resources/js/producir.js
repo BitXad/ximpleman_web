@@ -13,6 +13,7 @@ function elegirformula(){
         $("#formula_cantidad").val("");
         $("#formula_costounidad").val("");
         $("#formula_preciounidad").val("");
+        $("#laexistencia").html("");
     }
     var laformula = JSON.parse(document.getElementById('laformula').value);
     
@@ -23,7 +24,30 @@ function elegirformula(){
             $("#formula_cantidad").val(laformula[i]["formula_cantidad"]);
             $("#formula_costounidad").val(laformula[i]["formula_costounidad"]);
             $("#formula_preciounidad").val(laformula[i]["formula_preciounidad"]);
-            //cargar_detalleformula_aux(formula_id);
+            document.getElementById('loader').style.display = 'block';
+            var base_url    = document.getElementById('base_url').value;
+            var controlador = base_url+'produccion/obtener_existencia';
+            $.ajax({url: controlador,
+                    type:"POST",
+                    data:{formula_id:formula_id},
+                    success:function(respuesta){
+                        var registros =  JSON.parse(respuesta);
+                        if (registros != null){
+                            $("#laexistencia").html("<span class='text-bold'>Existencia: </span>"+Number(registros).toFixed(2));
+                           document.getElementById('loader').style.display = 'none';
+                        }else{
+
+                        }
+                        document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+                    },
+                    error:function(respuesta){
+                       // alert("Algo salio mal...!!!");
+                       html = "";
+                    },
+                    complete: function (jqXHR, textStatus) {
+                        document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+                    }
+            });
             break;
         }
     }

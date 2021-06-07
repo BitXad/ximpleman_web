@@ -277,4 +277,23 @@ class Produccion extends CI_Controller{
             }
         //}
     }
+    /* obtiene la existencia del producto a producir */
+    function obtener_existencia()
+    {
+        //if($this->acceso(118)){
+            if ($this->input->is_ajax_request()) {
+                $formula_id = $this->input->post('formula_id');
+                $this->load->model('Formula_model');
+                $formula = $this->Formula_model->get_formula($formula_id);
+                $this->load->model('Inventario_model');
+                $productoinv = $this->Inventario_model->get_productoinventario($formula["producto_id"]);
+                
+                echo json_encode($productoinv["existencia"]);
+            }
+            else
+            {                 
+                show_404();
+            }
+        //}
+    }
 }
