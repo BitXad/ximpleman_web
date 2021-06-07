@@ -1,6 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
+<!--sa<script src="<?php echo base_url('resources/js/zelect.js'); ?>"></script>-->
 <!--<script src="<?php echo base_url('resources/js/formula.js'); ?>"></script>-->
 
 <script type="text/javascript">
@@ -27,6 +28,7 @@
                 })
             }(jQuery));
         });    
+        
         $(document).ready(function () {
             (function ($) {
                 $('#filtrar3').keyup(function () {
@@ -37,7 +39,13 @@
                     }).show();
                 })
             }(jQuery));
-        });    
+    });
+        
+        
+
+        
+
+        
 
 function mostrar_ocultar(){
     var x = document.getElementById('tipo_transaccion').value;
@@ -45,13 +53,6 @@ function mostrar_ocultar(){
     if (x=='2'){ //si la transaccion es a credito
         
         document.getElementById('creditooculto').style.display = 'block';
-//        var hoy = new Date();
-//        var dd = hoy.getDate();
-//        var mm = hoy.getMonth()+1;
-//        var yyyy = hoy.getFullYear();
-//        
-//        dd = addZero(dd);
-//        mm = addZero(mm);
 
         }
     else{
@@ -122,29 +123,29 @@ var keyCode = document.all ? e.which : e.keyCode;
 
   if (keyCode == 113) //f2
   { //alert("Tecla F2"); 
-    $('#codigo').focus();
+    ///$('#codigo').focus();
       
   }    
 
   if (keyCode == 115) //f4
   {       
-    $('#filtrar').focus();
+    ///$('#filtrar').focus();
   }
 
   if (keyCode == 118) //f7
   {       
-    $('#nit').focus();
-    $('#nit').select();
+   /// $('#nit').focus();
+   /// $('#nit').select();
   }
 
   if (keyCode == 119) //f8
   {       
-    $('#boton_finalizar').click();
+  ///  $('#boton_finalizar').click();
   }
 
   if (keyCode == 120) //f9
   {   
-      alert("holaaaa");
+     /// alert("holaaaa");
       
     //$('#imprimir').click();
   }
@@ -159,7 +160,7 @@ var keyCode = document.all ? e.which : e.keyCode;
     e = e || event;
   if(e.altKey && String.fromCharCode(e.keyCode) == 'C')
   {
-      $("#imprimir").click();
+    ///  $("#imprimir").click();
   } 
   
 }
@@ -281,11 +282,12 @@ window.onkeydown = compruebaTecla;
 
     <div class="box-header with-border">
                 <h3 class="box-title">
-                    <b>Formula de Producción</b>
+                    <b>Formula de Producción</b>                                                     
+                        
                 </h3>
     </div>
 
-<?php echo form_open('formula/add'); ?>
+<?php// echo form_open('formula/add'); ?>
 
 <div class="row">
     <div class="col-md-12">
@@ -317,16 +319,34 @@ window.onkeydown = compruebaTecla;
 							<input type="text" name="formula_costounidad" value="<?php echo $this->input->post('formula_costounidad'); ?>" class="form-control" id="formula_costounidad" />
 						</div>
 					</div>
+                            
 					<div class="col-md-1">
 						<label for="formula_preciounidad" class="control-label">Precio Bs</label>
 						<div class="form-group">
 							<input type="text" name="formula_preciounidad" value="<?php echo $this->input->post('formula_preciounidad'); ?>" class="form-control" id="formula_preciounidad" />
 						</div>
 					</div>
+                            
 					<div class="col-md-2">
+			
+                                            <label for="razon social" class="control-label" > Producto Final</label>
+
+                                                <div class="form-group">
+                                                    <input type="search" name="lista_productos" list="listaproductos" class="form-control" id="lista_productos" onkeypress="buscador_productos(event)"  onchange="mostrame()" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" />
+                                                    <datalist id="listaproductos" onclick="mostrame()">
+                                                        
+                                                    </datalist>
+
+                                                </div>
+					</div>
+                            
+				
+
+				
+<!--					<div class="col-md-2">
 						<label for="formula_preciounidad" class="control-label" style="line-height: 0;"> 
                                                     <div class="form-group">
-    <!--							<input type="text" name="formula_preciounidad" value="<?php echo $this->input->post('formula_preciounidad'); ?>" class="form-control" id="formula_preciounidad" />-->
+    							<input type="text" name="formula_preciounidad" value="<?php echo $this->input->post('formula_preciounidad'); ?>" class="form-control" id="formula_preciounidad" />
                                                             <?php 
                                                             if ($parametro[0]["parametro_agruparitems"] == 1 )
                                                                     { $agrupar = "checked='true'";}
@@ -337,7 +357,7 @@ window.onkeydown = compruebaTecla;
                                                 
                                                 </label>
                                                 <button class="btn btn-block btn-warning"><fa class="fa fa-cogs"></fa> Insumos</button>
-					</div>
+					</div -->
 				</div>
 			</div>
             
@@ -518,6 +538,16 @@ window.onkeydown = compruebaTecla;
             <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
             <?php } ?>
+            
+            <span class='btn btn-facebook btn-xs' style="padding: 0;"> 
+                
+                        <?php 
+                            if ($parametro[0]["parametro_agruparitems"] == 1 )
+                            { $agrupar = "checked='true'";}
+                            else {$agrupar = " ";}
+                        ?>
+                <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?> style="padding: 0;" class="input-xs"><b> Agrupar </b>
+            </span>
 
             </center>
             
@@ -589,15 +619,15 @@ window.onkeydown = compruebaTecla;
             <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro[0]["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro[0]["moneda_tc"]; ?></b></span>
         
         <b>            
-        <br>TECLAS DE ACCESO DIRECTO <br>
+        <!--<br>TECLAS DE ACCESO DIRECTO <br>-->
         </b>
         <p>
             
-        [F2] Busqueda por código de barras <br>
+<!--        [F2] Busqueda por código de barras <br>
         [F4] Busqueda por parámetros<br>
         [F5] Actualizar página<br>        
         [F7] Registrar NIT<br>
-        [F8] Finalizar venta<br>
+        [F8] Finalizar venta<br>-->
         
         </p>
         </font>

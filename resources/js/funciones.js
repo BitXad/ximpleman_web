@@ -4795,3 +4795,49 @@ function guardar_formula()
         }
     
 }
+
+
+function buscador_productos(e)
+{   
+    tecla = (document.all) ? e.keyCode : e.which;
+    var parametro = document.getElementById("lista_productos").value;
+    
+    
+    if (tecla == 13)
+    {
+        //alert(parametro);
+        
+        if (parametro.length>0){
+            
+            var base_url = document.getElementById('base_url').value;
+            
+            var controlador = base_url+"venta/buscarproductos";
+
+                    $.ajax({url: controlador,
+                        type:"POST",
+                        data:{parametro:parametro},
+                        success:function(respuesta){
+                            var r = JSON.parse(respuesta);
+                            var html = "";
+                            //alert(r.length);
+                            for(var i=0;i<r.length; i++){
+                                html += "<option value='"+r[i]["producto_id"]+"' data-producto='"+r[i]["producto_nombre"]+"'>"+r[i]["producto_nombre"]+"</option>";
+                            }
+                           $("#listaproductos").html(html);
+                        }
+                    });      
+        }
+        else { alert('ADVERTENCIA: ocurrio un error'); }
+    }
+}
+
+function mostrame(){
+    
+    //var valor = document.getElementById("lista_productos").value;
+    //alert(valor);
+
+    var value = $("input[name=lista_productos]").val();
+    var data = $("#listaproductos[value='"+value+"']").data('producto');
+    alert(value+"***"+data);
+    
+}
