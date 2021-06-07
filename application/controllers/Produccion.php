@@ -9,6 +9,7 @@ class Produccion extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Produccion_model');
+        $this->session_data = $this->session->userdata('logged_in');
     } 
 
     /*
@@ -129,15 +130,85 @@ class Produccion extends CI_Controller{
         $data['_view'] = 'produccion/producir';
         $this->load->view('layouts/main',$data);
     }
-    /* busca los deudores */
+    /* carga los detalles de la formula en detalleformula_aux */
+    /*function cargar_detalleformula_aux()
+    {
+        //if($this->acceso(118)){
+            if ($this->input->is_ajax_request()) {
+                $usuario_id = $this->session_data['usuario_id'];
+                $this->load->model('Detalle_formula_aux_model');
+                $this->Detalle_formula_aux_model->delete_detalle_formula_aux($usuario_id);
+                
+                $this->load->model('Moneda_model');
+                $moneda = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                $tipo_cambio = $moneda["moneda_tc"];
+                $formula_id = $this->input->post('formula_id');
+                //$this->load->model('Detalle_formula_model');
+                $this->Detalle_formula_aux_model->insertar_detalle_formula_aux($formula_id, $usuario_id, $tipo_cambio);
+                //$detalle_formula = $this->Detalle_formula_model->get_all_detalles_deuna_formula($formula_id);
+                
+                echo json_encode("ok");
+            }   
+            else
+            {                 
+                show_404();
+            }
+        //}
+    }*/
+    /* busca insumos de una formula */
     function buscardetalleformula()
     {
         //if($this->acceso(118)){
             if ($this->input->is_ajax_request()) {
+                $usuario_id = $this->session_data['usuario_id'];
+                $this->load->model('Detalle_formula_aux_model');
+                $this->Detalle_formula_aux_model->delete_detalle_formula_aux($usuario_id);
+                
+                $this->load->model('Moneda_model');
+                $moneda = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                $tipo_cambio = $moneda["moneda_tc"];
                 $formula_id = $this->input->post('formula_id');
-                $this->load->model('Detalle_formula_model');
-                $datos = $this->Detalle_formula_model->get_all_detalles_deuna_formula($formula_id);
+                $this->Detalle_formula_aux_model->insertar_detalle_formula_aux($formula_id, $usuario_id, $tipo_cambio);
+
+                $formula_cantidad = $this->input->post('formula_cantidad');
+                
+                $detalle_formaux = $this->Detalle_formula_aux_model->get_all_detalles_porusuario($usuario_id);
+                foreach ($detalle_formaux as $detalle){
+                    $lacantidad = $detalle["detalleven_cantidad"]*$formula_cantidad;
+                    $params = array(
+                        'detalleven_cantidad' => $lacantidad,
+                        'detalleven_subtotal' => $lacantidad*$detalle["detalleven_costo"],
+                        'detalleven_total' => $lacantidad*$detalle["detalleven_costo"],
+                    );
+                    $this->Detalle_formula_aux_model->update_detalle_formula_aux($detalle["detalleven_id"],$params); 
+                }
+                $datos = $this->Detalle_formula_aux_model->get_all_detalles_porusuario($usuario_id);
                 echo json_encode($datos);
+            }
+            else
+            {                 
+                show_404();
+            }
+        //}
+    }
+    
+    /* verifica que la cantidad de insumos exista en Inventario(Almacen) */
+    function verificar_existencia()
+    {
+        //if($this->acceso(118)){
+            if ($this->input->is_ajax_request()) {
+                $usuario_id = $this->session_data['usuario_id'];
+                $this->load->model('Detalle_formula_aux_model');
+                $verif_existencia = $this->Detalle_formula_aux_model->get_all_detalles_porusuario($usuario_id);
+                $this->load->model('Inventario_model');
+                $cadena =array();
+                foreach ($verif_existencia as $verif) {
+                    $prod_inv = $this->Inventario_model->get_productoinventario($verif["producto_id"]);
+                    if($verif["detalleven_cantidad"] > $prod_inv['existencia']){
+                       $cadena[] = array("producto_nombre" => $prod_inv['producto_nombre'], "existencia" => $prod_inv['existencia'], "falta" =>$verif["detalleven_cantidad"]-$prod_inv['existencia'], "cantidad" => $verif["detalleven_cantidad"]);
+                    }
+                }
+                echo json_encode($cadena);
             }   
             else
             {                 
@@ -148,19 +219,19 @@ class Produccion extends CI_Controller{
     
     /* Funcion que hace la salida(venta) de los insumos;
      * y el registro (en compras) del producto producido */
-    function registrar_productoproducido()
+    function registrar_produccion()
     {
         //if($this->acceso(118)){
-            if ($this->input->is_ajax_request()) {
+            if ($this->input->is_ajax_request()){
                 $formula_id = $this->input->post('formula_id');
                 $usuario_id = $this->session_data['usuario_id'];
-                $produccion_fecha = date("Y-m-d");
-                $produccion_hora = date("H:i:s");
-                
+                /* ********** INICIO registrar produccion ********** */
                 $this->load->model('Parametro_model');
                 $parametro = $this->Parametro_model->get_parametro(1);
                 $produccion_numeroorden = $parametro['parametro_numordenproduccion']+1;
                 $produccion_total = $this->input->post('formula_cantidad')*$this->input->post('formula_preciounidad');
+                $produccion_fecha = date("Y-m-d");
+                $produccion_hora = date("H:i:s");
                 $params = array(
                     'formula_id' => $formula_id,
                     'usuario_id' => $usuario_id,
@@ -179,16 +250,31 @@ class Produccion extends CI_Controller{
                     'parametro_numordenproduccion' => $produccion_numeroorden,
                 );
                 $this->Parametro_model->update_parametro($parametro['parametro_id'],$paramsp);
+                /* ********** F I N  registrar produccion ********** */
                 
-                $this->load->model('Detalle_formula_model');
-                $datos = $this->Detalle_formula_model->get_all_detalles_deuna_formula($formula_id);
-                echo json_encode($datos);
+                /* ********** INICIO registrar en detalle venta ********** */
+                $this->load->model('Detalle_formula_aux_model');
+                $this->Detalle_formula_aux_model->insertar_detallef_aux_endetalleventa($usuario_id, $produccion_id);
+                
+                $this->load->model('Inventario_model');
+                $this->Inventario_model->reducir_inventario_formula_aux($usuario_id);
+                /* ********** F I N  registrar en detalle venta ********** */
+                /* ********** INICIO registrar en detalle compra ********** */
+                $this->load->model('Moneda_model');
+                $moneda = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                $tipo_cambio = $moneda["moneda_tc"];
+                $this->Produccion_model->insertar_prodproducido_endetallecompra($produccion_id, $tipo_cambio);
+                $producto = $this->Produccion_model->get_producto_cantidad($produccion_id);
+                
+                $this->Inventario_model->incrementar_inventario($producto["produccion_cantidad"],$producto["producto_id"]);
+                /* ********** F I N  registrar en detalle compra ********** */
+                
+                echo json_encode("ok");
             }
             else
-            {                 
+            {
                 show_404();
             }
         //}
     }
-    
 }
