@@ -199,6 +199,7 @@ class Parametro extends CI_Controller{
                 'parametro_cantidadproductos' => $this->input->post('parametro_cantidadproductos'),
                 'parametro_datosboton' => $this->input->post('parametro_datosboton'),
                 'moneda_id' => $this->input->post('moneda_id'),
+                'parametro_numordenproduccion' => $this->input->post('parametro_numordenproduccion'),
             );
             
             $parametro_id = $this->Parametro_model->add_parametro($params);
@@ -404,6 +405,7 @@ class Parametro extends CI_Controller{
                     'parametro_cantidadproductos' => $this->input->post('parametro_cantidadproductos'),
                     'parametro_datosboton' => $this->input->post('parametro_datosboton'),
                     'moneda_id' => $this->input->post('moneda_id'),
+                    'parametro_numordenproduccion' => $this->input->post('parametro_numordenproduccion'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            
