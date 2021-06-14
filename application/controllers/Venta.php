@@ -1856,11 +1856,15 @@ function buscarproductos()
             $parametro = $this->input->post('parametro');   
             
             if ($parametro!=""){
-            $datos = $this->Inventario_model->get_inventario_parametro($parametro);            
-          echo json_encode($datos);
-          
+                
+                $datos = $this->Inventario_model->get_inventario_parametro($parametro);            
+                echo json_encode($datos);
+                
+            }else{
+                
+                echo json_encode(null);
+                
             }
-            else echo json_encode(null);
         }
         else
         {                 
