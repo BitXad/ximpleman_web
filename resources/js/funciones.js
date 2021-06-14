@@ -4762,37 +4762,75 @@ function guardar_formula()
     var formula_costounidad = monto;
     var formula_preciounidad = document.getElementById('formula_preciounidad').value;
     
+    var producto_id = document.getElementById('lista_productos').value;
+    
+    
     
         
-        if (monto>0)
-        {
-           document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
-           document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
-
-            $.ajax({url: controlador,
-            type: "POST",
-            data:{formula_nombre:formula_nombre, formula_unidad:formula_unidad, formula_cantidad:formula_cantidad, formula_costounidad:formula_costounidad,formula_preciounidad:formula_preciounidad}, 
-            success:function(respuesta){
-                
-                resultado = JSON.parse(respuesta);
-                //var factura_id = resultado;
-                
-                alert("aquiiii");
-                
-               // window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", '_blank');
-
-
-            },
-            error:function(resultado){
-                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
-            },        
-        
-            });
-        
-           document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
-           document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+        if(formula_nombre != ""){
+        if (Number(monto) > 0){
+            if(Number(formula_cantidad) > 0){
+                if(Number(producto_id) > 0){
+                        if(Number(formula_preciounidad) > 0){
             
-        }
+                                document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
+                                document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
+
+                                 $.ajax({url: controlador,
+                                 type: "POST",
+                                 data:{formula_nombre:formula_nombre, formula_unidad:formula_unidad, formula_cantidad:formula_cantidad, 
+                                       formula_costounidad:formula_costounidad,formula_preciounidad:formula_preciounidad, producto_id:producto_id}, 
+                                 success:function(respuesta){
+
+                                     resultado = JSON.parse(respuesta);
+                                     eliminardetalleventa();
+                                     
+                                     //var factura_id = resultado;
+
+                                     //alert("aquiiii");
+
+                                   //window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", '_blank');
+                                   //window.open(base_url+"formula", '');
+                                   redirect(base_url+"formula");
+
+                                 },
+                                 error:function(resultado){
+                                     alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+                                 },        
+
+                                 });
+
+                                document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+                                document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+
+            
+                        }else{ 
+                                $("#formula_preciounidad").focus();
+                                $("#formula_preciounidad").select();
+                                alert("ERROR: Debe especificar el PRECIO del producto terminado...!!");  
+                            }
+                    }else{ 
+                            $("#lista_productos").focus();
+                            $("#lista_productos").select(); 
+                            alert("ERROR: Debe seleccionar un PRODUCTO DESTINO...!!");   
+                         }
+                }else{ 
+                        $("#formula_cantidad").focus();
+                        $("#formula_cantidad").select();                    
+                        alert("ERROR: Debe especificar una CANTIDAD para la producción...!!");
+                 }
+            }else{             
+                    $("#filtrar").focus();
+                    $("#filtrar").select();                    
+                    alert("ERROR: La formula debe contener insumos...!!");   
+                }
+        }else{ 
+                    alert("ERROR: Debe especificar el NOMBRE DE LA FORMULA...!!");   
+//                    $("#formula_nombre").focus();
+//                    $("#formula_nombre").select();
+                    document.getElementById('formula_nombre').focus();
+                    document.getElementById('formula_nombre').select();
+             }
     
 }
 
@@ -4838,6 +4876,6 @@ function mostrame(){
 
     var value = $("input[name=lista_productos]").val();
     var data = $("#listaproductos[value='"+value+"']").data('producto');
-    alert(value+"***"+data);
+ //   alert(value+"***"+data);
     
 }

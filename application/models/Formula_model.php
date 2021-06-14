@@ -16,16 +16,12 @@ class Formula_model extends CI_Model
      */
     function get_formula($formula_id)
     {
-        $formula = $this->db->query("
-            SELECT
-                *
-
-            FROM
-                `formula`
-
-            WHERE
-                `formula_id` = ?
-        ",array($formula_id))->row_array();
+        
+        $sql = "select f.*, p.* from formula f
+                left join producto p on p.producto_id = f.producto_id
+                where f.formula_id = ".$formula_id;
+        
+        $formula = $this->db->query($sql,array($formula_id))->row_array();
 
         return $formula;
     }
@@ -35,18 +31,11 @@ class Formula_model extends CI_Model
      */
     function get_all_formula()
     {
-        $formula = $this->db->query("
-            SELECT
-                *
-
-            FROM
-                `formula`
-
-            WHERE
-                1 = 1
-
-            ORDER BY `formula_id` DESC
-        ")->result_array();
+        $sql = "select * from formula f
+                left join producto p on p.producto_id = f.producto_id
+               ";
+        
+        $formula = $this->db->query($sql)->result_array();
 
         return $formula;
     }
@@ -88,6 +77,16 @@ class Formula_model extends CI_Model
     {
         $this->db->query($sql);
         return true;
+    }
+
+    function get_detalle_formula($formula_id)
+    {
+        $sql = "select * from detalle_formula f
+                left join producto p on p.producto_id = f.producto_id 
+                left join moneda m on m.moneda_id = f.moneda_id 
+                where f.formula_id = ".$formula_id;
+        
+        return $this->db->query($sql)->result_array();
     }
     
 }

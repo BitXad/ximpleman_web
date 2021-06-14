@@ -68,7 +68,6 @@ class Formula extends CI_Controller{
      */
     function add()
     {   
-        
           
         if($this->acceso(12)){
             //**************** inicio contenido ***************               
@@ -95,7 +94,7 @@ class Formula extends CI_Controller{
                 $usuario_id = $this->session_data['usuario_id'];
                 $tipousuario_id = $this->session_data['tipousuario_id'];        
 
-                $data['page_title'] = "Ventas";
+                $data['page_title'] = "Formula de Producción";
                 $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
                 $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
                 $data['cliente'] = $this->Venta_model->get_cliente_inicial();
@@ -190,9 +189,10 @@ class Formula extends CI_Controller{
         $formula_cantidad = $this->input->post("formula_cantidad");
         $formula_costounidad = $this->input->post("formula_costounidad");
         $formula_preciounidad = $this->input->post("formula_preciounidad");
+        $producto_id = $this->input->post("producto_id");
         
-        $sql = "insert into formula(formula_nombre, formula_unidad, formula_cantidad, formula_costounidad, formula_preciounidad) value(".
-                "'".$formula_nombre."','".$formula_unidad."',".$formula_cantidad.",".$formula_costounidad.",".$formula_preciounidad.")"; 
+        $sql = "insert into formula(formula_nombre, formula_unidad, formula_cantidad, formula_costounidad, formula_preciounidad, producto_id) value(".
+                "'".$formula_nombre."','".$formula_unidad."',".$formula_cantidad.",".$formula_costounidad.",".$formula_preciounidad.",".$producto_id.")"; 
         $this->Formula_model->ejecutar($sql);
         
         $sql = "select max(formula_id) as formulaid from formula"; 
@@ -211,5 +211,29 @@ class Formula extends CI_Controller{
         echo '[{"cliente_id":"'.$result.'"}]';
         
     }
+    
+   function imprimir_formula($formula_id)
+    {
+        if($this->acceso(21)){
+            
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['formula'] = $this->Formula_model->get_formula($formula_id);
+        $data['detalle_venta'] = $this->Formula_model->get_detalle_formula($formula_id);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Formula";
+
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'formula/formula_carta';
+        $this->load->view('layouts/main',$data);
+        }
+    }  
+    
     
 }

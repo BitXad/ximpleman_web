@@ -2,7 +2,6 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
 <!--sa<script src="<?php echo base_url('resources/js/zelect.js'); ?>"></script>-->
-<!--<script src="<?php echo base_url('resources/js/formula.js'); ?>"></script>-->
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -297,13 +296,13 @@ window.onkeydown = compruebaTecla;
 					<div class="col-md-5">
 						<label for="formula_nombre" class="control-label">Nombre</label>
 						<div class="form-group">
-							<input type="text" name="formula_nombre" value="<?php echo $this->input->post('formula_nombre'); ?>" class="form-control" id="formula_nombre" />
+							<input type="text" name="formula_nombre" value="<?php echo $this->input->post('formula_nombre'); ?>" class="form-control" id="formula_nombre" onKeyUp="this.value = this.value.toUpperCase();"/>
 						</div>
 					</div>
 					<div class="col-md-2">
 						<label for="formula_unidad" class="control-label">Unidad</label>
 						<div class="form-group">
-							<input type="text" name="formula_unidad" value="<?php echo $this->input->post('formula_unidad'); ?>" class="form-control" id="formula_unidad" />
+							<input type="text" name="formula_unidad" value="<?php echo $this->input->post('formula_unidad'); ?>" class="form-control" id="formula_unidad" onKeyUp="this.value = this.value.toUpperCase();"/>
 						</div>
 					</div>
                             
@@ -313,7 +312,7 @@ window.onkeydown = compruebaTecla;
 							<input type="text" name="formula_cantidad" value="<?php echo $this->input->post('formula_cantidad'); ?>" class="form-control" id="formula_cantidad" />
 						</div>
 					</div>
-					<div class="col-md-1">
+                                        <div class="col-md-1" hidden="">
 						<label for="formula_costounidad" class="control-label">Costo Bs</label>
 						<div class="form-group">
 							<input type="text" name="formula_costounidad" value="<?php echo $this->input->post('formula_costounidad'); ?>" class="form-control" id="formula_costounidad" />
