@@ -230,12 +230,14 @@ function producir(){
                 //$("#encontrados").val("- 0 -");
                 var registros =  JSON.parse(respuesta);
                 if (registros != null){
-                    var formula_cantidad  = document.getElementById('formula_cantidad').value;
+                    /*var formula_cantidad  = document.getElementById('formula_cantidad').value;
                     var eltotal = Number(0);
                     var n = registros.length; //tamaño del arreglo de la consulta
                     //$("#encontrados").html("Registros Encontrados: "+n+" ");
                     html = "";
-                    
+                    */
+                    alert("Producción exitosa!.");
+                    window.location.href = base_url+"produccion/producir";
                    //$("#detalle_deformula").html(html);
                    document.getElementById('loader').style.display = 'none';
             }
