@@ -286,7 +286,7 @@ window.onkeydown = compruebaTecla;
                 </h3>
     </div>
 
-<?php// echo form_open('formula/add'); ?>
+<?php // echo form_open('formula/add'); ?>
 
 <div class="row">
     <div class="col-md-12">
