@@ -1115,12 +1115,9 @@ function registrarpedido()
 
     function mapa_paraentregas()
     {
-
-       if($this->acceso(30)) {
-        //**************** inicio contenido ***************  
-        
+        if($this->acceso(30)) {
+            //**************** inicio contenido ***************
             $data['page_title'] = "Mapa de Entregas";
-            
             
             $fecha_desde = $this->input->post('fecha_desde');
             $fecha_hasta = $this->input->post('fecha_hasta');
@@ -1130,16 +1127,14 @@ function registrarpedido()
             else
                 $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
                 
-            
+            $data['parametros'] = $this->Parametro_model->get_parametro(1);
             $data['all_pedido'] = $this->Pedido_model->get_para_entregas($usuario_id, $fecha_desde, $fecha_hasta);
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
             $data['_view'] = 'pedido/mapaentregas';
             
             $this->load->view('layouts/main',$data);
-            
-        //**************** fin contenido ***************
+            //**************** fin contenido ***************
         }
-        
     }
 
     function mapa_distribuidor()
@@ -1546,5 +1541,27 @@ function registrarpedido()
                 echo json_encode("ok");
             }
         }
+    }
+    /* entregar pedido desde mapa de pedidos */
+    function entregarpedido(){
+        //if($this->acceso(30)) {
+            if ($this->input->is_ajax_request()) {
+                $venta_id = $this->input->post('venta_id');
+                $venta_fechaentrega=date('Y-m-d'); 
+                $venta_horaentrega=date('H:i:s');
+                $entrega_id = 2; //<-- pedido entregado
+                
+                $params = array(
+                    'venta_fechaentrega' => $venta_fechaentrega,
+                    'venta_horaentrega' => $venta_horaentrega,
+                    'entrega_id' => $entrega_id,
+                );
+                $this->Venta_model->update_venta($venta_id,$params);
+                
+                echo json_encode("ok");
+            }else{
+                show_404();
+            }
+        //}
     }
 }
