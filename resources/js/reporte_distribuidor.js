@@ -254,8 +254,8 @@ function buscarventasdist(){
            $("#tablaresultados").html(html);
         }
         
-    });   
-
+    });
+    
 }
 
 function consolidar(venta)

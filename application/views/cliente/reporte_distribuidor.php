@@ -146,7 +146,7 @@ Distribuidor:<span id="usuru"><font size="1" face="Arial"></font> <?php echo $us
         </div>
         <div class="col-md-1">
             <br>
-            <!--<a href="<?php echo base_url("pedido/mapa_paraentregas"); ?>" class="btn btn-facebook btn-foursquarexs btn-block"  style="height: 34px;" title="Mapa" target="_BLOCK" >-->
+            <!--<a href="<?php //echo base_url("pedido/mapa_paraentregas"); ?>" class="btn btn-facebook btn-foursquarexs btn-block"  style="height: 34px;" title="Mapa" target="_BLOCK" >-->
             <button type="submit" class="btn btn-facebook btn-foursquarexs btn-block"  style="height: 34px;" title="Mapa" target="_BLOCK" >
                 <span class="fa fa-map"></span> Mapa        
             </button>
@@ -186,10 +186,6 @@ Distribuidor:<span id="usuru"><font size="1" face="Arial"></font> <?php echo $us
 </div>
 <div class="row">
     <div class="col-md-12">
-        
-         <div class="row" id='loader'  style='display:none; text-align: center'>
-            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-        </div>
         <!-- *********** FIN de BUSCADOR select y productos encontrados ****** -->
 
         <div class="box">

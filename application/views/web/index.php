@@ -900,7 +900,9 @@ function mostrar() {
 					</div>
 					<div class="social-icons caption" style="font-size: 30px;"> 
 						<ul>
-							<li><a href="#" class="fa fa-whatsapp"> </a> Whatsapp</li>
+                                                    
+                                                    <!--<li><a href="https://wa.me/591<?php //echo $pagina_web[0]['empresa_telefono']; ?>" target="_BLANK" class="fa fa-whatsapp" title="Enviar mensaje por whatsapp"></a> Whatsapp</li>-->
+							<a href="#" class="fa fa-whatsapp"> </a> Whatsapp</li>
 <!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
 							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
 						</ul>

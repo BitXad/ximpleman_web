@@ -1121,6 +1121,7 @@ function registrarpedido()
             
             $fecha_desde = $this->input->post('fecha_desde');
             $fecha_hasta = $this->input->post('fecha_hasta');
+            $usuariodist_id = $this->input->post('usuariodist_id');
             
             if ($this->session_data['tipousuario_id']==1)
                 $usuario_id = $this->input->post('usuario_id');
@@ -1128,7 +1129,7 @@ function registrarpedido()
                 $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
                 
             $data['parametros'] = $this->Parametro_model->get_parametro(1);
-            $data['all_pedido'] = $this->Pedido_model->get_para_entregas($usuario_id, $fecha_desde, $fecha_hasta);
+            $data['all_pedido'] = $this->Pedido_model->get_para_entregas($usuario_id, $fecha_desde, $fecha_hasta, $usuariodist_id);
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
             $data['_view'] = 'pedido/mapaentregas';
             

@@ -330,12 +330,13 @@ class Pedido_model extends CI_Model
     /**
     * Obtiene todos los pedidos de un usuario, entrega_id 1
     */
-    function get_para_entregas($usuario_id, $fecha_desde, $fecha_hasta)
+    function get_para_entregas($usuario_id, $fecha_desde, $fecha_hasta, $usuariodist_id)
     {
         if ($usuario_id ==0)
             $usuario = "";
         else
-            $usuario = " AND p.entrega_usuarioid = $usuario_id";
+            //$usuario = " AND p.entrega_usuarioid = $usuario_id";
+            $usuario = " and (p.usuario_id = "+$usuario_id+" or p.usuarioprev_id = "+$usuario_id+")";
     
 
         $sql = "SELECT p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color, 
@@ -347,7 +348,8 @@ class Pedido_model extends CI_Model
                 AND p.entrega_id <= 2
                 AND p.venta_fecha >= '$fecha_desde'
                 AND p.venta_fecha <= '$fecha_hasta'
-                $usuario";
+                $usuario 
+                AND p.entrega_usuarioid = $usuariodist_id";
         //echo $sql;
         $result = $this->db->query($sql)->result_array();
         return $result;        
