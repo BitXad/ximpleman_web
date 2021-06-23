@@ -10,7 +10,7 @@ function entregarpedido(venta_id){
                 var registros =  JSON.parse(respuesta);
                 if (registros != null){
                    location.reload();
-                   //window.open(base_url+"factura/imprimir_recibo/"+venta_id, '_blank');
+                   window.open(base_url+"factura/imprimir_recibo/"+venta_id, '_blank');
                 }
             //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },

@@ -15,7 +15,7 @@
     <body>
         <div class="container">
             <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-            <h4><b>Entregas para hoy: <?php echo sizeof($all_pedido); ?></b>
+            <h4><b>Entregas : <?php echo sizeof($all_pedido); ?></b>
             <a href="<?php echo site_url('pedido'); ?>" class="btn btn-danger btn-sm"><span class="fa fa-list"></span> Pedidos</a>
             <a href="javascript:location.reload()" class="btn btn-warning btn-sm" ><span class="fa fa-recycle"></span> Actualizar</a>
             </h4>
