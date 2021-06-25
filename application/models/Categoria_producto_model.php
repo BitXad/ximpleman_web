@@ -148,7 +148,7 @@ class Categoria_producto_model extends CI_Model
         return $categoria_producto;
     }
     /* usado en reporte de ventas por usuario */
-    function get_all_usuario_ventaproducto_count($fecha_desde, $fecha_hasta)
+    function get_all_usuario_ventaproducto_count($fecha_desde, $fecha_hasta, $elusuario)
     {
         $categoria_producto = $this->db->query("
             SELECT
@@ -158,6 +158,7 @@ class Categoria_producto_model extends CI_Model
             where
             	date(vs.venta_fecha) >= '$fecha_desde'
                 and date(vs.venta_fecha) <= '$fecha_hasta'
+                ".$elusuario." 
             group by vs.`usuario_id`
         ")->result_array();
 
@@ -166,7 +167,7 @@ class Categoria_producto_model extends CI_Model
     /*
      * Get all categoria_producto
      */
-    function getall_ventapor_usuario($fecha_desde, $fecha_hasta)
+    function getall_ventapor_usuario($fecha_desde, $fecha_hasta, $elusuario)
     {
         $venta_porusuario = $this->db->query("
             SELECT
@@ -178,6 +179,7 @@ class Categoria_producto_model extends CI_Model
             where
             	date(vs.venta_fecha) >= '$fecha_desde'
                 and date(vs.venta_fecha) <= '$fecha_hasta'
+                ".$elusuario." 
             group by vs.`usuario_id`
             order by totalventas desc
         ")->result_array();

@@ -35,13 +35,28 @@
     </div>
 </div>
 <div class="row no-print" >
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label>Desde:</label>
         <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
     </div> 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <label>Hasta:</label>
         <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
+    </div>
+    <div class="col-md-2">
+        <label>Usuarios:</label>
+        <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" required>
+            <option value="0">TODOS</option>
+            <?php foreach($all_usuario as $usuario){?>
+            <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-md-1">
+        <label>Mostrar Gráfica:</label>
+        <div class="form-group">
+            <input type="checkbox" name="mosgrafica" id="mosgrafica" onclick="mostrargrafica()" />
+        </div>
     </div>
     <div class="col-md-1">
         <label>&nbsp;</label>
@@ -60,31 +75,6 @@
             </div>
         </div>
 </div>
-<?php if($tipousuario_id == 1){ $tamanio = "class='col-md-6'"; } else{ $tamanio = "class='col-md-12'"; } ?>
-<div <?php echo $tamanio; ?>>
-    <div class="row" id="graficapastel" style="display: none">
-        <br/>
-        <br/>
-        <div class="box box-primary">
-            <div class="box-header"></div>
-            <div class="box-body div_grafica_pie" id="div_grafica_pie"></div>
-            <div class="box-footer"></div>
-        </div>
-    </div>
-</div>
-<?php if($tipousuario_id == 1){ ?>
-<div class="col-md-6">
-    <div class="row" id="graficapastelu" style="display: none">
-        <br/>
-        <br/>
-        <div class="box box-primary">
-            <div class="box-header"></div>
-            <div class="box-body div_grafica_pieu" id="div_grafica_pieu"></div>
-            <div class="box-footer"></div>
-        </div>
-    </div>
-</div>
-<?php } ?>
 <div class="row" >
     <span id="desde"></span>
     <span id="hasta"></span>
@@ -128,4 +118,28 @@
     <ul style="margin-bottom: -5px;">RESPONSABLE</ul><ul>FIRMA - SELLO</ul>
 </center>
 
-
+<?php if($tipousuario_id == 1){ $tamanio = "class='col-md-6'"; } else{ $tamanio = "class='col-md-12'"; } ?>
+<div <?php echo $tamanio; ?>>
+    <div class="row" id="graficapastel" style="display: none">
+        <br/>
+        <br/>
+        <div class="box box-primary">
+            <div class="box-header"></div>
+            <div class="box-body div_grafica_pie" id="div_grafica_pie"></div>
+            <div class="box-footer"></div>
+        </div>
+    </div>
+</div>
+<?php if($tipousuario_id == 1){ ?>
+<div class="col-md-6">
+    <div class="row" id="graficapastelu" style="display: none">
+        <br/>
+        <br/>
+        <div class="box box-primary">
+            <div class="box-header"></div>
+            <div class="box-body div_grafica_pieu" id="div_grafica_pieu"></div>
+            <div class="box-footer"></div>
+        </div>
+    </div>
+</div>
+<?php } ?>

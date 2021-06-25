@@ -64,6 +64,7 @@ class Verificar extends CI_Controller
                     redirect('admin/dashb'); 
                 }elseif($session_data['tipousuario_id'] == 7){ // usuario tipo Cocina
                     redirect('detalle_venta/recepcion');
+                    //redirect('reportes/ventacategoriap');
                 }else{  // En caso de otro usuario no administrador 
                     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
                         redirect('alerta/dosificacion'); 

@@ -1153,6 +1153,10 @@ function torta3($anio,$mes)
         $this->load->model('Moneda_model');
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+        
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        
         $data['page_title'] = "Reporte de ventas por usuario";
         $data['_view'] = 'reportes/ventausuario';
 
@@ -1227,12 +1231,16 @@ function torta3($anio,$mes)
     {
         $fecha_desde = $this->input->post('fecha_desde');
         $fecha_hasta = $this->input->post('fecha_hasta');
-        
+        $usuario_id = $this->input->post('usuario_id');
+        $elusuario = "";
+        if($usuario_id >0){
+            $elusuario = "and vs.usuario_id = $usuario_id";
+        }
         $this->load->model('Categoria_producto_model');
-        $res_usuario = $this->Categoria_producto_model->get_all_usuario_ventaproducto_count($fecha_desde, $fecha_hasta);
+        $res_usuario = $this->Categoria_producto_model->get_all_usuario_ventaproducto_count($fecha_desde, $fecha_hasta, $elusuario);
         $numusu = count($res_usuario);
         
-        $usuarios = $this->Categoria_producto_model->getall_ventapor_usuario($fecha_desde, $fecha_hasta);
+        $usuarios = $this->Categoria_producto_model->getall_ventapor_usuario($fecha_desde, $fecha_hasta, $elusuario);
         $tove = $usuarios;
         
         foreach($usuarios as $tve){

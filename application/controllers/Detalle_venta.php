@@ -139,7 +139,7 @@ class Detalle_venta extends CI_Controller{
         
     }
     
-    /*
+    
     function reportes()
     {
         if($this->acceso(156)){
@@ -150,7 +150,7 @@ class Detalle_venta extends CI_Controller{
         //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
         $this->load->view('layouts/main',$data);
         }
-    }*/
+    }
 
     function buscarrepo()
     {

@@ -4,8 +4,6 @@ function inicio(){
 }
 
 function mostrar_grafica(){
-    $("#graficapastel").css("display", "block");
-    $("#graficapastelu").css("display", "block");
     var nombre_moneda = document.getElementById('nombre_moneda').value;
     var options={
      // Build the chart
@@ -44,10 +42,11 @@ function mostrar_grafica(){
     var tipousuario_id    = document.getElementById('tipousuario_id').value;
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
+    var usuario_id = document.getElementById('usuario_id').value;
     var controlador = base_url+"reportes/repventa_usuario";
     $.ajax({url: controlador,
             type:"POST",
-            data:{fecha_desde:fecha_desde, fecha_hasta:fecha_hasta},
+            data:{fecha_desde:fecha_desde, fecha_hasta:fecha_hasta, usuario_id:usuario_id},
             success:function(respuesta){
                 var datos= JSON.parse(respuesta);
                 if (datos != null){
@@ -165,6 +164,15 @@ function mostrar_grafica(){
     })
 }
 
+function mostrargrafica(){
+    if( $('#mosgrafica').prop('checked') ) {
+        $("#graficapastel").css("display", "block");
+        $("#graficapastelu").css("display", "block");
+    }else{
+        $("#graficapastel").css("display", "none");
+        $("#graficapastelu").css("display", "none");
+    }
+}
 function numberFormat(numero){
     // Variable que contendra el resultado final
     var resultado = "";
