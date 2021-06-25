@@ -81,8 +81,8 @@ class Red_social extends CI_Controller{
                         $conf['new_image'] = './resources/images/redsocial/';
                         $conf['maintain_ratio'] = TRUE;
                         $conf['create_thumb'] = FALSE;
-                        $conf['width'] = 800;
-                        $conf['height'] = 600;
+                        $conf['width'] = 250;
+                        $conf['height'] = 250;
                         $this->image_lib->clear();
                         $this->image_lib->initialize($conf);
                         if(!$this->image_lib->resize()){
@@ -108,8 +108,10 @@ class Red_social extends CI_Controller{
                 $estado_id = 1;
                 $params = array(
                     'estado_id' => $estado_id,
-                    'redsocial_imagen' => $foto,
                     'redsocial_nombre' => $this->input->post('redsocial_nombre'),
+                    'redsocial_direccion' => $this->input->post('redsocial_direccion'),
+                    'redsocial_imagen' => $foto,
+                    'redsocial_icono' => $this->input->post('redsocial_icono'),
                 );
                 $redsocial_id = $this->Red_social_model->add_red_social($params);
                 redirect('red_social/index');
@@ -168,8 +170,8 @@ class Red_social extends CI_Controller{
                             $conf['new_image'] = './resources/images/redsocial/';
                             $conf['maintain_ratio'] = TRUE;
                             $conf['create_thumb'] = FALSE;
-                            $conf['width'] = 800;
-                            $conf['height'] = 600;
+                            $conf['width'] = 250;
+                            $conf['height'] = 250;
 
                             $this->image_lib->initialize($conf);
                             if(!$this->image_lib->resize()){
@@ -212,8 +214,10 @@ class Red_social extends CI_Controller{
                     /* *********************FIN imagen***************************** */
                     $params = array(
                         'estado_id' => $this->input->post('estado_id'),
-                        'redsocial_imagen' => $foto,
                         'redsocial_nombre' => $this->input->post('redsocial_nombre'),
+                        'redsocial_direccion' => $this->input->post('redsocial_direccion'),
+                        'redsocial_imagen' => $foto,
+                        'redsocial_icono' => $this->input->post('redsocial_icono'),
                     );
                     $this->Red_social_model->update_red_social($redsocial_id,$params);            
                     redirect('red_social/index');

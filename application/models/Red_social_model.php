@@ -18,12 +18,11 @@ class Red_social_model extends CI_Model
     {
         $red_social = $this->db->query("
             SELECT
-                *
+                rs.*, e.estado_descripcion, e.estado_color
             FROM
-                `red_social`
-            WHERE
-                1 = 1
-            ORDER BY `redsocial_nombre` ASC
+                `red_social` rs
+            left join estado e on rs.estado_id = e.estado_id
+            ORDER BY `redsocial_id` ASC
         ")->result_array();
         return $red_social;
     }
