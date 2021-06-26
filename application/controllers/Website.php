@@ -19,6 +19,7 @@ class Website extends CI_Controller{
         $this->load->model('Cliente_model');
         $this->load->model('Configuracion_email_model');
         $this->load->helper('cookie');
+        $this->load->model('Red_social_model');
     }            
 
     function index($idioma_id)
@@ -39,6 +40,8 @@ class Website extends CI_Controller{
         $data['slider2'] = $this->Pagina_web_model->get_slider(2,$idioma_id); //tipo 2
         $data['categorias'] = $this->Categoria_producto_model->get_all_categoria_producto(); //tipo 2
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['all_redsocial'] = $this->Red_social_model->get_all_red_socialactivo(); //para redes sociales...
+        
         //$data['mapa'] = $this->Mapa_model->get_mapa(1); //mapa
         
 //        $data['_view'] = 'pagina_web/index';

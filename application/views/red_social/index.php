@@ -74,14 +74,16 @@
                             <?php
                             if($r['redsocial_imagen'] != null || $r['redsocial_imagen'] != ""){ ?>
                                 <a class="btn btn-xs" data-toggle="modal" data-target="#myModal<?php echo $r['redsocial_id']; ?>">
-                                    <img src="<?php echo site_url('resources/images/redsocial/')."thumb_".$r['redsocial_imagen']; ?>" class="img-circle" width="40" height="40">
+                                    <img src="<?php echo site_url('resources/web/images/redsocial/')."thumb_".$r['redsocial_imagen']; ?>" class="img-circle" width="40" height="40">
                                 </a>
                             <?php
                             }
                             echo $r['redsocial_nombre']; ?><sub> [<?php echo $r['redsocial_id']; ?>]</sub>
                         </td>
                         <td class="text-center"><span class="fa <?php echo $r['redsocial_icono']; ?>" style="font-size: 2em"></span></td>
-                        <td><?php echo $r['redsocial_direccion']; ?></td>
+                        <td>
+                            <a href="<?php echo $r["redsocial_direccion"]; ?>"><?php echo $r["redsocial_direccion"]; ?></a>
+                        </td>
                         <td class="text-center"><?php echo $r['estado_descripcion']; ?></td>
                         <td class="no-print">
                             <!------------------------ INICIO modal para ver imagen ------------------->
@@ -94,7 +96,7 @@
                                   </div>
                                   <div class="modal-body">
                                    <!------------------------------------------------------------------->
-                                   <img style="max-height: 100%; max-width: 100%" src="<?php echo site_url('resources/images/redsocial/').$r['redsocial_imagen']; ?>">
+                                   <img style="max-height: 100%; max-width: 100%" src="<?php echo site_url('resources/web/images/redsocial/').$r['redsocial_imagen']; ?>">
                                    <!------------------------------------------------------------------->
                                   </div>
                                 </div>

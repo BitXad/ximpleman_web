@@ -888,79 +888,28 @@ function mostrar() {
 
 	<!-- about-team -->
 	<div class="about-team" style="background-color: #fe9126;"> 
-		<div class="container">
-			<h3 class="w3_agile_header">COMUNICATE CON NOSOTROS</h3>
-			<div class="team-agileitsinfo">
-                            
-				<div class="col-md-3 about-team-grids" style="background-color: #fe9126">
-                                    <img src="<?php echo base_url("resources/web/images/t1.jpg") ?>" alt="" class="img img-circle"/>
-					<div class="team-w3lstext">
-						<!--<h4><span>WHATSAPP</span></h4>-->
-						<!--<p>Llamanos o envianos un mensaje, te contestaremos a la brevedad posible.</p>-->
-					</div>
-					<div class="social-icons caption" style="font-size: 30px;"> 
-						<ul>
-                                                    
-                                                    <!--<li><a href="https://wa.me/591<?php //echo $pagina_web[0]['empresa_telefono']; ?>" target="_BLANK" class="fa fa-whatsapp" title="Enviar mensaje por whatsapp"></a> Whatsapp</li>-->
-							<a href="#" class="fa fa-whatsapp"> </a> Whatsapp</li>
-<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
-							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
-						</ul>
-						<div class="clearfix"> </div>  
-					</div>
-				</div>
-                            
-				<div class=" col-md-3 about-team-grids" style="background-color: #fe9126">
-					<img src="<?php echo base_url("resources/web/images/t2.jpg") ?>" alt="" class="img img-circle"/>
-					<div class="team-w3lstext">
-						<!--<h4><span>FACEBOOK</span></h4>-->
-						<!--<p>Visita nuestra página de facebook, o dejanos un like.</p>-->
-					</div>
-					<div class="social-icons caption" style="font-size: 30px;"> 
-						<ul>
-							<li><a href="#" class="fa fa-facebook facebook"> </a> Facebook</li>
-<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
-							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
-						</ul>
-						<div class="clearfix"> </div>  
-					</div>
-				</div>
-                            
-				<div class="col-md-3 about-team-grids" style="background-color: #fe9126">
-					<img src="<?php echo base_url("resources/web/images/t3.jpg") ?>" alt="" class="img img-circle"/>
-					<div class="team-w3lstext">
-						<!--<h4><span>TWITEER</span> Supervisior</h4>-->				
-						<!--<p>Siguenos en twiteer.</p>-->
-					</div>
-					<div class="social-icons caption" style="font-size: 30px;"> 
-						<ul>
-							<li><a href="#" class="fa fa-twitter twitter"> </a> Twitter</li>
-<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
-							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
-						</ul>
-						<div class="clearfix"> </div>  
-					</div>
-				</div>
-                            
-				<div class="col-md-3 about-team-grids" style="background-color: #fe9126">
-					<img src="<?php echo base_url("resources/web/images/t4.jpg") ?>" alt="" class="img img-circle"/>
-					<div class="team-w3lstext">
-						<!--<h4><span>RACKHAM,</span> Staff</h4>-->
-						<!--<p>Odio dignissimos vero eos voluptatem accusantium doloremque laudantium reader will be distracted.</p>-->
-					</div>
-					<div class="social-icons caption" style="font-size: 30px;"> 
-						<ul>
-							<li><a href="#" class="fa fa-instagram"> </a> Instagram</li>
-<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
-							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
-						</ul>
-						<div class="clearfix"> </div>  
-					</div>
-				</div>
-                            
-				<div class="clearfix"> </div>
-			</div>
-		</div>
+            <div class="container">
+                <h3 class="w3_agile_header">COMUNICATE CON NOSOTROS</h3>
+                <div class="team-agileitsinfo">
+                    <?php
+                     foreach ($all_redsocial as $redsocial) {
+                    ?>
+                    <div class="col-md-3 about-team-grids" style="background-color: #fe9126">
+                        <img src="<?php echo base_url("resources/web/images/redsocial/".$redsocial["redsocial_imagen"]) ?>" alt="" class="img img-circle"/>
+                        <div class="team-w3lstext"></div>
+                        <div class="social-icons caption" style="font-size: 30px;"> 
+                            <ul>
+                                <li><a href="<?php echo $redsocial["redsocial_direccion"]; ?>" class="fa <?php echo $redsocial["redsocial_icono"]; ?>"> </a> <?php echo $redsocial["redsocial_nombre"]; ?></li>
+                            </ul>
+                            <div class="clearfix"> </div>  
+                        </div>
+                    </div>
+                    <?php
+                    }
+                    ?>
+                    <div class="clearfix"> </div>
+                </div>
+            </div>
 	</div>
 	<!-- //about-team -->
 

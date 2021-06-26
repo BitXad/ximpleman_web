@@ -57,7 +57,7 @@ class Red_social extends CI_Controller{
                 $foto="";
                 if (!empty($_FILES['redsocial_imagen']['name'])){
                     $this->load->library('image_lib');
-                    $config['upload_path'] = './resources/images/redsocial/';
+                    $config['upload_path'] = './resources/web/images/redsocial/';
                     $img_full_path = $config['upload_path'];
 
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
@@ -78,7 +78,7 @@ class Red_social extends CI_Controller{
                     if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                         $conf['image_library'] = 'gd2';
                         $conf['source_image'] = $img_data['full_path'];
-                        $conf['new_image'] = './resources/images/redsocial/';
+                        $conf['new_image'] = './resources/web/images/redsocial/';
                         $conf['maintain_ratio'] = TRUE;
                         $conf['create_thumb'] = FALSE;
                         $conf['width'] = 250;
@@ -91,8 +91,8 @@ class Red_social extends CI_Controller{
                     }
                     /* ********************F I N  para resize***************************** */
                     $confi['image_library'] = 'gd2';
-                    $confi['source_image'] = './resources/images/redsocial/'.$new_name.$extension;
-                    $confi['new_image'] = './resources/images/redsocial/'."thumb_".$new_name.$extension;
+                    $confi['source_image'] = './resources/web/images/redsocial/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/web/images/redsocial/'."thumb_".$new_name.$extension;
                     $confi['create_thumb'] = FALSE;
                     $confi['maintain_ratio'] = TRUE;
                     $confi['width'] = 100;
@@ -145,7 +145,7 @@ class Red_social extends CI_Controller{
                     $foto1= $this->input->post('redsocial_imagen1');
                     if (!empty($_FILES['redsocial_imagen']['name']))
                     {
-                        $config['upload_path'] = './resources/images/redsocial/';
+                        $config['upload_path'] = './resources/web/images/redsocial/';
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
                         $config['max_size'] = 0;
                         $config['max_width'] = 0;
@@ -167,7 +167,7 @@ class Red_social extends CI_Controller{
                         if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                             $conf['image_library'] = 'gd2';
                             $conf['source_image'] = $img_data['full_path'];
-                            $conf['new_image'] = './resources/images/redsocial/';
+                            $conf['new_image'] = './resources/web/images/redsocial/';
                             $conf['maintain_ratio'] = TRUE;
                             $conf['create_thumb'] = FALSE;
                             $conf['width'] = 250;
@@ -183,7 +183,7 @@ class Red_social extends CI_Controller{
                         //$directorio = base_url().'resources/imagenes/';
                         $base_url = explode('/', base_url());
                         //$directorio = FCPATH.'resources\images\clientes\\';
-                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/redsocial/';
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/web/images/redsocial/';
                         //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/';
                         if(isset($foto1) && !empty($foto1)){
                             if(file_exists($directorio.$foto1)){
@@ -196,8 +196,8 @@ class Red_social extends CI_Controller{
                             }
                         }
                         $confi['image_library'] = 'gd2';
-                        $confi['source_image'] = './resources/images/redsocial/'.$new_name.$extension;
-                        $confi['new_image'] = './resources/images/redsocial/'."thumb_".$new_name.$extension;
+                        $confi['source_image'] = './resources/web/images/redsocial/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/web/images/redsocial/'."thumb_".$new_name.$extension;
                         $confi['create_thumb'] = FALSE;
                         $confi['maintain_ratio'] = TRUE;
                         $confi['width'] = 100;

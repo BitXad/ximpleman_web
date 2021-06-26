@@ -22,7 +22,7 @@ class Red_social_model extends CI_Model
             FROM
                 `red_social` rs
             left join estado e on rs.estado_id = e.estado_id
-            ORDER BY `redsocial_id` ASC
+            ORDER BY rs.`redsocial_id` ASC
         ")->result_array();
         return $red_social;
     }
@@ -59,6 +59,23 @@ class Red_social_model extends CI_Model
     {
         $this->db->where('redsocial_id',$redsocial_id);
         return $this->db->update('red_social',$params);
+    }
+    /*
+     * Get all red_social a todos los activos
+     */
+    function get_all_red_socialactivo()
+    {
+        $red_social = $this->db->query("
+            SELECT
+                rs.*, e.estado_descripcion, e.estado_color
+            FROM
+                `red_social` rs
+            left join estado e on rs.estado_id = e.estado_id
+            WHERE
+                rs.estado_id = 1
+            ORDER BY rs.`redsocial_id` ASC
+        ")->result_array();
+        return $red_social;
     }
     
 }

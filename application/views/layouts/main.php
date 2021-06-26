@@ -885,7 +885,10 @@
                             <a href="<?php echo site_url('pagina_web');?>"><i class="fa fa-globe"></i>Página Web</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('promocion');?>"><!--<i class="fa fa-percent"></i>--><i class="fa fa-minus-circle"></i>Promoción</a>
+                            <a href="<?php echo site_url('promocion');?>"><i class="fa fa-minus-circle"></i>Promoción</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('red_social');?>"><i class="fa fa-connectdevelop"></i>Redes Sociales</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('seccion');?>"><i class="fa fa-paragraph"></i>Sección</a>
