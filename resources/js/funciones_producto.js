@@ -372,10 +372,54 @@ function catalogoproducto(num_imagenes) {
     //var formaimagen = document.getElementById('formaimagen').value;
     var formaimagen = num_imagenes[1]; //document.getElementById('formaimagen').value;
     //var catalogo = $('#escatalogo').is(':checked');
-    var respuesta = document.getElementById('resproducto').value;
-    var registros =  JSON.parse(respuesta);
-    var n = registros.length; //tamaño del arreglo de la consulta
-    //if(catalogo){
+    var parametro = "";
+    var categoriatext = "";
+    var estadotext = "";
+    var categoriaestado = "";
+    var base_url = document.getElementById('base_url').value;
+    var parametro_modulo = document.getElementById('parametro_modulorestaurante').value;
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var controlador = base_url+'producto/buscarproductos_agruparporcatalogo/';
+    var categoria = document.getElementById('categoria_id').value;
+    var subcategoria = document.getElementById('subcategoria_id').value;
+    var estado    = document.getElementById('estado_id').value;
+    if(categoria == 0){
+       categoriaestado = "";
+    }else{
+       categoriaestado = " and p.categoria_id = cp.categoria_id and p.categoria_id = "+categoria+" ";
+       categoriatext = $('select[name="categoria_id"] option:selected').text();
+       categoriatext = "Categoria: "+categoriatext;
+    }
+    if(subcategoria == ""){
+       categoriaestado += "";
+    }else{
+       categoriaestado += " and p.subcategoria_id = "+subcategoria+" ";
+       /*categoriatext = $('select[name="categoria_id"] option:selected').text();
+       categoriatext = "Categoria: "+categoriatext;*/
+    }
+    if(estado == 0){
+       categoriaestado += "";
+    }else{
+       categoriaestado += " and p.estado_id = "+estado+" ";
+       estadotext = $('select[name="estado_id"] option:selected').text();
+       estadotext = "Estado: "+estadotext;
+    }
+
+    $("#busquedacategoria").html(categoriatext+" "+estadotext);
+
+    parametro = document.getElementById('filtrar').value;
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{parametro:parametro, categoriaestado:categoriaestado},
+           success:function(respuesta){
+                //$("#encontrados").val("- 0 -");
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){
+                //var respuesta = document.getElementById('resproducto').value;
+                //var registros =  JSON.parse(respuesta);
+                var n = registros.length; //tamaño del arreglo de la consulta
+                //if(catalogo){
         var numcolumna = num_imagenes[0];
         var inifila = "";
         var finfila = "";
@@ -530,6 +574,21 @@ function catalogoproducto(num_imagenes) {
         }
         $("#cabcatalogo").html(chtml);
         $("#tablaresultados").html(html);
+        document.getElementById('loader').style.display = 'none';
+            }
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tablaresultados").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+        
+    });
     /*}else{
         busqueda_inicial();
     }*/

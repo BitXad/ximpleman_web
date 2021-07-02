@@ -1070,4 +1070,21 @@ class Producto extends CI_Controller{
             }
         }
     }
+    /*
+    * buscar productos y agruparlos por catalogos
+    */
+    function buscarproductos_agruparporcatalogo()
+    {
+        if($this->acceso(102)){
+            $usuario_id = $this->session_data['usuario_id'];
+            if ($this->input->is_ajax_request()){
+                $parametro       = $this->input->post('parametro');   
+                $categoriaestado = $this->input->post('categoriaestado');   
+                $datos = $this->Producto_model->get_busqueda_producto_parametrocategoria($parametro, $categoriaestado);
+                echo json_encode($datos);
+            }else{
+                show_404();
+            }
+        }
+    }
 }
