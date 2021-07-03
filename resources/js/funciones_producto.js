@@ -354,10 +354,16 @@ function verificarnumero() {
         arreglo.push(precio4_check); // 10
         arreglo.push(precio5_check); // 11
         $("#modalcatalogo").modal("hide");
-        catalogoproducto(arreglo);
+        var elorden = document.getElementById('tipo_orden').value;
+        if(elorden == "a"){
+            catalogoproducto_alfabetico(arreglo);
+        }else{
+            catalogoproducto_categoria(arreglo);
+        }
     }
 }
-function catalogoproducto(num_imagenes) {
+
+function catalogoproducto_categoria(num_imagenes) {
     //$("#listaprecios").prop("checked", false);
     //$("#listcodigobarras").prop("checked", false);
     $('#titcatalogo').text("CATALOGO DE ");
@@ -593,6 +599,161 @@ function catalogoproducto(num_imagenes) {
         busqueda_inicial();
     }*/
     //cabcatalogo
+}
+function catalogoproducto_alfabetico(num_imagenes) {
+    $('#titcatalogo').text("CATALOGO DE ");
+    var base_url = document.getElementById('base_url').value;
+    var lamoneda_id = document.getElementById('lamoneda_id').value;
+    var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+    var total_otram = Number(0);
+    var otra_moneda = "";
+    var formaimagen = num_imagenes[1];
+    var respuesta = document.getElementById('resproducto').value;
+    var registros =  JSON.parse(respuesta);
+    
+    var n = registros.length; //tamaño del arreglo de la consulta
+        var numcolumna = num_imagenes[0];
+        var inifila = "";
+        var finfila = "";
+        var contcol = 1;
+        chtml = "";
+        chtml += "<tr role='row'  style='width: 19cm !important'>";
+        chtml += "<th colspan='"+numcolumna+"'  role='columnheader' >CATALOGO DE PRODUCTOS</th>";
+        chtml += "</tr>";
+        html = "";
+        //var categoria = "";
+        for (var i = 0; i < n ; i++){
+            if(contcol <= numcolumna){
+                if(contcol == 1){
+                    inifila ="<tr style='width: 19cm !important'>";
+                    finfila = "";
+                    contcol++;
+                }else if(i+1== n || contcol == numcolumna){
+                    inifila = "";
+                    finfila ="</tr>";
+                    contcol = 1;
+                }else{
+                    inifila = "";
+                    finfila = "";
+                    contcol++;
+                }
+            }else{
+                contcol = 1;
+            }
+            
+            html += inifila;
+            html += "<td style='width: 300px; height: 150px'>";
+            html += "<div>";
+            var mimagen = "";
+            if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
+                mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
+                mimagen += "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' class='img img-"+formaimagen+"' width='160px' height='120px' />";
+                mimagen += "</a>";
+            }else{
+                mimagen = "<img src='"+base_url+"resources/images/productos/producto.jpg' class='img img-"+formaimagen+"' width='160px' height='120px' />";
+            }
+            html += mimagen;
+            html += "<div style='padding-left: 4px'>";
+            if(num_imagenes[2]){
+                var tamaniofont = 2;
+                if(registros[i]["producto_nombre"].length >50){
+                    tamaniofont = 1;
+                }
+                html += "<b id='masgrande'><font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["producto_nombre"]+"</b></font></b><br>";
+            }
+            if(num_imagenes[3]){
+                html += "<b>Cod.:</b> "+registros[i]["producto_codigo"];
+            }
+            if(num_imagenes[4]){
+                html += "&nbsp;<b>Marca:</b> "+registros[i]["producto_marca"]+"<br>";
+            }
+            if(num_imagenes[5]){
+                html += "<b>Industria:</b> "+registros[i]["producto_industria"]+"<br>";
+            }
+            if(num_imagenes[6]){
+                html += "<b>Precio "+registros[i]["producto_unidad"]+": "+registros[i]["moneda_descripcion"]+"</b> "+registros[i]["producto_precio"]+"/";
+                if(registros[i]["moneda_id"] == 1){
+                    total_otram = Number(registros[i]["producto_precio"])/Number(lamoneda[1]["moneda_tc"]);
+                    otra_moneda = lamoneda[1]["moneda_descripcion"];
+                }else{
+                    total_otram = Number(registros[i]["producto_precio"])*Number(lamoneda[1]["moneda_tc"]);
+                    otra_moneda = lamoneda[0]["moneda_descripcion"];
+                }
+                html += "<b>"+otra_moneda+"</b> "+Number(total_otram).toFixed(2)+"<br>";
+            }
+            if(num_imagenes[7]){
+                if(registros[i]["producto_preciofactor"] != null && registros[i]["producto_preciofactor"] > 0){
+                    html += "<b>Precio "+registros[i]["producto_unidadfactor"]+": "+registros[i]["moneda_descripcion"]+"</b> "+registros[i]["producto_preciofactor"]+"/";
+                    if(registros[i]["moneda_id"] == 1){
+                        total_otram = Number(registros[i]["producto_preciofactor"])/Number(lamoneda[1]["moneda_tc"]);
+                        otra_moneda = lamoneda[1]["moneda_descripcion"];
+                    }else{
+                        total_otram = Number(registros[i]["producto_preciofactor"])*Number(lamoneda[1]["moneda_tc"]);
+                        otra_moneda = lamoneda[0]["moneda_descripcion"];
+                    }
+                    html += "<b>"+otra_moneda+"</b> "+Number(total_otram).toFixed(2)+"<br>";
+                }
+            }
+            if(num_imagenes[8]){
+                if(registros[i]["producto_preciofactor1"] != null && registros[i]["producto_preciofactor1"] > 0){
+                    html += "<b>Precio "+registros[i]["producto_unidadfactor1"]+": "+registros[i]["moneda_descripcion"]+"</b> "+registros[i]["producto_preciofactor1"]+"/";
+                    if(registros[i]["moneda_id"] == 1){
+                        total_otram = Number(registros[i]["producto_preciofactor1"])/Number(lamoneda[1]["moneda_tc"]);
+                        otra_moneda = lamoneda[1]["moneda_descripcion"];
+                    }else{
+                        total_otram = Number(registros[i]["producto_preciofactor1"])*Number(lamoneda[1]["moneda_tc"]);
+                        otra_moneda = lamoneda[0]["moneda_descripcion"];
+                    }
+                    html += "<b>"+otra_moneda+"</b> "+Number(total_otram).toFixed(2)+"<br>";
+                }
+            }
+            if(num_imagenes[9]){
+                if(registros[i]["producto_preciofactor2"] != null && registros[i]["producto_preciofactor2"] > 0){
+                    html += "<b>Precio "+registros[i]["producto_unidadfactor2"]+": "+registros[i]["moneda_descripcion"]+"</b> "+registros[i]["producto_preciofactor2"]+"/";
+                    if(registros[i]["moneda_id"] == 1){
+                        total_otram = Number(registros[i]["producto_preciofactor2"])/Number(lamoneda[1]["moneda_tc"]);
+                        otra_moneda = lamoneda[1]["moneda_descripcion"];
+                    }else{
+                        total_otram = Number(registros[i]["producto_preciofactor2"])*Number(lamoneda[1]["moneda_tc"]);
+                        otra_moneda = lamoneda[0]["moneda_descripcion"];
+                    }
+                    html += "<b>"+otra_moneda+"</b> "+Number(total_otram).toFixed(2)+"<br>";
+                }
+            }
+            if(num_imagenes[10]){
+                if(registros[i]["producto_preciofactor3"] != null && registros[i]["producto_preciofactor3"] > 0){
+                    html += "<b>Precio "+registros[i]["producto_unidadfactor3"]+": "+registros[i]["moneda_descripcion"]+"</b> "+registros[i]["producto_preciofactor3"]+"/";
+                    if(registros[i]["moneda_id"] == 1){
+                        total_otram = Number(registros[i]["producto_preciofactor3"])/Number(lamoneda[1]["moneda_tc"]);
+                        otra_moneda = lamoneda[1]["moneda_descripcion"];
+                    }else{
+                        total_otram = Number(registros[i]["producto_preciofactor3"])*Number(lamoneda[1]["moneda_tc"]);
+                        otra_moneda = lamoneda[0]["moneda_descripcion"];
+                    }
+                    html += "<b>"+otra_moneda+"</b> "+Number(total_otram).toFixed(2)+"<br>";
+                }
+            }
+            if(num_imagenes[11]){
+                if(registros[i]["producto_preciofactor4"] != null && registros[i]["producto_preciofactor4"] > 0){
+                    html += "<b>Precio "+registros[i]["producto_unidadfactor4"]+": "+registros[i]["moneda_descripcion"]+"</b> "+registros[i]["producto_preciofactor4"]+"/";
+                    if(registros[i]["moneda_id"] == 1){
+                        total_otram = Number(registros[i]["producto_preciofactor4"])/Number(lamoneda[1]["moneda_tc"]);
+                        otra_moneda = lamoneda[1]["moneda_descripcion"];
+                    }else{
+                        total_otram = Number(registros[i]["producto_preciofactor4"])*Number(lamoneda[1]["moneda_tc"]);
+                        otra_moneda = lamoneda[0]["moneda_descripcion"];
+                    }
+                    html += "<b>"+otra_moneda+"</b> "+Number(total_otram).toFixed(2)+"<br>";
+                }
+            }
+            
+            html += "</div>";
+            html += "</div>";
+            html += "</td>";
+            html += finfila;
+        }
+        $("#cabcatalogo").html(chtml);
+        $("#tablaresultados").html(html);
 }
 /* muestra el modal para elegir lista de precios */
 function modalprecio() {

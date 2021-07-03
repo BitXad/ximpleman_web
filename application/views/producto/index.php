@@ -298,6 +298,16 @@ echo '<script type="text/javascript">
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <label for="tipo_orden" class="control-label"><span class="text-danger">*</span>Ordenar</label>
+                        <!--<span class="text-red" id="mensaje_numimagen"></span>-->
+                        <div class="form-group">
+                            <select name="tipo_orden" class="form-control" id="tipo_orden">
+                                <option value="a">por Orden Alfabetico</option>
+                                <option value="c">por Categoria</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-md-12">
                         <table>
                             <tr>
@@ -380,8 +390,10 @@ echo '<script type="text/javascript">
                 </span>
             </div>
             <div class="modal-footer" style="text-align: center">
-                <a class="btn btn-success" onclick="verificarnumero()"><span class="fa fa-check"></span> Generar</a>
-                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+                <div class="col-md-12">
+                    <a class="btn btn-success" onclick="verificarnumero()"><span class="fa fa-check"></span> Generar</a>
+                    <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+                </div>
             </div>
         </div>
     </div>
