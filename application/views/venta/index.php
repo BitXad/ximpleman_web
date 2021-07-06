@@ -117,7 +117,7 @@
             Usuario:             
             <select  class="btn btn-warning btn-sm form-control" id="usuario_id">
                     <option value="0">-- TODOS --</option>
-                <?php foreach($usuarios as $us){?>
+                <?php foreach($usuario as $us){?>
                     <option value="<?php echo $us['usuario_id']; ?>"><?php echo $us['usuario_nombre']; ?></option>
                 <?php } ?>
             </select>
