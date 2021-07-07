@@ -1341,7 +1341,11 @@ function edit($venta_id)
           detalleven_prestamoenvase,
           detalleven_fechavenc,
           usuario_id,
-          factura_id
+          factura_id,
+          clasificador_id,
+          detalleven_unidadfactor,
+          preferencia_id,
+          detalleven_tc
         )
 
         (SELECT 
@@ -1373,7 +1377,11 @@ function edit($venta_id)
             detalleven_prestamoenvase,
             detalleven_fechavenc,
             usuario_id,
-            0 as factura_id
+            0 as factura_id,
+            clasificador_id,
+            detalleven_unidadfactor,
+            preferencia_id,
+            detalleven_tc
           
         FROM
           detalle_venta_aux
