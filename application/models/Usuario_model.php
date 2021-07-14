@@ -288,4 +288,18 @@ class Usuario_model extends CI_Model
         return $respuesta;
         
     }
+    /*
+     * muestra un usuario determinado y retorna result array
+     */
+    public function get_usuario_activo($usuario_id)
+    {
+        $usuario = $this->db->query("
+            SELECT
+                  u.usuario_id, u.usuario_nombre
+            FROM 
+                  usuario u
+            WHERE 
+                  u.usuario_id = $usuario_id ")->result_array();
+        return $usuario;
+    }
 }

@@ -915,7 +915,7 @@ window.onkeydown = compruebaTecla;
 
           
             <div class="col-md-8">
-                <b>GLOSA </b><input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
+                <b>NOTA: </b><input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="<?php echo $venta[0]['venta_glosa'] ?>" class="form-control  input-sm">           
             </div>
             <div class="col-md-4">
                 <b>FECHA VENTA </b><input type="date" style="padding: 0;" id="venta_fecha" name="venta_fecha" value="<?php echo $venta[0]['venta_fecha']; ?>" class="form-control  input-sm">

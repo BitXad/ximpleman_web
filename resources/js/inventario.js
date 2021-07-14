@@ -2137,4 +2137,7 @@ function ver_operacionproceso(producto_id){
       
     
 }
-
+/* imprimir */
+function imprimir(){
+    window.print();
+}

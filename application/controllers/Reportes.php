@@ -1164,7 +1164,6 @@ function torta3($anio,$mes)
         }
     }
     
-    
     function repventa_categoria()
     {
         $fecha_desde = $this->input->post('fecha_desde');
@@ -1337,6 +1336,59 @@ function torta3($anio,$mes)
         }else{
             show_404();
         }
+    }
+    
+    /* reporte de ventas agrupado por usuario en un rango de fechas(por dia) */
+    function ventausuariofecha()
+    {
+        if($this->acceso(157)){
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $this->load->model('Parametro_model');
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+        
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        
+        $data['page_title'] = "Reporte de ventas por usuario";
+        $data['_view'] = 'reportes/ventausuariofecha';
+
+        $this->load->view('layouts/main',$data);
+        }
+    }
+    
+    /* obtiene los reportes de usuarios por fecha y usuario o usuarios */
+    function repventa_usuariofecha()
+    {
+        $fecha_desde = $this->input->post('fecha_desde');
+        $fecha_hasta = $this->input->post('fecha_hasta');
+        $usuario_id = $this->input->post('usuario_id');
+        $elusuario = "";
+        $this->load->model('Usuario_model');
+        if($usuario_id >0){
+            $elusuario = "and vs.usuario_id = $usuario_id";
+            $all_usuario = $this->Usuario_model->get_all_usuario_activo();
+        }else{
+            $all_usuario = $this->Usuario_model->get_usuario_activo($usuario_id);
+        }
+        $this->load->model('Categoria_producto_model');
+        $res_usuario = $this->Categoria_producto_model->get_all_usuario_ventaproducto_count($fecha_desde, $fecha_hasta, $elusuario);
+        $numusu = count($res_usuario);
+        
+        $usuarios = $this->Categoria_producto_model->getall_ventapor_usuario($fecha_desde, $fecha_hasta, $elusuario);
+        $tove = $usuarios;
+        
+        foreach($usuarios as $tve){
+            $ususel=intval($tve['usuario_id']);
+            $suma=round($tve['totalventas'],2);
+            $registros[$ususel]=$suma;
+        }
+        //var_dump($numusu);
+        $data=array("totaltipos"=>$numusu, "tipos" =>$usuarios, "numerodepubli" =>$registros, "allusuario" => $all_usuario);
+        echo   json_encode($data);   
     }
     
 }
