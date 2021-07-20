@@ -847,6 +847,37 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
         return $reporte;
     }
     
+    function get_totalventasfecha($usuario_id, $lafecha)
+    {
+        $ventatotal = $this->db->query("
+            select 
+                SUM(v.venta_total) as total
+            from
+                venta v
+            where
+                date(v.venta_fecha) = '".$lafecha."'
+                and v.usuario_id = ".$usuario_id."
+        ")->row_array();
+        
+        return $ventatotal;
+    }
+    
+    function getall_totalventasfecha($fecha_desde, $fecha_hasta, $usuario_id)
+    {
+        $venta_porusuariototal = $this->db->query("
+            SELECT
+                SUM(v.venta_total) as todototal
+            FROM
+                `venta` v
+            where
+            	date(v.venta_fecha) >= '$fecha_desde'
+                and date(v.venta_fecha) <= '$fecha_hasta'
+                and v.usuario_id = ".$usuario_id."
+        ")->row_array();
+
+        return $venta_porusuariototal;
+    }
+    
 }
 
 ?>

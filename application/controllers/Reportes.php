@@ -1361,34 +1361,47 @@ function torta3($anio,$mes)
     }
     
     /* obtiene los reportes de usuarios por fecha y usuario o usuarios */
-    function repventa_usuariofecha()
-    {
-        $fecha_desde = $this->input->post('fecha_desde');
-        $fecha_hasta = $this->input->post('fecha_hasta');
-        $usuario_id = $this->input->post('usuario_id');
-        $elusuario = "";
-        $this->load->model('Usuario_model');
-        if($usuario_id >0){
-            $elusuario = "and vs.usuario_id = $usuario_id";
-            $all_usuario = $this->Usuario_model->get_all_usuario_activo();
-        }else{
-            $all_usuario = $this->Usuario_model->get_usuario_activo($usuario_id);
-        }
-        $this->load->model('Categoria_producto_model');
-        $res_usuario = $this->Categoria_producto_model->get_all_usuario_ventaproducto_count($fecha_desde, $fecha_hasta, $elusuario);
-        $numusu = count($res_usuario);
-        
-        $usuarios = $this->Categoria_producto_model->getall_ventapor_usuario($fecha_desde, $fecha_hasta, $elusuario);
-        $tove = $usuarios;
-        
-        foreach($usuarios as $tve){
-            $ususel=intval($tve['usuario_id']);
-            $suma=round($tve['totalventas'],2);
-            $registros[$ususel]=$suma;
-        }
-        //var_dump($numusu);
-        $data=array("totaltipos"=>$numusu, "tipos" =>$usuarios, "numerodepubli" =>$registros, "allusuario" => $all_usuario);
-        echo   json_encode($data);   
+    function repventa_usuariofecha(){
+            if ($this->input->is_ajax_request()){
+                $fecha_desde = $this->input->post('fecha_desde');
+                $fecha_hasta = $this->input->post('fecha_hasta');
+                $usuario_id = $this->input->post('usuario_id');
+                $elusuario = "";
+                $this->load->model('Usuario_model');
+                if($usuario_id >0){
+                    //$elusuario = "and vs.usuario_id = $usuario_id";
+                    $allusuario = $this->Usuario_model->get_usuario_activo($usuario_id);
+                }else{
+                    $allusuario = $this->Usuario_model->get_all_usuario_activo();
+                }
+                $datos = $allusuario;
+                
+                echo json_encode($datos);
+                
+            }else{
+                show_404();
+            }
     }
     
+    function getventatotalusuario(){
+        if ($this->input->is_ajax_request()){
+            $usuario_id = $this->input->post('usuario_id');
+            $lafecha = $this->input->post('lafecha');
+            $datos = $this->Reporte_ing_egr_model->get_totalventasfecha($usuario_id, $lafecha);
+            echo json_encode($datos);
+        }else{
+            show_404();
+        }
+    }
+    function getall_totalventasfechas(){
+        if ($this->input->is_ajax_request()){
+            $fecha_desde = $this->input->post('fecha_desde');
+            $fecha_hasta = $this->input->post('fecha_hasta');
+            $usuario_id = $this->input->post('usuario_id');
+            $datos = $this->Reporte_ing_egr_model->getall_totalventasfecha($fecha_desde, $fecha_hasta, $usuario_id);
+            echo json_encode($datos);
+        }else{
+            show_404();
+        }
+    }
 }
