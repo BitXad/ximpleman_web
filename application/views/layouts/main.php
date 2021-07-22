@@ -394,6 +394,13 @@
                         if($rolusuario[124-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
+                            <a href="<?php echo site_url('mesa');?>"><i class="fa fa-table"></i>Mesa</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[124-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
                             <a href="<?php echo site_url('moneda');?>"><i class="fa fa-money"></i>Moneda</a>
                         </li>
                         <?php

@@ -175,4 +175,12 @@ class Parametro_model extends CI_Model
             ";
         return $this->db->query($sql)->result_array();
     }
+    /*
+     * Obtiene este parametro dado un parametro_id
+     */
+    function get_esteparametro($parametro_id)
+    {
+        $sql = "select p.*, m.moneda_tc, m.moneda_descripcion from parametros p, moneda m where p.moneda_id = m.moneda_id and parametro_id = $parametro_id";
+        return $this->db->query($sql)->row_array();
+    }
 }

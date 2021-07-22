@@ -3382,14 +3382,7 @@ function borrar_datos_cliente()
     
     $("#filtrar").focus();
     
-    var facturado = document.getElementById('facturado').checked;      
-
-    //Imprimir la factura
-    
-    if (facturado == 1){
-        var boton = document.getElementById("imprimir_factura");
-        boton.click();                    
-    }
+    var facturado = document.getElementById('facturado').checked;  
     
     //Si esta actuvo el modulo para restaurante
     if (modulo_restaurante == 1){
@@ -3397,8 +3390,18 @@ function borrar_datos_cliente()
             boton = document.getElementById("imprimir_comanda");
             boton.click();
             boton.click();
+            if (facturado != 1){
+                brecibo = document.getElementById("imprimir");
+                brecibo.click();
+            }
         }
-    } 
+    }
+    
+    //Imprimir la factura
+    if (facturado == 1){
+        var boton = document.getElementById("imprimir_factura");
+        boton.click();                    
+    }
     
     document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
     tablaproductos();

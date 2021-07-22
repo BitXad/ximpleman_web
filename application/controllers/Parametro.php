@@ -36,7 +36,7 @@ class Parametro extends CI_Controller{
         $this->load->model('Categoria_producto_model');
         $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
         $data['all_parametros'] = $this->Parametro_model->get_all_parametros();
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        //$data['parametro'] = $this->Parametro_model->get_parametros();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['page_title'] = "Parametro";
         $data['_view'] = 'parametro/index';
@@ -220,10 +220,10 @@ class Parametro extends CI_Controller{
      * Editing a parametro
      */
     function edit($parametro_id)
-    {   
+    {
         if($this->acceso(125)) {
         // check if the parametro exists before trying to edit it
-        $data['parametro'] = $this->Parametro_model->get_parametro($parametro_id);
+        $data['parametro'] = $this->Parametro_model->get_esteparametro($parametro_id);
         $this->load->model('Categoria_producto_model');
         $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
         

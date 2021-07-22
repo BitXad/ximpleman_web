@@ -37,14 +37,10 @@ class Mesa_model extends CI_Model
     {
         $mesa = $this->db->query("
             SELECT
-                *
-
+                m.*, u.usuario_nombre
             FROM
-                `mesa`
-
-            WHERE
-                1 = 1
-
+                `mesa` m
+            left join usuario u on m.usuario_id = u.usuario_id
             ORDER BY `mesa_id` ASC
         ")->result_array();
 

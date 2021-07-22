@@ -136,7 +136,7 @@ border-bottom : 1px solid #aaa;
 
 <table class="table" style="width: <?php echo $ancho?>" >
     <tr>
-        <td colspan="4">
+        <td colspan="4" style="padding-bottom: 1px">
                 
             <center>
                                
@@ -166,7 +166,16 @@ border-bottom : 1px solid #aaa;
                 <b>LUGAR Y FECHA: </b><span style="font-size: 8pt"><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$venta[0]['venta_hora']; ?></span> <br>
                     <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
                
-            </center>                      
+            </center>
+            <span class="text-bold" style="font-size: 12px">
+            <?php
+            if($venta[0]['tiposerv_id'] == 1){
+                echo "Mesa: ".$venta[0]['venta_numeromesa'];
+            }else{
+                echo "Para llevar";
+            }
+            ?>
+            </span>
         </td>
     </tr>
      
