@@ -63,6 +63,7 @@
 <input type="hidden" name="eselnombreproducto" id="eselnombreproducto" /> <!-- valor dado cuando mostramo el modal para codigo barra -->
 <!--<input type="hidden" name="lapresentacion" id="lapresentacion" value='<?php /*echo json_encode($all_presentacion); ?>' />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($all_moneda); */ ?>' /> -->
+<input type="hidden" name="conencabezado" id="conencabezado" value="1" />
 
 <div class="row micontenedorep" style="display: none" id="cabeceraprint" >
     <table class="table" style="width: 100%; padding: 0;" >
@@ -428,16 +429,21 @@ echo '<script type="text/javascript">
 </div>
 <!------------------------ FIN modal para elegir precio factor en PRECIOS ------------------->
 <!------------------------ INICIO modal para elegir # imagenes(codigo de barras de un producto) para su impresion! ------------------->
-<div class="modal fade" id="modalcodigobarra" tabindex="-1" role="dialog" aria-labelledby="modalcodigobarralabel">
+<div class="modal fade" id="modalcodigobarra" tabindex="-1" role="dialog" aria-labelledby="modalcodigobarralabel" style="font-family: Arial">
     <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                <span>CODIGO DE BARRAS DEL PRODUCTO</span><br>
+                <span class="text-bold">CODIGO DE BARRAS DEL PRODUCTO</span><br>
                 <span class="text-bold" id="elnombreproducto"></span>
             </div>
             <div class="modal-body">
+                <div class="col-md-12">
+                    <label for="elencabezadoprint" class="control-label">
+                        <input type="checkbox" name="elencabezadoprint" id="elencabezadoprint" />
+                        Imprimir con encabezado</label>
+                </div>
                 <div class="col-md-6">
                     <label for="num_impresiones" class="control-label"><span class="text-danger">*</span>Nro. de Etiquetas</label>
                     <span class="text-red" id="mensaje_num_impresiones"></span>

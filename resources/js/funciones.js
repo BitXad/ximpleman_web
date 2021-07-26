@@ -3106,13 +3106,14 @@ function tabla_ventas(filtro)
                     if(tipousuario_id == 1){
                     html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalusuario"+v[i]['venta_id']+"' title='Modificar Usuario vendedor'><span class='fa fa-user'></span></a>";
                     html += "<!------------------------ INICIO modal para cambiar usuario vendedor ------------------->";
-                    html += "<div class='modal fade' id='modalusuario"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='modalusuarioLabel"+v[i]['venta_id']+"'>";
+                    html += "<div class='modal fade' id='modalusuario"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='modalusuarioLabel"+v[i]['venta_id']+"' style='font-family: Arial'>";
                     html += "<div class='modal-dialog' role='document'>";
                     html += "<br><br>";
                     html += "<div class='modal-content'>";
-                    html += "<div class='modal-header text-center text-bold'>";
-                    html += "<span style='font-size: 15px'>Venta N° "+v[i]["venta_id"]+"</span>";
+                    html += "<div class='modal-header text-center'>";
                     html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                    html += "<span class='text-bold' style='font-size: 13pt'>MODIFICAR USUARIO DE LA VENTA</span><br>";
+                    html += "<span style='font-size: 11pt'>Venta N° <b>"+v[i]["venta_id"]+"</b></span>";
                     html += "</div>";
                     html += "<div class='modal-body'>";
                     html += "<!------------------------------------------------------------------->";
@@ -3154,7 +3155,9 @@ function tabla_ventas(filtro)
                     else{
                         if(generar_factura == 1){
                             if(dosificado == 1){
-                                html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+JSON.stringify(v[i])+");'><span class='fa fa-modx'></span></button> ";
+                                if(v[i]['venta_total'] > 0){
+                                    html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+JSON.stringify(v[i])+");'><span class='fa fa-modx'></span></button> ";
+                                }
                             }
                         }
                     }
@@ -3173,11 +3176,11 @@ function tabla_ventas(filtro)
                     html += "                           <!--<a href='<?php echo site_url('venta/eliminar_venta/'.$v[i]['venta_id']); ?>' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a>-->";
                     html += "                           <button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Anular venta'><em class='fa fa-ban'></em></button>";
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
-                    html += "                               <div class='modal fade' id='myModal"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['venta_id']+"'>";
+                    html += "                               <div class='modal fade' id='myModal"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['venta_id']+"' style='font-family: Arial'>";
                     html += "                                 <div class='modal-dialog' role='document'>";
                     html += "                                       <br><br>";
                     html += "                                   <div class='modal-content'>";
-                    html += "                                     <div class='modal-header'>";
+                    html += "                                     <div class='modal-header text-center'>";
                     html += "                                       <h1 class='modal-title' id='myModalLabel'>ADVERTENCIA</h1>";
                     html += "                                     </div>";
                     html += "                                     <div class='modal-body'>";
@@ -3185,7 +3188,7 @@ function tabla_ventas(filtro)
                     html += "                                             ";
                     html += "                                         <center>";
                     html += "                                      <!------------------------------------------------------------------->";
-                    html += "                                      <h1 style='font-size: 80px'> <b> <em class='fa fa-trash'></em></b></h1> ";
+                    html += "                                     <h1 style='font-size: 80px'> <b> <em class='text-red fa fa-trash'></em></b></h1> ";
                     html += "                                      <h4>";
                     html += "                                          ";
                     html += "                                          ¿Desea anular la venta? <b> <br>";
@@ -3202,11 +3205,11 @@ function tabla_ventas(filtro)
                     html += "                                         </center>";
                     html += "                                         </div>";
                     html += "                                     </div>";
-                    html += "                                     <div class='modal-footer aligncenter'>";
-                    html += "                                         <center>";                                        
-                    html += "                                           <a href='"+base_url+"venta/anular_venta/"+v[i]['venta_id']+"' class='btn btn-danger  btn-sm'><em class='fa fa-pencil'></em> Si </a>";
+                    html += "                                     <div class='modal-footer'>";
+                    html += "                                         <center>";
+                    html += "                                           <a href='"+base_url+"venta/anular_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-sm'><em class='fa fa-check'></em> Si </a>";
 
-                    html += "                                           <a href='#' class='btn btn-success btn-sm' data-dismiss='modal'><em class='fa fa-times'></em> No </a>";
+                    html += "                                           <a href='#' class='btn btn-danger btn-sm' data-dismiss='modal'><em class='fa fa-times'></em> No </a>";
                     html += "                                         </center>";
 
                     html += "                                     </div>";

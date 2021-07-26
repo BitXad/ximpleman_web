@@ -14,9 +14,12 @@ function buscarproducto(e) {
 }
 
 function imprimir_producto(){
-    var estafh = new Date();
-    $('#fhimpresion').html(formatofecha_hora_ampm(estafh));
-    $("#cabeceraprint").css("display", "");
+    var concabecera = $('#conencabezado').val();
+    if(concabecera == 1){
+        var estafh = new Date();
+        $('#fhimpresion').html(formatofecha_hora_ampm(estafh));
+        $("#cabeceraprint").css("display", "");
+    }
     window.print();
     $("#cabeceraprint").css("display", "none");
 }
@@ -1026,6 +1029,7 @@ function cabecera_tabla() {
 }
 function busqueda_inicial() {
     $('#titcatalogo').text("");
+    $('#conencabezado').val(1);
     var base_url = document.getElementById('base_url').value;
     //var checkBox = document.getElementById("myCheck");
     var formaimagen = document.getElementById('formaimagen').value;
@@ -1350,6 +1354,7 @@ function mostrarmodalcodigobarra(producto_id, producto_nombre, producto_codigoba
     $("#esestecodigobarra").val(producto_codigobarra);
     $("#eselnombreproducto").val(producto_nombre);
     $("#elnombreproducto").html(producto_nombre);
+    $("#elencabezadoprint").prop("checked", false);
     $("#modalcodigobarra").modal("show");
 }
 /* verifica si lo ingresado es un numero valido */
@@ -1371,11 +1376,16 @@ function verificarnumero_codbarra() {
     }else if(altoimagen_codbarra <= 0 || altoimagen_codbarra >20 || isNaN(altoimagen_codbarra)){
         $("#mensaje_altoimagen_codbarra").html("<br>Por favor ingrese un número valido");
     }else{
+        var imprimirencabezado = 0;
+        if( $('#elencabezadoprint').is(':checked') ) {
+            imprimirencabezado = 1;
+        }
         const arreglo = [];
         arreglo.push(num_impresiones); // 0
         arreglo.push(num_imagenescodbarra); // 1
         arreglo.push(anchoimagen_codbarra); // 2
         arreglo.push(altoimagen_codbarra); // 3
+        arreglo.push(imprimirencabezado); // 4
         $("#modalcodigobarra").modal("hide");
         codbarra_producto(arreglo);
     }
@@ -1391,7 +1401,7 @@ function codbarra_producto(num_imagenes) {
         var contcol = 1;
         chtml = "";
         chtml += "<tr role='row'  style='width: 19cm !important'>";
-        chtml += "<th colspan='"+numcolumna+"'  role='columnheader' >"+eselnombreproducto;
+        chtml += "<th colspan='"+numcolumna+"' role='columnheader' style='padding-top: 0px; padding-bottom: 0px'>"+eselnombreproducto;
         chtml += " <a class='btn btn-danger btn-xs no-print' onclick='busqueda_inicial()' title='Cerrar generador de código'><span class='fa fa-times'></span></a></th>";
         chtml += "</tr>";
         html = "";
@@ -1428,6 +1438,7 @@ function codbarra_producto(num_imagenes) {
         }
         $("#cabcatalogo").html(chtml);
         $("#tablaresultados").html(html);
+        $("#conencabezado").val(num_imagenes[4]);
         for (var i = 0; i < num_imagenes[0] ; i++){
             if(codigo_barra != null && codigo_barra !=""){
                 JsBarcode("#barcode"+i, codigo_barra);

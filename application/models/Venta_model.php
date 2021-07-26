@@ -405,7 +405,7 @@ class Venta_model extends CI_Model
      */
     function get_usuarios()
     {        
-        $sql = 'select * from usuario where estado_id = 1';
+        $sql = 'select * from usuario where estado_id = 1 order by usuario_nombre';
         $resultado = $this->db->query($sql)->result_array();
         
         return $resultado;

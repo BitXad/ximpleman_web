@@ -16,7 +16,7 @@ Class Login extends CI_Controller
         $lice = $this->db->query($licencia)->row_array();
 
         if ($lice['dias']<=10) {
-            $data['diaslic'] = $lice;
+            $data['diaslic'] = $lice['dias'];
             $this->load->view('login/singin',$data);
     	} else{
             $data['diaslic'] = 5000;

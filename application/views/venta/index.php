@@ -394,13 +394,14 @@
 <!----------------- fin modal factura ---------------------------------------------->
 
 <!------------------------ INICIO modal para Modificar fecha de una venta ------------------->
-<div class="modal fade" id="modalmodificarhora" tabindex="-1" role="dialog" aria-labelledby="modalmodificarhoralabel">
+<div class="modal fade" id="modalmodificarhora" tabindex="-1" role="dialog" aria-labelledby="modalmodificarhoralabel" style="font-family: Arial">
     <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                <span style="font-size: 15pt">Venta Num.: <span class="text-bold" id="num_venta"></span></span>
+                <span class="text-bold" style="font-size: 13pt">MODIFICAR FECHA DE LA VENTA</span><br>
+                <span style="font-size: 11pt">Venta Num.: <span class="text-bold" id="num_venta"></span></span>
                 <input type="hidden" name="nunmventa_id" class="form-control" id="nunmventa_id" />
             </div>
             <div class="modal-body" style="padding-bottom: 0px !important">
