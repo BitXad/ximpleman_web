@@ -142,6 +142,7 @@ border-bottom : 1px solid #aaa;
 
                 <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
                 <font size="1" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
+                <font size="1" face="arial"><b>Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?><br>T.C. <?php echo $moneda['moneda_tc']; ?></b></font> <br>
                 <br> 
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
@@ -168,10 +169,15 @@ border-bottom : 1px solid #aaa;
 <table class="table" style="width: <?php echo $ancho;?>; padding: 0;" >
        <!--<table class="table table-striped table-condensed"  style="width: <?php //echo $ancho; ?>;" >-->
            <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
-               <td align="center"><b>CN</b></td>
-                <td align="center"><b>DESCRIPCIÓN</b></td>
-                <td align="center"><b>P.UNIT</b></td>
-                <td align="center"><b>TOTAL</b></td>
+               <td align="center" style="padding: 0"><b>CN</b></td>
+                <td align="center" style="padding: 0"><b>DESCRIPCIÓN</b></td>
+                <td align="center" style="padding: 0"><b>P.UNIT <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
+                <td align="center" style="padding: 0"><b>TOTAL <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
+                <?php if($parametro[0]['moneda_id']==1){  ?>
+                        <td align="center" style="padding: 0"><b>TOTAL <?php echo $moneda['moneda_descripcion']; ?></b></td>
+                <?php }else{  ?> 
+                        <td align="center" style="padding: 0"><b>TOTAL Bs</b></td>
+                <?php }  ?>
            </tr>
            <?php $cont = 0;
                  $cantidad = 0;
@@ -202,46 +208,90 @@ border-bottom : 1px solid #aaa;
                 </td>
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0">
+                    <?php 
+                        if($parametro[0]['moneda_id'] == $d['moneda_id']){ //si la moneda es la misma que la principal
+                            if ($d['moneda_id']==1){    
+                                $total_equivalente = round($d['detalleven_subtotal'],2)/$d['detalleven_tc'];
+                            }else{
+                                $total_equivalente = round($d['detalleven_subtotal'],2)*$d['detalleven_tc'];
+                            }
+                        }else{
+                            if($d['moneda_id']==1){
+                                $total_equivalente = round($d['detalleven_subtotal'],2) * round($d['detalleven_tc'],2);
+                            }else{
+                                $total_equivalente = round($d['detalleven_subtotal'],2) / round($d['detalleven_tc'],2);
+                            }
+                        }
+                        echo number_format($total_equivalente,2,'.',',');
+                    ?>
+                </td>
            </tr>
            <?php } ?>
 <!--       </table>
 <table class="table" style="max-width: 7cm;">-->
-    <tr style="border-top-style: solid; border-top-width: 2px; border-top-style: solid; border-top-width: 2px;" colspan="4" align="right">
+    <tr style="border-top-style: solid; border-top-width: 2px; border-top-style: solid; border-top-width: 2px;" align="right">
         
-        <td colspan="4" style="padding: 0;"  >
+        <td colspan="5" style="padding: 0;"  >
             
             <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
+                <b><?php echo "SUB TOTAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
             </font>
             
 
             <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($venta[0]['venta_descuento'],2,'.',','); ?><br>
+                <?php echo "TOTAL DESCUENTO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_descuento'],2,'.',','); ?><br>
             </font>
             <font size="2">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
+                <?php echo "TOTAL FINAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
             </b>
+                <?php 
+                    if ($parametro[0]['moneda_id']==1)
+                        $texto_moneda = ' Bolivianos';
+                    else
+                        $texto_moneda = $parametro[0]['moneda_descripcion'];
+                
+                    echo "SON: ".num_to_letras($total_final,$texto_moneda); ?><br>
+                    <b>
+                    <!------------------ TOTAL EN OTRA MONEDA------------------------>
+                    <?php 
+                        $total_final_equivalente = 0;
+                        $tfe = "";
+                        
+                            if($parametro[0]['moneda_id']==1){
+                                
+                                $total_final_equivalente =  $venta[0]['venta_total'] / $d['detalleven_tc'];
+                                $tfe = "".$moneda['moneda_descripcion'];
+                                
+                            }else{
+                                
+                                $total_final_equivalente = $venta[0]['venta_total'] * $d['detalleven_tc'];
+                                $tfe = "Bs ";
+                            }
+                        
+                        echo $tfe." ".number_format($total_final_equivalente,2,'.',',');
+                    ?>
+                    <!------------------------------------------>
+                    </b>
             </font>
-            <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
-            </font>
+            <br>
             <font size="1">
-                <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>            
+                <?php echo "EFECTIVO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
+                <?php echo "CAMBIO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>            
             </font>
             
             <?php if($venta[0]['tipotrans_id']==2){ ?>
             <font size="1">
-                <br>CUOTA INIC. Bs: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b>
-                <br>SALDO Bs: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
+                <br>CUOTA INIC. <?php echo $parametro[0]['moneda_descripcion']; ?>: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b>
+                <br>SALDO <?php echo $parametro[0]['moneda_descripcion']; ?>: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
             </font>
             <?php } ?>
             
         </td>          
     </tr>
     <tr >
-        <td colspan="4" style="padding:0;">
+        <td colspan="5" style="padding:0;">
             <?php
             if($venta[0]['venta_glosa'] != null || $venta[0]['venta_glosa'] != ""){
             ?>

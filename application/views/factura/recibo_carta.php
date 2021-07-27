@@ -295,14 +295,34 @@ border-bottom : 1px solid #aaa;
             
             <font size="2">
             <b>
+                <!------------------ TOTAL EN OTRA MONEDA------------------------>
+                    <?php 
+                        $total_final_equivalente = 0;
+                        $tfe = "";
+                        
+                            if($parametro[0]['moneda_id']==1){
+                                
+                                $total_final_equivalente =  $venta[0]['venta_total'] / $d['detalleven_tc'];
+                                $tfe = "".$moneda['moneda_descripcion'];
+                                
+                            }else{
+                                
+                                $total_final_equivalente = $venta[0]['venta_total'] * $d['detalleven_tc'];
+                                $tfe = "Bs ";
+                            }
+                        
+                        echo $tfe." ".number_format($total_final_equivalente,2,'.',',');
+                    ?>              
+                   
+                    <!------------------------------------------>
                 <?php                    
                 
-                if ($parametro[0]["moneda_id"]==1){
+                /*if ($parametro[0]["moneda_id"]==1){
                     echo $parametro[0]["moneda_descripcion"]." ".number_format($total_final_me,2,'.',',');
 
                 }else{
                     echo "Bs ".number_format($total_final_me,2,'.',',');
-               }
+               }*/
                 
                 ?>
                 <br>

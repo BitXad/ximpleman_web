@@ -287,12 +287,12 @@ border-bottom : 1px solid #aaa;
                             if($parametro[0]['moneda_id']==1){
                                 
                                 $total_final_equivalente =  $venta[0]['venta_total'] / $d['detalleven_tc'];
-                                $tfe = "TOTAL FINAL ".$moneda['moneda_descripcion'];
+                                $tfe = "".$moneda['moneda_descripcion'];
                                 
                             }else{
                                 
                                 $total_final_equivalente = $venta[0]['venta_total'] * $d['detalleven_tc'];
-                                $tfe = "TOTAL FINAL Bs ";
+                                $tfe = "Bs ";
                             }
                         
                         echo $tfe." ".number_format($total_final_equivalente,2,'.',',');

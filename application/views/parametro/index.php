@@ -191,6 +191,7 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">PASE A DETALLE</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">DATOS DE BOTON</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MONEDA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FACTURA</th>
                     </tr>
                     <tr>
                         <td><?php
@@ -243,6 +244,16 @@ foreach($all_parametros as $p)
                         </td>
                         <td><?php
                             echo $p['moneda_descripcion'];
+                            ?>
+                        </td>
+                        <td><?php
+                            if($p['parametro_factura'] == 1){
+                                echo 'TODO FACTURADO';
+                            }else if($p['parametro_factura'] == 2){
+                                echo 'FACTURA OPCIONAL';
+                            }else if($p['parametro_factura'] == 3){
+                                echo 'SIN FACTURA';
+                            }
                             ?>
                         </td>
                     </tr>

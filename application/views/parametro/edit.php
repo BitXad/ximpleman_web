@@ -345,6 +345,16 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <label for="parametro_factura" class="control-label"><span class="text-danger">*</span>FACTURA</label>
+                        <div class="form-group">
+                            <select name="parametro_factura" class="form-control" required id="parametro_factura">
+                                <option value="1" <?php if($parametro['parametro_factura']=='1') echo 'selected'; ?> >TODO FACTURADO</option>
+                                <option value="2" <?php if($parametro['parametro_factura']=='2') echo 'selected'; ?> >FACTURA OPCIONAL</option>
+                                <option value="3" <?php if($parametro['parametro_factura']=='3') echo 'selected'; ?> >SIN FACTURA</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer text-center">

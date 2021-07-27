@@ -336,6 +336,16 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <label for="parametro_factura" class="control-label"><span class="text-danger">*</span>FACTURA</label>
+                        <div class="form-group">
+                            <select name="parametro_factura" class="form-control" required id="parametro_factura">
+                                <option value="1">TODO FACTURADO</option>
+                                <option value="2">FACTURA OPCIONAL</option>
+                                <option value="3">SIN FACTURA</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer text-center">

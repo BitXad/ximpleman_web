@@ -3097,7 +3097,8 @@ function tabla_ventas(filtro)
 
                     html += "                       <td class='no-print' style='padding:0;'>";
 //                    html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print' target='_blank' title='Modifica los datos generales de la venta'><span class='fa fa-pencil'></span></a>";
-                    html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modificar el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
+                    //html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modificar el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
+                    html += "                           <a onclick='verificarmodificar("+v[i]['venta_id']+", "+v[i]['estado_id']+")' class='btn btn-facebook btn-xs no-print' title='Modificar el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
                     html += "                           <a href='"+base_url+"factura/imprimir_recibo/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta' id='imprimir"+v[i]['venta_id']+"'><span class='fa fa-print'></span></a> ";
                     if(certif_garantia == 1){
@@ -3148,7 +3149,7 @@ function tabla_ventas(filtro)
                     }
                     if (parametro_modulorestaurante==1){
                     html += "                           <a href='"+base_url+"factura/comanda_boucher/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Imprimir comanda'><span class='fa fa-list'></span></a> ";
-                }
+                    }
                     if (v[i]['venta_tipodoc']==1){
                         html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
                     }
@@ -4884,4 +4885,13 @@ function mostrame(){
     var data = $("#listaproductos[value='"+value+"']").data('producto');
  //   alert(value+"***"+data);
     
+}
+
+function verificarmodificar(venta_id, estado_id){
+    if(estado_id == 3){
+        alert("No puede modificar la venta, debido a que esta venta fue anulada!");
+    }else{
+        var base_url    = document.getElementById('base_url').value;
+        window.open(base_url+'venta/modificar_venta/'+venta_id, '_blank');
+    }
 }
