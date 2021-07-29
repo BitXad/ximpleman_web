@@ -2666,7 +2666,7 @@ function registrarventa(cliente_id)
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
                 venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
-            success:function(respuesta){ 
+            success:function(respuesta){
                 eliminardetalleventa();
                 //if (pedido_id>0){ pedidos_pendientes(); }
             },
@@ -2685,7 +2685,7 @@ function registrarventa(cliente_id)
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 venta_descuento:venta_descuento,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
-            success:function(respuesta){ 
+            success:function(respuesta){
                 eliminardetalleventa();
                 //if (pedido_id>0){ pedidos_pendientes(); }
             },
@@ -3411,7 +3411,10 @@ function borrar_datos_cliente()
     tablaproductos();
     
     tablaresultados(1); //redibuja la tabla de busqueda de productos      
-    
+    var parametro_factura = document.getElementById('parametro_factura').value;
+    if(parametro_factura == 2){
+        $("#facturado").prop("checked", false);
+    }
     document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
     document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
     

@@ -253,6 +253,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
 <input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
 <input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
+<input type="text" id="parametro_factura" value="<?php echo $parametro[0]['parametro_factura']; ?>" name="parametro_factura"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 
@@ -346,8 +347,17 @@ window.onkeydown = compruebaTecla;
 <!---------------------- collapse ----------------------------->
  
         <h4 class="panel-title">
-          <?php if(sizeof($dosificacion)>0){ ?>
-            <input type="checkbox" id="facturado" value="1" name="facturado" >
+            <?php
+            if(sizeof($dosificacion)>0){
+                if($parametro[0]['parametro_factura'] == 1){
+                    $eschecked = "checked disabled";
+                }elseif($parametro[0]['parametro_factura'] == 2){
+                    $eschecked = "";
+                }elseif($parametro[0]['parametro_factura'] == 3){
+                    $eschecked = "hidden";
+                }
+            ?>
+            <input type="checkbox" id="facturado" value="1" name="facturado" <?php echo $eschecked; ?>>
           <?php } else{ ?>
             <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
             <font color="red" size="2"> Dosificación no activada</font>
