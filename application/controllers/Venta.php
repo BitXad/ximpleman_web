@@ -3382,6 +3382,24 @@ function anular_venta($venta_id){
         }else{                 
             show_404();
         }              
-    }   
+    }
+    
+    function registrar_puntos()
+    {
+        if ($this->input->is_ajax_request()) {
+            $cliente_id = $this->input->post('cliente_id');   
+            $venta_total = $this->input->post('venta_total');
+            $esteparametro = $this->Parametro_model->get_parametros();
+            $cliente = $this->Cliente_model->get_cliente($cliente_id);
+            $puntos = $cliente['cliente_puntos']+($esteparametro[0]['parametro_puntos']*$venta_total);
+            $params = array(
+                'cliente_puntos' => $puntos,
+            );
+            $this->Cliente_model->update_cliente($cliente_id, $params);
+            echo json_encode("ok");
+        }else{                 
+            show_404();
+        }              
+    }
     
 }

@@ -2667,6 +2667,7 @@ function registrarventa(cliente_id)
                 venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
             success:function(respuesta){
+                registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
                 //if (pedido_id>0){ pedidos_pendientes(); }
             },
@@ -2686,6 +2687,7 @@ function registrarventa(cliente_id)
                 venta_descuento:venta_descuento,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
             success:function(respuesta){
+                registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
                 //if (pedido_id>0){ pedidos_pendientes(); }
             },
@@ -4897,4 +4899,16 @@ function verificarmodificar(venta_id, estado_id){
         var base_url    = document.getElementById('base_url').value;
         window.open(base_url+'venta/modificar_venta/'+venta_id, '_blank');
     }
+}
+/* registra puntos de una venta a un cliente  */
+function registrarpuntos(cliente_id, venta_total){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/registrar_puntos";
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{cliente_id:cliente_id, venta_total:venta_total},
+        success:function(resultado){
+            
+        }
+    });
 }

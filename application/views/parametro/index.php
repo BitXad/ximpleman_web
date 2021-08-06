@@ -257,6 +257,13 @@ foreach($all_parametros as $p)
                             ?>
                         </td>
                     </tr>
+                    <tr>
+                        <th style="font-size: 12px;color:black;background: rgba(214, 114, 26, 0.3);" rowspan="2" ><u>CLIENTES</u></th>
+                        <th style="font-size: 11px;color:black;background: rgba(214, 114, 26, 0.3);">PUNTOS</th>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p['parametro_puntos']; ?></td>
+                    </tr>
                 </table>
                            
             </div>

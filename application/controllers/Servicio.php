@@ -1605,8 +1605,8 @@ class Servicio extends CI_Controller{
         }
     }
     
-    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta********** */
-    function servcompdetalle_pago($servicio_id)
+    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta sin IMAGEN********** */
+    function notaesi_carta($servicio_id)
     {
         if($this->acceso(69)){
             $data['page_title'] = "Comprobante de Servicio";
@@ -1616,10 +1616,12 @@ class Servicio extends CI_Controller{
             $this->load->model('Detalle_serv_model');
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
             
-            
             $empresa_id = 1;
             $this->load->model('Empresa_model');
 	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
             
             $this->load->model('Cliente_model');
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
@@ -1633,7 +1635,109 @@ class Servicio extends CI_Controller{
             $this->load->model('Dosificacion_model');
 	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
             
-            $data['_view'] = 'servicio/servcompdetalle_pago';
+            $data['_view'] = 'servicio/notaesi_carta';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta con IMAGEN********** */
+    function notaeci_carta($servicio_id)
+    {
+        if($this->acceso(69)){
+            $data['page_title'] = "Comprobante de Servicio";
+            
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Categoria_clientezona_model');
+	    $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($data['cliente']['zona_id']);
+            
+            $this->load->model('Usuario_model');
+	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['entregausuario_id']);
+            
+            $this->load->model('Dosificacion_model');
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            $data['_view'] = 'servicio/notaeci_carta';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño boucher sin IMAGEN********** */
+    function notaesi_boucher($servicio_id)
+    {
+        if($this->acceso(69)){
+            $data['page_title'] = "Comprobante de Servicio";
+            
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Categoria_clientezona_model');
+	    $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($data['cliente']['zona_id']);
+            
+            $this->load->model('Usuario_model');
+	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['entregausuario_id']);
+            
+            $this->load->model('Dosificacion_model');
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            $data['_view'] = 'servicio/notaesi_boucher';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta con IMAGEN********** */
+    function notaeci_boucher($servicio_id)
+    {
+        if($this->acceso(69)){
+            $data['page_title'] = "Comprobante de Servicio";
+            
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Categoria_clientezona_model');
+	    $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($data['cliente']['zona_id']);
+            
+            $this->load->model('Usuario_model');
+	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['entregausuario_id']);
+            
+            $this->load->model('Dosificacion_model');
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            $data['_view'] = 'servicio/notaeci_boucher';
             $this->load->view('layouts/main',$data);
         }
     }

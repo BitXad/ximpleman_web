@@ -356,6 +356,16 @@
                         </div>
                     </div>
                 </div>
+            </div><hr>
+            <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(214, 114, 26, 0.3);"><u><b>CLIENTES</b></u><br>
+                <div class="row clearfix">
+                    <div class="col-md-2">
+                        <label for="parametro_puntos" class="control-label">PUNTOS</label>
+                        <div class="form-group">
+                            <input type="number" min="0" step="any" name="parametro_puntos" value="<?php echo ($this->input->post('parametro_puntos') ? $this->input->post('parametro_puntos') : $parametro['parametro_puntos']); ?>" class="form-control" id="parametro_puntos"  />
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="box-footer text-center">
                 <button type="submit" class="btn btn-success">

@@ -18,13 +18,13 @@ class Servicio_model extends CI_Model
     {
         $servicio = $this->db->query("
             SELECT
-                *
-
+                s.*, u.usuario_nombre, e.usuario_nombre as entregausuario_nombre
             FROM
-                `servicio`
-
+                `servicio` s
+            left join usuario u on s.usuario_id = u.usuario_id
+            left join usuario e on s.entregausuario_id = e.usuario_id
             WHERE
-                `servicio_id` = ?
+                s.`servicio_id` = ?
         ",array($servicio_id))->row_array();
 
         return $servicio;
