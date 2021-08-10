@@ -48,15 +48,16 @@
     }
 </style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
-<!-- <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet"> -->
+<!--<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">-->
+ <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet"> 
 <!-- <link rel="stylesheet" href="<?= base_url('resources/css/dataTables.bootstrap4.min.css'); ?>"> -->
-<link rel="stylesheet" href="<?= base_url('resources/css/dataTables.min.css'); ?>">
+<!--<link rel="stylesheet" href="<?= base_url('resources/css/dataTables.min.css'); ?>">-->
 
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php  echo $tipousuario_id; ?>" />
+<input type="hidden" name="parametro_puntos" id="parametro_puntos" value="<?php  echo $parametro['parametro_puntos']; ?>" />
 <!--<input type="hidden" name="lacategoria_cliente" id="lacategoria_cliente" value='<?php /*echo json_encode($all_categoria_cliente); ?>' />
 <input type="hidden" name="lacategoria_clientezona" id="lacategoria_clientezona" value='<?php echo json_encode($all_categoria_clientezona);  ?>' />
 <input type="hidden" name="elusuario" id="elusuario" value='<?php echo json_encode($all_usuario); */ ?>' />-->

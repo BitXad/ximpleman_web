@@ -230,7 +230,13 @@ border-bottom : 1px solid #aaa;
                 <?php if ($venta[0]['pedido_id']>=1) { ?>
                 PED.: <b><?php echo $venta[0]['pedido_id']; ?></b><br>
                 <?php }else{ ?>
-                COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
+                COD.: <b><?php echo $venta[0]['venta_id']; ?></b>
+                <?php
+                if($parametro[0]['parametro_puntos'] >0){
+                    echo "PUNTOS: <b>".$venta[0]['cliente_puntos']."</b>";
+                }
+                ?>
+                <br>
                 <?php } ?>
                 TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b><br>
                 CUOTA INIC. Bs: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>

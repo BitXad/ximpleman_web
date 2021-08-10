@@ -304,6 +304,11 @@ border-bottom : 1px solid #aaa;*/
                     if ($factura[0]['servicio_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['servicio_id']."S"; 
                     if ($factura[0]['cuota_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['cuota_id']."C"; 
                ?></b>
+               <?php
+                if($parametro[0]['parametro_puntos'] >0){
+                    echo " / PUNTOS: <b>".$venta[0]['cliente_puntos']."</b>";
+                }
+                ?>
             <center>
                     <?php echo $factura[0]['factura_leyenda1'];?> <br>
             <font size="1">

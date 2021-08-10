@@ -187,6 +187,7 @@ function ventas_dia($estado)
                 c.cliente_direccion,c.cliente_telefono,c.cliente_celular,c.cliente_foto,c.cliente_email,
                 c.cliente_nombrenegocio,c.cliente_aniversario,c.cliente_latitud,c.cliente_longitud,c.cliente_nit,
                 c.cliente_razon,c.cliente_departamento,c.zona_id,c.lun,c.mar,c.mie,c.jue,c.vie,c.sab,c.dom,
+                c.cliente_puntos,
                 u.usuario_nombre,t.tipotrans_nombre,z.zona_nombre,r.credito_id,r.compra_id,r.credito_monto,
                 r.credito_cuotainicial,r.credito_interesproc,r.credito_interesmonto,r.credito_numpagos,
                 r.credito_fechalimite,r.credito_fecha,r.credito_hora,r.credito_tipo,r.credito_tipointeres,r.servicio_id

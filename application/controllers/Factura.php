@@ -176,7 +176,7 @@ class Factura extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        //$data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
        // $data['venta'] = $this->Detalle_venta_model->get_venta_id($venta_id);
         $data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        

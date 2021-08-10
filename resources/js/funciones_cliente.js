@@ -50,6 +50,7 @@ function tablaresultadoscliente(limite)
     var limit = limite;
     var base_url = document.getElementById('base_url').value;
     var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var parametro_puntos = document.getElementById('parametro_puntos').value;
     
     if(limit == 1){
         controlador = base_url+'cliente/buscarclienteslimit/';
@@ -229,6 +230,12 @@ function tablaresultadoscliente(limite)
                         html += "<b>NIT: </b>"+registros[i]["cliente_nit"]+"<br>";
                         html += "<b>EMAIL: </b>"+registros[i]["cliente_email"]+"<br>";
                         html += "<b>ANIVERS.: </b>"+aniv+"<br>";
+                        if(parametro_puntos >0){
+                            /*if(){
+                                
+                            }*/
+                            html += "<b>PUNTOS: </b>"+registros[i]["cliente_puntos"];
+                        }
                         
                         html += "</div>";
                         html += "</td>";
