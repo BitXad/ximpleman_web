@@ -145,7 +145,7 @@ class Factura extends CI_Controller{
          $params['size'] = 5;
          //decimos el directorio a guardar el codigo qr, en este 
          //caso una carpeta en la raíz llamada qr_code
-         $params['savename'] = FCPATH.'resources\images\qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+         $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
          
          //generamos el código qr
          $this->ciqrcode->generate($params); 

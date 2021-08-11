@@ -231,12 +231,8 @@ function tablaresultadoscliente(limite)
                         html += "<b>EMAIL: </b>"+registros[i]["cliente_email"]+"<br>";
                         html += "<b>ANIVERS.: </b>"+aniv+"<br>";
                         if(parametro_puntos >0){
-                            /*if(){
-                                
-                            }*/
                             html += "<b>PUNTOS: </b>"+registros[i]["cliente_puntos"];
                         }
-                        
                         html += "</div>";
                         html += "</td>";
                         html += "<td class='no-print' style='text-align: center'>";
@@ -304,9 +300,7 @@ function tablaresultadoscliente(limite)
                             html += "<a href='https://wa.me/591"+registros[i]["cliente_celular"]+"' target='_BLANK' class='btn btn-success btn-xs' title='Enviar mensaje por whatsapp'><span class='fa fa-whatsapp'></span></a>";
                         }
                         
-                        
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
-                        
                         
                         html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";

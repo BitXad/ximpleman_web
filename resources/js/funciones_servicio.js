@@ -4161,6 +4161,7 @@ function registrarservicio_proceso(servicio_id, detalleserv_id){
             success:function(respuesta){
                 resultado = JSON.parse(respuesta);
                 if(resultado == "ok"){
+                    $('#filtrar').val(servicio_id);
                     fechadeservicio(null, 1);
                 }
             },
@@ -4571,8 +4572,9 @@ function registrarservicio_pagoacuenta(servicio_id, detalleserv_id){
             success:function(respuesta){
                 resultado = JSON.parse(respuesta);
                 if(resultado == "ok"){
-                    buscar_servicioporfechas();
-                    //fechadeservicio(null, 1);
+                    //buscar_servicioporfechas();
+                    $('#filtrar').val(servicio_id);
+                    fechadeservicio(null, 1);
                 }
             },
             error: function(respuesta){
