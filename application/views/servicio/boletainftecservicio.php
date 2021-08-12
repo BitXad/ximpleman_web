@@ -30,56 +30,42 @@ if(isset($sintitulo)){
 }
 ?>
 <div style="width: 20cm">
-<div class="row micontenidoInforme" <?php echo $mostrar; ?> >
-    <div id="cabizquierda" style="width: 40%; font-size: 8pt;">
-
+    <div class="row micontenidoInforme" <?php echo $mostrar; ?> >
+        <div id="cabizquierda" style="width: 40%; font-size: 8pt;">
         <?php
-
-        echo $empresa[0]['empresa_nombre']."<br>";
-
-        echo $empresa[0]['empresa_direccion']."<br>";
-
-        echo $empresa[0]['empresa_telefono'];
-
+            echo $empresa[0]['empresa_nombre']."<br>";
+            echo $empresa[0]['empresa_direccion']."<br>";
+            echo $empresa[0]['empresa_telefono'];
         ?>
-
-    </div>
-
-    <div id="cabcentro" style="width: 20%;">
+        </div>
+        <div id="cabcentro" style="width: 20%;">
             <!--<div id="titulo">
                 ORDEN DE SERVICIO N°: <?php //echo $servicio['servicio_id']; ?><br>
                 <span class="lahora"><?php //echo date("d/m/Y - H:i:s"); ?></span>
             </div>-->
-
-    </div>
-
-    <div id="cabderecha" style="width: 40%;">
-
+        </div>
+        <div id="cabderecha" style="width: 40%;">
             <?php
-
             $mimagen = "thumb_".$empresa[0]['empresa_imagen'];
-
             echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';
-
             ?>
-
+        </div>
     </div>
-</div>
-<div class="row micontenedorlineas" style="margin-right: 0px; margin-left: 0px; <?php echo $mostrar1; ?>" >
-    
-    <hr style="margin-top: 2px; height: 4px !important; background-color: #000;" />
-</div>
-<div class="row micontenidoInforme" style="float: right; margin-top: 1cm;" id="nombrecliente">
-    <div style=" text-align: right; font-size: 8pt;">
-    COCHABAMBA,&nbsp;<span id="fechaliteral"></span><br>
-    <span id="itno">I.T.No: <?php echo $servicio['servicio_id']."/".$servicio['cliente_id']; ?></span>
+    <div class="row micontenedorlineas" style="margin-right: 0px; margin-left: 0px; <?php echo $mostrar1; ?>" >
+        <hr style="margin-top: 2px; height: 4px !important; background-color: #000;" />
     </div>
-</div>
-<br>
-<div class="row micontenidoInforme" id="nombrecliente">
-    <div style="text-align: left; font-size: 8pt;">
+    <div class="row micontenidoInforme" style="float: right; margin-top: 1cm;" id="nombrecliente">
+        <div style=" text-align: right; font-size: 8pt;">
+            COCHABAMBA,&nbsp;<span id="fechaliteral"></span><br>
+            <span id="itno">I.T.No: <?php echo $servicio['servicio_id']."/".$servicio['cliente_id']; ?></span>
+        </div>
+    </div>
+    <br>
+    <div class="row micontenidoInforme" id="nombrecliente">
+        <div style="text-align: left; font-size: 8pt;">
         Se&ntilde;or(es):<br>
-        <span><?php if(is_null($servicio['cliente_id'])|| ($servicio['cliente_id'] ==0))
+        <span>
+            <?php if(is_null($servicio['cliente_id'])|| ($servicio['cliente_id'] ==0))
               {
                  echo "NO DEFINIDO";
               } else{
@@ -87,8 +73,8 @@ if(isset($sintitulo)){
               }
         ?></span><br>
         Presente.-
+        </div>
     </div>
-</div>
 <div class="row micontenidoInforme" style="margin-top: 0px;">
     <div style="text-align: center; width: 100%; font-weight: bolder; font-size: 12pt; font-family: Arial; ">
         Ref.: INFORME TÉCNICO ORDEN N° <?php echo $servicio['cliente_id']; ?>

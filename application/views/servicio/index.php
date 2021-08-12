@@ -132,18 +132,28 @@
             </div>
             <div class="col-md-2">
                 Estado:             
-                <select  class="btn btn-primary btn-sm form-control" id="buscarestado_id" required>
+                <select  class="btn btn-primary btn-sm form-control" id="buscarestado_id" name="buscarestado_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_estado as $estado){?>
                     <option value="<?php echo $estado['estado_id']; ?>"><?php echo $estado['estado_descripcion']; ?></option>
                     <?php } ?>
                 </select>
             </div>
+            <div class="col-md-2">
+                Usuario:             
+                <select  class="btn btn-primary btn-sm form-control" id="buscarusuario_id" name="buscarusuario_id" required>
+                    <!--<option value="" disabled selected >-- USUARIOS --</option>-->
+                    <option value="0">TODOS</option>
+                    <?php foreach($all_usuario as $usuario){?>
+                    <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
+                    <?php } ?>
+                </select>
+            </div>
             <br>
-            <div class="col-md-3">
-                <button class="btn btn-sm btn-soundcloud btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;">
-                    <span class="fa fa-search"></span>Buscar Servicios
-              </button>
+            <div class="col-md-2">
+                <button class="btn btn-sm btn-soundcloud btn-sm btn-block form-control"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;">
+                    <span class="fa fa-search"></span> Buscar Servicios
+                </button>
                 <br>
             </div>
 

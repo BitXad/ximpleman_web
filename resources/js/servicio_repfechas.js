@@ -160,11 +160,13 @@ function reportedetservicio(){
                         html += "<td  class='text-center' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
                         html += "<td class='text-center'>"+registros[i]["tiposerv_descripcion"]+"</td>";
                         html += "<td class='conmenospacio'>";
-                        var longdesc = registros[i]["detalleserv_descripcion"].length;
-                        if(longdesc <= 20){
-                            html += registros[i]["detalleserv_descripcion"];
-                        }else{
-                            html += registros[i]["detalleserv_descripcion"].substring(0, 20);
+                        if(registros[i]["detalleserv_descripcion"] !='' && registros[i]["detalleserv_descripcion"] != null){
+                            var longdesc = registros[i]["detalleserv_descripcion"].length;
+                            if(longdesc <= 20){
+                                html += registros[i]["detalleserv_descripcion"];
+                            }else{
+                                html += registros[i]["detalleserv_descripcion"].substring(0, 20);
+                            }
                         }
                         html += "</td>";
                         html += "<td class='maspeque'>"+registros[i]["respusuario_nombre"]+"</td>";

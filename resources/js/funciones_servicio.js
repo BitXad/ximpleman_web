@@ -765,49 +765,56 @@ function buscar_servicioporfechas()
     {
         filtro = " s.estado_id = 5 ";
         mostrar_ocultar_buscador("ocultar");
+        fechadeservicio(filtro, 0);
     }else if (opcion == 28)
     {
         filtro = " s.estado_id = 28 ";
         mostrar_ocultar_buscador("ocultar");
+        fechadeservicio(filtro, 0);
     }else if (opcion == 66)
     {
         filtro = " s.estado_id = 6 ";
         mostrar_ocultar_buscador("ocultar");
+        fechadeservicio(filtro, 0);
     }else if (opcion == 7)
     {
         filtro = " s.estado_id = 7 ";
         mostrar_ocultar_buscador("ocultar");
+        fechadeservicio(filtro, 0);
     }else if (opcion == 44)
     {
         filtro = " s.estado_id = 4 ";
         mostrar_ocultar_buscador("ocultar");
+        fechadeservicio(filtro, 0);
     }else if (opcion == 1)
     {
         //servicios de hoy
         filtro = " date(servicio_fecharecepcion) = date(now())";
         mostrar_ocultar_buscador("ocultar");
+        fechadeservicio(filtro, 0);
     }else if (opcion == 2)
     {
         //servicios de ayer
         filtro = " date(servicio_fecharecepcion) = date_add(date(now()), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
+        fechadeservicio(filtro, 0);
     }else if (opcion == 3) 
     {
         //servicios de la semana
         filtro = " date(servicio_fecharecepcion) >= date_add(date(now()), INTERVAL -1 WEEK)";
         mostrar_ocultar_buscador("ocultar");
+        fechadeservicio(filtro, 0);
     }else if (opcion == 4) 
     {
         //todos los servicios
         filtro = "";
         mostrar_ocultar_buscador("ocultar");
+        fechadeservicio(filtro, 0);
     }else if (opcion == 5)
     {
         mostrar_ocultar_buscador("mostrar");
         filtro = null;
     }
-
-    fechadeservicio(filtro, 0);
 }
 
 function mostrar_ocultar_buscador(parametro){
@@ -824,15 +831,18 @@ function buscar_por_fecha()
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var estado_id   = document.getElementById('buscarestado_id').value;
+    var usuario_id   = document.getElementById('buscarusuario_id').value;
     var estado = "";
+    var usuario = "";
     if(estado_id != 0){
         estado = " and s.estado_id = "+estado_id;
     }
-    filtro = " date(servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(servicio_fecharecepcion) <='"+fecha_hasta+"' "+estado;
+    if(usuario_id != 0){
+        usuario = " and ds.responsable_id = "+usuario_id;
+    }
+    filtro = " date(servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(servicio_fecharecepcion) <='"+fecha_hasta+"' "+estado+" "+usuario;
 
     fechadeservicio(filtro, 0);
-
-    
 }
 
 function fechadeservicio(elfiltro, busquedade){

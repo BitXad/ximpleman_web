@@ -38,31 +38,31 @@ class Servicio extends CI_Controller{
             
             $data['rol'] = $this->session_data['rol'];
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        //$data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
-        $data['a']=$a;
-        $data['b']=$b;
-        
-        $this->load->model('Estado_model');
-        $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
-        
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        
-        
-        /*$this->load->model('Categoria_trabajo_model');
-        $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo();*/
-        
-        $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_prev_activo();
-        
-        $this->load->model('Categoria_servicio_model');
-        $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_asc();
-        
-        $this->load->model('Parametro_model');
-	$data['all_parametro'] = $this->Parametro_model->get_all_parametro();
-        $data['page_title'] = "Servicio";
-        $data['_view'] = 'servicio/index';
-        $this->load->view('layouts/main',$data);
+            //$data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
+            $data['a']=$a;
+            $data['b']=$b;
+
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
+
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+
+
+            /*$this->load->model('Categoria_trabajo_model');
+            $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo();*/
+
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+
+            $this->load->model('Categoria_servicio_model');
+            $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_asc();
+
+            $this->load->model('Parametro_model');
+            $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
+            $data['page_title'] = "Servicio";
+            $data['_view'] = 'servicio/index';
+            $this->load->view('layouts/main',$data);
         }
     }
     /*
@@ -771,22 +771,18 @@ class Servicio extends CI_Controller{
     */
     function buscarserviciosfecha()
     {
-        if ($this->input->is_ajax_request()) {
-            
-            $filtro = $this->input->post('filtro');   
-            
+        if($this->input->is_ajax_request()){
+            $filtro = $this->input->post('filtro');
             //if ($filtro!=""){
             $datos = $this->Servicio_model->get_busqueda_servicio_filtro($filtro);
             //$datos = $this->Inventario_model->get_inventario_bloque();
             echo json_encode($datos);
             /*}
             else echo json_encode(null);*/
-        }
-        else
-        {                 
+        }else{                 
             show_404();
         }
-}
+    }
     
     /*
      * obtenemos los detalles de un determinado servicio

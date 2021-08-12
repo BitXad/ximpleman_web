@@ -1530,6 +1530,7 @@ function registrarnuevodetalleservicio(servicio_id){
     var procedencia_id = document.getElementById('procedencia_id').value;
     var tiempouso_id = document.getElementById('tiempouso_id').value;
     var catserv_id = document.getElementById('catserv_id').value;
+    if(catserv_id >0){
     //var subcatserv_id = document.getElementById('subcatserv_id').value;
     var subcatserv_id = document.getElementById('estesubcatserv_id').value;
     
@@ -1580,9 +1581,11 @@ function registrarnuevodetalleservicio(servicio_id){
                        document.getElementById('finalizar').click();
                    }
                }
-        }
-        
-    });
+            }
+        });
+    }else{
+        $('#mensajenew_detalleserv').html("<br>Debe seleccionar Categoria Producto");
+    }
 }
 
 function resultadodetalleservicionew(servicio_id){

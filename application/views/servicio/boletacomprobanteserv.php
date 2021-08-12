@@ -61,7 +61,11 @@
                     } else {
                         $separador = "<span style='font-size: 8px'><b> | </b></span>";
                     }
-                    $descripcion = $detalle['detalleserv_descripcion'].$separador.$descripcion;
+                    $laglosa = "";
+                    if($detalle['detalleserv_glosa']){
+                        $laglosa = "; ".$detalle['detalleserv_glosa'];
+                    }
+                    $descripcion = $detalle['detalleserv_descripcion'].$laglosa.$separador.$descripcion;
                     $falla_segcliente = $detalle['detalleserv_falla'].$separador.$falla_segcliente;
                     $diagnostico = $detalle['detalleserv_diagnostico'].$separador.$diagnostico;
                     $solucion = $detalle['detalleserv_solucion'].$separador.$solucion;
@@ -167,7 +171,11 @@
                             } else {
                                 $separador = "<span style='font-size: 12px'><b> | </b></span>";
                             }
-                            $descripcion = $detalle['detalleserv_descripcion'].$separador.$descripcion;
+                            $laglosa = "";
+                            if($detalle['detalleserv_glosa']){
+                                $laglosa = "; ".$detalle['detalleserv_glosa'];
+                            }
+                            $descripcion = $detalle['detalleserv_descripcion'].$laglosa.$separador.$descripcion;
                             $falla_segcliente = $detalle['detalleserv_falla'].$separador.$falla_segcliente;
                             $diagnostico = $detalle['detalleserv_diagnostico'].$separador.$diagnostico;
                             $solucion = $detalle['detalleserv_solucion'].$separador.$solucion;

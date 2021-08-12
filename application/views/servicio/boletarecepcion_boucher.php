@@ -13,42 +13,37 @@
         color: #000;
         padding: 10px;
     }
-
     div {
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    margin-left: 10px;
-    margin: 0px;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        margin-left: 10px;
+        margin: 0px;
     }
-
-
     table{
-    width : 7cm;
-    margin : 0 0 0px 0;
-    padding : 0 0 0 0;
-    border-spacing : 0 0;
-    border-collapse : collapse;
-    font-family: Arial narrow;
-    font-size: 7pt;  
-
-    td {
-    border:hidden;
+        width : 7cm;
+        margin : 0 0 0px 0;
+        padding : 0 0 0 0;
+        border-spacing : 0 0;
+        border-collapse : collapse;
+        font-family: Arial narrow;
+        font-size: 7pt;
+        td{
+            border:hidden;
+        }
     }
-    }
-
     td#comentario {
-    vertical-align : bottom;
-    border-spacing : 0;
+        vertical-align : bottom;
+        border-spacing : 0;
     }
     div#content {
-    background : #ddd;
-    font-size : 7px;
-    margin : 0 0 0 0;
-    padding : 0 5px 0 5px;
-    border-left : 1px solid #aaa;
-    border-right : 1px solid #aaa;
-    border-bottom : 1px solid #aaa;
+        background : #ddd;
+        font-size : 7px;
+        margin : 0 0 0 0;
+        padding : 0 5px 0 5px;
+        border-left : 1px solid #aaa;
+        border-right : 1px solid #aaa;
+        border-bottom : 1px solid #aaa;
     }
 </style>
 <!-------------------------------------------------------->
@@ -57,18 +52,13 @@
       $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 ?>
 <table class="table" >
-<tr>
-<td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
-    
-</td>
-
-<td style="padding: 0;">
-    
-        <table class="table" style="width: <?php echo $ancho; ?>;" >
-            <tr>
-                <td style="padding:0;">        
-                    <center>
-
+    <tr>
+        <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" ></td>
+        <td style="padding: 0;">
+            <table class="table" style="width: <?php echo $ancho; ?>;" >
+                <tr>
+                    <td style="padding:0;">        
+                        <center>
                             <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                             <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                             <!--<font size="2" face="Arial"><b><?php /*echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
@@ -105,44 +95,47 @@
             </tr>
 
         </table>
-
-       <table class="table table-striped table-condensed"  style="width: <?php echo $ancho; ?>;" >
-           <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
-               <td align="center"><b>#</b></td>
+        <table class="table table-striped table-condensed"  style="width: <?php echo $ancho; ?>;" >
+            <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
+                <td align="center"><b>#</b></td>
                 <td align="center"><b>DETALLE</b></td>
                 <td align="center"><b></b></td>
                 <td align="center"><b></b></td>               
-           </tr>
-           <?php
-                         $i = 1;
-                         $total = 0; $acuenta = 0;
-                         $saldo = 0; $cont = 0;
-                         foreach($detalle_serv as $d){
-                             $total = $total + $d['detalleserv_total'];
-                             $acuenta = $acuenta + $d['detalleserv_acuenta'];
-                             $saldo = $saldo + $d['detalleserv_saldo'];
-                             $cont = $cont+1; ?>
-                    <tr>
-                        <td align="center" style="padding: 0;"><?php echo $i ?></td>
-                        <td style="padding: 0; width: 70%"><?php
-                            $tipotrabajo = "";
-                            if($d['cattrab_descripcion']){
-                                $tipotrabajo = " (".substr($d['cattrab_descripcion'], 0, 3).")";
-                            }
-                              echo $d['detalleserv_descripcion']."".$tipotrabajo." (".$d['detalleserv_codigo'].")";
-                              echo "<div><span style='font-weight: bold'>Fecha Aprox. Entrega:</span>".date("d/m/Y", strtotime($d['detalleserv_fechaentrega']));
-                              echo " - ".$d['detalleserv_horaentrega']."</div>";
-                              echo "<div><span class='text-bold'>Responsable Técnico: </span>".$d["respusuario_nombre"]."</div>"
-                             ?>
-                        </td>
-                        <td align="right" style="padding: 0; width: 25%" colspan="2"><?php 
-                            echo "Tot.: ".number_format($d['detalleserv_total'],'2','.',',')."<br>";
-                            echo "A.C.: ".number_format($d['detalleserv_acuenta'],'2','.',',')."<br>";
-                            echo "SAL.: ".number_format($d['detalleserv_saldo'],'2','.',',') ?>
-                        </td>
+            </tr>
+            <?php
+            $i = 1;
+            $total = 0; $acuenta = 0;
+            $saldo = 0; $cont = 0;
+            foreach($detalle_serv as $d){
+                $total = $total + $d['detalleserv_total'];
+                $acuenta = $acuenta + $d['detalleserv_acuenta'];
+                $saldo = $saldo + $d['detalleserv_saldo'];
+                $cont = $cont+1; ?>
+            <tr>
+                <td align="center" style="padding: 0;"><?php echo $i ?></td>
+                <td style="padding: 0; width: 70%"><?php
+                    $tipotrabajo = "";
+                    if($d['cattrab_descripcion']){
+                        $tipotrabajo = " (".substr($d['cattrab_descripcion'], 0, 3).")";
+                    }
+                    $laglosa = "";
+                    if($d['detalleserv_glosa']){
+                        $laglosa = "; ".$d['detalleserv_glosa'];
+                    }
+                      echo $d['detalleserv_descripcion'].$laglosa.$tipotrabajo." (".$d['detalleserv_codigo'].")";
+                      echo "<div><span style='font-weight: bold'>Fecha Aprox. Entrega:</span>".date("d/m/Y", strtotime($d['detalleserv_fechaentrega']));
+                      echo " - ".$d['detalleserv_horaentrega']."</div>";
+                      echo "<div><span class='text-bold'>Responsable Técnico: </span>".$d["respusuario_nombre"]."</div>"
+                     ?>
+                </td>
+                <td align="right" style="padding: 0; width: 25%" colspan="2"><?php 
+                    echo "Tot.: ".number_format($d['detalleserv_total'],'2','.',',')."<br>";
+                    echo "A.C.: ".number_format($d['detalleserv_acuenta'],'2','.',',')."<br>";
+                    echo "SAL.: ".number_format($d['detalleserv_saldo'],'2','.',',') ?>
+                </td>
 
-                    </tr>
-                    <?php $i++; } ?>
+            </tr>
+            <?php $i++; } ?>
 <!--       </table>
 <table class="table" style="max-width: 7cm;">-->
     <tr style="border-top-style: solid; border-top-width: 2px; border-top-style: solid; border-top-width: 2px;" colspan="4" align="right">

@@ -597,7 +597,7 @@ $(document).ready(function(){
                                     </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="catserv_id" class="control-label">Categoria Producto</label>
+                                <label for="catserv_id" class="control-label"><span class="text-danger">*</span>Categoria Producto</label>
                                     <div class="form-group">
                                         <select name="catserv_id" class="form-control" onchange="fetch_select(this.value);" id="catserv_id">
                                             <option value="0">- CATEGORIA -</option>
