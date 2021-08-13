@@ -1307,6 +1307,7 @@ class Servicio extends CI_Controller{
                             'detalleserv_horaterminado' => $hora_terminado,
                             'estado_id' => $estado_id,
                             'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
+                            'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
                             'detalleserv_falla' => $this->input->post('detalleserv_falla'),
                             'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
                             'detalleserv_solucion'    => $this->input->post('detalleserv_solucion'),
@@ -1872,6 +1873,7 @@ class Servicio extends CI_Controller{
                             'detalleserv_horaterminado' => $hora_terminado,*/
                             //'estado_id' => $estado_id,
                             'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
+                            'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
                             'detalleserv_falla' => $this->input->post('detalleserv_falla'),
                             'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
                             'detalleserv_solucion'    => $this->input->post('detalleserv_solucion'),
