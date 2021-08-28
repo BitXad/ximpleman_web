@@ -24,7 +24,7 @@
                     <tr>
                         <td>
                             <div id="map"></div> <!-- mapa -->
-                            <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametros['parametro_apikey']; ?>"></script>
+                            <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametros[0]['parametro_apikey']; ?>"></script>
                         <script>       
                             //coordada inicial del mapa 
                             var coordenadas= new google.maps.LatLng(-17.4038, -66.1635); 

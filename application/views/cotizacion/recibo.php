@@ -37,13 +37,13 @@ pre {
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
  <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
-<table class="table" style="width: 20cm; padding: 0;" >
+<table class="table" style="width: 20cm; padding: 0; margin-bottom: 13px" >
     <tr>
-        <td style="width: 6cm; padding: 0; line-height:10px;" >
+        <td style="width: 6cm; padding: 0; line-height:13px;" >
                 
             <center>
                                
-                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="80" height="60"><br>
+                <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="80" height="60" style="padding-bottom: 2px"><br>
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
@@ -81,7 +81,7 @@ pre {
     
     
 </table>       
-<table class="table" style="width: 100%; padding: 0;" >
+<table class="table" style="width: 100%; padding: 0; margin-bottom: 13px" >
     <tr>
         <td style="width: 5%; padding: 0;line-height:5px;">
                 
@@ -94,10 +94,25 @@ pre {
           <b>VALIDEZ: </b><?php echo  $cotizacion['cotizacion_validez']; ?> </font>   
         </td>
         <td style="width: 40%; padding: 0;line-height:10px;" >
-
-           <font size="1" face="Arial"><b>FORMA DE PAGO: </b><?php echo $cotizacion['cotizacion_formapago']; ?> <br>
-      
-          <b>TIEMPO DE ENTREGA: </b><?php echo  $cotizacion['cotizacion_tiempoentrega']; ?> </font>
+            <font size="1" face="Arial"><b>FORMA DE PAGO: </b><?php echo $cotizacion['cotizacion_formapago']; ?>
+                <?php
+               if($cotizacion['cotizacion_chequenombre']){
+               ?>
+               <br><b>CHEQUE A NOMBRE DE: </b><?php echo  $cotizacion['cotizacion_chequenombre']; ?>
+               <?php
+               }
+               ?>
+               <br>
+               <b>TIEMPO DE ENTREGA: </b><?php echo  $cotizacion['cotizacion_tiempoentrega']; ?>
+               <?php
+               if($cotizacion['cotizacion_lugarentrega']){
+               ?>
+               <br><b>LUGAR DE ENTREGA: </b><?php echo  $cotizacion['cotizacion_lugarentrega']; ?>
+               <?php
+               }
+               ?>
+           </font>
+           
 <!--                ______________________________                
                    
                                 
@@ -153,14 +168,14 @@ pre {
                         - Industria: <b><?php echo $d['producto_industria']; }?></b><br>
                       <?php if ($d['detallecot_caracteristica']==""){ ?>  
                          <?php }else{ ?>
-                          <pre><?php echo  $d['detallecot_caracteristica']; } ?></td>
-                         <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?></pre></td>
+                          <pre style='margin-bottom: 0px; padding-top: 2px; padding-bottom: 3px'><?php echo  $d['detallecot_caracteristica']; } ?></pre></td>
+                         <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?></td>
                          <td  style="text-align: right;"><?php echo number_format($d['detallecot_precio'],2,".",","); ?></td>  
                          <td  style="text-align: center;"> <?php echo $d['detallecot_cantidad']; ?></td>
                          <td  style="text-align: right;"> <?php echo number_format($d['detallecot_precio']*$d['detallecot_cantidad'],2,".",","); ?></td>
                          <td  style="text-align: right;"> <?php echo number_format($d['detallecot_descuento'], 2, ".", ","); ?> </font></td>
                          <td  style="text-align: right;">   
-                         <font size="2"><b><?php echo number_format($d['detallecot_total'],2,".",","); ?></b></font><br>
+                         <font size="2"><b><?php echo number_format($d['detallecot_total'],2,".",","); ?></b></font>
                          </td>
 
                           <?php } ?> 

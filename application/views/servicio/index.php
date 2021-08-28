@@ -6,7 +6,10 @@
 <input type="hidden" name="tipoimpresora" id="tipoimpresora" value="<?php echo $all_parametro[0]['parametro_tipoimpresora']; ?>" />
 <input type="hidden" name="parametro_segservicio" id="parametro_segservicio" value="<?php echo $all_parametro[0]['parametro_segservicio']; ?>" />
 <input type="hidden" name="parametro_serviciofact" id="parametro_serviciofact" value="<?php echo $all_parametro[0]['parametro_serviciofact']; ?>" />
+<input type="hidden" name="moneda_descripcion" id="moneda_descripcion" value="<?php echo $all_parametro[0]['moneda_descripcion']; ?>" />
 <input type="hidden" name="all_usuario" id="all_usuario" value='<?php echo json_encode($all_usuario);  ?>' />
+<input type="hidden" name="tipo_transaccion" id="tipo_transaccion" value='<?php echo json_encode($tipo_transaccion);  ?>' />
+<input type="hidden" name="forma_pago" id="forma_pago" value='<?php echo json_encode($forma_pago);  ?>' />
 <input type="hidden" name="permisomodificar" id="permisomodificar" value='<?php echo $rol[182-1]['rolusuario_asignado']; ?>' />
 <input type="hidden" name="a" id="a" value='<?php echo $a; ?>' />
 <input type="hidden" name="b" id="b" value='<?php echo $b; ?>' />
@@ -72,12 +75,12 @@
         <?php if($b != "s") {?>
         <div class="col-md-4">
             <div  class="box-tools" >
-                <select  class="btn btn-primary btn-sm form-control" name="" select_servicio id="select_servicio" onchange="buscar_servicioporfechas()">
+                <select  class="btn btn-primary btn-sm form-control" name="select_servicio" id="select_servicio" onchange="buscar_servicioporfechas()">
                     <!--<option value="">- ELEGIR -</option>-->
                     <option value="6">Servicios Pendientes</option>
                     <option value="28">Servicios en Proceso</option>
                     <option value="66">Servicios Terminados</option>
-                    <option value="7">Servicios Entregados</option>
+                    <!--<option value="7">Servicios Entregados</option>-->
                     <option value="44">Servicios Anulados</option>
                     <option value="1">Servicios de Hoy</option>
                     <option value="2">Servicios de Ayer</option>

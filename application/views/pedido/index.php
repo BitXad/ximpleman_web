@@ -1,26 +1,28 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/pedido.js'); ?>" type="text/javascript"></script>
-
 <script type="text/javascript">
-    
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-        
-</script>   
-
-<body onload="buscar_pedidos();">
-
-
+    $(document).ready(function () {
+        (function ($) {
+            $('#filtrar').keyup(function () {
+                var rex = new RegExp($(this).val(), 'i');
+                $('.buscar tr').hide();
+                $('.buscar tr').filter(function () {
+                    return rex.test($(this).text());
+                }).show();
+            })
+        }(jQuery));
+    });
+</script>
+<script type="text/javascript">
+    function sel_todos(source) {
+        checkboxes = document.getElementsByClassName('checkbox');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+</script>
+<!--<body onload="buscar_pedidos();">-->
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -29,11 +31,11 @@
 <input type="hidden" id="esrol" name="esrol" value="<?php echo $esrol; ?>">
 <input type="hidden" id="esrolconsolidar" name="esrolconsolidar" value="<?php echo $esrolconsolidar; ?>">
 
-<input id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>" hidden>
 <input id="pedido_id" name="pedido_id" value="0" hidden>
-<!--<input id="usuarios" name="usuarios" value='<?php echo json_encode($usuarios); ?>' hidden >-->
+<!--<input id="usuarios" name="usuarios" value='<?php //echo json_encode($usuarios); ?>' hidden >-->
 <input id='tipo_transaccion' name='tipo_transaccion' value='<?php echo json_encode($tipo_transaccion); ?>' hidden>
-<!--<input id='tipo_venta' name='tipo_venta' value='<?php echo json_encode($tipo_venta); ?>' hidden>-->
+<!--<input id='tipo_venta' name='tipo_venta' value='<?php //echo json_encode($tipo_venta); ?>' hidden>-->
+<input type="hidden" name="respedido" id="respedido" />
 
 <!--<div class="box-header">
 <div class="row clearfix">-->
@@ -50,7 +52,7 @@
     <div class="col-md-3"  style="padding:3px; margin-bottom: 0; margin-top: 0;">
         <div class="form-group" style="padding: 0;  margin-bottom: 0; margin-top: 0;">
 
-            <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onclick="cambiar_usuario()">
+            <select class="btn btn-warning btn-sm form-control" id="usuario_id" name="usuario_id" onchange="cambiar_usuario()">
                     <option value="0"><?php echo "TODOS"; ?></option>
                     <!--<option value="<?php //echo $usuario_id; ?>"><?php //echo $usuario_nombre; ?></option>-->
             <?php foreach($usuario as $u){ ?>
@@ -60,7 +62,9 @@
             
         </div>
     </div>
-    <?php } ?>
+    <?php }else{ ?>
+    <input id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>" hidden>
+    <?php }?>
                  
     <div class="col-md-3"  style="padding:3px;  margin-bottom: 0; margin-top: 0;">
         <div class="form-group" style=" margin-bottom: 0; margin-top: 0;">
@@ -92,7 +96,6 @@
             </center>
         </div>
     </div>
-    
     
     
 </div>
@@ -147,18 +150,10 @@
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el cliente, fecha, total">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
+            <div class="row" id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        </div>
         <div class="box">
-        
-        
-            <!--------------------- inicio loader ------------------------->
-            <div class="row" id='loader'  style='display:none;'>
-                <center>
-                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
-                </center>
-            </div> 
-            <!--------------------- fin inicio loader ------------------------->
-
-            
             <div class="box-body table-responsive" style="padding: 0;">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
@@ -167,8 +162,9 @@
                         <th style="padding: 0;" align="center">COD</th>
                         <th style="padding: 0;">Total</th>
                         <th style="padding: 0;">Fecha<br>entrega</th>
-
-                        <th style="padding: 0;"> </th>
+                        <th style="padding: 0; vertical-align: middle">
+                            <a onclick="consolidar_allpedido()" class="btn btn-facebook btn-xs" title="Consolidar todos los pedidos a ventas"><span class="fa fa-cart-plus"></span> </a>
+                        </th>
                     </tr>
                     <tbody class="buscar" id="tabla_pedidos">
 
@@ -184,7 +180,7 @@
         </div>
     </div>
 </div>
-</body>
+<!--</body>-->
 
 <!--    <div class="col-md-6"  style="padding:3px">
         <div class="form-group" style="margin-bottom: 0;">

@@ -129,6 +129,7 @@ border-bottom : 1px solid #aaa;*/
                             
                             <b>VALIDEZ:  </b><br>
                             <b>FORMA DE PAGO:  </b><br>
+                            <b>CHEQUE A NOMBRE:  </b><br>
                             <b>TIEMPO DE ENTREGA: </b><br>
                             <b>LUGAR DE ENTREGA: </b>
 
@@ -136,6 +137,7 @@ border-bottom : 1px solid #aaa;*/
                         <td style="font-family: arial; font-size: 8pt; padding: 0;">
                             <?php echo  $cotizacion['cotizacion_validez']; ?> <br>
                             <?php echo $cotizacion['cotizacion_formapago']; ?> <br>
+                            <?php echo $cotizacion['cotizacion_chequenombre']; ?> <br>
                             <?php echo $cotizacion['cotizacion_tiempoentrega']; ?> <br>          
                             <?php echo $cotizacion['cotizacion_lugarentrega']; ?> 
                         </td>

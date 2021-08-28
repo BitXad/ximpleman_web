@@ -51,7 +51,11 @@ class Servicio extends CI_Controller{
 
             /*$this->load->model('Categoria_trabajo_model');
             $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo();*/
-
+            $this->load->model('Tipo_transaccion_model');
+            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+            $this->load->model('Forma_pago_model');
+            $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+            
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
 
@@ -1593,6 +1597,119 @@ class Servicio extends CI_Controller{
 
                         $this->Servicio_model->update_servicio($servicio_id,$params);
                     }
+                    $forma_pago       =  $this->input->post('forma_pago');
+                    $tipo_transaccion =  $this->input->post('tipo_transaccion');
+                    if($tipo_transaccion==2) //Si la transaccion es a credito
+                    {
+                        $estado_id =  8; //8 pendiente 9 cancelado
+                        $compra_id =  0;
+                        $venta_id =  $venta_id;
+                        $credito_monto =  $venta_total - $cuota_inicial;
+                        $credito_cuotainicial =  $cuota_inicial;
+                        $credito_interesproc =  $credito_interes;
+                        $credito_interesmonto =  $venta_total * $venta_interes; //revisar
+                        $credito_numpagos =  $cuotas;
+                        $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                        $credito_fecha = date('Y-m-d');
+                        $time = time();
+                        $credito_hora =  date("H:i:s", $time);
+                        $credito_tipo = 1; // 1- ventas 2 - compras
+
+                        $cuotas       = $this->input->post('cuotas');
+                        $interes       = $this->input->post('interes');
+                        $modalidad    = $this->input->post('modalidad');
+                        $dia_pago     = $this->input->post('dia_pago');
+                        $fecha_inicio = $this->input->post('fecha_inicio');
+                        $numcuota = $cuotas; //numero de cuotas
+
+
+                        if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
+                        else $intervalo = 7; //si los pagos son semanales
+
+                            $cuota_numcuota = 1;
+                            for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                                $cuota_numcuota = $i;
+
+                                $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+                                if ($modalidad == "MENSUAL") 
+                                    $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+                                else 
+                                    $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+
+                            }
+                            $credito_fechalimite = $cuota_fechalimite;
+
+                        $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
+                                $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.")";
+                        $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+
+
+                        $estado_id =  8; //8 pendiente 9 cancelado
+                        $cuota_numcuota = 1;
+                        $cuota_capital = $venta_total - $cuota_inicial;
+                        $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
+                        $cuota_moradias = 0;
+                        $cuota_multa = 0;
+                        $cuota_subtotal =  $venta_total - $cuota_inicial;
+                        $cuota_descuento = 0;
+                        $cuota_total = $venta_total - $cuota_inicial+$cuota_interes;
+
+                        $cuota_cancelado = 0;
+                        $cuota_fecha = "'1900-01-01'";
+                        $cuota_hora = "'00:00'";
+                        $cuota_numercibo =  0;
+                        $cuota_saldo = $venta_total - $cuota_inicial;
+                        $cuota_glosa = "''";
+                        $cuota_saldocredito = $venta_total - $cuota_inicial;
+
+
+                        $dias_mora = 0;
+                        $multa = 0;
+                        $descuento = 0;
+                        $cancelado = 0;
+                        $credito_monto = $venta_total - $cuota_inicial;
+
+                        $patron = ($numcuota*0.5) + 0.5;
+                        $cuota_capital = ($credito_monto)/$numcuota;   // bien         
+                        $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
+                        $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
+                        $total = $cuota_subtotal - $descuento;
+                        $saldo_deudor = $credito_monto;
+
+                        $siguiente= 0;
+                        $cuota_fechalimite = $fecha_inicio;
+
+                       // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
+
+                        $cuota_fechalimite = $fecha_inicio;
+
+
+
+
+                            for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                                $cuota_numcuota = $i;
+
+                                $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+                                if ($modalidad == "MENSUAL") 
+                                    $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+                                else 
+                                    $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+
+                                $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
+                                        $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
+                                        $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
+
+                                $this->Venta_model->ejecutar($cuota);
+
+            //                    $saldo_deudor = $cuota_total - $cuota_capital;
+            //                    $cuota_total = $saldo_deudor;
+                                $saldo_deudor = $saldo_deudor - $cuota_capital;
+                                //$cuota_total = $saldo_deudor;
+                            }
+
+
+
+                    }
                    echo json_encode("ok");
                }else{
                     echo json_encode("faltainf");
@@ -1983,6 +2100,21 @@ class Servicio extends CI_Controller{
                 show_404();
             }
         //}
+    }
+    /*************** funcion para mostrar la vista de la nota de entrega de servicios ******************/
+    function imprimir_notaentrega($servicio_id){
+        if($this->acceso(69)){
+        //**************** inicio contenido ***************
+            $this->load->model('Parametro_model');
+            $parametros = $this->Parametro_model->get_parametros();
+            if(sizeof($parametros)>0){
+                if($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                    $this->notaesi_boucher($servicio_id);
+                else
+                    $this->notaesi_carta($servicio_id);
+            }
+        //**************** fin contenido ***************
+        }
     }
     
 }

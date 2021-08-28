@@ -853,16 +853,20 @@ function fechadeservicio(elfiltro, busquedade){
     var unico = document.getElementById('b').value;
     var permisomodificar = document.getElementById('permisomodificar').value;
     var all_usuario = JSON.parse(document.getElementById('all_usuario').value);
+    var all_tipo_transaccion = JSON.parse(document.getElementById('tipo_transaccion').value);
+    var all_forma_pago = JSON.parse(document.getElementById('forma_pago').value);
     var cantus = all_usuario.length;
     var tipoimpresora  = document.getElementById('tipoimpresora').value;
-    var parametro_segservicio  = document.getElementById('parametro_segservicio').value;
+    var moneda_descripcion  = document.getElementById('moneda_descripcion').value;
     if(busquedade == 2){
         controlador = base_url+'servicio/buscarserviciospendientes/';
     }else if(busquedade == 1){
-        
+        $("#select_servicio").val('6')
         controlador = base_url+'servicio/buscarservicios/';
         filtro = document.getElementById('filtrar').value
     }else if(elfiltro == null){
+        $("#select_servicio").val('6')
+        //$("#select_servicio option[value='6']").attr("selected", true);
         controlador = base_url+'servicio/buscarserviciospendientes/';
     }else{
         controlador = base_url+"servicio/buscarserviciosfecha";
@@ -891,6 +895,8 @@ function fechadeservicio(elfiltro, busquedade){
                     var total = Number(0);
                     var total_detalle = 0;*/
                     var n = registros.length; //tamaño del arreglo de la consulta
+                    var g = all_tipo_transaccion.length; //
+                    var h = all_forma_pago.length; //
                     $("#encontrados").val(" "+n+"");
                     //var m = detalles.length;
                     html = "";
@@ -2406,14 +2412,16 @@ function fechadeservicio(elfiltro, busquedade){
                             html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modalanulado"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='btn btn-soundcloud btn-xs' title='Anular servicio'><span class='fa fa-minus-circle'></span> Anular Servicio</a><br><br>";
                             ///html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modaleliminar"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='col-md-1 btn btn-danger btn-xs' title='Eliminar servicio'><font size='5'><span class='fa fa-trash'></span></font></a>";
                             if(tipousuario_id == 1){
-                                html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modaleliminar"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='btn btn-danger btn-xs' title='Eliminar servicio'><span class='fa fa-trash'></span> Eliminar servicio</a><br><br>";
+                                html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modaleliminar"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='btn btn-danger btn-xs' title='Eliminar servicio'><span class='fa fa-trash'></span> Eliminar Servicio</a><br><br>";
                             }
                         }
                         
                         if(registros[i]["estado_id"] == 6){
-                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' class='btn btn-success btn-xs' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' data-toggle='modal' data-target='#modalregistraresteservicio"+registros[i]['servicio_id']+"' title='Registrar entrega del servicio'><span class='fa fa-file-zip-o'></span> Entrega del servicio</a><br><br>";
+                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' class='btn btn-success btn-xs' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' data-toggle='modal' data-target='#modalregistraresteservicio"+registros[i]['servicio_id']+"' title='Registrar entrega del servicio'><span class='fa fa-file-zip-o'></span> Entrega del Servicio</a><br><br>";
                         }
-                        
+                        if(registros[i]["estado_id"] == 7){
+                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' href='"+base_url+"servicio/imprimir_notaentrega/"+registros[i]["servicio_id"]+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de entrega' ><span class='fa fa-print'></span> Imprimir Nota de Entrega</a><br><br>";
+                        }
                         var dir_url = base_url+"servicio/imprimircomprobante/"+registros[i]["servicio_id"];
                         //var titprint = "";
                         /*if(tipoimpresora == "FACTURADORA"){
@@ -2423,7 +2431,7 @@ function fechadeservicio(elfiltro, busquedade){
                             dir_url = base_url+"servicio/boletacomprobanteserv/"+registros[i]["servicio_id"];
                             titprint = "Impresion normal";
                         }*/
-                        html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' href='"+dir_url+"' id='imprimir' class='btn btn-success btn-xs' target='_blank' title='Imprimir orden de servicio' ><span class='fa fa-print'></span> Imprimir orden de servicio</a><br><br>";
+                        html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' href='"+dir_url+"' id='imprimir' class='btn btn-success btn-xs' target='_blank' title='Imprimir orden de servicio' ><span class='fa fa-print'></span> Imprimir Orden de Servicio</a><br><br>";
                         html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modalinformetecnico"+i+"' onclick='checkenfalso("+registros[i]["servicio_id"]+"), ocultarmodalnombre("+nombremodal+", "+i+")' class='btn btn-primary btn-xs' title='Informe técnico'><span class='fa fa-file-text'></span> Informe Técnico</a><br><br>";
                         if(parametro_segservicio == 1){
                             html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; background: #720e9e; float: none' href='"+base_url+"servicio/seguimiento/"+registros[i]["cliente_id"]+"/"+registros[i]["servicio_id"]+"' class='btn btn-primary btn-xs' title='Seguimiento' target='_blank'><span class='fa fa-user-secret'></span> Seguimiento</a><br><br>";
@@ -2490,12 +2498,12 @@ function fechadeservicio(elfiltro, busquedade){
                             html += "<div class='modal-dialog' role='document'>";
                             html += "<br><br>";
                             html += "<div class='modal-content'>";
-                            html += "<div class='modal-header text-center' style='font-size:12pt;'>";
+                            html += "<div class='modal-header text-center' style='font-size:12pt; padding-botton: 0px !important'>";
                             html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
                             html += "ENTREGA DEL SERVICIO N° "+registros[i]['servicio_id'];
                             html += "</div>";
                             //res += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
-                            html += "<div class='modal-body'>";
+                            html += "<div class='modal-body' style='padding-top: 0px'>";
                             html += "<!------------------------------------------------------------------->";
                             html += "<span id='mensajeregistraresteservicio"+registros[i]['servicio_id']+"' class='text-danger'></span>";
                             html += "<div class='text-center'><span style='font-size: 12pt'>"+registros[i]['cliente_nombre']+"</span>";
@@ -2519,6 +2527,27 @@ function fechadeservicio(elfiltro, busquedade){
                             }
                             html += nomtelef+cliente_telef+guion+cliente_celu+"</div>";
                             html += "<br>";
+                            html += "<div class='text-center'>";
+                            html += "<div class='col-md-6'>";
+                            html += "<h5 class='modal-title' id='myModalLabel'><b>FORMA DE PAGO</b></h5>";
+                            html += "<select id='forma_pago"+registros[i]['servicio_id']+"' name='forma_pago"+registros[i]['servicio_id']+"' class='btn btn-default btn-xs form-control' style='height: 22px'>"; //onchange='mostrar_formapago()'
+                            for (var f=0; f<h; f++) {
+                                html += "<option value='"+all_forma_pago[f]["forma_id"]+"'>"+all_forma_pago[f]["forma_nombre"]+"</option>";
+                            }
+                            html += "</select>";
+                            html += "</div>";
+                            html += "<div class='col-md-6'>";
+                            html += "<h5 class='modal-title' id='myModalLabel'><b>TIPO TRANS</b></h5>";
+                            html += "<select id='tipo_transaccion"+registros[i]['servicio_id']+"' name='tipo_transaccion"+registros[i]['servicio_id']+"' class='btn btn-default btn-xs form-control' onchange='mostrar_ocultar("+registros[i]['servicio_id']+")' style='height: 22px'>";
+                            for (var m=0; m<g-2; m++) {
+                                html += "<option value='"+all_tipo_transaccion[m]["tipotrans_id"]+"'>"+all_tipo_transaccion[m]["tipotrans_nombre"]+"</option>";
+                            }
+                            html += "</select>";
+                            html += "</div>";
+                            html += "</div>";
+                            html += "<div class='col-md-12'>";
+                            html += "<hr style='border-top: 1px solid #917e7e; margin-botton: 0px'>";
+                            html += "</div>";
                             html += "<div class='col-md-4'>";
                             html += "<label style='text-align: left;' class='control-label btn btn-facebook btn-xs btn-block'>Total:</label>";
                             html += "<div class='form-control'>";
@@ -2539,7 +2568,44 @@ function fechadeservicio(elfiltro, busquedade){
                             html += "<span class='text-danger' id='error_servicio_saldo"+registros[i]['servicio_id']+"'></span>";
                             html += "</div>";
                             html += "</div>";
-                            
+                            html += "<div id='creditooculto"+registros[i]['servicio_id']+"' style='display: none;'>";
+                            html += "<div class='col-md-4'>";
+                            html += "<h5 class='modal-title'><b>Nº CUOTAS</b></h5>";
+                            html += "<select name='cuotas"+registros[i]['servicio_id']+"' class='form-control input-sm' id='cuotas"+registros[i]['servicio_id']+"'>";
+                            for(b=1; b<=36; b++){
+                                html += "<option value='"+b+"'>"+b+" CUOTA (S)</option>";
+                            }
+                            html += "</select>";
+                            html += "</div>";
+                            html += "<div class='col-md-4'>";
+                            html += "<h5 class='modal-title'><b>MODALIDAD</b></h5>";
+                            html += "<select class='form-control input-sm' id='modalidad"+registros[i]['servicio_id']+"' name='modalidad"+registros[i]['servicio_id']+"'>";
+                            html += "<option value='MENSUAL'>MENSUAL</option>";
+                            html += "<option value='SEMANAL'>SEMANAL</option>";
+                            html += "</select>";
+                            html += "</div>";
+                            html += "<div class='col-md-4'>";
+                            html += "<h5 class='modal-title'><b>DIA PAGO</b></h5>";
+                            html += "<select class='form-control input-sm' id='dia_pago"+registros[i]['servicio_id']+"' name='dia_pago"+registros[i]['servicio_id']+"'>";
+                            for(dia=1; dia<=31; dia++){
+                                html += "<option value='"+dia+"'>"+dia+"</option>";
+                            }
+                            html += "</select>";
+                            html += "</div>";
+                            html += "<div class='col-md-4'>";
+                            html += "<h5 class='modal-title'><b>INTERES</b></h5>";
+                            html += "<input type='text' class='form-control input-sm' value='0.00' name='credito_interes"+registros[i]['servicio_id']+"' id='credito_interes"+registros[i]['servicio_id']+"'>";
+                            html += "</div>";
+                            html += "<div class='col-md-4'>";
+                            html += "<h5 class='modal-title'><b>CUOTA INIC. "+moneda_descripcion+"</b></h5>";
+                            html += "<input type='text' class='form-control input-sm' value='0.00' name='cuota_inicial"+registros[i]['servicio_id']+"' id='cuota_inicial"+registros[i]['servicio_id']+"'>";
+                            html += "</div>";
+                            fecha_inicio = moment(new Date()).format("YYYY-MM-DD");
+                            html += "<div class='col-md-4'>";
+                            html += "<h5 class='modal-title'><b>FECHA INICIAL</b></h5>";
+                            html += "<input type='date' class='form-control input-sm' value='"+fecha_inicio+"' name='fecha_inicio"+registros[i]['servicio_id']+"' id='fecha_inicio"+registros[i]['servicio_id']+"'>";
+                            html += "</div>";
+                            html += "</div>";
                             html += "<div class='col-md-12' style='font-size: 12px; font-family: Arial;'>";
                             html += "<label for='detalleserv_entregadoa"+registros[i]['servicio_id']+"' class='control-label'>Entregado a:</label>";
                             html += "<div class='form-group'>";
@@ -2550,7 +2616,7 @@ function fechadeservicio(elfiltro, busquedade){
                             
                             html += "<!------------------------------------------------------------------->";
                             html += "</div>";
-                            html += "<div class='modal-footer aligncenter'>";
+                            html += "<div class='modal-footer' style='text-align: center'>";
                             //html += "<a href='"+base_url+"servicio/remove/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
 
                             html += "<button class='btn btn-success' onclick='registrarservicio_entregadototal("+registros[i]['servicio_id']+")' ><span class='fa fa-wrench'></span> Registrar Entrega</button>";
@@ -4140,8 +4206,13 @@ function registrar_factura(servicio_id){
                 resultado = JSON.parse(respuesta);
                 var factura_id = resultado;
                 window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", '_blank');
-                $("#select_servicio option[value=6]").attr("selected",true);
-                fechadeservicio(null, 1);
+                //$("#select_servicio option[value=6]").attr("selected",true);
+                if($("#select_servicio").val() == 5){
+                    buscar_por_fecha();
+                }else{
+                    buscar_servicioporfechas();
+                }
+                //fechadeservicio(null, 1);
             },
             error:function(resultado){
                 alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
@@ -4152,32 +4223,40 @@ function registrar_factura(servicio_id){
 function registrarservicio_entregadototal(servicio_id){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"servicio/registrarcobrototalservicio";
+    var forma_pago       = document.getElementById('forma_pago'+servicio_id).value;
+    var tipo_transaccion = document.getElementById('tipo_transaccion'+servicio_id).value;
     var detalleserv_entregadoa = document.getElementById('detalleserv_entregadoa'+servicio_id).value;
     var servicio_saldo = document.getElementById('servicio_saldo'+servicio_id).value;
-    var tipoimpresora = document.getElementById('tipoimpresora').value;
+    //var tipoimpresora = document.getElementById('tipoimpresora').value;
+    if(tipo_transaccion == 2){
+        var cuotas          = document.getElementById('cuotas'+servicio_id).value;
+        var modalidad       = document.getElementById('modalidad'+servicio_id).value;
+        var dia_pago        = document.getElementById('dia_pago'+servicio_id).value;
+        var credito_interes = document.getElementById('credito_interes'+servicio_id).value;
+        var cuota_inicial   = document.getElementById('cuota_inicial'+servicio_id).value;
+        var fecha_inicio    = document.getElementById('fecha_inicio'+servicio_id).value;
+        $datos = "detalleserv_entregadoa:detalleserv_entregadoa, servicio_id:servicio_id, servicio_saldo:servicio_saldo, ";
+        $datos +="forma_pago:forma_pago, tipo_transaccion:tipo_transaccion, cuotas:cuotas, ";
+        $datos +="modalidad:modalidad, dia_pago:dia_pago, credito_interes:credito_interes, ";
+        $datos +="cuota_inicial:cuota_inicial, fecha_inicio:fecha_inicio"
+    }else{
+        $datos = "detalleserv_entregadoa:detalleserv_entregadoa, servicio_id:servicio_id, servicio_saldo:servicio_saldo, ";
+        $datos +="forma_pago:forma_pago, tipo_transaccion:tipo_transaccion";
+    }
     $('#modalregistraresteservicio'+servicio_id).modal('hide');
         $.ajax({url: controlador,
             type:"POST",
-            data:{detalleserv_entregadoa:detalleserv_entregadoa, servicio_id:servicio_id,
-                  servicio_saldo:servicio_saldo},
+            data:{$datos},
             success:function(respuesta){
-                
                 resultado = JSON.parse(respuesta);
                 fin = resultado.length;
                 html = "";
                 if(resultado == "faltainf"){
                     $('#mensajeregistraresteservicio'+servicio_id).html("<br>Los campos: Saldo y Entregado a; no debes estar vacios");
                 }else if(resultado == "ok"){
-                    var dir_url = "";
-                    if(tipoimpresora == "FACTURADORA"){
-                        dir_url = base_url+"servicio/servcompdetalle_pago_boucher/"+servicio_id;
-                    }else{
-                        dir_url = base_url+"servicio/servcompdetalle_pago/"+servicio_id;
-                    }
-                    window.open(dir_url, '_blank');
-                    //$('#modalregistrarservtecnico'+detalleserv_id).modal('hide');
-                    $("#select_servicio option[value=6]").attr("selected",true);
-                    fechadeservicio(null, 2);
+                    window.open(base_url+"servicio/imprimir_notaentrega/"+servicio_id, '_blank');
+                    buscar_servicioporfechas();
+                    //fechadeservicio(null, 2);
                 }
 
             },
@@ -4620,4 +4699,13 @@ function registrarservicio_pagoacuenta(servicio_id, detalleserv_id){
             error: function(respuesta){
             }
         });
+}
+/* muestra/oculta detalles de un servicio al credito */
+function mostrar_ocultar(servicio_id){
+    var tipo = document.getElementById('tipo_transaccion'+servicio_id).value;
+    if (tipo=='2'){ //2 cuando el tipo de transacción es a CREDITO
+        document.getElementById('creditooculto'+servicio_id).style.display = 'block';
+    }else{
+        document.getElementById('creditooculto'+servicio_id).style.display = 'none';
+    }
 }

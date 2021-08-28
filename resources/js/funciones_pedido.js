@@ -234,15 +234,16 @@ function tablaproductos()
     var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value; //1 bolivianos - 2 moneda extrangera
     var moneda_extrangera = document.getElementById('moneda_descripcion').value; //1 bolivianos - 2 moneda extrangera
     var total_final_equivalente = 0; //1 bolivianos - 2 moneda extrangera
+    var modificar_precioventa   = document.getElementById('modificar_precioventa').value;
     
     $.ajax({url: controlador,
            type:"POST",
            data:{datos:1},
            success:function(respuesta){     
                
-               var registros = JSON.parse(respuesta);
-                
-               if (registros != null){
+                var registros = JSON.parse(respuesta);
+                var sololect = "";
+                if (registros != null){
 
                        var subtotal = 0;
                        var descuento = 0;
@@ -282,8 +283,10 @@ function tablaproductos()
                            cont = cont+1;
                            cant_total+= parseFloat(registros[i]["detalleven_cantidad"]);
                            total_detalle+= parseFloat(registros[i]["detalleven_total"]);
-
-
+                           
+                            if(modificar_precioventa == 0){
+                                sololect = "readonly";
+                            }else{ sololect = ""; }
                             if (i == 0){
                                 color = "style='background-color: orange; padding:0; color: black;'"
                                 fuente = "2";
@@ -447,8 +450,8 @@ function tablaproductos()
                        
                         html += "                       <button onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
                         html += "                    </div>";
-
-                        html += "<input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
+                        
+                        html += "<input "+sololect+" size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
                         html += "<br><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font><br>"+total_equivalente;
                         html += "</td>";
                         html += "			<td "+color+">";
@@ -472,7 +475,7 @@ function tablaproductos()
                     
 
                         html += "</td>";
-                        html += "<td align='right' "+color+"><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        html += "<td align='right' "+color+"><input "+sololect+" size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         
                         
                         html += "                       <td align='right' "+color+"><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font><br>"+total_equivalente;

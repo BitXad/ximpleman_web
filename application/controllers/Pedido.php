@@ -65,7 +65,7 @@ class Pedido extends CI_Controller{
         $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
         
         $data['page_title'] = "Pedidos";
-        $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo(); // para el select
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
         $data['usuario_id'] = $usuario_id; //el usuario logueado
         
@@ -265,9 +265,8 @@ class Pedido extends CI_Controller{
             $data['pedido_id'] = $pedido_id;
             $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
             $data['usuario_activo'] = $usuario_id;
+            $data['rolusuario'] = $this->session_data['rol'];
             
-            
-           
             //$data['cliente'] = $this->Pedido_model->get_all_cliente($usuario_id);
             $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
 
@@ -1101,7 +1100,7 @@ function registrarpedido()
             $data['page_title'] = "Mapa de Entregas";
             $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
 
-            
+            $data['parametros'] = $this->Parametro_model->get_parametros();
             $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
             $data['_view'] = 'pedido/mapaentregas';
