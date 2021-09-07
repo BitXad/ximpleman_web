@@ -635,4 +635,12 @@ class Detalle_venta extends CI_Controller{
         }
     }
     
+    function reporte_generalventa1()
+    {
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);             
+        $data['page_title'] = "Reporte Ventas";        
+        $data['_view'] = 'venta/reporte_venta1';
+        $this->load->view('layouts/main',$data);
+    }
+    
 }

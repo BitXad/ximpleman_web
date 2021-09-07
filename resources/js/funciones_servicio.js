@@ -857,6 +857,7 @@ function fechadeservicio(elfiltro, busquedade){
     var all_forma_pago = JSON.parse(document.getElementById('forma_pago').value);
     var cantus = all_usuario.length;
     var tipoimpresora  = document.getElementById('tipoimpresora').value;
+    var parametro_segservicio  = document.getElementById('parametro_segservicio').value;
     var moneda_descripcion  = document.getElementById('moneda_descripcion').value;
     if(busquedade == 2){
         controlador = base_url+'servicio/buscarserviciospendientes/';

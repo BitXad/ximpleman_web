@@ -80,7 +80,7 @@
                     <option value="6">Servicios Pendientes</option>
                     <option value="28">Servicios en Proceso</option>
                     <option value="66">Servicios Terminados</option>
-                    <!--<option value="7">Servicios Entregados</option>-->
+                    <option value="7">Servicios Entregados</option>
                     <option value="44">Servicios Anulados</option>
                     <option value="1">Servicios de Hoy</option>
                     <option value="2">Servicios de Ayer</option>
