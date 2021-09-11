@@ -320,7 +320,7 @@ function modalcatalogo() {
     $("#precio4_check").prop("checked", false);
     $("#precio5_check").prop("checked", false);
     
-    $("#num_imagenes").val("");
+    $("#num_imagenes").val("5");
     $("#mensaje_numimagen").html("");
     $("#modalcatalogo").modal("show");
 }
@@ -463,7 +463,7 @@ function catalogoproducto_categoria(num_imagenes) {
             }
             
             html += inifila;
-            html += "<td style='width: 300px; height: 150px'>";
+            html += "<td style='width: 300px; height: 150px; font-size: 8px'>";
             //html += "<div style='width: 300px; height: 300px'>";
             html += "<div>";
             //html += "<div style='height: 300px !important'>";
@@ -480,11 +480,11 @@ function catalogoproducto_categoria(num_imagenes) {
             //html += "</div>";
             html += "<div style='padding-left: 4px'>";
             if(num_imagenes[2]){
-                var tamaniofont = 2;
+                /*var tamaniofont = 2;
                 if(registros[i]["producto_nombre"].length >50){
                     tamaniofont = 1;
-                }
-                html += "<b id='masgrande'><font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["producto_nombre"]+"</b></font></b><br>";
+                }*/
+                html += "<span class='text-bold' style='font-size: 9px !important; font-family: Arial'>"+registros[i]["producto_nombre"]+"</span><br>";
             }
             /*if(num_imagenes[4]){
                 html += "<b>Unidad:</b> "+registros[i]["producto_unidad"]+"<br>";
@@ -645,7 +645,7 @@ function catalogoproducto_alfabetico(num_imagenes) {
             }
             
             html += inifila;
-            html += "<td style='width: 300px; height: 150px'>";
+            html += "<td style='width: 300px; height: 150px; font-size: 8px'>";
             html += "<div>";
             var mimagen = "";
             if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
@@ -658,17 +658,17 @@ function catalogoproducto_alfabetico(num_imagenes) {
             html += mimagen;
             html += "<div style='padding-left: 4px'>";
             if(num_imagenes[2]){
-                var tamaniofont = 2;
+                /*var tamaniofont = 2;
                 if(registros[i]["producto_nombre"].length >50){
                     tamaniofont = 1;
-                }
-                html += "<b id='masgrande'><font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["producto_nombre"]+"</b></font></b><br>";
+                }*/
+                html += "<span class='text-bold' style='font-size: 9px !important; font-family: Arial'>"+registros[i]["producto_nombre"]+"</span><br>";
             }
             if(num_imagenes[3]){
-                html += "<b>Cod.:</b> "+registros[i]["producto_codigo"];
+                html += "<b>Cod.:</b> "+registros[i]["producto_codigo"]+"<br>";
             }
             if(num_imagenes[4]){
-                html += "&nbsp;<b>Marca:</b> "+registros[i]["producto_marca"]+"<br>";
+                html += "<b>Marca:</b> "+registros[i]["producto_marca"]+"<br>";
             }
             if(num_imagenes[5]){
                 html += "<b>Industria:</b> "+registros[i]["producto_industria"]+"<br>";

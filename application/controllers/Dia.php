@@ -29,13 +29,13 @@ class Dia extends CI_Controller{
     {   
         if(isset($_POST) && count($_POST) > 0)     
         {   
-            $params = array(
-				'fecha' => $this->input->post('fecha'),
-				'tipo_cambio' => $this->input->post('tipo_cambio'),
-				'tipo_ufv' => $this->input->post('tipo_ufv'),
-            );
-            
-            $dia_id = $this->Dia_model->add_dia($params);
+                $params = array(
+                                    'fecha' => $this->input->post('fecha'),
+                                    'tipo_cambio' => $this->input->post('tipo_cambio'),
+                                    'tipo_ufv' => $this->input->post('tipo_ufv'),
+                );
+
+                $dia_id = $this->Dia_model->add_dia($params);
             redirect('dia/index');
         }
         else
@@ -91,6 +91,145 @@ class Dia extends CI_Controller{
         }
         else
             show_error('The dia you are trying to delete does not exist.');
+    }
+    
+    /* registrar cambio en Dia
+     * 
+    */
+    function buscarcotizaciones()
+    {
+        //if($this->acceso(102)){
+            if ($this->input->is_ajax_request()){
+                $datos = $this->Dia_model->get_all_dia();
+                echo json_encode($datos);
+            }else{
+                show_404();
+            }
+        //}
+    }
+    /*
+    * registrar cambio en Dia
+    */
+    function registrarcotizacion()
+    {
+        //if($this->acceso(102)){
+            if ($this->input->is_ajax_request()){
+                $params = array(
+                    'fecha' => $this->input->post('fecha'),
+                    'tipo_cambio' => $this->input->post('tipo_cambio'),
+                    'tipo_ufv' => $this->input->post('tipo_ufv'),
+                );
+                $dia_id = $this->Dia_model->add_dia($params);
+                echo json_encode("ok");
+            }else{
+                show_404();
+            }
+        //}
+    }
+    /*
+    * modificar cotizacion en Dia
+    */
+    function modificarcotizacion()
+    {
+        //if($this->acceso(102)){
+            if ($this->input->is_ajax_request()){
+                $params = array(
+                    'fecha' => $this->input->post('fecha'),
+                    'tipo_cambio' => $this->input->post('tipo_cambio'),
+                    'tipo_ufv' => $this->input->post('tipo_ufv'),
+                );
+                $cod_dia = $this->input->post('cod_dia');
+                $this->Dia_model->update_dia($cod_dia, $params);
+                echo json_encode("ok");
+            }else{
+                show_404();
+            }
+        //}
+    }
+    /*
+    * eliminar cotizacion en Dia
+    */
+    function eliminarcotizacion()
+    {
+        //if($this->acceso(102)){
+            if ($this->input->is_ajax_request()){
+                $cod_dia = $this->input->post('cod_dia');
+                $this->Dia_model->delete_dia($cod_dia);
+                echo json_encode("ok");
+            }else{
+                show_404();
+            }
+        //}
+    }
+    /*
+    * eliminar cotizacion en Dia
+    */
+    function importararchivo()
+    {
+        //if($this->acceso(102)){
+            if ($this->input->is_ajax_request()){
+                $tipo = $_FILES['archivo']['type'];
+                $tamanio = $_FILES['archivo']['size'];
+                $archivotmp = $_FILES['archivo']['tmp_name'];
+                $respuesta = new stdClass();
+                $respuesta->mensaje = "";
+                $borrar = "";
+                //if( $tipo == 'application/vnd.ms-excel'){
+                $archivo = "./resources/images/formapago/alumno.csv";
+                if(move_uploaded_file($archivotmp, $archivo) ){
+                   $respuesta->estado = true;
+                } else {
+                   $respuesta->estado = false;
+                   $respuesta->mensaje = "El archivo no se pudo subir al servidor, inténtalo mas tarde";
+                }
+                if($respuesta->estado){
+                    /* Se crea la conexión a la base de datos*/
+                    //$conexion = new mysqli('localhost','usuario','password','basedatos',3306);
+                    $lineas = file('./resources/images/formapago/alumno.csv');
+                    foreach ($lineas as $linea) {
+                        
+                    //}
+                    //foreach ($lineas as $linea_num => $linea)
+                    //{
+                        $datos = explode(";",$linea);
+                        $fecha       = trim($datos[0]);
+                        //$fecha       = $datos[0];
+                        $borrar = substr($fecha, 0, 10);
+                        //$fecha1 = date("Y-m-d", strtotime($borrar));
+                           /*echo $fecha1;
+                           break;*/
+                       //$fecha1      = explode("/",$fecha);
+                       //$fecha2      = $fecha1[0]."/".$fecha1[2]."/".$fecha1[1]; //date("Y-m-d", strtotime($fecha));
+                        $fecha1 = str_replace("/", "\/", $borrar);
+                       $tipo_cambio = trim($datos[1]);
+                       $tipo_ufv    = trim($datos[2]);
+                       $params = array(
+                            'fecha'       => $fecha1,
+                            'tipo_cambio' => $tipo_cambio,
+                            'tipo_ufv'    => $tipo_ufv,
+                        );
+                        $dia_id = $this->Dia_model->add_dia($params);
+                       
+                        /*$consulta = "INSERT INTO tblalumno(matricula,paterno, materno, nombre) VALUES('$matricula', '$paterno', '$materno', '$nombre');";
+                        if(!$conexion->query($consulta)){
+                            $respuesta->estado = false;
+                            $respuesta->errormsg .= "El alumno $paterno $materno $nombre no se guardo, verifica la información \n";
+                        }*/
+                    }
+                }
+                    if($respuesta->estado == true)
+                       $respuesta->mensaje = "Todos los registros se guardaron correctamente\n";
+                /*}
+                else {
+                   $respuesta->mensaje = "La información no se guardo debido a que solo se admiten archivos .csv\n";
+                }*/
+                 //echo json_encode($respuesta);
+                 //echo json_encode($lineas);
+                 echo json_encode($fecha1);
+            }else{
+                show_404();
+            }
+        //}
     }
     
 }

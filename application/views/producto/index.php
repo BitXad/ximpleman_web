@@ -286,7 +286,7 @@ echo '<script type="text/javascript">
                         <label for="num_imagenes" class="control-label"><span class="text-danger">*</span>Nro. Columnas por Fila</label>
                         <span class="text-red" id="mensaje_numimagen"></span>
                         <div class="form-group">
-                            <input type="text" name="num_imagenes" class="form-control" id="num_imagenes" required placeholder="# entre 1 y 20" />
+                            <input type="number" min="0" max="20" name="num_imagenes" class="form-control" id="num_imagenes" required placeholder="# entre 1 y 20" />
                         </div>
                     </div>
                     <div class="col-md-6">

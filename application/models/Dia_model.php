@@ -38,13 +38,10 @@ class Dia_model extends CI_Model
         $dia = $this->db->query("
             SELECT
                 *
-
             FROM
                 `dia`
-
             WHERE
                 1 = 1
-
             ORDER BY `cod_dia` DESC
         ")->result_array();
 
