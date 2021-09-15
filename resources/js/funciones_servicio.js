@@ -2170,7 +2170,7 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<div class='modal-footer' style='text-align: center'>";
                         //html += "<a href='"+base_url+"servicio/remove/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
                         
-                        html += "<button class='btn btn-facebook' onclick='registrarinformacion_detservicio("+registros[i]['sservicio_id']+", "+registros[i]['detalleserv_id']+")' ><span class='fa fa-file-text'></span> Registrar Información</button>";
+                        html += "<button class='btn btn-facebook' onclick='registrarinformacion_detservicio("+registros[i]['servicio_id']+", "+registros[i]['detalleserv_id']+")' ><span class='fa fa-file-text'></span> Registrar Información</button>";
                         if(registros[i]['detallestado_id'] == 28){
                             html += "<button class='btn btn-success' onclick='registrarservicio_terminado("+registros[i]['servicio_id']+", "+registros[i]['detalleserv_id']+")' ><span class='fa fa-wrench'></span> Registrar Terminado</button>";
                         }
