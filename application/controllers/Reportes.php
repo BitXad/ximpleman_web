@@ -1404,4 +1404,46 @@ function torta3($anio,$mes)
             show_404();
         }
     }
+    /* reporte General */
+    function reporte_general()
+    {
+        if($this->acceso(157)){
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $this->load->model('Parametro_model');
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+        
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        
+        $this->load->model('Tipo_transaccion_model');
+        $data['all_tipotransaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+        
+        $this->load->model('Forma_pago_model');
+        $data['all_formapago'] = $this->Forma_pago_model->get_all_forma();
+        
+        $this->load->model('Categoria_clientezona_model');
+        $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_id1();
+        
+        $this->load->model('Preferencia_model');
+        $data['all_preferencia'] = $this->Preferencia_model->get_all_preferenciaestado(1);
+        
+        $this->load->model('Clasificador_model');
+        $data['all_clasificador'] = $this->Clasificador_model->get_all_clasificador_asc();
+        
+        $this->load->model('Categoria_producto_model');
+        $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
+        
+        $this->load->model('Subcategoria_producto_model');
+        $data['all_subcategoria'] = $this->Subcategoria_producto_model->get_all_subcategoria_producto();
+        
+        $data['page_title'] = "Reporte General";
+        $data['_view'] = 'reportes/reporte_general';
+
+        $this->load->view('layouts/main',$data);
+        }
+    }
 }

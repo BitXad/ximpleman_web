@@ -80,7 +80,7 @@ class Categoria_clientezona_model extends CI_Model
             WHERE
                 cc.estado_id = e.estado_id
                 and cc.estado_id = 1
-                
+            ORDER BY cc.zona_nombre ASC
         ")->result_array();
         return $categoriacliezona;
     }
