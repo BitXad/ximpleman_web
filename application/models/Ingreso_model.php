@@ -99,13 +99,14 @@ class Ingreso_model extends CI_Model
 
             
 
-       $ingreso = $this->db->query("
-        SELECT
-               i.*, u.*, f.ingreso_id as 'ingres', f.factura_id
+       $ingreso = $this->db->query(
+            "SELECT
+                i.*, u.*, f.ingreso_id as 'ingres', f.factura_id, fp.`forma_nombre`
             FROM
                 ingresos i
             LEFT JOIN usuario u on i.usuario_id=u.usuario_id
             LEFT JOIN  factura f on i.ingreso_id=f.ingreso_id
+            LEFT JOIN forma_pago fp on i.`forma_id` = fp.`forma_id`
             WHERE
                 1=1
                

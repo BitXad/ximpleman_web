@@ -78,6 +78,7 @@
                         <th>Total<br>Bs</th>
                         <th>Fecha<br>Limite</th>
                         <th>Cancelado<br>Bs</th>
+                        <th>Forma<br>de pago</th>
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Num.<br>recibo</th>
@@ -147,7 +148,7 @@ $(document).ready(function(){
                         $color ="";
                         if ($c['estado_id']==9){
                             $color = " style='background-color: gray'";
-                        }
+                          }
                     
                     ?>    
                     
@@ -163,6 +164,7 @@ $(document).ready(function(){
                       <td align="right" <?php echo $color; ?> style="background:silver"><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
                       <td <?php echo $color; ?>><?php echo date('d/m/Y',strtotime($c['cuota_fechalimite'])); ?></td>
                       <td align="right" <?php echo $color; ?>><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
+                      <td align="center" <?php echo $color; ?>><?php echo(($c['forma_nombre'] == null) ? "": $c['forma_nombre']) ?></td>
                       <?php if($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { ?>
                       <td <?php echo $color; ?>></td> 
                       <td <?php echo $color; ?>></td>
@@ -258,7 +260,7 @@ $(document).ready(function(){
           <div class="col-md-12">
             <input type="hidden" name="cuota_id" value="<?php echo $c['cuota_id']; ?>" class="form-control" id="cuota_id" />
             <input type="hidden" name="estado_id" value="9" class="form-control" id="estado_id" />
-          <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="cuota_cancelado" class="control-label">Cobrar Bs</label>
                         <div class="form-group">
                          
@@ -268,7 +270,8 @@ $(document).ready(function(){
                             <input type="hidden"  name="ventita" value="<?php echo $c['venta_id']; ?>" class="form-control" id="ventita" />
                         </div>
                     </div>
-                     <div class="col-md-6">
+                    
+                    <div class="col-md-3">
                         <label for="cuota_saldo" class="control-label">Saldo Bs</label>
                         <div class="form-group">
                             <input type="hidden"  name="cuota_interes" value="<?php echo $c['cuota_interes']; ?>" class="form-control" id="cuota_interes" />
@@ -282,6 +285,25 @@ $(document).ready(function(){
                              <input type="hidden" name="cuota_saldo" value="<?php echo $c['cuota_saldo']; ?>" class="form-control" id="cuota_saldo"/>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <label for="forma_pago" class="control-label">Forma de pago</label>
+                        <div class="form-group">
+                            <select id="select_forma_pago<?= $c['cuota_id'] ?>" name="forma_pago" class="form-control" onchange="mostrar('select_forma_pago<?= $c['cuota_id'] ?>', 'cuota_forma_glosa<?= $c['cuota_id'] ?>')">
+                                <?php foreach($all_forma_pago as $forma){
+                                  $selected = ($forma['forma_nombre'] == $this->input->post('forma_pago')) ? ' selected="selected"' : "";
+
+                                  echo '<option value="'.$forma['forma_id'].'" '.$selected.'>'.$forma['forma_nombre'].'</option>';
+                                }?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12" id="cuota_forma_glosa<?= $c['cuota_id'] ?>" style="display:none">
+                        <label for="cuota_forma_glosa" class="control-label">Glosa Forma de pago</label>
+                        <div class="form-group">
+                            <input type="text" name="cuota_forma_glosa" value="<?php echo $this->input->post('cuota_forma_glosa'); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                        </div>
+                    </div>
+                    <hr class="col-md-12">
           <div class="col-md-6">
                         <label for="cuota_numercibo" class="control-label">Recibo Num.</label>
                         <div class="form-group">
@@ -367,3 +389,15 @@ $(document).ready(function(){
 </div>
 
 
+<script type="text/javascript">
+    function mostrar(select_form, div_form){
+      // console.log("si llega")
+      var forma = document.getElementById(select_form).value;
+      console.log(forma)
+      if(forma != 1){
+        document.getElementById(div_form).style.display = 'block';
+      }else{
+        document.getElementById(div_form).style.display = 'none';        
+      }       
+    }
+</script> 
