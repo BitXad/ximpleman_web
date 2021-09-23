@@ -568,6 +568,7 @@ class Producto extends CI_Controller{
         $producto_precio = $this->input->post('producto_precio');
         $factor = $this->input->post('unidad_compra');
         $fecha_venc = $this->input->post('fecha_venc');
+        $moneda_tc = $this->input->post('moneda_tc1');
         
      $this->load->model('Compra_model');
       $this->load->library('form_validation');
@@ -670,7 +671,8 @@ class Producto extends CI_Controller{
                 detallecomp_precio,
                 detallecomp_descuento,
                 detallecomp_subtotal,
-                detallecomp_total              
+                detallecomp_total,
+                detallecomp_tc
                 )
                 (
                 SELECT
@@ -684,7 +686,8 @@ class Producto extends CI_Controller{
                 ".$producto_precio.",
                 ".$descuento.",
                 ".$cantidad." * ".$producto_costo.",
-                (".$cantidad." * ".$producto_costo.") - ".$descuento."
+                (".$cantidad." * ".$producto_costo.") - ".$descuento.",
+                ".$moneda_tc."
                 
                 from producto where producto_id = ".$producto_id."
                 )";

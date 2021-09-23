@@ -650,6 +650,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         <div class="form-group">
                             <input type="number" min="0" step="any" name="cantidad" autocomplete="off" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
                              <input type="hidden" name="descuento" value="0" class="form-control" id="descuento" />
+                             <input type="hidden" name="moneda_tc1" id="moneda_tc1" value="<?php echo $moneda['moneda_tc']; ?>">
                             <input id="banderanga" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
                         </div>
                     </div>
