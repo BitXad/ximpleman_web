@@ -147,6 +147,7 @@ function fechadeingreso(filtro)
                             html += "<span style='font-size: 8px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
                         }
                         html += "</td>";
+                        html += "<td>"+registros[i]["forma_nombre"]+"</td>";
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
                         html += "<td  class='no-print'><a href='"+base_url+"ingreso/imprimir/"+registros[i]["ingreso_id"]+"' title='Carta' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
                        
@@ -204,6 +205,7 @@ function fechadeingreso(filtro)
                         html += "</td>";
                         html += "<td></td>";
                         html += "<td></td>";
+                        html += "<td></td>
                         html += "</tr>";
                    
                    $("#fechadeingreso").html(html);

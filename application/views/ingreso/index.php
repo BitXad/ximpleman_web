@@ -138,6 +138,7 @@
                     <th>CONCEPTO</th>
                     <th>MONTO</th>
                     <th>MONEDA</th>
+                    <th>FORMA DE PAGO</th>
                     <th>USUARIO</th>
                     <th class="no-print"></th>
 

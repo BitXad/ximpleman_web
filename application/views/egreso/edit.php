@@ -85,7 +85,27 @@
                             </div>
                         </div>
                         <?php } ?>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
+                            <label for="forma_pago" class="control-label">Forma de pago</label>
+                            <div class="form-group">
+                                <select id="select_forma_pago" name="forma_pago" class="form-control" onchange="mostrar()" required>
+                                    <?php 
+                                    foreach($all_forma_pago as $forma)
+                                    {
+                                        $selected = ($forma['forma_id'] == $egreso['forma_id']) ? ' selected="selected"' : "";
+                                        echo '<option value="'.$forma['forma_id'].'" '.$selected.'>'.$forma['forma_nombre'].'</option>';
+                                    } 
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4" id="egreso_glosa" style="<?php if($egreso['forma_id'] == 1){ echo 'display: none;';} ?>">
+                            <label for="egreso_glosa" class="control-label">Glosa</label>
+                            <div class="form-group">
+                                <input type="text" id="input_glosa" name="egreso_glosa" value="<?php echo ($this->input->post('egreso_glosa') ? $this->input->post('egreso_glosa') : $egreso['egreso_glosa']) ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
                             <button type="submit" class="btn btn-success">
                                 <i class="fa fa-check"></i> Guardar
                             </button>
@@ -102,3 +122,15 @@
         </div>
     </div>
 </div>
+<script>
+    function mostrar(){
+        var forma = document.getElementById('select_forma_pago').value;
+        
+        if(forma != 1){
+            document.getElementById('egreso_glosa').style.display = 'block';
+        }else{
+            document.getElementById('egreso_glosa').style.display = 'none';
+            document.getElementById('input_glosa').value = "";
+        }
+    }
+</script>

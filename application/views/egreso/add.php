@@ -57,6 +57,28 @@
                                 <input type="text" name="egreso_concepto" value="<?php echo $this->input->post('egreso_concepto'); ?>" class="form-control" id="egreso_concepto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required/>
                             </div>
                         </div>
+                        <div class="col-md-2">
+                            <label for="forma_pago" class="control-label">Forma de pago</label>
+                            <div class="form-group">
+                                <select id="select_forma_pago" name="forma_pago" class="form-control" onchange="mostrar()" required>
+                                    <!--<option value="Bs">- Bs -</option>-->
+                                    <?php 
+                                    foreach($all_forma_pago as $forma)
+                                    {
+                                      $selected = ($forma['forma_nombre'] == $this->input->post('forma_pago')) ? ' selected="selected"' : "";
+
+                                      echo '<option value="'.$forma['forma_id'].'" '.$selected.'>'.$forma['forma_nombre'].'</option>';
+                                    } 
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4" id="egreso_glosa" style="display:none">
+                            <label for="egreso_glosa" class="control-label">Glosa</label>
+                            <div class="form-group">
+                                <input type="text" name="egreso_glosa" value="<?php echo $this->input->post('egreso_glosa'); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-success">
@@ -74,3 +96,14 @@
         </div>
     </div>
 </div>
+<script>
+    function mostrar(){
+        var forma = document.getElementById('select_forma_pago').value;
+        
+        if(forma != 1){
+            document.getElementById('egreso_glosa').style.display = 'block';
+        }else{
+            document.getElementById('egreso_glosa').style.display = 'none';
+        }
+    }
+</script>

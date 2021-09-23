@@ -15,6 +15,7 @@ class Egreso extends CI_Controller{
         $this->load->model('Usuario_model');   
         $this->load->helper('numeros');
         $this->load->model('Parametro_model');
+        $this->load->model('Forma_pago_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -124,6 +125,8 @@ class Egreso extends CI_Controller{
                     'egreso_concepto' => $this->input->post('egreso_concepto'),
                     'egreso_fecha' => $this->input->post('egreso_fecha'),
                     'egreso_tc' => $egreso_tc,
+                    'forma_id' => $this->input->post('forma_pago'),
+                    'egreso_glosa' => $this->input->post('egreso_glosa'),
                 );
                 $egreso_id = $this->Egreso_model->add_egreso($params);
                 $sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
@@ -134,6 +137,7 @@ class Egreso extends CI_Controller{
                 $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
                 $this->load->model('Parametro_model');
                 $data['parametro'] = $this->Parametro_model->get_all_parametro();
+                $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
                 $data['_view'] = 'egreso/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -189,6 +193,8 @@ class Egreso extends CI_Controller{
                             'egreso_moneda' => $lamoneda, //$this->input->post('egreso_moneda'),
                             'egreso_concepto' => $this->input->post('egreso_concepto'),
                             'egreso_fecha' => $this->input->post('egreso_fecha'),
+                            'forma_id' => $this->input->post('forma_pago'),
+                            'egreso_glosa' => $this->input->post('egreso_glosa'),
                         );
                     }else{
                     $params = array(
@@ -199,6 +205,8 @@ class Egreso extends CI_Controller{
                         'egreso_monto' => $total_final,
                         'egreso_moneda' => $lamoneda, //$this->input->post('egreso_moneda'),
                         'egreso_concepto' => $this->input->post('egreso_concepto'),
+                        'forma_id' => $this->input->post('forma_pago'),
+                        'egreso_glosa' => $this->input->post('egreso_glosa'),
                         //'egreso_fecha' => $this->input->post('egreso_fecha'),		
                     );
                 }
@@ -212,6 +220,7 @@ class Egreso extends CI_Controller{
                 $this->load->model('Categoria_egreso_model');
                 $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
                 $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+                $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
                 $data['_view'] = 'egreso/edit';
                 $this->load->view('layouts/main',$data);
             }

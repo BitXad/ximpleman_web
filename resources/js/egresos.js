@@ -139,6 +139,7 @@ function fechadeegreso(filtro)
                             html += "<span style='font-size: 8px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
                         }
                         html += "</td>";
+                        html += "<td>"+registros[i]["forma_nombre"]+"</td>";
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
 //                        html += "<td class='no-print'><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
 //                        html += "<a href='"+base_url+"egreso/boucher/"+registros[i]["egreso_id"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
@@ -191,6 +192,7 @@ function fechadeegreso(filtro)
                             html += "<span style='font-size: 9px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
                         }
                         html += "</td>";
+                        html += "<td></td>";
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "</tr>";
