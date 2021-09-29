@@ -98,19 +98,25 @@ class Cuotum_model extends CI_Model
             $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
         
         $credito = $this->db->query("
-            SELECT
-                c.*, p.*, co.*, k.*, e.*, u.usuario_nombre
-
-            FROM
-                credito c, proveedor p, compra co, cuota k, estado e, usuario u
-
+                SELECT 
+                `c`.*,
+                `p`.*,
+                `co`.*,
+                `k`.*,
+                `e`.*,
+                `u`.`usuario_nombre`,
+                `fp`.`forma_nombre`
+            FROM `credito` as c 
+                LEFT JOIN `compra` as co ON c.`compra_id` = co.`compra_id`
+                LEFT JOIN `proveedor` as p ON  p.`proveedor_id` = co.`proveedor_id`
+                LEFT JOIN `cuota` as k ON k.`credito_id` = c.`credito_id`
+                LEFT JOIN `estado` as e ON k.`estado_id` = e.`estado_id`
+                LEFT JOIN `usuario` as u ON k.`usuario_id` = u.`usuario_id`
+                LEFT JOIN `forma_pago` as fp on `fp`.`forma_id` = k.`forma_id`
+                
             WHERE
-                k.credito_id = c.credito_id 
-                and c.compra_id = co.compra_id
-                and p.proveedor_id = co.proveedor_id
-                and k.estado_id = e.estado_id
-                and k.usuario_id = u.usuario_id
-                and ".$credito_id." = k.credito_id
+                c.`credito_id` = k.`credito_id` AND
+                ".$credito_id." = k.credito_id
 
             ORDER BY `cuota_numcuota` ASC
 
@@ -147,7 +153,7 @@ class Cuotum_model extends CI_Model
         
         $credito = $this->db->query("
             SELECT
-                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id
+                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id, fp.forma_nombre
 
             FROM
                cuota k
@@ -157,6 +163,7 @@ class Cuotum_model extends CI_Model
             LEFT JOIN estado e on k.estado_id = e.estado_id
             LEFT JOIN usuario u on k.usuario_id = u.usuario_id
             LEFT JOIN factura f on k.cuota_id=f.cuota_id
+            LEFT JOIN forma_pago fp on k.`forma_id` = fp.forma_id
             WHERE
              
                  ".$credito_id." = k.credito_id

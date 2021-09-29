@@ -76,17 +76,15 @@ class Egreso_model extends CI_Model
     {
 
        $egreso = $this->db->query("
-        SELECT
-               e.*, u.*
+            SELECT
+                e.*, u.*, fp.forma_nombre
             FROM
-                egresos e, usuario u
+                egresos e, usuario u, `forma_pago` fp
             WHERE
                 e.usuario_id = u.usuario_id
-                
-               
+            AND e.`forma_id` = `fp`.`forma_id`   
                 ".$condicion." 
                 ".$categoria." 
-                
             ORDER BY e.egreso_fecha DESC 
         "
         )->result_array();

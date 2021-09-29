@@ -65,6 +65,8 @@
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($all_moneda); */ ?>' /> -->
 <input type="hidden" name="conencabezado" id="conencabezado" value="1" />
 
+<input type="text" value='<?php echo json_encode($empresa); ?>' id="datos_empresa" hidden>
+
 <div class="row micontenedorep" style="display: none" id="cabeceraprint" >
     <table class="table" style="width: 100%; padding: 0;" >
         <tr>
@@ -132,6 +134,7 @@
             </select>
         </div>
     </div>
+    
     <div class="col-md-4">
         <div class="box-tools" style="display: flex">
             <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('producto/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
@@ -282,33 +285,54 @@ echo '<script type="text/javascript">
             </div>
             <div class="modal-body">
                 <span>
-                    <div class="col-md-6">
-                        <label for="num_imagenes" class="control-label"><span class="text-danger">*</span>Nro. Columnas por Fila</label>
+                    <div class="col-md-2">
+                        <label for="num_imagenes" class="control-label"><span class="text-danger">*</span>Columnas</label>
                         <span class="text-red" id="mensaje_numimagen"></span>
                         <div class="form-group">
                             <input type="number" min="0" max="20" name="num_imagenes" class="form-control" id="num_imagenes" required placeholder="# entre 1 y 20" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="tipo_imagen" class="control-label"><span class="text-danger">*</span>Tipo Imagen</label>
                         <!--<span class="text-red" id="mensaje_numimagen"></span>-->
                         <div class="form-group">
                             <select name="tipo_imagen" class="form-control" id="tipo_imagen">
-                                <option value="circle">Circular</option>
-                                <option value="rounded">Rectangular</option>
+                                <option value="circle">CIRCULAR</option>
+                                <option value="rounded">RECTANGULAR</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="tipo_orden" class="control-label"><span class="text-danger">*</span>Ordenar</label>
+                            <label for="tipo_orden" class="control-label"><span class="text-danger">*</span>Orden</label>
                         <!--<span class="text-red" id="mensaje_numimagen"></span>-->
                         <div class="form-group">
                             <select name="tipo_orden" class="form-control" id="tipo_orden">
-                                <option value="a">por Orden Alfabetico</option>
-                                <option value="c">por Categoria</option>
+                                <option value="a">ALFABETICO</option>
+                                <option value="c">CATEGORIA</option>
                             </select>
                         </div>
                     </div>
+                    
+                    <div class="col-md-6">
+                        <label for="tipo_catalog" class="control-label"><span class="text-danger">*</span>Tipo de Catálogo</label>
+                        <!--<span class="text-red" id="mensaje_numimagen"></span>-->
+                        <div class="form-group">
+                            <select name="tipo_catalogo" class="form-control" id="tipo_catalogo">
+                                <option value="1">LISTA</option>
+                                <option value="2">ICONOS</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="titulo_catalog" class="control-label"><span class="text-danger"></span>Titulo</label>
+                        <!--<span class="text-red" id="mensaje_numimagen"></span>-->
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="titulo_catalogo" id="titulo_catalogo" />
+
+                        </div>
+                    </div>
+                    
                     <div class="col-md-12">
                         <table>
                             <tr>
@@ -386,6 +410,16 @@ echo '<script type="text/javascript">
                                 </td>
                                 <td style="padding-right: 10px"></td>
                             </tr>
+                            
+                            <tr>
+                                <td style="padding-right: 10px">
+                                    <label style="font: normal; font-size: 10px;">
+                                        <input class="btn" type="checkbox" name="precio_moneda" id="precio_moneda" title="Mostrar precio de la moneda alternativa" >
+                                        Precio Moneda alternativa
+                                    </label>
+                                </td>
+                                <td style="padding-right: 10px"></td>
+                            </tr>
                         </table>
                     </div>
                 </span>
@@ -418,6 +452,7 @@ echo '<script type="text/javascript">
                     <option value="3"> PRECIO (NIVEL 3) </option>
                     <option value="4"> PRECIO (NIVEL 4) </option>
                     <option value="5"> PRECIO (NIVEL 5) </option>
+                    
                 </select>
             </div>
             <div class="modal-footer" style="text-align: center">

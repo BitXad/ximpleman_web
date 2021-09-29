@@ -18,6 +18,7 @@ class Cuotum extends CI_Controller{
         $this->load->model('Dosificacion_model');
         $this->load->model('Ingreso_model');
         $this->load->model('Factura_model');
+        $this->load->model('Forma_pago_model');
         $this->load->library('ControlCode');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -57,6 +58,7 @@ class Cuotum extends CI_Controller{
             $data['rol'] = $this->session_data['rol'];
             $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
             $data['credito'] = $this->Credito_model->dato_deudas($credito_id);
+            $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
             $data['_view'] = 'cuotum/deudas';
             $this->load->view('layouts/main',$data);
         }
@@ -98,6 +100,7 @@ class Cuotum extends CI_Controller{
 
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
             $data['credito'] = $this->Credito_model->dato_cuentas($credito_id);
+            $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
             $data['_view'] = 'cuotum/cuentas';
             $this->load->view('layouts/main',$data);
         }
@@ -306,6 +309,8 @@ class Cuotum extends CI_Controller{
                    // 'cuota_saldo' => $this->input->post('cuota_saldo'),
                     'cuota_glosa' => $this->input->post('cuota_glosa'),
                     'cuota_ordenpago' => $this->input->post('cuota_ordenpago'),
+                    'forma_id' => $this->input->post('forma_pago'),
+                    'cuota_forma_glosa' => $this->input->post('cuota_forma_glosa'),
                 );
 
 
@@ -327,11 +332,13 @@ class Cuotum extends CI_Controller{
                    // 'cuota_fechalimite' => $this->input->post('cuota_fechalimite'),
                     'cuota_cancelado' => $this->input->post('cuota_cancelado'),
                     'cuota_fecha' => $this->input->post('cuota_fecha'),
-                    //'cuota_hora' => $this->input->post('cuota_hora'),
+                    'cuota_hora' => (date('H:i:s')), 
                     'cuota_numercibo' => $this->input->post('cuota_numercibo'),
                    // 'cuota_saldo' => $this->input->post('cuota_saldo'),
                     'cuota_glosa' => $this->input->post('cuota_glosa'),
                     'cuota_ordenpago' => $this->input->post('cuota_ordenpago'),
+                    'forma_id' => $this->input->post('forma_pago'),
+                    'cuota_forma_glosa' => $this->input->post('cuota_forma_glosa'),
                 );
 
 
@@ -589,7 +596,9 @@ class Cuotum extends CI_Controller{
                     'cuota_hora' => date('H:i:s'),
                     'cuota_numercibo' => $this->input->post('cuota_numercibo'),
                    // 'cuota_saldo' => $this->input->post('cuota_saldo'),
-                    'cuota_glosa' => $this->input->post('cuota_glosa'),
+                    'cuota_glosa' => $this->input->post('cuota_forma_glosa'),
+                    'forma_id' => $this->input->post('forma_pago'),
+                    'cuota_forma_glosa' => $this->input->post('cuota_forma_glosa'),
                 );
 
 
@@ -615,6 +624,8 @@ class Cuotum extends CI_Controller{
                     'cuota_numercibo' => $this->input->post('cuota_numercibo'),
                    // 'cuota_saldo' => $this->input->post('cuota_saldo'),
                     'cuota_glosa' => $this->input->post('cuota_glosa'),
+                    'forma_id' => $this->input->post('forma_pago'),
+                    'cuota_forma_glosa' => $this->input->post('cuota_forma_glosa'),
                 );
 
 
@@ -760,7 +771,7 @@ class Cuotum extends CI_Controller{
         if($this->acceso(41)){
             $usuario_id = $this->session_data['usuario_id'];
             
-            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00' WHERE cuota.cuota_id=".$cuota_id." ";
+            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00', forma_id=null, cuota_numercibo = null WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
             $ptq="DELETE FROM cuota WHERE cuota.cuota_numcuota = ".$numcuota." and cuota_id > ".$cuota_id." and cuota.credito_id=".$credito_id." and cuota.estado_id=8 ";
             $this->db->query($ptq);
@@ -786,7 +797,7 @@ class Cuotum extends CI_Controller{
         if($this->acceso(47)){
             $usuario_id = $this->session_data['usuario_id'];
             
-            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00' WHERE cuota.cuota_id=".$cuota_id." ";
+            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00', forma_id=null, cuota_numercibo = null WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
             $ptq="DELETE FROM cuota WHERE cuota.cuota_numcuota = ".$numcuota." and cuota_id > ".$cuota_id." and cuota.credito_id=".$credito_id." and cuota.estado_id=8 ";
             $this->db->query($ptq);

@@ -16,6 +16,7 @@ class Ingreso extends CI_Controller{
          $this->load->model('Parametro_model');
          $this->load->model('Dosificacion_model');
          $this->load->model('Factura_model');
+         $this->load->model('Forma_pago_model');
          $this->load->library('ControlCode'); 
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -53,6 +54,7 @@ class Ingreso extends CI_Controller{
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
             $data['_view'] = 'ingreso/index';
             $this->load->view('layouts/main',$data);
         }
@@ -134,6 +136,8 @@ class Ingreso extends CI_Controller{
                     'ingreso_concepto' => $this->input->post('ingreso_concepto'),
                     'ingreso_fecha' => $this->input->post('ingreso_fecha'),
                     'ingreso_tc' => $ingreso_tc,
+                    'forma_id' => $this->input->post('forma_pago'),
+                    'ingreso_glosa' => $this->input->post('ingreso_glosa'),
                 );
                 $ingreso_id = $this->Ingreso_model->add_ingreso($params);
                 $sql = "UPDATE parametros SET parametro_numrecing=parametro_numrecing+1 WHERE parametro_id = '1'"; 
@@ -250,6 +254,7 @@ class Ingreso extends CI_Controller{
                 $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion_activa();
                 $this->load->model('Categoria_ingreso_model');
                 $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+                $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
                 
                 $data['page_title'] = "Ingreso";
                 $data['_view'] = 'ingreso/add';
@@ -318,6 +323,8 @@ class Ingreso extends CI_Controller{
                         'ingreso_monto' => $total_final, //$this->input->post('ingreso_monto'),
                         'ingreso_moneda' => $lamoneda, //$this->input->post('ingreso_moneda'),
                         'ingreso_concepto' => $this->input->post('ingreso_concepto'),
+                        'forma_id' => $this->input->post('forma_pago'),
+                        'ingreso_glosa' => $this->input->post('ingreso_glosa'),
                         //'ingreso_fecha' => $this->input->post('ingreso_fecha'),
                     );
                     $this->Ingreso_model->update_ingreso($ingreso_id,$params);            
@@ -325,6 +332,7 @@ class Ingreso extends CI_Controller{
                 }else{
                     $this->load->model('Categoria_ingreso_model');
                     $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+                    $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
                     $data['page_title'] = "Ingreso";
                     $data['_view'] = 'ingreso/edit';
                     $this->load->view('layouts/main',$data);
