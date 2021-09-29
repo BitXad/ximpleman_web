@@ -16,7 +16,18 @@ class Caja_model extends CI_Model
      */
     function get_caja($caja_id)
     {
-        return $this->db->get_where('caja',array('caja_id'=>$caja_id))->row_array();
+        $caja = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `caja`
+
+            WHERE
+                `caja_id` = ?
+        ",array($caja_id))->row_array();
+
+        return $caja;
     }
         
     /*
@@ -24,17 +35,20 @@ class Caja_model extends CI_Model
      */
     function get_all_caja()
     {
-        $this->db->order_by('caja_id', 'desc');
-        return $this->db->get('caja')->result_array();
-    }
-        
-    /*
-     * Get all caja
-     */
-    function get_mis_cajas($usuario_id)
-    {
-        $sql = "select * from caja where usuario_id = ".$usuario_id." order by caja_id desc";        
-        return $this->db->query($sql)->result_array();
+        $caja = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `caja`
+
+            WHERE
+                1 = 1
+
+            ORDER BY `caja_id` DESC
+        ")->result_array();
+
+        return $caja;
     }
         
     /*
@@ -62,25 +76,4 @@ class Caja_model extends CI_Model
     {
         return $this->db->delete('caja',array('caja_id'=>$caja_id));
     }
-    
-    /*
-     * function consultar
-     */
-    function consultar($sql)
-    {
-        return $this->db->query($sql)->result_array();
-    }
-    
-    /*
-     * function ejecutar
-     */
-    function ejecutar($sql)
-    {
-        $this->db->query($sql);
-        return true;
-        
-    }
-    
-    
-    
 }
