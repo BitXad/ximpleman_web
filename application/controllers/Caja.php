@@ -9,64 +9,17 @@ class Caja extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Caja_model');
-        
-        if ($this->session->userdata('logged_in')) {
-            $this->session_data = $this->session->userdata('logged_in');
-        }else {
-            redirect('', 'refresh');
-        }
     } 
-    
-    /* *****Funcion que verifica el acceso al sistema**** */
-    private function acceso($id_rol){
-        $rolusuario = $this->session_data['rol'];
-        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
-            return true;
-        }else{
-//            $data['_view'] = 'login/mensajeacceso';
-//            $this->load->view('layouts/main',$data);
-            return false;
-        }
-    }     
 
     /*
      * Listing of caja
      */
     function index()
     {
-     
-
-        if($this->acceso(18)){
-        //**************** inicio contenido ***************
-        $data['rolusuario'] = $this->session_data['rol'];
-        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $usuario_id = $this->session_data['usuario_id'];
+        $data['caja'] = $this->Caja_model->get_all_caja();
         
-        //$data['venta'] = $this->Venta_model->get_all_venta($params);
-            
-        if ($this->session_data['tipousuario_id']==1){ // si es administrador mostrar todas la cajas
-            
-            $data['caja'] = $this->Caja_model->get_all_caja();
-            $data['_view'] = 'caja/index';
-            $this->load->view('layouts/main',$data);
-            
-        }else{
-            
-            $data['caja'] = $this->Caja_model->get_mis_cajas($usuario_id);
-            $data['_view'] = 'caja/index';
-            $this->load->view('layouts/main',$data);
-            
-        }
-        
-
-        
-        //**************** fin contenido ***************
-        }        
-        
-        
-        
-        
-    
+        $data['_view'] = 'caja/index';
+        $this->load->view('layouts/main',$data);
     }
 
     /*
@@ -74,136 +27,70 @@ class Caja extends CI_Controller{
      */
     function add()
     {   
-        
-//        if(isset($_POST) && count($_POST) > 0)     
-//        {   
-//            $params = array(
-//				'caja_apertura' => $this->input->post('caja_apertura'),
-//				'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
-//				'caja_horaapertura' => $this->input->post('caja_horaapertura'),
-//				'caja_cierre' => $this->input->post('caja_cierre'),
-//				'caja_horacierre' => $this->input->post('caja_horacierre'),
-//				'caja_fechacierre' => $this->input->post('caja_fechacierre'),
-//				'caja_diferencia' => $this->input->post('caja_diferencia'),
-//            );
-//            
-//            $caja_id = $this->Caja_model->add_caja($params);
-//            redirect('caja/index');
-//        }
-//        else
-//        {            
-//            $data['_view'] = 'caja/add';
-//            $this->load->view('layouts/main',$data);
-//        }
-    }  
-    
-    function apertura_caja()
-    {   
-
-        //$data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $usuario_id = $this->session_data['usuario_id'];
-        
         if(isset($_POST) && count($_POST) > 0)     
         {   
+            $params = array(
+				'estado_id' => $this->input->post('estado_id'),
+				'moneda_id' => $this->input->post('moneda_id'),
+				'usuario_id' => $this->input->post('usuario_id'),
+				'caja_corte5' => $this->input->post('caja_corte5'),
+				'caja_imagen5' => $this->input->post('caja_imagen5'),
+				'caja_corte2' => $this->input->post('caja_corte2'),
+				'caja_imagen2' => $this->input->post('caja_imagen2'),
+				'caja_corte1' => $this->input->post('caja_corte1'),
+				'caja_imagen1' => $this->input->post('caja_imagen1'),
+				'caja_corte050' => $this->input->post('caja_corte050'),
+				'caja_imagen050' => $this->input->post('caja_imagen050'),
+				'caja_corte020' => $this->input->post('caja_corte020'),
+				'caja_imagen020' => $this->input->post('caja_imagen020'),
+				'caja_corte010' => $this->input->post('caja_corte010'),
+				'caja_imagen010' => $this->input->post('caja_imagen010'),
+				'caja_corte005' => $this->input->post('caja_corte005'),
+				'caja_imagen005' => $this->input->post('caja_imagen005'),
+				'caja_efectivo' => $this->input->post('caja_efectivo'),
+				'caja_credito' => $this->input->post('caja_credito'),
+				'caja_transacciones' => $this->input->post('caja_transacciones'),
+				'caja_apertura' => $this->input->post('caja_apertura'),
+				'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
+				'caja_horaapertura' => $this->input->post('caja_horaapertura'),
+				'caja_cierre' => $this->input->post('caja_cierre'),
+				'caja_horacierre' => $this->input->post('caja_horacierre'),
+				'caja_fechacierre' => $this->input->post('caja_fechacierre'),
+				'caja_diferencia' => $this->input->post('caja_diferencia'),
+				'caja_corte1000' => $this->input->post('caja_corte1000'),
+				'caja_imagen1000' => $this->input->post('caja_imagen1000'),
+				'caja_corte500' => $this->input->post('caja_corte500'),
+				'caja_imagen500' => $this->input->post('caja_imagen500'),
+				'caja_corte200' => $this->input->post('caja_corte200'),
+				'caja_imagen200' => $this->input->post('caja_imagen200'),
+				'caja_corte100' => $this->input->post('caja_corte100'),
+				'caja_imagen100' => $this->input->post('caja_imagen100'),
+				'caja_corte50' => $this->input->post('caja_corte50'),
+				'caja_imagen50' => $this->input->post('caja_imagen50'),
+				'caja_corte20' => $this->input->post('caja_corte20'),
+				'caja_imagen20' => $this->input->post('caja_imagen20'),
+				'caja_corte10' => $this->input->post('caja_corte10'),
+				'caja_imagen10' => $this->input->post('caja_imagen10'),
+            );
             
-            $sql = "select * from caja where caja_fechaapertura = date(now()) and usuario_id = ".$usuario_id;
-            $res = $this->Caja_model->consultar($sql);
-            
-            if(sizeof($res)>0){
-//                echo "<script type='javascript'> alert('EL USUARIO: Ya registro su apertura de caja...!'); </script>";
-
-                redirect('caja/index');
-            }
-            else{
-                
-                $caja_apertura = $this->input->post('caja_apertura');
-                $caja_fechaapertura = "date(now())";
-                $caja_horaapertura = "time(now())";
-                $caja_diferencia = "0";
-
-                $sql = "insert into caja(caja_apertura,caja_fechaapertura,caja_horaapertura,caja_diferencia,usuario_id) value(".
-                        $caja_apertura.",".
-                        $caja_fechaapertura.",".
-                        $caja_horaapertura.",".
-                        $caja_diferencia.",".
-                        $usuario_id.")";
-                
-                $this->Caja_model->ejecutar($sql);
-                redirect('caja/index');
-                
-            }
-            
+            $caja_id = $this->Caja_model->add_caja($params);
+            redirect('caja/index');
         }
         else
-        {            
-            $data['_view'] = 'caja/apertura';
+        {
+			$this->load->model('Estado_model');
+			$data['all_estado'] = $this->Estado_model->get_all_estado();
+
+			$this->load->model('Moneda_model');
+			$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+
+			$this->load->model('Usuario_model');
+			$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            
+            $data['_view'] = 'caja/add';
             $this->load->view('layouts/main',$data);
         }
-        
-    }
-    
-    function verificar_apertura()
-    {   
-
-        //$data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $usuario_id = $this->session_data['usuario_id'];
-                    
-        $sql = "select * from caja where caja_fechaapertura = date(now()) and usuario_id = ".$usuario_id;
-        $res = $this->Caja_model->consultar($sql);
-
-        echo json_encode($res);
-
-    }
-    
-    function registrar_apertura()
-    {   
-
-        $tipousuario_id = $this->session_data['tipousuario_id'];
-        $usuario_id = $this->session_data['usuario_id'];
-                    
-
-        
-        
-        $caja_apertura = $this->input->post('caja_apertura');
-        
-        $caja_fechaapertura = "date(now())";
-        $caja_horaapertura = "time(now())";
-        $caja_diferencia = "0";
-
-        $sql = "insert into caja(caja_apertura,caja_fechaapertura,caja_horaapertura,caja_diferencia,usuario_id) value(".
-                $caja_apertura.",".
-                $caja_fechaapertura.",".
-                $caja_horaapertura.",".
-                $caja_diferencia.",".
-                $usuario_id.")";
-
-        $this->Caja_model->ejecutar($sql);
-                
-        echo json_encode(true);
-
-    }
-    
-    function mostrar_cajas()
-    {   
-
-        $tipousuario_id = $this->session_data['tipousuario_id'];
-        $usuario_id = $this->session_data['usuario_id'];
-                
-        if ($tipousuario_id==1){
-            
-            $sql = "select * from caja where caja_fechaapertura = date(now())";
-            
-        }else{
-            
-            $sql = "select * from caja where caja_fechaapertura = date(now()) and usuario_id = ".$usuario_id;
-            
-        }
-
-        $res = $this->Caja_model->consultar($sql);
-                
-        echo json_encode($res);
-
-    }
+    }  
 
     /*
      * Editing a caja
@@ -218,6 +105,26 @@ class Caja extends CI_Controller{
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
+					'estado_id' => $this->input->post('estado_id'),
+					'moneda_id' => $this->input->post('moneda_id'),
+					'usuario_id' => $this->input->post('usuario_id'),
+					'caja_corte5' => $this->input->post('caja_corte5'),
+					'caja_imagen5' => $this->input->post('caja_imagen5'),
+					'caja_corte2' => $this->input->post('caja_corte2'),
+					'caja_imagen2' => $this->input->post('caja_imagen2'),
+					'caja_corte1' => $this->input->post('caja_corte1'),
+					'caja_imagen1' => $this->input->post('caja_imagen1'),
+					'caja_corte050' => $this->input->post('caja_corte050'),
+					'caja_imagen050' => $this->input->post('caja_imagen050'),
+					'caja_corte020' => $this->input->post('caja_corte020'),
+					'caja_imagen020' => $this->input->post('caja_imagen020'),
+					'caja_corte010' => $this->input->post('caja_corte010'),
+					'caja_imagen010' => $this->input->post('caja_imagen010'),
+					'caja_corte005' => $this->input->post('caja_corte005'),
+					'caja_imagen005' => $this->input->post('caja_imagen005'),
+					'caja_efectivo' => $this->input->post('caja_efectivo'),
+					'caja_credito' => $this->input->post('caja_credito'),
+					'caja_transacciones' => $this->input->post('caja_transacciones'),
 					'caja_apertura' => $this->input->post('caja_apertura'),
 					'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
 					'caja_horaapertura' => $this->input->post('caja_horaapertura'),
@@ -225,6 +132,20 @@ class Caja extends CI_Controller{
 					'caja_horacierre' => $this->input->post('caja_horacierre'),
 					'caja_fechacierre' => $this->input->post('caja_fechacierre'),
 					'caja_diferencia' => $this->input->post('caja_diferencia'),
+					'caja_corte1000' => $this->input->post('caja_corte1000'),
+					'caja_imagen1000' => $this->input->post('caja_imagen1000'),
+					'caja_corte500' => $this->input->post('caja_corte500'),
+					'caja_imagen500' => $this->input->post('caja_imagen500'),
+					'caja_corte200' => $this->input->post('caja_corte200'),
+					'caja_imagen200' => $this->input->post('caja_imagen200'),
+					'caja_corte100' => $this->input->post('caja_corte100'),
+					'caja_imagen100' => $this->input->post('caja_imagen100'),
+					'caja_corte50' => $this->input->post('caja_corte50'),
+					'caja_imagen50' => $this->input->post('caja_imagen50'),
+					'caja_corte20' => $this->input->post('caja_corte20'),
+					'caja_imagen20' => $this->input->post('caja_imagen20'),
+					'caja_corte10' => $this->input->post('caja_corte10'),
+					'caja_imagen10' => $this->input->post('caja_imagen10'),
                 );
 
                 $this->Caja_model->update_caja($caja_id,$params);            
@@ -232,6 +153,15 @@ class Caja extends CI_Controller{
             }
             else
             {
+				$this->load->model('Estado_model');
+				$data['all_estado'] = $this->Estado_model->get_all_estado();
+
+				$this->load->model('Moneda_model');
+				$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+
+				$this->load->model('Usuario_model');
+				$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+
                 $data['_view'] = 'caja/edit';
                 $this->load->view('layouts/main',$data);
             }
