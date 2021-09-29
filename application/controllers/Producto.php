@@ -845,28 +845,28 @@ class Producto extends CI_Controller{
     function existenciaminima()
     {
         if($this->acceso(105)) {
-        $usuario_id = $this->session_data['usuario_id'];  
-        $data = array(
+            $usuario_id = $this->session_data['usuario_id'];  
+            $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
         
-        $this->load->model('Categoria_producto_model');
-        $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
+            $this->load->model('Categoria_producto_model');
+            $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
 
-        $this->load->model('Estado_model');
-        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-        
-        $this->load->model('Empresa_model');
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        
-        $this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametro(1);
-        
-        $data['page_title'] = "Producto";
-        $data['_view'] = 'producto/existenciaminima';
-        $this->load->view('layouts/main',$data);
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametro(1);
+
+            $data['page_title'] = "Producto";
+            $data['_view'] = 'producto/existenciaminima';
+            $this->load->view('layouts/main',$data);
+        }
     }
-}
     
     /*
     * buscar productos con existencia minima
@@ -875,9 +875,13 @@ class Producto extends CI_Controller{
     {
         if($this->acceso(105)) {
             if ($this->input->is_ajax_request()) {
+                
                 $parametro       = $this->input->post('parametro');
                 $categoriaestado = $this->input->post('categoriaestado'); 
-                $datos = $this->Producto_model->get_busqueda_producto_existmin($parametro, $categoriaestado);
+                $categoriaestado = " "; // anulamos la sentencia porque no necesitamos la categoria 
+                
+                $datos = $this->Producto_model->get_busqueda_producto_existmin($parametro);
+                
                 echo json_encode($datos);
             }
             else

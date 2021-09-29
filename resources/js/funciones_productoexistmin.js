@@ -100,109 +100,120 @@ function tablaresultadosproducto(limite)
                         
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>";
-                        html += "<div id='horizontal'>";
-                        html += "<div id='contieneimg'>";
-                        var mimagen = "";
-                        if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
-                            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
-                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-"+formaimagen+"' width='50' height='50' />";
-                            mimagen += "</a>";
-                            //mimagen = nomfoto.split(".").join("_thumb.");77
-                        }else{
-                            mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-"+formaimagen+"' width='50' height='50' />";
-                        }
-                        html += mimagen;
-                        html += "</div>";
-                        html += "<div style='padding-left: 4px'>";
-                        html += "<b id='masgrande'>"+registros[i]["producto_nombre"]+"</b><br>";
-                        html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
-                        if(registros[i]["destino_id"] > 0){
-                            html +="<br>Destino: "+registros[i]['destino_nombre'];
-                        }
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</td>";
-                        var escategoria="";
-                        if(registros[i]["categoria_id"] == null || registros[i]["categoria_id"] == 0 || registros[i]["categoria_id"] ==""){
-                            escategoria = "No definido";
-                        }else{
-                            escategoria = registros[i]["categoria_nombre"];
-                        }
-                        var esmoneda="";
-                        if(registros[i]["moneda_id"] == null || registros[i]["moneda_id"] == 0 || registros[i]["moneda_id"] == ""){ 
-                            esmoneda = "No definido";
-                        }else{
-                            esmoneda = registros[i]["moneda_descripcion"];
-                        }
-                        html += "<td><b>Cat.: </b>"+escategoria+"<br><b>Pres.: </b>"+registros[i]["producto_unidad"]+"<br>";
-                        html += "<b>Cant. Min.: </b>";
-                        var cantmin= 0;
-                        if(registros[i]["producto_cantidadminima"] != null || registros[i]["producto_cantidadminima"] ==""){
-                            cantmin = registros[i]["producto_cantidadminima"];
-                        }
-                        html += "<span style='color: #ff0084; font-weight: bold'>"+cantmin+"</span> <b>Exist: </b>";
-                        html += "<span style='color: #ff0084; font-weight: bold'>"+registros[i]["existencia"]+"</span></td>";
-                        html += "<td>";
-                        var caracteristica = "";
-                        if(registros[i]["producto_caracteristicas"] != null){
-                            caracteristica = "<div style='word-wrap: break-word;'>"+registros[i]["producto_caracteristicas"]+"</div>";
-                        }
-                        html+= caracteristica+"</td>";
-                        html += "<td>";
-                        var sinconenvase = "";
-                        var nombreenvase = "";
-                        var costoenvase  = "";
-                        var precioenvase = "";
-                        if(registros[i]["producto_envase"] == 1){
-                            sinconenvase = "Con Envase Retornable"+"<br>";
-                            if(registros[i]["producto_nombreenvase"] != "" || registros[i]["producto_nombreenvase"] != null){
-                                nombreenvase = registros[i]["producto_nombreenvase"]+"<br>";
-                                costoenvase  = "Costo:  "+Number(registros[i]["producto_costoenvase"]).toFixed(2)+"<br>";
-                                precioenvase = "Precio: "+Number(registros[i]["producto_precioenvase"]).toFixed(2);
-                            }
-                        }else{
-                            sinconenvase = "Sin Envase Retornable";
-                        }
-                        html += sinconenvase;
-                        html += nombreenvase;
-                        html += costoenvase;
-                        html += precioenvase;
-                        html += "</td>";
-                        var codbarras = "";
-                        if(!(registros[i]["producto_codigobarra"] == null)){
-                            codbarras = registros[i]["producto_codigobarra"];
-                        }
-                        html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
-                        html += "<td><b>Compra: </b>"+registros[i]["producto_costo"]+"<br>";
-                            html += "<b>Venta: </b>"+registros[i]["producto_precio"]+"<br>";
-                            html += "<b>Comisión: </b>"+registros[i]["producto_comision"];
-                            html += "</td>";
-                        html += "<td><b>Moneda: </b>"+esmoneda+"<br>";
-                        html += "<b>T. Cambio: </b>";
-                        var tipocambio= 0;
-                        if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
-                        html += tipocambio+"</td>";
-                        html += "<td class='no-print' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
-                        html += "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->";
-                        html += "<div class='modal fade' id='mostrarimagen"+i+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+i+"'>";
-                        html += "<div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
-                        html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "<font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
-                        html += "</div>";
-                        html += "<div class='modal-body'>";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' />";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "</div>";
+                        html += registros[i]['producto_nombre'];
+                        
+//                        html += "<div id='horizontal'>";
+//                        html += "<div id='contieneimg'>";
+//                        var mimagen = "";
+//                        if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
+//                            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
+//                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-"+formaimagen+"' width='50' height='50' />";
+//                            mimagen += "</a>";
+//                        }else{
+//                            mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-"+formaimagen+"' width='50' height='50' />";
+//                        }
+//                        html += mimagen;
+//                        html += "</div>";
+//                        html += "<div style='padding-left: 4px'>";
+//                        html += "<b id='masgrande'>"+registros[i]["producto_nombre"]+"</b><br>";
+//                        html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
+//                        if(registros[i]["destino_id"] > 0){
+//                            html +="<br>Destino: "+registros[i]['destino_nombre'];
+//                        }
+//                        html += "</div>";
+//                        html += "</div>";
 
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
                         html += "</td>";
+                        
+                        html += "<td>"+registros[i]['producto_codigo']+"</td>";
+                        html += "<td style='text-align: center;'><font size='2'><b>"+Number(registros[i]['existencia']).toFixed(2)+"</b></font></td>";
+                        html += "<td>"+Number(registros[i]['producto_ultimocosto']).toFixed(2)+"</td>";
+                        html += "<td>"+registros[i]['moneda_descripcion']+"</td>";
+                        html += "<td class='no-print'><button class='btn btn-info btn-xs'><fa class='fa fa-users'></fa> proveedores</button> </td>";
+                        
+                        
+                        
+//                        var escategoria="";
+//                        if(registros[i]["categoria_id"] == null || registros[i]["categoria_id"] == 0 || registros[i]["categoria_id"] ==""){
+//                            escategoria = "No definido";
+//                        }else{
+//                            escategoria = registros[i]["categoria_nombre"];
+//                        }
+//                        var esmoneda="";
+//                        if(registros[i]["moneda_id"] == null || registros[i]["moneda_id"] == 0 || registros[i]["moneda_id"] == ""){ 
+//                            esmoneda = "No definido";
+//                        }else{
+//                            esmoneda = registros[i]["moneda_descripcion"];
+//                        }
+//                        html += "<td><b>Cat.: </b>"+escategoria+"<br><b>Pres.: </b>"+registros[i]["producto_unidad"]+"<br>";
+//                        html += "<b>Cant. Min.: </b>";
+//                        var cantmin= 0;
+//                        if(registros[i]["producto_cantidadminima"] != null || registros[i]["producto_cantidadminima"] ==""){
+//                            cantmin = registros[i]["producto_cantidadminima"];
+//                        }
+//                        html += "<span style='color: #ff0084; font-weight: bold'>"+cantmin+"</span> <b>Exist: </b>";
+//                        html += "<span style='color: #ff0084; font-weight: bold'>"+registros[i]["existencia"]+"</span></td>";
+//                        html += "<td>";
+//                        var caracteristica = "";
+//                        if(registros[i]["producto_caracteristicas"] != null){
+//                            caracteristica = "<div style='word-wrap: break-word;'>"+registros[i]["producto_caracteristicas"]+"</div>";
+//                        }
+//                        html+= caracteristica+"</td>";
+//                        html += "<td>";
+//                        var sinconenvase = "";
+//                        var nombreenvase = "";
+//                        var costoenvase  = "";
+//                        var precioenvase = "";
+//                        if(registros[i]["producto_envase"] == 1){
+//                            sinconenvase = "Con Envase Retornable"+"<br>";
+//                            if(registros[i]["producto_nombreenvase"] != "" || registros[i]["producto_nombreenvase"] != null){
+//                                nombreenvase = registros[i]["producto_nombreenvase"]+"<br>";
+//                                costoenvase  = "Costo:  "+Number(registros[i]["producto_costoenvase"]).toFixed(2)+"<br>";
+//                                precioenvase = "Precio: "+Number(registros[i]["producto_precioenvase"]).toFixed(2);
+//                            }
+//                        }else{
+//                            sinconenvase = "Sin Envase Retornable";
+//                        }
+//                        html += sinconenvase;
+//                        html += nombreenvase;
+//                        html += costoenvase;
+//                        html += precioenvase;
+//                        html += "</td>";
+//                        var codbarras = "";
+//                        if(!(registros[i]["producto_codigobarra"] == null)){
+//                            codbarras = registros[i]["producto_codigobarra"];
+//                        }
+//                        html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
+//                        html += "<td><b>Compra: </b>"+registros[i]["producto_costo"]+"<br>";
+//                            html += "<b>Venta: </b>"+registros[i]["producto_precio"]+"<br>";
+//                            html += "<b>Comisión: </b>"+registros[i]["producto_comision"];
+//                            html += "</td>";
+//                        html += "<td><b>Moneda: </b>"+esmoneda+"<br>";
+//                        html += "<b>T. Cambio: </b>";
+//                        var tipocambio= 0;
+//                        if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
+//                        html += tipocambio+"</td>";
+//                        html += "<td class='no-print' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
+//                        html += "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->";
+//                        html += "<div class='modal fade' id='mostrarimagen"+i+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+i+"'>";
+//                        html += "<div class='modal-dialog' role='document'>";
+//                        html += "<br><br>";
+//                        html += "<div class='modal-content'>";
+//                        html += "<div class='modal-header'>";
+//                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+//                        html += "<font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+//                        html += "</div>";
+//                        html += "<div class='modal-body'>";
+//                        html += "<!------------------------------------------------------------------->";
+//                        html += "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' />";
+//                        html += "<!------------------------------------------------------------------->";
+//                        html += "</div>";
+//
+//                        html += "</div>";
+//                        html += "</div>";
+//                        html += "</div>";
+//                        html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
+//                        html += "</td>";
                         
                         html += "</tr>";
 
@@ -228,3 +239,16 @@ function tablaresultadosproducto(limite)
 
 }
 
+function formato_numerico(numero){
+            nStr = Number(numero).toFixed(2);
+        nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	
+	return x1 + x2;
+}

@@ -31,12 +31,14 @@
         border-style: none !important;
     }
     #masgrande{
+        font-family: Arial;
         font-size: 12px;
     }
 </style>
 
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
@@ -151,12 +153,12 @@
         <div class="box">
                  
             <div class="box-body  table-responsive">
-               <table class="table table-condensed" id="mitablaimpresion" role="table">
+               <table class="table table-condensed" id="mitabla" role="table">
                <!--<table role="table">-->
-                    <thead role="rowgroup">
+<!--                    <thead role="rowgroup">
                         <tr role="row">
                             <th  role="columnheader" >#</th>
-                            <th  role="columnheader" >Nombre</th>
+                            <th  role="columnheader" >producto</th>
                             <th  role="columnheader" >Categoria|<br>Presentación</th>
                             <th  role="columnheader" style="width: 20%;" >Caracteristicas</th>
                             <th  role="columnheader" >Envase</th>
@@ -165,7 +167,20 @@
                             <th  role="columnheader" >Moneda</th>
                             <th  role="columnheader" class="no-print">Estado</th>
                     
-                    </tr>
+                        </tr>
+                    </thead>-->
+                    <thead role="rowgroup">
+                        <tr role="row">
+                            <th  role="columnheader" >#</th>
+                            <th  role="columnheader" >PRODUCTO</th>
+                            <th  role="columnheader" >CODIGO</th>
+                            <th  role="columnheader" style="width: 20%;" >SALDO</th>
+                            <th  role="columnheader" >ULTIMO<br>COSTO</th>
+                            <th  role="columnheader" >MONEDA</th>
+                            <th  role="columnheader" >PROVEEDOR</th>
+                            <!--<th  role="columnheader" class="no-print">ESTADO</th>-->
+                    
+                        </tr>
                     </thead>
                     <tbody class="buscar" id="tablaresultados" role="rowgroup">
                                            
