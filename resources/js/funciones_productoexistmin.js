@@ -41,6 +41,63 @@ function formatofecha_hora_ampm(string){
     return info;
 }
 
+function formato_fecha(string){
+    var info = "";
+    if(string != null){
+       info = string.split('-').reverse().join('/');
+   }
+    return info;
+}
+
+function mostrar_historial(producto_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"compra/historial_compras";
+    
+    html = "";
+    
+    //alert(producto_id);
+    
+    $.ajax({url:controlador,
+           type:"POST",
+           data:{producto_id,producto_id},
+           success:function(resultado){
+               
+               var reg = JSON.parse(resultado);
+               var tam = reg.length;
+               
+               //alert(reg.length);
+                html = "";               
+                html += "<table class='table' id='mitabla'>";
+                html += "<tr>";
+                html += "<th>#</th>";
+                html += "<th>Proveedor</th>";
+                html += "<th>Costo</th>";
+                html += "<th>Fecha</th>";
+                html += "</tr>";
+                
+                //alert(tam)
+               if (tam>0){
+                   for(i=0;i<tam;i++){
+                     
+                    html += "<tr>";
+                     html += "<td>"+(i+1)+"</td>";
+                     html += "<td>"+reg[i].proveedor_nombre+"</td>";
+                     html += "<td><b>"+Number(reg[i].detallecomp_costo).toFixed(2)+"</b></td>";
+                     html += "<td>"+formato_fecha(reg[i].compra_fecha)+"</td>";
+                    html += "</tr>";
+                       
+                   }
+               }
+                html += "</table>";
+                $("#tabla_historial").html(html);
+                $("#boton_compras").click();
+               
+           },
+    });
+    
+}
+
+
 //Tabla resultados de la busqueda en el index de producto
 function tablaresultadosproducto(limite)
 {
@@ -129,7 +186,7 @@ function tablaresultadosproducto(limite)
                         html += "<td style='text-align: center;'><font size='2'><b>"+Number(registros[i]['existencia']).toFixed(2)+"</b></font></td>";
                         html += "<td>"+Number(registros[i]['producto_ultimocosto']).toFixed(2)+"</td>";
                         html += "<td>"+registros[i]['moneda_descripcion']+"</td>";
-                        html += "<td class='no-print'><button class='btn btn-info btn-xs'><fa class='fa fa-users'></fa> proveedores</button> </td>";
+                        html += "<td class='no-print'><button class='btn btn-info btn-xs' onclick='mostrar_historial("+registros[i]['producto_id']+")'><fa class='fa fa-users'></fa> proveedores</button> </td>";
                         
                         
                         

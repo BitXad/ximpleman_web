@@ -138,11 +138,11 @@
         
     </div>
     <!---------------- BOTONES --------->
-    <div class="col-md-4">
+<!--    <div class="col-md-4">
         <div class="box-tools text-center">
             <a onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
         </div>
-    </div>
+    </div>-->
     <!---------------- FIN BOTONES --------->
 </div>
     
@@ -191,3 +191,47 @@
         </div>
     </div>
 </div>
+
+<!------------------------ moda proveedores ------------------->
+<!-- Button trigger modal -->
+<div hidden>
+    
+<button type="button" class="btn btn-primary no-print" data-toggle="modal" data-target="#modalcompras" id="boton_compras" >
+  HISTORIAL DE COMPRAS
+</button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalcompras" tabindex="-1" role="dialog" aria-labelledby="modalcomprasLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <!--<h5 class="modal-title" id="modalcomprasLabel"><fa class="fa fa-cart-down"></fa> INGRESOS POR ARTICULO</h5>-->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          <fa class="fa fa-search"></fa> <b>HISTORIAL DE COMPRAS</b> 
+      </div>
+      <div class="modal-body" id="tabla_historial">
+<!--          <table class="table" id="mitabla">
+              <tr>
+                  <th style="padding-bottom: 0; padding-top: 0;">#</th>
+                  <th style="padding-bottom: 0; padding-top: 0;">PROVEEDOR</th>
+                  <th style="padding-bottom: 0; padding-top: 0;">FECHA COMPRA</th>
+                  <th style="padding-bottom: 0; padding-top: 0;">CANT.</th>
+                  <th style="padding-bottom: 0; padding-top: 0;">PREC.<br>COMPRA Bs</th>
+              </tr>
+              <tbody id="tablacompras">
+                  
+              </tbody>
+          </table>
+          -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!------------------------ Fin Moda proveedores ------------------->
