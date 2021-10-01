@@ -1446,4 +1446,31 @@ function torta3($anio,$mes)
         $this->load->view('layouts/main',$data);
         }
     }
+    /* busca reportes de ventas; servicios; produccion */
+    function reporte_buscarreporte(){
+        if ($this->input->is_ajax_request()){
+            $filtrar = $this->input->post('filtrar');
+            $fecha_desde = $this->input->post('fecha_desde');
+            $fecha_hasta = $this->input->post('fecha_hasta');
+            $vendedor_id = $this->input->post('vendedor_id');
+            $prevendedor_id = $this->input->post('prevendedor_id');
+            $tipotrans_id = $this->input->post('tipotrans_id');
+            $forma_id = $this->input->post('forma_id');
+            $comprobante = $this->input->post('comprobante');
+            $zona_id = $this->input->post('zona_id');
+            $espedido = $this->input->post('espedido');
+            $ventapreventa = $this->input->post('ventapreventa');
+            $cliente_id = $this->input->post('cliente_id');
+            $producto_id = $this->input->post('producto_id');
+            $usuario_id = $this->input->post('usuario_id');
+            $preferencia_id = $this->input->post('preferencia_id');
+            $clasificador_id = $this->input->post('clasificador_id');
+            $categoria_id = $this->input->post('categoria_id');
+            $subcategoria_id = $this->input->post('subcategoria_id');
+            $datos = $this->Reporte_ing_egr_model->getall_totalventasfecha($fecha_desde, $fecha_hasta, $usuario_id);
+            echo json_encode($datos);
+        }else{
+            show_404();
+        }
+    }
 }

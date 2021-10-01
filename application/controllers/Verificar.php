@@ -26,7 +26,7 @@ class Verificar extends CI_Controller
         //var_dump($result);
 
         if ($result) {
-            if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 3 or $result->tipousuario_id == 4 or $result->tipousuario_id == 5 or $result->tipousuario_id == 6 or $result->tipousuario_id == 7 or $result->tipousuario_id == 8) {
+            if ($result->tipousuario_id >= 1 && $result->tipousuario_id <= 10) {
                 $this->load->model('Rol_usuario_model');
                 $this->load->model('Tipo_usuario_model');
                 $thumb = "default_thumb.jpg";
@@ -112,13 +112,13 @@ class Verificar extends CI_Controller
  
  
             } else { 
-                $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO no es valido' . $result . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">TIPO DE USUARIO no es valido</div>');
                 redirect('login');
             }
 
         }
         else {
-            $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO o CONTRASEÑA no son validos' . $result . '</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO o CONTRASEÑA no son validos  </div>');
             redirect('login');
         }
 

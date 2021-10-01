@@ -139,11 +139,11 @@
                 </select>
             </div>
             <div class="col-md-2 no-print">
-                <label for="consinfact" class="control-label"> &nbsp; </label>
-                <select class="btn btn-primary btn-sm form-control" name="consinfact" id="consinfact" onchange="pasarnombre(this)" required>
+                <label for="comprobante" class="control-label"> Comprobante: </label>
+                <select class="btn btn-primary btn-sm form-control" name="comprobante" id="comprobante" onchange="pasarnombre(this)" required>
                     <option value="0">TODOS</option>
-                    <option value="1">CON FACT.</option>
-                    <option value="2">SIN FACT.</option>
+                    <option value="1">FACTURA</option>
+                    <option value="2">NOTA DE VENTA</option>
                 </select>
             </div>
             <div class="col-md-2 no-print">
@@ -156,8 +156,8 @@
                 </select>
             </div>
             <div class="col-md-1 no-print">
-                <label for="espedido" class="control-label"> Preventas: </label>
-                <select class="btn btn-primary btn-sm form-control" name="espedido" id="espedido" onchange="pasarnombre(this)" required>
+                <label for="ventapreventa" class="control-label"> Preventas: </label>
+                <select class="btn btn-primary btn-sm form-control" name="ventapreventa" id="ventapreventa" onchange="pasarnombre(this)" required>
                     <option value="0">TODOS</option>
                     <option value="1">PREVENTAS</option>
                     <option value="2">VENTAS</option>
@@ -165,7 +165,7 @@
             </div>
             <div class="col-md-3">  
                 <label for="cliente_nombre" class="control-label"> Cliente: </label>
-                <div class="form-group" style="display: flex">
+                <div class="form-group" style="display: flex; margin-bottom: 0px">
                     <input type="text" name="cliente_nombre" id="cliente_nombre" class="form-control" value="TODOS" readonly >
                     <input type="hidden" name="cliente_id" id="cliente_id" value="0" >
                     <a data-toggle="modal" data-target="#modalbuscarcliente" class="btn btn-success" title="Buscar Clientes">
@@ -175,7 +175,7 @@
             </div>
             <div class="col-md-3">  
                 <label for="producto_nombre" class="control-label"> Producto: </label>
-                <div class="form-group" style="display: flex">
+                <div class="form-group" style="display: flex; margin-bottom: 0px">
                     <input type="text" name="producto_nombre" id="producto_nombre" class="form-control" value="TODOS" readonly >
                     <input type="hidden" name="producto_id" id="producto_id" value="0" >
                     <a data-toggle="modal" data-target="#modalbuscarproducto" class="btn btn-success" title="Buscar Productos">
@@ -183,7 +183,7 @@
                     <a class="btn btn-warning" onclick="productotodos()" title="Todos los productos"><b>T</b></a>
                 </div>
             </div>
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print hidden">
                 <label for="usuario_id" class="control-label"> Usuario: </label>
                 <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" onchange="pasarnombre(this)" required >
                     <option value="0">TODOS</option>
@@ -231,15 +231,10 @@
         </span>
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
         
         
         

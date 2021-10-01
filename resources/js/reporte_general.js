@@ -1,3 +1,76 @@
+function reporte_general(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'reporte/buscar_ventas';
+    var filtrar = document.getElementById('filtrar').value;
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+    var vendedor_id = document.getElementById('vendedor_id').value;
+    var prevendedor_id = document.getElementById('prevendedor_id').value;
+    var tipotrans_id = document.getElementById('tipotrans_id').value;
+    var forma_id = document.getElementById('forma_id').value;
+    var comprobante = document.getElementById('comprobante').value;
+    var zona_id = document.getElementById('zona_id').value;
+    var espedido = document.getElementById('espedido').value;
+    var ventapreventa = document.getElementById('ventapreventa').value;
+    var cliente_id = document.getElementById('cliente_id').value;
+    var producto_id = document.getElementById('producto_id').value;
+    var usuario_id = document.getElementById('usuario_id').value; // para servicios
+    var preferencia_id = document.getElementById('preferencia_id').value;
+    var clasificador_id = document.getElementById('clasificador_id').value;
+    var categoria_id = document.getElementById('categoria_id').value;
+    var subcategoria_id = document.getElementById('subcategoria_id').value;
+    document.getElementById('loader').style.display = 'block';
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{filtrar:filtrar, fecha_desde:fecha_desde, fecha_hasta:fecha_hasta, vendedor_id:vendedor_id,
+                  prevendedor_id:prevendedor_id, tipotrans_id:tipotrans_id, forma_id:forma_id,
+                  comprobante:comprobante, zona_id:zona_id, espedido:espedido, ventapreventa:ventapreventa,
+                  cliente_id:cliente_id, producto_id:producto_id, usuario_id:usuario_id,
+                  preferencia_id:preferencia_id, clasificador_id:clasificador_id, categoria_id:categoria_id,
+                  subcategoria_id:subcategoria_id},
+            success:function(respuesta){
+                $("#encontrados").val("- 0 -");
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){
+                    var n = registros.length; //tama«Ðo del arreglo de la consulta
+                    $("#encontrados").val("- "+n+" -");
+                    html = "";
+                    html += "<table class='table table-striped no-print' id='mitabla'>";
+                    html += "<tr>"
+                    html += "<th>N</th>";
+                    //html += "<th>ID</th>";
+                    html += "<th>Cliente</th>";
+                    html += "<th></th>";
+                    html += "</tr>";
+                    html += "<tbody class='buscar' id='tablarecliente'>";
+                    for (var i = 0; i < n ; i++){
+                        html += "<tr>";
+                        html += "<td class='text-center'>"+(i+1)+"</td>";
+                        html += "<td>";
+                        html += "<div class='col-md-12'>";
+                        html += "<b>"+registros[i]["cliente_nombre"]+"</b>";
+                        html += "</div>";
+                        html += "</td>";
+                        html += "<td>";
+                        html += "<button type='button' onclick='repocliente("+JSON.stringify(registros[i]["cliente_nombre"])+", "+registros[i]["cliente_id"]+")' class='btn btn-primary btn-xs'><i class='fa fa-search'></i></button>";
+                        html += "</td>";
+                        html += "</tr>";
+                   }
+                       html += "</tbody>"
+                   $("#tablarecliente").html(html);
+                   document.getElementById('loader_bcliente').style.display = 'none';
+                }else{
+                    document.getElementById('loader_bcliente').style.display = 'none';
+                }
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "";
+               $("#tablarecliente").html(html);
+            }
+    });
+}
+
 function buscarcliente(e) {
     tecla = (document.all) ? e.keyCode : e.which;  
     if (tecla==13){ 
