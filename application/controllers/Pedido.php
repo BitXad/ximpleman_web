@@ -470,7 +470,7 @@ class Pedido extends CI_Controller{
 
                 $tipotrans_id = $this->input->post('tipo_transaccion');
                 $pedido_fecha = "now()";
-                $pedido_id = $this->input->post('pedido_id');
+                $pedido_id = $this->input->post('pedido_id1');
                 $pedido_subtotal = $this->input->post('pedido_subtotal');
                 $pedido_descuento = $this->input->post('pedido_descuento');
                 $pedido_total = $this->input->post('pedido_totalfinal');

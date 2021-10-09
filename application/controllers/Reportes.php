@@ -1437,8 +1437,8 @@ function torta3($anio,$mes)
         $this->load->model('Categoria_producto_model');
         $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
         
-        $this->load->model('Subcategoria_producto_model');
-        $data['all_subcategoria'] = $this->Subcategoria_producto_model->get_all_subcategoria_producto();
+        //$this->load->model('Subcategoria_producto_model');
+        //$data['all_subcategoria'] = $this->Subcategoria_producto_model->get_all_subcategoria_producto();
         
         $data['page_title'] = "Reporte General";
         $data['_view'] = 'reportes/reporte_general';
@@ -1467,6 +1467,14 @@ function torta3($anio,$mes)
             $clasificador_id = $this->input->post('clasificador_id');
             $categoria_id = $this->input->post('categoria_id');
             $subcategoria_id = $this->input->post('subcategoria_id');
+            if($filtrar == 1){ // <-- Venta
+                
+            }elseif($filtrar == 2){ // <-- Servicios
+                
+            }elseif($filtrar == 3){ // <-- Produccion
+                
+            }
+            
             $datos = $this->Reporte_ing_egr_model->getall_totalventasfecha($fecha_desde, $fecha_hasta, $usuario_id);
             echo json_encode($datos);
         }else{

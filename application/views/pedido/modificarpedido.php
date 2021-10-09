@@ -66,7 +66,7 @@ function mostrar_ocultar(){
 
 
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
-<input type="text" value="<?php echo $pedido_id; ?>" id="pedido_id" hidden>
+<input type="text" value="<?php echo $pedido_id; ?>" id="pedido_id" name="pedido_id" hidden>
 <input type="text" value='[{}]' id="lista_pedido" hidden>
 <input type="hidden" id="modificar_precioventa" value="<?php echo $rolusuario[183-1]['rolusuario_asignado']; ?>" name="modificar_precioventa">
 <!--<input type="text" value="4775.74" id="numero_prueba">-->
@@ -254,6 +254,7 @@ function mostrar_ocultar(){
                                             <td align="right"><input type="text"  size="8"  id="total_pedido" val="0.00"></td>
                                             <input type="text" name="latitud" id="latitud" value="0" hidden>
                                             <input type="text" name="longitud" id="longitud" value="0" hidden>
+                                            <input type="text" value="<?php echo $pedido_id; ?>" id="pedido_id1" name="pedido_id1" hidden>
                                         </tr>
                                         <tr>
                                             <td>Descuento Bs</td>
