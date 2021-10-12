@@ -1428,8 +1428,8 @@ function torta3($anio,$mes)
         $this->load->model('Categoria_clientezona_model');
         $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_id1();
         
-        $this->load->model('Preferencia_model');
-        $data['all_preferencia'] = $this->Preferencia_model->get_all_preferenciaestado(1);
+        $this->load->model('Producto_preferencia_model');
+        $data['all_preferencia'] = $this->Producto_preferencia_model->get_allpreferencia_producto();
         
         $this->load->model('Clasificador_model');
         $data['all_clasificador'] = $this->Clasificador_model->get_all_clasificador_asc();
@@ -1437,8 +1437,20 @@ function torta3($anio,$mes)
         $this->load->model('Categoria_producto_model');
         $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
         
-        //$this->load->model('Subcategoria_producto_model');
-        //$data['all_subcategoria'] = $this->Subcategoria_producto_model->get_all_subcategoria_producto();
+        $this->load->model('Categoria_trabajo_model');
+        $data['all_categoriatrabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
+        
+        $this->load->model('Procedencia_model');
+        $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
+        
+        $this->load->model('Tiempo_uso_model');
+        $data['all_tiempouso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
+        
+        $this->load->model('Categoria_servicio_model');
+        $data['all_categoriaservicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
+        
+        $this->load->model('tipo_servicio_model');
+        $data['all_tiposervicio'] = $this->tipo_servicio_model->get_all_tipo_servicio_id1();
         
         $data['page_title'] = "Reporte General";
         $data['_view'] = 'reportes/reporte_general';
@@ -1458,16 +1470,62 @@ function torta3($anio,$mes)
             $forma_id = $this->input->post('forma_id');
             $comprobante = $this->input->post('comprobante');
             $zona_id = $this->input->post('zona_id');
-            $espedido = $this->input->post('espedido');
+            //$espedido = $this->input->post('espedido');
             $ventapreventa = $this->input->post('ventapreventa');
             $cliente_id = $this->input->post('cliente_id');
             $producto_id = $this->input->post('producto_id');
-            $usuario_id = $this->input->post('usuario_id');
+            $usuario_id = $this->input->post('usuario_id'); // para servicios
             $preferencia_id = $this->input->post('preferencia_id');
             $clasificador_id = $this->input->post('clasificador_id');
             $categoria_id = $this->input->post('categoria_id');
             $subcategoria_id = $this->input->post('subcategoria_id');
+            $elfiltro = "date(vs.venta_fecha) >= '$fecha_desde'
+                        and date(vs.venta_fecha) <= '$fecha_hasta'";
+            
             if($filtrar == 1){ // <-- Venta
+                if($vendedor_id >0){
+                    $elfiltro .= " and vs.usuario_id = $vendedor_id";
+                }
+                if($prevendedor_id >0){
+                    $elfiltro .= " and vs.usuarioprev_id = $prevendedor_id";
+                }
+                if($tipotrans_id >0){
+                    $elfiltro .= " and vs.tipotrans_id = $tipotrans_id";
+                }
+                if($forma_id >0){
+                    $elfiltro .= " and vs.forma_id = $forma_id";
+                }
+                if($comprobante ==1){
+                    $elfiltro .= " and vs.venta_tipodoc = $comprobante";
+                }elseif($comprobante == 2){
+                    $elfiltro .= " and vs.venta_tipodoc = $comprobante";
+                }
+                if($zona_id >0){
+                    $elfiltro .= " and vs.zona_id = $zona_id";
+                }
+                if($ventapreventa ==1){
+                    $elfiltro .= " and vs.pedido_id > 0";
+                }elseif($comprobante == 2){
+                    $elfiltro .= " and vs.pedido_id = 0";
+                }
+                if($cliente_id >0){
+                    $elfiltro .= " and vs.cliente_id = $cliente_id";
+                }
+                if($producto_id >0){
+                    $elfiltro .= " and vs.producto_id = $producto_id";
+                }
+                if($preferencia_id >0){
+                    $elfiltro .= " and vs.preferencia_id = $preferencia_id";
+                }
+                if($clasificador_id >0){
+                    $elfiltro .= " and vs.clasificador_id = $clasificador_id";
+                }
+                if($categoria_id >0){
+                    $elfiltro .= " and vs.categoria_id = $categoria_id";
+                }
+                if($subcategoria_id >0){
+                    $elfiltro .= " and vs.subcategoria_id = $subcategoria_id";
+                }
                 
             }elseif($filtrar == 2){ // <-- Servicios
                 
@@ -1475,7 +1533,7 @@ function torta3($anio,$mes)
                 
             }
             
-            $datos = $this->Reporte_ing_egr_model->getall_totalventasfecha($fecha_desde, $fecha_hasta, $usuario_id);
+            $datos = $this->Reporte_ing_egr_model->reporte_general($elfiltro);
             echo json_encode($datos);
         }else{
             show_404();
