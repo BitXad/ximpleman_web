@@ -111,11 +111,20 @@
                 <?php } ?>
             </select>
         </div>
-        <div class="col-md-2 no-print" id="serv_responsable" style="display: none">
+        <div class="col-md-2 no-print" id="serv_usuario" style="display: none">
+            <label for="usuario_id" class="control-label"> Usuario: </label>
+            <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" required >
+                <option value="0">TODOS</option>
+                <?php foreach($all_usuario as $usuario){?>
+                <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <!--<div class="col-md-2 no-print" id="serv_responsable" style="display: none">
             <label for="responsable_id" class="control-label"> Responsable: </label>
             <select class="btn btn-primary btn-sm form-control" name="responsable_id" id="responsable_id" >
                 <option value="0">TODOS</option>
-                <?php foreach($all_usuario as $usuario){
+                <?php /*foreach($all_usuario as $usuario){
                     $selected = ($usuario['usuario_id'] == $usuario_id) ? ' selected="selected"' : "";
                 ?>
                 <option value="<?php echo $usuario['usuario_id']; ?>" <?php echo $selected; ?>><?php echo $usuario['usuario_nombre']; ?></option>
@@ -128,9 +137,9 @@
                 <option value="0">TODOS</option>
                 <?php foreach($all_usuario as $usuario){?>
                 <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
-                <?php } ?>
+                <?php }*/ ?>
             </select>
-        </div>
+        </div>-->
         <div class="col-md-2 no-print">
             <label for="exportar" class="control-label"> &nbsp; </label>
             <div class="form-group" style="display: flex; margin-bottom: 0px">
@@ -140,7 +149,7 @@
             </div>
         </div>
         <span id="masdeventas" style="display: none">
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print" id="prod_tipotrans" style="display: block">
                 <label for="tipotrans_id" class="control-label"> Tipo Trans: </label>
                 <select class="btn btn-primary btn-sm form-control" name="tipotrans_id" id="tipotrans_id" required>
                     <option value="0">TODOS</option>
@@ -149,7 +158,7 @@
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print" id="prod_forma" style="display: block">
                 <label for="forma_id" class="control-label"> Forma Pago: </label>
                 <select class="btn btn-primary btn-sm form-control" name="forma_id" id="forma_id" required>
                     <option value="0">TODOS</option>
@@ -158,7 +167,7 @@
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print" id="prod_comprobante" style="display: block">
                 <label for="comprobante" class="control-label"> Comprobante: </label>
                 <select class="btn btn-primary btn-sm form-control" name="comprobante" id="comprobante" required>
                     <option value="0">TODOS</option>
@@ -176,14 +185,14 @@
                 </select>
             </div>
             <div class="col-md-1 no-print" id="serv_ventapreventa" style="display: block">
-                <label for="ventapreventa" class="control-label"> Preventas: </label>
+                <label for="ventapreventa" class="control-label"> Origen: </label>
                 <select class="btn btn-primary btn-sm form-control" name="ventapreventa" id="ventapreventa" required>
                     <option value="0">TODOS</option>
                     <option value="1">PREVENTAS</option>
                     <option value="2">VENTAS</option>
                 </select>
             </div>
-            <div class="col-md-3">  
+            <div class="col-md-3" id="serv_cliente" style="display: block">
                 <label for="cliente_nombre" class="control-label"> Cliente: </label>
                 <div class="form-group" style="display: flex; margin-bottom: 0px">
                     <input type="text" name="cliente_nombre" id="cliente_nombre" class="form-control" value="TODOS" readonly >
@@ -202,15 +211,6 @@
                     <i class="fa fa-search"></i></a>
                     <a class="btn btn-warning" onclick="productotodos()" title="Todos los productos"><b>T</b></a>
                 </div>
-            </div>
-            <div class="col-md-2 no-print" id="serv_usuario" style="display: none">
-                <label for="usuario_id" class="control-label"> Usuario: </label>
-                <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" required >
-                    <option value="0">TODOS</option>
-                    <?php foreach($all_usuario as $usuario){?>
-                    <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
-                    <?php } ?>
-                </select>
             </div>
             <div class="col-md-2 no-print" id="serv_preferencia" style="display: block">
                 <label for="preferencia_id" class="control-label"> Preferencia: </label>
@@ -292,11 +292,11 @@
             <tr>
                 <th>Nro.</th>
                 <th>PRODUCTO</th>
-                <th>FECHA<br>VENTA</th>
-                <th>NUM.<br>VENTA</th>
-                <th>NUM.<br>DOC.</th>
-                <th>TIPO<br>VENTA</th>
-                <th>CUOTA<br>INIC.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th id="titulo_uno">FECHA<br>VENTA</th>
+                <th id="titulo_dos">NUM.<br>VENTA</th>
+                <th id="titulo_tres">NUM.<br>DOC.</th>
+                <th id="titulo_cuatro">TIPO<br>VENTA</th>
+                <th id="titulo_cinco">CUOTA<br>INIC.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                 <th>UNIDAD</th>
                 <th>CANT.</th>
                 <th>PRECIO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
@@ -314,8 +314,8 @@
                 <th>COSTO<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                 <th>UTILID.<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                 <?php } ?>
-                <th>CLIENTE</th>
-                <th>CAJERO</th>
+                <th id="titulo_seis">CLIENTE</th>
+                <th id="titulo_siete">CAJERO</th>
                 <th class="no-print"></th>
             </tr>
             <tbody class="buscar" id="resultado_reporte"></tbody>

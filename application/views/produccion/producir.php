@@ -89,6 +89,8 @@
     <!--<label for="producir" class="control-label">&nbsp;</label>-->
     <div class="form-group">
         <a class="btn btn-success disabled" onclick="producir()" id="paraproducir"><span class="fa fa-cogs"></span> Producir</a>
+        <a href="<?php echo site_url('produccion'); ?>" class="btn btn-danger">
+            <i class="fa fa-times"></i> Cancelar</a>
     </div>
 </div>
 

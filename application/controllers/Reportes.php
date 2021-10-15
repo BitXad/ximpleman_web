@@ -1436,7 +1436,7 @@ function torta3($anio,$mes)
         
         $this->load->model('Categoria_producto_model');
         $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
-        
+        /*
         $this->load->model('Categoria_trabajo_model');
         $data['all_categoriatrabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
         
@@ -1451,7 +1451,7 @@ function torta3($anio,$mes)
         
         $this->load->model('tipo_servicio_model');
         $data['all_tiposervicio'] = $this->tipo_servicio_model->get_all_tipo_servicio_id1();
-        
+        */
         $data['page_title'] = "Reporte General";
         $data['_view'] = 'reportes/reporte_general';
 
@@ -1479,10 +1479,11 @@ function torta3($anio,$mes)
             $clasificador_id = $this->input->post('clasificador_id');
             $categoria_id = $this->input->post('categoria_id');
             $subcategoria_id = $this->input->post('subcategoria_id');
-            $elfiltro = "date(vs.venta_fecha) >= '$fecha_desde'
-                        and date(vs.venta_fecha) <= '$fecha_hasta'";
-            
+            $elfiltro = "";
+            $datos = "";
             if($filtrar == 1){ // <-- Venta
+                $elfiltro .= "date(vs.venta_fecha) >= '$fecha_desde'
+                             and date(vs.venta_fecha) <= '$fecha_hasta'";
                 if($vendedor_id >0){
                     $elfiltro .= " and vs.usuario_id = $vendedor_id";
                 }
@@ -1526,14 +1527,80 @@ function torta3($anio,$mes)
                 if($subcategoria_id >0){
                     $elfiltro .= " and vs.subcategoria_id = $subcategoria_id";
                 }
-                
+                $datos = $this->Reporte_ing_egr_model->reporte_general($elfiltro);
             }elseif($filtrar == 2){ // <-- Servicios
-                
+                $elfiltro .= "date(ci.detalleserv_fechaentregado) >= '$fecha_desde'
+                             and date(ci.detalleserv_fechaentregado) <= '$fecha_hasta'";
+                if($usuario_id >0){
+                    $elfiltro .= " and ci.usuariopsaldo_id = $usuario_id";
+                }
+                /*if($tipotrans_id >0){
+                    $elfiltro .= " and ci.tipotrans_id = $tipotrans_id";
+                }
+                if($forma_id >0){
+                    $elfiltro .= " and ci.forma_id = $forma_id";
+                }*/
+                /*if($comprobante ==1){
+                    $elfiltro .= " and ci.venta_tipodoc = $comprobante";
+                }elseif($comprobante == 2){
+                    $elfiltro .= " and ci.venta_tipodoc = $comprobante";
+                }*/                
+                if($cliente_id >0){
+                    $elfiltro .= " and ci.cliente_id = $cliente_id";
+                }
+                if($producto_id >0){
+                    $elfiltro .= " and ci.producto_id = $producto_id";
+                }
+                if($preferencia_id >0){
+                    $elfiltro .= " and ci.preferencia_id = $preferencia_id";
+                }
+                if($clasificador_id >0){
+                    $elfiltro .= " and ci.clasificador_id = $clasificador_id";
+                }
+                if($categoria_id >0){
+                    $elfiltro .= " and ci.categoria_id = $categoria_id";
+                }
+                if($subcategoria_id >0){
+                    $elfiltro .= " and ci.subcategoria_id = $subcategoria_id";
+                }
+                $datos = $this->Reporte_ing_egr_model->reporte_generalinsumo($elfiltro);
             }elseif($filtrar == 3){ // <-- Produccion
-                
+                $elfiltro .= "date(pr.produccion_fecha) >= '$fecha_desde'
+                             and date(pr.produccion_fecha) <= '$fecha_hasta'";
+                if($usuario_id >0){
+                    $elfiltro .= " and pr.usuario_id = $usuario_id";
+                }
+                /*if($tipotrans_id >0){
+                    $elfiltro .= " and ci.tipotrans_id = $tipotrans_id";
+                }
+                if($forma_id >0){
+                    $elfiltro .= " and ci.forma_id = $forma_id";
+                }*/
+                /*if($comprobante ==1){
+                    $elfiltro .= " and ci.venta_tipodoc = $comprobante";
+                }elseif($comprobante == 2){
+                    $elfiltro .= " and ci.venta_tipodoc = $comprobante";
+                }*/                
+                /*if($cliente_id >0){
+                    $elfiltro .= " and ci.cliente_id = $cliente_id";
+                }*/
+                if($producto_id >0){
+                    $elfiltro .= " and pr.producto_id = $producto_id";
+                }
+                if($preferencia_id >0){
+                    $elfiltro .= " and pr.preferencia_id = $preferencia_id";
+                }
+                if($clasificador_id >0){
+                    $elfiltro .= " and pr.clasificador_id = $clasificador_id";
+                }
+                if($categoria_id >0){
+                    $elfiltro .= " and pr.categoria_id = $categoria_id";
+                }
+                if($subcategoria_id >0){
+                    $elfiltro .= " and pr.subcategoria_id = $subcategoria_id";
+                }
+                $datos = $this->Reporte_ing_egr_model->reporte_generalproduccion($elfiltro);
             }
-            
-            $datos = $this->Reporte_ing_egr_model->reporte_general($elfiltro);
             echo json_encode($datos);
         }else{
             show_404();

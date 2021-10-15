@@ -48,7 +48,9 @@ function reporte_general(){
                     for (var i = 0; i < n ; i++){
                         total += Number(registros[i]["detalleven_total"]);
                         cantidades += Number(registros[i]["detalleven_cantidad"]);
-                        cuotas += Number(registros[i]["credito_cuotainicial"]);
+                        if(filtrar == 1 || filtrar == 2){
+                            cuotas += Number(registros[i]["credito_cuotainicial"]);
+                        }
                         descuentos += Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"]);
                         costos += Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"]);
                         var utilidad = Number(Number(registros[i]["detalleven_total"])-(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])));
@@ -56,11 +58,39 @@ function reporte_general(){
                         html += "<tr>";
                         html += "<td align='center' style='width:5px;'>"+(i+1)+"</td>";
                         html += "<td> "+registros[i]["producto_nombre"]+" </td>";                                            
-                        html += "<td align='center' style='width:110px;'> "+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["venta_hora"]+" </td>";
-                        html += "<td align='center'> "+registros[i]["venta_id"]+" </td>";  
-                        html += "<td align='center'> "+Number(registros[i]["factura_id"])+" </td>";  // NUMERO FACTURA
-                        html += "<td align='center'> "+registros[i]["tipotrans_nombre"]+" </td>";  
-                        html += "<td align='right'>"+numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(2))+"</td>" ;// CUOTA INICIAL
+                        html += "<td align='center' style='width:110px;'>";
+                        if(filtrar == 1){
+                            html += moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["venta_hora"];
+                        }else if(filtrar == 2){
+                            html += moment(registros[i]["detalleserv_fechaentregado"]).format('DD/MM/YYYY')+"-"+registros[i]["detalleserv_horaentregado"];
+                        }else if(filtrar == 3){
+                            html += moment(registros[i]["produccion_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["produccion_hora"];
+                        }
+                        html += "</td>";
+                        html += "<td align='center'>";
+                        if(filtrar == 1){
+                            html += registros[i]["venta_id"];
+                        }else if(filtrar == 2){
+                            html += registros[i]["servicio_id"];
+                        }else if(filtrar == 3){
+                            html += registros[i]["produccion_id"];
+                        }
+                        html += "</td>";  
+                        if(filtrar == 1 || filtrar == 2){
+                            html += "<td align='center'>";
+                            html += Number(registros[i]["factura_numero"]) // NUMERO FACTURA
+                            html += "</td>";
+                        }
+                        if(filtrar == 1 || filtrar == 2){
+                            html += "<td align='center'>";
+                            html += registros[i]["tipotrans_nombre"];
+                            html += "</td>";
+                        }
+                        if(filtrar == 1 || filtrar == 2){
+                            html += "<td align='right'>";
+                            html += numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(2)); // CUOTA INICIAL
+                            html += "</td>";
+                        }
                         html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                          
                         html += "<td align='center'> "+registros[i]["detalleven_cantidad"]+" </td>"; 
                         html += "<td align='right'> "+numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(2))+" </td>"; 
@@ -80,19 +110,43 @@ function reporte_general(){
                             html += "<td align='right'> "+numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+" </td>";
                             html += "<td align='right'> "+numberFormat(Number(utilidad).toFixed(2))+" </td>"; 
                         }
-                        html += "<td  align='center'>"+registros[i]["cliente_nombre"]+"</td>"; 
-                        html += "<td  align='center'>"+registros[i]["usuario_nombre"]+"</td>"; 
-                        html += "<td class='no-print'><a href='"+base_url+"venta/modificar_venta/"+registros[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modifica el detalle/cliente de la venta'><span class='fa fa-edit'></span></a> <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a> </td>";
+                        if(filtrar == 1 || filtrar == 2){
+                            html += "<td align='center'>";
+                            html += registros[i]["cliente_nombre"];
+                            html += "</td>"; 
+                        }
+                        html += "<td align='center'>"+registros[i]["usuario_nombre"]+"</td>"; 
+                        html += "<td class='no-print'>";
+                        if(filtrar == 1){ //para ventas
+                            html += "<a href='"+base_url+"venta/modificar_venta/"+registros[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modifica el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
+                            html += "<a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a>";
+                        }else if(filtrar == 2){ //para servicios
+                            html += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+registros[i]['servicio_id']+"/"+registros[i]['detalleserv_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modifica el detalle de un servicio'><span class='fa fa-edit'></span></a>";
+                            if(registros[i]['factura_id'] >0 ){
+                                html += "<a href='"+base_url+"factura/imprimir_factura_id/"+registros[i]['factura_id']+"/0"+"' class='btn btn-warning btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-list-alt'></span></a>";
+                            }else{
+                               html += "<a href='"+base_url+"servicio/imprimir_notaentrega/"+registros[i]['servicio_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de entrega'><span class='fa fa-print'></span></a>";
+                            }
+                        }else if(filtrar == 3){ //para produccion
+                            html += "<a href='"+base_url+"servicio/imprimir_nota/"+registros[i]['produccion_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de producción'><span class='fa fa-print'></span></a>";
+                        }
+                        html += "</td>";
                         html += "</tr>";
-                   }
+                    }
                         html += "<tr>";
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(cuotas).toFixed(2))+"</th>";
+                        if(filtrar == 1 || filtrar == 2){
+                            html += "<td></td>";
+                            html += "<td></td>";
+                        }
+                        if(filtrar == 1 || filtrar == 2){
+                            html += "<th style='text-align:right'>";
+                            numberFormat(Number(cuotas).toFixed(2))
+                            html += "</th>";
+                        }
                         html += "<td></td>";
                         html += "<th>"+numberFormat(Number(cantidades).toFixed(2))+"</td>";
                         html += "<td></td>";
@@ -102,6 +156,9 @@ function reporte_general(){
                         if(tipousuario_id == 1){
                             html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(2))+"</th>";
                             html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(2))+"</th>";
+                        }
+                        if(filtrar == 1 || filtrar == 2){
+                            html += "<td></td>";
                         }
                         html += "<td></td>";
                         html += "<td></td>";
@@ -323,29 +380,78 @@ function mostrar_subcategoriaproducto(categoria_id){
 
 function tipode_reporte(){
     var tipo_reporte  = document.getElementById('filtrar').value;
+    var nombre_moneda = document.getElementById('nombre_moneda').value;
     if(tipo_reporte == 1){ //para ventas
         $('#serv_vendedor').css('display','block');
         $('#serv_prevendedor').css('display','block');
         $('#serv_zona').css('display','block');
         $('#serv_ventapreventa').css('display','block');
-        $('#serv_preferencia').css('display','block');
-        $('#serv_clasificador').css('display','block');
-        $('#serv_categoria').css('display','block');
-        $('#serv_subcategoria').css('display','block');
-        $('#serv_responsable').css('display','none');
-        $('#serv_recepcionadopor').css('display','none');
+        $('#serv_cliente').css('display','block');
+        $('#titulo_tres').css('display','table-cell');
+        $('#titulo_cuatro').css('display','table-cell');
+        $('#titulo_cinco').css('display','table-cell');
+        $('#titulo_seis').css('display','table-cell');
+        $('#serv_usuario').css('display','none');
+        $('#titulo_uno').html('FECHA<br>VENTA');
+        $('#titulo_dos').html('NUM.<br>VENTA');
+        $('#titulo_tres').html('NUM.<br>DOC.');
+        $('#titulo_cuatro').html('TIPO<br>VENTA');
+        $('#titulo_cinco').html('CUOTA<br>INIC.('+nombre_moneda+')');
+        $('#titulo_seis').html('CLIENTE');
+        $('#titulo_siete').html('CAJERO');
+        $('#prod_tipotrans').css('display','block');
+        $('#prod_forma').css('display','block');
+        $('#prod_comprobante').css('display','block');
+        $("#resultado_reporte").html("");
+        //$('#serv_preferencia').css('display','block');
+        //$('#serv_clasificador').css('display','block');
+        //$('#serv_categoria').css('display','block');
+        //$('#serv_subcategoria').css('display','block');
+        //$('#serv_responsable').css('display','none');
+        //$('#serv_recepcionadopor').css('display','none');
     }else if(tipo_reporte == 2){ //para servicios
         $('#serv_vendedor').css('display','none');
         $('#serv_prevendedor').css('display','none');
         $('#serv_zona').css('display','none');
         $('#serv_ventapreventa').css('display','none');
-        $('#serv_preferencia').css('display','none');
-        $('#serv_clasificador').css('display','none');
-        $('#serv_categoria').css('display','none');
-        $('#serv_subcategoria').css('display','none');
-        $('#serv_responsable').css('display','block');
-        $('#serv_recepcionadopor').css('display','block');
+        $('#serv_cliente').css('display','block');
+        $('#serv_usuario').css('display','block');
+        $('#prod_tipotrans').css('display','block');
+        $('#prod_forma').css('display','block');
+        $('#prod_comprobante').css('display','block');
+        $('#titulo_tres').css('display','table-cell');
+        $('#titulo_cuatro').css('display','table-cell');
+        $('#titulo_cinco').css('display','table-cell');
+        $('#titulo_seis').css('display','table-cell');
+        $('#titulo_uno').html('FECHA<br>SERVICIO');
+        $('#titulo_dos').html('NUM.<br>SERV.');
+        $('#titulo_tres').html('NUM.<br>DOC.');
+        $('#titulo_cuatro').html('TIPO<br>SERV.');
+        $('#titulo_cinco').html('CUOTA<br>INIC.('+nombre_moneda+')');
+        $('#titulo_seis').html('CLIENTE');
+        $('#titulo_siete').html('DESPACHADO<br>POR');
+        $("#resultado_reporte").html("");
     }else if(tipo_reporte == 3){ //para produccion
-        $('#serv_usuario').css('display','none');
+        $('#serv_vendedor').css('display','none');
+        $('#serv_prevendedor').css('display','none');
+        $('#prod_tipotrans').css('display','none');
+        $('#prod_forma').css('display','none');
+        $('#prod_comprobante').css('display','none');
+        $('#serv_zona').css('display','none');
+        $('#serv_ventapreventa').css('display','none');
+        $('#serv_cliente').css('display','none');
+        $('#serv_usuario').css('display','block');
+        $('#titulo_uno').html('FECHA<br>PROD.');
+        $('#titulo_dos').html('NUM.<br>PROD.');
+        /*$('#titulo_tres').html('-');
+        $('#titulo_cuatro').html('-');
+        $('#titulo_cinco').html('-');
+        $('#titulo_seis').html('-');*/
+        $('#titulo_tres').css('display','none');
+        $('#titulo_cuatro').css('display','none');
+        $('#titulo_cinco').css('display','none');
+        $('#titulo_seis').css('display','none');
+        $('#titulo_siete').html('DESPACHADO<br>POR');
+        $("#resultado_reporte").html("");
     }
 }

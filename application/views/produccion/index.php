@@ -47,6 +47,7 @@
                         <th>Hora</th>
                         <th>Formula</th>
                         <th>Usuario</th>
+                        <th></th>
                     </tr>
                     <tbody class="buscar">
                     <?php
@@ -65,10 +66,10 @@
                         <td class="text-center"><?php echo $p['produccion_hora']; ?></td>
                         <td><?php echo $p['formula_nombre']; ?></td>
                         <td class="text-center"><?php echo $p['usuario_nombre']; ?></td>
-                        <!--<td>
-                            <a href="<?php //echo site_url('produccion/edit/'.$p['produccion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-                            <a href="<?php //echo site_url('produccion/remove/'.$p['produccion_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
-                        </td>-->
+                        <td>
+                            <a href="<?php echo site_url('produccion/imprimir_nota/'.$p['produccion_id']); ?>" class="btn btn-success btn-xs" target="_blank" title="Imprimir nota de producción"><span class="fa fa-print"></span></a> 
+                            <!--<a href="<?php //echo site_url('produccion/remove/'.$p['produccion_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>-->
+                        </td>
                     </tr>
                     <?php
                     $i++;

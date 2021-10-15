@@ -879,9 +879,8 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
     }
     function reporte_general($filtro)
     {
-        
         $reporte = $this->db->query(
-        "SELECT vs.*, fa.factura_id, cr.credito_cuotainicial
+        "SELECT vs.*, fa.factura_id, fa.factura_numero, cr.credito_cuotainicial
                 FROM ventas vs
                 LEFT JOIN factura fa on vs.venta_id = fa.venta_id
                 LEFT JOIN credito cr on vs.venta_id = cr.venta_id
@@ -890,7 +889,29 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
         ")->result_array();
         return $reporte;
     }
-    
+    function reporte_generalinsumo($filtro)
+    {
+        $reporte = $this->db->query(
+        "select ci.*, u.usuario_nombre, f.factura_id, f.factura_numero, cr.credito_cuotainicial
+		from consinsumos ci
+                left join usuario u on ci.usuariopsaldo_id = u.usuario_id
+                left join factura f on ci.servicio_id = f.servicio_id
+                LEFT JOIN credito cr on ci.servicio_id = cr.servicio_id
+                where ".$filtro."
+                ORDER BY ci.detalleserv_fechaentregado DESC, ci.detalleserv_horaentregado DESC
+        ")->result_array();
+        return $reporte;
+    }
+    function reporte_generalproduccion($filtro)
+    {
+        $reporte = $this->db->query(
+        "select pr.*
+		from consproduccion pr
+                where ".$filtro."
+                ORDER BY pr.produccion_fecha DESC, pr.produccion_hora DESC
+        ")->result_array();
+        return $reporte;
+    }
 }
 
 ?>

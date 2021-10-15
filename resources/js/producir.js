@@ -109,7 +109,7 @@ function calcularformula(){
                     html = "";
                     for (var i = 0; i < n ; i++){
                         //verif_existencia.push({producto_id:registros[i]["producto_id"], cantidad:Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad)});
-                        eltotal += Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"]);
+                        eltotal += Number(registros[i]["detalleven_precio"])*Number(registros[i]["detalleven_cantidad"]);
                         //total = Number(Number(registros[i]["detalleformula_costo"])*Number(Number(registros[i]["detalleformula_cantidad"])*Number(formula_cantidad))).toFixed(2);
                         html += "<tr>";
                         //html += "<td>"+(i+1)+"</td>";
@@ -126,7 +126,7 @@ function calcularformula(){
                         html += "</div>";
                         html += "</td>";
                         html += "<td class='text-right'>";
-                        html += Number(registros[i]["detalleven_costo"]).toFixed(2);
+                        html += Number(registros[i]["detalleven_precio"]).toFixed(2);
                         html += "</td>";
                         html += "<td class='text-center'>";
                         html += registros[i]["detalleven_cantidad"];
