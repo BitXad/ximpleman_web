@@ -315,9 +315,9 @@ class Produccion extends CI_Controller{
                         $this->notae_boucher($produccion_id);
                     else
                         $this->notae_carta($produccion_id);
-                }else{
+                }/*else{
                     $this->notapreimpreso_carta($produccion_id);
-                }
+                }*/
             }
         //}
     }
@@ -347,29 +347,25 @@ class Produccion extends CI_Controller{
     }
     function recibo_carta($produccion_id)
     {
-        if($this->acceso(21)){
-        //**************** inicio contenido ***************           
-    
-        $usuario_id = $this->session_data['usuario_id'];
-        
+        //if($this->acceso(21)){
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $data['venta'] = $this->Detalle_venta_model->get_venta($produccion_id);
-        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($produccion_id);        
-        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['produccion'] = $this->Produccion_model->get_produccion($produccion_id);
+        $this->load->model('Detalle_venta_model');
+        $this->load->model('Empresa_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Moneda_model');
+        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_produccion($produccion_id);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
         $data['page_title'] = "Recibo";
 
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
    
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-  
-        $data['_view'] = 'factura/recibo_carta';
-        $this->load->view('layouts/main',$data);       
-
-        		
-        //**************** fin contenido ***************
-        }
+        
+        $data['_view'] = 'produccion/recibo_carta';
+        $this->load->view('layouts/main',$data);
+        //}
     }
     function notae_boucher($produccion_id)
     {
@@ -395,23 +391,25 @@ class Produccion extends CI_Controller{
     }
     function notae_carta($produccion_id)
     {
-        if($this->acceso(21)){
-        $usuario_id = $this->session_data['usuario_id'];
-        
+        //if($this->acceso(21)){
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $data['venta'] = $this->Detalle_venta_model->get_venta($produccion_id);
-        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($produccion_id);        
+        $data['produccion'] = $this->Produccion_model->get_produccion($produccion_id);
+        $this->load->model('Detalle_venta_model');
+        $this->load->model('Empresa_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Moneda_model');
+        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_produccion($produccion_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
         $data['page_title'] = "Recibo";
 
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-                
+   
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-  
-        $data['_view'] = 'factura/notae_carta';
+        
+        $data['_view'] = 'produccion/notae_carta';
         $this->load->view('layouts/main',$data);
-        }
+        //}
     }
     /* nota de entrega en hojas preimpresas.... */
     function notapreimpreso_carta($produccion_id)

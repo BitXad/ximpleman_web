@@ -1,6 +1,5 @@
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/reporte_general.js'); ?>" type="text/javascript"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         (function ($) {
@@ -247,15 +246,6 @@
             </div>
         </span>
         
-        
-
-
-
-
-        
-        
-        
-        
         <div class="col-md-2 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
@@ -265,7 +255,7 @@
         <div class="col-md-2 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
-                <a onclick="generarexcel_reportegeneral()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
+                <a onclick="generarexcel_reportegrl()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
             </div>
         </div>
         <div id="tablas" style="visibility: block">  

@@ -98,7 +98,7 @@
                             <br> 
                             <?php $fecha = new DateTime($produccion['produccion_fecha']); 
                                     $fecha_d_m_a = $fecha->format('d/m/Y');
-                              ?>    
+                              ?>
                                 <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
                         </center>                      
                     </td>
