@@ -453,7 +453,7 @@ function tipode_reporte(){
         $('#titulo_cuatro').css('display','none');
         $('#titulo_cinco').css('display','none');
         $('#titulo_seis').css('display','none');
-        $('#titulo_siete').html('DESPACHADO<br>POR');
+        $('#titulo_siete').html('PRODUCIDO<br>POR');
         $("#resultado_reporte").html("");
     }
 }
@@ -557,7 +557,7 @@ function generarexcel_reportegrl(){
                 //add a line break after each row
                 CSV += row + '\r\n';
             }
-            row += '\r\n';
+            row = '\r\n';
             row += '\r\n';
             row += '"",';
             row += '"",';
@@ -579,50 +579,220 @@ function generarexcel_reportegrl(){
             row += '"",';
             row += '\r\n';
             CSV += row + '\r\n';
-            }else if(filtrar == 2){
-                alert('falta');
-            }else if(filtrar == 3){
-                alert('falta');
+        }else if(filtrar == 2){
+            if (showLabel) {
+                var row = "";
+                row += 'Nro.' + ',';
+                row += 'PRODUCTO' + ',';
+                row += 'FECHA SERVICIO' + ',';
+                row += 'NUM. SERV.' + ',';
+                row += 'NUM. DOC.' + ',';
+                row += 'TIPO SERV.' + ',';
+                row += 'CUOTA INIC.(' +nombre_moneda+ '),';
+                row += 'UNIDAD' + ',';
+                row += 'CANT.' + ',';
+                row += 'PRECIO UNIT.(' +nombre_moneda+ '),';
+                row += 'DESCUENTO(' +nombre_moneda+ '),';
+                row += 'PRECIO TOTAL(' +nombre_moneda+ '),';
+                row += 'PRECIO TOTAL(';
+                if(lamoneda_id == 1){
+                    otramoneda_nombre = lamoneda[1]['moneda_descripcion'];
+                }else{
+                    otramoneda_nombre = lamoneda[0]['moneda_descripcion'];
+                }
+                row += otramoneda_nombre+ '),';
+                if(tipousuario_id == 1){
+                    row += 'COSTO(' +nombre_moneda+ '),';
+                    row += 'UTILIDAD(' +nombre_moneda+ '),';
+                }
+                row += 'CLIENTE' + ',';
+                row += 'DESPACHADO POR' + ',';
+                row = row.slice(0, -1);
+                //append Label row with line break
+                CSV += row + '\r\n';
             }
-                    
-                    if (CSV == '') {
-                        alert("Invalid data");
-                        return;
-                    }
-                    
-                    //Generate a file name
-                    var fileName = "Reporte_";
-                    //this will remove the blank-spaces from the title and replace it with an underscore
-                    fileName += reportitle.replace(/ /g,"_");   
-
-                    //Initialize file format you want csv or xls
-                    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-
-                    // Now the little tricky part.
-                    // you can use either>> window.open(uri);
-                    // but this will not work in some browsers
-                    // or you will not get the correct file extension    
-
-                    //this trick will generate a temp <a /> tag
-                    var link = document.createElement("a");    
-                    link.href = uri;
-
-                    //set the visibility hidden so it will not effect on your web-layout
-                    link.style = "visibility:hidden";
-                    link.download = fileName + ".csv";
-
-                    //this part will append the anchor tag and remove it after automatic click
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    /* **************F I N  Generar Excel JavaScript************** */
-                   
-                   
-                   
-                   
-                   //document.getElementById('loader').style.display = 'none';
-            //}
-         //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-        //}  
+            //1st loop is to extract each row
+            for (var i = 0; i < tam; i++) {
+                total += Number(registros[i]["detalleven_total"]);
+                cantidades += Number(registros[i]["detalleven_cantidad"]);
+                cuotas += Number(registros[i]["credito_cuotainicial"]);
+                descuentos += Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"]);
+                costos += Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"]);
+                var utilidad = Number(Number(registros[i]["detalleven_total"])-(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])));
+                utilidades += Number(utilidad);
+                var row = "";
+                row += (i+1)+',';
+                row += '"' +registros[i]["producto_nombre"]+ '",';
+                row += '"' +moment(registros[i]["detalleserv_fechaentregado"]).format('DD/MM/YYYY')+"-"+registros[i]["detalleserv_horaentregado"]+ '",';
+                row += '"' +registros[i]["servicio_id"]+ '",';
+                row += '"' +Number(registros[i]["factura_id"])+ '",';
+                row += '"' +registros[i]["tipotrans_nombre"]+ '",';
+                row += '"' +numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(2))+ '",';
+                row += '"' +registros[i]["producto_unidad"]+ '",';
+                row += '"' +registros[i]["detalleven_cantidad"]+ '",';
+                row += '"' +numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(registros[i]["detalleven_total"]).toFixed(2))+ '",';
+                if(lamoneda_id == 1){
+                    total_otram = Number(registros[i]["detalleven_total"])/Number(registros[i]["detalleven_tc"])
+                    total_otramoneda += total_otram;
+                }else{
+                    total_otram = Number(registros[i]["detalleven_total"])*Number(registros[i]["detalleven_tc"])
+                    total_otramoneda += total_otram;
+                }
+                row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
+                if(tipousuario_id == 1){
+                    row += '"' +numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+ '",';
+                    row += '"' +numberFormat(Number(utilidad).toFixed(2))+ '",';
+                }
+                row += '"' +registros[i]["cliente_nombre"]+ '",';
+                row += '"' +registros[i]["usuario_nombre"]+ '",';
+                row.slice(0, row.length - 1);
+                //add a line break after each row
+                CSV += row + '\r\n';
+            }
+            row = '\r\n';
+            row += '\r\n';
+            row += '"",';
+            row += '"",';
+            row += '"",';   
+            row += '"",';   
+            row += '"",';   
+            row += '"",';
+            row += '"'+numberFormat(Number(cuotas).toFixed(2))+'",';
+            row += '"",';
+            row += '"'+numberFormat(Number(cantidades).toFixed(2))+'",';
+            row += '"",';
+            row += '"'+numberFormat(Number(descuentos).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(total).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(total_otramoneda).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(costos).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(utilidades).toFixed(2))+'",';
+            row += '"",';
+            row += '"",';
+            row += '"",';
+            row += '\r\n';
+            CSV += row + '\r\n';
+        }else if(filtrar == 3){
+            if (showLabel) {
+                var row = "";
+                row += 'Nro.' + ',';
+                row += 'PRODUCTO' + ',';
+                row += 'FECHA PROD.' + ',';
+                row += 'NUM. PROD.' + ',';
+                row += 'UNIDAD' + ',';
+                row += 'CANT.' + ',';
+                row += 'PRECIO UNIT.(' +nombre_moneda+ '),';
+                row += 'DESCUENTO(' +nombre_moneda+ '),';
+                row += 'PRECIO TOTAL(' +nombre_moneda+ '),';
+                row += 'PRECIO TOTAL(';
+                if(lamoneda_id == 1){
+                    otramoneda_nombre = lamoneda[1]['moneda_descripcion'];
+                }else{
+                    otramoneda_nombre = lamoneda[0]['moneda_descripcion'];
+                }
+                row += otramoneda_nombre+ '),';
+                if(tipousuario_id == 1){
+                    row += 'COSTO(' +nombre_moneda+ '),';
+                    row += 'UTILIDAD(' +nombre_moneda+ '),';
+                }
+                row += 'PRODUCIDO POR' + ',';
+                row = row.slice(0, -1);
+                //append Label row with line break
+                CSV += row + '\r\n';
+            }
+            //1st loop is to extract each row
+            for (var i = 0; i < tam; i++) {
+                total += Number(registros[i]["detalleven_total"]);
+                cantidades += Number(registros[i]["detalleven_cantidad"]);
+                //cuotas += Number(registros[i]["credito_cuotainicial"]);
+                descuentos += Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"]);
+                costos += Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"]);
+                var utilidad = Number(Number(registros[i]["detalleven_total"])-(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])));
+                utilidades += Number(utilidad);
+                var row = "";
+                row += (i+1)+',';
+                row += '"' +registros[i]["producto_nombre"]+ '",';
+                row += '"' +moment(registros[i]["produccion_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["produccion_hora"]+ '",';
+                row += '"' +registros[i]["produccion_id"]+ '",';
+                //row += '"' +Number(registros[i]["factura_id"])+ '",';
+                //row += '"' +registros[i]["tipotrans_nombre"]+ '",';
+                //row += '"' +numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(2))+ '",';
+                row += '"' +registros[i]["producto_unidad"]+ '",';
+                row += '"' +registros[i]["detalleven_cantidad"]+ '",';
+                row += '"' +numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(registros[i]["detalleven_total"]).toFixed(2))+ '",';
+                if(lamoneda_id == 1){
+                    total_otram = Number(registros[i]["detalleven_total"])/Number(registros[i]["detalleven_tc"])
+                    total_otramoneda += total_otram;
+                }else{
+                    total_otram = Number(registros[i]["detalleven_total"])*Number(registros[i]["detalleven_tc"])
+                    total_otramoneda += total_otram;
+                }
+                row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
+                if(tipousuario_id == 1){
+                    row += '"' +numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+ '",';
+                    row += '"' +numberFormat(Number(utilidad).toFixed(2))+ '",';
+                }
+                //row += '"' +registros[i]["cliente_nombre"]+ '",';
+                row += '"' +registros[i]["usuario_nombre"]+ '",';
+                row.slice(0, row.length - 1);
+                //add a line break after each row
+                CSV += row + '\r\n';
+            }
+            row = '\r\n';
+            row += '\r\n';
+            row += '"",';
+            row += '"",';
+            row += '"",';   
+            row += '"",';   
+            //row += '"",';   
+            //row += '"",';
+            //row += '"'+numberFormat(Number(cuotas).toFixed(2))+'",';
+            row += '"",';
+            row += '"'+numberFormat(Number(cantidades).toFixed(2))+'",';
+            row += '"",';
+            row += '"'+numberFormat(Number(descuentos).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(total).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(total_otramoneda).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(costos).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(utilidades).toFixed(2))+'",';
+            row += '"",';
+            //row += '"",';
+            row += '"",';
+            row += '\r\n';
+            CSV += row + '\r\n';
         }
+        if (CSV == '') {
+            alert("Invalid data");
+            return;
+        }
+
+        //Generate a file name
+        var fileName = "Reporte_";
+        //this will remove the blank-spaces from the title and replace it with an underscore
+        fileName += reportitle.replace(/ /g,"_");   
+
+        //Initialize file format you want csv or xls
+        var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+        // Now the little tricky part.
+        // you can use either>> window.open(uri);
+        // but this will not work in some browsers
+        // or you will not get the correct file extension    
+
+        //this trick will generate a temp <a /> tag
+        var link = document.createElement("a");    
+        link.href = uri;
+
+        //set the visibility hidden so it will not effect on your web-layout
+        link.style = "visibility:hidden";
+        link.download = fileName + ".csv";
+
+        //this part will append the anchor tag and remove it after automatic click
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);  
+    }
 }
