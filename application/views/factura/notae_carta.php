@@ -148,7 +148,9 @@ border-bottom : 1px solid #aaa;
                 <td align="center" style="padding: 0"><b>P.UNIT <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
                 <td align="center" style="padding: 0"><b>TOTAL <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>               
                 
-                <?php if($parametro[0]['moneda_id']==1){  ?> 
+                <?php
+                if($parametro[0]["parametro_mostrarmoneda"] == 1){
+                if($parametro[0]['moneda_id']==1){  ?> 
                         
                         <td align="center" style="padding: 0"><b>TOTAL <?php echo $moneda['moneda_descripcion']; ?></b></td>
                             
@@ -156,7 +158,9 @@ border-bottom : 1px solid #aaa;
                         
                         <td align="center" style="padding: 0"><b>TOTAL Bs</b></td>
                         
-                <?php }  ?> 
+                <?php }
+                }
+                ?> 
                 
                 
            </tr>
@@ -189,19 +193,16 @@ border-bottom : 1px solid #aaa;
                 </td>
                 <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
                 <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                 <td align="right" style="padding: 0">
-                
-
                     <?php 
-                    
                         if($parametro[0]['moneda_id'] == $d['moneda_id']){ //si la moneda es la misma que la principal       
                             
                             if ($d['moneda_id']==1){    
                                 $total_equivalente = round($d['detalleven_subtotal'],2)/$d['detalleven_tc'];
                             }else{
                                 $total_equivalente = round($d['detalleven_subtotal'],2)*$d['detalleven_tc'];
-                            }    
-                                
+                            }
                         }else{  
                             
                             if($d['moneda_id']==1){
@@ -210,12 +211,11 @@ border-bottom : 1px solid #aaa;
                             }else{
                                 $total_equivalente = round($d['detalleven_subtotal'],2) / round($d['detalleven_tc'],2);
                             }
-                            
-                        }  
-                        
+                        }
                         echo number_format($total_equivalente,2,'.',',');
                         //echo $total_equivalente; ?>
                 </td>
+                <?php } ?>
            </tr>
            <?php } ?>
        </table>
@@ -223,9 +223,7 @@ border-bottom : 1px solid #aaa;
 <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
 <!--<table class="table" style="max-width: 20cm;">-->
     <tr style="border-top-style: solid">
-        
         <td align="left">
-                            
                 USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
                 <?php if ($venta[0]['pedido_id']>=1) { ?>
                 PED.: <b><?php echo $venta[0]['pedido_id']; ?></b><br>
@@ -281,12 +279,13 @@ border-bottom : 1px solid #aaa;
                     else
                         $texto_moneda = $parametro[0]['moneda_descripcion'];
                 
-                    echo "SON: ".num_to_letras($total_final,$texto_moneda); ?><br>            
-            
-                    <b>
+                    echo "SON: ".num_to_letras($total_final,$texto_moneda); ?>
+            <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
+            <br>
+            <b>
                         
                     <!------------------ TOTAL EN OTRA MONEDA------------------------>
-                    <?php 
+                    <?php
                         $total_final_equivalente = 0;
                         $tfe = "";
                         
@@ -302,11 +301,12 @@ border-bottom : 1px solid #aaa;
                             }
                         
                         echo $tfe." ".number_format($total_final_equivalente,2,'.',',');
+                        
                     ?>              
                    
                     <!------------------------------------------>
                     </b>
-                    
+            <?php } ?>
                     
             </font>
             <font size="1">

@@ -126,7 +126,10 @@ border-bottom : 1px solid #aaa;
 
                 <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
                 <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
-                <font size="1" face="arial"><b>Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?><br>T.C. <?php echo $moneda['moneda_tc']; ?></b></font> <br>
+                <font size="1" face="arial"><b>Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?><br>
+                    <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
+                    T.C. <?php echo $moneda['moneda_tc']; ?></b></font> <br>
+                    <?php } ?>
                 <!--<font size="1" face="arial"><b><?php echo $venta[0]['venta_fecha']." ".$venta[0]['venta_hora']; ?></b></font> <br>-->
             </center>
         </td>
@@ -168,9 +171,10 @@ border-bottom : 1px solid #aaa;
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>DESCRIPCIÓN</b></td>
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>UNIDAD</b></td>
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>P.UNIT<br><?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>
-                <!--<td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>SUB.TOT<br><?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>-->
-                <!--<td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>DESC.<br><?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>-->
-                <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>TOTAL<br><?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>               
+                <!--<td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>SUB.TOT<br><?php //echo $parametro[0]["moneda_descripcion"]; ?></b></td>-->
+                <!--<td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>DESC.<br><?php //echo $parametro[0]["moneda_descripcion"]; ?></b></td>-->
+                <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>TOTAL<br><?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>
+                <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;">
                     <b>TOTAL<br>
                     <?php
@@ -180,7 +184,9 @@ border-bottom : 1px solid #aaa;
                             echo "Bs";
                         }
                     ?>
-                    </b></td>               
+                    </b>
+                </td>
+                <?php } ?>
            </tr>
            <?php $cont = 0;
                  $cantidad = 0;
@@ -221,8 +227,8 @@ border-bottom : 1px solid #aaa;
                 <!--<td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>-->
                 <!--<td align="right" style="padding: 0"><?php echo number_format($d['detalleven_descuento']*$d['detalleven_cantidad'],2,'.',','); ?></td>-->
                 <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
+                <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                 <td align="right" style="padding: 0">
-                    
                     <?php
                         if ($parametro[0]["moneda_id"]==1){
                             $total_final_me += $total_final / $d['detalleven_tc'];
@@ -236,7 +242,8 @@ border-bottom : 1px solid #aaa;
                     ?>    
                     
                 </td>
-           <!--</tr>-->
+                <?php } ?>
+           </tr>
            <?php } ?>
        </table>
     
@@ -298,7 +305,7 @@ border-bottom : 1px solid #aaa;
                 <?php echo "SON: ".num_to_letras($total_final,$moneda_nombre); ?><br>            
             
             </font>
-            
+            <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
             <font size="2">
             <b>
                 <!------------------ TOTAL EN OTRA MONEDA------------------------>
@@ -334,7 +341,7 @@ border-bottom : 1px solid #aaa;
                 <br>
             </b>
             </font>
-            
+            <?php } ?>
             <font size="1">
                 <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
                 <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>

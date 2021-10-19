@@ -346,6 +346,15 @@
                         </div>
                     </div>
                     <div class="col-md-2">
+                        <label for="parametro_mostrarmoneda" class="control-label" title="Mostrar/no mostrar la otra moneda"><span class="text-danger">*</span>MOSTRAR MONEDA</label>
+                        <div class="form-group">
+                            <select name="parametro_mostrarmoneda" class="form-control" required id="parametro_mostrarmoneda">
+                                <option value="1" <?php if($parametro['parametro_mostrarmoneda']=='1') echo 'selected'; ?> >MOSTRAR</option>
+                                <option value="2" <?php if($parametro['parametro_mostrarmoneda']=='2') echo 'selected'; ?> >NO MOSTRAR</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
                         <label for="parametro_factura" class="control-label"><span class="text-danger">*</span>FACTURA</label>
                         <div class="form-group">
                             <select name="parametro_factura" class="form-control" required id="parametro_factura">
