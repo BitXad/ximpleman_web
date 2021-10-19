@@ -205,7 +205,7 @@ function fechadeingreso(filtro)
                         html += "</td>";
                         html += "<td></td>";
                         html += "<td></td>";
-                        html += "<td></td>
+                        html += "<td></td>";
                         html += "</tr>";
                    
                    $("#fechadeingreso").html(html);

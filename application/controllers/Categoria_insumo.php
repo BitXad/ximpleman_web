@@ -505,6 +505,8 @@ class Categoria_insumo extends CI_Controller{
                 $this->load->model('Detalle_venta_model');
                 $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
                 //if(sizeof($res) > 0){
+                $this->load->model('Moneda_model');
+                $moneda = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
                 if(isset($res)){
                     $cantidad1 = $res['detalleven_cantidad'];
                     $rescantidad = $cantidad + $cantidad1;
@@ -550,6 +552,7 @@ class Categoria_insumo extends CI_Controller{
                     'detalleven_tipocambio' => $thisproducto['producto_tipocambio'],
                     'usuario_id' => $usuario_id,
                     'detalleserv_id' => $detalleserv_id,
+                    'detalleven_tc' => $moneda['moneda_tc'],
                 );
                 $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
             }

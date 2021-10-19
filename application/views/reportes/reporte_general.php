@@ -1,6 +1,5 @@
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/reporte_general.js'); ?>" type="text/javascript"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         (function ($) {
@@ -77,7 +76,7 @@
         </div>-->
         <div class="col-md-2 no-print">
             <label for="filtrar" class="control-label"> Filtrar: </label>
-            <select class="btn btn-primary btn-sm form-control" name="filtrar" id="filtrar" onchange="pasarnombre(this)" required>
+            <select class="btn btn-primary btn-sm form-control" name="filtrar" id="filtrar" onchange="tipode_reporte()" required>
                 <option value="1" selected>VENTA</option>
                 <option value="2">SERVICIO</option>
                 <option value="3">PRODUCCION</option>
@@ -91,9 +90,9 @@
             <label for="fecha_hasta" class="control-label"> Hasta: </label>
             <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
         </div>
-        <div class="col-md-2 no-print">
+        <div class="col-md-2 no-print" id="serv_vendedor" style="display: block">
             <label for="vendedor_id" class="control-label"> Vendedor: </label>
-            <select class="btn btn-primary btn-sm form-control" name="vendedor_id" id="vendedor_id" onchange="pasarnombre(this)" required>
+            <select class="btn btn-primary btn-sm form-control" name="vendedor_id" id="vendedor_id" >
                 <option value="0">TODOS</option>
                 <?php foreach($all_usuario as $usuario){
                     $selected = ($usuario['usuario_id'] == $usuario_id) ? ' selected="selected"' : "";
@@ -102,70 +101,99 @@
                 <?php } ?>
             </select>
         </div>
-        <div class="col-md-2 no-print">
+        <div class="col-md-2 no-print" id="serv_prevendedor" style="display: block">
             <label for="prevendedor_id" class="control-label"> Prevendedor: </label>
-            <select class="btn btn-primary btn-sm form-control" name="prevendedor_id" id="prevendedor_id" onchange="pasarnombre(this)" required>
+            <select class="btn btn-primary btn-sm form-control" name="prevendedor_id" id="prevendedor_id" >
                 <option value="0">TODOS</option>
                 <?php foreach($all_usuario as $usuario){?>
                 <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
                 <?php } ?>
             </select>
         </div>
+        <div class="col-md-2 no-print" id="serv_usuario" style="display: none">
+            <label for="usuario_id" class="control-label"> Usuario: </label>
+            <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" required >
+                <option value="0">TODOS</option>
+                <?php foreach($all_usuario as $usuario){?>
+                <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <!--<div class="col-md-2 no-print" id="serv_responsable" style="display: none">
+            <label for="responsable_id" class="control-label"> Responsable: </label>
+            <select class="btn btn-primary btn-sm form-control" name="responsable_id" id="responsable_id" >
+                <option value="0">TODOS</option>
+                <?php /*foreach($all_usuario as $usuario){
+                    $selected = ($usuario['usuario_id'] == $usuario_id) ? ' selected="selected"' : "";
+                ?>
+                <option value="<?php echo $usuario['usuario_id']; ?>" <?php echo $selected; ?>><?php echo $usuario['usuario_nombre']; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="col-md-2 no-print" id="serv_recepcionadopor" style="display: none">
+            <label for="recepcionadopor_id" class="control-label"> Recepcionado por: </label>
+            <select class="btn btn-primary btn-sm form-control" name="recepcionadopor_id" id="recepcionadopor_id" >
+                <option value="0">TODOS</option>
+                <?php foreach($all_usuario as $usuario){?>
+                <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
+                <?php }*/ ?>
+            </select>
+        </div>-->
         <div class="col-md-2 no-print">
-            <label for="expotar" class="control-label"> &nbsp; </label>
-            <div class="form-group" style="display: flex">
+            <label for="exportar" class="control-label"> &nbsp; </label>
+            <div class="form-group" style="display: flex; margin-bottom: 0px">
                 <a class="btn btn-facebook btn-sm form-control" onclick="reporte_general()" title="Buscar ventas"><i class="fa fa-search"> Buscar</i></a>
                 <a class="btn btn-info" onclick="mostrar_masfventa()" style="display: block" id="boton_masfventa" title="Mostrar mas Filtros"><span class="fa fa-search-plus"></span></a>
                 <a class="btn btn-info" onclick="mostrar_menosfventa()" style="display: none" id="boton_menosfventa" title="Mostrar menos Filtros"><span class="fa fa-search-minus"></span></a>
             </div>
         </div>
         <span id="masdeventas" style="display: none">
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print" id="prod_tipotrans" style="display: block">
                 <label for="tipotrans_id" class="control-label"> Tipo Trans: </label>
-                <select class="btn btn-primary btn-sm form-control" name="tipotrans_id" id="tipotrans_id" onchange="pasarnombre(this)" required>
+                <select class="btn btn-primary btn-sm form-control" name="tipotrans_id" id="tipotrans_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_tipotransaccion as $tipo){?>
                     <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print" id="prod_forma" style="display: block">
                 <label for="forma_id" class="control-label"> Forma Pago: </label>
-                <select class="btn btn-primary btn-sm form-control" name="forma_id" id="forma_id" onchange="pasarnombre(this)" required>
+                <select class="btn btn-primary btn-sm form-control" name="forma_id" id="forma_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_formapago as $forma){?>
                     <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-2 no-print">
-                <label for="consinfact" class="control-label"> &nbsp; </label>
-                <select class="btn btn-primary btn-sm form-control" name="consinfact" id="consinfact" onchange="pasarnombre(this)" required>
+            <div class="col-md-2 no-print" id="prod_comprobante" style="display: block">
+                <label for="comprobante" class="control-label"> Comprobante: </label>
+                <select class="btn btn-primary btn-sm form-control" name="comprobante" id="comprobante" required>
                     <option value="0">TODOS</option>
-                    <option value="1">CON FACT.</option>
-                    <option value="2">SIN FACT.</option>
+                    <option value="1">FACTURA</option>
+                    <option value="2">NOTA DE VENTA</option>
                 </select>
             </div>
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print" id="serv_zona" style="display: block">
                 <label for="zona_id" class="control-label"> Zona: </label>
-                <select class="btn btn-primary btn-sm form-control" name="zona_id" id="zona_id" onchange="pasarnombre(this)" required>
+                <select class="btn btn-primary btn-sm form-control" name="zona_id" id="zona_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_zona as $zona){?>
                     <option value="<?php echo $zona['zona_id']; ?>"><?php echo $zona['zona_nombre']; ?></option>
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-1 no-print">
-                <label for="espedido" class="control-label"> Preventas: </label>
-                <select class="btn btn-primary btn-sm form-control" name="espedido" id="espedido" onchange="pasarnombre(this)" required>
+            <div class="col-md-1 no-print" id="serv_ventapreventa" style="display: block">
+                <label for="ventapreventa" class="control-label"> Origen: </label>
+                <select class="btn btn-primary btn-sm form-control" name="ventapreventa" id="ventapreventa" required>
                     <option value="0">TODOS</option>
                     <option value="1">PREVENTAS</option>
                     <option value="2">VENTAS</option>
                 </select>
             </div>
-            <div class="col-md-3">  
+            <div class="col-md-3" id="serv_cliente" style="display: block">
                 <label for="cliente_nombre" class="control-label"> Cliente: </label>
-                <div class="form-group" style="display: flex">
+                <div class="form-group" style="display: flex; margin-bottom: 0px">
                     <input type="text" name="cliente_nombre" id="cliente_nombre" class="form-control" value="TODOS" readonly >
                     <input type="hidden" name="cliente_id" id="cliente_id" value="0" >
                     <a data-toggle="modal" data-target="#modalbuscarcliente" class="btn btn-success" title="Buscar Clientes">
@@ -175,7 +203,7 @@
             </div>
             <div class="col-md-3">  
                 <label for="producto_nombre" class="control-label"> Producto: </label>
-                <div class="form-group" style="display: flex">
+                <div class="form-group" style="display: flex; margin-bottom: 0px">
                     <input type="text" name="producto_nombre" id="producto_nombre" class="form-control" value="TODOS" readonly >
                     <input type="hidden" name="producto_id" id="producto_id" value="0" >
                     <a data-toggle="modal" data-target="#modalbuscarproducto" class="btn btn-success" title="Buscar Productos">
@@ -183,66 +211,40 @@
                     <a class="btn btn-warning" onclick="productotodos()" title="Todos los productos"><b>T</b></a>
                 </div>
             </div>
-            <div class="col-md-2 no-print">
-                <label for="usuario_id" class="control-label"> Usuario: </label>
-                <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" onchange="pasarnombre(this)" required >
-                    <option value="0">TODOS</option>
-                    <?php foreach($all_usuario as $usuario){?>
-                    <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
-                    <?php } ?>
-                </select>
-            </div>
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print" id="serv_preferencia" style="display: block">
                 <label for="preferencia_id" class="control-label"> Preferencia: </label>
-                <select class="btn btn-primary btn-sm form-control" name="preferencia_id" id="preferencia_id" onchange="pasarnombre(this)" required>
+                <select class="btn btn-primary btn-sm form-control" name="preferencia_id" id="preferencia_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_preferencia as $preferencia){?>
                     <option value="<?php echo $preferencia['preferencia_id']; ?>"><?php echo $preferencia['preferencia_descripcion']; ?></option>
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print" id="serv_clasificador" style="display: block">
                 <label for="clasificador_id" class="control-label"> Clasificador: </label>
-                <select class="btn btn-primary btn-sm form-control" name="clasificador_id" id="clasificador_id" onchange="pasarnombre(this)" required>
+                <select class="btn btn-primary btn-sm form-control" name="clasificador_id" id="clasificador_id" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_clasificador as $clasificador){?>
                     <option value="<?php echo $clasificador['clasificador_id']; ?>"><?php echo $clasificador['clasificador_nombre']; ?></option>
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print" id="serv_categoria" style="display: block">
                 <label for="categoria_id" class="control-label"> Categoria: </label>
-                <select class="btn btn-primary btn-sm form-control" name="categoria_id" id="categoria_id" onchange="pasarnombre(this)" required>
+                <select class="btn btn-primary btn-sm form-control" name="categoria_id" id="categoria_id" onchange="mostrar_subcategoriaproducto(this.value)" required>
                     <option value="0">TODOS</option>
                     <?php foreach($all_categoria as $categoria){?>
                     <option value="<?php echo $categoria['categoria_id']; ?>"><?php echo $categoria['categoria_nombre']; ?></option>
                     <?php } ?>
                 </select>
             </div>
-            <div class="col-md-2 no-print">
+            <div class="col-md-2 no-print" id="serv_subcategoria" style="display: block">
                 <label for="subcategoria_id" class="control-label"> Sub categoria: </label>
-                <select class="btn btn-primary btn-sm form-control" name="subcategoria_id" id="subcategoria_id" onchange="pasarnombre(this)" required>
+                <select class="btn btn-primary btn-sm form-control" name="subcategoria_id" id="subcategoria_id" required>
                     <option value="0">TODOS</option>
-                    <?php foreach($all_subcategoria as $subcategoria){?>
-                    <option value="<?php echo $subcategoria['subcategoria_id']; ?>"><?php echo $subcategoria['subcategoria_nombre']; ?></option>
-                    <?php } ?>
                 </select>
             </div>
         </span>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         <div class="col-md-2 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
@@ -253,7 +255,7 @@
         <div class="col-md-2 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
-                <a onclick="generarexcel_reportegeneral()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
+                <a onclick="generarexcel_reportegrl()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
             </div>
         </div>
         <div id="tablas" style="visibility: block">  
@@ -278,24 +280,35 @@
     <div class="box-body table-responsive" >
         <table class="table table-striped table-condensed" id="mitabla" >
             <tr>
-                <tr>
-                <th>#</th>
-                <th>CLIENTE</th>
-                <th>VENTA (<?php echo $parametro[0]["moneda_descripcion"]; ?>)</th>
-                <th>VENTA (
-                    <?php 
-                    if($parametro[0]["moneda_id"] == 1){
-                        echo $lamoneda[1]['moneda_descripcion'];
-                    }else{
-                        echo $lamoneda[0]['moneda_descripcion'];
-                    } ?>)
+                <th>Nro.</th>
+                <th>PRODUCTO</th>
+                <th id="titulo_uno">FECHA<br>VENTA</th>
+                <th id="titulo_dos">NUM.<br>VENTA</th>
+                <th id="titulo_tres">NUM.<br>DOC.</th>
+                <th id="titulo_cuatro">TIPO<br>VENTA</th>
+                <th id="titulo_cinco">CUOTA<br>INIC.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>UNIDAD</th>
+                <th>CANT.</th>
+                <th>PRECIO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>DESC(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>PRECIO<br>TOTAL(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>PRECIO<br>TOTAL(<?php
+                                        if($parametro[0]["moneda_id"] == 1){
+                                            echo $lamoneda[1]['moneda_descripcion'];
+                                        }else{
+                                            echo $lamoneda[0]['moneda_descripcion'];
+                                        }
+                                    ?>)
                 </th>
                 <?php if($tipousuario_id == 1){ ?>
-                <th>COSTO (<?php echo $parametro[0]["moneda_descripcion"]; ?>)</th>
-                <th>UTILIDAD (<?php echo $parametro[0]["moneda_descripcion"]; ?>)</th>
+                <th>COSTO<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>UTILID.<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                 <?php } ?>
+                <th id="titulo_seis">CLIENTE</th>
+                <th id="titulo_siete">CAJERO</th>
+                <th class="no-print"></th>
             </tr>
-            <tbody class="buscar" id="resultado_ventas"></tbody>
+            <tbody class="buscar" id="resultado_reporte"></tbody>
         </table>
     </div>
 </div>

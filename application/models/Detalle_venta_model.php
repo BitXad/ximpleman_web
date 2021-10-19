@@ -584,4 +584,17 @@ function ventas_dia($estado)
         ")->result_array();
         return $reporte;
     }
+    /* obtiene los detalles de una producción */
+    function get_detalle_produccion($produccion_id)
+    {
+        $sql = "select d.*,  r.producto_nombre as preferencia_descripcion, r.producto_foto as preferencia_foto, 
+                clasificador_codigo, clasificador_nombre, p.*
+                from detalle_venta d
+                left join producto p on p.producto_id = d.producto_id
+                left join producto r on r.producto_id = d.preferencia_id
+                left join clasificador c on c.clasificador_id = d.clasificador_id
+                where d.producto_id = p.producto_id and produccion_id = ".$produccion_id;
+        $detalle_venta = $this->db->query($sql)->result_array();        
+        return $detalle_venta;
+    }
 }
