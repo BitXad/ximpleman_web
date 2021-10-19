@@ -496,7 +496,6 @@ function buscarporcodigo()
 //esta funcion elimina un item de la tabla detalle de venta
 
 function quitarproducto(producto_id)
-
 {
 
     //alert(producto_id);
@@ -1012,3 +1011,25 @@ function buscar_porcliente(e)
 }
 
 
+function pasar_a_ventas(){
+
+    var base_url = document.getElementById('base_url').value;
+    var cotizacion_id = document.getElementById('cotizacion_id').value;
+    var controlador = base_url+"cotizacion/pasar_a_ventas/"+cotizacion_id;
+    var url = base_url+"venta/ventas";
+
+
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{cotizacion_id: cotizacion_id},
+            success:function(respuesta){
+
+                alert("Proceso realizado con exito");
+                 window.open(url, '_blank');
+            }
+
+        
+
+    });
+
+}

@@ -53,7 +53,7 @@ function mostrar_historial(producto_id){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"compra/historial_compras";
     
-    html = "";
+    var html = "";
     
     //alert(producto_id);
     
@@ -64,7 +64,7 @@ function mostrar_historial(producto_id){
                
                var reg = JSON.parse(resultado);
                var tam = reg.length;
-               
+
                //alert(reg.length);
                 html = "";               
                 html += "<table class='table' id='mitabla'>";
@@ -77,22 +77,28 @@ function mostrar_historial(producto_id){
                 
                 //alert(tam)
                if (tam>0){
-                   for(i=0;i<tam;i++){
-                     
-                    html += "<tr>";
-                     html += "<td>"+(i+1)+"</td>";
-                     html += "<td>"+reg[i].proveedor_nombre+"</td>";
-                     html += "<td><b>"+Number(reg[i].detallecomp_costo).toFixed(2)+"</b></td>";
-                     html += "<td>"+formato_fecha(reg[i].compra_fecha)+"</td>";
-                    html += "</tr>";
+                    
+                   for(var i=0; i<tam;i++){
+                        html += "<tr>";
+                         html += "<td>"+(i+1)+"</td>";
+                         html += "<td>"+reg[i].proveedor_nombre+"</td>";
+                         html += "<td><b>"+Number(reg[i].detallecomp_costo).toFixed(2)+"</b></td>";
+                         html += "<td>"+formato_fecha(reg[i].compra_fecha)+"</td>";
+                        html += "</tr>";
                        
                    }
+                       
                }
+               
                 html += "</table>";
                 $("#tabla_historial").html(html);
                 $("#boton_compras").click();
                
-           },
+           },error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tablaresultados").html(html);
+        },
     });
     
 }
@@ -146,6 +152,7 @@ function tablaresultadosproducto(limite)
                                      
                 $("#encontrados").val("- 0 -");
                var registros =  JSON.parse(respuesta);
+               var color =  "";
                 
                if (registros != null){
                    var formaimagen = document.getElementById('formaimagen').value;
@@ -153,124 +160,30 @@ function tablaresultadosproducto(limite)
                     $("#encontrados").val("- "+n+" -");
                     html = "";
                     for (var i = 0; i < n ; i++){
-                        html += "<tr>";
                         
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td>";
+                                             
+                        if (Number(registros[i]['existencia'])>0){
+                            color = "";                            
+                        }else{                            
+                            color = "style='background-color: #ff81ff; '";
+                        }
+
+                        
+                        html += "<tr "+color+">";
+                        
+                        html += "<td style='padding:0;'>"+(i+1)+"</td>";
+                        html += "<td style='padding:0;'>";
                         html += registros[i]['producto_nombre'];
                         
-//                        html += "<div id='horizontal'>";
-//                        html += "<div id='contieneimg'>";
-//                        var mimagen = "";
-//                        if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
-//                            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
-//                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-"+formaimagen+"' width='50' height='50' />";
-//                            mimagen += "</a>";
-//                        }else{
-//                            mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-"+formaimagen+"' width='50' height='50' />";
-//                        }
-//                        html += mimagen;
-//                        html += "</div>";
-//                        html += "<div style='padding-left: 4px'>";
-//                        html += "<b id='masgrande'>"+registros[i]["producto_nombre"]+"</b><br>";
-//                        html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
-//                        if(registros[i]["destino_id"] > 0){
-//                            html +="<br>Destino: "+registros[i]['destino_nombre'];
-//                        }
-//                        html += "</div>";
-//                        html += "</div>";
-
                         html += "</td>";
                         
-                        html += "<td>"+registros[i]['producto_codigo']+"</td>";
+                        html += "<td style='padding:0;'>"+registros[i]['producto_codigo']+"</td>";
                         html += "<td style='text-align: center;'><font size='2'><b>"+Number(registros[i]['existencia']).toFixed(2)+"</b></font></td>";
-                        html += "<td>"+Number(registros[i]['producto_ultimocosto']).toFixed(2)+"</td>";
-                        html += "<td>"+registros[i]['moneda_descripcion']+"</td>";
-                        html += "<td class='no-print'><button class='btn btn-info btn-xs' onclick='mostrar_historial("+registros[i]['producto_id']+")'><fa class='fa fa-users'></fa> proveedores</button> </td>";
+                        html += "<td style='padding:0;'>"+Number(registros[i]['producto_ultimocosto']).toFixed(2)+"</td>";
+                        html += "<td style='padding:0;'>"+registros[i]['moneda_descripcion']+"</td>";
+                        html += "<td style='padding:0;'>"+registros[i]['categoria_nombre']+"</td>";
+                        html += "<td style='padding:0;' class='no-print'><button class='btn btn-info btn-xs' onclick='mostrar_historial("+registros[i]['producto_id']+")'><fa class='fa fa-users'></fa> proveedores</button> </td>";
                         
-                        
-                        
-//                        var escategoria="";
-//                        if(registros[i]["categoria_id"] == null || registros[i]["categoria_id"] == 0 || registros[i]["categoria_id"] ==""){
-//                            escategoria = "No definido";
-//                        }else{
-//                            escategoria = registros[i]["categoria_nombre"];
-//                        }
-//                        var esmoneda="";
-//                        if(registros[i]["moneda_id"] == null || registros[i]["moneda_id"] == 0 || registros[i]["moneda_id"] == ""){ 
-//                            esmoneda = "No definido";
-//                        }else{
-//                            esmoneda = registros[i]["moneda_descripcion"];
-//                        }
-//                        html += "<td><b>Cat.: </b>"+escategoria+"<br><b>Pres.: </b>"+registros[i]["producto_unidad"]+"<br>";
-//                        html += "<b>Cant. Min.: </b>";
-//                        var cantmin= 0;
-//                        if(registros[i]["producto_cantidadminima"] != null || registros[i]["producto_cantidadminima"] ==""){
-//                            cantmin = registros[i]["producto_cantidadminima"];
-//                        }
-//                        html += "<span style='color: #ff0084; font-weight: bold'>"+cantmin+"</span> <b>Exist: </b>";
-//                        html += "<span style='color: #ff0084; font-weight: bold'>"+registros[i]["existencia"]+"</span></td>";
-//                        html += "<td>";
-//                        var caracteristica = "";
-//                        if(registros[i]["producto_caracteristicas"] != null){
-//                            caracteristica = "<div style='word-wrap: break-word;'>"+registros[i]["producto_caracteristicas"]+"</div>";
-//                        }
-//                        html+= caracteristica+"</td>";
-//                        html += "<td>";
-//                        var sinconenvase = "";
-//                        var nombreenvase = "";
-//                        var costoenvase  = "";
-//                        var precioenvase = "";
-//                        if(registros[i]["producto_envase"] == 1){
-//                            sinconenvase = "Con Envase Retornable"+"<br>";
-//                            if(registros[i]["producto_nombreenvase"] != "" || registros[i]["producto_nombreenvase"] != null){
-//                                nombreenvase = registros[i]["producto_nombreenvase"]+"<br>";
-//                                costoenvase  = "Costo:  "+Number(registros[i]["producto_costoenvase"]).toFixed(2)+"<br>";
-//                                precioenvase = "Precio: "+Number(registros[i]["producto_precioenvase"]).toFixed(2);
-//                            }
-//                        }else{
-//                            sinconenvase = "Sin Envase Retornable";
-//                        }
-//                        html += sinconenvase;
-//                        html += nombreenvase;
-//                        html += costoenvase;
-//                        html += precioenvase;
-//                        html += "</td>";
-//                        var codbarras = "";
-//                        if(!(registros[i]["producto_codigobarra"] == null)){
-//                            codbarras = registros[i]["producto_codigobarra"];
-//                        }
-//                        html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
-//                        html += "<td><b>Compra: </b>"+registros[i]["producto_costo"]+"<br>";
-//                            html += "<b>Venta: </b>"+registros[i]["producto_precio"]+"<br>";
-//                            html += "<b>Comisión: </b>"+registros[i]["producto_comision"];
-//                            html += "</td>";
-//                        html += "<td><b>Moneda: </b>"+esmoneda+"<br>";
-//                        html += "<b>T. Cambio: </b>";
-//                        var tipocambio= 0;
-//                        if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
-//                        html += tipocambio+"</td>";
-//                        html += "<td class='no-print' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
-//                        html += "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->";
-//                        html += "<div class='modal fade' id='mostrarimagen"+i+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+i+"'>";
-//                        html += "<div class='modal-dialog' role='document'>";
-//                        html += "<br><br>";
-//                        html += "<div class='modal-content'>";
-//                        html += "<div class='modal-header'>";
-//                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-//                        html += "<font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
-//                        html += "</div>";
-//                        html += "<div class='modal-body'>";
-//                        html += "<!------------------------------------------------------------------->";
-//                        html += "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' />";
-//                        html += "<!------------------------------------------------------------------->";
-//                        html += "</div>";
-//
-//                        html += "</div>";
-//                        html += "</div>";
-//                        html += "</div>";
-//                        html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
-//                        html += "</td>";
                         
                         html += "</tr>";
 
@@ -308,4 +221,28 @@ function formato_numerico(numero){
 	}
 	
 	return x1 + x2;
+}
+
+
+function actualizar_inventario()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario/actualizar_inventario/";
+    
+    document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){     
+            alert('El inventario se actualizo exitosamente...! ');
+            //redirect('inventario/index');
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            //tabla_inventario();
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+    });   
+      
 }

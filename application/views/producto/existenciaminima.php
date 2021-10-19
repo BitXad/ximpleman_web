@@ -14,7 +14,7 @@
         });
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
-<style type="text/css">
+<!--<style type="text/css">
     /*td img{
         width: 50px;
         height: 50px;
@@ -34,7 +34,7 @@
         font-family: Arial;
         font-size: 12px;
     }
-</style>
+</style>-->
 
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
@@ -43,24 +43,27 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
 
-<div class="row micontenedorep" style="display: none" id="cabeceraprint">
+<!--<div class="row micontenedorep" style="display: block" id="cabeceraprint">
+    
     <div id="cabizquierda">
         <?php
         echo $empresa[0]['empresa_nombre']."<br>";
         echo $empresa[0]['empresa_direccion']."<br>";
         echo $empresa[0]['empresa_telefono'];
         ?>
-        </div>
-        <div id="cabcentro">
+    </div>
+    
+    <div id="cabcentro">
             <div id="titulo">
                 <u>PRODUCTOS CON EXISTENCIA MINIMA</u><br><br>
-                <!--<span style="font-size: 9pt">INGRESOS DIARIOS</span><br>-->
+                <span style="font-size: 9pt">INGRESOS DIARIOS</span><br>
                 <span class="lahora" id="fhimpresion"></span><br>
                 <span style="font-size: 8pt;" id="busquedacategoria"></span>
-                <!--<span style="font-size: 8pt;">PRECIOS EXPRESADOS EN MONEDA BOLIVIANA (Bs.)</span>-->
+                <span style="font-size: 8pt;">PRECIOS EXPRESADOS EN MONEDA BOLIVIANA (Bs.)</span>
             </div>
-        </div>
-        <div id="cabderecha">
+    </div>
+    
+    <div id="cabderecha">
             <?php
 
             $mimagen = "thumb_".$empresa[0]['empresa_imagen'];
@@ -69,12 +72,39 @@
 
             ?>
 
-        </div>
+    </div>
         
+</div>-->
+
+
+<div class="row micontenedorep" style="display: block; margin-top: 0px; margin-bottom: 0px;" id="cabeceraprintx" >
+    <table class="table" style="width: 100%; padding: 0;" >
+        <tr>
+            <td style="width: 25%; padding: 0; line-height:10px; text-align: center" >
+                <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+            </td>
+            
+            <td style="width: 50%; padding: 0; line-height: 10px;" > 
+                <center>
+                    <br><br>
+                    <font size="3" face="arial" style="font-weight: bold"><span id="titcatalogox"></span>PRODUCTOS CON EXISTENCIA MINIMA</font> <br>
+                    <font size="1" face="arial"><?php echo date("d/m/Y H:i:s"); ?></font> <br>
+                </center>
+            </td>
+            
+            <td style="width: 25%; padding: 0" >
+                <center></center>
+            </td>
+        </tr>
+    </table>
 </div>
+
 <br>
 <div class="row no-print">
-        <div class="col-md-8">
+        <div class="col-md-12">
 
 
         <!--este es INICIO del BREADCRUMB buscador-->
@@ -90,17 +120,22 @@
  
         <!--este es INICIO de input buscador-->
         <div class="col-md-12">
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-addon"> Buscar </span>           
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." onkeypress="buscarproducto(event)" autocomplete="off">
                 </div>
             </div>
-            <div class="col-md-3">
+            
+            <div class="col-md-2">                
+                <button class="btn btn-success btn-xs form-control" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
+            </div>
+            
+            <div class="col-md-2">
                 
                 <div class="box-tools">
-                    <select name="categoria_id" class="btn-primary btn-sm" id="categoria_id" onchange="tablaresultadosproducto(2)">
-                        <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
+                    <select name="categoria_id" class="btn-primary btn-sm form-control" id="categoria_id" onchange="tablaresultadosproducto(2)">
+                        <option value="" disabled selected >AGRUPAR POR CATEGORIAS</option>
                         <option value="0"> Todas Las Categorias </option>
                         <?php 
                         foreach($all_categoria as $categoria)
@@ -111,10 +146,11 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-2">
+            
+<!--            <div class="col-md-2">
                 
                 <div class="box-tools">
-                    <select name="estado_id" class="btn-primary btn-sm" id="estado_id" onchange="tablaresultadosproducto(2)">
+                    <select name="estado_id" class="btn-primary btn-sm form-control" id="estado_id" onchange="tablaresultadosproducto(2)">
                         <option value="" disabled selected >-- BUSCAR POR ESTADOS --</option>
                         <option value="0">Todos Los Estados</option>
                         <?php 
@@ -125,7 +161,7 @@
                         ?>
                     </select>
                 </div>
-            </div>
+            </div>-->
         </div>
         <!--este es FIN de input buscador-->
 
@@ -153,31 +189,19 @@
         <div class="box">
                  
             <div class="box-body  table-responsive">
+                
                <table class="table table-condensed" id="mitabla" role="table">
-               <!--<table role="table">-->
-<!--                    <thead role="rowgroup">
-                        <tr role="row">
-                            <th  role="columnheader" >#</th>
-                            <th  role="columnheader" >producto</th>
-                            <th  role="columnheader" >Categoria|<br>Presentación</th>
-                            <th  role="columnheader" style="width: 20%;" >Caracteristicas</th>
-                            <th  role="columnheader" >Envase</th>
-                            <th  role="columnheader" >Código|<br>Cód. Barra</th>
-                            <th  role="columnheader" >Precio</th>
-                            <th  role="columnheader" >Moneda</th>
-                            <th  role="columnheader" class="no-print">Estado</th>
-                    
-                        </tr>
-                    </thead>-->
                     <thead role="rowgroup">
+
                         <tr role="row">
                             <th  role="columnheader" >#</th>
                             <th  role="columnheader" >PRODUCTO</th>
                             <th  role="columnheader" >CODIGO</th>
-                            <th  role="columnheader" style="width: 20%;" >SALDO</th>
+                            <th  role="columnheader" >SALDO</th>
                             <th  role="columnheader" >ULTIMO<br>COSTO</th>
-                            <th  role="columnheader" >MONEDA</th>
-                            <th  role="columnheader" >PROVEEDOR</th>
+                            <th  role="columnheader" >MND</th>
+                            <th  role="columnheader" >CATEGORIA</th>
+                            <th  role="columnheader" class="no-print" >PROVEEDOR</th>
                             <!--<th  role="columnheader" class="no-print">ESTADO</th>-->
                     
                         </tr>
@@ -186,9 +210,11 @@
                                            
                     </tbody>
                 </table>
+                
             </div>
             <!-- pagination all... -->
         </div>
+        
     </div>
 </div>
 
