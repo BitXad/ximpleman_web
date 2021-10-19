@@ -119,6 +119,8 @@ class Cotizacion_model extends CI_Model
     function ejecutar($sql)
     {
         $cotizacion = $this->db->query($sql);
+        
+        //echo $sql;
         return $cotizacion;
         
     }

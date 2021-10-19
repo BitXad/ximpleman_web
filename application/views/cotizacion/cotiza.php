@@ -245,7 +245,9 @@
 
         </div>
 
-          
+
+<button class="btn btn-warning btn-xs no-print" onclick="pasar_a_ventas()"><fa class="fa fa-cart-plus"></fa> Pasar a ventas</button>
+                  
 
 <!--</div>-->
 

@@ -402,4 +402,108 @@ class Cotizacion extends CI_Controller{
         }
     }
     
+    function pasar_a_ventas($cotizacion_id){
+        
+        $usuario_id = $this->session_data['usuario_id'];   
+        
+        $sql = "insert into detalle_venta_aux(
+                producto_id 
+                ,venta_id 
+                ,moneda_id 
+                ,detalleven_id 
+                ,detalleven_codigo 
+                ,detalleven_cantidad 
+                ,detalleven_unidad 
+                ,detalleven_costo 
+                ,detalleven_precio 
+                ,detalleven_subtotal 
+                ,detalleven_descuento 
+                ,detalleven_total 
+                ,detalleven_caracteristicas 
+                ,detalleven_preferencia 
+                ,detalleven_comision 
+                ,detalleven_tipocambio 
+                ,usuario_id 
+                ,existencia 
+                ,producto_nombre 
+                ,producto_unidad 
+                ,producto_marca 
+                ,categoria_id 
+                ,producto_codigobarra 
+                ,detalleven_envase 
+                ,detalleven_nombreenvase 
+                ,detalleven_costoenvase 
+                ,detalleven_precioenvase 
+                ,detalleven_cantidadenvase 
+                ,detalleven_garantiaenvase 
+                ,detalleven_devueltoenvase  
+                ,detalleven_montodevolucion 
+                ,detalleven_prestamoenvase 
+                ,promocion_id 
+                ,clasificador_id 
+                ,detalleven_unidadfactor 
+                ,preferencia_id 
+                ,detalleven_tc  
+                )
+
+                (
+
+                select 
+                d.producto_id 
+                ,0
+                ,1
+                ,0	
+                ,p.producto_codigo
+                ,d.detallecot_cantidad 
+                ,p.producto_unidad
+                ,p.producto_costo
+                ,d.detallecot_precio 
+                ,d.detallecot_subtotal
+                ,d.detallecot_descuento 
+                ,d.detallecot_total 
+                ,d.detallecot_caracteristica 
+                ,d.detallecot_descripcion 
+                ,0
+                ,1
+                ,".$usuario_id."
+                ,p.existencia
+                ,p.producto_nombre
+                ,p.producto_unidad
+                ,p.producto_marca
+                ,p.categoria_id
+                ,p.producto_codigobarra
+                ,p.producto_envase
+                ,p.producto_nombreenvase
+                ,p.producto_costoenvase
+                ,p.producto_precioenvase
+                ,p.producto_cantidadenvase
+                ,0
+                ,0
+                ,0
+                ,0
+                ,0
+                ,0
+                ,''
+                ,0
+                ,p.moneda_tc
+
+                from
+                cotizacion t, detalle_cotizacion d, inventario p
+                where 
+                t.cotizacion_id = ".$cotizacion_id." and
+                t.cotizacion_id = d.cotizacion_id and
+                d.producto_id = p.producto_id 
+
+                )";
+        
+           
+        $this->Cotizacion_model->ejecutar("delete from detalle_venta_aux where usuario_id = ".$usuario_id);
+        $this->Cotizacion_model->ejecutar($sql);
+        
+        //echo $sql;
+        $resultado = 0;
+        echo json_encode($sql);
+        
+    }
+    
 }
