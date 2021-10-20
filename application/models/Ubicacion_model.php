@@ -30,8 +30,7 @@ class Ubicacion_model extends CI_Model
                 ubicacion as u,
                 estado as e
             WHERE
-                1 = 1
-            AND u.estado_id = e.estado_id
+                u.estado_id = e.estado_id
                 ORDER BY ubicacion_id ASC
         ")->result_array();
 
@@ -55,5 +54,17 @@ class Ubicacion_model extends CI_Model
         $this->db->where('ubicacion_id',$ubicacion_id);
         return $this->db->update('ubicacion',$params);
     }
-
+    /**
+     * get ubicaiones disponibles
+     */
+    function get_disponibles($controli_id){
+        return $this->db->query(
+            "SELECT u.*
+            from ubicacion u 
+            left join (select cu.*
+                        from control_ubicacion cu
+                        where cu.controli_id = $controli_id) as cu2 on u.ubicacion_id = cu2.ubicacion_id
+            where cu2.controlu_id is null"
+        )->result_array();
+    }
 }

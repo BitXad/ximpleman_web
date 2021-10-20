@@ -260,28 +260,29 @@ class Producto_model extends CI_Model
         $this->db->query($sql);
     }
 
-     function get_busqueda_producto_limite()
+     function get_busqueda_producto_limite($categoria = "", $estado="")
     {
         $sql = "select x.*, i.existencia
                 from
                     (SELECT
-                     p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion, m.moneda_tc,
-                     dp.destino_nombre, scp.subcategoria_nombre
-                      FROM
-                      producto p
-                      LEFT JOIN estado e on p.estado_id = e.estado_id
-                      LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
-                      LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
-                      LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
-                      LEFT JOIN moneda m on p.moneda_id = m.moneda_id
-                      LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
+                        p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
+                        cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion, m.moneda_tc,
+                        dp.destino_nombre, scp.subcategoria_nombre
+                    FROM
+                        producto p
+                    LEFT JOIN estado e on p.estado_id = e.estado_id
+                    LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+                    LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
+                    LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
+                    LEFT JOIN moneda m on p.moneda_id = m.moneda_id
+                    LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
+                    WHERE 
+                        p.estado_id = e.estado_id
+                        $categoria 
+                        $estado
 
-                      WHERE 
-                           p.estado_id = e.estado_id
-
-                      ORDER By p.producto_nombre LIMIT 50
-                      ) as x, consinventario i
+                    ORDER By p.producto_nombre LIMIT 50
+                    ) as x, consinventario i
                 where x.producto_id = i.producto_id
                 order by x.producto_nombre";
 

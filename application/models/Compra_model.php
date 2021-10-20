@@ -485,6 +485,14 @@ class Compra_model extends CI_Model
         ",array($compra_id))->row_array();
         return $compra;
     }
+
+    /**
+     * Add detalle compra aux
+     */
+    function add_detalle_compra_aux($params){
+        $this->db->insert('detalle_compra_aux',$params);
+        return $this->db->insert_id();
+    }
     
 }
 

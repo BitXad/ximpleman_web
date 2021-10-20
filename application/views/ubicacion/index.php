@@ -1,4 +1,3 @@
-<script src="<?php echo base_url('resources/js/unidad.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!----------------------------- script buscador --------------------------------------->
 <script type="text/javascript">

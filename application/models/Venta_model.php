@@ -698,4 +698,11 @@ function get_busqueda($condicion)
             AND p.regusuario_id = ".$usuario_id."")->row_array();
         return $entrega_mes;
     }
+    /**
+     * Add detalle_venta_aux
+     */
+    function add_detalle_venta_aux($params){
+        $this->db->insert('detalle_venta_aux',$params);
+        return $this->db->insert_id();
+    }
 }
