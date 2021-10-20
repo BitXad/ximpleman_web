@@ -107,7 +107,7 @@ function ventacombi(filtro)
                var registros =  JSON.parse(resul);
            
                if (registros != null){
-                   
+                   var parametro_mostrarmoneda    = document.getElementById('parametro_mostrarmoneda').value;
                   //  alert(filtro);
                     var totalCan = 0;
                     var totalTo = 0;
@@ -142,6 +142,7 @@ function ventacombi(filtro)
                         html += "<td align='right' >"+Number(total/canti).toFixed(2)+"<br></td>";                                          
                         html += "<td align='right' >"+Number(registros[i]["cantidades"])+"<br></td>";
                         html += "<td align='right'><b>"+Number(registros[i]["totales"]).toFixed(2)+"</b></td>";
+                        if(parametro_mostrarmoneda == 1){
                         html += "<td class='text-right'> ";
                         if(lamoneda_id == 1){
                             total_otram = Number(registros[i]["totales"])/Number(registros[i]["tipo_cambio"]);
@@ -152,6 +153,7 @@ function ventacombi(filtro)
                         }
                         html += numberFormat(Number(total_otram).toFixed(2));
                         html += "</td>";
+                        }
                      // html += "<td>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         //usuarios += "<b>"+registros[i]["usuario_id"]+"</b>";                       
             
@@ -179,8 +181,9 @@ function ventacombi(filtro)
                        
                         html += "<td style= 'font-size:13px;' align='right'><b> "+Number(totalCan)+"</td>";
                         html += "<td style= 'font-size:13px;' align='right'><b> "+Number(totalTo).toFixed(2)+"</td>";
-                        html += "<td style= 'font-size:13px;' align='right'><b> "+Number(total_otramoneda).toFixed(2)+"</td>";
-                       
+                        if(parametro_mostrarmoneda == 1){
+                            html += "<td style= 'font-size:13px;' align='right'><b> "+Number(total_otramoneda).toFixed(2)+"</td>";
+                        }
                         html += "</tr>";
 
                    $("#usus").html(usuarios);
