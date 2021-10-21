@@ -1534,17 +1534,17 @@ function torta3($anio,$mes)
                 if($usuario_id >0){
                     $elfiltro .= " and ci.usuariopsaldo_id = $usuario_id";
                 }
-                /*if($tipotrans_id >0){
+                if($tipotrans_id >0){
                     $elfiltro .= " and ci.tipotrans_id = $tipotrans_id";
                 }
                 if($forma_id >0){
                     $elfiltro .= " and ci.forma_id = $forma_id";
-                }*/
-                /*if($comprobante ==1){
-                    $elfiltro .= " and ci.venta_tipodoc = $comprobante";
+                }
+                if($comprobante ==1){
+                    $elfiltro .= " and ci.servicio_id = f.servicio_id";
                 }elseif($comprobante == 2){
-                    $elfiltro .= " and ci.venta_tipodoc = $comprobante";
-                }*/                
+                    $elfiltro .= " and (f.servicio_id is null or f.`servicio_id` = '' or f.`servicio_id` < 0)";
+                }
                 if($cliente_id >0){
                     $elfiltro .= " and ci.cliente_id = $cliente_id";
                 }

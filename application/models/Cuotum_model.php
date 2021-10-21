@@ -180,7 +180,7 @@ class Cuotum_model extends CI_Model
     {
         $credito = $this->db->query("
             SELECT
-                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id
+                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id, fp.forma_nombre
 
             FROM
                cuota k
@@ -190,6 +190,7 @@ class Cuotum_model extends CI_Model
             LEFT JOIN estado e on k.estado_id = e.estado_id
             LEFT JOIN usuario u on k.usuario_id = u.usuario_id
             LEFT JOIN factura f on k.cuota_id=f.cuota_id
+            LEFT JOIN forma_pago fp on k.`forma_id` = fp.forma_id
             WHERE
              
                  ".$credito_id." = k.credito_id
