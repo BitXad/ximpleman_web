@@ -580,44 +580,47 @@
                         </li> 
                         <?php
                         }  ?>
-                        
-                        
-                        
                         <?php
                         if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li><a href="#"><i class="fa fa-clipboard"></i> <span>Ventas</span></a>
                         <ul class="treeview-menu">
                             <li>
-                                <a href="<?php echo site_url('reportes/reporte_generalventa');?>"><i class="fa fa-id-card-o"></i>Ventas Agrupadas</a>
+                                <a href="<?php echo site_url('reportes/reporte_general');?>"><i class="fa fa-th-list"></i>Reporte General</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo site_url('reportes/reporte_generalventa');?>"><i class="fa fa-id-card-o"></i>Agrupadas por Clientes</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-arrow-down"></i>Simple Venta</a>
                             </li>
                         <li>
                             <a href="<?php echo site_url('venta');?>"><i class="fa fa-clock-o"></i>Ventas del dia</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('reportes/ventacategoria');?>"><i class="fa fa-th-list"></i>Ventas por Categoria</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('reportes/ventacliente');?>"><i class="fa fa-user-circle"></i>Ventas por Cliente</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('reportes/ventaproducto');?>"><i class="fa fa-product-hunt"></i>Ventas por Producto</a>
-                        </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('reportes/ventacategoria');?>"><i class="fa fa-th-list"></i>Ventas por Categoria</a>
+                        </li>-->
+                        <!--<li>
+                            <a href="<?php //echo site_url('reportes/ventacliente');?>"><i class="fa fa-user-circle"></i>Ventas por Cliente</a>
+                        </li>-->
+                        <!--<li>
+                            <a href="<?php //echo site_url('reportes/ventaproducto');?>"><i class="fa fa-product-hunt"></i>Ventas por Producto</a>
+                        </li>-->
                         <li>
                             <a href="<?php echo site_url('reportes/ventacategoria_pagrupado');?>"><i class="fa fa-certificate"></i>P. Agrupado/Categoria</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('reportes/ventapagrupado');?>"><i class="fa fa-certificate"></i>Producto Agrupado</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('reportes/ventaruta');?>"><i class="fa fa-truck"></i>Venta por Ruta</a>
-                        </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('reportes/ventaruta');?>"><i class="fa fa-truck"></i>Venta por Ruta</a>
+                        </li>-->
                         <li>
                             <a href="<?php echo site_url('reportes/ventausuario');?>"><i class="fa fa-user"></i>Venta por Usuario</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple Ventas</a>
-                        </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple Ventas</a>
+                        </li>-->
                         </ul>
                         </li>
                         <?php

@@ -71,15 +71,23 @@
 </div>
 <div class="row">
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
-        <!--<div class="col-md-4 no-print" >                     
-            Cliente:
+        <div class="col-md-4" style="padding-left: 0px">
+            <label for="expotar" class="control-label"> Cliente: </label>
+            <div class="input-group">
+                <span class="input-group-addon"> Buscar </span>
+                <input id="cliente_id" type="text" class="form-control" placeholder="Nombre del cliente, nit o razon social"  onkeypress="ventacliente(event)" autofocus>
+                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="reporte1()"><span class="fa fa-search"></span></div>
+            </div>
+        </div>
+        <div class="col-md-4 no-print" hidden >                     
+            <label for="expotar" class="control-label"> Cliente: </label>
             <input id="cliente_id" type="text" class="form-control" placeholder="Ingresa el nombre del cliente, nit o razon social"  onkeypress="ventacliente(event)">
-        </div>-->
-        <div class="col-md-3">
+        </div>
+        <div class="col-md-2">
             <label for="expotar" class="control-label"> Desde: </label>
             <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
         </div> 
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="expotar" class="control-label"> Hasta: </label>
             <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
         </div>
@@ -89,13 +97,14 @@
                 <option value="0">-TODOS-</option>
             </select>
         </div>
-        <div class="col-md-2 no-print">
+        <div class="col-md-1 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
             <div class="form-group">
-                <a data-toggle="modal" data-target="#modalbuscarcliente" class="btn btn-facebook btn-sm form-control" title="Buscar cliente"><i class="fa fa-search"> Buscar</i></a>
+                <a onclick="reporte1()" class="btn btn-facebook btn-sm form-control" title="Buscar clientes"><i class="fa fa-search"> Buscar</i></a>
+                <!--<a data-toggle="modal" data-target="#modalbuscarcliente" class="btn btn-facebook btn-sm form-control" title="Buscar cliente"><i class="fa fa-search"> Buscar</i></a>-->
             </div>
         </div>
-        <div class="col-md-2 no-print">
+        <div class="col-md-1 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
                 <a onclick="imprimir()" class="btn btn-success btn-sm form-control"><i class="fa fa-print"> Imprimir</i></a>
@@ -160,7 +169,7 @@
 </center>
 
 <!------------------------ INICIO modal para Seleccionar a un cliente ------------------->
-<div class="modal fade" id="modalbuscarcliente" tabindex="-1" role="dialog" aria-labelledby="modalbuscarclientelabel">
+<!--<div class="modal fade" id="modalbuscarcliente" tabindex="-1" role="dialog" aria-labelledby="modalbuscarclientelabel">
     <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
@@ -177,13 +186,13 @@
             </div>
             <div class="modal-body" style="padding-bottom: 0px !important">
                 <!------------------------------------------------------------------->
-                <div class="col-md-12 no-print" id="tablarecliente"></div>
+        <!--        <div class="col-md-12 no-print" id="tablarecliente"></div>
                 <!------------------------------------------------------------------->
-            </div>
+        <!--    </div>
             <div class="modal-footer aligncenter">
                 <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <!------------------------ FIN modal para Seleccionar a un cliente ------------------->
