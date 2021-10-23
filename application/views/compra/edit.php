@@ -1,5 +1,5 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/compra.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones_producto_newunidad.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
@@ -32,6 +32,7 @@
                 $('#comprar').keyup(function () {
                     var rex = new RegExp($(this).val(), 'i');
                     $('.buscar3 tr').hide();
+                    $('.buscar33 tr').show();
                     $('.buscar3 tr').filter(function () {
                         return rex.test($(this).text());
                     }).show();

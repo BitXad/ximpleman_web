@@ -1561,7 +1561,8 @@ function tablaresultados(opcion)
 //                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
 //                            html += "<label  class='control-label' style='margin-bottom :0px'>FEC.VENC. </label><input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'  class='form-control' ></div></td>";
 //                       
-                              html += "<table style='font-size: 10pt' id='tablares'>";
+                              html += "<table style='font-size: 10pt;' id='tablares' name='tablares'>";
+                              html += "<tbody class='buscar33'>"
                                 html += "<tr style='font-size: 10px;'>";
                                   html += "<td style='text-align: center;'><b>PRECIO</b></td>";
                                   html += "<td style='text-align: center;'><b>COSTO</b></td>";
@@ -1593,6 +1594,7 @@ function tablaresultados(opcion)
                                 html += "</td>";
                                 
                               html += "</tr>";
+                              html += "</tbody>";
                               
                             html += "</table>";
                             html += "<br>";
@@ -1622,12 +1624,13 @@ function tablaresultados(opcion)
                        if (esMobil()){
                             html += "<div class='col-md-2' style='padding-right: 0px;' >";
                             html += "<button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success btn-block'><i class='fa fa-cart-arrow-down'></i> Añadir</button>";
-                      
+                            html += "</div>";
                             
                        }
                        else{
                             html += "<td style='padding :0px'><div>";                      
                             html += "<label  class='control-label' style='margin-bottom :0px'>AÑADIR</label><button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button></div>";
+                            html += "</td>";
                         }
                        //html += "<a href=''  onclick='submit()' class='btn btn-danger'><span class='fa fa-cart-arrow-down'></span></a>";
                         
