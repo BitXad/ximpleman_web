@@ -1,6 +1,6 @@
 $(document).on("ready",inicio);
 function inicio(){
-       buscarventasdist();
+   buscarventasdist();
 }
 
 function imprimir_reporte(){
@@ -127,7 +127,7 @@ function buscarventasdist(){
                         html += "<td>";
                         html += "<b>Telf.:</b> "+registros[i]["cliente_telefono"]+" - "+registros[i]["cliente_celular"]+"<b><br>Dir.:</b> "+registros[i]["cliente_direccion"];
                         html += "</td>";
-                        html += "<td>";
+                        html += "<td class='no-print'>";
                             if ((registros[i]["cliente_latitud"]==0 && registros[i]["cliente_longitud"]==0) || (registros[i]["cliente_latitud"]==null && registros[i]["cliente_longitud"]==null) || (registros[i]["cliente_latitud"]== "" && registros[i]["cliente_longitud"]=="")){ 
                                 imagen = "noubicacion.png";
                                 html += " <a href='#' title='CLIENTE SIN UBICACIÓN REGISTRADA'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
@@ -141,7 +141,7 @@ function buscarventasdist(){
                         html += "</td>";
                         
                         //html += "<td align='center'>"+registros[i]["venta_id"]+"</td>";
-                        html += "<td align='center'>";
+                        html += "<td class='no-print' align='center'>";
                         html += "<a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta' id='imprimir"+registros[i]['venta_id']+"'><span class='fa fa-print'></span></a> ";
                         //html += "<br>";
                         //html += registros[i]["venta_id"];
@@ -167,9 +167,9 @@ function buscarventasdist(){
                         }
                         html += "</td>"; 
                         if (registros[i]["entrega_id"]==null) {
-                        html += "<td align='center'></br>";
+                        html += "<td class='no-print' align='center'></br>";
                         }else{
-                        html += "<td align='center'>"+registros[i]["entrega_nombre"]+"</br>";
+                        html += "<td class='no-print' align='center'>"+registros[i]["entrega_nombre"]+"</br>";
                         }
                         
                         if (registros[i]["entrega_id"]==1) {
@@ -231,17 +231,21 @@ function buscarventasdist(){
                         html += "</tr>";
                     } 
                         html += "<tr>";
-                        html += "<td class='text-bold text-right' colspan='5'>TOTAL:";
+                        html += "<td class='text-bold text-right' colspan='2'>";
+                        html += "</td>";
+                        html += "<td class='text-bold text-right no-print' colspan='2'>";
+                        html += "</td>";
+                        html += "<td class='text-bold text-right'>TOTAL:";
                         html += "</td>";
                         html += "<td class='text-bold text-right'>"+Number(ventatotal).toFixed(2);
                         html += "</td>";
-                        html += "<td colspan='3'>";
+                        html += "<td class='no-print' colspan='3'>";
                         html += "</td>";
                         html += "</tr>";
                    
                    $("#tablaresultados").html(html);
                    if(tipousuario_id == 1){
-                       var nombre_usudist = $('#usuariodist_id option:selected').text();
+                        var nombre_usudist = $('#usuariodist_id option:selected').text();
                        $("#usuru").html(" "+nombre_usudist);
                    }
                    document.getElementById('loader').style.display = 'none';

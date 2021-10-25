@@ -196,12 +196,12 @@ Distribuidor:<span id="usuru"><font size="1" face="Arial"></font> <?php echo $us
                         <th>#</th>
                         <th>Cliente</th>
                         <th>Dirección</th>
-                        <th> </th>
-                        <th>Venta</th>
+                        <th class="no-print">   </th>
+                        <th class="no-print">Venta</th>
                         <th>Total</th>
                         <th>Fecha</th>
                         <th>Usuario</th>
-                        <th>Estado</th>
+                        <th class="no-print">Estado</th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
                     </tbody>
