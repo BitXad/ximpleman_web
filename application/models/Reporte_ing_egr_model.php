@@ -912,6 +912,46 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
         ")->result_array();
         return $reporte;
     }
+    function reporte_generalmes($fecha_inicial, $fecha_final, $filtro)
+    {
+        $reporte = $this->db->query(
+        "SELECT
+                v.venta_fecha,
+                sum(d.detalleven_total) AS total, avg(d.detalleven_tc) as tipo_cambio
+            FROM
+                venta v
+            left join detalle_venta d on v.venta_id = d.venta_id
+            left join cliente c on v.cliente_id = c.cliente_id
+            left join zona z on c.zona_id = z.zona_id
+              WHERE
+                v.venta_fecha >= '".$fecha_inicial."' AND 
+                v.venta_fecha <= '".$fecha_final."'
+                ".$filtro."
+              GROUP BY
+                v.venta_fecha
+        ")->result_array();
+        return $reporte;
+    }
+    function reporte_generalutilidadmes($fecha_inicial, $fecha_final, $filtro)
+    {
+        $reporte = $this->db->query(
+        "SELECT 
+                v.venta_fecha,
+                sum((d.detalleven_total - d.detalleven_costo*d.detalleven_cantidad)) AS utilidad
+              FROM
+                venta v
+            left join detalle_venta d on v.venta_id = d.venta_id
+            left join cliente c on v.cliente_id = c.cliente_id
+            left join zona z on c.zona_id = z.zona_id
+              WHERE
+                v.venta_fecha >= '".$fecha_inicial."' AND 
+                v.venta_fecha <= '".$fecha_final."'
+                ".$filtro."
+              GROUP BY
+                v.venta_fecha
+        ")->result_array();
+        return $reporte;
+    }
 }
 
 ?>
