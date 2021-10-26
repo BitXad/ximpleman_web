@@ -35,6 +35,7 @@
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
+<input type="hidden" name="mostrarmoneda" id="mostrarmoneda" value="<?php echo $parametro[0]['parametro_mostrarmoneda']; ?>" />
 <input type="hidden" name="select_tipo" id="select_tipo" value='line' />
 
 <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='display:block;'>
@@ -90,15 +91,13 @@
             ?>
         </select>
     </div>
-    <!--<div class="col-md-2">
-        Tipo Gráfico: 
-        <select  class="btn btn-warning btn-sm form-control" id="select_tipo">
-            <option value="bar" selected> BARRAS</option>
-            <option value="column" selected> COLUMNAS</option>
-            <option value="area" selected> AREAS</option>
-            <option value="line" selected> LINEAS</option>
+    <div class="col-md-2">
+        Reporte:
+        <select class="btn btn-warning btn-sm form-control" id="lautilidad" name="lautilidad">
+            <option value="1">CON UTILIDAD</option>
+            <option value="2" selected>SIN UTILIDAD</option>
         </select>
-    </div>-->
+    </div>
     <div class="col-md-2">
         Buscar: 
         <button class="btn btn-success  form-control" onclick="grafico_ventas()"><fa class="fa fa-binoculars"></fa> Buscar</button>
@@ -130,7 +129,7 @@
                     <tr>
                         <th style="padding:0;">Fecha</th>
                         <th style="padding:0;">Ventas (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                        <th style="padding:0;">Ventas (<?php
+                        <th style="padding:0; display: none" id="mostrar_columna1">Ventas (<?php
                             if($parametro[0]["moneda_id"] == 1){
                                 echo $lamoneda[1]['moneda_descripcion'];
                             }else{
@@ -138,7 +137,7 @@
                             }
                         ?>)
                         </th>
-                        <th style="padding:0;">Utilidades (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>						
+                        <th style="padding:0; display: none" id="mostrar_columna">Utilidades (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>						
                     </tr>
                     <tbody class="buscar" id="tabla_ventas"></tbody>
                 </table>

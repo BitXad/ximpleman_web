@@ -618,6 +618,9 @@
                         <li>
                             <a href="<?php echo site_url('reportes/ventausuario');?>"><i class="fa fa-user"></i>Venta por Usuario</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes/reporte_usuariodia');?>"><i class="fa fa-file-text-o"></i>Venta Usuario/Mes</a>
+                        </li>
                         <!--<li>
                             <a href="<?php //echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple Ventas</a>
                         </li>-->

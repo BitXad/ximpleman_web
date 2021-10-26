@@ -10,13 +10,14 @@ function grafico_ventas(){
     var controlador = base_url+"reportes/ventas_mes";
     var mes = document.getElementById("select_mes").value;
     var anio = document.getElementById("select_anio").value;    
-    //var empresa =  document.getElementById('empresa_nombre').value;
+    var empresa =  document.getElementById('empresa_nombre').value;
     var tipo_grafico =  document.getElementById("select_tipo").value;
     var nombre_moneda = document.getElementById('nombre_moneda').value;
     var lamoneda_id = document.getElementById('lamoneda_id').value;
     var usuario_id = document.getElementById('usuario_id').value;
     var zona_id    = document.getElementById('zona_id').value;
-    
+    var lautilidad    = document.getElementById('lautilidad').value;
+        var mostrarmoneda = document.getElementById('mostrarmoneda').value;
     var options={
 	 chart: {
             renderTo: 'div_grafica_barras',
@@ -27,7 +28,7 @@ function grafico_ventas(){
             text: 'Ventas mensuales ('+nombre_moneda+')'
         },
         subtitle: {
-            text: 'empresa'
+            text: empresa
         },
         xAxis: {
             categories: [],
@@ -96,27 +97,33 @@ function grafico_ventas(){
                                 //alert(Math.round(ventas[i]*100)/100);
                                 
                         options.series[0].data.push( Math.round(ventas[i]*100)/100 );
-                        options.series[1].data.push( Math.round(utilidades[i]*100)/100 );
+                        if(lautilidad == 1){
+                            options.series[1].data.push( Math.round(utilidades[i]*100)/100 );
+                        }
                         options.xAxis.categories.push(i);
                         
                         html += "<tr style='padding:0'>";
                         html += "<td style='padding:0'>"+i+"/"+mes+"/"+anio+"</td>";
                         html += "<td style='padding:0; text-align:right;'>"+numberFormat(Number(ventas[i]).toFixed(2))+"</td>";
-                        html += "<td style='padding:0' class='text-right'> ";
-                        if(lamoneda_id == 1){
-                            if(Number(ventas[i]) >0){
-                                total_otram = Number(ventas[i])/Number(ventastc[i]);
+                        if(mostrarmoneda == 1){
+                            html += "<td style='padding:0' class='text-right'> ";
+                            if(lamoneda_id == 1){
+                                if(Number(ventas[i]) >0){
+                                    total_otram = Number(ventas[i])/Number(ventastc[i]);
+                                }else{
+                                    total_otram = 0;
+                                }
+                                total_otramoneda += total_otram;
                             }else{
-                                total_otram = 0;
+                                total_otram = Number(ventas[i])*Number(ventastc[i]);
+                                total_otramoneda += total_otram;
                             }
-                            total_otramoneda += total_otram;
-                        }else{
-                            total_otram = Number(ventas[i])*Number(ventastc[i]);
-                            total_otramoneda += total_otram;
+                            html += numberFormat(Number(total_otram).toFixed(2));
+                            html += "</td>";
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
-                        html += "</td>";
-                        html += "<td style='padding:0; text-align:right;'>"+numberFormat(Number(utilidades[i]).toFixed(2))+"</td>";
+                        if(lautilidad == 1){
+                            html += "<td style='padding:0; text-align:right;'>"+numberFormat(Number(utilidades[i]).toFixed(2))+"</td>";
+                        }
                         html += "</tr>";
                         
                         total_ventas += Number(ventas[i]);
@@ -128,8 +135,12 @@ function grafico_ventas(){
                     html += "<tr style='padding:0'>";
                     html += "   <th style='padding:0'> </th>";
                     html += "   <th style='padding:0; text-align: right'>"+numberFormat(Number(total_ventas).toFixed(2))+"</th>";
-                    html += "   <th style='padding:0; text-align: right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
-                    html += "   <th style='padding:0; text-align: right'>"+numberFormat(Number(total_utilidades).toFixed(2))+"</th>";
+                    if(mostrarmoneda == 1){
+                        html += "   <th style='padding:0; text-align: right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
+                    }
+                    if(lautilidad == 1){
+                        html += "   <th style='padding:0; text-align: right'>"+numberFormat(Number(total_utilidades).toFixed(2))+"</th>";
+                    }
                     html += "</tr>";                 
                     
                     html2 +="<table id='mitabla'>";
@@ -145,30 +156,41 @@ function grafico_ventas(){
                     html2 +="   <td style='padding:0;text-align:right;'>"+numberFormat(total_ventas.toFixed(2))+"</td>";
                     html2 +="   <td style='padding:0;text-align:right;'>"+numberFormat(Number(total_ventas/totaldias).toFixed(2))+"</td>";
                     html2 +="</tr>";
-                    
-                    html2 +="<tr>";
-                    html2 +="   <td style='padding:0; text-align:right;'><b>VENTAS (";
-                    if(lamoneda_id == 1){
-                        html2 += lamoneda[1]['moneda_descripcion'];
-                    }else{
-                        html2 += lamoneda[0]['moneda_descripcion'];
+                    if(mostrarmoneda ==1){
+                        html2 +="<tr>";
+                        html2 +="   <td style='padding:0; text-align:right;'><b>VENTAS (";
+                        if(lamoneda_id == 1){
+                            html2 += lamoneda[1]['moneda_descripcion'];
+                        }else{
+                            html2 += lamoneda[0]['moneda_descripcion'];
+                        }
+                        html2 += ")</b></td>";
+                        html2 +="   <td style='padding:0;text-align:right;'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</td>";
+                        html2 +="   <td style='padding:0;text-align:right;'></td>";
+                        html2 +="</tr>";
                     }
-                    html2 += ")</b></td>";
-                    html2 +="   <td style='padding:0;text-align:right;'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</td>";
-                    html2 +="   <td style='padding:0;text-align:right;'></td>";
-                    html2 +="</tr>";
-                    
-                    html2 +="<tr>";
-                    html2 +="   <td style='padding:0; text-align:right;'><b>UTILIDADES ("+nombre_moneda+")</b></td>";
-                    html2 +="   <td style='padding:0; text-align:right;'>"+numberFormat(total_utilidades.toFixed(2))+"</td>";  
-                    html2 +="   <td style='padding:0; text-align:right;'>"+numberFormat(Number(total_utilidades/totaldias).toFixed(2))+"</td>";
-                    html2 +="</tr>";
+                    if(lautilidad == 1){
+                        html2 +="<tr>";
+                        html2 +="   <td style='padding:0; text-align:right;'><b>UTILIDADES ("+nombre_moneda+")</b></td>";
+                        html2 +="   <td style='padding:0; text-align:right;'>"+numberFormat(total_utilidades.toFixed(2))+"</td>";  
+                        html2 +="   <td style='padding:0; text-align:right;'>"+numberFormat(Number(total_utilidades/totaldias).toFixed(2))+"</td>";
+                        html2 +="</tr>";
+                    }
                     html2 +="</table>";
                     
                     
                     //options.title.text="aqui e podria cambiar el titulo dinamicamente";
                     chart = new Highcharts.Chart(options);
-                    
+                    if(mostrarmoneda == 1){
+                        $("#mostrar_columna1").css("display", "block");
+                    }else{
+                        $("#mostrar_columna1").css("display", "none");
+                    }
+                    if(lautilidad == 1){
+                        $("#mostrar_columna").css("display", "block");
+                    }else{
+                        $("#mostrar_columna").css("display", "none");
+                    }
                     $("#div_grafica_barras").html( $("#cargador_empresa").html() );
                     $("#tabla_ventas").html(html);
                     $("#tabla_estadistica").html(html2);
