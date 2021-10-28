@@ -50,9 +50,9 @@ border-collapse : collapse;
 font-family: Arial;
 font-size: 8pt;  
 
+}
 td {
 border:hidden;
-}
 }
 
 td#comentario {
