@@ -1449,7 +1449,7 @@ class Servicio extends CI_Controller{
                     foreach($res_ids as $ids)
                     {
                         if($ids['estado_id'] == $estado_id){
-                            $cont++;
+                            $cont++;    
                         }
                     }
                     if($cont == count($res_ids)){

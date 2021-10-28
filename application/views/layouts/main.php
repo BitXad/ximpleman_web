@@ -25,12 +25,13 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="<?php echo site_url('resources/css/_all-skins.min.css');?>">
 
-<script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script><script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
+    <script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
+    <script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script>
+    <script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
+    <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
+    <script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
     
     <!-- jQuery 2.2.3 -->
-    <script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
         <script type="text/javascript"> 
         function mueveReloj(){
             momentoActual = new Date();

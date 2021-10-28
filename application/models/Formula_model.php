@@ -82,8 +82,7 @@ class Formula_model extends CI_Model
     function get_detalle_formula($formula_id)
     {
         $sql = "select * from detalle_formula f
-                left join producto p on p.producto_id = f.producto_id 
-                left join moneda m on m.moneda_id = f.moneda_id 
+                left join producto p on p.producto_id = f.producto_id  
                 where f.formula_id = ".$formula_id;
         
         return $this->db->query($sql)->result_array();
