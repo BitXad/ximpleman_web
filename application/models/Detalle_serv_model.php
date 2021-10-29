@@ -18,11 +18,14 @@ class Detalle_serv_model extends CI_Model
     {
         $detalle_serv = $this->db->query("
             SELECT
-                ds.*, ss.subcatserv_descripcion
-
+                ds.*, ss.subcatserv_descripcion, fp.forma_nombre, tt.tipotrans_nombre,
+                c.credito_cuotainicial, c.credito_monto
             FROM
                 detalle_serv ds
             LEFT JOIN subcategoria_servicio ss on ds.subcatserv_id = ss.subcatserv_id
+            LEFT JOIN forma_pago fp on ds.forma_id = fp.forma_id
+            LEFT JOIN tipo_transaccion tt on ds.tipotrans_id = tt.tipotrans_id
+            LEFT JOIN credito c on ds.servicio_id = c.servicio_id
             WHERE
                 `detalleserv_id` = ?
         ",array($detalleserv_id))->row_array();
