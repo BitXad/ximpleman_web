@@ -25,12 +25,13 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="<?php echo site_url('resources/css/_all-skins.min.css');?>">
 
-<script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script><script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
+    <script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
+    <script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script>
+    <script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
+    <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
+    <script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
     
     <!-- jQuery 2.2.3 -->
-    <script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
         <script type="text/javascript"> 
         function mueveReloj(){
             momentoActual = new Date();
@@ -253,6 +254,14 @@
                         ?>
                         <li>
                             <a href="<?php echo site_url('pedido_diario/index');?>"><i class="fa fa-calendar"></i> Pedidos Diarios</a>
+                        </li>
+                        <?php
+                        } ?>
+                        <?php
+                        if($rolusuario[181-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('ubicacion/index');?>"><i class="fa fa-cubes" aria-hidden="true"></i> Ubicaciones</a>
                         </li>
                         <?php
                         } ?>

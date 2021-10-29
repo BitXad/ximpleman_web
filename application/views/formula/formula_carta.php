@@ -50,9 +50,9 @@ border-collapse : collapse;
 font-family: Arial;
 font-size: 8pt;  
 
+}
 td {
 border:hidden;
-}
 }
 
 td#comentario {
@@ -165,7 +165,7 @@ border-bottom : 1px solid #aaa;
                 <!--<td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>DESC.<br><?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>-->
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>TOTAL<br><?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>               
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;">
-                    <b>TOTAL<br>
+                    <!-- <b>TOTAL<br> -->
                     <?php
 //                        if ($parametro["moneda_id"]==1){
 //                            echo $moneda["moneda_descripcion"];
@@ -210,9 +210,9 @@ border-bottom : 1px solid #aaa;
                     </center>
                 </td>
                 
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleformula_cantidad'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleformula_costo'],2,'.',','); ?></td>
-                <!--<td align="right" style="padding: 0"><?php echo number_format($d['detalleformula_cantidad'] * $d['detalleformula_costo'],2,'.',','); ?></td>-->
+                <td align="center" style="padding: 0"><?php echo number_format($d['detalleformula_cantidad'],2,'.',','); ?></td>
+                <td align="center" style="padding: 0"><?php echo number_format($d['detalleformula_costo'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleformula_cantidad'] * $d['detalleformula_costo'],2,'.',','); ?></td>
                 <!--<td align="right" style="padding: 0"><?php echo number_format($d['detalleformula_descuento']*$d['detalleformula_cantidad'],2,'.',','); ?></td>-->
                 <!--<td align="right" style="padding: 0"><?php echo number_format($d['detalleformula_total'],2,'.',','); ?></td>-->
                 <td align="right" style="padding: 0">

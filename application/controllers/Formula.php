@@ -73,7 +73,7 @@ class Formula extends CI_Controller{
             //**************** inicio contenido ***************               
 
             $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
-            
+            $fecha = date('Y-m-d');
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
@@ -82,6 +82,7 @@ class Formula extends CI_Controller{
                                     'formula_cantidad' => $this->input->post('formula_cantidad'),
                                     'formula_costounidad' => $this->input->post('formula_costounidad'),
                                     'formular_preciounidad' => $this->input->post('formular_preciounidad'),
+                                    'formula_fechacreacion' => $fecha,
                 );
 
                 $formula_id = $this->Formula_model->add_formula($params);
