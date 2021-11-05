@@ -2276,5 +2276,87 @@ class Servicio extends CI_Controller{
         //**************** fin contenido ***************
         }
     }
-    
+    /*************** funcion para mostrar la vista de la nota de entrega de servicios ******************/
+    function imprimir_notaentregadetalle($detalleserv_id){
+        if($this->acceso(69)){
+        //**************** inicio contenido ***************
+            $this->load->model('Parametro_model');
+            $parametros = $this->Parametro_model->get_parametros();
+            if(sizeof($parametros)>0){
+                if($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                    $this->notaesi_boucherdet($detalleserv_id);
+                else
+                    $this->notaesi_cartadet($detalleserv_id);
+            }
+        //**************** fin contenido ***************
+        }
+    }
+    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño boucher sin IMAGEN********** */
+    function notaesi_boucherdet($detalleserv_id)
+    {
+        if($this->acceso(69)){
+            $data['page_title'] = "Comprobante de Servicio";
+            
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            
+            $data['servicio'] = $this->Servicio_model->get_servicio($data['detalle_serv']['servicio_id']);
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Categoria_clientezona_model');
+	    $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($data['cliente']['zona_id']);
+            
+            $this->load->model('Usuario_model');
+	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['entregausuario_id']);
+            
+            $this->load->model('Dosificacion_model');
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            $data['_view'] = 'servicio/notaesi_boucherdet';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta sin IMAGEN********** */
+    function notaesi_cartadet($detalleserv_id)
+    {
+        if($this->acceso(69)){
+            $data['page_title'] = "Comprobante de Servicio";
+            
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            
+            $data['servicio'] = $this->Servicio_model->get_servicio($data['detalle_serv']['servicio_id']);
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Categoria_clientezona_model');
+	    $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($data['cliente']['zona_id']);
+            
+            $this->load->model('Usuario_model');
+	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['entregausuario_id']);
+            
+            $this->load->model('Dosificacion_model');
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            $data['_view'] = 'servicio/notaesi_cartadet';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 }
