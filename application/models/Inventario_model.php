@@ -589,4 +589,15 @@ class Inventario_model extends CI_Model
         $this->db->query($sql);
         return true;
     }
+    /* obtiene productos con existencia mayores o menores a 0  */
+    function get_inventario_conexistencia()
+    {
+        $sql = "SELECT i.* FROM inventario i
+              WHERE
+                  i.existencia > 0 or
+                  i.existencia < 0
+              ORDER By i.producto_nombre asc";
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+    }
 }

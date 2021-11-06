@@ -1,5 +1,5 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/compra.js'); ?>" type="text/javascript"></script>
    
 
@@ -116,16 +116,16 @@
         
     <div class="box-tools">
         <center> <?php if (sizeof($comprasn)>0){ ?>
-            <a href="#" data-toggle="modal" data-target="#avisar" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Comprar</small></a>
+            <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="#" data-toggle="modal" data-target="#avisar" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Comprar</small></a>
             
         <?php }else{ ?>    
-            <a href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Comprar</small></a>
+            <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Comprar</small></a>
         <?php } ?>           
-            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
+            <button style="width: 75px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
             <?php if($rolusuario[10-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" onclick="imprimir_compra()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="#" onclick="imprimir_compra()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
             <?php } ?>
-            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
+            <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('compra/crearcompra_invcero'); ?>" class="btn btn-facebook btn-foursquarexs" title="Llevar inventario a 0"><font size="5"><span class="fa fa-dot-circle-o"></span></font><br><small>Inv. a cero</small></a>
         </center>            
     </div>
     </div>
@@ -433,7 +433,7 @@
 
             </div>
 <!--            <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
+                    <?php //echo $this->pagination->create_links(); ?>                    
                 </div>-->
             </div>
         </div>
