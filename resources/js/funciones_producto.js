@@ -327,7 +327,6 @@ function modalcatalogo() {
 }
 /* verifica si lo ingresado es un numero valido */
 function verificarnumero() {
-    1
     var num_imagenes = document.getElementById('num_imagenes').value;
     if (num_imagenes <= 0 || num_imagenes >20 || isNaN(num_imagenes)) {
         $("#mensaje_numimagen").html("<br>Por favor ingrese Números validos que esten entre 1 y 20");
