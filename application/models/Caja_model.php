@@ -37,7 +37,7 @@ class Caja_model extends CI_Model
     function get_caja_usuario($usuario_id)
     {
         $sql = "select * from caja where usuario_id = ".$usuario_id.
-                " and estado_id = 29  or estado_id = 30";
+                " and (estado_id = 29  or estado_id = 30)";
                      
         $caja = $this->db->query($sql)->result_array();
         return $caja;

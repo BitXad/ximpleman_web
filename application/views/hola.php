@@ -31,9 +31,9 @@
 <script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/caja.js'); ?>"></script>
-<!--<script src="<?php /*echo base_url('resources/js/highcharts.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/graficas.js');*/ ?>"></script>
--->
+<script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
+
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
 <input type="hidden" name="caja_id" id="caja_id" value="<?php echo $caja[0]['caja_id']; ?>" />
@@ -812,12 +812,39 @@
 </div>
 <!------------------------ FIN modal para Seleccionar nuevo asociado ------------------->
 
+<!-- --------------------- INICIO Modal mensaje caja ------------------- -->
+<div id="modal_mensajecaja" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="font-family: Arial">
 
-    
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="background: #CC660E">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title"><fa class="fa fa-frown-o"></fa><b> ADVERTENCIA</b></h2>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-8">
+            <label for="monto_caja" class="control-label">
+                <fa class="fa fa-money fa-2x"></fa>
+                Existe una caja iniciada/abierta
+            </label>
+        </div>  
+        <div class="col-md-4">
+            <!--<button class="btn btn-warning btn-block" onclick="abrir_caja()"><fa class="fa fa-money"></fa> Registrar</button>-->
+            <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+        </div>  
+      
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- --------------------- F I N Modal mensaje caja ------------------- -->
 
 <!--------------------- modal apertura de caja ---------------->
 
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modalmensaje">Open Modal</button>
+<!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modalmensaje">Open Modal</button>-->
 
 <!-- Modal -->
 <div id="modalmensaje" class="modal fade" role="dialog">
@@ -844,8 +871,8 @@
             <div class="form-group">
                 <input type="text" name="producto_marca" value="S/N" class="form-control" id="producto_marca" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
             </div>-->
-            <button class="btn btn-warning btn-block" onclick="abrir_caja()"><fa class="fa fa-money"></fa> Registrar</button>
-            <button class="btn btn-danger btn-block"><fa class="fa fa-times"></fa> Cerrar</button>
+            <button class="btn btn-warning btn-block" data-dismiss="modal" onclick="modal_cajaabierta()"><fa class="fa fa-money"></fa> Registrar</button>
+            <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
         </div>  
       
       </div>
@@ -863,7 +890,7 @@
 
 <!--------------------- modal apertura de caja ---------------->
 
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+<!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
@@ -876,8 +903,9 @@
         <h4 class="modal-title"><fa class="fa fa-money"></fa><b> APERTURA DE CAJA</b></h4>
       </div>
       <div class="modal-body">
-      
-        
+        <div class="col-md-12 text-bold">
+          <span class="text-danger" id="elmensaje"></span>
+        </div>
         <div class="col-md-6">
             <label for="monto_caja" class="control-label"><p>Monto Registrado en Caja Bs</p></label>
             <div class="form-group">
@@ -890,7 +918,7 @@
             <div class="form-group">
                 <input type="text" name="producto_marca" value="S/N" class="form-control" id="producto_marca" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
             </div>-->
-            <button class="btn btn-warning btn-block" onclick="abrir_caja()"><fa class="fa fa-money"></fa> Registrar</button>
+            <button class="btn btn-warning btn-block" onclick="abrir_lacaja()"><fa class="fa fa-money"></fa> Registrar</button>
             <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
         </div>  
       

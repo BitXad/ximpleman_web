@@ -51,17 +51,15 @@ class Dashb extends CI_Controller
                 $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera                
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
                 
-                
                 $usuario_id = $session_data['usuario_id'];
                 $data['usuario'] = $usuario_id;
                 
                 $caja = $this->Caja_model->get_caja_usuario($usuario_id);
-                
                 if (! sizeof($caja)>0){ // si la caja no esta iniciada
                     //iniciar caja y dejarla en pendiente
-                            $this->Caja_model->caja_pendiente($usuario_id);
-                    $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+                    $this->Caja_model->caja_pendiente($usuario_id);
                 }
+                $caja = $this->Caja_model->get_caja_usuario($usuario_id);
                 
                 $data['caja'] = $caja;
                 
@@ -113,6 +111,17 @@ class Dashb extends CI_Controller
                 //$this->load->model('Moneda_model');
                 //$data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
                 //$data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+                $usuario_id = $session_data['usuario_id'];
+                $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+                if (! sizeof($caja)>0){ // si la caja no esta iniciada
+                    //iniciar caja y dejarla en pendiente
+                    $this->Caja_model->caja_pendiente($usuario_id);
+                }
+                $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+                
+                $data['caja'] = $caja;
+                
+                
                 $data['tipousuario_id'] = $session_data['tipousuario_id'];
                 $data['_view'] = 'dashboard_noad';
                 $this->load->view('layouts/dashb_noad',$data);

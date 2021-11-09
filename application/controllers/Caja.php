@@ -212,4 +212,103 @@ class Caja extends CI_Controller{
         
     }
     
+    /*
+     * Aperturar Caja
+     */
+    function abrir_lacaja()
+    {
+        $caja_apertura = $this->input->post("monto_caja");
+        if(trim($caja_apertura) == ""){
+            echo json_encode("no");
+        }else{        
+            $caja_id = $this->input->post("caja_id");
+            $fecha_aper = date('Y-m-d');
+            $hora_aper  = date('H:i:s');
+            $params = array(
+                'estado_id' => 30,
+                'caja_apertura' => $this->input->post('monto_caja'),
+                'caja_fechaapertura' => $fecha_aper,
+                'caja_horaapertura' => $hora_aper,
+            );
+            $this->Caja_model->update_caja($caja_id,$params);
+            echo json_encode("ok");
+        }
+    }
+    /*
+     * Adding a new caja
+     */
+    function cierre_caja()
+    {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('caja_apertura','Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('caja_fechaapertura','Fecha Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('caja_horaapertura','Hora Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $usuario_id = $this->session_data['usuario_id'];
+        $this->load->model('Parametro_model');
+        $data['all_parametro'] = $this->Parametro_model->get_parametros();
+        
+        $data['caja'] = $this->Caja_model->get_caja_usuario($usuario_id);
+        if($this->form_validation->run())     
+        {
+            $estado = 30;
+            $params = array(
+                'estado_id' => $estado,
+                'moneda_id' => $data['all_parametro'][0]['moneda_id'],
+                'usuario_id' => $usuario_id,
+                'caja_apertura' => $this->input->post('caja_apertura'),
+                'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
+                'caja_horaapertura' => $this->input->post('caja_horaapertura'),
+                /*'caja_cierre' => $this->input->post('caja_cierre'),
+                'caja_horacierre' => $this->input->post('caja_horacierre'),
+                'caja_fechacierre' => $this->input->post('caja_fechacierre'),*/
+                'caja_diferencia' => $this->input->post('caja_diferencia'),
+                'caja_corte1000' => $this->input->post('caja_corte1000'),
+                'caja_corte500' => $this->input->post('caja_corte500'),
+                'caja_corte200' => $this->input->post('caja_corte200'),
+                'caja_corte100' => $this->input->post('caja_corte100'),
+                'caja_corte50' => $this->input->post('caja_corte50'),
+                'caja_corte20' => $this->input->post('caja_corte20'),
+                'caja_corte10' => $this->input->post('caja_corte10'),
+                'caja_corte5' => $this->input->post('caja_corte5'),
+                'caja_corte2' => $this->input->post('caja_corte2'),
+                'caja_corte1' => $this->input->post('caja_corte1'),
+                'caja_corte050' => $this->input->post('caja_corte050'),
+                'caja_corte020' => $this->input->post('caja_corte020'),
+                'caja_corte010' => $this->input->post('caja_corte010'),
+                'caja_corte005' => $this->input->post('caja_corte005'),
+                'caja_efectivo' => $this->input->post('caja_efectivo'),
+                'caja_credito' => $this->input->post('caja_credito'),
+                'caja_transacciones' => $this->input->post('caja_transacciones'),
+                /*'caja_imagen1000' => $this->input->post('caja_imagen1000'),
+                'caja_imagen500' => $this->input->post('caja_imagen500'),
+                'caja_imagen200' => $this->input->post('caja_imagen200'),
+                'caja_imagen100' => $this->input->post('caja_imagen100'),
+                'caja_imagen50' => $this->input->post('caja_imagen50'),
+                'caja_imagen20' => $this->input->post('caja_imagen20'),
+                'caja_imagen10' => $this->input->post('caja_imagen10'),
+                'caja_imagen5' => $this->input->post('caja_imagen5'),
+                'caja_imagen2' => $this->input->post('caja_imagen2'),
+                'caja_imagen1' => $this->input->post('caja_imagen1'),
+                'caja_imagen020' => $this->input->post('caja_imagen020'),
+                'caja_imagen050' => $this->input->post('caja_imagen050'),
+                'caja_imagen010' => $this->input->post('caja_imagen010'),
+                'caja_imagen005' => $this->input->post('caja_imagen005'),*/
+            );
+            
+            $caja_id = $this->Caja_model->add_caja($params);
+            redirect('caja');
+        }else{
+            /*$this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado();
+            
+            $this->load->model('Moneda_model');
+            $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+            
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            */
+            $data['_view'] = 'caja/cierre_caja';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 }
