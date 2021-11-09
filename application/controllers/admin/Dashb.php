@@ -22,6 +22,7 @@ class Dashb extends CI_Controller
         $this->load->model('Categoria_clientezona_model');
         $this->load->model('Objetivo_model');
         $this->load->model('Parametro_model');
+        $this->load->model('Caja_model');
         $this->load->model('Moneda_model');
         // $this->load->model('Dashb_model');
 
@@ -49,7 +50,20 @@ class Dashb extends CI_Controller
                 $data['parametro'] = $this->Parametro_model->get_parametros();
                 $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera                
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
-                $data['usuario'] = $session_data['usuario_id'];
+                
+                
+                $usuario_id = $session_data['usuario_id'];
+                $data['usuario'] = $usuario_id;
+                
+                $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+                
+                if (! sizeof($caja)>0){ // si la caja no esta iniciada
+                    //iniciar caja y dejarla en pendiente
+                            $this->Caja_model->caja_pendiente($usuario_id);
+                    $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+                }
+                
+                $data['caja'] = $caja;
                 
                 $data['tipousuario_id'] = $session_data['tipousuario_id'];
                 $data['_view'] = 'hola';

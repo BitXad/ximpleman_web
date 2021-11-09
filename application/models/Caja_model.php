@@ -16,6 +16,7 @@ class Caja_model extends CI_Model
      */
     function get_caja($caja_id)
     {
+                     
         $caja = $this->db->query("
             SELECT
                 *
@@ -28,6 +29,38 @@ class Caja_model extends CI_Model
         ",array($caja_id))->row_array();
 
         return $caja;
+    }
+
+    /*
+     * Get caja by caja_id
+     */
+    function get_caja_usuario($usuario_id)
+    {
+        $sql = "select * from caja where usuario_id = ".$usuario_id.
+                " and estado_id = 29";
+                     
+        $caja = $this->db->query($sql)->result_array();
+        return $caja;
+        
+    }
+    /*
+     * Get caja by caja_id
+     */
+    function caja_pendiente($usuario_id)
+    {
+        
+        $sql = "insert into caja( caja_apertura, caja_fechaapertura, caja_horaapertura, caja_cierre, 
+                caja_diferencia, usuario_id, caja_corte1000, caja_corte500, caja_corte200, 
+                caja_corte100, caja_corte50, caja_corte20, caja_corte10, caja_corte5, caja_corte2, 
+                caja_corte1, caja_corte050 , caja_corte020, caja_corte010, caja_corte005, estado_id, 
+                moneda_id, caja_efectivo, caja_credito, caja_transacciones) 
+                values (
+                0, date(now()), time(now()), 0, 0, ".$usuario_id.", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 1, 0, 0, 0)";
+
+        
+        $this->db->query($sql);
+        return true;
+        
     }
         
     /*
@@ -76,6 +109,7 @@ class Caja_model extends CI_Model
     {
         return $this->db->delete('caja',array('caja_id'=>$caja_id));
     }
+<<<<<<< HEAD
     /*
      * Get caja by usuario_id
      */
@@ -91,5 +125,16 @@ class Caja_model extends CI_Model
             order by caja_id desc
         ")->row_array();
         return $caja;
+=======
+    
+    /*
+     * function to delete caja
+     */
+    function ejecutar($sql)
+    {
+       $this->db->query($sql);
+       
+        return true;
+>>>>>>> master
     }
 }
