@@ -35,6 +35,7 @@
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+<input type="hidden" name="tipousuario" id="tipousuario" value="<?= $tipousuario_id ?>" />
 <!--
 <button onclick="mostrar_grafica()">
  graficos    

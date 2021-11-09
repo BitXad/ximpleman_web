@@ -22,6 +22,7 @@ function mostrar_grafica(){
     var mes_sel = hoy.getMonth()+1;
     $("#anio_sel").val(anio_sel);
     $("#mes_sel").val(mes_sel);
+    var tipouser_id = document.getElementById("tipouser").value;
     if(tipouser_id != 1){ 
         cargar_grafica_barras_noad(anio_sel,mes_sel,user_id); 
     }else{ 
