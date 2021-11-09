@@ -127,6 +127,7 @@ class Cuotum extends CI_Controller{
             }
             $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
             $data['credito'] = $this->Credito_model->dato_cuenta_serv($credito_id);
+            $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
             $data['_view'] = 'cuotum/cuentas';
             $this->load->view('layouts/main',$data);
         }

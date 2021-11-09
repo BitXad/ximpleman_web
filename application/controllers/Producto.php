@@ -1094,4 +1094,19 @@ class Producto extends CI_Controller{
             }
         }
     }
+    /*
+    * buscar productos por categoria y estado
+    */
+    function buscarproductos_ubicaionestado(){
+        $categoria="";
+        $estado="";
+        $categoria_id = $this->input->post('categoria_id');
+        $estado_id = $this->input->post('estado_id');
+        if($categoria_id != 0)
+            $categoria = "AND p.categoria_id = $categoria_id";
+        if($estado_id != 0)
+            $estado = "AND p.estado_id = $estado_id";
+        $productos = $this->Producto_model->get_busqueda_producto_limite($categoria,$estado);
+        echo json_encode($productos);
+    }
 }

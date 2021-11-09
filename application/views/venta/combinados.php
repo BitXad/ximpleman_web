@@ -59,6 +59,7 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <!--<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php //echo $parametro[0]['moneda_descripcion']; ?>" />-->
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="parametro_mostrarmoneda" id="parametro_mostrarmoneda" value="<?php echo $parametro[0]['parametro_mostrarmoneda']; ?>" />
 <!--<input type="hidden" name="lamoneda" id="lamoneda" value='<?php //echo json_encode($lamoneda); ?>' />-->
 <div class="row">
 <div class="col-md-12">
@@ -208,6 +209,7 @@
                         <th>Precio (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                         <th>Cantidad</th>
                         <th>Total (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                         <th>Total (<?php
                                         if($parametro[0]["moneda_id"] == 1){
                                             echo $lamoneda[1]['moneda_descripcion'];
@@ -216,7 +218,7 @@
                                         }
                                     ?>)
                         </th>
-                        
+                        <?php } ?>
                     </tr>
                     <tbody class="buscar" id="ventacombi">
 

@@ -63,7 +63,7 @@
     </div>
     <div class="columna_central">
         <center>
-            <h3 class="box-title"><u>VENTAS GENERALES POR CLIENTES</u></h3>
+            <h3 class="box-title"><u>VENTAS AGRUPADAS POR CLIENTES</u></h3>
             <?php echo date('d/m/Y H:i:s'); ?><br>
             <b>VENTAS REALIZADAS</b>
         </center>

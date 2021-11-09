@@ -106,7 +106,7 @@ class Servicio_model extends CI_Model
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
                 ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,
                 es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
-                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre
+                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre, fp.forma_nombre, tt.tipotrans_nombre
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -117,6 +117,8 @@ class Servicio_model extends CI_Model
             LEFT JOIN detalle_serv ds on s.servicio_id = ds.servicio_id
             LEFT JOIN estado es on ds.estado_id = es.estado_id
             LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
+            LEFT JOIN forma_pago fp on ds.forma_id = fp.forma_id
+            LEFT JOIN tipo_transaccion tt on ds.tipotrans_id = tt.tipotrans_id
             WHERE
                (c.cliente_nombre like '%".$parametro."%' or s.servicio_id = '".$parametro."'
                    or e.estado_descripcion like '%".$parametro."%')
@@ -145,7 +147,7 @@ class Servicio_model extends CI_Model
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
                 ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,
                 es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
-                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre
+                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre, fp.forma_nombre, tt.tipotrans_nombre
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -156,6 +158,8 @@ class Servicio_model extends CI_Model
             LEFT JOIN detalle_serv ds on s.servicio_id = ds.servicio_id
             LEFT JOIN estado es on ds.estado_id = es.estado_id
             LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
+            LEFT JOIN forma_pago fp on ds.forma_id = fp.forma_id
+            LEFT JOIN tipo_transaccion tt on ds.tipotrans_id = tt.tipotrans_id
                 ".$where." ".$filtro."
 
             ORDER BY s.servicio_id desc, ds.detalleserv_id desc 
@@ -224,7 +228,7 @@ class Servicio_model extends CI_Model
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
                 ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,
                 es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
-                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre
+                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre, fp.forma_nombre, tt.tipotrans_nombre
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -235,6 +239,8 @@ class Servicio_model extends CI_Model
             LEFT JOIN detalle_serv ds on s.servicio_id = ds.servicio_id
             LEFT JOIN estado es on ds.estado_id = es.estado_id
             LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
+            LEFT JOIN forma_pago fp on ds.forma_id = fp.forma_id
+            LEFT JOIN tipo_transaccion tt on ds.tipotrans_id = tt.tipotrans_id
             WHERE
                 s.estado_id = 5
 

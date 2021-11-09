@@ -36,7 +36,11 @@
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+<<<<<<< HEAD
 <input type="hidden" name="caja_id" id="caja_id" value="<?php echo $caja[0]['caja_id']; ?>" />
+=======
+<input type="hidden" name="tipousuario" id="tipousuario" value="<?= $tipousuario_id ?>" />
+>>>>>>> master
 <!--
 <button onclick="mostrar_grafica()">
  graficos    

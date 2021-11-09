@@ -1534,17 +1534,17 @@ function torta3($anio,$mes)
                 if($usuario_id >0){
                     $elfiltro .= " and ci.usuariopsaldo_id = $usuario_id";
                 }
-                /*if($tipotrans_id >0){
+                if($tipotrans_id >0){
                     $elfiltro .= " and ci.tipotrans_id = $tipotrans_id";
                 }
                 if($forma_id >0){
                     $elfiltro .= " and ci.forma_id = $forma_id";
-                }*/
-                /*if($comprobante ==1){
-                    $elfiltro .= " and ci.venta_tipodoc = $comprobante";
+                }
+                if($comprobante ==1){
+                    $elfiltro .= " and ci.servicio_id = f.servicio_id";
                 }elseif($comprobante == 2){
-                    $elfiltro .= " and ci.venta_tipodoc = $comprobante";
-                }*/                
+                    $elfiltro .= " and (f.servicio_id is null or f.`servicio_id` = '' or f.`servicio_id` < 0)";
+                }
                 if($cliente_id >0){
                     $elfiltro .= " and ci.cliente_id = $cliente_id";
                 }
@@ -1605,5 +1605,118 @@ function torta3($anio,$mes)
         }else{
             show_404();
         }
+    }
+    /*
+     * Reporte de ventas por dia de un usuario
+     */
+    function reporte_usuariodia()
+    {
+        if($this->acceso(18)){
+            //**************** inicio contenido ***************
+            $data['rolusuario'] = $this->session_data['rol'];
+            $data['page_title'] = "Reporte por dia de usuarios";
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            //$this->load->model('Estado_model');
+            //$data['estado'] = $this->Estado_model->get_tipo_estado(1);
+            $this->load->model('Venta_model');
+            $data['all_usuario'] = $this->Venta_model->get_usuarios();
+            
+            $this->load->model('Categoria_clientezona_model');
+            $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_id1();
+            
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['_view'] = 'reportes/reporte_usuariodia';
+            $this->load->view('layouts/main',$data);
+            //**************** fin contenido ***************
+        }
+    }
+    function ventas_mes()
+    {
+        $anio = $this->input->post("anio");
+        $mes = $this->input->post("mes");
+        $usuario_id = $this->input->post("usuario_id");
+        $zona_id = $this->input->post("zona_id");
+        $filtro = " and v.usuario_id = $usuario_id";
+        if($zona_id >0){
+            $filtro .= " and c.zona_id = $zona_id";
+        }
+        $primer_dia = 1;
+        $ultimo_dia = $this->getUltimoDiaMes($anio,$mes);
+
+        $fecha_inicial = date("Y-m-d", strtotime($anio."-".$mes."-".$primer_dia) );
+        $fecha_final = date("Y-m-d", strtotime($anio."-".$mes."-".$ultimo_dia) );
+        
+        $this->load->model('Reporte_ing_egr_model');
+        $ventas = $this->Reporte_ing_egr_model->reporte_generalmes($fecha_inicial, $fecha_final, $filtro);
+            
+            
+            
+            
+            //$fecha_inicial = $anio."-".$mes."-01";
+            //$fecha_final = $anio."-".$mes."-31";
+            /*$sql_ventas = "SELECT 
+                            v.venta_fecha,
+                            sum(d.detalleven_total) AS total, avg(d.detalleven_tc) as tipo_cambio
+                          FROM
+                            venta v,
+                            detalle_venta d
+                          WHERE
+                            v.venta_id = d.venta_id AND 
+                            v.venta_fecha >= '".$fecha_inicial."' AND 
+                            v.venta_fecha <= '".$fecha_final."'
+                          GROUP BY
+                            v.venta_fecha";
+            
+            $ventas = $this->db->query($sql_ventas)->result_array();
+            */
+            /*$sql_utilidades = "SELECT 
+                            v.venta_fecha,
+                            sum((d.detalleven_total - d.detalleven_costo*d.detalleven_cantidad)) AS utilidad
+                          FROM
+                            venta v,
+                            detalle_venta d
+                          WHERE
+                            v.venta_id = d.venta_id AND 
+                            v.venta_fecha >= '".$fecha_inicial."' AND 
+                            v.venta_fecha <= '".$fecha_final."'
+                          GROUP BY
+                            v.venta_fecha";
+            
+            $utilidades = $this->db->query($sql_utilidades)->result_array();
+            */
+            $utilidades = $this->Reporte_ing_egr_model->reporte_generalutilidadmes($fecha_inicial, $fecha_final, $filtro);
+            $ct = count($ventas);
+
+            //Cargando los arreglos a CERO
+            for($d = 1; $d <= $ultimo_dia; $d++){
+                $arrayventas[$d] = 0;
+                $arraytc[$d] = 0;
+                $arrayutilidades[$d] = 0;     
+            }
+
+            
+            foreach($ventas as $res){
+                $diasel = intval(date("d",strtotime($res['venta_fecha']) ) );
+                $suma = $res['total'];
+                $arrayventas[$diasel] += $suma;
+                $arraytc[$diasel] += $res['tipo_cambio'];;
+            }
+
+            foreach($utilidades as $resven){
+                $diasel = intval(date("d",strtotime($resven['venta_fecha']) ) );
+                $sumautilidad = $resven['utilidad'];
+                $arrayutilidades[$diasel] += $sumautilidad;
+            }
+
+            $data=array("totaldias" => $ultimo_dia, "totalventas" => $arrayventas, "totalutilidades" => $arrayutilidades, "totaltc" => $arraytc);
+            echo  json_encode($data);
+            
+            /*$anio = $this->input->post('anio');   1555891200
+            $mes = $this->input->post('fecha2'); 
+    */
+
     }
 }

@@ -192,9 +192,11 @@ border-bottom : 1px solid #aaa;
                     <font size="3" face="Arial"><b><?php echo "NOTA DE PEDIDO"; ?></b></font><br>
                     <font size="3" face="Arial"><b><?php echo "Nº 000".$pedido[0]['pedido_id']; ?></b></font><br>
                     <font size="1" face="Arial"><b><?php echo  date_format(date_create($pedido[0]['pedido_fecha']),'d/m/Y h:i:s'); ?></b></font><br>
-                    <font size="1" face="Arial"><b><?php echo  "Expresado en ".$parametro[0]["moneda_descripcion"]; ?></b></font><br>
+                    <font size="1" face="Arial"><b><?php echo  "Expresado en ".$parametro[0]["moneda_descripcion"]; ?></b></font>
+                    <br>
+                    <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                     <font size="1" face="Arial"><b><?php echo  "T.C. Bs ".$moneda["moneda_tc"]; ?></b></font><br>
-                    
+                    <?php } ?>
                 </center>                
             </td>
             <td  style="padding: 0; line-height: 10px; width:30%;">
@@ -223,11 +225,14 @@ border-bottom : 1px solid #aaa;
             <th style="padding: 0"><center>UNIDAD</center></th>
             <th style="padding: 0"><center>PREC.UNIT<br><?php echo $parametro[0]["moneda_descripcion"]; ?></center></th>
             <th style="padding: 0"><center>TOTAL<br><?php echo $parametro[0]["moneda_descripcion"]; ?></center></th>
+            <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
             <th style="padding: 0"><center>TOTAL<br>            
                 <?php if ($parametro[0]["moneda_id"]==1){ echo $moneda["moneda_descripcion"]; } 
                     else{ echo "Bs";}
                 ?>
-            </center></th>
+            </center>
+            </th>
+            <?php } ?>
         </tr>
         
         <?php 
@@ -236,11 +241,8 @@ border-bottom : 1px solid #aaa;
             $total_final = 0;
             foreach($pedido as $p){
                 $total_final += $p['detalleped_total'];
-                
         ?>
-        
             <tr style="padding: 0;">
-
                 <td style="padding: 0">
                     <center>
                         <?php echo $p['detalleped_cantidad']; ?>
@@ -253,15 +255,12 @@ border-bottom : 1px solid #aaa;
                     <?php echo $p['producto_unidad']; ?>
                 </td>
                 <td align="right"  style="padding: 0">
-                    
                     <?php echo number_format($p['detalleped_precio'],2,".",","); ?>
-                    
                 </td>
-                
                 <td align="right"  style="padding: 0">
                     <?php echo number_format($p['detalleped_total'],2,".",","); ?>
                 </td>
-                
+                <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                 <td align="right"  style="padding: 0">
                 
                     <?php 
@@ -293,7 +292,7 @@ border-bottom : 1px solid #aaa;
                 
                 
                 </td>
-                
+                <?php } ?>
             </tr>
         <?php 
             }
@@ -307,6 +306,8 @@ border-bottom : 1px solid #aaa;
                 <b> 
                     <?php echo number_format($total_final,2,".",","); ?>
                 </b></font>
+                <?php
+                if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                     <br>
                     <?php
                         if ($parametro[0]["moneda_id"]==1){ //cuando la moneda principal es Bs y la del producto es Bs
@@ -315,10 +316,12 @@ border-bottom : 1px solid #aaa;
                         else{
                             echo "Bs ".number_format($total_final * $p['detalleped_tc'],2,".",","); 
                         }
+                }
                     ?>
             </td>
+            <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
             <td></td>
-
+            <?php } ?>
         </tr>
 
     </table>    

@@ -1561,40 +1561,42 @@ function tablaresultados(opcion)
 //                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
 //                            html += "<label  class='control-label' style='margin-bottom :0px'>FEC.VENC. </label><input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'  class='form-control' ></div></td>";
 //                       
-                              html += "<table style='font-size: 10pt' id='tablares'>"
-                                html += "<tr style='font-size: 10px;'>"
-                                  html += "<td style='text-align: center;'><b>PRECIO</b></td>"
-                                  html += "<td style='text-align: center;'><b>COSTO</b></td>"
-                                  html += "<td style='text-align: center;'><b>DESC.</b></td>"
-                                  html += "<td style='text-align: center;'><b>CANT.</b></td>"
-                                  html += "<td style='text-align: center;'><b>FECHA VENC.</b></td>"
+                              html += "<table style='font-size: 10pt;' id='tablares' name='tablares'>";
+                              html += "<tbody class='buscar33'>"
+                                html += "<tr style='font-size: 10px;'>";
+                                  html += "<td style='text-align: center;'><b>PRECIO</b></td>";
+                                  html += "<td style='text-align: center;'><b>COSTO</b></td>";
+                                  html += "<td style='text-align: center;'><b>DESC.</b></td>";
+                                  html += "<td style='text-align: center;'><b>CANT.</b></td>";
+                                  html += "<td style='text-align: center;'><b>FECHA VENC.</b></td>";
 
-                                html += "</tr>"
+                                html += "</tr>";
                               
-                              html += "<tr>"
-                                html += "<td>"
-                                      html += "<input style='width:"+anchoinput+"px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01'  value='"+registros[i]["producto_precio"]+"' >";                              
-                                html += "</td>"
+                              html += "<tr>";
+                                html += "<td>";
+                                      html += "<input style='width:"+anchoinput+"px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01'  value='"+registros[i]["producto_precio"]+"' >";
+                                html += "</td>";
                                 
-                                html += "<td>"
+                                html += "<td>";
                                       html += "<input style='width:"+anchoinput+"px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01'  value='"+registros[i]["producto_ultimocosto"]+"' >";
-                                html += "</td>"
+                                html += "</td>";
                                 
-                                html += "<td>"
+                                html += "<td>";
                                       html += "<input style='width:"+anchoinput+"px;' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number'  value='0.00' step='.01' required >";
-                                html += "</td>"
+                                html += "</td>";
                                 
-                                html += "<td>"
+                                html += "<td>";
                                       html += "<input style='width:"+anchoinput+"px;' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' onkeypress='pasardetalle(event,"+compra_id+","+registros[i]["producto_id"]+")'  placeholder='cantidad' required value='1'>";
-                                html += "</td>"
+                                html += "</td>";
                                 
-                                html += "<td>"
+                                html += "<td>";
                                       html += "<input style='width:"+(anchoinput+70)+"px; font-size: 12px;' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'   >";
-                                html += "</td>"
+                                html += "</td>";
                                 
-                              html += "</tr>"
+                              html += "</tr>";
+                              html += "</tbody>";
                               
-                            html += "</table>"
+                            html += "</table>";
                             html += "<br>";
 
                             
@@ -1622,12 +1624,13 @@ function tablaresultados(opcion)
                        if (esMobil()){
                             html += "<div class='col-md-2' style='padding-right: 0px;' >";
                             html += "<button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success btn-block'><i class='fa fa-cart-arrow-down'></i> Añadir</button>";
-                      
+                            html += "</div>";
                             
                        }
                        else{
                             html += "<td style='padding :0px'><div>";                      
                             html += "<label  class='control-label' style='margin-bottom :0px'>AÑADIR</label><button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button></div>";
+                            html += "</td>";
                         }
                        //html += "<a href=''  onclick='submit()' class='btn btn-danger'><span class='fa fa-cart-arrow-down'></span></a>";
                         

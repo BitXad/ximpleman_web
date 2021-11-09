@@ -2394,7 +2394,8 @@ function eliminardetalleventa()
         success:function(respuesta){         
             tablaproductos();
         },
-        error: function(respuesta){         
+        error: function(respuesta){   
+            alert("no se borro");      
         }        
     });
     
@@ -2405,8 +2406,8 @@ function cerrar_ventas(){
     
     var answer = window.confirm("¿Desea salir sin guardar cambios?");
     if (answer) {
-        eliminardetalleventa();
         window.close();
+        eliminardetalleventa();
     }
 //    else {
 //        //some code
@@ -3413,10 +3414,10 @@ function borrar_datos_cliente()
     tablaproductos();
     
     tablaresultados(1); //redibuja la tabla de busqueda de productos      
-    var parametro_factura = document.getElementById('parametro_factura').value;
-    if(parametro_factura == 2){
-        $("#facturado").prop("checked", false);
-    }
+    // var parametro_factura = document.getElementById('parametro_factura').value;
+    // if(parametro_factura == 2){
+    //     $("#facturado").prop("checked", false);
+    // }
     document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
     document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
     

@@ -11,6 +11,7 @@
 <input type="hidden" name="tipo_transaccion" id="tipo_transaccion" value='<?php echo json_encode($tipo_transaccion);  ?>' />
 <input type="hidden" name="forma_pago" id="forma_pago" value='<?php echo json_encode($forma_pago);  ?>' />
 <input type="hidden" name="permisomodificar" id="permisomodificar" value='<?php echo $rol[182-1]['rolusuario_asignado']; ?>' />
+<input type="hidden" name="all_empresa" id="all_empresa" value='<?php echo json_encode($all_empresa); ?>' />
 <input type="hidden" name="a" id="a" value='<?php echo $a; ?>' />
 <input type="hidden" name="b" id="b" value='<?php echo $b; ?>' />
 
@@ -485,3 +486,31 @@ if(isset($a) && $a == "n"){ ?>
     </div>
 </div>
 <!----------------- FIN modal factura ---------------------------------------------->
+<!------------------------ INICIO modal para Modificar fecha de una venta ------------------->
+<div class="modal fade" id="modalenviarmensaje" tabindex="-1" role="dialog" aria-labelledby="modalenviarmensajelabel" style="font-family: Arial">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold" style="font-size: 13pt"><span class="fa fa-whatsapp fa-4x"></span>ENVIAR MENSAJE AL CLIENTE</span><br>
+                <span style="font-size: 11pt">del Servicio Num.: <span class="text-bold" id="num_serv"></span></span>
+                <!--<input type="hidden" name="nunmventa_id" class="form-control" id="nunmventa_id" />-->
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px !important">
+                <span id="cliente" hidden></span>
+                <span id="telefono" hidden></span>
+                <span id="texto" hidden></span>
+                <!--<div class="col-md-6">
+                    <label for="el_mensaje" class="control-label"><span class="fa fa-whatsapp"></span></label>
+                    <span>Enviar mensaje al cliente</span>
+                </div>-->
+            </div>
+            <div class="modal-footer" style="text-align: center !important">
+                <a class="btn btn-success" onclick="enviar_mensaje()"><span class="fa fa-check"></span> Enviar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Omitir</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Modificar fecha de una venta ------------------->

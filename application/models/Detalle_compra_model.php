@@ -123,4 +123,12 @@ class Detalle_compra_model extends CI_Model
     {
         return $this->db->delete('detalle_compra',array('detallecomp_id'=>$detallecomp_id));
     }
+    /*
+     * function to add new detalle_compra_aux
+     */
+    function add_detalle_compra_aux($params)
+    {
+        $this->db->insert('detalle_compra_aux',$params);
+        return $this->db->insert_id();
+    }
 }

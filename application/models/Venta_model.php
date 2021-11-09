@@ -83,7 +83,8 @@ class Venta_model extends CI_Model
                 v.venta_fecha = date(now()) and
                 u.tipousuario_id = t.tipousuario_id and
                 v.usuario_id = u.usuario_id
-                group by u.usuario_id";
+                group by u.usuario_id
+                order by total_ventas desc";
         $venta = $this->db->query($sql)->result_array();
 
         return $venta;
@@ -100,6 +101,7 @@ class Venta_model extends CI_Model
                     where 
                      date(venta_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)
                     group by venta_fecha
+                    order by venta_fecha desc
                 ";
         $venta = $this->db->query($sql)->result_array();
 
@@ -697,5 +699,12 @@ function get_busqueda($condicion)
             AND p.pedido_fecha <= '".date('Y')."-".date('m')."-31'
             AND p.regusuario_id = ".$usuario_id."")->row_array();
         return $entrega_mes;
+    }
+    /**
+     * Add detalle_venta_aux
+     */
+    function add_detalle_venta_aux($params){
+        $this->db->insert('detalle_venta_aux',$params);
+        return $this->db->insert_id();
     }
 }

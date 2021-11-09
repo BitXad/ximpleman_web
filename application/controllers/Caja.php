@@ -9,7 +9,22 @@ class Caja extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Caja_model');
-    } 
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
     /*
      * Listing of caja
@@ -26,10 +41,20 @@ class Caja extends CI_Controller{
      * Adding a new caja
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+    {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('caja_apertura','Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('caja_fechaapertura','Fecha Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('caja_horaapertura','Hora Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $usuario_id = $this->session_data['usuario_id'];
+        $this->load->model('Parametro_model');
+        $data['all_parametro'] = $this->Parametro_model->get_parametros();
+        
+        if($this->form_validation->run())     
+        {
+            $estado = 1;
             $params = array(
+<<<<<<< HEAD
 				'estado_id' => $this->input->post('estado_id'),
 				'moneda_id' => $this->input->post('moneda_id'),
 				'usuario_id' => $this->input->post('usuario_id'),
@@ -57,6 +82,49 @@ class Caja extends CI_Controller{
 				'caja_corte50' => $this->input->post('caja_corte50'),
 				'caja_corte20' => $this->input->post('caja_corte20'),
 				'caja_corte10' => $this->input->post('caja_corte10'),
+=======
+                'estado_id' => $estado,
+                'moneda_id' => $data['all_parametro'][0]['moneda_id'],
+                'usuario_id' => $usuario_id,
+                'caja_apertura' => $this->input->post('caja_apertura'),
+                'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
+                'caja_horaapertura' => $this->input->post('caja_horaapertura'),
+                /*'caja_cierre' => $this->input->post('caja_cierre'),
+                'caja_horacierre' => $this->input->post('caja_horacierre'),
+                'caja_fechacierre' => $this->input->post('caja_fechacierre'),*/
+                'caja_diferencia' => $this->input->post('caja_diferencia'),
+                'caja_corte1000' => $this->input->post('caja_corte1000'),
+                'caja_corte500' => $this->input->post('caja_corte500'),
+                'caja_corte200' => $this->input->post('caja_corte200'),
+                'caja_corte100' => $this->input->post('caja_corte100'),
+                'caja_corte50' => $this->input->post('caja_corte50'),
+                'caja_corte20' => $this->input->post('caja_corte20'),
+                'caja_corte10' => $this->input->post('caja_corte10'),
+                'caja_corte5' => $this->input->post('caja_corte5'),
+                'caja_corte2' => $this->input->post('caja_corte2'),
+                'caja_corte1' => $this->input->post('caja_corte1'),
+                'caja_corte050' => $this->input->post('caja_corte050'),
+                'caja_corte020' => $this->input->post('caja_corte020'),
+                'caja_corte010' => $this->input->post('caja_corte010'),
+                'caja_corte005' => $this->input->post('caja_corte005'),
+                'caja_efectivo' => $this->input->post('caja_efectivo'),
+                'caja_credito' => $this->input->post('caja_credito'),
+                'caja_transacciones' => $this->input->post('caja_transacciones'),
+                /*'caja_imagen1000' => $this->input->post('caja_imagen1000'),
+                'caja_imagen500' => $this->input->post('caja_imagen500'),
+                'caja_imagen200' => $this->input->post('caja_imagen200'),
+                'caja_imagen100' => $this->input->post('caja_imagen100'),
+                'caja_imagen50' => $this->input->post('caja_imagen50'),
+                'caja_imagen20' => $this->input->post('caja_imagen20'),
+                'caja_imagen10' => $this->input->post('caja_imagen10'),
+                'caja_imagen5' => $this->input->post('caja_imagen5'),
+                'caja_imagen2' => $this->input->post('caja_imagen2'),
+                'caja_imagen1' => $this->input->post('caja_imagen1'),
+                'caja_imagen020' => $this->input->post('caja_imagen020'),
+                'caja_imagen050' => $this->input->post('caja_imagen050'),
+                'caja_imagen010' => $this->input->post('caja_imagen010'),
+                'caja_imagen005' => $this->input->post('caja_imagen005'),*/
+>>>>>>> master
             );
             
             $caja_id = $this->Caja_model->add_caja($params);
@@ -64,15 +132,15 @@ class Caja extends CI_Controller{
         }
         else
         {
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
-
-			$this->load->model('Moneda_model');
-			$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-
-			$this->load->model('Usuario_model');
-			$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            /*$this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado();
             
+            $this->load->model('Moneda_model');
+            $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+            
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            */
             $data['_view'] = 'caja/add';
             $this->load->view('layouts/main',$data);
         }

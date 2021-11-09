@@ -327,7 +327,6 @@ function modalcatalogo() {
 }
 /* verifica si lo ingresado es un numero valido */
 function verificarnumero() {
-    
     var num_imagenes = document.getElementById('num_imagenes').value;
     if (num_imagenes <= 0 || num_imagenes >20 || isNaN(num_imagenes)) {
         $("#mensaje_numimagen").html("<br>Por favor ingrese Números validos que esten entre 1 y 20");
@@ -516,7 +515,7 @@ function catalogoproducto_lista(num_imagenes) {
 
 
 //                    html += inifila;
-                    html += "<tr style='font-family: Arial Narrow;'>";
+                    html += "<tr style='font-family: Arial Narrow;' id='producto_"+registros[i]['producto_id']+"'>";
                     
 //                    html += "<td style='width: 300px; height: 150px; font-size: 8px'>";
 //                    html += "<td style='width: 2cm !important;'>";
@@ -724,7 +723,7 @@ function catalogoproducto_lista(num_imagenes) {
                                             html += "</td>"; //Precio Unitario                            
                                         }
                                     }
-                            
+                            html += "<div id='boton_visible_producto"+registros[i]['producto_id']+"'><span class='no-print' onclick='visible_producto("+registros[i]['producto_id']+")' style='font-size: 16px; cursor: pointer;'><i class='fa fa-eye' aria-hidden='true'></i></span></div>";
                             html += "</tr>";                            
                        
                             html += "</table>";
@@ -841,6 +840,22 @@ function catalogoproducto_lista(num_imagenes) {
         busqueda_inicial();
     }*/
     //cabcatalogo
+}
+
+function visible_producto(id){
+    var tr = document.getElementById(`producto_${id}`);
+    var div = document.getElementById(`boton_visible_producto${id}`);
+    if (tr.className === "no-print") {
+        $(`#producto_${id}`).removeClass("no-print");
+        tr.style.cssText = "color: #333333";
+        div.innerHTML = "";
+        div.innerHTML = `<span class='no-print' onclick='visible_producto(${id})' style='font-size: 16px; cursor: pointer;'><i class='fa fa-eye' aria-hidden='true'></i></span>`;
+    } else {
+        $(`#producto_${id}`).addClass("no-print");
+        tr.style.cssText = "color: #807e7e";
+        div.innerHTML = "";
+        div.innerHTML = `<span class='no-print' onclick='visible_producto(${id})' style='font-size: 16px; cursor: pointer; color: #000;'><i class='fa fa-eye-slash' aria-hidden='true'></i></span>`;
+    }
 }
 
 function catalogoproducto_categoria(num_imagenes) {

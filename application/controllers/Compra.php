@@ -1928,4 +1928,36 @@ $inventario = "update inventario set inventario.existencia=inventario.existencia
         echo json_encode(true);  
         
     }
+    /* crea compra para llevar inventario a cero */
+    function crearcompra_invcero()
+    {
+        if($this->acceso(2)){
+            $usuario_id = $this->session_data['usuario_id'];
+            $compra_id = $this->Compra_model->crear_compra($usuario_id);
+            $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
+            $this->db->query($eliminar_aux);
+            $bandera = 0;
+                    //Registrar Compra
+            //$this->ingresarproducto_invcero($compra_id);
+            $con_existencia = $this->Inventario_model->get_inventario_conexistencia();
+            foreach ($con_existencia as $inventario) {
+                $params = array(
+                    'compra_id' => $compra_id,
+                    'moneda_id' => $inventario['moneda_id'],
+                    'producto_id' => $inventario['producto_id'],
+                    'detallecomp_codigo' => $inventario['producto_codigo'],
+                    'detallecomp_cantidad' => $inventario['existencia']*(-1),
+                    'detallecomp_unidad' => $inventario['producto_unidad'],
+                    'detallecomp_costo' => $inventario['producto_costo'],
+                    'detallecomp_precio' => $inventario['producto_precio'],
+                    'detallecomp_subtotal' => ($inventario['existencia']*$inventario['producto_costo']),
+                    'detallecomp_descuento' => 0,
+                    'detallecomp_total' => ($inventario['existencia']*$inventario['producto_costo']),
+                    'detallecomp_tc' => $inventario['moneda_tc'],        
+                );
+                $detallecomp_id = $this->Detalle_compra_model->add_detalle_compra_aux($params);
+            }
+            redirect('compra/edit/'.$compra_id.'/'.$bandera);
+        }
+    }
 }

@@ -70,15 +70,15 @@ class Caja_model extends CI_Model
     {
         $caja = $this->db->query("
             SELECT
-                *
-
+                c.*, m.moneda_descripcion, e.estado_descripcion, u.usuario_nombre
             FROM
-                `caja`
-
+                `caja` c
+            LEFT JOIN moneda m on c.moneda_id = m.moneda_id
+            LEFT JOIN estado e on c.estado_id = e.estado_id
+            LEFT JOIN usuario u on c. usuario_id = u.usuario_id
             WHERE
                 1 = 1
-
-            ORDER BY `caja_id` DESC
+            ORDER BY c.`caja_id` DESC
         ")->result_array();
 
         return $caja;

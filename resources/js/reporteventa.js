@@ -1,11 +1,11 @@
 function ventacliente(e) {
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){               
-        tablarecliente();
+        reporte1();
     }
 }
 
-function tablarecliente(){
+/*function tablarecliente(){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'detalle_venta/buscarcliente';
     var parametro = document.getElementById('cliente_id').value;
@@ -52,9 +52,9 @@ function tablarecliente(){
                $("#tablarecliente").html(html);
             }
     });
-}
+}*/
 
-function repocliente(cliente){
+/*function repocliente(cliente){
     $("#cliente").val(cliente);
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"detalle_venta/nomcliente/"+cliente;
@@ -68,11 +68,11 @@ function repocliente(cliente){
             $("#labusqueda").html(html);
             /*$("#producto").val('');
             $("#proveedor").val('');*/
-            document.getElementById('tablas').style.display = 'none';
+    /*        document.getElementById('tablas').style.display = 'none';
             reporte1();
         }
     });
-}
+}*/
 
 function reporte1()
 {
@@ -81,7 +81,7 @@ function reporte1()
     var desde    = document.getElementById('fecha_desde').value;
     var hasta    = document.getElementById('fecha_hasta').value;
     var nombre_moneda = document.getElementById('nombre_moneda').value;
-    var cliente  = document.getElementById('cliente').value;
+    var cliente  = document.getElementById('cliente_id').value;
     var tipo     = document.getElementById('tipo_transaccion').value;
     if (tipo==0) {
       eltipo = "";
@@ -92,7 +92,8 @@ function reporte1()
     if (cliente=="") {
         elcliente = "";
     } else {
-        elcliente = "and vs.cliente_id="+cliente+" "; 
+        elcliente = " and (cliente_nombre like '%"+cliente+"%' or cliente_nit like '%"+cliente+"%' or cliente_razon like '%"+cliente+"%')"; 
+        //elcliente = "and vs.cliente_id="+cliente+" "; 
     }
 	var filtro = " date(vs.venta_fecha) >= '"+desde+"'  and  date(vs.venta_fecha) <='"+hasta+"' "+eltipo+" "+elcliente+" ";
 

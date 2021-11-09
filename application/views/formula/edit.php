@@ -34,7 +34,7 @@
 					<div class="col-md-6">
 						<label for="formular_preciounidad" class="control-label">Formular Preciounidad</label>
 						<div class="form-group">
-							<input type="text" name="formular_preciounidad" value="<?php echo ($this->input->post('formular_preciounidad') ? $this->input->post('formular_preciounidad') : $formula['formular_preciounidad']); ?>" class="form-control" id="formular_preciounidad" />
+							<input type="text" name="formular_preciounidad" value="<?php echo ($this->input->post('formular_preciounidad') ? $this->input->post('formular_preciounidad') : $formula['formula_preciounidad']); ?>" class="form-control" id="formular_preciounidad" />
 						</div>
 					</div>
 				</div>

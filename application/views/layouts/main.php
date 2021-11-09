@@ -25,12 +25,13 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="<?php echo site_url('resources/css/_all-skins.min.css');?>">
 
-<script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script><script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
+    <script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
+    <!--<script src="<?php /*echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script>
+    <script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
+    <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
+    <script src="<?php echo base_url('resources/js/graficas.js');*/ ?>"></script>-->
     
     <!-- jQuery 2.2.3 -->
-    <script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
         <script type="text/javascript"> 
         function mueveReloj(){
             momentoActual = new Date();
@@ -253,6 +254,22 @@
                         ?>
                         <li>
                             <a href="<?php echo site_url('pedido_diario/index');?>"><i class="fa fa-calendar"></i> Pedidos Diarios</a>
+                        </li>
+                        <?php
+                        } ?>
+                        <?php
+                        if($rolusuario[181-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('ubicacion/index');?>"><i class="fa fa-cubes" aria-hidden="true"></i> Ubicaciones</a>
+                        </li>
+                        <?php
+                        } ?>
+                        <?php
+                        if($rolusuario[181-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('control_inventario/index');?>"><i class="fa fa-book" aria-hidden="true"></i> Control de Inventario</a>
                         </li>
                         <?php
                         } ?>
@@ -572,44 +589,50 @@
                         </li> 
                         <?php
                         }  ?>
-                        
-                        
-                        
                         <?php
                         if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li><a href="#"><i class="fa fa-clipboard"></i> <span>Ventas</span></a>
                         <ul class="treeview-menu">
                             <li>
-                                <a href="<?php echo site_url('reportes/reporte_generalventa');?>"><i class="fa fa-id-card-o"></i>Ventas Agrupadas</a>
+                                <a href="<?php echo site_url('reportes/reporte_general');?>"><i class="fa fa-th-list"></i>Reporte General</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo site_url('reportes/reporte_generalventa');?>"><i class="fa fa-id-card-o"></i>Agrupadas por Clientes</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-arrow-down"></i>Simple Venta</a>
                             </li>
                         <li>
                             <a href="<?php echo site_url('venta');?>"><i class="fa fa-clock-o"></i>Ventas del dia</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('reportes/ventacategoria');?>"><i class="fa fa-th-list"></i>Ventas por Categoria</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('reportes/ventacliente');?>"><i class="fa fa-user-circle"></i>Ventas por Cliente</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('reportes/ventaproducto');?>"><i class="fa fa-product-hunt"></i>Ventas por Producto</a>
-                        </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('reportes/ventacategoria');?>"><i class="fa fa-th-list"></i>Ventas por Categoria</a>
+                        </li>-->
+                        <!--<li>
+                            <a href="<?php //echo site_url('reportes/ventacliente');?>"><i class="fa fa-user-circle"></i>Ventas por Cliente</a>
+                        </li>-->
+                        <!--<li>
+                            <a href="<?php //echo site_url('reportes/ventaproducto');?>"><i class="fa fa-product-hunt"></i>Ventas por Producto</a>
+                        </li>-->
                         <li>
                             <a href="<?php echo site_url('reportes/ventacategoria_pagrupado');?>"><i class="fa fa-certificate"></i>P. Agrupado/Categoria</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('reportes/ventapagrupado');?>"><i class="fa fa-certificate"></i>Producto Agrupado</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('reportes/ventaruta');?>"><i class="fa fa-truck"></i>Venta por Ruta</a>
-                        </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('reportes/ventaruta');?>"><i class="fa fa-truck"></i>Venta por Ruta</a>
+                        </li>-->
                         <li>
                             <a href="<?php echo site_url('reportes/ventausuario');?>"><i class="fa fa-user"></i>Venta por Usuario</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple Ventas</a>
+                            <a href="<?php echo site_url('reportes/reporte_usuariodia');?>"><i class="fa fa-file-text-o"></i>Venta Usuario/Mes</a>
                         </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple Ventas</a>
+                        </li>-->
                         </ul>
                         </li>
                         <?php
