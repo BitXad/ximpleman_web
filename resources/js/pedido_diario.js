@@ -479,3 +479,25 @@ function generar_pedido(){
 //    html += "<a href='"+base_url+"pedido/pedidoabierto/"+c[i].cliente_id+"' target='_BLANK' class='btn btn-facebook btn-xs'><fa class='fa fa-cart-arrow-down'></fa></a>";
     window.open(controlador, '_blank');
 }
+
+function abrir_caja()
+{    
+    var base_url    = document.getElementById('base_url').value; 
+    var monto_caja    = document.getElementById('monto_caja').value; 
+    var caja_id    = document.getElementById('caja_id').value; 
+    var controlador = base_url+"caja/abrir_caja";    
+    
+    //alert(controlador+" *** "+usuario_id+" *** "+dia_visita);
+    
+    $.ajax({url:controlador,
+        type:"POST",
+        data:{monto_caja:monto_caja, caja_id:caja_id},
+        success: function(response){
+            
+            tabla_clientes(response);
+        },
+        error:function (response){
+            alert("ocurrio un error ");
+        }
+    });
+}

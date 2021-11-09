@@ -34,19 +34,12 @@ class Caja extends CI_Controller{
 				'moneda_id' => $this->input->post('moneda_id'),
 				'usuario_id' => $this->input->post('usuario_id'),
 				'caja_corte5' => $this->input->post('caja_corte5'),
-				'caja_imagen5' => $this->input->post('caja_imagen5'),
 				'caja_corte2' => $this->input->post('caja_corte2'),
-				'caja_imagen2' => $this->input->post('caja_imagen2'),
 				'caja_corte1' => $this->input->post('caja_corte1'),
-				'caja_imagen1' => $this->input->post('caja_imagen1'),
 				'caja_corte050' => $this->input->post('caja_corte050'),
-				'caja_imagen050' => $this->input->post('caja_imagen050'),
 				'caja_corte020' => $this->input->post('caja_corte020'),
-				'caja_imagen020' => $this->input->post('caja_imagen020'),
 				'caja_corte010' => $this->input->post('caja_corte010'),
-				'caja_imagen010' => $this->input->post('caja_imagen010'),
 				'caja_corte005' => $this->input->post('caja_corte005'),
-				'caja_imagen005' => $this->input->post('caja_imagen005'),
 				'caja_efectivo' => $this->input->post('caja_efectivo'),
 				'caja_credito' => $this->input->post('caja_credito'),
 				'caja_transacciones' => $this->input->post('caja_transacciones'),
@@ -58,19 +51,12 @@ class Caja extends CI_Controller{
 				'caja_fechacierre' => $this->input->post('caja_fechacierre'),
 				'caja_diferencia' => $this->input->post('caja_diferencia'),
 				'caja_corte1000' => $this->input->post('caja_corte1000'),
-				'caja_imagen1000' => $this->input->post('caja_imagen1000'),
 				'caja_corte500' => $this->input->post('caja_corte500'),
-				'caja_imagen500' => $this->input->post('caja_imagen500'),
 				'caja_corte200' => $this->input->post('caja_corte200'),
-				'caja_imagen200' => $this->input->post('caja_imagen200'),
 				'caja_corte100' => $this->input->post('caja_corte100'),
-				'caja_imagen100' => $this->input->post('caja_imagen100'),
 				'caja_corte50' => $this->input->post('caja_corte50'),
-				'caja_imagen50' => $this->input->post('caja_imagen50'),
 				'caja_corte20' => $this->input->post('caja_corte20'),
-				'caja_imagen20' => $this->input->post('caja_imagen20'),
 				'caja_corte10' => $this->input->post('caja_corte10'),
-				'caja_imagen10' => $this->input->post('caja_imagen10'),
             );
             
             $caja_id = $this->Caja_model->add_caja($params);
@@ -109,19 +95,12 @@ class Caja extends CI_Controller{
 					'moneda_id' => $this->input->post('moneda_id'),
 					'usuario_id' => $this->input->post('usuario_id'),
 					'caja_corte5' => $this->input->post('caja_corte5'),
-					'caja_imagen5' => $this->input->post('caja_imagen5'),
 					'caja_corte2' => $this->input->post('caja_corte2'),
-					'caja_imagen2' => $this->input->post('caja_imagen2'),
 					'caja_corte1' => $this->input->post('caja_corte1'),
-					'caja_imagen1' => $this->input->post('caja_imagen1'),
 					'caja_corte050' => $this->input->post('caja_corte050'),
-					'caja_imagen050' => $this->input->post('caja_imagen050'),
 					'caja_corte020' => $this->input->post('caja_corte020'),
-					'caja_imagen020' => $this->input->post('caja_imagen020'),
 					'caja_corte010' => $this->input->post('caja_corte010'),
-					'caja_imagen010' => $this->input->post('caja_imagen010'),
 					'caja_corte005' => $this->input->post('caja_corte005'),
-					'caja_imagen005' => $this->input->post('caja_imagen005'),
 					'caja_efectivo' => $this->input->post('caja_efectivo'),
 					'caja_credito' => $this->input->post('caja_credito'),
 					'caja_transacciones' => $this->input->post('caja_transacciones'),
@@ -133,19 +112,12 @@ class Caja extends CI_Controller{
 					'caja_fechacierre' => $this->input->post('caja_fechacierre'),
 					'caja_diferencia' => $this->input->post('caja_diferencia'),
 					'caja_corte1000' => $this->input->post('caja_corte1000'),
-					'caja_imagen1000' => $this->input->post('caja_imagen1000'),
 					'caja_corte500' => $this->input->post('caja_corte500'),
-					'caja_imagen500' => $this->input->post('caja_imagen500'),
 					'caja_corte200' => $this->input->post('caja_corte200'),
-					'caja_imagen200' => $this->input->post('caja_imagen200'),
 					'caja_corte100' => $this->input->post('caja_corte100'),
-					'caja_imagen100' => $this->input->post('caja_imagen100'),
 					'caja_corte50' => $this->input->post('caja_corte50'),
-					'caja_imagen50' => $this->input->post('caja_imagen50'),
 					'caja_corte20' => $this->input->post('caja_corte20'),
-					'caja_imagen20' => $this->input->post('caja_imagen20'),
 					'caja_corte10' => $this->input->post('caja_corte10'),
-					'caja_imagen10' => $this->input->post('caja_imagen10'),
                 );
 
                 $this->Caja_model->update_caja($caja_id,$params);            
@@ -185,6 +157,23 @@ class Caja extends CI_Controller{
         }
         else
             show_error('The caja you are trying to delete does not exist.');
+    }
+
+    /*
+     * Aperturar Caja
+     */
+    function abrir_caja()
+    {
+        $monto_caja = $this->input->post("monto_caja");
+        $caja_id = $this->input->post("caja_id");
+        
+        $sql = "update caja set caja_apertura = ".$monto_caja.", caja_fechaapertura = date(now()), ".
+                "caja_horaapertura = time(now()) where caja_id = ".$caja_id;
+        
+        $this->Caja_model->ejecutar($sql);
+        echo json_encode($sql);
+        //echo json_encode(true);
+        
     }
     
 }
