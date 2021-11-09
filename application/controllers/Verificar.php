@@ -56,7 +56,7 @@ class Verificar extends CI_Controller
                 $dosif="SELECT DATEDIFF(dosificacion_fechalimite, CURDATE()) as dias FROM dosificacion WHERE dosificacion_id = 1";
                 $dosificacion = $this->db->query($dosif)->row_array();
                 //print "<pre>"; print_r( $session_data); print "</pre>";
-
+                
                 if ($session_data['tipousuario_id'] == 1) {// admin page
                     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
                         redirect('alerta/dosificacion'); 

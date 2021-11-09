@@ -52,7 +52,7 @@ class Caja extends CI_Controller{
         
         if($this->form_validation->run())     
         {
-            $estado = 1;
+            $estado = 30;
             $params = array(
                 'estado_id' => $estado,
                 'moneda_id' => $data['all_parametro'][0]['moneda_id'],
@@ -127,64 +127,48 @@ class Caja extends CI_Controller{
         if(isset($data['caja']['caja_id']))
         {
             if(isset($_POST) && count($_POST) > 0)     
-            {   
+            {
                 $params = array(
-					'estado_id' => $this->input->post('estado_id'),
-					'moneda_id' => $this->input->post('moneda_id'),
-					'usuario_id' => $this->input->post('usuario_id'),
-					'caja_corte5' => $this->input->post('caja_corte5'),
-					'caja_imagen5' => $this->input->post('caja_imagen5'),
-					'caja_corte2' => $this->input->post('caja_corte2'),
-					'caja_imagen2' => $this->input->post('caja_imagen2'),
-					'caja_corte1' => $this->input->post('caja_corte1'),
-					'caja_imagen1' => $this->input->post('caja_imagen1'),
-					'caja_corte050' => $this->input->post('caja_corte050'),
-					'caja_imagen050' => $this->input->post('caja_imagen050'),
-					'caja_corte020' => $this->input->post('caja_corte020'),
-					'caja_imagen020' => $this->input->post('caja_imagen020'),
-					'caja_corte010' => $this->input->post('caja_corte010'),
-					'caja_imagen010' => $this->input->post('caja_imagen010'),
-					'caja_corte005' => $this->input->post('caja_corte005'),
-					'caja_imagen005' => $this->input->post('caja_imagen005'),
-					'caja_efectivo' => $this->input->post('caja_efectivo'),
-					'caja_credito' => $this->input->post('caja_credito'),
-					'caja_transacciones' => $this->input->post('caja_transacciones'),
-					'caja_apertura' => $this->input->post('caja_apertura'),
-					'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
-					'caja_horaapertura' => $this->input->post('caja_horaapertura'),
-					'caja_cierre' => $this->input->post('caja_cierre'),
-					'caja_horacierre' => $this->input->post('caja_horacierre'),
-					'caja_fechacierre' => $this->input->post('caja_fechacierre'),
-					'caja_diferencia' => $this->input->post('caja_diferencia'),
-					'caja_corte1000' => $this->input->post('caja_corte1000'),
-					'caja_imagen1000' => $this->input->post('caja_imagen1000'),
-					'caja_corte500' => $this->input->post('caja_corte500'),
-					'caja_imagen500' => $this->input->post('caja_imagen500'),
-					'caja_corte200' => $this->input->post('caja_corte200'),
-					'caja_imagen200' => $this->input->post('caja_imagen200'),
-					'caja_corte100' => $this->input->post('caja_corte100'),
-					'caja_imagen100' => $this->input->post('caja_imagen100'),
-					'caja_corte50' => $this->input->post('caja_corte50'),
-					'caja_imagen50' => $this->input->post('caja_imagen50'),
-					'caja_corte20' => $this->input->post('caja_corte20'),
-					'caja_imagen20' => $this->input->post('caja_imagen20'),
-					'caja_corte10' => $this->input->post('caja_corte10'),
-					'caja_imagen10' => $this->input->post('caja_imagen10'),
+                    'estado_id' => $this->input->post('estado_id'),
+                    'moneda_id' => $this->input->post('moneda_id'),
+                    'usuario_id' => $this->input->post('usuario_id'),
+                    'caja_apertura' => $this->input->post('caja_apertura'),
+                    'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
+                    'caja_horaapertura' => $this->input->post('caja_horaapertura'),
+                    'caja_cierre' => $this->input->post('caja_cierre'),
+                    'caja_horacierre' => $this->input->post('caja_horacierre'),
+                    'caja_fechacierre' => $this->input->post('caja_fechacierre'),
+                    'caja_diferencia' => $this->input->post('caja_diferencia'),
+                    'caja_corte1000' => $this->input->post('caja_corte1000'),
+                    'caja_corte500' => $this->input->post('caja_corte500'),
+                    'caja_corte200' => $this->input->post('caja_corte200'),
+                    'caja_corte100' => $this->input->post('caja_corte100'),
+                    'caja_corte50' => $this->input->post('caja_corte50'),
+                    'caja_corte20' => $this->input->post('caja_corte20'),
+                    'caja_corte10' => $this->input->post('caja_corte10'),
+                    'caja_corte5' => $this->input->post('caja_corte5'),
+                    'caja_corte2' => $this->input->post('caja_corte2'),
+                    'caja_corte1' => $this->input->post('caja_corte1'),
+                    'caja_corte050' => $this->input->post('caja_corte050'),
+                    'caja_corte020' => $this->input->post('caja_corte020'),
+                    'caja_corte010' => $this->input->post('caja_corte010'),
+                    'caja_corte005' => $this->input->post('caja_corte005'),
+                    'caja_efectivo' => $this->input->post('caja_efectivo'),
+                    'caja_credito' => $this->input->post('caja_credito'),
+                    'caja_transacciones' => $this->input->post('caja_transacciones'),
                 );
-
                 $this->Caja_model->update_caja($caja_id,$params);            
                 redirect('caja/index');
-            }
-            else
-            {
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado();
+            }else{
+                $this->load->model('Estado_model');
+                $tipo = 8;
+                $data['all_estado'] = $this->Estado_model->get_estado_tipo($tipo);
 
-				$this->load->model('Moneda_model');
-				$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+                $this->load->model('Moneda_model');
+                $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
 
-				$this->load->model('Usuario_model');
-				$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+                $this->load->model('Usuario_model');
+                $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
 
                 $data['_view'] = 'caja/edit';
                 $this->load->view('layouts/main',$data);

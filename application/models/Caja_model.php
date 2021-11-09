@@ -76,4 +76,20 @@ class Caja_model extends CI_Model
     {
         return $this->db->delete('caja',array('caja_id'=>$caja_id));
     }
+    /*
+     * Get caja by usuario_id
+     */
+    function get_cajausuario($usuario_id)
+    {
+        $caja = $this->db->query("
+            SELECT
+                *
+            FROM
+                `caja`
+            WHERE
+                `usuario_id` = $usuario_id
+            order by caja_id desc
+        ")->row_array();
+        return $caja;
+    }
 }

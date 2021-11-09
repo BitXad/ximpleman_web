@@ -77,7 +77,7 @@ if(isset($sintitulo)){
     </div>
 <div class="row micontenidoInforme" style="margin-top: 0px;">
     <div style="text-align: center; width: 100%; font-weight: bolder; font-size: 12pt; font-family: Arial; ">
-        Ref.: INFORME TÉCNICO ORDEN N° <?php echo $servicio['cliente_id']; ?>
+        Ref.: INFORME TÉCNICO ORDEN N° <?php echo $servicio['servicio_id']; ?>
     </div>
 </div>
 <div class="row micontenidoInforme" style="margin-top: 4px;">
