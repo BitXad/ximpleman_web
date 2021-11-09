@@ -31,16 +31,14 @@
 <script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/caja.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
-
+<!--<script src="<?php /*echo base_url('resources/js/highcharts.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/graficas.js');*/ ?>"></script>
+-->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
-<<<<<<< HEAD
 <input type="hidden" name="caja_id" id="caja_id" value="<?php echo $caja[0]['caja_id']; ?>" />
-=======
+<input type="hidden" name="estado_id" id="estado_id" value="<?php echo $caja[0]['estado_id']; ?>" />
 <input type="hidden" name="tipousuario" id="tipousuario" value="<?= $tipousuario_id ?>" />
->>>>>>> master
 <!--
 <button onclick="mostrar_grafica()">
  graficos    
@@ -893,7 +891,7 @@
                 <input type="text" name="producto_marca" value="S/N" class="form-control" id="producto_marca" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
             </div>-->
             <button class="btn btn-warning btn-block" onclick="abrir_caja()"><fa class="fa fa-money"></fa> Registrar</button>
-            <button class="btn btn-danger btn-block"><fa class="fa fa-times"></fa> Cerrar</button>
+            <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
         </div>  
       
       </div>

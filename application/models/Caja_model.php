@@ -37,7 +37,7 @@ class Caja_model extends CI_Model
     function get_caja_usuario($usuario_id)
     {
         $sql = "select * from caja where usuario_id = ".$usuario_id.
-                " and estado_id = 29";
+                " and estado_id = 29  or estado_id = 30";
                      
         $caja = $this->db->query($sql)->result_array();
         return $caja;
@@ -109,11 +109,20 @@ class Caja_model extends CI_Model
     {
         return $this->db->delete('caja',array('caja_id'=>$caja_id));
     }
-<<<<<<< HEAD
+    
+    /*
+     * function to delete caja
+     */
+    function ejecutar($sql)
+    {
+       $this->db->query($sql);
+       
+        return true;
+    }
     /*
      * Get caja by usuario_id
      */
-    function get_cajausuario($usuario_id)
+    /*function get_cajausuario($usuario_id)
     {
         $caja = $this->db->query("
             SELECT
@@ -125,16 +134,5 @@ class Caja_model extends CI_Model
             order by caja_id desc
         ")->row_array();
         return $caja;
-=======
-    
-    /*
-     * function to delete caja
-     */
-    function ejecutar($sql)
-    {
-       $this->db->query($sql);
-       
-        return true;
->>>>>>> master
-    }
+    }*/
 }
