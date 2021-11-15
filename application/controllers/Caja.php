@@ -235,9 +235,9 @@ class Caja extends CI_Controller{
         }
     }
     /*
-     * Adding a new caja
+     * cierre de una caja
      */
-    function cierre_caja()
+    function cierre_caja($caja_id)
     {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('caja_apertura','Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -247,7 +247,7 @@ class Caja extends CI_Controller{
         $this->load->model('Parametro_model');
         $data['all_parametro'] = $this->Parametro_model->get_parametros();
         
-        $data['caja'] = $this->Caja_model->get_caja_usuario($usuario_id);
+        $data['caja'] = $this->Caja_model->get_caja($caja_id);
         if($this->form_validation->run())     
         {
             $estado = 30;

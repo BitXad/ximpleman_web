@@ -106,6 +106,7 @@
                         <td><?php echo $c['usuario_nombre']; ?></td>
                         <td>
                             <a href="<?php echo site_url('caja/edit/'.$c['caja_id']); ?>" class="btn btn-info btn-xs" title="Modificar caja"><span class="fa fa-pencil"></span></a> 
+                            <a href="<?php echo site_url('caja/cierre_caja/'.$c['caja_id']); ?>" class="btn btn-facebook btn-xs" title="Cierre de caja"><span class="fa fa-suitcase"></span></a> 
                             <!--<a href="<?php //echo site_url('caja/remove/'.$c['caja_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>

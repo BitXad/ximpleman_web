@@ -5,18 +5,10 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Cierre de Caja</h3>
             </div>
-            <?php echo form_open('caja/cierre_caja/'.$caja[0]['caja_id']); ?>
+            <?php echo form_open('caja/cierre_caja/'.$caja['caja_id']); ?>
           	<div class="box-body">
                     <div class="row clearfix">
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <span class="input-group-addon" style="border: 0px; padding: 1px">
-                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
-                                </span>
-                                <input type="number" step="any" min="0" style="height: 61px" name="caja_apertura" value="<?php echo ($this->input->post('caja_apertura') ? $this->input->post('caja_apertura') : 0); ?>" class="form-control" id="caja_apertura" autofocus required />
-                            </div>
-                        </div>
-                        <div class="col-md-4">
+                        <!--<div class="col-md-4">
                             <label for="caja_fechaapertura" class="control-label"><span class="text-danger">*</span>Fecha</label>
                             <div class="form-group">
                                 <input type="date" name="caja_fechaapertura" value="<?php echo ($this->input->post('caja_fechaapertura') ? $this->input->post('caja_fechaapertura') : date('Y-m-d')); ?>" class=" form-control" id="caja_fechaapertura" required />
@@ -27,33 +19,31 @@
                             <div class="form-group">
                                 <input type="time" step="any" name="caja_horaapertura" value="<?php echo ($this->input->post('caja_horaapertura') ? $this->input->post('caja_horaapertura') : date('H:i:s')); ?>" class="form-control" id="caja_horaapertura" required />
                             </div>
-                        </div>
-                        <!--
-                        <div class="col-md-6">
-                            <label for="caja_cierre" class="control-label">Caja Cierre</label>
+                        </div>-->
+                        <div class="col-md-4">
+                            <label for="caja_cierre" class="control-label"><span class="text-danger">*</span>Cierre</label>
                             <div class="form-group">
-                                <input type="text" name="caja_cierre" value="<?php /*echo $this->input->post('caja_cierre'); ?>" class="form-control" id="caja_cierre" />
+                                <input type="number" step="any" min="0" name="caja_cierre" value="<?php echo ($this->input->post('caja_cierre') ? $this->input->post('caja_cierre') : $caja['caja_cierre']); ?>" class="form-control" id="caja_cierre" autofocus required />
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="caja_horacierre" class="control-label">Caja Horacierre</label>
+                        <div class="col-md-4">
+                            <label for="caja_fechacierre" class="control-label">Fecha Cierre</label>
                             <div class="form-group">
-                                <input type="text" name="caja_horacierre" value="<?php echo $this->input->post('caja_horacierre'); ?>" class="form-control" id="caja_horacierre" />
+                                <input type="date" name="caja_fechacierre" value="<?php echo ($this->input->post('caja_fechacierre') ? $this->input->post('caja_fechacierre') : date('Y-m-d')); ?>" class="form-control" id="caja_fechacierre" />
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="caja_fechacierre" class="control-label">Caja Fechacierre</label>
+                        <div class="col-md-4">
+                            <label for="caja_horacierre" class="control-label">Hora Cierre</label>
                             <div class="form-group">
-                                <input type="text" name="caja_fechacierre" value="<?php echo $this->input->post('caja_fechacierre'); ?>" class="has-datepicker form-control" id="caja_fechacierre" />
+                                <input type="time" step="any" name="caja_horacierre" value="<?php echo ($this->input->post('caja_horacierre') ? $this->input->post('caja_horacierre') : date('H:i:s')); ?>" class="form-control" id="caja_horacierre" />
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <!--<div class="col-md-6">
                             <label for="caja_diferencia" class="control-label">Caja Diferencia</label>
                             <div class="form-group">
-                                <input type="text" name="caja_diferencia" value="<?php echo $this->input->post('caja_diferencia');*/ ?>" class="form-control" id="caja_diferencia" />
+                                <input type="text" name="caja_diferencia" value="<?php //echo $this->input->post('caja_diferencia'); ?>" class="form-control" id="caja_diferencia" />
                             </div>
-                        </div>
-                        -->
+                        </div>-->
                         <div class="col-md-2">
                             <label for="caja_corte1000" class="control-label">Cortes de 1000</label>
                             <div class="form-group">
@@ -66,12 +56,55 @@
                                 <input type="number" min="0" name="caja_corte500" value="<?php echo ($this->input->post('caja_corte500') ? $this->input->post('caja_corte500') : 0); ?>" class="form-control" id="caja_corte500" />
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte200" class="control-label">Cortes de 200</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
                             </div>
-                        </div><div class="col-md-2">
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte100" value="<?php echo ($this->input->post('caja_corte100') ? $this->input->post('caja_corte100') : 0); ?>" class="form-control" id="caja_corte100" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
+                            </div>
+                        </div>
+                        <div class="col-md-2">
                             <label for="caja_corte100" class="control-label">Cortes de 100</label>
                             <div class="form-group">
                                 <input type="number" min="0" name="caja_corte100" value="<?php echo ($this->input->post('caja_corte100') ? $this->input->post('caja_corte100') : 0); ?>" class="form-control" id="caja_corte100" />
