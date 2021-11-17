@@ -27,15 +27,15 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="caja_fechacierre" class="control-label">Fecha Cierre</label>
+                            <label for="caja_fechacierre" class="control-label"><span class="text-danger">*</span>Fecha Cierre</label>
                             <div class="form-group">
-                                <input type="date" name="caja_fechacierre" value="<?php echo ($this->input->post('caja_fechacierre') ? $this->input->post('caja_fechacierre') : date('Y-m-d')); ?>" class="form-control" id="caja_fechacierre" />
+                                <input type="date" name="caja_fechacierre" value="<?php echo ($this->input->post('caja_fechacierre') ? $this->input->post('caja_fechacierre') : date('Y-m-d')); ?>" class="form-control" id="caja_fechacierre" required />
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="caja_horacierre" class="control-label">Hora Cierre</label>
+                            <label for="caja_horacierre" class="control-label"><span class="text-danger">*</span>Hora Cierre</label>
                             <div class="form-group">
-                                <input type="time" step="any" name="caja_horacierre" value="<?php echo ($this->input->post('caja_horacierre') ? $this->input->post('caja_horacierre') : date('H:i:s')); ?>" class="form-control" id="caja_horacierre" />
+                                <input type="time" step="any" name="caja_horacierre" value="<?php echo ($this->input->post('caja_horacierre') ? $this->input->post('caja_horacierre') : date('H:i:s')); ?>" class="form-control" id="caja_horacierre" required />
                             </div>
                         </div>
                         <!--<div class="col-md-6">
@@ -59,7 +59,7 @@
                         <div class="col-md-3">
                             <div class="input-group">
                                 <span class="input-group-addon" style="border: 0px; padding: 1px">
-                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 200">
                                 </span>
                                 <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
                             </div>
@@ -67,7 +67,7 @@
                         <div class="col-md-3">
                             <div class="input-group">
                                 <span class="input-group-addon" style="border: 0px; padding: 1px">
-                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                    <img src="<?php echo base_url('resources/images/caja/100bs.jpeg'); ?>" width="100" height="60" title="Cortes de bs. 100">
                                 </span>
                                 <input type="number" step="any" min="0" style="height: 61px" name="caja_corte100" value="<?php echo ($this->input->post('caja_corte100') ? $this->input->post('caja_corte100') : 0); ?>" class="form-control" id="caja_corte100" />
                             </div>
@@ -75,101 +75,83 @@
                         <div class="col-md-3">
                             <div class="input-group">
                                 <span class="input-group-addon" style="border: 0px; padding: 1px">
-                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                    <img src="<?php echo base_url('resources/images/caja/50bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 50">
                                 </span>
-                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte50" value="<?php echo ($this->input->post('caja_corte50') ? $this->input->post('caja_corte50') : 0); ?>" class="form-control" id="caja_corte50" />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="input-group">
                                 <span class="input-group-addon" style="border: 0px; padding: 1px">
-                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                    <img src="<?php echo base_url('resources/images/caja/20bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 20">
                                 </span>
-                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte20" value="<?php echo ($this->input->post('caja_corte20') ? $this->input->post('caja_corte20') : 0); ?>" class="form-control" id="caja_corte20" />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="input-group">
                                 <span class="input-group-addon" style="border: 0px; padding: 1px">
-                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                    <img src="<?php echo base_url('resources/images/caja/10bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 10">
                                 </span>
-                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte10" value="<?php echo ($this->input->post('caja_corte10') ? $this->input->post('caja_corte10') : 0); ?>" class="form-control" id="caja_corte10" />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="input-group">
                                 <span class="input-group-addon" style="border: 0px; padding: 1px">
-                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60">
+                                    <img src="<?php echo base_url('resources/images/caja/5bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 5">
                                 </span>
-                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte5" value="<?php echo ($this->input->post('caja_corte5') ? $this->input->post('caja_corte5') : 0); ?>" class="form-control" id="caja_corte5" />
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte100" class="control-label">Cortes de 100</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte100" value="<?php echo ($this->input->post('caja_corte100') ? $this->input->post('caja_corte100') : 0); ?>" class="form-control" id="caja_corte100" />
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/2bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 2">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte2" value="<?php echo ($this->input->post('caja_corte2') ? $this->input->post('caja_corte2') : 0); ?>" class="form-control" id="caja_corte2" />
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte50" class="control-label">Cortes de 50</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte50" value="<?php echo ($this->input->post('caja_corte50') ? $this->input->post('caja_corte50') : 0); ?>" class="form-control" id="caja_corte50" />
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/1bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 1">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte1" value="<?php echo ($this->input->post('caja_corte1') ? $this->input->post('caja_corte1') : 0); ?>" class="form-control" id="caja_corte1" />
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte20" class="control-label">Cortes de 20</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte20" value="<?php echo ($this->input->post('caja_corte20') ? $this->input->post('caja_corte20') : 0); ?>" class="form-control" id="caja_corte20" />
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/050bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 0.50">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte050" value="<?php echo ($this->input->post('caja_corte050') ? $this->input->post('caja_corte050') : 0); ?>" class="form-control" id="caja_corte050" />
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte10" class="control-label">Cortes de 10</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte10" value="<?php echo ($this->input->post('caja_corte10') ? $this->input->post('caja_corte10') : 0); ?>" class="form-control" id="caja_corte10" />
-                            </div>
-                        </div><div class="col-md-2">
-                            <label for="caja_corte5" class="control-label">Cortes de 5</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte5" value="<?php echo ($this->input->post('caja_corte5') ? $this->input->post('caja_corte5') : 0); ?>" class="form-control" id="caja_corte5" />
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/020bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 0.20">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte020" value="<?php echo ($this->input->post('caja_corte020') ? $this->input->post('caja_corte020') : 0); ?>" class="form-control" id="caja_corte020" />
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte2" class="control-label">Cortes de 2</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte2" value="<?php echo ($this->input->post('caja_corte2') ? $this->input->post('caja_corte2') : 0); ?>" class="form-control" id="caja_corte2" />
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/010bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 0.10">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte010" value="<?php echo ($this->input->post('caja_corte010') ? $this->input->post('caja_corte010') : 0); ?>" class="form-control" id="caja_corte010" />
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte1" class="control-label">Cortes de 1</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte1" value="<?php echo ($this->input->post('caja_corte1') ? $this->input->post('caja_corte1') : 0); ?>" class="form-control" id="caja_corte1" />
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="border: 0px; padding: 1px">
+                                    <img src="<?php echo base_url('resources/images/caja/005bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 0.05">
+                                </span>
+                                <input type="number" step="any" min="0" style="height: 61px" name="caja_corte005" value="<?php echo ($this->input->post('caja_corte005') ? $this->input->post('caja_corte005') : 0); ?>" class="form-control" id="caja_corte005" />
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte050" class="control-label">Cortes de 050</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte050" value="<?php echo ($this->input->post('caja_corte050') ? $this->input->post('caja_corte050') : 0); ?>" class="form-control" id="caja_corte050" />
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte020" class="control-label">Cortes de 020</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte020" value="<?php echo ($this->input->post('caja_corte020') ? $this->input->post('caja_corte020') : 0); ?>" class="form-control" id="caja_corte020" />
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte010" class="control-label">Cortes de 010</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte010" value="<?php echo ($this->input->post('caja_corte010') ? $this->input->post('caja_corte010') : 0); ?>" class="form-control" id="caja_corte010" />
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="caja_corte005" class="control-label">Cortes de 005</label>
-                            <div class="form-group">
-                                <input type="number" min="0" name="caja_corte005" value="<?php echo ($this->input->post('caja_corte005') ? $this->input->post('caja_corte005') : 0); ?>" class="form-control" id="caja_corte005" />
-                            </div>
-                        </div>
-                        
                     </div>
                 </div>
           	<div class="box-footer">

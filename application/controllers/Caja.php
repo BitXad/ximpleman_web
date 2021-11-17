@@ -240,9 +240,9 @@ class Caja extends CI_Controller{
     function cierre_caja($caja_id)
     {
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('caja_apertura','Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        $this->form_validation->set_rules('caja_fechaapertura','Fecha Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        $this->form_validation->set_rules('caja_horaapertura','Hora Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('caja_cierre','Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('caja_fechacierre','Fecha de Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('caja_horacierre','Hora de Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         $usuario_id = $this->session_data['usuario_id'];
         $this->load->model('Parametro_model');
         $data['all_parametro'] = $this->Parametro_model->get_parametros();
@@ -250,17 +250,17 @@ class Caja extends CI_Controller{
         $data['caja'] = $this->Caja_model->get_caja($caja_id);
         if($this->form_validation->run())     
         {
-            $estado = 30;
+            $estado = 31;
             $params = array(
                 'estado_id' => $estado,
-                'moneda_id' => $data['all_parametro'][0]['moneda_id'],
+                /*'moneda_id' => $data['all_parametro'][0]['moneda_id'],
                 'usuario_id' => $usuario_id,
                 'caja_apertura' => $this->input->post('caja_apertura'),
                 'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
-                'caja_horaapertura' => $this->input->post('caja_horaapertura'),
-                /*'caja_cierre' => $this->input->post('caja_cierre'),
+                'caja_horaapertura' => $this->input->post('caja_horaapertura'),*/
+                'caja_cierre' => $this->input->post('caja_cierre'),
                 'caja_horacierre' => $this->input->post('caja_horacierre'),
-                'caja_fechacierre' => $this->input->post('caja_fechacierre'),*/
+                'caja_fechacierre' => $this->input->post('caja_fechacierre'),
                 'caja_diferencia' => $this->input->post('caja_diferencia'),
                 'caja_corte1000' => $this->input->post('caja_corte1000'),
                 'caja_corte500' => $this->input->post('caja_corte500'),
