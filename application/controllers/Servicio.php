@@ -2359,4 +2359,36 @@ class Servicio extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
+    /*
+     * Reporte de los servicios por fechas
+     */
+    function reproximovencer($es = null)
+    {
+        if($this->acceso(142)){
+            $data['servicio'] = $this->Servicio_model->get_all_repservicios();
+            $data['a']=$es;
+
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
+
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            /*
+            $this->load->model('Responsable_model');
+            $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
+            */
+            $this->load->model('Usuario_model');
+            $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+
+            /*$this->load->model('Cliente_model');
+            $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
+            */
+            $data['page_title'] = "Servicios proximos a vencer";
+            $data['_view'] = 'servicio/reproximovencer';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 }

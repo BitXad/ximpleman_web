@@ -61,6 +61,7 @@
             <br><font size='2' face='Arial'>Registros Encontrados: <span id="regencontrados"></span></font>
             <?php if($b != "s") {?>
             <font style="padding-left: 20px" size="2" face="Arial" title="Ir a reporte de servicios"><a class="btn btn-facebook btn-xs" href="<?php echo site_url('reportes/servicioreportes') ?>">Reporte de Servicios</a></font>
+            <font style="padding-left: 2px" size="2" face="Arial" title="Servicios pendientes y en proceso proximos a vencer"><a class="btn btn-facebook btn-xs" href="<?php echo site_url('servicio/reproximovencer') ?>">Servicios a Vencer</a></font>
             <?php }?>
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
