@@ -493,4 +493,29 @@ class Servicio_model extends CI_Model
 
         return $servicio;
     }
+    /* Servicios proximos a vencer!.. pendientes y en proceso */
+    function proximos_avencer()
+    {
+        $servicio = $this->db->query("
+            SELECT
+                c.cliente_nombre, s.servicio_id, ds.detalleserv_id, ds.estado_id,
+                s.servicio_fecharecepcion, s.servicio_horarecepcion,
+                ds.detalleserv_fechaentrega, ds.detalleserv_horaentrega,
+                e.estado_descripcion, ts.tiposerv_descripcion, s.servicio_direccion,
+                ds.detalleserv_descripcion, r.usuario_nombre as respnombre
+            FROM
+                detalle_serv ds
+            LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+            LEFT JOIN estado e on ds.estado_id = e.estado_id
+            LEFT JOIN usuario r on ds.responsable_id = r.usuario_id
+            LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+            LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
+            LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
+            WHERE
+                ds.estado_id = 5 or ds.estado_id = 28
+                order by ds.detalleserv_fechaentrega desc, ds.detalleserv_horaentrega desc
+        ")->result_array();
+        
+        return $servicio;
+    }
 }
