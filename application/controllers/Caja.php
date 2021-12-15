@@ -78,9 +78,9 @@ class Caja extends CI_Controller{
                 'caja_corte020' => $this->input->post('caja_corte020'),
                 'caja_corte010' => $this->input->post('caja_corte010'),
                 'caja_corte005' => $this->input->post('caja_corte005'),
-                'caja_efectivo' => $this->input->post('caja_efectivo'),
+                /*'caja_efectivo' => $this->input->post('caja_efectivo'),
                 'caja_credito' => $this->input->post('caja_credito'),
-                'caja_transacciones' => $this->input->post('caja_transacciones'),
+                'caja_transacciones' => $this->input->post('caja_transacciones'),*/
                 /*'caja_imagen1000' => $this->input->post('caja_imagen1000'),
                 'caja_imagen500' => $this->input->post('caja_imagen500'),
                 'caja_imagen200' => $this->input->post('caja_imagen200'),

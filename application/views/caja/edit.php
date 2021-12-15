@@ -10,37 +10,37 @@
                         <div class="col-md-4">
                             <label for="caja_apertura" class="control-label"><span class="text-danger">*</span>Apertura</label>
                             <div class="form-group">
-                                <input type="number" step="any" min="0" name="caja_apertura" value="<?php echo ($this->input->post('caja_apertura') ? $this->input->post('caja_apertura') : $caja['caja_apertura']); ?>" class="form-control" id="caja_apertura" required />
+                                <input type="number" step="any" min="0" style='background-color: #d2fcd7' name="caja_apertura" value="<?php echo ($this->input->post('caja_apertura') ? $this->input->post('caja_apertura') : $caja['caja_apertura']); ?>" class="form-control" id="caja_apertura" required />
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label for="caja_fechaapertura" class="control-label"><span class="text-danger">*</span>Fecha</label>
                             <div class="form-group">
-                                <input type="date" name="caja_fechaapertura" value="<?php echo ($this->input->post('caja_fechaapertura') ? $this->input->post('caja_fechaapertura') : $caja['caja_fechaapertura']); ?>" class="form-control" id="caja_fechaapertura" required />
+                                <input type="date" name="caja_fechaapertura" style='background-color: #d2fcd7' value="<?php echo ($this->input->post('caja_fechaapertura') ? $this->input->post('caja_fechaapertura') : $caja['caja_fechaapertura']); ?>" class="form-control" id="caja_fechaapertura" required />
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label for="caja_horaapertura" class="control-label"><span class="text-danger">*</span>Hora</label>
                             <div class="form-group">
-                                <input type="time" step="any" name="caja_horaapertura" value="<?php echo ($this->input->post('caja_horaapertura') ? $this->input->post('caja_horaapertura') : $caja['caja_horaapertura']); ?>" class="form-control" id="caja_horaapertura" required />
+                                <input type="time" step="any" name="caja_horaapertura" style='background-color: #d2fcd7' value="<?php echo ($this->input->post('caja_horaapertura') ? $this->input->post('caja_horaapertura') : $caja['caja_horaapertura']); ?>" class="form-control" id="caja_horaapertura" required />
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label for="caja_cierre" class="control-label">Cierre</label>
                             <div class="form-group">
-                                <input type="number" step="any" min="0" name="caja_cierre" value="<?php echo ($this->input->post('caja_cierre') ? $this->input->post('caja_cierre') : $caja['caja_cierre']); ?>" class="form-control" id="caja_cierre" />
+                                <input type="number" step="any" min="0" style='background-color: #dbc2b4' name="caja_cierre" value="<?php echo ($this->input->post('caja_cierre') ? $this->input->post('caja_cierre') : $caja['caja_cierre']); ?>" class="form-control" id="caja_cierre" />
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label for="caja_fechacierre" class="control-label">Fecha</label>
                             <div class="form-group">
-                                <input type="date" name="caja_fechacierre" value="<?php echo ($this->input->post('caja_fechacierre') ? $this->input->post('caja_fechacierre') : $caja['caja_fechacierre']); ?>" class="form-control" id="caja_fechacierre" />
+                                <input type="date" name="caja_fechacierre" style='background-color: #dbc2b4' value="<?php echo ($this->input->post('caja_fechacierre') ? $this->input->post('caja_fechacierre') : $caja['caja_fechacierre']); ?>" class="form-control" id="caja_fechacierre" />
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label for="caja_horacierre" class="control-label">Hora</label>
                             <div class="form-group">
-                                <input type="time" step="any" name="caja_horacierre" value="<?php echo ($this->input->post('caja_horacierre') ? $this->input->post('caja_horacierre') : $caja['caja_horacierre']); ?>" class="form-control" id="caja_horacierre" />
+                                <input type="time" step="any" name="caja_horacierre" style='background-color: #dbc2b4' value="<?php echo ($this->input->post('caja_horacierre') ? $this->input->post('caja_horacierre') : $caja['caja_horacierre']); ?>" class="form-control" id="caja_horacierre" />
                             </div>
                         </div>
                         <div class="col-md-4">

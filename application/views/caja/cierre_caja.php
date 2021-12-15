@@ -59,7 +59,7 @@
                         <div class="col-md-3">
                             <div class="input-group">
                                 <span class="input-group-addon" style="border: 0px; padding: 1px">
-                                    <img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 200">
+                                    <figure><img src="<?php echo base_url('resources/images/caja/200bs.jpg'); ?>" width="100" height="60" title="Cortes de bs. 200"></figure>
                                 </span>
                                 <input type="number" step="any" min="0" style="height: 61px" name="caja_corte200" value="<?php echo ($this->input->post('caja_corte200') ? $this->input->post('caja_corte200') : 0); ?>" class="form-control" id="caja_corte200" />
                             </div>

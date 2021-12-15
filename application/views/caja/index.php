@@ -50,7 +50,16 @@
                         <td><?php echo $c['caja_apertura']; ?></td>
                         <td><?php echo $c['caja_fechaapertura']; echo " ".$c['caja_horaapertura']; ?></td>
                         <td><?php echo $c['caja_cierre']; ?></td>
-                        <td><?php echo $c['caja_fechacierre']; echo " ".$c['caja_horacierre'] ?></td>
+                        <td>
+                            <?php
+                            if($c['caja_fechacierre'] != null && $c['caja_fechacierre'] != "0000-00-00"){
+                                echo $c['caja_fechacierre'];
+                            }
+                            if($c['caja_horacierre'] != null && $c['caja_horacierre'] != "00:00:00"){
+                                echo " ".$c['caja_horacierre'];
+                            }
+                            ?>
+                        </td>
                         <td><?php echo $c['caja_diferencia']; ?></td>
                         <td>
                             <?php

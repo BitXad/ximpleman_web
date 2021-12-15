@@ -76,14 +76,19 @@
                         $i = 0;
                         //$costototal = 0;
                         foreach ($all_detservicio as $detservicio) {
-                            //$costototal = ($costototal+$costo['costoop_costo']);
+                            $alerta ="#000";
+                            $date_add = new DateTime(date($detservicio['detalleserv_fechaentrega']." ".$detservicio['detalleserv_horaentrega']));
+                            $fecha_actual = new DateTime(date('Y-m-d H:i:s'));
+                            $diff = $date_add->diff($fecha_actual);
                             
-                            $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
-                            $fecha_avencer = strtotime(date(date("d/m/Y", strtotime($detservicio['detalleserv_fechaentrega']))." ".$detservicio['detalleserv_horaentrega']));
-                            if($fecha_avencer >=$fecha_actual){
+                            $time_elapsed = '';
+                            
+                            if ($diff->days > 0) {
                                 $alerta = "#f55b18";
-                            }else{
-                                $alerta = "fff";
+                            }
+
+                            if ($diff->h >= 2) {
+                                $alerta = "#f55b18";
                             }
                         ?>
                         <tr style="color: <?php echo $alerta; ?>">
