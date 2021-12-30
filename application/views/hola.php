@@ -39,6 +39,7 @@
 <input type="hidden" name="caja_id" id="caja_id" value="<?php echo $caja[0]['caja_id']; ?>" />
 <input type="hidden" name="estado_id" id="estado_id" value="<?php echo $caja[0]['estado_id']; ?>" />
 <input type="hidden" name="tipousuario" id="tipousuario" value="<?= $tipousuario_id ?>" />
+<input type="hidden" name="tipouser" id="tipouser" value="<?= $tipousuario_id ?>" />
 <!--
 <button onclick="mostrar_grafica()">
  graficos    
