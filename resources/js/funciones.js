@@ -61,7 +61,7 @@ function calcularcambio(e){
    
    var venta_cambio = Number(venta_efectivo) - Number(venta_totalfinal);
    //alert(venta_cambio);
-   $("#venta_cambio").val(venta_cambio);
+   $("#venta_cambio").val(venta_cambio.toFixed(2));
    
    if (tecla==13){ 
         $("#boton_finalizar").click();

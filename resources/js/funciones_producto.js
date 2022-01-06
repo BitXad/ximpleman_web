@@ -218,7 +218,7 @@ function tablaresultadosproducto(limite){
                             codbarras = registros[i]["producto_codigobarra"];
                         }
                         html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
-                        html += "<td>"+Number(registros[i]["existencia"])+"</td>";
+                        html += "<td>"+Number(registros[i]["existencia"]).toFixed(2)+"</td>";
                         html += "<td>";
                         if(tipousuario_id == 1){
                             html += "<b>COMPRA: </b>"+registros[i]["producto_costo"]+"<br>";

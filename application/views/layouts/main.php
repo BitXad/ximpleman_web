@@ -180,14 +180,14 @@
                         </li>      
                         <?php
                         }
-                        if($rolusuario[69-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[102-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('formula');?>"><i class="fa fa-list-ol"></i> Formula</a>
                         </li>      
                         <?php
                         }
-                        if($rolusuario[69-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[102-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('produccion/producir');?>"><i class="fa fa-certificate"></i> Producción</a>
