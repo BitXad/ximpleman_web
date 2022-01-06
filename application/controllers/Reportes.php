@@ -928,6 +928,12 @@ function torta3($anio,$mes)
             $data['usuario_id'] = $this->session_data['usuario_id'];
             $this->load->model('Empresa_model');
             $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $rolusuario = $this->session_data['rol'];
+            $data['tienepermiso'] = $rolusuario[171-1]['rolusuario_asignado'];
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
             /*
             $this->load->model('Parametro_model');
             $data['parametro'] = $this->Parametro_model->get_parametros();

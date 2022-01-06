@@ -750,10 +750,15 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
     
     function get_ingresoreportes($fecha1, $fecha2, $usuario_id)
     {
-      $cadusuario1 = " and v.usuario_id = ".$usuario_id." ";
-      $cadusuario3 = " and i.usuario_id = ".$usuario_id." ";
-      $cadusuario6 = " and c.usuario_id = ".$usuario_id." ";
-
+        if($usuario_id > 0){
+            $cadusuario1 = " and v.usuario_id = ".$usuario_id." ";
+            $cadusuario3 = " and i.usuario_id = ".$usuario_id." ";
+            $cadusuario6 = " and c.usuario_id = ".$usuario_id." ";
+        }else{
+            $cadusuario1 = "";
+            $cadusuario3 = "";
+            $cadusuario6 = "";
+        }
         $ingresos = $this->db->query("
      
       (select 
@@ -769,7 +774,7 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
       order by i.ingreso_fecha desc)
       UNION
       (select 
-            concat(v.venta_fecha, ' ', v.venta_hora) as fecha, p.producto_nombre as detalle,
+            concat(v.venta_fecha, ' ', v.venta_hora) as fecha, concat('(', d.detalleven_cantidad, ')', '(', p.producto_codigo, ') ', p.producto_nombre) as detalle,
             d.detalleven_total as ingreso, 0 as egreso,
             d.detalleven_total-(d.detalleven_costo * d.detalleven_cantidad) as utilidad, 2 as tipo
       from

@@ -96,7 +96,8 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    
                     var fecha1 = fecha_desde;
                     var fecha2 = fecha_hasta;
-                    var esusuario = document.getElementById('usuario_nombre').value;
+                    //var esusuario = document.getElementById('usuario_nombre').value;
+                    var esusuario = $('select[name="buscarusuario_id"] option:selected').text();
                     if(!(fecha_desde == null || fecha_desde =="") && !(fecha_hasta == null  || fecha_hasta =="")){
                         fecha1 = "Desde: "+convertDateFormat(fecha_desde);
                         fecha2 = " - Hasta: "+convertDateFormat(fecha_hasta);
