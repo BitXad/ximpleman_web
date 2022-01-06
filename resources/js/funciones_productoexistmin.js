@@ -165,7 +165,7 @@ function tablaresultadosproducto(limite)
                         if (Number(registros[i]['existencia'])>0){
                             color = "";                            
                         }else{                            
-                            color = "style='background-color: #ff81ff; '";
+                            color = "style='background-color: #ffffff; '";
                         }
 
                         
