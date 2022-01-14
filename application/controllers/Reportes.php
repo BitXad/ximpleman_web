@@ -12,7 +12,9 @@ class Reportes extends CI_Controller{
 
         $this->load->model('Reporte_ing_egr_model');
         $this->load->model('Ingreso_model');
+        $this->load->model('Cuotum_model');
         $this->load->model('Empresa_model');
+        $this->load->model('Usuario_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -1724,5 +1726,41 @@ function torta3($anio,$mes)
             $mes = $this->input->post('fecha2'); 
     */
 
+    }
+    /**
+     * Get reporte de mora de las ventas a credito
+     */
+    function reporte_mora(){
+        if($this->acceso(141)){
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            
+            $data['tipousuario_id']  = $this->session_data['tipousuario_id'];
+            $data['usuario_id']  = $this->session_data['usuario_id'];
+            $data['usuario_nombre']  = $this->session_data['usuario_nombre'];
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+    
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['page_title'] = "Reporte de mora";
+            $data['_view'] = 'reportes/reporte_mora';
+    
+            $this->load->view('layouts/main',$data);
+        }
+    }
+
+    function get_moras(){
+        if($this->input->is_ajax_request()){
+            $usuario = $this->input->post('usuario');
+            $all_usuarios = 0;
+            $consulta_usuario = "";
+            if($usuario != $all_usuarios){
+                $consulta_usuario = "AND c2.usuario_id = $usuario";
+            }
+            $moras = $this->Cuotum_model->get_moras($consulta_usuario);
+            echo json_encode($moras);
+        }else{
+            show_404();
+        }
     }
 }

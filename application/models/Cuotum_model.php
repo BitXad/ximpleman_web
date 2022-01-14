@@ -376,4 +376,45 @@ class Cuotum_model extends CI_Model
         $this->db->where('credito_id',$credito_id);
         return $this->db->update('cuota',$params);
     }
+    /* Funcion para obtener todos las ventas con mora */
+    function get_moras($consulta_usuario = ""){
+        return $this->db->query(
+            // "SELECT c.credito_id, c2.cuota_id, c3.cliente_nombre,
+            //         c2.cuota_fechalimite, c.credito_monto, c2.cuota_interes, m.dias_mora,
+            //         if((c2.cuota_interes*m.dias_mora)/30 > 0,(c2.cuota_interes*m.dias_mora)/30,0) as multa
+            // from credito c 
+            // left join cuota c2 on c2.credito_id = c.credito_id
+            // left join (
+            //     select c4.credito_id,if(datediff(now(),c5.cuota_fechalimite) is null, 0, datediff(now(),c5.cuota_fechalimite)) as dias_mora 
+            //     from credito c4 
+            //     left join cuota c5 on c5.credito_id = c4.credito_id
+            //     where c5.estado_id = 8
+            //     and c5.cuota_fechalimite <= now()
+            // ) as m on m.credito_id = c.credito_id 
+            // left join venta v on v.venta_id = c.venta_id 
+            // left join cliente c3 on c3.cliente_id = v.cliente_id 
+            // where c2.estado_id = 8
+            // and c2.cuota_fechalimite <= now()
+            // $consulta_usuario"
+            "SELECT c.credito_id, min(c2.cuota_numcuota), c2.*, m.dias_mora,
+                c3.cliente_nombre,c.credito_monto,v.venta_id,
+                if((c2.cuota_interes*m.dias_mora)/30 > 0,(c2.cuota_interes*m.dias_mora)/30,0) as multa
+            from credito c 
+            left join cuota c2 on c2.credito_id = c.credito_id
+            left join (
+                select c5.cuota_id,if(datediff(now(),c5.cuota_fechalimite) is null, 0, datediff(now(),c5.cuota_fechalimite)) as dias_mora
+                from credito c4 
+                left join cuota c5 on c5.credito_id = c4.credito_id
+                where c5.estado_id = 8
+                and c5.cuota_fechalimite <= now()
+            ) as m on m.cuota_id = c2.cuota_id 
+            left join venta v on v.venta_id = c.venta_id 
+            left join cliente c3 on c3.cliente_id = v.cliente_id 
+            where c2.estado_id = 8
+            and c2.cuota_fechalimite <= now()
+            $consulta_usuario
+            group by c.credito_id
+            order by c3.cliente_nombre, c2.cuota_numcuota, c.credito_id"
+        )->result_array();
+    }
 }
