@@ -289,7 +289,7 @@ function cerrar_ventana(){
 
 
 <center>
-    <font size="3"><b>PEDIDO</b></font>
+    <font size="3"><b><?php echo $pedido_titulo; ?></b></font>
      <!--<a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>-->
     <button onclick="focus_cliente()" id="boton_bsucar_clie" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></button>
     

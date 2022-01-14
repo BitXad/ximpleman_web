@@ -14,7 +14,7 @@
   <body>
       <div class="container">
           <h4><b>Mis Cliente: <?php echo sizeof($all_pedido); ?></b>
-          <a href="<?php echo site_url('pedido'); ?>" class="btn btn-danger btn-sm"><span class="fa fa-list"></span> Pedidos</a>
+          <a href="<?php echo site_url('pedido'); ?>" class="btn btn-danger btn-sm"><span class="fa fa-list"></span> <?php echo $pedido_titulo; ?></a>
           </h4>
           <div class="col col-md-12 table-responsive">
               <table class="table">

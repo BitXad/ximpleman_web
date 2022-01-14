@@ -81,10 +81,12 @@ foreach($all_parametros as $p)
                     <tr>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TITULO DOC.</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. PRODUCCION</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TITULO PEDIDO</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_tituldoc']; ?></td>
                         <td><?php echo $p['parametro_numordenproduccion']; ?></td>
+                        <td><?php echo $p['parametro_pedidotitulo']; ?></td>
                     </tr>
                     <tr>
                         <th style="font-size: 12px;color:black; background: rgba(0, 255, 0, 0.3);" rowspan="2" ><u>CREDITOS</u></th>

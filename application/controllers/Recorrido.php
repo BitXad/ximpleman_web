@@ -26,7 +26,8 @@ class Recorrido extends CI_Controller{
             
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-
+            
+            $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
             $data['_view'] = 'recorrido/index';
             $this->load->view('layouts/main',$data);
     }

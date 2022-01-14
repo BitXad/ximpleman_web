@@ -83,6 +83,16 @@
                         <input type="text" readonly name="parametro_numordenproduccion" value="<?php echo ($this->input->post('parametro_numordenproduccion') ? $this->input->post('parametro_numordenproduccion') : $parametro['parametro_numordenproduccion']); ?>" class="form-control" id="parametro_numordenproduccion" />
                     </div>
                 </div>
+                <div class="col-md-2">
+                    <label for="parametro_pedidotitulo" class="control-label"> TITULO DE PEDIDO</label>
+                    <div class="form-group">
+                        <select name="parametro_pedidotitulo" class="form-control" id="parametro_pedidotitulo">
+                            <option value="Pedidos" <?php if($parametro['parametro_pedidotitulo']=="Pedidos"){ ?> selected <?php } ?>>Pedidos</option>
+                            <option value="Preventas" <?php if($parametro['parametro_pedidotitulo']=="Preventas"){ ?> selected <?php } ?>>Preventas</option>
+                            <option value="Reservas" <?php if($parametro['parametro_pedidotitulo']=="Reservas"){ ?> selected <?php } ?>>Reservas</option>
+                        </select>
+                    </div>
+                </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(0, 255, 0, 0.3);"><u><b>CREDITOS</b></u><br>
                 <div class="col-md-2">

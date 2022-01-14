@@ -59,7 +59,7 @@ class Pedido extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         $usuario_nombre = $this->session_data['usuario_nombre'];
         $tipousuario_id = $this->session_data['tipousuario_id'];
-        
+        $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
         $rolusuario = $this->session_data['rol'];
         $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
         $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
@@ -320,8 +320,7 @@ class Pedido extends CI_Controller{
         $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
         
-        
-        
+        $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
@@ -1188,7 +1187,7 @@ function registrarpedido()
            
             $data['page_title'] = "Mapa Clientes";
             $data['parametro'] = $this->Parametro_model->get_parametros();
-            
+            $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
 //            $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');            
 //            $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
             $data['all_pedido'] = $resultado;
@@ -1307,7 +1306,7 @@ function registrarpedido()
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
             $data['usuario_id'] = $usuario_id;            
-            
+            $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
             $data['_view'] = 'pedido/misclientes';
             $this->load->view('layouts/main',$data);
             		

@@ -169,7 +169,7 @@
                         if($rolusuario[30-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i> Pedidos</a>
+                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i> <?php echo $session_data["pedido_titulo"]; ?></a>
                         </li>
                         <?php
                         }

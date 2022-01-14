@@ -41,7 +41,14 @@
 <div class="row clearfix">-->
 <div class="box-body col-md-6" style="padding: 0">
     <center>
-        <h3 class="box-title" style="font-family: Arial; margin: 0;" >Pedidos Realizados</h3>
+        <h3 class="box-title" style="font-family: Arial; margin: 0;" >
+            <?php echo $pedido_titulo;
+            if($pedido_titulo == "Pedidos"){
+                echo " Realizados";
+            }else{
+                echo " Realizadas";
+            } ?>
+        </h3>
     </center>
 </div>
 
@@ -65,15 +72,21 @@
     <?php }else{ ?>
     <input id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>" hidden>
     <?php }?>
-                 
+    <?php
+        if($pedido_titulo == "Pedidos"){
+            $partede = " Todos los";
+        }else{
+            $partede = " Todas las";
+        }
+    ?>
     <div class="col-md-3"  style="padding:3px;  margin-bottom: 0; margin-top: 0;">
         <div class="form-group" style=" margin-bottom: 0; margin-top: 0;">
         <select class="btn btn-facebook btn-sm form-control" id="select_pedidos" onchange="buscar_pedidos()">
-            <option value="1">Pedidos de Hoy</option>
-            <option value="2">Pedidos de Ayer</option>
-            <option value="3">Pedidos de la semana</option>
-            <option value="4">Todos los pedidos</option>
-            <option value="5">Pedidos por fecha</option>
+            <option value="1"><?php echo $pedido_titulo; ?> de Hoy</option>
+            <option value="2"><?php echo $pedido_titulo; ?> de Ayer</option>
+            <option value="3"><?php echo $pedido_titulo; ?> de la semana</option>
+            <option value="4"><?php echo $partede." ".$pedido_titulo; ?></option>
+            <option value="5"><?php echo $pedido_titulo; ?> por fecha</option>
             <option value="6">Entregas de Hoy</option>
             <option value="7">Entregas de Ayer</option>
             <option value="8">Entregas de la semana</option>
