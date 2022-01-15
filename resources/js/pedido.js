@@ -17,10 +17,11 @@ function mostrar_ocultar_buscador(parametro){
 }
 
 function tabla_pedidos(filtro)
-{   
+{
     var base_url        = document.getElementById('base_url').value;
     var esrol           = document.getElementById('esrol').value;
     var esrolconsolidar = document.getElementById('esrolconsolidar').value;
+    let pedido_titulo   = document.getElementById('pedido_titulo').value;
     var controlador = base_url+"pedido/mostrar_pedidos";
     $("#respedido").val("");
     //var forma_pago =  document.getElementById('forma_pago').value;
@@ -43,6 +44,15 @@ function tabla_pedidos(filtro)
             var fecha_pedido = "";
             var hora_p;edido = "";
             set_mapa(p);
+            var labelboton = "";
+            if(pedido_titulo == "Pedidos"){
+                labelboton = "Pedido";
+            }else if(pedido_titulo == "Preventas"){
+                labelboton = "Preventa";
+            }else{
+                labelboton = "Reserva";
+            }
+            
                 html = "";
 
             total_pedido = 0;   
@@ -135,15 +145,15 @@ function tabla_pedidos(filtro)
                     if (p[i]["estado_id"]>=10 && p[i]["estado_id"]<=14){
                         
                         if (p[i]["estado_id"]==13){
-                            html += "        <a href='"+base_url+'pedido/imprimir/'+p[i]["pedido_id"]+"' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
+                            html += "        <a href='"+base_url+'pedido/imprimir/'+p[i]["pedido_id"]+"' class='btn btn-warning btn-sm' title='Imprimir comprobante de "+labelboton+"'><span class='fa fa-print'></span></a> ";
                         }
                         else{
-                        html += "        <a href='"+base_url+'pedido/imprimir/'+p[i]["pedido_id"]+"' target='_blank' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
+                        html += "        <a href='"+base_url+'pedido/imprimir/'+p[i]["pedido_id"]+"' target='_blank' class='btn btn-warning btn-sm' title='Imprimir comprobante de "+labelboton+"'><span class='fa fa-print'></span></a> ";
                         if(esrol == 1){
-                            html += "        <a href='"+base_url+'pedido/modificarpedido/'+p[i]["pedido_id"]+"' class='btn btn-success btn-sm' title='Modificar datos de pedido'><span class='fa fa-cubes'></span></a> ";
+                            html += "        <a href='"+base_url+'pedido/modificarpedido/'+p[i]["pedido_id"]+"' class='btn btn-success btn-sm' title='Modificar datos de "+labelboton+"'><span class='fa fa-cubes'></span></a> ";
                         }
                  // ****************************** anular pedido ***************************************
-                        html += "      <button type='button' class='btn btn-danger btn-sm'  title='Anular pedido' data-toggle='modal' data-target='#modalanular"+p[i]["pedido_id"]+"'> ";
+                        html += "      <button type='button' class='btn btn-danger btn-sm'  title='Anular "+labelboton+"' data-toggle='modal' data-target='#modalanular"+p[i]["pedido_id"]+"'> ";
                         html += "           <span class='fa fa-trash'></span> ";
                         html += "      </button>  ";
   
@@ -183,7 +193,7 @@ function tabla_pedidos(filtro)
                 // ****************************** fin anular pedido ***************************************
                  // ****************************** consolidar pedido a ventas ***************************************
                         if(esrolconsolidar == 1){
-                        html += "   <button type='button' class='btn btn-facebook btn-sm' data-toggle='modal'  title='Consolidar pedido a ventas' data-target='#modalconsolidar"+p[i]["pedido_id"]+"'> ";
+                        html += "   <button type='button' class='btn btn-facebook btn-sm' data-toggle='modal'  title='Consolidar "+labelboton+" a ventas' data-target='#modalconsolidar"+p[i]["pedido_id"]+"'> ";
                         html += "           <span class='fa fa-cart-plus'></span>  ";
                         html += "      </button>  ";
                         }
@@ -248,7 +258,7 @@ function tabla_pedidos(filtro)
                 html += "         ";
                 html += "    <th style='padding: 0; line-height: 13px;'> ";
                 html += "        <center>  ";
-                html += "        PEDIDOS<br> ";
+                html += "        "+pedido_titulo.toUpperCase()+"<br> ";
                 html += "        <font size='3'><b>"+cont+"</b></font> ";
                 html += "        </center> ";
                 html += "   </th> ";

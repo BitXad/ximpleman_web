@@ -143,6 +143,16 @@ function cerrar_ventana(){
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 <!-------------------- inicio collapse ---------------------->
 
+<?php
+    if($pedido_titulo == "Pedidos"){
+        $labelboton = "Pedido";
+    }elseif($pedido_titulo == "Preventas"){
+        $labelboton = "Preventa";
+    }else{
+        $labelboton = "Reserva";
+    }
+?>
+´
 <div class="panel-group"  style="padding:0;" hidden>
   <div class="panel panel-warning" style="padding:0;">
     <div class="panel-heading" style="padding:0;">
@@ -599,7 +609,7 @@ function cerrar_ventana(){
             <center>
             
                 <a href="#" data-toggle="modal" onclick="focus_efectivo()" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
-                <i class="fa fa-money fa-4x"></i><br><br>Finalizar Pedido<br>
+                <i class="fa fa-money fa-4x"></i><br><br>Finalizar <?php echo $labelboton; ?><br>
             </a>
             
                 
@@ -952,7 +962,7 @@ function cerrar_ventana(){
             -->
             <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarpedido()" style="display: block;">
                 <h4>
-                <span class="fa fa-save"></span>   Finalizar Pedido
+                <span class="fa fa-save"></span>   Finalizar <?php echo $labelboton; ?>
                 </h4>
             </button>
 

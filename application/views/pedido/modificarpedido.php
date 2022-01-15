@@ -70,9 +70,17 @@ function mostrar_ocultar(){
 <input type="text" value='[{}]' id="lista_pedido" hidden>
 <input type="hidden" id="modificar_precioventa" value="<?php echo $rolusuario[183-1]['rolusuario_asignado']; ?>" name="modificar_precioventa">
 <!--<input type="text" value="4775.74" id="numero_prueba">-->
-
+<?php
+    if($pedido_titulo == "Pedidos"){
+        $labelboton = "Pedido";
+    }elseif($pedido_titulo == "Preventas"){
+        $labelboton = "Preventa";
+    }else{
+        $labelboton = "Reserva";
+    }
+?>
 <div class="box-header">
-    <h1 class="box-title"><b>DETALLE PEDIDO Nº: <?php echo "000".$pedido_id; ?></b></h1>
+    <h1 class="box-title"><b>DETALLE <?php echo strtoupper($pedido_titulo); ?> Nº: <?php echo "000".$pedido_id; ?></b></h1>
     <!--<a href="<?php //echo base_url('pedido/pedidoabierto/'.$pedido_id); ?>" class="btn btn-success">Actualizar </a>-->
 </div>
 
@@ -98,7 +106,7 @@ function mostrar_ocultar(){
         <center>            
             <a href="<?php echo base_url('cliente/clientenuevo/'.$pedido[0]['pedido_id']); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Clie</small></a>
             <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Clie</small></a>
-            <a href="<?php echo base_url('pedido'); ?>" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Pedidos</small></a>
+            <a href="<?php echo base_url('pedido'); ?>" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small><?php echo $pedido_titulo; ?></small></a>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
         </center>            
     </div>
@@ -141,7 +149,7 @@ function mostrar_ocultar(){
     <center>
         <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
             <i class="fa fa-money fa-4x"></i><br><br>
-           Finalizar pedido <br>
+            Finalizar <?php  echo $labelboton; ?> <br>
         </a>
         <a  href="<?php echo site_url('pedido'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
             <i class="fa fa-sign-out fa-4x"></i><br><br>
@@ -322,7 +330,7 @@ function mostrar_ocultar(){
                             <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->
                             <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit">
                                 <h4>
-                                <span class="fa fa-money"></span>   Finalizar Pedido  
+                                <span class="fa fa-money"></span>   Finalizar <?php  echo $labelboton; ?>  
                                 </h4>
                             </button>
                             <button class="btn btn-lg btn-danger btn-sm btn-block" data-dismiss="modal">

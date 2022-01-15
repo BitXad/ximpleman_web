@@ -86,7 +86,7 @@
                 </select>
                 
                 
-                <a href="<?php echo site_url('pedido'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 100px;"><span class="fa fa-cart-arrow-down"></span> Pedidos</a>
+                <a href="<?php echo site_url('pedido'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 100px;"><span class="fa fa-cart-arrow-down"></span> <?php echo $pedido_titulo; ?></a>
                 <button target="_blank" class="btn btn-facebook btn-sm" style="width: 100px;" onclick="mapa_clientes()"><span class="fa fa-map"></span> Mapa</button>                
             </center>
         </div>

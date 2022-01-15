@@ -16,7 +16,7 @@
         <div class="container">
             <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
             <h4><b>Entregas : <?php echo sizeof($all_pedido); ?></b>
-            <a href="<?php echo site_url('pedido'); ?>" class="btn btn-danger btn-sm"><span class="fa fa-list"></span> Pedidos</a>
+            <a href="<?php echo site_url('pedido'); ?>" class="btn btn-danger btn-sm"><span class="fa fa-list"></span> <?php echo $pedido_titulo; ?></a>
             <a href="javascript:location.reload()" class="btn btn-warning btn-sm" ><span class="fa fa-recycle"></span> Actualizar</a>
             </h4>
             <div class="col col-md-12 table-responsive">

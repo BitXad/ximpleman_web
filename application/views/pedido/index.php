@@ -36,6 +36,7 @@
 <input id='tipo_transaccion' name='tipo_transaccion' value='<?php echo json_encode($tipo_transaccion); ?>' hidden>
 <!--<input id='tipo_venta' name='tipo_venta' value='<?php //echo json_encode($tipo_venta); ?>' hidden>-->
 <input type="hidden" name="respedido" id="respedido" />
+<input type="hidden" id="pedido_titulo" name="pedido_titulo" value="<?php echo $pedido_titulo; ?>">
 
 <!--<div class="box-header">
 <div class="row clearfix">-->
@@ -75,8 +76,14 @@
     <?php
         if($pedido_titulo == "Pedidos"){
             $partede = " Todos los";
+            $labelboton = "Pedido";
         }else{
             $partede = " Todas las";
+            if($pedido_titulo == "Preventas"){
+                $labelboton = "Preventa";
+            }else{
+                $labelboton = "Reserva";
+            }
         }
     ?>
     <div class="col-md-3"  style="padding:3px;  margin-bottom: 0; margin-top: 0;">
@@ -99,13 +106,13 @@
     <div class="col-md-6"  style="padding:3px">
         <div class="form-group" style="margin-bottom: 0;">
             <center>
-                <a href="<?php echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 80px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Clientes</a>
-                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 80px;"><span class="fa fa-cart-arrow-down"></span> </span> <span class="fa fa-user-plus"></span> Pedido</a>
-                <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 80px;"><span class="fa fa-pie-chart"></span> Estadistica</a>
-                <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;" title="Mostrar mapa de entregas"><span class="fa fa-map"></span> Mapa</a>
-                <a class="btn btn-facebook btn-sm" data-toggle='modal' data-target='#modalmapa' style="width: 80px;" title="Mostrar mapa de pedidos"><span class="fa fa-map-o"></span> Mapa</a>
+                <a href="<?php echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 90px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Clientes</a>
+                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 90px;"><span class="fa fa-cart-arrow-down"></span> </span> <span class="fa fa-user-plus"></span> <?php echo $labelboton; ?></a>
+                <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 90px;"><span class="fa fa-pie-chart"></span> Estadistica</a>
+                <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 90px;" title="Mostrar mapa de entregas"><span class="fa fa-map"></span> Mapa</a>
+                <a class="btn btn-facebook btn-sm" data-toggle='modal' data-target='#modalmapa' style="width: 90px;" title="Mostrar mapa de pedidos"><span class="fa fa-map-o"></span> Mapa</a>
                 <!-- <a href="<?php echo site_url('pedido/mapa_seg_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;" title="Mostrar mapa de entregas"><span class="fa fa-map"></span>Mapa Seg</a> -->
-                <a href="" id="mapa_seg_entregas" name="mapa_seg_entregas" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;" title="Mostrar mapa de seguimiento" onclick="mapa_seg()"><span class="fa fa-map"></span>Mapa Seg</a>
+                <a href="" id="mapa_seg_entregas" name="mapa_seg_entregas" target="_blank" class="btn btn-facebook btn-sm" style="width: 90px;" title="Mostrar mapa de seguimiento" onclick="mapa_seg()"><span class="fa fa-map"></span>Mapa Seg</a>
             </center>
         </div>
     </div>
@@ -176,7 +183,7 @@
                         <th style="padding: 0;">Total</th>
                         <th style="padding: 0;">Fecha<br>entrega</th>
                         <th style="padding: 0; vertical-align: middle">
-                            <a onclick="consolidar_allpedido()" class="btn btn-facebook btn-xs" title="Consolidar todos los pedidos a ventas"><span class="fa fa-cart-plus"></span> </a>
+                            <a onclick="consolidar_allpedido()" class="btn btn-facebook btn-xs" title="Consolidar <?php echo ($partede)." ".$pedido_titulo ?> a ventas"><span class="fa fa-cart-plus"></span> </a>
                         </th>
                     </tr>
                     <tbody class="buscar" id="tabla_pedidos">
@@ -212,7 +219,7 @@
         <div class='modal-content'>
                 <?php //echo form_open_multipart('pedido/mapa_depedidos/', 'target="_blank"'); ?>
             <div class='modal-header text-center'>
-                <span style='font-size: 15pt' class='text-bold'>PEDIDOS</span>
+                <span style='font-size: 15pt' class='text-bold'><?php echo strtoupper($pedido_titulo); ?></span>
                 <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>
             </div>
             <div class='modal-body'>

@@ -64,7 +64,7 @@ class Pedido extends CI_Controller{
         $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
         $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
         
-        $data['page_title'] = "Pedidos";
+        $data['page_title'] = $data['pedido_titulo'];
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo(); // para el select
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
         $data['usuario_id'] = $usuario_id; //el usuario logueado
@@ -113,6 +113,7 @@ class Pedido extends CI_Controller{
         $data['empresa'] = $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
         
         $data['_view'] = 'pedido/nota_pedido';
         $this->load->view('layouts/main',$data);
@@ -138,7 +139,8 @@ class Pedido extends CI_Controller{
             $data['pedido'] = $data['pedido'] = $this->Pedido_model->get_pedido_id($pedido_id);
             $data['empresa'] = $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
             $data['parametro'] = $this->Parametro_model->get_parametros();
-
+            $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
+            
             $data['_view'] = 'pedido/nota_pedido_boucher';
             $this->load->view('layouts/main',$data);
 
@@ -269,7 +271,9 @@ class Pedido extends CI_Controller{
             
             //$data['cliente'] = $this->Pedido_model->get_all_cliente($usuario_id);
             $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-
+            
+            $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
+            
             $data['_view'] = 'pedido/modificarpedido';
             $this->load->view('layouts/main',$data);            
                                         		
@@ -1101,6 +1105,7 @@ function registrarpedido()
 
             $data['parametros'] = $this->Parametro_model->get_parametros();
             $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
+            $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
             $data['_view'] = 'pedido/mapaentregas';
             

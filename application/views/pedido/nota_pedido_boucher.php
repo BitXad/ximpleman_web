@@ -151,7 +151,15 @@ border-bottom : 1px solid #aaa;
       $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 
 ?>
-
+<?php
+    if($pedido_titulo == "Pedidos"){
+        $labelboton = "Pedido";
+    }elseif($pedido_titulo == "Preventas"){
+        $labelboton = "Preventa";
+    }else{
+        $labelboton = "Reserva";
+    }
+?>
 
 
 <table class="table table-responsive" >
@@ -191,7 +199,7 @@ border-bottom : 1px solid #aaa;
                  
                         
                     <br>
-                    <font size="3" face="Arial"><b><?php echo "NOTA DE PEDIDO"; ?></b></font><br>
+                    <font size="3" face="Arial"><b><?php echo "NOTA DE ". strtoupper($labelboton); ?></b></font><br>
                     <font size="3" face="Arial"><b><?php echo "Nº 000".$pedido[0]['pedido_id']; ?></b></font><br>
                     <font size="1" face="Arial"><b><?php echo $pedido[0]['pedido_fecha']; ?></b></font><br>
                     
