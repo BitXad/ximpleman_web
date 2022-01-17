@@ -146,6 +146,7 @@
         <td width="400" style="line-height: 14px; ">
             <center>
                 <font size="3" face="arial"><b>REPORTE DE MORA</b></font> <br>
+                <p>Expresados en Bolivianos (Bs)</p><br>
                 <label id="fechaimpresion"></label><br>
                 <label id="tituloimpresion"></label>
                 <!--<font size="1" face="Arial"><b><?php //echo $fecha_d_m_a; ?></b></font>-->
@@ -153,11 +154,11 @@
             </center>
         </td>
         <td width="300" style="text-align: center;">
-            -----------------------------<br>
+            <!-- -----------------------------<br> -->
             <span style="font-size: 10px; font-family: Arial" id="fecha1impresion"></span>
             <span style="font-size: 10px; font-family: Arial" id="fecha2impresion"></span><br>
             <!--<b>Gestión: </b><?php //echo $inscripcion[0]['gestion_descripcion']; ?><br>-->
-            -----------------------------
+            <!-- ----------------------------- -->
 <!--                <h5><b>Tipo: </b><?php /*echo $inscripcion[0]['tipotrans_nombre']; ?> <br>
                 <b>Cred. Nº: </b><?php echo $inscripcion[0]['cliente_codigo']; ?> <br>
                 <b>Limite: </b><?php echo $inscripcion[0]['venta_fecha'];*/ ?></h5>       -->
@@ -176,7 +177,7 @@
                 <tr style='background-color: #aaaaaa;' class='fondoprint'>
                     <th id='fondoprint' class='fondoprint' style='width: 2%' class='text-center'>N°</th>
                     <th id='fondoprint' style='width: 48%' class='text-center'>CLIENTE <input type='button' value='[-]' onclick='mostrar_detalle();' id='boton_detalle' class='btn btn-xs' style="padding:0;"/></th>
-                    <th id='fondoprint' style='width: 8%' class='text-center'>VENTA</th>
+                    <th id='fondoprint' style='width: 8%' class='text-center'>CREDITO</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>DIAS<br>MORA</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>CAPITAL</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>INTERES</th>

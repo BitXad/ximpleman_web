@@ -29,7 +29,7 @@ function tabla_moras() {
                 html += `<tr>
                             <td>${i}</td>
                             <td>${mora['cliente_nombre']}<sub>[${mora['credito_id']}]</sub></td>
-                            <td class="text-center">${mora['venta_id']}</td>
+                            <td class="text-center">${mora['razon']} (${mora['venta_id']})</td>
                             <td class="text-center">${mora['dias_mora']}</td>
                             <td class="text-center">${mora['credito_monto']}</td>
                             <td class="text-center">${mora['cuota_interes']}</td>
@@ -47,10 +47,10 @@ function tabla_moras() {
                         <th></th>
                         <th></th>
                         <th></th>
-                        <th>${parseFloat(total_capital).toFixed(2)}</th>
-                        <th>${parseFloat(total_intereses).toFixed(2)}</th>
-                        <th>${parseFloat(total_mora).toFixed(2)}</th>
-                        <th>${parseFloat(total_deuda).toFixed(2)}</th>
+                        <th><b>${parseFloat(total_capital).toFixed(2)}</b></th>
+                        <th><b>${parseFloat(total_intereses).toFixed(2)}</b></th>
+                        <th><b>${parseFloat(total_mora).toFixed(2)}</b></th>
+                        <th><b>${parseFloat(total_deuda).toFixed(2)}</b></th>
                     </tr>`
             $("#tablaMora").html(html);
         },
