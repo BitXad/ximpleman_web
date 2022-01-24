@@ -23,6 +23,7 @@ function tabla_moras() {
             let total_intereses = 0;
             let total_mora = 0;
             let total_deuda = 0;
+            let deuda_cuota = 0;
             for(let mora of moras){
                 let total = parseFloat(mora['credito_monto']) + parseFloat(mora['cuota_interes']) + parseFloat(mora['multa'])
 
@@ -30,6 +31,8 @@ function tabla_moras() {
                             <td>${i}</td>
                             <td>${mora['cliente_nombre']}<sub>[${mora['credito_id']}]</sub></td>
                             <td class="text-center">${mora['razon']} (${mora['venta_id']})</td>
+                            <td class="text-center">${mora['deudas_mora']}</td>
+                            <td class="text-center">${parseFloat(mora['monto_deuda']).toFixed(2)}</td>
                             <td class="text-center">${mora['dias_mora']}</td>
                             <td class="text-center">${mora['credito_monto']}</td>
                             <td class="text-center">${mora['cuota_interes']}</td>
@@ -41,11 +44,14 @@ function tabla_moras() {
                 total_intereses += parseFloat(mora['cuota_interes']);
                 total_mora += parseFloat(parseFloat(mora['multa']).toFixed(2));
                 total_deuda += parseFloat(total);
+                deuda_cuota += parseFloat(mora['monto_deuda'])
             }
             html += `<tr>
                         <th></th>
                         <th></th>
                         <th></th>
+                        <th></th>
+                        <th>${parseFloat(deuda_cuota).toFixed(2)}</th>
                         <th></th>
                         <th><b>${parseFloat(total_capital).toFixed(2)}</b></th>
                         <th><b>${parseFloat(total_intereses).toFixed(2)}</b></th>

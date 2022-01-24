@@ -396,28 +396,54 @@ class Cuotum_model extends CI_Model
             // where c2.estado_id = 8
             // and c2.cuota_fechalimite <= now()
             // $consulta_usuario"
-            "select c.credito_id, min(c2.cuota_numcuota), m.dias_mora,if(v.venta_id is null,s.servicio_id ,v.venta_id) as venta_id , if(v.venta_id is null,'Servicio' ,'Venta') as razon,
-                if(c3.cliente_nombre is null,if(c6.cliente_nombre is null,'No asignado cliente', c6.cliente_nombre),c3.cliente_nombre) as cliente_nombre,c.credito_monto,c2.*,
-                if((c2.cuota_interes*m.dias_mora)/30 > 0,(c2.cuota_interes*m.dias_mora)/30,0) as multa
+            "SELECT c.credito_id,c.credito_numpagos , min(c2.cuota_numcuota),count(c2.cuota_id) as cuotas, m.dias_mora,
+                if(v.venta_id is null,s.servicio_id ,v.venta_id) as venta_id , if(v.venta_id is null,'Servicio' ,'Venta') as razon,
+                if(c3.cliente_nombre is null,if(c6.cliente_nombre is null,'No asignado cliente', c6.cliente_nombre),c3.cliente_nombre) as cliente_nombre,c.credito_monto,
+                if((c2.cuota_interes*m.dias_mora)/30 > 0,(c2.cuota_interes*m.dias_mora)/30,0) as multa,1,c2.*
             from credito c 
-            left join cuota c2 on c2.credito_id = c.credito_id
+            left join (
+            select if(if(adeu.cuotas_adeudadas is null,0,adeu.cuotas_adeudadas) - ul_pago.ultimo_pago_cuota > 0, if(adeu.cuotas_adeudadas is null,0,adeu.cuotas_adeudadas) - ul_pago.ultimo_pago_cuota,1) as deudas_mora 
+                ,if(if(adeu.cuotas_adeudadas is null,0,adeu.cuotas_adeudadas ) - ul_pago.ultimo_pago_cuota > 0, (if(adeu.cuotas_adeudadas is null,0,adeu.cuotas_adeudadas)-ul_pago.ultimo_pago_cuota)*cu.cuota_total ,cu.cuota_total    ) as monto_deuda	
+                ,if(adeu.cuotas_adeudadas is null,0,adeu.cuotas_adeudadas) as sig_cuota,ul_pago.ultimo_pago_cuota 
+                ,cu.*
+                from cuota cu 
+                right join (
+                    select min(cu2.cuota_numcuota) as ultimo_pago_cuota, cu2.credito_id
+                    from cuota cu2  
+                    where cu2.estado_id = 8
+                    group by cu2.credito_id
+                ) as ul_pago on ul_pago.credito_id = cu.credito_id
+                left join (
+                    select min(cu3.cuota_numcuota) as cuotas_adeudadas, cu3.credito_id, cu3.estado_id 
+                    from cuota cu3
+                    where cu3.estado_id = 8
+                    and cu3.cuota_fechalimite > now() 
+                    group by cu3.credito_id
+                ) as adeu on adeu.credito_id = cu.credito_id
+                where cu.cuota_fechalimite < now()
+                and cu.estado_id = 8
+                group by cu.credito_id
+            ) c2 on c2.credito_id = c.credito_id
             left join (
                 select c5.cuota_id,if(datediff(now(),c5.cuota_fechalimite) is null, 0, datediff(now(),c5.cuota_fechalimite)) as dias_mora
+                    ,if(c5.cuota_fechalimite < now(),count(c5.cuota_fechalimite),0) as cuotas_adeudadas, c5.cuota_fechalimite 
                 from credito c4 
                 left join cuota c5 on c5.credito_id = c4.credito_id
                 where c5.estado_id = 8
                 and c5.cuota_fechalimite <= now()
+                group by c5.credito_id
             ) as m on m.cuota_id = c2.cuota_id 
             left join venta v on c.venta_id = v.venta_id 
             left join servicio s on c.servicio_id = s.servicio_id
             left join cliente c3 on v.cliente_id = c3.cliente_id
             left join cliente c6 on s.cliente_id = c6.cliente_id
-            where c2.estado_id = 8
-            and c2.cuota_fechalimite <= now()
-            and c.venta_id is not null
+            where c.venta_id is not null
+            and c.estado_id = 8
+            and c2.cuota_fechalimite < now()
             $consulta_usuario
             group by c.credito_id
             order by c3.cliente_nombre, c2.cuota_numcuota, c.credito_id"
         )->result_array();
     }
+    // - cuotas adeudadas cantidad max 3 y el total de las cuotas en reporte de mora
 }
