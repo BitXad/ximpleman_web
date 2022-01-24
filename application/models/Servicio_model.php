@@ -122,7 +122,7 @@ class Servicio_model extends CI_Model
             WHERE
                (c.cliente_nombre like '%".$parametro."%' or s.servicio_id = '".$parametro."'
                    or e.estado_descripcion like '%".$parametro."%')
-
+            group by ds.detalleserv_id
             ORDER BY s.servicio_id desc, ds.detalleserv_id desc 
         ")->result_array();
 
@@ -161,7 +161,7 @@ class Servicio_model extends CI_Model
             LEFT JOIN forma_pago fp on ds.forma_id = fp.forma_id
             LEFT JOIN tipo_transaccion tt on ds.tipotrans_id = tt.tipotrans_id
                 ".$where." ".$filtro."
-
+            group by ds.detalleserv_id
             ORDER BY s.servicio_id desc, ds.detalleserv_id desc 
 
         ")->result_array();
@@ -243,7 +243,7 @@ class Servicio_model extends CI_Model
             LEFT JOIN tipo_transaccion tt on ds.tipotrans_id = tt.tipotrans_id
             WHERE
                 s.estado_id = 5
-
+            group by ds.detalleserv_id
             ORDER BY s.servicio_id desc, ds.detalleserv_id desc 
         ")->result_array();
 
