@@ -295,7 +295,7 @@ class Caja extends CI_Controller{
                 'caja_imagen005' => $this->input->post('caja_imagen005'),*/
             );
             
-            $caja_id = $this->Caja_model->add_caja($params);
+            $caja_id = $this->Caja_model->update_caja($caja_id, $params);
             redirect('caja');
         }else{
             /*$this->load->model('Estado_model');
