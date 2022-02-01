@@ -13,8 +13,10 @@ class Egreso extends CI_Controller{
         $this->load->model('Categoria_egreso_model'); 
         $this->load->model('Empresa_model');
         $this->load->model('Usuario_model');   
+        $this->load->model('Moneda_model');   
         $this->load->helper('numeros');
         $this->load->model('Parametro_model');
+        $this->load->model('Detalle_egreso_model');
         $this->load->model('Forma_pago_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -62,7 +64,7 @@ class Egreso extends CI_Controller{
             $categoria = $this->input->post('categ');
             
            if ($filtro == null){
-            $result = $this->Egreso_model->get_all_egreso($params);
+            $result = $this->Egreso_model->get_all_egreso();
             }
             else{
             $result = $this->Egreso_model->fechaegreso($filtro,$categoria);            
@@ -213,21 +215,20 @@ class Egreso extends CI_Controller{
                 
                 $this->Egreso_model->update_egreso($egreso_id,$params);            
                 redirect('egreso/index');
-            }
-            else
-            {
+            }else{
 	
                 $this->load->model('Categoria_egreso_model');
                 $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
                 $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
                 $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
+                // $data['all_detegreso'] = json_encode($this->Detalle_egreso_model->get_detegresos($egreso_id));
                 $data['_view'] = 'egreso/edit';
                 $this->load->view('layouts/main',$data);
             }
         }
         else
             show_error('The egreso you are tryegr to edit does not exist.');
-            }
+        }
     }
 
     /*
@@ -333,5 +334,98 @@ class Egreso extends CI_Controller{
         }
     }
 
+    function add_egresos(){
+        if($this->input->is_ajax_request()){
+            $usuario_id = $this->session_data['usuario_id'];
+            $numrec = $this->Egreso_model->numero();
+            $numero = $numrec[0]['parametro_numrecegr'] + 1;
+            $det_egresos = json_decode($this->input->post('det_egresos'));
+            $egreso_nombre = $this->input->post('egreso_nombre');
+            $forma_id = $this->input->post('select_forma_pago');
+            $egreso_moneda = $this->input->post('egreso_moneda');
+            $egreso_monto = $this->input->post('egreso_monto');
+            $egreso_concepto = $this->input->post('egreso_concepto');
+            $egreso_glosa = $this->input->post('egreso_glosa');
+            
+            $egreso_fecha = date('Y-m-d H:i:s');
+            
+            $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
+            $egreso_tc = $all_moneda[1]["moneda_tc"];
+            $params = array(
+                'usuario_id' => $usuario_id,
+                'egreso_numero' => $numero,
+                'egreso_nombre' => $egreso_nombre,
+                'forma_id' => $forma_id,
+                'egreso_moneda' => $egreso_moneda,
+                'egreso_monto' => $egreso_monto,
+                'egreso_concepto' => $egreso_concepto,
+                'egreso_glosa' => $egreso_glosa,
+                'egreso_tc' => $egreso_tc,
+                'egreso_fecha' => $egreso_fecha,
+            );
+            $egreso_id = $this->Egreso_model->add_egreso($params);
+            $sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
+            $this->db->query($sql);
+            // var_dump($egreso['egreso']);
+            foreach ($det_egresos as $det_egreso){
+                $egreso = json_decode(json_encode($det_egreso),true);
+                $params2 = array(   
+                    'egreso_id' => $egreso_id,
+                    'detegreso_categoria' => $egreso['egreso'],
+                    'detegreso_suma' => $egreso['suma'],
+                );
+                $this->Detalle_egreso_model->add_egreso($params2);
+            }
+        }else{
+            show_404();
+        }
+    }
 
+    function edit_egresos(){
+        if($this->input->is_ajax_request()){
+            $det_egresos = json_decode($this->input->post('det_egresos'));
+            $egreso_nombre = $this->input->post('egreso_nombre');
+            $forma_id = $this->input->post('select_forma_pago');
+            $egreso_moneda = $this->input->post('egreso_moneda');
+            $egreso_monto = $this->input->post('egreso_monto');
+            $egreso_concepto = $this->input->post('egreso_concepto');
+            $egreso_glosa = $this->input->post('egreso_glosa');
+            
+            $egreso_fecha = $this->input->post('egreso_fecha');
+            $usuario_id = $this->input->post('usuario_id');
+            $egreso_numero = $this->input->post('egreso_numero');
+            $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
+            $egreso_tc = $all_moneda[1]["moneda_tc"];
+            $egreso_id = $this->input->post('egreso_id');
+
+            $params = array(
+                'usuario_id' => $usuario_id,
+                'egreso_numero' => $egreso_numero,
+                'egreso_nombre' => $egreso_nombre,
+                'forma_id' => $forma_id,
+                'egreso_moneda' => $egreso_moneda,
+                'egreso_monto' => $egreso_monto,
+                'egreso_concepto' => $egreso_concepto,
+                'egreso_glosa' => $egreso_glosa,
+                'egreso_tc' => $egreso_tc,
+                'egreso_fecha' => $egreso_fecha,
+            );
+
+            $this->Egreso_model->edit_egreso($params, $egreso_id);
+            $sql = "DELETE FROM detalle_egreso where egreso_id = $egreso_id"; 
+            $this->db->query($sql);
+            foreach ($det_egresos as $det_egreso){
+                $egreso = json_decode(json_encode($det_egreso),true);
+                $params2 = array(   
+                    'egreso_id' => $egreso_id,
+                    'detegreso_categoria' => $egreso['egreso'],
+                    'detegreso_suma' => $egreso['suma'],
+                );
+                $this->Detalle_egreso_model->add_egreso($params2);
+            }
+        }else{
+            show_404();
+        }
+    }
+    
 }

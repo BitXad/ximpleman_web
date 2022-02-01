@@ -14,7 +14,7 @@ class Empresa_model extends CI_Model
     /*
      * Get empresa by empresa_id
      */
-    function get_empresa($empresa_id)
+    function  get_empresa($empresa_id)
     {
         $empresa = $this->db->query("
             SELECT
