@@ -17,12 +17,13 @@ function cambiar_fecha_grafica(){
 function mostrar_grafica(){
 
     var hoy = new Date();
-        
+    
     var anio_sel = hoy.getFullYear();
     var mes_sel = hoy.getMonth()+1;
     $("#anio_sel").val(anio_sel);
     $("#mes_sel").val(mes_sel);
     var tipouser_id = document.getElementById("tipouser").value;
+    var user_id = document.getElementById("user_id").value;
     if(tipouser_id != 1){ 
         cargar_grafica_barras_noad(anio_sel,mes_sel,user_id); 
     }else{ 
