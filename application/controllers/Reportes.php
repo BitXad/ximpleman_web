@@ -1644,89 +1644,24 @@ function torta3($anio,$mes)
     }
     function ventas_mes()
     {
-        $anio = $this->input->post("anio");
-        $mes = $this->input->post("mes");
-        $usuario_id = $this->input->post("usuario_id");
-        $zona_id = $this->input->post("zona_id");
-        $filtro = " and v.usuario_id = $usuario_id";
-        if($zona_id >0){
-            $filtro .= " and c.zona_id = $zona_id";
-        }
-        $primer_dia = 1;
-        $ultimo_dia = $this->getUltimoDiaMes($anio,$mes);
-
-        $fecha_inicial = date("Y-m-d", strtotime($anio."-".$mes."-".$primer_dia) );
-        $fecha_final = date("Y-m-d", strtotime($anio."-".$mes."-".$ultimo_dia) );
-        
+        $usuario_id = $this->session_data['usuario_id'];
+            if ($this->input->is_ajax_request()){
+                $fecha_inicio = $this->input->post("fecha_inicio");
+                $fecha_fin    = $this->input->post("fecha_fin");
+                $usuario_id = $this->input->post("usuario_id");
+                $zona_id = $this->input->post("zona_id");
+                $filtro = " and v.usuario_id = $usuario_id";
+                if($zona_id >0){
+                    $filtro .= " and c.zona_id = $zona_id";
+                }
         $this->load->model('Reporte_ing_egr_model');
-        $ventas = $this->Reporte_ing_egr_model->reporte_generalmes($fecha_inicial, $fecha_final, $filtro);
-            
-            
-            
-            
-            //$fecha_inicial = $anio."-".$mes."-01";
-            //$fecha_final = $anio."-".$mes."-31";
-            /*$sql_ventas = "SELECT 
-                            v.venta_fecha,
-                            sum(d.detalleven_total) AS total, avg(d.detalleven_tc) as tipo_cambio
-                          FROM
-                            venta v,
-                            detalle_venta d
-                          WHERE
-                            v.venta_id = d.venta_id AND 
-                            v.venta_fecha >= '".$fecha_inicial."' AND 
-                            v.venta_fecha <= '".$fecha_final."'
-                          GROUP BY
-                            v.venta_fecha";
-            
-            $ventas = $this->db->query($sql_ventas)->result_array();
-            */
-            /*$sql_utilidades = "SELECT 
-                            v.venta_fecha,
-                            sum((d.detalleven_total - d.detalleven_costo*d.detalleven_cantidad)) AS utilidad
-                          FROM
-                            venta v,
-                            detalle_venta d
-                          WHERE
-                            v.venta_id = d.venta_id AND 
-                            v.venta_fecha >= '".$fecha_inicial."' AND 
-                            v.venta_fecha <= '".$fecha_final."'
-                          GROUP BY
-                            v.venta_fecha";
-            
-            $utilidades = $this->db->query($sql_utilidades)->result_array();
-            */
-            $utilidades = $this->Reporte_ing_egr_model->reporte_generalutilidadmes($fecha_inicial, $fecha_final, $filtro);
-            $ct = count($ventas);
-
-            //Cargando los arreglos a CERO
-            for($d = 1; $d <= $ultimo_dia; $d++){
-                $arrayventas[$d] = 0;
-                $arraytc[$d] = 0;
-                $arrayutilidades[$d] = 0;     
+        $lasventas = $this->Reporte_ing_egr_model->reporte_generalfecha_usuario($fecha_inicio, $fecha_fin, $filtro);
+                echo json_encode($lasventas);
+            }else{
+                show_404();
             }
-
+        
             
-            foreach($ventas as $res){
-                $diasel = intval(date("d",strtotime($res['venta_fecha']) ) );
-                $suma = $res['total'];
-                $arrayventas[$diasel] += $suma;
-                $arraytc[$diasel] += $res['tipo_cambio'];;
-            }
-
-            foreach($utilidades as $resven){
-                $diasel = intval(date("d",strtotime($resven['venta_fecha']) ) );
-                $sumautilidad = $resven['utilidad'];
-                $arrayutilidades[$diasel] += $sumautilidad;
-            }
-
-            $data=array("totaldias" => $ultimo_dia, "totalventas" => $arrayventas, "totalutilidades" => $arrayutilidades, "totaltc" => $arraytc);
-            echo  json_encode($data);
-            
-            /*$anio = $this->input->post('anio');   1555891200
-            $mes = $this->input->post('fecha2'); 
-    */
-
     }
     /**
      * Get reporte de mora de las ventas a credito

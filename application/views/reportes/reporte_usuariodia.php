@@ -1,50 +1,22 @@
 <script src="<?php echo base_url('resources/js/reporte_usuariodia.js'); ?>" type="text/javascript"></script>
-<!--<script type="text/javascript">
-    $(document).ready(function () {
-        (function ($) {
-            $('#filtrar').keyup(function () {
-                var rex = new RegExp($(this).val(), 'i');
-                $('.buscar tr').hide();
-                $('.buscar tr').filter(function () {
-                    return rex.test($(this).text());
-                }).show();
-            })
-        }(jQuery));
-    });
-</script>-->
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-<!--
-<input type="text" id="parametro_modoventas" value="<?php /*echo $parametro[0]['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
-<input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
-<input type="text" id="parametro_altoboton" value="<?php echo $parametro[0]['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
-<input type="text" id="parametro_colorboton" value="<?php echo $parametro[0]['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
-<input type="text" id="parametro_altoimagen" value="<?php echo $parametro[0]['parametro_altoimagen']; ?>" name="parametro_altoimagen"  hidden>
-<input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
-<input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
-<input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
 
-<input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
-<input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
-<input type="text" id="rol_factor1" value="<?php echo $rolusuario[162-1]['rolusuario_asignado']; ?>" hidden>
-<input type="text" id="rol_factor2" value="<?php echo $rolusuario[163-1]['rolusuario_asignado']; ?>" hidden>
-<input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
-<input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado'];*/ ?>" hidden>
--->
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
 <input type="text" value="" id="parametro" hidden>
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <input type="hidden" name="mostrarmoneda" id="mostrarmoneda" value="<?php echo $parametro[0]['parametro_mostrarmoneda']; ?>" />
-<input type="hidden" name="select_tipo" id="select_tipo" value='line' />
+<!--<input type="hidden" name="select_tipo" id="select_tipo" value='line' />-->
 
 <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='display:block;'>
     <br>
-    <center>
+    <!--<center>
         <div class="col-md-2">
             Mes: 
             <?php 
-                $mes_actual = date("m");
+                /*$mes_actual = date("m");
                 $anio_actual = date("Y");
             ?>
             <select  class="btn btn-warning btn-sm form-control" id="select_mes">
@@ -63,8 +35,16 @@
             <?php
                 for($i = 2015;$i<=2060;$i++){ ?>
             <option value="<?php echo $i; ?>" <?php if ($i == $anio_actual){ echo "selected";} ?>> <?php echo $i; ?></option>
-            <?php } ?>
+            <?php }*/ ?>
         </select>
+    </div>-->
+    <div class="col-md-2">
+        Desde:
+        <input type="date" name="fecha_inicio" id="fecha_inicio" class="btn btn-warning btn-sm form-control" value="<?php echo date("Y-m-d"); ?>">
+    </div>
+    <div class="col-md-2">
+        Hasta:
+        <input type="date" name="fecha_fin" id="fecha_fin" class="btn btn-warning btn-sm form-control" value="<?php echo date("Y-m-d"); ?>">
     </div>
     <div class="col-md-2">
         Usuario:
@@ -91,7 +71,7 @@
             ?>
         </select>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 hidden">
         Reporte:
         <select class="btn btn-warning btn-sm form-control" id="lautilidad" name="lautilidad">
             <option value="1">CON UTILIDAD</option>
@@ -100,9 +80,12 @@
     </div>
     <div class="col-md-2">
         Buscar: 
-        <button class="btn btn-success  form-control" onclick="grafico_ventas()"><fa class="fa fa-binoculars"></fa> Buscar</button>
+        <button class="btn btn-success  form-control" onclick="buscar_ventas()"><fa class="fa fa-binoculars"></fa> Buscar</button>
     </div>
 </div>
+<div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
+        <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+    </div>
 <!------------------------------------------------------------------------------------------->
 
 <div class="panel panel-primary col-md-12">
