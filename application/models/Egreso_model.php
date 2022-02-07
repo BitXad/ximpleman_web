@@ -123,6 +123,12 @@ class Egreso_model extends CI_Model
         }
     }
     
+    function edit_egreso($params,$egreso_id)
+    {
+        $this->db->where('egreso_id',$egreso_id);
+        $response = $this->db->update('egresos',$params);
+    }
+    
     /*
      * function to delete egreso
      */
