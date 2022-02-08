@@ -248,7 +248,32 @@
                                     <input type="number" step="any" min="0" max="100" name="producto_comision" value="<?php echo '0.00'; ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
                             </div>
                     </div>
-
+                    
+                        <div class="col-md-3">
+                            <label for="producto_colnorte" class="control-label">Colindancia norte</label>
+                            <div class="form-group">
+                                <input type="text" name="producto_colnorte" class="form-control" id="producto_colnorte" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="producto_coleste" class="control-label">Colindancia este</label>
+                            <div class="form-group">
+                                <input type="text" name="producto_coleste" class="form-control" id="producto_coleste" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="producto_coloeste" class="control-label">Colindancia oeste</label>
+                            <div class="form-group">
+                                <input type="text" name="producto_coloeste" class="form-control" id="producto_coloeste" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="producto_colsur" class="control-label">Colindancia sur</label>
+                            <div class="form-group">
+                                <input type="text" name="producto_colsur" class="form-control" id="producto_colsur" />
+                            </div>
+                        </div>
+                    
                     <div class="col-md-3" hidden>
                             <label for="producto_tipocambio" class="control-label">Tipo Cambio</label>
                             <div class="form-group">

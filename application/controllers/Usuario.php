@@ -159,6 +159,7 @@ private function acceso($id_rol){
                         'estado_id' => 1,
                         'tipousuario_id' => $this->input->post('tipousuario_id'),
                         'usuario_nombre' => $this->input->post('usuario_nombre'),
+                        'usuario_ci' => $this->input->post('usuario_ci'),
                         'usuario_email' => $this->input->post('usuario_email'),
                         'usuario_login' => $this->input->post('usuario_login'),
                         'usuario_clave' => md5($this->input->post('usuario_clave')),
@@ -314,15 +315,14 @@ private function acceso($id_rol){
                     'estado_id' => $this->input->post('estado_id'),
                     'tipousuario_id' => $this->input->post('tipousuario_id'),
                     'usuario_nombre' => $this->input->post('usuario_nombre'),
+                    'usuario_ci' => $this->input->post('usuario_ci'),
                     'usuario_email' => $this->input->post('usuario_email'),
                     'usuario_login' => $this->input->post('usuario_login'),
                     'usuario_clave' => $this->input->post('usuario_clave'),
                     'usuario_imagen' => $foto,
                 );
-
                 $this->Usuario_model->update_usuario($usuario_id, $params);
                 redirect('usuario/index');
-
             } else {
                 $this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
@@ -544,6 +544,7 @@ private function acceso($id_rol){
 
                     $data = array(
                         'usuario_nombre' => $this->input->post('usuario_nombre'),
+                        'usuario_ci' => $this->input->post('usuario_ci'),
                         'usuario_email' => $this->input->post('usuario_email'),
                         'usuario_imagen' => $foto,
                         'usuario_login' => $this->input->post('usuario_login'),

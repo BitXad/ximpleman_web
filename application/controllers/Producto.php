@@ -67,7 +67,7 @@ class Producto extends CI_Controller{
     }
 
     /*
-     * Adding a new producto
+     * 274812.04ing a new producto
      */
     function add()
     {
@@ -209,6 +209,10 @@ class Producto extends CI_Controller{
                 'subcategoria_id' => $this->input->post('subcategoria_id'),
                 'producto_unidadentera' => $this->input->post('producto_unidadentera'),
                 'producto_catalogo' => $producto_catalogo,
+                'producto_colnorte' => $this->input->post('producto_colnorte'),
+                'producto_colsur' => $this->input->post('producto_colsur'),
+                'producto_coleste' => $this->input->post('producto_coleste'),
+                'producto_coloeste' => $this->input->post('producto_coloeste'),
             );
             
             $producto_id = $this->Producto_model->add_producto($params);
@@ -381,6 +385,10 @@ class Producto extends CI_Controller{
                     'subcategoria_id' => $this->input->post('subcategoria_id'),
                     'producto_unidadentera' => $this->input->post('producto_unidadentera'),
                     'producto_catalogo' => $this->input->post('producto_catalogo'),
+                    'producto_colnorte' => $this->input->post('producto_colnorte'),
+                    'producto_colsur' => $this->input->post('producto_colsur'),
+                    'producto_coleste' => $this->input->post('producto_coleste'),
+                    'producto_coloeste' => $this->input->post('producto_coloeste'),
                 );
 
                 $this->Producto_model->update_producto($producto_id,$params);

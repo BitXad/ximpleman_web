@@ -3177,7 +3177,7 @@ function tabla_ventas(filtro)
                     }
                     
                     
-                    html += "                           <!--<a href='<?php echo site_url('venta/eliminar_venta/'.$v[i]['venta_id']); ?>' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a>-->";
+                    html += "                           <a href='"+base_url+"modelo_contrato/generar_contrato/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Generar contrato'><i class='fa fa-file-text-o' aria-hidden='true'></i></a>";
                     html += "                           <button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Anular venta'><em class='fa fa-ban'></em></button>";
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
                     html += "                               <div class='modal fade' id='myModal"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['venta_id']+"' style='font-family: Arial'>";
