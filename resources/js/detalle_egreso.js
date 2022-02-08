@@ -1,31 +1,11 @@
 let det_egreso = [];
 var base_url;
 window.onload = (()=>{
-    base_url = $("#base_url").val();
-    let egreso = $('#egreso').val();
-    if(egreso != null){
-        let controlador = `${base_url}detalle_egreso/get_egresos`;
-        $.ajax({
-            url: controlador,
-            cache: false,
-            type: 'POST',
-            data: {
-                egreso:egreso
-            },
-            success:(ress)=>{
-                let detegresos = JSON.parse(ress);
-                console.log(detegresos);
-                for(let dete of detegresos){
-                    cargar_concepto(dete['detegreso_categoria'], dete['detegreso_suma']);
-                    console.log(dete['egreso'])
-                }
-                dibujar_tabla();
-            },
-            error:()=>{
-                alert("Error: Algo salio mal al obtener los detalles de este egreso")
-            }
-        });
-    }
+    base_url = $('#base_url').val();
+    let detalle = $('#egreso_concepto').val();
+    let egresos = convertir(detalle);
+    convert_egreso(egresos);
+    dibujar_tabla()
 });
 
 function get_detallesEgresos(){
@@ -42,10 +22,13 @@ function cargar_concepto(egreso, suma){
 function guardar_concepto(){
     if(verificar_detegreso()){
         let egr = new Egreso();
+        let detalle = $('#egreso_concepto').val();
         egr.set_egreso($('#egreso_categoria').val());
         egr.set_suma($('#egreso_suma').val());
         det_egreso.push(egr)
         dibujar_tabla();
+        detalle = `${detalle}${detalle === '' ? '':`,`} ${$('#egreso_categoria').val()}(${$('#egreso_suma').val()}) `
+        $('#egreso_concepto').val(detalle);
         $('#add_concepto').modal('hide')
         $('#egreso_categoria').val('CATEGORIA EGRESO')
         $('#egreso_suma').val('');
@@ -110,14 +93,21 @@ function dibujar_tabla(){
  */
 function borrar_egreso(posicion){
     det_egreso.splice(posicion, 1);
+    let concepto = $('#egreso_concepto').val();
+    let array = convertir(concepto);
+    let detalle = ``;
+    array.splice(posicion, 1);
+    // convert_egreso(array);
+    array.forEach(egreso => {
+        detalle = `${detalle}${detalle === '' ? '':`,`} ${egreso}`
+    });
+    $('#egreso_concepto').val(detalle)
     dibujar_tabla();
 }
 
 function add_egreso(edit){
     if(verificar_form()){
         let controlador = (edit == 0 ? `${base_url}egreso/add_egresos`:`${base_url}egreso/edit_egresos`);
-        let detegresos = get_detallesEgresos();
-        let det_egresos = JSON.stringify(detegresos);
         let egreso_nombre = $('#egreso_nombre').val();
         let select_forma_pago = $('#select_forma_pago').val();
         let egreso_moneda = $('#egreso_moneda').val();
@@ -132,10 +122,8 @@ function add_egreso(edit){
         $.ajax({
             url: controlador,
             type: 'POST',
-            cache: false,
             async: false,
             data:{
-                det_egresos:det_egresos,
                 egreso_nombre:egreso_nombre,
                 select_forma_pago:select_forma_pago,
                 egreso_moneda:egreso_moneda,
@@ -187,6 +175,45 @@ function verificar_form(){
     }
 
     return ress;
+}
+/**
+ * convierte un string a un array
+ */
+function convertir(str) {
+    let array = []
+    let bandera = true;
+    let pos;
+    while(bandera){
+        pos = str.indexOf(',')
+        if(pos < 0){
+            bandera = false
+            str1 =  str.slice(0,str.length)
+        }else{
+            str1 =  str.slice(0,pos)
+        }
+        array.push(str1)
+        str = str.slice(pos+2,str.length)  
+    }
+    return array;
+}
+
+/**
+ * agregar a objeto egreso 
+ */
+function convert_egreso(array) {
+    let nombre, monto, pos;
+    array.forEach(egreso => {
+        nombre = egreso;
+        monto = egreso;
+        pos = nombre.indexOf('(')
+        nombre = nombre.slice(0,pos)
+        monto = monto.slice(pos+1,monto.length-1)
+        
+        let egr = new Egreso();
+        egr.set_egreso(nombre);
+        egr.set_suma(monto);
+        det_egreso.push(egr)
+    });
 }
 
 class Egreso{
