@@ -15,6 +15,8 @@ class Reportes extends CI_Controller{
         $this->load->model('Cuotum_model');
         $this->load->model('Empresa_model');
         $this->load->model('Usuario_model');
+        $this->load->model('Inventario_model');
+        $this->load->model('Compra_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -1616,7 +1618,7 @@ function torta3($anio,$mes)
         }
     }
     /*
-     * Reporte de ventas por dia de un usuario
+     * Reporte de ventas por dia de un usuario dado un rango de fechas!..
      */
     function reporte_usuariodia()
     {
@@ -1642,6 +1644,7 @@ function torta3($anio,$mes)
             //**************** fin contenido ***************
         }
     }
+    /* obtiene la suma de las ventas por dia en un rango de fechas de un usuario*/
     function ventas_mes()
     {
         $usuario_id = $this->session_data['usuario_id'];
@@ -1695,6 +1698,91 @@ function torta3($anio,$mes)
             }
             $moras = $this->Cuotum_model->get_moras($consulta_usuario);
             echo json_encode($moras);
+        }else{
+            show_404();
+        }
+    }
+    /*
+     * Reporte de productos con fechas de vencimiento
+     */
+    function productosvencidos()
+    {
+        if($this->acceso(18)){
+            $data['page_title'] = "Reporte de productos vencidos";
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['_view'] = 'reportes/productosvencidos';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    /* obtiene los productos con fechas de vencimiento y los guarda en una tabla auxiliar */
+    function productos_fechasvencimiento()
+    {
+        if ($this->input->is_ajax_request()){
+            $productos = $this->Inventario_model->get_inventario();
+            $this->load->model('Vencimiento_producto_model');
+            $this->Vencimiento_producto_model->truncar_vencimientoproducto();
+            foreach ($productos as $producto) {
+                $existencia = 0;
+                $res = 0;
+                if($producto["existencia"] >0){
+                    $detalles_compra = $this->Compra_model->mostrar_detallescompraproducto($producto["producto_id"]);
+                    $existencia = $producto["existencia"];
+                    foreach ($detalles_compra as $detalle) {
+                        $res = $existencia - $detalle["detallecomp_cantidad"];
+                        if($res <= 0){
+                            $params = array(
+                                'producto_id' => $producto['producto_id'],
+                                'producto_nombre' => $producto['producto_nombre'],
+                                'producto_codigo' => $producto['producto_codigo'],
+                                'producto_cantidad' => $producto['existencia'],
+                                'compra_id' => $detalle['compra_id'],
+                                'proveedor_nombre' => $detalle['proveedor_nombre'],
+                                'detallecomp_fechavencimiento' => $detalle['detallecomp_fechavencimiento'],
+                            );
+                            $vencimientoprod_id = $this->Vencimiento_producto_model->add_vencimientoproducto($params);
+                            break;
+                        }else{
+                            $params = array(
+                                'producto_id' => $producto['producto_id'],
+                                'producto_nombre' => $producto['producto_nombre'],
+                                'producto_codigo' => $producto['producto_codigo'],
+                                'producto_cantidad' => $detalle["detallecomp_cantidad"],
+                                'compra_id' => $detalle['compra_id'],
+                                'proveedor_nombre' => $detalle['proveedor_nombre'],
+                                'detallecomp_fechavencimiento' => $detalle['detallecomp_fechavencimiento'],
+                            );
+                            $vencimientoprod_id = $this->Vencimiento_producto_model->add_vencimientoproducto($params);
+                            $existencia = $res;
+                        }
+                    }
+                }
+            }
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
+    /* obtiene los productos con fechas de vencimiento de vencimiento_producto */
+    function get_fechasvencimiento()
+    {
+        if($this->input->is_ajax_request()){
+            $fecha_vencimiento = $this->input->post("fecha_vencimiento");
+            $filtrar = $this->input->post("filtrar");
+            $tipo_filtro = $this->input->post("tipo_filtro");
+            date_default_timezone_set('America/La_Paz');
+            $fecha_hoy = date('Y-m-d');
+            $fecha_filtro = "";
+            if($tipo_filtro == 1){
+                $a = "date(p.detallecomp_fechavencimiento) <= '".$fecha_limite."'";
+            }
+            $parametro = "";
+            if($filtrar){
+                $parametro = "and p.producto_nombre like '%".$filtrar."%'";
+            }
+            $this->load->model('Vencimiento_producto_model');
+            $vencimiento = $this->Vencimiento_producto_model->get_vencimiento_parametros($fecha_vencimiento, $parametro);
+            
+            echo json_encode($vencimiento);
         }else{
             show_404();
         }

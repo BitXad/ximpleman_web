@@ -17,7 +17,6 @@ function buscar_ventas(){
            data:{fecha_inicio:fecha_inicio, fecha_fin:fecha_fin, usuario_id:usuario_id, zona_id:zona_id},
            success:function(respuesta){
                 var registros =  JSON.parse(respuesta);
-                console.log(registros);
                 html = "";   
                 if (registros != null){
                     var n = registros.length; //tamaño del arreglo de la consulta

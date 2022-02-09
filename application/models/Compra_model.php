@@ -494,5 +494,21 @@ class Compra_model extends CI_Model
         return $this->db->insert_id();
     }
     
+    /* obtiene cantidades de los detalles de compra de un producto!. */
+    function mostrar_detallescompraproducto($producto_id){
+        $sql = "SELECT 
+                    c.compra_id, c.compra_fecha, c.compra_hora, p.proveedor_nombre,
+                    d.detallecomp_costo, d.`detallecomp_fechavencimiento`, d.`detallecomp_cantidad`
+                  FROM
+                    detalle_compra d
+                    left join compra c on d.compra_id = c.compra_id
+                    left join proveedor p on c.`proveedor_id` = p.`proveedor_id`
+                  WHERE
+                    d.producto_id = ".$producto_id."
+                  ORDER BY
+                    c.compra_fecha DESC, c.compra_hora DESC";
+        return $this->db->query($sql)->result_array();
+    }
+    
 }
 
