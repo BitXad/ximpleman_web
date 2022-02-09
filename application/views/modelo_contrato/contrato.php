@@ -58,18 +58,18 @@
 
 <form class="form-inline">
     <div class="form-group mb-2" >
-        <label for="contrato_id">Contrato </label>
-        <select name="contrato_id" id="contrato_id" class="form-control no-print" onchange="cambiar_contrato()">
+        <label for="contrato_id">Información 2do comprador </label>
+        <!-- <select name="contrato_id" id="contrato_id" class="form-control no-print" onchange="cambiar_contrato()">
             <?php foreach ($modelo_contratos as $modcontrato) {
                 echo "<option value='{$modcontrato['modcontrato_id']}'>{$modcontrato['modcontrato_nombre']}</option>";
             } ?>
-        </select>
+        </select> -->
         <input type="text" class="form-control no-print" id="segundoComprador_nombre" placeholder="Nombre" >
         <input type="text" class="form-control no-print" id="segundoComprador_ci" placeholder="C.I." >
         <a id="segundoComprador_a" class="btn btn-success no-print" onClick="agregar_segundo()" ><i class="fa fa-plus-square-o" aria-hidden="true"></i> Agregar</a>
     </div>
 </form>
-
+<br>
 <div class="col-xs-10" style="padding: 0; display: contents;">
     <div style="width: <?php echo $ancho;?>cm; padding: 0;">
         <div id="contrato">

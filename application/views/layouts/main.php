@@ -497,6 +497,9 @@
                         <li>
                             <a href="<?php echo site_url('Categoria_clientezona');?>"><i class="fa fa-map-marker"></i>Zonas</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('Modelo_contrato');?>"><i class="fa fa-book" aria-hidden="true"></i> Modelo Contrato</a>
+                        </li>
                         <?php
                         }
                         ?>

@@ -444,7 +444,7 @@
             <div class="modal-body" style="padding-bottom: 0px !important">
                 <?php foreach ($modelos_c as $mc){?>
                     <input type="hidden" id="modcontrato_id_contrato<?= $mc['modcontrato_id'] ?>" value="<?= $mc['modcontrato_id'] ?>">
-                    <button class="btn btn-md btn-primary" target="_blanck" onclick="ir_contrato(<?= $mc['modcontrato_id'] ?>)"><?= $mc['modcontrato_nombre'] ?></button><br>
+                    <button class="btn btn-md btn-primary btn-block" target="_blanck" onclick="ir_contrato(<?= $mc['modcontrato_id'] ?>)"><?= $mc['modcontrato_nombre'] ?></button><br>
                 <?php }?>
                 <input type="hidden" id="venta_id_contrato">
                 <br>
@@ -458,7 +458,8 @@
         let contrato = $(`#modcontrato_id_contrato${contrato_id}`).val()
         let venta = $('#venta_id_contrato').val()
         let base_url = $('#base_url').val()
-        window.location.href = `${base_url}modelo_contrato/generar_contrato/${venta}/${contrato}`;
+        // window.location.href = `${base_url}modelo_contrato/generar_contrato/${venta}/${contrato}`;
+        window.open(`${base_url}modelo_contrato/generar_contrato/${venta}/${contrato}`, '_blank');
     }
 </script>
 <!------------------------ FIN modal para Modificar fecha de una venta ------------------->
