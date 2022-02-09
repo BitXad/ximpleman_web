@@ -339,7 +339,6 @@ class Egreso extends CI_Controller{
             $usuario_id = $this->session_data['usuario_id'];
             $numrec = $this->Egreso_model->numero();
             $numero = $numrec[0]['parametro_numrecegr'] + 1;
-            $det_egresos = json_decode($this->input->post('det_egresos'));
             $egreso_nombre = $this->input->post('egreso_nombre');
             $forma_id = $this->input->post('select_forma_pago');
             $egreso_moneda = $this->input->post('egreso_moneda');
@@ -363,19 +362,7 @@ class Egreso extends CI_Controller{
                 'egreso_tc' => $egreso_tc,
                 'egreso_fecha' => $egreso_fecha,
             );
-            $egreso_id = $this->Egreso_model->add_egreso($params);
-            $sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
-            $this->db->query($sql);
-            // var_dump($egreso['egreso']);
-            foreach ($det_egresos as $det_egreso){
-                $egreso = json_decode(json_encode($det_egreso),true);
-                $params2 = array(   
-                    'egreso_id' => $egreso_id,
-                    'detegreso_categoria' => $egreso['egreso'],
-                    'detegreso_suma' => $egreso['suma'],
-                );
-                $this->Detalle_egreso_model->add_egreso($params2);
-            }
+            $this->Egreso_model->add_egreso($params);
         }else{
             show_404();
         }
@@ -383,7 +370,6 @@ class Egreso extends CI_Controller{
 
     function edit_egresos(){
         if($this->input->is_ajax_request()){
-            $det_egresos = json_decode($this->input->post('det_egresos'));
             $egreso_nombre = $this->input->post('egreso_nombre');
             $forma_id = $this->input->post('select_forma_pago');
             $egreso_moneda = $this->input->post('egreso_moneda');
@@ -412,17 +398,6 @@ class Egreso extends CI_Controller{
             );
 
             $this->Egreso_model->edit_egreso($params, $egreso_id);
-            $sql = "DELETE FROM detalle_egreso where egreso_id = $egreso_id"; 
-            $this->db->query($sql);
-            foreach ($det_egresos as $det_egreso){
-                $egreso = json_decode(json_encode($det_egreso),true);
-                $params2 = array(   
-                    'egreso_id' => $egreso_id,
-                    'detegreso_categoria' => $egreso['egreso'],
-                    'detegreso_suma' => $egreso['suma'],
-                );
-                $this->Detalle_egreso_model->add_egreso($params2);
-            }
         }else{
             show_404();
         }
