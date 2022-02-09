@@ -29,6 +29,7 @@ class Venta extends CI_Controller{
         $this->load->model('Credito_model');
         $this->load->model('Categoria_clientezona_model');
         $this->load->model('Promocion_model');
+        $this->load->model('Modelo_contrato_model');
         $this->load->model('Mesa_model');
         $this->load->model('Moneda_model');
         
@@ -66,6 +67,7 @@ class Venta extends CI_Controller{
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['estado'] = $this->Estado_model->get_tipo_estado(1);
         $data['usuario'] = $this->Venta_model->get_usuarios();
+        $data['modelos_c'] = $this->Modelo_contrato_model->get_all_modelo_contrato();
         $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
         if(sizeof($dosificacion)>0){
             $data['dosificado'] = 1;

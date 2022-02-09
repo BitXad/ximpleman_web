@@ -403,7 +403,7 @@ html += "  <button class='btn btn-facebook btn-xs' title='Clasificador de produc
 
 
 html += "<div class='row'>";
-html += "  <div class='col'>";
+html += "  <div class='col-md-12'>";
 html += "    <div class='collapse multi-collapse' id='caracteristicas"+registros[i]["detalleven_id"]+"'>";
 html += "      <div class='card card-body'>";
 
@@ -3177,7 +3177,8 @@ function tabla_ventas(filtro)
                     }
                     
                     
-                    html += "                           <a href='"+base_url+"modelo_contrato/generar_contrato/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Generar contrato'><i class='fa fa-file-text-o' aria-hidden='true'></i></a>";
+                    // html += "                           <a href='"+base_url+"modelo_contrato/generar_contrato/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Generar contrato'><i class='fa fa-file-text-o' aria-hidden='true'></i></a>";
+                    html += "                           <button type='button' class='btn btn-primary btn-xs' data-toggle='modal' data-target='#modal_contratos' title='Generar contrato' onclick='dar_venta("+v[i]['venta_id']+")'><i class='fa fa-file-text-o' aria-hidden='true'></i></button>";
                     html += "                           <button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Anular venta'><em class='fa fa-ban'></em></button>";
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
                     html += "                               <div class='modal fade' id='myModal"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['venta_id']+"' style='font-family: Arial'>";
@@ -3269,6 +3270,10 @@ function tabla_ventas(filtro)
         }        
     });    
             document.getElementById('oculto').style.display = 'none'; //mostrar el bloque del loader
+}
+
+function dar_venta(venta_id){
+    $('#venta_id_contrato').val(venta_id);
 }
 
 function montrar_ocultar_fila(parametro)

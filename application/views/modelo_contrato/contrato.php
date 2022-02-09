@@ -60,8 +60,8 @@
     <div class="form-group mb-2" >
         <label for="contrato_id">Contrato </label>
         <select name="contrato_id" id="contrato_id" class="form-control no-print" onchange="cambiar_contrato()">
-            <?php foreach ($contratos as $contrato) {
-                echo "<option value='{$contrato['modcontrato_id']}'>{$contrato['modcontrato_nombre']}</option>";
+            <?php foreach ($modelo_contratos as $modcontrato) {
+                echo "<option value='{$modcontrato['modcontrato_id']}'>{$modcontrato['modcontrato_nombre']}</option>";
             } ?>
         </select>
         <input type="text" class="form-control no-print" id="segundoComprador_nombre" placeholder="Nombre" >
@@ -81,19 +81,21 @@
 <script>
     function cambiar_contrato(){
         let base_url = $('#base_url').val();
-        let controlador  = `${base_url}/modelo_contrato/cambiar_contrato`
+        let controlador  = `${base_url}modelo_contrato/cambiar_contrato`
         let contrato = $('#contrato_id').val();
         // contrato != 1 ? campos(true):campos(false);
         let venta_id = $('#venta_id').val();
         $.ajax({
             url: controlador,
             type: 'POST',
+            async: false,
             data: {
                 contrato:contrato,
                 venta_id:venta_id,
             },
             success: (respuesta)=>{
                 let c = JSON.parse(respuesta);
+                $('#contrato').empty();
                 $('#contrato').html(c['modcontrato_contrato']);
             },
             error:()=>{

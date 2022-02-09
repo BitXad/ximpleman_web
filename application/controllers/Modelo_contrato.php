@@ -110,7 +110,7 @@ class Modelo_contrato extends CI_Controller{
      */
     function generar_contrato($venta_id, $modcontrato_id = 1, $cambiar_contrato = 0){
         if($this->acceso(21)){
-            $data['contratos'] = $this->Modelo_contrato_model->get_all_modelo_contrato();
+            $data['modelo_contratos'] = $this->Modelo_contrato_model->get_all_modelo_contrato();
             // $usuario_id = $this->session_data['usuario_id'];
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
@@ -167,6 +167,7 @@ class Modelo_contrato extends CI_Controller{
                 $datos['usuario_ci']
             );
             $data['contrato'] = $this->reemplazar_contrato($contrato,$comandos,$d);
+            // var_dump($data['contrato']);
             if($cambiar_contrato == 0){
                 $data['_view'] = 'modelo_contrato/contrato';
                 $this->load->view('layouts/main',$data);
