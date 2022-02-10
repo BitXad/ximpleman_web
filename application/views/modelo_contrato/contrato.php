@@ -58,7 +58,7 @@
 
 <form class="form-inline">
     <div class="form-group mb-2" >
-        <label for="contrato_id">Información 2do comprador </label>
+        <label class="no-print" for="contrato_id">Información 2do comprador </label>
         <!-- <select name="contrato_id" id="contrato_id" class="form-control no-print" onchange="cambiar_contrato()">
             <?php foreach ($modelo_contratos as $modcontrato) {
                 echo "<option value='{$modcontrato['modcontrato_id']}'>{$modcontrato['modcontrato_nombre']}</option>";
@@ -66,8 +66,17 @@
         </select> -->
         <input type="text" class="form-control no-print" id="segundoComprador_nombre" placeholder="Nombre" >
         <input type="text" class="form-control no-print" id="segundoComprador_ci" placeholder="C.I." >
-        <a id="segundoComprador_a" class="btn btn-success no-print" onClick="agregar_segundo()" ><i class="fa fa-plus-square-o" aria-hidden="true"></i> Agregar</a>
     </div>
+    <br>
+    <!-- <sp class="no-print">Colindancias </span> -->
+    <div class="form-group mb-2" >
+        <label for="" class="no-print">Colindancias </label>
+        <input type="text" class="form-control no-print" id="colindancia_norte" placeholder="NORTE" >
+        <input type="text" class="form-control no-print" id="colindancia_sur" placeholder="SUR" >
+        <input type="text" class="form-control no-print" id="colindancia_este" placeholder="ESTE" >
+        <input type="text" class="form-control no-print" id="colindancia_oeste" placeholder="OESTE" >
+    </div>
+    <a id="segundoComprador_a" class="btn btn-success no-print" onClick="agregar_segundo()" ><i class="fa fa-plus-square-o" aria-hidden="true"></i> Cambiar</a>
 </form>
 <br>
 <div class="col-xs-10" style="padding: 0; display: contents;">
@@ -108,12 +117,29 @@
         let contrato = `${$('#contrato').html()}`;
         let segundoComprador_nombre = $('#segundoComprador_nombre').val();
         let segundoComprador_ci = $('#segundoComprador_ci').val();
-        let comandos = [`*cliente2_nombre*`,`*cliente2_ci*`];
-        let datos = [segundoComprador_nombre,segundoComprador_ci];
+        let colindancia_norte = $('#colindancia_norte').val()
+        let colindancia_sur = $('#colindancia_sur').val()
+        let colindancia_este = $('#colindancia_este').val()
+        let colindancia_oeste = $('#colindancia_oeste').val()
+        let comandos = [
+            `#cliente2_nombre#`,
+            `#cliente2_ci#`,
+            `#colindancia_norte#`,
+            `#colindancia_sur#`,
+            `#colindancia_este#`,
+            `#colindancia_oeste#`
+        ];
+        let datos = [
+            segundoComprador_nombre,
+            segundoComprador_ci,
+            colindancia_norte,
+            colindancia_sur,
+            colindancia_este,
+            colindancia_oeste
+        ];
         if(segundoComprador_nombre != '' && segundoComprador_ci != ''){
             for(let i = 0; i < comandos.length; i++)
-                contrato = contrato.replace(comandos[i],datos[i]);
-            
+                contrato = contrato.replace(new RegExp(comandos[i],"g") ,datos[i]);
             $('#contrato').empty();
             $('#contrato').html(`${contrato}`);
         }else{

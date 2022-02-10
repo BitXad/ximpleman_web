@@ -177,6 +177,7 @@
                 <tr style='background-color: #aaaaaa;' class='fondoprint'>
                     <th id='fondoprint' class='fondoprint' style='width: 2%' class='text-center'>N°</th>
                     <th id='fondoprint' style='width: 32%' class='text-center'>CLIENTE <input type='button' value='[-]' onclick='mostrar_detalle();' id='boton_detalle' class='btn btn-xs' style="padding:0;"/></th>
+                    <th id='fondoprint' style='width: 8%' class='text-center'>CELULAR</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>CREDITO</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>CUOTAS A DEUDA</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>TOTAL DEUDA</th>

@@ -30,6 +30,7 @@ function tabla_moras() {
                 html += `<tr>
                             <td>${i}</td>
                             <td>${mora['cliente_nombre']}<sub>[${mora['credito_id']}]</sub></td>
+                            <td class="text-center">${mora['cliente_celular']}</td>
                             <td class="text-center">${mora['razon']} (${mora['venta_id']})</td>
                             <td class="text-center">${mora['deudas_mora']}</td>
                             <td class="text-center">${parseFloat(mora['monto_deuda']).toFixed(2)}</td>

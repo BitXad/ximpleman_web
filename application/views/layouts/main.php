@@ -749,6 +749,9 @@
                         <li>
                             <a href="<?php echo site_url('venta/prestamos');?>"><i class="fa fa-bitbucket"></i>Envases prestados</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes/reporte_mora');?>"><i class="glyphicon glyphicon-list-alt"></i>Mora de creditos</a>
+                        </li>
                         <?php
                         }
                         ?>

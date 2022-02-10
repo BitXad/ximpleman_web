@@ -121,30 +121,28 @@ class Modelo_contrato extends CI_Controller{
             $data['parametro'] = $this->Parametro_model->get_parametros();
             $contrato = $this->Modelo_contrato_model->get_modelo_contrato($modcontrato_id);
             $comandos = array(
-                "*cliente_nombre*",
-                "*cliente_ci*",
-                "*zona_lote*",
-                "*manzano_lote*",
-                "*numero_lote*",
-                "*superficie_lote*",
-                "*colindancia_norte*",
-                "*colindancia_sur*",
-                "*colindancia_este*",
-                "*colindancia_oeste*",
-                "*precio_total*",
-                "*cuota_inicial*",
-                "*cuota_saldo*",
-                "*numero_cuotas*",
-                "*cuota_mes*",
-                "*fecha_venta*",
-                "*cuota_dia*",
-                "*nombre_usuario*",
-                "*carnet_usuario*"
+                "#cliente_nombre#",
+                "#cliente_ci#",
+                "#zona_lote#",
+                "#manzano_lote#",
+                "#numero_lote#",
+                "#superficie_lote#",
+                "#precio_total#",
+                "#cuota_inicial#",
+                "#cuota_saldo#",
+                "#numero_cuotas#",
+                "#cuota_mes#",
+                "#fecha_venta#",
+                "#cuota_dia#",
+                "#nombre_usuario#",
+                "#carnet_usuario#"
             );
             $datos = $this->Modelo_contrato_model->get_datosContrato($venta_id);
             $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-            setlocale(LC_TIME, "spanish");
-            $fecha = strftime(strftime("%A, %d de %B de %Y"), strtotime($datos['venta_fecha']));
+            setlocale(LC_TIME, "spanish");  
+            // $fecha = strftime(strftime("%A, %d de %B de %Y"), strtotime($datos['venta_fecha']));
+            $fecha = new DateTime("2022-02-09");
+            $fecha = strftime("%A, %d de %B de %Y", $fecha->getTimestamp());
             $d = array(
                 $datos['cliente_nombre'],
                 $datos['cliente_ci'],
@@ -152,10 +150,10 @@ class Modelo_contrato extends CI_Controller{
                 $datos['subcategoria_nombre'],
                 $datos['producto_nombre'],
                 $datos['producto_caracteristicas'],
-                $datos['producto_colnorte'],   // "*colindancia_norte*",
-                $datos['producto_colsur'],   // "*colindancia_sur*",
-                $datos['producto_coleste'],   // "*colindancia_este*",
-                $datos['producto_coloeste'],   // "*colindancia_oeste*",
+                // $datos['producto_colnorte'],   // "*colindancia_norte*",
+                // $datos['producto_colsur'],   // "*colindancia_sur*",
+                // $datos['producto_coleste'],   // "*colindancia_este*",
+                // $datos['producto_coloeste'],   // "*colindancia_oeste*",
                 "{$datos['venta_total']} ".num_to_letras($datos['venta_total'],' Dolares'),
                 "{$datos['credito_cuotainicial']} ".num_to_letras($datos['credito_cuotainicial'],' Dolares'),
                 "{$datos['credito_monto']} ".num_to_letras($datos['credito_monto'],' Dolares'),
