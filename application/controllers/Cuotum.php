@@ -178,11 +178,8 @@ class Cuotum extends CI_Controller{
             
         }
     }
-<<<<<<< HEAD
+    
      function recibocuentas($cuota_id, $eldetalle = null)
-=======
-    function recibocuentas($cuota_id)
->>>>>>> master
     {
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
@@ -193,7 +190,7 @@ class Cuotum extends CI_Controller{
             $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
-<<<<<<< HEAD
+            
             if($eldetalle == 1){
                 if(isset($data['cuota'])){
                     $data['detalle_venta'] = $this->Cuotum_model->get_detallesventa($data['cuota'][0]['venta_id']);
@@ -216,15 +213,6 @@ class Cuotum extends CI_Controller{
             $data['_view'] = 'cuotum/boucherCuenta';
             $this->load->view('layouts/main',$data);
 
-=======
-
-            if ($este == 'NORMAL') {
-                $data['_view'] = 'cuotum/reciboCuenta';
-                $this->load->view('layouts/main',$data);
-            }else{
-                $data['_view'] = 'cuotum/boucherCuenta';
-                $this->load->view('layouts/main',$data);
->>>>>>> master
             }
         }
     }
