@@ -223,8 +223,8 @@ $(document).ready(function(){
                           <?php } else { ?>
                             <a href="<?php echo site_url("cuotum/pendiente1/".$c['cuota_id']."/".$c['credito_id']."/".$c['cuota_numcuota']); ?>" title="REESTABLECER" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
                             <?php if ($cuota[0]['venta_id']>0) { ?>
-                             <a href="<?php echo site_url('cuotum/recibocuentas/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span title="RECIBO" class="fa fa-print"></span></a>
-                             <a href="<?php echo site_url("cuotum/comprobantecuentas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" title="RECIBO DIVIDIDO" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
+                            <a onclick="mostrar_modal(<?php echo $c['cuota_id']; ?>)" class="btn btn-success btn-xs"><span title="RECIBO" class="fa fa-print"></span></a>
+                            <a href="<?php echo site_url("cuotum/comprobantecuentas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" title="RECIBO DIVIDIDO" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
                            <?php } else { ?>
                              <a href="<?php echo site_url('cuotum/recibocuentaserv/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
                              <a href="<?php echo site_url("cuotum/comprobantecuentaserv/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
@@ -400,4 +400,31 @@ $(document).ready(function(){
         document.getElementById(div_form).style.display = 'none';        
       }       
     }
-</script> 
+</script>
+
+<!------------------------ INICIO modal para confirmar eliminación ------------------->
+<div class="modal fade" id="modalconfirmar" tabindex="-1" role="dialog" aria-labelledby="modalconfirmarLabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <span class="text-bold" style="font-size: 12pt">Forma de Impresión</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <!------------------------------------------------------------------->
+                <label>
+                    <input type="hidden" name="lacuota_id" id="lacuota_id" />
+                    <input type="checkbox" name="eldetalle" id="eldetalle" checked />
+                    Imprimir con el detalle de la venta.
+                </label>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a onclick="mostrarcomprobante()" class="btn btn-success"><span class="fa fa-print"></span> Imprimir </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para confirmar eliminación ------------------->

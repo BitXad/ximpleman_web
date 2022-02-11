@@ -446,4 +446,20 @@ class Cuotum_model extends CI_Model
         )->result_array();
     }
     // - cuotas adeudadas cantidad max 3 y el total de las cuotas en reporte de mora
+    
+    function get_detallesventa($venta_id)
+    {
+        $venta = $this->db->query("
+            SELECT
+                dv.producto_id, dv.`detalleven_cantidad`, p.producto_nombre, cp.`categoria_nombre`
+            FROM
+                detalle_venta dv
+            left join producto p on dv.producto_id = p.producto_id
+            left join categoria_producto cp on p.`categoria_id` = cp.`categoria_id`
+            WHERE
+                dv.`venta_id` = $venta_id
+            ORDER BY dv.`detalleven_id` ASC
+        ")->result_array();
+        return $venta;
+    }
 }

@@ -123,7 +123,24 @@
             <td align="left"> GLOSA.-</td>
             <td align="right"><?php echo $cuota[0]['cuota_glosa']; ?> </td>
         </tr>
-             
+        <?php
+        $res = "";        
+        if($detalle_venta != ""){
+            foreach ($detalle_venta as $venta) {
+                $res .= " ".$venta['producto_nombre']." | ";  
+            ?>
+            <?php
+            }
+            ?>
+            <tr>
+                <td colspan="6">
+                    <?php echo "<b>".$lacategoria."</b> "; ?>
+                    <?php echo $res; ?>
+                </td>
+            </tr>
+        <?php
+        }
+        ?>
         </table>
         
             </div>
