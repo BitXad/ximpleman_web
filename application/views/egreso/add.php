@@ -27,11 +27,9 @@
                                         <select name="egreso_moneda" id="egreso_moneda" class="form-control" required>
                                             <!--<option value="Bs">- Bs -</option>-->
                                             <?php 
-                                            foreach($all_moneda as $moneda)
-                                            {
-                                            $selected = ($moneda['moneda_descripcion'] == $this->input->post('egreso_moneda')) ? ' selected="selected"' : "";
-
-                                            echo '<option value="'.$moneda['moneda_descripcion'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
+                                            foreach($all_moneda as $moneda){
+                                                $selected = ($moneda['moneda_descripcion'] == $this->input->post('egreso_moneda')) ? ' selected="selected"' : "";
+                                                echo "<option value='{$moneda['moneda_id']}' $selected>{$moneda['moneda_descripcion']}</option>";
                                             } 
                                             ?>
                                         </select>
@@ -161,7 +159,7 @@
                             </button>
                         </a>			        
                     </div>
-                <?php echo form_close(); ?>                            
+                <!-- <?php echo form_close(); ?>                             -->
                 </div>
             </div>
         </div>

@@ -221,7 +221,6 @@ class Egreso extends CI_Controller{
                 $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
                 $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
                 $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
-                // $data['all_detegreso'] = json_encode($this->Detalle_egreso_model->get_detegresos($egreso_id));
                 $data['_view'] = 'egreso/edit';
                 $this->load->view('layouts/main',$data);
             }
@@ -345,8 +344,12 @@ class Egreso extends CI_Controller{
             $egreso_monto = $this->input->post('egreso_monto');
             $egreso_concepto = $this->input->post('egreso_concepto');
             $egreso_glosa = $this->input->post('egreso_glosa');
-            
+            $egreso_monreg = $this->input->post('egreso_monreg');
             $egreso_fecha = date('Y-m-d H:i:s');
+            
+            $moneda_parametro = $this->Parametro_model->get_moneda();
+            $egreso_monto = $egreso_moneda == $moneda_parametro['moneda_id'] ? $egreso_monto : round($egreso_monto/$moneda_parametro['moneda_tc'], 3);
+            $egreso_moneda = $moneda_parametro['moneda_descripcion'];
             
             $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
             $egreso_tc = $all_moneda[1]["moneda_tc"];
@@ -361,6 +364,7 @@ class Egreso extends CI_Controller{
                 'egreso_glosa' => $egreso_glosa,
                 'egreso_tc' => $egreso_tc,
                 'egreso_fecha' => $egreso_fecha,
+                'egreso_monreg'=> $egreso_monreg,
             );
             $this->Egreso_model->add_egreso($params);
         }else{
@@ -376,13 +380,17 @@ class Egreso extends CI_Controller{
             $egreso_monto = $this->input->post('egreso_monto');
             $egreso_concepto = $this->input->post('egreso_concepto');
             $egreso_glosa = $this->input->post('egreso_glosa');
-            
+            $egreso_monreg = $this->input->post('egreso_monreg');
             $egreso_fecha = $this->input->post('egreso_fecha');
             $usuario_id = $this->input->post('usuario_id');
             $egreso_numero = $this->input->post('egreso_numero');
             $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
             $egreso_tc = $all_moneda[1]["moneda_tc"];
             $egreso_id = $this->input->post('egreso_id');
+            
+            $moneda_parametro = $this->Parametro_model->get_moneda();
+            $egreso_monto = $egreso_moneda == $moneda_parametro['moneda_id'] ? $egreso_monto : round($egreso_monto/$moneda_parametro['moneda_tc'], 3);
+            $egreso_moneda = $moneda_parametro['moneda_descripcion'];
 
             $params = array(
                 'usuario_id' => $usuario_id,
@@ -395,6 +403,7 @@ class Egreso extends CI_Controller{
                 'egreso_glosa' => $egreso_glosa,
                 'egreso_tc' => $egreso_tc,
                 'egreso_fecha' => $egreso_fecha,
+                'egreso_monreg' => $egreso_monreg,
             );
 
             $this->Egreso_model->edit_egreso($params, $egreso_id);
