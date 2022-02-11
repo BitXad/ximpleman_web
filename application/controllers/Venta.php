@@ -337,14 +337,14 @@ class Venta extends CI_Controller{
         $pedido_id = $this->input->post('pedido_id'); // interes por ventas
         $nit = $this->input->post('nit'); // nit del cliente
         $razon = $this->input->post('razon'); // nit del cliente
-        $fecha_venta = $this->input->post('venta_fecha'); // fecha de la venta
+        $fecha_venta  = $this->input->post('venta_fecha'); // fecha de la venta
         $hora_venta = $this->input->post('venta_hora'); // hora de la venta
         $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
         $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
         $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
         $venta_efectivo = $this->input->post('venta_efectivo'); // efectivo cancelado
         $venta_cambio = $this->input->post('venta_cambio'); // Cambio devuelto  
-        
+        $cuota_fecha_i = $fecha_venta;
         $facturado = $this->input->post('facturado'); // si la venta es facturada
         
         $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
@@ -448,10 +448,12 @@ class Venta extends CI_Controller{
             $credito_monto =  $venta_total - $cuota_inicial;
             $credito_cuotainicial =  $cuota_inicial;
             $credito_interesproc =  $credito_interes;
-            $credito_interesmonto =  $venta_total * $venta_interes; //revisar
+            // $credito_interesmonto =  $venta_total * $venta_interes; //revisar
+            $credito_interesmonto =  $venta_total * 0; //revisar
             $credito_numpagos =  $cuotas;
             $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
-            $credito_fecha = date('Y-m-d');
+            // $credito_fecha = date('Y-m-d');
+            $credito_fecha = $fecha_venta;
             $time = time();
             $credito_hora =  date("H:i:s", $time);
             $credito_tipo = 1; // 1- ventas 2 - compras
@@ -463,21 +465,22 @@ class Venta extends CI_Controller{
             $fecha_inicio = $this->input->post('fecha_inicio');
             $numcuota = $cuotas; //numero de cuotas
             
-                        
-            if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
-            else $intervalo = 7; //si los pagos son semanales
+            $intervalo = $modalidad == "MENSUAL" ? 'month':'week';
+            // if ($modalidad == "MENSUAL") $intervalo = 'month'; //si los pagos son mensuales
+            // else $intervalo = 'week'; //si los pagos son semanales
             
-                $cuota_numcuota = 1;
-                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
-                    $cuota_numcuota = $i;
+                // $cuota_numcuota = 1;
+            $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$numcuota $intervalo"));
+                // for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                //     $cuota_numcuota = $i;
                     
-                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    if ($modalidad == "MENSUAL") 
-                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
-                    else 
-                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+                //     $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+                    // if ($modalidad == "MENSUAL") 
+                    //     $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+                    // else 
+                    //     $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
 
-                }
+                // }
                 $credito_fechalimite = $cuota_fechalimite;
             
             $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
@@ -518,23 +521,22 @@ class Venta extends CI_Controller{
             $saldo_deudor = $credito_monto;
             
             $siguiente= 0;
-            $cuota_fechalimite = $fecha_inicio;
+            // $cuota_fechalimite = $fecha_inicio;
            
            // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
             
-            $cuota_fechalimite = $fecha_inicio;
+            // $cuota_fechalimite = $fecha_inicio;
             
 
                 
             
-                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
-                    $cuota_numcuota = $i;
+                for ($j=1; $j <= $numcuota; $j++) { // ciclo para llenar las cuotas
+                    $cuota_numcuota = $j;
                     
-                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    if ($modalidad == "MENSUAL") 
-                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
-                    else 
-                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+                    // $cuota_fechalimitex = (time() + ($jntervalo * $j * 24 * 60 * 60 ));
+                    $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$j $intervalo"));
+                    
+                    $cuota_fechalimite = $cuota_fechalimitex;
                     
                     $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
                             $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
@@ -1447,21 +1449,12 @@ function edit($venta_id)
                     $fecha_inicio = $this->input->post('fecha_inicio');
                     $numcuota = $cuotas; //numero de cuotas
 
-                        
-            if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
-            else $intervalo = 7; //si los pagos son semanales
+            $intervalo = $modalidad == "MENSUAL" ? 'month': 'week'; 
             
                 $cuota_numcuota = 1;
-                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
-                    $cuota_numcuota = $i;
-                    
-                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    if ($modalidad == "MENSUAL") 
-                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
-                    else 
-                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
 
-                }
+                $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$numcuota $intervalo"));
+                
                 $credito_fechalimite = $cuota_fechalimite;
             
             $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_tipo) value(".
@@ -1514,17 +1507,11 @@ function edit($venta_id)
             
                 for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
                     $cuota_numcuota = $i;
-                    
-                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    if ($modalidad == "MENSUAL") 
-                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
-                    else 
-                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
-                    
+                    $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$i $intervalo"));
+
                     $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
                             $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
                             $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
-                  
                     $this->Venta_model->ejecutar($cuota);
 
 //                    $saldo_deudor = $cuota_total - $cuota_capital;

@@ -3935,7 +3935,7 @@ function finalizarcambios()
     }
     else
     {
-        var txt;
+        // var txt;
         var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
         if (r == true) {
           registrarcliente_modificado();
