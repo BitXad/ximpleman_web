@@ -67,17 +67,20 @@ function dibujar_tabla(){
     let posicion = 0;
     let html = ``;
     let total = parseFloat(0);
+    console.log(egresos);
     for(let egreso of egresos){
-        html +=`<tr>
-                    <td>${posicion+1}</td>
-                    <td>${egreso.get_egreso()}</td>
-                    <td>${parseFloat(egreso.get_suma()).toFixed(2)}</td>
-                    <td>
-                        <button class="btn btn-danger btn-xs" title="Borrar" onclick="borrar_egreso(${posicion})"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                    </td>
-                </tr>`;
-        posicion += 1;
-        total = parseFloat(total) + parseFloat(egreso.get_suma());
+        if(egreso.get_egreso() != ''){
+            html +=`<tr>
+                        <td>${posicion+1}</td>
+                        <td>${egreso.get_egreso()}</td>
+                        <td>${parseFloat(egreso.get_suma()).toFixed(2)}</td>
+                        <td>
+                            <button class="btn btn-danger btn-xs" title="Borrar" onclick="borrar_egreso(${posicion})"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        </td>
+                    </tr>`;
+            posicion += 1;
+            total = parseFloat(total) + parseFloat(egreso.get_suma());
+        }
     }
     html += `<tr>
                 <th></th>
@@ -114,7 +117,7 @@ function add_egreso(edit){
         let egreso_monto = $('#egreso_monto').val();
         let egreso_concepto = $('#egreso_concepto').val();
         let egreso_glosa = $('#egreso_glosa').val();
-
+        let egreso_monreg =  $('#egreso_moneda').val();
         let egreso_numero = $('#egreso_numero') .val();
         let egreso_fecha = $('#egreso_fecha') .val();
         let usuario_id = $('#usuario_id').val();
@@ -134,6 +137,7 @@ function add_egreso(edit){
                 egreso_fecha:egreso_fecha,
                 usuario_id:usuario_id,
                 egreso_id:egreso_id,
+                egreso_monreg:egreso_monreg,
             },
             success: () =>{
                 window.location.href = `${base_url}egreso/index`;
@@ -205,9 +209,9 @@ function convert_egreso(array) {
     array.forEach(egreso => {
         nombre = egreso;
         monto = egreso;
-        pos = nombre.indexOf('(')
-        nombre = nombre.slice(0,pos)
-        monto = monto.slice(pos+1,monto.length-1)
+        pos = nombre.indexOf('(');
+        nombre = nombre.slice(0,pos);
+        monto = monto.slice(pos+1,monto.length-1);
         
         let egr = new Egreso();
         egr.set_egreso(nombre);

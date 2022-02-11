@@ -16,21 +16,33 @@ function modificar_modelocontrato(modcontrato_id){
     let modcontrato_contrato = $('#modeloc_parte1').summernote('code');
     let modcontrato_nombre = $('#nombre_contrato').val(); 
     let estado_id = $('#estado_id').val();
-    $.ajax({url: controlador,
-            type: "POST",
-            data:{
-                estado_id:estado_id,
-                modcontrato_nombre:modcontrato_nombre,
-                modcontrato_id:modcontrato_id, 
-                modcontrato_contrato:modcontrato_contrato,
+    if(verificar()){
+        $.ajax({url: controlador,
+                type: "POST",
+                data:{
+                    estado_id:estado_id,
+                    modcontrato_nombre:modcontrato_nombre,
+                    modcontrato_id:modcontrato_id, 
+                    modcontrato_contrato:modcontrato_contrato,
+                },
+                success:(respuesta)=>{
+                    var registros =  JSON.parse(respuesta);
+                    if (registros != null)
+                        window.location.href = `${base_url}modelo_contrato`;
             },
-            success:(respuesta)=>{
-                var registros =  JSON.parse(respuesta);
-                if (registros != null)
-                    window.location.href = `${base_url}modelo_contrato`;
-        },
-        error:()=>{
-            window.location.href = `${base_url}modelo_contrato`;
-        }
-    });
+            error:()=>{
+                window.location.href = `${base_url}modelo_contrato`;
+            }
+        });
+    }else{
+        let mensaje = `Este campo es obligatorio`; 
+        // console.log("no se lleno el campo")
+        $('#nombre_contrato').focus();
+        $('#nombre_contrato').css('border','1px solid #FF2828');
+        $('#mensaje_nombre_contrato').html(mensaje);
+    }
+}
+
+function verificar(){
+    return $('#nombre_contrato').val() == '' ? false:true;
 }

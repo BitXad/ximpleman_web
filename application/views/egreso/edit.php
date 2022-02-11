@@ -24,12 +24,10 @@
                                     <label for="egreso_moneda" class="control-label">Moneda</label>
                                     <div class="form-group">
                                         <select name="egreso_moneda" id="egreso_moneda" class="form-control" required>
-                                            <!--<option value="Bs">- Bs -</option>-->
                                             <?php
-                                            foreach($all_moneda as $moneda)
-                                            {
-                                              $selected = ($moneda['moneda_descripcion'] == $egreso['egreso_moneda']) ? ' selected="selected"' : "";
-                                              echo '<option value="'.$moneda['moneda_descripcion'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
+                                            foreach($all_moneda as $moneda){
+                                                $selected = ($moneda['moneda_id'] == $egreso['egreso_monreg']) ? ' selected="selected"' : "";
+                                                echo '<option value="'.$moneda['moneda_id'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
                                             } 
                                             ?>
                                         </select>

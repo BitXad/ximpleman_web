@@ -185,4 +185,15 @@ class Parametro_model extends CI_Model
         $sql = "select p.*, m.moneda_tc, m.moneda_descripcion from parametros p, moneda m where p.moneda_id = m.moneda_id and parametro_id = $parametro_id";
         return $this->db->query($sql)->row_array();
     }
+    /**
+     * Obtener la modena_id de paramtros que se usa en el sistema
+     */
+    function get_moneda(){
+        return $this->db->query(
+            "SELECT p.moneda_id, m.moneda_descripcion,m.moneda_tc 
+            from parametros p 
+            left join moneda m on m.moneda_id = p.moneda_id
+            where p.parametro_id = 1"
+            )->row_array();
+    }
 }

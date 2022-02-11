@@ -13,6 +13,7 @@ class Cuotum extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('Credito_model');        
         $this->load->model('Compra_model');
+        $this->load->model('Moneda_model');
         $this->load->model('Parametro_model');
         $this->load->helper('numeros');  
         $this->load->model('Dosificacion_model');
@@ -83,21 +84,22 @@ class Cuotum extends CI_Controller{
             $data['rol'] = $this->session_data['rol'];
             $cuotas_pendientes = $this->Cuotum_model->get_pendientes($credito_id);
             if (isset($cuotas_pendientes)) {
-              foreach ($cuotas_pendientes as $cuota) {
-              $hoy = new DateTime('NOW');
-              $fechalimite = new DateTime($cuota['cuota_fechalimite']);
-              
-              if ($hoy>$fechalimite) {
-                $diff = $hoy->diff($fechalimite);
-                $dias =  $diff->days;
-                $multa = $dias*$cuota['cuota_interes']/30;
-                $sql = "UPDATE cuota SET cuota_moradias = ".$dias.", cuota_multa = ".$multa."  WHERE credito_id = ".$credito_id." and cuota_id = ".$cuota['cuota_id']." ";
-                $this->db->query($sql);
-              }
-            }
+                foreach ($cuotas_pendientes as $cuota) {
+                    $hoy = new DateTime('NOW');
+                    $fechalimite = new DateTime($cuota['cuota_fechalimite']);
+                    
+                    if ($hoy>$fechalimite) {
+                        $diff = $hoy->diff($fechalimite);
+                        $dias =  $diff->days;
+                        $multa = $dias*$cuota['cuota_interes']/30;
+                        $sql = "UPDATE cuota SET cuota_moradias = ".$dias.", cuota_multa = ".$multa."  WHERE credito_id = ".$credito_id." and cuota_id = ".$cuota['cuota_id']." ";
+                        $this->db->query($sql);
+                    }
+                }
             }
             
-
+            $parametros = $this->Parametro_model->get_parametro(1);
+            $data['moneda'] = $this->Moneda_model->get_moneda($parametros['moneda_id']);
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
             $data['credito'] = $this->Credito_model->dato_cuentas($credito_id);
             $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
@@ -176,16 +178,22 @@ class Cuotum extends CI_Controller{
             
         }
     }
+<<<<<<< HEAD
      function recibocuentas($cuota_id, $eldetalle = null)
+=======
+    function recibocuentas($cuota_id)
+>>>>>>> master
     {
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
+        $data['moneda'] = $this->Moneda_model->get_moneda($data['parametro'][0]['moneda_id']);
          if($this->acceso(47)){
             $data['page_title'] = "Comprobante";
             $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
+<<<<<<< HEAD
             if($eldetalle == 1){
                 if(isset($data['cuota'])){
                     $data['detalle_venta'] = $this->Cuotum_model->get_detallesventa($data['cuota'][0]['venta_id']);
@@ -208,6 +216,15 @@ class Cuotum extends CI_Controller{
             $data['_view'] = 'cuotum/boucherCuenta';
             $this->load->view('layouts/main',$data);
 
+=======
+
+            if ($este == 'NORMAL') {
+                $data['_view'] = 'cuotum/reciboCuenta';
+                $this->load->view('layouts/main',$data);
+            }else{
+                $data['_view'] = 'cuotum/boucherCuenta';
+                $this->load->view('layouts/main',$data);
+>>>>>>> master
             }
         }
     }
