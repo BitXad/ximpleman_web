@@ -49,10 +49,9 @@ border-spacing : 0 0;
 border-collapse : collapse;
 font-family: Arial narrow;
 font-size: 7pt;
+}
 td {
 border:hidden;
-
-}
 }
 
 td#comentario {
@@ -169,23 +168,23 @@ border-bottom : 1px solid #aaa;*/
 
        <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
            <tr  style="font-size: 8pt;" >
-            <td align="left" style="padding: 0;"> SALDO TOTAL: Bs</td> 
+            <td align="left" style="padding: 0;"> SALDO TOTAL: <?= $moneda['moneda_descripcion'] ?></td> 
             <td align="right" style="padding: 0;"><?php echo number_format($cuota[0]['cuota_saldo'],'2','.',','); ?></td>
            </tr>
            <tr style="font-size: 8pt;">
-            <td align="left" style="padding: 0;"> MONTO CUOTA: Bs</td>
+            <td align="left" style="padding: 0;"> MONTO CUOTA: <?= $moneda['moneda_descripcion'] ?></td>
             <td align="right" style="padding: 0;"><?php echo number_format($cuota[0]['cuota_total'],'2','.',','); ?> </td>
            </tr>
            <tr style="font-size: 8pt;">
-            <td align="left" style="padding: 0;"> MONTO CANCELADO: Bs</td>
+            <td align="left" style="padding: 0;"> MONTO CANCELADO: <?= $moneda['moneda_descripcion'] ?></td>
             <td align="right" style="padding: 0;"><?php echo number_format($cuota[0]['cuota_cancelado'],'2','.',','); ?></td>
            </tr>
            <tr  style="font-size: 8pt;border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 0px;">
-            <td align="left" style="padding: 0;"> SALDO PARC: Bs</td>
+            <td align="left" style="padding: 0;"> SALDO PARC: <?= $moneda['moneda_descripcion'] ?></td>
             <td align="right" style="padding: 0;"><?php echo number_format($cuota[0]['cuota_total']-$cuota[0]['cuota_cancelado'],'2','.',','); ?> </td>
             </tr>
             <tr style="font-size: 8pt;border-top-style: solid; border-top-width: 0px; border-bottom-style: solid; border-bottom-width: 2px;">
-            <td align="left" style="padding: 0;"> SALDO DEUDOR: Bs</td>
+            <td align="left" style="padding: 0;"> SALDO DEUDOR: <?= $moneda['moneda_descripcion'] ?></td>
             <td align="right" style="padding: 0;"><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'],'2','.',','); ?> </td>
             </tr>
             <tr  style="font-size: 8pt;" >
