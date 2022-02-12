@@ -743,6 +743,14 @@
                         <?php
                         }
                         ?>
+                        <?php if($rolusuario[156-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('reportes/productosvencidos');?>"><i class="fa fa-calendar"></i>Vencimiento Productos</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
                         
                         <?php if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
