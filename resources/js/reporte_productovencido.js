@@ -61,6 +61,10 @@ function tabla_fvencimiento(){
                         html += "</td>";
                         html += "<td class='text-center' style='padding:0'>"+registros[i]["compra_id"]+"</td>";
                         html += "<td class='text-lefth' style='padding:0'>"+registros[i]["proveedor_nombre"]+"</td>";
+                        html += "<td class='no-print'>";
+                        html += "<a href='"+base_url+"compra/nota/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Nota de Compra'><span class='fa fa-print'></span></a>";
+                        html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
+                        html += "</td>";
                         html += "</tr>";
                     }
                     $("#tabla_productos").html(html);
