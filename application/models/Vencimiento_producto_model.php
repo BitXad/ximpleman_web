@@ -69,7 +69,7 @@ class Vencimiento_producto_model extends CI_Model
     /*
      * Get vencimiento_producto dado una fecha limite
      */
-    function get_vencimiento_parametros($fecha_limite, $parametro)
+    function get_vencimiento_parametros($fecha_filtro, $parametro)
     {
         $vencimiento = $this->db->query("
             SELECT
@@ -77,7 +77,7 @@ class Vencimiento_producto_model extends CI_Model
             FROM
                 vencimiento_producto p
             where
-                p.detallecomp_fechavencimiento <= '".$fecha_limite."'
+                ".$fecha_filtro."
                 ".$parametro."
         ")->result_array();
         return $vencimiento;

@@ -1772,15 +1772,24 @@ function torta3($anio,$mes)
             date_default_timezone_set('America/La_Paz');
             $fecha_hoy = date('Y-m-d');
             $fecha_filtro = "";
-            if($tipo_filtro == 1){
-                $a = "date(p.detallecomp_fechavencimiento) <= '".$fecha_limite."'";
-            }
             $parametro = "";
-            if($filtrar){
+            if($filtrar != ""){
                 $parametro = "and p.producto_nombre like '%".$filtrar."%'";
             }
+            if($tipo_filtro == 1){
+                $fecha_filtro = " date(p.detallecomp_fechavencimiento) < '".$fecha_hoy."' ";
+            }elseif($tipo_filtro == 2){
+                $fecha_filtro = " date(p.detallecomp_fechavencimiento) >= '".$fecha_hoy."' ";
+            }elseif($tipo_filtro == 3){
+                $fecha_filtro = " date(p.detallecomp_fechavencimiento) <= '".$fecha_vencimiento."' ";
+            }elseif($tipo_filtro == 4){
+                $fecha_filtro = " date(p.detallecomp_fechavencimiento) >= '".$fecha_vencimiento."' ";
+            }elseif($tipo_filtro == 5){
+                $fecha_filtro = " 1 = 1 ";
+            }
+            
             $this->load->model('Vencimiento_producto_model');
-            $vencimiento = $this->Vencimiento_producto_model->get_vencimiento_parametros($fecha_vencimiento, $parametro);
+            $vencimiento = $this->Vencimiento_producto_model->get_vencimiento_parametros($fecha_filtro, $parametro);
             
             echo json_encode($vencimiento);
         }else{
