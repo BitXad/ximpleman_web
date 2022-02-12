@@ -64,17 +64,17 @@
                 echo "<option value='{$modcontrato['modcontrato_id']}'>{$modcontrato['modcontrato_nombre']}</option>";
             } ?>
         </select> -->
-        <input type="text" class="form-control no-print" id="segundoComprador_nombre" placeholder="Nombre" >
-        <input type="text" class="form-control no-print" id="segundoComprador_ci" placeholder="C.I." >
+        <input type="text" class="form-control no-print" id="segundoComprador_nombre" placeholder="Nombre" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus>
+        <input type="text" class="form-control no-print" id="segundoComprador_ci" placeholder="C.I." onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus>
     </div>
     <br>
     <!-- <sp class="no-print">Colindancias </span> -->
     <div class="form-group mb-2" >
         <label for="" class="no-print">Colindancias </label>
-        <input type="text" class="form-control no-print" id="colindancia_norte" placeholder="NORTE" >
-        <input type="text" class="form-control no-print" id="colindancia_sur" placeholder="SUR" >
-        <input type="text" class="form-control no-print" id="colindancia_este" placeholder="ESTE" >
-        <input type="text" class="form-control no-print" id="colindancia_oeste" placeholder="OESTE" >
+        <input type="text" class="form-control no-print" id="colindancia_norte" placeholder="NORTE" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus>
+        <input type="text" class="form-control no-print" id="colindancia_sur" placeholder="SUR" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus>
+        <input type="text" class="form-control no-print" id="colindancia_este" placeholder="ESTE" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus>
+        <input type="text" class="form-control no-print" id="colindancia_oeste" placeholder="OESTE" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus>
     </div>
     <a id="segundoComprador_a" class="btn btn-success no-print" onClick="agregar_segundo()" ><i class="fa fa-plus-square-o" aria-hidden="true"></i> Cambiar</a>
 </form>

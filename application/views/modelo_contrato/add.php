@@ -23,7 +23,7 @@
                     <div class="col-md-10">
                         <label for="nombre_contrato" class="control-label"><span style="color: red;">*</span>Nombre del contrato</label>
                         <div class="form-group">
-                            <input type="text" id="nombre_contrato" name="nombre_contrato" class="form-control" required placeholder="Nombre del contrato">
+                            <input type="text" id="nombre_contrato" name="nombre_contrato" class="form-control" required placeholder="Nombre del contrato" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus>
                             <span id="mensaje_nombre_contrato" style="color: red; font-size: 10pt;"></span>
                         </div>
                     </div>
