@@ -79,10 +79,11 @@ class Egreso_model extends CI_Model
             SELECT
                 e.*, u.*, fp.forma_nombre
             FROM
-                egresos e, usuario u, `forma_pago` fp
+                egresos e
+            left join usuario u on e.usuario_id = u.usuario_id
+            left join forma_pago fp on e.`forma_id` = `fp`.`forma_id`
             WHERE
-                e.usuario_id = u.usuario_id
-            AND e.`forma_id` = `fp`.`forma_id`   
+                1 = 1  
                 ".$condicion." 
                 ".$categoria." 
             ORDER BY e.egreso_fecha DESC 
