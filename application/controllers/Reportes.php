@@ -1734,7 +1734,7 @@ function torta3($anio,$mes)
                                 'producto_id' => $producto['producto_id'],
                                 'producto_nombre' => $producto['producto_nombre'],
                                 'producto_codigo' => $producto['producto_codigo'],
-                                'producto_cantidad' => $producto['existencia'],
+                                'producto_cantidad' => $existencia,
                                 'compra_id' => $detalle['compra_id'],
                                 'proveedor_nombre' => $detalle['proveedor_nombre'],
                                 'detallecomp_fechavencimiento' => $detalle['detallecomp_fechavencimiento'],
