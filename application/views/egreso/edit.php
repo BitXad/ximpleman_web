@@ -60,10 +60,16 @@
                                         <input type="text" readonly="readonly" name="egreso_numero" value="<?php echo ($this->input->post('egreso_numero') ? $this->input->post('egreso_numero') : $egreso['egreso_numero']); ?>" class="form-control" id="egreso_numero" required />
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
+                                    <label for="egreso_especificacion" class="control-label">Especificación</label>
+                                    <div class="form-group">
+                                        <input type="text" name="egreso_especificacion" value="<?php echo ($this->input->post('egreso_especificacion') ? $this->input->post('egreso_especificacion') : $egreso['egreso_especificacion']); ?>" class="form-control" id="egreso_especificacion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" disabled/>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
                                     <label for="egreso_concepto" class="control-label">Detalle</label>
                                     <div class="form-group">
-                                        <input type="text" name="egreso_concepto" value="<?php echo ($this->input->post('egreso_concepto') ? $this->input->post('egreso_concepto') : $egreso['egreso_concepto']); ?>" class="form-control" id="egreso_concepto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" disabled/>
+                                        <input type="text" name="egreso_concepto" value="<?php echo ($this->input->post('egreso_concepto') ? $this->input->post('egreso_concepto') : $egreso['egreso_concepto']); ?>" class="form-control" id="egreso_concepto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
                                     </div>
                                 </div>
                                 <?php  if ($tipousuario_id==1) { ?>
@@ -90,10 +96,10 @@
                                 </div>
                                 <?php } ?>
                                 
-                                <div class="col-md-6" id="egreso_glosa" style="<?php if($egreso['forma_id'] == 1){ echo 'display: none;';} ?>">
+                                <div class="col-md-6" id="input_egreso_glosa" style="<?php if($egreso['forma_id'] == 1){ echo 'display: none;';} ?>">
                                     <label for="egreso_glosa" class="control-label">Glosa</label>
                                     <div class="form-group">
-                                        <input type="text" id="input_glosa" name="egreso_glosa" value="<?php echo ($this->input->post('egreso_glosa') ? $this->input->post('egreso_glosa') : $egreso['egreso_glosa']) ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                                        <input type="text" id="egreso_glosa" name="egreso_glosa" value="<?php echo ($this->input->post('egreso_glosa') ? $this->input->post('egreso_glosa') : $egreso['egreso_glosa']) ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -192,10 +198,10 @@
         var forma = document.getElementById('select_forma_pago').value;
         
         if(forma != 1){
-            document.getElementById('egreso_glosa').style.display = 'block';
+            document.getElementById('input_egreso_glosa').style.display = 'block';
         }else{
-            document.getElementById('egreso_glosa').style.display = 'none';
-            document.getElementById('input_glosa').value = "";
+            document.getElementById('input_egreso_glosa').style.display = 'none';
+            document.getElementById('egreso_glosa').value = "";
         }
     }
 </script>

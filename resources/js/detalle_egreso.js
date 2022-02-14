@@ -2,7 +2,7 @@ let det_egreso = [];
 var base_url;
 window.onload = (()=>{
     base_url = $('#base_url').val();
-    let detalle = $('#egreso_concepto').val();
+    let detalle = $('#egreso_especificacion').val();
     let egresos = convertir(detalle);
     convert_egreso(egresos);
     dibujar_tabla()
@@ -22,13 +22,13 @@ function cargar_concepto(egreso, suma){
 function guardar_concepto(){
     if(verificar_detegreso()){
         let egr = new Egreso();
-        let detalle = $('#egreso_concepto').val();
+        let detalle = $('#egreso_especificacion').val();
         egr.set_egreso($('#egreso_categoria').val());
         egr.set_suma($('#egreso_suma').val());
         det_egreso.push(egr)
         dibujar_tabla();
         detalle = `${detalle}${detalle === '' ? '':`,`} ${$('#egreso_categoria').val()}(${$('#egreso_suma').val()}) `
-        $('#egreso_concepto').val(detalle);
+        $('#egreso_especificacion').val(detalle);
         $('#add_concepto').modal('hide')
         $('#egreso_categoria').val('CATEGORIA EGRESO')
         $('#egreso_suma').val('');
@@ -96,7 +96,7 @@ function dibujar_tabla(){
  */
 function borrar_egreso(posicion){
     det_egreso.splice(posicion, 1);
-    let concepto = $('#egreso_concepto').val();
+    let concepto = $('#egreso_especificacion').val();
     let array = convertir(concepto);
     let detalle = ``;
     array.splice(posicion, 1);
@@ -104,7 +104,7 @@ function borrar_egreso(posicion){
     array.forEach(egreso => {
         detalle = `${detalle}${detalle === '' ? '':`,`} ${egreso}`
     });
-    $('#egreso_concepto').val(detalle)
+    $('#egreso_especificacion').val(detalle)
     dibujar_tabla();
 }
 
@@ -115,11 +115,13 @@ function add_egreso(edit){
         let select_forma_pago = $('#select_forma_pago').val();
         let egreso_moneda = $('#egreso_moneda').val();
         let egreso_monto = $('#egreso_monto').val();
+        let egreso_especificacion = $('#egreso_especificacion').val();
         let egreso_concepto = $('#egreso_concepto').val();
         let egreso_glosa = $('#egreso_glosa').val();
         let egreso_monreg =  $('#egreso_moneda').val();
         let egreso_numero = $('#egreso_numero') .val();
         let egreso_fecha = $('#egreso_fecha') .val();
+        console.log(egreso_glosa)
         let usuario_id = $('#usuario_id').val();
         let egreso_id = edit;
         $.ajax({
@@ -138,6 +140,7 @@ function add_egreso(edit){
                 usuario_id:usuario_id,
                 egreso_id:egreso_id,
                 egreso_monreg:egreso_monreg,
+                egreso_especificacion:egreso_especificacion,
             },
             success: () =>{
                 window.location.href = `${base_url}egreso/index`;

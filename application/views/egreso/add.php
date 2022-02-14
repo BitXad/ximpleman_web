@@ -59,13 +59,19 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
+                                    <label for="egreso_especificacion" class="control-label">Especificación</label>
+                                    <div class="form-group">
+                                        <input type="text" name="egreso_especificacion" value="<?php echo $this->input->post('egreso_especificacion'); ?>" class="form-control" id="egreso_especificacion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required disabled/>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
                                     <label for="egreso_concepto" class="control-label">Detalle</label>
                                     <div class="form-group">
-                                        <input type="text" name="egreso_concepto" value="<?php echo $this->input->post('egreso_concepto'); ?>" class="form-control" id="egreso_concepto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required disabled/>
+                                        <input type="text" name="egreso_concepto" value="<?php echo $this->input->post('egreso_concepto'); ?>" class="form-control" id="egreso_concepto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required/>
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-12" id="egreso_glosa" style="display:none">
+                                <div class="col-md-12" id="input_egreso_glosa" style="display:none">
                                     <label for="egreso_glosa" class="control-label">Glosa</label>
                                     <div class="form-group">
                                         <input type="text" name="egreso_glosa" id="egreso_glosa" value="<?php echo $this->input->post('egreso_glosa'); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
@@ -170,9 +176,9 @@
         var forma = document.getElementById('select_forma_pago').value;
         
         if(forma != 1){
-            document.getElementById('egreso_glosa').style.display = 'block';
+            document.getElementById('input_egreso_glosa').style.display = 'block';
         }else{
-            document.getElementById('egreso_glosa').style.display = 'none';
+            document.getElementById('input_egreso_glosa').style.display = 'none';
         }
     }
 </script>
