@@ -1,4 +1,6 @@
-  $(document).on("ready",inicio);
+
+$(document).on("ready",inicio);
+
 function inicio(){
      filtro = " and date(egreso_fecha) = date(now())";   
         
@@ -16,6 +18,11 @@ function buscar_egresos()
  
     
 
+    if (opcion == 0){
+        filtro = "";
+        mostrar_ocultar_buscador("ocultar");
+    }//todas las compras
+    
     if (opcion == 1)
     {
         filtro = " and date(egreso_fecha) = date(now())";
@@ -51,7 +58,6 @@ function buscar_egresos()
         mostrar_ocultar_buscador("mostrar");
         filtro = null;
     }
-
     fechadeegreso(filtro);
 }
 
@@ -77,20 +83,20 @@ function mostrar_ocultar_buscador(parametro){
     
 }
 
-function fechadeegreso(filtro)
-{   
-      
-   var base_url    = document.getElementById('base_url').value;
+function fechadeegreso(filtro){   
+    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"egreso/buscarfecha";
-    var categoria = document.getElementById('categoria_id').value;
-   if (categoria==0) {
-       var categ = " ";
-   }else{
-       var categ = " and e.egreso_categoria='"+categoria+"' ";
-   }
+    var categoria = $('#categoria_id').val();
+    let categ = categoria == 0 ? false:true;//mandar con una consulta
+    console.log(filtro)
+        // categ = `and e.egreso_categoria like'${categoria}' or `;
     $.ajax({url: controlador,
            type:"POST",
-           data:{filtro:filtro,categ:categ},
+           data:{
+               filtro:filtro,
+               categ:categ,
+               categoria:categoria,
+            },
            success:function(resul){         
                 $("#pillados").val("- 0 -");
                 var registros =  JSON.parse(resul);

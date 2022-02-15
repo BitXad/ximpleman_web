@@ -74,8 +74,7 @@ class Egreso_model extends CI_Model
     
     function fechaegreso($condicion,$categoria)
     {
-
-       $egreso = $this->db->query("
+        $egreso = $this->db->query("
             SELECT
                 e.*, u.*, fp.forma_nombre
             FROM

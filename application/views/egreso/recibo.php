@@ -213,7 +213,7 @@ border-bottom : 1px solid #aaa;
                                     <b>POR CONCEPTO: </b></td><td></td> 
                                 <td style="width: 10cm; background-color: #ddd !important; -webkit-print-color-adjust: exact;">
                                      <?php echo$egresos[0]['egreso_categoria'];?> (<?php echo$egresos[0]['egreso_concepto'];?>).<br>
-                                     <span>- <?= $egresos[0]['egreso_especificacion'] ?></span>
+                                     <!-- <span>- <?= $egresos[0]['egreso_especificacion'] ?></span> -->
                                 </td>
                                 <td style="width: 2cm;"></td> 
                         </tr>

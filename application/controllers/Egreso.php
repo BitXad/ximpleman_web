@@ -61,7 +61,9 @@ class Egreso extends CI_Controller{
         if ($this->input->is_ajax_request()) {
             
             $filtro = $this->input->post('filtro');
-            $categoria = $this->input->post('categ');
+            $categ = $this->input->post('categ');
+            $categoria = $this->input->post('categoria');
+            $categoria =  $categ ? "and (e.egreso_categoria like '%$categoria%' or e.egreso_especificacion like '%$categoria%')":"";
             
            if ($filtro == null){
             $result = $this->Egreso_model->get_all_egreso();
@@ -366,6 +368,7 @@ class Egreso extends CI_Controller{
                 'egreso_tc' => $egreso_tc,
                 'egreso_fecha' => $egreso_fecha,
                 'egreso_monreg'=> $egreso_monreg,
+                'egreso_categoria'=> $egreso_especificacion,
                 'egreso_especificacion'=> $egreso_especificacion,
             );
             $this->Egreso_model->add_egreso($params);
@@ -407,6 +410,7 @@ class Egreso extends CI_Controller{
                 'egreso_tc' => $egreso_tc,
                 'egreso_fecha' => $egreso_fecha,
                 'egreso_monreg' => $egreso_monreg,
+                'egreso_categoria' => $egreso_especificacion,
                 'egreso_especificacion' => $egreso_especificacion,
             );
 
