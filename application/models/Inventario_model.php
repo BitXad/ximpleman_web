@@ -52,6 +52,18 @@ class Inventario_model extends CI_Model
         return $producto;
     }
 
+    function get_inventario_serie($serie){
+        return $this->db->query(
+            "SELECT 1 as tipo,'$serie' as detallecomp_series, i.*
+            from inventario i 
+            left join detalle_compra dc on dc.producto_id = i.producto_id 
+            where i.estado_id = 1 
+            and dc.detallecomp_series like '%$serie%'
+            group by i.producto_id
+            order by i.producto_nombre"
+        )->result_array();
+    }
+
 
     function get_inventario_codigo_factor($codigo)
     {
@@ -74,15 +86,32 @@ class Inventario_model extends CI_Model
     function get_inventario_parametro($parametro)
     {
         
-        $sql = "select  p.*,c.categoria_nombre FROM inventario p
-                left join categoria_producto c on c.categoria_id = p.categoria_id
-                WHERE p.estado_id=1 and p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%' or p.producto_codigo like '%".$parametro."%'
-                GROUP BY p.categoria_id, p.producto_id
-                ORDER By c.categoria_nombre, p.producto_nombre asc";
+        $sql = "SELECT p.*,c.categoria_nombre FROM inventario p
+        left join categoria_producto c on c.categoria_id = p.categoria_id
+        left join detalle_compra dc on dc.producto_id = p.producto_id 
+        WHERE p.estado_id=1 
+        and p.producto_nombre like '%$parametro%' 
+        or p.producto_codigobarra like '%$parametro%' 
+        or p.producto_codigo like '%$parametro%'
+        or dc.detallecomp_series like '%$parametro%'
+        GROUP BY p.categoria_id, p.producto_id
+        ORDER By c.categoria_nombre, p.producto_nombre asc";
         
         $producto = $this->db->query($sql)->result_array();
         return $producto;
+    }
 
+    function get_inventario_for_serie($parametro){
+        return $this->db->query(
+            "SELECT p.*,c.categoria_nombre 
+            FROM inventario p
+            left join categoria_producto c on c.categoria_id = p.categoria_id
+            left join detalle_compra dc on dc.producto_id = p.producto_id 
+            WHERE p.estado_id=1 
+            and dc.detallecomp_series like '%$parametro%'
+            GROUP BY p.categoria_id, p.producto_id
+            ORDER By c.categoria_nombre, p.producto_nombre asc"
+        )->result_array();
     }
 
     function get_inventario_categoria($parametro)

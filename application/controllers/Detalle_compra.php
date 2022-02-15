@@ -203,4 +203,28 @@ function sacar($detallecomp_id,$cambio_producto_id)
             show_error('The detalle_compra you are trying to delete does not exist.');
     }
     
+
+    function save_preferenciaCaracteristicas(){
+        if($this->input->is_ajax_request()){
+            $detallecomp_id = $this->input->post('detcompra');
+            // $producto = $this->input->post('producto');
+            $series = $this->input->post('series');
+
+            $params = array(
+                'detallecomp_series' => $series,
+            );
+            $this->Detalle_compra_model->update_detalle_compra_aux($detallecomp_id,$params);
+        }else{
+            show_404();
+        }
+    }
+
+    function get_compra_serie(){
+        if($this->input->is_ajax_request()){
+            $detallecomp_id = $this->input->post('detallecomp_id');
+            echo json_encode($this->Detalle_compra_model->get_detalle_compra_aux($detallecomp_id));
+        }else{
+            show_404();
+        }
+    }
 }

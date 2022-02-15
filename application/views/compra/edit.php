@@ -1,4 +1,4 @@
-<!----------------------------- script buscador --------------------------------------->
+    <!----------------------------- script buscador --------------------------------------->
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/compra.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones_producto_newunidad.js'); ?>" type="text/javascript"></script>
@@ -1141,7 +1141,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </td>
                 </tr>               
                 <tr>                      
-                    <td><b>Cambio <?php echo $parametro[0]["moneda_descripcion"];; ?></b></td>
+                    <td><b>Cambio <?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>
                         <td>
                             <input class="btn btn-default" id="compra_cambio" size="8" name="compra_cambio" value="<?php echo $cambio; ?>" readonly="true">
                         </td>
@@ -1565,6 +1565,38 @@ $("#texto2").change(function(){
 
                         <!----------------------FIN TABLA--------------------------------------------------->
                     </div>
+		</div>
+	</div>
+</div>
+<!-- modal caracteristicas -->
+<div class="modal fade" id="modalCaracteristicas" tabindex="-1" role="dialog" aria-labelledby="modalCaracteristicas" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+            <div class="modal-header" >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                </button>
+                <center>
+                    <h4 class="modal-title" id="myModalLabel"><b>CARACTERISTICAS DEL PRODUCTO</b></h4>
+
+                </center>
+            </div>
+            <div class="modal-body">
+                <!-- <div class="form-group">
+                    <label for="detallecomp_preferencias">Preferencias</label>
+                    <input type="text" class="form-control" name="detallecomp_preferencias" id="detallecomp_preferencias" placeholder="Preferencia del producto">
+                </div> -->
+                <div class="form-group">
+                    <label for="detallecomp_series">Número de series</label>
+                    <textarea class="form-control" name="detallecomp_series" id="detallecomp_series" cols="30" rows="5" placeholder="Numeros de series separados por coma (,)"></textarea>
+                </div>
+                <input type="hidden" class="form-control" name="detcompra" id="detcompra">
+                <input type="hidden" class="form-control" name="producto" id="producto">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success" onclick="guardar_preferenciaCaracteristicas()">Guardar</button>
+            </div>
 		</div>
 	</div>
 </div>

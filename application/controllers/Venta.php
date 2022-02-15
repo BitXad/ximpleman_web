@@ -178,7 +178,7 @@ class Venta extends CI_Controller{
         $datos1 = $this->input->post('datos1');
         $agrupado = $this->input->post('agrupado');
         $detalleven_id = $this->input->post('detalleven_id');
-        
+        $serie = $this->input->post('preferencias');
         $descuento = $this->input->post('descuento');
         
         //consulta para registrar del detalle venta
@@ -196,6 +196,7 @@ class Venta extends CI_Controller{
                 ", detalleven_descuento = ".$descuento.
                 ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                 ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
+                ", detalleven_preferencia = concat(detalleven_preferencia,', $serie')".
                 "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
         
         $descuento = 0;
@@ -204,16 +205,11 @@ class Venta extends CI_Controller{
         $sql = "select if(sum(detalleven_cantidad)+".$cantidad.">".$existencia.",1,0) as resultado from detalle_venta_aux where producto_id = ".$producto_id;
         $resultado = $this->Venta_model->consultar($sql);
         
-        
-        
         $existe = 0;
         
         if ($resultado[0]['resultado']==0){ //si la cantidad aun es menor al inventario
-            
             if($agrupado==1){
-                
                 $existe = $this->Venta_model->existe($producto_id,$usuario_id);
-                
                 if ($existe){
                     $sql = $sql2; 
                     $existe = 1;
@@ -225,10 +221,7 @@ class Venta extends CI_Controller{
                     $this->Venta_model->ejecutar($sql);
                     
                 }                
-            }
-            else //si no registraran datos agrupados
-            {   
-                
+            }else{ //si no registraran datos agrupados   
                 if ($detalleven_id>0){ //si exl producto existe en el detalle
                     //si el producto ya esta registrado, solo actualizara la cantidad y total
                     $sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
@@ -713,6 +706,23 @@ class Venta extends CI_Controller{
                 
             }            
 
+    }
+
+    function buscar_serie() {  
+        if($this->input->is_ajax_request()){
+            $serie = $this->input->post('serie');
+            $vendido = $this->Detalle_venta_model->get_venta_serie($serie);
+            // var_dump($vendido);
+            if(sizeof($vendido) == 0){//si se encontro una venta con el numero de serie
+                $producto = $this->Inventario_model->get_inventario_serie($serie);
+                if (sizeof($producto)<=0){
+                    $producto = $this->Inventario_model->get_inventario_codigo_factor($producto['producto_codigo']);
+                }
+                echo json_encode($producto);
+            }else{
+                echo json_encode($vendido);
+            }
+        }
     }
 
     
@@ -1842,35 +1852,23 @@ function edit($venta_id)
 /*
 * buscar productos
 */
-function buscarproductos()
-{
-        //**************** inicio contenido ***************    
-    
-        $usuario_id = $this->session_data['usuario_id'];
-
-        if ($this->input->is_ajax_request()) {
-            
-            $parametro = $this->input->post('parametro');   
-            
-            if ($parametro!=""){
-                
+function buscarproductos(){
+    if ($this->input->is_ajax_request()) {
+        $busqueda_serie = $this->input->post('busqueda_serie');
+        $parametro = $this->input->post('parametro');   
+        if ($parametro!=""){
+            if (!$busqueda_serie) {
                 $datos = $this->Inventario_model->get_inventario_parametro($parametro);            
-                echo json_encode($datos);
-                
             }else{
-                
-                echo json_encode(null);
-                
+                $datos = $this->Inventario_model->get_inventario_for_serie($parametro);            
             }
+            echo json_encode($datos);
+        }else{
+            echo json_encode(null);
         }
-        else
-        {                 
-            show_404();
-        }   
-        		
-        //**************** fin contenido ***************
-        			     
-        
+    }else{                 
+        show_404();
+    }   
 }
     
 /*
@@ -2795,7 +2793,7 @@ function anular_venta($venta_id){
             $this->Venta_model->ejecutar($sql);
             
                         
-            echo json_encode($res);
+            echo json_encode(1);
 
 
         //**************** fin contenido ***************        

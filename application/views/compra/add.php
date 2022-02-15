@@ -61,12 +61,10 @@
 							<select name="moneda_id" class="form-control">
 								<option value="">select moneda</option>
 								<?php 
-								foreach($all_moneda as $moneda)
-								{
+								foreach($all_moneda as $moneda){
 									$selected = ($moneda['moneda_id'] == $this->input->post('moneda_id')) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$moneda['moneda_id'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
-								} 
+									echo "<option value='{$moneda['moneda_id']}' $selected>{$moneda['moneda_descripcion']}</option>";
+								}
 								?>
 							</select>
 						</div>

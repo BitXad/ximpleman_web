@@ -109,7 +109,8 @@ function validar(e,opcion) {
         } 
         
         if (opcion==3){   //si la tecla proviene del input codigo de barras          
-            buscarporcodigojs();           
+            
+            $('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojs();
         } 
         
         if (opcion==4){   //si la tecla proviene del input codigo de barras
@@ -833,6 +834,64 @@ function buscarporcodigojs()
 
 }
 
+function buscarPorSerie(){
+    let base_url = $('#base_url').val();
+    let controlador = `${base_url}venta/buscar_serie`;
+    let serie = $('#codigo').val();
+
+    $('#oculto').css('display','block'); //mostrar el bloque del loader
+    
+    $.ajax({
+        url: controlador,
+        type:"POST",
+        cache: false,
+        data:{
+            serie:serie,
+        },
+        success:(respuesta)=>{
+            let precio = 0;
+            let factor_nombre = "";
+            res = JSON.parse(respuesta);
+            if(res[0].venta_id == null){
+                if (res.length>0){
+                    if (res[0].existencia > 0){                        
+                        if (res[0].detallecomp_series == serie){
+                            factor = 1;
+                            precio = res[0].producto_precio;
+                            factor_nombre = "";
+                        }
+                        precio_unidad = precio; //res[0]["producto_precio"];
+                        html = `<select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor${res[0]["producto_id"]}' name='select_factor${res[0]["producto_id"]}' onchange='mostrar_saldo(${JSON.stringify(res[0])})'>"
+                                    <option value='${factor_nombre}'>${res[0]["producto_unidad"]} ${res[0]["moneda_descripcion"]}:${precio_unidad.fixed(2)}</option>
+                                </select>`;
+                        $("#selector").html(html);
+                        ingresorapidojs2(factor, res[0],serie);
+                        //ingresorapidojs(factor,res[0]);
+                    }else{    
+                        alert('La serie ya se encuentra resgistrada o ya está vendida...!');
+                    }
+                }else{
+                    alert('El producto no se encuentra registrado con el código especificado...!!'); 
+                }
+            }else{
+                alert(`La serie ya se encuentra registrada en la venta N° ${res[0].venta_id}`);
+            }        
+        },
+        error:function(respuesta){
+            alert('ERROR: No existe el producto con la serie seleccionada...!!');
+            $("#codigo").select();
+        },
+        complete: function (respuesta) {
+            if (respuesta == null){
+                alert('El producto no se encuentra registrado o se encuentra agotado en inventario..!!!');
+            }              
+            $('#oculto').css('display','none'); //ocultar el bloque del loader
+            $("#codigo").select();
+        }
+    });
+    $('#oculto').css('display','none'); //ocultar el bloque del loader
+}
+
 function cantidad_en_detalle(producto_id){
     
    var base_url = document.getElementById('base_url').value;
@@ -1143,8 +1202,7 @@ function ingresorapido(producto_id,cantidad)
     
 }
 
-function ingresorapidojs2(cantidad,producto)
-{       
+function ingresorapidojs2(cantidad,producto,serie = ''){       
     //alert(producto.producto_nombre);
     var factor_nombre = ""; //cantidad del factor seleccionado
     var indice = 0; //cantidad del factor seleccionado
@@ -1278,15 +1336,16 @@ function ingresorapidojs2(cantidad,producto)
         
     }
     
-    var preferencias = "";
-    try {
-        preferencias = document.getElementById('input_detalleven_preferencia'+producto_id).value;
-
-    } catch (error) {
-        //console.error(error);
-        preferencias = ""; //preferencias
+    // var preferencias = "";
+    // try {
+        //     preferencias = document.getElementById('input_detalleven_preferencia'+producto_id).value ;
+        //     console.log(preferencias)
         
-    }        
+        // } catch (error) {
+            //     console.log(serie);
+            
+        
+    // }        
         
     // alert(clasificador_id);   
         
@@ -1296,7 +1355,10 @@ function ingresorapidojs2(cantidad,producto)
     else{
         agrupado = 0;
     }
-        
+
+    var preferencias = $(`#detalleven_preferencia${producto.detalleven_id}`).val();
+    preferencias = preferencias == null ?  serie : `${preferencias} ${serie}`; //preferencias
+    console.log(producto.detalleven_id);
         //alert(cantidad);
     if (cantidad_total <= producto.existencia){
 
@@ -1330,7 +1392,16 @@ function ingresorapidojs2(cantidad,producto)
 
         $.ajax({url: controlador,
             type:"POST",
-            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento, agrupado:agrupado, detalleven_id:detalleven_id},
+            data:{
+                datos1:datos1, 
+                existencia:existencia,
+                producto_id:producto_id,
+                cantidad:cantidad, 
+                descuento:descuento, 
+                agrupado:agrupado, 
+                detalleven_id:detalleven_id,
+                preferencias:preferencias,
+            },
             success:function(respuesta){
                                 
                 tablaproductos();
@@ -1568,7 +1639,7 @@ function cambiarcantidadjs(e,producto)
                 $.ajax({url: controlador,
                     type:"POST",
                     data:{sql:sql},
-                    success:function(respuesta){
+                    success:function(){
                             //var r = JSON.parse(respuesta);                        
                     }
                 });      
@@ -1767,7 +1838,9 @@ function tablaresultados(opcion)
     var rol_factor4 = document.getElementById('rol_factor4').value; //document.getElementById('parametro_altoimagen').value;
     var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
     
-    
+    let busqueda_serie 
+    $('#busqueda_serie').prop('checked')  
+
     if(esMobil()) { tamanio = 1; }
     else{ tamanio = 2; }
     
@@ -1790,17 +1863,17 @@ function tablaresultados(opcion)
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{parametro:parametro},
-           success:function(respuesta){     
-               
-                                     
-                $("#encontrados").val("- 0 -");
-               var registros =  JSON.parse(respuesta);
-                
-               if (registros != null){
-                   
+    $.ajax({
+        url: controlador,
+        type:"POST",
+        data:{
+            parametro:parametro,
+        },
+        success:function(respuesta){     
+            $("#encontrados").val("- 0 -");
+            var registros =  JSON.parse(respuesta);
+            
+            if (registros != null){
                    if (modo_visualizacion == 1){ // visualziacion tipos texto, en lista
                    
                    /************** INICIO MODO TEXTO ***************/

@@ -371,7 +371,8 @@ window.onkeydown = compruebaTecla;
                     { $agrupar = "checked='true'";}
               else {$agrupar = " ";}
             ?>
-            <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> <button class="btn btn-default btn-xs"> Agrupar</button> 
+            <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> <label class="btn btn-default btn-xs" for="check_agrupar"> Agrupar</label> 
+            <input type="checkbox" class="form-check-input" id="busqueda_serie"><label class="btn btn-default btn-xs" for="busqueda_serie">Búsqueda por serie</label>
         </h4>
 
 
@@ -499,7 +500,7 @@ window.onkeydown = compruebaTecla;
                       <span class="input-group-addon"> 
                         <i class="fa fa-barcode"></i>
                       </span>           
-                      <input type="text" name="codigo" id="codigo" class="form-control" placeholder="código" onkeyup="validar(event,3)">
+                      <input type="text" name="codigo" id="codigo" class="form-control" placeholder="Código, serie" onkeyup="validar(event,3)">
                   </div>
             </div>      
            <!--------------------- fin buscador por codigo --------------------->
@@ -513,7 +514,7 @@ window.onkeydown = compruebaTecla;
                       <span class="input-group-addon" onclick="ocultar_busqueda();"> 
                         Buscar 
                       </span>           
-                      <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,4)">
+                      <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código, serie" onkeypress="validar(event,4)">
                   </div>
             
 <!--            ------------------- fin parametro de buscador ------------------- -->

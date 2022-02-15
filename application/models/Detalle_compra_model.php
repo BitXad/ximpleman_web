@@ -131,4 +131,20 @@ class Detalle_compra_model extends CI_Model
         $this->db->insert('detalle_compra_aux',$params);
         return $this->db->insert_id();
     }
+    /**
+     * function to update detalle_compra_aux
+     */
+    function update_detalle_compra_aux($detallecomp_id,$params)
+    {
+        $this->db->where('detallecomp_id',$detallecomp_id);
+        return $this->db->update('detalle_compra_aux',$params);
+    }
+
+    function get_detalle_compra_aux($det_compra_aux){
+        return $this->db->query(
+            "SELECT dca.detallecomp_series
+            FROM detalle_compra_aux dca
+            WHERE dca.detallecomp_id = $det_compra_aux"
+            )->row_array();
+    }
 }

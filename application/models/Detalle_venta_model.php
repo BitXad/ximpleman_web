@@ -597,4 +597,14 @@ function ventas_dia($estado)
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
     }
+    /**
+     * Buscar si se vendio una serie
+     */
+    function get_venta_serie($serie){
+        return $this->db->query(
+            "SELECT dv.venta_id, '$serie' as serie
+            FROM detalle_venta dv 
+            where dv.detalleven_preferencia like '%$serie%'"
+        )->result_array();
+    }
 }

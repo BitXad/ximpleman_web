@@ -440,7 +440,8 @@ class Compra extends CI_Controller{
     detallecomp_fechavencimiento,
     detallecomp_tipocambio,
     cambio_id,
-    detallecomp_tc
+    detallecomp_tc,
+    detallecomp_series
     )
     (SELECT 
     ".$compra_id.",
@@ -458,7 +459,8 @@ class Compra extends CI_Controller{
     detallecomp_fechavencimiento,
     detallecomp_tipocambio,
     cambio_id,
-    detallecomp_tc
+    detallecomp_tc,
+    detallecomp_series
     FROM 
     detalle_compra
     WHERE 
@@ -905,7 +907,8 @@ class Compra extends CI_Controller{
            detallecomp_fechavencimiento,
            detallecomp_tipocambio,
            cambio_id,
-           detallecomp_tc
+           detallecomp_tc,
+           detallecomp_series
            )
            (SELECT 
            ".$compra_id.",
@@ -923,7 +926,8 @@ class Compra extends CI_Controller{
            detallecomp_fechavencimiento,
            detallecomp_tipocambio,
            cambio_id,
-           detallecomp_tc
+           detallecomp_tc,
+           detallecomp_series
            FROM 
            detalle_compra_aux
            WHERE
