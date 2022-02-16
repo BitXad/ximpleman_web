@@ -519,9 +519,10 @@ class Venta extends CI_Controller{
            // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
             
             // $cuota_fechalimite = $fecha_inicio;
-            
-
+            $anio = date("Y",$cuota_fecha_i);
+            $month = date("m",$cuota_fecha_i);
                 
+            $cuota_fecha_i = "$anio-$month-$dia_pago";
             
                 for ($j=1; $j <= $numcuota; $j++) { // ciclo para llenar las cuotas
                     $cuota_numcuota = $j;
