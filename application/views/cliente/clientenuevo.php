@@ -248,10 +248,10 @@ function toggle(source) {
 						</div>
 					</div>
 					<div class="col-md-2">
-						<label for="tipocliente_id" class="control-label"><span class="text-danger">*</span>Tipo</label>
+						<label for="tipocliente_id" class="control-label">Tipo</label>
 						<div class="form-group">
 							<select name="tipocliente_id" class="form-control" required>
-								<option value="">- TIPO CLIENTE -</option>
+								<!--<option value="">- TIPO CLIENTE -</option>-->
 								<?php 
 								foreach($all_tipo_cliente as $tipo_cliente)
 								{
@@ -264,10 +264,10 @@ function toggle(source) {
 						</div>
 					</div>
 					<div class="col-md-2">
-						<label for="categoriaclie_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
+						<label for="categoriaclie_id" class="control-label">Categoria</label>
 						<div class="form-group">
 							<select name="categoriaclie_id" class="form-control" required>
-								<option value="">- CATEGORIA CLIENTE -</option>
+								<!--<option value="">- CATEGORIA CLIENTE -</option>-->
 								<?php 
 								foreach($all_categoria_cliente as $categoria_cliente)
 								{
