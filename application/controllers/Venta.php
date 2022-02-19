@@ -447,8 +447,8 @@ class Venta extends CI_Controller{
             $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
             // $credito_fecha = date('Y-m-d');
             $credito_fecha = $fecha_venta;
-            $time = time();
-            $credito_hora =  date("H:i:s", $time);
+            // $time = time();
+            $credito_hora =  date("H:i:s");
             $credito_tipo = 1; // 1- ventas 2 - compras
          
             $cuotas       = $this->input->post('cuotas');
@@ -1434,7 +1434,7 @@ function edit($venta_id)
                     $this->Venta_model->ejecutar($sql);
                 
                     //Generar credito
-                    $sql = "delete from credito where credito_id=".$credito_id;
+                    $sql = "delete from credito where venta_id=".$venta_id;
                     $this->Venta_model->ejecutar($sql);
 
                     //Generar detalle del credito
@@ -1449,8 +1449,8 @@ function edit($venta_id)
                     $credito_numpagos =  $cuotas;
                     $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
                     $credito_fecha = $venta_fecha;
-                    $time = time();
-                    $credito_hora =  date("H:i:s", $time);
+                    // $time = time();
+                    $credito_hora =  date("H:i:s");
                     $credito_tipo = 1; // 1- ventas 2 - compras
 
                     $cuotas       = $this->input->post('cuotas');
@@ -1468,8 +1468,8 @@ function edit($venta_id)
                 
                 $credito_fechalimite = $cuota_fechalimite;
             
-            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_tipo) value(".
-                    $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."',".$credito_tipo.")";
+            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(
+                    $estado_id,$compra_id,$venta_id,$credito_monto,$credito_cuotainicial,$credito_interesproc,$credito_interesmonto,$credito_numpagos,'$credito_fechalimite','$credito_fecha','$credito_hora',$credito_tipo)";
             echo $sql;
             $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
 
