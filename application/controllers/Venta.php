@@ -337,7 +337,7 @@ class Venta extends CI_Controller{
         $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
         $venta_efectivo = $this->input->post('venta_efectivo'); // efectivo cancelado
         $venta_cambio = $this->input->post('venta_cambio'); // Cambio devuelto  
-        $cuota_fecha_i = $fecha_venta;
+        $cuota_fecha_i = $fecha_venta == '' ? date('Y-m-d') : $fecha_venta;
         $facturado = $this->input->post('facturado'); // si la venta es facturada
         
         $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
@@ -519,8 +519,8 @@ class Venta extends CI_Controller{
            // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
             
             // $cuota_fechalimite = $fecha_inicio;
-            $anio = date("Y",$cuota_fecha_i);
-            $month = date("m",$cuota_fecha_i);
+            $anio = date("Y",strtotime($cuota_fecha_i));
+            $month = date("m",strtotime($cuota_fecha_i));
                 
             $cuota_fecha_i = "$anio-$month-$dia_pago";
             
