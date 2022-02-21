@@ -137,13 +137,11 @@
             colindancia_este,
             colindancia_oeste
         ];
-        if(segundoComprador_nombre != '' && segundoComprador_ci != ''){
-            for(let i = 0; i < comandos.length; i++)
-                contrato = contrato.replace(new RegExp(comandos[i],"g") ,datos[i]);
-            $('#contrato').empty();
-            $('#contrato').html(`${contrato}`);
-        }else{
-            alert("Debe de colocar el Nombre y el Carnet del segundo comprador");
-        }
+        
+        for(let i = 0; i < comandos.length; i++)
+            contrato = contrato.replace(new RegExp(comandos[i],"g") ,datos[i]);
+        $('#contrato').empty();
+        $('#contrato').html(`${contrato}`);
+        
     }
 </script>
