@@ -372,6 +372,8 @@ class Egreso extends CI_Controller{
                 'egreso_especificacion'=> $egreso_especificacion,
             );
             $this->Egreso_model->add_egreso($params);
+            $sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
+            $this->db->query($sql);
         }else{
             show_404();
         }
