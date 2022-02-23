@@ -48,13 +48,14 @@ class Egreso_model extends CI_Model
         
         $egresos = $this->db->query("
             SELECT
-                i.*, u.*
+                i.*, u.*,fe.forma_nombre
 
             FROM
-                egresos i, usuario u
+                egresos i, usuario u, forma_pago fe
 
             WHERE
                 i.usuario_id = u.usuario_id
+            and fe.forma_id = i.forma_id
 
             ORDER BY `egreso_id` DESC
 

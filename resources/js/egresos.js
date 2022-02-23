@@ -80,7 +80,7 @@ function fechadeegreso(filtro){
     var controlador = base_url+"egreso/buscarfecha";
     var categoria = $('#categoria_id').val();
     let categ = categoria == 0 ? false:true;//mandar con una consulta
-    console.log(filtro)
+    // console.log(filtro)
         // categ = `and e.egreso_categoria like'${categoria}' or `;
     $.ajax({url: controlador,
            type:"POST",
