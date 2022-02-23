@@ -1,13 +1,8 @@
-
 $(document).on("ready",inicio);
-
 function inicio(){
-     filtro = " and date(egreso_fecha) = date(now())";   
-        
-        fechadeegreso(filtro); 
-     
-        
-} 
+    filtro = " and date(egreso_fecha) = date(now())";
+    fechadeegreso(filtro);
+}
 
 
 function buscar_egresos()
@@ -15,9 +10,6 @@ function buscar_egresos()
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"egreso";
     var opcion      = document.getElementById('select_compra').value;
- 
-    
-
     if (opcion == 0){
         filtro = "";
         mostrar_ocultar_buscador("ocultar");
@@ -83,7 +75,7 @@ function mostrar_ocultar_buscador(parametro){
     
 }
 
-function fechadeegreso(filtro){   
+function fechadeegreso(filtro){
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"egreso/buscarfecha";
     var categoria = $('#categoria_id').val();

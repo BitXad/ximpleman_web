@@ -1,5 +1,5 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/egresos.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
@@ -62,9 +62,9 @@
     <div class="row">
         <div class="col-md-6 no-print">
             <!--------------------- parametro de buscador --------------------->
-                <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
-                </div>
+            <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
+            </div>
             <!--------------------- fin parametro de buscador --------------------->
         </div>
         <div class="col-md-3 no-print">
