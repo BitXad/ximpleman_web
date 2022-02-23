@@ -73,24 +73,23 @@ class Egreso_model extends CI_Model
         return $this->db->insert_id();
     }
     
-    function fechaegreso($condicion,$categoria)
-    {
-        $egreso = $this->db->query("
-            SELECT
+    
+    function fechaegreso($condicion,$parametro){
+        return $this->db->query(
+            "SELECT
                 e.*, u.*, fp.forma_nombre
             FROM
                 egresos e
             left join usuario u on e.usuario_id = u.usuario_id
-            left join forma_pago fp on e.`forma_id` = `fp`.`forma_id`
+            left join forma_pago fp on fp.forma_id = e.forma_id
             WHERE
                 1 = 1  
-                ".$condicion." 
-                ".$categoria." 
-            ORDER BY e.egreso_fecha DESC 
-        "
+                ".$condicion."
+                ".$parametro."
+            ORDER BY e.egreso_fecha DESC"
         )->result_array();
 
-        return $egreso;
+        // return $egreso;
     }
     
     /*

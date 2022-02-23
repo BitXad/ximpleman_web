@@ -55,29 +55,25 @@ class Egreso extends CI_Controller{
         }
     }
 
-    function buscarfecha()
-    {
+    function buscarfecha(){
         if($this->acceso(59)){
-        if ($this->input->is_ajax_request()) {
-            
-            $filtro = $this->input->post('filtro');
-            $categ = $this->input->post('categ');
-            $categoria = $this->input->post('categoria');
-            $categoria =  $categ ? "and (e.egreso_categoria like '%$categoria%' or e.egreso_especificacion like '%$categoria%')":"";
-            
-           if ($filtro == null){
-            $result = $this->Egreso_model->get_all_egreso();
-            }
-            else{
-            $result = $this->Egreso_model->fechaegreso($filtro,$categoria);            
-            }
-           echo json_encode($result);
-            
-        }
-        else
-        {                 
-                    show_404();
-        }          
+            if ($this->input->is_ajax_request()){                
+                $filtro = $this->input->post('filtro');
+                $categ = $this->input->post('categ');
+                $categoria = $this->input->post('categoria');
+                $parametro = "";
+                if($categ == 1){
+                    $parametro = "and (e.egreso_categoria like '%$categoria%' or e.egreso_especificacion like '%$categoria%')";
+                }
+                if ($filtro == null){
+                    $result = $this->Egreso_model->get_all_egreso();
+                }else{
+                    $result = $this->Egreso_model->fechaegreso($filtro,$parametro);
+                }
+                echo json_encode($result);
+            }else{                 
+                show_404();
+            }          
         }
     }
 
