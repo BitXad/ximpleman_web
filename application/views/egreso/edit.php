@@ -63,7 +63,7 @@
                                 <div class="col-md-12">
                                     <label for="egreso_especificacion" class="control-label">Especificación</label>
                                     <div class="form-group">
-                                        <input type="text" name="egreso_especificacion" value="<?php echo ($this->input->post('egreso_especificacion') ? $this->input->post('egreso_especificacion') : $egreso['egreso_especificacion']); ?>" class="form-control" id="egreso_especificacion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" disabled/>
+                                        <input type="text" name="egreso_especificacion" value="<?=($egreso['egreso_especificacion'] == '' ? "{$egreso['egreso_categoria']}({$egreso['egreso_monto']})": $egreso['egreso_especificacion']); ?>" class="form-control" id="egreso_especificacion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" disabled/>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
