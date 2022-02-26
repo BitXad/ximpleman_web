@@ -139,10 +139,12 @@ class Modelo_contrato extends CI_Controller{
             );
             $datos = $this->Modelo_contrato_model->get_datosContrato($venta_id);
             $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-            setlocale(LC_TIME, "spanish");  
-            // $fecha = strftime(strftime("%A, %d de %B de %Y"), strtotime($datos['venta_fecha']));
-            $fecha = new DateTime("2022-02-09");
-            $fecha = strftime("%A, %d de %B de %Y", $fecha->getTimestamp());
+            setlocale(LC_TIME, 'es_ES', 'Spanish_Spain', 'Spanish');
+            $fecha = date('F j, Y');
+            $semana = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+            $dia_semana = (strftime('%u',strtotime($fecha)))-1;
+            $fecha = strftime('%d %B %Y',strtotime($fecha));
+            $fecha = "{$semana[$dia_semana]} $fecha";
             $d = array(
                 $datos['cliente_nombre'],
                 $datos['cliente_ci'],
