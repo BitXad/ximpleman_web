@@ -1,5 +1,5 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<input type="hidden" name="venta_id" id="venta_id" value="<?= $venta; ?>" />
+<input type="hidden" name="venta_id" id="venta_id" value="<?= $venta[0]['venta_id']; ?>" />
 <style type="text/css">
 
     p {
