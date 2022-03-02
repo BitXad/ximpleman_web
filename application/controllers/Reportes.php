@@ -17,6 +17,8 @@ class Reportes extends CI_Controller{
         $this->load->model('Usuario_model');
         $this->load->model('Inventario_model');
         $this->load->model('Compra_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Categoria_producto_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -1676,8 +1678,7 @@ function torta3($anio,$mes)
             $data['tipousuario_id']  = $this->session_data['tipousuario_id'];
             $data['usuario_id']  = $this->session_data['usuario_id'];
             $data['usuario_nombre']  = $this->session_data['usuario_nombre'];
-            
-            $this->load->model('Parametro_model');
+            $data['categorias'] = $this->Categoria_producto_model->get_all_categoria_producto();      
             $data['parametro'] = $this->Parametro_model->get_parametros();
     
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
@@ -1691,12 +1692,16 @@ function torta3($anio,$mes)
     function get_moras(){
         if($this->input->is_ajax_request()){
             $usuario = $this->input->post('usuario');
+            $categoria = $this->input->post('categoria');
+            $sub_categoria = $this->input->post('sub_categoria');
+            $condicion1 = $categoria == 0 ? "" : "AND p.categoria_id = $categoria";
+            $condicion2 = $sub_categoria == 0 ? "" : "AND p.subcategoria_id = $sub_categoria";
             $all_usuarios = 0;
             $consulta_usuario = "";
             if($usuario != $all_usuarios){
                 $consulta_usuario = "AND c2.usuario_id = $usuario";
             }
-            $moras = $this->Cuotum_model->get_moras($consulta_usuario);
+            $moras = $this->Cuotum_model->get_moras($consulta_usuario,$condicion1,$condicion2);
             echo json_encode($moras);
         }else{
             show_404();

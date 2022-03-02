@@ -147,16 +147,11 @@ class Cuotum_model extends CI_Model
         return $credito;
     }
 
-    function get_all_cuentas($credito_id)
-    {
-        
-        
-        $credito = $this->db->query("
-            SELECT
-                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id, fp.forma_nombre
-
-            FROM
-               cuota k
+    function get_all_cuentas($credito_id){
+        $credito = $this->db->query(
+            "SELECT
+                m.moneda_tc ,c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id, fp.forma_nombre
+            FROM cuota k
             LEFT JOIN credito c on k.credito_id = c.credito_id 
             LEFT JOIN venta ve on c.venta_id = ve.venta_id
             LEFT JOIN cliente p on p.cliente_id = ve.cliente_id
@@ -164,14 +159,10 @@ class Cuotum_model extends CI_Model
             LEFT JOIN usuario u on k.usuario_id = u.usuario_id
             LEFT JOIN factura f on k.cuota_id=f.cuota_id
             LEFT JOIN forma_pago fp on k.`forma_id` = fp.forma_id
-            WHERE
-             
-                 ".$credito_id." = k.credito_id
-
-            ORDER BY `cuota_id` ASC
-
-          
-        ")->result_array();
+            left join moneda m on m.moneda_id != ve.moneda_id    
+            where k.credito_id = $credito_id
+            and m.moneda_id = 2
+            ORDER BY `cuota_id` ASC")->result_array();
 
         return $credito;
     }
@@ -377,7 +368,7 @@ class Cuotum_model extends CI_Model
         return $this->db->update('cuota',$params);
     }
     /* Funcion para obtener todos las ventas con mora */
-    function get_moras($consulta_usuario = ""){
+    function get_moras($consulta_usuario = "",$condicion1="",$condicion2=""){
         return $this->db->query(
             "SELECT c.credito_id,c.credito_numpagos , min(c2.cuota_numcuota),count(c2.cuota_id) as cuotas, m.dias_mora,
                 if(v.venta_id is null,s.servicio_id ,v.venta_id) as venta_id , if(v.venta_id is null,'Servicio' ,'Venta') as razon,
@@ -421,8 +412,12 @@ class Cuotum_model extends CI_Model
             left join servicio s on c.servicio_id = s.servicio_id
             left join cliente c3 on v.cliente_id = c3.cliente_id
             left join cliente c6 on s.cliente_id = c6.cliente_id
+            left join detalle_venta dv on dv.venta_id = v.venta_id
+            left join producto p on p.producto_id = dv.producto_id 
             where c.venta_id is not null
             and c.estado_id = 8
+            $condicion1
+            $condicion2
             and c2.cuota_fechalimite < now()
             $consulta_usuario
             group by c.credito_id
