@@ -380,6 +380,13 @@
                     <a href="#"><i class="fa fa-cogs"></i> <span>Parámetros</span></a>
                     <ul class="treeview-menu">
                         <?php
+                        if($rolusuario[124-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('banco');?>"><i class="fa fa-bank"></i>Banco</a>
+                        </li> 
+                        <?php
+                        }
                         if($rolusuario[175-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
