@@ -159,7 +159,7 @@ function tabla_inventario(){
                                 total = inv[i]["producto_costo"]*inv[i]["existencia"]; 
                                 total_final += total;
                                 existencia = parseFloat(inv[i]["existencia"]);
-                                
+
                     html += "             	<td>"+(i+1)+"</td>";
                     html += "             	<td><img src='"+ base_url+"resources/images/productos/thumb_"+inv[i]["producto_foto"]+"' width='50' height='50' class='img-circle'</td>";
                     html += "             	<td><font size='3'><b>"+ inv[i]["producto_nombre"]+"</b></font> <sub>";
@@ -267,7 +267,7 @@ function tabla_inventario(){
                     var total = 0;
                     var total_final = 0;
                     var existencia = 0;
-                    var margen = " style='padding:0'";
+                    var margen = " style='padding:0;'";
                     var categoria = "";
                     
                 for (var i = 0; i < tamanio ; i++){
@@ -277,7 +277,7 @@ function tabla_inventario(){
                         html += "<tr><td colspan='14'><b>"+inv[i]["categoria_nombre"]+"<b></tr>";
                     }   
 
-                        html += "<tr "+margen+">";
+                        html += `<tr style='padding:0;${inv[i]["existencia"] <= 0 ? "background-color: #FF8989":""}'>`;
 
                                     total = inv[i]["producto_costo"]*inv[i]["existencia"]; 
                                     total_final += total;

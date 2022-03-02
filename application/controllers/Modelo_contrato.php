@@ -113,10 +113,10 @@ class Modelo_contrato extends CI_Controller{
             $data['modelo_contratos'] = $this->Modelo_contrato_model->get_all_modelo_contrato();
             // $usuario_id = $this->session_data['usuario_id'];
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-            $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+            $venta = $this->Detalle_venta_model->get_venta($venta_id);
             $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
             $data['empresa'] = $this->Empresa_model->get_empresa(1);        
-            $data['venta'] = $venta_id;
+            $data['venta'] = $venta;
             $data['page_title'] = "Contrato";
             $data['parametro'] = $this->Parametro_model->get_parametros();
             $contrato = $this->Modelo_contrato_model->get_modelo_contrato($modcontrato_id);
@@ -139,10 +139,13 @@ class Modelo_contrato extends CI_Controller{
             );
             $datos = $this->Modelo_contrato_model->get_datosContrato($venta_id);
             $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-            setlocale(LC_TIME, "spanish");  
-            // $fecha = strftime(strftime("%A, %d de %B de %Y"), strtotime($datos['venta_fecha']));
-            $fecha = new DateTime("2022-02-09");
-            $fecha = strftime("%A, %d de %B de %Y", $fecha->getTimestamp());
+            setlocale(LC_TIME, 'es_ES', 'Spanish_Spain', 'Spanish');
+            // $fecha = date('F j, Y', $venta[0]['venta_fecha']);
+            $fecha = $venta[0]['venta_fecha'];
+            $semana = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+            $dia_semana = (strftime('%u',strtotime($fecha)))-1;
+            $fecha = strftime('%d %B %Y',strtotime($fecha));
+            $fecha = "{$semana[$dia_semana]} $fecha";
             $d = array(
                 $datos['cliente_nombre'],
                 $datos['cliente_ci'],
