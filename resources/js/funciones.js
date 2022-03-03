@@ -2718,13 +2718,12 @@ function registrarventa(cliente_id)
         venta_tipodoc = 0;}
     
     
-    var cad =   forma_id+","+tipotrans_id+","+usuario_id+","+cliente_id
+    var cad =   ""+forma_id+","+tipotrans_id+","+usuario_id+","+cliente_id
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
-                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id;
+                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id+"";
         
-     
     if (tipo_transaccion==2){
         var cuotas = document.getElementById('cuotas').value;
         var modalidad = document.getElementById('modalidad').value;

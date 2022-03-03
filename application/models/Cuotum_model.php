@@ -182,31 +182,9 @@ class Cuotum_model extends CI_Model
             LEFT JOIN usuario u on k.usuario_id = u.usuario_id
             LEFT JOIN factura f on k.cuota_id=f.cuota_id
             LEFT JOIN forma_pago fp on k.`forma_id` = fp.forma_id
-            WHERE
-             
-                 ".$credito_id." = k.credito_id
+            WHERE k.credito_id = $credito_id
 
             ORDER BY `cuota_id` ASC
-
-            /*
-
-
-            SELECT
-                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*,
-                u.usuario_nombre, f.factura_id
-
-            FROM
-                credito c, cliente p, servicio ve, cuota k, estado e,
-                usuario u
-            WHERE
-                k.credito_id = c.credito_id 
-                and c.servicio_id = ve.servicio_id
-                and p.cliente_id = ve.cliente_id
-                and k.estado_id = e.estado_id
-                and u.usuario_id = ve.usuario_id
-                and ".$credito_id." = k.credito_id
-
-            ORDER BY `cuota_numcuota` ASC*/
         ")->result_array();
 
         return $credito;

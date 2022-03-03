@@ -515,3 +515,63 @@ if(isset($a) && $a == "n"){ ?>
     </div>
 </div>
 <!------------------------ FIN modal para Modificar fecha de una venta ------------------->
+
+
+<!------------------------ INICIO modal para registrar PAGO A CUENTA ------------------->
+<div style='white-space: normal !important;' class='modal fade' id='modalregistraracuenta' tabindex='-1' role='dialog' aria-labelledby='modalregistraracuentaLabel'>
+    <div class='modal-dialog' role='document'>
+        <br><br>
+        <div class='modal-content'>
+            <div class='modal-header text-center' style='font-size:12pt;'>
+                <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>
+                
+                <span id="servicio_pago_cuenta" style="font-weight: 900;"></span>
+                <br><span id="servicio_detalle" style='font-size: 10px; font-weight: 600'></span>
+            </div>
+            <!------------------------------------------------------------------->
+            <div class='modal-body'>
+                <div class="row">
+                    <span id='mensajeregistrarserterminado' class='text-danger'></span>
+                    <div class='text-center'>
+                        <span id="servicio_cliente" style='font-size: 12pt; font-weight: 900;'></span>
+                        <br>
+                        <span id="info_cliente" style="font-weight: 600;"></span>
+                    </div>
+                    <div class='col-md-6'>
+                        <label for='fecha_acuenta' class='control-label'>Fecha:</label>
+                        <div class='form-group'>
+                            <input type='datetime-local' class='form-control' name='fecha_acuenta' id='fecha_acuenta' value='' />
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <label for='monto_total' class='control-label'>Total(Bs.):</label>
+                        <div class='form-group'>
+                            <input type='number' step='any' min='0' class='form-control' name='monto_total' id='monto_total' value='' placeholder='0.00'/>
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <label for='monto_acuenta' class='control-label'>A cuenta(Bs.):</label>
+                        <div class='form-group'>
+                            <input type='number' step='any' min='0' class='form-control' name='monto_acuenta' id='monto_acuenta' value='' placeholder='0.00'/>
+                            <input type='hidden' class='form-control' name='servicio_id' id='acuenta_servicio_id'/>
+                            <input type='hidden' class='form-control' name='detalleserv_id' id='acuenta_detalleserv_id'/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- <br> -->
+            <div class='modal-footer'>
+                <div class='text-center' style='text-align: center !important;'>
+                    <!-- <button class='btn btn-success' onclick='registrarservicio_pagoacuenta("+registros[i]['servicio_id']+", "+registros[i]['detalleserv_id']+")' title='Registrar pago a cuenta de un servicio'><span class='fa fa-wrench'></span> Registrar</button> -->
+                    <button class='btn btn-success' onclick='registrarservicio_pagoacuenta()' title='Registrar pago a cuenta de un servicio'>
+                        <span class='fa fa-wrench'></span> Registrar</button>
+                    <a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar </a>
+                </div>
+            </div>
+        </div>
+
+        <!------------------------------------------------------------------->
+    </div>
+    <!-- </div> -->
+</div>
+<!------------------------ FIN modal para registrar PAGO A CUENTA ------------------->

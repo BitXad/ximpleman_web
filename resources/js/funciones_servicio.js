@@ -1021,7 +1021,8 @@ function fechadeservicio(elfiltro, busquedade){
                             res1 += "<label for='fecha_acuenta' class='control-label'>Fecha:</label>";
                             res1 += "<div class='form-group'>";
                             var estafecha = new Date();
-                            estafecha = moment(estafecha).format("YYYY-MM-DD HH:mm:ss");
+                            // estafecha = moment(estafecha).format("yyyy-MM-dd hh:mm:ss");
+                            estafecha = `${estafecha.getFullYear()}-${(estafecha.getMonth()+1 < 10) ? "0"+(estafecha.getMonth()+1):estafecha.getMonth()+1}-${estafecha.getDate() < 10 ? "0"+estafecha.getDate():estafecha.getDate()}T${estafecha.getHours()}:${estafecha.getMinutes()}:${estafecha.getSeconds()}`;
                             res1 += "<input type='datetime-local' class='form-control' name='fecha_acuenta"+registros[i]['detalleserv_id']+"' id='fecha_acuenta"+registros[i]['detalleserv_id']+"' value='"+estafecha+"' />";
                             
                             res1 += "</div>";
@@ -1599,6 +1600,47 @@ function fechadeservicio(elfiltro, busquedade){
                         res1 +="</table>";
                         //html += "</h3>";
                         res1 += "<!------------------------------------------------------------------->";
+                        res1 += "<div id='creditooculto"+registros[i]['detalleserv_id']+"' style='display: none;'>";
+                            res1 += "<div class='col-md-4'>";
+                            res1 += "<h5 class='modal-title'><b>Nº CUOTAS</b></h5>";
+                            res1 += "<select name='cuotas"+registros[i]['detalleserv_id']+"' class='form-control input-sm' id='cuotas"+registros[i]['detalleserv_id']+"'>";
+                            for(b=1; b<=36; b++){
+                                res1 += "<option value='"+b+"'>"+b+" CUOTA (S)</option>";
+                            }
+                            res1 += "</select>";
+                            res1 += "</div>";
+                            res1 += "<div class='col-md-4'>";
+                            res1 += "<h5 class='modal-title'><b>MODALIDAD</b></h5>";
+                            res1 += "<select class='form-control input-sm' id='modalidad"+registros[i]['detalleserv_id']+"' name='modalidad"+registros[i]['detalleserv_id']+"'>";
+                            res1 += "<option value='MENSUAL'>MENSUAL</option>";
+                            res1 += "<option value='SEMANAL'>SEMANAL</option>";
+                            res1 += "</select>";
+                            res1 += "</div>";
+                            res1 += "<div class='col-md-4'>";
+                            res1 += "<h5 class='modal-title'><b>DIA PAGO</b></h5>";
+                            res1 += "<select class='form-control input-sm' id='dia_pago"+registros[i]['detalleserv_id']+"' name='dia_pago"+registros[i]['detalleserv_id']+"'>";
+                            for(dia=1; dia<=31; dia++){
+                                res1 += "<option value='"+dia+"'>"+dia+"</option>";
+                            }
+                            res1 += "</select>";
+                            res1 += "</div>";
+                            res1 += "<div class='col-md-4'>";
+                            res1 += "<h5 class='modal-title'><b>INTERES</b></h5>";
+                            res1 += "<input type='text' class='form-control input-sm' value='0.00' name='credito_interes"+registros[i]['detalleserv_id']+"' id='credito_interes"+registros[i]['detalleserv_id']+"'>";
+                            res1 += "</div>";
+                            res1 += "<div class='col-md-4'>";
+                            res1 += "<h5 class='modal-title'><b>CUOTA INIC. "+moneda_descripcion+"</b></h5>";
+                            res1 += "<input type='text' class='form-control input-sm' value='0.00' name='cuota_inicial"+registros[i]['detalleserv_id']+"' id='cuota_inicial"+registros[i]['detalleserv_id']+"'>";
+                            res1 += "</div>";
+                            fecha_inicio = moment(new Date()).format("YYYY-MM-DD");
+                            res1 += "<div class='col-md-4'>";
+                            res1 += "<h5 class='modal-title'><b>FECHA INICIAL</b></h5>";
+                            res1 += "<input type='date' class='form-control input-sm' value='"+fecha_inicio+"' name='fecha_inicio"+registros[i]['detalleserv_id']+"' id='fecha_inicio"+registros[i]['detalleserv_id']+"'>";
+                            res1 += "</div>";
+                            res1 += "</div>";
+                        
+                        res1 += "<!------------------------------------------------------------------->";
+
                         res1 += "</div>";
                         res1 += "<div class='modal-footer' style='text-align: center'>";
                         //html += "<a href='"+base_url+"servicio/remove/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
@@ -1698,6 +1740,11 @@ function fechadeservicio(elfiltro, busquedade){
 
                         html += convertDateFormat(registros[i]["servicio_fecharecepcion"])+"|"+registros[i]["servicio_horarecepcion"]+"<br>";
                         html += "<span style='font-size: 8px'>"+registros[i]["usuario_nombre"]+"</span><br>";
+                        let fecha = new Date(registros[i]['detalleserv_fpagoacuenta']);
+
+                        if(registros[i]["servicio_acuenta"] > 0 && registros[i]["servicio_acuenta"] != null){
+                            html += `<b>A cuenta:</b><br>${fecha.toLocaleString()}<br>`;
+                        }
                         html += "<b>Salida: </b>"+fechamos+horamos+"</font>";
                         html += "</td>";
                         //processData(registros[i]["servicio_id"]);
@@ -1780,84 +1827,100 @@ function fechadeservicio(elfiltro, busquedade){
                             }
                         //}
                         if(registros[i]['detalleserv_acuenta'] == 0 && registros[i]["detallestado_id"] != 7){
-                            html += "<a style='width: 25px' class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalregistraracuenta"+registros[i]['detalleserv_id']+"' title='Registrar pago a cuenta'><span class='fa fa-dollar'></span></a>";
-                            
-                            html += "<!------------------------ INICIO modal para registrar PAGO A CUENTA ------------------->";
-                            html += "<div style='white-space: normal !important;' class='modal fade' id='modalregistraracuenta"+registros[i]['detalleserv_id']+"' tabindex='-1' role='dialog' aria-labelledby='modalregistraracuentaLabel"+registros[i]['detalleserv_id']+"'>";
-                            html += "<div class='modal-dialog' role='document'>";
-                            html += "<br><br>";
-                            html += "<div class='modal-content'>";
-                            html += "<div class='modal-header text-center' style='font-size:12pt;'>";
-                            html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                            html += "PAGO A CUENTA DEL SERVICIO N° 00"+registros[i]['servicio_id'];
-                            html += "<br><span style='font-size: 10px'>"+registros[i]['detalleserv_descripcion']+"</span>";
-                            html += "</div>";
-                            //res += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
-                            html += "<div class='modal-body'>";
-                            html += "<!------------------------------------------------------------------->";
-                            html += "<span id='mensajeregistrarserterminado' class='text-danger'></span>";
-                            html += "<div class='text-center'><span style='font-size: 12pt'> CLIENTE: "+registros[i]['cliente_nombre']+"</span>";
-                            var cliente_telef = "";
-                            var cliente_celu = "";
-                            var guion = "";
-                            var nomtelef = "";
                             if((registros[i]["cliente_telefono"] != "") && (registros[i]["cliente_telefono"] != null) && (registros[i]["cliente_celular"] != "") && (registros[i]["cliente_celular"] != null))
                             {
                                 guion = "-";
-                                nomtelef = "<br>Telef.: ";
+                                nomtelef = "Telf.: ";
                             }
                             if(registros[i]["cliente_telefono"] != null && registros[i]["cliente_telefono"] != ""){
                                 cliente_telef = registros[i]["cliente_telefono"];
-                                nomtelef = "<br>Telef.: ";
+                                nomtelef = "Telf.: ";
                             }
                             if(registros[i]["cliente_celular"] != null && registros[i]["cliente_celular"] != ""){
                                 cliente_celu = registros[i]["cliente_celular"];
-                                nomtelef = "<br>Telef.: ";
+                                nomtelef = "Telf.: ";
                             }
-                            html += nomtelef+cliente_telef+guion+cliente_celu+"</div>";
-                            //if(tipousuario_id == 1){
-                            html += "<div class='col-md-12'>";
-                            html += "<div class='col-md-6'>";
-                            html += "<label for='fecha_acuenta' class='control-label'>Fecha:</label>";
-                            html += "<div class='form-group'>";
-                            var estafecha = new Date();
-                            estafecha = moment(estafecha).format("YYYY-MM-DD HH:mm:ss");
-                            html += "<input type='datetime-local' class='form-control' name='fecha_acuenta"+registros[i]['detalleserv_id']+"' id='fecha_acuenta"+registros[i]['detalleserv_id']+"' value='"+estafecha+"' />";
+                            let info_cliente = ""+nomtelef+""+cliente_telef+""+guion+""+cliente_celu+"";
+                            html += `<a style='width: 25px' class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalregistraracuenta' title='Registrar pago a cuenta' onclick="load_date_modal(${registros[i]["servicio_id"]},${registros[i]["detalleserv_id"]},'${registros[i]["detalleserv_descripcion"]}','${registros[i]['cliente_nombre']}','${info_cliente}',${registros[i]["detalleserv_total"]})"><span class='fa fa-dollar'></span></a>`;
                             
-                            html += "</div>";
-                            html += "</div>";
-                            html += "<div class='col-md-6'>";
-                            html += "<label for='monto_total' class='control-label'>Total(Bs.):</label>";
-                            html += "<div class='form-group'>";
-                            html += "<input type='number' step='any' min='0' class='form-control' name='monto_total"+registros[i]['detalleserv_id']+"' id='monto_total"+registros[i]['detalleserv_id']+"' value='"+registros[i]["detalleserv_total"]+"' />";
                             
-                            html += "</div>";
-                            html += "</div>";
-                            html += "<div class='col-md-6'>";
-                            html += "<label for='monto_acuenta' class='control-label'>A cuenta(Bs.):</label>";
-                            html += "<div class='form-group'>";
-                            html += "<input type='number' step='any' min='0' class='form-control' name='monto_acuenta"+registros[i]['detalleserv_id']+"' id='monto_acuenta"+registros[i]['detalleserv_id']+"' value='0' />";
+                            // html += "<!------------------------ INICIO modal para registrar PAGO A CUENTA ------------------->";
+                            // html += "<div style='white-space: normal !important;' class='modal fade' id='modalregistraracuenta"+registros[i]['detalleserv_id']+"' tabindex='-1' role='dialog' aria-labelledby='modalregistraracuentaLabel"+registros[i]['detalleserv_id']+"'>";
+                            // html += "<div class='modal-dialog' role='document'>";
+                            // html += "<br><br>";
+                            // html += "<div class='modal-content'>";
+                            // html += "<div class='modal-header text-center' style='font-size:12pt;'>";
+                            // html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                            // html += "PAGO A CUENTA DEL SERVICIO N° 00"+registros[i]['servicio_id'];
+                            // html += "<br><span style='font-size: 10px'>"+registros[i]['detalleserv_descripcion']+"</span>";
+                            // html += "</div>";
+                            //res += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
+                            // html += "<div class='modal-body'>";
+                            // html += "<!------------------------------------------------------------------->";
+                            // html += "<span id='mensajeregistrarserterminado' class='text-danger'></span>";
+                            // html += "<div class='text-center'><span style='font-size: 12pt'> CLIENTE: "+registros[i]['cliente_nombre']+"</span>";
+                            // var cliente_telef = "";
+                            // var cliente_celu = "";
+                            // var guion = "";
+                            // var nomtelef = "";
+                            // if((registros[i]["cliente_telefono"] != "") && (registros[i]["cliente_telefono"] != null) && (registros[i]["cliente_celular"] != "") && (registros[i]["cliente_celular"] != null))
+                            // {
+                            //     guion = "-";
+                            //     nomtelef = "<br>Telef.: ";
+                            // }
+                            // if(registros[i]["cliente_telefono"] != null && registros[i]["cliente_telefono"] != ""){
+                            //     cliente_telef = registros[i]["cliente_telefono"];
+                            //     nomtelef = "<br>Telef.: ";
+                            // }
+                            // if(registros[i]["cliente_celular"] != null && registros[i]["cliente_celular"] != ""){
+                            //     cliente_celu = registros[i]["cliente_celular"];
+                            //     nomtelef = "<br>Telef.: ";
+                            // }
+                            // html += nomtelef+cliente_telef+guion+cliente_celu+"</div>";
+                            // //if(tipousuario_id == 1){
+                            // html += "<div class='col-md-12'>";
+                            // html += "<div class='col-md-6'>";
+                            // html += "<label for='fecha_acuenta' class='control-label'>Fecha:</label>";
+                            // html += "<div class='form-group'>";
+                            // var estafecha = new Date();
+                            // // estafecha = moment(estafecha).format("YYYY-MM-DD HH:mm:ss");
+                            // estafecha = `${estafecha.getFullYear()}-${(estafecha.getMonth()+1 < 10) ? "0"+(estafecha.getMonth()+1):estafecha.getMonth()+1}-${estafecha.getDate()}T${estafecha.getHours()}:${estafecha.getMinutes()}`;
+                            // html += "<input type='datetime-local' class='form-control' name='fecha_acuenta"+registros[i]['detalleserv_id']+"' id='fecha_acuenta"+registros[i]['detalleserv_id']+"' value='"+estafecha+"' />";
                             
-                            html += "</div>";
-                            html += "</div>";
-                            html += "</div>";
-                            html += "<br>";
-                            //}
-                            html += "<!------------------------------------------------------------------->";
-                            html += "</div>";
-                            html += "<div class='modal-footer'>";
-                            html += "<div class='text-center' style='text-align: center !iportant'>";
+                            // html += "</div>";
+                            // html += "</div>";
+                            // html += "<div class='col-md-6'>";
+                            // html += "<label for='monto_total' class='control-label'>Total(Bs.):</label>";
+                            // html += "<div class='form-group'>";
+                            // html += "<input type='number' step='any' min='0' class='form-control' name='monto_total"+registros[i]['detalleserv_id']+"' id='monto_total"+registros[i]['detalleserv_id']+"' value='"+registros[i]["detalleserv_total"]+"' />";
+                            
+                            // html += "</div>";
+                            // html += "</div>";
+                            // html += "<div class='col-md-6'>";
+                            // html += "<label for='monto_acuenta' class='control-label'>A cuenta(Bs.):</label>";
+                            // html += "<div class='form-group'>";
+                            // html += "<input type='number' step='any' min='0' class='form-control' name='monto_acuenta"+registros[i]['detalleserv_id']+"' id='monto_acuenta"+registros[i]['detalleserv_id']+"' value='0' />";
+                            
+                            // html += "</div>";
+                            // html += "</div>";
+                            // html += "</div>";
+                            // html += "<br>";
+                            // //}
+                            // html += "<!------------------------------------------------------------------->";
+                            // html += "</div>";
+                            // html += "<div class='modal-footer'>";
+                            // html += "<div class='text-center' style='text-align: center !iportant'>";
 
-                            html += "<button class='btn btn-success' onclick='registrarservicio_pagoacuenta("+registros[i]['servicio_id']+", "+registros[i]['detalleserv_id']+")' title='Registrar pago a cuenta de un servicio'><span class='fa fa-wrench'></span> Registrar</button>";
+                            // html += "<button class='btn btn-success' onclick='registrarservicio_pagoacuenta("+registros[i]['servicio_id']+", "+registros[i]['detalleserv_id']+")' title='Registrar pago a cuenta de un servicio'><span class='fa fa-wrench'></span> Registrar</button>";
 
-                            html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar </a>";
-                            html += "</div>";
-                            html += "</div>";
-                            //res += "</form>";
-                            html += "</div>";
-                            html += "</div>";
-                            html += "</div>";
-                            html += "<!------------------------ FIN modal para registrar PAGO A CUENTA ------------------->";
+                            // html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar </a>";
+                            // html += "</div>";
+                            // html += "</div>";
+                            // //res += "</form>";
+                            // html += "</div>";
+                            // html += "</div>";
+                            // html += "</div>";
+                            // html += "<!------------------------ FIN modal para registrar PAGO A CUENTA ------------------->";
                         }
                         if(registros[i]['detallestado_id'] == 5){
                             html += "<br><a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#modalregistrarprocesar"+registros[i]['detalleserv_id']+"' title='Procesar el servicio'><span class='fa fa-wrench'></span> PENDIENTE</a>";
@@ -3392,7 +3455,8 @@ function mostrardetalleserv(serv_id){
                             res += "<label for='fecha_acuenta' class='control-label'>Fecha:</label>";
                             res += "<div class='form-group'>";
                             var estafecha = new Date();
-                            estafecha = moment(estafecha).format("YYYY-MM-DD HH:mm:ss");
+                            // estafecha = moment(estafecha).format("YYYY-MM-DD HH:mm:ss");
+                            estafecha = `${estafecha.getFullYear()}-${(estafecha.getMonth()+1 < 10) ? "0"+(estafecha.getMonth()+1):estafecha.getMonth()+1}-${estafecha.getDate()}T${estafecha.getHours()}:${estafecha.getMinutes()}`;
                             res += "<input type='datetime-local' class='form-control' name='fecha_acuenta"+registros[i]['detalleserv_id']+"' id='fecha_acuenta"+registros[i]['detalleserv_id']+"' value='"+estafecha+"' />";
                             
                             res += "</div>";
@@ -4123,6 +4187,7 @@ function registrarservicio_terminado(servicio_id, detalleserv_id){
     var elcliente = $('#elcliente'+detalleserv_id).html();
     var eltelefono = $('#eltelefono'+detalleserv_id).html();
     $('#modalregistrarservtecnico'+detalleserv_id).modal('hide');
+    $('body').removeClass('modal-open');
     var esdata = "";
     if(tipousuario_id ==1){
         var detalleserv_descripcion = document.getElementById('detalleserv_descripcion'+detalleserv_id).value;
@@ -4197,6 +4262,7 @@ function registrarinformacion_detservicio(servicio_id, detalleserv_id){
     var detalleserv_saldo = document.getElementById('detalleserv_saldo'+detalleserv_id).value;
     //var producto_id = document.getElementById('esteproducto_id'+detalleserv_id).value;
     $('#modalregistrarservtecnico'+detalleserv_id).modal('hide');
+    $('body').removeClass('modal-open');
     var esdata = "";
     if(tipousuario_id ==1){
         var detalleserv_descripcion = document.getElementById('detalleserv_descripcion'+detalleserv_id).value;
@@ -4435,21 +4501,21 @@ function registrarservicio_proceso(servicio_id, detalleserv_id){
     if(tipousuario_id == 1){
         este_responsable = document.getElementById('este_responsable'+detalleserv_id).value;
     }
-    
-    $('#modalregistrarprocesar'+detalleserv_id).modal('hide');
-        $.ajax({url: controlador,
-            type:"POST",
-            data:{detalleserv_id:detalleserv_id, servicio_id:servicio_id, este_responsable:este_responsable},
-            success:function(respuesta){
-                resultado = JSON.parse(respuesta);
-                if(resultado == "ok"){
-                    $('#filtrar').val(servicio_id);
-                    fechadeservicio(null, 1);
-                }
-            },
-            error: function(respuesta){
+    $(`#modalregistrarprocesar${detalleserv_id}`).modal('hide');
+    $('body').removeClass('modal-open');//remueve la clase modal-open(fondo oscuro)
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{detalleserv_id:detalleserv_id, servicio_id:servicio_id, este_responsable:este_responsable},
+        success:function(respuesta){
+            resultado = JSON.parse(respuesta);
+            if(resultado == "ok"){
+                $('#filtrar').val(servicio_id);
+                fechadeservicio(null, 1);
             }
-        });
+        },
+        error: function(respuesta){
+        }
+    });
 }
 /*async function processmisInsumos(detalleserv_id) {
   try {
@@ -4834,23 +4900,28 @@ function cargar_parafactura_serv(servicio_id){
     
 }
 /* registrar pagos acuenta*/
-function registrarservicio_pagoacuenta(servicio_id, detalleserv_id){
+// function registrarservicio_pagoacuenta(servicio_id, detalleserv_id){
+function registrarservicio_pagoacuenta(serv_id = 0, detser_id = 0){
     var base_url = document.getElementById('base_url').value;
-    //var tipousuario_id = document.getElementById('tipousuario_id').value;
-    var fecha_acuenta = document.getElementById('fecha_acuenta'+detalleserv_id).value;
-    var monto_acuenta = document.getElementById('monto_acuenta'+detalleserv_id).value;
-    var monto_total = document.getElementById('monto_total'+detalleserv_id).value;
+    let servicio_id = serv_id === 0 ? $('#acuenta_servicio_id').val():serv_id;
+    let detalleserv_id = detser_id === 0 ? $('#acuenta_detalleserv_id').val(): detser_id;
+
+    var fecha_acuenta = detser_id == 0 ? $('#fecha_acuenta').val() : $(`#fecha_acuenta${detser_id}`).val();
+    var monto_acuenta = detser_id == 0 ? $('#monto_acuenta').val() : $(`#monto_acuenta${detser_id}`).val();
+    var monto_total = detser_id == 0 ? $('#monto_total').val() : $(`#monto_total${detser_id}`).val();
     var controlador = base_url+"servicio/registrar_pago_acuenta";
     //var este_responsable = "";
     /*if(tipousuario_id == 1){
         este_responsable = document.getElementById('este_responsable'+detalleserv_id).value;
     }*/
-    
-    $('#modalregistraracuenta'+detalleserv_id).modal('hide');
-        $.ajax({url: controlador,
+    if(verificar_campos(fecha_acuenta,monto_acuenta,monto_total)){
+        detser_id == 0 ? $('#modalregistraracuenta').modal('hide') : $(`#modalregistraracuenta${detser_id}`).modal('hide');
+        $('body').removeClass('modal-open');
+        $.ajax({
+            url: controlador,
             type:"POST",
             data:{detalleserv_id:detalleserv_id, servicio_id:servicio_id, fecha_acuenta:fecha_acuenta,
-                  monto_total:monto_total, monto_acuenta:monto_acuenta},
+                    monto_total:monto_total, monto_acuenta:monto_acuenta},
             success:function(respuesta){
                 resultado = JSON.parse(respuesta);
                 if(resultado == "ok"){
@@ -4862,14 +4933,19 @@ function registrarservicio_pagoacuenta(servicio_id, detalleserv_id){
             error: function(respuesta){
             }
         });
+    }else{
+        alert("Debe escoger una fecha, Total debe ser mayor a 0, A cuenta deber ser mayor a 0 y el Total debe ser mayor de a cuenta")
+    }
 }
 /* muestra/oculta detalles de un servicio al credito */
 function mostrar_ocultar(detalleserv_id){
-    var tipo = document.getElementById('tipo_transaccion'+detalleserv_id).value;
+    var tipo = $(`#tipo_transaccion${detalleserv_id}`).val();
+    console.log(tipo);
     if (tipo=='2'){ //2 cuando el tipo de transacción es a CREDITO
-        document.getElementById('creditooculto'+detalleserv_id).style.display = 'block';
+        $(`#creditooculto${detalleserv_id}`).css('display','block');
+        console.log(true);
     }else{
-        document.getElementById('creditooculto'+detalleserv_id).style.display = 'none';
+        $(`#creditooculto${detalleserv_id}`).css('display','none');
     }
 }
 
@@ -4889,4 +4965,28 @@ function enviar_mensaje(){
     telefono = telefono.replace(/"/g,"");
     var url = "https://wa.me/591"+telefono+"?text="+texto
     window.open(url, '_blank');
+}
+
+function verificar_campos(fecha_acuenta,monto_acuenta,monto_total){
+    let campo = (fecha_acuenta == '' || fecha_acuenta == null) ? false:true;
+    console.log(campo)
+    campo = (campo && monto_total >= 0 && monto_acuenta >= 0) ? true:false;
+    console.log(campo)
+    campo = (campo && monto_total-monto_acuenta >= 0) ? true:false;
+    console.log(campo)
+    return campo;
+}
+
+function load_date_modal(servicio_id,detalleserv_id,detalleserv_descripcion,cliente_nombre,info_cliente,detalleserv_total){
+    $('#servicio_pago_cuenta').html(`PAGO A CUENTA DEL SERVICIO N° 00${servicio_id}`);
+    $('#servicio_detalle').html(detalleserv_descripcion);
+    $('#servicio_cliente').html(`CLIENTE: ${cliente_nombre}`);
+    $('#info_cliente').html(info_cliente);
+    var estafecha = new Date();
+    estafecha = `${estafecha.getFullYear()}-${(estafecha.getMonth()+1 < 10) ? "0"+(estafecha.getMonth()+1):estafecha.getMonth()+1}-${estafecha.getDate() < 10 ? "0"+estafecha.getDate():estafecha.getDate()}T${(estafecha.getHours()<10? "0":"")+estafecha.getHours()}:${(estafecha.getMinutes()<10?"0":"")+estafecha.getMinutes()}:${(estafecha.getSeconds()<10?"0":"")+estafecha.getSeconds()}`;
+    $('#fecha_acuenta').val(estafecha);
+    $('#monto_total').val((detalleserv_total.toFixed(2) <= 0 ? "":detalleserv_total.toFixed(2)));
+    $('#acuenta_servicio_id').val(servicio_id);
+    $('#acuenta_detalleserv_id').val(detalleserv_id);
+    $('#monto_acuenta').val("")
 }
