@@ -590,13 +590,12 @@ class Servicio extends CI_Controller{
             $parametro = $this->input->post('filtro');   
             
             if ($parametro!=""){
-            $datos = $this->Servicio_model->get_busqueda_servicio_parametro($parametro);
-            //$datos = $this->Inventario_model->get_inventario_bloque();
-            echo json_encode($datos);
+                $datos = $this->Servicio_model->get_busqueda_servicio_parametro($parametro);
+                //$datos = $this->Inventario_model->get_inventario_bloque();
             }else{
                 $datos = $this->Servicio_model->get_all_servicios_pendientes();
-            echo json_encode($datos);
             }
+            echo json_encode($datos);
         }
         else
         {                 
@@ -829,8 +828,9 @@ class Servicio extends CI_Controller{
     }
 }
     /* **********Obtiene todos los insumos usados en un determinado detalle de servicio*************** */
-    function obtenerinsumosusados($detalleserv_id)
+    function obtenerinsumosusados($detalleserv_id = 0)
     {
+        $detalleserv_id = $detalleserv_id == 0 ? $this->input->post('detalleserv_id'):$detalleserv_id; 
         //if($this->acceso(69)){
         $this->load->model('Detalle_venta_model');
         $datos = $this->Detalle_venta_model->get_all_insumo_usado($detalleserv_id);
@@ -2215,51 +2215,47 @@ class Servicio extends CI_Controller{
         //}
     }
     /* registrar pago a cuenta de un detalle de servicio */
-    function registrar_pago_acuenta()
-    {
-            if ($this->input->is_ajax_request()){
-                    $servicio_id = $this->input->post('servicio_id');
-                    $detalleserv_id = $this->input->post('detalleserv_id');
-                    //$estado_id = 28; // 28 ---> EN PROCESO
-                    //$fecha_enproceso = date('Y-m-d');
-                    //$hora_enproceso  = date('H:i:s');
-                    //if($this->session_data['tipousuario_id'] == 1){
-                        //$fecha_acuenta = $this->input->post('fecha_acuenta');
-                        //$monto_acuenta = $this->input->post('monto_acuenta');
-                    /*}else{
-                        $responsable_id = $this->session_data['usuario_id'];
-                    }*/
-                    $this->load->model('Detalle_serv_model');
-                    //$detalleservdatos = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
-                    $saldo = $this->input->post('monto_total')-$this->input->post('monto_acuenta');
-                    $params = array(
-                        'detalleserv_total' => $this->input->post('monto_total'),
-                        'detalleserv_acuenta' => $this->input->post('monto_acuenta'),
-                        'detalleserv_fpagoacuenta' => $this->input->post('fecha_acuenta'),
-                        'detalleserv_saldo' => $saldo,
-                    );
-                    
-                    $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
-                    
-                    $data['resultado'] = $this->Detalle_serv_model->sumarmontos($servicio_id);
-                    
-                    $total = $data['resultado']['total'];
-                    $acuenta = $data['resultado']['acuenta'];
-                    $saldo = $data['resultado']['saldo'];
-                    $sumparams = array(
-                            'servicio_total' => $total,
-                            'servicio_acuenta' => $acuenta,
-                            'servicio_saldo' => $saldo,
-                    );
-                    $this->Servicio_model->update_servicio($servicio_id,$sumparams);
-                    
-                    echo json_encode("ok");
-            }
-            else
-            {
-                show_404();
-            }
-        //}
+    function registrar_pago_acuenta(){
+        if ($this->input->is_ajax_request()){
+                $servicio_id = $this->input->post('servicio_id');
+                $detalleserv_id = $this->input->post('detalleserv_id');
+                //$estado_id = 28; // 28 ---> EN PROCESO
+                //$fecha_enproceso = date('Y-m-d');
+                //$hora_enproceso  = date('H:i:s');
+                //if($this->session_data['tipousuario_id'] == 1){
+                    //$fecha_acuenta = $this->input->post('fecha_acuenta');
+                    //$monto_acuenta = $this->input->post('monto_acuenta');
+                /*}else{
+                    $responsable_id = $this->session_data['usuario_id'];
+                }*/
+                $this->load->model('Detalle_serv_model');
+                //$detalleservdatos = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+                $saldo = floatval($this->input->post('monto_total')) - floatval($this->input->post('monto_acuenta'));
+                $params = array(
+                    'detalleserv_total' => $this->input->post('monto_total'),
+                    'detalleserv_acuenta' => $this->input->post('monto_acuenta'),
+                    'detalleserv_fpagoacuenta' => $this->input->post('fecha_acuenta'),
+                    'detalleserv_saldo' => $saldo,
+                );
+                
+                $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
+                
+                $data['resultado'] = $this->Detalle_serv_model->sumarmontos($servicio_id);
+                
+                $total = $data['resultado']['total'];
+                $acuenta = $data['resultado']['acuenta'];
+                $saldo = $data['resultado']['saldo'];
+                $sumparams = array(
+                        'servicio_total' => $total,
+                        'servicio_acuenta' => $acuenta,
+                        'servicio_saldo' => $saldo,
+                );
+                $this->Servicio_model->update_servicio($servicio_id,$sumparams);
+                
+                echo json_encode("ok");
+        }else{
+            show_404();
+        }   
     }
     /*************** funcion para mostrar la vista de la nota de entrega de servicios ******************/
     function imprimir_notaentrega($servicio_id){

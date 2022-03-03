@@ -221,7 +221,7 @@ $(document).ready(function(){
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
                           <?php } else { ?>
-                            <a href="<?php echo site_url("cuotum/pendiente1/".$c['cuota_id']."/".$c['credito_id']."/".$c['cuota_numcuota']); ?>" title="REESTABLECER" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
+                            <button onclick="confirm_reset(<?= $c['cuota_id'] ?>, <?= $c['credito_id'] ?>, <?= $c['cuota_numcuota'] ?>)"  title="REESTABLECER" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></button>
                             <?php if ($cuota[0]['venta_id']>0) { ?>
                             <a onclick="mostrar_modal(<?php echo $c['cuota_id']; ?>)" class="btn btn-success btn-xs"><span title="RECIBO" class="fa fa-print"></span></a>
                             <a href="<?php echo site_url("cuotum/comprobantecuentas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" title="RECIBO DIVIDIDO" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
@@ -399,6 +399,14 @@ $(document).ready(function(){
       }else{
         document.getElementById(div_form).style.display = 'none';        
       }       
+    }
+
+    function confirm_reset(cuota_id,credito_id,cuota_numcuota){
+      let base_url = $('#base_url').val();
+      let mensaje = `¿Estas seguro de reestablecer está cuota?`
+      if(confirm(mensaje)){
+        window.location.href = `${base_url}cuotum/pendiente1/${cuota_id}/${credito_id}/${cuota_numcuota}`;
+      }
     }
 </script>
 

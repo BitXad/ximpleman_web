@@ -104,7 +104,7 @@ class Servicio_model extends CI_Model
                 ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
                 ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
-                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,
+                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,ds.detalleserv_fpagoacuenta,
                 es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
                 ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre, fp.forma_nombre, tt.tipotrans_nombre
             FROM
@@ -145,7 +145,7 @@ class Servicio_model extends CI_Model
                 ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
                 ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
-                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,
+                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,ds.detalleserv_fpagoacuenta,
                 es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
                 ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre, fp.forma_nombre, tt.tipotrans_nombre
             FROM
@@ -226,7 +226,7 @@ class Servicio_model extends CI_Model
                 ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
                 ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
-                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,
+                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,ds.detalleserv_fpagoacuenta,
                 es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
                 ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre, fp.forma_nombre, tt.tipotrans_nombre
             FROM

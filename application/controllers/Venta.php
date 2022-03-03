@@ -2051,9 +2051,7 @@ function modificarcliente()
                         ",cliente_direccion= ".$cliente_direccion.
                         ",cliente_departamento = ".$cliente_departamento.
                         ",cliente_celular = ".$cliente_celular.
-                        ",zona_id = ".$zona_id.
-                        
-                        " where cliente_id = ".$cliente_id;
+                        ",zona_id = ".$zona_id." where cliente_id = ".$cliente_id;
                 
                 $datos = $this->Venta_model->modificarcliente($sql);            
                 echo  '[{"cliente_id":'.$cliente_id.'}]';

@@ -21,6 +21,7 @@ class Cuotum extends CI_Controller{
         $this->load->model('Factura_model');
         $this->load->model('Forma_pago_model');
         $this->load->model('Detalle_venta_model');
+        $this->load->model('Detalle_serv_model');
         $this->load->library('ControlCode');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -128,6 +129,8 @@ class Cuotum extends CI_Controller{
                     }
                 }
             }
+            $parametros = $this->Parametro_model->get_parametro(1);
+            $data['moneda'] = $this->Moneda_model->get_moneda($parametros['moneda_id']);
             $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
             $data['credito'] = $this->Credito_model->dato_cuenta_serv($credito_id);
             $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
@@ -152,12 +155,12 @@ class Cuotum extends CI_Controller{
             if(isset($data['cuota'])){
                 $detalle_venta = $this->Detalle_venta_model->get_detalle_venta($data['cuota'][0]['venta_id']);
                 foreach ($detalle_venta as $detalle) {
-                    $eldetalle .= $detalle['categoria_nombre']." - ".$detalle['producto_nombre']." | ";
+                    $eldetalle = $detalle['categoria_nombre']." - ".$detalle['producto_nombre']." | ";
                 }
             }
             $data['eldetalle'] = $eldetalle;
             
-            $data['_view'] = 'cuotum/planCuentas';
+            $data['_view'] = 'cuotum/planCuentas_lotes';
             $this->load->view('layouts/main',$data);
         }
     }
@@ -168,6 +171,20 @@ class Cuotum extends CI_Controller{
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
+            $parametros = $this->Parametro_model->get_parametros();
+            if ($parametros[0]['parametro_notaentrega']==1){
+                $data['conimagen'] = 1;
+            }elseif($parametros[0]['parametro_notaentrega']==2){
+                $data['conimagen'] = 2;
+            }
+            $eldetalle = "";
+            if(isset($data['cuota'])){
+                $detalle_venta = $this->Detalle_serv_model->get_detalle_serv_all($data['cuota'][0]['servicio_id']);
+                foreach ($detalle_venta as $detalle) {
+                    $eldetalle = $detalle['detalleserv_descripcion'];
+                }
+            }
+            $data['eldetalle'] = $eldetalle;
             $data['_view'] = 'cuotum/planCuentas';
             $this->load->view('layouts/main',$data);
         }
