@@ -1,11 +1,8 @@
-  $(document).on("ready",inicio);
+$(document).on("ready",inicio);
 function inicio(){
-     filtro = " and date(egreso_fecha) = date(now())";   
-        
-        fechadeegreso(filtro); 
-     
-        
-} 
+    filtro = " and date(egreso_fecha) = date(now())";
+    fechadeegreso(filtro);
+}
 
 
 function buscar_egresos()
@@ -13,9 +10,11 @@ function buscar_egresos()
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"egreso";
     var opcion      = document.getElementById('select_compra').value;
- 
+    if (opcion == 0){
+        filtro = "";
+        mostrar_ocultar_buscador("ocultar");
+    }//todas las compras
     
-
     if (opcion == 1)
     {
         filtro = " and date(egreso_fecha) = date(now())";
@@ -51,7 +50,6 @@ function buscar_egresos()
         mostrar_ocultar_buscador("mostrar");
         filtro = null;
     }
-
     fechadeegreso(filtro);
 }
 
@@ -77,130 +75,129 @@ function mostrar_ocultar_buscador(parametro){
     
 }
 
-function fechadeegreso(filtro)
-{   
-      
-   var base_url    = document.getElementById('base_url').value;
+function fechadeegreso(filtro){
+    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"egreso/buscarfecha";
-    var categoria = document.getElementById('categoria_id').value;
-   if (categoria==0) {
-       var categ = " ";
-   }else{
-       var categ = " and e.egreso_categoria='"+categoria+"' ";
-   }
+    var categoria = $('#categoria_id').val();
+    let categ = 0;//mandar con una consulta
+    if(categoria != "0"){
+        categ = 1;
+    }
     $.ajax({url: controlador,
-           type:"POST",
-           data:{filtro:filtro,categ:categ},
-           success:function(resul){         
-                $("#pillados").val("- 0 -");
-                var registros =  JSON.parse(resul);
-                if (registros != null){
-                    var nombre_moneda = document.getElementById('nombre_moneda').value;
-                    var lamoneda_id = document.getElementById('lamoneda_id').value;
-                    var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
-                    var total_otramoneda = Number(0);
-                    var total_otram = Number(0);
-                    var cont = 0;
-                    var total = Number(0);
+        type:"POST",
+        data:{
+            filtro:filtro,
+            categ:categ,
+            categoria:categoria,
+        },
+        success:function(resul){         
+            $("#pillados").val("- 0 -");
+            var registros = JSON.parse(resul);
+            if (registros != null){
+                var nombre_moneda = document.getElementById('nombre_moneda').value;
+                var lamoneda_id = document.getElementById('lamoneda_id').value;
+                var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                var total_otramoneda = Number(0);
+                var total_otram = Number(0);
+                var cont = 0;
+                var total = Number(0);
+                
+                var n = registros.length; //tamaño del arreglo de la consulta
+                $("#pillados").html("Registros Encontrados: "+n+"");
+                
+                html = "";
+                for (var i = 0; i < n ; i++){
                     
-                    var n = registros.length; //tamaño del arreglo de la consulta
-                    $("#pillados").html("Registros Encontrados: "+n+"");
-                   
-                    html = "";
-                    for (var i = 0; i < n ; i++){
-                        
-                        var suma = Number(registros[i]["egreso_monto"]);
-                        var total = Number(suma+total);
-                        
-                        html += "<tr>";
-                      
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["egreso_nombre"]+"</b><sub> ["+registros[i]["egreso_id"]+"]</sub></td>";
-                        html += "<td align='center'>"+registros[i]["egreso_numero"]+"</td>"; 
-                        html += "<td align='center'>"+moment(registros[i]["egreso_fecha"]).format('DD/MM/YYYY HH:mm:ss')+"</td>"; 
-                        html += "<td>"+registros[i]["egreso_categoria"]+"</br>"; 
-                        html += "<b>"+registros[i]["egreso_concepto"]+"</b></td>"; 
-                        html += "<td align='right'>"+numberFormat(Number(registros[i]["egreso_monto"]).toFixed(2));
-                        html += "<br>";
-                        if(lamoneda_id == 1){
-                            total_otram = Number(registros[i]["egreso_monto"])/Number(registros[i]["egreso_tc"]);
-                            total_otramoneda += total_otram;
-                        }else{
-                            total_otram = Number(registros[i]["egreso_monto"])*Number(registros[i]["egreso_tc"]);
-                            total_otramoneda += total_otram;
-                        }
-                        html += "<span style='font-size: 8px'>"+numberFormat(Number(total_otram).toFixed(2))+"</span>";
-                        html += "</td>"; 
-                        html += "<td>"+registros[i]["egreso_moneda"];
-                        html += "<br>";
-                        if(lamoneda_id == 1){
-                            html += "<span style='font-size: 8px'>"+lamoneda[1]['moneda_descripcion']+"</span>";
-                        }else{
-                            html += "<span style='font-size: 8px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
-                        }
-                        html += "</td>";
-                        html += "<td>"+registros[i]["forma_nombre"]+"</td>";
-                        html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
+                    var suma = Number(registros[i]["egreso_monto"]);
+                    var total = Number(suma+total);
+                    
+                    html += "<tr>";
+                    
+                    html += "<td>"+(i+1)+"</td>";
+                    html += "<td><b>"+registros[i]["egreso_nombre"]+"</b><sub> ["+registros[i]["egreso_id"]+"]</sub></td>";
+                    html += "<td align='center'>"+registros[i]["egreso_numero"]+"</td>"; 
+                    html += "<td align='center'>"+moment(registros[i]["egreso_fecha"]).format('DD/MM/YYYY HH:mm:ss')+"</td>"; 
+                    html += "<td>"+registros[i]["egreso_categoria"]+"</br>"; 
+                    html += "<b>"+registros[i]["egreso_concepto"]+"</b></td>"; 
+                    html += "<td align='right'>"+numberFormat(Number(registros[i]["egreso_monto"]).toFixed(2));
+                    html += "<br>";
+                    if(lamoneda_id == 1){
+                        total_otram = Number(registros[i]["egreso_monto"])/Number(registros[i]["egreso_tc"]);
+                        total_otramoneda += total_otram;
+                    }else{
+                        total_otram = Number(registros[i]["egreso_monto"])*Number(registros[i]["egreso_tc"]);
+                        total_otramoneda += total_otram;
+                    }
+                    html += "<span style='font-size: 8px'>"+numberFormat(Number(total_otram).toFixed(2))+"</span>";
+                    html += "</td>"; 
+                    html += "<td>"+registros[i]["egreso_moneda"];
+                    html += "<br>";
+                    if(lamoneda_id == 1){
+                        html += "<span style='font-size: 8px'>"+lamoneda[1]['moneda_descripcion']+"</span>";
+                    }else{
+                        html += "<span style='font-size: 8px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
+                    }
+                    html += "</td>";
+                    html += "<td>"+registros[i]["forma_nombre"]+"</td>";
+                    html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
 //                        html += "<td class='no-print'><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
 //                        html += "<a href='"+base_url+"egreso/boucher/"+registros[i]["egreso_id"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
-                        html += "<td class='no-print'><a href='"+base_url+"egreso/imprimir/"+registros[i]["egreso_id"]+"' title='Imprimir comprobante' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
+                    html += "<td class='no-print'><a href='"+base_url+"egreso/imprimir/"+registros[i]["egreso_id"]+"' title='Imprimir comprobante' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
 
-                       html += "<a href='"+base_url+"egreso/edit/"+registros[i]["egreso_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
-                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
-                        html += "<!------------------------ INICIO modal para confirmar eliminaci���n ------------------->";
-                        html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
-                        html += "<div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
-                        html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "</div>";
-                        html += "<div class='modal-body'>";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "<h3><b> <span class='fa fa-trash'></span></b>";
-                        html += "Desea eliminar el Egreso <b># "+registros[i]["egreso_numero"]+"?</b>";
-                        html += "</h3>";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "</div>";
-                        html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"egreso/remove/"+registros[i]["egreso_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
-                        html += " <a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "<!------------------------ FIN modal para confirmar eliminaci���n ------------------->";
-                        html += "</td>";
-                        
-                        html += "</tr>";
-                    } 
-                        html += "<tr>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td align='right'><b>TOTAL</b></td>";
-                        html += "<td align='right'><font size='4'><b>"+numberFormat(Number(total).toFixed(2))+"</b></font>";
-                        html += "<br>";
-                        html += "<span style='font-size: 9px'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</span>"
-                        html += "</td>";
-                        html += "<td><font size='4'><b>"+nombre_moneda+"</b></font>";
-                        html += "<br>";
-                        if(lamoneda_id == 1){
-                            html += "<span style='font-size: 9px'>"+lamoneda[1]['moneda_descripcion']+"</span>";
-                        }else{
-                            html += "<span style='font-size: 9px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
-                        }
-                        html += "</td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "</tr>";
-                   
-                   $("#fechadeegreso").html(html);
-                   
-            }
+                    html += "<a href='"+base_url+"egreso/edit/"+registros[i]["egreso_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
+                    html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
+                    html += "<!------------------------ INICIO modal para confirmar eliminaci���n ------------------->";
+                    html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
+                    html += "<div class='modal-dialog' role='document'>";
+                    html += "<br><br>";
+                    html += "<div class='modal-content'>";
+                    html += "<div class='modal-header'>";
+                    html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                    html += "</div>";
+                    html += "<div class='modal-body'>";
+                    html += "<!------------------------------------------------------------------->";
+                    html += "<h3><b> <span class='fa fa-trash'></span></b>";
+                    html += "Desea eliminar el Egreso <b># "+registros[i]["egreso_numero"]+"?</b>";
+                    html += "</h3>";
+                    html += "<!------------------------------------------------------------------->";
+                    html += "</div>";
+                    html += "<div class='modal-footer aligncenter'>";
+                    html += "<a href='"+base_url+"egreso/remove/"+registros[i]["egreso_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                    html += " <a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<!------------------------ FIN modal para confirmar eliminaci���n ------------------->";
+                    html += "</td>";
+                    
+                    html += "</tr>";
+                } 
+                    html += "<tr>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td align='right'><b>TOTAL</b></td>";
+                    html += "<td align='right'><font size='4'><b>"+numberFormat(Number(total).toFixed(2))+"</b></font>";
+                    html += "<br>";
+                    html += "<span style='font-size: 9px'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</span>"
+                    html += "</td>";
+                    html += "<td><font size='4'><b>"+nombre_moneda+"</b></font>";
+                    html += "<br>";
+                    if(lamoneda_id == 1){
+                        html += "<span style='font-size: 9px'>"+lamoneda[1]['moneda_descripcion']+"</span>";
+                    }else{
+                        html += "<span style='font-size: 9px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
+                    }
+                    html += "</td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "</tr>";
                 
+                $("#fechadeegreso").html(html);
+            }
         },
         error:function(resul){
           // alert("Algo salio mal...!!!");

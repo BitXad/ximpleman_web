@@ -69,7 +69,7 @@
                     <!-- panel panel-primary -->
                     <!--<div class="panel panel-primary col-md-8" id='buscador_oculto' > style='display:none; padding-top: 10px;'> -->
                     <div class="col-md-2">
-                        Usuario:
+                        <label for="usuario">Usuario:</label>
                         <?php if($tipousuario_id == 1 || $tienepermiso == 1){ ?>
                         <select  class="btn btn-primary btn-sm form-control" id="buscarusuario_id" required>
                             <option value="0"> TODOS </option>
@@ -90,6 +90,22 @@
                                 } ?>
                         </select>
                         <?php } ?>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="categorias">Categorias</label>
+                        <select  class="btn btn-warning btn-sm form-control" id="buscarcategoria_id" name="buscarcategoria_id" onchange="buscarSubCategoria()" required>
+                            <option value="0"> TODAS </option>
+                            <?php foreach($categorias as $categoria){?>
+                                <?php extract($categoria);?>
+                                <option value="<?= $categoria_id; ?>"><?= $categoria_nombre; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="sub_categoria">Sub categoria</label>
+                        <select  class="btn btn-warning btn-sm form-control" id="subcategorias" required>
+                            <option value="0">TODAS</option>
+                        </select>
                     </div>
                         <!-- <div class="col-md-2">
                             Desde: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
@@ -177,6 +193,7 @@
                 <tr style='background-color: #aaaaaa;' class='fondoprint'>
                     <th id='fondoprint' class='fondoprint' style='width: 2%' class='text-center'>N°</th>
                     <th id='fondoprint' style='width: 32%' class='text-center'>CLIENTE <input type='button' value='[-]' onclick='mostrar_detalle();' id='boton_detalle' class='btn btn-xs' style="padding:0;"/></th>
+                    <th id='fondoprint' style='width: 8%' class='text-center'>CELULAR</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>CREDITO</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>CUOTAS A DEUDA</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>TOTAL DEUDA</th>

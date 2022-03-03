@@ -13,8 +13,10 @@ class Egreso extends CI_Controller{
         $this->load->model('Categoria_egreso_model'); 
         $this->load->model('Empresa_model');
         $this->load->model('Usuario_model');   
+        $this->load->model('Moneda_model');   
         $this->load->helper('numeros');
         $this->load->model('Parametro_model');
+        $this->load->model('Detalle_egreso_model');
         $this->load->model('Forma_pago_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -53,27 +55,25 @@ class Egreso extends CI_Controller{
         }
     }
 
-    function buscarfecha()
-    {
+    function buscarfecha(){
         if($this->acceso(59)){
-        if ($this->input->is_ajax_request()) {
-            
-            $filtro = $this->input->post('filtro');
-            $categoria = $this->input->post('categ');
-            
-           if ($filtro == null){
-            $result = $this->Egreso_model->get_all_egreso($params);
-            }
-            else{
-            $result = $this->Egreso_model->fechaegreso($filtro,$categoria);            
-            }
-           echo json_encode($result);
-            
-        }
-        else
-        {                 
-                    show_404();
-        }          
+            if ($this->input->is_ajax_request()){                
+                $filtro = $this->input->post('filtro');
+                $categ = $this->input->post('categ');
+                $categoria = $this->input->post('categoria');
+                $parametro = "";
+                if($categ == 1){
+                    $parametro = "and (e.egreso_categoria like '%$categoria%' or e.egreso_especificacion like '%$categoria%')";
+                }
+                if ($filtro == null){
+                    $result = $this->Egreso_model->get_all_egreso();
+                }else{
+                    $result = $this->Egreso_model->fechaegreso($filtro,$parametro);
+                }
+                echo json_encode($result);
+            }else{                 
+                show_404();
+            }          
         }
     }
 
@@ -213,9 +213,7 @@ class Egreso extends CI_Controller{
                 
                 $this->Egreso_model->update_egreso($egreso_id,$params);            
                 redirect('egreso/index');
-            }
-            else
-            {
+            }else{
 	
                 $this->load->model('Categoria_egreso_model');
                 $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
@@ -227,7 +225,7 @@ class Egreso extends CI_Controller{
         }
         else
             show_error('The egreso you are tryegr to edit does not exist.');
-            }
+        }
     }
 
     /*
@@ -333,5 +331,91 @@ class Egreso extends CI_Controller{
         }
     }
 
+    function add_egresos(){
+        if($this->input->is_ajax_request()){
+            $usuario_id = $this->session_data['usuario_id'];
+            $numrec = $this->Egreso_model->numero();
+            $numero = $numrec[0]['parametro_numrecegr'] + 1;
+            $egreso_nombre = $this->input->post('egreso_nombre');
+            $forma_id = $this->input->post('select_forma_pago');
+            $egreso_moneda = $this->input->post('egreso_moneda');
+            $egreso_monto = $this->input->post('egreso_monto');
+            $egreso_concepto = $this->input->post('egreso_concepto');
+            $egreso_glosa = $this->input->post('egreso_glosa');
+            $egreso_monreg = $this->input->post('egreso_monreg');
+            $egreso_especificacion = $this->input->post('egreso_especificacion');
+            $egreso_fecha = date('Y-m-d H:i:s');
+            
+            $moneda_parametro = $this->Parametro_model->get_moneda();
+            $egreso_monto = $egreso_moneda == $moneda_parametro['moneda_id'] ? $egreso_monto : round($egreso_monto/$moneda_parametro['moneda_tc'], 3);
+            $egreso_moneda = $moneda_parametro['moneda_descripcion'];
+            
+            $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
+            $egreso_tc = $all_moneda[1]["moneda_tc"];
+            $params = array(
+                'usuario_id' => $usuario_id,
+                'egreso_numero' => $numero,
+                'egreso_nombre' => $egreso_nombre,
+                'forma_id' => $forma_id,
+                'egreso_moneda' => $egreso_moneda,
+                'egreso_monto' => $egreso_monto,
+                'egreso_concepto' => $egreso_concepto,
+                'egreso_glosa' => $egreso_glosa,
+                'egreso_tc' => $egreso_tc,
+                'egreso_fecha' => $egreso_fecha,
+                'egreso_monreg'=> $egreso_monreg,
+                'egreso_categoria'=> $egreso_especificacion,
+                'egreso_especificacion'=> $egreso_especificacion,
+            );
+            $this->Egreso_model->add_egreso($params);
+            $sql = "UPDATE parametros SET parametro_numrecegr=parametro_numrecegr+1 WHERE parametro_id = '1'"; 
+            $this->db->query($sql);
+        }else{
+            show_404();
+        }
+    }
 
+    function edit_egresos(){
+        if($this->input->is_ajax_request()){
+            $egreso_nombre = $this->input->post('egreso_nombre');
+            $forma_id = $this->input->post('select_forma_pago');
+            $egreso_moneda = $this->input->post('egreso_moneda');
+            $egreso_monto = $this->input->post('egreso_monto');
+            $egreso_concepto = $this->input->post('egreso_concepto');
+            $egreso_glosa = $this->input->post('egreso_glosa');
+            $egreso_monreg = $this->input->post('egreso_monreg');
+            $egreso_fecha = $this->input->post('egreso_fecha');
+            $usuario_id = $this->input->post('usuario_id');
+            $egreso_numero = $this->input->post('egreso_numero');
+            $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
+            $egreso_tc = $all_moneda[1]["moneda_tc"];
+            $egreso_id = $this->input->post('egreso_id');
+            $egreso_especificacion =$this->input->post('egreso_especificacion');
+            
+            $moneda_parametro = $this->Parametro_model->get_moneda();
+            $egreso_monto = $egreso_moneda == $moneda_parametro['moneda_id'] ? $egreso_monto : round($egreso_monto/$moneda_parametro['moneda_tc'], 3);
+            $egreso_moneda = $moneda_parametro['moneda_descripcion'];
+
+            $params = array(
+                'usuario_id' => $usuario_id,
+                'egreso_numero' => $egreso_numero,
+                'egreso_nombre' => $egreso_nombre,
+                'forma_id' => $forma_id,
+                'egreso_moneda' => $egreso_moneda,
+                'egreso_monto' => $egreso_monto,
+                'egreso_concepto' => $egreso_concepto,
+                'egreso_glosa' => $egreso_glosa,
+                'egreso_tc' => $egreso_tc,
+                'egreso_fecha' => $egreso_fecha,
+                'egreso_monreg' => $egreso_monreg,
+                'egreso_categoria' => $egreso_especificacion,
+                'egreso_especificacion' => $egreso_especificacion,
+            );
+
+            $this->Egreso_model->edit_egreso($params, $egreso_id);
+        }else{
+            show_404();
+        }
+    }
+    
 }

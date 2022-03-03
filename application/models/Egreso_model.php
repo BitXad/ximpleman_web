@@ -48,13 +48,14 @@ class Egreso_model extends CI_Model
         
         $egresos = $this->db->query("
             SELECT
-                i.*, u.*
+                i.*, u.*,fe.forma_nombre
 
             FROM
-                egresos i, usuario u
+                egresos i, usuario u, forma_pago fe
 
             WHERE
                 i.usuario_id = u.usuario_id
+            and fe.forma_id = i.forma_id
 
             ORDER BY `egreso_id` DESC
 
@@ -72,24 +73,23 @@ class Egreso_model extends CI_Model
         return $this->db->insert_id();
     }
     
-    function fechaegreso($condicion,$categoria)
-    {
-
-       $egreso = $this->db->query("
-            SELECT
+    
+    function fechaegreso($condicion,$parametro){
+        return $this->db->query(
+            "SELECT
                 e.*, u.*, fp.forma_nombre
             FROM
-                egresos e, usuario u, `forma_pago` fp
+                egresos e
+            left join usuario u on e.usuario_id = u.usuario_id
+            left join forma_pago fp on fp.forma_id = e.forma_id
             WHERE
-                e.usuario_id = u.usuario_id
-            AND e.`forma_id` = `fp`.`forma_id`   
-                ".$condicion." 
-                ".$categoria." 
-            ORDER BY e.egreso_fecha DESC 
-        "
+                1 = 1  
+                ".$condicion."
+                ".$parametro."
+            ORDER BY e.egreso_fecha DESC"
         )->result_array();
 
-        return $egreso;
+        // return $egreso;
     }
     
     /*
@@ -121,6 +121,12 @@ class Egreso_model extends CI_Model
         {
             return "Error occuring while updating egreso";
         }
+    }
+    
+    function edit_egreso($params,$egreso_id)
+    {
+        $this->db->where('egreso_id',$egreso_id);
+        $response = $this->db->update('egresos',$params);
     }
     
     /*

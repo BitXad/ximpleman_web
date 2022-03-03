@@ -17,14 +17,21 @@
             echo form_open_multipart("usuario/set", $attributes);?>
 			<div class="box-body">
 				<div class="row clearfix">
-						<div class="col-md-6">
+                    <div class="col-md-5">
 						<label for="usuario_nombre" class="control-label">Nombre</label>
 						<div class="form-group">
 							<input type="text" name="usuario_nombre" value="<?php echo $usuario['usuario_nombre'] ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 							<span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
 						</div>
 					</div>
-					<div class="col-md-6">
+                    <div class="col-md-4">
+						<label for="usuario_ci" class="control-label">C.I.</label>
+						<div class="form-group">
+							<input type="text" name="usuario_ci" value="<?php echo $usuario['usuario_ci'] ?>" class="form-control" id="usuario_ci" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+							<span class="text-danger"><?php echo form_error('usuario_ci');?></span>
+						</div>
+					</div>
+					<div class="col-md-3">
 						<label for="tipousuario_id" class="control-label">Tipo</label>
 						<div class="form-group">
 							<select name="tipousuario_id" class="form-control">

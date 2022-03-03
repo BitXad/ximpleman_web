@@ -1,201 +1,52 @@
 $(document).on("ready",inicio);
 function inicio()
 {
-    grafico_ventas();
+    buscar_ventas();
 }
 
-function grafico_ventas(){
-    
+function buscar_ventas(){
     var base_url = document.getElementById("base_url").value;
     var controlador = base_url+"reportes/ventas_mes";
-    var mes = document.getElementById("select_mes").value;
-    var anio = document.getElementById("select_anio").value;    
-    var empresa =  document.getElementById('empresa_nombre').value;
-    var tipo_grafico =  document.getElementById("select_tipo").value;
-    var nombre_moneda = document.getElementById('nombre_moneda').value;
-    var lamoneda_id = document.getElementById('lamoneda_id').value;
+    var fecha_inicio = document.getElementById("fecha_inicio").value;
+    var fecha_fin    = document.getElementById("fecha_fin").value;    
     var usuario_id = document.getElementById('usuario_id').value;
     var zona_id    = document.getElementById('zona_id').value;
-    var lautilidad    = document.getElementById('lautilidad').value;
-        var mostrarmoneda = document.getElementById('mostrarmoneda').value;
-    var options={
-	 chart: {
-            renderTo: 'div_grafica_barras',
-            type: tipo_grafico,
-           
-        },
-        title: {
-            text: 'Ventas mensuales ('+nombre_moneda+')'
-        },
-        subtitle: {
-            text: empresa
-        },
-        xAxis: {
-            categories: [],
-             title: {
-                text: 'Dias del mes'
-            },
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Ventas por dia'
-            }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y} </b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            color: 'brown',
-            name: 'ventas',
-            data: []
-
-        },{
-           color: 'orange',
-            name: 'Utilidades',
-            data: [] 
-        }]
-    }
-    
-    //$("#div_grafica_barras").html( $("#cargador_empresa").html() );
-
-    
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
-               type:"POST",
-               data:{mes:mes, anio:anio, usuario_id:usuario_id, zona_id:zona_id},
-               success:function(respuesta){
-                   
-                    var datos = JSON.parse(respuesta);
-                    var lamoneda= JSON.parse(document.getElementById('lamoneda').value);
-                    var totaldias = datos.totaldias;
-                    var ventas = datos.totalventas;
-                    var ventastc = datos.totaltc;
-                    var utilidades = datos.totalutilidades;
-                    var total_ventas = 0;
-                    var total_otramoneda = Number(0);
-                    var total_otram = Number(0);
-                    var total_tc = 0;
-                    var total_utilidades = 0;
-                    
-                    var i = 0;
-                    html = "";   
-                    html2 = "";   
-                      
-                    for(i=1; i <= totaldias; i++){
-                                //alert(Math.round(ventas[i]*100)/100);
-                                
-                        options.series[0].data.push( Math.round(ventas[i]*100)/100 );
-                        if(lautilidad == 1){
-                            options.series[1].data.push( Math.round(utilidades[i]*100)/100 );
-                        }
-                        options.xAxis.categories.push(i);
-                        
+           type:"POST",
+           data:{fecha_inicio:fecha_inicio, fecha_fin:fecha_fin, usuario_id:usuario_id, zona_id:zona_id},
+           success:function(respuesta){
+                var registros =  JSON.parse(respuesta);
+                html = "";   
+                if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    let total_venta = Number(0);
+                    for(i=0; i < n; i++){
+                        total_venta = total_venta +Number(registros[i]["venta_total"]);
                         html += "<tr style='padding:0'>";
-                        html += "<td style='padding:0'>"+i+"/"+mes+"/"+anio+"</td>";
-                        html += "<td style='padding:0; text-align:right;'>"+numberFormat(Number(ventas[i]).toFixed(2))+"</td>";
-                        if(mostrarmoneda == 1){
-                            html += "<td style='padding:0' class='text-right'> ";
-                            if(lamoneda_id == 1){
-                                if(Number(ventas[i]) >0){
-                                    total_otram = Number(ventas[i])/Number(ventastc[i]);
-                                }else{
-                                    total_otram = 0;
-                                }
-                                total_otramoneda += total_otram;
-                            }else{
-                                total_otram = Number(ventas[i])*Number(ventastc[i]);
-                                total_otramoneda += total_otram;
-                            }
-                            html += numberFormat(Number(total_otram).toFixed(2));
-                            html += "</td>";
-                        }
-                        if(lautilidad == 1){
-                            html += "<td style='padding:0; text-align:right;'>"+numberFormat(Number(utilidades[i]).toFixed(2))+"</td>";
-                        }
+                        html += "<td class='text-center' style='padding:0'>"+moment(registros[i]["venta_fecha"]).format("DD-MM-YYYY")+"</td>";
+                        html += "<td class='text-right' style='padding:0'>"+numberFormat(Number(registros[i]["venta_total"]).toFixed(2))+"</td>";
                         html += "</tr>";
-                        
-                        total_ventas += Number(ventas[i]);
-                        total_tc += Number(ventastc[i]);
-                        total_utilidades += Number(utilidades[i]);
-
                     }
-                    //alert("aquiii33333333332");  
-                    html += "<tr style='padding:0'>";
-                    html += "   <th style='padding:0'> </th>";
-                    html += "   <th style='padding:0; text-align: right'>"+numberFormat(Number(total_ventas).toFixed(2))+"</th>";
-                    if(mostrarmoneda == 1){
-                        html += "   <th style='padding:0; text-align: right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
-                    }
-                    if(lautilidad == 1){
-                        html += "   <th style='padding:0; text-align: right'>"+numberFormat(Number(total_utilidades).toFixed(2))+"</th>";
-                    }
-                    html += "</tr>";                 
-                    
-                    html2 +="<table id='mitabla'>";
-                    html2 +="<tr>";
-                    html2 +="   <th style='padding:0;'>Detalle</th>";
-                    html2 +="   <th style='padding:0;'>Totales</th>";
-                    html2 +="   <th style='padding:0;'>Promedio</th>";
-                   
-                    html2 +="</tr>";
-                    
-                    html2 +="<tr>";
-                    html2 +="   <td style='padding:0; text-align:right;'><b>VENTAS ("+nombre_moneda+")</b></td>";
-                    html2 +="   <td style='padding:0;text-align:right;'>"+numberFormat(total_ventas.toFixed(2))+"</td>";
-                    html2 +="   <td style='padding:0;text-align:right;'>"+numberFormat(Number(total_ventas/totaldias).toFixed(2))+"</td>";
-                    html2 +="</tr>";
-                    if(mostrarmoneda ==1){
-                        html2 +="<tr>";
-                        html2 +="   <td style='padding:0; text-align:right;'><b>VENTAS (";
-                        if(lamoneda_id == 1){
-                            html2 += lamoneda[1]['moneda_descripcion'];
-                        }else{
-                            html2 += lamoneda[0]['moneda_descripcion'];
-                        }
-                        html2 += ")</b></td>";
-                        html2 +="   <td style='padding:0;text-align:right;'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</td>";
-                        html2 +="   <td style='padding:0;text-align:right;'></td>";
-                        html2 +="</tr>";
-                    }
-                    if(lautilidad == 1){
-                        html2 +="<tr>";
-                        html2 +="   <td style='padding:0; text-align:right;'><b>UTILIDADES ("+nombre_moneda+")</b></td>";
-                        html2 +="   <td style='padding:0; text-align:right;'>"+numberFormat(total_utilidades.toFixed(2))+"</td>";  
-                        html2 +="   <td style='padding:0; text-align:right;'>"+numberFormat(Number(total_utilidades/totaldias).toFixed(2))+"</td>";
-                        html2 +="</tr>";
-                    }
-                    html2 +="</table>";
-                    
-                    
-                    //options.title.text="aqui e podria cambiar el titulo dinamicamente";
-                    chart = new Highcharts.Chart(options);
-                    if(mostrarmoneda == 1){
-                        $("#mostrar_columna1").css("display", "block");
-                    }else{
-                        $("#mostrar_columna1").css("display", "none");
-                    }
-                    if(lautilidad == 1){
-                        $("#mostrar_columna").css("display", "block");
-                    }else{
-                        $("#mostrar_columna").css("display", "none");
-                    }
-                    $("#div_grafica_barras").html( $("#cargador_empresa").html() );
+                    html += "<tr>";
+                    html += "<th style='text-align: right'>TOTAL</th>";
+                    html += "<th style='text-align: right'>"+numberFormat(Number(total_venta).toFixed(2))+"</th>";
+                    html += "</tr>";
                     $("#tabla_ventas").html(html);
-                    $("#tabla_estadistica").html(html2);
-                }   
-    });   
+                }
+               $("#tabla_ventas").html(html);
+               document.getElementById('loader').style.display = 'none';
+            
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tabla_ventas").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        }
+    });
 }
 
 function numberFormat(numero){

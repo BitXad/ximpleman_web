@@ -245,4 +245,11 @@ class Subcategoria_producto extends CI_Controller{
         }
     }
     
+    function get_subCategoria_producto(){
+        if($this->input->is_ajax_request()){
+            $categoria_id = $this->input->post('categoria_id');
+            $sub_categoria = $this->Subcategoria_producto_model->get_all_subcategoria_de_categoria($categoria_id);
+            echo json_encode($sub_categoria);
+        }
+    }
 }

@@ -40,6 +40,23 @@ function enviar_formulario(cuota_id){
 }
 
 
+function mostrar_modal(cuota_id){
+    $("#lacuota_id").val(cuota_id);
+    $("#modalconfirmar").modal("show");
+}
+
+function mostrarcomprobante(){
+    var base_url    = document.getElementById('base_url').value;
+    let cuota_id    = document.getElementById('lacuota_id').value;
+    let condetalle = 0;
+    if( $('#eldetalle').is(':checked') ) {
+        condetalle = 1;
+    }
+    dir_url = base_url+"cuotum/recibocuentas/"+cuota_id+"/"+condetalle;
+    window.open(dir_url, '_blank');
+    $("#modalconfirmar").modal("hide");
+}
+
 /*
 
 function facturarcuota(cuota_id){

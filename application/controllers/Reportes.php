@@ -15,6 +15,10 @@ class Reportes extends CI_Controller{
         $this->load->model('Cuotum_model');
         $this->load->model('Empresa_model');
         $this->load->model('Usuario_model');
+        $this->load->model('Inventario_model');
+        $this->load->model('Compra_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Categoria_producto_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -88,6 +92,7 @@ class Reportes extends CI_Controller{
     function graficas()
     {
         if($this->acceso(157)){
+            $data['user_id']  = $this->session_data['usuario_id'];
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
             $this->load->model('Parametro_model');
             $data['parametro'] = $this->Parametro_model->get_parametros();
@@ -1615,7 +1620,7 @@ function torta3($anio,$mes)
         }
     }
     /*
-     * Reporte de ventas por dia de un usuario
+     * Reporte de ventas por dia de un usuario dado un rango de fechas!..
      */
     function reporte_usuariodia()
     {
@@ -1641,91 +1646,27 @@ function torta3($anio,$mes)
             //**************** fin contenido ***************
         }
     }
+    /* obtiene la suma de las ventas por dia en un rango de fechas de un usuario*/
     function ventas_mes()
     {
-        $anio = $this->input->post("anio");
-        $mes = $this->input->post("mes");
-        $usuario_id = $this->input->post("usuario_id");
-        $zona_id = $this->input->post("zona_id");
-        $filtro = " and v.usuario_id = $usuario_id";
-        if($zona_id >0){
-            $filtro .= " and c.zona_id = $zona_id";
-        }
-        $primer_dia = 1;
-        $ultimo_dia = $this->getUltimoDiaMes($anio,$mes);
-
-        $fecha_inicial = date("Y-m-d", strtotime($anio."-".$mes."-".$primer_dia) );
-        $fecha_final = date("Y-m-d", strtotime($anio."-".$mes."-".$ultimo_dia) );
-        
+        $usuario_id = $this->session_data['usuario_id'];
+            if ($this->input->is_ajax_request()){
+                $fecha_inicio = $this->input->post("fecha_inicio");
+                $fecha_fin    = $this->input->post("fecha_fin");
+                $usuario_id = $this->input->post("usuario_id");
+                $zona_id = $this->input->post("zona_id");
+                $filtro = " and v.usuario_id = $usuario_id";
+                if($zona_id >0){
+                    $filtro .= " and c.zona_id = $zona_id";
+                }
         $this->load->model('Reporte_ing_egr_model');
-        $ventas = $this->Reporte_ing_egr_model->reporte_generalmes($fecha_inicial, $fecha_final, $filtro);
-            
-            
-            
-            
-            //$fecha_inicial = $anio."-".$mes."-01";
-            //$fecha_final = $anio."-".$mes."-31";
-            /*$sql_ventas = "SELECT 
-                            v.venta_fecha,
-                            sum(d.detalleven_total) AS total, avg(d.detalleven_tc) as tipo_cambio
-                          FROM
-                            venta v,
-                            detalle_venta d
-                          WHERE
-                            v.venta_id = d.venta_id AND 
-                            v.venta_fecha >= '".$fecha_inicial."' AND 
-                            v.venta_fecha <= '".$fecha_final."'
-                          GROUP BY
-                            v.venta_fecha";
-            
-            $ventas = $this->db->query($sql_ventas)->result_array();
-            */
-            /*$sql_utilidades = "SELECT 
-                            v.venta_fecha,
-                            sum((d.detalleven_total - d.detalleven_costo*d.detalleven_cantidad)) AS utilidad
-                          FROM
-                            venta v,
-                            detalle_venta d
-                          WHERE
-                            v.venta_id = d.venta_id AND 
-                            v.venta_fecha >= '".$fecha_inicial."' AND 
-                            v.venta_fecha <= '".$fecha_final."'
-                          GROUP BY
-                            v.venta_fecha";
-            
-            $utilidades = $this->db->query($sql_utilidades)->result_array();
-            */
-            $utilidades = $this->Reporte_ing_egr_model->reporte_generalutilidadmes($fecha_inicial, $fecha_final, $filtro);
-            $ct = count($ventas);
-
-            //Cargando los arreglos a CERO
-            for($d = 1; $d <= $ultimo_dia; $d++){
-                $arrayventas[$d] = 0;
-                $arraytc[$d] = 0;
-                $arrayutilidades[$d] = 0;     
+        $lasventas = $this->Reporte_ing_egr_model->reporte_generalfecha_usuario($fecha_inicio, $fecha_fin, $filtro);
+                echo json_encode($lasventas);
+            }else{
+                show_404();
             }
-
+        
             
-            foreach($ventas as $res){
-                $diasel = intval(date("d",strtotime($res['venta_fecha']) ) );
-                $suma = $res['total'];
-                $arrayventas[$diasel] += $suma;
-                $arraytc[$diasel] += $res['tipo_cambio'];;
-            }
-
-            foreach($utilidades as $resven){
-                $diasel = intval(date("d",strtotime($resven['venta_fecha']) ) );
-                $sumautilidad = $resven['utilidad'];
-                $arrayutilidades[$diasel] += $sumautilidad;
-            }
-
-            $data=array("totaldias" => $ultimo_dia, "totalventas" => $arrayventas, "totalutilidades" => $arrayutilidades, "totaltc" => $arraytc);
-            echo  json_encode($data);
-            
-            /*$anio = $this->input->post('anio');   1555891200
-            $mes = $this->input->post('fecha2'); 
-    */
-
     }
     /**
      * Get reporte de mora de las ventas a credito
@@ -1737,8 +1678,7 @@ function torta3($anio,$mes)
             $data['tipousuario_id']  = $this->session_data['tipousuario_id'];
             $data['usuario_id']  = $this->session_data['usuario_id'];
             $data['usuario_nombre']  = $this->session_data['usuario_nombre'];
-            
-            $this->load->model('Parametro_model');
+            $data['categorias'] = $this->Categoria_producto_model->get_all_categoria_producto();      
             $data['parametro'] = $this->Parametro_model->get_parametros();
     
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
@@ -1752,13 +1692,111 @@ function torta3($anio,$mes)
     function get_moras(){
         if($this->input->is_ajax_request()){
             $usuario = $this->input->post('usuario');
+            $categoria = $this->input->post('categoria');
+            $sub_categoria = $this->input->post('sub_categoria');
+            $condicion1 = $categoria == 0 ? "" : "AND p.categoria_id = $categoria";
+            $condicion2 = $sub_categoria == 0 ? "" : "AND p.subcategoria_id = $sub_categoria";
             $all_usuarios = 0;
             $consulta_usuario = "";
             if($usuario != $all_usuarios){
                 $consulta_usuario = "AND c2.usuario_id = $usuario";
             }
-            $moras = $this->Cuotum_model->get_moras($consulta_usuario);
+            $moras = $this->Cuotum_model->get_moras($consulta_usuario,$condicion1,$condicion2);
             echo json_encode($moras);
+        }else{
+            show_404();
+        }
+    }
+    /*
+     * Reporte de productos con fechas de vencimiento
+     */
+    function productosvencidos()
+    {
+        if($this->acceso(18)){
+            $data['page_title'] = "Reporte de productos vencidos";
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['_view'] = 'reportes/productosvencidos';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    /* obtiene los productos con fechas de vencimiento y los guarda en una tabla auxiliar */
+    function productos_fechasvencimiento()
+    {
+        if ($this->input->is_ajax_request()){
+            $productos = $this->Inventario_model->get_inventario();
+            $this->load->model('Vencimiento_producto_model');
+            $this->Vencimiento_producto_model->truncar_vencimientoproducto();
+            foreach ($productos as $producto) {
+                $existencia = 0;
+                $res = 0;
+                if($producto["existencia"] >0){
+                    $detalles_compra = $this->Compra_model->mostrar_detallescompraproducto($producto["producto_id"]);
+                    $existencia = $producto["existencia"];
+                    foreach ($detalles_compra as $detalle) {
+                        $res = $existencia - $detalle["detallecomp_cantidad"];
+                        if($res <= 0){
+                            $params = array(
+                                'producto_id' => $producto['producto_id'],
+                                'producto_nombre' => $producto['producto_nombre'],
+                                'producto_codigo' => $producto['producto_codigo'],
+                                'producto_cantidad' => $existencia,
+                                'compra_id' => $detalle['compra_id'],
+                                'proveedor_nombre' => $detalle['proveedor_nombre'],
+                                'detallecomp_fechavencimiento' => $detalle['detallecomp_fechavencimiento'],
+                            );
+                            $vencimientoprod_id = $this->Vencimiento_producto_model->add_vencimientoproducto($params);
+                            break;
+                        }else{
+                            $params = array(
+                                'producto_id' => $producto['producto_id'],
+                                'producto_nombre' => $producto['producto_nombre'],
+                                'producto_codigo' => $producto['producto_codigo'],
+                                'producto_cantidad' => $detalle["detallecomp_cantidad"],
+                                'compra_id' => $detalle['compra_id'],
+                                'proveedor_nombre' => $detalle['proveedor_nombre'],
+                                'detallecomp_fechavencimiento' => $detalle['detallecomp_fechavencimiento'],
+                            );
+                            $vencimientoprod_id = $this->Vencimiento_producto_model->add_vencimientoproducto($params);
+                            $existencia = $res;
+                        }
+                    }
+                }
+            }
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
+    /* obtiene los productos con fechas de vencimiento de vencimiento_producto */
+    function get_fechasvencimiento()
+    {
+        if($this->input->is_ajax_request()){
+            $fecha_vencimiento = $this->input->post("fecha_vencimiento");
+            $filtrar = $this->input->post("filtrar");
+            $tipo_filtro = $this->input->post("tipo_filtro");
+            date_default_timezone_set('America/La_Paz');
+            $fecha_hoy = date('Y-m-d');
+            $fecha_filtro = "";
+            $parametro = "";
+            if($filtrar != ""){
+                $parametro = "and p.producto_nombre like '%".$filtrar."%'";
+            }
+            if($tipo_filtro == 1){
+                $fecha_filtro = " date(p.detallecomp_fechavencimiento) < '".$fecha_hoy."' ";
+            }elseif($tipo_filtro == 2){
+                $fecha_filtro = " date(p.detallecomp_fechavencimiento) >= '".$fecha_hoy."' ";
+            }elseif($tipo_filtro == 3){
+                $fecha_filtro = " date(p.detallecomp_fechavencimiento) <= '".$fecha_vencimiento."' ";
+            }elseif($tipo_filtro == 4){
+                $fecha_filtro = " date(p.detallecomp_fechavencimiento) >= '".$fecha_vencimiento."' ";
+            }elseif($tipo_filtro == 5){
+                $fecha_filtro = " 1 = 1 ";
+            }
+            
+            $this->load->model('Vencimiento_producto_model');
+            $vencimiento = $this->Vencimiento_producto_model->get_vencimiento_parametros($fecha_filtro, $parametro);
+            
+            echo json_encode($vencimiento);
         }else{
             show_404();
         }

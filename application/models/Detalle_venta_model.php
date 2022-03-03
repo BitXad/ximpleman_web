@@ -190,7 +190,8 @@ function ventas_dia($estado)
                 c.cliente_puntos,
                 u.usuario_nombre,t.tipotrans_nombre,z.zona_nombre,r.credito_id,r.compra_id,r.credito_monto,
                 r.credito_cuotainicial,r.credito_interesproc,r.credito_interesmonto,r.credito_numpagos,
-                r.credito_fechalimite,r.credito_fecha,r.credito_hora,r.credito_tipo,r.credito_tipointeres,r.servicio_id
+                r.credito_fechalimite,r.credito_fecha,r.credito_hora,r.credito_tipo,r.credito_tipointeres,r.servicio_id,
+                m.moneda_descripcion
 
 
                 from venta v
@@ -199,7 +200,9 @@ function ventas_dia($estado)
                 left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
                 left join zona z on z.zona_id = c.zona_id
                 left join credito r on r.venta_id = v.venta_id
+                left join moneda m on m.moneda_id = v.moneda_id
                 where v.venta_id = ".$venta_id;
+                
         
         $venta = $this->db->query($sql)->result_array();        
         return $venta;
@@ -235,11 +238,12 @@ function ventas_dia($estado)
     function get_detalle_venta($venta_id)
     {
         $sql = "select d.*,  r.producto_nombre as preferencia_descripcion, r.producto_foto as preferencia_foto, 
-                clasificador_codigo, clasificador_nombre,p.*
+                clasificador_codigo, clasificador_nombre,p.*, cp.categoria_nombre
                 from detalle_venta d
                 left join producto p on p.producto_id = d.producto_id
                 left join producto r on r.producto_id = d.preferencia_id
                 left join clasificador c on c.clasificador_id = d.clasificador_id
+                left join categoria_producto cp on p.categoria_id = cp.categoria_id
                 
                 where d.producto_id = p.producto_id and venta_id = ".$venta_id;
         $detalle_venta = $this->db->query($sql)->result_array();        
@@ -596,5 +600,15 @@ function ventas_dia($estado)
                 where d.producto_id = p.producto_id and produccion_id = ".$produccion_id;
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
+    }
+    /**
+     * Buscar si se vendio una serie
+     */
+    function get_venta_serie($serie){
+        return $this->db->query(
+            "SELECT dv.venta_id, '$serie' as serie
+            FROM detalle_venta dv 
+            where dv.detalleven_preferencia like '%$serie%'"
+        )->result_array();
     }
 }

@@ -74,7 +74,7 @@
 <div class="box" style="width: <?php echo $ancho;?>; padding: 10px;border-top: 1px solid black;border-bottom: 1px solid black; margin-bottom: 0">
     <table style="font-size: 10px;font-family: 'Arial', Arial, Arial, arial; ">
         <tr>
-            <td align="left" style="width: 4cm"> SALDO TOTAL: Bs</td> 
+            <td align="left" style="width: 4cm"> SALDO TOTAL: <?= $moneda['moneda_descripcion'] ?></td> 
             <td align="right" style="width: 4cm"><?php echo number_format($cuota[0]['cuota_saldo'],'2','.',','); ?></td>
             <td style="width: 3cm"></td>
             <td style="width: 1cm"></td>
@@ -82,7 +82,7 @@
             <td align="right" style="width: 3cm"><?php echo $cuota[0]['cuota_numcuota']; ?> / <?php echo $cuota[0]['credito_numpagos']; ?></td>
         </tr> 
         <tr>
-            <td align="left"> MONTO CUOTA: Bs</td>
+            <td align="left"> MONTO CUOTA: <?= $moneda['moneda_descripcion'] ?></td>
             <td align="right"><?php echo number_format($cuota[0]['cuota_total'],'2','.',','); ?> </td>
             <td style="width: 3cm"></td>
             <td style="width: 1cm"></td>
@@ -90,7 +90,7 @@
             <td align="right"><?php echo date('d/m/Y',strtotime($cuota[0]['cuota_fechalimite'])); ?></td>
         </tr>
         <tr>
-            <td align="left"> MONTO CANCELADO: Bs</td>
+            <td align="left"> MONTO CANCELADO: <?= $moneda['moneda_descripcion'] ?></td>
             <td align="right"><?php echo number_format($cuota[0]['cuota_cancelado'],'2','.',','); ?></td>
             <td align="right" style="width: 4cm">CANCELADO:....................</td>
             <td style="width: 1cm"></td>
@@ -101,19 +101,19 @@
             <td colspan="2" align="left"> SON: <?php echo num_to_letras($cuota[0]['cuota_cancelado']); ?></td>
             <td style="width: 3cm"></td>
             <td style="width: 1cm"></td>
-            <td align="left">MULTA MORA: Bs</td>
+            <td align="left">MULTA MORA: <?= $moneda['moneda_descripcion'] ?></td>
             <td align="right"><?php echo number_format($cuota[0]['cuota_multa'],'2','.',','); ?> </td>
         </tr> 
         <tr>
-            <td align="left"> SALDO PARC: Bs</td>
+            <td align="left"> SALDO PARC: <?= $moneda['moneda_descripcion'] ?></td>
             <td align="right"><?php echo number_format($cuota[0]['cuota_total']-$cuota[0]['cuota_cancelado'],'2','.',','); ?> </td>
             <td style="width: 3cm"></td>
             <td style="width: 1cm"></td>
-            <td align="left">OTROS: Bs</td>   
+            <td align="left">OTROS: <?= $moneda['moneda_descripcion'] ?></td>   
             
         </tr>
         <tr>
-            <td align="left"> SALDO DEUDOR: Bs</td>
+            <td align="left"> SALDO DEUDOR: <?= $moneda['moneda_descripcion'] ?></td>
             <td align="right"><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'],'2','.',','); ?> </td>
             <td align="right" style="width: 3cm">SALDO:....................</td>
             <td style="width: 1cm"></td>
@@ -123,7 +123,24 @@
             <td align="left"> GLOSA.-</td>
             <td align="right"><?php echo $cuota[0]['cuota_glosa']; ?> </td>
         </tr>
-             
+        <?php
+        $res = "";        
+        if($detalle_venta != ""){
+            foreach ($detalle_venta as $venta) {
+                $res .= " ".$venta['producto_nombre']." | ";  
+            ?>
+            <?php
+            }
+            ?>
+            <tr>
+                <td colspan="6">
+                    <?php echo "<b>".$lacategoria."</b> "; ?>
+                    <?php echo $res; ?>
+                </td>
+            </tr>
+        <?php
+        }
+        ?>
         </table>
         
             </div>

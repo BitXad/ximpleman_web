@@ -52,7 +52,7 @@
         <font size="2" face="Arial">
           <b>FECHA CRÉDITO: </b><?php echo date('d/m/Y',strtotime($credito[0]['credito_fecha'])); ?>  <?php echo $credito[0]['credito_hora']; ?><br>
           <b>FECHA LIMITE: </b><?php echo date('d/m/Y',strtotime($credito[0]['credito_fechalimite'])); ?><br>
-          <b>MONTO CRED. Bs: </b><?php echo $credito[0]['credito_monto']; ?><br>
+          <b>MONTO CRED. <?= $moneda['moneda_descripcion'] ?>: </b><?php echo $credito[0]['credito_monto']; ?><br>
           <b>CUOTAS: </b><?php echo $credito[0]['credito_numpagos']; ?> <b> INTERES: </b><?php echo $credito[0]['credito_interesproc']; ?> %
         </font>
         </td>
@@ -69,20 +69,20 @@
                                                 <th>#</th>
                         
                         <th>Num.<br>Cuota</th>
-                        <th>Capital<br>Bs</th>
-                        <th>Interes<br>Bs</th>
+                        <th>Capital<br><?= $moneda['moneda_descripcion'] ?></th>
+                        <th>Interes<br><?= $moneda['moneda_descripcion'] ?></th>
                         <th>Mora<br>Dias</th>
-                        <th>Multa<br>Bs</th>
-                        <th>Subtotal<br>Bs</th>
-                        <th>Desc.<br>Bs</th>
-                        <th>Total<br>Bs</th>
+                        <th>Multa<br><?= $moneda['moneda_descripcion'] ?></th>
+                        <th>Subtotal<br><?= $moneda['moneda_descripcion'] ?></th>
+                        <th>Desc.<br><?= $moneda['moneda_descripcion'] ?></th>
+                        <th>Total<br><?= $moneda['moneda_descripcion'] ?></th>
                         <th>Fecha<br>Limite</th>
-                        <th>Cancelado<br>Bs</th>
+                        <th>Cancelado<br><?= $moneda['moneda_descripcion'] ?></th>
                         <th>Forma<br>de pago</th>
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Num.<br>recibo</th>
-                        <th>Saldo<br>Bs</th>
+                        <th>Saldo<br><?= $moneda['moneda_descripcion'] ?></th>
                         <th>Glosa</th>
                         <th>Estado</th>
                         <th>Usuario</th>
@@ -221,10 +221,10 @@ $(document).ready(function(){
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
                           <?php } else { ?>
-                            <a href="<?php echo site_url("cuotum/pendiente1/".$c['cuota_id']."/".$c['credito_id']."/".$c['cuota_numcuota']); ?>" title="REESTABLECER" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
+                            <button onclick="confirm_reset(<?= $c['cuota_id'] ?>, <?= $c['credito_id'] ?>, <?= $c['cuota_numcuota'] ?>)"  title="REESTABLECER" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></button>
                             <?php if ($cuota[0]['venta_id']>0) { ?>
-                             <a href="<?php echo site_url('cuotum/recibocuentas/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span title="RECIBO" class="fa fa-print"></span></a>
-                             <a href="<?php echo site_url("cuotum/comprobantecuentas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" title="RECIBO DIVIDIDO" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
+                            <a onclick="mostrar_modal(<?php echo $c['cuota_id']; ?>)" class="btn btn-success btn-xs"><span title="RECIBO" class="fa fa-print"></span></a>
+                            <a href="<?php echo site_url("cuotum/comprobantecuentas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" title="RECIBO DIVIDIDO" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
                            <?php } else { ?>
                              <a href="<?php echo site_url('cuotum/recibocuentaserv/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
                              <a href="<?php echo site_url("cuotum/comprobantecuentaserv/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
@@ -249,7 +249,7 @@ $(document).ready(function(){
                    
                 <font face="Arial" size="5">
                     
-                    <b> <span class="" >Monto Bs: 
+                    <b> <span class="" >Monto <?= $moneda['moneda_descripcion'] ?>: 
                     <?php echo number_format($c['cuota_total'],2,".",","); ?></span>
                     </b>
                 </font><br>
@@ -261,7 +261,7 @@ $(document).ready(function(){
             <input type="hidden" name="cuota_id" value="<?php echo $c['cuota_id']; ?>" class="form-control" id="cuota_id" />
             <input type="hidden" name="estado_id" value="9" class="form-control" id="estado_id" />
                     <div class="col-md-3">
-                        <label for="cuota_cancelado" class="control-label">Cobrar Bs</label>
+                        <label for="cuota_cancelado" class="control-label">Cobrar <?= $moneda['moneda_descripcion'] ?></label>
                         <div class="form-group">
                          
                             <input type="number" step="any" name="cuota_cancelado" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" max="<?php echo $c['cuota_total']; ?>" />
@@ -272,7 +272,7 @@ $(document).ready(function(){
                     </div>
                     
                     <div class="col-md-3">
-                        <label for="cuota_saldo" class="control-label">Saldo Bs</label>
+                        <label for="cuota_saldo" class="control-label">Saldo <?= $moneda['moneda_descripcion'] ?></label>
                         <div class="form-group">
                             <input type="hidden"  name="cuota_interes" value="<?php echo $c['cuota_interes']; ?>" class="form-control" id="cuota_interes" />
                             <input type="hidden"  name="credito_interesproc" value="<?php echo $c['credito_interesproc']; ?>" class="form-control" id="credito_interesproc" />
@@ -400,4 +400,39 @@ $(document).ready(function(){
         document.getElementById(div_form).style.display = 'none';        
       }       
     }
-</script> 
+
+    function confirm_reset(cuota_id,credito_id,cuota_numcuota){
+      let base_url = $('#base_url').val();
+      let mensaje = `¿Estas seguro de reestablecer está cuota?`
+      if(confirm(mensaje)){
+        window.location.href = `${base_url}cuotum/pendiente1/${cuota_id}/${credito_id}/${cuota_numcuota}`;
+      }
+    }
+</script>
+
+<!------------------------ INICIO modal para confirmar eliminación ------------------->
+<div class="modal fade" id="modalconfirmar" tabindex="-1" role="dialog" aria-labelledby="modalconfirmarLabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content text-center">
+            <div class="modal-header">
+                <span class="text-bold" style="font-size: 12pt">Forma de Impresión</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <!------------------------------------------------------------------->
+                <label>
+                    <input type="hidden" name="lacuota_id" id="lacuota_id" />
+                    <input type="checkbox" name="eldetalle" id="eldetalle" checked />
+                    Imprimir con el detalle de la venta.
+                </label>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a onclick="mostrarcomprobante()" class="btn btn-success"><span class="fa fa-print"></span> Imprimir </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para confirmar eliminación ------------------->

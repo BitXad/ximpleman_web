@@ -29,6 +29,7 @@ class Venta extends CI_Controller{
         $this->load->model('Credito_model');
         $this->load->model('Categoria_clientezona_model');
         $this->load->model('Promocion_model');
+        $this->load->model('Modelo_contrato_model');
         $this->load->model('Mesa_model');
         $this->load->model('Moneda_model');
         
@@ -66,6 +67,7 @@ class Venta extends CI_Controller{
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['estado'] = $this->Estado_model->get_tipo_estado(1);
         $data['usuario'] = $this->Venta_model->get_usuarios();
+        $data['modelos_c'] = $this->Modelo_contrato_model->get_all_modelo_contrato();
         $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
         if(sizeof($dosificacion)>0){
             $data['dosificado'] = 1;
@@ -176,7 +178,7 @@ class Venta extends CI_Controller{
         $datos1 = $this->input->post('datos1');
         $agrupado = $this->input->post('agrupado');
         $detalleven_id = $this->input->post('detalleven_id');
-        
+        $serie = $this->input->post('preferencias');
         $descuento = $this->input->post('descuento');
         
         //consulta para registrar del detalle venta
@@ -194,6 +196,7 @@ class Venta extends CI_Controller{
                 ", detalleven_descuento = ".$descuento.
                 ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                 ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
+                ", detalleven_preferencia = concat(detalleven_preferencia,', $serie')".
                 "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
         
         $descuento = 0;
@@ -202,16 +205,11 @@ class Venta extends CI_Controller{
         $sql = "select if(sum(detalleven_cantidad)+".$cantidad.">".$existencia.",1,0) as resultado from detalle_venta_aux where producto_id = ".$producto_id;
         $resultado = $this->Venta_model->consultar($sql);
         
-        
-        
         $existe = 0;
         
         if ($resultado[0]['resultado']==0){ //si la cantidad aun es menor al inventario
-            
             if($agrupado==1){
-                
                 $existe = $this->Venta_model->existe($producto_id,$usuario_id);
-                
                 if ($existe){
                     $sql = $sql2; 
                     $existe = 1;
@@ -223,10 +221,7 @@ class Venta extends CI_Controller{
                     $this->Venta_model->ejecutar($sql);
                     
                 }                
-            }
-            else //si no registraran datos agrupados
-            {   
-                
+            }else{ //si no registraran datos agrupados   
                 if ($detalleven_id>0){ //si exl producto existe en el detalle
                     //si el producto ya esta registrado, solo actualizara la cantidad y total
                     $sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
@@ -335,14 +330,14 @@ class Venta extends CI_Controller{
         $pedido_id = $this->input->post('pedido_id'); // interes por ventas
         $nit = $this->input->post('nit'); // nit del cliente
         $razon = $this->input->post('razon'); // nit del cliente
-        $fecha_venta = $this->input->post('venta_fecha'); // fecha de la venta
+        $fecha_venta  = $this->input->post('venta_fecha'); // fecha de la venta
         $hora_venta = $this->input->post('venta_hora'); // hora de la venta
         $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
         $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
         $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
         $venta_efectivo = $this->input->post('venta_efectivo'); // efectivo cancelado
         $venta_cambio = $this->input->post('venta_cambio'); // Cambio devuelto  
-        
+        $cuota_fecha_i = $fecha_venta == '' ? date('Y-m-d') : $fecha_venta;
         $facturado = $this->input->post('facturado'); // si la venta es facturada
         
         $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
@@ -446,12 +441,14 @@ class Venta extends CI_Controller{
             $credito_monto =  $venta_total - $cuota_inicial;
             $credito_cuotainicial =  $cuota_inicial;
             $credito_interesproc =  $credito_interes;
-            $credito_interesmonto =  $venta_total * $venta_interes; //revisar
+            // $credito_interesmonto =  $venta_total * $venta_interes; //revisar
+            $credito_interesmonto =  $venta_total * 0; //revisar
             $credito_numpagos =  $cuotas;
             $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
-            $credito_fecha = date('Y-m-d');
-            $time = time();
-            $credito_hora =  date("H:i:s", $time);
+            // $credito_fecha = date('Y-m-d');
+            $credito_fecha = $fecha_venta;
+            // $time = time();
+            $credito_hora =  date("H:i:s");
             $credito_tipo = 1; // 1- ventas 2 - compras
          
             $cuotas       = $this->input->post('cuotas');
@@ -461,21 +458,22 @@ class Venta extends CI_Controller{
             $fecha_inicio = $this->input->post('fecha_inicio');
             $numcuota = $cuotas; //numero de cuotas
             
-                        
-            if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
-            else $intervalo = 7; //si los pagos son semanales
+            $intervalo = $modalidad == "MENSUAL" ? 'month':'week';
+            // if ($modalidad == "MENSUAL") $intervalo = 'month'; //si los pagos son mensuales
+            // else $intervalo = 'week'; //si los pagos son semanales
             
-                $cuota_numcuota = 1;
-                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
-                    $cuota_numcuota = $i;
+                // $cuota_numcuota = 1;
+            $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$numcuota $intervalo"));
+                // for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                //     $cuota_numcuota = $i;
                     
-                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    if ($modalidad == "MENSUAL") 
-                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
-                    else 
-                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+                //     $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+                    // if ($modalidad == "MENSUAL") 
+                    //     $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+                    // else 
+                    //     $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
 
-                }
+                // }
                 $credito_fechalimite = $cuota_fechalimite;
             
             $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
@@ -516,23 +514,23 @@ class Venta extends CI_Controller{
             $saldo_deudor = $credito_monto;
             
             $siguiente= 0;
-            $cuota_fechalimite = $fecha_inicio;
+            // $cuota_fechalimite = $fecha_inicio;
            
            // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
             
-            $cuota_fechalimite = $fecha_inicio;
-            
-
+            // $cuota_fechalimite = $fecha_inicio;
+            $anio = date("Y",strtotime($cuota_fecha_i));
+            $month = date("m",strtotime($cuota_fecha_i));
                 
+            $cuota_fecha_i = "$anio-$month-$dia_pago";
             
-                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
-                    $cuota_numcuota = $i;
+                for ($j=1; $j <= $numcuota; $j++) { // ciclo para llenar las cuotas
+                    $cuota_numcuota = $j;
                     
-                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    if ($modalidad == "MENSUAL") 
-                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
-                    else 
-                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+                    // $cuota_fechalimitex = (time() + ($jntervalo * $j * 24 * 60 * 60 ));
+                    $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$j $intervalo"));
+                    
+                    $cuota_fechalimite = $cuota_fechalimitex;
                     
                     $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
                             $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
@@ -709,6 +707,23 @@ class Venta extends CI_Controller{
                 
             }            
 
+    }
+
+    function buscar_serie() {  
+        if($this->input->is_ajax_request()){
+            $serie = $this->input->post('serie');
+            $vendido = $this->Detalle_venta_model->get_venta_serie($serie);
+            // var_dump($vendido);
+            if(sizeof($vendido) == 0){//si se encontro una venta con el numero de serie
+                $producto = $this->Inventario_model->get_inventario_serie($serie);
+                if (sizeof($producto)<=0){
+                    $producto = $this->Inventario_model->get_inventario_codigo_factor($producto['producto_codigo']);
+                }
+                echo json_encode($producto);
+            }else{
+                echo json_encode($vendido);
+            }
+        }
     }
 
     
@@ -1419,7 +1434,7 @@ function edit($venta_id)
                     $this->Venta_model->ejecutar($sql);
                 
                     //Generar credito
-                    $sql = "delete from credito where credito_id=".$credito_id;
+                    $sql = "delete from credito where venta_id=".$venta_id;
                     $this->Venta_model->ejecutar($sql);
 
                     //Generar detalle del credito
@@ -1434,8 +1449,8 @@ function edit($venta_id)
                     $credito_numpagos =  $cuotas;
                     $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
                     $credito_fecha = $venta_fecha;
-                    $time = time();
-                    $credito_hora =  date("H:i:s", $time);
+                    // $time = time();
+                    $credito_hora =  date("H:i:s");
                     $credito_tipo = 1; // 1- ventas 2 - compras
 
                     $cuotas       = $this->input->post('cuotas');
@@ -1445,25 +1460,16 @@ function edit($venta_id)
                     $fecha_inicio = $this->input->post('fecha_inicio');
                     $numcuota = $cuotas; //numero de cuotas
 
-                        
-            if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
-            else $intervalo = 7; //si los pagos son semanales
+            $intervalo = $modalidad == "MENSUAL" ? 'month': 'week'; 
             
                 $cuota_numcuota = 1;
-                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
-                    $cuota_numcuota = $i;
-                    
-                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    if ($modalidad == "MENSUAL") 
-                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
-                    else 
-                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
 
-                }
+                $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$numcuota $intervalo"));
+                
                 $credito_fechalimite = $cuota_fechalimite;
             
-            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_tipo) value(".
-                    $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."',".$credito_tipo.")";
+            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(
+                    $estado_id,$compra_id,$venta_id,$credito_monto,$credito_cuotainicial,$credito_interesproc,$credito_interesmonto,$credito_numpagos,'$credito_fechalimite','$credito_fecha','$credito_hora',$credito_tipo)";
             echo $sql;
             $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
 
@@ -1512,17 +1518,11 @@ function edit($venta_id)
             
                 for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
                     $cuota_numcuota = $i;
-                    
-                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    if ($modalidad == "MENSUAL") 
-                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
-                    else 
-                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
-                    
+                    $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$i $intervalo"));
+
                     $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
                             $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
                             $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
-                  
                     $this->Venta_model->ejecutar($cuota);
 
 //                    $saldo_deudor = $cuota_total - $cuota_capital;
@@ -1853,35 +1853,23 @@ function edit($venta_id)
 /*
 * buscar productos
 */
-function buscarproductos()
-{
-        //**************** inicio contenido ***************    
-    
-        $usuario_id = $this->session_data['usuario_id'];
-
-        if ($this->input->is_ajax_request()) {
-            
-            $parametro = $this->input->post('parametro');   
-            
-            if ($parametro!=""){
-                
+function buscarproductos(){
+    if ($this->input->is_ajax_request()) {
+        $busqueda_serie = $this->input->post('busqueda_serie');
+        $parametro = $this->input->post('parametro');   
+        if ($parametro!=""){
+            if (!$busqueda_serie) {
                 $datos = $this->Inventario_model->get_inventario_parametro($parametro);            
-                echo json_encode($datos);
-                
             }else{
-                
-                echo json_encode(null);
-                
+                $datos = $this->Inventario_model->get_inventario_for_serie($parametro);            
             }
+            echo json_encode($datos);
+        }else{
+            echo json_encode(null);
         }
-        else
-        {                 
-            show_404();
-        }   
-        		
-        //**************** fin contenido ***************
-        			     
-        
+    }else{                 
+        show_404();
+    }   
 }
     
 /*
@@ -2063,9 +2051,7 @@ function modificarcliente()
                         ",cliente_direccion= ".$cliente_direccion.
                         ",cliente_departamento = ".$cliente_departamento.
                         ",cliente_celular = ".$cliente_celular.
-                        ",zona_id = ".$zona_id.
-                        
-                        " where cliente_id = ".$cliente_id;
+                        ",zona_id = ".$zona_id." where cliente_id = ".$cliente_id;
                 
                 $datos = $this->Venta_model->modificarcliente($sql);            
                 echo  '[{"cliente_id":'.$cliente_id.'}]';
@@ -2806,7 +2792,7 @@ function anular_venta($venta_id){
             $this->Venta_model->ejecutar($sql);
             
                         
-            echo json_encode($res);
+            echo json_encode(1);
 
 
         //**************** fin contenido ***************        

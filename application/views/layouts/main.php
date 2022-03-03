@@ -380,6 +380,13 @@
                     <a href="#"><i class="fa fa-cogs"></i> <span>Parámetros</span></a>
                     <ul class="treeview-menu">
                         <?php
+                        if($rolusuario[124-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('banco');?>"><i class="fa fa-bank"></i>Banco</a>
+                        </li> 
+                        <?php
+                        }
                         if($rolusuario[175-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -496,6 +503,9 @@
                         ?>
                         <li>
                             <a href="<?php echo site_url('Categoria_clientezona');?>"><i class="fa fa-map-marker"></i>Zonas</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('Modelo_contrato');?>"><i class="fa fa-book" aria-hidden="true"></i> Modelo Contrato</a>
                         </li>
                         <?php
                         }
@@ -740,11 +750,22 @@
                         <?php
                         }
                         ?>
+                        <?php if($rolusuario[156-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('reportes/productosvencidos');?>"><i class="fa fa-calendar"></i>Vencimiento Productos</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
                         
                         <?php if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('venta/prestamos');?>"><i class="fa fa-bitbucket"></i>Envases prestados</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes/reporte_mora');?>"><i class="glyphicon glyphicon-list-alt"></i>Mora de creditos</a>
                         </li>
                         <?php
                         }

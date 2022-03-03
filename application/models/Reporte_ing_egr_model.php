@@ -917,23 +917,19 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
         ")->result_array();
         return $reporte;
     }
-    function reporte_generalmes($fecha_inicial, $fecha_final, $filtro)
+    function reporte_generalfecha_usuario($fecha_inicio, $fecha_fin, $filtro)
     {
         $reporte = $this->db->query(
-        "SELECT
-                v.venta_fecha,
-                sum(d.detalleven_total) AS total, avg(d.detalleven_tc) as tipo_cambio
-            FROM
-                venta v
-            left join detalle_venta d on v.venta_id = d.venta_id
+        "select sum(v.venta_total) as venta_total, v.venta_fecha
+            from venta v
             left join cliente c on v.cliente_id = c.cliente_id
             left join zona z on c.zona_id = z.zona_id
-              WHERE
-                v.venta_fecha >= '".$fecha_inicial."' AND 
-                v.venta_fecha <= '".$fecha_final."'
-                ".$filtro."
-              GROUP BY
-                v.venta_fecha
+        where
+            v.venta_fecha >= '".$fecha_inicio."' and 
+            v.venta_fecha <= '".$fecha_fin."' 
+            ".$filtro."
+        group by v.`venta_fecha`
+            
         ")->result_array();
         return $reporte;
     }
@@ -949,8 +945,8 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
             left join cliente c on v.cliente_id = c.cliente_id
             left join zona z on c.zona_id = z.zona_id
               WHERE
-                v.venta_fecha >= '".$fecha_inicial."' AND 
-                v.venta_fecha <= '".$fecha_final."'
+                v.venta_fecha >= ".$fecha_inicial." and 
+                v.venta_fecha <= ".$fecha_final."
                 ".$filtro."
               GROUP BY
                 v.venta_fecha
