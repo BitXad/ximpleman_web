@@ -61,9 +61,9 @@
     </div>
     <div class="row">
         <div class="col-md-6 no-print">
-        <!--------------------- parametro de buscador --------------------->
+            <!--------------------- parametro de buscador --------------------->
             <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción" onkeypress="buscaringreso(event)" autocomplete="off">
             </div>
             <!--------------------- fin parametro de buscador --------------------->
         </div>
@@ -80,7 +80,7 @@
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                <select name="categoria_id" id="categoria_id" class="btn btn-primary btn-sm form-control" >
+                <select name="categoria_id" id="categoria_id" class="btn btn-primary btn-sm form-control" onchange="buscar_ingresos()" >
                     <option value="0">- Todas -</option>
                     <?php 
                     foreach($all_categoria_ingreso as $categoria_ingreso)
@@ -94,15 +94,18 @@
             </div>
         </div>
     </div>
-</div>
+ </div>
 <div class="col-md-4 no-print">
     <div class="box-tools">
         <center>    
             <a href="<?php echo site_url('ingreso/add'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-money"></span></font><br><small>Registrar Ingreso</small></a>
-            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadeingreso('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
+            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadeingreso(null)" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
             <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
         </center>            
     </div>
+</div>
+<div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
+    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
 </div>
 <div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none;'>
     <br>
@@ -139,6 +142,7 @@
                     <th>MONTO</th>
                     <th>MONEDA</th>
                     <th>FORMA DE PAGO</th>
+                    <th>BANCO</th>
                     <th>USUARIO</th>
                     <th class="no-print"></th>
 

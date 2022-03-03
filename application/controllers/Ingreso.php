@@ -46,7 +46,7 @@ class Ingreso extends CI_Controller{
             $usuario_id = $this->session_data['usuario_id'];
             $data['rol'] = $this->session_data['rol'];
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
-            $data['ingresos'] = $this->Ingreso_model->get_all_ingresos();
+            //$data['ingresos'] = $this->Ingreso_model->get_all_ingresos();
             $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
             $data['page_title'] = "Ingreso";
             //$this->load->model('Parametro_model');
@@ -61,31 +61,22 @@ class Ingreso extends CI_Controller{
            
     } 
 
-     function buscarfecha()
+    function buscarfecha()
     {
-         
-     
- 
-        $usuario_id = 1;
-
+        //$usuario_id = 1;
         if ($this->input->is_ajax_request()) {
-            
             $filtro = $this->input->post('filtro');
             $categoria = $this->input->post('categ');
-            
-           if ($filtro == null){
-            $result = $this->Ingreso_model->get_all_ingresos($params);
+            if ($filtro == null){
+                $result = $this->Ingreso_model->get_all_ingresos();
             }
             else{
-            $result = $this->Ingreso_model->fechaingreso($filtro,$categoria);            
+                $result = $this->Ingreso_model->fechaingreso($filtro,$categoria);            
             }
-           echo json_encode($result);
-            
+            echo json_encode($result);
+        }else{                 
+            show_404();
         }
-        else
-        {                 
-                    show_404();
-        }          
     }
     /*
      * Adding a new ingreso
@@ -126,6 +117,10 @@ class Ingreso extends CI_Controller{
                 
                 $numrec = $this->Ingreso_model->numero();
                 $numero = $numrec[0]['parametro_numrecing'] + 1;
+                $el_banco = 0;
+                if($this->input->post('forma_pago') != 1){
+                    $el_banco = $this->input->post('banco_id');
+                }
                 $params = array(
                     'usuario_id' => $usuario_id,
                     'ingreso_categoria' => $this->input->post('ingreso_categoria'),
@@ -138,6 +133,7 @@ class Ingreso extends CI_Controller{
                     'ingreso_tc' => $ingreso_tc,
                     'forma_id' => $this->input->post('forma_pago'),
                     'ingreso_glosa' => $this->input->post('ingreso_glosa'),
+                    'banco_id' => $el_banco,
                 );
                 $ingreso_id = $this->Ingreso_model->add_ingreso($params);
                 $sql = "UPDATE parametros SET parametro_numrecing=parametro_numrecing+1 WHERE parametro_id = '1'"; 
@@ -256,6 +252,9 @@ class Ingreso extends CI_Controller{
                 $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
                 $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
                 
+                $this->load->model('Banco_model');
+                $data['all_banco'] = $this->Banco_model->getall_bancosact_asc();
+                
                 $data['page_title'] = "Ingreso";
                 $data['_view'] = 'ingreso/add';
                 $this->load->view('layouts/main',$data);
@@ -315,6 +314,10 @@ class Ingreso extends CI_Controller{
                             $total_final += $ingreso_monto/$all_moneda[1]["moneda_tc"];
                         }
                     }
+                    $el_banco = 0;
+                    if($this->input->post('forma_pago') != 1){
+                        $el_banco = $this->input->post('banco_id');
+                    }
                     $params = array(
                         'usuario_id' => $usuario_id,
                         'ingreso_categoria' => $this->input->post('ingreso_categoria'),
@@ -325,6 +328,7 @@ class Ingreso extends CI_Controller{
                         'ingreso_concepto' => $this->input->post('ingreso_concepto'),
                         'forma_id' => $this->input->post('forma_pago'),
                         'ingreso_glosa' => $this->input->post('ingreso_glosa'),
+                        'banco_id' => $el_banco,
                         //'ingreso_fecha' => $this->input->post('ingreso_fecha'),
                     );
                     $this->Ingreso_model->update_ingreso($ingreso_id,$params);            
@@ -333,7 +337,10 @@ class Ingreso extends CI_Controller{
                     $this->load->model('Categoria_ingreso_model');
                     $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
                     $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
-                    $data['page_title'] = "Ingreso";
+                    
+                    $this->load->model('Banco_model');
+                    $data['all_banco'] = $this->Banco_model->getall_bancosact_asc();
+                    $data['page_title'] = "Modificar Ingreso";
                     $data['_view'] = 'ingreso/edit';
                     $this->load->view('layouts/main',$data);
                 }

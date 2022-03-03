@@ -1,28 +1,18 @@
-    $(document).on("ready",inicio);
+$(document).on("ready",inicio);
 function inicio(){
-      filtro = " and date(ingreso_fecha) = date(now())";   
-        
-        fechadeingreso(filtro); 
-     
-        
+    filtro = " and date(ingreso_fecha) = date(now())";
+        fechadeingreso(filtro);
 } 
-
-   
 
 function buscar_ingresos()
 {
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"ingreso";
     var opcion      = document.getElementById('select_compra').value;
- 
-    
-
     if (opcion == 1)
     {
         filtro = " and date(ingreso_fecha) = date(now())";
         mostrar_ocultar_buscador("ocultar");
-
-               
     }//compras de hoy
     
     if (opcion == 2)
@@ -78,18 +68,26 @@ function mostrar_ocultar_buscador(parametro){
     
 }
 
+function buscaringreso(e) {
+  tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){
+        var filtrar = document.getElementById('filtrar').value;
+        let filtro = " and(i.ingreso_numero = "+filtrar+" or i.ingreso_nombre like '%"+filtrar+"%'";
+        filtro += " or i.ingreso_monto like '%"+filtrar+"%' or i.ingreso_concepto like '%"+filtrar+"%')";
+        fechadeingreso(filtro);
+    }
+}
 function fechadeingreso(filtro)
-{   
-      
-   var base_url    = document.getElementById('base_url').value;
-   var controlador = base_url+"ingreso/buscarfecha";
-   var categoria = document.getElementById('categoria_id').value;
-   if (categoria==0) {
-       var categ = " ";
-   }else{
-       var categ = " and i.ingreso_categoria='"+categoria+"' ";
-   }
-    
+{
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"ingreso/buscarfecha";
+    var categoria = document.getElementById('categoria_id').value;
+    if (categoria==0) {
+        var categ = " ";
+    }else{
+        var categ = " and i.ingreso_categoria='"+categoria+"' ";
+    }
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
            type:"POST",
            data:{filtro:filtro,categ:categ},
@@ -147,7 +145,19 @@ function fechadeingreso(filtro)
                             html += "<span style='font-size: 8px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
                         }
                         html += "</td>";
-                        html += "<td>"+registros[i]["forma_nombre"]+"</td>";
+                        html += "<td>";
+                        if(registros[i]["forma_id"] >0){
+                            html += registros[i]["forma_nombre"];
+                            if(registros[i]["forma_id"]> 1){
+                                html += "<br><b>Glosa: </b>"+registros[i]["ingreso_glosa"];
+                            }
+                        }
+                        html += "</td>";
+                        html += "<td>";
+                        if(registros[i]["banco_id"] >0){
+                            html += registros[i]["banco_nombre"];
+                        }
+                        html += "</td>";
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
                         html += "<td  class='no-print'><a href='"+base_url+"ingreso/imprimir/"+registros[i]["ingreso_id"]+"' title='Carta' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
                        
@@ -209,9 +219,9 @@ function fechadeingreso(filtro)
                         html += "</tr>";
                    
                    $("#fechadeingreso").html(html);
-                   
+                   document.getElementById('loader').style.display = 'none';
             }
-                
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
         error:function(resul){
           // alert("Algo salio mal...!!!");

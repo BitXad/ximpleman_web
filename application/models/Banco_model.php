@@ -97,7 +97,7 @@ class Banco_model extends CI_Model
             SELECT
                 b.*, m.moneda_descripcion, m.moneda_tc, e.estado_color, e.estado_descripcion
             FROM
-                banco b, estado e
+                banco b
             left join moneda m on b.moneda_id = m.moneda_id
             left join estado e on b.estado_id = e.estado_id
             where  

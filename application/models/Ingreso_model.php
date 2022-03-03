@@ -45,25 +45,19 @@ class Ingreso_model extends CI_Model
      */
     function get_all_ingresos()
     {
-        
-        
         $ingresos = $this->db->query("
             SELECT
-                i.*, u.*, f.ingreso_id as 'ingres', f.factura_id
-
+                i.*, u.*, f.ingreso_id as 'ingres', f.factura_id, fp.`forma_nombre`, b.banco_nombre
             FROM
                 ingresos i
             LEFT JOIN usuario u on i.usuario_id=u.usuario_id
             LEFT JOIN  factura f on i.ingreso_id=f.ingreso_id
-
+            LEFT JOIN forma_pago fp on i.`forma_id` = fp.`forma_id`
+            LEFT JOIN banco b on i.`banco_id` = b.`banco_id`
             WHERE
                 1=1
-
-            ORDER BY `ingreso_fecha` DESC
-
-          
+            ORDER BY i.ingreso_fecha DESC
         ")->result_array();
-
         return $ingresos;
     }
 
@@ -96,27 +90,22 @@ class Ingreso_model extends CI_Model
     
      function fechaingreso($condicion,$categoria)
     {
-
-            
-
-       $ingreso = $this->db->query(
+        $ingreso = $this->db->query(
             "SELECT
-                i.*, u.*, f.ingreso_id as 'ingres', f.factura_id, fp.`forma_nombre`
+                i.*, u.*, f.ingreso_id as 'ingres', f.factura_id, fp.`forma_nombre`, b.banco_nombre
             FROM
                 ingresos i
             LEFT JOIN usuario u on i.usuario_id=u.usuario_id
             LEFT JOIN  factura f on i.ingreso_id=f.ingreso_id
             LEFT JOIN forma_pago fp on i.`forma_id` = fp.`forma_id`
+            LEFT JOIN banco b on i.`banco_id` = b.`banco_id`
             WHERE
                 1=1
-               
                 ".$condicion." 
-                ".$categoria."
-                
+                ".$categoria." 
             ORDER BY i.ingreso_fecha DESC 
-        "
+            "
         )->result_array();
-
         return $ingreso;
     }
     /*

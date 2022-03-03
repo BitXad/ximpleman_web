@@ -163,6 +163,21 @@ function facturar(mensualidad){
                                 <input type="text" name="ingreso_glosa" value="<?php echo $this->input->post('ingreso_glosa'); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
                             </div>
                         </div>
+                        <div class="col-md-4" id="ingreso_banco" style="display:none">
+                            <label for="banco_id" class="control-label">Banco</label>
+                            <div class="form-group">
+                                <select id="banco_id" name="banco_id" class="form-control" >
+                                    <?php 
+                                    foreach($all_banco as $banco)
+                                    {
+                                      $selected = ($banco['banco_id'] == $this->input->post('banco_id')) ? ' selected="selected"' : "";
+
+                                      echo '<option value="'.$banco['banco_id'].'" '.$selected.'>'.$banco['banco_nombre'].'</option>';
+                                    } 
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-success">
@@ -186,8 +201,10 @@ function facturar(mensualidad){
         
         if(forma != 1){
             document.getElementById('ingreso_glosa').style.display = 'block';
+            document.getElementById('ingreso_banco').style.display = 'block';
         }else{
             document.getElementById('ingreso_glosa').style.display = 'none';
+            document.getElementById('ingreso_banco').style.display = 'none';
         }
     }
 </script>
