@@ -4,53 +4,35 @@ function inicio(){
     fechadeegreso(filtro);
 }
 
-
 function buscar_egresos()
 {
-    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"egreso";
-    var opcion      = document.getElementById('select_compra').value;
-    if (opcion == 0){
+    //var base_url    = document.getElementById('base_url').value;
+    //var controlador = base_url+"egreso";
+    var opcion = document.getElementById('select_compra').value;
+    /*if(opcion == 0){
         filtro = "";
         mostrar_ocultar_buscador("ocultar");
-    }//todas las compras
-    
-    if (opcion == 1)
-    {
+        fechadeegreso(filtro);
+    }else*/ if(opcion == 1){ //todas las compras
         filtro = " and date(egreso_fecha) = date(now())";
         mostrar_ocultar_buscador("ocultar");
-
-               
-    }//compras de hoy
-    
-    if (opcion == 2)
-    {
-       
+        fechadeegreso(filtro);
+    }else if(opcion == 2){ //compras de hoy
         filtro = " and date(egreso_fecha) = date_add(date(now()), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
-    }//compras de ayer
-    
-    if (opcion == 3) 
-    {
-    
+        fechadeegreso(filtro);
+    }else if(opcion == 3){ //compras de ayer
         filtro = " and date(egreso_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
         mostrar_ocultar_buscador("ocultar");
-
-            }
-
-    
-    if (opcion == 4) 
-    {   filtro = " ";//todos los compras
+        fechadeegreso(filtro);
+    }else if(opcion == 4){
+        filtro = " ";//todos los compras
         mostrar_ocultar_buscador("ocultar");
-
+        fechadeegreso(filtro);
+    }else if(opcion == 5){
+        mostrar_ocultar_buscador("mostrar");
     }
     
-    if (opcion == 5) {
-
-        mostrar_ocultar_buscador("mostrar");
-        filtro = null;
-    }
-    fechadeegreso(filtro);
 }
 
 function buscar_por_fechas()
@@ -71,8 +53,17 @@ function mostrar_ocultar_buscador(parametro){
     if (parametro == "mostrar"){
         document.getElementById('buscador_oculto').style.display = 'block';}
     else{
-        document.getElementById('buscador_oculto').style.display = 'none';}
-    
+        document.getElementById('buscador_oculto').style.display = 'none';}   
+}
+
+function buscaregreso(e) {
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){
+        var filtrar = document.getElementById('filtrar').value;
+        let filtro = " and(e.egreso_numero = '"+filtrar+"' or e.egreso_nombre like '%"+filtrar+"%'";
+        filtro += " or e.egreso_monto like '%"+filtrar+"%' or e.egreso_concepto like '%"+filtrar+"%')";
+        fechadeegreso(filtro);
+    }
 }
 
 function fechadeegreso(filtro){
@@ -83,6 +74,7 @@ function fechadeegreso(filtro){
     if(categoria != "0"){
         categ = 1;
     }
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
         type:"POST",
         data:{
@@ -138,8 +130,20 @@ function fechadeegreso(filtro){
                         html += "<span style='font-size: 8px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
                     }
                     html += "</td>";
-                    html += "<td>"+registros[i]["forma_nombre"]+"</td>";
-                    html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
+                    html += "<td>";
+                    if(registros[i]["forma_id"] >0){
+                        html += registros[i]["forma_nombre"];
+                        if(registros[i]["forma_id"]> 1){
+                            html += "<br><b>Glosa: </b>"+registros[i]["egreso_glosa"];
+                        }
+                    }
+                    html += "</td>";
+                    html += "<td>";
+                    if(registros[i]["banco_id"] >0){
+                        html += registros[i]["banco_nombre"];
+                    }
+                    html += "</td>";
+                    html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
 //                        html += "<td class='no-print'><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
 //                        html += "<a href='"+base_url+"egreso/boucher/"+registros[i]["egreso_id"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
                     html += "<td class='no-print'><a href='"+base_url+"egreso/imprimir/"+registros[i]["egreso_id"]+"' title='Imprimir comprobante' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
@@ -197,7 +201,9 @@ function fechadeegreso(filtro){
                     html += "</tr>";
                 
                 $("#fechadeegreso").html(html);
+                document.getElementById('loader').style.display = 'none';
             }
+            document.getElementById('loader').style.display = 'none';
         },
         error:function(resul){
           // alert("Algo salio mal...!!!");

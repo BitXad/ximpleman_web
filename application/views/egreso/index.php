@@ -2,23 +2,23 @@
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/egresos.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
+    $(document).ready(function () {
+        (function ($) {
+            $('#filtrar').keyup(function () {
+                var rex = new RegExp($(this).val(), 'i');
+                $('.buscar tr').hide();
+                $('.buscar tr').filter(function () {
+                    return rex.test($(this).text());
+                }).show();
+            })
+        }(jQuery));
+    });
 
-        function imprimir()
-        {
-           $("#cabeceraprint").css("display", "");
-             window.print(); 
-        }
+    function imprimir()
+    {
+        $("#cabeceraprint").css("display", "");
+        window.print(); 
+    }
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
@@ -63,14 +63,14 @@
         <div class="col-md-6 no-print">
             <!--------------------- parametro de buscador --------------------->
             <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción" onkeypress="buscaregreso(event)" autocomplete="off">
             </div>
             <!--------------------- fin parametro de buscador --------------------->
         </div>
         <div class="col-md-3 no-print">
             <div  class="box-tools" >
                 <select  class="btn btn-primary btn-sm form-control" id="select_compra" onchange="buscar_egresos()">
-                    <option value="0">Elija Fechas</option>
+                    <!--<option value="0">Elija Fechas</option>-->
                     <option value="1">Egresos de Hoy</option>
                     <option value="2">Egresos de Ayer</option>
                     <option value="3">Egresos de la semana</option>
@@ -80,7 +80,7 @@
         </div>
         <div class="col-md-3 no-print">
             <div class="form-group">
-                <select name="categoria_id" id="categoria_id" class="btn btn-primary btn-sm form-control">
+                <select name="categoria_id" id="categoria_id" class="btn btn-primary btn-sm form-control" onchange="buscar_egresos()">
                     <option value="0">- Todas -</option>
                     <?php 
                     foreach($all_categoria_egreso as $categoria_egreso)
@@ -98,19 +98,22 @@
     <div class="box-tools">
         <center>    
             <a href="<?php echo site_url('egreso/add'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-money"></span></font><br><small>Registrar Egreso</small></a>
-            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="buscar_egresos()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>            
+            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadeegreso()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>            
             <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
         </center>            
     </div>
+</div>
+<div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
+    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
 </div>
 <div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none;'>
     <br>
     <center>            
         <div class="col-md-2">
-            Desde: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+            Desde: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" value="<?php echo date("Y-m-d"); ?>" required="true">
         </div>
         <div class="col-md-2">
-            Hasta: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+            Hasta: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" value="<?php echo date("Y-m-d"); ?>" required="true">
         </div>
         <div class="col-md-3">
             <?php if($rol[63-1]['rolusuario_asignado'] == 1){ ?>
@@ -139,6 +142,7 @@
                     <th>MONTO</th>
                     <th>MONEDA</th>
                     <th>FORMA DE PAGO</th>
+                    <th>BANCO</th>
                     <th>USUARIO</th>
                     <th class="no-print"></th>
                 </tr>

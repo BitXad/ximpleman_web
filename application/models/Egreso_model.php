@@ -48,16 +48,15 @@ class Egreso_model extends CI_Model
         
         $egresos = $this->db->query("
             SELECT
-                i.*, u.*,fe.forma_nombre
-
+                e.*, u.usuario_nombre, fp.forma_nombre, b.banco_nombre
             FROM
-                egresos i, usuario u, forma_pago fe
-
+                egresos e
+            left join usuario u on e.usuario_id = u.usuario_id
+            left join forma_pago fp on e.forma_id =fp.forma_id
+            left join banco b on e.banco_id = b.banco_id
             WHERE
-                i.usuario_id = u.usuario_id
-            and fe.forma_id = i.forma_id
-
-            ORDER BY `egreso_id` DESC
+                1 = 1
+            ORDER BY e.egreso_fecha DESC
 
         ")->result_array();
 
@@ -77,11 +76,12 @@ class Egreso_model extends CI_Model
     function fechaegreso($condicion,$parametro){
         return $this->db->query(
             "SELECT
-                e.*, u.*, fp.forma_nombre
+                e.*, u.usuario_nombre, fp.forma_nombre, b.banco_nombre
             FROM
                 egresos e
             left join usuario u on e.usuario_id = u.usuario_id
-            left join forma_pago fp on fp.forma_id = e.forma_id
+            left join forma_pago fp on e.forma_id =fp.forma_id
+            left join banco b on e.banco_id = b.banco_id
             WHERE
                 1 = 1  
                 ".$condicion."

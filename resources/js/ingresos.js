@@ -6,44 +6,28 @@ function inicio(){
 
 function buscar_ingresos()
 {
-    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"ingreso";
+    //var base_url    = document.getElementById('base_url').value;
+    //var controlador = base_url+"ingreso";
     var opcion      = document.getElementById('select_compra').value;
-    if (opcion == 1)
-    {
+    if(opcion == 1){
         filtro = " and date(ingreso_fecha) = date(now())";
         mostrar_ocultar_buscador("ocultar");
-    }//compras de hoy
-    
-    if (opcion == 2)
-    {
-       
+        fechadeingreso(filtro);
+    }else if(opcion == 2){ //compras de hoy
         filtro = " and date(ingreso_fecha) = date_add(date(now()), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
-    }//compras de ayer
-    
-    if (opcion == 3) 
-    {
-    
+        fechadeingreso(filtro);
+    }else if(opcion == 3){//compras de hayer
         filtro = " and date(ingreso_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
         mostrar_ocultar_buscador("ocultar");
-
-            }
-
-    
-    if (opcion == 4) 
-    {   filtro = " ";//todos los compras
+        fechadeingreso(filtro);
+    }else if(opcion == 4){
+        filtro = " ";//todos los compras
         mostrar_ocultar_buscador("ocultar");
-
-    }
-    
-    if (opcion == 5) {
-
+        fechadeingreso(filtro);
+    }else if(opcion == 5){
         mostrar_ocultar_buscador("mostrar");
-        filtro = null;
     }
-
-    fechadeingreso(filtro);
 }
 
 function buscar_por_fechas()
@@ -72,7 +56,7 @@ function buscaringreso(e) {
   tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){
         var filtrar = document.getElementById('filtrar').value;
-        let filtro = " and(i.ingreso_numero = "+filtrar+" or i.ingreso_nombre like '%"+filtrar+"%'";
+        let filtro = " and(i.ingreso_numero = '"+filtrar+"' or i.ingreso_nombre like '%"+filtrar+"%'";
         filtro += " or i.ingreso_monto like '%"+filtrar+"%' or i.ingreso_concepto like '%"+filtrar+"%')";
         fechadeingreso(filtro);
     }

@@ -123,6 +123,7 @@ function add_egreso(edit){
         let egreso_fecha = $('#egreso_fecha') .val();
         console.log(egreso_glosa)
         let usuario_id = $('#usuario_id').val();
+        let banco_id = $('#banco_id').val();
         let egreso_id = edit;
         $.ajax({
             url: controlador,
@@ -141,6 +142,7 @@ function add_egreso(edit){
                 egreso_id:egreso_id,
                 egreso_monreg:egreso_monreg,
                 egreso_especificacion:egreso_especificacion,
+                banco_id:banco_id,
             },
             success: () =>{
                 window.location.href = `${base_url}egreso/index`;
