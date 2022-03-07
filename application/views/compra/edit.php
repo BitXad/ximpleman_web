@@ -439,12 +439,12 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <center>
 
             <?php  $provien = $compra[0]['proveedor_id'];  if($provien==0) { ?>  
-            <label id="provedorboton2"><a onclick="myFunction()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+            <label id="provedorboton2"><a onclick="myFunction()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')"0>
                 <i class="fa fa-money fa-4x"></i><br>
                Finalizar<br>Compra<br>
             </a></label>
           <?php }else{ ?>
-            <label id="provedorboton2"><a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+            <label id="provedorboton2"><a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')">
                 <i class="fa fa-money fa-4x"></i><br>
                Finalizar<br>Compra<br>
             </a></label>
@@ -1022,14 +1022,13 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-3">
                         <label for="forma_id" class="control-label">Forma Pago</label>
                         <div class="form-group">
-                            <select name="forma_id"  class="form-control"  required>
+                            <select name="forma_id" id="forma_id" class="form-control"  required onchange="mostrar('forma_id','glosa_banco')">
                                 <option value="1">EFECTIVO</option>
                                 <?php 
-                                foreach($all_forma_pago as $forma_pago)
-                                {
-                                    $selected = ($forma_pago['forma_id'] == $compra['forma_id']) ? ' selected="selected"' : "";
-
-                                    echo '<option value="'.$forma_pago['forma_id'].'" '.$selected.'>'.$forma_pago['forma_nombre'].'</option>';
+                                foreach($all_forma_pago as $forma_pago){
+                                    extract($forma_pago);
+                                    $selected = ($forma_id == $compra[0]['forma_id']) ? 'selected="selected"' : "";
+                                    echo "<option value='$forma_id' $selected>$forma_nombre</option>";
                                 } 
                                 ?>
                             </select>
@@ -1051,8 +1050,29 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             </select>
                         </div>
                     </div>  
-                            
-                                
+                    <div class="col-md-12" style="display: block;"></div>
+                    <div class="col-md-6" id="glosa_banco" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <label for="glosa_compra">Glosa</label>
+                                <div class="form-group">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="banco">Banco</label>
+                                <div class="form-group">
+                                    <select name="banco" id="banco" class="form-control">
+                                        <?php foreach($bancos as $banco){ 
+                                            extract($banco);
+                                            $selected = ($banco_id == $compra['banco_id']) ? ' selected="selected"' : "";
+                                            echo "<option value='$banco_id' $selected>$banco_nombre ($banco_numcuenta)</option>";
+                                        } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 <!--      <div class="input-group"> <span class="input-group-addon">Buscar</span>
         <input id="filtrar" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción">

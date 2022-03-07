@@ -20,6 +20,7 @@ class Compra extends CI_Controller{
         $this->load->model('Moneda_model');
         $this->load->helper('numeros');
         $this->load->model('Usuario_model');
+        $this->load->model('Banco_model');
         
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -487,7 +488,7 @@ class Compra extends CI_Controller{
              $data['parametro'] = $this->Parametro_model->get_parametros();
              $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
              $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc(); //0-->bs; 1-->USD
-             
+             $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
              if ($bandera==0) {
               $this->Compra_model->volvermal($compra_id);
              }
@@ -755,6 +756,7 @@ class Compra extends CI_Controller{
             $banderafin=$this->input->post('banderafin');
             $nueva_fecha = date("Y-m-d"); 
             $nueva_hora = date("H:i:s"); 
+            $banco_id = $this->input->post('forma_id') != 1 ? $this->input->post('banco') : "";
             if ($descglobal>0) {
                 $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";
                 $this->db->query($descontar);
@@ -781,6 +783,7 @@ class Compra extends CI_Controller{
                     'compra_codcontrol' => $this->input->post('compra_codcontrol'),
                     'compra_fecha' => $nueva_fecha,
                     'compra_hora' => $nueva_hora,
+                    'banco_id'=> $banco_id,
                 );
             }else{
                 $params = array(
@@ -800,6 +803,7 @@ class Compra extends CI_Controller{
                     'compra_caja' => $this->input->post('compra_caja'),
                     'compra_placamovil' => $null,
                     'compra_codcontrol' => $this->input->post('compra_codcontrol'),
+                    'banco_id'=> $banco_id,
 
                 );
             }

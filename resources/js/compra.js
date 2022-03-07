@@ -2007,3 +2007,8 @@ function ocultar_busqueda(){
     
     $("#tablaresultados").html("");
 }
+
+function mostrar(select_form, div_form){
+    var forma = $(`#${select_form}`).val();
+    $(`#${div_form}`).css('display',forma != 1 ? 'block': 'none');
+}
