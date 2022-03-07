@@ -105,7 +105,7 @@ class Cuotum_model extends CI_Model
                 `k`.*,
                 `e`.*,
                 `u`.`usuario_nombre`,
-                `fp`.`forma_nombre`
+                `fp`.`forma_nombre`, b.banco_nombre
             FROM `credito` as c 
                 LEFT JOIN `compra` as co ON c.`compra_id` = co.`compra_id`
                 LEFT JOIN `proveedor` as p ON  p.`proveedor_id` = co.`proveedor_id`
@@ -113,7 +113,7 @@ class Cuotum_model extends CI_Model
                 LEFT JOIN `estado` as e ON k.`estado_id` = e.`estado_id`
                 LEFT JOIN `usuario` as u ON k.`usuario_id` = u.`usuario_id`
                 LEFT JOIN `forma_pago` as fp on `fp`.`forma_id` = k.`forma_id`
-                
+                left join banco b on b.banco_id = k.`banco_id`
             WHERE
                 c.`credito_id` = k.`credito_id` AND
                 ".$credito_id." = k.credito_id
