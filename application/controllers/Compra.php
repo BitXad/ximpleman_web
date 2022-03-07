@@ -219,7 +219,7 @@ class Compra extends CI_Controller{
             $filtro = $this->input->post('filtro');
             
             if ($filtro == null){
-                $result = $this->Compra_model->get_all_compra($params);
+                $result = $this->Compra_model->get_all_compra();
             }
             else{
                 $result = $this->Compra_model->fechacompras($filtro);            

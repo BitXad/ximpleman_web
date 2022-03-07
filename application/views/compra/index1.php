@@ -232,6 +232,8 @@
 <!--                        <th>Sub <br>Total</th>
     <th>Desc.</th>-->
     <th>Total</th>
+    <th>Transacción</th>
+    <th>Banco</th>
     <th>Fecha<br>Hora</th>
     <th>Estado</th>
     <th>Usuario</th>
@@ -270,8 +272,10 @@
                 <td align="right" ><?php echo "Sub Total: ".number_format($c['compra_subtotal'],'2','.',','); ?><br>
                   <?php echo "Desc.: ".number_format($c['compra_descuento'],'2','.',','); ?><br>
                   <?php echo "Desc.Global: ".number_format($c['compra_descglobal'],'2','.',','); ?><br>  
-                  <font size="3"><b><?php echo number_format($c['compra_totalfinal'],'2','.',','); ?></b></font></td>
-
+                  <font size="3"><b><?php echo number_format($c['compra_totalfinal'],'2','.',','); ?></b></font>
+                </td>
+                <td style="text-align:center;"><?= $c['forma_nombre'] ?></td>
+                <td style="text-align:center;"><?= $c['banco_nombre'] ?></td>
                   <td align="center"><?php echo date('d/m/Y',strtotime($c['compra_fecha'])) ; ?><br>
                     <?php echo $c['compra_hora']; ?></td>
                     <td align="center" style='background: #<?php echo $c['estado_color']; ?>'><?php echo $c['estado_descripcion']; ?> <br> <?php if($c['compra_placamovil']==1) { ?><span class="btn-danger btn-xs">NO FINALIZADO</span> <?php } ?></td>

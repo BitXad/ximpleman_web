@@ -145,43 +145,45 @@ class Compra_model extends CI_Model
     /*
      * Get all compra
      */
-     function get_all_compra($params = array())
-    {
-        
-        $hoy = date("Y-m-d");
-        $hoje ="'".$hoy."'";
-        $compra = $this->db->query("
-            SELECT
-                *, c.estado_id as 'elestado'
-
-            FROM
-                compra c, estado e, proveedor p, tipo_transaccion t, usuario u
-
-            WHERE
-                c.estado_id = e.estado_id
-                and c.proveedor_id = p.proveedor_id
-                and c.tipotrans_id = t.tipotrans_id
-                and c.usuario_id = u.usuario_id
-                and c.compra_fecha = ".$hoje."  
+     function get_all_compra($params = array()){
+        return $this->db->query(
+            "SELECT c.*, c.estado_id as 'elestado',
+                e.estado_descripcion, e.estado_color,
+                p.*,
+                tt.*,
+                u.*,
+                b.banco_nombre,
+                fp.forma_nombre 
+            from compra c 
+            left join estado e on c.estado_id = e.estado_id  
+            left join proveedor p on c.proveedor_id  = p.proveedor_id 
+            left join tipo_transaccion tt on c.tipotrans_id = tt.tipotrans_id 
+            left join usuario u on c.usuario_id = u.usuario_id 
+            left join banco b on c.banco_id = b.banco_id 
+            left join forma_pago fp on c.forma_id = fp.forma_id 
+            where c.compra_fecha = date(now()) 
             ORDER BY `compra_hora` DESC 
         ")->result_array();
-
-        return $compra;
     }
      function fechacompras($condicion)
     {
-       $compra = $this->db->query("
-            SELECT
-                *, c.estado_id as 'elestado'
-            FROM
-                compra c, estado e, proveedor p, tipo_transaccion t, usuario u
-
-            WHERE
-                c.estado_id = e.estado_id
-                and c.proveedor_id = p.proveedor_id
-                and c.usuario_id = u.usuario_id
-                and c.tipotrans_id = t.tipotrans_id
-                ".$condicion." 
+       $compra = $this->db->query(
+            "SELECT c.*, c.estado_id as 'elestado',
+                e.estado_descripcion, e.estado_color,
+                p.*,
+                tt.*,
+                u.*,
+                b.banco_nombre,
+                fp.forma_nombre 
+            from compra c 
+            left join estado e on c.estado_id = e.estado_id  
+            left join proveedor p on c.proveedor_id  = p.proveedor_id 
+            left join tipo_transaccion tt on c.tipotrans_id = tt.tipotrans_id 
+            left join usuario u on c.usuario_id = u.usuario_id 
+            left join banco b on c.banco_id = b.banco_id 
+            left join forma_pago fp on c.forma_id = fp.forma_id 
+            where 1 = 1
+            $condicion
             ORDER BY c.compra_fecha DESC, c.compra_hora DESC
         ")->result_array();
 

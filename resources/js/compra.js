@@ -1007,10 +1007,10 @@ function buscar_compras()
 
 function mostrar_ocultar_buscador(parametro){
        
-    if (parametro == "mostrar"){
-        document.getElementById('buscador_oculto').style.display = 'block';}
-    else{
-        document.getElementById('buscador_oculto').style.display = 'none';}
+    if (parametro == "mostrar")
+        document.getElementById('buscador_oculto').style.display = 'block';
+    else
+        document.getElementById('buscador_oculto').style.display = 'none';
     
 }
 
@@ -1325,6 +1325,8 @@ function fechadecompra(filtro)
                         html += "</td><td align='center'><font size='3'><b>"+registros[i]["compra_id"]+"</b></font></td>";                                           
                         html += "<td align='right' > Subtotal:"+numberFormat(Number(registros[i]["compra_subtotal"]).toFixed(2))+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
                         html += "<font size='3'><b>Total:"+numberFormat(Number(registros[i]["compra_totalfinal"]).toFixed(2))+"</b></font></td>";
+                        html += "<td style='text-align: center'>"+registros[i]['forma_nombre']+"</td>"
+                        html += "<td style='text-align: center'>"+(registros[i]['banco_nombre'] == null ? '':registros[i]['banco_nombre'])+"</td>"
                         html += "<td  align='center'>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         
                         html += "<td  align='center' style='background: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"<br>";
@@ -1979,6 +1981,8 @@ function mostrar_historial(producto_id){
                 html += "<th>#</th>";
                 html += "<th>Proveedor</th>";
                 html += "<th>Costo</th>";
+                html += "<th>Transación</th>";
+                html += "<th>Banco</th>";
                 html += "<th>Fecha</th>";
                 html += "</tr>";
                 
@@ -1989,6 +1993,8 @@ function mostrar_historial(producto_id){
                      html += "<td>"+(i+1)+"</td>";
                      html += "<td>"+reg[i].proveedor_nombre+"</td>";
                      html += "<td><b>"+Number(reg[i].detallecomp_costo).toFixed(2)+"</b></td>";
+                     html += "<td style='text-center'>"+reg[i].forma_nombre+"</td>"
+                     html += "<td style='text-center'>"+reg[i].banco_nombre+"</td>"
                      html += "<td>"+formato_fecha(reg[i].compra_fecha)+"</td>";
                     html += "</tr>";
                        
@@ -2008,7 +2014,7 @@ function ocultar_busqueda(){
     $("#tablaresultados").html("");
 }
 
-function mostrar(select_form, div_form){
-    var forma = $(`#${select_form}`).val();
-    $(`#${div_form}`).css('display',forma != 1 ? 'block': 'none');
+function mostrar(forma_id,glosa_banco){
+    let forma = $(`#${forma_id}`).val();
+    $(`#${glosa_banco}`).css('display',forma != 1 ? 'block':'none');
 }
