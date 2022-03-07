@@ -61,6 +61,7 @@ class Cuotum extends CI_Controller{
             $data['page_title'] = "Cuota";
             $data['rol'] = $this->session_data['rol'];
             $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
+            $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
             $data['credito'] = $this->Credito_model->dato_deudas($credito_id);
             $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
             $data['_view'] = 'cuotum/deudas';
@@ -334,6 +335,7 @@ class Cuotum extends CI_Controller{
             $credito_id = $this->input->post('credito_id');
             $credito_tipointeres = $this->input->post('credito_tipointeres');
             $cuota_capital = $this->input->post('cuota_capital');
+            $banco_id = $this->input->post('forma_pago') != 1 ? $this->input->post('banco'):'';
 
   $si_orden=$this->input->post('cuota_ordenpago');     
    if ($si_orden==1 ) {
@@ -374,6 +376,7 @@ class Cuotum extends CI_Controller{
                     'cuota_ordenpago' => $this->input->post('cuota_ordenpago'),
                     'forma_id' => $this->input->post('forma_pago'),
                     'cuota_forma_glosa' => $this->input->post('cuota_forma_glosa'),
+                    'banco_id' => $banco_id,
                 );
 
 
@@ -402,6 +405,7 @@ class Cuotum extends CI_Controller{
                     'cuota_ordenpago' => $this->input->post('cuota_ordenpago'),
                     'forma_id' => $this->input->post('forma_pago'),
                     'cuota_forma_glosa' => $this->input->post('cuota_forma_glosa'),
+                    'banco_id' => $banco_id,
                 );
 
 
@@ -430,7 +434,7 @@ class Cuotum extends CI_Controller{
 
                 $cuota_numcuota = $this->input->post('cuota_numcuota');
                 
-                  $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
+                  $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora, banco_id) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.",$banco_id)";
                 $this->db->query($cuota);
   
                
