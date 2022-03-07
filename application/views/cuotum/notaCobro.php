@@ -34,8 +34,7 @@ body {
     /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
     font-family: "Arial", Arial, Arial, arial;
     font-size: 9px;
-    
-
+}
 </style>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -68,15 +67,13 @@ body {
     <div style="width: 100%;overflow-x:hidden;overflow-y:auto;">
    
 <div style="float:left; width:22%;">
-
     <center style="font-family: 'Arial', Arial, Arial, arial; font-size: 8px;">  <font size="1"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
-                        <?php echo $empresa[0]['empresa_zona']; ?><br>
-                        <p style="font-size: 7px;margin: 0;"><?php echo $empresa[0]['empresa_direccion']; ?></p>
-                        <?php echo $empresa[0]['empresa_telefono']; ?><br>
-                        <?php echo date('d/m/Y',strtotime($cuota[0]['cuota_fechalimite'])); ?><br>
-                        <font size="1"><b>CUOTA N: <?php echo $cuota[0]['cuota_numcuota']; ?> / <?php echo $cuota[0]['credito_numpagos']; ?></b></font>
-                     </center>
-                     
+        <?php echo $empresa[0]['empresa_zona']; ?><br>
+        <p style="font-size: 7px;margin: 0;"><?php echo $empresa[0]['empresa_direccion']; ?></p>
+        <?php echo $empresa[0]['empresa_telefono']; ?><br>
+        <?php echo date('d/m/Y',strtotime($cuota[0]['cuota_fechalimite'])); ?><br>
+        <font size="1"><b>CUOTA N: <?php echo $cuota[0]['cuota_numcuota']; ?> / <?php echo $cuota[0]['credito_numpagos']; ?></b></font>
+    </center>
 </div>
 <div style="float:right; width:78%;">
 

@@ -131,9 +131,7 @@ class Cuotum_model extends CI_Model
         $credito = $this->db->query("
             SELECT
                 k.*
-
-            FROM
-               cuota k
+            FROM cuota k
             WHERE
              
                  k.credito_id = ".$credito_id." 
@@ -150,7 +148,7 @@ class Cuotum_model extends CI_Model
     function get_all_cuentas($credito_id){
         $credito = $this->db->query(
             "SELECT
-                m.moneda_tc ,c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id, fp.forma_nombre
+                m.moneda_tc ,c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id, fp.forma_nombre, b.banco_nombre
             FROM cuota k
             LEFT JOIN credito c on k.credito_id = c.credito_id 
             LEFT JOIN venta ve on c.venta_id = ve.venta_id
@@ -159,7 +157,8 @@ class Cuotum_model extends CI_Model
             LEFT JOIN usuario u on k.usuario_id = u.usuario_id
             LEFT JOIN factura f on k.cuota_id=f.cuota_id
             LEFT JOIN forma_pago fp on k.`forma_id` = fp.forma_id
-            left join moneda m on m.moneda_id != ve.moneda_id    
+            left join moneda m on m.moneda_id != ve.moneda_id  
+            left join banco b on b.banco_id = k.banco_id  
             where k.credito_id = $credito_id
             and m.moneda_id = 2
             ORDER BY `cuota_id` ASC")->result_array();
@@ -167,14 +166,12 @@ class Cuotum_model extends CI_Model
         return $credito;
     }
     
-    function get_all_cuenta_serv($credito_id)
-    {
-        $credito = $this->db->query("
-            SELECT
-                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id, fp.forma_nombre
-
+    function get_all_cuenta_serv($credito_id){
+        $credito = $this->db->query(
+            "SELECT
+                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id, fp.forma_nombre,b.banco_id, b.banco_nombre 
             FROM
-               cuota k
+                cuota k
             LEFT JOIN credito c on k.credito_id = c.credito_id 
             LEFT JOIN servicio ve on c.servicio_id = ve.servicio_id
             LEFT JOIN cliente p on p.cliente_id = ve.cliente_id
@@ -182,11 +179,9 @@ class Cuotum_model extends CI_Model
             LEFT JOIN usuario u on k.usuario_id = u.usuario_id
             LEFT JOIN factura f on k.cuota_id=f.cuota_id
             LEFT JOIN forma_pago fp on k.`forma_id` = fp.forma_id
+            LEFT JOIN banco b on b.banco_id = k.banco_id
             WHERE k.credito_id = $credito_id
-
-            ORDER BY `cuota_id` ASC
-        ")->result_array();
-
+            ORDER BY `cuota_id` ASC")->result_array();
         return $credito;
     }
     function get_recibo_deuda($cuota_id)

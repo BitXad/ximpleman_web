@@ -64,9 +64,10 @@
     <hr style="border-color: black; margin: 3px; ">
     <div class="cuerpo" >
         <div class="columna_derecha">
-            TOTAL: <b><?php echo  number_format($cuota[0]['credito_monto'], 2, ".", ",") ?></b><br>
+            TOTAL: <b><?php echo  number_format($cuota[0]['venta_total'], 2, ".", ",") ?></b><br>
             CUOTA INICIAL: <b><?php echo  number_format($cuota[0]['credito_cuotainicial'], 2, ".", ",") ?></b><br>
-            INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?></b>
+            <!-- INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?></b> -->
+            INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?></b>
         </div>
         <div class="columna_izquierda">
             FECHA: <b><?php $fecha_format = date('d/m/Y', strtotime($cuota[0]['credito_fecha'])); echo $fecha_format; ?>   <?php echo $cuota[0]['credito_hora']; ?></b><br>

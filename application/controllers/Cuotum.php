@@ -12,6 +12,7 @@ class Cuotum extends CI_Controller{
         $this->load->model('Cuotum_model');
         $this->load->model('Empresa_model');
         $this->load->model('Credito_model');        
+        $this->load->model('Banco_model');        
         $this->load->model('Compra_model');
         $this->load->model('Moneda_model');
         $this->load->model('Parametro_model');
@@ -101,6 +102,7 @@ class Cuotum extends CI_Controller{
             }
             
             $parametros = $this->Parametro_model->get_parametro(1);
+            $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
             $data['moneda'] = $this->Moneda_model->get_moneda($parametros['moneda_id']);
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
             $data['credito'] = $this->Credito_model->dato_cuentas($credito_id);
@@ -131,6 +133,7 @@ class Cuotum extends CI_Controller{
             }
             $parametros = $this->Parametro_model->get_parametro(1);
             $data['moneda'] = $this->Moneda_model->get_moneda($parametros['moneda_id']);
+            $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
             $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
             $data['credito'] = $this->Credito_model->dato_cuenta_serv($credito_id);
             $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma();
@@ -160,7 +163,7 @@ class Cuotum extends CI_Controller{
             }
             $data['eldetalle'] = $eldetalle;
             
-            $data['_view'] = 'cuotum/planCuentas_lotes';
+            $data['_view'] = 'cuotum/planCuentas';
             $this->load->view('layouts/main',$data);
         }
     }
@@ -253,9 +256,14 @@ class Cuotum extends CI_Controller{
    function recibocuentaserv($cuota_id)
     {
        if($this->acceso(47)){
-           $data['page_title'] = "Cuota";
+            $data['page_title'] = "Cuota";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['moneda'] = $this->Moneda_model->get_moneda($data['parametro'][0]['moneda_id']);
+
+            $data['detalle_venta'] = "";
+            $data['lacategoria'] = "";
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
             $data['_view'] = 'cuotum/reciboCuenta';
             $this->load->view('layouts/main',$data);
@@ -289,7 +297,9 @@ class Cuotum extends CI_Controller{
     {
         if($this->acceso(41) or $this->acceso(47)){
             $data['page_title'] = "Cuota";
-            $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
+            $parametros = $this->Parametro_model->get_parametro(1);
+            $data['moneda'] = $this->Moneda_model->get_moneda($parametros['moneda_id']);
+            $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($credito_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
             $data['_view'] = 'cuotum/notaCobro';
@@ -301,6 +311,7 @@ class Cuotum extends CI_Controller{
     {
         if($this->acceso(47)){
             $data['page_title'] = "Cuota";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
@@ -523,6 +534,7 @@ class Cuotum extends CI_Controller{
         $interes = $this->input->post('credito_interesproc');
         $cuota_capital = $this->input->post('cuota_capital');
         $facturado = $this->input->post('factura');
+        $banco_id = $this->input->post('forma_pago') != 1 ? $this->input->post('banco'):'';
 
         /////////////////la facturaaaa//////////////////
             if($facturado=="on"){
@@ -557,7 +569,7 @@ class Cuotum extends CI_Controller{
 
                 $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
                 $this->Ingreso_model->ejecutar($sql);
-                             
+                            
                 $sql = "insert into factura(estado_id, cuota_id, factura_fechaventa, 
                     factura_fecha, factura_hora, factura_subtotal, 
                     factura_ice, factura_exento, factura_descuento, factura_total, 
@@ -651,6 +663,7 @@ class Cuotum extends CI_Controller{
                     'cuota_glosa' => $this->input->post('cuota_forma_glosa'),
                     'forma_id' => $this->input->post('forma_pago'),
                     'cuota_forma_glosa' => $this->input->post('cuota_forma_glosa'),
+                    'banco_id' => $banco_id,
                 );
 
 
@@ -706,7 +719,7 @@ class Cuotum extends CI_Controller{
 
                 $cuota_numcuota = $this->input->post('cuota_numcuota');
                 
-                  $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
+                  $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora, banco_id) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.", $banco_id)";
                 $this->db->query($cuota);
   
                
@@ -725,7 +738,7 @@ class Cuotum extends CI_Controller{
                 $cuota_numcuota = $this->input->post('cuota_numcuota');
                 $total =  $cuota_subtotal - $descuento;
 
-                 $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$variable.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
+                 $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora, banco_id) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$variable.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.",$banco_id)";
                 $this->db->query($cuota);
                
               

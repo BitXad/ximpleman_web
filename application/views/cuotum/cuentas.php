@@ -79,6 +79,7 @@
                         <th>Fecha<br>Limite</th>
                         <th>Cancelado<br><?= $moneda['moneda_descripcion'] ?></th>
                         <th>Forma<br>de pago</th>
+                        <th>Banco</th>
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Num.<br>recibo</th>
@@ -164,7 +165,8 @@ $(document).ready(function(){
                       <td align="right" <?php echo $color; ?> style="background:silver"><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
                       <td <?php echo $color; ?>><?php echo date('d/m/Y',strtotime($c['cuota_fechalimite'])); ?></td>
                       <td align="right" <?php echo $color; ?>><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
-                      <td align="center" <?php echo $color; ?>><?php echo(($c['forma_nombre'] == null) ? "": $c['forma_nombre']) ?></td>
+                      <td align="center" <?php echo $color; ?>><?php echo(($c['forma_nombre'] == null) ? "": "{$c['forma_nombre']}") ?></td>
+                      <td align="center"<?= $color ?>><?= $c['banco_nombre'] ?></td>
                       <?php if($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { ?>
                       <td <?php echo $color; ?>></td> 
                       <td <?php echo $color; ?>></td>
@@ -298,10 +300,26 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="col-md-12" id="cuota_forma_glosa<?= $c['cuota_id'] ?>" style="display:none">
-                        <label for="cuota_forma_glosa" class="control-label">Glosa Forma de pago</label>
-                        <div class="form-group">
-                            <input type="text" name="cuota_forma_glosa" value="<?php echo $this->input->post('cuota_forma_glosa'); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                      <div class="row">
+                        <div class="col-md-7">
+                          <label for="cuota_forma_glosa" class="control-label">Glosa Forma de pago</label>
+                          <div class="form-group">
+                              <input type="text" name="cuota_forma_glosa" value="<?php echo $this->input->post('cuota_forma_glosa'); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                          </div>
                         </div>
+                        <div class="col-md-5">
+                          <label for="banco">Banco</label>
+                          <div class="form-group">
+                            <select name="banco" id="banco" class="form-control">
+                              <?php foreach($bancos as $banco){
+                                  extract($banco);
+                                  $selected = ($banco_id == $this->input->post('banco_id')) ? "selected='selected'" : "";
+                                  echo "<option value='$banco_id' $selected>$banco_nombre ($banco_numcuenta)</option>";
+                                }?>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <hr class="col-md-12">
           <div class="col-md-6">
@@ -357,26 +375,12 @@ $(document).ready(function(){
         <!---------------------------------FIN MODAL DE PAGAR------------------------->
                     </tr>
                    <?php  $i++;  } ?>
-                   <tr>
-                    <td></td>    
-                    <td></td>    
-                    <td></td>    
-                    <td></td>    
-                    <td></td>    
-                    <td></td>    
-                    <td></td>    
-                    <td></td> 
-                    <td></td> 
-                    <!--<th align="right"><b><?php echo number_format($total,'2','.',','); ?></b></th>-->
-                    <td></td>    
-                    <th align="right"><b><?php echo number_format($cancelados,'2','.',','); ?></b></th>   
-                    <td></td>    
-                    <td></td>    
-                    <td></td>    
-                    <td></td>    
-                    <td></td>    
-                    <td></td>
-                    <td></td>
+                    <tr>
+                      <td colspan="10"></td>    
+                      <!--<th align="right"><b><?php echo number_format($total,'2','.',','); ?></b></th>-->
+                      <!-- <td></td>     -->
+                      <th align="right"><b><?php echo number_format($cancelados,'2','.',','); ?></b></th>   
+                      <td colspan="8"></td>    
                     </tr>
                 </table>               
             </div>
@@ -391,22 +395,15 @@ $(document).ready(function(){
 
 <script type="text/javascript">
     function mostrar(select_form, div_form){
-      // console.log("si llega")
-      var forma = document.getElementById(select_form).value;
-      console.log(forma)
-      if(forma != 1){
-        document.getElementById(div_form).style.display = 'block';
-      }else{
-        document.getElementById(div_form).style.display = 'none';        
-      }       
+      let forma = $(`#${select_form}`).val();
+      $(`#${div_form}`).css('display', forma != 1 ? 'block':'none');
     }
 
     function confirm_reset(cuota_id,credito_id,cuota_numcuota){
       let base_url = $('#base_url').val();
       let mensaje = `¿Estas seguro de reestablecer está cuota?`
-      if(confirm(mensaje)){
+      if(confirm(mensaje))
         window.location.href = `${base_url}cuotum/pendiente1/${cuota_id}/${credito_id}/${cuota_numcuota}`;
-      }
     }
 </script>
 
