@@ -416,8 +416,11 @@ class Venta_model extends CI_Model
     function get_ventas($condicion)
     {    
 
-        $sql = "select v.* from consventastotales v
-                where 1 = 1 ".$condicion."
+        $sql = "select v.*, b.banco_nombre
+                from consventastotales v
+                left join banco b on b.banco_id = v.banco_id
+                where 1 = 1 
+                ".$condicion."
                 order by v.venta_id desc";
 
         $ventas = $this->db->query($sql)->result_array();

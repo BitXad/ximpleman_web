@@ -32,6 +32,7 @@ class Venta extends CI_Controller{
         $this->load->model('Modelo_contrato_model');
         $this->load->model('Mesa_model');
         $this->load->model('Moneda_model');
+        $this->load->model('Banco_model');
         
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -108,6 +109,7 @@ class Venta extends CI_Controller{
         $data['promociones'] = $this->Promocion_model->get_promociones();
         $data['mesas'] = $this->Mesa_model->get_all_mesa();
         $data['usuario_id'] = $usuario_id;
+        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['tipousuario_id'] = $tipousuario_id;
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
@@ -319,7 +321,7 @@ class Venta extends CI_Controller{
         $sql = "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
                "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,".
                "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,".
-               "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id, orden_id, entrega_estadoid".
+               "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id".
                ") value(".$cad.")";
         
         $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
@@ -1180,7 +1182,7 @@ function edit($venta_id)
         
         $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
         $cliente_id = $venta["cliente_id"];       
-        
+        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['page_title'] = "Modificar Venta";
         
 //        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
@@ -1269,6 +1271,7 @@ function edit($venta_id)
         $credito_interes = $this->input->post('credito_interes');
         $venta_interes = $this->input->post('venta_interes');
         $cuotas = $this->input->post('cuotas');
+        $banco_id = $forma_id == 1 ? '0':$this->input->post('banco');
         
         $modificar_credito = $this->input->post('modificar_credito');
         
@@ -1417,7 +1420,8 @@ function edit($venta_id)
                 ",venta_efectivo = ".$venta_efectivo.
                 ",venta_cambio = ".$venta_cambio.                
                 ",tipotrans_id = ".$tipotrans_id.                
-                ",forma_id = ".$forma_id.                
+                ",forma_id = ".$forma_id.              
+                ",banco_id = ".$banco_id.              
                 " where venta_id = ".$venta_id;       
         $this->Venta_model->ejecutar($sql);        
         

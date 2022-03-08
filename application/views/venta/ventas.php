@@ -839,7 +839,7 @@ window.onkeydown = compruebaTecla;
                                         
                                         <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>-->
                                         <h5 class="modal-title" id="myModalLabel"><b>FORMA DE PAGO</b></h5>                                        
-                                        <select id="forma_pago"  name="forma_pago" class="btn btn-default btn-xs" onchange="mostrar_formapago()"  style="width: 120px;" >
+                                        <select id="forma_pago" id="forma_pago" name="forma_pago" class="btn btn-default btn-xs" onchange="mostrar_formapago(), mostrar('forma_pago','glosa_banco')"  style="width: 120px;" >
                                             <?php
                                                 foreach($forma_pago as $forma){ ?>
                                                     <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>                                                   
@@ -861,7 +861,29 @@ window.onkeydown = compruebaTecla;
                                          </select>
                                         </center>
                                     </div>
-                                    
+                                    <div class="col-md-12" style="display: block;"></div>
+                                    <div class="col-md-6" id="glosa_banco" style="display: none;">
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <label for="glosa_compra">Glosa</label>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label for="banco">Banco</label>
+                                                <div class="form-group">
+                                                    <select name="banco" id="banco" class="form-control">
+                                                        <?php foreach($bancos as $banco){ 
+                                                            extract($banco);
+                                                            $selected = ($banco_id == $compra['banco_id']) ? ' selected="selected"' : "";
+                                                            echo "<option value='$banco_id' $selected>$banco_nombre ($banco_numcuenta)</option>";
+                                                        } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <?php 
                                             $ocultar = "none";
                                         if ($parametro[0]["parametro_modulorestaurante"]==1){    

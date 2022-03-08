@@ -2697,6 +2697,7 @@ function registrarventa(cliente_id)
     var tiposerv_id = document.getElementById('tiposerv_id').value;
     var venta_numeromesa = document.getElementById('venta_numeromesa').value;
     var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
+    let banco_id = forma_id == 1 ? '0':$('#banco').val();
    
     //alert(venta_efectivo);
     
@@ -2722,7 +2723,7 @@ function registrarventa(cliente_id)
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
-                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id+"";
+                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id+","+banco_id+"";
         
     if (tipo_transaccion==2){
         var cuotas = document.getElementById('cuotas').value;
@@ -2772,7 +2773,7 @@ function registrarventa(cliente_id)
         
 }
 
-function finalizarventa()
+function finalizarventa(){ 
 {    
     var monto = document.getElementById('venta_totalfinal').value;
     var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value;
@@ -3130,6 +3131,7 @@ function tabla_ventas(filtro)
                     
                     html += "                       <td align='center'  style='padding:0;' bgcolor='"+v[i]['estado_color']+"'>"+v[i]['forma_nombre'];
                     html += "                           <br> "+v[i]['tipotrans_nombre'];
+                    html += "                           <br><span><b>"+(v[i]['banco_nombre'] == null ? '':v[i]['banco_nombre'])+"</b></span> ";
                     html += "                           <br><br><span class='btn btn-facebook btn-xs' ><b>"+v[i]['estado_descripcion']+"</b></span> ";
                     html += "                       </td>";
 
@@ -3901,7 +3903,7 @@ function modificar_venta(cliente_id)
     var tipo_transaccion = document.getElementById('tipo_transaccion').value;
     var forma_pago = document.getElementById('forma_pago').value;
     var facturado = document.getElementById('facturado').value;
-    
+    let banco = $('#banco').val();
 
         $.ajax({url: controlador,
             type:"POST",
@@ -3911,7 +3913,7 @@ function modificar_venta(cliente_id)
             tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
             venta_total:venta_total, credito_interes:credito_interes,
             facturado:facturado,venta_fecha:venta_fecha, tipo_transaccion:tipo_transaccion, forma_pago:forma_pago,
-            modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio},
+            modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio, banco:banco},
             success:function(respuesta){
                 //window.opener.location.reload();
                 window.close();
@@ -4989,4 +4991,10 @@ function registrarpuntos(cliente_id, venta_total){
             
         }
     });
+}
+
+
+function mostrar(forma_id,glosa_banco){
+    let forma = $(`#${forma_id}`).val();
+    $(`#${glosa_banco}`).css('display',forma != 1 ? 'block':'none');
 }
