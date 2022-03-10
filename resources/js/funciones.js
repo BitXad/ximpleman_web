@@ -2773,8 +2773,7 @@ function registrarventa(cliente_id)
         
 }
 
-function finalizarventa(){ 
-{    
+function finalizarventa(){
     var monto = document.getElementById('venta_totalfinal').value;
     var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value;
     //var base_url = document.getElementById('base_url').value;
