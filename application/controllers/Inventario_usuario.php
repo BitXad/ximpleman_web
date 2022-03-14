@@ -89,42 +89,38 @@ class Inventario_usuario extends CI_Controller{
     }  
 
     function asignar()
-    {   
-        $fecha = $this->input->post('fecha');
-        $hora = $this->input->post('hora');
+    {
+        $fecha   = $this->input->post('fecha');
+        $hora    = $this->input->post('hora');
         $usuario = $this->input->post('usuario');
-        $filtro = $this->input->post('filtro');
+        $filtro  = $this->input->post('filtro');
+        if($filtro!=""){
+            $datos = $this->Venta_model->get_busqueda($filtro);
+            echo json_encode($datos);
+            $borrar="DELETE FROM inventario_usuario WHERE usuario_id=".$usuario." and inventario_fecha='".$fecha."' ";
+            $this->db->query($borrar);
+            foreach ($datos as $dat) {
+              $params = array(
+                    'producto_id' => $dat['producto_id'],
+                    'inventario_fecha' => $fecha,
+                    'inventario_hora' => $hora,
+                    'inventario_cantidad' => $dat['cantidades'],
+                    'inventario_costo' => $dat['producto_costo'],
+                    'inventario_ventas' => 0,
+                    'inventario_pedidos' => 0,
+                    'inventario_devoluciones' => 0,
+                    'inventario_saldo' => $dat['cantidades'],
+                    'usuario_id' => $usuario,
+                );
 
-        if ($filtro!=""){
-        $datos = $this->Venta_model->get_busqueda($filtro);
-        echo json_encode($datos);
-        $borrar="DELETE FROM inventario_usuario WHERE usuario_id=".$usuario." and inventario_fecha='".$fecha."' ";
-        $this->db->query($borrar);
-        foreach ($datos as $dat) {
-          $params = array(
-                'producto_id' => $dat['producto_id'],
-                'inventario_fecha' => $fecha,
-                'inventario_hora' => $hora,
-                'inventario_cantidad' => $dat['cantidades'],
-                'inventario_costo' => $dat['producto_costo'],
-                'inventario_ventas' => 0,
-                'inventario_pedidos' => 0,
-                'inventario_devoluciones' => 0,
-                'inventario_saldo' => $dat['cantidades'],
-                'usuario_id' => $usuario,
-            );
-            
-            $inventario_usuario_id = $this->Inventario_usuario_model->add_inventario_usuario($params);
+                $inventario_usuario_id = $this->Inventario_usuario_model->add_inventario_usuario($params);
 
+            }
+             $entrega="UPDATE venta v SET entrega_id = 1, v.entrega_usuarioid=".$usuario." WHERE 1=1 ".$filtro."";
+             $this->db->query($entrega);
         }
-         $entrega="UPDATE venta v SET entrega_id = 1, v.entrega_usuarioid=".$usuario." WHERE 1=1 ".$filtro."";
-         $this->db->query($entrega);
     }
-
-    }  
-
- 
-
+    
     /*
      * Editing a inventario_usuario
      */

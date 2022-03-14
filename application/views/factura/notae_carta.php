@@ -225,9 +225,13 @@ border-bottom : 1px solid #aaa;
     <tr style="border-top-style: solid">
         <td align="left">
                 USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
-                <?php if ($venta[0]['pedido_id']>=1) { ?>
+                <?php if($venta[0]['pedido_id']>=1) { ?>
                 PED.: <b><?php echo $venta[0]['pedido_id']; ?></b><br>
-                <?php }else{ ?>
+                <?php
+                    if($venta[0]['entrega_usuarioid']>0){
+                        echo "ENTREGADO POR: <b>".$venta[0]['usuario_entrega']."</b><br>";
+                    }
+                }else{ ?>
                 COD.: <b><?php echo $venta[0]['venta_id']; ?></b>
                 <?php
                 if($parametro[0]['parametro_puntos'] >0){

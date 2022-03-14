@@ -253,13 +253,15 @@ border-bottom : 1px solid #aaa;
         <td align="left" style="background-color: #aaa !important; -webkit-print-color-adjust: exact; line-height: 10px;">
                             
                 USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
-                COD.: <b><?php echo $venta[0]['venta_id']; ?></b>
+                COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
                 <?php
+                if($venta[0]['entrega_usuarioid']>0){
+                    echo "ENTREGADO POR: <b>".$venta[0]['usuario_entrega']."</b><br>";
+                }
                 if($parametro[0]['parametro_puntos'] >0){
-                    echo "PUNTOS: <b>".$venta[0]['cliente_puntos']."</b>";
+                    echo "PUNTOS: <b>".$venta[0]['cliente_puntos']."</b><br>";
                 }
                 ?>
-                <br>
                 TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b><br>
                 CUOTA INIC. <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
                 SALDO <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>                

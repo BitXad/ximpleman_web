@@ -191,7 +191,7 @@ function ventas_dia($estado)
                 u.usuario_nombre,t.tipotrans_nombre,z.zona_nombre,r.credito_id,r.compra_id,r.credito_monto,
                 r.credito_cuotainicial,r.credito_interesproc,r.credito_interesmonto,r.credito_numpagos,
                 r.credito_fechalimite,r.credito_fecha,r.credito_hora,r.credito_tipo,r.credito_tipointeres,r.servicio_id,
-                m.moneda_descripcion
+                m.moneda_descripcion, ue.usuario_nombre as usuario_entrega
 
 
                 from venta v
@@ -201,6 +201,7 @@ function ventas_dia($estado)
                 left join zona z on z.zona_id = c.zona_id
                 left join credito r on r.venta_id = v.venta_id
                 left join moneda m on m.moneda_id = v.moneda_id
+                left join usuario ue on v.entrega_usuarioid = ue.usuario_id
                 where v.venta_id = ".$venta_id;
                 
         

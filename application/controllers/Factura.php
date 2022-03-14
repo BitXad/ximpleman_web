@@ -1165,21 +1165,21 @@ class Factura extends CI_Controller{
     function notae_boucher($venta_id)
     {
         if($this->acceso(21)){
-        $usuario_id = $this->session_data['usuario_id'];
-        
-        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
-        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
-        $data['page_title'] = "Recibo";
+            $usuario_id = $this->session_data['usuario_id'];
 
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-   
-        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-  
-        $data['_view'] = 'factura/notae_boucher';
-        $this->load->view('layouts/main',$data);
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+            $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+            $data['page_title'] = "Recibo";
+
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+
+            $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+
+            $data['_view'] = 'factura/notae_boucher';
+            $this->load->view('layouts/main',$data);
         }
     }
     /* nota de entrega en hojas preimpresas.... */
