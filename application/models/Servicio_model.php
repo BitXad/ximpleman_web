@@ -106,7 +106,7 @@ class Servicio_model extends CI_Model
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
                 ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,ds.detalleserv_fpagoacuenta,
                 es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
-                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre, fp.forma_nombre, tt.tipotrans_nombre
+                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre, fp.forma_nombre, tt.tipotrans_nombre, b.banco_nombre
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -119,6 +119,7 @@ class Servicio_model extends CI_Model
             LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
             LEFT JOIN forma_pago fp on ds.forma_id = fp.forma_id
             LEFT JOIN tipo_transaccion tt on ds.tipotrans_id = tt.tipotrans_id
+            left join banco b on ds.banco_id = b.banco_id
             WHERE
                (c.cliente_nombre like '%".$parametro."%' or s.servicio_id = '".$parametro."'
                    or e.estado_descripcion like '%".$parametro."%')
@@ -216,8 +217,8 @@ class Servicio_model extends CI_Model
      */
     function get_all_servicios_pendientes()
     {
-        $servicio = $this->db->query("
-            SELECT
+        $servicio = $this->db->query(
+            "SELECT
                 s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
                 i.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
                 c.cliente_nit, c.cliente_razon, f.factura_id,
@@ -228,7 +229,8 @@ class Servicio_model extends CI_Model
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
                 ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id as esteservicio_id,ds.detalleserv_fpagoacuenta,
                 es.estado_color as esteestado_color, es.estado_descripcion as esteestado_descripcion,
-                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre, fp.forma_nombre, tt.tipotrans_nombre
+                ds.detalleserv_entregadoa, u.usuario_nombre as esteusuario_nombre, fp.forma_nombre, tt.tipotrans_nombre,
+                b.banco_nombre,fp.forma_nombre 
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -241,6 +243,7 @@ class Servicio_model extends CI_Model
             LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
             LEFT JOIN forma_pago fp on ds.forma_id = fp.forma_id
             LEFT JOIN tipo_transaccion tt on ds.tipotrans_id = tt.tipotrans_id
+            left join banco b on ds.banco_id = b.banco_id 
             WHERE
                 s.estado_id = 5
             group by ds.detalleserv_id

@@ -335,7 +335,7 @@ class Cuotum extends CI_Controller{
             $credito_id = $this->input->post('credito_id');
             $credito_tipointeres = $this->input->post('credito_tipointeres');
             $cuota_capital = $this->input->post('cuota_capital');
-            $banco_id = $this->input->post('forma_pago') != 1 ? $this->input->post('banco'):'';
+            $banco_id = $this->input->post('forma_pago') != 1 ? $this->input->post('banco'):'0';
 
   $si_orden=$this->input->post('cuota_ordenpago');     
    if ($si_orden==1 ) {
@@ -434,7 +434,7 @@ class Cuotum extends CI_Controller{
 
                 $cuota_numcuota = $this->input->post('cuota_numcuota');
                 
-                  $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora, banco_id) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.",$banco_id)";
+                  $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
                 $this->db->query($cuota);
   
                
@@ -538,7 +538,7 @@ class Cuotum extends CI_Controller{
         $interes = $this->input->post('credito_interesproc');
         $cuota_capital = $this->input->post('cuota_capital');
         $facturado = $this->input->post('factura');
-        $banco_id = $this->input->post('forma_pago') != 1 ? $this->input->post('banco'):'';
+        $banco_id = $this->input->post('forma_pago') != 1 ? $this->input->post('banco'):'0';
 
         /////////////////la facturaaaa//////////////////
             if($facturado=="on"){
@@ -695,6 +695,7 @@ class Cuotum extends CI_Controller{
                     'cuota_glosa' => $this->input->post('cuota_glosa'),
                     'forma_id' => $this->input->post('forma_pago'),
                     'cuota_forma_glosa' => $this->input->post('cuota_forma_glosa'),
+                    'banco_id' => $banco_id
                 );
 
 
@@ -723,7 +724,7 @@ class Cuotum extends CI_Controller{
 
                 $cuota_numcuota = $this->input->post('cuota_numcuota');
                 
-                  $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora, banco_id) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.", $banco_id)";
+                  $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
                 $this->db->query($cuota);
   
                
@@ -742,7 +743,7 @@ class Cuotum extends CI_Controller{
                 $cuota_numcuota = $this->input->post('cuota_numcuota');
                 $total =  $cuota_subtotal - $descuento;
 
-                 $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora, banco_id) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$variable.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.",$banco_id)";
+                 $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$variable.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
                 $this->db->query($cuota);
                
               
@@ -840,7 +841,7 @@ class Cuotum extends CI_Controller{
         if($this->acceso(41)){
             $usuario_id = $this->session_data['usuario_id'];
             
-            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00', forma_id=null, cuota_numercibo = null WHERE cuota.cuota_id=".$cuota_id." ";
+            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00', forma_id=null, cuota_numercibo = null, banco_id = 0 WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
             $ptq="DELETE FROM cuota WHERE cuota.cuota_numcuota = ".$numcuota." and cuota_id > ".$cuota_id." and cuota.credito_id=".$credito_id." and cuota.estado_id=8 ";
             $this->db->query($ptq);
@@ -866,7 +867,7 @@ class Cuotum extends CI_Controller{
         if($this->acceso(47)){
             $usuario_id = $this->session_data['usuario_id'];
             
-            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00', forma_id=null, cuota_numercibo = null WHERE cuota.cuota_id=".$cuota_id." ";
+            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00', forma_id=null, cuota_numercibo = null, banco_id = 0 WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
             $ptq="DELETE FROM cuota WHERE cuota.cuota_numcuota = ".$numcuota." and cuota_id > ".$cuota_id." and cuota.credito_id=".$credito_id." and cuota.estado_id=8 ";
             $this->db->query($ptq);

@@ -864,7 +864,7 @@ function fechadeservicio(elfiltro, busquedade){
     }else if(busquedade == 1){
         $("#select_servicio").val('6')
         controlador = base_url+'servicio/buscarservicios/';
-        filtro = document.getElementById('filtrar').value
+        filtro = $('#filtrar').val();
     }else if(elfiltro == null){
         $("#select_servicio").val('6')
         //$("#select_servicio option[value='6']").attr("selected", true);
@@ -882,7 +882,9 @@ function fechadeservicio(elfiltro, busquedade){
             success:function(resul){
                 
                 $("#encontrados").val(" 0");
-                var registros =  JSON.parse(resul);
+                var datos =  JSON.parse(resul);
+                let registros = datos['datos'];
+                let bancos = datos['bancos']
                 /*var resultado =  JSON.parse(resul);
                 var registros = resultado.servicios;
                 var detalles = resultado.detalles;*/
@@ -2345,7 +2347,7 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<div class='text-center' style='padding-bottom: 5px'>";
                         html += "<div class='col-md-6'>";
                         html += "<h5 class='modal-title' id='myModalLabel'><b>FORMA DE PAGO</b></h5>";
-                        html += "<select id='forma_pago"+registros[i]['detalleserv_id']+"' name='forma_pago"+registros[i]['detalleserv_id']+"' class='btn btn-facebook btn-xs form-control' style='height: 22px'>"; //onchange='mostrar_formapago()'
+                        html += "<select id='forma_pago"+registros[i]['detalleserv_id']+"' name='forma_pago"+registros[i]['detalleserv_id']+"' class='btn btn-facebook btn-xs form-control' style='height: 22px' onclick=mostrar("+registros[i]['detalleserv_id']+")>"; //onchange='mostrar_formapago()'
                         for (var f=0; f<h; f++) {
                             html += "<option value='"+all_forma_pago[f]["forma_id"]+"'>"+all_forma_pago[f]["forma_nombre"]+"</option>";
                         }
@@ -2359,6 +2361,24 @@ function fechadeservicio(elfiltro, busquedade){
                         }
                         html += "</select>";
                         html += "</div>";
+                        html += `<div class="col-md-12" id="banco_glosa${registros[i]['detalleserv_id']}" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <label for="glosa_${registros[i]['detalleserv_id']}">Glosa</label>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="glosa_${registros[i]['detalleserv_id']}" id="glosa_${registros[i]['detalleserv_id']}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label for="banco_${registros[i]['detalleserv_id']}">Banco</label>
+                                            <div class="for-group">
+                                                <select id="banco_${registros[i]['detalleserv_id']}" name="banco_${registros[i]['detalleserv_id']}" class="form-control">
+                                                    ${bancos.map( (banco) =>{ return `<option value="${banco.banco_id}">${banco.banco_nombre} (${banco.banco_numcuenta})</option>`; })}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
                         html += "</div>";
                         
                         html +="<table style='width: 100%'>";
@@ -2531,7 +2551,11 @@ function fechadeservicio(elfiltro, busquedade){
                         
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>";
                         html += "<span class='text-bold' style='font-size: 12px'>"+registros[i]["estado_descripcion"]+"</span><br>";
-                        html += "<span style='font-size: 10px'><span class='text-bold'>Serv.:</span>"+registros[i]["tiposerv_descripcion"]+"</span>";
+                        html += "<span style='font-size: 10px'><span class='text-bold'>Serv.:</span>"+registros[i]["tiposerv_descripcion"]+"</span><br>";
+                        if(registros[i]['estado_id'] == 7){// 7 entregado
+                            html += "<span style='font-size: 10px'><span class='text-bold'>Trans.:</span>"+registros[i]["forma_nombre"]+"</span><br>";
+                            html += "<span style='font-size: 10px'><span class='text-bold'>Banco:</span>"+registros[i]["banco_nombre"]+"</span>";
+                        }
                         html += "</td>";
                         
                         var servtotal = "";
@@ -4350,6 +4374,8 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
     var detalleserv_detalleexterno = document.getElementById('detalleserv_detalleexternot'+detalleserv_id).value;
     var detalleserv_total = document.getElementById('detalleserv_totalt'+detalleserv_id).value;
     var detalleserv_saldo = document.getElementById('detalleserv_saldot'+detalleserv_id).value;
+    let banco_id = $(`#banco_${detalleserv_id}`).val();
+    let glosa = $(`#glosa_${detalleserv_id}`).val();
     //var tipoimpresora = document.getElementById('tipoimpresora').value;
     var esdata = "";
     if(tipousuario_id ==1){
@@ -4362,7 +4388,7 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
                   detalleserv_detalleexterno:detalleserv_detalleexterno, detalleserv_total:detalleserv_total,
                   este_responsable_regent:este_responsable_regent,
                   forma_pago:forma_pago, tipo_transaccion:tipo_transaccion, cuotas:cuotas, modalidad:modalidad,
-                  dia_pago:dia_pago, credito_interes:credito_interes, cuota_inicial:cuota_inicial, fecha_inicio:fecha_inicio};
+                  dia_pago:dia_pago, credito_interes:credito_interes, cuota_inicial:cuota_inicial, fecha_inicio:fecha_inicio,banco_id:banco_id,glosa:glosa};
     }else{
         esdata = {detalleserv_entregadoa:detalleserv_entregadoa, detalleserv_id:detalleserv_id,
                   detalleserv_saldo:detalleserv_saldo, servicio_id:servicio_id, detalleserv_diagnosticot:detalleserv_diagnosticot,
@@ -4371,10 +4397,12 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
                   detalleserv_precioexterno:detalleserv_precioexterno, 
                   detalleserv_detalleexterno:detalleserv_detalleexterno, detalleserv_total:detalleserv_total,
                   forma_pago:forma_pago, tipo_transaccion:tipo_transaccion, cuotas:cuotas, modalidad:modalidad,
-                  dia_pago:dia_pago, credito_interes:credito_interes, cuota_inicial:cuota_inicial, fecha_inicio:fecha_inicio};
+                  dia_pago:dia_pago, credito_interes:credito_interes, cuota_inicial:cuota_inicial, fecha_inicio:fecha_inicio,banco_id:banco_id,glosa:glosa};
     }
     
     $('#modalregistrarentregaserv'+detalleserv_id).modal('hide');
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
         $.ajax({url: controlador,
             type:"POST",
             data:esdata,
@@ -4503,6 +4531,7 @@ function registrarservicio_proceso(servicio_id, detalleserv_id){
     }
     $(`#modalregistrarprocesar${detalleserv_id}`).modal('hide');
     $('body').removeClass('modal-open');//remueve la clase modal-open(fondo oscuro)
+    $('.modal-backdrop').remove();
     $.ajax({url: controlador,
         type:"POST",
         data:{detalleserv_id:detalleserv_id, servicio_id:servicio_id, este_responsable:este_responsable},
@@ -4649,10 +4678,10 @@ function mostrarinsumosdetalleserv(detalleserv_id){
 
 function mostrarinsumosdetalleservt(detalleserv_id){
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'servicio/obtenerinsumosusados/'+detalleserv_id;
+    var controlador = base_url+'servicio/obtenerinsumosusados';
     $.ajax({url: controlador,
            type:"POST",
-           data:{},
+           data:{detalleserv_id:detalleserv_id},
            success:function(respuesta){
                var registros =  JSON.parse(respuesta);
                var res = "";
@@ -4989,4 +5018,9 @@ function load_date_modal(servicio_id,detalleserv_id,detalleserv_descripcion,clie
     $('#acuenta_servicio_id').val(servicio_id);
     $('#acuenta_detalleserv_id').val(detalleserv_id);
     $('#monto_acuenta').val("")
+}
+
+function mostrar(detalleserv_id){
+    let forma = $(`#forma_pago${detalleserv_id}`).val();
+    $(`#banco_glosa${detalleserv_id}`).css('display', forma != 1 ? 'block':'none');
 }

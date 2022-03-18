@@ -1,4 +1,4 @@
-<!----------------------------- script buscador --------------------------------------->
+    <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />

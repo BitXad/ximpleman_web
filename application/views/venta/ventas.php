@@ -744,7 +744,7 @@ window.onkeydown = compruebaTecla;
 
             <center>
             <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" onclick="focus_efectivo()" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+            <a href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar Venta <br>
             </a>
             <?php } ?>

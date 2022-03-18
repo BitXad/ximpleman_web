@@ -18,6 +18,7 @@ class Reportes extends CI_Controller{
         $this->load->model('Inventario_model');
         $this->load->model('Compra_model');
         $this->load->model('Parametro_model');
+        $this->load->model('Banco_model');
         $this->load->model('Categoria_producto_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -407,59 +408,53 @@ function torta3($anio,$mes)
             
     }
 
-    function buscarporfecha()
-    {
+    function buscarporfecha(){
         if($this->acceso(141)){
-            
-        if ($this->input->is_ajax_request()) {
+            if ($this->input->is_ajax_request()) {
+                $fecha1 = $this->input->post('fecha1');   
+                $fecha2 = $this->input->post('fecha2'); 
+                $usuario = $this->input->post('usuario_id'); 
+                $valfecha1 = "";
+                $valfecha2 = "";
+                $usuario_id = "";
 
-            $fecha1 = $this->input->post('fecha1');   
-            $fecha2 = $this->input->post('fecha2'); 
-            $usuario = $this->input->post('usuario_id'); 
-            $valfecha1 = "";
-            $valfecha2 = "";
-            $usuario_id = "";
+                if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
+                    $valfecha1 = $fecha1;
+                    $valfecha2 = $fecha2;
+                }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
+                    $valfecha1 = $fecha1;
+                    $valfecha2 = $fecha1;
+                }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
+                    $valfecha1 = $fecha2;
+                    $valfecha2 = $fecha2;
+                }else{
+                    $fecha1 = null;
+                    $fecha2 = null;
+                }
 
-            if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
-                $valfecha1 = $fecha1;
-                $valfecha2 = $fecha2;
-            }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
-                $valfecha1 = $fecha1;
-                $valfecha2 = $fecha1;
-            }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
-                $valfecha1 = $fecha2;
-                $valfecha2 = $fecha2;
-            }else{
-                $fecha1 = null;
-                $fecha2 = null;
-            }
-
-            if($usuario >  0){
-                $usuario_id = $usuario;
-            }else{
-                $usuario_id = 0;
-            }
-            
-                $datos = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
-            /*if ($fecha1 == 0){
+                if($usuario >  0){
+                    $usuario_id = $usuario;
+                }else{
+                    $usuario_id = 0;
+                }
                 
-            }else{
-                $datos = $this->Reporte_ing_egr_model->get_reportemovimientodia();
+                $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
+                $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+                /*if ($fecha1 == 0){
+                    
+                }else{
+                    $datos = $this->Reporte_ing_egr_model->get_reportemovimientodia();
+                    
+                }*/
                 
-            }*/
-            
-            /*$detalles = $this->Reporte_ing_egr_model->get_detalleventas_reporte($valfecha1, $valfecha2, $usuario_id);
-            $ventas   = $this->Reporte_ing_egr_model->get_reportes($valfecha1, $valfecha2, $usuario_id);
-            $datos=array("ventas" => $ventas, "detalles" => $detalles);*/
-            echo json_encode($datos);
-        }   
-        else
-        {                 
-            show_404();
+                /*$detalles = $this->Reporte_ing_egr_model->get_detalleventas_reporte($valfecha1, $valfecha2, $usuario_id);
+                $ventas   = $this->Reporte_ing_egr_model->get_reportes($valfecha1, $valfecha2, $usuario_id);
+                $datos=array("ventas" => $ventas, "detalles" => $detalles);*/
+                echo json_encode($data  );
+            }else{                 
+                show_404();
+            }
         }
-        
-        }
-            
     }
     
     function buscardiario()

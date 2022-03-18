@@ -10,6 +10,7 @@ class Servicio extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Servicio_model');
+        $this->load->model('Banco_model');
         $this->load->helper('numeros');
         $this->load->library('ControlCode'); // para generar codigo
         if ($this->session->userdata('logged_in')) {
@@ -590,12 +591,13 @@ class Servicio extends CI_Controller{
             $parametro = $this->input->post('filtro');   
             
             if ($parametro!=""){
-                $datos = $this->Servicio_model->get_busqueda_servicio_parametro($parametro);
+                $data['datos'] = $this->Servicio_model->get_busqueda_servicio_parametro($parametro);
                 //$datos = $this->Inventario_model->get_inventario_bloque();
             }else{
-                $datos = $this->Servicio_model->get_all_servicios_pendientes();
+                $data['datos'] = $this->Servicio_model->get_all_servicios_pendientes();
             }
-            echo json_encode($datos);
+            $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+            echo json_encode($data);
         }
         else
         {                 
@@ -777,9 +779,10 @@ class Servicio extends CI_Controller{
         if($this->input->is_ajax_request()){
             $filtro = $this->input->post('filtro');
             //if ($filtro!=""){
-            $datos = $this->Servicio_model->get_busqueda_servicio_filtro($filtro);
+            $data['datos'] = $this->Servicio_model->get_busqueda_servicio_filtro($filtro);
+            $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
             //$datos = $this->Inventario_model->get_inventario_bloque();
-            echo json_encode($datos);
+            echo json_encode($data);
             /*}
             else echo json_encode(null);*/
         }else{                 
@@ -1083,8 +1086,9 @@ class Servicio extends CI_Controller{
         if($this->acceso(69)){
         if ($this->input->is_ajax_request()) {
             
-            $datos = $this->Servicio_model->get_all_servicios_pendientes();
-            echo json_encode($datos);
+            $data['datos'] = $this->Servicio_model->get_all_servicios_pendientes();
+            $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+            echo json_encode($data);
             /*$servicios = $this->Servicio_model->get_all_servicios_pendientes();
             
             $this->load->model('Detalle_serv_model');
@@ -1393,6 +1397,9 @@ class Servicio extends CI_Controller{
                     $fecha_entregado = date('Y-m-d');
                     $hora_entregado  = date('H:i:s');
                     $tipousuario_id = $this->session_data['tipousuario_id'];
+                    $forma_id = $this->input->post('forma_pago');
+                    $banco_id = $forma_id == 1 ? '0':$this->input->post('banco_id');
+                    $glosa = $forma_id == 1 ? '':$this->input->post('glosa');
                     if($tipousuario_id == 1){
                         $params = array(
                             'responsable_id'       => $this->input->post('este_responsable_regent'),
@@ -1410,6 +1417,8 @@ class Servicio extends CI_Controller{
                             'detalleserv_detalleexterno'  => $this->input->post('detalleserv_detalleexterno'),
                             'forma_id'  => $this->input->post('forma_pago'),
                             'tipotrans_id'  => $this->input->post('tipo_transaccion'),
+                            'banco_id'=> $banco_id,
+                            'glosa' => $glosa,
                         );
                     }else{
                         $params = array(
@@ -1427,6 +1436,8 @@ class Servicio extends CI_Controller{
                             'detalleserv_detalleexterno'  => $this->input->post('detalleserv_detalleexterno'),
                             'forma_id'  => $this->input->post('forma_pago'),
                             'tipotrans_id'  => $this->input->post('tipo_transaccion'),
+                            'banco_id'=> $banco_id,
+                            'glosa' => $glosa,
                         );
                     }
                     $this->load->model('Detalle_serv_model');
