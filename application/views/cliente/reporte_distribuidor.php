@@ -35,6 +35,25 @@
     }
     
 </style>
+<style>
+    .labj {
+        border-bottom: 1.5px solid black; border-right: 0px; border-top: 0px;
+    }
+    @media print {
+        
+        .pintado {
+            background-color: rgba(169,175,232) !important;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+        }
+        .boxtabla {
+            background-color: rgba(169,175,232) !important;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+        }
+    }
+
+</style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php //echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">-->
 <link href="<?php echo base_url('resources/css/mitabladetalleimpresion.css'); ?>" rel="stylesheet">
@@ -46,12 +65,10 @@
     REPORTE DE ENTREGAS
 </div>
 <div class="row cabeceraprint" style="display: none" id="contenedortitulo">
- <table class="table" style="width: 100%; padding: 0;" >
-    <tr>
-        <td style="width: 25%; padding: 0; line-height:10px;" >
-                
-            <center>
-                               
+    <table class="table" style="width: 100%; padding: 0;" >
+        <tr>
+            <td style="width: 25%; padding: 0; line-height:10px;" >
+                <center>
                     <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
@@ -60,42 +77,26 @@
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
-                
+                </center>                      
+            </td>
 
-            </center>                      
-        </td>
-                   
-        <td style="width: 35%; padding: 0" > 
-            <center>
-            
-                <br><br>
-                <font size="3" face="arial"><b>REPORTE DE ENTREGAS</b></font> <br>
-                
-                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
-
-            </center>
-        </td>
-        <td style="width: 20%; padding: 0" >
+            <td style="width: 35%; padding: 0" > 
                 <center>
-                         
-                             
-                            
-                         
-                        
+
+                    <br><br>
+                    <font size="3" face="arial"><b>REPORTE DE ENTREGAS</b></font> <br>
+
+                    <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+
                 </center>
-        </td>
-    </tr>
-     
-    
-    
-</table>  <br> 
-   
+            </td>
+            <td style="width: 20%; padding: 0" >
+                <center></center>
+            </td>
+        </tr>
+    </table>
 </div>
 
-<!--- ?php echo form_open('pedido/mapa_paraentregas'); ?--->
-
-
-<br>
 Desde:<span id="fechade"><font size="1" face="Arial"></font></span>        
 Hasta:<span id="fechaha"><font size="1" face="Arial"></font></span>   <br>     
 Distribuidor:<span id="usuru"><font size="1" face="Arial"></font> <?php echo $usuario_nombre; ?></span>  

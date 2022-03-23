@@ -120,7 +120,7 @@ function buscarventasdist(){
                         }
 
                         ventatotal = ventatotal + Number(registros[i]["venta_total"]);
-                        html += "<tr style='background-color: "+color+"'>";
+                        html += "<tr class='labj' style='background-color: "+color+"'>";
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><b>"+registros[i]["cliente_nombre"]+"</b><br>"+registros[i]["cliente_nombrenegocio"]+"</td>";
