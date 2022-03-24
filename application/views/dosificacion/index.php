@@ -1,43 +1,27 @@
-<!----------------------------- script buscador --------------------------------------->
-<script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-</script>   
-<!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 
 <div class="box-header">
-                <h3 class="box-title">Dosificación</h3>
-            	<div class="box-tools">
-                    <?php
-                    if($newdosif == 0){
-                    ?>
-                        <a href="<?php echo site_url('dosificacion/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
-                    <?php } ?>
-                    <?php
-                    if($newdosif == 1){
-                    ?>
-                        <a href="<?php echo site_url('dosificacion/edit/'.$dosificacion['dosificacion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span>Editar</a> 
-                    <?php } ?>
-                </div>
-                
+    <h3 class="box-title">Dosificación</h3>
+    <div class="box-tools">
+        <?php
+        if($newdosif == 0){
+        ?>
+            <a href="<?php echo site_url('dosificacion/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
+        <?php } ?>
+        <?php
+        if($newdosif == 1){
+        ?>
+            <a href="<?php echo site_url('dosificacion/edit/'.$dosificacion['dosificacion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span>Editar</a> 
+        <?php } ?>
+    </div>
 </div>
 
 <style type="text/css">
     .linea:hover {
-  background-color: #dddddd;
-}
+        background-color: #dddddd;
+    }
 </style>
 <div class="row">
     <div class="box">
@@ -143,14 +127,39 @@
             <div class="col-md-2">
                 <?php echo $dosificacion['estado_descripcion']; ?>
             </div>
-             
         </div>
         <div class="col-md-12 linea">
-        <div class="col-md-1">
+            <div class="col-md-1">
                 <label class="control-label">Actividad Secundaria</label>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <?php echo $dosificacion['dosificasion_actividadsec']; ?>
+            </div>
+            <div class="col-md-1">
+                <label class="control-label">Token Delegado</label>
+            </div>
+            <div class="col-md-7" style="word-break: break-word;">
+                <?php echo $dosificacion['dosificacion_tokendelegado']; ?>
+            </div>
+        </div>
+        <div class="col-md-12 linea">
+            <div class="col-md-1">
+                <label class="control-label">Ambiente</label>
+            </div>
+            <div class="col-md-3">
+                <?php echo $dosificacion['dosificacion_ambiente']; ?>
+            </div>
+            <div class="col-md-1">
+                <label class="control-label">CUIS (Código Único de Inicio de Sistemas)</label>
+            </div>
+            <div class="col-md-3">
+                <?php echo $dosificacion['dosificacion_cuis']; ?>
+            </div>
+           <div class="col-md-1">
+                <label class="control-label">Estado</label>
+            </div>
+            <div class="col-md-2">
+                <?php echo $dosificacion['estado_descripcion']; ?>
             </div>
         </div>
     </div>

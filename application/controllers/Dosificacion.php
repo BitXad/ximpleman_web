@@ -75,6 +75,15 @@ class Dosificacion extends CI_Controller{
                 'dosificacion_sfc'         => $this->input->post('dosificacion_sfc'),
                 'dosificacion_actividad'   => $this->input->post('dosificacion_actividad'),
                 'dosificasion_actividadsec' => $this->input->post('dosificacion_actividadsec'),
+                'dosificacion_tokendelegado' => $this->input->post('dosificacion_tokendelegado'),
+                'dosificacion_ambiente' => $this->input->post('dosificacion_ambiente'),
+                'dosificacion_cuis' => $this->input->post('dosificacion_cuis'),
+                'dosificacion_cufd' => $this->input->post('dosificacion_cufd'),
+                'dosificacion_modalidad' => $this->input->post('dosificacion_modalidad'),
+                'dosificacion_codsistema' => $this->input->post('dosificacion_codsistema'),
+                'dosificacion_puntoventa' => $this->input->post('dosificacion_puntoventa'),
+                'dosificacion_sectoreconomico' => $this->input->post('dosificacion_sectoreconomico'),
+                'dosificacion_email' => $this->input->post('dosificacion_email'),
             );
             
             $dosificacion_id = $this->Dosificacion_model->add_dosificacion($params);
@@ -123,6 +132,15 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_actividad' => $this->input->post('dosificacion_actividad'),
                     'dosificacion_fechalimite' => $this->input->post('dosificacion_fechalimite'),
                     'dosificasion_actividadsec' => $this->input->post('dosificasion_actividadsec'),
+                    'dosificacion_tokendelegado' => $this->input->post('dosificacion_tokendelegado'),
+                    'dosificacion_ambiente' => $this->input->post('dosificacion_ambiente'),
+                    'dosificacion_cuis' => $this->input->post('dosificacion_cuis'),
+                    'dosificacion_cufd' => $this->input->post('dosificacion_cufd'),
+                    'dosificacion_modalidad' => $this->input->post('dosificacion_modalidad'),
+                    'dosificacion_codsistema' => $this->input->post('dosificacion_codsistema'),
+                    'dosificacion_puntoventa' => $this->input->post('dosificacion_puntoventa'),
+                    'dosificacion_sectoreconomico' => $this->input->post('dosificacion_sectoreconomico'),
+                    'dosificacion_email' => $this->input->post('dosificacion_email'),
                 );
 
                 $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);            
