@@ -148,13 +148,13 @@
                                 <input type="text" name="dosificacion_puntoventa" value="<?php echo ($this->input->post('dosificacion_puntoventa') ? $this->input->post('dosificacion_puntoventa') : ''); ?>" class="form-control" id="dosificacion_puntoventa" />
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <label for="dosificacion_sectoreconomico" class="control-label">Sector Economico</label>
                             <div class="form-group">
                                 <input type="text" name="dosificacion_sectoreconomico" value="<?php echo ($this->input->post('dosificacion_sectoreconomico') ? $this->input->post('dosificacion_sectoreconomico') : ''); ?>" class="form-control" id="dosificacion_sectoreconomico" />
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="dosificacion_email" class="control-label">Correo Electrónico</label>
                             <div class="form-group">
                                 <input type="email" name="dosificacion_email" value="<?php echo ($this->input->post('dosificacion_email') ? $this->input->post('dosificacion_email') : ''); ?>" class="form-control" id="dosificacion_email" />

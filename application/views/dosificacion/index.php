@@ -121,24 +121,18 @@
             <div class="col-md-3">
                 <?php echo $dosificacion['dosificacion_leyenda5']; ?>
             </div>
-           <div class="col-md-1">
-                <label class="control-label">Estado</label>
-            </div>
-            <div class="col-md-2">
-                <?php echo $dosificacion['estado_descripcion']; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
             <div class="col-md-1">
                 <label class="control-label">Actividad Secundaria</label>
             </div>
             <div class="col-md-3">
                 <?php echo $dosificacion['dosificasion_actividadsec']; ?>
             </div>
+        </div>
+        <div class="col-md-12 linea">
             <div class="col-md-1">
                 <label class="control-label">Token Delegado</label>
             </div>
-            <div class="col-md-7" style="word-break: break-word;">
+            <div class="col-md-11" style="word-break: break-word;">
                 <?php echo $dosificacion['dosificacion_tokendelegado']; ?>
             </div>
         </div>
@@ -150,12 +144,52 @@
                 <?php echo $dosificacion['dosificacion_ambiente']; ?>
             </div>
             <div class="col-md-1">
-                <label class="control-label">CUIS (Código Único de Inicio de Sistemas)</label>
+                <label class="control-label">CUIS</label>
             </div>
             <div class="col-md-3">
                 <?php echo $dosificacion['dosificacion_cuis']; ?>
             </div>
            <div class="col-md-1">
+                <label class="control-label">CUFD</label>
+            </div>
+            <div class="col-md-2">
+                <?php echo $dosificacion['dosificacion_cufd']; ?>
+            </div>
+        </div>
+        <div class="col-md-12 linea">
+            <div class="col-md-1">
+                <label class="control-label">Modalidad</label>
+            </div>
+            <div class="col-md-3">
+                <?php echo $dosificacion['dosificacion_modalidad']; ?>
+            </div>
+            <div class="col-md-1">
+                <label class="control-label">Cod. Sistema</label>
+            </div>
+            <div class="col-md-3">
+                <?php echo $dosificacion['dosificacion_codsistema']; ?>
+            </div>
+           <div class="col-md-1">
+                <label class="control-label">Punto Venta</label>
+            </div>
+            <div class="col-md-2">
+                <?php echo $dosificacion['dosificacion_puntoventa']; ?>
+            </div>
+        </div>
+        <div class="col-md-12 linea">
+            <div class="col-md-1">
+                <label class="control-label">Sector Económico</label>
+            </div>
+            <div class="col-md-3">
+                <?php echo $dosificacion['dosificacion_sectoreconomico']; ?>
+            </div>
+            <div class="col-md-1">
+                <label class="control-label">Correo Electrónico</label>
+            </div>
+            <div class="col-md-3">
+                <?php echo $dosificacion['dosificacion_email']; ?>
+            </div>
+            <div class="col-md-1">
                 <label class="control-label">Estado</label>
             </div>
             <div class="col-md-2">
