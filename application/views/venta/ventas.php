@@ -1635,4 +1635,32 @@ window.onkeydown = compruebaTecla;
 		</div>
 	</div>
 </div>
-<!----------------- fin modal clasificador ---------------------------------------------->
+<!-- --------------- fin modal clasificador ---------------------------------------------->
+<!-- --------------- INICIO modal Advertencia ---------------------------------->
+<div id="modal_mensajeadvertencia" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="font-family: Arial">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="background: #CC660E">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title"><fa class="fa fa-frown-o"></fa><b> ADVERTENCIA</b></h2>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-8">
+            <label for="monto_caja" class="control-label">
+                <fa class="fa fa-money fa-2x"></fa>
+                <span id="mensajeadvertencia"></span>
+            </label>
+        </div>  
+        <div class="col-md-4">
+            <!--<button class="btn btn-warning btn-block" onclick="abrir_caja()"><fa class="fa fa-money"></fa> Registrar</button>-->
+            <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+        </div>  
+      
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- --------------- F I N  modal Advertencia ---------------------------------->

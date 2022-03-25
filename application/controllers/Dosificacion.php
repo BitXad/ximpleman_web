@@ -367,6 +367,67 @@ class Dosificacion extends CI_Controller{
                 
                 
     }
-    
+    /* en servicio de obtención de códigos es la Funcion que verifica el nit: verifiarNit */
+    function verificarNit(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                /* ---------------------INICIO segun EJEMPLO ---------------------- */
+                /*fuente:
+                 * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/autenticacion/token-de-autenticacion
+                 * Nota.- hubo unos pequeños cambios......
+                 */
+                //la ruta para el servicio de obtencion de codigos, ejm:
+                //$wsdl = "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl";
+                $wsdl = $dosificacion['dosificacion_obtencioncodigos'];
+                //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
+                //$token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXN0ZXJiaXQwOCIsImNvZGlnb1Npc3RlbWEiOiI3MUU3QTY1NDZFMDhCNDQ2MkNDNUQyNyIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTFORFV5TmpjM01MUUVBRjZuNi1jS0FBQUEiLCJpZCI6NTY5MTkxLCJleHAiOjE2NDg2ODQ4MDAsImlhdCI6MTY0ODEzMTU5Niwibml0RGVsZWdhZG8iOjUxNTIzNzcwMTksInN1YnNpc3RlbWEiOiJTRkUifQ.tVKsxvHNYA4L_Z1qFeVycWvGWI4mxDJDhqL7MgL1RJRMq3wXTCwhleMIQXJAfNmEpLwuH9jQqefttjQgtwP-1w';
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                /* ---------------------F I N  segun EJEMPLO ---------------------- */
+                /* ordenado segun SoapUI */
+                $nit_verificar = $this->input->post("nit");
+                //$nit_verificar = 5196226;
+                $parametros = ["SolicitudVerificarNit" => [
+                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                    "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
+                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                    "cuis"=>            $dosificacion['dosificacion_cuis'],
+                    "nit"=>             $dosificacion['dosificacion_nitemisor'],
+                    "nitParaVerificacion"=>$nit_verificar]];
+
+                $resultado = $cliente->verificarNit($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                /*$elres = $resultado->RespuestaVerificarNit->mensajesList;
+                $elres2 = $resultado->RespuestaVerificarNit->transaccion;
+                echo "Codigo: ".$elres->codigo."<br>";
+                echo "Descripción: ".$elres->descripcion."<br>";
+                echo "Transacción: ".$elres2;*/
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
     
 }

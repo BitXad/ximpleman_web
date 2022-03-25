@@ -208,7 +208,7 @@ function buscarcliente(){
                 var registros = eval(respuesta);
                 
                 
-                if (registros[0]!=null){ //Si el cliente es nuevo o no existe
+                if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
                     
                     $("#razon_social").val(registros[0]["cliente_razon"]);
                     document.getElementById('telefono').focus();
@@ -265,7 +265,7 @@ function buscarcliente(){
                     
                     
                 }
-                else 
+                else //Si el cliente es nuevo o no existe
                 {
                     //$("#razon_social").val('SIN NOMBRECILLO');
                     document.getElementById('razon_social').focus();
@@ -285,7 +285,7 @@ function buscarcliente(){
                     $("#tipocliente_id").val(1);
                     $("#venta_descuento").val(0);
                     
-                    
+                    verificarnit();
                     
                 }
 
@@ -4992,8 +4992,39 @@ function registrarpuntos(cliente_id, venta_total){
     });
 }
 
-
 function mostrar(forma_id,glosa_banco){
     let forma = $(`#${forma_id}`).val();
     $(`#${glosa_banco}`).css('display',forma != 1 ? 'block':'none');
+}
+
+/*  */
+function verificarnit(){
+    var base_url = document.getElementById('base_url').value;
+    var nit = document.getElementById('nit').value;
+    var controlador = base_url+'dosificacion/verificarNit';
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{nit:nit},
+            success:function(respuesta){
+                var registros = JSON.parse(respuesta);
+                /*console.log(registros);
+                console.log(registros.RespuestaVerificarNit.mensajesList.codigo);
+                console.log(registros.RespuestaVerificarNit.mensajesList.descripcion);
+                console.log(registros.RespuestaVerificarNit.transaccion);*/
+                let elcodigo = registros.RespuestaVerificarNit.mensajesList.codigo;
+                if(elcodigo != 986){
+                    $("#modal_mensajeadvertencia").modal("show");
+                }
+                
+                //alert("hola");
+                /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
+                    
+                }*/
+
+            },
+            error:function(respuesta){
+                alert("Algo salio mal; por favor verificar sus datos!.");
+            }                
+    }); 
+
 }
