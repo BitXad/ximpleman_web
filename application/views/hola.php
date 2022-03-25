@@ -771,6 +771,24 @@
         </div>
     </section>
 
+    <!------------------------- temporal -------------->
+    <br>
+        <section>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                
+                  <a href="<?php echo base_url("dosificacion/prueba_soap");  ?>" class="btn btn-danger btn-xs" ><fa class="fa fa-floppy-o"> </fa> Prueba Soap </a>
+                
+              </div>
+            </div>
+          </div>
+            <!-- <br> -->
+
+        </section>   
+    <!------------------------- fin temporal -------------->
+    
+    
     <br>
         <section>
           <div class="container">

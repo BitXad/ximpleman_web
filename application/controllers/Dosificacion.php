@@ -5,11 +5,15 @@
  */
  
 class Dosificacion extends CI_Controller{
+
     private $session_data = "";
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Dosificacion_model');
+        $this->load->model('Dosificacion_model');            
+        //$this->load->library('lib_nusoap/nusoap');    
+    
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -181,5 +185,100 @@ class Dosificacion extends CI_Controller{
             show_error('The dosificacion you are trying to delete does not exist.');
         }
     }
+
+//prueba nusoap
+    function prueba_soap(){
+        
+        
+        $cliente = new SoapClient('http://www.dneonline.com/calculator.asmx?wsdl');
+        $numeroA = 15;
+        $numeroB = 7;
+        
+        
+        $resultado = $cliente->Add([
+            "intA"=>$numeroA,
+            "intB"=>$numeroB]);
+        echo "La suma es: ".$resultado->AddResult."<br>";        
+        
+        
+        $resultado = $cliente->Subtract([
+            "intA"=>$numeroA,
+            "intB"=>$numeroB]);
+        echo "La resta es: ".$resultado->SubtractResult."<br>";
+        
+        
+        $resultado = $cliente->Multiply([
+            "intA"=>$numeroA,
+            "intB"=>$numeroB]);
+        echo "El producto es: ".$resultado->MultiplyResult."<br>";        
+        
+    }
+    
+    function cufd(){
+        
+        //try{
+        
+        
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+
+                $cliente = new SoapClient($dosificacion['dosificacion_obtencioncodigos'], array(
+                        "trace"      => 1,
+                        "exceptions" => 1,
+                        "cache_wsdl" => 1));
+
+
+              /*  $cabecera = new SoapHeader("ApiKey", "TokenApi ".$dosificacion['dosificacion_tokendelegado']);
+                $cliente->__setSoapHeaders($cabecera); */
+                
+               /* $auth = array(
+                    'UserName'=>'USERNAME',
+                    'Password'=>'PASSWORD',
+                    'SystemId'=> array('_'=>'DATA','Param'=>'PARAM'),
+                    );
+              $header = new SoapHeader('NAMESPACE','Auth',$auth,false);
+              $cliente->__setSoapHeaders($header);*/
+                
+                //$auth         = new ChannelAdvisorAuth("ApiKey", "TokenApi ".$dosificacion['dosificacion_tokendelegado']);
+                $header     = new SoapHeader("http://www.example.com/webservices/", "APICredentials", "TokenApi ".$dosificacion['dosificacion_tokendelegado'], false);
+
+                
+                // apikey es el token delegado
+               // $cliente.header("apikey", "TokenApi " +$dosificacion['dosificacion_tokendelegado']);
+
+                $codigoAmbiente = $dosificacion['dosificacion_ambiente'];
+                $codigoModalidad = $dosificacion['dosificacion_modalidad'];
+                $codigoPuntoVenta = $dosificacion['dosificacion_puntoventa'];
+                $codigoSistema = $dosificacion['dosificacion_codsistema'];
+                $codigoSucursal = $dosificacion['dosificacion_codsucursal'];
+                $cuis = $dosificacion['dosificacion_cuis'];
+                $nit = $dosificacion['dosificacion_nitemisor'];
+
+                //echo $codigoAmbiente.",".$codigoModalidad.",".$codigoPuntoVenta.",".$codigoSistema.",".$codigoSucursal.",".$cuis.",".$nit;
+               echo "REQUEST HEADERS:\n".$cliente->__getLastRequestHeaders();
+
+                $parametros = ["SolicitudCufd" => [
+                    "codigoAmbiente"=>$codigoAmbiente,
+                    "codigoModalidad"=>$codigoModalidad,
+                    "codigoPuntoVenta"=>$codigoPuntoVenta,
+                    "codigoSistema"=>$codigoSistema,
+                    "codigoSucursal"=>$codigoSucursal,
+                    "cuis"=>$cuis,
+                    "nit"=>$nit ]];
+
+                $resultado = $cliente->cufd($parametros);
+              
+                $result = $cliente->__soapCall("DeleteMarketplaceAd",$parametros, NULL, $header);
+
+                //echo "Advertencia: ".$resultado->faultstring; 
+
+        /*} catch (Exception $ex){
+            
+            echo "Algo esta mal";
+        }*/
+        
+            
+    }
+    
     
 }
