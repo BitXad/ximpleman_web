@@ -213,6 +213,37 @@ class Dosificacion extends CI_Controller{
         echo "El producto es: ".$resultado->MultiplyResult."<br>";        
         
     }
+
+    function prueba_soap2(){
+        
+        $this->load->helper('nusoap_helper'); // Helper para convertir numeros a letras
+        $this->load->helper('numeros_helper');
+        
+        $cliente = new SoapClient('http://www.dneonline.com/calculator.asmx?wsdl');
+        $numeroA = 15;
+        $numeroB = 7;
+        
+        
+        $resultado = $cliente->Add([
+            "intA"=>$numeroA,
+            "intB"=>$numeroB]);
+        echo "La suma es: ".$resultado->AddResult."<br>";        
+        
+        
+        $resultado = $cliente->Subtract([
+            "intA"=>$numeroA,
+            "intB"=>$numeroB]);
+        echo "La resta es: ".$resultado->SubtractResult."<br>";
+        
+        
+        $resultado = $cliente->Multiply([
+            "intA"=>$numeroA,
+            "intB"=>$numeroB]);
+        echo "El producto es: ".$resultado->MultiplyResult."<br>";        
+        
+        echo num_to_letras($resultado->MultiplyResult);
+        
+    }
     
     function cufd(){
         
@@ -278,6 +309,63 @@ class Dosificacion extends CI_Controller{
         }*/
         
             
+    }
+
+    function nosetoken(){
+        
+        //try{
+        
+        
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                $res = "'".$dosificacion['dosificacion_obtencioncodigos']."'";
+
+                $wsdl = "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl";
+
+                $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXN0ZXJiaXQwOCIsImNvZGlnb1Npc3RlbWEiOiI3MUU3QTY1NDZFMDhCNDQ2MkNDNUQyNyIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTFORFV5TmpjM01MUUVBRjZuNi1jS0FBQUEiLCJpZCI6NTY5MTkxLCJleHAiOjE2NDg2ODQ4MDAsImlhdCI6MTY0ODEzMTU5Niwibml0RGVsZWdhZG8iOjUxNTIzNzcwMTksInN1YnNpc3RlbWEiOiJTRkUifQ.tVKsxvHNYA4L_Z1qFeVycWvGWI4mxDJDhqL7MgL1RJRMq3wXTCwhleMIQXJAfNmEpLwuH9jQqefttjQgtwP-1w';
+
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+
+                $parametros = ["SolicitudVerificarNit" => [
+                    "codigoAmbiente"=> 2, //$codigoAmbiente,
+                    "codigoModalidad"=> 1, //$codigoModalidad,
+                    "codigoSistema"=>'71E7A6546E08B4462CC5D27', //$codigoSistema,
+                    "codigoSucursal"=>0, //$codigoSucursal,
+                    "cuis"=>'A6FD9CF6', //$cuis,
+                    "nit"=>5152377019, //$nit ]];
+                    "nitParaVerificacion"=> 5152377019]];
+
+                $resultado = $cliente->verificarNit($parametros);
+                print_r($resultado);
+                echo "<br>";
+                $datos = json_decode( json_encode( $resultado),true);
+                
+                print_r ($datos);
+                
+                $datos = json_decode( json_encode( $resultado),true);
+                $info = $datos['RespuestaVerificarNit']['mensajesList'];
+                
+                echo "<br>";
+                echo "<br>";
+                
+                echo "<br>CODIGO: ".$info['codigo'];
+                echo "<br>DESCRIPCION: ".$info['descripcion'];
+                
+                
     }
     
     
