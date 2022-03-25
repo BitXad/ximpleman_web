@@ -47,7 +47,7 @@ class Ingreso_model extends CI_Model
     {
         $ingresos = $this->db->query("
             SELECT
-                i.*, u.*, f.ingreso_id as 'ingres', f.factura_id, fp.`forma_nombre`, b.banco_nombre
+                i.*, u.*, f.ingreso_id as 'ingres', f.factura_id, fp.`forma_nombre`, b.banco_nombre, b.banco_numcuenta
             FROM
                 ingresos i
             LEFT JOIN usuario u on i.usuario_id=u.usuario_id

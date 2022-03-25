@@ -139,7 +139,7 @@ function fechadeingreso(filtro)
                         html += "</td>";
                         html += "<td>";
                         if(registros[i]["banco_id"] >0){
-                            html += registros[i]["banco_nombre"];
+                            html += registros[i]["banco_nombre"]+" ("+registros[i]["banco_numcuenta"]+")";
                         }
                         html += "</td>";
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>";

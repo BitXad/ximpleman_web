@@ -172,7 +172,7 @@ function facturar(mensualidad){
                                     {
                                       $selected = ($banco['banco_id'] == $this->input->post('banco_id')) ? ' selected="selected"' : "";
 
-                                      echo '<option value="'.$banco['banco_id'].'" '.$selected.'>'.$banco['banco_nombre'].'</option>';
+                                      echo '<option value="'.$banco['banco_id'].'" '.$selected.'>'.$banco['banco_nombre']." (".$banco['banco_numcuenta'].')</option>';
                                     } 
                                     ?>
                                 </select>
