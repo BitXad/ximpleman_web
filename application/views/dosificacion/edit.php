@@ -119,20 +119,6 @@
                             <textarea rows="3" class="form-control" name="dosificacion_leyenda5" id="dosificacion_leyenda5"><?php echo ($this->input->post('dosificacion_leyenda5') ? $this->input->post('dosificacion_leyenda5') : $dosificacion['dosificacion_leyenda5']); ?></textarea>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="estado_id" class="control-label">Estado</label>
-                        <div class="form-group">
-                            <select name="estado_id" class="form-control">
-                                <?php 
-                                foreach($all_estado as $estado)
-                                {
-                                    $selected = ($estado['estado_id'] == $dosificacion['estado_id']) ? ' selected="selected"' : "";
-                                    echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
-                                } 
-                                ?>
-                            </select>
-                        </div>
-                    </div>
                     <div class="col-md-12">
                         <label for="dosificacion_tokendelegado" class="control-label">Token Delegado</label>
                         <div class="form-group">
@@ -175,16 +161,30 @@
                             <input type="text" name="dosificacion_puntoventa" value="<?php echo ($this->input->post('dosificacion_puntoventa') ? $this->input->post('dosificacion_puntoventa') : $dosificacion['dosificacion_puntoventa']); ?>" class="form-control" id="dosificacion_puntoventa" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <label for="dosificacion_sectoreconomico" class="control-label">Sector Economico</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_sectoreconomico" value="<?php echo ($this->input->post('dosificacion_sectoreconomico') ? $this->input->post('dosificacion_sectoreconomico') : $dosificacion['dosificacion_sectoreconomico']); ?>" class="form-control" id="dosificacion_sectoreconomico" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="dosificacion_email" class="control-label">Correo Electrónico</label>
                         <div class="form-group">
                             <input type="email" name="dosificacion_email" value="<?php echo ($this->input->post('dosificacion_email') ? $this->input->post('dosificacion_email') : $dosificacion['dosificacion_email']); ?>" class="form-control" id="dosificacion_email" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="estado_id" class="control-label">Estado</label>
+                        <div class="form-group">
+                            <select name="estado_id" class="form-control">
+                                <?php 
+                                foreach($all_estado as $estado)
+                                {
+                                    $selected = ($estado['estado_id'] == $dosificacion['estado_id']) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
+                                } 
+                                ?>
+                            </select>
                         </div>
                     </div>
                 </div>
