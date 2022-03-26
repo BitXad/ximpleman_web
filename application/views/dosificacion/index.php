@@ -1,9 +1,12 @@
+<script src="<?php echo base_url('resources/js/funcionessin.js'); ?>"></script>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-
+<input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <div class="box-header">
     <h3 class="box-title">Dosificación</h3>
+    <button class="btn btn-info btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa> Verificar Conexión</button>
+    
     <div class="box-tools">
         <?php
         if($newdosif == 0){
@@ -144,16 +147,18 @@
                 <?php echo $dosificacion['dosificacion_ambiente']; ?>
             </div>
             <div class="col-md-1">
-                <label class="control-label">CUIS</label>
+                <label class="control-label">Codigo Unico de Inicio de Sistema (CUIS)</label>
+                <button class="btn btn-info btn-xs" onclick="solicitudCuis()"><fa class="fa fa-download"></fa> Solicitar CUIS</button>
             </div>
             <div class="col-md-3">
                 <?php echo $dosificacion['dosificacion_cuis']; ?>
             </div>
            <div class="col-md-1">
-                <label class="control-label">CUFD</label>
+                <label class="control-label">Codigo Unico de Facturación Diaria (CUFD) </label>
             </div>
             <div class="col-md-2">
                 <?php echo $dosificacion['dosificacion_cufd']; ?>
+                <button class="btn btn-info btn-xs" onclick="solicitudCufd()"><fa class="fa fa-download"></fa> Solicitar CUFD</button>
             </div>
         </div>
         <div class="col-md-12 linea">

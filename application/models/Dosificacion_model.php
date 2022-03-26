@@ -207,4 +207,11 @@ class Dosificacion_model extends CI_Model
         return $dosificacion;
     }
     
+    function ejecutar($sql)
+    {        
+        $this->db->query($sql);
+        return true;
+        
+    }
+    
 }

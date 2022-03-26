@@ -245,71 +245,71 @@ class Dosificacion extends CI_Controller{
         
     }
     
-    function cufd(){
-        
-        //try{
-        
-        
-                $dosificacion_id = 1;
-                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-
-                $cliente = new SoapClient($dosificacion['dosificacion_obtencioncodigos'], array(
-                        "trace"      => 1,
-                        "exceptions" => 1,
-                        "cache_wsdl" => 1));
-
-
-              /*  $cabecera = new SoapHeader("ApiKey", "TokenApi ".$dosificacion['dosificacion_tokendelegado']);
-                $cliente->__setSoapHeaders($cabecera); */
-                
-               /* $auth = array(
-                    'UserName'=>'USERNAME',
-                    'Password'=>'PASSWORD',
-                    'SystemId'=> array('_'=>'DATA','Param'=>'PARAM'),
-                    );
-              $header = new SoapHeader('NAMESPACE','Auth',$auth,false);
-              $cliente->__setSoapHeaders($header);*/
-                
-                //$auth         = new ChannelAdvisorAuth("ApiKey", "TokenApi ".$dosificacion['dosificacion_tokendelegado']);
-                $header     = new SoapHeader("http://www.example.com/webservices/", "APICredentials", "TokenApi ".$dosificacion['dosificacion_tokendelegado'], false);
-
-                
-                // apikey es el token delegado
-               // $cliente.header("apikey", "TokenApi " +$dosificacion['dosificacion_tokendelegado']);
-
-                $codigoAmbiente = $dosificacion['dosificacion_ambiente'];
-                $codigoModalidad = $dosificacion['dosificacion_modalidad'];
-                $codigoPuntoVenta = $dosificacion['dosificacion_puntoventa'];
-                $codigoSistema = $dosificacion['dosificacion_codsistema'];
-                $codigoSucursal = $dosificacion['dosificacion_codsucursal'];
-                $cuis = $dosificacion['dosificacion_cuis'];
-                $nit = $dosificacion['dosificacion_nitemisor'];
-
-                //echo $codigoAmbiente.",".$codigoModalidad.",".$codigoPuntoVenta.",".$codigoSistema.",".$codigoSucursal.",".$cuis.",".$nit;
-               echo "REQUEST HEADERS:\n".$cliente->__getLastRequestHeaders();
-
-                $parametros = ["SolicitudCufd" => [
-                    "codigoAmbiente"=>$codigoAmbiente,
-                    "codigoModalidad"=>$codigoModalidad,
-                    "codigoPuntoVenta"=>$codigoPuntoVenta,
-                    "codigoSistema"=>$codigoSistema,
-                    "codigoSucursal"=>$codigoSucursal,
-                    "cuis"=>$cuis,
-                    "nit"=>$nit ]];
-
-                $resultado = $cliente->cufd($parametros);
-              
-                $result = $cliente->__soapCall("DeleteMarketplaceAd",$parametros, NULL, $header);
-
-                //echo "Advertencia: ".$resultado->faultstring; 
-
-        /*} catch (Exception $ex){
-            
-            echo "Algo esta mal";
-        }*/
-        
-            
-    }
+//    function cufd(){
+//        
+//        //try{
+//        
+//        
+//                $dosificacion_id = 1;
+//                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+//
+//                $cliente = new SoapClient($dosificacion['dosificacion_obtencioncodigos'], array(
+//                        "trace"      => 1,
+//                        "exceptions" => 1,
+//                        "cache_wsdl" => 1));
+//
+//
+//              /*  $cabecera = new SoapHeader("ApiKey", "TokenApi ".$dosificacion['dosificacion_tokendelegado']);
+//                $cliente->__setSoapHeaders($cabecera); */
+//                
+//               /* $auth = array(
+//                    'UserName'=>'USERNAME',
+//                    'Password'=>'PASSWORD',
+//                    'SystemId'=> array('_'=>'DATA','Param'=>'PARAM'),
+//                    );
+//              $header = new SoapHeader('NAMESPACE','Auth',$auth,false);
+//              $cliente->__setSoapHeaders($header);*/
+//                
+//                //$auth         = new ChannelAdvisorAuth("ApiKey", "TokenApi ".$dosificacion['dosificacion_tokendelegado']);
+//                $header     = new SoapHeader("http://www.example.com/webservices/", "APICredentials", "TokenApi ".$dosificacion['dosificacion_tokendelegado'], false);
+//
+//                
+//                // apikey es el token delegado
+//               // $cliente.header("apikey", "TokenApi " +$dosificacion['dosificacion_tokendelegado']);
+//
+//                $codigoAmbiente = $dosificacion['dosificacion_ambiente'];
+//                $codigoModalidad = $dosificacion['dosificacion_modalidad'];
+//                $codigoPuntoVenta = $dosificacion['dosificacion_puntoventa'];
+//                $codigoSistema = $dosificacion['dosificacion_codsistema'];
+//                $codigoSucursal = $dosificacion['dosificacion_codsucursal'];
+//                $cuis = $dosificacion['dosificacion_cuis'];
+//                $nit = $dosificacion['dosificacion_nitemisor'];
+//
+//                //echo $codigoAmbiente.",".$codigoModalidad.",".$codigoPuntoVenta.",".$codigoSistema.",".$codigoSucursal.",".$cuis.",".$nit;
+//               echo "REQUEST HEADERS:\n".$cliente->__getLastRequestHeaders();
+//
+//                $parametros = ["SolicitudCufd" => [
+//                    "codigoAmbiente"=>$codigoAmbiente,
+//                    "codigoModalidad"=>$codigoModalidad,
+//                    "codigoPuntoVenta"=>$codigoPuntoVenta,
+//                    "codigoSistema"=>$codigoSistema,
+//                    "codigoSucursal"=>$codigoSucursal,
+//                    "cuis"=>$cuis,
+//                    "nit"=>$nit ]];
+//
+//                $resultado = $cliente->cufd($parametros);
+//              
+//                $result = $cliente->__soapCall("DeleteMarketplaceAd",$parametros, NULL, $header);
+//
+//                //echo "Advertencia: ".$resultado->faultstring; 
+//
+//        /*} catch (Exception $ex){
+//            
+//            echo "Algo esta mal";
+//        }*/
+//        
+//            
+//    }
 
     function nosetoken(){
         
@@ -367,6 +367,7 @@ class Dosificacion extends CI_Controller{
                 
                 
     }
+
     /* en servicio de obtención de códigos es la Funcion que verifica el nit: verifiarNit */
     function verificarNit(){
         try{
@@ -426,6 +427,228 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    
+    
+    function cufd(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                /* ---------------------INICIO segun EJEMPLO ---------------------- */
+                /*fuente:
+                 * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/autenticacion/token-de-autenticacion
+                 * Nota.- hubo unos pequeños cambios......
+                 */
+                //la ruta para el servicio de obtencion de codigos, ejm:
+                //$wsdl = "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl";
+                $wsdl = $dosificacion['dosificacion_obtencioncodigos']; //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+
+
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                /* ---------------------F I N  segun EJEMPLO ---------------------- */
+                /* ordenado segun SoapUI */
+
+                $parametros = ["SolicitudCufd" => [
+                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                    "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
+                    "codigoPuntoVenta"=>   $dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                    "cuis"=>            $dosificacion['dosificacion_cuis'],
+                    "nit"=>             $dosificacion['dosificacion_nitemisor']
+                        ]];
+
+                $resultado = $cliente->cufd($parametros);
+                echo json_encode($resultado);
+                
+                //print_r($resultado);
+                //print_r($resultado);
+                /*$elres = $resultado->RespuestaVerificarNit->mensajesList;
+                $elres2 = $resultado->RespuestaVerificarNit->transaccion;
+                echo "Codigo: ".$elres->codigo."<br>";
+                echo "Descripción: ".$elres->descripcion."<br>";
+                echo "Transacción: ".$elres2;*/
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            
+            
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+
+    function cuis(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+
+                $wsdl = $dosificacion['dosificacion_obtencioncodigos']; //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+
+
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                ]);
+                
+                /* ---------------------F I N  segun EJEMPLO ---------------------- */
+                /* ordenado segun SoapUI */
+
+                $parametros = ["SolicitudCuis" => [
+                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                    "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
+                    "codigoPuntoVenta"=>   $dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                    "nit"=>             $dosificacion['dosificacion_nitemisor']
+                        ]];
+
+                $resultado = $cliente->cuis($parametros);
+                echo json_encode($resultado);
+                
+//                codigo: "A6FD9CF6"
+//                fechaVigencia: "2023-03-24T11:14:16.443-04:00"
+//                mensajesList: {codigo: 980, descripcion: "EXISTE UN CUIS VIGENTE PARA LA SUCURSAL O PUNTO DE VENTA"}
+//                transaccion: false                
+                
+                
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            
+            
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    
+    function almacenarcufd(){
+        try{
+            if ($this->input->is_ajax_request()) {
+
+                $cufd_codigo = "'".$this->input->post('codigo')."'";
+                $cufd_codigocontrol = "'".$this->input->post('codigocontrol')."'";
+                $cufd_direccion = "'".$this->input->post('direccion')."'";
+                $cufd_fechavigencia = "'".$this->input->post('fechavigencia')."'";
+                $cufd_transaccion = "'".$this->input->post('transaccion')."'";
+                
+                $sql = "insert into cufd(cufd_codigo,cufd_codigocontrol,cufd_direccion,cufd_fechavigencia,cufd_transaccion) value(".
+                        $cufd_codigo.",".$cufd_codigocontrol.",".$cufd_direccion.",".$cufd_fechavigencia.",".$cufd_transaccion.")";
+                $this->Dosificacion_model->ejecutar($sql);
+                
+                $sql = "update dosificacion set dosificacion_cufd = ".$cufd_codigo;
+                $this->Dosificacion_model->ejecutar($sql);
+                
+                echo json_encode("ok");
+                
+                }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            
+            
+                echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+
+    function almacenarcuis(){
+        try{
+            if ($this->input->is_ajax_request()) {
+
+                $cuis_codigo = "'".$this->input->post('codigo')."'";
+                $cuis_fechavigencia = "'".$this->input->post('fechavigencia')."'";
+                $cuis_transaccion = "'".$this->input->post('transaccion')."'";
+                
+                $sql = "insert into cuis(cuis_codigo,cuis_fechavigencia,cuis_transaccion) value(".
+                        $cuis_codigo.",".$cuis_fechavigencia.",".$cuis_transaccion.")";
+                $this->Dosificacion_model->ejecutar($sql);
+                
+                $sql = "update dosificacion set dosificacion_cuis = ".$cuis_codigo;
+                $this->Dosificacion_model->ejecutar($sql);
+                
+                echo json_encode("ok");
+                
+                }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            
+            
+                echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    
+    function verificarcomunicacion(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+
+                $wsdl = $dosificacion['dosificacion_obtencioncodigos']; //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+
+
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                ]);
+                
+                /* ---------------------F I N  segun EJEMPLO ---------------------- */
+                /* ordenado segun SoapUI */
+                $resultado = $cliente->verificarComunicacion();
+                echo json_encode($resultado);
+                
+                
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            
+            
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
