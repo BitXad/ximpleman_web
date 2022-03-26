@@ -5012,6 +5012,7 @@ function verificarnit(){
                 console.log(registros.RespuestaVerificarNit.mensajesList.descripcion);
                 console.log(registros.RespuestaVerificarNit.transaccion);*/
                 let elcodigo = registros.RespuestaVerificarNit.mensajesList.codigo;
+                $("#mensajeadvertencia").html(registros.RespuestaVerificarNit.mensajesList.descripcion);
                 if(elcodigo != 986){
                     $("#modal_mensajeadvertencia").modal("show");
                 }
