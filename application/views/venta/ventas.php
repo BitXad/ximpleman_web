@@ -1648,8 +1648,9 @@ window.onkeydown = compruebaTecla;
       <div class="modal-body">
         <div class="col-md-8">
             <label for="monto_caja" class="control-label">
-                <fa class="fa fa-money fa-2x"></fa>
-                <span id="mensajeadvertencia"></span>
+                <h2 class="modal-title">
+                    <fa class="btn btn-warning fa fa-exclamation-triangle fa-2x"> </fa><b><span id="mensajeadvertencia"></span></b>
+                </h2>
             </label>
         </div>  
         <div class="col-md-4">

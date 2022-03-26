@@ -156,18 +156,34 @@
            <div class="col-md-1">
                 <label class="control-label">Codigo Unico de Facturación Diaria (CUFD) </label>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2" style="word-break: break-word;">
                 <?php echo $dosificacion['dosificacion_cufd']; ?>
                 <button class="btn btn-info btn-xs" onclick="solicitudCufd()"><fa class="fa fa-download"></fa> Solicitar CUFD</button>
             </div>
         </div>
         <div class="col-md-12 linea">
             <div class="col-md-1">
+                <label class="control-label">Codigo Unico de Inicio de Sistema Masivo (CUIS Masivo)</label>
+                <button class="btn btn-info btn-xs" onclick="solicitudCuismasivo()"><fa class="fa fa-download"></fa> Solicitar CUIS Masivo</button>
+            </div>
+            <div class="col-md-3">
+                <?php echo $dosificacion['dosificacion_cuismasivo']; ?>
+            </div>
+           <div class="col-md-1">
+                <label class="control-label">Codigo Unico de Facturación Diaria Masivo (CUFD Masivo) </label>
+                <button class="btn btn-info btn-xs" onclick="solicitudCufdMasivo()"><fa class="fa fa-download"></fa> Solicitar CUFD Masivo</button>
+            </div>
+            <div class="col-md-2">
+                <?php echo $dosificacion['dosificacion_cufdmasivo']; ?>
+            </div>
+            <div class="col-md-1">
                 <label class="control-label">Modalidad</label>
             </div>
             <div class="col-md-3">
                 <?php echo $dosificacion['dosificacion_modalidad']; ?>
             </div>
+        </div>
+        <div class="col-md-12 linea">
             <div class="col-md-1">
                 <label class="control-label">Cod. Sistema</label>
             </div>
@@ -180,14 +196,14 @@
             <div class="col-md-2">
                 <?php echo $dosificacion['dosificacion_puntoventa']; ?>
             </div>
-        </div>
-        <div class="col-md-12 linea">
             <div class="col-md-1">
                 <label class="control-label">Sector Económico</label>
             </div>
             <div class="col-md-3">
                 <?php echo $dosificacion['dosificacion_sectoreconomico']; ?>
             </div>
+        </div>
+        <div class="col-md-12 linea">
             <div class="col-md-1">
                 <label class="control-label">Correo Electrónico</label>
             </div>
