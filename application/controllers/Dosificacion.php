@@ -654,8 +654,8 @@ class Dosificacion extends CI_Controller{
     }
     /* en servicio de obtención de códigos es la Funcion que solicita cuis masivo: cuisMasivo */
     function cuisMasivo(){
-        /*try{
-            if ($this->input->is_ajax_request()) {*/
+        try{
+            if ($this->input->is_ajax_request()) {
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
@@ -691,8 +691,8 @@ class Dosificacion extends CI_Controller{
                 ]];
 
                 $resultado = $cliente->cuisMasivo($parametros);
-                //echo json_encode($resultado);
-                print_r($resultado);
+                echo json_encode($resultado);
+                /*print_r($resultado);
                 $lrespcodigo = $resultado->RespuestaCuisMasivo->listaRespuestasCuis->codigo;
                 $lrespcodigopuntoventa = $resultado->RespuestaCuisMasivo->listaRespuestasCuis->codigoPuntoVenta;
                 $lrespcodigosucursal = $resultado->RespuestaCuisMasivo->listaRespuestasCuis->codigoSucursal;
@@ -708,13 +708,81 @@ class Dosificacion extends CI_Controller{
                 echo "mensajecodigo: ".$lrespmensajecodigo."<br>";
                 echo "pmensajedescripcion: ".$lrespmensajedescripcion."<br>";
                 echo "transaccion: ".$lresptransaccion."<br>";
-                echo "transaccion: ".$latransaccion;
-           /* }else{                 
+                echo "transaccion: ".$latransaccion;*/
+            }else{                 
                 show_404();
             }
         }catch (Exception $e){
             echo 'Ocurrio algo inesperado; revisar datos!.';
-        }*/
+        }
+    }
+    
+    /* en servicio de obtención de códigos es la Funcion que solicita cufd masivo: cufdMasivo */
+    function cufdMasivo(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_obtencioncodigos'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                /* ordenado segun SoapUI */
+                $parametros = ["SolicitudCufdMasivo" => [
+                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                    "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
+                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                    "datosSolicitud" => [
+                        "codigoPuntoVenta"=>$dosificacion['dosificacion_puntoventa'],
+                        "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                        "cuis"=>  $dosificacion['dosificacion_cuis']
+                    ],
+                    "nit"=>             $dosificacion['dosificacion_nitemisor'],
+                ]];
+
+                $resultado = $cliente->cufdMasivo($parametros);
+                echo json_encode($resultado);
+                /*print_r($resultado);
+                $lrespcodigo = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigo;
+                $lrespcodigocontrol = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigoControl;
+                $lrespcodigopuntoventa = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigoPuntoVenta;
+                $lrespcodigosucursal = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigoSucursal;
+                $lrespcuis = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->cuis;
+                $lresdireccion = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->direccion;
+                $lrespfechaVigencia = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->fechaVigencia;
+                $lresptransaccion = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->transaccion;
+                $latransaccion = $resultado->RespuestaCufdMasivo->transaccion;
+                echo "codigo: ".$lrespcodigo."<br>";
+                echo "codigoControl: ".$lrespcodigocontrol."<br>";
+                echo "codigoPuntoVenta: ".$lrespcodigopuntoventa."<br>";
+                echo "codigoSucursal: ".$lrespcodigosucursal."<br>";
+                echo "cuis: ".$lrespcuis."<br>";
+                echo "direccion: ".$lresdireccion."<br>";
+                echo "fechaVigencia: ".$lrespfechaVigencia."<br>";
+                echo "transaccion: ".$lresptransaccion."<br>";
+                echo "transaccion: ".$latransaccion;*/
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
     }
     
 }
