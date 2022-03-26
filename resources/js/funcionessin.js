@@ -131,10 +131,37 @@ function almacenar_cuis(datos){
     
 }
 
+// verificarComunicacion -> obtenciond e codigos
 function verificarComunicacion(){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/verificarcomunicacion';
+   
+    
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    
+                    var registros = JSON.parse(respuesta);
+                    let codigo = registros.RespuestaComunicacion.mensajesList.codigo;
+                    let descripcion = registros.RespuestaComunicacion.mensajesList.descripcion;
+
+                    alert(codigo+" "+descripcion);
+
+                },
+                error:function(respuesta){
+                    alert("Error: Conexión fallida. Vuelva a intentar...!");
+                }                
+        }); 
+    
+}
+
+// verificarComunicacion -> facturas compra venta
+function verificarComunicacioncv(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'factura/verificarcomunicacion';
    
     
         $.ajax({url:controlador,

@@ -1221,4 +1221,49 @@ class Factura extends CI_Controller{
         $this->load->view('layouts/main',$data);
         }
     }
+    
+// facturas de compras - ventas SOAP
+    
+    function verificarcomunicacion(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+
+                $wsdl = $dosificacion['dosificacion_factura']; //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+
+
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                ]);
+                
+                /* ---------------------F I N  segun EJEMPLO ---------------------- */
+                /* ordenado segun SoapUI */
+                $resultado = $cliente->verificarComunicacion();
+                echo json_encode($resultado);
+                
+                
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            
+            
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }    
+    
 }
