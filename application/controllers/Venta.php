@@ -1913,7 +1913,7 @@ function buscarcategorias()
             if ($parametro!=""){
             $datos = $this->Inventario_model->get_inventario_categoria($parametro);            
             //$datos = $this->Inventario_model->get_inventario_bloque();
-            echo json_encode($datos);
+                echo (json_encode($datos));
             }
             else echo json_encode(null);
         }
@@ -3139,7 +3139,7 @@ function anular_venta($venta_id){
             
             $factura_efectivo = $factura_total;
             $factura_cambio = 0;
-          
+        
             $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
             
             $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
@@ -3191,19 +3191,125 @@ function anular_venta($venta_id){
             $detallefact_id = $this->Detalle_factura_aux_model->add_detalle_factura_aux($params);
             }
             
+            $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+
+            $anio = date('Y');
+            $mes = date('m');
+            $dia = date('d');
+            $hora = date('H');
+            $min = date('i');
+            $seg = date('s');
+            $mseg = (new DateTime())->format('v');
+
+            $fecha_hora = $anio."".$mes."".$dia."".$hora."".$min."".$seg."".$mseg;
+            $tipo_emision = 1;
+            $tipo_factura = 1;
+            $tipo_documento_sector = 1;
+            $pos = 0;
+            // , pos
+            $cuf = $this->generarCuf($factura_nitemisor,
+                                    $fecha_hora,
+                                    $factura_sucursal,
+                                    $factura_modalidad,
+                                    $tipo_emision,
+                                    $tipo_factura,
+                                    $tipo_documento_sector,
+                                    $factura_numero,
+                                    $pos);
+
             $this->Detalle_factura_aux_model->delete_detalleventa_factura_aux($venta_id);
-                       
             
             
             if($venta_id>0){
                 $sql = "update venta set venta_tipodoc = 1 where venta_id = ".$venta_id;
                 $this->Venta_model->ejecutar($sql);
             }
+            //--------------------------GENERAR XML-----------------------------------
+            $xml = new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><facturaComputarizadaCompraVenta></facturaComputarizadaCompraVenta><?xml version='1.0' encoding='utf-8'?>");
+    
+            $array_to_xml = array (
+                'cabecera' => array(
+                    'nitEmisor' => "$factura_nitemisor",
+                    'razonSocialEmisor' => "$factura_razonsocial",
+                    'municipio' => "La Paz",
+                    'telefono' => "2457896",
+                    'numeroFactura' => "$numero_factura",
+                    'cuf' => "{$dosificacion['dosificacion_cuf']}",
+                    'cufd' => "{$dosificacion['dosificacion_cufd']}",
+                    'codigoSucursal' => "0",
+                    'direccion' => "Calle Juan Pablo II #54",
+                    'codigoPuntoVenta' => "0",
+                    'fechaEmision' => "$factura_fecha_hora",
+                    'nombreRazonSocial' => "Pablo Mamani",
+                    'codigoTipoDocumentoIdentidad' => "1",
+                    'numeroDocumento' => "1548971",
+                    'complemento' => "ABC",
+                    'codigoCliente' => "PMamani",
+                    'codigoMetodoPago' => "2",
+                    'numeroTarjeta' => "",
+                    'montoTotal' => "$factura_total",
+                    'montoTotalSujetoIva' => "25",
+                    'codigoMoneda' => "1",
+                    'tipoCambio' => "1",
+                    'montoTotalMoneda' => "25",
+                    'leyenda' => "$factura_leyenda1 <br>$factura_leyenda2",
+                    'usuario' => "pperez",
+                    'codigoDocumentoSecto' => "1"
+                ),
+                'detalle' => array(
+                    'actividadEconomica' => '620100' ,
+                    'codigoProductoSin' => '83141' ,
+                    'codigoProducto' => 'JN-131231' ,
+                    'descripcion' => 'JUGO DE NARANJA EN VASO' ,
+                    'cantidad' => '10' ,
+                    'unidadMedida' => '58' ,
+                    'precioUnitario' => '2.5' ,
+                    'montoDescuento' => '' ,
+                    'subTotal' => '25' ,
+                    'numeroSerie' => '' ,
+                    'numeroImei' => ''
+                )
+            );
+            // $xml es el formato xml 
+            $xml = $this->array_to_xml($array_to_xml,$xml);
+            // ------------Agregar atributos xsi:nil="true"--------------
+            $numeroTarjeta = $xml->cabecera->numeroTarjeta;
+            $numeroTarjeta = $numeroTarjeta->addAttribute("xsi:nil",'true',"http://www.w3.org/2001/XMLSchema-instance");
             
+            $montoDescuento = $xml->detalle->montoDescuento;
+            $montoDescuento = $montoDescuento->addAttribute("xsi:nil",'true',"http://www.w3.org/2001/XMLSchema-instance");
+
+            $numeroSerie = $xml->detalle->numeroSerie;
+            $numeroSerie = $numeroSerie->addAttribute("xsi:nil",'true',"http://www.w3.org/2001/XMLSchema-instance");
+
+            $numeroImei = $xml->detalle->numeroImei;
+            $numeroImei = $numeroImei->addAttribute("xsi:nil",'true',"http://www.w3.org/2001/XMLSchema-instance");
+            // ------------Agregar atributos xsi:nil="true"--------------
+            
+            //--------------------------GENERAR XML-----------------------------------
+
             echo json_encode($factura_id);
         //**************** fin contenido ***************
         }
     }
+
+    function array_to_xml($array_to_xml, &$xml) {
+        foreach($array_to_xml as $key => $value) {
+            if(is_array($value)) {
+                if(!is_numeric($key)){
+                    $subnode = $xml->addChild("$key");
+                    $this->array_to_xml($value, $subnode);
+                }else{
+                    $subnode = $xml->addChild("$value");
+                    $this->array_to_xml($value, $subnode);
+                }
+            }else {
+                $xml->addChild("$key",htmlspecialchars("$value"));
+            }
+        }
+        return $xml;
+    }
+
     /* genera factura desde el index de servicios con sus detalles */
     function generar_factura_detalle_servicio()
     {
@@ -3433,5 +3539,119 @@ function anular_venta($venta_id){
             show_404();
         }              
     }
+
+    function generarCuf($factura_nitemisor,
+                        $fecha_hora,
+                        $factura_sucursal,
+                        $factura_modalidad,
+                        $tipo_emision,
+                        $tipo_factura,
+                        $tipo_documento_sector,
+                        $factura_numero,
+                        $pos){
+        $factura_nitemisor = $this->add_ceros($factura_nitemisor,13);
+        $fecha_hora = $this->add_ceros($fecha_hora,17);
+        $factura_sucursal = $this->add_ceros($factura_sucursal,4);
+        $factura_modalidad = $this->add_ceros($factura_modalidad,1);
+        $tipo_emision = $this->add_ceros($tipo_emision,1);
+        $tipo_factura = $this->add_ceros($tipo_factura,1);
+        $tipo_documento_sector = $this->add_ceros($tipo_documento_sector,2);
+        $factura_numero = $this->add_ceros($factura_numero,10);
+        $pos = $this->add_ceros($pos,4);
+        
+        $cuf = "$factura_nitemisor$fecha_hora$factura_sucursal$factura_modalidad$tipo_emision$tipo_factura$tipo_documento_sector$factura_numero$pos";
+        
+        $mod11 = $this->obtenerModulo11($cuf);
+        $cuf = "$cuf$mod11";
+
+        return $cuf;
+    }
+
+    function add_ceros($str, $longitud){
+        $longitud_str = strlen($str);
+        $cero = '0';
+        if($longitud_str < $longitud){
+            for($i = 1; $i<=$longitud-$longitud_str;$i++){
+                $str = $cero."".$str;
+            }
+        }
+        return $str;
+    }
+
+    function Base16($pString){
+        $vValor = gmp_init($pString);
+        // return $vValor.ToString("X");
+        return strval($vValor);
+    }
+
+    // function Base10($pString){
+
+    //     $vValor = gmp_init($pString, System.Globalization.NumberStyles.HexNumber);
+    //     // return vValor.ToString();
+    //     return strval($vValor);
+    // }
     
+
+    function obtenerModulo11($pCadena) {
+        $vDigito = $this->calculaDigitoMod11($pCadena, 1, 9, false);
+        return $vDigito;
+    }
+
+    function calculaDigitoMod11($cadena, $numDig, $limMult, $x10){
+        // $mult; $suma; $i; $n; $dig; 
+
+        if (!$x10) $numDig = 1;
+        for($n = 1; $n <= $numDig; $n++) {
+            $suma = 0;
+            $mult = 2;
+            for($i = strlen($cadena)-1; $i >= 0; $i--) {
+                $suma += ($mult * intVal($cadena.substr($i, $i + 1)));
+                if(++$mult > $limMult) $mult = 2;
+            }    
+            if ($x10)   
+                $dig = (($suma * 10) % 11) % 10;
+            else
+                $dig = $suma % 11;               
+            
+            if ($dig == 10) {
+                $cadena += "1";
+            }
+            
+            if ($dig == 11) {
+                $cadena += "0";            
+            }
+            if ($dig < 10) {
+                $cadena += strval($dig);
+            }             
+        }
+        return substr($cadena,strlen($cadena) - $numDig, strlen($cadena));
+    }
+
+    // OTRO MODULO 11
+    // function getMod11( $num, $retorno_10='K' ){
+    //     $digits = str_replace( array( '.', ',' ), array( ''.'' ), strrev($num ) );
+    //     if ( ! ctype_digit( $digits ) )
+    //         return false;
+
+    //     $sum = 0;
+    //     $factor = 2;
+        
+    //     for( $i=0;$i<strlen( $digits ); $i++ ){
+    //         $sum += substr( $digits,$i,1 ) * $factor;
+    //         if ( $factor == 7 )
+    //             $factor = 2;
+    //         else
+    //             $factor++;
+    //     }
+
+    //     $dv = 11 - ($sum % 11);
+    
+    //     if ( $dv < 10 )
+    //         return $dv;
+
+    //     if ( $dv == 11 )
+    //         return 0;
+
+    //     return $retorno_10;
+    // }
 }
