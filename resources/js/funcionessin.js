@@ -183,11 +183,12 @@ function verificarComunicacioncv(){
     
 }
 
-function solicitudCuisMasivo(){
-    
+
+function solicitudCuismasivo(){
+
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'dosificacion/cuis';
-    var opcion = confirm("Esta a punto de generar el C.U.I.S., el cual reamplazara el existente...! \n ¿Desea Continuar?");
+    var controlador = base_url+'dosificacion/cuisMasivo';
+    var opcion = confirm("Esta a punto de generar el C.U.I.S. Masivo, DETALLES ojo...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
     
@@ -196,18 +197,19 @@ function solicitudCuisMasivo(){
                 data:{},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
-                    let transaccion = registros.RespuestaCuis.transaccion;
-
-                    if(transaccion == true){
-                       almacenar_cuis((registros['RespuestaCuis']));
-                    }
-                    else{
-                        
-                        let transaccion = registros.RespuestaCuis.mensajesList.codigo;
-                        let descripcion = registros.RespuestaCuis.mensajesList.descripcion;
-                        alert("ERROR: "+transaccion+" "+descripcion);
-                    }
-
+                    
+                    /* Nota.- Cuando es correcto genera todo;
+                     *        cuando es incorrecto no genera codigo */
+                    //let codigo = registros.RespuestaCuisMasivo.listaRespuestasCuis.codigo;
+                    let codigoPuntoVenta = registros.RespuestaCuisMasivo.listaRespuestasCuis.codigoPuntoVenta;
+                    let codigoSucursal = registros.RespuestaCuisMasivo.listaRespuestasCuis.codigoSucursal;
+                    let fechaVigencia = registros.RespuestaCuisMasivo.listaRespuestasCuis.fechaVigencia;
+                    let mensajecodigo = registros.RespuestaCuisMasivo.listaRespuestasCuis.mensajeServicioList.codigo;
+                    let descripcion = registros.RespuestaCuisMasivo.listaRespuestasCuis.mensajeServicioList.descripcion;
+                    /* transaccion cuando es invalido devuelve false: */
+                    let transaccion = registros.RespuestaCuisMasivo.listaRespuestasCuis.transaccion;
+                    let latransaccion = registros.RespuestaCuisMasivo.transaccion;
+                    alert(descripcion);
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
@@ -219,8 +221,8 @@ function solicitudCuisMasivo(){
 function solicitudCufdMasivo(){
     
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'dosificacion/cufd';
-    var opcion = confirm("Esta a punto de generar el C.U.F.D., el cual reamplazara el existente...! \n ¿Desea Continuar?");
+    var controlador = base_url+'dosificacion/cufdMasivo';
+    var opcion = confirm("Esta a punto de generar el C.U.F.D. Masivo, DETALLES ojo...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
     
@@ -243,7 +245,7 @@ function solicitudCufdMasivo(){
 
                     if(transaccion == true){
                        // $("#modal_mensajeadvertencia").modal("show");
-                       almacenar_cufd((registros['RespuestaCufd']));
+                       //almacenar_cufd((registros['RespuestaCufd']));
                     }
                     else{
                         alert("Algo fallo...!!");
