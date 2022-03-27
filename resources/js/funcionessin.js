@@ -157,7 +157,7 @@ function verificarComunicacion(){
     
 }
 
-// verificarComunicacion -> facturas compra venta
+//verificarComunicacion -> facturas compra venta
 function verificarComunicacioncv(){
     
     var base_url = document.getElementById('base_url').value;
