@@ -10,7 +10,7 @@ class Dosificacion extends CI_Controller{
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Dosificacion_model');            
+        $this->load->model('Dosificacion_model');
         //$this->load->library('lib_nusoap/nusoap');    
     
         
@@ -782,6 +782,28 @@ class Dosificacion extends CI_Controller{
             }
         }catch (Exception $e){
             echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    function almacenarcufdmasivo(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $params = array(
+                    'cufdmasivo_codigo'    => $this->input->post('codigo'),
+                    'cufdmasivo_codigocontrol' => $this->input->post('codigocontrol'),
+                    'cufdmasivo_direccion'       => $this->input->post('direccion'),
+                    'cufdmasivo_fechavigencia' => $this->input->post('fechavigencia'),
+                    'cufdmasivo_transaccion'     => $this->input->post('transaccion'),
+                );
+                $this->load->model('Cufd_masivo_model');
+                $cufdmasivo_id = $this->Cufd_masivo_model->add_cufd_masivo($params);
+
+                echo json_encode("ok");
+                
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+                echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     

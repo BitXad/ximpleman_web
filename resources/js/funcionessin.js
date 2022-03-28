@@ -184,7 +184,7 @@ function verificarComunicacioncv(){
 }
 
 
-function solicitudCuismasivo(){
+function solicitudCuisMasivo(){
 
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/cuisMasivo';
@@ -225,27 +225,25 @@ function solicitudCufdMasivo(){
     var opcion = confirm("Esta a punto de generar el C.U.F.D. Masivo, DETALLES ojo...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
-    
+        document.getElementById('loader_cufdm').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
                 data:{},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
                     /*console.log(registros);
-                    console.log(registros.RespuestaVerificarNit.mensajesList.codigo);
-                    console.log(registros.RespuestaVerificarNit.mensajesList.descripcion);
-                    console.log(registros.RespuestaVerificarNit.transaccion);*/
-                    //let elcodigo = registros.RespuestaVerificarNit.mensajesList.codigo;
-                    let codigo = registros.RespuestaCufd.codigo;
-                    let codigoControl = registros.RespuestaCufd.codigoControl;
-                    let direccion = registros.RespuestaCufd.direccion;
-                    let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
-                    let transaccion = registros.RespuestaCufd.transaccion;
-
+                    console.log(registros.RespuestaCufdMasivo.listaRespuestasCufd.codigo);
+                    console.log(registros.RespuestaCufdMasivo.listaRespuestasCufd.descripcion);
+                    console.log(registros.RespuestaCufdMasivo.listaRespuestasCufd.transaccion);*/
+                    
+                    let transaccion = registros.RespuestaCufdMasivo.listaRespuestasCufd.transaccion;
 
                     if(transaccion == true){
-                       // $("#modal_mensajeadvertencia").modal("show");
-                       //almacenar_cufd((registros['RespuestaCufd']));
+                        let codigo = registros.RespuestaCufdMasivo.listaRespuestasCufd.codigo;
+                        let codigoControl = registros.RespuestaCufdMasivo.listaRespuestasCufd.codigoControl;
+                        let direccion = registros.RespuestaCufdMasivo.listaRespuestasCufd.direccion;
+                        let fechaVigencia = registros.RespuestaCufdMasivo.listaRespuestasCufd.fechaVigencia;
+                       almacenar_cufdmasivo((registros['RespuestaCufdMasivo']));
                     }
                     else{
                         alert("Algo fallo...!!");
@@ -262,4 +260,29 @@ function solicitudCufdMasivo(){
                 }                
         }); 
     }
+}
+
+function almacenar_cufdmasivo(datos){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/almacenarcufdmasivo';
+    var codigo        = datos.listaRespuestasCufd.codigo;
+    var codigoControl = datos.listaRespuestasCufd.codigoControl;
+    var direccion     = datos.listaRespuestasCufd.direccion;
+    var fechaVigencia = datos.listaRespuestasCufd.fechaVigencia;
+    var transaccion = datos.transaccion;    
+    //alert(codigo+" * "+codigoControl+" * "+direccion+" * "+fechaVigencia+" * "+transaccion);
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{codigo:codigo, codigocontrol:codigoControl, direccion:direccion,
+                  fechavigencia:fechaVigencia, transaccion:transaccion},
+            success:function(respuesta){
+                alert("C.U.F.D Masivo generado y almacenado correctamente...!");
+                document.getElementById('loader_cufdm').style.display = 'none';
+            },
+            error:function(respuesta){
+                alert("Algo salio mal; por favor verificar sus datos!.");
+                document.getElementById('loader_cufdm').style.display = 'none';
+            }
+    });
 }

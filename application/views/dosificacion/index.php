@@ -164,7 +164,7 @@
         <div class="col-md-12 linea">
             <div class="col-md-1">
                 <label class="control-label">Codigo Unico de Inicio de Sistema Masivo (CUIS Masivo)</label>
-                <button class="btn btn-info btn-xs" onclick="solicitudCuismasivo()"><fa class="fa fa-download"></fa> Solicitar CUIS Masivo</button>
+                <button class="btn btn-info btn-xs" onclick="solicitudCuisMasivo()"><fa class="fa fa-download"></fa> Solicitar CUIS Masivo</button>
             </div>
             <div class="col-md-3">
                 <?php echo $dosificacion['dosificacion_cuismasivo']; ?>
@@ -172,6 +172,9 @@
            <div class="col-md-1">
                 <label class="control-label">Codigo Unico de Facturación Diaria Masivo (CUFD Masivo) </label>
                 <button class="btn btn-info btn-xs" onclick="solicitudCufdMasivo()"><fa class="fa fa-download"></fa> Solicitar CUFD Masivo</button>
+                <div class="row" id='loader_cufdm'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
             </div>
             <div class="col-md-2">
                 <?php echo $dosificacion['dosificacion_cufdmasivo']; ?>
