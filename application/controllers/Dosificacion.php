@@ -807,4 +807,57 @@ class Dosificacion extends CI_Controller{
         }
     }
     
+    /* en servicio de obtención de códigos es la Funcion:  registrofirmaRevocada */
+    function registroFirmaRevocada(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_obtencioncodigos'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                $certificado = "HGHHDHDfdT565TTFfFDF4R5F";
+                $fecharevocacion = "2022-03-28";
+                $razonrevocacion = "Sustracción de codigos...";
+                /* ordenado segun SoapUI */
+                $parametros = ["SolicitudNotificaRevocado" => [
+                    "certificado"=>  $certificado,  //$dosificacion['dosificacion_ambiente'],
+                    "codigoAmbiente"=> $dosificacion['dosificacion_ambiente'],
+                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                    "cuis"=>            $dosificacion['dosificacion_cuis'],
+                    "fechaRevocacion"=> $fecharevocacion, //$dosificacion['dosificacion_nitemisor'],
+                    "nit"=>             $dosificacion['dosificacion_nitemisor'],
+                    "razonRevocacion"=> $razonrevocacion]];
+                
+                $resultado = $cliente->notificaCertificadoRevocado($parametros);
+                echo json_encode($resultado);
+                /*print_r($resultado);
+                $transaccion = $resultado->RespuestaNotificaRevocado->transaccion;
+                */
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    
 }

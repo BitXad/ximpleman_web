@@ -189,7 +189,7 @@ class Factura_model extends CI_Model
     function ejecutar($sql)
     {       
         $this->db->query($sql);     
-        return $true;
+        return true;
     }
 
     function consultar($sql)

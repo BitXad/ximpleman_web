@@ -239,10 +239,10 @@ function solicitudCufdMasivo(){
                     let transaccion = registros.RespuestaCufdMasivo.listaRespuestasCufd.transaccion;
 
                     if(transaccion == true){
-                        let codigo = registros.RespuestaCufdMasivo.listaRespuestasCufd.codigo;
+                        /*let codigo = registros.RespuestaCufdMasivo.listaRespuestasCufd.codigo;
                         let codigoControl = registros.RespuestaCufdMasivo.listaRespuestasCufd.codigoControl;
                         let direccion = registros.RespuestaCufdMasivo.listaRespuestasCufd.direccion;
-                        let fechaVigencia = registros.RespuestaCufdMasivo.listaRespuestasCufd.fechaVigencia;
+                        let fechaVigencia = registros.RespuestaCufdMasivo.listaRespuestasCufd.fechaVigencia;*/
                        almacenar_cufdmasivo((registros['RespuestaCufdMasivo']));
                     }
                     else{
@@ -285,4 +285,40 @@ function almacenar_cufdmasivo(datos){
                 document.getElementById('loader_cufdm').style.display = 'none';
             }
     });
+}
+
+function registroFirmaRevocada(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/registroFirmaRevocada';
+    var opcion = confirm("Esta a punto de inhabilitar el CUIS y el CUFD vigente, \n de manera automática no pudiendo realizar la emisión de Facturas Digitales a partir de ese momento, hasta que se tenga firma valida habilitada! \n ¿Desea Continuar?");
+    
+    if (opcion == true) {
+        document.getElementById('loader_cufdm').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                    //console.log(registros);
+                    let transaccion = registros.RespuestaNotificaRevocado.transaccion;
+
+                    if(transaccion == true){
+                        alert("falta poner y ver que registrar... ojo");
+                       //almacenar_cufdmasivo((registros['RespuestaCufdMasivo']));
+                    }
+                    else{
+                        alert("Algo fallo...!!");
+                    }
+
+                    //alert("hola");
+                    /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
+
+                    }*/
+
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                }                
+        }); 
+    }
 }
