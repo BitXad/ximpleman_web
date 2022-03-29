@@ -88,6 +88,15 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-md-2">
+                    <label for="parametro_manejocaja" class="control-label"> ADMINISTRAR CAJA</label>
+                    <div class="form-group">
+                        <select  name="parametro_manejocaja" class="form-control" id="parametro_manejocaja" >
+                            <option value="Si">Si</option>
+                            <option value=No">No</option>
+                        </select>
+                    </div>
+                </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(0, 255, 0, 0.3);"><u><b>CREDITOS</b></u><br>
                 <div class="col-md-2">
