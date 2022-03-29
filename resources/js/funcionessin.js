@@ -293,7 +293,7 @@ function registroFirmaRevocada(){
     var opcion = confirm("Esta a punto de inhabilitar el CUIS y el CUFD vigente, \n de manera automática no pudiendo realizar la emisión de Facturas Digitales a partir de ese momento, hasta que se tenga firma valida habilitada! \n ¿Desea Continuar?");
     
     if (opcion == true) {
-        document.getElementById('loader_cufdm').style.display = 'block';
+        document.getElementById('loader_revocado').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
                 data:{},
@@ -301,23 +301,20 @@ function registroFirmaRevocada(){
                     var registros = JSON.parse(respuesta);
                     //console.log(registros);
                     let transaccion = registros.RespuestaNotificaRevocado.transaccion;
-
                     if(transaccion == true){
                         alert("falta poner y ver que registrar... ojo");
                        //almacenar_cufdmasivo((registros['RespuestaCufdMasivo']));
                     }
                     else{
-                        alert("Algo fallo...!!");
+                        let mensaje = registros.RespuestaNotificaRevocado.mensajesList.descripcion;
+                        alert("Algo fallo...!! "+mensaje);
                     }
-
-                    //alert("hola");
-                    /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
-
-                    }*/
+                    document.getElementById('loader_revocado').style.display = 'none';
 
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
                 }                
         }); 
     }

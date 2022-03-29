@@ -6,6 +6,10 @@
 <div class="box-header">
     <h3 class="box-title">Dosificación</h3>
     <button class="btn btn-info btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa> Verificar Conexión</button>
+    <a class="btn btn-danger btn-xs" onclick="registroFirmaRevocada()"><fa class="fa fa-chain-broken"></fa> Firma Rebocada</a>
+    <div class="row" id='loader_revocado'  style='display:none; text-align: center'>
+        <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+    </div>
     
     <div class="box-tools">
         <?php
