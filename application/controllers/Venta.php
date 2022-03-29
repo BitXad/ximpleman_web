@@ -3215,7 +3215,8 @@ function anular_venta($venta_id){
                                     $tipo_factura,
                                     $tipo_documento_sector,
                                     $factura_numero,
-                                    $pos);
+                                    $pos,
+                                    $dosificacion['dosificacion_cufd']);
 
             $this->Detalle_factura_aux_model->delete_detalleventa_factura_aux($venta_id);
             
@@ -3234,7 +3235,7 @@ function anular_venta($venta_id){
                     'municipio' => "La Paz",
                     'telefono' => "2457896",
                     'numeroFactura' => "$numero_factura",
-                    'cuf' => "{$dosificacion['dosificacion_cuf']}",
+                    'cuf' => "{$cuf}",
                     'cufd' => "{$dosificacion['dosificacion_cufd']}",
                     'codigoSucursal' => "0",
                     'direccion' => "Calle Juan Pablo II #54",
@@ -3548,7 +3549,8 @@ function anular_venta($venta_id){
                         $tipo_factura,
                         $tipo_documento_sector,
                         $factura_numero,
-                        $pos){
+                        $pos,
+                        $cufd){
         $factura_nitemisor = $this->add_ceros($factura_nitemisor,13);
         $fecha_hora = $this->add_ceros($fecha_hora,17);
         $factura_sucursal = $this->add_ceros($factura_sucursal,4);
@@ -3562,8 +3564,11 @@ function anular_venta($venta_id){
         $cuf = "$factura_nitemisor$fecha_hora$factura_sucursal$factura_modalidad$tipo_emision$tipo_factura$tipo_documento_sector$factura_numero$pos";
         
         $mod11 = $this->obtenerModulo11($cuf);
-        $cuf = "$cuf$mod11";
 
+        $cuf = "$cuf$mod11";
+        //llamada a funcion para convertir a base 16
+        $cuf = $this->convBase16($cuf,'0123456789','0123456789ABCDEF');
+        $cuf += $cufd;
         return $cuf;
     }
 
@@ -3577,12 +3582,36 @@ function anular_venta($venta_id){
         }
         return $str;
     }
-
-    function Base16($pString){
-        $vValor = gmp_init($pString);
-        // return $vValor.ToString("X");
-        return strval($vValor);
+    /**CONVIERTE A BASE 16 */
+    function convBase16($numberInput, $fromBaseInput, $toBaseInput){
+        if ($fromBaseInput==$toBaseInput) return $numberInput;
+        $fromBase = str_split($fromBaseInput,1);
+        $toBase = str_split($toBaseInput,1);
+        $number = str_split($numberInput,1);
+        $fromLen=strlen($fromBaseInput);
+        $toLen=strlen($toBaseInput);
+        $numberLen=strlen($numberInput);
+        $retval='';
+        if ($toBaseInput == '0123456789'){
+            $retval=0;
+            for ($i = 1;$i <= $numberLen; $i++)
+                $retval = bcadd($retval, bcmul(array_search($number[$i-1], $fromBase),bcpow($fromLen,$numberLen-$i)));
+            return $retval;
+        }
+        if ($fromBaseInput != '0123456789')
+            $base10=$this->convBase16($numberInput, $fromBaseInput, '0123456789');
+        else
+            $base10 = $numberInput;
+        if ($base10<strlen($toBaseInput))
+            return $toBase[$base10];
+        while($base10 != '0')
+        {
+            $retval = $toBase[(bcmod($base10,$toLen))].$retval;
+            $base10 = bcdiv($base10,$toLen,0);
+        }
+        return $retval;
     }
+
 
     // function Base10($pString){
 
