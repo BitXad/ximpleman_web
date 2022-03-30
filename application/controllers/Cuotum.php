@@ -165,6 +165,8 @@ class Cuotum extends CI_Controller{
             $data['eldetalle'] = $eldetalle;
             
             $data['_view'] = 'cuotum/planCuentas';
+            /* para lotes:  */
+            //$data['_view'] = 'cuotum/planCuentas_lotes';
             $this->load->view('layouts/main',$data);
         }
     }

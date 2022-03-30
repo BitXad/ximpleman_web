@@ -319,3 +319,39 @@ function registroFirmaRevocada(){
         }); 
     }
 }
+function mostrar_modalrevocarfirma(){
+    $("#modalrevocarfirma").modal("show");
+}
+
+function cierre_OperacionesSistema(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/cierre_OperacionesSistema';
+    var opcion = confirm("Este proceso inhabilita el CUIS y el CUFD vigente, de manera automática no pudiendo realizar la emisión de Facturas Digitales a partir de ese momento! \n ¿Desea Continuar?");
+    
+    if (opcion == true) {
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                    console.log(registros);
+                    let transaccion = registros.RespuestaCierreSistemas.transaccion;
+                    if(transaccion == true){
+                        alert("falta poner y ver que registrar... ojo");
+                       //almacenar_cufdmasivo((registros['RespuestaCufdMasivo']));
+                    }
+                    else{
+                        let mensaje = registros.RespuestaNotificaRevocado.mensajesList.descripcion;
+                        alert("Algo fallo...!! "+mensaje);
+                    }
+                    document.getElementById('loader_revocado').style.display = 'none';
+
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    }
+}

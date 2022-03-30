@@ -860,4 +860,73 @@ class Dosificacion extends CI_Controller{
         }
     }
     
+    /* +++++++++++++ Servicio de Facturacion Operaciones  +++++++++++++++ */
+    /* en servicio Facturacion de Operaciones es la Funcion:  cierreOperacionesSistema */
+    function cierreOperacionesSistema(){
+        /*try{
+            if ($this->input->is_ajax_request()) {*/
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_operaciones'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                /* ordenado segun SoapUI */
+                $parametros = ["SolicitudOperaciones" => [
+                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                    "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
+                    "codigoPuntoVenta"=>$dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                    "cuis"=>            $dosificacion['dosificacion_cuis'],
+                    "nit"=>             $dosificacion['dosificacion_nitemisor']
+                ]];
+
+                var_dump($parametros);
+                $resultado = $cliente->cierreOperacionesSistema($parametros);
+                //echo json_encode($resultado);
+                print_r($resultado);
+                /*$lrespcodigo = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigo;
+                $lrespcodigocontrol = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigoControl;
+                $lrespcodigopuntoventa = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigoPuntoVenta;
+                $lrespcodigosucursal = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigoSucursal;
+                $lrespcuis = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->cuis;
+                $lresdireccion = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->direccion;
+                $lrespfechaVigencia = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->fechaVigencia;
+                $lresptransaccion = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->transaccion;
+                $latransaccion = $resultado->RespuestaCufdMasivo->transaccion;
+                echo "codigo: ".$lrespcodigo."<br>";
+                echo "codigoControl: ".$lrespcodigocontrol."<br>";
+                echo "codigoPuntoVenta: ".$lrespcodigopuntoventa."<br>";
+                echo "codigoSucursal: ".$lrespcodigosucursal."<br>";
+                echo "cuis: ".$lrespcuis."<br>";
+                echo "direccion: ".$lresdireccion."<br>";
+                echo "fechaVigencia: ".$lrespfechaVigencia."<br>";
+                echo "transaccion: ".$lresptransaccion."<br>";
+                echo "transaccion: ".$latransaccion;*/
+           /* }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }*/
+    }
+    
+    
 }

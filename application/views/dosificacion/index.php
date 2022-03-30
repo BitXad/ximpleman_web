@@ -6,7 +6,8 @@
 <div class="box-header">
     <h3 class="box-title">Dosificación</h3>
     <button class="btn btn-info btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa> Verificar Conexión</button>
-    <a class="btn btn-danger btn-xs" onclick="registroFirmaRevocada()"><fa class="fa fa-chain-broken"></fa> Firma Rebocada</a>
+    <!--<a class="btn btn-danger btn-xs" onclick="registroFirmaRevocada()"><fa class="fa fa-chain-broken"></fa> Firma Rebocada</a>-->
+    <a class="btn btn-danger btn-xs" onclick="cierre_OperacionesSistema()"><fa class="fa fa-chain-broken"></fa> Firma Rebocada</a>
     <div class="row" id='loader_revocado'  style='display:none; text-align: center'>
         <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
     </div>
@@ -227,4 +228,57 @@
     </div>
 
 </div>
-                            
+<!--------------------- Inicio modal registrar firma revocada  ------------>
+<div id="modalrevocarfirma" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="font-family: Arial">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #CC660E">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title"><fa class="fa fa-exclamation-triangle"></fa><b> ADVERTENCIA</b></h2>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <label for="monto_caja" class="control-label">
+                        <p class="text-justify"> Esta a punto de inhabilitar el CUIS y el CUFD vigente,
+                            de manera automática no pudiendo realizar la emisión de Facturas Digitales a partir de ese momento,
+                            hasta que se tenga firma valida habilitada!<br>
+                            ¿Desea Continuar?
+                        </p>
+                    </label>
+                </div>
+                <div class="col-md-12">
+                    <label for="certificado" class="control-label">Certificado</label>
+                    <div class="form-group">
+                        <input type="text" name="certificado" value="" class="form-control" id="certificado" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                        <span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="fecha_revocacion" class="control-label">Fecha Revocación</label>
+                    <div class="form-group">
+                        <input type="date" name="fecha_revocacion" value="<?php echo date("Y-m-d") ?>" class="form-control" id="fecha_revocacion" required />
+                        <span class="text-danger"><?php echo form_error('fecha_revocacion');?></span>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <label for="razonrevocacion" class="control-label">Razon de Revocación</label>
+                    <div class="form-group">
+                        <input type="text" name="razonrevocacion" value="" class="form-control" id="razonrevocacion" required />
+                        <span class="text-danger"><?php echo form_error('razonrevocacion');?></span>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <div class="col-md-4">
+                    <button class="btn btn-warning btn-block" data-dismiss="modal" onclick="registroFirmaRevocada()"><fa class="fa fa-chain-broken"></fa> Rebocar Firmas</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+                </div>
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------------- Fin modal registrar firma revocada  ------------>
