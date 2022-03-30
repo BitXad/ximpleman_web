@@ -343,7 +343,6 @@ class Venta extends CI_Controller{
         $facturado = $this->input->post('facturado'); // si la venta es facturada
         
         $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
-        
         if (($venta_total+$venta_descuento)>0)
             $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
         else
@@ -3088,6 +3087,7 @@ function anular_venta($venta_id){
             //$dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
             $parametro = $this->Parametro_model->get_parametros();
+            $empresa = $this->Empresa_model->get_empresa(1);
             $tamanio_hoja = 2;
             if($parametro[0]['parametro_tipoimpresora'] == "FACTURADORA"){
                 $tamanio_hoja = 1;
@@ -3201,7 +3201,7 @@ function anular_venta($venta_id){
             $seg = date('s');
             $mseg = (new DateTime())->format('v');
 
-            $fecha_hora = $anio."".$mes."".$dia."".$hora."".$min."".$seg."".$mseg;
+            $fecha_hora = "$anio$mes$dia$hora$min$seg$mseg";
             $tipo_emision = 1;
             $tipo_factura = 1;
             $tipo_documento_sector = 1;
@@ -3217,7 +3217,7 @@ function anular_venta($venta_id){
                                     $factura_numero,
                                     $pos,
                                     $dosificacion['dosificacion_cufd']);
-
+            var_dump($cuf);
             $this->Detalle_factura_aux_model->delete_detalleventa_factura_aux($venta_id);
             
             
@@ -3226,51 +3226,75 @@ function anular_venta($venta_id){
                 $this->Venta_model->ejecutar($sql);
             }
             //--------------------------GENERAR XML-----------------------------------
-            $xml = new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><facturaComputarizadaCompraVenta></facturaComputarizadaCompraVenta><?xml version='1.0' encoding='utf-8'?>");
+            $xml = new SimpleXMLElement("<?xml version='1.0' encoding='utf-8'?><facturaComputarizadaCompraVenta></facturaComputarizadaCompraVenta>");
     
-            $array_to_xml = array (
+            $array_to_xml_cabecera = array (
                 'cabecera' => array(
                     'nitEmisor' => "$factura_nitemisor",
-                    'razonSocialEmisor' => "$factura_razonsocial",
-                    'municipio' => "La Paz",
-                    'telefono' => "2457896",
+                    'razonSocialEmisor' => "{$empresa[0]['empresa_nombre']}",
+                    'municipio' => "{$empresa[0]['empresa_ubicacion']}",
+                    'telefono' => $empresa[0]['empresa_telefono'],
                     'numeroFactura' => "$numero_factura",
                     'cuf' => "{$cuf}",
                     'cufd' => "{$dosificacion['dosificacion_cufd']}",
-                    'codigoSucursal' => "0",
-                    'direccion' => "Calle Juan Pablo II #54",
-                    'codigoPuntoVenta' => "0",
+                    'codigoSucursal' => "0",//?
+                    'direccion' => "{$empresa[0]['empresa_direccion']}",
+                    'codigoPuntoVenta' => "0",//? no obligatorio
                     'fechaEmision' => "$factura_fecha_hora",
-                    'nombreRazonSocial' => "Pablo Mamani",
-                    'codigoTipoDocumentoIdentidad' => "1",
-                    'numeroDocumento' => "1548971",
+                    'nombreRazonSocial' => "$factura_razonsocial",
+                    'codigoTipoDocumentoIdentidad' => "1",//1 -> carnet
+                    'numeroDocumento' => $factura_nit,
                     'complemento' => "ABC",
                     'codigoCliente' => "PMamani",
-                    'codigoMetodoPago' => "2",
+                    'codigoMetodoPago' => $tipotrans_id,
                     'numeroTarjeta' => "",
                     'montoTotal' => "$factura_total",
                     'montoTotalSujetoIva' => "25",
-                    'codigoMoneda' => "1",
-                    'tipoCambio' => "1",
-                    'montoTotalMoneda' => "25",
-                    'leyenda' => "$factura_leyenda1 <br>$factura_leyenda2",
+                    'codigoMoneda' => "1",//transaccion en bolivianos
+                    'tipoCambio' => "1",//Cambio en bolivianos
+                    'montoTotalMoneda' => "25",// 
+                    'leyenda' => "$factura_leyenda1 { $factura_leyenda2 != '' ? '<br>'.$factura_leyenda2:''}",
                     'usuario' => "pperez",
-                    'codigoDocumentoSecto' => "1"
-                ),
-                'detalle' => array(
-                    'actividadEconomica' => '620100' ,
-                    'codigoProductoSin' => '83141' ,
-                    'codigoProducto' => 'JN-131231' ,
-                    'descripcion' => 'JUGO DE NARANJA EN VASO' ,
-                    'cantidad' => '10' ,
-                    'unidadMedida' => '58' ,
-                    'precioUnitario' => '2.5' ,
-                    'montoDescuento' => '' ,
-                    'subTotal' => '25' ,
-                    'numeroSerie' => '' ,
-                    'numeroImei' => ''
+                    'codigoDocumentoSector' => "1"
                 )
+                // 'detalle' => array(
+                //     'actividadEconomica' => '620100' ,
+                //     'codigoProductoSin' => '83141' ,
+                //     'codigoProducto' => 'JN-131231' ,
+                //     'descripcion' => 'JUGO DE NARANJA EN VASO' ,
+                //     'cantidad' => '10' ,
+                //     'unidadMedida' => '58' ,
+                //     'precioUnitario' => '2.5' ,
+                //     'montoDescuento' => '' ,
+                //     'subTotal' => '25' ,
+                //     'numeroSerie' => '' ,
+                //     'numeroImei' => ''
+                // )
             );
+
+            $all_detalle_factura_aux;
+
+            // $detalle;
+            
+            foreach ($all_detalle_factura_aux as $detalle_fact){
+                    $detalle = array(
+                        'actividadEconomica' => '620100' ,
+                        'codigoProductoSin' => '83141' ,
+                        'codigoProducto' => $detalle_fact['detallefact_codigo'] ,
+                        'descripcion' => $detalle_fact['detallefact_descripcion'] ,
+                        'cantidad' => $detalle_fact['detallefact_cantidad'] ,
+                        'unidadMedida' => '58' ,
+                        'precioUnitario' => $detalle_fact['detallefact_precio'] ,
+                        'montoDescuento' => $detalle_fact['detallefact_descuento'] ,
+                        'subTotal' => $detalle_fact['detallefact_subtotal'] ,
+                        'numeroSerie' => 'null' ,
+                        'numeroImei' => 'null'
+                    );
+            }
+            $array_to_xml_detalle = array(
+                'detalle' => $detalle
+            );
+            $array_to_xml = array_merge($array_to_xml_cabecera, $array_to_xml_detalle); 
             // $xml es el formato xml 
             $xml = $this->array_to_xml($array_to_xml,$xml);
             // ------------Agregar atributos xsi:nil="true"--------------
@@ -3568,7 +3592,7 @@ function anular_venta($venta_id){
         $cuf = "$cuf$mod11";
         //llamada a funcion para convertir a base 16
         $cuf = $this->convBase16($cuf,'0123456789','0123456789ABCDEF');
-        $cuf += $cufd;
+        $cuf = "$cuf$cufd";
         return $cuf;
     }
 
@@ -3622,65 +3646,66 @@ function anular_venta($venta_id){
     
 
     function obtenerModulo11($pCadena) {
-        $vDigito = $this->calculaDigitoMod11($pCadena, 1, 9, false);
+        // $vDigito = $this->calculaDigitoMod11($pCadena, 1, 9, false);
+        $vDigito = $this->getMod11($pCadena);
         return $vDigito;
     }
 
-    function calculaDigitoMod11($cadena, $numDig, $limMult, $x10){
-        // $mult; $suma; $i; $n; $dig; 
+    // function calculaDigitoMod11($cadena, $numDig, $limMult, $x10){
+    //     // $mult; $suma; $i; $n; $dig; 
 
-        if (!$x10) $numDig = 1;
-        for($n = 1; $n <= $numDig; $n++) {
-            $suma = 0;
-            $mult = 2;
-            for($i = strlen($cadena)-1; $i >= 0; $i--) {
-                $suma += ($mult * intVal($cadena.substr($i, $i + 1)));
-                if(++$mult > $limMult) $mult = 2;
-            }    
-            if ($x10)   
-                $dig = (($suma * 10) % 11) % 10;
-            else
-                $dig = $suma % 11;               
+    //     if (!$x10) $numDig = 1;
+    //     for($n = 1; $n <= $numDig; $n++) {
+    //         $suma = 0;
+    //         $mult = 2;
+    //         for($i = strlen($cadena)-1; $i >= 0; $i--) {
+    //             $suma += ($mult * intVal($cadena.substr($i, $i + 1)));
+    //             if(++$mult > $limMult) $mult = 2;
+    //         }    
+    //         if ($x10)   
+    //             $dig = (($suma * 10) % 11) % 10;
+    //         else
+    //             $dig = $suma % 11;               
             
-            if ($dig == 10) {
-                $cadena += "1";
-            }
+    //         if ($dig == 10) {
+    //             $cadena += "1";
+    //         }
             
-            if ($dig == 11) {
-                $cadena += "0";            
-            }
-            if ($dig < 10) {
-                $cadena += strval($dig);
-            }             
-        }
-        return substr($cadena,strlen($cadena) - $numDig, strlen($cadena));
-    }
+    //         if ($dig == 11) {
+    //             $cadena += "0";            
+    //         }
+    //         if ($dig < 10) {
+    //             $cadena += strval($dig);
+    //         }             
+    //     }
+    //     return substr($cadena,strlen($cadena) - $numDig, strlen($cadena));
+    // }
 
     // OTRO MODULO 11
-    // function getMod11( $num, $retorno_10='K' ){
-    //     $digits = str_replace( array( '.', ',' ), array( ''.'' ), strrev($num ) );
-    //     if ( ! ctype_digit( $digits ) )
-    //         return false;
+    function getMod11( $num, $retorno_10='K' ){
+        $digits = str_replace( array( '.', ',' ), array( ''.'' ), strrev($num ) );
+        if ( ! ctype_digit( $digits ) )
+            return false;
 
-    //     $sum = 0;
-    //     $factor = 2;
+        $sum = 0;
+        $factor = 2;
         
-    //     for( $i=0;$i<strlen( $digits ); $i++ ){
-    //         $sum += substr( $digits,$i,1 ) * $factor;
-    //         if ( $factor == 7 )
-    //             $factor = 2;
-    //         else
-    //             $factor++;
-    //     }
+        for( $i=0;$i<strlen( $digits ); $i++ ){
+            $sum += substr( $digits,$i,1 ) * $factor;
+            if ( $factor == 7 )
+                $factor = 2;
+            else
+                $factor++;
+        }
 
-    //     $dv = 11 - ($sum % 11);
+        $dv = 11 - ($sum % 11);
     
-    //     if ( $dv < 10 )
-    //         return $dv;
+        if ( $dv < 10 )
+            return $dv;
 
-    //     if ( $dv == 11 )
-    //         return 0;
+        if ( $dv == 11 )
+            return 0;
 
-    //     return $retorno_10;
-    // }
+        return $retorno_10;
+    }
 }
