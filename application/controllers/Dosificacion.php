@@ -1025,5 +1025,54 @@ class Dosificacion extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
+    /* en servicio Facturacion de Operaciones es la Funcion: consultaEventoSignificativo */
+    function consultaEventoSignificativo(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_operaciones'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                $fechaevento = date("Y-m-d");
+                /* ordenado segun SoapUI */
+                $parametros = ["SolicitudConsultaEvento" => [
+                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                    "codigoPuntoVenta"=>$dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                    "cufd"=>            $dosificacion['dosificacion_cufd'],
+                    "cuis"=>            $dosificacion['dosificacion_cuis'],
+                    "fechaEvento"=>     $fechaevento, //$dosificacion['dosificacion_cuis'],
+                    "nit"=>             $dosificacion['dosificacion_nitemisor']
+                ]];
+
+                //var_dump($parametros);
+                $resultado = $cliente->consultaEventoSignificativo($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaListaEventos->transaccion;
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
     
 }

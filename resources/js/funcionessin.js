@@ -389,3 +389,34 @@ function cierre_PuntoVenta(){
         }); 
     }
 }
+function consulta_EventoSignificativo(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/consultaEventoSignificativo';
+    var opcion = confirm("Consulta de eventos significativos de una fecha \n ¿Desea Continuar?");
+    
+    if (opcion == true) {
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        //console.log(registros);
+                        let transaccion = registros.RespuestaListaEventos.transaccion;
+                        if(transaccion == true){
+                            alert("Consulta realizada con exito;");
+                        }
+                        else{
+                            let codigo = registros.RespuestaListaEventos.mensajesList.codigo;
+                            let mensaje = registros.RespuestaListaEventos.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    }
+}
