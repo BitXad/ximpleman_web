@@ -929,8 +929,8 @@ class Dosificacion extends CI_Controller{
     /* +++++++++++++ Servicio de Facturacion Operaciones  +++++++++++++++ */
     /* en servicio Facturacion de Operaciones es la Funcion:  cierreOperacionesSistema */
     function cierreOperacionesSistema(){
-        /*try{
-            if ($this->input->is_ajax_request()) {*/
+        try{
+            if ($this->input->is_ajax_request()) {
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
@@ -964,34 +964,17 @@ class Dosificacion extends CI_Controller{
                     "nit"=>             $dosificacion['dosificacion_nitemisor']
                 ]];
 
-                var_dump($parametros);
+                //var_dump($parametros);
                 $resultado = $cliente->cierreOperacionesSistema($parametros);
-                //echo json_encode($resultado);
-                print_r($resultado);
-                /*$lrespcodigo = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigo;
-                $lrespcodigocontrol = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigoControl;
-                $lrespcodigopuntoventa = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigoPuntoVenta;
-                $lrespcodigosucursal = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->codigoSucursal;
-                $lrespcuis = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->cuis;
-                $lresdireccion = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->direccion;
-                $lrespfechaVigencia = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->fechaVigencia;
-                $lresptransaccion = $resultado->RespuestaCufdMasivo->listaRespuestasCufd->transaccion;
-                $latransaccion = $resultado->RespuestaCufdMasivo->transaccion;
-                echo "codigo: ".$lrespcodigo."<br>";
-                echo "codigoControl: ".$lrespcodigocontrol."<br>";
-                echo "codigoPuntoVenta: ".$lrespcodigopuntoventa."<br>";
-                echo "codigoSucursal: ".$lrespcodigosucursal."<br>";
-                echo "cuis: ".$lrespcuis."<br>";
-                echo "direccion: ".$lresdireccion."<br>";
-                echo "fechaVigencia: ".$lrespfechaVigencia."<br>";
-                echo "transaccion: ".$lresptransaccion."<br>";
-                echo "transaccion: ".$latransaccion;*/
-           /* }else{                 
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaCierreSistemas->transaccion;
+            }else{                 
                 show_404();
             }
         }catch (Exception $e){
             echo 'Ocurrio algo inesperado; revisar datos!.';
-        }*/
+        }
     }
     
     

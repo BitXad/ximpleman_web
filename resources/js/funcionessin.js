@@ -5,7 +5,7 @@ function solicitudCufd(){
     var opcion = confirm("Esta a punto de generar el C.U.F.D., el cual reamplazara el existente...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
-    
+        document.getElementById('loader_cufd').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
                 data:{},
@@ -30,7 +30,7 @@ function solicitudCufd(){
                     else{
                         alert("Algo fallo...!!");
                     }
-
+                    document.getElementById('loader_cufd').style.display = 'none';
                     //alert("hola");
                     /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
 
@@ -39,6 +39,7 @@ function solicitudCufd(){
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_cufd').style.display = 'none';
                 }                
         }); 
     }
@@ -78,7 +79,7 @@ function solicitudCuis(){
     var opcion = confirm("Esta a punto de generar el C.U.I.S., el cual reamplazara el existente...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
-    
+        document.getElementById('loader_cuis').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
                 data:{},
@@ -95,10 +96,11 @@ function solicitudCuis(){
                         let descripcion = registros.RespuestaCuis.mensajesList.descripcion;
                         alert("ERROR: "+transaccion+" "+descripcion);
                     }
-
+                    document.getElementById('loader_cuis').style.display = 'none';
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_cuis').style.display = 'none';
                 }                
         }); 
     }
@@ -191,7 +193,7 @@ function solicitudCuisMasivo(){
     var opcion = confirm("Esta a punto de generar el C.U.I.S. Masivo, DETALLES ojo...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
-    
+        document.getElementById('loader_cuism').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
                 data:{},
@@ -210,10 +212,12 @@ function solicitudCuisMasivo(){
                     let transaccion = registros.RespuestaCuisMasivo.listaRespuestasCuis.transaccion;
                     let latransaccion = registros.RespuestaCuisMasivo.transaccion;
                     alert(descripcion);
+                    document.getElementById('loader_cuism').style.display = 'none';
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
-                }                
+                    document.getElementById('loader_cuism').style.display = 'none';
+                }
         }); 
     }
 }
@@ -257,7 +261,7 @@ function solicitudCufdMasivo(){
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
-                }                
+                }
         }); 
     }
 }
@@ -325,7 +329,7 @@ function mostrar_modalrevocarfirma(){
 
 function cierre_OperacionesSistema(){
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'dosificacion/cierre_OperacionesSistema';
+    var controlador = base_url+'dosificacion/cierreOperacionesSistema';
     var opcion = confirm("Este proceso inhabilita el CUIS y el CUFD vigente, de manera automática no pudiendo realizar la emisión de Facturas Digitales a partir de ese momento! \n ¿Desea Continuar?");
     
     if (opcion == true) {
@@ -335,18 +339,17 @@ function cierre_OperacionesSistema(){
                 data:{},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
-                    console.log(registros);
-                    let transaccion = registros.RespuestaCierreSistemas.transaccion;
-                    if(transaccion == true){
-                        alert("falta poner y ver que registrar... ojo");
-                       //almacenar_cufdmasivo((registros['RespuestaCufdMasivo']));
-                    }
-                    else{
-                        let mensaje = registros.RespuestaNotificaRevocado.mensajesList.descripcion;
-                        alert("Algo fallo...!! "+mensaje);
-                    }
-                    document.getElementById('loader_revocado').style.display = 'none';
-
+                        console.log(registros);
+                        let transaccion = registros.RespuestaCierreSistemas.transaccion;
+                        if(transaccion == true){
+                            alert("Operación procesada con exito;");
+                        }
+                        else{
+                            let codigo = registros.RespuestaCierreSistemas.mensajesList.codigo;
+                            let mensaje = registros.RespuestaCierreSistemas.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");

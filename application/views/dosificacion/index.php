@@ -6,8 +6,8 @@
 <div class="box-header">
     <h3 class="box-title">Dosificación</h3>
     <button class="btn btn-info btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa> Verificar Conexión</button>
-    <!--<a class="btn btn-danger btn-xs" onclick="registroFirmaRevocada()"><fa class="fa fa-chain-broken"></fa> Firma Rebocada</a>-->
-    <a class="btn btn-danger btn-xs" onclick="cierre_OperacionesSistema()"><fa class="fa fa-chain-broken"></fa> Firma Rebocada</a>
+    <a class="btn btn-danger btn-xs" onclick="registroFirmaRevocada()"><fa class="fa fa-chain-broken"></fa> Firma Rebocada</a>
+    <a class="btn btn-warning btn-xs" onclick="cierre_OperacionesSistema()"><fa class="fa fa-chain-broken"></fa> Cierre de Operaciones</a>
     <div class="row" id='loader_revocado'  style='display:none; text-align: center'>
         <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
     </div>
@@ -154,22 +154,31 @@
             <div class="col-md-1">
                 <label class="control-label">Codigo Unico de Inicio de Sistema (CUIS)</label>
                 <button class="btn btn-info btn-xs" onclick="solicitudCuis()"><fa class="fa fa-download"></fa> Solicitar CUIS</button>
+                <div class="row" id='loader_cuis' style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
             </div>
             <div class="col-md-3">
                 <?php echo $dosificacion['dosificacion_cuis']; ?>
             </div>
            <div class="col-md-1">
                 <label class="control-label">Codigo Unico de Facturación Diaria (CUFD) </label>
+                <button class="btn btn-info btn-xs" onclick="solicitudCufd()"><fa class="fa fa-download"></fa> Solicitar CUFD</button>
+                <div class="row" id='loader_cufd' style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
             </div>
             <div class="col-md-2" style="word-break: break-word;">
                 <?php echo $dosificacion['dosificacion_cufd']; ?>
-                <button class="btn btn-info btn-xs" onclick="solicitudCufd()"><fa class="fa fa-download"></fa> Solicitar CUFD</button>
             </div>
         </div>
         <div class="col-md-12 linea">
             <div class="col-md-1">
                 <label class="control-label">Codigo Unico de Inicio de Sistema Masivo (CUIS Masivo)</label>
                 <button class="btn btn-info btn-xs" onclick="solicitudCuisMasivo()"><fa class="fa fa-download"></fa> Solicitar CUIS Masivo</button>
+                <div class="row" id='loader_cuism' style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
             </div>
             <div class="col-md-3">
                 <?php echo $dosificacion['dosificacion_cuismasivo']; ?>
