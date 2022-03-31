@@ -339,7 +339,7 @@ function cierre_OperacionesSistema(){
                 data:{},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
-                        console.log(registros);
+                        //console.log(registros);
                         let transaccion = registros.RespuestaCierreSistemas.transaccion;
                         if(transaccion == true){
                             alert("Operación procesada con exito;");
@@ -347,6 +347,37 @@ function cierre_OperacionesSistema(){
                         else{
                             let codigo = registros.RespuestaCierreSistemas.mensajesList.codigo;
                             let mensaje = registros.RespuestaCierreSistemas.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    }
+}
+function cierre_PuntoVenta(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/cierrePuntoVenta';
+    var opcion = confirm("Realiza el cierre definitivo de un punto de venta; esta operación se realiza solo si para el punto de venta no existe CUIS o CUFD activo. Una vez que el punto de venta se haya cerrado no podrá generarse nuevamente con el mismo correlativo.! \n ¿Desea Continuar?");
+    
+    if (opcion == true) {
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        //console.log(registros);
+                        let transaccion = registros.RespuestaCierrePuntoVenta.transaccion;
+                        if(transaccion == true){
+                            alert("Operación procesada con exito;");
+                        }
+                        else{
+                            let codigo = registros.RespuestaCierrePuntoVenta.mensajesList.codigo;
+                            let mensaje = registros.RespuestaCierrePuntoVenta.mensajesList.descripcion;
                             alert("Algo fallo...!! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
