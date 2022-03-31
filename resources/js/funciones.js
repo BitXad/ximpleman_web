@@ -1836,9 +1836,9 @@ function tablaresultados(opcion)
     var rol_factor2 = document.getElementById('rol_factor2').value; //document.getElementById('parametro_altoimagen').value;
     var rol_factor3 = document.getElementById('rol_factor3').value; //document.getElementById('parametro_altoimagen').value;
     var rol_factor4 = document.getElementById('rol_factor4').value; //document.getElementById('parametro_altoimagen').value;
-    var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
+    // var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
     
-    let busqueda_serie 
+    // let busqueda_serie 
     $('#busqueda_serie').prop('checked')  
 
     if(esMobil()) { tamanio = 1; }

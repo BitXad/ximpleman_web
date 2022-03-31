@@ -11,6 +11,7 @@ class Dosificacion extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Dosificacion_model');
+        $this->load->model('Actividad_model');
         //$this->load->library('lib_nusoap/nusoap');    
     
         
@@ -154,7 +155,9 @@ class Dosificacion extends CI_Controller{
             {
                 $this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-
+                // $this->sincronizar_actividades();
+                $data['actividades'] = $this->Actividad_model->get_all_activities();
+                var_dump($data['actividades']);
                 $this->load->model('Empresa_model');
                 $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
 
@@ -859,6 +862,69 @@ class Dosificacion extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
+    /**SINCRONIZAR ACTIVIDADES ECONOMICAS */
+    function sincronizar_actividades(){
+        try{
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+            /* ---------------------INICIO segun EJEMPLO ---------------------- */
+            /*fuente:
+                * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/sincronizacion-codigos-catalogos
+                */
+            //la ruta para el servicio de obtencion de codigos, ejm:
+            //$wsdl = "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl";
+            $wsdl = $dosificacion['dosificacion_obtencioncodigos'];
+            //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
+            //$token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXN0ZXJiaXQwOCIsImNvZGlnb1Npc3RlbWEiOiI3MUU3QTY1NDZFMDhCNDQ2MkNDNUQyNyIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTFORFV5TmpjM01MUUVBRjZuNi1jS0FBQUEiLCJpZCI6NTY5MTkxLCJleHAiOjE2NDg2ODQ4MDAsImlhdCI6MTY0ODEzMTU5Niwibml0RGVsZWdhZG8iOjUxNTIzNzcwMTksInN1YnNpc3RlbWEiOiJTRkUifQ.tVKsxvHNYA4L_Z1qFeVycWvGWI4mxDJDhqL7MgL1RJRMq3wXTCwhleMIQXJAfNmEpLwuH9jQqefttjQgtwP-1w';
+            $token = $dosificacion['dosificacion_tokendelegado'];
+            
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token",
+                )
+            );
+
+            $context = stream_context_create($opts);
+
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context' => $context,
+                'cache_wsdl' => WSDL_CACHE_NONE,
+                'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+            ]);
+            
+            $parametros = ["SolicitudSincronizacion" => [
+                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
+                // "codigoPuntoVenta"  =>  $dosificacion['dosificacion_modalidad'],
+                "codigoPuntoVenta"  =>  0,
+                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
+                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']]];
+                var_dump($parametros);
+            $resultados = $cliente->sincronizarActividades($parametros);
+            
+            $activities = $this->Actividad_model->get_all_activities();
+            var_dump($resultados);
+            foreach($resultados as $resultado){
+                $params = array(
+                    'actividad_codigocaeb' => $resultado['listaActividades']['codigoCaeb'],
+                    'actividad_descripcion' => $resultado['listaActividades']['descripcion'],
+                    'actividad_tipoactividad' => $resultado['listaActividades']['tipoActividad']
+                );
+                foreach($activities as $activity){
+                    if($resultado['listaActividades']['codigoCaeb'] == $activity['actividad_codigocaeb']){
+                        $this->Actividad_model->update_activity($params,$activity['actividad_id']);
+                    }else{
+                        $this->Actividad_model->add_activity($params);
+                    }
+                }
+            }
+            return $resultado;
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+
     
     /* +++++++++++++ Servicio de Facturacion Operaciones  +++++++++++++++ */
     /* en servicio Facturacion de Operaciones es la Funcion:  cierreOperacionesSistema */

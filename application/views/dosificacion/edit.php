@@ -66,7 +66,15 @@
                     <div class="col-md-6">
                         <label for="dosificacion_sucursal" class="control-label">Sucursal</label>
                         <div class="form-group">
-                            <input type="text" name="dosificacion_sucursal" value="<?php echo ($this->input->post('dosificacion_sucursal') ? $this->input->post('dosificacion_sucursal') : $dosificacion['dosificacion_sucursal']); ?>" class="form-control" id="dosificacion_sucursal" />
+                            <!-- <input type="text" name="dosificacion_sucursal" value="<?php echo ($this->input->post('dosificacion_sucursal') ? $this->input->post('dosificacion_sucursal') : $dosificacion['dosificacion_sucursal']); ?>" class="form-control" id="dosificacion_sucursal" /> -->
+                            <select class="form-control" name="dosificacion_sucursal" id="dosificacion_sucursal">
+                                <option value="0">CASA MATRIZ</option>
+                                <option value="1">SUCURSAL 1</option>
+                                <option value="2">SUCURSAL 2</option>
+                                <option value="3">SUCURSAL 3</option>
+                                <option value="4">SUCURSAL 4</option>
+                                <option value="5">SUCURSAL 5</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -78,7 +86,8 @@
                     <div class="col-md-6">
                         <label for="dosificacion_actividad" class="control-label">Actividad</label>
                         <div class="form-group">
-                            <input type="text" name="dosificacion_actividad" value="<?php echo ($this->input->post('dosificacion_actividad') ? $this->input->post('dosificacion_actividad') : $dosificacion['dosificacion_actividad']); ?>" class="form-control" id="dosificacion_actividad" />
+                            <!-- <input type="text" name="dosificacion_actividad" value="<?php echo ($this->input->post('dosificacion_actividad') ? $this->input->post('dosificacion_actividad') : $dosificacion['dosificacion_actividad']); ?>" class="form-control" id="dosificacion_actividad" /> -->
+                            
                         </div>
                     </div>
                     <div class="col-md-6">
