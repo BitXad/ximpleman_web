@@ -93,7 +93,7 @@
                 <label class="control-label">Actividad</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_actividad']; ?>
+                <?php echo $dosificacion['actividad_descripcion']; ?>
             </div>
         </div>
         <div class="col-md-12 linea">

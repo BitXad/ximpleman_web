@@ -87,7 +87,14 @@
                         <label for="dosificacion_actividad" class="control-label">Actividad</label>
                         <div class="form-group">
                             <!-- <input type="text" name="dosificacion_actividad" value="<?php echo ($this->input->post('dosificacion_actividad') ? $this->input->post('dosificacion_actividad') : $dosificacion['dosificacion_actividad']); ?>" class="form-control" id="dosificacion_actividad" /> -->
-                            
+                            <select name="dosificacion_actividad" id="dosificacion_actividad" class="form-control">
+                                <?php
+                                    foreach($actividades as $actividad){
+                                        $selected = $dosificacion['dosificacion_actividad'] == $actividad['actividad_id'] ? "selected":"";
+                                        echo "<option value='{$actividad['actividad_id']}' $selected>{$actividad['actividad_codigocaeb']} - {$actividad['actividad_descripcion']}</option>";
+                                    }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">

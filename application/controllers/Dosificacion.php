@@ -155,9 +155,9 @@ class Dosificacion extends CI_Controller{
             {
                 $this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-                // $this->sincronizar_actividades();
+                $this->sincronizar_actividades();
                 $data['actividades'] = $this->Actividad_model->get_all_activities();
-                var_dump($data['actividades']);
+                // var_dump($data['actividades']);
                 $this->load->model('Empresa_model');
                 $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
 
@@ -867,17 +867,10 @@ class Dosificacion extends CI_Controller{
         try{
             $dosificacion_id = 1;
             $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-            /* ---------------------INICIO segun EJEMPLO ---------------------- */
             /*fuente:
-                * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/sincronizacion-codigos-catalogos
-                */
-            //la ruta para el servicio de obtencion de codigos, ejm:
-            //$wsdl = "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl";
-            $wsdl = $dosificacion['dosificacion_obtencioncodigos'];
-            //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
-            //$token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXN0ZXJiaXQwOCIsImNvZGlnb1Npc3RlbWEiOiI3MUU3QTY1NDZFMDhCNDQ2MkNDNUQyNyIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTFORFV5TmpjM01MUUVBRjZuNi1jS0FBQUEiLCJpZCI6NTY5MTkxLCJleHAiOjE2NDg2ODQ4MDAsImlhdCI6MTY0ODEzMTU5Niwibml0RGVsZWdhZG8iOjUxNTIzNzcwMTksInN1YnNpc3RlbWEiOiJTRkUifQ.tVKsxvHNYA4L_Z1qFeVycWvGWI4mxDJDhqL7MgL1RJRMq3wXTCwhleMIQXJAfNmEpLwuH9jQqefttjQgtwP-1w';
+                * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/sincronizacion-codigos-catalogos */
+            $wsdl = $dosificacion['dosificacion_sincronizacion'];
             $token = $dosificacion['dosificacion_tokendelegado'];
-            
             $opts = array(
                 'http' => array(
                     'header' => "apiKey: TokenApi $token",
@@ -900,31 +893,41 @@ class Dosificacion extends CI_Controller{
                 "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
                 "cuis"              =>  $dosificacion['dosificacion_cuis'],
                 "nit"               =>  $dosificacion['dosificacion_nitemisor']]];
-                var_dump($parametros);
+            
             $resultados = $cliente->sincronizarActividades($parametros);
             
             $activities = $this->Actividad_model->get_all_activities();
-            var_dump($resultados);
-            foreach($resultados as $resultado){
+            
+            $listaActividades = $resultados->RespuestaListaActividades->listaActividades;
+            foreach($listaActividades as $list_actividad){
                 $params = array(
-                    'actividad_codigocaeb' => $resultado['listaActividades']['codigoCaeb'],
-                    'actividad_descripcion' => $resultado['listaActividades']['descripcion'],
-                    'actividad_tipoactividad' => $resultado['listaActividades']['tipoActividad']
+                    'actividad_codigocaeb' => $list_actividad->codigoCaeb,
+                    'actividad_descripcion' => $list_actividad->descripcion,
+                    'actividad_tipoactividad' => $list_actividad->tipoActividad
                 );
-                foreach($activities as $activity){
-                    if($resultado['listaActividades']['codigoCaeb'] == $activity['actividad_codigocaeb']){
-                        $this->Actividad_model->update_activity($params,$activity['actividad_id']);
-                    }else{
-                        $this->Actividad_model->add_activity($params);
-                    }
-                }
+                
+                $actividad_id = $this->buscar_actividad_codigocaeb($list_actividad->codigoCaeb,$activities);
+                var_dump($actividad_id);
+                if($actividad_id != 0)
+                    $this->Actividad_model->update_activity($actividad_id,$params);
+                else
+                    $this->Actividad_model->add_activity($params);
+
             }
-            return $resultado;
+            return $resultados;
         }catch (Exception $e){
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
 
+    function buscar_actividad_codigocaeb($actividad_codigocaeb,$activities){
+        $resultado = 0;
+        foreach($activities as $activity){
+            if($actividad_codigocaeb == $activity['actividad_codigocaeb'])
+                $resultado =  $activity['actividad_id'];
+        }
+        return $resultado;
+    }
     
     /* +++++++++++++ Servicio de Facturacion Operaciones  +++++++++++++++ */
     /* en servicio Facturacion de Operaciones es la Funcion:  cierreOperacionesSistema */
