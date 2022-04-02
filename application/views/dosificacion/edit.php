@@ -1,8 +1,15 @@
+<input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <div class="row">
     <div class="col-md-12">
-      	<div class="box box-info">
+        <div class="box box-info">
+            <!-- <div> -->
+                <figure id="gif_loader" style="display: none;">
+                    <img  style="margin-left: 50%; margin-right: auto;" width="20px" height="20px" src="<?= site_url("resources/images/loader.gif") ?>" alt="Gif de carga" style="margin: auto;">
+                </figure>    
+            <!-- </div> -->
             <div class="box-header with-border">
               	<h3 class="box-title">Editar Dosificación</h3>
+                <button class="btn btn-sm btn-warning" onclick="mostrar_loader(),sincronizar_datos()">Sincronizar Codigos y Catalogo</button>
             </div>
             <?php echo form_open('dosificacion/edit/'.$dosificacion['dosificacion_id']); ?>
             <div class="box-body">
@@ -106,8 +113,16 @@
                     <div class="col-md-6">
                         <label for="dosificacion_leyenda1" class="control-label">Leyenda1</label>
                         <div class="form-group">
-                            <textarea rows="3" class="form-control" name="dosificacion_leyenda1" id="dosificacion_leyenda1"><?php echo ($this->input->post('dosificacion_leyenda1') ? $this->input->post('dosificacion_leyenda1') : $dosificacion['dosificacion_leyenda1']); ?></textarea>
+                            <!-- <textarea rows="3" class="form-control" name="dosificacion_leyenda1" id="dosificacion_leyenda1"><?php echo ($this->input->post('dosificacion_leyenda1') ? $this->input->post('dosificacion_leyenda1') : $dosificacion['dosificacion_leyenda1']); ?></textarea> -->
                             <!--<input type="text" name="dosificacion_leyenda1" value="<?php //echo ($this->input->post('dosificacion_leyenda1') ? $this->input->post('dosificacion_leyenda1') : $dosificacion['dosificacion_leyenda1']); ?>" class="form-control" id="dosificacion_leyenda1" />-->
+                            <select name="dosificacion_leyenda1" id="dosificacion_leyenda1" class="form-control">
+                                <?php
+                                    foreach($leyendas as $leyenda){
+                                        $selected = $dosificacion['dosificacion_leyenda1'] == $leyenda['leyenda_id'] ? "selected":"";
+                                        echo "<option value='{$leyenda['leyenda_descripcion']}' $selected>{$leyenda['leyenda_codigoactividad']} - {$leyenda['leyenda_descripcion']}</option>";
+                                    }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -208,11 +223,37 @@
             <div class="box-footer">
             	<button type="submit" class="btn btn-success">
                     <i class="fa fa-check"></i> Guardar
-		</button>
+		        </button>
                 <a href="<?php echo site_url('dosificacion'); ?>" class="btn btn-danger">
-                    <i class="fa fa-times"></i> Cancelar</a>
+                    <i class="fa fa-times"></i> Cancelar
+                </a>
             </div>				
         <?php echo form_close(); ?>
         </div>
     </div>
 </div>
+
+<script>
+    function mostrar_loader(){
+        $('#gif_loader').css('display','block');
+    }
+
+    function sincronizar_datos(){
+        let base_url = $('#base_url').val();
+        let controlador = `${base_url}dosificacion/sincronizarCodigosYCatalogos`;
+
+        $.ajax({
+            url: controlador,
+            type: 'POST',
+            async: false,
+            success: ()=>{
+                $("gif_loader").css('display','none')
+
+                location.reload();
+            },
+            error:()=>{
+                alert("algo salio mal");
+            }
+        });
+    }
+</script>
