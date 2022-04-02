@@ -27,15 +27,16 @@
 
     <!-- jQuery 2.2.3 -->
     <script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
-        <script type="text/javascript"> 
+    <script type="text/javascript"> 
         function mueveReloj(){
+            console.log("mueveReloj");
             momentoActual = new Date();
             var today = moment(momentoActual).format('DD/MM/YYYY HH:mm:ss');
             $("#reloj").html(today);
             
         } 
         setInterval("mueveReloj()",1000);
-        </script>
+    </script>
     <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
     
 </head>

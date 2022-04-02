@@ -12,6 +12,11 @@ class Dosificacion extends CI_Controller{
         parent::__construct();
         $this->load->model('Dosificacion_model');
         $this->load->model('Actividad_model');
+        $this->load->model('Leyenda_model');
+        $this->load->model('Estado_model');
+        $this->load->model('Empresa_model');
+        $this->load->model('MensajeServicio_model');
+        $this->load->model('ActividadDocumentoSector_model');
         //$this->load->library('lib_nusoap/nusoap');    
     
         
@@ -153,12 +158,9 @@ class Dosificacion extends CI_Controller{
             }
             else
             {
-                $this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-                $this->sincronizar_actividades();
                 $data['actividades'] = $this->Actividad_model->get_all_activities();
-                // var_dump($data['actividades']);
-                $this->load->model('Empresa_model');
+                $data['leyendas'] = $this->Leyenda_model->get_all_leyendas();
                 $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
 
                 $data['_view'] = 'dosificacion/edit';
@@ -887,32 +889,32 @@ class Dosificacion extends CI_Controller{
             
             $parametros = ["SolicitudSincronizacion" => [
                 "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                // "codigoPuntoVenta"  =>  $dosificacion['dosificacion_modalidad'],
-                "codigoPuntoVenta"  =>  0,
+                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
                 "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
                 "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
                 "cuis"              =>  $dosificacion['dosificacion_cuis'],
-                "nit"               =>  $dosificacion['dosificacion_nitemisor']]];
-            
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']]
+            ];
             $resultados = $cliente->sincronizarActividades($parametros);
             
             $activities = $this->Actividad_model->get_all_activities();
             
-            $listaActividades = $resultados->RespuestaListaActividades->listaActividades;
-            foreach($listaActividades as $list_actividad){
-                $params = array(
-                    'actividad_codigocaeb' => $list_actividad->codigoCaeb,
-                    'actividad_descripcion' => $list_actividad->descripcion,
-                    'actividad_tipoactividad' => $list_actividad->tipoActividad
-                );
-                
-                $actividad_id = $this->buscar_actividad_codigocaeb($list_actividad->codigoCaeb,$activities);
-                var_dump($actividad_id);
-                if($actividad_id != 0)
-                    $this->Actividad_model->update_activity($actividad_id,$params);
-                else
-                    $this->Actividad_model->add_activity($params);
-
+            $transaccion = $resultados->RespuestaListaActividades->transaccion;
+            if($transaccion){
+                $listaActividades = $resultados->RespuestaListaActividades->listaActividades;
+                foreach($listaActividades as $list_actividad){
+                    $params = array(
+                        'actividad_codigocaeb' => $list_actividad->codigoCaeb,
+                        'actividad_descripcion' => $list_actividad->descripcion,
+                        'actividad_tipoactividad' => $list_actividad->tipoActividad
+                    );
+                    
+                    $actividad_id = $this->buscar_str_array_obj($list_actividad->codigoCaeb,$activities,'actividad_codigocaeb','actividad_id');
+                    if($actividad_id != 0)
+                        $this->Actividad_model->update_activity($actividad_id,$params);
+                    else
+                        $this->Actividad_model->add_activity($params);
+                }
             }
             return $resultados;
         }catch (Exception $e){
@@ -920,11 +922,11 @@ class Dosificacion extends CI_Controller{
         }
     }
 
-    function buscar_actividad_codigocaeb($actividad_codigocaeb,$activities){
+    function buscar_str_array_obj($str,$array_obts,$name_campo,$name_id){
         $resultado = 0;
-        foreach($activities as $activity){
-            if($actividad_codigocaeb == $activity['actividad_codigocaeb'])
-                $resultado =  $activity['actividad_id'];
+        foreach($array_obts as $obt){
+            if($str == $obt[$name_campo])
+                $resultado =  $obt[$name_id];
         }
         return $resultado;
     }
@@ -1074,5 +1076,175 @@ class Dosificacion extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
+
+    function sincronizacion_codigos_leyenda(){
+        try{
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+            /*fuente:
+                * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/sincronizacion-codigos-catalogos */
+            $wsdl = $dosificacion['dosificacion_sincronizacion'];
+            $token = $dosificacion['dosificacion_tokendelegado'];
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token",
+                )
+            );
+
+            $context = stream_context_create($opts);
+
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context' => $context,
+                'cache_wsdl' => WSDL_CACHE_NONE,
+                'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+            ]);
+            
+            $parametros = ["SolicitudSincronizacion" => [
+                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
+                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
+                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']]
+            ];
+
+            $resultados = $cliente->sincronizarListaLeyendasFactura($parametros);
+                
+            $transaccion = $resultados->RespuestaListaParametricasLeyendas->transaccion;
+            
+            if($transaccion){
+                $leyendas = $resultados->RespuestaListaParametricasLeyendas->listaLeyendas;
+                $this->Leyenda_model->truncate_table();
+                foreach($leyendas as $leyenda){
+                    $params = array(
+                        'leyenda_codigoactividad'   => $leyenda->codigoActividad,
+                        'leyenda_descripcion'       => $leyenda->descripcionLeyenda
+                    );
+                    $this->Leyenda_model->add_leyenda($params);
+                }
+            }
+            
+            return $resultados;
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado revisar datos!.';
+        }
+    }
+
+    function codigosMensajesServicios(){
+        try{
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+
+            $wsdl = $dosificacion['dosificacion_sincronizacion'];
+            $token = $dosificacion['dosificacion_tokendelegado'];
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token",
+                )
+            );
+            
+            $context = stream_context_create($opts);
+
+            $cliente = new \SoapClient($wsdl,[  
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+            ]);
+
+            $parametros = ["SolicitudSincronizacion" => [
+                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
+                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
+                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']
+            ]];
+
+            $resultados = $cliente->sincronizarListaMensajesServicios($parametros);
+
+            $transaccion =  $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->MensajeServicio_model->truncate_table();
+                foreach($listaCodigos as $codigo){
+                    $params = array(
+                        'mjsserv_codigoclasificador'    =>  $codigo->codigoClasificador,
+                        'mjsserv_descripcion'           =>  $codigo->descripcion
+                    );
+                    $this->MensajeServicio_model->add_mensajeServicio($params);
+                }
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+    }
+
+    function codigos_actividades_doc_sector(){
+        try{
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+
+            $wsdl = $dosificacion['dosificacion_sincronizacion'];
+            $token = $dosificacion['dosificacion_tokendelegado'];
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+
+            $parametros = ["SolicitudSincronizacion" => [
+                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
+                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
+                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']
+            ]];
+
+            $resultados = $cliente->sincronizarListaActividadesDocumentoSector($parametros);
+
+            $transaccion = $resultados->RespuestaListaActividadesDocumentoSector->transaccion;
+
+            if($transaccion){
+                $listaActividadesDocumentoSector = $resultados->RespuestaListaActividadesDocumentoSector->listaActividadesDocumentoSector;
+                $this->ActividadDocumentoSector_model->truncate_table();
+                foreach ($listaActividadesDocumentoSector as $actDocSec) {
+                    $params = array(
+                        'actdocsec_codigoactividad' => $actDocSec->codigoActividad,
+                        'actdocsec_codigo'          => $actDocSec->codigoDocumentoSector,
+                        'actdocsec_tipo'            => $actDocSec->tipoDocumentoSector
+                    );
+
+                    $this->ActividadDocumentoSector_model->add_actividad_doc_sector($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaActividadesDocumentoSector->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+
+    }
     
+    function sincronizarCodigosYCatalogos(){
+        if($this->input->is_ajax_request()){
+            $this->sincronizar_actividades();
+            $this->codigosMensajesServicios();
+            $this->sincronizacion_codigos_leyenda();
+            $this->codigos_actividades_doc_sector();
+        }else{
+            show_404();
+        }
+    } 
 }
