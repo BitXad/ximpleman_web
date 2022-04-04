@@ -17,6 +17,7 @@ class Dosificacion extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('MensajeServicio_model');
         $this->load->model('ActividadDocumentoSector_model');
+        $this->load->model('CodEventosSignificativos_model');
         //$this->load->library('lib_nusoap/nusoap');    
     
         
@@ -1237,12 +1238,70 @@ class Dosificacion extends CI_Controller{
 
     }
     
+    function codigosEventosSignificativos(){
+        try{
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+
+            $wsdl = $dosificacion['dosificacion_sincronizacion'];
+            $token = $dosificacion['dosificacion_tokendelegado'];
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+
+            $parametros = ["SolicitudSincronizacion" => [
+                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
+                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
+                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']
+            ]];
+
+            $resultados = $cliente->sincronizarParametricaEventosSignificativos($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->CodEventosSignificativos_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'ces_codigoclasificador' => $codigo->codigoClasificador,
+                        'ces_descripcion'          => $codigo->descripcion
+                    );
+
+                    $this->CodEventosSignificativos_model->add_cod_eventos_significativos($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaProductos->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+
+    }
+
+
     function sincronizarCodigosYCatalogos(){
         if($this->input->is_ajax_request()){
             $this->sincronizar_actividades();
             $this->codigosMensajesServicios();
             $this->sincronizacion_codigos_leyenda();
             $this->codigos_actividades_doc_sector();
+            $this->codigosEventosSignificativos();
         }else{
             show_404();
         }
