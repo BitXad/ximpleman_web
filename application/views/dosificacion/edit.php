@@ -249,7 +249,7 @@
             success: ()=>{
                 $("gif_loader").css('display','none')
 
-                location.reload();
+                // location.reload();
             },
             error:()=>{
                 alert("algo salio mal");

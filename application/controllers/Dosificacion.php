@@ -18,6 +18,9 @@ class Dosificacion extends CI_Controller{
         $this->load->model('MensajeServicio_model');
         $this->load->model('ActividadDocumentoSector_model');
         $this->load->model('CodEventosSignificativos_model');
+        $this->load->model('CodMotivosAnulacion_model');
+        $this->load->model('Pais_model');
+        $this->load->model('CodTipoDocumentoIdentidad_model');
         //$this->load->library('lib_nusoap/nusoap');    
     
         
@@ -1284,7 +1287,174 @@ class Dosificacion extends CI_Controller{
                     $this->CodEventosSignificativos_model->add_cod_eventos_significativos($params);
                 }
             }else{
-                $mensaje = $resultados->RespuestaListaProductos->mensajesList;
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+
+    }
+
+    function codigosMotivosAnulacion(){
+        try{
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+
+            $wsdl = $dosificacion['dosificacion_sincronizacion'];
+            $token = $dosificacion['dosificacion_tokendelegado'];
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+
+            $parametros = ["SolicitudSincronizacion" => [
+                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
+                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
+                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']
+            ]];
+
+            $resultados = $cliente->sincronizarParametricaMotivoAnulacion($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->CodMotivosAnulacion_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'cma_codigoclasificador' => $codigo->codigoClasificador,
+                        'cma_descripcion'        => $codigo->descripcion
+                    );
+
+                    $this->CodMotivosAnulacion_model->add_cod_motivo_anulacion($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+
+    }
+
+    function codigoPaisOrigen(){
+        try{
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+
+            $wsdl = $dosificacion['dosificacion_sincronizacion'];
+            $token = $dosificacion['dosificacion_tokendelegado'];
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+
+            $parametros = ["SolicitudSincronizacion" => [
+                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
+                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
+                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']
+            ]];
+
+            $resultados = $cliente->sincronizarParametricaPaisOrigen($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->Pais_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'pais_codigoclasificador' => $codigo->codigoClasificador,
+                        'pais_descripcion'        => $codigo->descripcion
+                    );
+
+                    $this->Pais_model->add_pais($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+    }
+
+    function codigoTipoDocumentoIdentidad(){
+        try{
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+
+            $wsdl = $dosificacion['dosificacion_sincronizacion'];
+            $token = $dosificacion['dosificacion_tokendelegado'];
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+
+            $parametros = ["SolicitudSincronizacion" => [
+                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
+                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
+                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']
+            ]];
+
+            $resultados = $cliente->sincronizarParametricaTipoDocumentoIdentidad($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->CodTipoDocumentoIdentidad_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'cdi_codigoclasificador' => $codigo->codigoClasificador,
+                        'cdi_descripcion'        => $codigo->descripcion
+                    );
+
+                    $this->CodTipoDocumentoIdentidad_model->add_cod_doc_identidad($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
                 var_dump($mensaje);
             }
@@ -1302,6 +1472,9 @@ class Dosificacion extends CI_Controller{
             $this->sincronizacion_codigos_leyenda();
             $this->codigos_actividades_doc_sector();
             $this->codigosEventosSignificativos();
+            $this->codigosMotivosAnulacion();
+            $this->codigoPaisOrigen();
+            $this->codigoTipoDocumentoIdentidad();
         }else{
             show_404();
         }
