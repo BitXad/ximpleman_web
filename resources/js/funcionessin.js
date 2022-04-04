@@ -326,7 +326,7 @@ function registroFirmaRevocada(){
 function mostrar_modalrevocarfirma(){
     $("#modalrevocarfirma").modal("show");
 }
-
+/* +++++++++++++ INICIO Servicio de Facturacion Operaciones  +++++++++++++++ */
 function cierre_OperacionesSistema(){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/cierreOperacionesSistema';
@@ -373,7 +373,13 @@ function cierre_PuntoVenta(){
                         //console.log(registros);
                         let transaccion = registros.RespuestaCierrePuntoVenta.transaccion;
                         if(transaccion == true){
-                            alert("Operación procesada con exito;");
+                            let codigo = registros.RespuestaCierrePuntoVenta.codigoPuntoVenta;
+                            let transaccion2 = registros.RespuestaCierrePuntoVenta.transaccion;
+                            if(transaccion2 == true){
+                                alert("Operación procesada con exito! \n Punto de venta: "+codigo);
+                            }else{
+                                alert("La operación no se pudo procesar con exito! \n Punto de venta: "+codigo);
+                            }
                         }
                         else{
                             let codigo = registros.RespuestaCierrePuntoVenta.mensajesList.codigo;
@@ -409,6 +415,143 @@ function consulta_EventoSignificativo(){
                         else{
                             let codigo = registros.RespuestaListaEventos.mensajesList.codigo;
                             let mensaje = registros.RespuestaListaEventos.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    }
+}
+
+function consulta_PuntoVenta(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/consultaPuntoVenta';
+    var opcion = confirm("Realizar consulta de puntos de venta asociados al Sujeto Pasivo \n ¿Desea Continuar?");
+    
+    if (opcion == true) {
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        let transaccion = registros.RespuestaConsultaPuntoVenta.transaccion;
+                        if(transaccion == true){
+                            let puntosventa = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas;
+                            let n = puntosventa.length;
+                            if(n== undefined){
+                                let codigo = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.codigoPuntoVenta;
+                                let nombre = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.nombrePuntoVenta;
+                                let tipopv = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.tipoPuntoVenta;
+                                /*let codigo = puntosventa["codigoPuntoVenta"];
+                                let nombre = puntosventa["nombrePuntoVenta"];
+                                let tipopv = puntosventa["tipoPuntoVenta"];*/
+                                alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
+                            }else if(n>1){
+                                for (var i = 0; i < n; i++) {
+                                    let codigo = puntosventa[i]["codigoPuntoVenta"];
+                                    let nombre = puntosventa[i]["nombrePuntoVenta"];
+                                    let tipopv = puntosventa[i]["tipoPuntoVenta"];
+                                    alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
+                                }
+                            }
+                            
+                            //alert("Consulta realizada con exito;");
+                        }else{
+                            let codigo = registros.RespuestaConsultaPuntoVenta.mensajesList.codigo;
+                            let mensaje = registros.RespuestaConsultaPuntoVenta.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    }
+}
+
+function registro_EventoSignificativo(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/registroEventoSignificativo';
+    var opcion = confirm("Permite informar al SIN de la contingencia del Sistema Informático de Facturación autorizado. \n ¿Desea Continuar?");
+    
+    if (opcion == true) {
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        let transaccion = registros.RespuestaListaEventos.transaccion;
+                        if(transaccion == true){
+                            alert("Consulta realizada con exito;");
+                        }
+                        else{
+                            let mensajelist = registros.RespuestaListaEventos.mensajesList
+                            let n = mensajelist.length;
+                            for (var i = 0; i < n; i++) {
+                                let codigo = mensajelist[i]["codigo"];
+                                let mensaje = mensajelist[i]["descripcion"];
+                                alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            }
+                            //let codigo = registros.RespuestaListaEventos.mensajesList.codigo;
+                            //let mensaje = registros.RespuestaListaEventos.mensajesList.descripcion;
+                            //alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    }
+}
+function mostrar_modalregistrarpuntoventa(){
+    $("#mensaje").html("");
+    $("#nombrePuntoVenta").val("");
+    $("#descripcion").val("");
+    $("#codigoTipoPuntoVenta").val($("#codigoTipoPuntoVenta option:first").val());
+    $("#modalregistrarpventa").modal("show");
+}
+function registroPuntoVenta(){
+    var codigoTipoPuntoVenta = document.getElementById('codigoTipoPuntoVenta').value;
+    var nombrePuntoVenta = document.getElementById('nombrePuntoVenta').value;
+    var descripcion = document.getElementById('descripcion').value;
+    let mensaje = "";
+    
+    if(nombrePuntoVenta.trim() == "" || descripcion.trim() == ""){
+        mensaje = "Punto de venta y Descripción no deben estar vacios<br>";
+        $("#mensaje").html(mensaje);
+    }else{
+        $("#modalregistrarpventa").modal("hide");
+        var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'dosificacion/registroPuntoVenta';
+        //var opcion = confirm("Permite informar al SIN de la contingencia del Sistema Informático de Facturación autorizado. \n ¿Desea Continuar?");
+
+        //if (opcion == true) {
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{codigoTipoPuntoVenta:Number(codigoTipoPuntoVenta), nombrePuntoVenta:nombrePuntoVenta, descripcion:descripcion},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        let transaccion = registros.RespuestaRegistroPuntoVenta.transaccion;
+                        if(transaccion == true){
+                            let codigo = registros.RespuestaRegistroPuntoVenta.codigoPuntoVenta;
+                            alert("Registro realizado con exito!; Codigo: "+codigo);
+                        }else{
+                            let codigo = registros.RespuestaRegistroPuntoVenta.mensajesList.codigo;
+                            let mensaje = registros.RespuestaRegistroPuntoVenta.mensajesList.descripcion;
                             alert("Algo fallo...!! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';

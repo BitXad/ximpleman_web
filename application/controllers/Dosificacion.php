@@ -12,6 +12,7 @@ class Dosificacion extends CI_Controller{
         parent::__construct();
         $this->load->model('Dosificacion_model');
         $this->load->model('Actividad_model');
+<<<<<<< Updated upstream
         $this->load->model('Leyenda_model');
         $this->load->model('Estado_model');
         $this->load->model('Empresa_model');
@@ -21,6 +22,9 @@ class Dosificacion extends CI_Controller{
         $this->load->model('CodMotivosAnulacion_model');
         $this->load->model('Pais_model');
         $this->load->model('CodTipoDocumentoIdentidad_model');
+=======
+        $this->load->model('Tipo_puntoventa_model');
+>>>>>>> Stashed changes
         //$this->load->library('lib_nusoap/nusoap');    
     
         
@@ -54,6 +58,7 @@ class Dosificacion extends CI_Controller{
             }else{ $data['newdosif'] =0; }
 
             $data['dosificacion'] = $this->Dosificacion_model->get_this_dosificacion();
+            $data['all_tipopuntoventa'] = $this->Tipo_puntoventa_model->get_all_tipopuntoventa();
 
             $data['_view'] = 'dosificacion/index';
             $this->load->view('layouts/main',$data);
@@ -935,8 +940,8 @@ class Dosificacion extends CI_Controller{
         return $resultado;
     }
     
-    /* +++++++++++++ Servicio de Facturacion Operaciones  +++++++++++++++ */
-    /* en servicio Facturacion de Operaciones es la Funcion:  cierreOperacionesSistema */
+    /* +++++++++++++ INICIO Servicio de Facturacion Operaciones  +++++++++++++++ */
+    /* en servicio Facturacion de Operaciones (Cierre de Operaciones) es la Funcion:  cierreOperacionesSistema */
     function cierreOperacionesSistema(){
         try{
             if ($this->input->is_ajax_request()) {
@@ -985,7 +990,7 @@ class Dosificacion extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
-    /* en servicio Facturacion de Operaciones es la Funcion:  cierrePuntoVenta */
+    /* en servicio Facturacion de Operaciones (Cierre Punto de Venta) es la Funcion:  cierrePuntoVenta */
     function cierrePuntoVenta(){
         try{
             if ($this->input->is_ajax_request()) {
@@ -1031,7 +1036,7 @@ class Dosificacion extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
-    /* en servicio Facturacion de Operaciones es la Funcion: consultaEventoSignificativo */
+    /* en servicio Facturacion de Operaciones (Consulta Evento Significativo) es la Funcion: consultaEventoSignificativo */
     function consultaEventoSignificativo(){
         try{
             if ($this->input->is_ajax_request()) {
@@ -1080,6 +1085,7 @@ class Dosificacion extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
+<<<<<<< Updated upstream
 
     function sincronizacion_codigos_leyenda(){
         try{
@@ -1480,3 +1486,159 @@ class Dosificacion extends CI_Controller{
         }
     } 
 }
+=======
+    /* en servicio Facturacion de Operaciones (Consulta Puntos de Venta) es la Funcion: consultaPuntoVenta */
+    function consultaPuntoVenta(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_operaciones'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                /* ordenado segun SoapUI */
+                $parametros = ["SolicitudConsultaPuntoVenta" => [
+                    "codigoAmbiente"=> $dosificacion['dosificacion_ambiente'],
+                    "codigoSistema" => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"=> $dosificacion['dosificacion_codsucursal'],
+                    "cuis"          => $dosificacion['dosificacion_cuis'],
+                    "nit"           => $dosificacion['dosificacion_nitemisor']
+                ]];
+
+                //var_dump($parametros);
+                $resultado = $cliente->consultaPuntoVenta($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaConsultaPuntoVenta->transaccion;
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    /* en servicio Facturacion de Operaciones (Registro de Evento Significativo) es la Funcion: registroEventoSignificativo */
+    function registroEventoSignificativo(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_operaciones'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                //este codigo se recupera de consultaEventoSignificativo()
+                $codigomotivoambiente = 2;
+                //Recuperar un cfd antiguo o del cual queremos hacer el registro del evento significativo
+                $cufdEvento = "1";
+                $descripcion ="la prueba";
+                $fechaHoraFinEvento = date('Y-m-d\TH:i:s.v');
+                $fechaHoraInicioEvento = date('Y-m-d\TH:i:s.v');
+                /* ordenado segun SoapUI */
+                $parametros = ["SolicitudEventoSignificativo" => [
+                    "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
+                    "codigoMotivoEvento"=> $codigomotivoambiente, //$dosificacion['dosificacion_codsistema'],
+                    "codigoPuntoVenta"  => $dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"     => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"    => $dosificacion['dosificacion_codsucursal'],
+                    "cufd"              => $dosificacion['dosificacion_cufd'],
+                    "cufdEvento"        => $cufdEvento, //$dosificacion['dosificacion_cuis'],
+                    "cuis"              => $dosificacion['dosificacion_cuis'],
+                    "descripcion"       => $descripcion, //$dosificacion['dosificacion_cuis'],
+                    "fechaHoraFinEvento"=> $fechaHoraFinEvento, //$dosificacion['dosificacion_cuis'],
+                    "fechaHoraInicioEvento"=>$fechaHoraInicioEvento, //$dosificacion['dosificacion_cuis'],
+                    "nit"               => $dosificacion['dosificacion_nitemisor']
+                ]];
+
+                //var_dump($parametros);
+                $resultado = $cliente->registroEventoSignificativo($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaListaEventos->transaccion;
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    /* en servicio Facturacion de Operaciones (Registro de Punto de Venta) es la Funcion: registroPuntoVenta */
+    function registroPuntoVenta(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_operaciones'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                $parametros = ["SolicitudRegistroPuntoVenta" => [
+                    "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
+                    "codigoModalidad"   => $dosificacion['dosificacion_modalidad'],
+                    "codigoSistema"     => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"    => $dosificacion['dosificacion_codsucursal'],
+                    "codigoTipoPuntoVenta"=> $this->input->post('codigoTipoPuntoVenta'),
+                    "cuis"              => $dosificacion['dosificacion_cuis'],
+                    "descripcion"       => $this->input->post('descripcion'),
+                    "nit"               => $dosificacion['dosificacion_nitemisor'],
+                    "nombrePuntoVenta"  => $this->input->post('nombrePuntoVenta'),
+                ]];
+
+                //var_dump($parametros);
+                $resultado = $cliente->registroPuntoVenta($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaRegistroPuntoVenta->transaccion;
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+}
+>>>>>>> Stashed changes
