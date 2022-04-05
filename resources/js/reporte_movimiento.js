@@ -629,15 +629,20 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 
                     for(let j = 0; j < bancos.length; j++){
                         let no_ingresos = () => {
-                            let aux = false;
-                            aux = bancos[j].ingreso_total_efectivo + bancos[j].ingreso_total_debito + bancos[j].ingreso_total_transaccion + bancos[j].ingreso_total_credito + bancos[j].ingreso_total_cheque 
+                            let aux;
+                            aux = bancos[j].ingreso_total_efectivo + bancos[j].ingreso_total_debito + bancos[j].ingreso_total_transaccion + bancos[j].ingreso_total_credito + bancos[j].ingreso_total_cheque; 
                             return (aux == 0);
                         };
 
                         if(no_ingresos()) break;
-                        
+                        let sumatoria_ingresos =    parseFloat(bancos[j].ingreso_total_efectivo) +
+                                                    parseFloat(bancos[j].ingreso_total_debito) +
+                                                    parseFloat(bancos[j].ingreso_total_transaccion) +
+                                                    parseFloat(bancos[j].ingreso_total_credito) +
+                                                    parseFloat(bancos[j].ingreso_total_cheque);
                         html += "<tr>";
-                            html += `<td ${estilo} colspan='9'><b>${bancos[j].banco_nombre}</b></td>`;
+                            html += `<td ${estilo} colspan='6'><b>${bancos[j].banco_nombre}</b></td>`;
+                            html += `<td ${estilo} colspan='3'><b>${sumatoria_ingresos.toFixed(2)}</b></td>`;
                         html += "</tr>";
 
                         
@@ -1043,8 +1048,15 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 
                         if(no_egresos()) break;
 
+                        let sumatoriaEgresos = parseFloat(bancos[j].egreso_total_efectivo)+
+                                                parseFloat(bancos[j].egreso_total_transaccion)+
+                                                parseFloat(bancos[j].egreso_total_credito)+
+                                                parseFloat(bancos[j].egreso_total_debito)+
+                                                parseFloat(bancos[j].egreso_total_cheque);
+
                         html += `<tr>
-                                    <td ${estilo} colspan='9'><b>${bancos[j].banco_nombre}</b></td>
+                                    <td ${estilo} colspan='7'><b>${bancos[j].banco_nombre}</b></td>
+                                    <td ${estilo} colspan='2'><b>${sumatoriaEgresos.toFixed(2)}</b></td>
                                 </tr>`;
                         let egreso_total_efectivo = bancos[j].egreso_total_efectivo;
 
