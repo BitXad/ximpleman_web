@@ -85,4 +85,7 @@ class Unidad_model extends CI_Model
         return $unidad;
     }
 
+    function truncate_table(){
+        $this->db->query("TRUNCATE unidad");
+    }
 }
