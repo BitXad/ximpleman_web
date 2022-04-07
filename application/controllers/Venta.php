@@ -621,7 +621,7 @@ class Venta extends CI_Controller{
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
                     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
-                    $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio."')";
+                    $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.")";
                 // $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                 //     factura_fecha, factura_hora, factura_subtotal, 
                 //     factura_ice, factura_exento, factura_descuento, factura_total, 
@@ -3180,7 +3180,7 @@ function anular_venta($venta_id){
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
                     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
-                    $factura_efectivo.",".$factura_cambio.",".$tipotrans_id."')";
+                    $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.")";
             // $sql = "insert into factura(estado_id, factura_fechaventa, 
             //         factura_fecha, factura_hora, factura_subtotal, 
             //         factura_ice, factura_exento, factura_descuento, factura_total, 
