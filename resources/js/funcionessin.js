@@ -642,3 +642,29 @@ function verificar_comunicacion_op(){
     }); 
     //}
 }
+/* verifica la comunicación de Nota Credito-Debito (Nota de Credito-Debito verificarComunicacion) */
+function verificar_comunicacionNCD(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/verificarComunicacionNCD';
+    document.getElementById('loader_revocado').style.display = 'block';
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){
+                var registros = JSON.parse(respuesta);
+                    console.log(registros);
+                    let transaccion = registros.return.transaccion;
+                    if(transaccion == true){
+                        alert("Comunicación Exitosa!.");
+                    }else{
+                        alert("Algo fallo...!! ");
+                    }
+                    document.getElementById('loader_revocado').style.display = 'none';
+            },
+            error:function(respuesta){
+                alert("Algo salio mal; por favor verificar sus datos!.");
+                document.getElementById('loader_revocado').style.display = 'none';
+            }                
+    }); 
+    //}
+}

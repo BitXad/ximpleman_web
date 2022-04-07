@@ -1319,22 +1319,6 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
-                
-                /*$parametros = ["SolicitudPuntoVentaComisionista" => [
-                    "codigoAmbiente"  => $dosificacion['dosificacion_ambiente'],
-                    "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
-                    "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
-                    "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
-                    "cuis"            => $dosificacion['dosificacion_cuis'],
-                    "descripcion"     => $this->input->post('descripcion'),
-                    "fechaFin"        => $this->input->post('fechaFin'),
-                    "fechaInicio"     => $this->input->post('fechaInicio'),
-                    "nit"             => $dosificacion['dosificacion_nitemisor'],
-                    "nitComisionista" => $this->input->post('nitComisionista'),
-                    "nombrePuntoVenta"=> $this->input->post('nombrePuntoVenta'),
-                    "numeroContrato"  => $this->input->post('numeroContrato'),
-                ]];*/
-
                 //var_dump($parametros);
                 $resultado = $cliente->verificarComunicacion();
                 echo json_encode($resultado);
@@ -2040,6 +2024,43 @@ class Dosificacion extends CI_Controller{
             }
         }else{
             show_404();
+        }
+    }
+    /* en servicio Facturacion de Operaciones (verificar comunicacion de Nota Credito-Debito) es la Funcion: verificarComunicacion */
+    function verificarComunicacionNCD(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_notacredito'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                //var_dump($parametros);
+                $resultado = $cliente->verificarComunicacion();
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->return->transaccion;
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
 }
