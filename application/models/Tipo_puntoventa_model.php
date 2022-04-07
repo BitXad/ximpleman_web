@@ -33,5 +33,9 @@
         function delete_tipopuntoventa_id($tipopuntoventa_id){
             return $this->db->delete('tipo_puntoventa',array('tipopuntoventa_id'=>$tipopuntoventa_id));
         }
+
+        function truncate_table(){
+            $this->db->query("TRUNCATE tipo_puntoventa");
+        }
     }
 ?>

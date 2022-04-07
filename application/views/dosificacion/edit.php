@@ -246,10 +246,17 @@
             url: controlador,
             type: 'POST',
             async: false,
-            success: ()=>{
-                $("gif_loader").css('display','none')
+            success: (respuesta )=>{
+                let res = JSON.parse(respuesta);
+                if (res) {
+                    $("#gif_loader").css('display','none')
+                    alert("SINCRONIZACION EXITOSA")
+        
+                    // location.reload();
+                }else{
+                    alert("NO SE PUDO COMPLETAR LA SINCRONIZACION CON IMPUESTOS");
+                }
 
-                // location.reload();
             },
             error:()=>{
                 alert("algo salio mal");

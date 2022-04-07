@@ -22,6 +22,14 @@ class Dosificacion extends CI_Controller{
         $this->load->model('Pais_model');
         $this->load->model('CodTipoDocumentoIdentidad_model');
         $this->load->model('Tipo_puntoventa_model');
+        $this->load->model('CodTipoDocumentoSector_model');
+        $this->load->model('TipoEmision_model');
+        $this->load->model('Forma_pago_model');
+        $this->load->model('TipoHabitacion_model');
+        $this->load->model('Moneda_model');
+        $this->load->model('Tipo_puntoventa_model');
+        $this->load->model('TipoFactura_model');
+        $this->load->model('Unidad_model');
         //$this->load->library('lib_nusoap/nusoap');    
     
         
@@ -1288,14 +1296,8 @@ class Dosificacion extends CI_Controller{
         }
     }
     
-    function sincronizacion_codigos_leyenda(){
+    function sincronizacion_codigos_leyenda($wsdl,$token,$parametros){
         try{
-            $dosificacion_id = 1;
-            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-            /*fuente:
-                * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/sincronizacion-codigos-catalogos */
-            $wsdl = $dosificacion['dosificacion_sincronizacion'];
-            $token = $dosificacion['dosificacion_tokendelegado'];
             $opts = array(
                 'http' => array(
                     'header' => "apiKey: TokenApi $token",
@@ -1310,15 +1312,6 @@ class Dosificacion extends CI_Controller{
                 'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
             ]);
             
-            $parametros = ["SolicitudSincronizacion" => [
-                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
-                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
-                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                "cuis"              =>  $dosificacion['dosificacion_cuis'],
-                "nit"               =>  $dosificacion['dosificacion_nitemisor']]
-            ];
-
             $resultados = $cliente->sincronizarListaLeyendasFactura($parametros);
                 
             $transaccion = $resultados->RespuestaListaParametricasLeyendas->transaccion;
@@ -1341,13 +1334,8 @@ class Dosificacion extends CI_Controller{
         }
     }
 
-    function codigosMensajesServicios(){
+    function codigosMensajesServicios($wsdl,$token,$parametros){
         try{
-            $dosificacion_id = 1;
-            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-
-            $wsdl = $dosificacion['dosificacion_sincronizacion'];
-            $token = $dosificacion['dosificacion_tokendelegado'];
             $opts = array(
                 'http' => array(
                     'header' => "apiKey: TokenApi $token",
@@ -1361,15 +1349,6 @@ class Dosificacion extends CI_Controller{
                 'cache_wsdl'        => WSDL_CACHE_NONE,
                 'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
             ]);
-
-            $parametros = ["SolicitudSincronizacion" => [
-                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
-                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
-                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                "cuis"              =>  $dosificacion['dosificacion_cuis'],
-                "nit"               =>  $dosificacion['dosificacion_nitemisor']
-            ]];
 
             $resultados = $cliente->sincronizarListaMensajesServicios($parametros);
 
@@ -1391,13 +1370,8 @@ class Dosificacion extends CI_Controller{
         }
     }
 
-    function codigos_actividades_doc_sector(){
+    function codigos_actividades_doc_sector($wsdl,$token,$parametros){
         try{
-            $dosificacion_id = 1;
-            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-
-            $wsdl = $dosificacion['dosificacion_sincronizacion'];
-            $token = $dosificacion['dosificacion_tokendelegado'];
             $opts = array(
                 'http' => array(
                     'header' => "apiKey: TokenApi $token"
@@ -1411,15 +1385,6 @@ class Dosificacion extends CI_Controller{
                 'cache_wsdl'        => WSDL_CACHE_NONE,
                 'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
             ]);
-
-            $parametros = ["SolicitudSincronizacion" => [
-                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
-                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
-                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                "cuis"              =>  $dosificacion['dosificacion_cuis'],
-                "nit"               =>  $dosificacion['dosificacion_nitemisor']
-            ]];
 
             $resultados = $cliente->sincronizarListaActividadesDocumentoSector($parametros);
 
@@ -1448,13 +1413,8 @@ class Dosificacion extends CI_Controller{
 
     }
     
-    function codigosEventosSignificativos(){
+    function codigosEventosSignificativos($wsdl,$token,$parametros){
         try{
-            $dosificacion_id = 1;
-            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-
-            $wsdl = $dosificacion['dosificacion_sincronizacion'];
-            $token = $dosificacion['dosificacion_tokendelegado'];
             $opts = array(
                 'http' => array(
                     'header' => "apiKey: TokenApi $token"
@@ -1468,15 +1428,6 @@ class Dosificacion extends CI_Controller{
                 'cache_wsdl'        => WSDL_CACHE_NONE,
                 'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
             ]);
-
-            $parametros = ["SolicitudSincronizacion" => [
-                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
-                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
-                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                "cuis"              =>  $dosificacion['dosificacion_cuis'],
-                "nit"               =>  $dosificacion['dosificacion_nitemisor']
-            ]];
 
             $resultados = $cliente->sincronizarParametricaEventosSignificativos($parametros);
 
@@ -1504,13 +1455,8 @@ class Dosificacion extends CI_Controller{
 
     }
 
-    function codigosMotivosAnulacion(){
+    function codigosMotivosAnulacion($wsdl,$token,$parametros){
         try{
-            $dosificacion_id = 1;
-            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-
-            $wsdl = $dosificacion['dosificacion_sincronizacion'];
-            $token = $dosificacion['dosificacion_tokendelegado'];
             $opts = array(
                 'http' => array(
                     'header' => "apiKey: TokenApi $token"
@@ -1524,15 +1470,6 @@ class Dosificacion extends CI_Controller{
                 'cache_wsdl'        => WSDL_CACHE_NONE,
                 'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
             ]);
-
-            $parametros = ["SolicitudSincronizacion" => [
-                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
-                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
-                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                "cuis"              =>  $dosificacion['dosificacion_cuis'],
-                "nit"               =>  $dosificacion['dosificacion_nitemisor']
-            ]];
 
             $resultados = $cliente->sincronizarParametricaMotivoAnulacion($parametros);
 
@@ -1560,13 +1497,8 @@ class Dosificacion extends CI_Controller{
 
     }
 
-    function codigoPaisOrigen(){
+    function codigoPaisOrigen($wsdl,$token,$parametros){
         try{
-            $dosificacion_id = 1;
-            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-
-            $wsdl = $dosificacion['dosificacion_sincronizacion'];
-            $token = $dosificacion['dosificacion_tokendelegado'];
             $opts = array(
                 'http' => array(
                     'header' => "apiKey: TokenApi $token"
@@ -1580,15 +1512,6 @@ class Dosificacion extends CI_Controller{
                 'cache_wsdl'        => WSDL_CACHE_NONE,
                 'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
             ]);
-
-            $parametros = ["SolicitudSincronizacion" => [
-                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
-                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
-                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                "cuis"              =>  $dosificacion['dosificacion_cuis'],
-                "nit"               =>  $dosificacion['dosificacion_nitemisor']
-            ]];
 
             $resultados = $cliente->sincronizarParametricaPaisOrigen($parametros);
 
@@ -1615,13 +1538,8 @@ class Dosificacion extends CI_Controller{
         }
     }
 
-    function codigoTipoDocumentoIdentidad(){
+    function codigoTipoDocumentoIdentidad($wsdl,$token,$parametros){
         try{
-            $dosificacion_id = 1;
-            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-
-            $wsdl = $dosificacion['dosificacion_sincronizacion'];
-            $token = $dosificacion['dosificacion_tokendelegado'];
             $opts = array(
                 'http' => array(
                     'header' => "apiKey: TokenApi $token"
@@ -1635,15 +1553,6 @@ class Dosificacion extends CI_Controller{
                 'cache_wsdl'        => WSDL_CACHE_NONE,
                 'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
             ]);
-
-            $parametros = ["SolicitudSincronizacion" => [
-                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
-                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
-                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                "cuis"              =>  $dosificacion['dosificacion_cuis'],
-                "nit"               =>  $dosificacion['dosificacion_nitemisor']
-            ]];
 
             $resultados = $cliente->sincronizarParametricaTipoDocumentoIdentidad($parametros);
 
@@ -1671,20 +1580,414 @@ class Dosificacion extends CI_Controller{
 
     }
 
+    function codigosTipoDocumentoSector($wsdl,$token,$parametros){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+
+            $resultados = $cliente->sincronizarParametricaTipoDocumentoSector($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->CodTipoDocumentoSector_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'docsec_codigoclasificador' => $codigo->codigoClasificador,
+                        'docsec_descripcion'        => $codigo->descripcion
+                    );
+
+                    $this->CodTipoDocumentoSector_model->add_documento_sector($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+
+    }
+
+    function codigosTipoEmision($wsdl,$token,$parametros){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->sincronizarParametricaTipoEmision($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->TipoEmision_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'tipoemi_codigoclasificador' => $codigo->codigoClasificador,
+                        'tipoemi_descripcion'        => $codigo->descripcion
+                    );
+
+                    $this->TipoEmision_model->add_tipo_emision($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+
+    }
+    
+    function tipoMetodoPago($wsdl,$token,$parametros){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->sincronizarParametricaTipoMetodoPago($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->Forma_pago_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'forma_codigoclasificador' => $codigo->codigoClasificador,
+                        'forma_nombre'        => $codigo->descripcion
+                    );
+
+                    $this->Forma_pago_model->add_forma_pago($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+
+    }
+
+    function tipoHabitacion($wsdl,$token,$parametros){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->sincronizarParametricaTipoHabitacion($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->TipoHabitacion_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'tipohab_codigoclasificador' => $codigo->codigoClasificador,
+                        'tipohab_descripcion'        => $codigo->descripcion
+                    );
+
+                    $this->TipoHabitacion_model->add_tipo_habitacion($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+    }
+
+    function tipo_moneda($wsdl,$token,$parametros){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->sincronizarParametricaTipoMoneda($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                // $this->TipoHabitacion_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'estado_id'                 => 2,//2 INACTIVO
+                        'moneda_codigoclasificador' => $codigo->codigoClasificador,
+                        'moneda_descripcion'        => $codigo->descripcion
+                    );
+                    $moneda_id = $this->Moneda_model->buscar_codigo_clasificador($codigo->codigoClasificador);
+                    var_dump($moneda_id['moneda_id']);
+                    if($moneda_id['moneda_id'] == 0){
+                        // array_push($params,"'estado_id'=> 1");
+                        $this->Moneda_model->add_moneda($params);
+                    }else{
+                        $this->Moneda_model->update_moneda($moneda_id['moneda_id'],$params);
+                    }
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+    }
+
+    function tipoPuntoVenta($wsdl,$token,$parametros){
+        // static $array;
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->sincronizarParametricaTipoPuntoVenta($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->Tipo_puntoventa_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'tipopuntoventa_codigo'         => $codigo->codigoClasificador,
+                        'tipopuntoventa_descripcion'    => $codigo->descripcion
+                    );
+                    $this->Tipo_puntoventa_model->add_tipopuntoventa($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+    }
+    
+    function codigosTipoFactura($wsdl,$token,$parametros){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->sincronizarParametricaTiposFactura($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->TipoFactura_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'tipofac_codigo'         => $codigo->codigoClasificador,
+                        'tipofac_descripcion'    => $codigo->descripcion
+                    );
+                    $this->TipoFactura_model->add_tipoFactura($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+    }
+
+    function unidadMedida($wsdl,$token,$parametros){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->sincronizarParametricaUnidadMedida($parametros);
+
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->Unidad_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'unidad_codigo'    => $codigo->codigoClasificador,
+                        'unidad_nombre'    => $codigo->descripcion
+                    );
+                    $this->Unidad_model->add_unidad($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+    }
+
+    function verificar_comunicacion($token,$wsdl){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->verificarComunicacion();
+
+            $transaccion = $resultados->return->transaccion;
+
+            if($transaccion){
+                $codigo = $resultados->return->mensajesList->codigo;
+                $descripcion = $resultados->return->mensajesList->descripcion;
+                $params = array(
+                    'transaccion' => $transaccion,
+                    'codigo'      => $codigo,
+                    'descripcion' => $descripcion
+                );
+                return $params;
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+    }
 
     function sincronizarCodigosYCatalogos(){
         if($this->input->is_ajax_request()){
-            $this->sincronizar_actividades();
-            $this->codigosMensajesServicios();
-            $this->sincronizacion_codigos_leyenda();
-            $this->codigos_actividades_doc_sector();
-            $this->codigosEventosSignificativos();
-            $this->codigosMotivosAnulacion();
-            $this->codigoPaisOrigen();
-            $this->codigoTipoDocumentoIdentidad();
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+            
+            $wsdl = $dosificacion['dosificacion_sincronizacion'];
+            $token = $dosificacion['dosificacion_tokendelegado'];
+            $comunicacion = $this->verificar_comunicacion($token,$wsdl);
+            if ($comunicacion['transaccion']) {
+                
+                $parametros = ["SolicitudSincronizacion" => [
+                    "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
+                    "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
+                    "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                    "nit"               =>  $dosificacion['dosificacion_nitemisor']
+                ]];
+    
+                $this->sincronizar_actividades();
+                $this->codigosMensajesServicios($wsdl,$token,$parametros);
+                $this->sincronizacion_codigos_leyenda($wsdl,$token,$parametros);
+                $this->codigos_actividades_doc_sector($wsdl,$token,$parametros);
+                $this->codigosEventosSignificativos($wsdl,$token,$parametros);
+                $this->codigosMotivosAnulacion($wsdl,$token,$parametros);
+                $this->codigoPaisOrigen($wsdl,$token,$parametros);
+                $this->codigoTipoDocumentoIdentidad($wsdl,$token,$parametros);
+                $this->codigosTipoDocumentoSector($wsdl,$token,$parametros);
+                $this->codigosTipoEmision($wsdl,$token,$parametros);
+                $this->tipoMetodoPago($wsdl,$token,$parametros);
+                $this->tipoHabitacion($wsdl,$token,$parametros);
+                $this->tipo_moneda($wsdl,$token,$parametros);
+                $this->tipoPuntoVenta($wsdl,$token,$parametros);
+                $this->codigosTipoFactura($wsdl,$token,$parametros);
+                $this->unidadMedida($wsdl,$token,$parametros);
+                echo json_encode("ok");
+            }else{
+                echo json_decode("no");
+            }
         }else{
             show_404();
         }
     }
 }
-

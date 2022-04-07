@@ -107,4 +107,7 @@ class Forma_pago_model extends CI_Model
     {
         return $this->db->delete('forma_pago',array('forma_id'=>$forma_id));
     }
+    function truncate_table(){
+        $this->db->query("TRUNCATE forma_pago");
+    }
 }
