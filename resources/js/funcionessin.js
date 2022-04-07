@@ -614,3 +614,31 @@ function registro_PuntoVentaComisionista(){
         }); 
     }
 }
+/* verifica la comunicación de Operaciones (Factura Operaciones) */
+function verificar_comunicacion_op(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/verificarComunicacionOp';
+    document.getElementById('loader_revocado').style.display = 'block';
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){
+                var registros = JSON.parse(respuesta);
+                    console.log(registros);
+                    let transaccion = registros.return.transaccion;
+                    if(transaccion == true){
+                        let codigo = registros.return.mensajesList.codigo;
+                        let descripcion = registros.return.mensajesList.descripcion;
+                        alert(codigo+" "+descripcion);
+                    }else{
+                        alert("Algo fallo...!! ");
+                    }
+                    document.getElementById('loader_revocado').style.display = 'none';
+            },
+            error:function(respuesta){
+                alert("Algo salio mal; por favor verificar sus datos!.");
+                document.getElementById('loader_revocado').style.display = 'none';
+            }                
+    }); 
+    //}
+}
