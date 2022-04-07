@@ -1235,6 +1235,58 @@ class Dosificacion extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
+    /* en servicio Facturacion de Operaciones (Registro de Punto de Venta Comisionista) es la Funcion: registroPuntoVentaComisionista */
+    function registroPuntoVentaComisionista(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_operaciones'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                $parametros = ["SolicitudPuntoVentaComisionista" => [
+                    "codigoAmbiente"  => $dosificacion['dosificacion_ambiente'],
+                    "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
+                    "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
+                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "descripcion"     => $this->input->post('descripcion'),
+                    "fechaFin"        => $this->input->post('fechaFin'),
+                    "fechaInicio"     => $this->input->post('fechaInicio'),
+                    "nit"             => $dosificacion['dosificacion_nitemisor'],
+                    "nitComisionista" => $this->input->post('nitComisionista'),
+                    "nombrePuntoVenta"=> $this->input->post('nombrePuntoVenta'),
+                    "numeroContrato"  => $this->input->post('numeroContrato'),
+                ]];
+
+                //var_dump($parametros);
+                $resultado = $cliente->registroPuntoVentaComisionista($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaPuntoVentaComisionista->transaccion;
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
     
     function sincronizacion_codigos_leyenda(){
         try{

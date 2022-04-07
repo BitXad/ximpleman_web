@@ -563,3 +563,54 @@ function registroPuntoVenta(){
         }); 
     }
 }
+function mostrar_modalregistrarpuntoventacomisionista(){
+    $("#mensajecomisionista").html("");
+    $("#nitComisionista").val("");
+    $("#numeroContrato").val("");
+    $("#nombrePuntoVentac").val("");
+    $("#descripcionc").val("");
+    $("#modalregistrarpventacomisionista").modal("show");
+}
+function registro_PuntoVentaComisionista(){
+    var nitComisionista = document.getElementById('nitComisionista').value;
+    var numeroContrato  = document.getElementById('numeroContrato').value;
+    var nombrePuntoVenta= document.getElementById('nombrePuntoVentac').value;
+    var fechaInicio     = document.getElementById('fechaInicio').value;
+    var fechaFin        = document.getElementById('fechaFin').value;
+    var descripcion     = document.getElementById('descripcionc').value;
+    let mensaje = "";
+    
+    if(nitComisionista.trim() == "" || numeroContrato.trim() == "" || nombrePuntoVenta.trim() == "" || descripcion.trim() == ""){
+        mensaje = "Los campos no deben estar vacios!; por favor revise sus datos<br><br>";
+        $("#mensajecomisionista").html(mensaje);
+    }else{
+        $("#modalregistrarpventacomisionista").modal("hide");
+        var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'dosificacion/registroPuntoVentaComisionista';
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{nitComisionista:nitComisionista, numeroContrato:numeroContrato,
+                      nombrePuntoVenta:nombrePuntoVenta, fechaInicio:fechaInicio,
+                      fechaFin:fechaFin, descripcion:descripcion},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        let transaccion = registros.RespuestaPuntoVentaComisionista.transaccion;
+                        if(transaccion == true){
+                            let codigo = registros.RespuestaPuntoVentaComisionista.codigoPuntoVenta;
+                            alert("Registro realizado con exito!; Codigo: "+codigo);
+                        }else{
+                            let codigo = registros.RespuestaPuntoVentaComisionista.mensajesList.codigo;
+                            let mensaje = registros.RespuestaPuntoVentaComisionista.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    }
+}

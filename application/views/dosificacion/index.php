@@ -13,10 +13,10 @@
     <a class="btn btn-warning btn-xs" onclick="consulta_PuntoVenta()"><fa class="fa fa-cart-arrow-down"></fa> Consulta Puntos de Venta</a>
     <a class="btn btn-warning btn-xs" onclick="registro_EventoSignificativo()"><fa class="fa fa-cart-arrow-down"></fa> Registro de Evento Significativo</a>
     <a class="btn btn-warning btn-xs" onclick="mostrar_modalregistrarpuntoventa()"><fa class="fa fa-cart-arrow-down"></fa> Registrar Punto de Venta</a>
+    <a class="btn btn-warning btn-xs" onclick="mostrar_modalregistrarpuntoventacomisionista()"><fa class="fa fa-cart-arrow-down"></fa> Registrar Punto de Venta Comisionista</a>
     <div class="row" id='loader_revocado'  style='display:none; text-align: center'>
         <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
     </div>
-    
     <div class="box-tools">
         <?php
         if($newdosif == 0){
@@ -30,7 +30,6 @@
         <?php } ?>
     </div>
 </div>
-
 <style type="text/css">
     .linea:hover {
         background-color: #dddddd;
@@ -311,11 +310,6 @@
                     <label for="codigoTipoPuntoVenta" class="control-label">Tipo Punto de Venta</label>
                     <div class="form-group">
                         <select name="codigoTipoPuntoVenta" class="form-control" id="codigoTipoPuntoVenta">
-                            <!--<option value="1">Punto Venta Comisionista</option>
-                            <option value="2">Punto Venta Ventanilla de Cobranza</option>
-                            <option value="3">Punto de Venta Moviles</option>
-                            <option value="4">Punto de Venta YPFB</option>
-                            <option value="5">Punto de Venta Cajeros</option>-->
                             <?php 
                             foreach($all_tipopuntoventa as $tipopuntoventa){ ?>
                                 <option value="<?php echo $tipopuntoventa['tipopuntoventa_codigo']; ?>"> <?php echo $tipopuntoventa['tipopuntoventa_descripcion']; ?> </option>
@@ -348,3 +342,60 @@
     </div>
 </div>
 <!--------------------- Fin modal registrar nuevo punto de venta  ------------>
+<!--------------------- Inicio modal registrar nuevo punto de venta comisionista ------------>
+<div class="modal fade" id="modalregistrarpventacomisionista" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center !important">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <span style="font-size: 16px"><b> REGISTRAR NUEVO PUNTO DE VENTA COMISIONISTA</b></span>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <span class="text-danger" id="mensajecomisionista"></span>
+                </div>
+                <div class="col-md-6">
+                    <label for="nitComisionista" class="control-label">Nit Comisionista</label>
+                    <div class="form-group">
+                        <input type="number" name="nitComisionista" class="form-control" id="nitComisionista" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="numeroContrato" class="control-label">Número del Contrato</label>
+                    <div class="form-group">
+                        <input type="number" name="numeroContrato" class="form-control" id="numeroContrato" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="nombrePuntoVentac" class="control-label">Nombre de Punto de Venta</label>
+                    <div class="form-group">
+                        <input type="text" name="nombrePuntoVentac" class="form-control" id="nombrePuntoVentac" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="fechaInicio" class="control-label">Inicio Contrato</label>
+                    <div class="form-group">
+                        <input type="date" name="fechaInicio" class="form-control" value="<?php echo date("Y-m-d") ?>" id="fechaInicio" required />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="fechaFin" class="control-label">Fin Contrato</label>
+                    <div class="form-group">
+                        <input type="date" name="fechaFin" class="form-control" value="<?php echo date("Y-m-d") ?>" id="fechaFin" required />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="descripcionc" class="control-label">Descripción</label>
+                    <div class="form-group">
+                         <input type="text" name="descripcionc" class="form-control" id="descripcionc" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center !important">
+                <button class="btn btn-success" onclick="registro_PuntoVentaComisionista()"><fa class="fa fa-check"></fa> Registrar</button>
+                <button class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--------------------- Fin modal registrar nuevo punto de venta comisionista ------------>
