@@ -228,7 +228,8 @@ class Factura extends CI_Controller{
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
-        $data['_view'] = 'factura/factura_bouchern';
+        $data['_view'] = 'factura/factura_boucher';
+        //$data['_view'] = 'factura/factura_bouchern';
         $this->load->view('layouts/main',$data);
         
         
