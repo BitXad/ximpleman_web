@@ -4,7 +4,7 @@
             parent::__construct();
         }
 
-        function get_all_pais(){
+        function get_all_emision(){
             return $this->db->query(
                 "SELECT * 
                 from tipo_emision"

@@ -1945,6 +1945,46 @@ class Dosificacion extends CI_Controller{
         }
     }
 
+    function codigosProductosServicios($wsdl,$token,$parametros){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->sincronizarListaProductosServicios($parametros);
+            var_dump($resultados);
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
+
+            if($transaccion){
+            //     $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+            //     $this->Unidad_model->truncate_table();
+            //     foreach ($listaCodigos as $codigo) {
+            //         $params = array(
+            //             'prodserv_codigo'    => $codigo->codigoClasificador,
+            //             'prodserv_descripcion'    => $codigo->descripcion,
+            //             'prodserv_nandina'    => $codigo->nandina
+            //         );
+            //         $this->Unidad_model->add_unidad($params);
+            //     }
+            // }else{
+            //     $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+            //     $mensaje = "$mensaje->codigo $mensaje->descripcion";
+            //     var_dump($mensaje);
+            }
+        }catch(Exception $e){
+            var_dump("No se realizo la sincronizacion");
+        }
+    }
+
     function verificar_comunicacion($token,$wsdl){
         try{
             $opts = array(
@@ -1972,26 +2012,42 @@ class Dosificacion extends CI_Controller{
                     'codigo'      => $codigo,
                     'descripcion' => $descripcion
                 );
-                return $params;
+                // return $params;
             }else{
+                $params = array(
+                    'transaccion' => $transaccion
+                );
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
                 var_dump($mensaje);
             }
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            $transaccion = false;
+            $params = array(
+                'transaccion' => $transaccion
+            );
         }
+        return $params;
     }
 
     function sincronizarCodigosYCatalogos(){
         if($this->input->is_ajax_request()){
-            $dosificacion_id = 1;
-            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+            static $array;
+            if(!isset($array['dosificacion'])){
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+                $array['dosificacion'] = $dosificacion;
+            }else{
+                $dosificacion = $array['dosificacion'];
+            }
             
             $wsdl = $dosificacion['dosificacion_sincronizacion'];
             $token = $dosificacion['dosificacion_tokendelegado'];
-            $comunicacion = $this->verificar_comunicacion($token,$wsdl);
-            if ($comunicacion['transaccion']) {
+
+            // $comunicacion = $this->verificar_comunicacion($token,$wsdl);
+            // if ($comunicacion['transaccion']) {
+            
+            if (true) {
                 
                 $parametros = ["SolicitudSincronizacion" => [
                     "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
@@ -2001,7 +2057,7 @@ class Dosificacion extends CI_Controller{
                     "cuis"              =>  $dosificacion['dosificacion_cuis'],
                     "nit"               =>  $dosificacion['dosificacion_nitemisor']
                 ]];
-    
+
                 $this->sincronizar_actividades();
                 $this->codigosMensajesServicios($wsdl,$token,$parametros);
                 $this->sincronizacion_codigos_leyenda($wsdl,$token,$parametros);
@@ -2015,9 +2071,10 @@ class Dosificacion extends CI_Controller{
                 $this->tipoMetodoPago($wsdl,$token,$parametros);
                 $this->tipoHabitacion($wsdl,$token,$parametros);
                 $this->tipo_moneda($wsdl,$token,$parametros);
-                $this->tipoPuntoVenta($wsdl,$token,$parametros);
+                $this->tipoPuntoVenta($wsdl,$token,$parametros); 
                 $this->codigosTipoFactura($wsdl,$token,$parametros);
                 $this->unidadMedida($wsdl,$token,$parametros);
+                $this->codigosProductosServicios($wsdl,$token,$parametros);
                 echo json_encode("ok");
             }else{
                 echo json_decode("no");

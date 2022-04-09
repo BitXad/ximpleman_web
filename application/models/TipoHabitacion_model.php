@@ -4,7 +4,7 @@
             parent::__construct();
         }
 
-        function get_all_pais(){
+        function get_all_habitacion(){
             return $this->db->query(
                 "SELECT * 
                 from tipo_habitacion"

@@ -247,16 +247,17 @@
             type: 'POST',
             async: false,
             success: (respuesta )=>{
-                let res = JSON.parse(respuesta);
-                if (res) {
+                // let res = JSON.parse(respuesta);
+                let res = respuesta;
+                console.log(respuesta)
+                if (res == "ok") {
                     $("#gif_loader").css('display','none')
                     alert("SINCRONIZACION EXITOSA")
-        
                     // location.reload();
                 }else{
+                    $("#gif_loader").css('display','none')
                     alert("NO SE PUDO COMPLETAR LA SINCRONIZACION CON IMPUESTOS");
                 }
-
             },
             error:()=>{
                 alert("algo salio mal");

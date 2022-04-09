@@ -4,7 +4,7 @@
             parent::__construct();
         }
 
-        function get_all_pais(){
+        function get_all_documentoSector(){
             return $this->db->query(
                 "SELECT * 
                 from documento_sector"
