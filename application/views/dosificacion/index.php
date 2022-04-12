@@ -15,6 +15,8 @@
     <a class="btn btn-warning btn-xs" onclick="mostrar_modalregistrarpuntoventa()"><fa class="fa fa-cart-arrow-down"></fa> Registrar Punto de Venta</a>
     <a class="btn btn-warning btn-xs" onclick="mostrar_modalregistrarpuntoventacomisionista()"><fa class="fa fa-cart-arrow-down"></fa> Registrar Punto de Venta Comisionista</a>
     <!--<a class="btn btn-warning btn-xs" onclick="verificar_comunicacion_op()"><fa class="fa fa-cart-arrow-down"></fa> Verificar Comunicación de Operaciones</a>-->
+    <!--<a class="btn btn-warning btn-xs" onclick="verificar_comunicacionNCD()"><fa class="fa fa-cart-arrow-down"></fa> Verificar Comunicación Doc de Ajuste NCD</a>-->
+    <a class="btn btn-warning btn-xs" onclick="recepcion_documentoAjuste()"><fa class="fa fa-cart-arrow-down"></fa>Recepción Documento de Ajuste</a>
     <div class="row" id='loader_revocado'  style='display:none; text-align: center'>
         <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
     </div>

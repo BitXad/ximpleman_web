@@ -2083,7 +2083,7 @@ class Dosificacion extends CI_Controller{
             show_404();
         }
     }
-    /* en servicio Facturacion de Operaciones (verificar comunicacion de Nota Credito-Debito) es la Funcion: verificarComunicacion */
+    /* en servicio Facturacion documentos de Ajuste (verificar comunicacion de Nota Credito-Debito) es la Funcion: verificarComunicacion */
     function verificarComunicacionNCD(){
         try{
             if ($this->input->is_ajax_request()) {
@@ -2114,6 +2114,58 @@ class Dosificacion extends CI_Controller{
                 //print_r($resultado);
                 //$lresptransaccion = $resultado->return->transaccion;
             }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    /* en servicio Facturacion documentos de Ajuste (verificar estado de recepcion documentos de ajuste) es la Funcion: SolicitudServicioRecepcionDocumentoAjuste */
+    function recepcionDocumentoAjuste(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_notacredito'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                $parametros = ["SolicitudServicioRecepcionDocumentoAjuste" => [
+                    "codigoAmbiente"       => $dosificacion['dosificacion_ambiente'],
+                    "codigoDocumentoSector"=> 1, //$this->input->post('descripcion'),
+                    "codigoEmision" => 1, //si es en linea$dosificacion['dosificacion_modalidad'],
+                    "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
+                    "codigoPuntoVenta" => 0, //$dosificacion['dosificacion_modalidad'],
+                    "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
+                    "cufd"            => $dosificacion['dosificacion_cufd'],
+                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "nit"             => $dosificacion['dosificacion_nitemisor'],
+                    "tipoFacturaDocumento" => 3, //$this->input->post('descripcion'),
+                    "archivo"     => "gddfDFGDSfdGFSDDdfd", //$this->input->post('descripcion'),
+                    "fechaEnvio"        =>"2022-04-12T12:45:12.152", //$this->input->post('fechaFin'),
+                    "hashArchivo"     => "123", //$this->input->post('fechaInicio'),
+                ]];
+                //var_dump($parametros);
+                $resultado = $cliente->recepcionDocumentoAjuste($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->return->transaccion;
+            }else{
                 show_404();
             }
         }catch (Exception $e){
