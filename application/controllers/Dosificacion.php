@@ -2120,7 +2120,7 @@ class Dosificacion extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
-    /* en servicio Facturacion documentos de Ajuste (verificar estado de recepcion documentos de ajuste) es la Funcion: SolicitudServicioRecepcionDocumentoAjuste */
+    /* en servicio Facturacion documentos de Ajuste (Recepcion documentos de ajuste) es la Funcion: recepcionDocumentoAjuste */
     function recepcionDocumentoAjuste(){
         try{
             if ($this->input->is_ajax_request()) {
@@ -2164,7 +2164,108 @@ class Dosificacion extends CI_Controller{
                 $resultado = $cliente->recepcionDocumentoAjuste($parametros);
                 echo json_encode($resultado);
                 //print_r($resultado);
-                //$lresptransaccion = $resultado->return->transaccion;
+                //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
+            }else{
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    /* en servicio Facturacion documentos de Ajuste (verificación estado de los documentos de ajuste) es la Funcion: verificacionEstadoDocumentoAjuste */
+    function verificacionEstadoDocumentoAjuste(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_notacredito'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                $parametros = ["SolicitudServicioVerificacionEstadoDocumentoAjuste" => [
+                    "codigoAmbiente"       => $dosificacion['dosificacion_ambiente'],
+                    "codigoDocumentoSector"=> 1, //$this->input->post('descripcion'),
+                    "codigoEmision" => 1, //si es en linea$dosificacion['dosificacion_modalidad'],
+                    "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
+                    "codigoPuntoVenta" => 0, //$dosificacion['dosificacion_modalidad'],
+                    "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
+                    "cufd"            => $dosificacion['dosificacion_cufd'],
+                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "nit"             => $dosificacion['dosificacion_nitemisor'],
+                    "tipoFacturaDocumento" => 3, //$this->input->post('descripcion'),
+                    "cuf"     => "BQXxCKlhQRkE=NzjQ0NjJDQzVEMjc=Qz43ZzZKRkVXVUFFFN0E2NTQ2RTA4Q", //$this->input->post('descripcion'),
+                ]];
+                //var_dump($parametros);
+                $resultado = $cliente->verificacionEstadoDocumentoAjuste($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
+            }else{
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    /* en servicio Facturacion documentos de Ajuste (verificación estado de los documentos de ajuste) es la Funcion: verificacionEstadoDocumentoAjuste */
+    function anulacionDocumentoAjuste(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_notacredito'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                $parametros = ["SolicitudServicioAnulacionDocumentoAjuste" => [
+                    "codigoAmbiente"       => $dosificacion['dosificacion_ambiente'],
+                    "codigoDocumentoSector"=> 1, //$this->input->post('descripcion'),
+                    "codigoEmision" => 1, //si es en linea$dosificacion['dosificacion_modalidad'],
+                    "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
+                    "codigoPuntoVenta" => 0, //$dosificacion['dosificacion_modalidad'],
+                    "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
+                    "cufd"            => $dosificacion['dosificacion_cufd'],
+                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "nit"             => $dosificacion['dosificacion_nitemisor'],
+                    "tipoFacturaDocumento"=> 3, //$this->input->post('descripcion'),
+                    "codigoMotivo"        => 7, // $dosificacion['dosificacion_nitemisor'],
+                    "cuf"     => "BQXxCKlhQRkE=NzjQ0NjJDQzVEMjc=Qz43ZzZKRkVXVUFFFN0E2NTQ2RTA4Q", //$this->input->post('descripcion'),
+                ]];
+                //var_dump($parametros);
+                $resultado = $cliente->anulacionDocumentoAjuste($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
             }else{
                 show_404();
             }
