@@ -811,3 +811,97 @@ function anulacion_DocumentoAjuste(){
         }); 
     //}
 }
+/* Anulación de registro de compras */
+function anulacion_compra(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/anulacionCompra';
+    /*var opcion = confirm("Realizar consulta de puntos de venta asociados al Sujeto Pasivo \n ¿Desea Continuar?");
+    
+    if (opcion == true) {*/
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        let transaccion = registros.RespuestaServicioFacturacion.transaccion;
+                        if(transaccion == true){
+                            /*let puntosventa = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas;
+                            let n = puntosventa.length;
+                            if(n== undefined){
+                                let codigo = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.codigoPuntoVenta;
+                                let nombre = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.nombrePuntoVenta;
+                                let tipopv = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.tipoPuntoVenta;
+                                
+                                alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
+                            }else if(n>1){
+                                for (var i = 0; i < n; i++) {
+                                    let codigo = puntosventa[i]["codigoPuntoVenta"];
+                                    let nombre = puntosventa[i]["nombrePuntoVenta"];
+                                    let tipopv = puntosventa[i]["tipoPuntoVenta"];
+                                    alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
+                                }
+                            }*/
+                            alert("Consulta realizada con exito;");
+                        }else{
+                            let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
+                            let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    //}
+}
+/* Anulación de registro de compras */
+function confirmacion_Compras(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/confirmacionCompras';
+    /*var opcion = confirm("Realizar consulta de puntos de venta asociados al Sujeto Pasivo \n ¿Desea Continuar?");
+    
+    if (opcion == true) {*/
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        let transaccion = registros.RespuestaServicioFacturacion.transaccion;
+                        if(transaccion == true){
+                            /*let puntosventa = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas;
+                            let n = puntosventa.length;
+                            if(n== undefined){
+                                let codigo = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.codigoPuntoVenta;
+                                let nombre = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.nombrePuntoVenta;
+                                let tipopv = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.tipoPuntoVenta;
+                                
+                                alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
+                            }else if(n>1){
+                                for (var i = 0; i < n; i++) {
+                                    let codigo = puntosventa[i]["codigoPuntoVenta"];
+                                    let nombre = puntosventa[i]["nombrePuntoVenta"];
+                                    let tipopv = puntosventa[i]["tipoPuntoVenta"];
+                                    alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
+                                }
+                            }*/
+                            alert("Consulta realizada con exito;");
+                        }else{
+                            let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
+                            let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    //}
+}

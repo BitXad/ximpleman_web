@@ -19,6 +19,8 @@
     <!--<a class="btn btn-warning btn-xs" onclick="recepcion_documentoAjuste()"><fa class="fa fa-cart-arrow-down"></fa>Recepción Documento de Ajuste</a>-->
     <!--<a class="btn btn-warning btn-xs" onclick="verificacion_EstadoDocumentoAjuste()"><fa class="fa fa-cart-arrow-down"></fa>Verificar Estado Documento de Ajuste</a>-->
     <!--<a class="btn btn-warning btn-xs" onclick="anulacion_DocumentoAjuste()"><fa class="fa fa-cart-arrow-down"></fa> Anulación Documento de Ajuste</a>-->
+    <!--<a class="btn btn-warning btn-xs" onclick="anulacion_compra()"><fa class="fa fa-cart-arrow-down"></fa> Anulación Registro de Compra</a>-->
+    <!--<a class="btn btn-warning btn-xs" onclick="confirmacion_Compras()"><fa class="fa fa-cart-arrow-down"></fa> Confirmación de Compras</a>-->
     <div class="row" id='loader_revocado'  style='display:none; text-align: center'>
         <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
     </div>

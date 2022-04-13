@@ -2149,7 +2149,7 @@ class Dosificacion extends CI_Controller{
                     "codigoDocumentoSector"=> 1, //$this->input->post('descripcion'),
                     "codigoEmision" => 1, //si es en linea$dosificacion['dosificacion_modalidad'],
                     "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
-                    "codigoPuntoVenta" => 0, //$dosificacion['dosificacion_modalidad'],
+                    "codigoPuntoVenta" => $dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
                     "cufd"            => $dosificacion['dosificacion_cufd'],
@@ -2201,7 +2201,7 @@ class Dosificacion extends CI_Controller{
                     "codigoDocumentoSector"=> 1, //$this->input->post('descripcion'),
                     "codigoEmision" => 1, //si es en linea$dosificacion['dosificacion_modalidad'],
                     "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
-                    "codigoPuntoVenta" => 0, //$dosificacion['dosificacion_modalidad'],
+                    "codigoPuntoVenta" => $dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
                     "cufd"            => $dosificacion['dosificacion_cufd'],
@@ -2251,7 +2251,7 @@ class Dosificacion extends CI_Controller{
                     "codigoDocumentoSector"=> 1, //$this->input->post('descripcion'),
                     "codigoEmision" => 1, //si es en linea$dosificacion['dosificacion_modalidad'],
                     "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
-                    "codigoPuntoVenta" => 0, //$dosificacion['dosificacion_modalidad'],
+                    "codigoPuntoVenta" => $dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
                     "cufd"            => $dosificacion['dosificacion_cufd'],
@@ -2263,6 +2263,106 @@ class Dosificacion extends CI_Controller{
                 ]];
                 //var_dump($parametros);
                 $resultado = $cliente->anulacionDocumentoAjuste($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
+            }else{
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    /* en registro de compras (Serv) Anulación de registro de compras: anulacionCompra */
+    function anulacionCompra(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_recepcioncompras'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                $parametros = ["SolicitudAnulacionCompra" => [
+                    "codigoAmbiente"   => $dosificacion['dosificacion_ambiente'],
+                    "codigoPuntoVenta" => $dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"    => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"   => $dosificacion['dosificacion_codsucursal'],
+                    "cufd"             => $dosificacion['dosificacion_cufd'],
+                    "cuis"             => $dosificacion['dosificacion_cuis'],
+                    "nit"              => $dosificacion['dosificacion_nitemisor'],
+                    "codigoAutorizacion"=> 0, //$this->input->post('descripcion'),
+                    "nitProveedor" => 5152377019, //si es en linea$dosificacion['dosificacion_modalidad'],
+                    "nroDuiDim" => 0, //$dosificacion['dosificacion_modalidad'],
+                    "nroFactura"=> 45 //$this->input->post('descripcion'),                    
+                ]];
+                //var_dump($parametros);
+                $resultado = $cliente->anulacionCompra($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
+            }else{
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    /* en registro de compras (Serv) Anulación de registro de compras: anulacionCompra */
+    function confirmacionCompras(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_recepcioncompras'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                $parametros = ["SolicitudConfirmacionCompras" => [
+                    "codigoAmbiente"   => $dosificacion['dosificacion_ambiente'],
+                    "codigoPuntoVenta" => $dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"    => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"   => $dosificacion['dosificacion_codsucursal'],
+                    "cufd"             => $dosificacion['dosificacion_cufd'],
+                    "cuis"             => $dosificacion['dosificacion_cuis'],
+                    "nit"              => $dosificacion['dosificacion_nitemisor'],
+                    "archivo"          => "cid:1476575835872",//$dosificacion['dosificacion_nitemisor'],
+                    "cantidadFacturas" => 5, //$dosificacion['dosificacion_nitemisor'],
+                    "fechaEnvio"       => "2022-04-13T17:27:05.125", //$dosificacion['dosificacion_nitemisor'],
+                    "gestion"          => "2022", //$dosificacion['dosificacion_nitemisor'],
+                    "hashArchivo"      => "gfgfdgd",//$dosificacion['dosificacion_nitemisor'],
+                    "periodo"          => 1, //$this->input->post('descripcion'),
+                ]];
+                //var_dump($parametros);
+                $resultado = $cliente->confirmacionCompras($parametros);
                 echo json_encode($resultado);
                 //print_r($resultado);
                 //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
