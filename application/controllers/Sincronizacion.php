@@ -151,7 +151,7 @@ class Sincronizacion extends CI_Controller{
             $token = $dosificacion['dosificacion_tokendelegado'];
 
             $comunicacion = $this->verificar_comunicacion($token,$wsdl);
-            if ($comunicacion['transaccion']) {
+            if ($comunicacion) {
 
                 $parametros = ["SolicitudSincronizacion" => [
                     "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
@@ -165,80 +165,88 @@ class Sincronizacion extends CI_Controller{
                 // SINCRONIZAR
                 switch(intval($sincronizacion_id)){
                     case 1: // CODIGOS DE ACTIVIDADES
-                        $this->sincronizar_actividades();
+                        $data['transaccion'] = $this->sincronizar_actividades();
                         break;
                     case 2: // FECHA Y HORA
                         // $data['datos'] = 
                         break;
                     case 3: // CODIGOS DE ACTIVIDADES DOCUMENTO SECTOR
-                        $this->codigos_actividades_doc_sector($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigos_actividades_doc_sector($wsdl,$token,$parametros);
                         break;
                     case 4: // CODIGOS DE LEYENDAS FACTURAS
-                        $this->sincronizacion_codigos_leyenda($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->sincronizacion_codigos_leyenda($wsdl,$token,$parametros);
                         break;
                     case 5: // CODIGOS DE MENSAJES SERVICIOS
-                        $this->codigosMensajesServicios($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosMensajesServicios($wsdl,$token,$parametros);
                         break;
                     case 6: // CODIGOS DE PRODUCTOS Y SERVICIOS
-                        $this->codigosProductosServicios($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosProductosServicios($wsdl,$token,$parametros);
                         break;
                     case 7: // CODIGOS DE EVENTOS SIGNIFICATIVOS
-                        $this->codigosEventosSignificativos($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosEventosSignificativos($wsdl,$token,$parametros);
                         break;
                     case 8: // CODIGOS DE MOTIVOS DE ANULACION
-                        $this->codigosMotivosAnulacion($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosMotivosAnulacion($wsdl,$token,$parametros);
                         break;
                     case 9: // CODIGOS DE PAIS DE ORIGEN
-                        $this->codigoPaisOrigen($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigoPaisOrigen($wsdl,$token,$parametros);
                         break;
                     case 10: // CODIGOS DE TIPO DOCUMENTO DE IDENTIDAD
-                        $this->codigoTipoDocumentoIdentidad($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigoTipoDocumentoIdentidad($wsdl,$token,$parametros);
                         break;
                     case 11: // CODIGOS DE TIPO DOCUMENTO SECTOR
-                        $this->codigosTipoDocumentoSector($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosTipoDocumentoSector($wsdl,$token,$parametros);
                         break;
                     case 12: // CODIGOS DE TIPO EMISION
-                        $this->codigosTipoEmision($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosTipoEmision($wsdl,$token,$parametros);
                         break;
                     case 13: // CODIGOS DE TIPO HABITACION
-                        $this->tipoHabitacion($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->tipoHabitacion($wsdl,$token,$parametros);
                         break;
                     case 14: // CODIGOS DE TIPO METODO DE PAGO
-                        $this->tipoMetodoPago($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->tipoMetodoPago($wsdl,$token,$parametros);
                         break;
                     case 15: // CODIGOS DE TIPO MONEDA
-                        $this->tipo_moneda($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->tipo_moneda($wsdl,$token,$parametros);
                         break;
                     case 16: // CODIGOS DE TIPO PUNTO DE VENTA
-                        $this->tipoPuntoVenta($wsdl,$token,$parametros); 
+                        $data['transaccion'] = $this->tipoPuntoVenta($wsdl,$token,$parametros); 
                         break;
                     case 17: // CODIGOS DE TIPO FACTURA
-                        $this->codigosTipoFactura($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosTipoFactura($wsdl,$token,$parametros);
                         break;
                     case 18: // CODIGOS DE UNIDAD DE MEDIDA
-                        $this->unidadMedida($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->unidadMedida($wsdl,$token,$parametros);
                         break;
                     default://SINCRONIZAR TODOS LOS CODIGOS
-                        $this->sincronizar_actividades();
-                        $this->codigosMensajesServicios($wsdl,$token,$parametros);
-                        $this->sincronizacion_codigos_leyenda($wsdl,$token,$parametros);
-                        $this->codigos_actividades_doc_sector($wsdl,$token,$parametros);
-                        $this->codigosEventosSignificativos($wsdl,$token,$parametros);
-                        $this->codigosMotivosAnulacion($wsdl,$token,$parametros);
-                        $this->codigoPaisOrigen($wsdl,$token,$parametros);
-                        $this->codigoTipoDocumentoIdentidad($wsdl,$token,$parametros);
-                        $this->codigosTipoDocumentoSector($wsdl,$token,$parametros);
-                        $this->codigosTipoEmision($wsdl,$token,$parametros);
-                        $this->tipoMetodoPago($wsdl,$token,$parametros);
-                        $this->tipoHabitacion($wsdl,$token,$parametros);
-                        $this->tipo_moneda($wsdl,$token,$parametros);
-                        $this->tipoPuntoVenta($wsdl,$token,$parametros); 
-                        $this->codigosTipoFactura($wsdl,$token,$parametros);
-                        $this->unidadMedida($wsdl,$token,$parametros);
-                        $this->codigosProductosServicios($wsdl,$token,$parametros);
-                        echo json_encode("ok");
+                        if($this->sincronizar_actividades() &&
+                            $this->codigosMensajesServicios($wsdl,$token,$parametros) &&
+                            $this->sincronizacion_codigos_leyenda($wsdl,$token,$parametros) &&
+                            $this->codigos_actividades_doc_sector($wsdl,$token,$parametros) &&
+                            $this->codigosEventosSignificativos($wsdl,$token,$parametros) &&
+                            $this->codigosMotivosAnulacion($wsdl,$token,$parametros) &&
+                            $this->codigoPaisOrigen($wsdl,$token,$parametros) &&
+                            $this->codigoTipoDocumentoIdentidad($wsdl,$token,$parametros) &&
+                            $this->codigosTipoDocumentoSector($wsdl,$token,$parametros) &&
+                            $this->codigosTipoEmision($wsdl,$token,$parametros) &&
+                            $this->tipoMetodoPago($wsdl,$token,$parametros) &&
+                            $this->tipoHabitacion($wsdl,$token,$parametros) &&
+                            $this->tipo_moneda($wsdl,$token,$parametros) &&
+                            $this->tipoPuntoVenta($wsdl,$token,$parametros) && 
+                            $this->codigosTipoFactura($wsdl,$token,$parametros) &&
+                            $this->unidadMedida($wsdl,$token,$parametros) &&
+                            $this->codigosProductosServicios($wsdl,$token,$parametros)){
+                            $data['transaccion'] = true;
+                        }else{
+                            $data['transaccion'] = false;
+                        }
+                        
                         break;
                 }
+                echo json_encode($data['transaccion']);
+            }else{
+                $data['transaccion'] = false;
+                echo json_encode($data['transaccion']);
             }
         }
     }
@@ -249,7 +257,7 @@ class Sincronizacion extends CI_Controller{
             $dosificacion_id = 1;
             $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
             /*fuente:
-                * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/sincronizacion-codigos-catalogos */
+            * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/sincronizacion-codigos-catalogos */
             $wsdl = $dosificacion['dosificacion_sincronizacion'];
             $token = $dosificacion['dosificacion_tokendelegado'];
             $opts = array(
@@ -272,8 +280,8 @@ class Sincronizacion extends CI_Controller{
                 "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
                 "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
                 "cuis"              =>  $dosificacion['dosificacion_cuis'],
-                "nit"               =>  $dosificacion['dosificacion_nitemisor']]
-            ];
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']
+            ]];
             $resultados = $cliente->sincronizarActividades($parametros);
             
             $activities = $this->Actividad_model->get_all_activities();
@@ -295,9 +303,9 @@ class Sincronizacion extends CI_Controller{
                         $this->Actividad_model->add_activity($params);
                 }
             }
-            return $resultados;
+            return $transaccion;
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            return false;
         }
     }
 
@@ -340,12 +348,11 @@ class Sincronizacion extends CI_Controller{
                     );
                     $this->MensajeServicio_model->add_mensajeServicio($params);
                 }
-                return $transaccion;
-            }else{
-                return $transaccion;
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
     }
 
@@ -384,10 +391,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaActividadesDocumentoSector->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
 
     }
@@ -426,10 +435,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
 
     }
@@ -468,10 +479,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
 
     }
@@ -510,10 +523,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
     }
 
@@ -551,10 +566,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
 
     }
@@ -593,10 +610,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
 
     }
@@ -634,10 +653,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
 
     }
@@ -675,10 +696,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
 
     }
@@ -716,10 +739,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
     }
 
@@ -763,10 +788,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
     }
 
@@ -803,10 +830,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
     }
     
@@ -842,10 +871,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
     }
 
@@ -881,10 +912,12 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
+                // var_dump($mensaje);
             }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
     }
 
@@ -906,31 +939,10 @@ class Sincronizacion extends CI_Controller{
             $resultados = $cliente->verificarComunicacion();
 
             $transaccion = $resultados->return->transaccion;
-
-            if($transaccion){
-                $codigo = $resultados->return->mensajesList->codigo;
-                $descripcion = $resultados->return->mensajesList->descripcion;
-                $params = array(
-                    'transaccion' => $transaccion,
-                    'codigo'      => $codigo,
-                    'descripcion' => $descripcion
-                );
-                // return $params;
-            }else{
-                $params = array(
-                    'transaccion' => $transaccion
-                );
-                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
-                $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
-            }
+            return $transaccion;
         }catch(Exception $e){
-            $transaccion = false;
-            $params = array(
-                'transaccion' => $transaccion
-            );
+            return false;
         }
-        return $params;
     }
 
     function sincronizacion_codigos_leyenda($wsdl,$token,$parametros){
@@ -964,10 +976,10 @@ class Sincronizacion extends CI_Controller{
                     $this->Leyenda_model->add_leyenda($params);
                 }
             }
-            
-            return $resultados;
+            return $transaccion;
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado revisar datos!.';
+            // echo 'Ocurrio algo inesperado revisar datos!.';
+            return false;
         }
     }
 
@@ -987,7 +999,6 @@ class Sincronizacion extends CI_Controller{
             ]);
             
             $resultados = $cliente->sincronizarListaProductosServicios($parametros);
-            var_dump($resultados);
             $transaccion = $resultados->RespuestaListaProductos->transaccion;
 
             if($transaccion){
@@ -998,12 +1009,15 @@ class Sincronizacion extends CI_Controller{
                     $nandina = "";
                     if(isset($codigo->nandina)){
                         $nandinas = $codigo->nandina;
-                        foreach($nandinas as $nan){
-                            $coma = $nandina == "" ? "":",";  
-                            $nandina = "$nandina$coma $nan";
+                        if(is_string($nandinas)){
+                            $nandina = "{$nandinas[0]}";
+                        }else{
+                            foreach($nandinas as $nan){
+                                $coma = $nandina == "" ? "":", ";  
+                                $nandina = "$nandina$coma$nan";
+                            }
                         }
                     }
-                    
                     $params = array(
                         'prodserv_codigoactividad'  => $codigo->codigoActividad,
                         'prodserv_codigoproducto'   => $codigo->codigoProducto,
@@ -1015,11 +1029,13 @@ class Sincronizacion extends CI_Controller{
             }else{
                 $mensaje = $resultados->RespuestaListaProductos->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                var_dump($mensaje);
-            var_dump("se realizo la sincronizacion");
-        }
+                // var_dump($mensaje);
+                // var_dump("se realizo la sincronizacion");
+            }
+            return $transaccion;
         }catch(Exception $e){
-            var_dump("No se realizo la sincronizacion");
+            // var_dump("No se realizo la sincronizacion");
+            return false;
         }
     }
 }
