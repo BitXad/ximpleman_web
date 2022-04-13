@@ -36,10 +36,9 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th width="50px">#</th>
                             <th>SINCRONIZACION DE CODIGOS</th>
-                            <th>SINCRONIZACION</th>
-                            <th class="no-print"></th>
+                            <th width="100px" class="no-print"></th>
                         </tr>
                     </thead>
                     <tbody class="buscar">
@@ -48,8 +47,7 @@
                         foreach ($sincronizaciones as $sincronizacion) {?>
                             <tr>
                                 <td><?= $i ?></td>
-                                <td><?= $sincronizacion['sincronizacion_descripcion'] ?></td>
-                                <td><div id="sincronizado_<?= $sincronizacion['sincronizacion_id'] ?>"></div></td>
+                                <td><?= $sincronizacion['sincronizacion_descripcion'] ?></td>                            
                                 <td>
                                     <button class="btn btn-primary btn-xs" title="Sincronizar <?= strtolower($sincronizacion['sincronizacion_descripcion']) ?>" onclick="sincronizar(<?= $sincronizacion['sincronizacion_id'] ?>)">
                                         <i class="fa-solid fa-arrows-rotate"></i>
