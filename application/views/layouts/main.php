@@ -425,6 +425,9 @@
                         if($rolusuario[124-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
+                            <a href="<?php echo site_url('Modelo_contrato');?>"><i class="fa fa-book" aria-hidden="true"></i> Modelo Contrato</a>
+                        </li>
+                        <li>
                             <a href="<?php echo site_url('moneda');?>"><i class="fa fa-money"></i>Moneda</a>
                         </li>
                         <?php
@@ -452,6 +455,9 @@
                         }
                         if($rolusuario[133-1]['rolusuario_asignado'] == 1){
                         ?>
+                        <li>
+                            <a href="<?php echo site_url('sincronizacion');?>"><i class="fa-solid fa-arrows-rotate"></i> Sincronizar</a>
+                        </li>
                         <li>
                             <a href="<?php echo site_url('tipo_transaccion');?>"><i class="fa fa-houzz"></i>Tipo de Transacción</a>
                         </li>
@@ -503,9 +509,6 @@
                         ?>
                         <li>
                             <a href="<?php echo site_url('Categoria_clientezona');?>"><i class="fa fa-map-marker"></i>Zonas</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('Modelo_contrato');?>"><i class="fa fa-book" aria-hidden="true"></i> Modelo Contrato</a>
                         </li>
                         <?php
                         }

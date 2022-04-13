@@ -82,8 +82,9 @@
             },
             async: false,
             success: (respuesta)=>{
-                res = JSON.parse(respuesta);
-                if(res == 'OK'){
+                let res = JSON.parse(respuesta);
+                console.log(res)
+                if(res){
                     alert("Se completo la sincronización")
                 }else{
                     alert("No se logro completar la sincronización");
