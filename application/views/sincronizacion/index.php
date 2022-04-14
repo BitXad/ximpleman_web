@@ -31,7 +31,9 @@
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
-            
+            <div class="row" id='loader'  style='display:none; text-align: center'>
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+            </div>
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <thead>
@@ -72,6 +74,7 @@
     function sincronizar(codigo_sincronizar){
         let base_url = $("#base_url").val();
         let controlador = `${base_url}sincronizacion/sincronizar_datos`;
+        document.getElementById('loader').style.display = 'block';
         $.ajax({
             url: controlador,
             type:"POST",
@@ -87,9 +90,11 @@
                 }else{
                     alert("No se logro completar la sincronización");
                 }
+                document.getElementById('loader').style.display = 'none';
             },
             error: ()=>{
                 alert("Ocurrio un error al realizar la sincronización, por favor intente en unos minutos")
+                document.getElementById('loader').style.display = 'none';
             }
         });
     }
