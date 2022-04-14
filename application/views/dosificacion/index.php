@@ -21,6 +21,10 @@
     <!--<a class="btn btn-warning btn-xs" onclick="anulacion_DocumentoAjuste()"><fa class="fa fa-cart-arrow-down"></fa> Anulación Documento de Ajuste</a>-->
     <!--<a class="btn btn-warning btn-xs" onclick="anulacion_compra()"><fa class="fa fa-cart-arrow-down"></fa> Anulación Registro de Compra</a>-->
     <!--<a class="btn btn-warning btn-xs" onclick="confirmacion_Compras()"><fa class="fa fa-cart-arrow-down"></fa> Confirmación de Compras</a>-->
+    <!--<a class="btn btn-warning btn-xs" onclick="consulta_Compras()"><fa class="fa fa-cart-arrow-down"></fa> Consulta Compras a Confirmar</a>-->
+    <!--<a class="btn btn-warning btn-xs" onclick="recepcion_paqueteCompras()"><fa class="fa fa-cart-arrow-down"></fa> Recepción Paquete Compras</a>-->
+    <!--<a class="btn btn-warning btn-xs" onclick="validacion_recepcionPaqueteCompras()"><fa class="fa fa-cart-arrow-down"></fa> Validación Recepción Paquete Compras</a>-->
+    <!--<a class="btn btn-warning btn-xs" onclick="verificar_comunicacionRecCompras()"><fa class="fa fa-cart-arrow-down"></fa> Verificar Comunicación Rec. Compras</a>-->
     <div class="row" id='loader_revocado'  style='display:none; text-align: center'>
         <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
     </div>

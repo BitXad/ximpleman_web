@@ -827,22 +827,6 @@ function anulacion_compra(){
                         console.log(registros);
                         let transaccion = registros.RespuestaServicioFacturacion.transaccion;
                         if(transaccion == true){
-                            /*let puntosventa = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas;
-                            let n = puntosventa.length;
-                            if(n== undefined){
-                                let codigo = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.codigoPuntoVenta;
-                                let nombre = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.nombrePuntoVenta;
-                                let tipopv = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.tipoPuntoVenta;
-                                
-                                alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
-                            }else if(n>1){
-                                for (var i = 0; i < n; i++) {
-                                    let codigo = puntosventa[i]["codigoPuntoVenta"];
-                                    let nombre = puntosventa[i]["nombrePuntoVenta"];
-                                    let tipopv = puntosventa[i]["tipoPuntoVenta"];
-                                    alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
-                                }
-                            }*/
                             alert("Consulta realizada con exito;");
                         }else{
                             let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
@@ -858,7 +842,7 @@ function anulacion_compra(){
         }); 
     //}
 }
-/* Anulación de registro de compras */
+/* Confirmación de compras */
 function confirmacion_Compras(){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/confirmacionCompras';
@@ -874,27 +858,137 @@ function confirmacion_Compras(){
                         console.log(registros);
                         let transaccion = registros.RespuestaServicioFacturacion.transaccion;
                         if(transaccion == true){
-                            /*let puntosventa = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas;
-                            let n = puntosventa.length;
-                            if(n== undefined){
-                                let codigo = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.codigoPuntoVenta;
-                                let nombre = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.nombrePuntoVenta;
-                                let tipopv = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.tipoPuntoVenta;
-                                
-                                alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
-                            }else if(n>1){
-                                for (var i = 0; i < n; i++) {
-                                    let codigo = puntosventa[i]["codigoPuntoVenta"];
-                                    let nombre = puntosventa[i]["nombrePuntoVenta"];
-                                    let tipopv = puntosventa[i]["tipoPuntoVenta"];
-                                    alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
-                                }
-                            }*/
                             alert("Consulta realizada con exito;");
                         }else{
                             let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
                             let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
                             alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    //}
+}
+
+/* Coonsulta Compras a Confirmar */
+function consulta_Compras(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/consultaCompras';
+    /*var opcion = confirm("Realizar consulta de puntos de venta asociados al Sujeto Pasivo \n ¿Desea Continuar?");
+    
+    if (opcion == true) {*/
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        let transaccion = registros.RespuestaServicioFacturacion.transaccion;
+                        if(transaccion == true){
+                            alert("Consulta realizada con exito;");
+                        }else{
+                            let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
+                            let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    //}
+}
+
+/* Recepción Paquete de compras */
+function recepcion_paqueteCompras(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/recepcionPaqueteCompras';
+    /*var opcion = confirm("Realizar consulta de puntos de venta asociados al Sujeto Pasivo \n ¿Desea Continuar?");
+    
+    if (opcion == true) {*/
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        let transaccion = registros.RespuestaServicioFacturacion.transaccion;
+                        if(transaccion == true){
+                            alert("Consulta realizada con exito;");
+                        }else{
+                            let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
+                            let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    //}
+}
+/* Validacion Recepción Paquete de compras */
+function validacion_recepcionPaqueteCompras(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/validacionRecepcionPaqueteCompras';
+    /*var opcion = confirm("Realizar consulta de puntos de venta asociados al Sujeto Pasivo \n ¿Desea Continuar?");
+    
+    if (opcion == true) {*/
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        let transaccion = registros.RespuestaServicioFacturacion.transaccion;
+                        if(transaccion == true){
+                            let codigoEstado = registros.RespuestaServicioFacturacion.codigoEstado;
+                            alert("Consulta realizada con exito; "+codigoEstado);
+                        }else{
+                            let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
+                            let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
+                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        }
+                        document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    //}
+}
+
+/* Verificar Comunicación en recepcion Compras */
+function verificar_comunicacionRecCompras(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/verificar_comunicacionRecCompras';
+    /*var opcion = confirm("Realizar consulta de puntos de venta asociados al Sujeto Pasivo \n ¿Desea Continuar?");
+    
+    if (opcion == true) {*/
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        let transaccion = registros.return.transaccion;
+                        if(transaccion == true){
+                            alert("Comunicación exitosa!");
+                        }else{
+                            alert("Algo fallo...!!");
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },

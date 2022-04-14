@@ -2322,7 +2322,7 @@ class Dosificacion extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
-    /* en registro de compras (Serv) Anulación de registro de compras: anulacionCompra */
+    /* en registro de compras (Serv) Confirmación de compras: confirmacionCompras */
     function confirmacionCompras(){
         try{
             if ($this->input->is_ajax_request()) {
@@ -2363,6 +2363,187 @@ class Dosificacion extends CI_Controller{
                 ]];
                 //var_dump($parametros);
                 $resultado = $cliente->confirmacionCompras($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
+            }else{
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    /* en registro de compras (Serv) Consulta compras a Confirmar: consultaCompras */
+    function consultaCompras(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_recepcioncompras'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                $parametros = ["SolicitudConsultaCompras" => [
+                    "codigoAmbiente"  => $dosificacion['dosificacion_ambiente'],
+                    "codigoPuntoVenta"=> $dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
+                    "cufd"            => $dosificacion['dosificacion_cufd'],
+                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "nit"             => $dosificacion['dosificacion_nitemisor'],
+                    "fecha"           => "2022-04-13T17:27:05.125", //$dosificacion['dosificacion_nitemisor'],
+                ]];
+                //var_dump($parametros);
+                $resultado = $cliente->consultaCompras($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
+            }else{
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    /* en registro de compras (Serv) Recepción Paquete de Compras: recepcionPaqueteCompras */
+    function recepcionPaqueteCompras(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_recepcioncompras'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                $parametros = ["SolicitudRecepcionCompras" => [
+                    "codigoAmbiente"  => $dosificacion['dosificacion_ambiente'],
+                    "codigoPuntoVenta"=> $dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
+                    "cufd"            => $dosificacion['dosificacion_cufd'],
+                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "nit"             => $dosificacion['dosificacion_nitemisor'],
+                    "archivo"         => "cid:579302390480", //$dosificacion['dosificacion_nitemisor'],
+                    "cantidadFacturas"=> 40, //$dosificacion['dosificacion_nitemisor'],
+                    "fechaEnvio"      => "2022-04-13T17:27:05.125", //$dosificacion['dosificacion_nitemisor'],
+                    "gestion"         => "2022", //$dosificacion['dosificacion_nitemisor'],
+                    "hashArchivo"     => "HGGBHH", //$dosificacion['dosificacion_nitemisor'],
+                    "periodo"         => "41", //$dosificacion['dosificacion_nitemisor'],
+                ]];
+                //var_dump($parametros);
+                $resultado = $cliente->recepcionPaqueteCompras($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
+            }else{
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    
+    /* en registro de compras (Serv) Validacion Recepción Paquete de Compras: recepcionPaqueteCompras */
+    function validacionRecepcionPaqueteCompras(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_recepcioncompras'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                $parametros = ["SolicitudRecepcionCompras" => [
+                    "codigoAmbiente"  => $dosificacion['dosificacion_ambiente'],
+                    "codigoPuntoVenta"=> $dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
+                    "cufd"            => $dosificacion['dosificacion_cufd'],
+                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "nit"             => $dosificacion['dosificacion_nitemisor'],
+                    "codigoRecepcion" => "12", //$dosificacion['dosificacion_nitemisor'],
+                ]];
+                //var_dump($parametros);
+                $resultado = $cliente->validacionRecepcionPaqueteCompras($parametros);
+                echo json_encode($resultado);
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
+            }else{
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    
+    /* en registro de compras (Serv) verificar comunicacion: verificarComunicacion */
+    function verificar_comunicacionRecCompras(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_recepcioncompras'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                $resultado = $cliente->verificarComunicacion();
                 echo json_encode($resultado);
                 //print_r($resultado);
                 //$lresptransaccion = $resultado->RespuestaServicioFacturacion->transaccion;
