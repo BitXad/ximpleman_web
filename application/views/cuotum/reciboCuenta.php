@@ -98,7 +98,16 @@
             <td align="right"><?php echo $cuota[0]['cuota_moradias']; ?></td>
         </tr> 
         <tr>
-            <td colspan="2" align="left"> SON: <?php echo num_to_letras($cuota[0]['cuota_cancelado']); ?></td>
+            <td colspan="2" align="left"> SON:
+                <?php
+                if($moneda['moneda_descripcion'] != "Bs"){
+                    echo num_to_letras($cuota[0]['cuota_cancelado'], "USD"); 
+                }else{
+                    echo num_to_letras($cuota[0]['cuota_cancelado']);
+                }
+                ?>
+            </td>
+            
             <td style="width: 3cm"></td>
             <td style="width: 1cm"></td>
             <td align="left">MULTA MORA: <?= $moneda['moneda_descripcion'] ?></td>
