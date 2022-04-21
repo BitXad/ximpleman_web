@@ -97,7 +97,7 @@
                                     $actividad_select = "";
                                     foreach($actividades as $actividad){
                                         $selected = "";
-                                        if($dosificacion['dosificacion_actividad'] == $actividad['actividad_id']){
+                                        if($dosificacion['dosificacion_actividad'] == $actividad['actividad_codigocaeb']){
                                             $selected = "selected";
                                             $actividad_select = $actividad['actividad_codigocaeb'];
                                         }
@@ -117,9 +117,9 @@
                                     $actividad_select2 = "";
                                     foreach($actividades as $actividad){
                                         $selected = "";
-                                        if($dosificacion['dosificasion_actividadsec'] == $actividad['actividad_id']){
+                                        if($dosificacion['dosificasion_actividadsec'] == $actividad['actividad_codigocaeb']){
                                             $selected = "selected";
-                                            $actividad_select2 = $actividad['actividad_codigocaeb'];
+                                            $actividad_select2 = $actividad['actividad_codigocaeb'];    
                                         }
                                         echo "<option value='{$actividad['actividad_codigocaeb']}' $selected>{$actividad['actividad_codigocaeb']} - {$actividad['actividad_descripcion']}</option>";
                                     }
@@ -323,7 +323,7 @@
     function getHtmlLeyenda(leyendas, dosificacion_leyenda_select){
         let html = `<option value="">NINGUNA</option>`;
         let selected  = "";
-        console.log(dosificacion_leyenda_select)
+        // console.log(dosificacion_leyenda_select)
         leyendas.map( leyenda => {
             selected = leyenda.leyenda_descripcion == dosificacion_leyenda_select ? "selected" : "";
             html += `<option value="${leyenda.leyenda_descripcion}" ${selected}>${leyenda.leyenda_codigoactividad} ${leyenda.leyenda_descripcion}</option>`
