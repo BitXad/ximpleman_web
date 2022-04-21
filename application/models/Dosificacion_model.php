@@ -204,5 +204,18 @@ class Dosificacion_model extends CI_Model
         return true;
         
     }
+    /**
+     * Retorna todas las leyendas de las actividades que se realizen 
+     */
+    function get_leyendas_por_actividad($actividadPrincipal, $actividadSecundaria){
+        return $this->db->query(
+            "SELECT l.* 
+            from leyenda l 
+            where 
+            (l.leyenda_codigoactividad = '$actividadPrincipal'
+            or l.leyenda_codigoactividad = '$actividadSecundaria')
+            order by l.leyenda_codigoactividad 
+        ")->result_array();
+    }
     
 }

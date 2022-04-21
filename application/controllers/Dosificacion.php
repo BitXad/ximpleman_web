@@ -2554,4 +2554,13 @@ class Dosificacion extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
+
+    function get_leyendas_por_actividad(){
+        if($this->input->is_ajax_request()){
+            $actividadPrincipal = $this->input->post('actividadPrincipal');
+            $actividadSecundaria = $this->input->post('actividadSecundaria');
+            $leyendas = $this->Dosificacion_model->get_leyendas_por_actividad($actividadPrincipal, $actividadSecundaria); 
+            echo json_encode($leyendas);
+        }
+    }
 }

@@ -81,7 +81,7 @@
             data:{
                 codigo_sincronizar: codigo_sincronizar
             },
-            async: false,
+            // async: false,
             success: (respuesta)=>{
                 let res = JSON.parse(respuesta);
                 console.log(res)
