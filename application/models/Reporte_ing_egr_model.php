@@ -916,7 +916,7 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
     function reporte_generalfecha_usuario($fecha_inicio, $fecha_fin, $filtro)
     {
         $reporte = $this->db->query(
-        "select sum(v.venta_total) as venta_total, v.venta_fecha
+        "select sum(v.venta_total) as venta_total, v.venta_fecha, z.zona_nombre
             from venta v
             left join cliente c on v.cliente_id = c.cliente_id
             left join zona z on c.zona_id = z.zona_id

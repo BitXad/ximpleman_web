@@ -79,8 +79,12 @@
         </select>
     </div>
     <div class="col-md-2">
-        Buscar: 
+        &nbsp; 
         <button class="btn btn-success  form-control" onclick="buscar_ventas()"><fa class="fa fa-binoculars"></fa> Buscar</button>
+    </div>
+    <div class="col-md-2">
+        &nbsp; 
+        <a class="btn btn-facebook  form-control" onclick="imprimir()"><fa class="fa fa-print"></fa> Imprimir</a>
     </div>
 </div>
 <div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
@@ -120,7 +124,8 @@
                             }
                         ?>)
                         </th>
-                        <th style="padding:0; display: none" id="mostrar_columna">Utilidades (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>						
+                        <th style="padding:0; display: none" id="mostrar_columna">Utilidades (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th style="padding:0;">Zona</th>
                     </tr>
                     <tbody class="buscar" id="tabla_ventas"></tbody>
                 </table>

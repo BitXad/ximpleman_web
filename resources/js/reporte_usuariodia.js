@@ -26,11 +26,13 @@ function buscar_ventas(){
                         html += "<tr style='padding:0'>";
                         html += "<td class='text-center' style='padding:0'>"+moment(registros[i]["venta_fecha"]).format("DD-MM-YYYY")+"</td>";
                         html += "<td class='text-right' style='padding:0'>"+numberFormat(Number(registros[i]["venta_total"]).toFixed(2))+"</td>";
+                        html += "<td class='text-center' style='padding:0'>"+registros[i]["zona_nombre"]+"</td>";
                         html += "</tr>";
                     }
                     html += "<tr>";
                     html += "<th style='text-align: right'>TOTAL</th>";
                     html += "<th style='text-align: right'>"+numberFormat(Number(total_venta).toFixed(2))+"</th>";
+                    html += "<th style='text-align: right'></th>";
                     html += "</tr>";
                     $("#tabla_ventas").html(html);
                 }
@@ -84,4 +86,8 @@ function numberFormat(numero){
     }else{
         return resultado;
     }
+}
+
+function imprimir(){
+    window.print();
 }
