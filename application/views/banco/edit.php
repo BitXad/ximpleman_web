@@ -30,7 +30,7 @@
                         <div class="col-md-3">
                             <label for="banco_monto" class="control-label">Monto</label>
                             <div class="form-group">
-                                <input type="number" step="any" min="0" name="banco_monto" value="<?php echo ($this->input->post('banco_monto') ? $this->input->post('banco_monto') : $banco['banco_monto']); ?>" class="form-control" id="banco_monto" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <input type="number" step="any" min="0" name="banco_monto" value="<?php echo ($this->input->post('banco_monto') ? $this->input->post('banco_monto') : $banco['banco_monto']); ?>" class="form-control" id="banco_monto" required />
                             </div>
                         </div>
                         <div class="col-md-2">
