@@ -16,6 +16,7 @@
                             <label for="ingreso_monto" class="control-label">La suma de</label>
                             <div class="form-group">
                                 <input type="number" step="any" min="0" name="ingreso_monto" value="<?php echo ($this->input->post('ingreso_monto') ? $this->input->post('ingreso_monto') : $ingreso['ingreso_monto']); ?>" class="form-control" id="ingreso_monto" required/>
+                                <small id="mjs_ingreso_monto" style="color: red; display:none;">El monto debe ser mayor a 0</small>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -126,4 +127,13 @@
             //document.getElementById('input_glosa').value = "";
         }
     }
+
+    $(document).ready(() => {
+        $("#ingreso_monto").on("keyup", () => {
+            if ($("#ingreso_monto").val() <= 0)  
+                $("#mjs_ingreso_monto").css("display", "block");
+            else 
+                $("#mjs_ingreso_monto").css("display", "none");        
+        });
+    });
 </script>
