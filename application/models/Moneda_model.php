@@ -146,7 +146,7 @@ class Moneda_model extends CI_Model
     {
         $moneda = $this->db->query("
             SELECT
-                m.moneda_id, m.moneda_descripcion, m.moneda_tc
+                m.moneda_id, m.moneda_descripcion, m.moneda_tc,m.moneda_codigoclasificador
             FROM
                 moneda m, estado e
             WHERE
@@ -163,7 +163,7 @@ class Moneda_model extends CI_Model
         return $this->db->query(
             "SELECT if(count(m.moneda_id) > 0,m.moneda_id,0) as moneda_id
             from moneda m
-            where m.moneda_id = $moneda_codigoclasificador"
+            where m.moneda_codigoclasificador = $moneda_codigoclasificador"
             )->row_array();
     }
 }

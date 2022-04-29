@@ -112,9 +112,9 @@ function facturar(mensualidad){
                                     <?php 
                                     foreach($all_moneda as $moneda)
                                     {
-                                      $selected = ($moneda['moneda_descripcion'] == $this->input->post('ingreso_moneda')) ? ' selected="selected"' : "";
+                                      $selected = ($moneda['moneda_codigoclasificador'] == $parametro[0]['moneda_id']) ? ' selected="selected"' : "";
 
-                                      echo '<option value="'.$moneda['moneda_descripcion'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
+                                      echo '<option value="'.$moneda['moneda_codigoclasificador'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
                                     } 
                                     ?>
                                 </select>

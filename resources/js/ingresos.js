@@ -72,138 +72,139 @@ function fechadeingreso(filtro)
         var categ = " and i.ingreso_categoria='"+categoria+"' ";
     }
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{filtro:filtro,categ:categ},
-          
-           success:function(resul){     
-              
-                            
-                $("#pillados").val("- 0 -");
-               var registros =  JSON.parse(resul);
-           
-                if (registros != null){
-                    var nombre_moneda = document.getElementById('nombre_moneda').value;
-                    var lamoneda_id = document.getElementById('lamoneda_id').value;
-                    var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
-                    var total_otramoneda = Number(0);
-                    var total_otram = Number(0);
-                    
-                    var cont = 0;
-                    var total = Number(0);
-                    
-                    var n = registros.length; //tama単o del arreglo de la consulta
-                    $("#pillados").html("Registros Encontrados: "+n+"");
-                   
-                    html = "";
+    $.ajax({
+        url: controlador,
+        type:"POST",
+        data:{
+            filtro:filtro,
+            categoria:categoria,
+        },success:(resul) => {     
+            $("#pillados").val("- 0 -");
+            var registros =  JSON.parse(resul);
+            if (registros != null){
+                var nombre_moneda = document.getElementById('nombre_moneda').value;
+                var lamoneda_id = document.getElementById('lamoneda_id').value;
+                var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                var total_otramoneda = Number(0);
+                var total_otram = Number(0);
                 
-                    for (var i = 0; i < n ; i++){
-                        
-                        var suma = Number(registros[i]["ingreso_monto"]);
-                        var total = Number(suma+total);
-                        
-                        html += "<tr>";
-                      
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["ingreso_nombre"]+"</b><sub> ["+registros[i]["ingreso_id"]+"]</sub></td>";
-                        html += "<td align='center'>"+registros[i]["ingreso_numero"]+"</td>"; 
-                        html += "<td align='center'>"+moment(registros[i]["ingreso_fecha"]).format('DD/MM/YYYY HH:mm:ss')+"</td>"; 
-                        html += "<td>"+registros[i]["ingreso_categoria"]+"</br>"; 
-                        html += "<b>"+registros[i]["ingreso_concepto"]+"</b></td>"; 
-                        html += "<td align='right'>"+numberFormat(Number(registros[i]["ingreso_monto"]).toFixed(2));
-                        html += "<br>";
-                        if(lamoneda_id == 1){
-                            total_otram = Number(registros[i]["ingreso_monto"])/Number(registros[i]["ingreso_tc"]);
-                            total_otramoneda += total_otram;
-                        }else{
-                            total_otram = Number(registros[i]["ingreso_monto"])*Number(registros[i]["ingreso_tc"]);
-                            total_otramoneda += total_otram;
-                        }
-                        html += "<span style='font-size: 8px'>"+numberFormat(Number(total_otram).toFixed(2))+"</span>";
+                var cont = 0;
+                var total = Number(0);
+                
+                var n = registros.length; //tama単o del arreglo de la consulta
+                $("#pillados").html("Registros Encontrados: "+n+"");
+                
+                html = "";
+            
+                for (var i = 0; i < n ; i++){
+                    
+                    var suma = Number(registros[i]["ingreso_monto"]);
+                    var total = Number(suma+total);
+                    
+                    html += "<tr>";
+                    
+                    html += "<td>"+(i+1)+"</td>";
+                    html += "<td><b>"+registros[i]["ingreso_nombre"]+"</b><sub> ["+registros[i]["ingreso_id"]+"]</sub></td>";
+                    html += "<td align='center'>"+registros[i]["ingreso_numero"]+"</td>";  
+                    html += "<td align='center'>"+moment(registros[i]["ingreso_fecha"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";  
+                    html += "<td>"+registros[i]["ingreso_categoria"]+"</br>"; 
+                    html += "<b>"+registros[i]["ingreso_concepto"]+"</b></td>"; 
+                    html += "<td align='right'>"+numberFormat(Number(registros[i]["ingreso_monto"]).toFixed(2));
+                    html += "<br>";
+                    if(lamoneda_id == 1){
+                        total_otram = Number(registros[i]["ingreso_monto"])/Number(registros[i]["ingreso_tc"]);
+                        total_otramoneda += total_otram;
+                    }else{
+                        total_otram = Number(registros[i]["ingreso_monto"])*Number(registros[i]["ingreso_tc"]);
+                        total_otramoneda += total_otram;
+                    }
+                    html += "<span style='font-size: 8px'>"+numberFormat(Number(total_otram).toFixed(2))+"</span>";
+                    html += "</td>"; 
                         html += "</td>"; 
-                        html += "<td>"+registros[i]["ingreso_moneda"];
-                        html += "<br>";
-                        if(lamoneda_id == 1){
-                            html += "<span style='font-size: 8px'>"+lamoneda[1]['moneda_descripcion']+"</span>";
-                        }else{
-                            html += "<span style='font-size: 8px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
+                    html += "</td>"; 
+                    html += "<td>"+registros[i]["moneda_descripcion"];
+                    html += "<br>";
+                    if(lamoneda_id == 1){
+                        html += "<span style='font-size: 8px'>"+lamoneda[1]['moneda_descripcion']+"</span>";
+                    }else{
+                        html += "<span style='font-size: 8px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
+                    }
+                    html += "</td>";
+                    html += "<td>";
+                    if(registros[i]["forma_id"] >0){
+                        html += registros[i]["forma_nombre"];
+                        if(registros[i]["forma_id"]> 1){
+                            html += "<br><b>Glosa: </b>"+registros[i]["ingreso_glosa"];
                         }
-                        html += "</td>";
-                        html += "<td>";
-                        if(registros[i]["forma_id"] >0){
-                            html += registros[i]["forma_nombre"];
-                            if(registros[i]["forma_id"]> 1){
-                                html += "<br><b>Glosa: </b>"+registros[i]["ingreso_glosa"];
-                            }
-                        }
-                        html += "</td>";
-                        html += "<td>";
-                        if(registros[i]["banco_id"] >0){
-                            html += registros[i]["banco_nombre"]+" ("+registros[i]["banco_numcuenta"]+")";
-                        }
-                        html += "</td>";
-                        html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
-                        html += "<td  class='no-print'><a href='"+base_url+"ingreso/imprimir/"+registros[i]["ingreso_id"]+"' title='Carta' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
-                       
+                    }
+                    html += "</td>";
+                    html += "<td>";
+                    if(registros[i]["banco_id"] >0){
+                        html += registros[i]["banco_nombre"]+" ("+registros[i]["banco_numcuenta"]+")";
+                    }
+                    html += "</td>";
+                    html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
+                    html += "<td  class='no-print'><a href='"+base_url+"ingreso/imprimir/"+registros[i]["ingreso_id"]+"' title='Carta' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
+                    
 //                        html += "<a href='"+base_url+"ingreso/boucher/"+registros[i]["ingreso_id"]+"' title='Bouche' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
-                        
-                       if (registros[i]["factura_id"]>0) {
-                        html += "<a href='"+base_url+"factura/imprimir_factura_id/"+registros[i]["factura_id"]+"/2' title='Factura' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></a>";
-                        }
-                        html += "<a href='"+base_url+"ingreso/edit/"+registros[i]["ingreso_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
-                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
-                        html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
-                        html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
-                        html += "<div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
-                        html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "</div>";
-                        html += "<div class='modal-body'>";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "<h3><b> <span class='fa fa-trash'></span></b>";
-                        html += "Desea eliminar el ingreso <b># "+registros[i]["ingreso_numero"]+"?</b>";
-                        html += "</h3>";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "</div>";
-                        html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"ingreso/remove/"+registros[i]["ingreso_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
-                        html += " <a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
-                        html += "</td>";
-                        
-                        html += "</tr>";
-                    } 
-                        html += "<tr>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td align='right'><font size='4'><b>TOTAL</b></font></td>";
-                        html += "<td align='right'><font size='4'><b>"+numberFormat(Number(total).toFixed(2))+"</b></font>";
-                        html += "<br>";
-                        html += "<span style='font-size: 9px'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</span>"
-                        html += "</td>";
-                        html += "<td><font size='4'><b>"+nombre_moneda+"</b></font>";
-                        html += "<br>";
-                        if(lamoneda_id == 1){
-                            html += "<span style='font-size: 9px'>"+lamoneda[1]['moneda_descripcion']+"</span>";
-                        }else{
-                            html += "<span style='font-size: 9px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
-                        }
-                        html += "</td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "</tr>";
-                   
-                   $("#fechadeingreso").html(html);
-                   document.getElementById('loader').style.display = 'none';
+                    
+                    if (registros[i]["factura_id"]>0) {
+                    html += "<a href='"+base_url+"factura/imprimir_factura_id/"+registros[i]["factura_id"]+"/2' title='Factura' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></a>";
+                    }
+                    html += "<a href='"+base_url+"ingreso/edit/"+registros[i]["ingreso_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
+                    html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
+                    html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
+                    html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
+                    html += "<div class='modal-dialog' role='document'>";
+                    html += "<br><br>";
+                    html += "<div class='modal-content'>";
+                    html += "<div class='modal-header'>";
+                    html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                    html += "</div>";
+                    html += "<div class='modal-body'>";
+                    html += "<!------------------------------------------------------------------->";
+                    html += "<h3><b> <span class='fa fa-trash'></span></b>";
+                    html += "Desea eliminar el ingreso <b># "+registros[i]["ingreso_numero"]+"?</b>";
+                    html += "</h3>";
+                    html += "<!------------------------------------------------------------------->";
+                    html += "</div>";
+                    html += "<div class='modal-footer aligncenter'>";
+                    html += "<a href='"+base_url+"ingreso/remove/"+registros[i]["ingreso_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                    html += " <a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
+                    html += "</td>";
+                    
+                    html += "</tr>";
+                } 
+                    html += "<tr>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td align='right'><font size='4'><b>TOTAL</b></font></td>";
+                    html += "<td align='right'><font size='4'><b>"+numberFormat(Number(total).toFixed(2))+"</b></font>";
+                    html += "<br>";
+                    html += "<span style='font-size: 9px'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</span>"
+                    html += "</td>";
+                    html += "<td><font size='4'><b>"+nombre_moneda+"</b></font>";
+                    html += "<br>";
+                    if(lamoneda_id == 1){
+                        html += "<span style='font-size: 9px'>"+lamoneda[1]['moneda_descripcion']+"</span>";
+                    }else{
+                        html += "<span style='font-size: 9px'>"+lamoneda[0]['moneda_descripcion']+"</span>";
+                    }
+                    html += "</td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "<td></td>";
+                    html += "</tr>";
+                
+                $("#fechadeingreso").html(html);
+                document.getElementById('loader').style.display = 'none';
             }
             document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },

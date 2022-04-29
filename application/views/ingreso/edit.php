@@ -27,8 +27,8 @@
                                     <?php
                                     foreach($all_moneda as $moneda)
                                     {
-                                      $selected = ($moneda['moneda_descripcion'] == $ingreso['ingreso_moneda']) ? ' selected="selected"' : "";
-                                      echo '<option value="'.$moneda['moneda_descripcion'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
+                                      $selected = ($moneda['moneda_codigoclasificador'] == $ingreso['ingreso_moneda']) ? ' selected="selected"' : "";
+                                      echo '<option value="'.$moneda['moneda_codigoclasificador'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
                                     } 
                                     ?>
                                 </select>

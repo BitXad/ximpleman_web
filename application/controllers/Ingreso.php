@@ -58,7 +58,7 @@ class Ingreso extends CI_Controller{
             $data['_view'] = 'ingreso/index';
             $this->load->view('layouts/main',$data);
         }
-           
+        
     } 
 
     function buscarfecha()
@@ -101,14 +101,14 @@ class Ingreso extends CI_Controller{
                 $total_final = 0;
                 if($parametro[0]["moneda_id"]==1){ //Si es bolivianos
                     $lamoneda = $all_moneda[0]["moneda_descripcion"];
-                    if($ingreso_moneda != "Bs"){
+                    if($ingreso_moneda != 1){// 1 para indicar boliviano
                         $total_final += $ingreso_monto*$all_moneda[1]["moneda_tc"];
                     }else{
                         $total_final += $ingreso_monto;
                     }
                 }else{ // Si no se multiplica
                     $lamoneda = $all_moneda[1]["moneda_descripcion"];
-                    if($ingreso_moneda != "Bs"){
+                    if($ingreso_moneda != 1){// 1 para indicar boliviano
                         $total_final += $ingreso_monto;
                     }else{
                         $total_final += $ingreso_monto/$all_moneda[1]["moneda_tc"];
@@ -298,17 +298,18 @@ class Ingreso extends CI_Controller{
                 {
                     $ingreso_monto  = $this->input->post('ingreso_monto');
                     $ingreso_moneda = $this->input->post('ingreso_moneda');
+                    $total_final = 0;
                     $ingreso_tc     = $all_moneda[1]["moneda_tc"];
                     if($parametro[0]["moneda_id"]==1){ //Si es bolivianos
                         $lamoneda = $all_moneda[0]["moneda_descripcion"];
-                        if($ingreso_moneda != "Bs"){
+                        if($ingreso_moneda != 1){ // 1 para inidicar Moneda en BOLIVIANO
                             $total_final += $ingreso_monto*$all_moneda[1]["moneda_tc"];
                         }else{
                             $total_final += $ingreso_monto;
                         }
                     }else{ // Si no se multiplica
                         $lamoneda = $all_moneda[1]["moneda_descripcion"];
-                        if($ingreso_moneda != "Bs"){
+                        if($ingreso_moneda != 1){ // 1 para inidicar Moneda en BOLIVIANO
                             $total_final += $ingreso_monto;
                         }else{
                             $total_final += $ingreso_monto/$all_moneda[1]["moneda_tc"];
