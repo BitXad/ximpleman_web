@@ -282,7 +282,11 @@ border-bottom : 1px solid #aaa;
         <tr>
             <td colspan="4">
                 <font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?>
-                <br><b>PREVED.: </b><?php echo $pedido[0]['usuario_nombre']; ?></font>                
+                <br><b>PREVED.: </b><?php echo $pedido[0]['usuario_nombre']; 
+                if($pedido[0]['ingreso_monto'] > 0){
+                    echo "<br><b>RESERVA: </b>".$pedido[0]['ingreso_monto']." ".$pedido[0]['ingreso_moneda'];
+                }
+                ?></font>
             </td>
         </tr>    
         <tr>    

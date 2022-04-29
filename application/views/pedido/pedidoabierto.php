@@ -782,116 +782,136 @@ function cerrar_ventana(){
             </div>
                  
         <div class="row">
-            
-            
             <div class="col-md-12">
-            <!--<form action="<?php echo base_url('hotel/checkout/'.$pedido_id."/".$habitacion_id); ?>"  method="POST" class="form">-->
                 <div class="box">
+                    <div class="box-body table-responsive table-condensed">
+                        <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
+                            <tr>
+                                <td  style="padding: 0" >Total <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
+                                <td align="right">
+                                    <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                                </td>
+                            </tr>
+                            <tr style="padding: 0">
+                                <td style="padding: 0">Descuento <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
+                                <td align="right" style="padding: 0">
+                                    <input class="btn btn-foursquarexs" style="padding: 0" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                                </td>
+                            </tr>
+                            <tr style="padding: 0">
+                                <td align="right" style="padding: 0"><b>Sub Total <?php echo $parametro[0]["moneda_descripcion"]; ?> </b></td>
+                                <td align="right" style="padding: 0">
+                                    <input class="btn btn-foursquarexs"  style="padding: 0" id="venta_subtotal" size="<?php echo $ancho_boton; ?>"  name="venta_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
+                                </td>
+                            </tr>
+                            <tr style="padding: 0">                      
+                                <td style="padding: 0">Descuento <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
+                                <td align="right" style="padding: 0">
+                                    <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
+                                </td>
+                            </tr>
+                            <tr style="padding: 0">                      
+                                <td style="padding: 0"><b>Total Final <?php echo $parametro[0]["moneda_descripcion"]; ?> </b></td>
+                                <td align="right" style="padding: 0">
+                                    <input class="btn btn-foursquarexs" style="font-size: 20; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">
+                                </td>
+                            </tr>
+                            <tr style="padding: 0">                      
+                                <td style="padding: 0">Efectivo <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
+                                <td align="right" style="padding: 0">
+                                    <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
+                                </td>
+                            </tr>
+                            <tr style="padding: 0">                      
+                            <td style="padding: 0"><b>Cambio <?php echo $parametro[0]["moneda_descripcion"]; ?> </b></td>
+                                <td align="right" style="padding: 0;">
+                                    <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="col-md-12">
+                            NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
+                        </div>
+                        <?php if($tipousuario_id == 1) { ?>
+                        <div class="col-md-12">
+                            Vendedor:                 
+                            <select name="usuario_id" id="usuario_id" class="btn btn-default btn-xs" style="width: 120px;" >
+                                <?php 
+                                foreach($usuarios as $us){ 
+                                    $selected = ($us['usuario_id'] == $usuario_id) ? ' selected="selected"' : "";
+                                    ?>
+                                    <option value="<?php echo $us["usuario_id"]; ?>" <?php echo $selected; ?>><?php echo $us["usuario_nombre"]; ?></option>
+                                <?php
+                                    }
+                                ?>
+                            </select>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="checkbox" name="esreserva" id="esreserva" onclick="mostrar_reserva()"> Reserva</label>
+                        </div>
+                        <?php } ?>
+                        <!-- *************** Inicio para reservas *************** -->
+                        <div class="col-md-12" id="mostrarreserva" style="background-color: #c9d2d6; display: none">
+                            <div class="col-md-6">
+                            <label for="ingreso_monto" class="control-label">La suma de</label>
+                            <div class="form-group">
+                                <input type="number" step="any" min="0" name="ingreso_monto" value="<?php echo $this->input->post('ingreso_monto'); ?>" class="form-control" id="ingreso_monto" required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ingreso_moneda" class="control-label">Moneda</label>
+                            <div class="form-group">
+                                <select name="ingreso_moneda" id="ingreso_moneda" class="form-control" required>
+                                    <!--<option value="Bs">- Bs -</option>-->
+                                    <?php 
+                                    foreach($all_moneda as $moneda)
+                                    {
+                                      $selected = ($moneda['moneda_descripcion'] == $this->input->post('ingreso_moneda')) ? ' selected="selected"' : "";
 
-            <div class="box-body table-responsive table-condensed">
-            <!--<form method="post" name="descuento">-->                
-            
-            
-            
-            <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
-                
-                <tr>
-                        <td  style="padding: 0" >Total <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
-                        <td align="right">
-                            <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
-                        </td>
-                    
-                    
-                </tr>                
-                <tr style="padding: 0">
-                        <td style="padding: 0">Descuento <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
-                        <td align="right" style="padding: 0">
-                            <input class="btn btn-foursquarexs" style="padding: 0" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
-                        </td>
-                    
-                </tr>
+                                      echo '<option value="'.$moneda['moneda_descripcion'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
+                                    } 
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="select_forma_pago" class="control-label">Forma de pago</label>
+                            <div class="form-group">
+                                <select id="select_forma_pago" name="select_forma_pago" class="form-control" onchange="mostrar()" required>
+                                    <?php 
+                                    foreach($forma_pago as $forma)
+                                    {
+                                      $selected = ($forma['forma_nombre'] == $this->input->post('forma_pago')) ? ' selected="selected"' : "";
 
-                        
-                <tr style="padding: 0">
-                        <td align="right" style="padding: 0"><b>Sub Total <?php echo $parametro[0]["moneda_descripcion"]; ?> </b></td>
-                        <td align="right" style="padding: 0">                
-                            
-                            <input class="btn btn-foursquarexs"  style="padding: 0" id="venta_subtotal" size="<?php echo $ancho_boton; ?>"  name="venta_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
-                        </td>
+                                      echo '<option value="'.$forma['forma_id'].'" '.$selected.'>'.$forma['forma_nombre'].'</option>';
+                                    } 
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="ingreso_glosa" style="display:none">
+                            <label for="ingreso_laglosa" class="control-label">Glosa</label>
+                            <div class="form-group">
+                                <input type="text" name="ingreso_laglosa" id="ingreso_laglosa" value="<?php echo $this->input->post('ingreso_glosa'); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="ingreso_banco" style="display:none">
+                            <label for="banco_id" class="control-label">Banco</label>
+                            <div class="form-group">
+                                <select id="banco_id" name="banco_id" class="form-control" >
+                                    <?php 
+                                    foreach($all_banco as $banco)
+                                    {
+                                      $selected = ($banco['banco_id'] == $this->input->post('banco_id')) ? ' selected="selected"' : "";
 
-                </tr>
-
-                <tr style="padding: 0">                      
-                        <td style="padding: 0">Descuento <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
-                        <td align="right" style="padding: 0">
-                            <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
-                        </td>
-                </tr>
-
-                <tr style="padding: 0">                      
-                        <td style="padding: 0"><b>Total Final <?php echo $parametro[0]["moneda_descripcion"]; ?> </b></td>
-                        <td align="right" style="padding: 0">
-
-                              <input class="btn btn-foursquarexs" style="font-size: 20; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">                                
-
-                        </td>
-                </tr>
-
-                <tr style="padding: 0">                      
-                        <td style="padding: 0">Efectivo <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
-                        <td align="right" style="padding: 0">
-                            <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
-                        </td>
-                </tr>
-                
-                <tr style="padding: 0">                      
-                    <td style="padding: 0"><b>Cambio <?php echo $parametro[0]["moneda_descripcion"]; ?> </b></td>
-                        <td align="right" style="padding: 0;">
-                            <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
-                        </td>
-                </tr>
-                
-                
-                
-                
-            </table>
-            
-            
-
-          
-            <div class="col-md-12">
-                NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
-            </div>
-
-            <?php if($tipousuario_id == 1) { ?> 
-            
-            <div class="col-md-12">
-                Vendedor:                 
-                <select name="usuario_id" id="usuario_id" class="btn btn-default btn-xs" style="width: 120px;" >
-                    <?php 
-                    foreach($usuarios as $us){ 
-                        
-                        $selected = ($us['usuario_id'] == $usuario_id) ? ' selected="selected"' : "";
-
-                        ?>
-                        
-                    
-                        <option value="<?php echo $us["usuario_id"]; ?>" <?php echo $selected; ?>><?php echo $us["usuario_nombre"]; ?></option>
-                    
-                    <?php
-                        }
-                    ?>
-                </select>
-            </div>
-            
-            <?php } ?> 
-           
-        </div>
-           
-        </div>
-                
-                
-                           
+                                      echo '<option value="'.$banco['banco_id'].'" '.$selected.'>'.$banco['banco_nombre']." (".$banco['banco_numcuenta'].')</option>';
+                                    } 
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- *************** F i n  para reservas *************** -->
+                    </div>
+                </div>
            <!-- ************************************* datos credito ************************************************-->
                 
             <div class="row" id='creditoocultox'  style='display:none;'>
@@ -959,7 +979,7 @@ function cerrar_ventana(){
                 <span class="fa fa-money"></span>   Finalizar Venta  
                 </h4>
             </button>
-            -->
+                -->
             <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarpedido()" style="display: block;">
                 <h4>
                 <span class="fa fa-save"></span>   Finalizar <?php echo $labelboton; ?>
@@ -1555,3 +1575,25 @@ function cerrar_ventana(){
 	</div>
 </div>
 <!----------------- fin modal clasificador ---------------------------------------------->                 
+
+<script>
+    function mostrar(){
+        var forma = document.getElementById('select_forma_pago').value;
+        
+        if(forma != 1){
+            document.getElementById('ingreso_glosa').style.display = 'block';
+            document.getElementById('ingreso_banco').style.display = 'block';
+        }else{
+            document.getElementById('ingreso_glosa').style.display = 'none';
+            document.getElementById('ingreso_banco').style.display = 'none';
+        }
+    }
+    function mostrar_reserva(){
+        var es_check = $('#esreserva').is(':checked');
+        if(es_check){
+            document.getElementById('mostrarreserva').style.display = 'block';
+        }else{
+            document.getElementById('mostrarreserva').style.display = 'none';
+        }
+    }
+</script>

@@ -107,8 +107,10 @@ function tabla_pedidos(filtro)
                 hora_pedido = p[i]["pedido_fecha"];
                 hora_pedido = hora_pedido.substr(11,8);
                 
-                html += "    "+ formato_fecha(fecha_pedido)+" - "+hora_pedido+"<br> ";
-                
+                html += "    "+ formato_fecha(fecha_pedido)+" - "+hora_pedido+"";
+                if(p[i]["ingreso_monto"] >0){
+                    html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Reserva: </b>"+p[i]["ingreso_monto"]+" "+p[i]["ingreso_moneda"];
+                }
                 
                 html += "     ";
                 html += "    </td> ";
@@ -628,7 +630,7 @@ function buscar_pedidos()
     
     var por_usuario = "";
     
-    if (usuario_id>0){        
+    if (usuario_id>0){
         por_usuario = " and p.usuario_id = "+usuario_id+" ";
     }
        

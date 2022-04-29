@@ -335,8 +335,14 @@ border-bottom : 1px solid #aaa;
     </table>    
 </font>
 
-<font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?>
-<br><b>PREVED.: </b><?php echo $pedido[0]['usuario_nombre']; ?></font>
+<font size="1">
+    <b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?>
+    <br><b>PREVED.: </b><?php echo $pedido[0]['usuario_nombre'];
+    if($pedido[0]['ingreso_monto'] > 0){
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>RESERVA: </b>".$pedido[0]['ingreso_monto']." ".$pedido[0]['ingreso_moneda'];
+    }?>
+    
+</font>
 
     <table class="table" style="width: <?php echo $ancho; ?>;">
         <tr>

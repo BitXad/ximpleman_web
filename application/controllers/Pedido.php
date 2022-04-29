@@ -28,6 +28,7 @@ class Pedido extends CI_Controller{
         $this->load->model('Tipo_servicio_model');
         $this->load->model('Preferencia_model');
         $this->load->model('Promocion_model');
+        $this->load->model('Ingreso_model');
         
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -312,6 +313,9 @@ class Pedido extends CI_Controller{
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['all_moneda'] = $this->Moneda_model->getalls_monedasact_asc();
+        $this->load->model('Banco_model');
+        $data['all_banco'] = $this->Banco_model->getall_bancosact_asc();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
@@ -520,8 +524,8 @@ class Pedido extends CI_Controller{
     }
 
     
-function registrarpedido()
-    {  
+    function registrarpedido()
+    {
         if($this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************        
         
@@ -618,7 +622,68 @@ function registrarpedido()
                 $recorrido_hora.",".
                 $recorrido_detalleresp.")";
         $this->Pedido_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
-     
+        
+        $esreserva = $this->input->post('esreserva');
+        if($esreserva){
+            $numrec = $this->Ingreso_model->numero();
+            $numero = $numrec[0]['parametro_numrecing'] + 1;
+            $cliente = $this->Cliente_model->get_cliente($cliente_id);
+
+            $detallepedido = $this->Pedido_model->get_detalle_pedido($pedido_id);
+            $glosa = "RESERVA: ";
+            foreach ($detallepedido as $detalle) {
+                $glosa .= $detalle['detalleped_nombre']."; ";
+            }
+
+            $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
+            $data['all_moneda'] = $all_moneda;
+            $ingreso_monto  = $this->input->post('ingreso_monto');
+            $ingreso_moneda = $this->input->post('ingreso_moneda');
+            $ingreso_tc     = $all_moneda[1]["moneda_tc"];
+            $total_final = 0;
+            $parametro = $this->Parametro_model->get_all_parametro();
+            if($parametro[0]["moneda_id"]==1){ //Si es bolivianos
+                $lamoneda = $all_moneda[0]["moneda_descripcion"];
+                if($ingreso_moneda != "Bs"){
+                    $total_final += $ingreso_monto*$all_moneda[1]["moneda_tc"];
+                }else{
+                    $total_final += $ingreso_monto;
+                }
+            }else{ // Si no se multiplica
+                $lamoneda = $all_moneda[1]["moneda_descripcion"];
+                if($ingreso_moneda != "Bs"){
+                    $total_final += $ingreso_monto;
+                }else{
+                    $total_final += $ingreso_monto/$all_moneda[1]["moneda_tc"];
+                }
+            }
+            $el_banco = 0;
+            if($this->input->post('select_forma_pago') != 1){
+                $el_banco = $this->input->post('banco_id');
+            }
+            $params = array(
+                'usuario_id' => $usuario_id,
+                'ingreso_categoria' => "",
+                'ingreso_numero' => $numero,
+                'ingreso_nombre' => $cliente['cliente_nombre'],
+                'ingreso_monto' => $total_final,
+                'ingreso_moneda' => $lamoneda, //$this->input->post('ingreso_moneda'),
+                'ingreso_concepto' => $glosa, //$this->input->post('ingreso_concepto'),
+                'ingreso_fecha' => $this->input->post('ingreso_fecha'),
+                'ingreso_tc' => $ingreso_tc,
+                'forma_id' => $this->input->post('select_forma_pago'),
+                'ingreso_glosa' => $this->input->post('ingreso_glosa'),
+                'banco_id' => $el_banco,
+            );
+            $ingreso_id = $this->Ingreso_model->add_ingreso($params);
+            $sql = "UPDATE parametros SET parametro_numrecing=parametro_numrecing+1 WHERE parametro_id = '1'"; 
+            $this->db->query($sql);
+
+            $params = array(
+                'ingreso_id' => $ingreso_id,
+            );
+            $this->Pedido_model->update_pedido($pedido_id,$params);
+        }
         //**************** fin contenido ***************
         }
         

@@ -2284,14 +2284,23 @@ function registrarpedido(cliente_id)
             pedido_subtotal+","+pedido_descuento+","+pedido_total+","+pedido_glosa+","+
             pedido_fechaentrega+","+pedido_horaentrega+","+pedido_latitud+","+
             pedido_longitud+","+regusuario_id;
-    
-
+    /* Inicio para reservas*/
+    let esreserva         = $('#esreserva').is(':checked');
+    let ingreso_monto     = document.getElementById('ingreso_monto').value;
+    let ingreso_moneda    = document.getElementById('ingreso_moneda').value;
+    let select_forma_pago = document.getElementById('select_forma_pago').value;
+    let ingreso_glosa     = document.getElementById('ingreso_laglosa').value;
+    let banco_id          = document.getElementById('banco_id').value;
+    /* F i n  para reservas*/
         $.ajax({
             url: controlador,
             type:"POST",
             data:{cad:cad, tipo_trans:tipo_trans, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 pedido_total:pedido_total, credito_interes:credito_interes, pedido_id:pedido_id,
-                facturado:facturado,pedido_fecha:pedido_fecha, razon:razon, nit:nit, pedido_descuento:pedido_descuento, pedido_hora:pedido_hora,cliente_id:cliente_id},
+                facturado:facturado,pedido_fecha:pedido_fecha, razon:razon, nit:nit, pedido_descuento:pedido_descuento,
+                pedido_hora:pedido_hora,cliente_id:cliente_id, esreserva:esreserva, ingreso_monto:ingreso_monto,
+                ingreso_moneda:ingreso_moneda, select_forma_pago:select_forma_pago, ingreso_glosa:ingreso_glosa,
+                banco_id:banco_id},
             success:function(respuesta){ 
                 eliminardetalleventa();
                 
