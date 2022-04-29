@@ -45,15 +45,18 @@ class Ingreso_model extends CI_Model
      */
     function get_all_ingresos()
     {
-        $ingresos = $this->db->query("
-            SELECT
-                i.*, u.*, f.ingreso_id as 'ingres', f.factura_id, fp.`forma_nombre`, b.banco_nombre, b.banco_numcuenta
+        $ingresos = $this->db->query(
+            "SELECT
+                m.moneda_descripcion ,i.*, u.*, f.ingreso_id as 'ingres', f.factura_id, fp.`forma_nombre`, b.banco_nombre, b.banco_numcuenta
             FROM
-                ingresos i
+                (select i2.ingreso_id,i2.ingreso_numero,i2.usuario_id,i2.ingreso_categoria,i2.ingreso_nombre,i2.ingreso_monto
+                        ,if(STRCMP(i2.ingreso_moneda,'Bs') || STRCMP(i2.ingreso_moneda,'BOLIVIANO'),1,i2.ingreso_moneda) as ingreso_moneda,i2.ingreso_concepto,i2.ingreso_fecha,i2.ingreso_tc,i2.forma_id,i2.banco_id
+                from ingresos i2) as i
             LEFT JOIN usuario u on i.usuario_id=u.usuario_id
             LEFT JOIN  factura f on i.ingreso_id=f.ingreso_id
             LEFT JOIN forma_pago fp on i.`forma_id` = fp.`forma_id`
             LEFT JOIN banco b on i.`banco_id` = b.`banco_id`
+            left join moneda m on m.moneda_codigoclasificador = i.ingreso_moneda
             WHERE
                 1=1
             ORDER BY i.ingreso_fecha DESC
@@ -88,23 +91,25 @@ class Ingreso_model extends CI_Model
         return $nom;
     }
     
-     function fechaingreso($condicion,$categoria)
+    function fechaingreso($condicion,$categoria)
     {
         $ingreso = $this->db->query(
             "SELECT
-                i.*, u.*, f.ingreso_id as 'ingres', f.factura_id, fp.`forma_nombre`, b.banco_nombre
+                m.moneda_descripcion, i.*, u.*, f.ingreso_id as 'ingres', f.factura_id, fp.`forma_nombre`, b.banco_nombre
             FROM
-                ingresos i
+                (select i2.ingreso_id,i2.ingreso_numero,i2.usuario_id,i2.ingreso_categoria,i2.ingreso_nombre,i2.ingreso_monto
+                        ,if(STRCMP(i2.ingreso_moneda,'Bs') || STRCMP(i2.ingreso_moneda,'BOLIVIANO'),1,i2.ingreso_moneda) as ingreso_moneda,i2.ingreso_concepto,i2.ingreso_fecha,i2.ingreso_tc,i2.forma_id,i2.banco_id
+                from ingresos i2) as i
             LEFT JOIN usuario u on i.usuario_id=u.usuario_id
             LEFT JOIN  factura f on i.ingreso_id=f.ingreso_id
             LEFT JOIN forma_pago fp on i.`forma_id` = fp.`forma_id`
             LEFT JOIN banco b on i.`banco_id` = b.`banco_id`
-            WHERE
+            left join moneda m on m.moneda_codigoclasificador = i.ingreso_moneda
+            WHERE 
                 1=1
-                ".$condicion." 
-                ".$categoria." 
-            ORDER BY i.ingreso_fecha DESC 
-            "
+                $condicion
+                $categoria
+            ORDER BY i.ingreso_fecha DESC"
         )->result_array();
         return $ingreso;
     }

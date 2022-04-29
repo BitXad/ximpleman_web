@@ -101,6 +101,7 @@ function facturar(mensualidad){
                             <label for="ingreso_monto" class="control-label">La suma de</label>
                             <div class="form-group">
                                 <input type="number" step="any" min="0" name="ingreso_monto" value="<?php echo $this->input->post('ingreso_monto'); ?>" class="form-control" id="ingreso_monto" required/>
+                                <small id="mjs_ingreso_monto" style="color: red; display:none;">El monto debe ser mayor a 0</small>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -111,9 +112,9 @@ function facturar(mensualidad){
                                     <?php 
                                     foreach($all_moneda as $moneda)
                                     {
-                                      $selected = ($moneda['moneda_descripcion'] == $this->input->post('ingreso_moneda')) ? ' selected="selected"' : "";
+                                      $selected = ($moneda['moneda_codigoclasificador'] == $parametro[0]['moneda_id']) ? ' selected="selected"' : "";
 
-                                      echo '<option value="'.$moneda['moneda_descripcion'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
+                                      echo '<option value="'.$moneda['moneda_codigoclasificador'].'" '.$selected.'>'.$moneda['moneda_descripcion'].'</option>';
                                     } 
                                     ?>
                                 </select>
@@ -207,4 +208,13 @@ function facturar(mensualidad){
             document.getElementById('ingreso_banco').style.display = 'none';
         }
     }
+    
+    $(document).ready(() => {
+        $("#ingreso_monto").on("keyup", () => {
+            if ($("#ingreso_monto").val() <= 0 && $("#ingreso_monto").val() != '')  
+                $("#mjs_ingreso_monto").css("display", "block");
+            else 
+                $("#mjs_ingreso_monto").css("display", "none");        
+        });
+    });
 </script>
