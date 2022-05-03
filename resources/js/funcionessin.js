@@ -51,6 +51,8 @@ function almacenar_cufd(datos){
     var controlador = base_url+'dosificacion/almacenarcufd';   
     
     var codigo = datos.codigo;
+    let codigoControl = datos.codigoControl;
+    let direccion = datos.direccion;
     var fechavigencia = datos.fechaVigencia;
     var transaccion = datos.transaccion;    
 
@@ -59,7 +61,11 @@ function almacenar_cufd(datos){
     
             $.ajax({url:controlador,
                     type:"POST",
-                    data:{codigo:codigo, fechavigencia:fechavigencia, transaccion:transaccion},
+                    data:{codigo:codigo, 
+                        codigoControl:codigoControl, 
+                        direccion:direccion,
+                        fechavigencia:fechavigencia, 
+                        transaccion:transaccion},
                     success:function(respuesta){
 
                         alert("C.U.F.D generado y almacenado correctamente...!");

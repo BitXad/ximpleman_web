@@ -579,7 +579,7 @@ class Dosificacion extends CI_Controller{
             if ($this->input->is_ajax_request()) {
 
                 $cufd_codigo = "'".$this->input->post('codigo')."'";
-                $cufd_codigocontrol = "'".$this->input->post('codigocontrol')."'";
+                $cufd_codigocontrol = "'".$this->input->post('codigoControl')."'";
                 $cufd_direccion = "'".$this->input->post('direccion')."'";
                 $cufd_fechavigencia = "'".$this->input->post('fechavigencia')."'";
                 $cufd_transaccion = "'".$this->input->post('transaccion')."'";
