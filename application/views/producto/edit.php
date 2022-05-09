@@ -160,6 +160,18 @@
                             <span class="text-danger"><?php echo form_error('producto_codigo');?></span>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <label for="producto_" class="control-label"><span class="text-danger">*</span>Codigo Producto SIN</label>
+                        <div class="form-group">
+                            <select name="cod_product_sin" id="cod_product_sin" class="form-control selectpicker" title="Actividad - Codigo NIS" data-hide-disabled="true" data-live-search="true">
+                                <?php foreach ($nis_codigos as $cod_nis){
+                                    $selected =  ($cod_nis['prodserv_codigoproducto'] == $producto['producto_codigosin']) ? "selected":"";
+                                    ?>
+                                    <option value="<?= $cod_nis['prodserv_codigoproducto'] ?>" <?= $selected ?>><?= "{$cod_nis['prodserv_codigoactividad']} - {$cod_nis['prodserv_codigoproducto']}" ?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <label for="categoria_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
                         <div class="form-group" style="display: flex">
@@ -169,7 +181,6 @@
                                     foreach($all_categoria_producto as $categoria_producto)
                                     {
                                         $selected = ($categoria_producto['categoria_id'] == $producto['categoria_id']) ? ' selected="selected"' : "";
-
                                         echo '<option value="'.$categoria_producto['categoria_id'].'" '.$selected.'>'.$categoria_producto['categoria_nombre'].'</option>';
                                     } 
                                     ?>
@@ -233,7 +244,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="producto_costo" class="control-label">Precio de Compra</label>
                         <div class="form-group">
                             <input type="number" step="any" min="0" name="producto_costo" value="<?php echo ($this->input->post('producto_costo') ? $this->input->post('producto_costo') : $producto['producto_costo']); ?>" class="form-control" id="producto_costo" />
@@ -243,19 +254,19 @@
                         <label for="porcentaje" class="control-label">Porcentaje</label>
                         <div class="form-group" style="display: flex">
                             <input type="number" step="any" min="0" name="porcentaje" value="<?php
-                                                                                                   if($this->input->post('producto_costo')){
-                                                                                                       echo $this->input->post('producto_costo');
-                                                                                                   }else{
-                                                                                                       if($producto['producto_costo']>0){
-                                                                                                           echo (($producto['producto_precio']/$producto['producto_costo'])-1);
-                                                                                                       }else{ $producto['producto_costo']; }
-                                                                                                   }
+                                if($this->input->post('producto_costo')){
+                                    echo $this->input->post('producto_costo');
+                                }else{
+                                    if($producto['producto_costo']>0){
+                                        echo (($producto['producto_precio']/$producto['producto_costo'])-1);
+                                    }else{ $producto['producto_costo']; }
+                                }
                                                                                             ?>" class="form-control" id="porcentaje" />
                             <a href="#" class="btn btn-warning" title="Calcular Porcentaje" onclick="calcularporc()">
                                 <span class="fa fa-snowflake-o"></span> </a>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="producto_precio" class="control-label">Precio de Venta</label>
                         <div class="form-group">
                             <input type="number" step="any" min="0" name="producto_precio" value="<?php echo ($this->input->post('producto_precio') ? $this->input->post('producto_precio') : $producto['producto_precio']); ?>" class="form-control" id="producto_precio" onchange="verificar_precio();" />
@@ -267,32 +278,37 @@
                             <input type="number" step="any" min="0" max="100" name="producto_comision" value="<?php echo ($this->input->post('producto_comision') ? $this->input->post('producto_comision') : $producto['producto_comision']); ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
                         </div>
                     </div>
-
-                    <div class="col-md-3">
-                        <label for="producto_colnorte" class="control-label">Colindancia norte</label>
-                        <div class="form-group">
-                            <input type="text" name="producto_colnorte" class="form-control" id="producto_colnorte" value="<?= $producto['producto_colnorte'] ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    
+                    <div class="col-md-12">
+                        <a href="#inputs" class="btn btn-facebook btn-sm inf" title="Agregar colindancias Norte, Sur, Este y Oeste"><i class="fa fa-map-o" aria-hidden="true"></i> Agregar Colindancias</a>
+                        <div id="inputs" class="row" style="display:none;">
+                            <div class="col-md-3">
+                                <label for="producto_colnorte" class="control-label">Colindancia norte</label>
+                                <div class="form-group">
+                                    <input type="text" name="producto_colnorte" class="form-control" id="producto_colnorte" value="<?= $producto['producto_colnorte'] ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="producto_coleste" class="control-label">Colindancia este</label>
+                                <div class="form-group">
+                                    <input type="text" name="producto_coleste" class="form-control" id="producto_coleste" value="<?= $producto['producto_coleste'] ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="producto_coloeste" class="control-label">Colindancia oeste</label>
+                                <div class="form-group">
+                                    <input type="text" name="producto_coloeste" class="form-control" id="producto_coloeste" value="<?= $producto['producto_coloeste'] ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="producto_colsur" class="control-label">Colindancia sur</label>
+                                <div class="form-group">
+                                    <input type="text" name="producto_colsur" class="form-control" id="producto_colsur" value="<?= $producto['producto_colsur'] ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="producto_coleste" class="control-label">Colindancia este</label>
-                        <div class="form-group">
-                            <input type="text" name="producto_coleste" class="form-control" id="producto_coleste" value="<?= $producto['producto_coleste'] ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="producto_coloeste" class="control-label">Colindancia oeste</label>
-                        <div class="form-group">
-                            <input type="text" name="producto_coloeste" class="form-control" id="producto_coloeste" value="<?= $producto['producto_coloeste'] ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="producto_colsur" class="control-label">Colindancia sur</label>
-                        <div class="form-group">
-                            <input type="text" name="producto_colsur" class="form-control" id="producto_colsur" value="<?= $producto['producto_colsur'] ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                        </div>
-                    </div>
-
+                    
                     <div class="col-md-12">
                         <a href="#info1" class="btn btn-facebook btn-sm inf" title="Los factores se utilizan para describir productos con diferentes presentaciones."><fa class="fa fa-sitemap"></fa> Configurar Factores</a>
                         <div id="info1" class="oculto">
