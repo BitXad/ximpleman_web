@@ -350,7 +350,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="moneda_id" class="control-label"><span class="text-danger">*</span>MONEDA</label>
+                        <label for="moneda_id" class="control-label" title="Moneda pricipal del Sistema"><span class="text-danger">*</span>MONEDA</label>
                         <div class="form-group">
                             <select name="moneda_id" class="form-control" required id="moneda_id">
                                 <!--<option value="0">- CATEGORIA -</option>-->
@@ -365,7 +365,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="parametro_mostrarmoneda" class="control-label" title="Mostrar/no mostrar la otra moneda"><span class="text-danger">*</span>MOSTRAR MONEDA</label>
+                        <label for="parametro_mostrarmoneda" class="control-label" title="En nota de entrega, para mostrar/no mostrar la otra moneda"><span class="text-danger">*</span>MOSTRAR MONEDA</label>
                         <div class="form-group">
                             <select name="parametro_mostrarmoneda" class="form-control" required id="parametro_mostrarmoneda">
                                 <option value="1" <?php if($parametro['parametro_mostrarmoneda']=='1') echo 'selected'; ?> >MOSTRAR</option>
@@ -380,6 +380,21 @@
                                 <option value="1" <?php if($parametro['parametro_factura']=='1') echo 'selected'; ?> >TODO FACTURADO</option>
                                 <option value="2" <?php if($parametro['parametro_factura']=='2') echo 'selected'; ?> >FACTURA OPCIONAL</option>
                                 <option value="3" <?php if($parametro['parametro_factura']=='3') echo 'selected'; ?> >SIN FACTURA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="parametro_codcatsubcat" class="control-label" title="En nota de Entrega, para mostrar en el detalle del producto"><span class="text-danger">*</span>CODIGO/CATEGORIA/SUB-CAT.</label>
+                        <div class="form-group">
+                            <select name="parametro_codcatsubcat" class="form-control" required id="parametro_codcatsubcat">
+                                <option value="0" <?php if($parametro['parametro_codcatsubcat']=='0') echo 'selected'; ?> >NINGUNO</option>
+                                <option value="1" <?php if($parametro['parametro_codcatsubcat']=='1') echo 'selected'; ?> >CODIGO</option>
+                                <option value="2" <?php if($parametro['parametro_codcatsubcat']=='2') echo 'selected'; ?> >CATEGORIA, SUB CATEGORIA, CODIGO</option>
+                                <option value="3" <?php if($parametro['parametro_codcatsubcat']=='3') echo 'selected'; ?> >CATEGORIA, SUB CATEGORIA</option>
+                                <option value="4" <?php if($parametro['parametro_codcatsubcat']=='4') echo 'selected'; ?> >CATEGORIA, CODIGO</option>
+                                <option value="5" <?php if($parametro['parametro_codcatsubcat']=='5') echo 'selected'; ?> >CATEGORIA</option>
+                                <option value="6" <?php if($parametro['parametro_codcatsubcat']=='6') echo 'selected'; ?> >SUB CATEGORIA, CODIGO</option>
+                                <option value="7" <?php if($parametro['parametro_codcatsubcat']=='7') echo 'selected'; ?> >SUB CATEGORIA</option>
                             </select>
                         </div>
                     </div>

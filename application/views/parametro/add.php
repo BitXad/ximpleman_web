@@ -342,7 +342,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="moneda_id" class="control-label"><span class="text-danger">*</span>MONEDA</label>
+                        <label for="moneda_id" class="control-label" title="Moneda pricipal del Sistema"><span class="text-danger">*</span>MONEDA</label>
                         <div class="form-group">
                             <select name="moneda_id" class="form-control" required id="moneda_id">
                                 <!--<option value="0">- CATEGORIA -</option>-->
@@ -356,7 +356,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="parametro_mostrarmoneda" class="control-label" title="Mostrar/no mostrar la otra moneda"><span class="text-danger">*</span>MOSTRAR MONEDA</label>
+                        <label for="parametro_mostrarmoneda" class="control-label" title="En nota de entrega, para mostrar/no mostrar la otra moneda"><span class="text-danger">*</span>MOSTRAR MONEDA</label>
                         <div class="form-group">
                             <select name="parametro_mostrarmoneda" class="form-control" required id="parametro_mostrarmoneda">
                                 <option value="1">MOSTRAR</option>
@@ -371,6 +371,21 @@
                                 <option value="1">TODO FACTURADO</option>
                                 <option value="2">FACTURA OPCIONAL</option>
                                 <option value="3">SIN FACTURA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="parametro_codcatsubcat" class="control-label" title="En nota de Entrega, para mostrar en el detalle del producto"><span class="text-danger">*</span>CODIGO/CATEGORIA/SUB-CAT.</label>
+                        <div class="form-group">
+                            <select name="parametro_codcatsubcat" class="form-control" required id="parametro_codcatsubcat">
+                                <option value="0">NINGUNO</option>
+                                <option value="1">CODIGO</option>
+                                <option value="2">CATEGORIA, SUB CATEGORIA, CODIGO</option>
+                                <option value="3">CATEGORIA, SUB CATEGORIA</option>
+                                <option value="4">CATEGORIA, CODIGO</option>
+                                <option value="5">CATEGORIA</option>
+                                <option value="6">SUB CATEGORIA, CODIGO</option>
+                                <option value="7">SUB CATEGORIA</option>
                             </select>
                         </div>
                     </div>

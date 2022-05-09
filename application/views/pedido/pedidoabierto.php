@@ -79,6 +79,7 @@ function mostrar_buscadores(){
         
 function cerrar_ventana(){
    //window.opener.location.reload();
+   window.open('', '_self', '');
     window.close();
 }
 </script>   
@@ -449,64 +450,41 @@ function cerrar_ventana(){
         </div>
 <!-------------------- CATEGORIAS------------------------------------->
 <div class="container" id="categoria" style="padding:0; display: none;">
-    
-    <span class="badge btn-danger" style="width: 170px;">
-    
-    
-    
-        <select class="bange btn-danger" style="border-width: 0; width:100px;"  onchange="tablaresultados(2)" id="categoria_prod">
-                <option value="0" >Todas las Categorias</option>
-        <?php 
-            foreach($categoria_producto as $categ){ 
-                $selected = ($categ['categoria_id'] == $parametro[0]['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
-                ?>
-                
-                <option value="<?php echo $categ['categoria_id']; ?>" <?php echo $selected; ?>><?php echo $categ['categoria_nombre']; ?></option>
-        <?php
-            }
-        ?>
-    </select>
-        <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span>
+    <span class="badge btn-danger">
+        <select lect class="bange btn-danger" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod">
+            <option value="0" >- CATEGORIAS -</option>
+            <?php 
+                foreach($categoria_producto as $categ){ 
+                    $selected = ($categ['categoria_id'] == $parametro[0]['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+                    ?>
+                    <option value="<?php echo $categ['categoria_id']; ?>" <?php echo $selected; ?>><?php echo $categ['categoria_nombre']; ?></option>
+            <?php
+                }
+            ?>
+        </select>
     </span>
-        <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
-       <?php 
-            if ($parametro[0]["parametro_agruparitems"] == 1 )
-                    { $agrupar = "checked='true'";}
-              else {$agrupar = " ";}
-        ?>
-        
-    <!--<span class="badge btn-primary">-->
-        
-        
-        
-        <button class="btn btn-primary btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>
-        
-        
-    <!--</span>-->
-        <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
-
-                <!--<span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span></span>-->
-                <center>
-                <span class="badge btn-default">
-
-                    <!--------------------- inicio loader ------------------------->
-                    <div class="row" id='oculto'  style='display:none;'>
-                            <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
-                    </div> 
-                    
-<!--                    <div class="row" id='loader'  style='display:none;'>
-                        <center>
-                            <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
-                        </center>
-                    </div> -->
-                    <!--------------------- fin inicio loader ------------------------->
-                    
-                </span>
-                </center>
-
-                
-                
+    <span class="badge btn-danger">
+        <select class="bange btn-danger" style="border-width: 0; width:120px;"  onchange="tablaresultados(3)" id="subcategoria_prod">
+            <option value="0" >- SUB CATEGORIAS -</option>
+        </select>
+    </span>
+    <span class="badge btn-facebook">
+        <input style="border-width: 0; color: black;" id="encontrados" type="text"  size="3" value="0" readonly="true">
+    </span>
+    <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
+    <?php 
+    if ($parametro[0]["parametro_agruparitems"] == 1 ){
+        $agrupar = "checked='true'";
+    }else {$agrupar = " ";}
+    ?>
+    <button class="btn btn-primary btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>
+    <span class="badge btn-default text-center">
+        <!--------------------- inicio loader ------------------------->
+        <div class="row" id='oculto'  style='display:none;'>
+                <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
+        </div>
+        <!--------------------- fin inicio loader ------------------------->
+    </span>
 </div>
 <!-------------------- FIN CATEGORIAS--------------------------------->
         
@@ -847,7 +825,11 @@ function cerrar_ventana(){
                             </select>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="checkbox" name="esreserva" id="esreserva" onclick="mostrar_reserva()"> Reserva</label>
                         </div>
-                        <?php } ?>
+                        <?php }else{ ?>
+                        <div class="col-md-12">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="checkbox" name="esreserva" id="esreserva" onclick="mostrar_reserva()"> Reserva</label>
+                        </div>
+                        <?php }?>
                         <!-- *************** Inicio para reservas *************** -->
                         <div class="col-md-12" id="mostrarreserva" style="background-color: #c9d2d6; display: none">
                             <div class="col-md-6">

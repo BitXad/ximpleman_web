@@ -235,44 +235,38 @@ $(document).ready(function(){
                        <?php } ?>
                         <!---------------------------------MODAL DE PAGAR------------------------->
 
-  <div class="modal fade" id="pagar<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="pagar<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
-          <div class="modal-dialog" role="document">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                     <font face="Arial" size="3"><b>COBRAR CUOTA Nº: <?php echo $c['cuota_numcuota']; ?></b></font><br>
-              </div>
-              <div class="modal-body" align="center">
-                <form action="<?php echo base_url('cuotum/cobrar/'.$c['cuota_id']); ?>"  method="POST" class="form" name="finpagar<?php echo $c['cuota_id']; ?>" id="finpagar<?php echo $c['cuota_id']; ?>">
+                    <font face="Arial" size="3"><b>COBRAR CUOTA Nº: <?php echo $c['cuota_numcuota']; ?></b></font><br>
+                </div>
+                <div class="modal-body" align="center">
+                    <form action="<?php echo base_url('cuotum/cobrar/'.$c['cuota_id']); ?>"  method="POST" class="form" name="finpagar<?php echo $c['cuota_id']; ?>" id="finpagar<?php echo $c['cuota_id']; ?>">
+                        <font face="Arial" size="5">
+                            <b> <span class="" >Monto <?= $moneda['moneda_descripcion'] ?>: 
+                                <?php echo number_format($c['cuota_total'],2,".",","); ?></span>
+                            </b>
+                        </font><br>
+                        <input type="checkbox" name="factura" id="factura" onclick="facturar(<?php echo $c['cuota_id']; ?>)"> Emitir Factura
 
-                   
-                <font face="Arial" size="5">
-                    
-                    <b> <span class="" >Monto <?= $moneda['moneda_descripcion'] ?>: 
-                    <?php echo number_format($c['cuota_total'],2,".",","); ?></span>
-                    </b>
-                </font><br>
-                
-              <input type="checkbox" name="factura" id="factura" onclick="facturar(<?php echo $c['cuota_id']; ?>)"> Emitir Factura
-               
-            </div>
-          <div class="col-md-12">
-            <input type="hidden" name="cuota_id" value="<?php echo $c['cuota_id']; ?>" class="form-control" id="cuota_id" />
-            <input type="hidden" name="estado_id" value="9" class="form-control" id="estado_id" />
+                </div>
+                <div class="col-md-12">
+                    <input type="hidden" name="cuota_id" value="<?php echo $c['cuota_id']; ?>" class="form-control" id="cuota_id" />
+                    <input type="hidden" name="estado_id" value="9" class="form-control" id="estado_id" />
                     <div class="col-md-3">
                         <label for="cuota_cancelado" class="control-label">Cobrar <?= $moneda['moneda_descripcion'] ?></label>
                         <div class="form-group">
-                         
                             <input type="number" step="any" name="cuota_cancelado" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" max="<?php echo $c['cuota_total']; ?>" />
                             <input type="hidden"  name="cuota_total" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_total<?php echo $c['cuota_id']; ?>" />
                             <input type="hidden"  name="credito_id" value="<?php echo $c['credito_id']; ?>" class="form-control" id="credito_id" />
                             <input type="hidden"  name="ventita" value="<?php echo $c['venta_id']; ?>" class="form-control" id="ventita" />
                         </div>
                     </div>
-                    
                     <div class="col-md-3">
                         <label for="cuota_saldo" class="control-label">Saldo <?= $moneda['moneda_descripcion'] ?></label>
                         <div class="form-group">
@@ -281,10 +275,10 @@ $(document).ready(function(){
                             <input type="hidden"  name="credito_tipointeres" value="<?php echo $c['credito_tipointeres']; ?>" class="form-control" id="credito_tipointeres" />
                             <input type="text" name="cuota_capital" value="0" class="form-control" id="cuota_saldo<?php echo $c['cuota_id']; ?>" style="background-color: #C5C5C5" readonly/>
                             <input type="hidden" name="cuota_numcuota" value="<?php echo $c['cuota_numcuota']; ?>" class="form-control" id="cuota_numcuota" />
-                             <input type="hidden" name="cuota_fechalimite" value="<?php echo $c['cuota_fechalimite']; ?>" class="form-control" id="cuota_fechalimite" />
-                             <input type="hidden" name="cuota_fecha" value="<?php echo date('Y-m-d'); ?>" class="form-control" id="cuota_fecha" />
-                             <input type="hidden" name="cuota_hora" value="<?php echo date('H:i:s'); ?>" class="form-control" id="cuota_hora" />
-                             <input type="hidden" name="cuota_saldo" value="<?php echo $c['cuota_saldo']; ?>" class="form-control" id="cuota_saldo"/>
+                            <input type="hidden" name="cuota_fechalimite" value="<?php echo $c['cuota_fechalimite']; ?>" class="form-control" id="cuota_fechalimite" />
+                            <input type="hidden" name="cuota_fecha" value="<?php echo date('Y-m-d'); ?>" class="form-control" id="cuota_fecha" />
+                            <input type="hidden" name="cuota_hora" value="<?php echo date('H:i:s'); ?>" class="form-control" id="cuota_hora" />
+                            <input type="hidden" name="cuota_saldo" value="<?php echo $c['cuota_saldo']; ?>" class="form-control" id="cuota_saldo"/>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -293,36 +287,35 @@ $(document).ready(function(){
                             <select id="select_forma_pago<?= $c['cuota_id'] ?>" name="forma_pago" class="form-control" onchange="mostrar('select_forma_pago<?= $c['cuota_id'] ?>', 'cuota_forma_glosa<?= $c['cuota_id'] ?>')">
                                 <?php foreach($all_forma_pago as $forma){
                                   $selected = ($forma['forma_nombre'] == $this->input->post('forma_pago')) ? ' selected="selected"' : "";
-
                                   echo '<option value="'.$forma['forma_id'].'" '.$selected.'>'.$forma['forma_nombre'].'</option>';
                                 }?>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-12" id="cuota_forma_glosa<?= $c['cuota_id'] ?>" style="display:none">
-                      <div class="row">
-                        <div class="col-md-7">
-                          <label for="cuota_forma_glosa" class="control-label">Glosa Forma de pago</label>
-                          <div class="form-group">
-                              <input type="text" name="cuota_forma_glosa" value="<?php echo $this->input->post('cuota_forma_glosa'); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
-                          </div>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <label for="cuota_forma_glosa" class="control-label">Glosa Forma de pago</label>
+                                <div class="form-group">
+                                    <input type="text" name="cuota_forma_glosa" value="<?php echo $this->input->post('cuota_forma_glosa'); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="banco">Banco</label>
+                                <div class="form-group">
+                                    <select name="banco" id="banco" class="form-control">
+                                      <?php foreach($bancos as $banco){
+                                          extract($banco);
+                                          $selected = ($banco_id == $this->input->post('banco_id')) ? "selected='selected'" : "";
+                                          echo "<option value='$banco_id' $selected>$banco_nombre ($banco_numcuenta)</option>";
+                                        }?>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-5">
-                          <label for="banco">Banco</label>
-                          <div class="form-group">
-                            <select name="banco" id="banco" class="form-control">
-                              <?php foreach($bancos as $banco){
-                                  extract($banco);
-                                  $selected = ($banco_id == $this->input->post('banco_id')) ? "selected='selected'" : "";
-                                  echo "<option value='$banco_id' $selected>$banco_nombre ($banco_numcuenta)</option>";
-                                }?>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                     <hr class="col-md-12">
-          <div class="col-md-6">
+                    <div class="col-md-6">
                         <label for="cuota_numercibo" class="control-label">Recibo Num.</label>
                         <div class="form-group">
                             <input type="text" name="cuota_numercibo" value="" class="form-control" id="cuota_numercibo" />
@@ -334,44 +327,38 @@ $(document).ready(function(){
                             <input type="text" name="cuota_glosa" value="" class="form-control" id="cuota_glosa" />
                         </div>
                     </div>
-                    
                     <div id="clinit<?php echo $c['cuota_id']; ?>" style="display: none">
-                      <div class="col-md-6">
-                        <label for="cuota_nit" class="control-label">Nit</label>
-                        <div class="form-group">
-                       <input type="text" name="cuota_nit" id="cuota_nit<?php echo $c['cuota_id']; ?>" value="<?php echo $credito[0]['cliente_nit']; ?>" class="form-control"  />
-                     </div></div>
-                     <div class="col-md-6">
-                      <label for="cuota_razon" class="control-label">Razon Social</label>
-                        <div class="form-group">
-                          <input type="text"  name="cuota_razon" id="cuota_razon<?php echo $c['cuota_id']; ?>" value="<?php echo $credito[0]['cliente_razon']; ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  />
+                        <div class="col-md-6">
+                            <label for="cuota_nit" class="control-label">Nit</label>
+                            <div class="form-group">
+                                <input type="text" name="cuota_nit" id="cuota_nit<?php echo $c['cuota_id']; ?>" value="<?php echo $credito[0]['cliente_nit']; ?>" class="form-control"  />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cuota_razon" class="control-label">Razon Social</label>
+                            <div class="form-group">
+                                <input type="text"  name="cuota_razon" id="cuota_razon<?php echo $c['cuota_id']; ?>" value="<?php echo $credito[0]['cliente_razon']; ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  />
+                            </div>
                         </div>
                     </div>
-                    </div>
-            
-                    <div class="col-md-12" id="detallec<?php echo $c['cuota_id']; ?>">
-                    
-                    </div>
+                    <div class="col-md-12" id="detallec<?php echo $c['cuota_id']; ?>"></div>
                 </div>
-              <div class="modal-footer" align="right">
-
-            <button class="btn btn-lg btn-success"  type="button"  onclick="enviar_formulario(<?php echo $c['cuota_id']; ?>)">
-                <h4>
-                <span class="fa fa-money"></span>   Cobrar  
-                </h4>
-            </button> 
-            </form>
-            <button class="btn btn-lg btn-danger" data-dismiss="modal">
-                <h4>
-                <span class="fa fa-close"></span>   Cancelar  
-                </h4>
-            </button>
-                         
-        </div>
-
+                <div class="modal-footer" align="right">
+                    <button class="btn btn-lg btn-success"  type="button"  onclick="enviar_formulario(<?php echo $c['cuota_id']; ?>)">
+                        <h4>
+                            <span class="fa fa-money"></span>   Cobrar  
+                        </h4>
+                    </button> 
+                    </form>
+                    <button class="btn btn-lg btn-danger" data-dismiss="modal">
+                        <h4>
+                        <span class="fa fa-close"></span>   Cancelar  
+                        </h4>
+                    </button>
+                </div>
             </div>
-          </div>
         </div>
+    </div>
         <!---------------------------------FIN MODAL DE PAGAR------------------------->
                     </tr>
                    <?php  $i++;  } ?>

@@ -2451,7 +2451,7 @@ function tablaresultados(opcion)
             }
         
         });
-    }    
+    }
  
 } 
 
@@ -2730,8 +2730,7 @@ function registrarventa(cliente_id)
         var modalidad = document.getElementById('modalidad').value;
         var dia_pago = document.getElementById('dia_pago').value;
         var fecha_inicio = document.getElementById('fecha_inicio').value;
-        
-        
+        let metodo_frances  = $('#metodofrances').is(':checked');
         $.ajax({url: controlador,
             type:"POST",
             data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
@@ -2739,7 +2738,7 @@ function registrarventa(cliente_id)
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
                 venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
-                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
+                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances},
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
@@ -2779,8 +2778,13 @@ function finalizarventa(){
     //var base_url = document.getElementById('base_url').value;
     //var controlador = base_url+'/verificardetalle/'+monto;
     
-    calculardesc();
-        
+    calculardesc();    
+    var tipo_trans   = document.getElementById('tipo_transaccion').value;
+    let met_frances  = $('#metodofrances').is(':checked');
+    let interes_porc = document.getElementById('credito_interes').value;
+    if(tipo_trans == 2 && met_frances == true && (interes_porc <= 0 || interes_porc == "")){
+        alert("El interes debe ser mayor a 0");
+    }else{
         if (monto>0)
         {
            
@@ -2803,6 +2807,7 @@ function finalizarventa(){
                 registrarcliente();
             } 
 
+        }
         }
     
     

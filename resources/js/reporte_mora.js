@@ -34,7 +34,7 @@ function tabla_moras() {
                             <td>${i}</td>
                             <td>${mora['cliente_nombre']}<sub>[${mora['credito_id']}]</sub></td>
                             <td class="text-center">${mora['cliente_celular']}</td>
-                            <td class="text-center">${mora['razon']} (${mora['venta_id']})</td>
+                            <td class="text-center">${mora['razon']} (${mora['venta_id']}) <span id="det${mora['venta_id']}"></span></td>
                             <td class="text-center">${mora['deudas_mora']}</td>
                             <td class="text-center">${parseFloat(mora['monto_deuda']).toFixed(2)}</td>
                             <td class="text-center">${mora['dias_mora']}</td>
@@ -64,6 +64,9 @@ function tabla_moras() {
                         <th><b>${parseFloat(total_deuda).toFixed(2)}</b></th>
                     </tr>`
             $("#tablaMora").html(html);
+            for(let mora of moras){
+                mostrar_detalle(`${mora['venta_id']}`);
+            }
         },
         error: () => {
             alert("Error al obtener las moras")
@@ -91,6 +94,57 @@ function buscarSubCategoria(){
             },
             error: ()=>{
                 alert("Error: Algo salio mal al consultar las subcategorias del producto")
+            }
+        });
+    }
+}
+
+function mostrar_detalle(venta_id){
+    base_url = document.getElementById('base_url').value;
+    let controlador = `${base_url}reportes/get_detalleventa`;
+    let parametro_codcatsubcat = document.getElementById('parametro_codcatsubcat').value;
+    if(venta_id != 0){
+        $.ajax({
+            url: controlador,
+            type: 'POST',
+            data: {
+                venta_id:venta_id,
+            },
+            success: (resultado)=>{
+                let los_detalles = JSON.parse(resultado);
+                let html = ``;
+                let codigo       =  "";
+                let categoria    = "";
+                let subcategoria = "";
+                //echo $categoria.$subcategoria.$codigo." ".$d['producto_nombre'];
+                
+                for(let detalle of los_detalles){
+                    if(parametro_codcatsubcat == 1){
+                        codigo = `(${detalle.detalleven_codigo})`;
+                    }else if(parametro_codcatsubcat == 2){
+                        categoria = `${detalle.categoria_nombre}, `;
+                        subcategoria = `${detalle.subcategoria_nombre}, `;
+                        codigo  =  `(${detalle.detalleven_codigo})`;
+                    }else if(parametro_codcatsubcat == 3){
+                        categoria = `${detalle.categoria_nombre}, `;
+                        subcategoria = `${detalle.subcategoria_nombre}`;
+                    }else if(parametro_codcatsubcat == 4){
+                        categoria = `${detalle.categoria_nombre}, `;
+                        codigo  =  `(${detalle.detalleven_codigo})`;
+                    }else if(parametro_codcatsubcat == 5){
+                        categoria = `${detalle.categoria_nombre}`;
+                    }else if(parametro_codcatsubcat == 6){
+                        subcategoria = `${detalle.subcategoria_nombre}, `;
+                        codigo  =  `(${detalle.detalleven_codigo})`;
+                    }else if(parametro_codcatsubcat == 7){
+                        subcategoria = `${detalle.subcategoria_nombre}`;
+                    }
+                    html += `${categoria} ${subcategoria} ${codigo} ${detalle.producto_nombre} <br>`
+                }
+                $('#det'+venta_id).html(html);
+            },
+            error: ()=>{
+                alert("Error: Algo salio mal al consultar los detalles de la venta")
             }
         });
     }

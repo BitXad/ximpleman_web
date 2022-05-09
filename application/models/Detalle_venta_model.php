@@ -239,12 +239,13 @@ function ventas_dia($estado)
     function get_detalle_venta($venta_id)
     {
         $sql = "select d.*,  r.producto_nombre as preferencia_descripcion, r.producto_foto as preferencia_foto, 
-                clasificador_codigo, clasificador_nombre,p.*, cp.categoria_nombre
+                clasificador_codigo, clasificador_nombre,p.*, cp.categoria_nombre, scp.subcategoria_nombre
                 from detalle_venta d
                 left join producto p on p.producto_id = d.producto_id
                 left join producto r on r.producto_id = d.preferencia_id
                 left join clasificador c on c.clasificador_id = d.clasificador_id
                 left join categoria_producto cp on p.categoria_id = cp.categoria_id
+                left join subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
                 
                 where d.producto_id = p.producto_id and venta_id = ".$venta_id;
         $detalle_venta = $this->db->query($sql)->result_array();        

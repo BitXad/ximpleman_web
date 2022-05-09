@@ -1796,4 +1796,18 @@ function torta3($anio,$mes)
             show_404();
         }
     }
+    /* obtiene los detalles de una venta */
+    function get_detalleventa()
+    {
+        if($this->input->is_ajax_request()){
+            $venta_id = $this->input->post("venta_id");
+            
+            $this->load->model('Detalle_venta_model');
+            $detalle = $this->Detalle_venta_model->get_detalle_venta($venta_id);
+            
+            echo json_encode($detalle);
+        }else{
+            show_404();
+        }
+    }
 }

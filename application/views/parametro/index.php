@@ -197,6 +197,7 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MONEDA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR MONEDA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FACTURA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CODIGO/CATEGORIA/SUB-CAT.</th>
                     </tr>
                     <tr>
                         <td><?php
@@ -266,6 +267,26 @@ foreach($all_parametros as $p)
                                 echo 'FACTURA OPCIONAL';
                             }else if($p['parametro_factura'] == 3){
                                 echo 'SIN FACTURA';
+                            }
+                            ?>
+                        </td>
+                        <td><?php
+                            if($p['parametro_codcatsubcat'] == 0 || $p['parametro_codcatsubcat'] == "" || $p['parametro_codcatsubcat'] == null){
+                                echo 'NINGUNO';
+                            }else if($p['parametro_codcatsubcat'] == 1){
+                                echo 'CODIGO';
+                            }else if($p['parametro_codcatsubcat'] == 2){
+                                echo 'CATEGORIA, SUB CATEGORIA, CODIGO';
+                            }else if($p['parametro_codcatsubcat'] == 3){
+                                echo 'CATEGORIA, SUB CATEGORIA';
+                            }else if($p['parametro_codcatsubcat'] == 4){
+                                echo 'CATEGORIA, CODIGO';
+                            }else if($p['parametro_codcatsubcat'] == 5){
+                                echo 'CATEGORIA';
+                            }else if($p['parametro_codcatsubcat'] == 6){
+                                echo 'SUB CATEGORIA, CODIGO';
+                            }else if($p['parametro_codcatsubcat'] == 7){
+                                echo 'SUB CATEGORIA';
                             }
                             ?>
                         </td>

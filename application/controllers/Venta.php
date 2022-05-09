@@ -434,7 +434,7 @@ class Venta extends CI_Controller{
         
   
         if($tipo_transaccion==2) //Si la transaccion es a credito
-        {            
+        {
             //$credito_id =  
             $estado_id =  8; //8 pendiente 9 cancelado
             $compra_id =  0;
@@ -524,7 +524,47 @@ class Venta extends CI_Controller{
             $month = date("m",strtotime($cuota_fecha_i));
                 
             $cuota_fecha_i = "$anio-$month-$dia_pago";
-            
+            $metodo_frances = $this->input->post('metodo_frances');
+            if($metodo_frances == "true"){
+                $Co = $credito_monto;
+                $i  = $credito_interes;
+                $n  = $cuotas;
+                $Ci = $Co;
+                $Ii = 0;
+                $Ai = 0;
+                //$a = $Co*($i/(1-(1+$i) ** (-$n)));
+                $a = $Co*($i/(1-(pow((1+$i),-$n))));
+                for($k = 1; $k <= $cuotas; $k++){
+                    $cuota_numcuota = $k;
+                    
+                    $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$k $intervalo"));
+                    $cuota_fechalimite = $cuota_fechalimitex;
+                    
+                    $Ii = $Ci*$i;
+                    $Ai = $a-$Ii;
+                    $cuota_subtotal = $Ai + $Ii + $dias_mora + $multa;
+                    $total = $cuota_subtotal - $descuento;
+                    $params = array(
+                        'credito_id' => $credito_id,
+                        'usuario_id' => $usuario_id,
+                        'estado_id' => $estado_id,
+                        'cuota_numcuota' => $cuota_numcuota,
+                        'cuota_capital' => $Ai,
+                        'cuota_interes' => $Ii,
+                        'cuota_moradias' => $dias_mora,
+                        'cuota_multa' => $multa,
+                        'cuota_subtotal' => $cuota_subtotal,
+                        'cuota_descuento' => $descuento,
+                        'cuota_total' => $total,
+                        'cuota_fechalimite' => $cuota_fechalimite,
+                        'cuota_cancelado' => $cancelado,
+                        'cuota_saldo' => $Ci,
+                    );
+                    $this->load->model('Cuotum_model');
+                    $cuotum_id = $this->Cuotum_model->add_cuotum($params);
+                    $Ci = $Ci-$Ai;
+                }
+            }else{
                 for ($j=1; $j <= $numcuota; $j++) { // ciclo para llenar las cuotas
                     $cuota_numcuota = $j;
                     
@@ -544,8 +584,7 @@ class Venta extends CI_Controller{
                     $saldo_deudor = $saldo_deudor - $cuota_capital;
                     //$cuota_total = $saldo_deudor;
                 }
-            
-
+            }
             
         }
               

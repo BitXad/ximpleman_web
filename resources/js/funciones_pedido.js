@@ -2022,7 +2022,41 @@ function tablaresultados(opcion)
             $("#filtrar").select();
         }
         
-    });  
+    });
+    
+    if(opcion==2){
+        
+        //Busca la subcategoria y la redibuja en el select
+        var controlador = base_url+'website/obtener_subcategoria/'+parametro;
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{categoria_id:parametro},
+            success:function(respuesta){
+                                                        
+                 html = "";
+                 subcat = JSON.parse(respuesta);
+                 cant = subcat.length;
+                 
+                html += "<option value='0' selected>- SUB CATEGORIA -</option>"                     
+                 for(i=0;i<cant;i++){
+                     html += "<option value='"+subcat[i]["subcategoria_id"]+"'>"+subcat[i]["subcategoria_nombre"]+"</option>"                     
+                 }
+                 
+               $("#subcategoria_prod").html(html);
+                    
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "<option value='0' selected>-SUB CATEGORIA-</option>";
+               $("#subcategoria_prod").html(html);
+            },
+            complete: function (jqXHR, textStatus) {
+               
+                //tabla_inventario();
+            }
+        
+        });
+    }
     
  //   $("#encontrados").focus(); //Quita el foco del buscador para que desparezca el teclado android
 } 

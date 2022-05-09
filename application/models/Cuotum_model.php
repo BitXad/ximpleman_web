@@ -161,7 +161,7 @@ class Cuotum_model extends CI_Model
             left join banco b on b.banco_id = k.banco_id  
             where k.credito_id = $credito_id
             and m.moneda_id = 2
-            ORDER BY `cuota_id` ASC")->result_array();
+            ORDER BY k.cuota_numcuota, `cuota_id` ASC")->result_array();
 
         return $credito;
     }

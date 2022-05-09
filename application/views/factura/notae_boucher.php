@@ -203,8 +203,34 @@ border-bottom : 1px solid #aaa;
                         ?>
            <tr>
                 <td align="center" style="padding: 0;"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre'];?>
-                        <?php
+                <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;">
+                    <?php
+                    $codigo  =  "";
+                    $categoria = "";
+                    $subcategoria = "";
+                    if($parametro[0]["parametro_codcatsubcat"] == 1){
+                        $codigo = "(".$d['detalleven_codigo'].")";
+                    }elseif($parametro[0]["parametro_codcatsubcat"] == 2){
+                        $categoria = $d["categoria_nombre"].", ";
+                        $subcategoria = $d["subcategoria_nombre"].", ";
+                        $codigo  =  "(".$d["detalleven_codigo"].")";
+                    }elseif($parametro[0]["parametro_codcatsubcat"] == 3){
+                        $categoria = $d["categoria_nombre"].", ";
+                        $subcategoria = $d["subcategoria_nombre"];
+                    }elseif($parametro[0]["parametro_codcatsubcat"] == 4){
+                        $categoria = $d["categoria_nombre"].", ";
+                        $codigo  =  "(".$d["detalleven_codigo"].")";
+                    }elseif($parametro[0]["parametro_codcatsubcat"] == 5){
+                        $categoria = $d["categoria_nombre"];
+                    }elseif($parametro[0]["parametro_codcatsubcat"] == 6){
+                        $subcategoria = $d["subcategoria_nombre"].", ";
+                        $codigo  =  "(".$d["detalleven_codigo"].")";
+                    }elseif($parametro[0]["parametro_codcatsubcat"] == 7){
+                        $subcategoria = $d["subcategoria_nombre"];
+                    }
+                    
+                    echo $categoria.$subcategoria.$codigo." ".$d['producto_nombre'];
+
                         $preferencia = $d['detalleven_preferencia'];
                         $caracteristicas = $d['detalleven_caracteristicas'];
                         
