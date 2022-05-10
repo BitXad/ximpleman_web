@@ -476,9 +476,13 @@ class Venta extends CI_Controller{
 
                 // }
                 $credito_fechalimite = $cuota_fechalimite;
-            
-            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
-                    $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.")";
+            $metodo_frances = $this->input->post('metodo_frances');
+            $metodo = "";
+            if($metodo_frances == "true"){
+                $metodo = "FRANCES";
+            }
+            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo, credito_metodo) value(".
+                    $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.", '".$metodo."')";
             $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
 
             
@@ -524,7 +528,7 @@ class Venta extends CI_Controller{
             $month = date("m",strtotime($cuota_fecha_i));
                 
             $cuota_fecha_i = "$anio-$month-$dia_pago";
-            $metodo_frances = $this->input->post('metodo_frances');
+            
             if($metodo_frances == "true"){
                 $Co = $credito_monto;
                 $i  = $credito_interes;
@@ -1548,9 +1552,13 @@ function edit($venta_id)
                 $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$numcuota $intervalo"));
                 
                 $credito_fechalimite = $cuota_fechalimite;
-            
-            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(
-                    $estado_id,$compra_id,$venta_id,$credito_monto,$credito_cuotainicial,$credito_interesproc,$credito_interesmonto,$credito_numpagos,'$credito_fechalimite','$credito_fecha','$credito_hora',$credito_tipo)";
+            $metodo_frances = $this->input->post('metodo_frances');
+            $metodo = "";
+            if($metodo_frances == "true"){
+                $metodo = "FRANCES";
+            }
+            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo, credito_metodo) value(
+                    $estado_id,$compra_id,$venta_id,$credito_monto,$credito_cuotainicial,$credito_interesproc,$credito_interesmonto,$credito_numpagos,'$credito_fechalimite','$credito_fecha','$credito_hora',$credito_tipo, '$metodo')";
             echo $sql;
             $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
 
@@ -1594,9 +1602,46 @@ function edit($venta_id)
             
             $cuota_fechalimite = $fecha_inicio;
             
-
-                
-            
+            if($metodo_frances == "true"){
+                $Co = $credito_monto;
+                $i  = $credito_interes;
+                $n  = $cuotas;
+                $Ci = $Co;
+                $Ii = 0;
+                $Ai = 0;
+                //$a = $Co*($i/(1-(1+$i) ** (-$n)));
+                $a = $Co*($i/(1-(pow((1+$i),-$n))));
+                for($k = 1; $k <= $cuotas; $k++){
+                    $cuota_numcuota = $k;
+                    
+                    $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$k $intervalo"));
+                    $cuota_fechalimite = $cuota_fechalimitex;
+                    
+                    $Ii = $Ci*$i;
+                    $Ai = $a-$Ii;
+                    $cuota_subtotal = $Ai + $Ii + $dias_mora + $multa;
+                    $total = $cuota_subtotal - $descuento;
+                    $params = array(
+                        'credito_id' => $credito_id,
+                        'usuario_id' => $usuario_id,
+                        'estado_id' => $estado_id,
+                        'cuota_numcuota' => $cuota_numcuota,
+                        'cuota_capital' => $Ai,
+                        'cuota_interes' => $Ii,
+                        'cuota_moradias' => $dias_mora,
+                        'cuota_multa' => $multa,
+                        'cuota_subtotal' => $cuota_subtotal,
+                        'cuota_descuento' => $descuento,
+                        'cuota_total' => $total,
+                        'cuota_fechalimite' => $cuota_fechalimite,
+                        'cuota_cancelado' => $cancelado,
+                        'cuota_saldo' => $Ci,
+                    );
+                    $this->load->model('Cuotum_model');
+                    $cuotum_id = $this->Cuotum_model->add_cuotum($params);
+                    $Ci = $Ci-$Ai;
+                }
+            }else{
                 for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
                     $cuota_numcuota = $i;
                     $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$i $intervalo"));
@@ -1611,8 +1656,9 @@ function edit($venta_id)
                     $saldo_deudor = $saldo_deudor - $cuota_capital;
                     //$cuota_total = $saldo_deudor;
                 }
+            }
 
-                }
+            }
             }
             else{
                 

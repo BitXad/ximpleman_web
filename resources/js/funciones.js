@@ -2783,7 +2783,7 @@ function finalizarventa(){
     let met_frances  = $('#metodofrances').is(':checked');
     let interes_porc = document.getElementById('credito_interes').value;
     if(tipo_trans == 2 && met_frances == true && (interes_porc <= 0 || interes_porc == "")){
-        alert("El interes debe ser mayor a 0");
+        alert("El interes debe ser mayor a 0 para el metodo Frances");
     }else{
         if (monto>0)
         {
@@ -3908,7 +3908,8 @@ function modificar_venta(cliente_id)
     var forma_pago = document.getElementById('forma_pago').value;
     var facturado = document.getElementById('facturado').value;
     let banco = $('#banco').val();
-
+    let metodo_frances  = $('#metodofrances').is(':checked');
+    
         $.ajax({url: controlador,
             type:"POST",
             data:{venta_id:venta_id, cliente_id:cliente_id, venta_fecha:venta_fecha,venta_subtotal:venta_subtotal,
@@ -3917,7 +3918,7 @@ function modificar_venta(cliente_id)
             tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
             venta_total:venta_total, credito_interes:credito_interes,
             facturado:facturado,venta_fecha:venta_fecha, tipo_transaccion:tipo_transaccion, forma_pago:forma_pago,
-            modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio, banco:banco},
+            modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio, banco:banco, metodo_frances:metodo_frances},
             success:function(respuesta){
                 //window.opener.location.reload();
                 window.close();
@@ -4001,24 +4002,31 @@ function registrarcliente_modificado()
 }
 
 function finalizarcambios()
-{    
-    var monto = document.getElementById('venta_totalfinal').value;
+{
+    let tipo_trans   = document.getElementById('tipo_transaccion').value;
+    let met_frances  = $('#metodofrances').is(':checked');
+    let interes_porc = document.getElementById('credito_interes').value;
+    if(tipo_trans == 2 && met_frances == true && (interes_porc <= 0 || interes_porc == "")){
+        alert("El interes debe ser mayor a 0 para el metodo Frances");
+    }else{
+        var monto = document.getElementById('venta_totalfinal').value;
 
-    if (monto>0)
-    {
-        $("#diventas1").style = "display:block";
-        $("#diventas0").style = "display:none";
-        
-        registrarcliente_modificado();
-    }
-    else
-    {
-        // var txt;
-        var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
-        if (r == true) {
-          registrarcliente_modificado();
-        } 
-        //document.getElementById("demo").innerHTML = txt;
+        if (monto>0)
+        {
+            $("#diventas1").style = "display:block";
+            $("#diventas0").style = "display:none";
+
+            registrarcliente_modificado();
+        }
+        else
+        {
+            // var txt;
+            var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
+            if (r == true) {
+              registrarcliente_modificado();
+            } 
+            //document.getElementById("demo").innerHTML = txt;
+        }
     }
 }
 
