@@ -153,6 +153,14 @@
         </div>
         <div class="col-md-12 linea">
             <div class="col-md-1">
+                <label class="control-label">Documento Sector</label>
+            </div>
+            <div class="col-md-11">
+                <?php echo $dosificacion['docsec_descripcion']; ?>
+            </div>
+        </div>
+        <div class="col-md-12 linea">
+            <div class="col-md-1">
                 <label class="control-label">Token Delegado</label>
             </div>
             <div class="col-md-11" style="word-break: break-word;">

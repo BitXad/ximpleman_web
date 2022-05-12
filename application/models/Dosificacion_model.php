@@ -187,11 +187,13 @@ class Dosificacion_model extends CI_Model
     function get_this_dosificacion()
     {
         $dosificacion = $this->db->query(
-            "SELECT d.*, e.`estado_descripcion`,em.`empresa_nombre`,a.actividad_descripcion    
+            "SELECT d.*, e.`estado_descripcion`,em.`empresa_nombre`,a.actividad_descripcion,
+                    ds.docsec_codigoclasificador, ds.docsec_descripcion
             from dosificacion d 
             left join estado e on d.estado_id = e.estado_id 
             left join empresa em on d.empresa_id = em.empresa_id
-            left join actividad a on a.actividad_id = d.dosificacion_actividad 
+            left join actividad a on a.actividad_id = d.dosificacion_actividad
+            left join documento_sector ds on d.docsec_codigoclasificador = ds.docsec_codigoclasificador
             ORDER BY `dosificacion_id` DESC
         ")->row_array();
 
@@ -218,4 +220,13 @@ class Dosificacion_model extends CI_Model
         ")->result_array();
     }
     
+    /**
+     * Recupera la informacion de documento_sector
+     */
+    function get_documento_sector(){
+        return $this->db->query(
+            "SELECT ds.* 
+            from documento_sector ds
+        ")->result_array();
+    }
 }

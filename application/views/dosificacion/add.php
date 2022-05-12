@@ -106,6 +106,21 @@
                                 <textarea rows="3" class="form-control" name="dosificacion_leyenda5" id="dosificacion_leyenda5"><?php echo $this->input->post('dosificacion_leyenda5'); ?></textarea>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <label for="docsec_codigoclasificador" class="control-label">Documento Sector</label>
+                                <div class="form-group">
+                                    <select name="docsec_codigoclasificador" class="form-control">
+                                        <option value="">- Documento Sector -</option>
+                                        <?php 
+                                        foreach($all_documentosector as $docsector)
+                                        {
+                                            $selected = ($docsector['docsec_codigoclasificador'] == $this->input->post('docsec_codigoclasificador')) ? ' selected="selected"' : "";
+                                            echo '<option value="'.$docsector['docsec_codigoclasificador'].'" '.$selected.'>'.$docsector['docsec_descripcion'].'</option>';
+                                        } 
+                                        ?>
+                                    </select>
+                                </div>
+                        </div>
                         <div class="col-md-12">
                             <label for="dosificacion_tokendelegado" class="control-label">Token Delegado</label>
                             <div class="form-group">

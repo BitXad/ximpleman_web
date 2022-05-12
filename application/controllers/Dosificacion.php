@@ -78,7 +78,7 @@ class Dosificacion extends CI_Controller{
         if($this->acceso(150)){
             $data['page_title'] = "Dosificación";
         if(isset($_POST) && count($_POST) > 0)     
-        {   
+        {
             //estado activo al crear
             $estado_id = 1;
             $params = array(
@@ -108,6 +108,7 @@ class Dosificacion extends CI_Controller{
                 'dosificacion_puntoventa' => $this->input->post('dosificacion_puntoventa'),
                 'dosificacion_sectoreconomico' => $this->input->post('dosificacion_sectoreconomico'),
                 'dosificacion_email' => $this->input->post('dosificacion_email'),
+                'docsec_codigoclasificador' => $this->input->post('docsec_codigoclasificador'),
             );
             
             $dosificacion_id = $this->Dosificacion_model->add_dosificacion($params);
@@ -115,8 +116,10 @@ class Dosificacion extends CI_Controller{
         }
         else
         {
-			$this->load->model('Empresa_model');
-			$data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            
+            $data['all_documentosector'] = $this->Dosificacion_model->get_documento_sector();
             
             $data['_view'] = 'dosificacion/add';
             $this->load->view('layouts/main',$data);
@@ -137,7 +140,7 @@ class Dosificacion extends CI_Controller{
         if(isset($data['dosificacion']['dosificacion_id']))
         {
             if(isset($_POST) && count($_POST) > 0)     
-            {   
+            {
                 $params = array(
                     'estado_id' => $this->input->post('estado_id'),
                     'empresa_id' => $this->input->post('empresa_id'),
@@ -165,6 +168,7 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_puntoventa' => $this->input->post('dosificacion_puntoventa'),
                     'dosificacion_sectoreconomico' => $this->input->post('dosificacion_sectoreconomico'),
                     'dosificacion_email' => $this->input->post('dosificacion_email'),
+                    'docsec_codigoclasificador' => $this->input->post('docsec_codigoclasificador'),
                 );
 
                 $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);            
@@ -176,7 +180,8 @@ class Dosificacion extends CI_Controller{
                 $data['actividades'] = $this->Actividad_model->get_all_activities();
                 $data['leyendas'] = $this->Leyenda_model->get_all_leyendas();
                 $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-
+                $data['all_documentosector'] = $this->Dosificacion_model->get_documento_sector();
+                
                 $data['_view'] = 'dosificacion/edit';
                 $this->load->view('layouts/main',$data);
             }
