@@ -340,7 +340,7 @@ class Compra extends CI_Controller{
             $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
             if(isset($_POST) && count($_POST) > 0)     
-            {   
+            {
                 $params = array(
                     'estado_id' => $this->input->post('estado_id'),
                     'tipotrans_id' => $this->input->post('tipotrans_id'),
