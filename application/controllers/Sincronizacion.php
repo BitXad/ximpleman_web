@@ -777,11 +777,10 @@ class Sincronizacion extends CI_Controller{
                         'moneda_descripcion'        => $codigo->descripcion
                     );
                     $moneda_id = $this->Moneda_model->buscar_codigo_clasificador($codigo->codigoClasificador);
-                    var_dump($moneda_id['moneda_id']);
                     if($moneda_id['moneda_id'] == 0){
-                        // array_push($params,"'estado_id'=> 1");
                         $this->Moneda_model->add_moneda($params);
                     }else{
+                        unset($params['estado_id']);
                         $this->Moneda_model->update_moneda($moneda_id['moneda_id'],$params);
                     }
                 }
