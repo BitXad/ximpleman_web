@@ -83,7 +83,7 @@ class Cliente_model extends CI_Model
     {
         $sql = "SELECT
                 c.*, e.estado_color, e.estado_descripcion, tc.tipocliente_descripcion,
-                cc.categoriaclie_descripcion, u.usuario_nombre, z.zona_nombre
+                cc.categoriaclie_descripcion, u.usuario_nombre, z.zona_nombre, ifnull(cdi.cdi_descripcion, 'NIT') as cdi_descripcion
             FROM
                 cliente c
             LEFT JOIN estado e on c.estado_id = e.estado_id
@@ -91,6 +91,7 @@ class Cliente_model extends CI_Model
             LEFT JOIN categoria_cliente cc on c.categoriaclie_id = cc.categoriaclie_id
             LEFT JOIN usuario u on c.usuario_id = u.usuario_id
             LEFT JOIN zona z on c.zona_id = z.zona_id
+            LEFT JOIN cod_doc_identidad cdi on cdi.cdi_codigoclasificador = c.cdi_codigoclasificador
             WHERE
             1=1
             ".$condicion."
@@ -270,7 +271,7 @@ class Cliente_model extends CI_Model
     {
         $sql = "SELECT
                 c.*, e.estado_color, e.estado_descripcion, tc.tipocliente_descripcion,
-                cc.categoriaclie_descripcion, u.usuario_nombre, z.zona_nombre
+                cc.categoriaclie_descripcion, u.usuario_nombre, z.zona_nombre, ifnull(cdi.cdi_descripcion, 'NIT') as cdi_descripcion
 
             FROM
                 cliente c
@@ -279,7 +280,7 @@ class Cliente_model extends CI_Model
             LEFT JOIN categoria_cliente cc on c.categoriaclie_id = cc.categoriaclie_id
             LEFT JOIN usuario u on c.usuario_id = u.usuario_id
             LEFT JOIN zona z on c.zona_id = z.zona_id
-            
+            left join cod_doc_identidad cdi on cdi.cdi_codigoclasificador = c.cdi_codigoclasificador
             WHERE
                 c.estado_id = e.estado_id
                 and(c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
@@ -419,7 +420,7 @@ class Cliente_model extends CI_Model
     {
         $sql = "SELECT
                 c.*, e.estado_color, e.estado_descripcion, tc.tipocliente_descripcion,
-                cc.categoriaclie_descripcion, u.usuario_nombre, z.zona_nombre
+                cc.categoriaclie_descripcion, u.usuario_nombre, z.zona_nombre, ifnull(cdi.cdi_descripcion, 'NIT') as cdi_descripcion
             FROM
                 cliente c
             LEFT JOIN estado e on c.estado_id = e.estado_id
@@ -427,6 +428,7 @@ class Cliente_model extends CI_Model
             LEFT JOIN categoria_cliente cc on c.categoriaclie_id = cc.categoriaclie_id
             LEFT JOIN usuario u on c.usuario_id = u.usuario_id
             LEFT JOIN zona z on c.zona_id = z.zona_id
+            LEFT JOIN cod_doc_identidad cdi on cdi.cdi_codigoclasificador = c.cdi_codigoclasificador
             WHERE
             1=1
             ".$condicion."
@@ -475,13 +477,13 @@ class Cliente_model extends CI_Model
 //            GROUP BY
 //                c.cliente_id
 //              ORDER By c.cliente_id ";
-        $sql = "select *
+        $sql = "select c.*,e.*,z.*,cc.*,t.*,ifnull(cdi.cdi_descripcion, 'NIT') as cdi_descripcion
                 from cliente c
                 left join estado e on e.estado_id = c.estado_id
                 left join zona z on z.zona_id = c.zona_id
                 left join categoria_cliente cc on cc.categoriaclie_id = c.categoriaclie_id
                 left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id 
-
+                LEFT JOIN cod_doc_identidad cdi on cdi.cdi_codigoclasificador = c.cdi_codigoclasificador
                 where
                 c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
                 or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%'

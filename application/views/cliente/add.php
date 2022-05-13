@@ -173,7 +173,7 @@ function toggle(source) {
                             </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label  class="control-label"><a href="#" class="btn btn-success btn-sm " id="mosmapa" onclick="mostrar('1'); return false">Obtener Ubicación del negocio</a></label>
                         <!-- ***********************aqui empieza el mapa para capturar coordenadas *********************** -->
                         <div id="oculto1" style="visibility:hidden">
@@ -253,10 +253,20 @@ function toggle(source) {
                             </div>
                     </div>
                     <div class="col-md-2">
-                            <label for="cliente_nit" class="control-label">Nit</label>
-                            <div class="form-group">
-                                <input type="number" min="0" onchange="verificarnumero(this.value)" name="cliente_nit" value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : '0'); ?>" class="form-control" id="cliente_nit" />
-                            </div>
+                        <label for="doc_clasificador" class="control-label">Tipo de documento</label>
+                        <div class="form-group">
+                            <select name="doc_clasificador" id="doc_clasificador" class="form-control">
+                                <?php foreach($cdis as $cdi){ ?>
+                                    <option value="<?=$cdi['cdi_codigoclasificador']?>"><?= $cdi['cdi_descripcion'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="cliente_nit" class="control-label">Numero de Documento</label>
+                        <div class="form-group">
+                            <input type="number" min="0" onchange="verificarnumero(this.value)" name="cliente_nit" value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : '0'); ?>" class="form-control" id="cliente_nit" />
+                        </div>
                     </div>
                     <div class="col-md-6">
                             <label for="cliente_razon" class="control-label">Razón</label>

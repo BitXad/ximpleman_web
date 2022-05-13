@@ -9,9 +9,12 @@ class Cliente extends CI_Controller{
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Cliente_model');
-        $this->load->model('Compra_model');
-        $this->load->model('Categoria_clientezona_model');
+        $this->load->model([
+            'Cliente_model',
+            'Compra_model',
+            'Categoria_clientezona_model',
+            'Sincronizacion_model'
+        ]);
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -259,6 +262,7 @@ class Cliente extends CI_Controller{
                     'dom' => $dom,
                     'cliente_ordenvisita' => $this->input->post('cliente_ordenvisita'),
                     'cliente_clave' => $la_contraseña,
+                    'cdi_codigoclasificador' => $this->input->post('doc_clasificador'),
                 );
             
                 $cliente_id = $this->Cliente_model->add_cliente($params);
@@ -267,25 +271,26 @@ class Cliente extends CI_Controller{
             }
             else
             {
-                            $this->load->model('Estado_model');
-                            $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                $data['cdis']  = $this->Sincronizacion_model->getall_docs_ident();
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
 
-                            $this->load->model('Categoria_clientezona_model');
-                            $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-                            /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
-                            $this->load->model('Usuario_model');
-                            $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
+                $this->load->model('Categoria_clientezona_model');
+                $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
+                $this->load->model('Usuario_model');
+                $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
 
-                            $this->load->model('Tipo_cliente_model');
-                            $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+                $this->load->model('Tipo_cliente_model');
+                $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
 
-                            $this->load->model('Categoria_cliente_model');
-                            $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
-                            
-                            $this->load->model('Parametro_model');
-                            $data['parametro'] = $this->Parametro_model->get_parametros();
+                $this->load->model('Categoria_cliente_model');
+                $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+                
+                $this->load->model('Parametro_model');
+                $data['parametro'] = $this->Parametro_model->get_parametros();
 
-                            $data['resultado'] = 0;
+                $data['resultado'] = 0;
 
                 $data['_view'] = 'cliente/add';
                 $this->load->view('layouts/main',$data);
@@ -429,6 +434,7 @@ class Cliente extends CI_Controller{
                         'sab' => $sab,
                         'dom' => $dom,
                         'cliente_ordenvisita' => $this->input->post('cliente_ordenvisita'),
+                        'cdi_codigoclasificador' => $this->input->post('cdi_codigoclasificador')
                     );
 
                     $this->Cliente_model->update_cliente($cliente_id,$params);            
@@ -436,6 +442,7 @@ class Cliente extends CI_Controller{
                 }
                 else
                 {
+                    $data['cdis'] = $this->Sincronizacion_model->getall_docs_ident();
                     $this->load->model('Estado_model');
                     $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
 

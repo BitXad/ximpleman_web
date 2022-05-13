@@ -227,7 +227,8 @@ function tablaresultadoscliente(limite)
                         html += "<b>CÓDIGO: </b>"+codigo+"<br>";
                         html += "<b>C.I.: </b>"+registros[i]["cliente_ci"]+"<br>";
                         html += "<b>RAZÓN SOC.: </b>"+registros[i]["cliente_razon"]+"<br>";
-                        html += "<b>NIT: </b>"+registros[i]["cliente_nit"]+"<br>";
+                        console.info(registros[i]['cdi_descripcion'])
+                        html += "<b>"+registros[i]['cdi_descripcion']+": </b>"+registros[i]["cliente_nit"]+"<br>";
                         html += "<b>EMAIL: </b>"+registros[i]["cliente_email"]+"<br>";
                         html += "<b>ANIVERS.: </b>"+aniv+"<br>";
                         if(parametro_puntos >0){
