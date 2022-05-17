@@ -849,7 +849,7 @@
                         if($rolusuario[153-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('factura/factura_compra');?>"><i class="fa fa-shopping-basket"></i> <span>Libro de Compras</span></a>
+                            <a href="<?php echo site_url('factura_compra');?>"><i class="fa fa-shopping-basket"></i> <span>Libro de Compras</span></a>
                         </li>
                         <?php
                         }

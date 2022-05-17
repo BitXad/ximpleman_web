@@ -20,6 +20,7 @@
 </style>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="hidden" id="base_url" value="<?php echo base_url();?>">
+<input type="hidden" id="elresultado">
 
 <div class="col-md-12 no-print">
     <div class="box-header">
@@ -58,7 +59,7 @@
             </div>
         </div>
         <div class="col-md-2">
-           <label for="desde" class="control-label">&nbsp;</label>
+           <label for="generar_excel" class="control-label">&nbsp;</label>
            <div class="form-group">
                 <button onclick="generarexcel()" type="button" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
                 <!--<button  type="submit" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>-->

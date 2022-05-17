@@ -59,7 +59,8 @@ class Factura_compra_model extends CI_Model
                 left join compra c on f.compra_id = c.compra_id
                 left join estado e on f.estado_id = e.estado_id
             WHERE
-                1 = 1
+                f.factura_fecha >= '".$desde."'
+                and f.factura_fecha <= '".$hasta."'
                 $filtro
             ORDER BY `factura_id` DESC
         ")->result_array();
@@ -67,90 +68,4 @@ class Factura_compra_model extends CI_Model
         return $factura;
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-     * Get factura by factura_id
-     */
-    function get_factura_id($factura_id)
-    {
-        $sql = "select f.*,u.* from factura f 
-                left join usuario u on u.usuario_id = f.usuario_id
-                where f.factura_id = ".$factura_id;
-        $factura = $this->db->query($sql)->result_array();
-        return $factura;
-        
-    }
-       
-    /*
-     * Get all factura
-     */
-    function get_all_facturacompra()
-    {
-        $factura = $this->db->query("
-            SELECT
-                *
-            FROM
-                factura_compra f, estado e, compra c
-            WHERE
-                f.estado_id = e.estado_id
-                and f.compra_id = v.compra_id
-            ORDER BY `factura_id` DESC
-        ")->result_array();
-
-        return $factura;
-    }
-        
-    
-    
-    
-    
-    /*
-     * function to delete factura
-     */
-    function delete_factura($factura_id)
-    {
-        return $this->db->delete('factura_compra',array('factura_id'=>$factura_id));
-    }
-    
-    function get_factura_compras($inicio, $fin)
-    {
-        $sql = "
-            SELECT
-                *
-            FROM
-                `factura_compra`
-            WHERE
-                factura_fecha >= '".$inicio."'
-                and factura_fecha <= '".$fin."'
-                and compra_id <> 0 
-            ORDER BY `factura_id` ASC";
-        $factura = $this->db->query($sql)->result_array();
-      
-        return $factura;
-    }
 }
