@@ -524,6 +524,7 @@ class Venta extends CI_Controller{
            // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
             
             // $cuota_fechalimite = $fecha_inicio;
+            $cuota_fecha_i = $fecha_inicio;
             $anio = date("Y",strtotime($cuota_fecha_i));
             $month = date("m",strtotime($cuota_fecha_i));
                 
@@ -1601,7 +1602,7 @@ function edit($venta_id)
            // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
             
             $cuota_fechalimite = $fecha_inicio;
-            
+            $cuota_fecha_i = $fecha_inicio;
             if($metodo_frances == "true"){
                 $Co = $credito_monto;
                 $i  = $credito_interes;
