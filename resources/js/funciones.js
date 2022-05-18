@@ -301,8 +301,7 @@ function buscarcliente(){
 }
 
 //muestra la tabla de productos del detalle de la venta
-function tablaproductos()
-{   
+function tablaproductos(){   
     var base_url = document.getElementById('base_url').value;
     var categ = JSON.parse(document.getElementById('categoria_producto').value);
     var controlador = base_url+'venta/detalleventa';
@@ -2498,6 +2497,7 @@ function registrarcliente()
     var razon = document.getElementById('razon_social').value;
     var telefono = document.getElementById('telefono').value;    
     var tipocliente_id = document.getElementById('tipocliente_id').value;
+    let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
     
     var cliente_nombre = document.getElementById('cliente_nombre').value;
     var cliente_ci = document.getElementById('cliente_ci').value;
@@ -2528,7 +2528,9 @@ function registrarcliente()
                     type:"POST",
                     data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id},
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
+                        tipo_doc_identidad:tipo_doc_identidad,
+                    },
                     
                     success:function(respuesta){ 
                         var datos = JSON.parse(respuesta);
@@ -2698,6 +2700,7 @@ function registrarventa(cliente_id)
     var venta_numeromesa = document.getElementById('venta_numeromesa').value;
     var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
     let banco_id = forma_id == 1 ? '0':$('#banco').val();
+    let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
    
     //alert(venta_efectivo);
     
@@ -2738,7 +2741,7 @@ function registrarventa(cliente_id)
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
                 venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
-                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances},
+                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,tipo_doc_identidad:tipo_doc_identidad},
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
@@ -2758,7 +2761,7 @@ function registrarventa(cliente_id)
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 venta_descuento:venta_descuento,orden_id:orden_id,
-                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
+                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad},
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
@@ -2770,7 +2773,7 @@ function registrarventa(cliente_id)
         });          
     }
         
-}
+} 
 
 function finalizarventa(){
     var monto = document.getElementById('venta_totalfinal').value;
@@ -2992,16 +2995,22 @@ function cargar_factura(factura){
 }
 
 function registrar_factura(venta_id){
-            
     var base_url = document.getElementById("base_url").value;
-    var nit   = document.getElementById("generar_nit").value;
+    var numeroDocumento   = document.getElementById("generar_nit").value;
+    let tipoDocumento = $('#doc_identidad').val();
     var razon = document.getElementById("generar_razon").value;
     var monto_factura = document.getElementById("generar_monto").value;
     var controlador = base_url+"venta/generar_factura_detalle_aux";
     $.ajax({url: controlador,
             type: "POST",
-            data:{venta_id:venta_id, nit:nit, razon:razon, monto_factura:monto_factura}, 
-            success:function(respuesta){
+            data:{
+                venta_id:venta_id, 
+                numeroDocumento:numeroDocumento, 
+                razon:razon, 
+                monto_factura:monto_factura,
+                tipoDocumento:tipoDocumento,
+            }, 
+            success:function(respuesta){      
                 resultado = JSON.parse(respuesta);
                 var factura_id = resultado;
                 //alert(factura_id);
@@ -3664,7 +3673,7 @@ function seleccionar_cliente(){
                     $("#cliente_direccion").val(resultado[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(resultado[0]["cliente_departamento"]);
                     $("#cliente_celular").val(resultado[0]["cliente_celular"]);
-                    
+                    $("#tipo_doc_identidad").val(resultado[0]["cdi_codigoclasificador"]);
                     $("#tipocliente_porcdesc").val(resultado[0]["tipocliente_porcdesc"]);
                     $("#tipocliente_montodesc").val(resultado[0]["tipocliente_montodesc"]);                    
 
@@ -4440,6 +4449,7 @@ function cargar_factura2(venta_id){
                     }
                     html += "</table><br>";
                            
+                    $("#doc_identidad").val(registros[0]['cdi_codigoclasificador']);
                     $("#generar_nit").val(registros[0]['cliente_nit']);
                     $("#generar_razon").val(registros[0]['cliente_razon']);
                     $("#generar_detalle").html(html);
@@ -4464,7 +4474,7 @@ function cargar_factura2(venta_id){
                     $("#boton_modal_factura").click();
                 }
             },
-            error:function(resultado){
+            error:function(){
                 alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
             },
         
