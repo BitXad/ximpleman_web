@@ -27,4 +27,23 @@ class Sincronizacion_model extends CI_Model{
     function delete_codigo($codigo_id){
         return $this->db->delete('sincronizacion',array('sincronizacion_id'=>$codigo_id));
     }
+    /**
+     * get Codigos Nis for activity and secondary activity
+     */
+    function getCodigosNis(){
+        return $this->db->query(
+            "SELECT ps.*
+            from productos_servicios ps, dosificacion d 
+            where (ps.prodserv_codigoactividad = d.dosificacion_actividad or ps.prodserv_codigoactividad = d.dosificasion_actividadsec)"
+        )->result_array();
+    }
+    /**
+     * Obtener todo los documentos de identidad
+     */
+    function getall_docs_ident(){
+        return $this->db->query(
+            "SELECT cdi.* 
+            FROM cod_doc_identidad cdi"
+        )->result_array();
+    }
 }

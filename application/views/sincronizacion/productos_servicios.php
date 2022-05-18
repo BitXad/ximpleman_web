@@ -18,7 +18,7 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-    <font size='4' face='Arial'><b>C&Oacute;digos de Productos y Servicios</b></font>
+    <font size='4' face='Arial'><b>C&oacute;digos de Productos y Servicios</b></font>
     <div class="box-tools no-print">
     </div>
 </div>

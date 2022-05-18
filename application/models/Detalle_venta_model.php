@@ -254,17 +254,20 @@ function ventas_dia($estado)
 
     function get_detalle_factura($venta_id)
     {
-        $sql = "select * from detalle_factura d where d.venta_id = ".$venta_id;
+        $sql = "SELECT df.*, p.producto_codigosin 
+                from detalle_factura df
+                left join producto p on p.producto_id  = df.producto_id 
+                where df.venta_id = $venta_id ";
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
     }
 
     function get_detalle_factura_id($factura_id)
     {
-        $sql = "SELECT d.* ,p.producto_unidad
+        $sql = "SELECT d.* ,p.producto_unidad,p.producto_codigosin
                 from detalle_factura d 
                 left join producto p on p.producto_id = d.producto_id
-                where d.factura_id = ".$factura_id;
+                where d.factura_id = $factura_id";
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
     }

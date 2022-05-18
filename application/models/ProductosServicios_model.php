@@ -24,5 +24,15 @@
         function truncate_table(){
             $this->db->query("truncate productos_servicios");
         }
+        /**
+         * Obtener codigos productos servicios por las actividades deacuerdo a la dosificacion
+         */
+        function get_productosServicios_actividad(){
+            return $this->db->query(
+                "SELECT ps.*
+                from productos_servicios ps, dosificacion d 
+                where (ps.prodserv_codigoactividad = d.dosificacion_actividad or ps.prodserv_codigoactividad = d.dosificasion_actividadsec)"
+            )->result_array();
+        }
     }
 ?>

@@ -296,10 +296,22 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="col-md-4">
-                                    <b>NIT:</b><input type="text" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;">
+                                        <b>DOC. IDENTIDAD:</b>
+                                        <select name="doc_identidad" id="doc_identidad" class="form-control btn btn-xs btn-warning" style="text-align: left;">
+                                            <option value="">--DOC. IDENTIDAD--</option>
+                                            <?php
+                                            foreach($docs_identidad as $doc_ident){?>
+                                                <option value="<?=$doc_ident['cdi_codigoclasificador']?>"><?=$doc_ident['cdi_descripcion']?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                    <b>NUMERO DE DOC.:</b><input type="text" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;">
 
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-5">
                                     <b>RAZON SOCIAL:</b><input type="text" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">
 
                                     </div>

@@ -290,15 +290,32 @@ window.onkeydown = compruebaTecla;
 </div>
 
 <!--------------------- fin cliente_id --------------------->
+
+        <div class="col-md-3" <?= $estilo_div ?>>
+            <label for="tipo_doc_identidad" class="control-label" style="margin-bottom: 0;">TIPO DOCUMENTO IDENTIDAD</label>
+            <div class="form-group" <?= $estilo_div ?>>
+                <select class="form-control <?php echo $atributos; ?>" name="tipo_doc_identidad" id="tipo_doc_identidad" <?= $estilos_facturacion ?>>
+                    <?php 
+                        $select = 5;
+                        if(isset($cliente[0]['cliente_codidentidad'])) $select = $cliente[0]['cliente_codidentidad'];
+                        foreach ($docs_identidad as $di){
+                            $selected = $di['cdi_codigoclasificador'] == $select ? "selected" : "" ;// por defecto que esté seleccionado NIT
+                        ?>                    
+                        <option value="<?= $di['cdi_codigoclasificador'] ?>" <?= $selected ?>><?= $di['cdi_descripcion'] ?></option>
+                    <?php
+                    }?>
+                </select>
+            </div>
+        </div>
         
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="nit" class="control-label" style="margin-bottom: 0;">NIT</label>
+        <div class="col-md-2" <?php echo $estilo_div; ?>>
+            <label for="nit" class="control-label" style="margin-bottom: 0;">NUMERO DE DOCUMENTO</label>
             <div class="form-group"  <?php echo $estilo_div; ?>>
                 <input type="number" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" />
             </div>
         </div>
         
-        <div class="col-md-4"  <?php echo $estilo_div; ?>>
+        <div class="col-md-3"  <?php echo $estilo_div; ?>>
             <label for="razon social" class="control-label" style="margin-bottom: 0;">RAZON SOCIAL</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 
@@ -318,7 +335,7 @@ window.onkeydown = compruebaTecla;
 
 <?php //if($es_movil == 0){ ?> 
 
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
+        <div class="col-md-2" <?php echo $estilo_div; ?>>
         <label for="cliente_celular" class="control-label" style="margin-bottom: 0;">CELULAR</label>
         <div class="form-group" <?php echo $estilo_div; ?>>
             <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>" onKeyUp="this.value = this.value.toUpperCase();"/>

@@ -9,22 +9,29 @@ class Factura extends CI_Controller{
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Factura_model');
-        $this->load->model('Empresa_model');
-        $this->load->model('Detalle_venta_model');
-        $this->load->model('Parametro_model');
-        $this->load->model('Tipo_servicio_model');
-        $this->load->model('Dosificacion_model');
-        $this->load->model('Pedido_model');
-        $this->load->model('Venta_model');
-        $this->load->model('Tipo_transaccion_model');
-        $this->load->model('Forma_pago_model');
-        $this->load->model('Tipo_cliente_model');
-        $this->load->model('Usuario_model');
-        $this->load->model('Preferencia_model');
-        $this->load->model('Moneda_model');
+        $this->load->model([
+            'Factura_model',
+            'Empresa_model',
+            'Detalle_venta_model',
+            'Parametro_model',
+            'Tipo_servicio_model',
+            'Dosificacion_model',
+            'Pedido_model',
+            'Venta_model',
+            'Tipo_transaccion_model',
+            'Forma_pago_model',
+            'Tipo_cliente_model',
+            'Usuario_model',
+            'Preferencia_model',
+            'Moneda_model',
+        ]);
+        
         $this->load->library('ControlCode');
-       
+
+        $this->load->helper([
+            'xml',
+            'numeros_helper',// Helper para convertir numeros a letras
+        ]);
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -140,19 +147,28 @@ class Factura extends CI_Controller{
                
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
         //Generador de Codigo QR
+               //cargamos la librería	
                 //cargamos la librería	
-         $this->load->library('ciqrcode');
-                 
-         //hacemos configuraciones
-         $params['data'] = $cadenaQR;//$this->random(30);
-         $params['level'] = 'H';
-         $params['size'] = 5;
+               //cargamos la librería	
+        $this->load->library('ciqrcode');
+                
+        //hacemos configuraciones
+        $params['data'] = $cadenaQR;//$this->random(30);
+        $params['level'] = 'H';
+        $params['size'] = 5;
          //decimos el directorio a guardar el codigo qr, en este 
          //caso una carpeta en la raíz llamada qr_code
+        $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
          $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
-         
+        $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+        
          //generamos el código qr
+        $this->ciqrcode->generate($params); 
          $this->ciqrcode->generate($params); 
+        $this->ciqrcode->generate($params); 
+        
+        generarfacturaCompra_ventaXML(1, $factura, $data['detalle_factura'],$data['empresa']);
+
          //echo '<img src="'.base_url().'resources/images/qrcode.png" />';
         //fin generador de codigo QR        
         
@@ -351,10 +367,8 @@ class Factura extends CI_Controller{
         $cuf           = $factura[0]['factura_cufd'];
         $tamanio       = $factura[0]['factura_tamanio'];
         
-        $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
-        // $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
-               
-        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+        // $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
+        $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
         //Generador de Codigo QR
                 //cargamos la librería	
          $this->load->library('ciqrcode');
@@ -370,12 +384,12 @@ class Factura extends CI_Controller{
          $this->ciqrcode->generate($params); 
          //echo '<img src="'.base_url().'resources/images/qrcode.png" />';
         //fin generador de codigo QR
-         
+        $xml = generarfacturaCompra_ventaXML(1,$factura,$data['detalle_factura'],$data['empresa']);
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
-        $data['_view'] = 'factura/factura_carta';
-        // $data['_view'] = 'factura/factura_carta_new';
+        // $data['_view'] = 'factura/factura_carta';
+        $data['_view'] = 'factura/factura_carta_new';
         $this->load->view('layouts/main',$data);
         
         }
@@ -1266,5 +1280,168 @@ class Factura extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }    
+    // /**
+    //  * Crea la factura de compra venta 
+    //  * 1 = COMPUTARIZADA
+    //  * 2 = ELECTRONICA
+    //  */
+    // function generarfacturaCompra_ventaXML($computarizada = 1){
+    //     $doc_xml = $computarizada == 1 ? "facturaComputarizadaCompraVenta" : "facturaElectronicaCompraVenta";
+    //     $xml = loadXML($doc_xml);
+    //     // CABECERA
+    //     $xml->getElementsByTagName('nitEmisor')->item(0)->nodeValue = "5152377019";
+    //     $xml->getElementsByTagName('razonSocialEmisor')->item(0)->nodeValue = "holaMundo";
+    //     $xml->getElementsByTagName('municipio')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('telefono')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('numeroFactura')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('cufd')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('cuf')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('codigoSucursal')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('direccion')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('codigoPuntoVenta')->item(0)->nodeValue = "infwen";
+    //     $xml->getElementsByTagName('fechaEmision')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('nombreRazonSocial')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('codigoTipoDocumentoIdentidad')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('complemento')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('codigoCliente')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('codigoMetodoPago')->item(0)->nodeValue = "0";
+    //     $xml->getElementsByTagName('numeroDocumento')->item(0)->nodeValue = "1";
+    //     $xml->getElementsByTagName('montoTotalSujetoIva')->item(0)->nodeValue = "23";
+    //     $xml->getElementsByTagName('codigoMoneda')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('tipoCambio')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('montoTotal')->item(0)->nodeValue = "84";
+    //     $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "84";
+    //     $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('usuario')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('codigoDocumentoSector')->item(0)->nodeValue = "";
+    //     // CABECERA
+    //     // $nit =  $xml->getElementsByTagName('nitEmisor')->item(0)->nodeValue;
+    //     // DETALLE
+    //     $xml->getElementsByTagName('actividadEconomica')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('codigoProductoSin')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('codigoProducto')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('descripcion')->item(0)->nodeValue = "enfoern";
+    //     $xml->getElementsByTagName('cantidad')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('unidadMedida')->item(0)->nodeValue = "";
+    //     $xml->getElementsByTagName('subTotal')->item(0)->nodeValue = "23";
+    //     // DETALLE
+    //     // mp_helper("Hola");
+    //     // generarCuf();
+
+    //     var_dump($xml);
+    // }
+    // /**
+    //  * Carga un archivo XML para su uso
+    //  */
+    // function loadXML($archivoXml){
+    //     $xml = new DOMDocument();
+    //     $doc_xml = site_url("resources/xml/$archivoXml.xml");
+    //     $xml->load($doc_xml);
+    //     return $xml;
+    // }
     
+    // function generarCuf($factura_nitemisor,//nit emisor
+    //                     $fecha_hora,//fechaYHora Ejem 20190113163721231
+    //                     $factura_sucursal,//surcursal 0
+    //                     $factura_modalidad,// modalidad
+    //                     $tipo_emision,// tipo de emision
+    //                     $tipo_factura,//tipo de factura / documento ajuste
+    //                     $tipo_documento_sector,//tipo documento sector
+    //                     $factura_numero,//numero de factura
+    //                     $pos,//punto de venta
+    //                     $cufd){// Codigo Unico de Facturacion Diaria
+    //     $factura_nitemisor = $this->add_ceros($factura_nitemisor,13);
+    //     $fecha_hora = $this->add_ceros($fecha_hora,17);
+    //     $factura_sucursal = $this->add_ceros($factura_sucursal,4);
+    //     $factura_modalidad = $this->add_ceros($factura_modalidad,1);
+    //     $tipo_emision = $this->add_ceros($tipo_emision,1);
+    //     $tipo_factura = $this->add_ceros($tipo_factura,1);
+    //     $tipo_documento_sector = $this->add_ceros($tipo_documento_sector,2);
+    //     $factura_numero = $this->add_ceros($factura_numero,10);
+    //     $pos = $this->add_ceros($pos,4);
+        
+    //     $cuf = "$factura_nitemisor$fecha_hora$factura_sucursal$factura_modalidad$tipo_emision$tipo_factura$tipo_documento_sector$factura_numero$pos";
+        
+    //     $mod11 = $this->obtenerModulo11($cuf);
+
+    //     $cuf = "$cuf$mod11";
+    //     //llamada a funcion para convertir a base 16
+    //     $cuf = $this->convBase16($cuf,'0123456789','0123456789ABCDEF');
+    //     $cuf = "$cuf$cufd";
+    //     return $cuf;
+    // }
+
+    // function add_ceros($str, $longitud){
+    //     $longitud_str = strlen($str);
+    //     $cero = '0';
+    //     if($longitud_str < $longitud){
+    //         for($i = 1; $i<=$longitud-$longitud_str;$i++){
+    //             $str = $cero."".$str;
+    //         }
+    //     }
+    //     return $str;
+    // }
+    // /**CONVIERTE A BASE 16 */
+    // function convBase16($numberInput, $fromBaseInput, $toBaseInput){
+    //     if ($fromBaseInput==$toBaseInput) return $numberInput;
+    //     $fromBase = str_split($fromBaseInput,1);
+    //     $toBase = str_split($toBaseInput,1);
+    //     $number = str_split($numberInput,1);
+    //     $fromLen=strlen($fromBaseInput);
+    //     $toLen=strlen($toBaseInput);
+    //     $numberLen=strlen($numberInput);
+    //     $retval='';
+    //     if ($toBaseInput == '0123456789'){
+    //         $retval=0;
+    //         for ($i = 1;$i <= $numberLen; $i++)
+    //             $retval = bcadd($retval, bcmul(array_search($number[$i-1], $fromBase),bcpow($fromLen,$numberLen-$i)));
+    //         return $retval;
+    //     }
+    //     if ($fromBaseInput != '0123456789')
+    //         $base10=$this->convBase16($numberInput, $fromBaseInput, '0123456789');
+    //     else
+    //         $base10 = $numberInput;
+    //     if ($base10<strlen($toBaseInput))
+    //         return $toBase[$base10];
+    //     while($base10 != '0')
+    //     {
+    //         $retval = $toBase[(bcmod($base10,$toLen))].$retval;
+    //         $base10 = bcdiv($base10,$toLen,0);
+    //     }
+    //     return $retval;
+    // }
+
+    // function obtenerModulo11($pCadena) {
+    //     // $vDigito = $this->calculaDigitoMod11($pCadena, 1, 9, false);
+    //     $vDigito = $this->getMod11($pCadena);
+    //     return $vDigito;
+    // }
+
+    // // MODULO 11
+    // function getMod11( $num, $retorno_10='K' ){
+    //     $digits = str_replace( array( '.', ',' ), array( ''.'' ), strrev($num ) );
+    //     if ( ! ctype_digit( $digits ) )
+    //         return false;
+
+    //     $sum = 0;
+    //     $factor = 2;
+        
+    //     for( $i=0;$i<strlen( $digits ); $i++ ){
+    //         $sum += substr( $digits,$i,1 ) * $factor;
+    //         if ( $factor == 7 )
+    //             $factor = 2;
+    //         else
+    //             $factor++;
+    //     }
+
+    //     $dv = 11 - ($sum % 11);
+    
+    //     if ( $dv < 10 )
+    //         return $dv;
+
+    //     if ( $dv == 11 )
+    //         return 0;
+
+    //     return $retorno_10;
+    // }
 }

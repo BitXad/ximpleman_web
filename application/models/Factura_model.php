@@ -35,7 +35,11 @@ class Factura_model extends CI_Model
      */
     function get_factura_venta($venta_id)
     {
-        $sql = "select f.*,t.tipotrans_nombre, u.usuario_nombre from factura f
+        $sql = "select f.*,t.tipotrans_nombre, u.usuario_nombre, m.moneda_codigoclasificador, m.moneda_tc, moneda_descripcion, c.cliente_codigo
+                from factura f
+                left join venta v on v.venta_id = f.venta_id
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join moneda m on m.moneda_id = v.moneda_id
                 left join tipo_transaccion t on t.tipotrans_id = f.tipotrans_id
                 left join usuario u on u.usuario_id = f.usuario_id
                 where f.venta_id = ".$venta_id;
@@ -49,7 +53,11 @@ class Factura_model extends CI_Model
      */
     function get_factura_id($factura_id)
     {
-        $sql = "select f.*,u.* from factura f 
+        $sql = "select f.*,u.*, v.moneda_id, m.moneda_codigoclasificador, m.moneda_tc, moneda_descripcion, c.cliente_codigo
+                from factura f
+                left join venta v on v.venta_id = f.venta_id
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join moneda m on m.moneda_id = v.moneda_id
                 left join usuario u on u.usuario_id = f.usuario_id
                 where f.factura_id = ".$factura_id;
         $factura = $this->db->query($sql)->result_array();
@@ -207,6 +215,14 @@ class Factura_model extends CI_Model
        
         return $factura;
     }
-
-    
+    /**
+     * Obtener CUFD activo mediante el codigo
+     */
+    function get_cudf_activo($cufd_codigo){
+        return $this->db->query(
+            "SELECT c.cufd_codigocontrol 
+            from cufd c 
+            where c.cufd_codigo like '$cufd_codigo'
+            ")->row_array();
+    }    
 }
