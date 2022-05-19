@@ -197,7 +197,7 @@
         }
         // DETALLE
         $xml->saveXML();
-        $xml->save('C:\Users\shemo\Desktop\compra_venta.xml');
+        $xml->save('C:\Users\mi Pc\Desktop\compra_venta.xml');
         return $xml;
     }
 
