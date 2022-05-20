@@ -10,7 +10,7 @@ class Validacion_xsd extends CI_Controller{
 
     function __construct() {
         parent::__construct();
-        $this->load->model('Articulo_model');
+        //$this->load->model('Articulo_model');
         //Representa un documento HTML o XML en su totalidad;
         $this->doc = new \DOMDocument('1.0', 'utf-8');
     }

@@ -197,7 +197,11 @@
         }
         // DETALLE
         $xml->saveXML();
-        $xml->save('C:\Users\mi Pc\Desktop\compra_venta.xml');
+        $base_url = explode('/', base_url());
+        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+        //$xml->save('C:\Users\mi Pc\Desktop\compra_venta.xml');
+        $xml->save($directorio.'compra_venta'.$factura['factura_id'].'.xml');
         return $xml;
     }
 

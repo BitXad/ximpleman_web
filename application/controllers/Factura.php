@@ -31,6 +31,7 @@ class Factura extends CI_Controller{
         $this->load->helper([
             'xml',
             'numeros_helper',// Helper para convertir numeros a letras
+            'validacionxmlxsd_helper',
         ]);
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -386,6 +387,16 @@ class Factura extends CI_Controller{
         //fin generador de codigo QR
         $xml = generarfacturaCompra_ventaXML(1,$factura,$data['detalle_factura'],$data['empresa']);
         
+        $base_url = explode('/', base_url());
+        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+        
+        $res = validar($directorio.'compra_venta'.$factura[0]['factura_id'].'xml', $directorio.'compra_venta.xsd');
+        if($res){
+            echo "hola";
+        }else{
+            echo "bola";
+        }
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
         // $data['_view'] = 'factura/factura_carta';
