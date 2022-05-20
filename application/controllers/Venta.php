@@ -308,12 +308,12 @@ class Venta extends CI_Controller{
         //include 'ControlCode.php';
 
         $code = $this->controlcode->generate($dosificacion_autorizacion,//Numero de autorizacion
-                                                   $dosificacion_numfact,//Numero de factura
-                                                   $nit,//Número de Identificación Tributaria o Carnet de Identidad
-                                                   str_replace('-','',$fecha_trans),//fecha de transaccion de la forma AAAAMMDD
-                                                   $monto,//Monto de la transacción
-                                                   $dosificacion_llave//Llave de dosificación
-                        );        
+                                                $dosificacion_numfact,//Numero de factura
+                                                $nit,//Número de Identificación Tributaria o Carnet de Identidad
+                                                str_replace('-','',$fecha_trans),//fecha de transaccion de la forma AAAAMMDD
+                                                $monto,//Monto de la transacción
+                                                $dosificacion_llave//Llave de dosificación
+                                            );        
          return $code;
     }
     
@@ -325,7 +325,7 @@ class Venta extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         
         $porcentaje = 0;
-        
+        // $factura_id = 0;
         $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
         $sql = "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
                "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,".
@@ -514,7 +514,6 @@ class Venta extends CI_Controller{
             $cuota_glosa = "''";
             $cuota_saldocredito = $venta_total - $cuota_inicial;
                  
-           
             $dias_mora = 0;
             $multa = 0;
             $descuento = 0;
@@ -613,7 +612,6 @@ class Venta extends CI_Controller{
         if($facturado=="true"){//si la venta es facturada
 
             $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
-
             // PARA NUEVO SISTEMA DE FACTURACION
             $parametro = $this->Parametro_model->get_parametros();
             $tamanio_hoja = 2;
@@ -659,10 +657,20 @@ class Venta extends CI_Controller{
                 $factura_sectoreconomico = $dosificacion[0]['dosificacion_sectoreconomico'];
                 $factura_ruta          = $dosificacion[0]['dosificacion_ruta'];
                 $factura_tamanio       = $tamanio_hoja;
-
+                $tipo_factura          = $dosificacion[0]['tipofac_codigo'];
+                $pos = $dosificacion[0]['dosificacion_puntoventa'];
                 $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
                 $this->Venta_model->ejecutar($sql);
-                $cuf = $this->generarCuf($factura_nitemisor,$facura_fecha,$factura_sucursal,$factura_modalidad);
+                $anio = date('Y');
+                $mes = date('m');
+                $dia = date('d');
+                $hora = date('H');
+                $min = date('i');
+                $seg = date('s');
+                $mseg = (new DateTime())->format('v');
+
+                $fecha_hora_cuf = "$anio$mes$dia$hora$min$seg$mseg";
+                $cuf = generarCuf($factura_nitemisor,$fecha_hora_cuf,$factura_sucursal,$factura_modalidad,1,$tipo_factura,$docsec_codigoclasificador,$factura_numero,$pos,$factura_cufd);
                 // $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                 //     factura_fecha, factura_hora, factura_subtotal, 
                 //     factura_ice, factura_exento, factura_descuento, factura_total, 
@@ -679,29 +687,29 @@ class Venta extends CI_Controller{
                 //     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
                 //     $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.")";
                 $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
-                    factura_fecha, factura_hora, factura_subtotal, 
-                    factura_ice, factura_exento, factura_descuento, factura_total, 
-                    factura_numero, factura_autorizacion, factura_llave, 
-                    factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
-                    usuario_id, tipotrans_id, factura_efectivo, factura_cambio, factura_tokendelegado,
-                    factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
-                    factura_codsistema, factura_puntoventa, factura_sectoreconomico,
-                    factura_ruta, factura_tamanio,cuf,cdi_codigoclasificador,docsec_codigoclasificador) value(".
-                    $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
-                    $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
-                    $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
-                    $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                    $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
-                    $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.",'".$factura_tokendelegado."','".
-                    $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
-                    $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
-                    $factura_ruta."','".$factura_tamanio."',$cuf,$tipo_doc_identidad,$docsec_codigoclasificador)";
+                        factura_fecha, factura_hora, factura_subtotal, 
+                        factura_ice, factura_exento, factura_descuento, factura_total, 
+                        factura_numero, factura_autorizacion, factura_llave, 
+                        factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
+                        factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
+                        usuario_id, tipotrans_id, factura_efectivo, factura_cambio, factura_tokendelegado,
+                        factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
+                        factura_codsistema, factura_puntoventa, factura_sectoreconomico,
+                        factura_ruta, factura_tamanio,factura_cuf,cdi_codigoclasificador,docsec_codigoclasificador) value(".
+                        $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
+                        $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
+                        $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                        $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
+                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
+                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
+                        $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
+                        $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.",'".$factura_tokendelegado."','".
+                        $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
+                        $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
+                        $factura_ruta."','".$factura_tamanio."','$cuf',$tipo_doc_identidad,$docsec_codigoclasificador)";
 
                 $factura_id = $this->Venta_model->ejecutar($sql);
-            
+            // var_dump($factura_id);
             
                 $sql =  "insert into detalle_factura(
                  producto_id,
@@ -720,29 +728,28 @@ class Venta extends CI_Controller{
                 detallefact_unidadfactor)
 
                 (SELECT 
-                  producto_id,
-                  ".$venta_id." as venta_id,          
-                  ".$factura_id." as factura_id,
-                  detalleven_codigo,
-                  detalleven_unidad,
-                  detalleven_cantidad,
-                  producto_nombre,          
-                  detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-                  detalleven_subtotal,
-                 (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-                  detalleven_total * (1 - ".$porcentaje."),     
-                  detalleven_preferencia,
-                  detalleven_caracteristicas,
-                  detalleven_unidadfactor
+                    producto_id,
+                    ".$venta_id." as venta_id,          
+                    ".$factura_id." as factura_id,
+                    detalleven_codigo,
+                    detalleven_unidad,
+                    detalleven_cantidad,
+                    producto_nombre,          
+                    detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                    detalleven_subtotal,
+                    (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                    detalleven_total * (1 - ".$porcentaje."),     
+                    detalleven_preferencia,
+                    detalleven_caracteristicas,
+                    detalleven_unidadfactor
 
                 FROM
-                  detalle_venta_aux
+                    detalle_venta_aux
                 WHERE 
-                  usuario_id=".$usuario_id.")";
-         
+                    usuario_id=".$usuario_id.")";
                 $this->Venta_model->ejecutar($sql);               
-                
-                $this->ultimaventa(1);
+                // var_dump($factura_id);
+                $this->ultimaventa(19);
        //     }
         }
         
@@ -2242,7 +2249,7 @@ function modificarcliente()
 
 
 /*************** funcion para mostrar la vista de la factura******************/
-function ultimaventa($tipo,$factura_id = 0){
+function ultimaventa($factura_id){
     
     if($this->acceso(12)||$this->acceso(30)){
 
@@ -2252,12 +2259,10 @@ function ultimaventa($tipo,$factura_id = 0){
         $venta_id = $venta[0]['venta_id'];
 
         if ($venta_tipodoc==1){ 
-            redirect('factura/imprimir_factura/'.$venta_id."/".$tipo);
-            // redirect("factura/imprimir_factura_id/$factura_id/1");
+            // redirect('factura/imprimir_factura/'.$venta_id."/".$tipo);
+            redirect("factura/imprimir_factura_id/$factura_id/1");
             //redirect('factura/factura_boucher/'.$venta_id);
-
-        }
-        else{
+        }else{
             redirect('factura/imprimir_recibo/'.$venta_id);
             //redirect('factura/recibo_boucher/'.$venta_id);        
         }
