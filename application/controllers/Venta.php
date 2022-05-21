@@ -318,7 +318,7 @@ class Venta extends CI_Controller{
     }
     
     function registrarventa()
-    {  
+    {
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
         
@@ -749,7 +749,7 @@ class Venta extends CI_Controller{
                     usuario_id=".$usuario_id.")";
                 $this->Venta_model->ejecutar($sql);               
                 // var_dump($factura_id);
-                $this->ultimaventa(19);
+                $this->ultimaventa($factura_id);
        //     }
         }
         
@@ -2257,8 +2257,8 @@ function ultimaventa($factura_id){
         $venta = $this->Venta_model->ultima_venta();
         $venta_tipodoc = $venta[0]['venta_tipodoc'];
         $venta_id = $venta[0]['venta_id'];
-
-        if ($venta_tipodoc==1){ 
+        
+        if ($venta_tipodoc==1){
             // redirect('factura/imprimir_factura/'.$venta_id."/".$tipo);
             redirect("factura/imprimir_factura_id/$factura_id/1");
             //redirect('factura/factura_boucher/'.$venta_id);

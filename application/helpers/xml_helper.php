@@ -2,7 +2,7 @@
     /**
      * Carga un archivo XML para su uso
      */
-    function loadXML($archivoXml){
+    function loadXML2($archivoXml){
         $xml = new DOMDocument();
         $doc_xml = site_url("resources/xml/$archivoXml.xml");
         $xml->load($doc_xml);
@@ -152,7 +152,7 @@
         $dosificacion = $CI->Dosificacion_model->get_dosificacion(1);
         // var_dump($factura);
         $doc_xml = $computarizada == 1 ? "facturaComputarizadaCompraVenta" : "facturaElectronicaCompraVenta";
-        $xml = loadXML($doc_xml);
+        $xml = loadXML2($doc_xml);
         // CABECERA
         $xml->getElementsByTagName('nitEmisor')->item(0)->nodeValue = "{$factura['factura_nitemisor']}";
         $xml->getElementsByTagName('razonSocialEmisor')->item(0)->nodeValue = "{$empresa['empresa_nombre']}";

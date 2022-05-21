@@ -4,11 +4,16 @@
      * de comprobar que el XML está bien formado
      * y se ajusta a una estructura definida
      */
-
-    /*
-    $errors = "";
-    $doc = "";
+    /*class Xmlxssd{
     
+        public $errors;
+        public $doc;
+        function __construct()
+    {
+            
+    }*/
+    
+    /*
     function index()
     {
         //$valXSD = new ValidacionXSD();
@@ -38,19 +43,22 @@
             echo "Archivo <b>$filexml</b> o <b>$xsd</b> no existe.";
             return false;
         }
-
+        //$errors = new libXMLError();  //= new stdClass();
+        //$doc    = ""; //new stdClass();
+        $doc = new DOMDocument();
         //Habilita/Deshabilita errores libxml y permite al usuario extraer 
         //información de errores según sea necesario
         libxml_use_internal_errors(true);
         //lee archivo XML
         $myfile = fopen($filexml, "r");
         $contents = fread($myfile, filesize($filexml));
-        $this->doc->loadXML($contents, LIBXML_NOBLANKS);
+        $doc->loadXML($contents, LIBXML_NOBLANKS);
         fclose($myfile);
         // Valida un documento basado en un esquema
-        if (!$this->doc->schemaValidate($xsd)) {
+        if (!$doc->schemaValidate($xsd)) {
             //Recupera un array de errores
-            $this->errors = libxml_get_errors();
+            
+            //$errors->libxml_get_errors();
             return false;
         }
         return true;
@@ -92,5 +100,5 @@
     function setErrors($errors) {
         $this->errors = $errors;
     }
-
+    //}
     
