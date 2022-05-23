@@ -165,6 +165,21 @@
                         </div>
                     </div>
                     <div class="col-md-6">
+                        <label for="tipofac_codigo" class="control-label">Tipo Factura / Documento Ajuste</label>
+                        <div class="form-group">
+                            <select name="tipofac_codigo" class="form-control">
+                                <option value="">- Tipo Factura/Documento Ajuste -</option>
+                                <?php 
+                                    foreach($all_tipoFact as $tipoFact)
+                                    {
+                                        $selected = ($tipoFact['tipofac_codigo'] == $dosificacion['tipofac_codigo']) ? ' selected="selected"' : "";
+                                        echo '<option value="'.$tipoFact['tipofac_codigo'].'" '.$selected.'>'.$tipoFact['tipofac_descripcion'].'</option>';
+                                    } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
                         <label for="docsec_codigoclasificador" class="control-label">Documento Sector</label>
                         <div class="form-group">
                             <select name="docsec_codigoclasificador" class="form-control">

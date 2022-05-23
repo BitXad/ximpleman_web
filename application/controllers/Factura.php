@@ -390,17 +390,29 @@ class Factura extends CI_Controller{
         $base_url = explode('/', base_url());
         //$doc_xml = site_url("resources/xml/$archivoXml.xml");
         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-        $res = validar($directorio.'compra_venta'.$factura[0]['factura_id'].'.xml', $directorio.'compra_venta.xsd');
-        if($res){
-            echo "hola";
-        }else{
-            echo "que tal".$factura_id;
-        }
-        $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
-        if(file_exists($directorio.'compra_venta'.$factura[0]['factura_id'].'.xml')){
-            unlink($directorio.'compra_venta'.$factura[0]['factura_id'].'.xml');
+        // $res = validar(, );
+        // $res = validar("$directorio/compra_venta{$factura[0]['factura_id']}".'.xml', "{$directorio}compra_venta.xsd");
+
+        // require 'ValidacionXSD.php';
+        $valXSD = new ValidacionXSD();
+        if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
+            echo "No ingreso";
+            print $valXSD->mostrarError();
+        }else{
+            echo "Todo Ok";
         }
+        // if($res){
+        //     echo "hola";//comprimir 
+        //     $p = new Phar(site_url('/resources/xml/mi.phar'), 0, 'mi.phar');
+        //     $p['xmlCompraVentaComputarizada.xml'] = $xml;
+        //     $xml_gzip = $p->compress(Phar::GZ); 
+        //     $data['test'] = $xml_gzip;
+        // }else{
+        //     // echo "NO INGRESA";
+            
+        // }
+        $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
         // $data['_view'] = 'factura/factura_carta';
         $data['_view'] = 'factura/factura_carta_new';

@@ -155,8 +155,14 @@
             <div class="col-md-1">
                 <label class="control-label">Documento Sector</label>
             </div>
-            <div class="col-md-11">
+            <div class="col-md-3">
                 <?php echo $dosificacion['docsec_descripcion']; ?>
+            </div>
+            <div class="col-md-1">
+                <label class="control-label">Documento Sector</label>
+            </div>
+            <div class="col-md-7">
+                <?php echo $dosificacion['tipofac_descripcion']; ?>
             </div>
         </div>
         <div class="col-md-12 linea">

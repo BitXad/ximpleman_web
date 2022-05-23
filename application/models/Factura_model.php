@@ -200,6 +200,12 @@ class Factura_model extends CI_Model
         return true;
     }
 
+    function ejecutar2($sql){       
+        $this->db->query($sql);
+        return $this->db->insert_id();
+        // return $this->db->query("select max(f.factura_id) ultimo from factura f")->row_array();
+    }
+
     function consultar($sql)
     {       
         $res = $this->db->query($sql)->result_array();     
@@ -225,4 +231,7 @@ class Factura_model extends CI_Model
             where c.cufd_codigo like '$cufd_codigo'
             ")->row_array();
     }    
+    function ultima_factura(){
+        return $this->db->query("SELECT max(f.factura_id) as ultimo from factura f")->row_array();
+    }
 }

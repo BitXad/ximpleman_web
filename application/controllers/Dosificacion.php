@@ -10,26 +10,26 @@ class Dosificacion extends CI_Controller{
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Dosificacion_model');
-        $this->load->model('Actividad_model');
-        $this->load->model('Leyenda_model');
-        $this->load->model('Estado_model');
-        $this->load->model('Empresa_model');
-        $this->load->model('MensajeServicio_model');
-        $this->load->model('ActividadDocumentoSector_model');
-        $this->load->model('CodEventosSignificativos_model');
-        $this->load->model('CodMotivosAnulacion_model');
-        $this->load->model('Pais_model');
-        $this->load->model('CodTipoDocumentoIdentidad_model');
-        $this->load->model('Tipo_puntoventa_model');
-        $this->load->model('CodTipoDocumentoSector_model');
-        $this->load->model('TipoEmision_model');
-        $this->load->model('Forma_pago_model');
-        $this->load->model('TipoHabitacion_model');
-        $this->load->model('Moneda_model');
-        $this->load->model('Tipo_puntoventa_model');
-        $this->load->model('TipoFactura_model');
-        $this->load->model('Unidad_model');
+        $this->load->model(['Dosificacion_model',
+                            'Actividad_model',
+                            'Leyenda_model',
+                            'Estado_model',
+                            'Empresa_model',
+                            'MensajeServicio_model',
+                            'ActividadDocumentoSector_model',
+                            'CodEventosSignificativos_model',
+                            'CodMotivosAnulacion_model',
+                            'Pais_model',
+                            'CodTipoDocumentoIdentidad_model',
+                            'Tipo_puntoventa_model',
+                            'CodTipoDocumentoSector_model',
+                            'TipoEmision_model',
+                            'Forma_pago_model',
+                            'TipoHabitacion_model',
+                            'Moneda_model',
+                            'Tipo_puntoventa_model',
+                            'TipoFactura_model',
+                            'Unidad_model']);
         //$this->load->library('lib_nusoap/nusoap');    
     
         
@@ -169,6 +169,7 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_sectoreconomico' => $this->input->post('dosificacion_sectoreconomico'),
                     'dosificacion_email' => $this->input->post('dosificacion_email'),
                     'docsec_codigoclasificador' => $this->input->post('docsec_codigoclasificador'),
+                    'tipofac_codigo' => $this->input->post('tipofac_codigo'),
                 );
 
                 $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);            
@@ -181,7 +182,7 @@ class Dosificacion extends CI_Controller{
                 $data['leyendas'] = $this->Leyenda_model->get_all_leyendas();
                 $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
                 $data['all_documentosector'] = $this->Dosificacion_model->get_documento_sector();
-                
+                $data['all_tipoFact'] = $this->TipoFactura_model->get_all_tipoFactura();
                 $data['_view'] = 'dosificacion/edit';
                 $this->load->view('layouts/main',$data);
             }
