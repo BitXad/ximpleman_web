@@ -36,9 +36,9 @@
         <cantidad>10</cantidad>
         <unidadMedida>58</unidadMedida>
         <precioUnitario>2.5</precioUnitario>
-        <montoDescuento xsi:nil="true" />
+        <montoDescuento/>
         <subTotal>25</subTotal>
         <numeroSerie xsi:nil="true" />
-        <numeroImei xsi:nil="true" />
+        <numeroImei />
     </detalle>
 </facturaComputarizadaCompraVenta>

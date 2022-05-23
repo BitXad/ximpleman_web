@@ -188,7 +188,7 @@
             $xml->getElementsByTagName('codigoProducto')->item(0)->nodeValue = "{$df['detallefact_codigo']}";
             $xml->getElementsByTagName('descripcion')->item(0)->nodeValue = "{$df['detallefact_descripcion']}";
             $xml->getElementsByTagName('cantidad')->item(0)->nodeValue = "{$df['detallefact_cantidad']}";
-            $xml->getElementsByTagName('unidadMedida')->item(0)->nodeValue = "{$df['detallefact_unidad']}";
+            $xml->getElementsByTagName('unidadMedida')->item(0)->nodeValue = "{$df['unidad_codigo']}";
             $xml->getElementsByTagName('precioUnitario')->item(0)->nodeValue = "{$df['detallefact_precio']}";
             $xml->getElementsByTagName('montoDescuento')->item(0)->nodeValue = "{$df['detallefact_descuento']}";
             $xml->getElementsByTagName('subTotal')->item(0)->nodeValue = "{$df['detallefact_subtotal']}";
