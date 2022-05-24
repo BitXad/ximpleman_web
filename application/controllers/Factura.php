@@ -404,8 +404,8 @@ class Factura extends CI_Controller{
         }
         
         //$data = implode("", file("bigfile.txt"));
-        $data = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
-        $gzdata = gzencode($data, 9);
+        $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
+        $gzdata = gzencode($datos, 9);
         $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
         fwrite($fp, $gzdata);
         fclose($fp);
