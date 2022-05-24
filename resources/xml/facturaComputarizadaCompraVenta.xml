@@ -24,6 +24,10 @@
         <codigoMoneda>1</codigoMoneda>
         <tipoCambio>1</tipoCambio>
         <montoTotalMoneda>25</montoTotalMoneda>
+        <montoGiftCard xsi:nil="true"></montoGiftCard>        
+        <descuentoAdicional xsi:nil="true"></descuentoAdicional>
+        <codigoExcepcion xsi:nil="true"></codigoExcepcion>  
+        <cafc xsi:nil="true"></cafc>
         <leyenda>Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.</leyenda>
         <usuario>pperez</usuario>
         <codigoDocumentoSector>1</codigoDocumentoSector>
