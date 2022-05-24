@@ -304,10 +304,17 @@ class Venta extends CI_Controller{
     
     function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
     {
+        // var_dump(isset($dosificacion_llave) ? "si dosificacion_llave":"no dosificacion_llave");
+        // var_dump(isset($dosificacion_autorizacion) ? "si dosificacion_autorizacion":"no dosificacion_autorizacion");
+        // var_dump(isset($dosificacion_numfact) ? "si dosificacion_numfact":"no dosificacion_numfact");
+        // var_dump(isset($nit) ? "si nit":"no nit");
+        // var_dump(isset($fecha_trans) ? "si fecha_trans":"no fecha_trans");
+        // var_dump(isset($monto) ? "si monto":"no monto");
 
         //include 'ControlCode.php';
 
-        $code = $this->controlcode->generate($dosificacion_autorizacion,//Numero de autorizacion
+        $code = $this->controlcode->generate(
+                                                $dosificacion_autorizacion,//Numero de autorizacion
                                                 $dosificacion_numfact,//Numero de factura
                                                 $nit,//Número de Identificación Tributaria o Carnet de Identidad
                                                 str_replace('-','',$fecha_trans),//fecha de transaccion de la forma AAAAMMDD
@@ -331,7 +338,7 @@ class Venta extends CI_Controller{
                "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,".
                "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,".
                "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id".
-               ") value(".$cad.")";
+               ") value($cad)";
         
         $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
         $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
@@ -669,6 +676,9 @@ class Venta extends CI_Controller{
                 $seg = date('s');
                 $mseg = (new DateTime())->format('v');
 
+                $ultima_factura = $this->Factura_model->ultima_factura();
+                // $factura_id = $ultima_factura['ultimo'] + 1;
+
                 $fecha_hora_cuf = "$anio$mes$dia$hora$min$seg$mseg";
                 $cuf = generarCuf($factura_nitemisor,$fecha_hora_cuf,$factura_sucursal,$factura_modalidad,1,$tipo_factura,$docsec_codigoclasificador,$factura_numero,$pos,$factura_cufd);
                 // $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
@@ -686,7 +696,7 @@ class Venta extends CI_Controller{
                 //     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
                 //     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
                 //     $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.")";
-                $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
+                $sql2 = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                         factura_fecha, factura_hora, factura_subtotal, 
                         factura_ice, factura_exento, factura_descuento, factura_total, 
                         factura_numero, factura_autorizacion, factura_llave, 
@@ -708,11 +718,10 @@ class Venta extends CI_Controller{
                         $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
                         $factura_ruta."','".$factura_tamanio."','$cuf',$tipo_doc_identidad,$docsec_codigoclasificador)";
 
-                $factura_id = $this->Venta_model->ejecutar($sql);
-            // var_dump($factura_id);
+                $factura_id= $this->Factura_model->ejecutar2($sql2);
             
                 $sql =  "insert into detalle_factura(
-                 producto_id,
+                producto_id,
                 venta_id,
                 factura_id,
                 detallefact_codigo,
@@ -747,7 +756,7 @@ class Venta extends CI_Controller{
                     detalle_venta_aux
                 WHERE 
                     usuario_id=".$usuario_id.")";
-                $this->Venta_model->ejecutar($sql);               
+                $this->Factura_model->ejecutar($sql);               
                 // var_dump($factura_id);
                 $this->ultimaventa($factura_id);
        //     }
@@ -3268,7 +3277,7 @@ function anular_venta($venta_id){
             
             $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
             $this->Venta_model->ejecutar($sql);
-            // $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+            $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
             $facturaCufd = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
             $anio = date('Y');
             $mes = date('m');
@@ -3294,6 +3303,7 @@ function anular_venta($venta_id){
                                     $factura_numero,
                                     $pos,
                                     $facturaCufd);
+            $fecha_hora = $factura_fecha_hora;
             // $sql = "insert into factura(estado_id, factura_fechaventa, 
             //         factura_fecha, factura_hora, factura_subtotal, 
             //         factura_ice, factura_exento, factura_descuento, factura_total, 

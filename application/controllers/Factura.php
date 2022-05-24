@@ -400,7 +400,16 @@ class Factura extends CI_Controller{
             echo "No ingreso";
             print $valXSD->mostrarError();
         }else{
-            echo "Todo Ok";
+            // COMPRECION XML EN GZIP
+            $data = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
+            $gzdata = gzencode($data, 9);
+            $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
+            fwrite($fp, $gzdata);
+            fclose($fp);
+            
+            // HASH (SHA 256)
+            $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
+            var_dump($xml_comprimido);
         }
         
         //$data = implode("", file("bigfile.txt"));
