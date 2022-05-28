@@ -397,13 +397,8 @@ class Factura extends CI_Controller{
         // require 'ValidacionXSD.php';
         $valXSD = new ValidacionXSD();
         if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
-<<<<<<< Updated upstream
             // echo "No ingreso";
             print $valXSD->mostrarError();
-=======
-            echo "No ingreso";
-            //print $valXSD->mostrarError();
->>>>>>> Stashed changes
         }else{
             // COMPRECION XML EN GZIP
             $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
@@ -423,42 +418,7 @@ class Factura extends CI_Controller{
         
         $eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
         //$data = implode("", file("bigfile.txt"));
-<<<<<<< Updated upstream
         
-=======
-        /*$datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
-        $gzdata = gzencode($datos, 9);
-        $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
-        fwrite($fp, $gzdata);
-        fclose($fp);*/
-        /* ************************INICIO Para Electronica en Linea ************************* */
-        $doc = new DOMDocument();
-  
-        // Load XML
-        $doc->loadXML($directorio."compra_venta".$factura[0]['factura_id'].".xml");
-
-        // Create an heading element on DOMDocument object
-        //  $h1 = $doc->createElement('h1');
-
-        // Append the child
-        //$doc->documentElement->appendChild($h1);
-
-        // Save the data with comments
-        //$stringdata = $doc->C14NFile($directorio.'new.txt', false, true);
-        $stringdata = $doc->C14NFile($directorio.'new.txt');
-        echo $stringdata."QW";
-        /* ************************F I N  Para Electronica en Linea ************************* */
->>>>>>> Stashed changes
-        // if($res){
-        //     echo "hola";//comprimir 
-        //     $p = new Phar(site_url('/resources/xml/mi.phar'), 0, 'mi.phar');
-        //     $p['xmlCompraVentaComputarizada.xml'] = $xml;
-        //     $xml_gzip = $p->compress(Phar::GZ); 
-        //     $data['test'] = $xml_gzip;
-        // }else{
-        //     // echo "NO INGRESA";
-            
-        // }
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
         // $data['_view'] = 'factura/factura_carta';
