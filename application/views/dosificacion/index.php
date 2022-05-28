@@ -159,7 +159,7 @@
                 <?php echo $dosificacion['docsec_descripcion']; ?>
             </div>
             <div class="col-md-1">
-                <label class="control-label">Documento Sector</label>
+                <label class="control-label">Documento Ajuste</label>
             </div>
             <div class="col-md-7">
                 <?php echo $dosificacion['tipofac_descripcion']; ?>

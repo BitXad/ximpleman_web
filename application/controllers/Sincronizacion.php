@@ -4,28 +4,30 @@ class Sincronizacion extends CI_Controller{
     private $session_data = "";
     function __construct(){
         parent::__construct();
-        $this->load->model('Sincronizacion_model');
-        $this->load->model('Dosificacion_model');
-        $this->load->model('Actividad_model');
-        $this->load->model('Leyenda_model');
-        $this->load->model('Estado_model');
-        $this->load->model('Empresa_model');
-        $this->load->model('MensajeServicio_model');
-        $this->load->model('ActividadDocumentoSector_model');
-        $this->load->model('CodEventosSignificativos_model');
-        $this->load->model('CodMotivosAnulacion_model');
-        $this->load->model('Pais_model');
-        $this->load->model('CodTipoDocumentoIdentidad_model');
-        $this->load->model('Tipo_puntoventa_model');
-        $this->load->model('CodTipoDocumentoSector_model');
-        $this->load->model('TipoEmision_model');
-        $this->load->model('Forma_pago_model');
-        $this->load->model('TipoHabitacion_model');
-        $this->load->model('Moneda_model');
-        $this->load->model('Tipo_puntoventa_model');
-        $this->load->model('TipoFactura_model');
-        $this->load->model('Unidad_model');
-        $this->load->model('ProductosServicios_model');
+        $this->load->model([
+            'Sincronizacion_model',
+            'Dosificacion_model',
+            'Actividad_model',
+            'Leyenda_model',
+            'Estado_model',
+            'Empresa_model',
+            'MensajeServicio_model',
+            'ActividadDocumentoSector_model',
+            'CodEventosSignificativos_model',
+            'CodMotivosAnulacion_model',
+            'Pais_model',
+            'CodTipoDocumentoIdentidad_model',
+            'Tipo_puntoventa_model',
+            'CodTipoDocumentoSector_model',
+            'TipoEmision_model',
+            'Forma_pago_model',
+            'TipoHabitacion_model',
+            'Moneda_model',
+            'Tipo_puntoventa_model',
+            'TipoFactura_model',
+            'Unidad_model',
+            'ProductosServicios_model',
+        ]);
         //$this->load->library('lib_nusoap/nusoap');    
         
         if ($this->session->userdata('logged_in')) {

@@ -3302,7 +3302,7 @@ function anular_venta($venta_id){
                                     $tipo_documento_sector,
                                     $factura_numero,
                                     $pos,
-                                    $facturaCufd);
+                                    $facturaCufd['cufd_codigocontrol']);
             $fecha_hora = $factura_fecha_hora;
             // $sql = "insert into factura(estado_id, factura_fechaventa, 
             //         factura_fecha, factura_hora, factura_subtotal, 
