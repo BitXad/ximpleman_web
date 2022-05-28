@@ -467,7 +467,7 @@ class Detalle_venta extends CI_Controller{
                 $this->Detalle_factura_aux_model->add_detalleventa_factura_aux($params);
             }
             //$datos = $this->Detalle_factura_aux_model->getall_detalle_factura_aux($venta_id);
-             echo json_encode("ok");
+            echo json_encode("ok");
         }
         else{
             echo json_encode(null);

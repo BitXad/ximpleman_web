@@ -397,27 +397,27 @@ class Factura extends CI_Controller{
         // require 'ValidacionXSD.php';
         $valXSD = new ValidacionXSD();
         if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
-            echo "No ingreso";
+            // echo "No ingreso";
             print $valXSD->mostrarError();
         }else{
             // COMPRECION XML EN GZIP
-            $data = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
-            $gzdata = gzencode($data, 9);
+            $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
+            $gzdata = gzencode($datos, 9);
             $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
+            // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
             fwrite($fp, $gzdata);
             fclose($fp);
-            
+
+            // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml");
+
             // HASH (SHA 256)
             $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
-            var_dump($xml_comprimido);
+            var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
+            // var_dump($xml_gzip);
         }
         
+        $eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
         //$data = implode("", file("bigfile.txt"));
-        $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
-        $gzdata = gzencode($datos, 9);
-        $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
-        fwrite($fp, $gzdata);
-        fclose($fp);
         
         // if($res){
         //     echo "hola";//comprimir 
@@ -1322,169 +1322,135 @@ class Factura extends CI_Controller{
             
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
-    }    
-    // /**
-    //  * Crea la factura de compra venta 
-    //  * 1 = COMPUTARIZADA
-    //  * 2 = ELECTRONICA
-    //  */
-    // function generarfacturaCompra_ventaXML($computarizada = 1){
-    //     $doc_xml = $computarizada == 1 ? "facturaComputarizadaCompraVenta" : "facturaElectronicaCompraVenta";
-    //     $xml = loadXML($doc_xml);
-    //     // CABECERA
-    //     $xml->getElementsByTagName('nitEmisor')->item(0)->nodeValue = "5152377019";
-    //     $xml->getElementsByTagName('razonSocialEmisor')->item(0)->nodeValue = "holaMundo";
-    //     $xml->getElementsByTagName('municipio')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('telefono')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('numeroFactura')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('cufd')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('cuf')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('codigoSucursal')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('direccion')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('codigoPuntoVenta')->item(0)->nodeValue = "infwen";
-    //     $xml->getElementsByTagName('fechaEmision')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('nombreRazonSocial')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('codigoTipoDocumentoIdentidad')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('complemento')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('codigoCliente')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('codigoMetodoPago')->item(0)->nodeValue = "0";
-    //     $xml->getElementsByTagName('numeroDocumento')->item(0)->nodeValue = "1";
-    //     $xml->getElementsByTagName('montoTotalSujetoIva')->item(0)->nodeValue = "23";
-    //     $xml->getElementsByTagName('codigoMoneda')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('tipoCambio')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('montoTotal')->item(0)->nodeValue = "84";
-    //     $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "84";
-    //     $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('usuario')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('codigoDocumentoSector')->item(0)->nodeValue = "";
-    //     // CABECERA
-    //     // $nit =  $xml->getElementsByTagName('nitEmisor')->item(0)->nodeValue;
-    //     // DETALLE
-    //     $xml->getElementsByTagName('actividadEconomica')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('codigoProductoSin')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('codigoProducto')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('descripcion')->item(0)->nodeValue = "enfoern";
-    //     $xml->getElementsByTagName('cantidad')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('unidadMedida')->item(0)->nodeValue = "";
-    //     $xml->getElementsByTagName('subTotal')->item(0)->nodeValue = "23";
-    //     // DETALLE
-    //     // mp_helper("Hola");
-    //     // generarCuf();
-
-    //     var_dump($xml);
-    // }
-    // /**
-    //  * Carga un archivo XML para su uso
-    //  */
-    // function loadXML($archivoXml){
-    //     $xml = new DOMDocument();
-    //     $doc_xml = site_url("resources/xml/$archivoXml.xml");
-    //     $xml->load($doc_xml);
-    //     return $xml;
-    // }
-    
-    // function generarCuf($factura_nitemisor,//nit emisor
-    //                     $fecha_hora,//fechaYHora Ejem 20190113163721231
-    //                     $factura_sucursal,//surcursal 0
-    //                     $factura_modalidad,// modalidad
-    //                     $tipo_emision,// tipo de emision
-    //                     $tipo_factura,//tipo de factura / documento ajuste
-    //                     $tipo_documento_sector,//tipo documento sector
-    //                     $factura_numero,//numero de factura
-    //                     $pos,//punto de venta
-    //                     $cufd){// Codigo Unico de Facturacion Diaria
-    //     $factura_nitemisor = $this->add_ceros($factura_nitemisor,13);
-    //     $fecha_hora = $this->add_ceros($fecha_hora,17);
-    //     $factura_sucursal = $this->add_ceros($factura_sucursal,4);
-    //     $factura_modalidad = $this->add_ceros($factura_modalidad,1);
-    //     $tipo_emision = $this->add_ceros($tipo_emision,1);
-    //     $tipo_factura = $this->add_ceros($tipo_factura,1);
-    //     $tipo_documento_sector = $this->add_ceros($tipo_documento_sector,2);
-    //     $factura_numero = $this->add_ceros($factura_numero,10);
-    //     $pos = $this->add_ceros($pos,4);
+    } 
+    /**
+     * Enviar factura a impuestos
+     */
+    function mandarFactura($direccion_archivo_zip, $archivo_zip){
+        static $array;
+        // $sincronizacion_id = $this->input->post('codigo_sincronizar');
+        if(!isset($array['dosificacion'])){
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+            $array['dosificacion'] = $dosificacion;
+        }else{
+            $dosificacion = $array['dosificacion'];
+        }
         
-    //     $cuf = "$factura_nitemisor$fecha_hora$factura_sucursal$factura_modalidad$tipo_emision$tipo_factura$tipo_documento_sector$factura_numero$pos";
+        $wsdl = $dosificacion['dosificacion_sincronizacion'];
+        $token = $dosificacion['dosificacion_tokendelegado'];
+
+        $comunicacion = $this->verificar_comunicacion($token,$wsdl);
+        if ($comunicacion) {
+
+            $parametros = ["SolicitudSincronizacion" => [
+                "codigoAmbiente"            =>  $dosificacion['dosificacion_ambiente'],
+                "codigoDocumentoSector"     =>  $dosificacion['dosificacion_ambiente'],
+                "codigoEmision"             =>  $dosificacion['dosificacion_ambiente'],
+                "codigoModalidad"           =>  $dosificacion['dosificacion_ambiente'],
+                "codigoPuntoVenta"          =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoSistema"             =>  $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"            =>  $dosificacion['dosificacion_codsucursal'],
+                "cufd"                      =>  $dosificacion['dosificacion_cuis'],
+                "cuis"                      =>  $dosificacion['dosificacion_cuis'],
+                "nit"                       =>  $dosificacion['dosificacion_nitemisor'],
+                "tipoFacturaDocumento"      =>  $dosificacion['dosificacion_nitemisor'],
+                "archivo"                   =>  $dosificacion['dosificacion_nitemisor'],
+                "fechaEnvio"                =>  $dosificacion['dosificacion_nitemisor'],
+                "hashArchivo"               =>  $dosificacion['dosificacion_nitemisor'],
+            ]];
+        }
         
-    //     $mod11 = $this->obtenerModulo11($cuf);
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
 
-    //     $cuf = "$cuf$mod11";
-    //     //llamada a funcion para convertir a base 16
-    //     $cuf = $this->convBase16($cuf,'0123456789','0123456789ABCDEF');
-    //     $cuf = "$cuf$cufd";
-    //     return $cuf;
-    // }
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
 
-    // function add_ceros($str, $longitud){
-    //     $longitud_str = strlen($str);
-    //     $cero = '0';
-    //     if($longitud_str < $longitud){
-    //         for($i = 1; $i<=$longitud-$longitud_str;$i++){
-    //             $str = $cero."".$str;
-    //         }
-    //     }
-    //     return $str;
-    // }
-    // /**CONVIERTE A BASE 16 */
-    // function convBase16($numberInput, $fromBaseInput, $toBaseInput){
-    //     if ($fromBaseInput==$toBaseInput) return $numberInput;
-    //     $fromBase = str_split($fromBaseInput,1);
-    //     $toBase = str_split($toBaseInput,1);
-    //     $number = str_split($numberInput,1);
-    //     $fromLen=strlen($fromBaseInput);
-    //     $toLen=strlen($toBaseInput);
-    //     $numberLen=strlen($numberInput);
-    //     $retval='';
-    //     if ($toBaseInput == '0123456789'){
-    //         $retval=0;
-    //         for ($i = 1;$i <= $numberLen; $i++)
-    //             $retval = bcadd($retval, bcmul(array_search($number[$i-1], $fromBase),bcpow($fromLen,$numberLen-$i)));
-    //         return $retval;
-    //     }
-    //     if ($fromBaseInput != '0123456789')
-    //         $base10=$this->convBase16($numberInput, $fromBaseInput, '0123456789');
-    //     else
-    //         $base10 = $numberInput;
-    //     if ($base10<strlen($toBaseInput))
-    //         return $toBase[$base10];
-    //     while($base10 != '0')
-    //     {
-    //         $retval = $toBase[(bcmod($base10,$toLen))].$retval;
-    //         $base10 = bcdiv($base10,$toLen,0);
-    //     }
-    //     return $retval;
-    // }
 
-    // function obtenerModulo11($pCadena) {
-    //     // $vDigito = $this->calculaDigitoMod11($pCadena, 1, 9, false);
-    //     $vDigito = $this->getMod11($pCadena);
-    //     return $vDigito;
-    // }
+            // $cliente->__setSoapHeaders([$headers]);
+ 
+            $fileName = new SoapVar($direccion_archivo_zip, XSD_STRING);
+            
+            // $archivo = $direccion_archivo_zip;
+            // $handle = file($archivo);
+            // $bytes = unpack("C*", $handle);
+            // var_dump($bytes);
+            // $contentFile = new SoapVar($bytes, XSD_BYTE);
 
-    // // MODULO 11
-    // function getMod11( $num, $retorno_10='K' ){
-    //     $digits = str_replace( array( '.', ',' ), array( ''.'' ), strrev($num ) );
-    //     if ( ! ctype_digit( $digits ) )
-    //         return false;
+            $handle = fopen($direccion_archivo_zip, "rb");
+            $contents = fread($handle, filesize($direccion_archivo_zip));
+            fclose($handle);
+            // $b= unpack("C*",$contents);
+            $b = filesize($direccion_archivo_zip);
+            // $b = $get_zip_originalsize($direccion_archivo_zip);
+            var_dump($b);
+            // $result = $cliente->__soapCall('sendBill',
+            //     array('sendBill' =>
+            //         array(
+            //             'fileName' => $fileName,
+            //             'contentFile' => $contentFile
+            //         )
+            //     )
+            // );
 
-    //     $sum = 0;
-    //     $factor = 2;
-        
-    //     for( $i=0;$i<strlen( $digits ); $i++ ){
-    //         $sum += substr( $digits,$i,1 ) * $factor;
-    //         if ( $factor == 7 )
-    //             $factor = 2;
-    //         else
-    //             $factor++;
-    //     }
+            
+            $resultados = $cliente->SolicitudServicioRecepcionFactura($parametros);
 
-    //     $dv = 11 - ($sum % 11);
-    
-    //     if ( $dv < 10 )
-    //         return $dv;
+            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
 
-    //     if ( $dv == 11 )
-    //         return 0;
+            if($transaccion){
+                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
+                $this->Unidad_model->truncate_table();
+                foreach ($listaCodigos as $codigo) {
+                    $params = array(
+                        'unidad_codigo'    => $codigo->codigoClasificador,
+                        'unidad_nombre'    => $codigo->descripcion
+                    );
+                    $this->Unidad_model->add_unidad($params);
+                }
+            }else{
+                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
+                $mensaje = "$mensaje->codigo $mensaje->descripcion";
+                // var_dump($mensaje);
+            }
+            return $transaccion;
+        }catch(Exception $e){
+            // var_dump("No se realizo la sincronizacion");
+            return false;
+        }
 
-    //     return $retorno_10;
-    // }
+    }
+
+    function verificar_comunicacion($token,$wsdl){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token"
+                )
+            );
+
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->verificarComunicacion();
+
+            $transaccion = $resultados->return->transaccion;
+            return $transaccion;
+        }catch(Exception $e){
+            return false;
+        }
+    }
 }
