@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>5152377019</nitEmisor>
+        <razonSocialEmisor>PASSWORD</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>(591) 4511518 * (591) 79999097</telefono>
+        <numeroFactura>233</numeroFactura>
+        <cuf>1608A399D64B137C21268EA9C4F705AC4523CE807A5</cuf>
+        <cufd>BQXxCKlhQRkE=NzjQ0NjJDQzVEMjc=Q0EoWUpSTUZXVUFFFN0E2NTQ2RTA4Q</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-05-24T15:38:40.061</fechaEmision>
+        <nombreRazonSocial>JUAN ADRIAN LOPEZ</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>3544223</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>-</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta xsi:nil="true"/>
+        <montoTotal>765.00</montoTotal>
+        <montoTotalSujetoIva>765.00</montoTotalSujetoIva>
+        <codigoMoneda></codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>765.00</montoTotalMoneda>
+        <montoGiftCard xsi:nil="true"/>        
+        <descuentoAdicional xsi:nil="true"/>
+        <codigoExcepcion xsi:nil="true"/>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: Está prohibido importar, distribuir o comercializar productos expirados o prontos a expirar.</leyenda>
+        <usuario>DIRLENIA ROJAS AGUILAR</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    <detalle>
+        <actividadEconomica>465000</actividadEconomica>
+        <codigoProductoSin></codigoProductoSin>
+        <codigoProducto>TEC-00148</codigoProducto>
+        <descripcion>TECLADO FLEXIBLE KEYBOARD</descripcion>
+        <cantidad>9</cantidad>
+        <unidadMedida></unidadMedida>
+        <precioUnitario>85.00</precioUnitario>
+        <montoDescuento>0.00</montoDescuento>
+        <subTotal>765.00</subTotal>
+        <numeroSerie xsi:nil="true">, , </numeroSerie>
+        <numeroImei>null</numeroImei>
+    </detalle>
+</facturaComputarizadaCompraVenta>
