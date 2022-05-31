@@ -389,6 +389,7 @@ class Cuotum_model extends CI_Model
             left join producto p on p.producto_id = dv.producto_id 
             where c.venta_id is not null
             and c.estado_id = 8
+            and c2.monto_deuda > 0
             $condicion1
             $condicion2
             and c2.cuota_fechalimite < now()
