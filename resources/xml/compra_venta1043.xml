@@ -5,25 +5,25 @@
         <razonSocialEmisor>PASSWORD</razonSocialEmisor>
         <municipio>CERCADO - COCHABAMBA</municipio>
         <telefono>(591) 4511518 * (591) 79999097</telefono>
-        <numeroFactura>229</numeroFactura>
-        <cuf>1608A399D64B137C1F7BA65F1E7E9A36E4745E1ED26</cuf>
-        <cufd>BQXxCKlhQRkE=NzjQ0NjJDQzVEMjc=Q0EoWUpSTUZXVUFFFN0E2NTQ2RTA4Q</cufd>
+        <numeroFactura>241</numeroFactura>
+        <cuf>1608A399D64B14693F343A26BEDE4A6F5BC55F43CA3BQXxCKlhQRkE=NzjQ0NjJDQzVEMjc=Q2VQYWt</cuf>
+        <cufd>BQXxCKlhQRkE=NzjQ0NjJDQzVEMjc=Q2VQYWtRWkZXVUFFFN0E2NTQ2RTA4Q</cufd>
         <codigoSucursal>0</codigoSucursal>
         <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
         <codigoPuntoVenta>0</codigoPuntoVenta>
-        <fechaEmision>20220524151726119</fechaEmision>
-        <nombreRazonSocial>ABIGAIL PEREDO TERRAZAS</nombreRazonSocial>
+        <fechaEmision>2022-06-01T10:28:34.486</fechaEmision>
+        <nombreRazonSocial>ADEMAR ERGUETA</nombreRazonSocial>
         <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
-        <numeroDocumento>708113855</numeroDocumento>
+        <numeroDocumento>6801209</numeroDocumento>
         <complemento></complemento>
         <codigoCliente>-</codigoCliente>
         <codigoMetodoPago>1</codigoMetodoPago>
         <numeroTarjeta xsi:nil="true"/>
-        <montoTotal>85.00</montoTotal>
-        <montoTotalSujetoIva>85.00</montoTotalSujetoIva>
+        <montoTotal>120.00</montoTotal>
+        <montoTotalSujetoIva>120.00</montoTotalSujetoIva>
         <codigoMoneda></codigoMoneda>
         <tipoCambio>1</tipoCambio>
-        <montoTotalMoneda>85.00</montoTotalMoneda>
+        <montoTotalMoneda>120.00</montoTotalMoneda>
         <montoGiftCard xsi:nil="true"/>        
         <descuentoAdicional xsi:nil="true"/>
         <codigoExcepcion xsi:nil="true"/>  
@@ -34,15 +34,15 @@
     </cabecera>
     <detalle>
         <actividadEconomica>465000</actividadEconomica>
-        <codigoProductoSin></codigoProductoSin>
-        <codigoProducto>TEC-00148</codigoProducto>
-        <descripcion>TECLADO FLEXIBLE KEYBOARD</descripcion>
-        <cantidad>1</cantidad>
+        <codigoProductoSin>61182</codigoProductoSin>
+        <codigoProducto>TEC-00149</codigoProducto>
+        <descripcion>TECLADO MULTIMEDIA SURE</descripcion>
+        <cantidad>2</cantidad>
         <unidadMedida></unidadMedida>
-        <precioUnitario>85.00</precioUnitario>
+        <precioUnitario>60.00</precioUnitario>
         <montoDescuento>0.00</montoDescuento>
-        <subTotal>85.00</subTotal>
-        <numeroSerie xsi:nil="true"></numeroSerie>
-        <numeroImei>null</numeroImei>
+        <subTotal>120.00</subTotal>
+        <numeroSerie xsi:nil="true">, </numeroSerie>
+        <numeroImei></numeroImei>
     </detalle>
 </facturaComputarizadaCompraVenta>

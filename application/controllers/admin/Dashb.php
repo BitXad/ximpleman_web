@@ -24,6 +24,8 @@ class Dashb extends CI_Controller
         $this->load->model('Parametro_model');
         $this->load->model('Caja_model');
         $this->load->model('Moneda_model');
+        $this->load->model('Rol_usuario_model');
+        $this->load->model('Tipo_usuario_model');
         // $this->load->model('Dashb_model');
 
         $this->session_data = $this->session->userdata('logged_in');
@@ -146,12 +148,12 @@ class Dashb extends CI_Controller
         $this->acceso();
 
         $session_data = $this->session->userdata('logged_in');
-
+        $rolusuario = $this->Rol_usuario_model->getall_rolusuario($session_data['tipousuario_id']);
             $data = array(
                 'usuario_login' => $session_data['usuario_login'],
                 'usuario_id' => $session_data['usuario_id'],
                 'usuario_nombre' => $session_data['usuario_nombre'],
-                'rol' => $this->getRol($session_data['tipousuario_id']),
+                'rol' => $rolusuario,
                 'tipousuario_id' => $session_data['tipousuario_id'],
                 'usuario_imagen' => $session_data['usuario_imagen'],
                 'usuario_email' => $session_data['usuario_email'],
@@ -181,14 +183,15 @@ class Dashb extends CI_Controller
         $this->form_validation->set_rules('rclave', 'Repetir Password', 'trim|required');
         $this->form_validation->set_rules('login', 'Login', 'trim|required|min_length[4]|max_length[50]|callback_hay_login2');//OJO
         $this->form_validation->set_message('hay_login2', 'El login ya se registro, escriba uno diferente');
-
+        $rolusuario = $this->Rol_usuario_model->getall_rolusuario($this->session_data['tipousuario_id']);
+        $tipousuario_nombre = $this->Tipo_usuario_model->get_tipousuario_nombre($result->tipousuario_id);
         if ($this->form_validation->run() == FALSE) {   //validacion falla
-
+            
             $data = array(
                 'usuario_login' => $this->session_data['usuario_login'],
                 'usuario_id' => $this->session_data['usuario_id'],
                 'usuario_nombre' => $this->session_data['usuario_nombre'],
-                'rol' => $this->getRol($this->session_data['tipousuario_id']),
+                'rol' => $rolusuario,
                 'tipousuario_id' => $this->session_data['tipousuario_id'],
                 'usuario_imagen' => $this->session_data['usuario_imagen'],
                 'usuario_email' => $this->session_data['usuario_email'],
@@ -208,37 +211,68 @@ class Dashb extends CI_Controller
 //ini
             $idu = $this->session_data['usuario_id'];
             $foto = $this->input->post('foto');
+            $foto1 = $this->input->post('foto');
 
             if (!empty($_FILES['chivo']['name'])){
-                $this->load->library('image_lib');
-                $config['upload_path'] = './resources/images/usuarios';
-                $config['allowed_types'] = 'gif|jpg|png';
-                $config['max_size'] = 450;
-                $config['max_width'] = 1024;
-                $config['max_height'] = 768;
+                    $this->load->library('image_lib');
+                    $config['upload_path'] = './resources/images/usuarios/';
+                    $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 0;
+                    $config['max_height'] = 0;
 
-                $new_name = time();
-                $config['file_name'] = $new_name;
-                $config['file_ext_tolower'] = TRUE;
+                    $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
 
-                $this->load->library('upload', $config);
-                $this->upload->do_upload('chivo');
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('chivo');
 
-                $img_data = $this->upload->data();
-                $extension = $img_data['file_ext'];
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/images/usuarios/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 400;
+                        $conf['height'] = 300;
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
+                    }
+                    /* ********************F I N  para resize***************************** */
+                    
+                    $base_url = explode('/', base_url());
+                    
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/usuarios/';
+                    
+                    if(isset($foto1) && !empty($foto1)){
+                        if(file_exists($directorio.$foto1)){
+                            unlink($directorio.$foto1);
+                            $mimagenthumb = "thumb_".$foto1;
+                            if(file_exists($directorio.$mimagenthumb)){
+                                unlink($directorio.$mimagenthumb);
+                            }
+                        }
+                    }
+                    $confi['image_library'] = 'gd2';
+                    $confi['source_image'] = './resources/images/usuarios/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/images/usuarios/'."thumb_".$new_name.$extension;
+                    $confi['create_thumb'] = FALSE;
+                    $confi['maintain_ratio'] = TRUE;
+                    $confi['width'] = 100;
+                    $confi['height'] = 100;
 
-                $confi['image_library'] = 'gd2';
-                $confi['source_image'] = './resources/images/usuarios/' . $new_name . $extension;
-                $confi['create_thumb'] = TRUE;
-                $confi['maintain_ratio'] = TRUE;
-                $confi['width'] = 40;
-                $confi['height'] = 40;
+                    $this->image_lib->clear();
+                    $this->image_lib->initialize($confi);
+                    $this->image_lib->resize();
 
-                $this->image_lib->clear();
-                $this->image_lib->initialize($confi);
-                $this->image_lib->resize();
-
-                $foto = $new_name . $extension;
+                    $foto = $new_name.$extension;
             }
 
 
@@ -257,30 +291,25 @@ class Dashb extends CI_Controller
 
                     $path_parts = pathinfo('./resources/images/usuarios/' . $usuario->usuario_imagen);
                     $thumb =  'thumb_'.$path_parts['filename'] .'.'. $path_parts['extension'];
-
-                    $this->load->model('rol_model');
-                    $permisos = $this->rol_model->get_permisos($usuario->tipousuario_id);
-
-                    $descrip = array();
-                    foreach ($permisos as $per){
-                        array_push($descrip, $per->rol_descripcion);
-                    }
-
+                    
+                    $this->load->model('Parametro_model');
+                    $parametro = $this->Parametro_model->get_parametros();
+                    
                     $sess_array = array(
-                        'usuario_login' => $usuario->usuario_login,
-                        'usuario_id' => $usuario->usuario_id,
-                        'usuario_nombre' => $usuario->usuario_nombre,
-                        'estado_id' => $usuario->estado_id,
-                        'tipousuario_id' => $usuario->tipousuario_id,
-                        'usuario_imagen' => $usuario->usuario_imagen,
-                        'usuario_email' => $usuario->usuario_email,
-                        'usuario_clave' => $usuario->usuario_clave,
-                        'thumb' => $thumb,
-                        'rol' => $this->getRol($usuario->tipousuario_id),
-                        'permisos' => $descrip,
-                        'codigo' => $this->get_codigo_empresa()
-
-                    );
+                    'usuario_login' => $usuario->usuario_login,
+                    'usuario_id' => $usuario->usuario_id,
+                    'usuario_nombre' => $usuario->usuario_nombre,
+                    'estado_id' => $usuario->estado_id,
+                    'tipousuario_id' => $usuario->tipousuario_id,
+                    'tipousuario_descripcion' => $tipousuario_nombre,
+                    'usuario_imagen' => $usuario->usuario_imagen,
+                    'usuario_email' => $usuario->usuario_email,
+                    'usuario_clave' => $usuario->usuario_clave,
+                    'thumb' => $thumb,
+                    'rol' => $rolusuario,
+                    'codigo' => $this->get_codigo_empresa(),
+                    'pedido_titulo' => $parametro[0]["parametro_pedidotitulo"]
+                );
 
                     $this->session->set_userdata('logged_in', $sess_array);
                     $this->session->set_flashdata('msg',

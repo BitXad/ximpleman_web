@@ -287,13 +287,14 @@ private function acceso($id_rol){
                     $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/usuarios/';
                     //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/usuarios/';
                     if(isset($foto1) && !empty($foto1)){
-                      if(file_exists($directorio.$foto1)){
-                          unlink($directorio.$foto1);
-                          $mimagenthumb = "thumb_".$foto1;
-                          //$mimagenthumb = str_replace(".", "_thumb.", $foto1);
-                          unlink($directorio.$mimagenthumb);
-                      }
-                  }
+                        if(file_exists($directorio.$foto1)){
+                            unlink($directorio.$foto1);
+                            $mimagenthumb = "thumb_".$foto1;
+                            if(file_exists($directorio.$mimagenthumb)){
+                                unlink($directorio.$mimagenthumb);
+                            }
+                        }
+                    }
                     $confi['image_library'] = 'gd2';
                     $confi['source_image'] = './resources/images/usuarios/'.$new_name.$extension;
                     $confi['new_image'] = './resources/images/usuarios/'."thumb_".$new_name.$extension;

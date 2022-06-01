@@ -131,10 +131,10 @@
                         chivo: {
                             validators: {
                                 file: {
-                                    extension: 'jpeg,jpg,png',
+                                    extension: 'jpeg,jpg,png,gif',
                                     type: 'image/jpeg,image/png',
-                                    maxSize: 360800,   // 2048 * 1024
-                                    message: 'El archivo seleccionado no es valido, Tamaño Maximo 350 Kb'
+                                    maxSize: 26214400,   // 2048 * 1024
+                                    message: 'El archivo seleccionado no es valido, Tamaño Maximo 20 Mb'
                                 }
                             }
                         },
