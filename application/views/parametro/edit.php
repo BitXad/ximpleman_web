@@ -7,19 +7,19 @@
             <?php echo form_open_multipart('parametro/edit/'.$parametro['parametro_id']); ?>
             <div class="box-body" style="margin-top: 0px;margin-bottom: -20px; background: rgba(0, 0, 255, 0.3);"><u><b>CONFIGURACION</b></u><br>
                 <div class="col-md-2">
-                    <label for="parametro_numrecegr" class="control-label"> NUMERO EGRESO</label>
+                    <label for="parametro_numrecegr" class="control-label"> Nº REC. EGRESO</label>
                     <div class="form-group">
                         <input type="text" readonly name="parametro_numrecegr" value="<?php echo ($this->input->post('parametro_numrecegr') ? $this->input->post('parametro_numrecegr') : $parametro['parametro_numrecegr']); ?>" class="form-control" id="parametro_numrecegr" />
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <label for="parametro_numrecing" class="control-label"> NUMERO INGRESO</label>
+                    <label for="parametro_numrecing" class="control-label"> Nº REC. INGRESO</label>
                     <div class="form-group">
                         <input type="text" readonly name="parametro_numrecing" value="<?php echo ($this->input->post('parametro_numrecing') ? $this->input->post('parametro_numrecing') : $parametro['parametro_numrecing']); ?>" class="form-control" id="parametro_numrecing" />
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <label for="parametro_copiasfact" class="control-label"> NO. DE COPIAS FACTURA</label>
+                    <label for="parametro_copiasfact" class="control-label"> Nº COPIAS(FACTURA)</label>
                     <div class="form-group">
                         <input type="number" name="parametro_copiasfact" value="<?php echo ($this->input->post('parametro_copiasfact') ? $this->input->post('parametro_copiasfact') : $parametro['parametro_copiasfact']); ?>" class="form-control" id="parametro_copiasfact" />
                     </div>
@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <label for="parametro_margenfactura" class="control-label">MARGEN IZQ. FACTURA (CM)</label>
+                    <label for="parametro_margenfactura" class="control-label">MARGEN IZQ. FACT.(CM)</label>
                     <div class="form-group">
                             <input type="parametro_margenfactura" name="parametro_margenfactura" value="<?php echo ($this->input->post('parametro_margenfactura') ? $this->input->post('parametro_margenfactura') : $parametro['parametro_margenfactura']); ?>" class="form-control" id="parametro_margenfactura" />
                         
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="parametro_permisocredito" class="control-label">PERMISO CLIENTES</label>
+                    <label for="parametro_permisocredito" class="control-label">PERMISO CLIENTES (CREDITOS)</label>
                     <div class="form-group">
                         <select  name="parametro_permisocredito" class="form-control" id="parametro_permisocredito" >
                             <option value="1">TODOS</option>
@@ -72,13 +72,13 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <label for="parametro_tituldoc" class="control-label">TITULO DOC.</label>
+                    <label for="parametro_tituldoc" class="control-label">TITULO DOC. VENTA</label>
                     <div class="form-group">
                         <input type="text" name="parametro_tituldoc" value="<?php echo ($this->input->post('parametro_tituldoc') ? $this->input->post('parametro_tituldoc') : $parametro['parametro_tituldoc']); ?>" class="form-control" id="parametro_tituldoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <label for="parametro_numordenproduccion" class="control-label"> NUMERO PRODUCCION</label>
+                    <label for="parametro_numordenproduccion" class="control-label"> No. ORDEN PROD.</label>
                     <div class="form-group">
                         <input type="text" readonly name="parametro_numordenproduccion" value="<?php echo ($this->input->post('parametro_numordenproduccion') ? $this->input->post('parametro_numordenproduccion') : $parametro['parametro_numordenproduccion']); ?>" class="form-control" id="parametro_numordenproduccion" />
                     </div>
@@ -93,8 +93,8 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <label for="parametro_manejocaja" class="control-label"> ADMINISTRAR CAJA</label>
+                <div class="col-md-3">
+                    <label for="parametro_manejocaja" class="control-label"> APERTURA/CIERRA DE CAJA</label>
                     <div class="form-group">
                         <select name="parametro_manejocaja" class="form-control" id="parametro_manejocaja">
                             <option value="Si" <?php if($parametro['parametro_manejocaja']=="Si"){ ?> selected <?php } ?>>Si</option>
@@ -152,13 +152,13 @@
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(255, 0, 0, 0.3);"><u><b>SERVICIOS</b></u><br>
                 <div class="col-md-3">
-                    <label for="parametro_diagnostico" class="control-label">DIAGNOSTICO</label>
+                    <label for="parametro_diagnostico" class="control-label">TEXTO DIAGNOSTICO</label>
                     <div class="form-group">
                         <input type="text" name="parametro_diagnostico" value="<?php echo ($this->input->post('parametro_diagnostico') ? $this->input->post('parametro_diagnostico') : $parametro['parametro_diagnostico']); ?>" class="form-control" id="parametro_diagnostico" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="parametro_solucion" class="control-label">SOLUCIÓN</label>
+                    <label for="parametro_solucion" class="control-label">TEXTO SOLUCIÓN</label>
                     <div class="form-group">
                         <input type="text" name="parametro_solucion" value="<?php echo ($this->input->post('parametro_solucion') ? $this->input->post('parametro_solucion') : $parametro['parametro_solucion']); ?>" class="form-control" id="parametro_solucion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                     </div>
@@ -179,7 +179,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="parametro_segservicio" class="control-label"> SEGUIMIENTO</label>
+                    <label for="parametro_segservicio" class="control-label"> DOMULO DE SEGUIMIENTO</label>
                     <div class="form-group">
                         <select  name="parametro_segservicio" class="form-control" id="parametro_segservicio" >
                              <option value="1">ACTIVAR SEGUIMIENTO</option>
@@ -188,7 +188,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="parametro_serviciofact" class="control-label"> DETALLE FACTURA</label>
+                    <label for="parametro_serviciofact" class="control-label"> DETALLE FACTURA (SERV.TEC.)</label>
                     <div class="form-group">
                         <select  name="parametro_serviciofact" class="form-control" id="parametro_serviciofact" >
                              <option value="1" <?php if($parametro['parametro_serviciofact']==1){ ?> selected <?php } ?>>SOLUCION</option>
@@ -217,7 +217,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="parametro_modoventas" class="control-label">MODO VENTAS</label>
+                        <label for="parametro_modoventas" class="control-label">BUSCADOR EN VENTAS</label>
                         <div class="form-group">
                             <select  name="parametro_modoventas" class="form-control" id="parametro_modoventas">
                                 <option value="1" <?php if($parametro['parametro_modoventas']==1) echo 'selected'; ?> >LISTA</option>
@@ -235,17 +235,17 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="parametro_modulorestaurante" class="control-label">MODULO</label>
+                        <label for="parametro_modulorestaurante" class="control-label">COMPORTAMIENTO</label>
                         <div class="form-group">
                             <select  name="parametro_modulorestaurante" class="form-control" id="parametro_modulorestaurante" >
-                                <option value="0" <?php if($parametro['parametro_modulorestaurante']==0) echo 'selected'; ?> >NORMAL</option>
+                                <option value="0" <?php if($parametro['parametro_modulorestaurante']==0) echo 'selected'; ?> >COMERCIAL</option>
                                 <option value="1" <?php if($parametro['parametro_modulorestaurante']==1) echo 'selected'; ?> >RESTAURANTE</option>
                                 <option value="2" <?php if($parametro['parametro_modulorestaurante']==2) echo 'selected'; ?> >FARMACIA</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="parametro_agruparitems" class="control-label">AGRUPAR ITEMS</label>
+                        <label for="parametro_agruparitems" class="control-label">AGRUPAR ITEMS (DETALLE)</label>
                         <div class="form-group">
                             <select  name="parametro_agruparitems" class="form-control" id="parametro_agruparitems">
                                 <option value="0" <?php if($parametro['parametro_agruparitems']==0) echo 'selected'; ?> >NO</option>
@@ -330,7 +330,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="parametro_cantidadproductos" class="control-label">PASE A DETALLE</label>
+                        <label for="parametro_cantidadproductos" class="control-label">COMPORAMIENTO BOTON</label>
                         <div class="form-group">
                             <select  name="parametro_cantidadproductos" class="form-control" id="parametro_cantidadproductos">
                                 <option value="1" <?php if($parametro['parametro_cantidadproductos']=='1') echo 'selected'; ?> >SELECCIONAR CANTIDAD DE PRODUCTOS</option>
@@ -384,7 +384,7 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label for="parametro_codcatsubcat" class="control-label" title="En nota de Entrega, para mostrar en el detalle del producto"><span class="text-danger">*</span>CODIGO/CATEGORIA/SUB-CAT.</label>
+                        <label for="parametro_codcatsubcat" class="control-label" title="En nota de Entrega, para mostrar en el detalle del producto"><span class="text-danger">*</span>MOSTRAR CODIGO EN RECIBOS</label>
                         <div class="form-group">
                             <select name="parametro_codcatsubcat" class="form-control" required id="parametro_codcatsubcat">
                                 <option value="0" <?php if($parametro['parametro_codcatsubcat']=='0') echo 'selected'; ?> >NINGUNO</option>
@@ -403,7 +403,7 @@
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(214, 114, 26, 0.3);"><u><b>CLIENTES</b></u><br>
                 <div class="row clearfix">
                     <div class="col-md-2">
-                        <label for="parametro_puntos" class="control-label">PUNTOS</label>
+                        <label for="parametro_puntos" class="control-label">PUNTOS (Bs/PUNTO)</label>
                         <div class="form-group">
                             <input type="number" min="0" step="any" name="parametro_puntos" value="<?php echo ($this->input->post('parametro_puntos') ? $this->input->post('parametro_puntos') : $parametro['parametro_puntos']); ?>" class="form-control" id="parametro_puntos"  />
                         </div>
