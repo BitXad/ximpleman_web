@@ -1330,6 +1330,7 @@ function edit($venta_id)
         $data['mesas'] = $this->Mesa_model->get_all_mesa();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
+       $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         
         
                 
@@ -3209,7 +3210,7 @@ function anular_venta($venta_id){
         
    }
    /* genera factura desde el index de ventas  */
-   function generar_factura_detalle_aux()
+    function generar_factura_detalle_aux()
     {
         if($this->acceso(12)){
             //$dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
@@ -3279,15 +3280,18 @@ function anular_venta($venta_id){
             $this->Venta_model->ejecutar($sql);
             $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
             $facturaCufd = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
-            $anio = date('Y');
+            /*$anio = date('Y');
             $mes = date('m');
             $dia = date('d');
             $hora = date('H');
             $min = date('i');
             $seg = date('s');
             $mseg = (new DateTime())->format('v');
-
-            $fecha_hora = "$anio$mes$dia$hora$min$seg$mseg";
+            */
+            $fecha_hora_aux = date("YmdHis".substr((string)microtime(), 1, 4), strtotime($factura_fecha_hora));
+            
+            //$fecha_hora = "$anio$mes$dia$hora$min$seg$mseg";
+            $fecha_hora = str_replace(".", "", $fecha_hora_aux);;
             $tipo_emision = 1;//1 online
             $tipo_factura = 1;
             $tipo_documento_sector = 1;

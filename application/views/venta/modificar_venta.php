@@ -959,7 +959,12 @@ window.onkeydown = compruebaTecla;
                     <input type="checkbox" checked="true" value="1" id="modificar_credito" hidden="true"> Modificar credito
                 </div>
                 <div class="col-md-12">
-                    <?php $metodo = ($credito['credito_metodo'] == "FRANCES") ? 'checked' :''; ?>
+                    <?php
+                    $metodo = "";
+                    if(isset($credito)){
+                        $metodo = ($credito['credito_metodo'] == "FRANCES") ? 'checked' :'';
+                    }
+                    ?>
                     <label style="margin-bottom: 0px">
                         <input type="checkbox" name="metodofrances" id="metodofrances" <?php echo $metodo; ?>> Metodo Frances
                     </label>

@@ -125,7 +125,9 @@
         }
 
         $dv = 11 - ($sum % 11);
-
+        if ( $dv == 10 )
+            return 1;
+        
         if ( $dv < 10 )
             return $dv;
 

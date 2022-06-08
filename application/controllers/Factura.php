@@ -400,24 +400,40 @@ class Factura extends CI_Controller{
             // echo "No ingreso";
             print $valXSD->mostrarError();
         }else{
-            // COMPRECION XML EN GZIP
+            // COMPRESION XML EN GZIP
             $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
             $gzdata = gzencode($datos, 9);
             $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
             // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
             fwrite($fp, $gzdata);
             fclose($fp);
-
-            // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml");
-
+            
+            //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
+            //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
+            
+            $handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
+            $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
+            fclose($handle);
+            /*//$content = base64_encode($contents);
+            //$b= unpack("C*",$contents);*/
+            
+            var_dump($contents);
+            
+            
+            /*//var_dump($byteArr);
+            // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml*");*/
+            
             // HASH (SHA 256)
             $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
-            var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
-            // var_dump($xml_gzip);
+            //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
+            var_dump($xml_comprimido);
+            //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
+            $eniada = $this->mandarFactura($contents, $xml_comprimido);
+            var_dump($eniada);
         }
         
-        $eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
-        //$data = implode("", file("bigfile.txt"));
+        //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
+        
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
@@ -1316,7 +1332,8 @@ class Factura extends CI_Controller{
     /**
      * Enviar factura a impuestos
      */
-    function mandarFactura($direccion_archivo_zip, $archivo_zip){
+    //function mandarFactura($direccion_archivo_zip, $archivo_zip){
+    function mandarFactura($el_archivo, $hash_archivo){
         static $array;
         // $sincronizacion_id = $this->input->post('codigo_sincronizar');
         if(!isset($array['dosificacion'])){
@@ -1327,27 +1344,27 @@ class Factura extends CI_Controller{
             $dosificacion = $array['dosificacion'];
         }
         
-        $wsdl = $dosificacion['dosificacion_sincronizacion'];
+        $wsdl = $dosificacion['dosificacion_factura'];
         $token = $dosificacion['dosificacion_tokendelegado'];
 
         $comunicacion = $this->verificar_comunicacion($token,$wsdl);
-        if ($comunicacion) {
-
-            $parametros = ["SolicitudSincronizacion" => [
-                "codigoAmbiente"            =>  $dosificacion['dosificacion_ambiente'],
-                "codigoDocumentoSector"     =>  $dosificacion['dosificacion_ambiente'],
-                "codigoEmision"             =>  $dosificacion['dosificacion_ambiente'],
-                "codigoModalidad"           =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"          =>  $dosificacion['dosificacion_puntoventa'],
-                "codigoSistema"             =>  $dosificacion['dosificacion_codsistema'],
-                "codigoSucursal"            =>  $dosificacion['dosificacion_codsucursal'],
-                "cufd"                      =>  $dosificacion['dosificacion_cuis'],
-                "cuis"                      =>  $dosificacion['dosificacion_cuis'],
-                "nit"                       =>  $dosificacion['dosificacion_nitemisor'],
-                "tipoFacturaDocumento"      =>  $dosificacion['dosificacion_nitemisor'],
-                "archivo"                   =>  $dosificacion['dosificacion_nitemisor'],
-                "fechaEnvio"                =>  $dosificacion['dosificacion_nitemisor'],
-                "hashArchivo"               =>  $dosificacion['dosificacion_nitemisor'],
+        if($comunicacion){
+            $fecha_envio = date('Y-m-d\TH:i:s.v');
+            $parametros = ["SolicitudServicioRecepcionFactura" => [
+                "codigoAmbiente"        => $dosificacion['dosificacion_ambiente'],   // Producción: 1 Pruebas y Piloto: 2
+                "codigoDocumentoSector" => $dosificacion['docsec_codigoclasificador'], //documento_sector: para compra y venta es 1
+                "codigoEmision"         =>  1, //$dosificacion['dosificacion_ambiente'],   //Describe si la emisión se realizó en línea. El valor permitido es: Online: 1
+                "codigoModalidad"       => $dosificacion['dosificacion_modalidad'],  //Uno (1) Electrónica  y dos (2) Computarizada en línea
+                "codigoPuntoVenta"      => $dosificacion['dosificacion_puntoventa'], //se realiza utilizando un punto de venta. Caso contrario enviar 0.
+                "codigoSistema"         => $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"        => $dosificacion['dosificacion_codsucursal'],
+                "cufd"                  => $dosificacion['dosificacion_cufd'],
+                "cuis"                  => $dosificacion['dosificacion_cuis'],
+                "nit"                   => $dosificacion['dosificacion_nitemisor'],
+                "tipoFacturaDocumento"  => $dosificacion['tipofac_codigo'],
+                "archivo"               => $el_archivo,
+                "fechaEnvio"            => $fecha_envio,
+                "hashArchivo"           => $hash_archivo,
             ]];
         }
         
@@ -1368,7 +1385,7 @@ class Factura extends CI_Controller{
 
             // $cliente->__setSoapHeaders([$headers]);
  
-            $fileName = new SoapVar($direccion_archivo_zip, XSD_STRING);
+            //$fileName = new SoapVar($direccion_archivo_zip, XSD_STRING);
             
             // $archivo = $direccion_archivo_zip;
             // $handle = file($archivo);
@@ -1376,13 +1393,13 @@ class Factura extends CI_Controller{
             // var_dump($bytes);
             // $contentFile = new SoapVar($bytes, XSD_BYTE);
 
-            $handle = fopen($direccion_archivo_zip, "rb");
-            $contents = fread($handle, filesize($direccion_archivo_zip));
-            fclose($handle);
+            //$handle = fopen($direccion_archivo_zip, "rb");
+            //$contents = fread($handle, filesize($direccion_archivo_zip));
+            //fclose($handle);
             // $b= unpack("C*",$contents);
-            $b = filesize($direccion_archivo_zip);
+            //$b = filesize($direccion_archivo_zip);
             // $b = $get_zip_originalsize($direccion_archivo_zip);
-            var_dump($b);
+            //var_dump($b);
             // $result = $cliente->__soapCall('sendBill',
             //     array('sendBill' =>
             //         array(
@@ -1392,11 +1409,12 @@ class Factura extends CI_Controller{
             //     )
             // );
 
+            $resultado = $cliente->recepcionFactura($parametros);
             
-            $resultados = $cliente->SolicitudServicioRecepcionFactura($parametros);
+            //$resultados = $cliente->SolicitudServicioRecepcionFactura($parametros);
 
-            $transaccion = $resultados->RespuestaListaParametricas->transaccion;
-
+            //$transaccion = $resultados->RespuestaListaParametricas->transaccion;
+            /*
             if($transaccion){
                 $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
                 $this->Unidad_model->truncate_table();
@@ -1411,8 +1429,10 @@ class Factura extends CI_Controller{
                 $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
                 $mensaje = "$mensaje->codigo $mensaje->descripcion";
                 // var_dump($mensaje);
-            }
-            return $transaccion;
+            }*/
+            //return $transaccion;
+                $mensaje = $resultado->RespuestaServicioFacturacion;
+            return $mensaje;
         }catch(Exception $e){
             // var_dump("No se realizo la sincronizacion");
             return false;
