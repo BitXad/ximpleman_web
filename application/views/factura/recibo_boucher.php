@@ -144,7 +144,7 @@ border-bottom : 1px solid #aaa;
                             <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
                                  else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
 
-                        <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
+                        <font size="3" face="arial"><b><?php echo $parametro[0]["parametro_tituldoc"]; ?></b></font> <br>
                         <font size="1" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
                         <font size="1" face="arial"><b>Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?>
                             <br>

@@ -57,14 +57,14 @@ foreach($all_parametros as $p)
                 <table class="table table-striped table-condensed" id="mitabla" style="text-align: center; font-size: 11px;color:black;">
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(0, 0, 255, 0.3);" rowspan="4" ><u>CONFIGURACION</u></th>
-                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. EGRESO</th>
-                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. INGRESO</th>
-                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No.COPIAS FACTURAS</th>
-                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TIPO DE IMPRESORA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">Nº REC.<br>EGRESO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">Nº REC.<br>INGRESO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">Nº COPIAS<br>FACTURAS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TIPO IMPRESORA</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">ANCHO FACTURA</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">ALTO FACTURA</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">MARGEN FACTURA</th>
-                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">PERMISO CLIENTES</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">PERMISO CLIENTES (CREDITOS)</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">API KEY</th>
                     </tr>
                     <tr>
@@ -79,10 +79,10 @@ foreach($all_parametros as $p)
                         <td><?php echo substr($p['parametro_apikey'],0,8).".."; ?></td>
                     </tr>
                     <tr>
-                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TITULO DOC.</th>
-                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. PRODUCCION</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TITULO DOC. VENTA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. ORDEN PROD.</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TITULO PEDIDO</th>
-                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">MANEJO DE CAJA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">APERTURA/CIERRA<br>DE CAJA</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_tituldoc']; ?></td>
@@ -132,12 +132,12 @@ foreach($all_parametros as $p)
                    
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(255, 0, 0, 0.3);" rowspan="2" ><u>SERVICIOS</u></th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DIAGNOSTICO</th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">SOLUCION</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DIAGNOSTICO<br>(TEXTO POR DEFECTO)</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">SOLUCION<br>(TEXTO POR DEFECTO)</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DIAS DE ENTREGA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">RESOLUCIÓN DE IMAGEN</th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">SEGUIMIENTO</th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DETALLE FACTURA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">MODULO DE<br>SEGUIMIENTO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DETALLE FACTURA (SERV.TEC.)</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_diagnostico']; ?></td>
@@ -154,7 +154,7 @@ foreach($all_parametros as $p)
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="4" ><u>VENTAS</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CATEGORIA</th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MODO VENTAS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BUSCADOR EN VENTAS</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRIMIR COMANDA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ANCHO BOTON</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ALTO BOTON</th>
@@ -162,8 +162,8 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ANCHO IMAGEN</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ALTO IMAGEN</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FORMA IMAGEN</th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MODULO</th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">AGRUPAR ITEMS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">COMPORTAMIENTO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">AGRUPAR ITEMS (DETALLE)</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">DIAS DE VENCIMIENTO</th>
                     </tr> 
                     <tr>
@@ -181,7 +181,7 @@ foreach($all_parametros as $p)
                         <td><?php echo $p['parametro_altoimagen']; ?></td>
                         <td><?php  if ($p['parametro_formaimagen']==''){ echo 'RECTANGULAR'; }else{ echo'CIRCULAR'; } ?></td>
                         <td><?php  if ($p['parametro_modulorestaurante']==0){
-                                       echo 'NORMAL';
+                                       echo 'COMERCIAL';
                                    }elseif($p['parametro_modulorestaurante']==1){
                                        echo'RESTAURANTE';
                                    }else{ echo'FARMACIA';} ?></td>
@@ -192,12 +192,12 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">NOTA DE ENTREGA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">LOGO MONITOR</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMAGEN FONDO</th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">PASE A DETALLE</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">COMPORAMIENTO BOTON</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">DATOS DE BOTON</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MONEDA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR MONEDA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FACTURA</th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CODIGO/CATEGORIA/SUB-CAT.</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CODIGO EN RECIBOS</th>
                     </tr>
                     <tr>
                         <td><?php
@@ -230,7 +230,7 @@ foreach($all_parametros as $p)
                         </td>
                         <td><?php
                             if($p['parametro_cantidadproductos'] == 1){
-                                echo 'SELECCIONAR CANTIDAD DE PRODUCTOS';
+                                echo 'ESPECIFICAR CANT. DE PRODUCTOS';
                             }else if($p['parametro_cantidadproductos'] == 2){
                                 echo 'CARGAR UNO POR DEFECTO';
                             }
@@ -293,7 +293,7 @@ foreach($all_parametros as $p)
                     </tr>
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(214, 114, 26, 0.3);" rowspan="2" ><u>CLIENTES</u></th>
-                        <th style="font-size: 11px;color:black;background: rgba(214, 114, 26, 0.3);">PUNTOS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(214, 114, 26, 0.3);">PUNTOS (Bs/PUNTO)</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_puntos']; ?></td>
