@@ -677,10 +677,12 @@ class Venta extends CI_Controller{
                 $mseg = (new DateTime())->format('v');
 
                 $ultima_factura = $this->Factura_model->ultima_factura();
+
+                $facturaCufd = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
                 // $factura_id = $ultima_factura['ultimo'] + 1;
 
                 $fecha_hora_cuf = "$anio$mes$dia$hora$min$seg$mseg";
-                $cuf = generarCuf($factura_nitemisor,$fecha_hora_cuf,$factura_sucursal,$factura_modalidad,1,$tipo_factura,$docsec_codigoclasificador,$factura_numero,$pos,$factura_cufd);
+                $cuf = generarCuf($factura_nitemisor,$fecha_hora_cuf,$factura_sucursal,$factura_modalidad,1,$tipo_factura,$docsec_codigoclasificador,$factura_numero,$pos,$facturaCufd['cufd_codigocontrol']);
                 // $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                 //     factura_fecha, factura_hora, factura_subtotal, 
                 //     factura_ice, factura_exento, factura_descuento, factura_total, 
@@ -3279,7 +3281,7 @@ function anular_venta($venta_id){
             $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
             $this->Venta_model->ejecutar($sql);
             $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
-            $facturaCufd = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
+            $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
             /*$anio = date('Y');
             $mes = date('m');
             $dia = date('d');
@@ -3306,7 +3308,7 @@ function anular_venta($venta_id){
                                     $tipo_documento_sector,
                                     $factura_numero,
                                     $pos,
-                                    $facturaCufd['cufd_codigocontrol']);
+                                    $facturaCufdCodControl['cufd_codigocontrol']);
             $fecha_hora = $factura_fecha_hora;
             // $sql = "insert into factura(estado_id, factura_fechaventa, 
             //         factura_fecha, factura_hora, factura_subtotal, 
