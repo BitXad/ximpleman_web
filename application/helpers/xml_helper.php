@@ -32,7 +32,7 @@
                         $tipo_documento_sector,//tipo documento sector
                         $factura_numero,//numero de factura
                         $pos,//punto de venta
-                        $cufd){// Codigo Unico de Facturacion Diaria
+                        $cufd){// Codigo de control de Codigo Unico de Facturacion Diaria
         $factura_nitemisor = add_ceros($factura_nitemisor,13);
         $fecha_hora = add_ceros($fecha_hora,17);
         $factura_sucursal = add_ceros($factura_sucursal,4);

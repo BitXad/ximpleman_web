@@ -3291,7 +3291,7 @@ function anular_venta($venta_id){
             $fecha_hora_aux = date("YmdHis".substr((string)microtime(), 1, 4), strtotime($factura_fecha_hora));
             
             //$fecha_hora = "$anio$mes$dia$hora$min$seg$mseg";
-            $fecha_hora = str_replace(".", "", $fecha_hora_aux);;
+            $fecha_hora = str_replace(".", "", $fecha_hora_aux);
             $tipo_emision = 1;//1 online
             $tipo_factura = 1;
             $tipo_documento_sector = 1;
