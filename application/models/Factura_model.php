@@ -228,7 +228,7 @@ class Factura_model extends CI_Model
         return $this->db->query(
             "SELECT c.cufd_codigocontrol 
             from cufd c 
-            where c.cufd_codigo = '$cufd_codigo'
+            where c.cufd_codigo like '$cufd_codigo'
             ")->row_array();
     }    
     function ultima_factura(){
