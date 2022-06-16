@@ -1040,6 +1040,7 @@ function quitartodo()
 {
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/eliminartodo/";
+    
     $.ajax({url: controlador,
             type:"POST",
             data:{},
@@ -1048,6 +1049,9 @@ function quitartodo()
             }
         
     });
+
+    
+    
 }
 
 //esta funcion incrementar una cantidad determinada de productos
@@ -1868,7 +1872,7 @@ function tablaresultados(opcion)
         data:{
             parametro:parametro,
         },
-        success:function(respuesta){     
+        success:function(respuesta){
             $("#encontrados").val("- 0 -");
             var registros =  JSON.parse(respuesta);
             
@@ -3958,6 +3962,7 @@ function registrarcliente_modificado()
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;    
     var zona_id = document.getElementById('zona_id').value;    
+    var tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;    
     
    
     if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
@@ -3970,7 +3975,7 @@ function registrarcliente_modificado()
                 type:"POST",
                 data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id},
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,tipo_doc_identidad:tipo_doc_identidad},
                 success:function(respuesta){ 
                     var datos = JSON.parse(respuesta)
                     cliente_id = datos[0]["cliente_id"];

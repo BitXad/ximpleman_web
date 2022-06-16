@@ -86,14 +86,24 @@ class Inventario_model extends CI_Model
     function get_inventario_parametro($parametro)
     {
         
+//        $sql = "SELECT p.*,c.categoria_nombre FROM inventario p
+//        left join categoria_producto c on c.categoria_id = p.categoria_id
+//        left join detalle_compra dc on dc.producto_id = p.producto_id 
+//        WHERE p.estado_id=1 
+//        and p.producto_nombre like '%$parametro%' 
+//        or p.producto_codigobarra like '%$parametro%' 
+//        or p.producto_codigo like '%$parametro%'
+//        or dc.detallecomp_series like '%$parametro%'
+//        GROUP BY p.categoria_id, p.producto_id
+//        ORDER By c.categoria_nombre, p.producto_nombre asc";
+        
         $sql = "SELECT p.*,c.categoria_nombre FROM inventario p
         left join categoria_producto c on c.categoria_id = p.categoria_id
         left join detalle_compra dc on dc.producto_id = p.producto_id 
         WHERE p.estado_id=1 
         and p.producto_nombre like '%$parametro%' 
         or p.producto_codigobarra like '%$parametro%' 
-        or p.producto_codigo like '%$parametro%'
-        or dc.detallecomp_series like '%$parametro%'
+        or p.producto_codigo like '%$parametro%'         
         GROUP BY p.categoria_id, p.producto_id
         ORDER By c.categoria_nombre, p.producto_nombre asc";
         

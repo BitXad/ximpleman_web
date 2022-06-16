@@ -291,6 +291,26 @@ class Venta extends CI_Controller{
         
         $usuario_id = $this->session_data['usuario_id'];
         
+            
+        //**************** bitacora caja ********************
+        // NO ES NECESARIA ESTA FUNCION PORQUE ES PARTE DE LA FINALIZACION DEL PROCESO DE VENTAS
+//        $bitacoracaja_fecha = "date(now())";
+//        $bitacoracaja_hora = "time(now())";
+//        $bitacoracaja_evento = "(select concat('ELIMINACION TOTAL PRODUCTOS EN VENTAS, CANT: ',count(*),', TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
+//        //$usuario_id = esta mas arriba;
+//        $bitacoracaja_montoreg = 0;
+//        $bitacoracaja_montocaja = 0;
+//        $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
+//        
+//        
+//        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+//                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(".
+//                $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+//                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
+//        $this->Venta_model->ejecutar($sql);
+        
+        //****************** fin bitacora caja *************** 
+        
         $sql =  "delete from detalle_venta_aux where usuario_id=".$usuario_id;
         $this->Venta_model->ejecutar($sql);
         return true;
@@ -1294,28 +1314,13 @@ function edit($venta_id)
         $cliente_id = $venta["cliente_id"];       
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['page_title'] = "Modificar Venta";
-        
-//        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
-//        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-//        $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
-//        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
-//        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-//        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
-//        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-//        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-//        $data['parametro'] = $this->Parametro_model->get_parametros();
-//        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
-//        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
-//        $data['usuario_id'] = $usuario_id;
-//        $data['tipousuario_id'] = $tipousuario_id;
-//        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-//        
-                
-        
-        $data['page_title'] = "Modificar Venta";
+
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
+        
+        $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+        $data['cliente'] = $cliente;
+        
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
@@ -1329,18 +1334,45 @@ function edit($venta_id)
         $data['promociones'] = $this->Promocion_model->get_promociones();
         $data['mesas'] = $this->Mesa_model->get_all_mesa();
         $data['usuario_id'] = $usuario_id;
+        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+        $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
+
+
         
-        
-                
         //**************** inicio contenido ***************     
                 
        
         $data['venta_id'] = $venta_id;
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
-        $data['detalle_venta'] = $this->Detalle_venta_model->cargar_detalle_venta($venta_id, $usuario_id);        
+        
+        $detalle_venta = $this->Detalle_venta_model->cargar_detalle_venta($venta_id, $usuario_id);        
+        $data['detalle_venta'] = $detalle_venta;        
+        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
 
+        
+
+        //**************** bitacora caja
+        $cont = sizeof($detalle_venta);
+        $prec_total = 0;
+        
+        foreach($detalle_venta as $d){
+            $prec_total += $d['detalleven_precio'] * $d['detalleven_cantidad'];
+        }
+        
+        
+        $bitacoracaja_evento = "MODIFICAR VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+        $bitacoracaja_tipo = 2;
+        
+        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(date(now()),time(now())".
+                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.")";
+        
+        $this->Venta_model->ejecutar($sql);
+        //****************** fin bitacora caja
+
+        
         if($venta['tipotrans_id'] == 2){
             $data['credito'] = $this->Credito_model->get_credito_id($venta_id);
         }
@@ -1389,51 +1421,6 @@ function edit($venta_id)
         
         $sql = "delete from detalle_venta where venta_id = ".$venta_id;
         $this->Venta_model->ejecutar($sql);
-        
-        /*
-        $sql =  "insert into detalle_venta
-                (producto_id,
-                  venta_id,
-                  moneda_id,
-                  detalleven_codigo,
-                  detalleven_cantidad,
-                  detalleven_unidad,
-                  detalleven_costo,
-                  detalleven_precio,
-                  detalleven_subtotal,
-                  detalleven_descuento,
-                  detalleven_total,
-                  detalleven_caracteristicas,
-                  detalleven_preferencia,
-                  detalleven_comision,
-                  detalleven_tipocambio,
-                  usuario_id
-                )
-                
-                (SELECT 
-                  producto_id,
-                  ".$venta_id." as venta_id,
-                  moneda_id,
-                  detalleven_codigo,
-                  detalleven_cantidad,
-                  detalleven_unidad,
-                  detalleven_costo,
-                  detalleven_precio,
-                  detalleven_subtotal,
-                  detalleven_subtotal * ".$porcentaje.",
-                  detalleven_total - (detalleven_subtotal * ".$porcentaje."),
-                  detalleven_caracteristicas,
-                  detalleven_preferencia,
-                  detalleven_comision,
-                  detalleven_tipocambio,
-                  usuario_id
-                FROM
-                  detalle_venta_aux
-                WHERE 
-                  usuario_id=".$usuario_id.")";
-        */
-
-
         
         if (($venta_total+$venta_descuento)>0)
             $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
@@ -1534,10 +1521,31 @@ function edit($venta_id)
                 ",banco_id = ".$banco_id.              
                 " where venta_id = ".$venta_id;       
         $this->Venta_model->ejecutar($sql);        
+
+        
+        //**************** bitacora caja ********************
+        
+        $bitacoracaja_fecha = "date(now())";
+        $bitacoracaja_hora = "time(now())";
+        $bitacoracaja_evento = "(select concat('FINALIZAR MODIFICACION EN VENTA Nº: 00','".$venta_id."','| CLIENTE ID: ','".$cliente_id."', '| CANT: ',count(*),'| NUEVO TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
+        //$usuario_id = esta mas arriba;
+        $bitacoracaja_montoreg = 0;
+        $bitacoracaja_montocaja = 0;
+        $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
+        
+        
+        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(".
+                $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
+        $this->Venta_model->ejecutar($sql);
+        
+        //****************** fin bitacora caja *************** 
+        
+        
         
         $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
-        $this->Venta_model->ejecutar($sql);        
-        
+        $this->Venta_model->ejecutar($sql);                
         
         if($tipotrans_id==2){ //si el tipo de transaccion es credito
 
@@ -1759,8 +1767,27 @@ function edit($venta_id)
     function eliminartodo()
     {
         if($this->acceso(12)){
-        //**************** inicio contenido ***************        
-        $usuario_id = $this->session_data['usuario_id'];
+        //**************** inicio contenido ***************  
+            
+        //************ inicio bitacora 
+            
+        $usuario_id = $this->session_data['usuario_id'];        
+        $bitacoracaja_fecha = "date(now())";
+        $bitacoracaja_hora = "time(now())";
+        $bitacoracaja_evento = "(select concat('QUITAR TODOS LOS PRODUCTOS EN VENTAS CANT: ',count(*),'| TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
+        $bitacoracaja_montoreg = 0;
+        $bitacoracaja_montocaja = 0;
+        $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
+        
+        
+        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(".
+                $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
+        $this->Venta_model->ejecutar($sql);
+        //************ fin botacora bitacora     
+        
+        
         $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
         $this->Venta_model->ejecutar($sql);
         return true;
@@ -2010,14 +2037,16 @@ function edit($venta_id)
 * buscar productos
 */
 function buscarproductos(){
+    
     if ($this->input->is_ajax_request()) {
         $busqueda_serie = $this->input->post('busqueda_serie');
         $parametro = $this->input->post('parametro');   
         if ($parametro!=""){
+            
             if (!$busqueda_serie) {
                 $datos = $this->Inventario_model->get_inventario_parametro($parametro);            
             }else{
-                $datos = $this->Inventario_model->get_inventario_for_serie($parametro);            
+                $datos = $this->Inventario_model->get_inventario_for_serie($parametro);
             }
             echo json_encode($datos);
         }else{
@@ -2189,6 +2218,7 @@ function modificarcliente()
             $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
             $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
             $zona_id = $this->input->post('zona_id');
+            $tipo_doc_identidad = $this->input->post('tipo_doc_identidad');
             
             
             if ($cliente_id>0){
@@ -2210,7 +2240,7 @@ function modificarcliente()
                         ",cliente_celular = ".$cliente_celular.
                         ",cdi_codigoclasificador = $tipo_doc_identidad".
                         ",zona_id = ".$zona_id." where cliente_id = ".$cliente_id;
-                
+                //echo $sql;
                 $datos = $this->Venta_model->modificarcliente($sql);            
                 echo  '[{"cliente_id":'.$cliente_id.'}]';
             }
@@ -2342,8 +2372,32 @@ function ultimacomanda(){
 function eliminar_venta($venta_id){
 
         if($this->acceso(12)){
+            
+            
+        //**************** bitacora caja       
+        $venta = $this->Detalle_venta_model->get_venta($venta_id);
+        $cliente = $this->Cliente_model->get_cliente($venta[0]['cliente_id']);
+        $sql =  "select count(*) from detalle_venta where venta_id = ".$venta[0]['venta_id'];
+        $cont = $this->Venta_model->consultar($sql);
+        
+        $prec_total = $venta[0]['venta_total'];
+        
+        
+        $bitacoracaja_evento = "ELIMINAR VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+        $bitacoracaja_tipo = 2;
+        
+        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(date(now()),time(now())".
+                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.")";
+        
+        $this->Venta_model->ejecutar($sql);
+        //****************** fin bitacora caja
+    
+            
+            
         //**************** inicio contenido ***************       
     
+            
             $sql = "update inventario i, detalle_venta d"
                     ." set i.existencia = i.existencia + d.detalleven_cantidad"
                     ." where d.venta_id = ".$venta_id." and d.producto_id = i.producto_id ";
@@ -2371,7 +2425,34 @@ function eliminar_venta($venta_id){
 function anular_venta($venta_id){
 
         if($this->acceso(22)){
+            
+            
+        //**************** bitacora caja
+        $usuario_id = $this->session_data['usuario_id'];
+        $venta = $this->Detalle_venta_model->get_venta($venta_id);
+        $cliente = $this->Cliente_model->get_cliente($venta[0]['cliente_id']);
+        $sql =  "select count(*) as cantidad from detalle_venta where venta_id = ".$venta[0]['venta_id'];
+        $contx = $this->Venta_model->consultar($sql);
+        $cont = $contx[0]['cantidad'];
+        
+        $prec_total = $venta[0]['venta_total'];
+        
+        
+        $bitacoracaja_evento = "ANULAR VENTA Nº 00".$venta_id." CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+        $bitacoracaja_tipo = 2;
+        
+        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(date(now()),time(now())".
+                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.")";
+        
+        $this->Venta_model->ejecutar($sql);
+        //****************** fin bitacora caja
+          
+            
+            
+            
         //**************** inicio contenido ***************   
+            
     
     //$sql =  "delete from detalle_venta where venta_id = ".$venta_id;
     $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_total = 0 where venta_id = ".$venta_id;
@@ -2418,7 +2499,7 @@ function anular_venta($venta_id){
     redirect('venta/index');
     
     //**************** fin contenido ***************
-                             }
+    }
                               
     
 }
@@ -2647,7 +2728,25 @@ function anular_venta($venta_id){
          if($this->acceso(15)){
         //**************** inicio contenido ***************       
         
+        //************ inicio bitacora 
+            
         $usuario_id = $this->session_data['usuario_id'];
+        
+        $bitacoracaja_fecha = "date(now())";
+        $bitacoracaja_hora = "time(now())";
+        $bitacoracaja_evento = "(select concat('COSTO CERO CANT PROD.: ',count(*),'| TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
+        $bitacoracaja_montoreg = 0;
+        $bitacoracaja_montocaja = 0;
+        $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
+        
+        
+        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(".
+                $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
+        $this->Venta_model->ejecutar($sql);
+        //************ fin botacora bitacora     
+        
         
         $sql =  "UPDATE
                 detalle_venta_aux
@@ -2740,18 +2839,37 @@ function anular_venta($venta_id){
          if($this->acceso(16)){
         //**************** inicio contenido ***************       
         
+        //************ inicio bitacora 
+            
         $usuario_id = $this->session_data['usuario_id'];
         
+        $bitacoracaja_fecha = "date(now())";
+        $bitacoracaja_hora = "time(now())";
+        $bitacoracaja_evento = "(select concat('PRECIO COSTO CANT PROD.: ',count(*),'| TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
+        $bitacoracaja_montoreg = 0;
+        $bitacoracaja_montocaja = 0;
+        $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
+        
+        
+        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(".
+                $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
+        $this->Venta_model->ejecutar($sql);
+        //************ fin botacora bitacora   
+        
         $sql =  "UPDATE
-                detalle_venta_aux
+                detalle_venta_aux d, inventario i
               SET
                
-                detalleven_precio = detalleven_costo,
-                detalleven_subtotal = detalleven_costo * detalleven_cantidad,
-                detalleven_descuento = 0,
-                detalleven_total = detalleven_costo * detalleven_cantidad
-              WHERE
-                usuario_id = ".$usuario_id;
+                d.detalleven_precio = i.producto_costo,
+                d.detalleven_costo = i.producto_costo,
+                d.detalleven_subtotal = d.detalleven_costo * d.detalleven_cantidad,
+                d.detalleven_descuento = 0,
+                d.detalleven_total = d.detalleven_costo * d.detalleven_cantidad
+              WHERE                
+                d.usuario_id = ".$usuario_id.
+                " and d.producto_id = i.producto_id";
         $this->Venta_model->ejecutar($sql);
         return true;
     

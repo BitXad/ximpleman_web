@@ -30,16 +30,36 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
-                        <th>Apertura</th>
-                        <th>Fecha Apertura</th>
-                        <th>Cierre</th>
-                        <th>Fecha Cierre</th>
+                        <th>CAJERO(A)</th>                        
+                        <th>FECHA<br>APERTURA</th>
+                        <th>MONTO<br>INICIAL</th>
+                        <th>TRANSAC.</th>
+                        <th>TOTAL<br>ESPERADO</th>
+                        <th>TOTAL<br>REGISTRADO</th>
+                        <th>DIFERENCIA</th>
+                        <th>OBSERVACION</th>
+                        
+                        
+                        
+                        <th>Fecha<br>Cierre</th>
                         <th>Diferencia</th>
                         <th>Cortes</th>
-                        <th>Efectivo</th>
-                        <th>Credito</th>
+<!--                        <th>Credito</th>-->
                         <th>transacciones</th>
                         <th>Moneda</th>
+                        <th>200</th>
+                        <th>100</th>
+                        <th>50</th>
+                        <th>20</th>
+                        <th>10</th>
+                        <th>5</th>
+                        <th>2</th>
+                        <th>1</th>
+                        <th>0.50</th>
+                        <th>0.20</th>
+                        <th>0.10</th>
+                        <th>0.05</th>
+                        
                         <th>Estado</th>
                         <th>Usuario</th>
                         <th></th>
@@ -47,8 +67,16 @@
                     <?php $i = 0; foreach($caja as $c){ ?>
                     <tr>
                         <td><?php echo ($i+1); ?></td>
-                        <td><?php echo $c['caja_apertura']; ?></td>
+                        <td class="nowrap"><?php echo $c['usuario_nombre']; ?></td>
                         <td><?php echo $c['caja_fechaapertura']; echo " ".$c['caja_horaapertura']; ?></td>
+                        <td style="text-align: right"><?php echo number_format($c['caja_apertura'],2,'.',','); ?></td>
+                        <td style="text-align: right"><?php echo number_format($c['caja_transacciones'],2,'.',','); ?></td>
+                        <td style="text-align: right; background:#00FF00; font-weight: bold; font-size: 10pt; "><?php echo number_format($c['caja_transacciones'] + $c['caja_apertura'],2,'.',','); ?></td>
+                        <td style="text-align: right; background:#00FF00; font-weight: bold; font-size: 10pt; "><?php echo number_format($c['caja_cierre'],2,'.',','); ?></td>
+                        <td style="text-align: right; background:#ff0; font-weight: bold; font-size: 10pt; "><?php echo number_format($c['caja_diferencia'],2,'.',','); ?></td>
+                        
+                        <td><?php echo $c['caja_efectivo']; ?></td>
+                        
                         <td><?php echo $c['caja_cierre']; ?></td>
                         <td>
                             <?php
@@ -61,58 +89,23 @@
                             ?>
                         </td>
                         <td><?php echo $c['caja_diferencia']; ?></td>
-                        <td>
-                            <?php
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 1000: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte1000'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 500: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte500'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 200: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte200'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 100: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte100'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 50: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte50'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 20: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte20'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 10: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte10'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 5: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte5'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 2: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte2'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 1: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte1'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 050: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte050'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 020: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte020'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 010: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte010'],0,'.',',')."</span>";
-                            echo "</div>";
-                            echo "<div class='col-md-3' style='padding-left: 2px; padding-right: 2px'>";
-                            echo "Cortes de 005: <span class='text-bold' style='font-size: 11px'>".number_format($c['caja_corte005'],0,'.',',')."</span>";
-                            echo "</div>";
-                            ?>
-                        </td>
-                        <td><?php echo $c['caja_efectivo']; ?></td>
-                        <td><?php echo $c['caja_credito']; ?></td>
-                        <td><?php echo $c['caja_transacciones']; ?></td>
+
+                        <!--<td><?php echo $c['caja_credito']; ?></td>-->
                         <td><?php echo $c['moneda_descripcion']; ?></td>
+                        
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte200']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte100']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte50']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte20']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte10']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte5']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte2']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte1']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte050']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte020']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte010']; ?></td>
+                        <td style="background: #F2B33F"><?php echo $c['caja_corte005']; ?></td>
                         <td><?php echo $c['estado_descripcion']; ?></td>
-                        <td><?php echo $c['usuario_nombre']; ?></td>
                         <td>
                             <a href="<?php echo site_url('caja/edit/'.$c['caja_id']); ?>" class="btn btn-info btn-xs" title="Modificar caja"><span class="fa fa-pencil"></span></a> 
                             <a href="<?php echo site_url('caja/cierre_caja/'.$c['caja_id']); ?>" class="btn btn-facebook btn-xs" title="Cierre de caja"><span class="fa fa-suitcase"></span></a> 

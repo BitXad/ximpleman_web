@@ -101,7 +101,7 @@
                         </div>
                         <div class="col-md-2">
                             <br>
-                            <button class="btn btn-sm btn-warning btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;">
+                            <button class="btn btn-sm btn-warning btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;" id="boton_buscar">
                                 <span class="fa fa-search"></span> Buscar
                           </button>
                             <br>
@@ -231,6 +231,7 @@
 </tr>
 </table>
     
+<input type="text" id="saldo_caja">
     
     
 <script type="text/javascript">

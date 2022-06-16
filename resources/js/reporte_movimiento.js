@@ -1441,6 +1441,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         html += "<td "+estilo+"></td>";
                         html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(efectivo_caja_diferencia)+"</b></td>";
                         html += "<td "+estilo+"></td>";
+                        
                     html += "</tr>";
                     if (tipousuario_id==1){
                         html += "<tr style='font-size:12px;'>";
@@ -1468,6 +1469,9 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 //                    $("#saldoencaja").html(numberFormat(Number(totalingresoefec-totalegreso).toFixed(2)));
                     
                 document.getElementById('loader').style.display = 'none';
+                
+                $("#saldo_caja").val(Number(efectivo_caja_diferencia).toFixed(2));
+                
             }
                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
