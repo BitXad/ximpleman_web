@@ -98,229 +98,85 @@ class Orden_compra_model extends CI_Model
         return $this->db->query($sql)->result_array();
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /* *busqueda de productos activos en el sistema..* */
-    function get_busqueda_productos($parametro)
-    {
-        $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
-              FROM
-              inventario p
-              LEFT JOIN estado e on p.estado_id = e.estado_id
-              WHERE 
-                   p.estado_id = 1
-                   and p.producto_catalogo = 1 
-                   and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
-                   or p.producto_codigo like '%".$parametro."%' or p.producto_marca like '%".$parametro."%'
-                   or p.producto_industria like '%".$parametro."%' or p.producto_caracteristicas like '%".$parametro."%')
-              GROUP By p.producto_id
-              ORDER By p.producto_nombre";
-
-        $producto = $this->db->query($sql)->result_array();
-        return $producto;
-
-    }
-
-    function get_busqueda_categoria($categoria_id)
-    {
-        $lacategoria = "";
-        if($categoria_id > 0){
-            $lacategoria = " and p.categoria_id='".$categoria_id."' ";
-        }
-        $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion, cp.categoria_nombre
-              FROM
-              inventario p
-              LEFT JOIN estado e on p.estado_id = e.estado_id
-              LEFT JOIN categoria_producto cp on cp.categoria_id = p.categoria_id
-              WHERE 
-                   p.estado_id = 1
-                   and p.producto_catalogo = 1 
-                   $lacategoria
-              GROUP By p.producto_id
-              ORDER By p.producto_nombre";
-
-        $producto = $this->db->query($sql)->result_array();
-        return $producto;
-
-    }
-
-    function get_subcategorias($categoria_id)
-    {
-        $sql = "select * from subcategoria_producto where categoria_id = ".$categoria_id.
-                " order by subcategoria_nombre";
-
-        $resultado = $this->db->query($sql)->result_array();
-        return $resultado;
-
-    }
-
-    function get_busqueda_subcategoria($subcategoria_id)
-    {
-        $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion, cp.categoria_nombre
-              FROM
-              inventario p
-              LEFT JOIN estado e on p.estado_id = e.estado_id
-              LEFT JOIN categoria_producto cp on cp.categoria_id = p.categoria_id
-              WHERE 
-                   p.estado_id = 1
-                   and p.producto_catalogo = 1 
-                   and p.subcategoria_id=".$subcategoria_id."
-              GROUP By p.producto_id
-              ORDER By p.producto_nombre";
-
-        $producto = $this->db->query($sql)->result_array();
-        return $producto;
-
-    }
-    
-    function get_all_productosubcategorias($producto_id)
-    {
-        $sql = "SELECT
-                sc.subcatserv_descripcion
-            FROM
-                subcategoria_servicio sc
-            LEFT JOIN categoria_insumo ci on ci.subcatserv_id = sc.subcatserv_id
-            WHERE
-                ci.producto_id = $producto_id";
-
-        $producto = $this->db->query($sql)->result_array();
-        return $producto;
-
-    }
-    /* Get busqueda all productos de parametros */
-    function buscar_allproducto($parametro){
-        $producto = $this->db->query("
-            SELECT
-                p.producto_id, p.producto_nombre
-            FROM
-                inventario p, estado e
-            WHERE
-                p.estado_id = e.estado_id
-                and p.estado_id = 1
-                and (p.producto_nombre like '%".$parametro."%'
-                    or p.producto_codigo like '%".$parametro."%'
-                    or p.producto_codigobarra like '%".$parametro."%')
-            ORDER BY p.producto_nombre
-        ")->result_array();
-
-        return $producto;
-    }
-    
     /*
-     * Get this Insumo
+     * function to add new detalle orden compra
      */
-    function get_this_insumo($producto_id){
-        $producto = $this->db->query("
-            SELECT
-                p.producto_id, p.producto_nombre, p.existencia, producto_precio
-            FROM
-                inventario p
-            WHERE
-                p.producto_id = $producto_id
-                
-        ")->row_array();
-
-        return $producto;
-    }
-    
-    /* devuelve todos los productos activos(de inventario)..(lo usamos en catalogo).. */
-    function buscar_allproductos(){
-        $producto = $this->db->query("
-            SELECT
-                p.producto_id, p.producto_foto, p.producto_nombre, p.producto_codigo
-            FROM
-                inventario p, estado e
-            WHERE
-                p.estado_id = e.estado_id
-                and p.estado_id = 1
-            ORDER BY p.producto_nombre
-        ")->result_array();
-
-        return $producto;
-    }
-    
-    /* busca clasificadores de un producto */
-    function get_busqueda_clasificadores($producto_id)
+    function add_detalle_ordencompra($params)
     {
-        $sql = "select
-                    cp.*, c.clasificador_codigo, c.clasificador_nombre
-                from
-                    clasificador c, clasificador_producto cp
-                where
-                    c.clasificador_id = cp.clasificador_id
-                    and cp.producto_id = $producto_id
-                    order by c.clasificador_nombre";
-
-        $producto = $this->db->query($sql)->result_array();
-        return $producto;
-
-    }
-    /*
-     * function to añadir clasificador_producto
-     */
-    function add_clasificador_producto($params)
-    {
-        $this->db->insert('clasificador_producto',$params);
+        $this->db->insert('detalle_ordencompra',$params);
         return $this->db->insert_id();
     }
-    /*
-     * Get clasificador producto
-     */
-    function get_clasificador_producto($clasificador_id, $producto_id)
+    function get_detalle_ordencompra($ordencompra_id)
     {
-        $clasificador = $this->db->query("
-            SELECT
-                *
-            FROM
-                `clasificador_producto`
-            WHERE
-                `clasificador_id` = $clasificador_id
-                 and producto_id = $producto_id
-        ")->row_array();
-
-        return $clasificador;
-    }
-    /*
-     * elimina clasificador_producto
-     */
-    function delete_clasificador_producto($clasificadorprod_id)
-    {
-        return $this->db->delete('clasificador_producto',array('clasificadorprod_id'=>$clasificadorprod_id));
-    }
-
-    function get_productos()
-    {
-        $sql="select * from producto";
+        $sql="select doc.*, p.producto_nombre
+                from detalle_ordencompra doc
+                left join inventario p on doc.producto_id = p.producto_id
+                where
+                    doc.ordencompra_id = $ordencompra_id";
         return $this->db->query($sql)->result_array();
+    }
+    /*
+     * function to add new detalle orden compra aux
+     */
+    function add_ordencompra($params)
+    {
+        $this->db->insert('orden_compra',$params);
+        return $this->db->insert_id();
+    }
+    
+    function get_ordencompra($ordencompra_id)
+    {
+        $compra = $this->db->query("
+            SELECT
+                oc.*, p.proveedor_nombre, u.usuario_nombre, m. moneda_descripcion,
+                e.estado_color, e.estado_descripcion
+            FROM
+                orden_compra oc
+            left join proveedor p on oc.proveedor_id = p.proveedor_id
+            left join usuario u on oc.usuario_id = u.usuario_id
+            left join moneda m on oc.moneda_id = m.moneda_id
+            left join estado e on oc.estado_id = e.estado_id
+            WHERE
+                 oc.ordencompra_id=".$ordencompra_id."
+         ")->result_array();
+
+        return $compra;
+    }
+    
+    function getall_ordencompra($parametro)
+    {
+        $el_parametro = "";
+        if($parametro != ""){
+            $el_parametro = "and (oc.ordencompra_id = '".$parametro."' or p.proveedor_nombre like '%".$parametro."%'
+                             or u.usuario_nombre like '%".$parametro."%')";
+        }
+        $compra = $this->db->query("
+            SELECT
+                oc.*, p.proveedor_nombre, u.usuario_nombre, m. moneda_descripcion,
+                e.estado_color, e.estado_descripcion
+            FROM
+                orden_compra oc
+            left join proveedor p on oc.proveedor_id = p.proveedor_id
+            left join usuario u on oc.usuario_id = u.usuario_id
+            left join moneda m on oc.moneda_id = m.moneda_id
+            left join estado e on oc.estado_id = e.estado_id
+            WHERE
+                1= 1
+                ".$el_parametro."
+         ")->result_array();
+
+        return $compra;
+    }
+    
+    function update_ordencompra($ordencompra_id,$params)
+    {
+        $this->db->where('ordencompra_id',$ordencompra_id);
+        return $this->db->update('orden_compra',$params);
+    }
+    
+    function update_detalleordencompra($detalleordencomp_id,$params)
+    {
+        $this->db->where('detalleordencomp_id',$detalleordencomp_id);
+        return $this->db->update('detalle_ordencompra',$params);
     }
 }

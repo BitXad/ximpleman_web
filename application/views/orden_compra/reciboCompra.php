@@ -1,41 +1,31 @@
- <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
- <!--<script type="text/javascript">
-    $(document).ready(function()
-{
-   var hola = document.getElementById('compra_id').value;
-        if(hola!=null){
-             window.print(); 
-        }
-});
-</script>-->
+<script src="<?php echo base_url('resources/js/orden_compragenerar.js'); ?>" type="text/javascript"></script>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="compra_id" id="compra_id" value="<?php echo $compra_id; ?>" />
+
  <style>
-            body {
-                text-align: left;
-                 
-        }
-       hr {
-  height: 2px;
-  color: black;
-  margin:0% 0% 0% 0%;
-}
-h3 {
-  margin-bottom: 0;
-  padding-bottom: 0;
-  text-indent: 0; }
-.box1 {
-width:100%;
-margin:0% 12%;
-
-}
-.box2 {
-
-margin:0%;
-border-top:2px solid black;
-font-family: "Arial", Arial, Arial, arial;
-    font-size: 11px;
-    padding: 0px;
-}
-
+    body{
+        text-align: left;
+    }
+    hr{
+      height: 2px;
+      color: black;
+      margin:0% 0% 0% 0%;
+    }
+    h3 {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      text-indent: 0; }
+    .box1 {
+        width:100%;
+        margin:0% 12%;
+    }
+    .box2 {
+        margin:0%;
+        border-top:2px solid black;
+        font-family: "Arial", Arial, Arial, arial;
+        font-size: 11px;
+        padding: 0px;
+    }
 
 .box4 {
 width:100%;
@@ -158,6 +148,9 @@ border-bottom:1px solid black;
 
 
          </style>
+<div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
+    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+</div>
 <table class="table table-striped" style="width: 20cm; padding: 0;" >
     <tr>
         <td style="width: 25%; padding: 0; line-height:10px;" >
@@ -201,7 +194,7 @@ border-bottom:1px solid black;
      
     
     
-</table>       
+</table>
 <div class="box-body table-responsive"> 
 
         <table class="table table-striped " border-bottom="1" id="mitabla" style="width: 18cm; padding: 0;">                        
@@ -299,11 +292,14 @@ border-bottom:1px solid black;
         </tr>
 </table>
 
-<div class="box-footer">
-                    <button type="submit" class="btn btn-success">
-                        <i class="fa fa-check"></i> Guardar
-                    </button>
-                    <a href="<?php echo site_url('moneda'); ?>" class="btn btn-danger">
-                        <i class="fa fa-times"></i> Cancelar</a>
-          	</div>
+<div class="box-footer no-print">
+    <a class="btn btn-success" onclick="generar_ordencompra()">
+        <i class="fa fa-file-text"></i> Generar Orden de Compra
+    </a>
+    <a class="btn btn-info" onclick="">
+        <i class="fa fa-list-ol"></i> Crear Orden de Compra
+    </a>
+    <a href="<?php echo site_url('orden_compra/existenciaminima'); ?>" class="btn btn-danger">
+        <i class="fa fa-times"></i> Cancelar</a>
+</div>
  
