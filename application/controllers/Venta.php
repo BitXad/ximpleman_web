@@ -1340,10 +1340,17 @@ function edit($venta_id)
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
 <<<<<<< HEAD
+<<<<<<< Updated upstream
        $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
 =======
 
 
+=======
+
+
+=======
+       $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
+>>>>>>> Stashed changes
 >>>>>>> master
         
         //**************** inicio contenido ***************     

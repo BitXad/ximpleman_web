@@ -9,7 +9,10 @@ class Orden_compra extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('Parametro_model');
         $this->load->model('Producto_model');
+<<<<<<< Updated upstream
         $this->load->model('Compra_model');
+=======
+>>>>>>> Stashed changes
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -112,6 +115,7 @@ class Orden_compra extends CI_Controller{
         }
     }
     
+<<<<<<< Updated upstream
     function nota($compra_id){
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
@@ -138,17 +142,28 @@ class Orden_compra extends CI_Controller{
     }
     
     
+=======
+>>>>>>> Stashed changes
     /** obtiene el ultimo pedido realizado donde se encuentra el producto seleccionado */
     function proveedor_ultimopedido()
     {
         if($this->acceso(1)) {
             if ($this->input->is_ajax_request()){
+<<<<<<< Updated upstream
                 //$usuario_id = $this->session_data['usuario_id'];
                 $producto_id  = $this->input->post('producto_id');
                 $proveedor_id = $this->input->post('proveedor_id');
                 //$this->Orden_compra_model->delete_detalle_ordencompra_aux($usuario_id);
                 $detalle_compra = $this->Orden_compra_model->getultimo_pedidoproducto($producto_id, $proveedor_id);
                 /*foreach ($detalle_compra as $detalle){
+=======
+                $usuario_id = $this->session_data['usuario_id'];
+                $producto_id  = $this->input->post('producto_id');
+                $proveedor_id = $this->input->post('proveedor_id');
+                $this->Orden_compra_model->delete_detalle_ordencompra_aux($usuario_id);
+                $detalle_compra = $this->Orden_compra_model->getultimo_pedidoproducto($producto_id, $proveedor_id);
+                foreach ($detalle_compra as $detalle){
+>>>>>>> Stashed changes
                     $params = array(
                         'ordencompra_id' => 0, // por ser nuevo
                         'moneda_id' => $detalle["moneda_id"],
@@ -170,8 +185,13 @@ class Orden_compra extends CI_Controller{
                         'usuario_id' => $usuario_id,
                     );
                     $detalleordencomp_id = $this->Orden_compra_model->add_detalle_ordencompra_aux($params);
+<<<<<<< Updated upstream
                 }*/
                 $datos = $detalle_compra;
+=======
+                }
+                $datos = "ok";
+>>>>>>> Stashed changes
                 echo json_encode($datos);
             }else{                 
                 show_404();
