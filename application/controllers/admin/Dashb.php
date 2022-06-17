@@ -56,7 +56,9 @@ class Dashb extends CI_Controller
                 $usuario_id = $session_data['usuario_id'];
                 $data['usuario'] = $usuario_id;
                 
+                //*********** Administracion de caja *********
                 $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+                
                 if (! sizeof($caja)>0){ // si la caja no esta iniciada
                     //iniciar caja y dejarla en pendiente
                     $this->Caja_model->caja_pendiente($usuario_id);
@@ -64,6 +66,8 @@ class Dashb extends CI_Controller
                 $caja = $this->Caja_model->get_caja_usuario($usuario_id);
                 
                 $data['caja'] = $caja;
+                
+                //*********** FIN Administracion de caja *********
                 
                 $data['tipousuario_id'] = $session_data['tipousuario_id'];
                 $data['_view'] = 'hola';
