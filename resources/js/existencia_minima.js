@@ -123,13 +123,10 @@ function mostrar_ultimopedido(producto_id, proveedor_id){
             type:"POST",
             data:{producto_id:producto_id, proveedor_id:proveedor_id},
             success:function(resultado){
-<<<<<<< Updated upstream
                 var reg = JSON.parse(resultado);
                 let compra_id = reg[0].compra_id;
                 dir_url = base_url+"orden_compra/nota/"+compra_id;
-=======
-                dir_url = base_url+"orden_compra/ultimo_pedido";
->>>>>>> Stashed changes
+                //dir_url = base_url+"orden_compra/ultimo_pedido";
                 location.href =dir_url;
                 
            },error:function(respuesta){

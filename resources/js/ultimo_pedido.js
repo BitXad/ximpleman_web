@@ -18,11 +18,7 @@ function ultimopedido(){
                 var tam = registros.length;
                 //alert(reg.length);
                 html = "";
-<<<<<<< Updated upstream
                 /*html += "<table class='table' id='mitabla'>";
-=======
-                html += "<table class='table' id='mitabla'>";
->>>>>>> Stashed changes
                 html += "<tr>";
                 html += "<th>#</th>";
                 html += "<th>Producto/ Unidad</th>";
@@ -33,11 +29,7 @@ function ultimopedido(){
                 html += "<th>Cant.</th>";
                 html += "<th>Total</th>";
                 html += "<th></th>";
-<<<<<<< Updated upstream
                 html += "</tr>";*/
-=======
-                html += "</tr>";
->>>>>>> Stashed changes
                 if(tam>0){
                     let total = Number(0);
                     var total_detalle = Number(0);

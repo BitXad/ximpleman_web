@@ -48,25 +48,18 @@
 
                         <tr role="row">
                             <th  role="columnheader" >#</th>
-<<<<<<< Updated upstream
                             <th  role="columnheader" >PRODUCTO/ UNIDAD</th>
-=======
-                            <th  role="columnheader" >PRODUCTO</th>
->>>>>>> Stashed changes
                             <th  role="columnheader" >CODIGO</th>
                             <th  role="columnheader" >ULTIMO<br>COSTO</th>
                             <th  role="columnheader" >PRECIO<br>VENTA</th>
                             <th  role="columnheader" >EXISTENCIA</th>
-<<<<<<< Updated upstream
                             <th  role="columnheader" >CANTIDAD</th>
                             <th  role="columnheader" >TOTAL</th>
                             <th  role="columnheader" ></th>
-=======
                             <!--<th  role="columnheader" >MND</th>-->
                             <!--<th  role="columnheader" >CATEGORIA</th>-->
                             <th  role="columnheader" class="no-print" >PROVEEDOR</th>
                             <!--<th  role="columnheader" class="no-print">ESTADO</th>-->
->>>>>>> Stashed changes
                     
                         </tr>
                     </thead>
