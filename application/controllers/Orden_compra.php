@@ -9,6 +9,7 @@ class Orden_compra extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('Parametro_model');
         $this->load->model('Producto_model');
+        $this->load->model('Compra_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -111,17 +112,43 @@ class Orden_compra extends CI_Controller{
         }
     }
     
+    function nota($compra_id){
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $num = $this->Compra_model->numero();
+        $este = $num[0]['parametro_tipoimpresora'];
+        if($this->acceso(1)){
+            $data['page_title'] = "Ultima Compra";
+            $usuario_id = $this->session_data['usuario_id'];
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['compra'] = $this->Compra_model->join_compras($compra_id);
+            //$this->load->model('Detalle_compra_model');
+            $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
+            $data['credito'] = $this->Compra_model->get_credito($compra_id);
+
+        }
+        if ($este == 'NORMAL') {
+            $data['_view'] = 'orden_compra/reciboCompra';
+            $this->load->view('layouts/main',$data);
+        }else{
+            $data['_view'] = 'orden_compra/boucher';
+            $this->load->view('layouts/main',$data);
+
+        }
+    }
+    
+    
     /** obtiene el ultimo pedido realizado donde se encuentra el producto seleccionado */
     function proveedor_ultimopedido()
     {
         if($this->acceso(1)) {
             if ($this->input->is_ajax_request()){
-                $usuario_id = $this->session_data['usuario_id'];
+                //$usuario_id = $this->session_data['usuario_id'];
                 $producto_id  = $this->input->post('producto_id');
                 $proveedor_id = $this->input->post('proveedor_id');
-                $this->Orden_compra_model->delete_detalle_ordencompra_aux($usuario_id);
+                //$this->Orden_compra_model->delete_detalle_ordencompra_aux($usuario_id);
                 $detalle_compra = $this->Orden_compra_model->getultimo_pedidoproducto($producto_id, $proveedor_id);
-                foreach ($detalle_compra as $detalle){
+                /*foreach ($detalle_compra as $detalle){
                     $params = array(
                         'ordencompra_id' => 0, // por ser nuevo
                         'moneda_id' => $detalle["moneda_id"],
@@ -143,8 +170,8 @@ class Orden_compra extends CI_Controller{
                         'usuario_id' => $usuario_id,
                     );
                     $detalleordencomp_id = $this->Orden_compra_model->add_detalle_ordencompra_aux($params);
-                }
-                $datos = "ok";
+                }*/
+                $datos = $detalle_compra;
                 echo json_encode($datos);
             }else{                 
                 show_404();

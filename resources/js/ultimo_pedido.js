@@ -18,7 +18,7 @@ function ultimopedido(){
                 var tam = registros.length;
                 //alert(reg.length);
                 html = "";
-                html += "<table class='table' id='mitabla'>";
+                /*html += "<table class='table' id='mitabla'>";
                 html += "<tr>";
                 html += "<th>#</th>";
                 html += "<th>Producto/ Unidad</th>";
@@ -29,7 +29,7 @@ function ultimopedido(){
                 html += "<th>Cant.</th>";
                 html += "<th>Total</th>";
                 html += "<th></th>";
-                html += "</tr>";
+                html += "</tr>";*/
                 if(tam>0){
                     let total = Number(0);
                     var total_detalle = Number(0);
