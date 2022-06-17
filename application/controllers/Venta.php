@@ -1339,7 +1339,11 @@ function edit($venta_id)
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> master
         //**************** inicio contenido ***************     
                 
        
