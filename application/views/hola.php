@@ -33,6 +33,7 @@
 <script src="<?php if($parametro[0]["parametro_manejocaja"] == "Si"){ echo base_url('resources/js/caja.js');} ?>"></script>
 <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/dashb_existenciamin.js'); ?>"></script>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
@@ -772,7 +773,40 @@
             </div>
         </div>
     </section>
-
+    <section class="col-lg-5 connectedSortable">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-file-text-o"></i>
+                <h3 class="box-title">Existencia Minima</h3>
+                <!--<a class="btn btn-success btn-xs" onclick="tabladetalle_venta()" data-toggle="tooltip" title="Actualizar lo que se esta vendiendo">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a class="btn btn-danger btn-xs" onclick="quitartodo()" data-toggle="tooltip" title="Anular todo lo que se esta vendiendo">
+                    <i class="fa fa-trash"></i>
+                </a>-->
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remover">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <!-- /. tools -->
+            </div>
+            <div class="box-body">
+                <div class="box-body no-padding">
+                    <table class="table table-condensed">
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Producto</th>
+                            <th>Codigo</th>
+                            <th>Existencia</th>
+                        </tr>
+                        <tbody id="tabla_existenciaminima"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
     <!------------------------- temporal -------------->
     <br>
         <section>
