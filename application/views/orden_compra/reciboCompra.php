@@ -296,7 +296,7 @@ border-bottom:1px solid black;
     <a class="btn btn-success" onclick="generar_ordencompra()">
         <i class="fa fa-file-text"></i> Generar Orden de Compra
     </a>
-    <a class="btn btn-info" onclick="">
+    <a class="btn btn-info" onclick="crear_ordencompra()">
         <i class="fa fa-list-ol"></i> Crear Orden de Compra
     </a>
     <a href="<?php echo site_url('orden_compra/existenciaminima'); ?>" class="btn btn-danger">

@@ -90,8 +90,9 @@ class Orden_compra_model extends CI_Model
     
     function get_detalle_ordencompra_aux($usuario_id)
     {
-        $sql="select dca.*, p.producto_nombre, p.existencia
+        $sql="select dca.*, p.producto_nombre, p.existencia, pr.proveedor_nombre
                 from detalle_ordencompra_aux dca
+                left join proveedor pr on dca.proveedor_id = pr.proveedor_id
                 left join inventario p on dca.producto_id = p.producto_id
                 where
                     dca.usuario_id = $usuario_id ";
@@ -178,5 +179,52 @@ class Orden_compra_model extends CI_Model
     {
         $this->db->where('detalleordencomp_id',$detalleordencomp_id);
         return $this->db->update('detalle_ordencompra',$params);
+    }
+    
+    function update_detalleordencompra_aux($detalleordencomp_id,$params)
+    {
+        $this->db->where('detalleordencomp_id',$detalleordencomp_id);
+        return $this->db->update('detalle_ordencompra_aux',$params);
+    }
+    function get_detalleordencompra($detalleordencomp_id)
+    {
+        $detalle_ordencompra = $this->db->query("
+            SELECT
+                doc.*
+            FROM
+                detalle_ordencompra_aux doc
+            WHERE
+                 doc.detalleordencomp_id=".$detalleordencomp_id."
+         ")->row_array();
+
+        return $detalle_ordencompra;
+    }
+    
+    function eliminar_detalleordencompra_aux($detalleordencomp_id)
+    {
+        return $this->db->delete('detalle_ordencompra_aux',array('detalleordencomp_id'=>$detalleordencomp_id));
+    }
+    
+    /* busqueda de productos */
+    function buscar_productos($parametro)
+    {
+        $el_parametro = "";
+        if($parametro != ""){
+            $el_parametro = "and (p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
+                      or producto_codigo like '%".$parametro."%' or producto_marca like '%".$parametro."%'
+                      or producto_industria like '%".$parametro."%')";
+        }
+        $sql = "SELECT
+                p.*
+                 FROM
+                 inventario p
+                 WHERE
+                    1 = 1
+                      $el_parametro
+                 GROUP By p.producto_id
+                 ORDER By p.producto_nombre";
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
     }
 }

@@ -8,7 +8,7 @@ function ultimopedido(){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"orden_compra/ultimopedido";
     var html = "";
-    $("#modalproveedor").modal("hide");
+    //$("#modalproveedor").modal("hide");
     //alert(producto_id);
     $.ajax({url:controlador,
             type:"POST",
@@ -66,8 +66,8 @@ function ultimopedido(){
                         html += "<td>";
                         //html += "<input id='producto_identi'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>" ;
                         html += "<input class='input-sm' style='font-size:13px; width:100%; padding-left:0px; padding-right:0px;' id='detallecomp_precio"+registros[i]["detalleordencomp_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+","+registros[i]["producto_id"]+","+registros[i]["compra_id"]+")'  class='form-control'  value='"+Number(registros[i]["detalleordencomp_precio"]).toFixed(2)+"'  ></td>"; 
-                        html += "<td>"+registros[i]["existencia"]+"</td>",
-                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-sm' style='font-size:13px;width:65px;' id='detallecomp_cantidad"+registros[i]["detalleordencomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detalleordencomp_cantidad"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+","+registros[i]["producto_id"]+","+registros[i]["compra_id"]+")' >";
+                        html += "<td class='text-center'>"+registros[i]["existencia"]+"</td>",
+                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-sm' style='font-size:13px;width:65px;' id='detallecomp_cantidad"+registros[i]["detalleordencomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detalleordencomp_cantidad"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+")' >";
                         html += "<input id='detallecomp_id'  name='detallecomp_id' type='hidden' class='form-control' value='"+registros[i]["detalleordencomp_id"]+"'>";
                         html += "<td><center>";
                         html += "<span class='badge badge-success'>";
@@ -79,8 +79,8 @@ function ultimopedido(){
                         html += "</center></td>";
                         html += "<td style='padding-left:4px; padding-right:4px;'>";
                         
-                        html += "<button type='button' onclick='editadetalle("+registros[i]["detalleordencomp_id"]+","+registros[i]["producto_id"]+","+registros[i]["compra_id"]+")' class='btn btn-success btn-xs'><span class='fa fa-save'></span></button>";
-                        html += "<button type='button' onclick='quitardetalle("+registros[i]["detalleordencomp_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></button>";
+                        html += "<button type='button' onclick='editadetalle("+registros[i]["detalleordencomp_id"]+")' class='btn btn-success btn-xs' title='Guardar modificaciones de este detalle'><span class='fa fa-save'></span></button>";
+                        html += "<button type='button' onclick='quitardetalle("+registros[i]["detalleordencomp_id"]+")' class='btn btn-danger btn-xs' title='Eliminar este detalle'><span class='fa fa-trash'></span></button>";
                         html += "</td>";
                         html += "<tr>";
                     }
@@ -91,10 +91,11 @@ function ultimopedido(){
                     html += "</tr>";
                 }
                
-                html += "</table>";
+                //html += "</table>";
+                $("#elproveedor").html(registros[0]["proveedor_nombre"]);
                 $("#tabla_ultimopedido").html(html);
                 //$('#modalultimopedido').modal({backdrop: 'static', keyboard: false})
-                $("#modalultimopedido").modal("show");
+                //$("#modalultimopedido").modal("show");
                
            },error:function(respuesta){
            // alert("Algo salio mal...!!!");
@@ -102,169 +103,162 @@ function ultimopedido(){
            $("#tabla_ultimopedido").html(html);
         },
     });
+}
+
+function actualizadetalle(e,detalle_id){
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){
+        editadetalle(detalle_id);
+    }
+}
+
+function editadetalle(detalleordencomp_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'orden_compra/update_detalleaux/';
+    var costo = document.getElementById('detallecomp_costo'+detalleordencomp_id).value;
+    var precio = document.getElementById('detallecomp_precio'+detalleordencomp_id).value;
+    var cantidad = document.getElementById('detallecomp_cantidad'+detalleordencomp_id).value;
     
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{detalleordencomp_id:detalleordencomp_id,costo:costo,precio:precio,
+                  cantidad:cantidad},
+            success:function(respuesta){
+                ultimopedido();
+            }        
+    });
+}
+
+function quitardetalle(detalleordencomp_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'orden_compra/eliminar_detalleaux/';
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{detalleordencomp_id:detalleordencomp_id},
+            success:function(respuesta){
+                ultimopedido();
+            }
+    });
+}
+
+function modal_buscarproducto(){
+    $("#modal_buscarproducto").modal("show");
+}
+
+function iniciar_busqueda(e){
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){
+        let buscarproducto = document.getElementById('buscarproducto').value;
+        if(buscarproducto != null){
+            tabla_productos();
+        }
+    }
+}
+
+function tabla_productos(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'orden_compra/buscar_producto/';
+    let buscarproducto = document.getElementById('buscarproducto').value;
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{buscarproducto:buscarproducto},
+            success:function(resultado){
+                var registros = JSON.parse(resultado);
+                var tam = registros.length;
+                $("#productos_encontrados").html(tam);
+                html = "";
+                if(tam>0){
+                    for(var i=0; i<tam;i++){
+                        html += "<tr>";
+                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td style='font-size:12px;'><b>"+registros[i]["producto_nombre"]+"</b></td>";
+                        html += "<td style='font-size:10px; text-align:center;'>"+registros[i]["producto_codigo"]+"</td>";
+                        html += "<td style='padding-left:4px; padding-right:4px;'>";
+                        html += "<button type='button' onclick='agregar_adetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-xs' title='Agregar al orden de compra'><span class='fa fa-check'> </span> Añadir</button>";
+                        html += "</td>";
+                        html += "<tr>";
+                    }
+                }
+                
+                $("#tablaresultados_productos").html(html);
+                
+           },error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tabla_ultimopedido").html(html);
+        },
+    });
+}
+
+function agregar_adetalle(producto_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'orden_compra/añadir_producto/';
+    let buscarproducto = document.getElementById('buscarproducto').value;
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{buscarproducto:buscarproducto},
+            success:function(resultado){
+                var registros = JSON.parse(resultado);
+                var tam = registros.length;
+                $("#productos_encontrados").html(tam);
+                html = "";
+                if(tam>0){
+                    for(var i=0; i<tam;i++){
+                        html += "<tr>";
+                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td style='font-size:12px;'><b>"+registros[i]["producto_nombre"]+"</b></td>";
+                        html += "<td style='font-size:10px; text-align:center;'>"+registros[i]["producto_codigo"]+"</td>";
+                        html += "<td style='padding-left:4px; padding-right:4px;'>";
+                        html += "<button type='button' onclick='agregar_adetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-xs' title='Agregar al orden de compra'><span class='fa fa-check'> </span> Añadir</button>";
+                        html += "</td>";
+                        html += "<tr>";
+                    }
+                }
+                
+                $("#tablaresultados_productos").html(html);
+                
+           },error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tabla_ultimopedido").html(html);
+        },
+    });
 }
 
 function numberFormat(numero){
-        // Variable que contendra el resultado final
-        var resultado = "";
- 
-        // Si el numero empieza por el valor "-" (numero negativo)
-        if(numero[0]=="-")
-        {
-            // Cogemos el numero eliminando los posibles puntos que tenga, y sin
-            // el signo negativo
-            nuevoNumero=numero.replace(/\,/g,'').substring(1);
-        }else{
-            // Cogemos el numero eliminando los posibles puntos que tenga
-            nuevoNumero=numero.replace(/\,/g,'');
-        }
- 
-        // Si tiene decimales, se los quitamos al numero
-        if(numero.indexOf(".")>=0)
-            nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
- 
-        // Ponemos un punto cada 3 caracteres
-        for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
-            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
- 
-        // Si tiene decimales, se lo añadimos al numero una vez forateado con 
-        // los separadores de miles
-        if(numero.indexOf(".")>=0)
-            resultado+=numero.substring(numero.indexOf("."));
- 
-        if(numero[0]=="-")
-        {
-            // Devolvemos el valor añadiendo al inicio el signo negativo
-            return "-"+resultado;
-        }else{
-            return resultado;
-        }
+    // Variable que contendra el resultado final
+    var resultado = "";
+
+    // Si el numero empieza por el valor "-" (numero negativo)
+    if(numero[0]=="-")
+    {
+        // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+        // el signo negativo
+        nuevoNumero=numero.replace(/\,/g,'').substring(1);
+    }else{
+        // Cogemos el numero eliminando los posibles puntos que tenga
+        nuevoNumero=numero.replace(/\,/g,'');
     }
-    
-    
-    
-    
-    
-    
 
+    // Si tiene decimales, se los quitamos al numero
+    if(numero.indexOf(".")>=0)
+        nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
 
+    // Ponemos un punto cada 3 caracteres
+    for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+        resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
 
+    // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+    // los separadores de miles
+    if(numero.indexOf(".")>=0)
+        resultado+=numero.substring(numero.indexOf("."));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
- * Funcion que buscara productos en la tabla productos
- */
-function buscarproducto(e) {
-  tecla = (document.all) ? e.keyCode : e.which;
-  
-    if (tecla==13){
-        tablaresultadosproducto(2);
+    if(numero[0]=="-")
+    {
+        // Devolvemos el valor añadiendo al inicio el signo negativo
+        return "-"+resultado;
+    }else{
+        return resultado;
     }
 }
 
-function imprimir_producto(){
-    var estafh = new Date();
-    $('#fhimpresion').html(formatofecha_hora_ampm(estafh));
-    $("#cabeceraprint").css("display", "");
-    window.print();
-    $("#cabeceraprint").css("display", "none");
-}
-
-/*aumenta un cero a un digito; es para las horas*/
-function aumentar_cero(num){
-    if (num < 10) {
-        num = "0" + num;
-    }
-    return num;
-}
-/* recibe Date y devuelve en formato dd/mm/YYYY hh:mm:ss ampm */
-function formatofecha_hora_ampm(string){
-    var mifh = new Date(string);
-    var info = "";
-    var am_pm = mifh.getHours() >= 12 ? "p.m." : "a.m.";
-    var hours = mifh.getHours() > 12 ? mifh.getHours() - 12 : mifh.getHours();
-    if(string != null){
-       info = aumentar_cero(mifh.getDate())+"/"+aumentar_cero((mifh.getMonth()+1))+"/"+mifh.getFullYear()+" "+aumentar_cero(hours)+":"+aumentar_cero(mifh.getMinutes())+":"+aumentar_cero(mifh.getSeconds())+" "+am_pm;
-   }
-    return info;
-}
-
-function formato_fecha(string){
-    var info = "";
-    if(string != null){
-       info = string.split('-').reverse().join('/');
-   }
-    return info;
-}
-
-
-
-
-
-
-function formato_numerico(numero){
-            nStr = Number(numero).toFixed(2);
-        nStr += '';
-	x = nStr.split('.');
-	x1 = x[0];
-	x2 = x.length > 1 ? '.' + x[1] : '';
-	var rgx = /(\d+)(\d{3})/;
-	while (rgx.test(x1)) {
-		x1 = x1.replace(rgx, '$1' + ',' + '$2');
-	}
-	
-	return x1 + x2;
-}
-
-
-function actualizar_inventario()
-{
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"inventario/actualizar_inventario/";
-    
-    document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
-    $.ajax({url: controlador,
-        type:"POST",
-        data:{},
-        success:function(respuesta){     
-            alert('El inventario se actualizo exitosamente...! ');
-            //redirect('inventario/index');
-            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-            //tabla_inventario();
-        },
-        complete: function (jqXHR, textStatus) {
-            document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader 
-            //tabla_inventario();
-        }
-    });   
-      
-}

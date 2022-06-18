@@ -139,44 +139,10 @@ class Orden_compra extends CI_Controller{
     {
         if($this->acceso(1)) {
             if ($this->input->is_ajax_request()){
-                //$usuario_id = $this->session_data['usuario_id'];
                 $producto_id  = $this->input->post('producto_id');
                 $proveedor_id = $this->input->post('proveedor_id');
-                //$this->Orden_compra_model->delete_detalle_ordencompra_aux($usuario_id);
                 $detalle_compra = $this->Orden_compra_model->getultimo_pedidoproducto($producto_id, $proveedor_id);
-                /*foreach ($detalle_compra as $detalle){
-                $usuario_id = $this->session_data['usuario_id'];
-                $producto_id  = $this->input->post('producto_id');
-                $proveedor_id = $this->input->post('proveedor_id');
-                $this->Orden_compra_model->delete_detalle_ordencompra_aux($usuario_id);
-                $detalle_compra = $this->Orden_compra_model->getultimo_pedidoproducto($producto_id, $proveedor_id);
-                foreach ($detalle_compra as $detalle){
-
-                    $params = array(
-                        'ordencompra_id' => 0, // por ser nuevo
-                        'moneda_id' => $detalle["moneda_id"],
-                        'producto_id' => $detalle["producto_id"],
-                        'detalleordencomp_codigo' => $detalle["detallecomp_codigo"],
-                        'detalleordencomp_cantidad' => $detalle["detallecomp_cantidad"],
-                        'detalleordencomp_unidad' => $detalle["detallecomp_unidad"],
-                        'detalleordencomp_costo' => $detalle["detallecomp_costo"],
-                        'detalleordencomp_precio' => $detalle["detallecomp_precio"],
-                        'detalleordencomp_subtotal' => $detalle["detallecomp_subtotal"],
-                        'detalleordencomp_descuento' => $detalle["detallecomp_descuento"],
-                        'detalleordencomp_total' => $detalle["detallecomp_total"],
-                        'detalleordencomp_descglobal' => $detalle["detallecomp_descglobal"],
-                        'detalleordencomp_fechavencimiento' => $detalle["detallecomp_fechavencimiento"],
-                        'detalleordencomp_tipocambio' => $detalle["detallecomp_tipocambio"],
-                        'cambio_id' => $detalle["cambio_id"],
-                        'detalleordencomp_tc' => $detalle["detallecomp_tc"],
-                        'detalleordencomp_series' => $detalle["detallecomp_series"],
-                        'usuario_id' => $usuario_id,
-                    );
-                    $detalleordencomp_id = $this->Orden_compra_model->add_detalle_ordencompra_aux($params);
-
-                }*/
                 $datos = $detalle_compra;
-
                 echo json_encode($datos);
             }else{                 
                 show_404();
@@ -184,7 +150,7 @@ class Orden_compra extends CI_Controller{
         }
     }
     
-    /** genera la oredn compra directa */
+    /** genera la orden compra directa */
     function generar_ordencompradirecta()
     {
         if($this->acceso(1)){
@@ -265,9 +231,6 @@ class Orden_compra extends CI_Controller{
         }
     }
     
-    
-    
-    
     /*
      * Productos con existencia minima
      */
@@ -278,14 +241,6 @@ class Orden_compra extends CI_Controller{
             $data['page_title'] = "Existencia Minima";
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
             $data['parametro'] = $this->Parametro_model->get_parametro(1);
-            /*
-            $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
-
-            $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-
-            
-
-            */
             
             $data['_view'] = 'orden_compra/ultimo_pedido';
             $this->load->view('layouts/main',$data);
@@ -298,12 +253,53 @@ class Orden_compra extends CI_Controller{
             if ($this->input->is_ajax_request()){
                 $usuario_id = $this->session_data['usuario_id'];
                 $datos = $this->Orden_compra_model->get_detalle_ordencompra_aux($usuario_id);
+                
                 echo json_encode($datos);
             }else{                 
                 show_404();
             }
         }
     }
+    
+    /** actualiza una detalle de la tabla detalle_ordencompra_aux */
+    function update_detalleaux()
+    {
+        if($this->acceso(1)) {
+            if ($this->input->is_ajax_request()){
+                $detalleordencomp_id  = $this->input->post('detalleordencomp_id');
+                $costo    = $this->input->post('costo');
+                $precio   = $this->input->post('precio');
+                $cantidad = $this->input->post('cantidad');
+                $params = array(
+                    'detalleordencomp_cantidad' => $cantidad,
+                    'detalleordencomp_costo' => $costo,
+                    'detalleordencomp_precio' => $precio,
+                    'detalleordencomp_subtotal' => ($cantidad*$costo),
+                    'detalleordencomp_total' => ($cantidad*$costo),
+                );
+                $this->Orden_compra_model->update_detalleordencompra_aux($detalleordencomp_id,$params);
+                echo json_encode("ok");
+            }else{                 
+                show_404();
+            }
+        }
+    }
+    
+    /** elimina un detalle de la tabla detalle_ordencompra_aux */
+    function eliminar_detalleaux()
+    {
+        if($this->acceso(1)) {
+            if ($this->input->is_ajax_request()){
+                $detalleordencomp_id  = $this->input->post('detalleordencomp_id');
+                
+                $this->Orden_compra_model->eliminar_detalleordencompra_aux($detalleordencomp_id);
+                echo json_encode("ok");
+            }else{                 
+                show_404();
+            }
+        }
+    }
+    
     /** obtiene todas las ordenes de compras realizadas */
     function buscar_ordenescompra()
     {
@@ -419,6 +415,64 @@ class Orden_compra extends CI_Controller{
                 }
                 
                 $datos = "ok";
+                echo json_encode($datos);
+            }else{                 
+                show_404();
+            }
+        }
+    }
+    
+    /** replica la compra y el detalle lo vacia a la tabla aux (detalle_ordencompra_aux) */
+    function crear_ordencompra()
+    {
+        if($this->acceso(1)) {
+            if ($this->input->is_ajax_request()){
+                $usuario_id = $this->session_data['usuario_id'];
+                $compra_id  = $this->input->post('compra_id');
+                $detalle_compra = $this->Compra_model->get_detalle_compra($compra_id);
+                $proveedor_compra = $this->Compra_model->get_proveedor_id($compra_id);
+                $proveedor_id = $proveedor_compra[0]['proveedor_id'];
+
+                $this->Orden_compra_model->delete_detalle_ordencompra_aux($usuario_id);
+                foreach($detalle_compra as $detalle){
+                    $params = array(
+                        'ordencompra_id' => 0, // por ser nuevo
+                        'proveedor_id' => $proveedor_id,
+                        'moneda_id' => $detalle["moneda_id"],
+                        'producto_id' => $detalle["producto_id"],
+                        'detalleordencomp_codigo' => $detalle["detallecomp_codigo"],
+                        'detalleordencomp_cantidad' => $detalle["detallecomp_cantidad"],
+                        'detalleordencomp_unidad' => $detalle["detallecomp_unidad"],
+                        'detalleordencomp_costo' => $detalle["detallecomp_costo"],
+                        'detalleordencomp_precio' => $detalle["detallecomp_precio"],
+                        'detalleordencomp_subtotal' => $detalle["detallecomp_subtotal"],
+                        'detalleordencomp_descuento' => $detalle["detallecomp_descuento"],
+                        'detalleordencomp_total' => $detalle["detallecomp_total"],
+                        'detalleordencomp_descglobal' => $detalle["detallecomp_descglobal"],
+                        'detalleordencomp_fechavencimiento' => $detalle["detallecomp_fechavencimiento"],
+                        'detalleordencomp_tipocambio' => $detalle["detallecomp_tipocambio"],
+                        'cambio_id' => $detalle["cambio_id"],
+                        'detalleordencomp_tc' => $detalle["detallecomp_tc"],
+                        //'detalleordencomp_series' => $detalle["detallecomp_series"],
+                        'usuario_id' => $usuario_id,
+                    );
+                    $detalleordencomp_id = $this->Orden_compra_model->add_detalle_ordencompra_aux($params);
+                }
+                //$detalle_compra_aux = $this->Orden_compra_model->get_detalle_ordencompra_aux($usuario_id);
+                $datos = "ok";
+                echo json_encode($datos);
+            }else{
+                show_404();
+            }
+        }
+    }
+    /** busca productos */
+    function buscar_producto()
+    {
+        if($this->acceso(1)) {
+            if ($this->input->is_ajax_request()){
+                $parametro  = $this->input->post('buscarproducto');
+                $datos = $this->Orden_compra_model->buscar_productos($parametro);
                 echo json_encode($datos);
             }else{                 
                 show_404();
