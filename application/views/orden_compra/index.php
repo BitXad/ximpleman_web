@@ -39,18 +39,6 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<!--<input type="hidden" name="parametro_modulorestaurante" id="parametro_modulorestaurante" value="<?php echo $parametro['parametro_modulorestaurante']; ?>" />
-<input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
-<input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php  echo $tipousuario_id; ?>" />
-<input type="hidden" name="resproducto" id="resproducto" />
-<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
-<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
-<input type="hidden" name="esesteproducto" id="esesteproducto" /> <!-- usado en el modal para numero de imgs. para codigo barra -->
-<!--<input type="hidden" name="esestecodigobarra" id="esestecodigobarra" /> <!-- usado en el modal para numero de imgs. para codigo barra -->
-<!--<input type="hidden" name="eselnombreproducto" id="eselnombreproducto" /> <!-- valor dado cuando mostramo el modal para codigo barra -->
-<!--<input type="hidden" name="lapresentacion" id="lapresentacion" value='<?php /*echo json_encode($all_presentacion); ?>' />
-<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($all_moneda); */ ?>' /> -->
-<!--<input type="hidden" name="conencabezado" id="conencabezado" value="1" />-->
 
 <input type="text" value='<?php echo json_encode($empresa); ?>' id="datos_empresa" hidden>
 
@@ -76,7 +64,7 @@
         </tr>
     </table>
 </div>-->
-<br>
+<!--<br>-->
 <div class="row no-print">
     <div class="col-md-5">
         <div class="box-header" style="padding-left: 0px">
@@ -92,20 +80,27 @@
     </div>
     <!--<div class="col-md-3">
         <div class="box-tools">
-            <select name="categoria_id" class="btn-primary btn-sm btn-block" id="categoria_id" onchange="mostrar_subcategoria(this.value); tablaresultadosproducto(2)">
-                <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
-                <option value="0"> Todas Las Categorias </option>
+            <select name="proveedor_id" class="btn-primary btn-sm btn-block" id="proveedor_id" onchange="tablaresultadosproducto(2)">
+                <option value="" disabled selected >-- BUSCAR POR PROVEEDOR --</option>
+                <option value="0"> Todos Los Proveedorres </option>
                 <?php 
-                foreach($all_categoria as $categoria)
+                foreach($all_proveedor as $proveedor)
                 {
-                    echo '<option value="'.$categoria['categoria_id'].'">'.$categoria['categoria_nombre'].'</option>';
+                    echo '<option value="'.$proveedor['proveedor_id'].'">'.$proveedor['proveedor_nombre'].'</option>';
                 } 
                 ?>
             </select>
         </div>
         <div class="box-tools">
-            <select name="subcategoria_id" class="btn-primary btn-sm btn-block" id="subcategoria_id">
-                <option value="" disabled selected >-- BUSCAR SUB CATEGORIA --</option>
+            <select name="usuario_id" class="btn-primary btn-sm btn-block" id="usuario_id" onchange="tablaresultadosproducto(2)">
+                <option value="" disabled selected >-- BUSCAR POR RESPONSABLE --</option>
+                <option value="0"> Todos Los Responsables </option>
+                <?php 
+                foreach($all_usuario as $usuario)
+                {
+                    echo '<option value="'.$usuario['usuario_id'].'">'.$usuario['usuario_nombre'].'</option>';
+                } 
+                ?>
             </select>
         </div>
         <div class="box-tools">
@@ -121,6 +116,15 @@
             </select>
         </div>
     </div>-->
+    <div class="col-md-4 text-right">
+        <div class="box-tools" style="display: flex">
+            <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('orden_compra/nueva_ordencompra'); ?>" class="btn btn-success btn-foursquarexs" title="Añadir nueva Orden de Compra"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Añadir</small></a>
+            <!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" onclick="modalcatalogo()" class="btn btn-info btn-foursquarexs" title="Catalogo de Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Catálogo</small></a>
+            <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('producto/existenciaminima'); ?>" target="_blank" class="btn btn-soundcloud btn-foursquarexs" title="Productos con existencia mínima" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
+            <!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalprecio" class="btn btn-soundcloud btn-foursquarexs" title="Codigo de Barras" ><font size="5"><span class="fa fa-barcode"></span></font><br><small>Cod. Barras</small></a>-->
+        </div>
+    </div>
+    
     
     <!--<div class="col-md-4">
         <div class="box-tools" style="display: flex">

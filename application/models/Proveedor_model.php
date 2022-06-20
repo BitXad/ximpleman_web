@@ -143,7 +143,7 @@ class Proveedor_model extends CI_Model
             WHERE
                 p.estado_id=e.estado_id
                 and p.estado_id =1
-            ORDER BY `proveedor_id` DESC
+            ORDER BY `proveedor_nombre` ASC
         ")->result_array();
         return $proveedor;
     }

@@ -95,7 +95,9 @@ class Orden_compra_model extends CI_Model
                 left join proveedor pr on dca.proveedor_id = pr.proveedor_id
                 left join inventario p on dca.producto_id = p.producto_id
                 where
-                    dca.usuario_id = $usuario_id ";
+                    dca.usuario_id = $usuario_id 
+                order by dca.detalleordencomp_id desc
+                ";
         return $this->db->query($sql)->result_array();
     }
     
@@ -164,6 +166,7 @@ class Orden_compra_model extends CI_Model
             WHERE
                 1= 1
                 ".$el_parametro."
+            order by oc.ordencompra_id DESC
          ")->result_array();
 
         return $compra;

@@ -233,22 +233,27 @@ function calcular_total(producto_id){
 
 function registrar_ordencompra(){
     var base_url = document.getElementById('base_url').value;
-    //var proveedor_id = document.getElementById('proveedor_id').value;
-    var controlador = base_url+'orden_compra/registrar_ordencompra/';
-    $.ajax({url:controlador,
-            type:"POST",
-            data:{},
-            success:function(resultado){
-                var registros = JSON.parse(resultado);
-                dir_url = base_url+"orden_compra/";
-                location.href =dir_url;
-                //window.open(dir_url, '_blank');
-           },error:function(respuesta){
-           // alert("Algo salio mal...!!!");
-           html = "";
-           $("#tabla_ultimopedido").html(html);
-        },
-    });
+    var proveedor_id = document.getElementById('proveedor_id').value;
+    if(proveedor_id == 0){
+        alert("Debe elegir un proveedor");
+        $("#proveedor_id").focus();
+    }else{
+        var controlador = base_url+'orden_compra/registrar_ordencompra/';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{proveedor_id:proveedor_id},
+                success:function(resultado){
+                    var registros = JSON.parse(resultado);
+                    dir_url = base_url+"orden_compra/";
+                    location.href =dir_url;
+                    //window.open(dir_url, '_blank');
+               },error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "";
+               $("#tabla_ultimopedido").html(html);
+            },
+        });
+    }
 }
 
 function cancelar_ordencompra(){

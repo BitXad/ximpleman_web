@@ -94,7 +94,7 @@ function mostrar_historial(producto_id){
                         //html += "<td>"+formato_fecha(reg[i].compra_fecha)+"</td>";
                         html += "<td>";
                         html += "<a class='btn btn-facebook btn-xs' onclick='mostrar_ultimopedido("+producto_id+", "+reg[i].proveedor_id+")' title='Replicar el ultimo pedido del producto' ><fa class='fa fa-file-text'></fa></a> ";
-                        html += " <a class='btn btn-info btn-xs' onclick='mostrar_todopedido("+reg[i].proveedor_id+")' title='Mostrar todo lo que se compra del proveedor'><fa class='fa fa-files-o'></fa></a>";
+                        //html += " <a class='btn btn-info btn-xs' onclick='mostrar_todopedido("+reg[i].proveedor_id+")' title='Mostrar todo lo que se compra del proveedor'><fa class='fa fa-files-o'></fa></a>";
                         html += "</td>";
                         html += "</tr>";
                     }
