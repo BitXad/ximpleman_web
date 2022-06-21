@@ -119,6 +119,19 @@ class Caja_model extends CI_Model
        
         return true;
     }
+
+    function get_caja_id($caja_id)
+    {
+        $sql = "select * from caja c, bitacora_caja b, usuario u
+                where
+                c.caja_id = ".$caja_id." and
+                c.usuario_id  = u.usuario_id and
+                c.caja_id =  b.caja_id 
+                order by b.bitacoracaja_id
+                ";
+       
+        return $this->db->query($sql)->result_array();
+    }
     /*
      * Get caja by usuario_id
      */

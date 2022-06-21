@@ -28,25 +28,26 @@
         <div class="box">
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
+                    
                     <tr>
-                        <th>#</th>
-                        <th>CAJERO(A)</th>                        
-                        <th>FECHA<br>APERTURA</th>
-                        <th>MONTO<br>INICIAL</th>
-                        <th>TRANSAC.</th>
-                        <th>TOTAL<br>ESPERADO</th>
-                        <th>TOTAL<br>REGISTRADO</th>
-                        <th>DIFERENCIA</th>
-                        <th>OBSERVACION</th>
-                        
-                        
-                        
-                        <th>Fecha<br>Cierre</th>
-                        <th>Diferencia</th>
-                        <th>Cortes</th>
-<!--                        <th>Credito</th>-->
-                        <th>transacciones</th>
-                        <th>Moneda</th>
+                        <th rowspan="2">#</th>
+                        <th rowspan="2">CAJERO(A)</th>                        
+                        <th rowspan="2">COD.</th>                        
+                        <th rowspan="2">FECHA<br>APERTURA</th>
+                        <th rowspan="2">MONTO<br>INICIAL</th>
+                        <th rowspan="2">TRANSAC.</th>
+                        <th rowspan="2">TOTAL<br>ESPERADO</th>
+                        <th rowspan="2">TOTAL<br>REGISTRADO</th>
+                        <th rowspan="2">DIFERENCIA</th>
+                        <th rowspan="2">OBSERVACION</th>
+                        <th rowspan="2">FECHA<br>CIERRE</th>
+                        <th rowspan="2">MND.</th>
+                        <th colspan="12">CORTES</th>
+                        <th rowpan="2">Estado</th>
+                        <th rowspan="2">Usuario</th>
+
+                    </tr>
+                    <tr>
                         <th>200</th>
                         <th>100</th>
                         <th>50</th>
@@ -60,14 +61,14 @@
                         <th>0.10</th>
                         <th>0.05</th>
                         
-                        <th>Estado</th>
-                        <th>Usuario</th>
                         <th></th>
                     </tr>
+                    
                     <?php $i = 0; foreach($caja as $c){ ?>
                     <tr>
                         <td><?php echo ($i+1); ?></td>
                         <td class="nowrap"><?php echo $c['usuario_nombre']; ?></td>
+                        <td class="nowrap"><?php echo "00".$c['caja_id']; ?></td>
                         <td><?php echo $c['caja_fechaapertura']; echo " ".$c['caja_horaapertura']; ?></td>
                         <td style="text-align: right"><?php echo number_format($c['caja_apertura'],2,'.',','); ?></td>
                         <td style="text-align: right"><?php echo number_format($c['caja_transacciones'],2,'.',','); ?></td>
@@ -75,22 +76,10 @@
                         <td style="text-align: right; background:#00FF00; font-weight: bold; font-size: 10pt; "><?php echo number_format($c['caja_cierre'],2,'.',','); ?></td>
                         <td style="text-align: right; background:#ff0; font-weight: bold; font-size: 10pt; "><?php echo number_format($c['caja_diferencia'],2,'.',','); ?></td>
                         
-                        <td><?php echo $c['caja_efectivo']; ?></td>
+                        <td><?php echo ($c['caja_diferencia']>0)?"SOBRANTE":($c['caja_diferencia']==0)?" ":"FALTANTE"; ?></td>
+                        <td><?php echo $c['caja_fechacierre']." ".$c["caja_horacierre"]; ?></td>
                         
-                        <td><?php echo $c['caja_cierre']; ?></td>
-                        <td>
-                            <?php
-                            if($c['caja_fechacierre'] != null && $c['caja_fechacierre'] != "0000-00-00"){
-                                echo $c['caja_fechacierre'];
-                            }
-                            if($c['caja_horacierre'] != null && $c['caja_horacierre'] != "00:00:00"){
-                                echo " ".$c['caja_horacierre'];
-                            }
-                            ?>
-                        </td>
-                        <td><?php echo $c['caja_diferencia']; ?></td>
 
-                        <!--<td><?php echo $c['caja_credito']; ?></td>-->
                         <td><?php echo $c['moneda_descripcion']; ?></td>
                         
                         <td style="background: #F2B33F"><?php echo $c['caja_corte200']; ?></td>
@@ -109,6 +98,7 @@
                         <td>
                             <a href="<?php echo site_url('caja/edit/'.$c['caja_id']); ?>" class="btn btn-info btn-xs" title="Modificar caja"><span class="fa fa-pencil"></span></a> 
                             <a href="<?php echo site_url('caja/cierre_caja/'.$c['caja_id']); ?>" class="btn btn-facebook btn-xs" title="Cierre de caja"><span class="fa fa-suitcase"></span></a> 
+                            <a href="<?php echo site_url('caja/reporte_caja/'.$c['caja_id']); ?>" class="btn btn-success btn-xs" title="Reporte de caja"><span class="fa fa-print"></span></a> 
                             <!--<a href="<?php //echo site_url('caja/remove/'.$c['caja_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>

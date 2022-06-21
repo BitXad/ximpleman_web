@@ -16,8 +16,6 @@
     <input  type="text" id="estado_id" value="1">
     <input type="text" id="caja_apertura" value="<?php echo $caja["caja_apertura"]; ?>">
    
-   
-
 </div>
 
 
@@ -43,7 +41,7 @@
                             Desde: <input type="date" value="<?php echo date($caja["caja_fechaapertura"]) ;//date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
                         </div>
                         <div class="col-md-2">
-                            Hasta: <input type="date" value="<?php echo date($caja["caja_fechaapertura"]); //date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+                            Hasta: <input type="date" value="<?php echo date('Y-m-d'); //date($caja["caja_fechaapertura"]);  ?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
                         </div>
                         <div class="col-md-2">
                             <br>

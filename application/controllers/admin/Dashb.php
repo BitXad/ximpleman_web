@@ -33,6 +33,8 @@ class Dashb extends CI_Controller
 
     public function index()
     {
+
+        
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1){
@@ -52,6 +54,7 @@ class Dashb extends CI_Controller
                 $data['parametro'] = $this->Parametro_model->get_parametros();
                 $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera                
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
+                
                 
                 $usuario_id = $session_data['usuario_id'];
                 $data['usuario'] = $usuario_id;

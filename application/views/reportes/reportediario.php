@@ -231,7 +231,7 @@
 </tr>
 </table>
     
-<input type="text" id="saldo_caja">
+<input type="text" id="saldo_caja" hidden>
     
     
 <script type="text/javascript">
