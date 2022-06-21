@@ -1,5 +1,4 @@
 <?php
-
 class Orden_compra extends CI_Controller{
     var $session_data;
     function __construct()
