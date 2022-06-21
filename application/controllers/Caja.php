@@ -5,16 +5,39 @@
  */
  
 class Caja extends CI_Controller{
+    
+    private $caja_id = 0;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Caja_model');
         $this->load->model('Moneda_model');
+        $this->load->model('Venta_model');
+        $this->load->model('Detalle_venta_model');
+        $this->load->model('Empresa_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Caja_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
             redirect('', 'refresh');
         }
+        
+            //*********** Administracion de caja *********
+                $usuario_id = $this->session_data['usuario_id'];
+                $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+                
+                if (!sizeof($caja)>0){ // si la caja no esta iniciada
+                    //iniciar caja y dejarla en pendiente
+                    $this->caja_id = 0;
+                }else{
+                    $this->caja_id = $caja[0]["caja_id"];
+                    
+                }
+                
+                
+        //*********** FIN Administracion de caja *********
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -311,8 +334,9 @@ class Caja extends CI_Controller{
                     'caja_imagen005' => $this->input->post('caja_imagen005'),*/
                 );
 
-                $caja_id = $this->Caja_model->update_caja($caja_id, $params);
-                redirect('caja');
+                $this->Caja_model->update_caja($caja_id, $params);
+                redirect('caja/reporte_caja/'.$caja_id);
+                
             }else{
                 /*$this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estado();
@@ -328,7 +352,10 @@ class Caja extends CI_Controller{
             }
         }
         else{
-            redirect("caja/cierre_caja/".$caja[0]["caja_id"]); 
+            if(isset($caja[0]["caja_id"]))    
+                redirect("caja/cierre_caja/".$caja[0]["caja_id"]);
+            else 
+                redirect('admin/dash');
         }
     }
     
@@ -344,12 +371,33 @@ class Caja extends CI_Controller{
         
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(date(now()),time(now())".
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
                 ",'".$bitacoracaja_evento."',".$usuario_id.",".
-                $bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
+                $bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
         
         $this->Caja_model->ejecutar($sql);
         
         return json_encode(true);
+    }
+    
+    
+    function reporte_caja($caja_id){
+        
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $data['caja'] = $this->Caja_model->get_caja_id($caja_id);
+        
+        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Cierre de Caja";
+
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+
+        
+                $data['_view'] = 'caja/reportecaja_boucher';
+                $this->load->view('layouts/main',$data);
     }
 }

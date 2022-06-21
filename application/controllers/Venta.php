@@ -5,6 +5,9 @@
  */
  
 class Venta extends CI_Controller{
+    
+    private $caja_id = 0;
+    
     function __construct()
     {
         parent::__construct();
@@ -34,7 +37,9 @@ class Venta extends CI_Controller{
             'Mesa_model',
             'Moneda_model',
             'Banco_model',
+            'Caja_model',
         ]);
+        
 
         $this->load->library('ControlCode');
         
@@ -45,6 +50,22 @@ class Venta extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        
+        //*********** Administracion de caja *********
+                $usuario_id = $this->session_data['usuario_id'];
+                $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+                
+                if (!sizeof($caja)>0){ // si la caja no esta iniciada
+                    //iniciar caja y dejarla en pendiente
+                    $this->caja_id = 0;
+                }else{
+                    $this->caja_id = $caja[0]["caja_id"];
+                    
+                }
+                
+                
+        //*********** FIN Administracion de caja *********
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -1360,14 +1381,13 @@ function edit($venta_id)
         foreach($detalle_venta as $d){
             $prec_total += $d['detalleven_precio'] * $d['detalleven_cantidad'];
         }
-        
-        
+                
         $bitacoracaja_evento = "MODIFICAR VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(date(now()),time(now())".
-                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.")";
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
         
         $this->Venta_model->ejecutar($sql);
         //****************** fin bitacora caja
@@ -1535,9 +1555,9 @@ function edit($venta_id)
         
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(".
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
                 $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
+                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
         $this->Venta_model->ejecutar($sql);
         
         //****************** fin bitacora caja *************** 
@@ -1781,9 +1801,9 @@ function edit($venta_id)
         
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(".
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
                 $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
+                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
         $this->Venta_model->ejecutar($sql);
         //************ fin botacora bitacora     
         
@@ -2387,8 +2407,8 @@ function eliminar_venta($venta_id){
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(date(now()),time(now())".
-                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.")";
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
         
         $this->Venta_model->ejecutar($sql);
         //****************** fin bitacora caja
@@ -2442,8 +2462,8 @@ function anular_venta($venta_id){
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(date(now()),time(now())".
-                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.")";
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
         
         $this->Venta_model->ejecutar($sql);
         //****************** fin bitacora caja
@@ -2741,9 +2761,9 @@ function anular_venta($venta_id){
         
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(".
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
                 $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
+                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
         $this->Venta_model->ejecutar($sql);
         //************ fin botacora bitacora     
         
@@ -2852,9 +2872,9 @@ function anular_venta($venta_id){
         
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo) value(".
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
                 $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.")";
+                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
         $this->Venta_model->ejecutar($sql);
         //************ fin botacora bitacora   
         

@@ -126,9 +126,12 @@ border-bottom : 1px solid #aaa;
     
 
 
-        <table class="table" style="width: <?php echo $ancho; ?>;" >
-            <tr>
-                <td style="padding:0;">        
+        
+
+    <table class="table table-striped table-condensed"  style="width: <?php echo $ancho; ?>;" >
+        
+        <tr>
+                <td style="padding:0;" colspan="2">
                     <center>
 
                             <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
@@ -138,224 +141,169 @@ border-bottom : 1px solid #aaa;
                             <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
                             <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                             <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
-                            <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>
+                            <font size="1" face="Arial"><?php // echo $empresa[0]['empresa_ubicacion']; ?></font>
 
-                            <br>
-                            <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
-                                 else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
+                            <!--<br>-->
 
-                        <font size="3" face="arial"><b><?php echo $parametro[0]["parametro_tituldoc"]; ?></b></font> <br>
-                        <font size="1" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
+                        <font size="3" face="arial"><b>CIERRE DE CAJA</b></font> <br>
+                        <font size="1" face="arial"><b>Nº 00<?php echo $caja[0]['caja_id']; ?></b></font> <br>
                         <font size="1" face="arial"><b>Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?>
-                            <br>
+                            <!--<br>-->
                             <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                             T.C. <?php echo $moneda['moneda_tc']; ?></b></font> <br>
                             <?php } ?>
                         <br> 
-                        <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
+                        <?php $fecha = new DateTime($caja[0]['caja_fechacierre']); 
                                 $fecha_d_m_a = $fecha->format('d/m/Y');
                           ?>    
-                            <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
-                            <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." ".$venta[0]['cliente_nit']; ?> <br>
-                            <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
-                        <br>
+                            <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".date('d/m/Y H:i:s' ); ?> <br>
+                            <b>CODIGO/C.I.: </b><?php echo $caja[0]['usuario_ci']; ?> <br>
+                            <b>RESPONSABLE: </b><?php echo $caja[0]['usuario_nombre'].""; ?>
+                        <!--<br>-->
                     </center>                      
                 </td>
             </tr>
 
-        </table>
-
-       <table class="table table-striped table-condensed"  style="width: <?php echo $ancho; ?>;" >
-           <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
-               <td align="center" style="padding: 0"><b>CN</b></td>
-                <td align="center" style="padding: 0"><b>DESCRIPCIÓN</b></td>
-                <td align="center" style="padding: 0"><b>P.UNIT <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
-                <td align="center" style="padding: 0"><b>TOTAL <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
-                <?php
-                if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
-                <?php if($parametro[0]['moneda_id']==1){  ?>
-                        <td align="center" style="padding: 0"><b>TOTAL <?php echo $moneda['moneda_descripcion']; ?></b></td>
-                <?php }else{  ?> 
-                        <td align="center" style="padding: 0"><b>TOTAL Bs</b></td>
-                <?php }
-                } ?>
-           </tr>
-           <?php $cont = 0;
-                 $cantidad = 0;
-                 $total_descuento = 0;
-                 $total_final = 0;
-
-                 foreach($detalle_venta as $d){;
-                        $cont = $cont+1;
-                        $cantidad += $d['detalleven_cantidad'];
-                        $total_descuento += $d['detalleven_descuento']; 
-                        $total_final += $d['detalleven_total']; 
-                        ?>
-           <tr>
-                <td align="center" style="padding: 0;"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;">
-                    <?php
-                    $codigo  =  "";
-                    $categoria = "";
-                    $subcategoria = "";
-                    if($parametro[0]["parametro_codcatsubcat"] == 1){
-                        $codigo = "(".$d['detalleven_codigo'].")";
-                    }elseif($parametro[0]["parametro_codcatsubcat"] == 2){
-                        $categoria = $d["categoria_nombre"].", ";
-                        $subcategoria = $d["subcategoria_nombre"].", ";
-                        $codigo  =  "(".$d["detalleven_codigo"].")";
-                    }elseif($parametro[0]["parametro_codcatsubcat"] == 3){
-                        $categoria = $d["categoria_nombre"].", ";
-                        $subcategoria = $d["subcategoria_nombre"];
-                    }elseif($parametro[0]["parametro_codcatsubcat"] == 4){
-                        $categoria = $d["categoria_nombre"].", ";
-                        $codigo  =  "(".$d["detalleven_codigo"].")";
-                    }elseif($parametro[0]["parametro_codcatsubcat"] == 5){
-                        $categoria = $d["categoria_nombre"];
-                    }elseif($parametro[0]["parametro_codcatsubcat"] == 6){
-                        $subcategoria = $d["subcategoria_nombre"].", ";
-                        $codigo  =  "(".$d["detalleven_codigo"].")";
-                    }elseif($parametro[0]["parametro_codcatsubcat"] == 7){
-                        $subcategoria = $d["subcategoria_nombre"];
-                    }
-                    
-                    echo $categoria.$subcategoria.$codigo." ".$d['producto_nombre'];
-                    
-                        $preferencia = $d['detalleven_preferencia'];
-                        $caracteristicas = $d['detalleven_caracteristicas'];
-                        
-                        if ($preferencia !="null" && $preferencia!='-')
-                            echo  " /".nl2br($preferencia);
-                        
-                        if ($caracteristicas!="null" && $caracteristicas!='-')
-                            echo  "<br>".nl2br($caracteristicas);
-                        
-                        ?>
-                    <!--<textarea onload="autosize()"></textarea>-->
-                </td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
-                <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
-                <td align="right" style="padding: 0">
-                    <?php 
-                        if($parametro[0]['moneda_id'] == $d['moneda_id']){ //si la moneda es la misma que la principal
-                            if ($d['moneda_id']==1){    
-                                $total_equivalente = round($d['detalleven_subtotal'],2)/$d['detalleven_tc'];
-                            }else{
-                                $total_equivalente = round($d['detalleven_subtotal'],2)*$d['detalleven_tc'];
-                            }
-                        }else{
-                            if($d['moneda_id']==1){
-                                $total_equivalente = round($d['detalleven_subtotal'],2) * round($d['detalleven_tc'],2);
-                            }else{
-                                $total_equivalente = round($d['detalleven_subtotal'],2) / round($d['detalleven_tc'],2);
-                            }
-                        }
-                        echo number_format($total_equivalente,2,'.',',');
-                    ?>
-                </td>
-                <?php } ?>
-           </tr>
-           <?php } ?>
-<!--       </table>
-<table class="table" style="max-width: 7cm;">-->
-    <tr style="border-top-style: solid; border-top-width: 2px; border-top-style: solid; border-top-width: 2px;" align="right">
         
-        <td colspan="5" style="padding: 0;"  >
-            
-            <font size="1">
-                <b><?php echo "SUB TOTAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
-            </font>
-            
-
-            <font size="1">
-                <?php echo "TOTAL DESCUENTO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_descuento'],2,'.',','); ?><br>
-            </font>
-            <font size="2">
-            <b>
-                <?php echo "TOTAL FINAL ".$parametro[0]['moneda_descripcion'].": ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
-            </b>
-            <!--<font size="1" face="arial narrow">
-                <?php //echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
-            </font>-->
-            <?php 
-                    if ($parametro[0]['moneda_id']==1)
-                        $texto_moneda = ' Bolivianos';
-                    else
-                        $texto_moneda = $parametro[0]['moneda_descripcion'];
-                
-                    echo "SON: ".num_to_letras($total_final,$texto_moneda); ?>
-                <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
-                <br>
-                    <b>
-                    <!------------------ TOTAL EN OTRA MONEDA------------------------>
-                    <?php 
-                        $total_final_equivalente = 0;
-                        $tfe = "";
+        
+        
+        <tr style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; font-weight: bold;">
+            <td style=" padding: 0;" style="max-width:50%;" >REGISTRADO</td>
+            <td style=" padding: 0;" style="max-width:50%;">DECLARADO</td>
+        </tr>        
+        
+        <tr style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
+            <td style="max-width: <?php echo $parametro[0]["parametro_anchofactura"]/2; ?>cm" > 
+            <!---------------------------------------------->
+            <table class="table table-striped table-condensed">
+<!--                        <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
+                            <td align="center" style="padding: 0" style="max-width: 90%"><b>DETALLE</b></td>
+                            <td align="center" style="padding: 0" style="max-width: 10%"><b>MONTO</b></td>
+                        </tr>-->
+                        <tr>
+                            <td>APERTURA</td>
+                            <td style="text-align: right"><?php echo number_format($caja[0]["caja_apertura"],2,".",","); ?></td>
+                        </tr>
+                        <tr>
+                            <td>TRANSACCIONES</td>
+                            <td style="text-align: right"><?php echo number_format($caja[0]["caja_transacciones"],2,".",","); ?></td>
+                        </tr>
+                        <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; padding: 0;" >
+                            <td style="padding: 0;"><b>TOTAL FINAL OPERACIONES</b></td>
+                            <td style="padding: 0; text-align: right"><b><?php echo number_format($caja[0]["caja_transacciones"] + $caja[0]["caja_apertura"],2,".",","); ?></b></td>
+                        </tr>
                         
-                            if($parametro[0]['moneda_id']==1){
-                                
-                                $total_final_equivalente =  $venta[0]['venta_total'] / $d['detalleven_tc'];
-                                $tfe = "".$moneda['moneda_descripcion'];
-                                
-                            }else{
-                                
-                                $total_final_equivalente = $venta[0]['venta_total'] * $d['detalleven_tc'];
-                                $tfe = "Bs ";
-                            }
-                        
-                        echo $tfe." ".number_format($total_final_equivalente,2,'.',',');
-                    ?>
-                    <!------------------------------------------>
-                    </b>
-                    <?php } ?>
-            </font>
-            <br>
-            <font size="1">
-                <?php echo "EFECTIVO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>            
-            </font>
-            
-            <?php if($venta[0]['tipotrans_id']==2){ ?>
-            <font size="1">
-                <br>CUOTA INIC. <?php echo $parametro[0]['moneda_descripcion']; ?>: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b>
-                <br>SALDO <?php echo $parametro[0]['moneda_descripcion']; ?>: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
-            </font>
-            <?php } ?>
-            
-        </td>          
-    </tr>
 
-    <tr >
-        <td colspan="5" style="padding:0;">
-            <?php
-            if($venta[0]['venta_glosa'] != null || $venta[0]['venta_glosa'] != ""){
-            ?>
-            <b>NOTA: </b><?php echo $venta[0]['venta_glosa']; ?><br>
-            <?php } ?>
-            USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
-            COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
-            <?php
-                if($venta[0]['entrega_usuarioid']>0){
-                    echo "ENTREGADO POR: <b>".$venta[0]['usuario_entrega']."</b><br>";
-                }
-            ?>
-            TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b>
-            <?php
-            if($parametro[0]['parametro_puntos'] >0){
-                echo "PUNTOS: <b>".$venta[0]['cliente_puntos']."</b>";
-            }
-            ?>
-            <center>
-            <font size="2">
-                   
-            </font>
-                    <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
-            </center>
-         </td>
-    </tr>    
+                        <tr style="padding: 0;">
+                          <?php $fecha = new DateTime($caja[0]['caja_fechaapertura']); 
+                                $fecha1 = $fecha->format('d/m/Y');
+                          ?>   
+                            
+                            <td colspan="2"  style="padding: 0;">APERTURA: <?php echo $fecha1." - ".$caja[0]["caja_horaapertura"]; ?>
+
+                          <?php $fecha = new DateTime($caja[0]['caja_fechacierre']); 
+                                $fecha2 = $fecha->format('d/m/Y');
+                          ?>   
+                           <br>
+                           CERRAR: <?php echo $fecha2." - ".$caja[0]["caja_horacierre"]; ?></td>
+                        </tr>
+
+                        
+                        
+                        
+                        <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; padding: 0;" >
+                            <td style="padding: 0;"><b>TOTAL FINAL REGISTRADO</b></td>
+                            <td style="padding: 0; text-align: right"><b><?php echo number_format($caja[0]["caja_cierre"],2,".",","); ?></b></td>
+                        </tr>
+                        
+                        
+                        <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; padding: 0;" >
+                            <td style="padding: 0;"><b>DIFERENCIA 
+                                <?php
+                                    if($caja[0]["caja_diferencia"]<0){ echo "FALTANTE";}
+                                    if($caja[0]["caja_diferencia"]==0){ echo " ";}
+                                    if($caja[0]["caja_diferencia"]>0){ echo "SOBRANTE";}
+                                ?>
+                                </b></td>
+                            <td style="padding: 0; text-align: right"><b><?php echo number_format($caja[0]["caja_diferencia"],2,".",","); ?></b></td>
+                        </tr>
+                        
+                    </table>
+            
+            <!---------------------------------------------->
+            </td>
+            <td style="max-width: <?php echo $parametro[0]["parametro_anchofactura"]/2; ?>cm" >
+            <!---------------------------------------------->
+            
+            
+                        <table class="table table-striped table-condensed">
+                                 <?php $array = array('200', '100', '50','20','10','5','2','1','0.50','0.20','0.10','0.05'); 
+                                       $cantidad = count($array);
+                                       $totaldinero = 0;
+
+                                         for ($i = 0; $i<$cantidad; $i++){
+                                             $money = $array[$i];
+                                             $totaldinero += $caja[0]["caja_corte".str_replace ( ".", '', $money)] * $money;  
+                                     ?>
+
+                                     <tr>
+                                         <td align="left" style="padding: 0;" colspan="2"><?php echo $money." ".substr($moneda['moneda_descripcion'],0,3)." X ".$caja[0]["caja_corte".str_replace ( ".", '', $money)]; ?></td>
+                                         <!--<td style="padding: 0;"><font style="size:5px; font-family: arial narrow;"><?php echo " X ".$money." ".substr($moneda['moneda_descripcion'],0,3); ?></td>-->
+                                         <td align="right" style="padding: 0;"><?php echo number_format($caja[0]["caja_corte".str_replace ( ".", '', $money)] * $money,2,'.',','); ?></td>
+                                         <td align="right" style="padding: 0"> </td>
+                                     </tr>
+
+                                 <?php } ?>
+
+
+                                     <tr style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt;" >
+                                         <td align="center" style="padding: 0;" colspan="2"><b>TOTAL</b></td>
+                                         <!--<td style="padding: 0;"><font style="size:5px; font-family: arial narrow;"><?php echo $moneda['moneda_descripcion']." ".$money; ?></td>-->
+                                         <td align="right" style="padding: 0;"><b><?php echo number_format($totaldinero,2,'.',','); ?></b></td>
+                                         <td align="right" style="padding: 0"> </td>
+                                     </tr>
+
+                     <tr style="border-top-style: solid; border-top-width: 2px; border-top-style: solid; border-top-width: 2px;" align="right">
+
+                         <td colspan="5" style="padding: 0;"  >
+
+
+                         </td>          
+                     </tr>
+
+                     <tr >
+                          </td>
+                     </tr>    
+
+                 </table>
+            <!---------------------------------------------->
+            </td>
+        </tr>
+        
+        <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
+            <td colspan="2" style="padding: 0;">
+                <b>TRANSACCIONES OBSERVADAS</b>
+            </td>
+        </tr>
+        
+        <?php 
+        $cont = 0;
+        foreach($caja as $c){ ?>
+            <tr>
+                <td colspan="2"><?php echo $c["bitacoracaja_hora"].". ".$c["bitacoracaja_evento"]; ?></td>
+            </tr>
+        <?php } ?>
+        
+        <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
+            <td colspan="2" style="padding: 0; text-align: center;">
+                <small>Declaro veracidad de la información de este documento.</small>
+                <br><br><br><br><br>
+                <b><?php echo $caja[0]["usuario_nombre"]; ?><br>CAJERO(A)</b>
+            </td>
+        </tr>
+    </table>
     
-</table>
+    
   
 </td>
 </tr>

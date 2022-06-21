@@ -366,6 +366,7 @@
     </script>
 </body>
 
+
 <!-- --------------------- INICIO Modal mensaje caja ------------------- -->
 <div id="modal_mensajecaja" class="modal fade" role="dialog">
   <div class="modal-dialog" style="font-family: Arial">
@@ -378,13 +379,21 @@
       </div>
       <div class="modal-body">
         <div class="col-md-8">
-            <label for="monto_caja" class="control-label">
+            <label for="monto_caja" class="control-label" style="font-size:12pt;">
                 <fa class="fa fa-money fa-2x"></fa>
                 Existe una caja iniciada/abierta
             </label>
+            <br><b>Fecha apertura: </b><?php
+                    $date = date_create($caja[0]["caja_fechaapertura"]);
+                    $fechaapertura =  date_format($date,"d/m/Y");
+                    echo $fechaapertura." ".$caja[0]["caja_horaapertura"] ?>
+            <!--- br><b>Usuario:</b --> <?php //echo $nombre_usuario; ?>
+                    
+            <br><b>¿Desea cerrar la caja?</b>
         </div>  
         <div class="col-md-4">
-            <!--<button class="btn btn-warning btn-block" onclick="abrir_caja()"><fa class="fa fa-money"></fa> Registrar</button>-->
+            <!--<button class="btn btn-info btn-block" onclick="cerrar_caja()"><fa class="fa fa-money"></fa> Cierre de Caja</button>-->
+            <a href="<?= base_url("caja/cierre_caja/".$caja[0]["caja_id"]) ?>" class="btn btn-info btn-block"><fa class="fa fa-money"></fa> Cierre de Caja</a>
             <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
         </div>  
       
@@ -408,13 +417,13 @@
     <div class="modal-content">
       <div class="modal-header" style="background: #CC660E">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h2 class="modal-title"><fa class="fa fa-frown-o"></fa><b> ADVERTENCIA</b></h2>
+        <h2 class="modal-title"><fa class="fa fa-frown-o"></fa><b> APERTURA DE CAJA</b></h2>
       </div>
       <div class="modal-body">
       
         
         <div class="col-md-6">
-            <label for="monto_caja" class="control-label"><fa class="fa fa-money"></fa> <p> La caja aun esta pendiente por abrir...!!</p></label>
+            <label for="monto_caja" class="control-label"><fa class="fa fa-money"></fa> <p> No realizó la apertura de caja..!</p></label>
 <!--            <div class="form-group">
                 <input type="text" name="monto_caja" value="0.00" class="form-control" id="monto_caja" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
             </div>-->
@@ -425,7 +434,7 @@
             <div class="form-group">
                 <input type="text" name="producto_marca" value="S/N" class="form-control" id="producto_marca" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
             </div>-->
-            <button class="btn btn-warning btn-block" data-dismiss="modal" onclick="modal_cajaabierta()"><fa class="fa fa-money"></fa> Registrar</button>
+            <button class="btn btn-info btn-block" data-dismiss="modal" onclick="modal_cajaabierta()"><fa class="fa fa-money"></fa> Registrar Caja</button>
             <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
         </div>  
       
@@ -461,9 +470,9 @@
           <span class="text-danger" id="elmensaje"></span>
         </div>
         <div class="col-md-6">
-            <label for="monto_caja" class="control-label"><p>Monto Registrado en Caja Bs</p></label>
+            <label for="monto_caja" class="control-label"><p>Monto inicial en caja Bs</p></label>
             <div class="form-group">
-                <input type="text" name="monto_caja" value="0.00" class="form-control" id="monto_caja" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                <input type="text" name="monto_caja" id="monto_caja" value="0.00" class="form-control" id="monto_caja" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
             </div>
         </div>  
 
