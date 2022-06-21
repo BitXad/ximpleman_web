@@ -3763,4 +3763,32 @@ function anular_venta($venta_id){
             show_404();
         }              
     }
+    function prueba(){
+        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+        $factura_nitemisor = $dosificacion["dosificacion_nitemisor"];
+        
+        $fecha_hora = "20220613163046258";
+        
+        $factura_sucursal  = $dosificacion["dosificacion_sucursal"];
+        $factura_modalidad = $dosificacion['dosificacion_modalidad'];
+        $tipo_emision = 1;
+        $tipo_factura = 1;
+        $tipo_documento_sector = 1;
+        $pos = 0;
+        $factura_numero = 303;
+        $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
+        
+            // LLAMANDO AL HELPER
+            $factura_cuf = generarCuf($factura_nitemisor,
+                                    $fecha_hora,
+                                    $factura_sucursal,
+                                    $factura_modalidad,
+                                    $tipo_emision,
+                                    $tipo_factura,
+                                    $tipo_documento_sector,
+                                    $factura_numero,
+                                    $pos,
+                                    $facturaCufdCodControl['cufd_codigocontrol']);
+            echo $factura_cuf;
+    }
 }
