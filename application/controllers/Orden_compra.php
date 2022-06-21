@@ -10,12 +10,9 @@ class Orden_compra extends CI_Controller{
         $this->load->model('Proveedor_model');
         $this->load->model('Producto_model');
         $this->load->model('Compra_model');
-<<<<<<< HEAD
-=======
         $this->load->model('Detalle_compra_model');
         //$this->load->model('Usuario_model');
         //$this->load->model('Estado_model');
->>>>>>> master
 
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -104,10 +101,6 @@ class Orden_compra extends CI_Controller{
         }
     }
     
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     function nota($compra_id){
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
@@ -132,21 +125,12 @@ class Orden_compra extends CI_Controller{
 
         }
     }
-<<<<<<< HEAD
-        
-=======
     
->>>>>>> master
     /** obtiene el ultimo pedido realizado donde se encuentra el producto seleccionado */
     function proveedor_ultimopedido()
     {
         if($this->acceso(1)) {
             if ($this->input->is_ajax_request()){
-<<<<<<< HEAD
-
-                //$usuario_id = $this->session_data['usuario_id'];
-=======
->>>>>>> master
                 $producto_id  = $this->input->post('producto_id');
                 $proveedor_id = $this->input->post('proveedor_id');
                 $detalle_compra = $this->Orden_compra_model->getultimo_pedidoproducto($producto_id, $proveedor_id);
@@ -206,18 +190,9 @@ class Orden_compra extends CI_Controller{
                         'cambio_id' => $detalle["cambio_id"],
                         'detalleordencomp_tc' => $detalle["detallecomp_tc"],
                     );
-<<<<<<< HEAD
-                    $detalleordencomp_id = $this->Orden_compra_model->add_detalle_ordencompra_aux($params);
-<<<<<<< Updated upstream
-                }*/
-                $datos = $detalle_compra;
-                }
-                $datos = "ok";
-=======
                     $detalleordencomp_id = $this->Orden_compra_model->add_detalle_ordencompra($params);
                 }
                 $datos = $ordencompra_id;
->>>>>>> master
                 echo json_encode($datos);
             }else{                 
                 show_404();
@@ -277,44 +252,6 @@ class Orden_compra extends CI_Controller{
             }
         }
     }
-<<<<<<< HEAD
-    /*
-     * 274812.04ing a new producto
-     */
-    function add(){   
-        if($this->acceso(103)) {
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
-            $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
-            if($this->form_validation->run())     
-            {
-                $producto_nombre = $this->input->post('producto_nombre');
-                $resultado = $this->Producto_model->es_producto_registrado($producto_nombre);
-                if($resultado > 0){
-                    
-                    $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-
-                    $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-                    
-                    $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-                    $data['unidades'] = $this->Producto_model->get_all_unidad();
-                    
-                    $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
-                    
-                    
-                    $data['parametro'] = $this->Parametro_model->get_parametro(1);
-            
-                    $data['resultado'] = 1;
-                    $data['page_title'] = "Producto";
-                    $data['_view'] = 'producto/add';
-                    $this->load->view('layouts/main',$data);
-                }else{
-                    $producto_catalogo = $this->input->post('producto_catalogo');
-                    /* *********************INICIO imagen***************************** */
-                    $foto="";
-                    if (!empty($_FILES['producto_foto']['name'])){
-                        $producto_catalogo = 1;
-=======
     
     /** actualiza una detalle de la tabla detalle_ordencompra_aux */
     function update_detalleaux()
@@ -376,7 +313,6 @@ class Orden_compra extends CI_Controller{
             if ($this->input->is_ajax_request()){
                 $usuario_id = $this->session_data['usuario_id'];
                 $ordencompra_id  = $this->input->post('ordencompra_id');
->>>>>>> master
                 
                 $la_ordencompra = $this->Orden_compra_model->get_ordencompra($ordencompra_id);
                 
@@ -649,9 +585,6 @@ class Orden_compra extends CI_Controller{
             }
         }
     }
-<<<<<<< HEAD
-
-=======
     /*
      * Nueva oden de compra
      */
@@ -666,4 +599,3 @@ class Orden_compra extends CI_Controller{
         }    
     }
 }
->>>>>>> master
