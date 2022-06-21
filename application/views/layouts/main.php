@@ -202,6 +202,13 @@
                         </li>      
                         <?php
                         }
+                        if($rolusuario[1-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('orden_compra');?>"><i class="fa fa-wpforms"></i> Ordenes de Compra</a>
+                        </li>      
+                        <?php
+                        }
                         if($rolusuario[36-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>

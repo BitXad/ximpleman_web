@@ -239,11 +239,11 @@ class Producto_model extends CI_Model
     {
         $producto = $this->db->query("
             SELECT
-                *
+                p.*, m.moneda_tc
 
             FROM
-                `producto`
-
+                `producto` p
+            left join moneda m on p.moneda_id = m.moneda_id
             WHERE
                 `producto_id` = ?
         ",array($producto_id))->row_array();

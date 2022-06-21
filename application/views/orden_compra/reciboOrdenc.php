@@ -1,13 +1,3 @@
- <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
- <!--<script type="text/javascript">
-    $(document).ready(function()
-{
-   var hola = document.getElementById('compra_id').value;
-        if(hola!=null){
-             window.print(); 
-        }
-});
-</script>-->
  <style>
             body {
                 text-align: left;
@@ -181,8 +171,8 @@ border-bottom:1px solid black;
             <center>
             
                 <br><br>
-                <font size="3" face="arial"><b>COMPRA</b></font> <br>
-                <font size="3" face="arial"><b>Nº 00<?php echo $compra[0]['compra_id']; ?></b></font> <br>
+                <font size="3" face="arial"><b>ORDEN DE COMPRA</b></font> <br>
+                <font size="3" face="arial"><b>Nº 00<?php echo $ordencompra[0]['ordencompra_id']; ?></b></font> <br>
                 <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
 
             </center>
@@ -190,24 +180,17 @@ border-bottom:1px solid black;
         <td style="width: 25%; padding: 0; text-align: left" >
                 
                          
-        <br><br><br><font size="2" face="Arial"> <b>PROVEEDOR: </b><?php echo $compra[0]['proveedor_nombre'];?><br>
-        <b>FORMA DE PAGO: </b><?php echo $compra[0]['tipotrans_nombre'];?><br>
-        <b>FECHA: </b><?php echo date('d/m/Y',strtotime($compra[0]['compra_fecha'])) ; ?> <?php echo $compra[0]['compra_hora'];?></font>
-                         
-         
-                   
+        <br><br><br><font size="2" face="Arial"> <b>PROVEEDOR: </b><?php echo $ordencompra[0]['proveedor_nombre'];?>
+        <!--<b>FORMA DE PAGO: </b><?php //echo $ordencompra[0]['tipotrans_nombre'];?><br>-->
+        <br><b>FECHA: </b><?php echo date('d/m/Y',strtotime($ordencompra[0]['ordencompra_fecha'])) ; ?> <?php echo $ordencompra[0]['ordencompra_hora'];?>
+        <br><b>ESTADO: </b><?php echo $ordencompra[0]['estado_descripcion'];?><br>
+        </font>
         </td>
     </tr>
-     
-    
-    
 </table>       
 <div class="box-body table-responsive"> 
-
         <table class="table table-striped " border-bottom="1" id="mitabla" style="width: 18cm; padding: 0;">                        
                         <tr>
-
-                            
                             <th>ITEM</th>
                             <th>CODIGO</th>
                             <th>CONCEPTO</th>
@@ -224,56 +207,54 @@ border-bottom:1px solid black;
                     
                          <?php
                                 $cont = 0;
-                             foreach($detalle_compra as $dc) {;
+                             foreach($detalle_ordencompra as $dc) {;
                                  $cont = $cont+1; ?>
-                            
              <tr>
                             <td><?php echo $cont;?></td>
-                            <td style="text-align: center;"><?php echo $dc['detallecomp_codigo'];?></td>
+                            <td style="text-align: center;"><?php echo $dc['detalleordencomp_codigo'];?></td>
                             <td style="text-align: left;"><?php echo $dc['producto_nombre'];?></td>                            
-                            <td><?php echo $dc['detallecomp_unidad'];?></td>
-                            <td><?php echo $dc['detallecomp_cantidad'];?></td>
-                            <td><?php echo number_format($dc['detallecomp_costo'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_subtotal'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_descuento'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_descglobal'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_total'],'2','.',',');?></td>
-                          
+                            <td><?php echo $dc['detalleordencomp_unidad'];?></td>
+                            <td><?php echo $dc['detalleordencomp_cantidad'];?></td>
+                            <td><?php echo number_format($dc['detalleordencomp_costo'],'2','.',',');?></td>
+                            <td><?php echo number_format($dc['detalleordencomp_subtotal'],'2','.',',');?></td>
+                            <td><?php echo number_format($dc['detalleordencomp_descuento'],'2','.',',');?></td>
+                            <td><?php echo number_format($dc['detalleordencomp_descglobal'],'2','.',',');?></td>
+                            <td><?php echo number_format($dc['detalleordencomp_total'],'2','.',',');?></td>
         </tr> 
-                    
                            <?php } ?>
 
 </table>
- 
 </div>
    <hr style="border:1px solid black;width: 18cm; margin: 0;padding: 0">
-   <font size="1" face="arial"><b>Nota.- </b><?php echo $compra[0]['compra_glosa'];?></font> 
+   <font size="1" face="arial"><b>Nota.- </b><?php echo $ordencompra[0]['ordencompra_glosa'];?></font>
+   <br>
+   <font size="1" face="arial"><b>Orden de Compra Realizada por: </b><?php echo $ordencompra[0]['usuario_nombre'];?></font> 
         
         
 
 <div class="box-body table-responsive"> 
 
        <table class="table table-striped" border-bottom="0" id="mitabla2" style="width: 18cm; padding: 0;"> 
-                    <tr>
-                        <td>TOTAL COMPRA</td><td><?php echo number_format( $compra[0]['compra_subtotal'],'2','.',',');?></td>
+                    <!--<tr>
+                        <td>TOTAL COMPRA</td><td><?php /*echo number_format( $ordencompra[0]['ordencompra_subtotal'],'2','.',',');?></td>
                     </tr>                      
                     <tr>
-                       <td>TOTAL DESCUENTO</td><td><?php echo number_format( $compra[0]['compra_descuento'],'2','.',',');?></td>
+                       <td>TOTAL DESCUENTO</td><td><?php echo number_format( $ordencompra[0]['ordencompra_descuento'],'2','.',',');?></td>
                     </tr>
                     <tr>
-                        <td>DESC. GLOBAL</td><td><?php echo  number_format($compra[0]['compra_descglobal'],'2','.',',');?></td>
-                    </tr>
+                        <td>DESC. GLOBAL</td><td><?php echo  number_format($ordencompra[0]['ordencompra_descglobal'],'2','.',',');*/ ?></td>
+                    </tr>-->
                     <tr>
-                        <td><b>TOTAL FINAL  <?php echo $compra[0]['moneda_descripcion'];?>.</b></td> <td><b><?php echo  number_format($compra[0]['compra_totalfinal'],'2','.',',');?></b></td>
+                        <td><b>TOTAL FINAL  <?php echo $ordencompra[0]['moneda_descripcion'];?>.</b></td> <td><b><?php echo  number_format($ordencompra[0]['ordencompra_totalfinal'],'2','.',',');?></b></td>
                     </tr>
-                    <?php if ($compra[0]['tipotrans_id']==2) { ?>
+                    <?php /*if ($ordencompra[0]['tipotrans_id']==2) { ?>
                     <tr>
                         <td><b>A CUENTA</b></td> <td><b><?php echo  number_format($credito['credito_cuotainicial'],'2','.',',');?></b></td>
                     </tr>
                     <tr>
                         <td><b>SALDO</b></td> <td><b><?php echo  number_format($credito['credito_monto'],'2','.',',');?></b></td>
                     </tr> 
-                    <?php } ?>  
+                    <?php }*/ ?>  
                                  
  
 </table>
@@ -281,7 +262,7 @@ border-bottom:1px solid black;
 </div>
 <br>
 <table class="table" style="width: 20cm;">
-        <tr>
+        <!--<tr>
             <td  style="padding: 0">
                 <center>
                     __________________________<br>
@@ -296,14 +277,7 @@ border-bottom:1px solid black;
                             RECIBI CONFORME
                 </center>  
             </td>
-        </tr>
+        </tr>-->
 </table>
 
-<div class="box-footer">
-                    <button type="submit" class="btn btn-success">
-                        <i class="fa fa-check"></i> Guardar
-                    </button>
-                    <a href="<?php echo site_url('moneda'); ?>" class="btn btn-danger">
-                        <i class="fa fa-times"></i> Cancelar</a>
-          	</div>
  

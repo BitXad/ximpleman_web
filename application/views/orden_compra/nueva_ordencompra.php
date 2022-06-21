@@ -1,4 +1,4 @@
-<script src="<?php echo base_url('resources/js/ultimo_pedido.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/nueva_ordencompra.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         (function ($) {
@@ -27,14 +27,12 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<input type="hidden" name="proveedor_id" id="proveedor_id" />
-<input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
 
 <div class="row no-print">
     <div class="col-md-5">
         <div class="box-header" style="padding-left: 0px">
-            <font size='4' face='Arial'><b>Orden de Compra</b></font>
-            <br><font size='2' face='Arial'><b>Proveedor: </b><span id="elproveedor"></span></font>
+            <font size='4' face='Arial'><b>Nueva Orden de Compra</b></font>
+            <!--<br><font size='2' face='Arial'><b>Proveedor: </b><span id="elproveedor"></span></font>-->
             <!--<br><font size='2' face='Arial'>Registros Encontrados: <span id="encontrados">0</span></font>--> 
         </div>
         <div class="input-group">
@@ -42,6 +40,20 @@
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." autocomplete="off">
             <!--<div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaresultadosproducto(2)" title="Buscar"><span class="fa fa-search"></span></div>-->
             <!--<div style="border-color: #d58512; background: #e08e0b !important; color: white" class="btn btn-warning input-group-addon" onclick="tablaresultadosproducto(3)" title="Mostrar todos los productos"><span class="fa fa-globe"></span></div>-->
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="box-tools">
+            &nbsp;
+            <select name="proveedor_id" class="btn-primary btn-sm btn-block" id="proveedor_id">
+                <option value="0" selected >-- ELEGIR PROVEEDOR --</option>
+                <?php 
+                foreach($all_proveedores as $proveedor)
+                {
+                    echo '<option value="'.$proveedor['proveedor_id'].'">'.$proveedor['proveedor_nombre'].'</option>';
+                } 
+                ?>
+            </select>
         </div>
     </div>
     <div class="col-md-4 text-right">
