@@ -287,6 +287,151 @@ function cancelar_ordencompra(){
         },
     });
 }
+function modal_nuevoproducto(){
+    //$("#buscarproducto").val("");
+    //$("#tablaresultados_productos").html("");
+    $('#modal_nuevoproducto').on('shown.bs.modal', function (e) {
+        $('#producto_nombre').focus();
+        $('#elproveedor_id').val($('#proveedor_id').val());
+    });
+    $("#modal_nuevoproducto").modal("show");
+}
+
+function cambiarcodproducto(){
+    var estetime = new Date();
+    var anio = estetime.getFullYear();
+    anio = anio -2000;
+    var mes = parseInt(estetime.getMonth())+1;
+    if(mes>0&&mes<10){
+        mes = "0"+mes;
+    }
+    var dia = parseInt(estetime.getDate());
+    if(dia>0&&dia<10){
+        dia = "0"+dia;
+    }
+    var hora = estetime.getHours();
+    if(hora>0&&hora<10){
+        hora = "0"+hora;
+    }
+    var min = estetime.getMinutes();
+    if(min>0&&min<10){
+        min = "0"+min;
+    }
+    var seg = estetime.getSeconds();
+    if(seg>0&&seg<10){
+        seg = "0"+seg;
+    }
+    $('#producto_codigobarra').val(anio+mes+dia+hora+min+seg);
+    $('#producto_codigo').val(anio+mes+dia+hora+min+seg);
+}
+function registrarnuevacategoria(){
+    var controlador = "";
+    var base_url  = document.getElementById('base_url').value;
+    var parametro = document.getElementById('nueva_categoria').value;
+    controlador = base_url+'producto/aniadircategoria/';
+    $('#modalcategoria').modal('hide');
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{parametro:parametro},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+                
+               if (registros != null){
+                    html = "";
+                    html += "<option value='"+registros["categoria_id"]+"' selected >";
+                    html += registros["categoria_nombre"];
+                    html += "</option>";
+                    $("#categoria_id").append(html);
+                    mostrar_subcategoriaproducto(registros["categoria_id"]);
+            }
+        },
+        error:function(respuesta){
+           html = "";
+           $("#categoria_id").html(html);
+        }
+        
+    });   
+
+}
+/* funcion que recupera las subcategorias de una categoria de producto */
+function mostrar_subcategoriaproducto(categoria_id){
+    var controlador = "";
+    var base_url  = document.getElementById('base_url').value;
+    controlador = base_url+'producto/obtener_subcategoria/';
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{categoria_id:categoria_id},
+           success:function(respuesta){
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    html = "";
+                    html += "<select name='subcategoria_id' class='form-control' id='subcategoria_id'>";
+                    html += "<option value='' selected>- SUB CATEGORIA -</option>";
+                    for (var i = 0; i < n ; i++){
+                        html += "<option value='"+registros[i]["subcategoria_id"]+"'>";
+                        html += registros[i]["subcategoria_nombre"];
+                        html += "</option>";
+                    }
+                    html += "</select>";
+                    //$("#subcategoria_id").append(html);
+                    $("#subcategoria_id").replaceWith(html);
+                    html1 ="";
+                    html1 +="<a data-toggle='modal' data-target='#modalsubcategoria' class='btn btn-warning' title='Registrar Nueva Sub Categoria'>";
+                    html1 +="<i class='fa fa-plus-circle'></i></a>";
+                    $("#parasubcat").replaceWith(html1);
+            }
+        },
+        error:function(respuesta){
+           html = "";
+           $("#producto_nombreenvase").html(html);
+        }
+    });   
+}
+
+/* registra nuevas sub-categorias */
+function registrarnuevasubcategoria(){
+    var controlador = "";
+    var base_url  = document.getElementById('base_url').value;
+    var categoria_id = document.getElementById('categoria_id').value;
+    var parametro = document.getElementById('nueva_subcategoria').value;
+    controlador = base_url+'producto/aniadirsubcategoria/';
+    $('#modalsubcategoria').modal('hide');
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{parametro:parametro, categoria_id:categoria_id},
+           success:function(respuesta){
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    html = "";
+                    html += "<option value='"+registros["subcategoria_id"]+"' selected >";
+                    html += registros["subcategoria_nombre"];
+                    html += "</option>";
+                    $("#subcategoria_id").append(html);
+                    //mostrar_subcategoriaproducto(registros["categoria_id"]);
+                    $("#nueva_subcategoria").val("");
+            }
+        },
+        error:function(respuesta){
+           html = "";
+           $("#subcategoria_id").html(html);
+        }
+    });
+}
+
+function calcular_preciov(numero){
+    let costo   = $("#producto_costo").val();
+    let porcent = $("#porcentaje").val();
+    $("#producto_precio").val(Number(costo*porcent)+Number(costo));
+}
+
+function calcular_preciov_porcent(numero){
+    //let costo   = $("#producto_costo").val();
+    let porcent = $("#porcentaje").val();
+    var estecosto = $("#producto_costo").val();
+    $("#producto_precio").val(Number(estecosto*porcent)+Number(estecosto));
+}
 
 function numberFormat(numero){
     // Variable que contendra el resultado final
