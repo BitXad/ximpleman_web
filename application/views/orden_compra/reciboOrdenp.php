@@ -180,35 +180,37 @@
                         <th>CONCEPTO</th>
                         <th>UNIDAD</th>
                         <th>CANT.</th>
-                        <th>UNIT.</th>
-                        <!--<th>SUBTOTAL</th>
+                        <!--<th>UNIT.</th>
+                        <th>SUBTOTAL</th>
                         <th>DESC.</th>
-                        <th>D.GLOB</th>-->
-                        <th>TOTAL</th>
+                        <th>D.GLOB</th>
+                        <th>TOTAL</th>-->
                     </tr>
                     <?php
                     $cont = 0;
+                    $total = 0;
                     foreach($detalle_ordencompra as $dc) {;
-                    $cont = $cont+1; ?>
+                    $cont = $cont+1;
+                    $total = $total+$dc['detalleordencomp_cantidad']; ?>
                     <tr>
                         <td class="text-center"><?php echo $cont;?></td>
                         <td style="text-align: center;"><?php echo $dc['detalleordencomp_codigo'];?></td>
                         <td style="text-align: left;"><?php echo $dc['producto_nombre'];?></td>                            
                         <td class="text-center"><?php echo $dc['detalleordencomp_unidad'];?></td>
                         <td><?php echo $dc['detalleordencomp_cantidad'];?></td>
-                        <td><?php echo number_format($dc['detalleordencomp_costo'],'2','.',',');?></td>
-                        <!--<td><?php /*echo number_format($dc['detalleordencomp_subtotal'],'2','.',',');?></td>
+                        <!--<td><?php echo number_format($dc['detalleordencomp_costo'],'2','.',',');?></td>
+                        <td><?php /*echo number_format($dc['detalleordencomp_subtotal'],'2','.',',');?></td>
                         <td><?php echo number_format($dc['detalleordencomp_descuento'],'2','.',',');?></td>
-                        <td><?php echo number_format($dc['detalleordencomp_descglobal'],'2','.',',');*/ ?></td>-->
-                        <td><?php echo number_format($dc['detalleordencomp_total'],'2','.',',');?></td>
+                        <td><?php echo number_format($dc['detalleordencomp_descglobal'],'2','.',',');*/ ?></td>
+                        <td><?php echo number_format($dc['detalleordencomp_total'],'2','.',',');?></td>-->
                     </tr> 
                     <?php } ?>
                     <tr style="border-top:2px solid black; margin: 0;padding: 0; font-size: 10pt">
-                        <td colspan="6"><b>TOTAL FINAL  <?php echo $ordencompra[0]['moneda_descripcion'];?>: </b></td>
-                        <td><b><?php echo  number_format($ordencompra[0]['ordencompra_totalfinal'],'2','.',',');?></b></td>
+                        <td colspan="4"><b>TOTAL: </b></td>
+                        <td><b><?php echo  number_format($total,'2','.',',');?></b></td>
                     </tr>
                     <tr>
-                        <td class="text-left" colspan="7">
+                        <td class="text-left" colspan="5">
                             <font size="1" face="arial"><b>Orden de Compra Realizada por: </b><?php echo $ordencompra[0]['usuario_nombre'];?></font>
                         </td>
                     </tr>

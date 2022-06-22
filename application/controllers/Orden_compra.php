@@ -222,6 +222,29 @@ class Orden_compra extends CI_Controller{
 
         }
     }
+    /* muestra la nota para el proveedor del pedido realizado  */
+    function nota_ordenp($ordencompra_id){
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $num = $this->Compra_model->numero();
+        $este = $num[0]['parametro_tipoimpresora'];
+        if($this->acceso(1)){
+            $data['page_title'] = "Orden de Compra";
+            $usuario_id = $this->session_data['usuario_id'];
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['ordencompra'] = $this->Orden_compra_model->get_ordencompra($ordencompra_id);
+            
+            $data['detalle_ordencompra'] = $this->Orden_compra_model->get_detalle_ordencompra($ordencompra_id);
+        }
+        if ($este == 'NORMAL') {
+            $data['_view'] = 'orden_compra/reciboOrdenp';
+            $this->load->view('layouts/main',$data);
+        }else{
+            $data['_view'] = 'orden_compra/boucherOrdenp';
+            $this->load->view('layouts/main',$data);
+
+        }
+    }
     
     /*
      * Productos con existencia minima
@@ -564,7 +587,7 @@ class Orden_compra extends CI_Controller{
                     $detalleordencomp_id = $this->Orden_compra_model->add_detalle_ordencompra($params);
                 }
                 $this->Orden_compra_model->delete_detalle_ordencompra_aux($usuario_id);
-                $datos = "ok";
+                $datos = $ordencompra_id;
                 echo json_encode($datos);
             }else{                 
                 show_404();

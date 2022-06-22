@@ -41,6 +41,7 @@ function tablaresultadosordencompra(limite)
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['estado_descripcion']+"</td>";
                         html += "<td style='padding: 2px;' class='no-print'>";
                         html += "<a class='btn btn-success btn-xs' onclick='mostrar_reciboorden("+registros[i]['ordencompra_id']+")' title='Ver reporte orden compra'><fa class='fa fa-print'></fa></a>&nbsp;";
+                        html += "<a class='btn btn-facebook btn-xs' onclick='mostrar_reciboordenp("+registros[i]['ordencompra_id']+")' title='Ver reporte orden compra para proveedor'><fa class='fa fa-print'></fa></a>&nbsp;";
                         if(registros[i]['estado_id'] == 33){
                             html += "<a class='btn btn-danger btn-xs' onclick='modal_ejecutarordencompra("+registros[i]['ordencompra_id']+")' title='Ejecutar orden compra'><fa class='fa fa-bolt'></fa></a>&nbsp;";
                             html += "<a class='btn btn-warning btn-xs' onclick='modal_anularordencompra("+registros[i]['ordencompra_id']+")' title='Anular orden compra'><fa class='fa fa-minus-circle'></fa></a>";
@@ -80,6 +81,13 @@ function mostrar_reciboorden(ordencompra_id){
     var base_url = document.getElementById('base_url').value;
     dir_url = base_url+"orden_compra/nota_orden/"+ordencompra_id;
     //location.href =dir_url;
+    window.open(dir_url, '_blank');
+}
+
+/* muestra el detalle de la orden de compra para mandar al proveedor */
+function mostrar_reciboordenp(ordencompra_id){
+    var base_url = document.getElementById('base_url').value;
+    dir_url = base_url+"orden_compra/nota_ordenp/"+ordencompra_id;
     window.open(dir_url, '_blank');
 }
 

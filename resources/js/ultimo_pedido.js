@@ -50,14 +50,12 @@ function ultimopedido(){
                             html += "Venc:"+moment(registros[i]["detalleordencomp_fechavencimiento"]).format('DD/MM/YYYY')+"</font>";
                         }
                         html += "</td>";
-                        html += "<td><input  class='input-sm' style='font-size:13px; width:95px;padding-left:0px; padding-right:0px;' id='detallecomp_costo"+registros[i]["detalleordencomp_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' type='text' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+","+registros[i]["producto_id"]+","+registros[i]["compra_id"]+")' class='form-control' value='"+Number(registros[i]["detalleordencomp_costo"]).toFixed(2)+"' ></td>";
+                        html += "<td><input  class='input-sm form-control text-right' style='font-size:13px; width:95px;padding-left:0px; padding-right:0px;' id='detallecomp_costo"+registros[i]["detalleordencomp_id"]+"' name='producto_costo"+registros[i]["producto_id"]+"' type='text' onclick='this.select();' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+","+registros[i]["producto_id"]+","+registros[i]["compra_id"]+")' value='"+Number(registros[i]["detalleordencomp_costo"]).toFixed(2)+"' ></td>";
                         html += "<td>";
-                        //html += "<input id='producto_identi'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>" ;
-                        html += "<input class='input-sm' style='font-size:13px; width:95px; padding-left:0px; padding-right:0px;' id='detallecomp_precio"+registros[i]["detalleordencomp_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+","+registros[i]["producto_id"]+","+registros[i]["compra_id"]+")'  class='form-control'  value='"+Number(registros[i]["detalleordencomp_precio"]).toFixed(2)+"'  ></td>"; 
+                        html += "<input class='input-sm form-control text-right' style='font-size:13px; width:95px; padding-left:0px; padding-right:0px;' id='detallecomp_precio"+registros[i]["detalleordencomp_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text' onclick='this.select();' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+","+registros[i]["producto_id"]+","+registros[i]["compra_id"]+")' value='"+Number(registros[i]["detalleordencomp_precio"]).toFixed(2)+"'></td>"; 
                         html += "<td class='text-center'>"+registros[i]["existencia"]+"</td>",
                         html += "<td style='padding-left:0px; padding-right:0px;'>";
-                        html += "<input class='input-sm' style='font-size:13px;width:85px;' id='detallecomp_cantidad"+registros[i]["detalleordencomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detalleordencomp_cantidad"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+")' >";
-                        html += "<input id='detallecomp_id'  name='detallecomp_id' type='hidden' class='form-control' value='"+registros[i]["detalleordencomp_id"]+"'>";
+                        html += "<input class='input-sm form-control text-right' style='font-size:13px;width:85px;' id='detallecomp_cantidad"+registros[i]["detalleordencomp_id"]+"'  name='cantidad' autocomplete='off' value='"+registros[i]["detalleordencomp_cantidad"]+"' type='text' onclick='this.select();' onkeypress='actualizadetalle(event,"+registros[i]["detalleordencomp_id"]+")' >";
                         html += "<td><center>";
                         html += "<span class='badge badge-success'>";
                         html += "<font size='2'> <b>"+Number(registros[i]["detalleordencomp_total"]).toFixed(2)+"</b></font> <br>";
@@ -134,6 +132,9 @@ function quitardetalle(detalleordencomp_id){
 function modal_buscarproducto(){
     $("#buscarproducto").val("");
     $("#tablaresultados_productos").html("");
+    $('#modal_buscarproducto').on('shown.bs.modal', function (e) {
+        $('#buscarproducto').focus();
+    });
     $("#modal_buscarproducto").modal("show");
 }
 
@@ -161,18 +162,18 @@ function tabla_productos(){
                 html = "";
                 if(tam>0){
                     for(var i=0; i<tam;i++){
-                        html += "<tr>";
+                        html += "<tr id='producto"+registros[i]["producto_id"]+"'>";
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td style='font-size:12px;'><b>"+registros[i]["producto_nombre"]+"</b></td>";
                         html += "<td style='font-size:10px; text-align:center;'>"+registros[i]["producto_codigo"]+"</td>";
                         html += "<td style='font-size:10px;'>";
-                        html += "<input type='text' style='width: 100px !important' id='adetallecosto"+registros[i]["producto_id"]+"' name='adetallecosto"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_ultimocosto"]+"' required >";
+                        html += "<input type='text' style='width: 100px !important' id='adetallecosto"+registros[i]["producto_id"]+"' name='adetallecosto"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_ultimocosto"]+"' onclick='this.select();' required >";
                         html += "</td>";
                         html += "<td style='font-size:10px;'>";
-                        html += "<input type='text' style='width: 100px !important' id='adetalleprecio"+registros[i]["producto_id"]+"' name='adetalleprecio"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_precio"]+"' required >";
+                        html += "<input type='text' style='width: 100px !important' id='adetalleprecio"+registros[i]["producto_id"]+"' name='adetalleprecio"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_precio"]+"' onclick='this.select();' required >";
                         html += "</td>";
                         html += "<td style='font-size:10px;'>";
-                        html += "<input type='text' style='width: 100px !important' id='adetallecantidad"+registros[i]["producto_id"]+"' name='adetallecantidad"+registros[i]["producto_id"]+"' value='0' onkeyup='(calcular_total("+registros[i]["producto_id"]+"))' required >";
+                        html += "<input type='text' style='width: 100px !important' id='adetallecantidad"+registros[i]["producto_id"]+"' name='adetallecantidad"+registros[i]["producto_id"]+"' value='0' onclick='this.select();' onkeyup='calcular_total("+registros[i]["producto_id"]+", event)' required >";
                         html += "</td>";
                         html += "<td style='font-size:10px;'>";
                         html += "<span id='adetalletotal"+registros[i]["producto_id"]+"'>0</span>";
@@ -202,7 +203,7 @@ function agregar_adetalle(producto_id){
     if(!((costo>=0) && (precio>=0) && (cantidad>0))){
         let mensaje = "";
         if(!(cantidad>0)){
-            mensaje = "Cantidad debe ser mayor a cero;"
+            mensaje = "Cantidad debe ser mayor a cero";
         }
         alert("Costo, precio y Cantidad deben ser Numeros; "+mensaje+" por favor revise sus datos");
     }else{
@@ -215,6 +216,7 @@ function agregar_adetalle(producto_id){
                       precio:precio, cantidad:cantidad},
                 success:function(resultado){
                     var registros = JSON.parse(resultado);
+                    $("#producto"+producto_id).hide();
                     ultimopedido();
                },error:function(respuesta){
                // alert("Algo salio mal...!!!");
@@ -225,10 +227,19 @@ function agregar_adetalle(producto_id){
     }
 }
 
-function calcular_total(producto_id){
+function calcular_total(producto_id, e){
     let costo    = $("#adetallecosto"+producto_id).val();
     let cantidad = $("#adetallecantidad"+producto_id).val();
     $("#adetalletotal"+producto_id).html(Number(Number(costo) * Number(cantidad)).toFixed(2));
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){
+        if(cantidad>0){
+            let buscarproducto = document.getElementById('buscarproducto').value;
+            if(buscarproducto != null){
+                agregar_adetalle(producto_id);
+            }
+        }
+    }
 }
 
 function registrar_ordencompra(){
@@ -240,9 +251,10 @@ function registrar_ordencompra(){
             data:{},
             success:function(resultado){
                 var registros = JSON.parse(resultado);
+                dir_url_nota = base_url+"orden_compra/nota_ordenp/"+registros;
+                window.open(dir_url_nota, '_blank');
                 dir_url = base_url+"orden_compra/";
                 location.href =dir_url;
-                //window.open(dir_url, '_blank');
            },error:function(respuesta){
            // alert("Algo salio mal...!!!");
            html = "";

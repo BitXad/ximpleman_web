@@ -27,14 +27,11 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-
+<div class="box-header" style="padding-left: 0px">
+    <font size='4' face='Arial'><b>Nueva Orden de Compra</b></font>
+</div>
 <div class="row no-print">
     <div class="col-md-5">
-        <div class="box-header" style="padding-left: 0px">
-            <font size='4' face='Arial'><b>Nueva Orden de Compra</b></font>
-            <!--<br><font size='2' face='Arial'><b>Proveedor: </b><span id="elproveedor"></span></font>-->
-            <!--<br><font size='2' face='Arial'>Registros Encontrados: <span id="encontrados">0</span></font>--> 
-        </div>
         <div class="input-group">
             <span class="input-group-addon"> Buscar </span>           
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." autocomplete="off">
@@ -44,8 +41,7 @@
     </div>
     <div class="col-md-3">
         <div class="box-tools">
-            &nbsp;
-            <select name="proveedor_id" class="btn-primary btn-sm btn-block" id="proveedor_id">
+            <select name="proveedor_id" class="form-control btn btn-facebook btn-sm btn-block" id="proveedor_id">
                 <option value="0" selected >-- ELEGIR PROVEEDOR --</option>
                 <?php 
                 foreach($all_proveedores as $proveedor)
@@ -58,7 +54,7 @@
     </div>
     <div class="col-md-4 text-right">
         <div class="box-tools" style="display: flex">
-            <a style="width: 75px; margin-right: 1px; margin-top: 1px" onclick="modal_buscarproducto()" class="btn btn-success btn-foursquarexs" title="Añadir nuevo Producto"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Añadir</small></a>
+            <a onclick="modal_buscarproducto()" class="btn btn-success btn-foursquarexs" title="Añadir nuevo Producto"><span class="fa fa-cart-plus"></span><small> Añadir Producto</small></a>
             <!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" onclick="modalcatalogo()" class="btn btn-info btn-foursquarexs" title="Catalogo de Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Catálogo</small></a>
             <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('producto/existenciaminima'); ?>" target="_blank" class="btn btn-soundcloud btn-foursquarexs" title="Productos con existencia mínima" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
             <!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalprecio" class="btn btn-soundcloud btn-foursquarexs" title="Codigo de Barras" ><font size="5"><span class="fa fa-barcode"></span></font><br><small>Cod. Barras</small></a>-->
@@ -114,7 +110,7 @@
                 <div class="col-md-12" style="padding-left: 0px">
                     <div class="input-group">
                         <span class="input-group-addon"> Buscar </span>           
-                        <input type="text" id="buscarproducto" name="buscarproducto" class="form-control" placeholder="Ingrese el nombre, código, marca, industria.." onkeypress="iniciar_busqueda(event)" autofocus autocomplete="off">
+                        <input type="text" id="buscarproducto" name="buscarproducto" class="form-control" placeholder="Ingrese el nombre, código, marca, industria.." onkeypress="iniciar_busqueda(event)" autocomplete="off">
                         <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tabla_productos()"><span class="fa fa-search"></span></div>
                     </div>
                 </div>
