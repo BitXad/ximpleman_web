@@ -658,7 +658,7 @@ class Venta extends CI_Controller{
                 
         
         if($facturado=="true"){//si la venta es facturada
-
+            // $parametro = $this->Parametro_model->get_parametro(1);
             $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
             // PARA NUEVO SISTEMA DE FACTURACION
             $parametro = $this->Parametro_model->get_parametros();
@@ -694,61 +694,38 @@ class Venta extends CI_Controller{
                 $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
                 $factura_actividad     = $dosificacion[0]['dosificacion_actividad'];
                 // $tipo_doc_identidad    = $tipo_doc_identidad;
-                $docsec_codigoclasificador  = $dosificacion[0]['docsec_codigoclasificador'];
-                $factura_tokendelegado = $dosificacion[0]['dosificacion_tokendelegado'];
-                $factura_ambiente      = $dosificacion[0]['dosificacion_ambiente'];
-                $factura_cuis          = $dosificacion[0]['dosificacion_cuis'];
-                $factura_cufd          = $dosificacion[0]['dosificacion_cufd'];
-                $factura_modalidad     = $dosificacion[0]['dosificacion_modalidad'];
-                $factura_codsistema    = $dosificacion[0]['dosificacion_codsistema'];
-                $factura_puntoventa    = $dosificacion[0]['dosificacion_puntoventa'];
-                $factura_sectoreconomico = $dosificacion[0]['dosificacion_sectoreconomico'];
-                $factura_ruta          = $dosificacion[0]['dosificacion_ruta'];
-                $factura_tamanio       = $tamanio_hoja;
-                $tipo_factura          = $dosificacion[0]['tipofac_codigo'];
-                $pos = $dosificacion[0]['dosificacion_puntoventa'];
+                if($parametro['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
+                    // facturacion nueva
+                    $docsec_codigoclasificador  = $dosificacion[0]['docsec_codigoclasificador'];
+                    $factura_tokendelegado = $dosificacion[0]['dosificacion_tokendelegado'];
+                    $factura_ambiente      = $dosificacion[0]['dosificacion_ambiente'];
+                    $factura_cuis          = $dosificacion[0]['dosificacion_cuis'];
+                    $factura_cufd          = $dosificacion[0]['dosificacion_cufd'];
+                    $pos = $dosificacion[0]['dosificacion_puntoventa'];
+                    $factura_modalidad     = $dosificacion[0]['dosificacion_modalidad'];
+                    $factura_codsistema    = $dosificacion[0]['dosificacion_codsistema'];
+                    $factura_puntoventa    = $dosificacion[0]['dosificacion_puntoventa'];
+                    $factura_sectoreconomico = $dosificacion[0]['dosificacion_sectoreconomico'];
+                    $factura_ruta          = $dosificacion[0]['dosificacion_ruta'];
+                    $factura_tamanio       = $tamanio_hoja;
+                    $tipo_factura          = $dosificacion[0]['tipofac_codigo'];
+                }
                 $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
                 $this->Venta_model->ejecutar($sql);
-                $anio = date('Y');
-                $mes = date('m');
-                $dia = date('d');
-                $hora = date('H');
-                $min = date('i');
-                $seg = date('s');
-                $mseg = (new DateTime())->format('v');
-
-                $ultima_factura = $this->Factura_model->ultima_factura();
-
-                $facturaCufd = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
+                
+                
+                // $ultima_factura = $this->Factura_model->ultima_factura();
+                
                 // $factura_id = $ultima_factura['ultimo'] + 1;
-
-                $fecha_hora_cuf = "$anio$mes$dia$hora$min$seg$mseg";
-                $cuf = generarCuf($factura_nitemisor,$fecha_hora_cuf,$factura_sucursal,$factura_modalidad,1,$tipo_factura,$docsec_codigoclasificador,$factura_numero,$pos,$facturaCufd['cufd_codigocontrol']);
-                // $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
-                //     factura_fecha, factura_hora, factura_subtotal, 
-                //     factura_ice, factura_exento, factura_descuento, factura_total, 
-                //     factura_numero, factura_autorizacion, factura_llave, 
-                //     factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                //     factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
-                //     usuario_id, tipotrans_id, factura_efectivo, factura_cambio,tipo_doc_identidad,docsec_codigoclasificador) value(".
-                //     $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
-                //     $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
-                //     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
-                //     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                //     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                //     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-                //     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
-                //     $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.")";
-                $sql2 = "insert into factura(estado_id, venta_id, factura_fechaventa, 
+                if($parametro['parametro_tiposistema'] == 1){
+                    // sistema de facturacion antiguo
+                    $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                         factura_fecha, factura_hora, factura_subtotal, 
                         factura_ice, factura_exento, factura_descuento, factura_total, 
                         factura_numero, factura_autorizacion, factura_llave, 
                         factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                         factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
-                        usuario_id, tipotrans_id, factura_efectivo, factura_cambio, factura_tokendelegado,
-                        factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
-                        factura_codsistema, factura_puntoventa, factura_sectoreconomico,
-                        factura_ruta, factura_tamanio,factura_cuf,cdi_codigoclasificador,docsec_codigoclasificador) value(".
+                        usuario_id, tipotrans_id, factura_efectivo, factura_cambio,tipo_doc_identidad,docsec_codigoclasificador) value(".
                         $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                         $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                         $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
@@ -756,10 +733,44 @@ class Venta extends CI_Controller{
                         $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                         $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
                         $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
-                        $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.",'".$factura_tokendelegado."','".
-                        $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
-                        $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
-                        $factura_ruta."','".$factura_tamanio."','$cuf',$tipo_doc_identidad,$docsec_codigoclasificador)";
+                        $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.")";
+                }else{
+                    // sistema de facturacion nuevo
+                    $anio = date('Y');
+                    $mes = date('m');
+                    $dia = date('d');
+                    $hora = date('H');
+                    $min = date('i');
+                    $seg = date('s');
+                    $mseg = (new DateTime())->format('v');
+
+                    $facturaCufd = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
+                    
+                    $fecha_hora_cuf = "$anio$mes$dia$hora$min$seg$mseg";
+                    $cuf = generarCuf($factura_nitemisor,$fecha_hora_cuf,$factura_sucursal,$factura_modalidad,1,$tipo_factura,$docsec_codigoclasificador,$factura_numero,$pos,$facturaCufd['cufd_codigocontrol']);
+
+                    $sql2 = "insert into factura(estado_id, venta_id, factura_fechaventa, 
+                            factura_fecha, factura_hora, factura_subtotal, 
+                            factura_ice, factura_exento, factura_descuento, factura_total, 
+                            factura_numero, factura_autorizacion, factura_llave, 
+                            factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
+                            factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
+                            usuario_id, tipotrans_id, factura_efectivo, factura_cambio, factura_tokendelegado,
+                            factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
+                            factura_codsistema, factura_puntoventa, factura_sectoreconomico,
+                            factura_ruta, factura_tamanio,factura_cuf,cdi_codigoclasificador,docsec_codigoclasificador) value(".
+                            $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
+                            $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
+                            $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                            $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
+                            $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
+                            $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
+                            $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
+                            $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.",'".$factura_tokendelegado."','".
+                            $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
+                            $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
+                            $factura_ruta."','".$factura_tamanio."','$cuf',$tipo_doc_identidad,$docsec_codigoclasificador)";
+                }
 
                 $factura_id= $this->Factura_model->ejecutar2($sql2);
             
@@ -3395,18 +3406,42 @@ function anular_venta($venta_id){
             $factura_sfc = $dosificacion["dosificacion_sfc"];
             $factura_actividad = $dosificacion["dosificacion_actividad"];
             // PARA NUEVA FACTURACION
-            $factura_tokendelegado   = $dosificacion['dosificacion_tokendelegado'];
-            $factura_ambiente        = $dosificacion['dosificacion_ambiente'];
-            $factura_cuis            = $dosificacion['dosificacion_cuis'];
-            $factura_cufd            = $dosificacion['dosificacion_cufd'];
-            $factura_modalidad       = $dosificacion['dosificacion_modalidad'];
-            $factura_codsistema      = $dosificacion['dosificacion_codsistema'];
-            $factura_puntoventa      = $dosificacion['dosificacion_puntoventa'];
-            $factura_sectoreconomico = $dosificacion['dosificacion_sectoreconomico'];
-            $factura_ruta            = $dosificacion['dosificacion_ruta'];
-            $factura_tamanio         = $tamanio_hoja;
-            $tipoDocumentoIdentidad  = $this->input->post('tipoDocumento');
-            $documentoSector = $dosificacion['docsec_codigoclasificador'];
+            if($parametro[0]['parametro_tiposistema'] != 1){
+                $factura_tokendelegado   = $dosificacion['dosificacion_tokendelegado'];
+                $factura_ambiente        = $dosificacion['dosificacion_ambiente'];
+                $factura_cuis            = $dosificacion['dosificacion_cuis'];
+                $factura_cufd            = $dosificacion['dosificacion_cufd'];
+                $factura_modalidad       = $dosificacion['dosificacion_modalidad'];
+                $factura_codsistema      = $dosificacion['dosificacion_codsistema'];
+                $factura_puntoventa      = $dosificacion['dosificacion_puntoventa'];
+                $factura_sectoreconomico = $dosificacion['dosificacion_sectoreconomico'];
+                $factura_ruta            = $dosificacion['dosificacion_ruta'];
+                $factura_tamanio         = $tamanio_hoja;
+                $tipoDocumentoIdentidad  = $this->input->post('tipoDocumento');
+                $documentoSector = $dosificacion['docsec_codigoclasificador'];
+                $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
+                $fecha_hora_aux = date("YmdHis".substr((string)microtime(), 1, 4), strtotime($factura_fecha_hora));
+            
+                //$fecha_hora = "$anio$mes$dia$hora$min$seg$mseg";
+                $fecha_hora = str_replace(".", "", $fecha_hora_aux);
+                $tipo_emision = 1;//1 online
+                $tipo_factura = $dosificacion['tipofac_codigo'];
+                $tipo_documento_sector = $dosificacion['docsec_codigoclasificador'];
+                $pos = $dosificacion['dosificacion_puntoventa'];
+                // LLAMANDO AL HELPER
+                $factura_cuf = generarCuf($factura_nitemisor,
+                                        $fecha_hora,
+                                        $factura_sucursal,
+                                        $factura_modalidad,
+                                        $tipo_emision,
+                                        $tipo_factura,
+                                        $tipo_documento_sector,
+                                        $factura_numero,
+                                        $pos,
+                                        $facturaCufdCodControl['cufd_codigocontrol']);
+                $fecha_hora = $factura_fecha_hora;
+            }
             // PARA NUEVA FACTURACION
             $factura_efectivo = $factura_total;
             $factura_cambio = 0;
@@ -3415,72 +3450,50 @@ function anular_venta($venta_id){
             
             $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
             $this->Venta_model->ejecutar($sql);
-            $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
-            $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
-            /*$anio = date('Y');
-            $mes = date('m');
-            $dia = date('d');
-            $hora = date('H');
-            $min = date('i');
-            $seg = date('s');
-            $mseg = (new DateTime())->format('v');
-            */
-            $fecha_hora_aux = date("YmdHis".substr((string)microtime(), 1, 4), strtotime($factura_fecha_hora));
             
-            //$fecha_hora = "$anio$mes$dia$hora$min$seg$mseg";
-            $fecha_hora = str_replace(".", "", $fecha_hora_aux);
-            $tipo_emision = 1;//1 online
-            $tipo_factura = 1;
-            $tipo_documento_sector = 1;
-            $pos = 0;
-            // LLAMANDO AL HELPER
-            $factura_cuf = generarCuf($factura_nitemisor,
-                                    $fecha_hora,
-                                    $factura_sucursal,
-                                    $factura_modalidad,
-                                    $tipo_emision,
-                                    $tipo_factura,
-                                    $tipo_documento_sector,
-                                    $factura_numero,
-                                    $pos,
-                                    $facturaCufdCodControl['cufd_codigocontrol']);
-            $fecha_hora = $factura_fecha_hora;
-            // $sql = "insert into factura(estado_id, factura_fechaventa, 
-            //         factura_fecha, factura_hora, factura_subtotal, 
-            //         factura_ice, factura_exento, factura_descuento, factura_total, 
-            //         factura_numero, factura_autorizacion, factura_llave, 
-            //         factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-            //         factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id, venta_id,
-            //         factura_efectivo, factura_cambio, tipotrans_id) value(".
-            //         $estado_id.",'".$factura_fechaventa."',".
-            //         $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-            //         $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
-            //         $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-            //         $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-            //         $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-            //         $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
-            //         $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.")";
-            $sql = "insert into factura(estado_id, factura_fechaventa, 
-                    factura_fecha, factura_hora, factura_subtotal, 
-                    factura_ice, factura_exento, factura_descuento, factura_total, 
-                    factura_numero, factura_autorizacion, factura_llave, 
-                    factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id, venta_id,
-                    factura_efectivo, factura_cambio, tipotrans_id, factura_tokendelegado,
-                    factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
-                    factura_codsistema, factura_puntoventa, factura_sectoreconomico,
-                    factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,docsec_codigoclasificador) value(".
-                    $estado_id.",'".$factura_fechaventa."',".
-                    $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-                    $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
-                    $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                    $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
-                    $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_tokendelegado."','".
-                    $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
-                    $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
-                    $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,$documentoSector)";
+            
+            if($parametro[0]['parametro_tiposistema'] == 1){ //1 = istema de facturacion computarizado
+                // antiguo sistema de facturacion
+                $sql = "insert into factura(estado_id, factura_fechaventa, 
+                        factura_fecha, factura_hora, factura_subtotal, 
+                        factura_ice, factura_exento, factura_descuento, factura_total, 
+                        factura_numero, factura_autorizacion, factura_llave, 
+                        factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
+                        factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id, venta_id,
+                        factura_efectivo, factura_cambio, tipotrans_id) value(".
+                        $estado_id.",'".$factura_fechaventa."',".
+                        $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
+                        $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                        $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
+                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
+                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
+                        $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
+                        $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.")";
+            }else{
+                // nuevo sistema de facturacion
+                $sql = "insert into factura(estado_id, factura_fechaventa, 
+                        factura_fecha, factura_hora, factura_subtotal, 
+                        factura_ice, factura_exento, factura_descuento, factura_total, 
+                        factura_numero, factura_autorizacion, factura_llave, 
+                        factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
+                        factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id, venta_id,
+                        factura_efectivo, factura_cambio, tipotrans_id, factura_tokendelegado,
+                        factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
+                        factura_codsistema, factura_puntoventa, factura_sectoreconomico,
+                        factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,docsec_codigoclasificador) value(".
+                        $estado_id.",'".$factura_fechaventa."',".
+                        $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
+                        $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                        $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
+                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
+                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
+                        $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
+                        $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_tokendelegado."','".
+                        $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
+                        $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
+                        $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,$documentoSector)";
+            }
+
 
             $factura_id = $this->Venta_model->ejecutar($sql);
             

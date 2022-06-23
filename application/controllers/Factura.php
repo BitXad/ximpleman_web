@@ -159,13 +159,13 @@ class Factura extends CI_Controller{
         $params['size'] = 5;
          //decimos el directorio a guardar el codigo qr, en este 
          //caso una carpeta en la raíz llamada qr_code
-        $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
-         $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+        // $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+        //  $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
         $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
         
          //generamos el código qr
-        $this->ciqrcode->generate($params); 
-         $this->ciqrcode->generate($params); 
+        // $this->ciqrcode->generate($params); 
+        //  $this->ciqrcode->generate($params); 
         $this->ciqrcode->generate($params); 
         
         generarfacturaCompra_ventaXML(1, $factura, $data['detalle_factura'],$data['empresa']);
@@ -337,7 +337,8 @@ class Factura extends CI_Controller{
     {
         if($this->acceso(17)){
         //**************** inicio contenido ***************           
-    
+        $parametros = $this->Parametro_model->get_parametros();
+        $parametros = $parametros[0];
         $usuario_id = $this->session_data['usuario_id'];
         
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -367,9 +368,14 @@ class Factura extends CI_Controller{
         $ruta          = $factura[0]['factura_ruta'];
         $cuf           = $factura[0]['factura_cufd'];
         $tamanio       = $factura[0]['factura_tamanio'];
+        if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
+            // Antiguo
+            $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
+        }else{
+            // nuevo
+            $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
+        }
         
-        // $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
-        $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
         //Generador de Codigo QR
                 //cargamos la librería	
          $this->load->library('ciqrcode');
@@ -385,51 +391,54 @@ class Factura extends CI_Controller{
          $this->ciqrcode->generate($params); 
          //echo '<img src="'.base_url().'resources/images/qrcode.png" />';
         //fin generador de codigo QR
-        $xml = generarfacturaCompra_ventaXML(1,$factura,$data['detalle_factura'],$data['empresa']);
+        if($parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
         
-        $base_url = explode('/', base_url());
-        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
-        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-        
-        // $res = validar(, );
-        // $res = validar("$directorio/compra_venta{$factura[0]['factura_id']}".'.xml', "{$directorio}compra_venta.xsd");
-
-        // require 'ValidacionXSD.php';
-        $valXSD = new ValidacionXSD();
-        if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
-            // echo "No ingreso";
-            print $valXSD->mostrarError();
-        }else{
-            // COMPRESION XML EN GZIP
-            $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
-            $gzdata = gzencode($datos, 9);
-            $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
-            // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
-            fwrite($fp, $gzdata);
-            fclose($fp);
+            $xml = generarfacturaCompra_ventaXML(1,$factura,$data['detalle_factura'],$data['empresa']);
             
-            //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
-            //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
+            $base_url = explode('/', base_url());
+            //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
             
-            $handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
-            $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
-            fclose($handle);
-            /*//$content = base64_encode($contents);
-            //$b= unpack("C*",$contents);*/
-            
-            var_dump($contents);
-            
-            
-            /*//var_dump($byteArr);
-            // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml*");*/
-            
-            // HASH (SHA 256)
-            $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
-            //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
-            var_dump($xml_comprimido);
-            //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
-            $eniada = $this->mandarFactura($contents, $xml_comprimido);
-            var_dump($eniada);
+            // $res = validar(, );
+            // $res = validar("$directorio/compra_venta{$factura[0]['factura_id']}".'.xml', "{$directorio}compra_venta.xsd");
+    
+            // require 'ValidacionXSD.php';
+            $valXSD = new ValidacionXSD();
+            if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
+                // echo "No ingreso";
+                print $valXSD->mostrarError();
+            }else{
+                // COMPRESION XML EN GZIP
+                $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
+                $gzdata = gzencode($datos, 9);
+                $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
+                // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+                fwrite($fp, $gzdata);
+                fclose($fp);
+                
+                //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
+                //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
+                
+                $handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
+                $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
+                fclose($handle);
+                /*//$content = base64_encode($contents);
+                //$b= unpack("C*",$contents);*/
+                
+                var_dump($contents);
+                
+                
+                /*//var_dump($byteArr);
+                // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml*");*/
+                
+                // HASH (SHA 256)
+                $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
+                //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
+                var_dump($xml_comprimido);
+                //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
+                $eniada = $this->mandarFactura($contents, $xml_comprimido);
+                var_dump($eniada);
+            }
         }
         
         //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
@@ -437,8 +446,11 @@ class Factura extends CI_Controller{
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
-        // $data['_view'] = 'factura/factura_carta';
-        $data['_view'] = 'factura/factura_carta_new';
+        if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
+            $data['_view'] = 'factura/factura_carta';
+        }else{
+            $data['_view'] = 'factura/factura_carta_new'; 
+        }
         $this->load->view('layouts/main',$data);
         
         }
