@@ -157,24 +157,23 @@ border-bottom : 1px solid #aaa;*/
 
         <tr  style="border-top-style: solid; border-bottom-style: solid; " >
                
-                <td align="center" style="padding: 0;"><b>CANT</b></td>
                 <td align="center" style="padding: 0;"><b>DESCRIPCIÓN</b></td>
-                <td align="center" style="padding: 0;"><b>P.UNIT</b></td>
-                <td align="center" style="padding: 0;"><b>TOTAL</b></td>
+                <td align="center" style="padding: 0;"><b>CANT</b></td>
+                <!--<td align="center" style="padding: 0;"><b>P.UNIT</b></td>-->
+                <!--<td align="center" style="padding: 0;"><b>TOTAL</b></td>-->
                 
            </tr>
            <?php $cont = 0;
-                 
-
+                 $total_cant = 0;
                  foreach($detalle_ordencompra as $d){
                         $cont = $cont+1;
-                       
+                       $total_cant = $total_cant+$d['detalleordencomp_cantidad'];
                         ?>
            <tr style="font-size: 8pt;">
-                <td align="center" style="padding: 0;"><?php echo $d['detalleordencomp_cantidad']; ?></td>
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <b><?php echo $d['producto_nombre']; ?></b></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleordencomp_costo'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleordencomp_total'],2,'.',','); ?></td>
+                <td align="center" style="padding: 0;"><?php echo $d['detalleordencomp_cantidad']; ?></td>
+                <!--<td align="right" style="padding: 0;"><?php //echo number_format($d['detalleordencomp_costo'],2,'.',','); ?></td>-->
+                <!--<td align="right" style="padding: 0;"><?php //echo number_format($d['detalleordencomp_total'],2,'.',','); ?></td>-->
            </tr>
            <?php }?>
   
@@ -187,12 +186,10 @@ border-bottom : 1px solid #aaa;*/
             
             <font size="2">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($ordencompra[0]['ordencompra_totalfinal'] ,2,'.',','); ?><br>
+                <?php echo "TOTAL: ".number_format($total_cant ,2,'.',','); ?><br>
             </b>
             </font>
-            <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($ordencompra[0]['ordencompra_totalfinal'],' Bolivianos'); ?><br>            
-            </font>
+            
             
         </td>          
     </tr>

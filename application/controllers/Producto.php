@@ -87,19 +87,15 @@ class Producto extends CI_Controller{
                 $producto_nombre = $this->input->post('producto_nombre');
                 $resultado = $this->Producto_model->es_producto_registrado($producto_nombre);
                 if($resultado > 0){
-                    
                     $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-
                     $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-                    
                     $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+                    $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
                     $data['unidades'] = $this->Producto_model->get_all_unidad();
-                    
                     $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
-                    
-                    
                     $data['parametro'] = $this->Parametro_model->get_parametro(1);
-            
+                    $data['prod_servicios'] = $this->ProductosServicios_model->get_productosServicios_actividad();
+                    
                     $data['resultado'] = 1;
                     $data['page_title'] = "Producto";
                     $data['_view'] = 'producto/add';
