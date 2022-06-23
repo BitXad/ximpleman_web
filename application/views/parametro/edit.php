@@ -102,6 +102,16 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <label for="parametro_tiposistema" class="control-label"> TIPO DE SISTEMA</label>
+                    <div class="form-group">
+                        <select name="parametro_tiposistema" class="form-control" id="parametro_tiposistema">
+                            <option value="1" <?php if($parametro['parametro_tiposistema']=="1"){ ?> selected <?php } ?>>SISTEMA DE FACTURACION COMPUTARIZADO</option>
+                            <option value="2" <?php if($parametro['parametro_tiposistema']=="2"){ ?> selected <?php } ?>>SISTEMA DE FACTURACION COMPUTARIZADO EN LINEA</option>
+                            <option value="3" <?php if($parametro['parametro_tiposistema']=="3"){ ?> selected <?php } ?>>SISTEMA DE FACTURACION ELECTRONICO EN LINEA</option>
+                        </select>
+                    </div>
+                </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(0, 255, 0, 0.3);"><u><b>CREDITOS</b></u><br>
                 <div class="col-md-2">

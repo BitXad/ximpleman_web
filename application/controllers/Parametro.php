@@ -206,6 +206,7 @@ class Parametro extends CI_Controller{
                 'parametro_pedidotitulo' => $this->input->post('parametro_pedidotitulo'),
                 'parametro_manejocaja' => $this->input->post('parametro_manejocaja'),
                 'parametro_codcatsubcat' => $this->input->post('parametro_codcatsubcat'),
+                'parametro_tiposistema' => $this->input->post('parametro_tiposistema'),
             );
             
             $parametro_id = $this->Parametro_model->add_parametro($params);
@@ -418,6 +419,7 @@ class Parametro extends CI_Controller{
                     'parametro_pedidotitulo' => $this->input->post('parametro_pedidotitulo'),
                     'parametro_manejocaja' => $this->input->post('parametro_manejocaja'),
                     'parametro_codcatsubcat' => $this->input->post('parametro_codcatsubcat'),
+                    'parametro_tiposistema' => $this->input->post('parametro_tiposistema'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            
