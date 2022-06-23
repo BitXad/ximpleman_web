@@ -18,7 +18,8 @@ class Orden_compra extends CI_Controller{
         $this->load->model('ProductosServicios_model');
         //$this->load->model('Usuario_model');
         //$this->load->model('Estado_model');
-
+        $this->load->helper('numeros_helper');
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {

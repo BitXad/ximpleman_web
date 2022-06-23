@@ -118,12 +118,12 @@ border-bottom : 1px solid #aaa;*/
                          //else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>
                    
                     
-                <font size="3" face="arial"><b>COMPRA</b></font> <br>
-                <font size="1" face="arial"><b>Nº 00<?php echo $compra[0]['compra_id']; ?></b></font> <br>
+                <font size="3" face="arial"><b>ORDEN DE COMPRA</b></font> <br>
+                <font size="1" face="arial"><b>Nº 00<?php echo $ordencompra[0]['ordencompra_id']; ?></b></font> <br>
                 
                    
                 <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
-                <table style="width:<?php echo $ancho?>" >
+                <!--<table style="width:<?php echo $ancho?>" >
                     <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
                         <td style="font-family: arial; font-size: 8pt; padding: 0;">
 
@@ -133,11 +133,11 @@ border-bottom : 1px solid #aaa;*/
 
                         </td>
                         <td style="font-family: arial; font-size: 8pt; padding: 0;">
-                            <?php echo  $compra[0]['tipotrans_nombre']; ?> <br>
-                            <?php echo $compra[0]['forma_nombre']; ?> 
+                            <?php /*echo  $compra[0]['tipotrans_nombre']; ?> <br>
+                            <?php echo $compra[0]['forma_nombre'];*/ ?> 
                         </td>
                     </tr>
-                </table>
+                </table>-->
                 
             </center>
         </td>
@@ -146,35 +146,34 @@ border-bottom : 1px solid #aaa;*/
 <tr  style="border-top-style: solid; border-top-width: 0px; border-bottom-style: solid; border-bottom-width: 2px;" >
         <td colspan="4" style="padding: 0;  font-size: 9pt;">
             
-                <?php $fecha = new DateTime($compra[0]['compra_fecha']); 
+                <?php $fecha = new DateTime($ordencompra[0]['ordencompra_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
-                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'] ?> <?php echo implode("/", array_reverse(explode("-", $compra[0]['compra_fecha']))); ?><br>
-                    <b>PROVEEDOR: </b><?php if ($compra[0]['proveedor_nombre']==''){ echo "A QUIEN CORRESPONDA"; }else{ echo $compra[0]['proveedor_nombre']; }?>            
+                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'] ?> <?php echo implode("/", array_reverse(explode("-", $ordencompra[0]['ordencompra_fecha']))); ?><br>
+                    <b>PROVEEDOR: </b><?php if ($ordencompra[0]['proveedor_nombre']==''){ echo "A QUIEN CORRESPONDA"; }else{ echo $ordencompra[0]['proveedor_nombre']; }?>            
         </td>
     </tr>
 <!--                </div>-->
 
         <tr  style="border-top-style: solid; border-bottom-style: solid; " >
                
-                <td align="center" style="padding: 0;"><b>CANT</b></td>
                 <td align="center" style="padding: 0;"><b>DESCRIPCIÓN</b></td>
-                <td align="center" style="padding: 0;"><b>P.UNIT</b></td>
-                <td align="center" style="padding: 0;"><b>TOTAL</b></td>
+                <td align="center" style="padding: 0;"><b>CANT</b></td>
+                <!--<td align="center" style="padding: 0;"><b>P.UNIT</b></td>-->
+                <!--<td align="center" style="padding: 0;"><b>TOTAL</b></td>-->
                 
            </tr>
            <?php $cont = 0;
-                 
-
-                 foreach($detalle_compra as $d){
+                 $total_cant = 0;
+                 foreach($detalle_ordencompra as $d){
                         $cont = $cont+1;
-                       
+                       $total_cant = $total_cant+$d['detalleordencomp_cantidad'];
                         ?>
            <tr style="font-size: 8pt;">
-                <td align="center" style="padding: 0;"><?php echo $d['detallecomp_cantidad']; ?></td>
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <b><?php echo $d['producto_nombre']; ?></b></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detallecomp_costo'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detallecomp_total'],2,'.',','); ?></td>
+                <td align="center" style="padding: 0;"><?php echo $d['detalleordencomp_cantidad']; ?></td>
+                <!--<td align="right" style="padding: 0;"><?php //echo number_format($d['detalleordencomp_costo'],2,'.',','); ?></td>-->
+                <!--<td align="right" style="padding: 0;"><?php //echo number_format($d['detalleordencomp_total'],2,'.',','); ?></td>-->
            </tr>
            <?php }?>
   
@@ -184,42 +183,19 @@ border-bottom : 1px solid #aaa;*/
             
         <td align="right" style="padding: 0;" colspan="4">
             
-            <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($compra[0]['compra_subtotal'],2,'.',','); ?></b><br>
-            </font>
             
-
-            <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($compra[0]['compra_descuento'],2,'.',','); ?><br>
-            </font>
-            <font size="1">
-                <?php echo "DESCUENTO GLOBAL Bs ".number_format($compra[0]['compra_descglobal'],2,'.',','); ?><br>
-            </font>
             <font size="2">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($compra[0]['compra_totalfinal'] ,2,'.',','); ?><br>
+                <?php echo "TOTAL: ".number_format($total_cant ,2,'.',','); ?><br>
             </b>
             </font>
-            <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($compra[0]['compra_totalfinal'],' Bolivianos'); ?><br>            
-            </font>
+            
             
         </td>          
     </tr>
-   
-<tr>
-        <td nowrap style="padding: 0;" colspan="4">
-            <font size="2">
-            
-                NOTA: <b><?php echo  $compra[0]['compra_glosa']; ?></b><br>
-                
-            </font>
-        </td>           
-    </tr>
-      
     <tr >
         <td style="padding: 0;  line-height: 12px;" colspan="4">
-               USUARIO: <b><?php echo $compra[0]['usuario_nombre']; ?></b> 
+               USUARIO: <b><?php echo $ordencompra[0]['usuario_nombre']; ?></b> 
            
          </td>
     </tr>    
@@ -229,27 +205,3 @@ border-bottom : 1px solid #aaa;*/
 </td>    
 </tr>    
 </table>   
-
-<table class="table" style="max-width: 7cm; margin-top: 15px;">
-            <tr>
-                <td> <center>
-                
-                        <?php echo "------------------------------------"; ?><br>
-                        <?php echo "RECIBI CONFORME"; ?><br>
-                    
-                    </center>
-                </td>
-                <td width="20">
-                    <?php echo "     "; ?><br>
-                    <?php echo "     "; ?><br>
-                </td>
-                <td>
-                    <center>
-
-                        <?php echo "------------------------------------"; ?><br>
-                        <?php echo "ENTREGUE CONFORME"; ?><br>   
-
-                    </center>
-                </td>
-            </tr>
-        </table>
