@@ -108,7 +108,7 @@ function formato_numerico(numero){
     $('#caja_diferencia').val(Number(total - caja_apertura - total_transacciones).toFixed(2));
     //alert(total);
     
-    
+    document.getElementById('div_guardar').style.display = 'none'; 
     
  }
  
@@ -167,6 +167,9 @@ function formato_numerico(numero){
 
     $('#caja_diferencia').val(Number(caja_cierre - saldo_caja).toFixed(2));
 
+    //$("#div_guardar").style = "display:block;"
+     document.getElementById('div_guardar').style.display = 'block'; 
+    
     $.ajax({url: controlador,
                type:"POST",
                data:{bitacoracaja_montoreg:bitacoracaja_montoreg, bitacoracaja_montocaja:bitacoracaja_montocaja, bitacoracaja_tipo:bitacoracaja_tipo, bitacoracaja_evento:bitacoracaja_evento},

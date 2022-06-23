@@ -3346,6 +3346,7 @@ function anular_venta($venta_id){
         }
         
    }
+   
    /* genera factura desde el index de ventas  */
     function generar_factura_detalle_aux()
     {
