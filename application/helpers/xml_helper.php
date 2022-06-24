@@ -100,15 +100,58 @@
     /**
      * Obtener el modulo11
      */
+    function calculaDigitoMod11($cadena, $numDig, $limMult, $x10)
+    {
+        //$mult=0; $suma=0; $i=0; $n=0; $dig=0;
+        if (!$x10) $numDig = 1;
+        for($n = 1; $n <= $numDig; $n++) {
+            $suma = 0;
+            $mult = 2;
+            for($i = strlen($cadena) - 1; $i >= 0; $i--) {
+                //suma += (mult * Integer.parseInt(cadena.substring(i, i + 1)));
+                $suma = $suma+($mult * intval($cadena[$i])); //Integer.parseInt(cadena.substring(i, i + 1)));
+                //echo "resCadena: ".substr(strval($cadena), $i, ($i+1))." *** ".$i." * ".($i+1)." ******** ".$cadena[$i]."<br>";
+                //echo "resCadena: ".$suma."<br>";
+                if(++$mult > $limMult) $mult = 2;
+            }
+            /*echo "La cadena: ".$cadena;
+            echo "<br>La suma: ".$suma;
+            echo "<br>Mult: ".$mult."<br>";
+            */
+            if ($x10) {
+                $dig = (($suma * 10) % 11) % 10;
+            }else{
+                $dig = $suma % 11;
+            }
+            if ($dig == 10) {
+                //$cadena += "1";
+                $cadena = $cadena."1";
+            }
+            if ($dig == 11) {
+                //$cadena += "0";
+                $cadena = $cadena."0";
+            }
+            if ($dig < 10) {
+                $cadena = $cadena.$dig; //String.valueOf(dig);
+            }
+        }
+    //return cadena.substring(cadena.length() - numDig, cadena.length());
+        return substr($cadena, strlen($cadena)-$numDig, strlen($cadena));
+    }
     function obtenerModulo11($pCadena) {
-        $vDigito = getMod11($pCadena);
+        $vDigito = calculaDigitoMod11($pCadena, 1, 9, false);
         return $vDigito;
     }
+    
+    /*function obtenerModulo11($pCadena) {
+        $vDigito = getMod11($pCadena);
+        return $vDigito;
+    }*/
 
     /**
      * MODULO 11
     */
-    function getMod11( $num, $retorno_10='K' ){
+    /*function getMod11( $num, $retorno_10='K' ){
         $digits = str_replace( array( '.', ',' ), array( ''.'' ), strrev($num ) );
         if ( ! ctype_digit( $digits ) )
             return false;
@@ -135,7 +178,7 @@
             return 0;
 
         return $retorno_10;
-    }
+    }*/
     /**
      * Crea la factura de compra venta 
      * 1 = COMPUTARIZADA

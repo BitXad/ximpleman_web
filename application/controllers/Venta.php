@@ -3780,7 +3780,7 @@ function anular_venta($venta_id){
         $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
         $factura_nitemisor = $dosificacion["dosificacion_nitemisor"];
         
-        $fecha_hora = "20220613163046258";
+        $fecha_hora = "20220623171714355";
         
         $factura_sucursal  = $dosificacion["dosificacion_sucursal"];
         $factura_modalidad = $dosificacion['dosificacion_modalidad'];
@@ -3788,7 +3788,7 @@ function anular_venta($venta_id){
         $tipo_factura = 1;
         $tipo_documento_sector = 1;
         $pos = 0;
-        $factura_numero = 303;
+        $factura_numero = 318;
         $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
         
             // LLAMANDO AL HELPER
@@ -3802,6 +3802,12 @@ function anular_venta($venta_id){
                                     $factura_numero,
                                     $pos,
                                     $facturaCufdCodControl['cufd_codigocontrol']);
+            echo "Fecha y hora:".$fecha_hora."<br>";
+            echo "Tipo Emision:".$tipo_emision."<br>";
+            echo "Tipo Factura:".$tipo_factura."<br>";
+            echo "Tipo Docuemnto sector:".$tipo_documento_sector."<br>";
+            echo "Punto de venta:".$pos."<br>";
+            echo "Fact. Num.:".$factura_numero."<br>";
             echo $factura_cuf;
     }
 }
