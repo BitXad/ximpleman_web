@@ -3421,25 +3421,58 @@ function anular_venta($venta_id){
                 $documentoSector = $dosificacion['docsec_codigoclasificador'];
                 $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
                 $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion['dosificacion_cufd']);
-                $fecha_hora_aux = date("YmdHis".substr((string)microtime(), 1, 4), strtotime($factura_fecha_hora));
+                //$fecha_hora_aux = date("YmdHis".substr((string)microtime(), 1, 4), strtotime($factura_fecha_hora));
             
                 //$fecha_hora = "$anio$mes$dia$hora$min$seg$mseg";
-                $fecha_hora = str_replace(".", "", $fecha_hora_aux);
+                /*$anio = date("Y", strtotime($factura_fecha_hora));
+                $mes  = date("m", strtotime($factura_fecha_hora));
+                $dia  = date("d", strtotime($factura_fecha_hora));
+                $hora = date("H", strtotime($factura_fecha_hora));
+                $min  = date("i", strtotime($factura_fecha_hora));
+                $seg  = date("s", strtotime($factura_fecha_hora));
+                $miliseg1  = date(substr((string)microtime(), 1, 4), strtotime($factura_fecha_hora));
+                $miliseg = str_replace(".", "", $miliseg1);
+                echo $miliseg."WW";
+                $fecha_hora = "$anio$mes$dia$hora$min$seg$miliseg";*/
+                
+                //$fecha_hora = str_replace(".", "", $fecha_hora_aux);
+                $cadFechahora = str_replace("-", "", $factura_fecha_hora);
+                $cadFechahora = str_replace("T", "", $cadFechahora);
+                $cadFechahora = str_replace(":", "", $cadFechahora);
+                $cadFechahora = str_replace(".", "", $cadFechahora);
+                //echo $cadFechahora."QWE";
+                //$fecha_hora = str_replace(".", "", $fecha_hora_aux);
                 $tipo_emision = 1;//1 online
                 $tipo_factura = $dosificacion['tipofac_codigo'];
                 $tipo_documento_sector = $dosificacion['docsec_codigoclasificador'];
                 $pos = $dosificacion['dosificacion_puntoventa'];
+                /*
+                echo "Fecha que se guarda :".$factura_fecha_hora."<br>";
+                echo "Fecha hora para cuf :".$fecha_hora."<br>";
+                echo "Nit :".$factura_nitemisor."<br>";
+                echo "fecha hora :".$fecha_hora."<br>";
+                echo "Sucursal :".$factura_sucursal."<br>";
+                echo "Modalidad :".$factura_modalidad."<br>";
+                echo "tipo Emision :".$tipo_emision."<br>";
+                echo "Tipo Factura :".$tipo_factura."<br>";
+                echo "Tipo Doc Sector :".$tipo_documento_sector."<br>";
+                echo "Factura numero :".$factura_numero."<br>";
+                echo "Pos :".$pos."<br>";
+                echo "Cod Control :".$facturaCufdCodControl['cufd_codigocontrol']."<br><br><br><br>";
+                */
                 // LLAMANDO AL HELPER
-                $factura_cuf = generarCuf($factura_nitemisor,
-                                        $fecha_hora,
-                                        $factura_sucursal,
-                                        $factura_modalidad,
-                                        $tipo_emision,
-                                        $tipo_factura,
-                                        $tipo_documento_sector,
-                                        $factura_numero,
-                                        $pos,
-                                        $facturaCufdCodControl['cufd_codigocontrol']);
+                $factura_cuf = generarCuf(trim($factura_nitemisor),
+                                        trim($cadFechahora),
+                                        trim($factura_sucursal),
+                                        trim($factura_modalidad),
+                                        trim($tipo_emision),
+                                        trim($tipo_factura),
+                                        trim($tipo_documento_sector),
+                                        trim($factura_numero),
+                                        trim($pos),
+                                        trim($facturaCufdCodControl['cufd_codigocontrol']));
+                
+        
                 $fecha_hora = $factura_fecha_hora;
             }
             // PARA NUEVA FACTURACION
@@ -3529,7 +3562,7 @@ function anular_venta($venta_id){
         //**************** fin contenido ***************
         }
     }
-
+    
     function array_to_xml($array_to_xml, &$xml) {
         foreach($array_to_xml as $key => $value) {
             if(is_array($value)) {

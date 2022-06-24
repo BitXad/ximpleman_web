@@ -5,25 +5,25 @@
         <razonSocialEmisor>PASSWORD</razonSocialEmisor>
         <municipio>CERCADO - COCHABAMBA</municipio>
         <telefono>4511518 * (591) 79999097</telefono>
-        <numeroFactura>321</numeroFactura>
-        <cuf>1608A399D64B14B026405225872FB13A425206E4EA012AC7D2CEC86D74</cuf>
+        <numeroFactura>397</numeroFactura>
+        <cuf>1608A399D64B14B05DE06E57568C2A1FA792AE2462612AC7D2CEC86D74</cuf>
         <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q1VJYWFKWkdXVUFIwRjM5RTI3N0RBO</cufd>
         <codigoSucursal>0</codigoSucursal>
         <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
         <codigoPuntoVenta>0</codigoPuntoVenta>
-        <fechaEmision>2022-06-24T11:20:20.414</fechaEmision>
-        <nombreRazonSocial>GUTIERREZ</nombreRazonSocial>
+        <fechaEmision>2022-06-24T18:25:34.027</fechaEmision>
+        <nombreRazonSocial>ECODESARROLLO SRL</nombreRazonSocial>
         <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
-        <numeroDocumento>4169794010</numeroDocumento>
+        <numeroDocumento>1010615025</numeroDocumento>
         <complemento></complemento>
-        <codigoCliente>GU40803</codigoCliente>
+        <codigoCliente>-</codigoCliente>
         <codigoMetodoPago>1</codigoMetodoPago>
         <numeroTarjeta xsi:nil="true"/>
-        <montoTotal>60.00</montoTotal>
-        <montoTotalSujetoIva>60.00</montoTotalSujetoIva>
+        <montoTotal>130.00</montoTotal>
+        <montoTotalSujetoIva>130.00</montoTotalSujetoIva>
         <codigoMoneda>1</codigoMoneda>
         <tipoCambio>1</tipoCambio>
-        <montoTotalMoneda>60.00</montoTotalMoneda>
+        <montoTotalMoneda>130.00</montoTotalMoneda>
         <montoGiftCard xsi:nil="true"/>        
         <descuentoAdicional xsi:nil="true"/>
         <codigoExcepcion xsi:nil="true"/>  
@@ -34,15 +34,15 @@
     </cabecera>
     <detalle>
         <actividadEconomica>465000</actividadEconomica>
-        <codigoProductoSin>61182</codigoProductoSin>
-        <codigoProducto>TEC-00149</codigoProducto>
-        <descripcion>TECLADO MULTIMEDIA SURE</descripcion>
-        <cantidad>1</cantidad>
+        <codigoProductoSin>61187</codigoProductoSin>
+        <codigoProducto>TEC-00271</codigoProducto>
+        <descripcion>TECLADO MULTIMEDIA DELUX K8060</descripcion>
+        <cantidad>2</cantidad>
         <unidadMedida></unidadMedida>
-        <precioUnitario>60.00</precioUnitario>
+        <precioUnitario>65.00</precioUnitario>
         <montoDescuento>0.00</montoDescuento>
-        <subTotal>60.00</subTotal>
+        <subTotal>130.00</subTotal>
         <numeroSerie xsi:nil="true"></numeroSerie>
-        <numeroImei></numeroImei>
+        <numeroImei>null</numeroImei>
     </detalle>
 </facturaComputarizadaCompraVenta>

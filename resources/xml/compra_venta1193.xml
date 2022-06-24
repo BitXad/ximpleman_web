@@ -5,13 +5,13 @@
         <razonSocialEmisor>PASSWORD</razonSocialEmisor>
         <municipio>CERCADO - COCHABAMBA</municipio>
         <telefono>4511518 * (591) 79999097</telefono>
-        <numeroFactura>321</numeroFactura>
-        <cuf>1608A399D64B14B026405225872FB13A425206E4EA012AC7D2CEC86D74</cuf>
+        <numeroFactura>393</numeroFactura>
+        <cuf>1608A399D64B14B05DD155C0DB0E0E2EED52ADC2BA412AC7D2CEC86D74</cuf>
         <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q1VJYWFKWkdXVUFIwRjM5RTI3N0RBO</cufd>
         <codigoSucursal>0</codigoSucursal>
         <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
         <codigoPuntoVenta>0</codigoPuntoVenta>
-        <fechaEmision>2022-06-24T11:20:20.414</fechaEmision>
+        <fechaEmision>2022-06-24T18:24:59.275</fechaEmision>
         <nombreRazonSocial>GUTIERREZ</nombreRazonSocial>
         <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
         <numeroDocumento>4169794010</numeroDocumento>
@@ -19,11 +19,11 @@
         <codigoCliente>GU40803</codigoCliente>
         <codigoMetodoPago>1</codigoMetodoPago>
         <numeroTarjeta xsi:nil="true"/>
-        <montoTotal>60.00</montoTotal>
-        <montoTotalSujetoIva>60.00</montoTotalSujetoIva>
+        <montoTotal>85.00</montoTotal>
+        <montoTotalSujetoIva>85.00</montoTotalSujetoIva>
         <codigoMoneda>1</codigoMoneda>
         <tipoCambio>1</tipoCambio>
-        <montoTotalMoneda>60.00</montoTotalMoneda>
+        <montoTotalMoneda>85.00</montoTotalMoneda>
         <montoGiftCard xsi:nil="true"/>        
         <descuentoAdicional xsi:nil="true"/>
         <codigoExcepcion xsi:nil="true"/>  
@@ -34,14 +34,14 @@
     </cabecera>
     <detalle>
         <actividadEconomica>465000</actividadEconomica>
-        <codigoProductoSin>61182</codigoProductoSin>
-        <codigoProducto>TEC-00149</codigoProducto>
-        <descripcion>TECLADO MULTIMEDIA SURE</descripcion>
+        <codigoProductoSin>61187</codigoProductoSin>
+        <codigoProducto>TEC-00148</codigoProducto>
+        <descripcion>TECLADO FLEXIBLE KEYBOARD</descripcion>
         <cantidad>1</cantidad>
-        <unidadMedida></unidadMedida>
-        <precioUnitario>60.00</precioUnitario>
+        <unidadMedida>47</unidadMedida>
+        <precioUnitario>85.00</precioUnitario>
         <montoDescuento>0.00</montoDescuento>
-        <subTotal>60.00</subTotal>
+        <subTotal>85.00</subTotal>
         <numeroSerie xsi:nil="true"></numeroSerie>
         <numeroImei></numeroImei>
     </detalle>

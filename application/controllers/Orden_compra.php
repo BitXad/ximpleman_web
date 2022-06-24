@@ -784,7 +784,7 @@ class Orden_compra extends CI_Controller{
                     );
                     
                     $producto_id = $this->Producto_model->add_producto($params);
-                    
+                    $producto = $this->Producto_model->get_esteproducto($producto_id);
                     $this->Inventario_model->ingresar_producto_inventario($producto_id);
                     
                     $usuario_id = $this->session_data['usuario_id'];
@@ -964,6 +964,7 @@ class Orden_compra extends CI_Controller{
                     );
                     
                     $producto_id = $this->Producto_model->add_producto($params);
+                    $producto = $this->Producto_model->get_esteproducto($producto_id);
                     
                     $this->Inventario_model->ingresar_producto_inventario($producto_id);
                     

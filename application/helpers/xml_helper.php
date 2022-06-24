@@ -33,6 +33,17 @@
                         $factura_numero,//numero de factura
                         $pos,//punto de venta
                         $cufd){// Codigo de control de Codigo Unico de Facturacion Diaria
+        /*echo "Nit :".$factura_nitemisor."<br>";
+        echo "fecha hora :".$fecha_hora."<br>";
+        echo "Sucursal :".$factura_sucursal."<br>";
+        echo "Modalidad :".$factura_modalidad."<br>";
+        echo "tipo Emision :".$tipo_emision."<br>";
+        echo "Tipo Factura :".$tipo_factura."<br>";
+        echo "Tipo Doc Sector :".$tipo_documento_sector."<br>";
+        echo "Factura numero :".$factura_numero."<br>";
+        echo "Pos :".$pos."<br>";
+        echo "Cod Control :".$cufd."<br><br><br><br>";
+        */
         $factura_nitemisor = add_ceros($factura_nitemisor,13);
         $fecha_hora = add_ceros($fecha_hora,17);
         $factura_sucursal = add_ceros($factura_sucursal,4);
@@ -42,15 +53,28 @@
         $tipo_documento_sector = add_ceros($tipo_documento_sector,2);
         $factura_numero = add_ceros($factura_numero,10);
         $pos = add_ceros($pos,4);
-
+        /*
+        echo "Nit :".$factura_nitemisor."<br>";
+        echo "fecha hora :".$fecha_hora."<br>";
+        echo "Sucursal :".$factura_sucursal."<br>";
+        echo "Modalidad :".$factura_modalidad."<br>";
+        echo "tipo Emision :".$tipo_emision."<br>";
+        echo "Tipo Factura :".$tipo_factura."<br>";
+        echo "Tipo Doc Sector :".$tipo_documento_sector."<br>";
+        echo "Factura numero :".$factura_numero."<br>";
+        echo "Pos :".$pos."<br>";
+        echo "Cod Control :".$cufd."<br><br><br><br>";
+        */
         $cuf = "$factura_nitemisor$fecha_hora$factura_sucursal$factura_modalidad$tipo_emision$tipo_factura$tipo_documento_sector$factura_numero$pos";
-
+        //echo $cuf."<br>";
         $mod11 = obtenerModulo11($cuf);
-
+        //echo $mod11."<br>";
         $cuf = "$cuf$mod11";
         //llamada a funcion para convertir a base 16
         $cuf = convBase16($cuf,'0123456789','0123456789ABCDEF');
+        //echo $cuf."<br>";
         $cuf = "$cuf$cufd";
+        
         return $cuf;
     }
     /**
