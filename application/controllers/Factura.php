@@ -425,7 +425,7 @@ class Factura extends CI_Controller{
                 /*//$content = base64_encode($contents);
                 //$b= unpack("C*",$contents);*/
                 
-                var_dump($contents);
+                //var_dump($contents);
                 
                 
                 /*//var_dump($byteArr);
@@ -434,10 +434,33 @@ class Factura extends CI_Controller{
                 // HASH (SHA 256)
                 $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
                 //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
-                var_dump($xml_comprimido);
+                //var_dump($xml_comprimido);
                 //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
                 $eniada = $this->mandarFactura($contents, $xml_comprimido);
-                var_dump($eniada);
+                //var_dump($eniada->transaccion);
+                if($eniada->transaccion){
+                    $params = array(
+                        'factura_codigodescripcion' => $eniada->codigoDescripcion,
+                        'factura_codigoestado'    => $eniada->codigoEstado,
+                        'factura_codigorecepcion' => $eniada->codigoRecepcion,
+                        'factura_transaccion'    => $eniada->transaccion,
+                    );
+                    $this->Factura_model->update_factura($factura_id, $params);
+                }else{
+                    $cad = $eniada->mensajesList;
+                    $mensajecadena = "";
+                    foreach ($cad as $c) {
+                        $mensajecadena .= $c.";";
+                    }
+                    $params = array(
+                        'factura_codigodescripcion' => $eniada->codigoDescripcion,
+                        'factura_codigoestado' => $eniada->codigoEstado,
+                        'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
+                        'factura_transaccion'  => $eniada->transaccion,
+                    );
+                    $this->Factura_model->update_factura($factura_id, $params);
+                }
+                //var_dump($eniada);
             }
         }
         
