@@ -99,3 +99,7 @@
         });
     }
 </script>
+
+<?php echo "<br>".date("YmdHis").round(microtime(true) * 1000 %60%60%60); ?>
+<?php echo "<br>". round(microtime(true) * 1000 %60%60%60); ?>
+<?php echo "<br>". substr(round(microtime(true) * 1000),1,3); ?>
