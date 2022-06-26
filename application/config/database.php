@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.1.2',
+	'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
-        'database' => 'ximpleman_web',
+        'database' => 'ximpleman_webfacturacion',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
