@@ -470,10 +470,10 @@
                         }
                         if($rolusuario[133-1]['rolusuario_asignado'] == 1){
                         ?>
-                        <li>
+<!--                        <li>
                             <a href="<?php echo site_url('sincronizacion');?>"><i class="fa-solid fa-arrows-rotate"></i> Sincronizar</a>
                         </li>
-                        <li>
+                        <li>-->
                             <a href="<?php echo site_url('tipo_transaccion');?>"><i class="fa fa-houzz"></i>Tipo de Transacción</a>
                         </li>
                         <?php
@@ -838,6 +838,59 @@
                 <li>
                     <a href="#"><i class="fa fa-calculator"></i> <span>Contabilidad</span></a>
                     <ul class="treeview-menu">
+                        <?php
+                        if($rolusuario[149-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('dosificacion');?>"><i class="fa fa-list-alt"></i>Dosificación</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[152-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-shopping-cart"></i> <span>Libro de Ventas</span></a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[153-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('factura_compra');?>"><i class="fa fa-shopping-basket"></i> <span>Libro de Compras</span></a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[154-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('factura/verificador');?>"><i class="fa fa-paperclip"></i>Verificador de facturas</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                    </ul>
+                   
+                </li>
+                
+                <li>
+                    <a href="#"><i class="fa fa-paste"></i> <span>Facturación</span></a>
+                    <ul class="treeview-menu">
+                        
+                        <?php
+                            if($rolusuario[133-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('sincronizacion');?>"><i class="fa-solid fa-arrows-rotate"></i> Sincronizar</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('eventos_significativos');?>"><i class="fa fa-link"></i> Eventos Significativos</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                        
+                        
+                        
                         <?php
                         if($rolusuario[149-1]['rolusuario_asignado'] == 1){
                         ?>

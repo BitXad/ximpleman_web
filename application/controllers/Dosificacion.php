@@ -1145,6 +1145,9 @@ class Dosificacion extends CI_Controller{
     function registroEventoSignificativo(){
         try{
             if ($this->input->is_ajax_request()) {
+                
+                
+                
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
