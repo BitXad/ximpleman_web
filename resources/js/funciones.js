@@ -284,8 +284,10 @@ function buscarcliente(){
                     $("#zona_id").val(0);
                     $("#tipocliente_id").val(1);
                     $("#venta_descuento").val(0);
-                    
-                    verificarnit();
+                    let tipo_sistema = document.getElementById('parametro_tiposistema').value;
+                    if(tipo_sistema != 1){
+                        verificarnit();
+                    }
                     
                 }
 

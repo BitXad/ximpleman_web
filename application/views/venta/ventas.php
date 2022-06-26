@@ -254,6 +254,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
 <input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
 <input type="text" id="parametro_factura" value="<?php echo $parametro[0]['parametro_factura']; ?>" name="parametro_factura"  hidden>
+<input type="text" id="parametro_tiposistema" value="<?php echo $parametro[0]['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 

@@ -153,7 +153,7 @@ border-bottom : 1px solid #aaa;
                         </tr>
                         <tr>
                             <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b> CUF: </b></td>
-                            <td style="font-family: arial; font-size: 8pt; padding-left: 5px; white-space: intial; max-width: 3cm"><span class="width:100%"><?= $factura[0]['factura_autorizacion'] ?></span></td>
+                            <td style="font-family: arial; font-size: 8pt; padding-left: 5px; white-space: intial; max-width: 3cm"><span class="width:100%"><?= $factura[0]['factura_cuf'] ?></span></td>
                         </tr>
                         <tr>
                             <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b> ACTIVIDAD: </b></td>
@@ -199,7 +199,7 @@ border-bottom : 1px solid #aaa;
                             </tr>
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Cod. Cliente:</b></td>
-                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;">01195536</td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_codigocliente'] ?></td>
                             </tr>
                         </table>
                     </div>

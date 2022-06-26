@@ -659,5 +659,20 @@ class Cliente_model extends CI_Model
         return $this->db->query($sql)->result_array();
 
     }
+    /*
+     * Devuelve codigo de un cliente, dado su nit y razon
+     */
+    function get_codigo_cliente($cliente_nit, $cliente_razon)
+    {
+        $sql = "SELECT
+                      c.cliente_codigo as codigocliente
+                  FROM
+                      cliente c
+                 WHERE
+                      c.cliente_nit   = '".$cliente_nit."' and 
+                      c.cliente_razon = '".$cliente_razon."'";
+        $cliente = $this->db->query($sql)->row_array();
+        return $cliente['codigocliente'];
+    }
     
 }

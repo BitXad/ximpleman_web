@@ -115,14 +115,15 @@ class Factura extends CI_Controller{
 
     function factura_carta($venta_id,$tipo)
     {
-        
         if($this->acceso(17)){
-        //**************** inicio contenido ***************   
+        //**************** inicio contenido ***************
+            $parametros = $this->Parametro_model->get_parametros();
+            $parametros = $parametros[0];
         $usuario_id = $this->session_data['usuario_id'];
         
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
-        $data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
+        //$data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        $data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura($venta_id);
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
         $data['page_title'] = "Factura";
         $factura = $this->Factura_model->get_factura_venta($venta_id);
@@ -139,43 +140,43 @@ class Factura extends CI_Controller{
         $total         = $factura[0]['factura_total'];
         $codcontrol    = $factura[0]['factura_codigocontrol'];
         $nit           = $factura[0]['factura_nit'];
-        $ruta          = $factura[0]['factura_ruta'];
-        $cuf           = $factura[0]['factura_cufd'];
-        $tamanio       = $factura[0]['factura_tamanio'];
         
-        $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
-        // $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
-               
+        if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
+            // Antiguo
+            $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
+        }else{
+            $ruta      = $factura[0]['factura_ruta'];
+            $cuf       = $factura[0]['factura_cufd'];
+            $tamanio   = $factura[0]['factura_tamanio'];
+            // nuevo
+            $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
+        }
+        
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
         //Generador de Codigo QR
-               //cargamos la librería	
-                //cargamos la librería	
-               //cargamos la librería	
-        $this->load->library('ciqrcode');
-                
-        //hacemos configuraciones
-        $params['data'] = $cadenaQR;//$this->random(30);
-        $params['level'] = 'H';
-        $params['size'] = 5;
+                //cargamos la librerÃ­a	
+         $this->load->library('ciqrcode');
+                 
+         //hacemos configuraciones
+         $params['data'] = $cadenaQR;//$this->random(30);
+         $params['level'] = 'H';
+         $params['size'] = 5;
          //decimos el directorio a guardar el codigo qr, en este 
-         //caso una carpeta en la raíz llamada qr_code
-        // $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
-        //  $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
-        $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
-        
+         //caso una carpeta en la raí­z llamada qr_code
+         $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+         
          //generamos el código qr
-        // $this->ciqrcode->generate($params); 
-        //  $this->ciqrcode->generate($params); 
-        $this->ciqrcode->generate($params); 
-        
-        generarfacturaCompra_ventaXML(1, $factura, $data['detalle_factura'],$data['empresa']);
-
+         $this->ciqrcode->generate($params); 
          //echo '<img src="'.base_url().'resources/images/qrcode.png" />';
         //fin generador de codigo QR        
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
-        $data['_view'] = 'factura/factura_carta';
+        if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
+            $data['_view'] = 'factura/factura_carta';
+        }else{
+            $data['_view'] = 'factura/factura_carta_new'; 
+        }
         $this->load->view('layouts/main',$data);        
         
         }
@@ -337,8 +338,8 @@ class Factura extends CI_Controller{
     {
         if($this->acceso(17)){
         //**************** inicio contenido ***************           
-        $parametros = $this->Parametro_model->get_parametros();
-        $parametros = $parametros[0];
+            $parametros = $this->Parametro_model->get_parametros();
+            $parametros = $parametros[0];
         $usuario_id = $this->session_data['usuario_id'];
         
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -365,19 +366,23 @@ class Factura extends CI_Controller{
         $total         = $factura[0]['factura_total'];
         $codcontrol    = $factura[0]['factura_codigocontrol'];
         $nit           = $factura[0]['factura_nit'];
-        $ruta          = $factura[0]['factura_ruta'];
-        $cuf           = $factura[0]['factura_cufd'];
-        $tamanio       = $factura[0]['factura_tamanio'];
+        
+        
+        
         if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             // Antiguo
             $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
         }else{
+            $ruta      = $factura[0]['factura_ruta'];
+            $cuf       = $factura[0]['factura_cufd'];
+            $tamanio   = $factura[0]['factura_tamanio'];
             // nuevo
             $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
         }
-        
+         
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
         //Generador de Codigo QR
-                //cargamos la librería	
+                //cargamos la libreri­a	
          $this->load->library('ciqrcode');
                   
          //hacemos configuraciones
@@ -385,87 +390,13 @@ class Factura extends CI_Controller{
          $params['level'] = 'H';
          $params['size'] = 5;
          //decimos el directorio a guardar el codigo qr, en este 
-         //caso una carpeta en la raíz llamada qr_code
+         //caso una carpeta en la raí­z llamada qr_code
          $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
-         //generamos el código qr
+         //generamos el cÃ³digo qr
          $this->ciqrcode->generate($params); 
          //echo '<img src="'.base_url().'resources/images/qrcode.png" />';
         //fin generador de codigo QR
-        if($parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
-        
-            $xml = generarfacturaCompra_ventaXML(1,$factura,$data['detalle_factura'],$data['empresa']);
-            
-            $base_url = explode('/', base_url());
-            //$doc_xml = site_url("resources/xml/$archivoXml.xml");
-            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-            
-            // $res = validar(, );
-            // $res = validar("$directorio/compra_venta{$factura[0]['factura_id']}".'.xml', "{$directorio}compra_venta.xsd");
-    
-            // require 'ValidacionXSD.php';
-            $valXSD = new ValidacionXSD();
-            if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
-                // echo "No ingreso";
-                print $valXSD->mostrarError();
-            }else{
-                // COMPRESION XML EN GZIP
-                $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
-                $gzdata = gzencode($datos, 9);
-                $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
-                // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
-                fwrite($fp, $gzdata);
-                fclose($fp);
-                
-                //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
-                //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
-                
-                $handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
-                $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
-                fclose($handle);
-                /*//$content = base64_encode($contents);
-                //$b= unpack("C*",$contents);*/
-                
-                //var_dump($contents);
-                
-                
-                /*//var_dump($byteArr);
-                // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml*");*/
-                
-                // HASH (SHA 256)
-                $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
-                //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
-                //var_dump($xml_comprimido);
-                //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
-                $eniada = $this->mandarFactura($contents, $xml_comprimido);
-                //var_dump($eniada->transaccion);
-                if($eniada->transaccion){
-                    $params = array(
-                        'factura_codigodescripcion' => $eniada->codigoDescripcion,
-                        'factura_codigoestado'    => $eniada->codigoEstado,
-                        'factura_codigorecepcion' => $eniada->codigoRecepcion,
-                        'factura_transaccion'    => $eniada->transaccion,
-                    );
-                    $this->Factura_model->update_factura($factura_id, $params);
-                }else{
-                    $cad = $eniada->mensajesList;
-                    $mensajecadena = "";
-                    foreach ($cad as $c) {
-                        $mensajecadena .= $c.";";
-                    }
-                    $params = array(
-                        'factura_codigodescripcion' => $eniada->codigoDescripcion,
-                        'factura_codigoestado' => $eniada->codigoEstado,
-                        'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
-                        'factura_transaccion'  => $eniada->transaccion,
-                    );
-                    $this->Factura_model->update_factura($factura_id, $params);
-                }
-                //var_dump($eniada);
-            }
-        }
-        
-        //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
-        
+         
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
@@ -1363,139 +1294,6 @@ class Factura extends CI_Controller{
             
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
-    } 
-    /**
-     * Enviar factura a impuestos
-     */
-    //function mandarFactura($direccion_archivo_zip, $archivo_zip){
-    function mandarFactura($el_archivo, $hash_archivo){
-        static $array;
-        // $sincronizacion_id = $this->input->post('codigo_sincronizar');
-        if(!isset($array['dosificacion'])){
-            $dosificacion_id = 1;
-            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-            $array['dosificacion'] = $dosificacion;
-        }else{
-            $dosificacion = $array['dosificacion'];
-        }
-        
-        $wsdl = $dosificacion['dosificacion_factura'];
-        $token = $dosificacion['dosificacion_tokendelegado'];
-
-        $comunicacion = $this->verificar_comunicacion($token,$wsdl);
-        if($comunicacion){
-            $fecha_envio = date('Y-m-d\TH:i:s.v');
-            $parametros = ["SolicitudServicioRecepcionFactura" => [
-                "codigoAmbiente"        => $dosificacion['dosificacion_ambiente'],   // Producción: 1 Pruebas y Piloto: 2
-                "codigoDocumentoSector" => $dosificacion['docsec_codigoclasificador'], //documento_sector: para compra y venta es 1
-                "codigoEmision"         =>  1, //$dosificacion['dosificacion_ambiente'],   //Describe si la emisión se realizó en línea. El valor permitido es: Online: 1
-                "codigoModalidad"       => $dosificacion['dosificacion_modalidad'],  //Uno (1) Electrónica  y dos (2) Computarizada en línea
-                "codigoPuntoVenta"      => $dosificacion['dosificacion_puntoventa'], //se realiza utilizando un punto de venta. Caso contrario enviar 0.
-                "codigoSistema"         => $dosificacion['dosificacion_codsistema'],
-                "codigoSucursal"        => $dosificacion['dosificacion_codsucursal'],
-                "cufd"                  => $dosificacion['dosificacion_cufd'],
-                "cuis"                  => $dosificacion['dosificacion_cuis'],
-                "nit"                   => $dosificacion['dosificacion_nitemisor'],
-                "tipoFacturaDocumento"  => $dosificacion['tipofac_codigo'],
-                "archivo"               => $el_archivo,
-                "fechaEnvio"            => $fecha_envio,
-                "hashArchivo"           => $hash_archivo,
-            ]];
-        }
-        
-        try{
-            $opts = array(
-                'http' => array(
-                    'header' => "apiKey: TokenApi $token"
-                )
-            );
-
-            $context = stream_context_create($opts);
-            $cliente = new \SoapClient($wsdl, [
-                'stream_context'    => $context,
-                'cache_wsdl'        => WSDL_CACHE_NONE,
-                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
-            ]);
-
-
-            // $cliente->__setSoapHeaders([$headers]);
- 
-            //$fileName = new SoapVar($direccion_archivo_zip, XSD_STRING);
-            
-            // $archivo = $direccion_archivo_zip;
-            // $handle = file($archivo);
-            // $bytes = unpack("C*", $handle);
-            // var_dump($bytes);
-            // $contentFile = new SoapVar($bytes, XSD_BYTE);
-
-            //$handle = fopen($direccion_archivo_zip, "rb");
-            //$contents = fread($handle, filesize($direccion_archivo_zip));
-            //fclose($handle);
-            // $b= unpack("C*",$contents);
-            //$b = filesize($direccion_archivo_zip);
-            // $b = $get_zip_originalsize($direccion_archivo_zip);
-            //var_dump($b);
-            // $result = $cliente->__soapCall('sendBill',
-            //     array('sendBill' =>
-            //         array(
-            //             'fileName' => $fileName,
-            //             'contentFile' => $contentFile
-            //         )
-            //     )
-            // );
-
-            $resultado = $cliente->recepcionFactura($parametros);
-            
-            //$resultados = $cliente->SolicitudServicioRecepcionFactura($parametros);
-
-            //$transaccion = $resultados->RespuestaListaParametricas->transaccion;
-            /*
-            if($transaccion){
-                $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
-                $this->Unidad_model->truncate_table();
-                foreach ($listaCodigos as $codigo) {
-                    $params = array(
-                        'unidad_codigo'    => $codigo->codigoClasificador,
-                        'unidad_nombre'    => $codigo->descripcion
-                    );
-                    $this->Unidad_model->add_unidad($params);
-                }
-            }else{
-                $mensaje = $resultados->RespuestaListaParametricas->mensajesList;
-                $mensaje = "$mensaje->codigo $mensaje->descripcion";
-                // var_dump($mensaje);
-            }*/
-            //return $transaccion;
-                $mensaje = $resultado->RespuestaServicioFacturacion;
-            return $mensaje;
-        }catch(Exception $e){
-            // var_dump("No se realizo la sincronizacion");
-            return false;
-        }
-
     }
-
-    function verificar_comunicacion($token,$wsdl){
-        try{
-            $opts = array(
-                'http' => array(
-                    'header' => "apiKey: TokenApi $token"
-                )
-            );
-
-            $context = stream_context_create($opts);
-            $cliente = new \SoapClient($wsdl, [
-                'stream_context'    => $context,
-                'cache_wsdl'        => WSDL_CACHE_NONE,
-                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
-            ]);
-            
-            $resultados = $cliente->verificarComunicacion();
-
-            $transaccion = $resultados->return->transaccion;
-            return $transaccion;
-        }catch(Exception $e){
-            return false;
-        }
-    }
+    
 }
