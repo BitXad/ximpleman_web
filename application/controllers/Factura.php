@@ -6,6 +6,7 @@
  
 class Factura extends CI_Controller{
     private $session_data = "";
+    private $configuracion;
     function __construct()
     {
         parent::__construct();
@@ -38,6 +39,8 @@ class Factura extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->configuracion = $this->Parametro_model->get_parametros();
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -68,6 +71,8 @@ class Factura extends CI_Controller{
 
         $data['page_title'] = "Libro de Ventas";
         $data['factura'] = $this->Factura_model->get_all_factura($params);
+        $data['configuracion'] = $this->configuracion[0];
+        $data['motivos'] = $this->Factura_model->get_all_motivos();
         
         $data['_view'] = 'factura/index';
         $this->load->view('layouts/main',$data);
@@ -990,32 +995,162 @@ class Factura extends CI_Controller{
                 
 //        if($factura_id>0)
 //        {
-//            
-        $sql = "select venta_id from factura where factura_id = ".$factura_id;                
-        $resultado = $this->Factura_model->consultar($sql);
-        $venta_id = $resultado[0]["venta_id"];
+//                  
+        $configuracion = $this->configuracion[0];
+            
+        $sql = "select * from factura where factura_id = ".$factura_id;                
+        $factura = $this->Factura_model->consultar($sql);
+        
+        $venta_id = $factura[0]["venta_id"];
          
+        if($configuracion["parametro_tiposistema"]==1){
         
-        $sql = "update factura set ".                
-                "factura_subtotal = 0".
-                ",factura_nit = 0".
-                ",factura_razonsocial   = 'ANULADO'".
-                ",factura_ice           = 0".
-                ",factura_exento        = 0".
-                ",factura_descuento     = 0".
-                ",factura_total         = 0".
-                ",factura_codigocontrol     = '0'".
-                ",venta_id     = '0'".
-                ",estado_id     = 3".
-                " where factura_id = ".$factura_id;
-                
-        $this->Factura_model->ejecutar($sql);
-        
-        
-        $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
-        $this->Factura_model->ejecutar($sql);
+            //************** ANULACION FACTURA COMPUTARIZADA 
+            
+            $sql = "update factura set ".                
+                    "factura_subtotal = 0".
+                    ",factura_nit = 0".
+                    ",factura_razonsocial   = 'ANULADO'".
+                    ",factura_ice           = 0".
+                    ",factura_exento        = 0".
+                    ",factura_descuento     = 0".
+                    ",factura_total         = 0".
+                    ",factura_codigocontrol     = '0'".
+                    ",venta_id     = '0'".
+                    ",estado_id     = 3".
+                    " where factura_id = ".$factura_id;
+
+            $this->Factura_model->ejecutar($sql);
+
+            $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
+            $this->Factura_model->ejecutar($sql);
+            
             
             redirect('factura/mensaje/'.$factura_id."/".$factura_numero);
+            //************** FIN ANULACION FACTURA COMPUTARIZADA 
+
+        }else{
+            
+            //************** ANULACION FACTURA ELECTRONICA EN LINEA
+    
+                $codigo_motivo =  $this->input->post("motivo_id");
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+                
+                $wsdl = $dosificacion['dosificacion_factura'];                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+
+                $codigoAmbiente = $dosificacion['dosificacion_ambiente'];
+                $codigoDocumentoSector = $factura[0]["docsec_codigoclasificador"];
+                $codigoEmision = 1;
+                $codigoModalidad = $factura[0]['factura_modalidad'];
+                $codigoPuntoVenta = $dosificacion['dosificacion_puntoventa'];
+                $codigoSistema = $dosificacion['dosificacion_codsistema'];
+                $codigoSucursal = $dosificacion['dosificacion_codsucursal'];
+                $cufd = $dosificacion['dosificacion_cufd'];
+                $cuis = $dosificacion['dosificacion_cuis']; 
+                $nit =  $dosificacion['dosificacion_nitemisor'];
+                $tipoFacturaDocumento = 1; 
+                $codigoMotivo = $codigo_motivo;
+                $cuf = $factura[0]['factura_cuf'];
+                
+                
+//                echo 
+//                "<br>codigoAmbiente: ".$codigoAmbiente.
+//                "<br>codigoDocumentoSector: ".$codigoDocumentoSector.
+//                "<br>codigoEmision: ".$codigoEmision.
+//                "<br>codigoModalidad: ".$codigoModalidad.
+//                "<br>codigoPuntoVenta: ".$codigoPuntoVenta.
+//                "<br>codigoSistema: ".$codigoSistema.
+//                "<br>codigoSucursal: ".$codigoSucursal.
+//                "<br>cufd: ".$cufd.
+//                "<br>cuis: ".$cuis. 
+//                "<br>nit: ".$nit.
+//                "<br>tipoFacturaDocumento: ".$tipoFacturaDocumento. 
+//                "<br>codigoMotivo: ".$codigoMotivo.
+//                "<br>cuf: ".$cuf;
+                
+                
+                /* ordenado segun SoapUI */
+                
+                $parametros = ["SolicitudServicioAnulacionFactura" => [
+                    "codigoAmbiente" => $codigoAmbiente,
+                    "codigoDocumentoSector" => $codigoDocumentoSector,
+                    "codigoEmision" => $codigoEmision,
+                    "codigoModalidad" => $codigoModalidad,
+                    "codigoPuntoVenta" => $codigoPuntoVenta,
+                    "codigoSistema" => $codigoSistema,
+                    "codigoSucursal" => $codigoSucursal,
+                    "cufd" => $cufd,
+                    "cuis" => $cuis, 
+                    "nit" =>  $nit,
+                    "tipoFacturaDocumento" => $tipoFacturaDocumento, //averiguar donde se almacena esto
+                    "codigoMotivo" => $codigoMotivo,
+                    "cuf" => $cuf
+                ]];
+
+                //var_dump($parametros);
+                $resultado = $cliente->anulacionFactura($parametros);
+                $res = $resultado->RespuestaServicioFacturacion->transaccion;
+                $mensaje = "";
+                
+//                    var_dump($resultado);
+//                    var_dump($res);
+                if ($res){
+                    //$codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;                    
+                    //$mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;
+
+                    $sql = "update factura set ".                
+                            "factura_subtotal = 0".
+                            ",factura_nit = 0".
+                            ",factura_razonsocial   = 'ANULADO'".
+                            ",factura_ice           = 0".
+                            ",factura_exento        = 0".
+                            ",factura_descuento     = 0".
+                            ",factura_total         = 0".
+                            ",factura_codigocontrol     = '0'".
+                            ",venta_id     = '0'".
+                            ",estado_id     = 3".
+                            " where factura_id = ".$factura_id;
+
+                    $this->Factura_model->ejecutar($sql);
+
+                    $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
+                    $this->Factura_model->ejecutar($sql);                    
+                    
+                    
+                    
+                }else{
+                        
+                    //$mensajeresultado = $resultado->RespuestaServicioFacturacion;
+                    $mensaje = $resultado->RespuestaServicioFacturacion;
+                    
+//                    $mensaje = "OCURRIO UN ERROR, CODIGO: ".$mensajeresultado->codigo.", ".$mensajeresultado->descripcion;
+                    
+                }
+                
+                echo json_encode($resultado->RespuestaServicioFacturacion);
+                //echo $mensaje;
+            //************** FIN ANULACION FACTURA ELECTRONICA EN LINEA
+            
+        }
+        
+          //  redirect('factura/mensaje/'.$factura_id."/".$factura_numero);
 //        }
 //        else
 //            show_error('The factura you are trying to delete does not exist.');

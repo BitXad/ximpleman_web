@@ -170,7 +170,7 @@ class Sincronizacion extends CI_Controller{
                         $data['transaccion'] = $this->sincronizar_actividades();
                         break;
                     case 2: // FECHA Y HORA
-                        // $data['datos'] = 
+                        //$this->fechaHora($wsdl,$token,$parametros);
                         break;
                     case 3: // CODIGOS DE ACTIVIDADES DOCUMENTO SECTOR
                         $data['transaccion'] = $this->codigos_actividades_doc_sector($wsdl,$token,$parametros);
@@ -222,7 +222,7 @@ class Sincronizacion extends CI_Controller{
                         break;
                     default://SINCRONIZAR TODOS LOS CODIGOS
                         if($this->sincronizar_actividades() &&
-                            $this->codigosMensajesServicios($wsdl,$token,$parametros) &&
+                            $this->codigosMensajesServicios($wsdl,$token,$parametros) &&                          
                             $this->sincronizacion_codigos_leyenda($wsdl,$token,$parametros) &&
                             $this->codigos_actividades_doc_sector($wsdl,$token,$parametros) &&
                             $this->codigosEventosSignificativos($wsdl,$token,$parametros) &&
@@ -320,6 +320,63 @@ class Sincronizacion extends CI_Controller{
         return $resultado;
     }
 
+    function fechaHora($wsdl,$token,$parametros){
+        try{
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+            /*fuente:
+            * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/sincronizacion-codigos-catalogos */
+            $wsdl = $dosificacion['dosificacion_sincronizacion'];
+            $token = $dosificacion['dosificacion_tokendelegado'];
+            $opts = array(
+                'http' => array(
+                    'header' => "apiKey: TokenApi $token",
+                )
+            );
+
+            $context = stream_context_create($opts);
+
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context' => $context,
+                'cache_wsdl' => WSDL_CACHE_NONE,
+                'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+            ]);
+            
+            $parametros = ["SolicitudSincronizacion" => [
+                "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
+                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
+                "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
+                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "nit"               =>  $dosificacion['dosificacion_nitemisor']
+            ]];
+            $resultados = $cliente->sincronizarFechaHora($parametros);
+            
+//            $activities = $this->Actividad_model->get_all_activities();
+//            
+//            $transaccion = $resultados->RespuestaListaActividades->transaccion;
+//            if($transaccion){
+//                $listaActividades = $resultados->RespuestaListaActividades->listaActividades;
+//                foreach($listaActividades as $list_actividad){
+//                    $params = array(
+//                        'actividad_codigocaeb' => $list_actividad->codigoCaeb,
+//                        'actividad_descripcion' => $list_actividad->descripcion,
+//                        'actividad_tipoactividad' => $list_actividad->tipoActividad
+//                    );
+//                    
+//                    $actividad_id = $this->buscar_str_array_obj($list_actividad->codigoCaeb,$activities,'actividad_codigocaeb','actividad_id');
+//                    if($actividad_id != 0)
+//                        $this->Actividad_model->update_activity($actividad_id,$params);
+//                    else
+//                        $this->Actividad_model->add_activity($params);
+//                }
+//            }
+//            return $transaccion;
+        }catch (Exception $e){
+            return false;
+        }
+    }
+    
     function codigosMensajesServicios($wsdl,$token,$parametros){
         try{
             $opts = array(

@@ -20,6 +20,7 @@
 <!-------------------------------------------------------->
 <input type="text" id="base_url" value="<?php echo base_url();?>" hidden>
 <input type="hidden" id="rolusuario_asignado" name="rolusuario_asignado" value="<?php echo $rolusuario_asignado;?>">
+<input type="hidden" id="parametro_tiposistema" name="parametro_tiposistema" value="<?php echo $configuracion["parametro_tiposistema"];?>">
 
 <!--<div class="box-header">
                 <h3 class="box-title">Factura</h3>
@@ -109,3 +110,87 @@
 
 </div>
     
+
+<!-- Modal anular -->
+<div class="modal fade" id="modalanular" tabindex="-1" role="dialog" aria-labelledby="modalanular" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #3399cc">
+        <b style="color: white;">ANULAR FACTURA</b>
+        
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        
+        
+      <div class="modal-body">
+         
+        <div class="col-md-12">
+            <label for="factura_numero" class="control-label">ADVERTENCIA: Esta a punto de eliminar la factura</label>
+        </div>
+          
+        <div class="col-md-12" style="display:none;">
+            <div class="row" id='loader2'  style='text-align: center'>
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+            </div>
+        </div>
+          
+          <input type="hidden" name="factura_id" value="00" class="form-control" id="factura_id" readonly="true" />
+          <input type="hidden" name="venta_id" value="00" class="form-control" id="venta_id" readonly="true" />
+        
+        <div class="col-md-4">
+            <label for="factura_numero" class="control-label">Factura Nº</label>
+            <div class="form-group">
+                <input type="input" name="factura_numero" value="00" class="form-control" id="factura_numero" readonly="true"/>
+            </div>
+        </div>
+          
+        <div class="col-md-4">
+            <label for="factura_monto" class="control-label">Monto</label>
+            <div class="form-group">
+                <input type="input" name="factura_monto" value="0.00" class="form-control" id="factura_monto" readonly="true"/>
+            </div>
+        </div>
+          
+        <div class="col-md-4">
+            <label for="factura_fecha" class="control-label">Fecha</label>
+            <div class="form-group">
+                <input type="input" name="factura_fecha" value="0.00" class="form-control" id="factura_fecha" readonly="true"/>
+            </div>
+        </div>
+          
+        <div class="col-md-12">
+            <label for="factura_cliente" class="control-label">Cliente</label>
+            <div class="form-group">
+                <input type="input" name="factura_cliente" value="-" class="form-control" id="factura_cliente" readonly="true"  />
+            </div>
+        </div>
+          
+        <div class="col-md-12">
+            <label for="dosificacion_nitemisor" class="control-label">Motivo Anulación</label>
+            <div class="form-group">
+                
+                <select id="motivo_anulacion" class="form-control">
+
+                    <?php  foreach ($motivos as $motivo) {?>
+                
+                        <option value="<?= $motivo['motivo_codigo']; ?>"><?= $motivo['motivo_descripcion']; ?></option>
+
+                    <?php } ?>
+
+                </select>
+                
+            </div>
+        </div>
+          
+        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrar"><fa class="fa fa-times"></fa> Cerrar</button>
+            <button type="button" class="btn btn-success" onclick="anular_factura_electronica()"><fa class="fa fa-floppy-o"></fa> Anular Factura</button>
+        </div>
+        
+    </div>
+  </div>
+</div>
+<!-- Fin Modal Anular -->
