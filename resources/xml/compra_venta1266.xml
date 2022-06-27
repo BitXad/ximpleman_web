@@ -5,6 +5,7 @@
         <razonSocialEmisor>PASSWORD</razonSocialEmisor>
         <municipio>CERCADO - COCHABAMBA</municipio>
         <telefono>4511518 * (591) 79999097</telefono>
+<<<<<<< HEAD
         <numeroFactura>338</numeroFactura>
         <cuf>1608A399D64B14B99E44E2E74D02944CDA2CE883F4F19850123AD86D74</cuf>
         <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q3w/blVRY0dXVUJIwRjM5RTI3N0RBO</cufd>
@@ -24,6 +25,27 @@
         <codigoMoneda>1</codigoMoneda>
         <tipoCambio>1</tipoCambio>
         <montoTotalMoneda>65.00</montoTotalMoneda>
+=======
+        <numeroFactura>474</numeroFactura>
+        <cuf>1608A399D64B14B995E2C047DBC0549C0DCA457C4461446FC50AD86D74</cuf>
+        <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q1VkazVMY0dXVUFIwRjM5RTI3N0RBO</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-06-27T17:42:00.932</fechaEmision>
+        <nombreRazonSocial>MARIO ESCOBAR VASQUEZ</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>5196226</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>MAZ1277 OK</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta xsi:nil="true"/>
+        <montoTotal>470.00</montoTotal>
+        <montoTotalSujetoIva>470.00</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>470.00</montoTotalMoneda>
+>>>>>>> master
         <montoGiftCard xsi:nil="true"/>        
         <descuentoAdicional xsi:nil="true"/>
         <codigoExcepcion xsi:nil="true"/>  
@@ -37,11 +59,19 @@
         <codigoProductoSin>61187</codigoProductoSin>
         <codigoProducto>TEC-00255</codigoProducto>
         <descripcion>TECLADO MULTIMEDIA DELUX K3100</descripcion>
+<<<<<<< HEAD
         <cantidad>1</cantidad>
         <unidadMedida>75</unidadMedida>
         <precioUnitario>65.00</precioUnitario>
         <montoDescuento>0.00</montoDescuento>
         <subTotal>65.00</subTotal>
+=======
+        <cantidad>2</cantidad>
+        <unidadMedida>75</unidadMedida>
+        <precioUnitario>65.00</precioUnitario>
+        <montoDescuento>0.00</montoDescuento>
+        <subTotal>130.00</subTotal>
+>>>>>>> master
         <numeroSerie xsi:nil="true"></numeroSerie>
         <numeroImei></numeroImei>
     </detalle>

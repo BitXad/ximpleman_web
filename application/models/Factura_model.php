@@ -230,17 +230,8 @@ class Factura_model extends CI_Model
             from cufd c 
             where c.cufd_codigo = '$cufd_codigo'
             ")->row_array();
-    }
-    
+    }    
     function ultima_factura(){
         return $this->db->query("SELECT max(f.factura_id) as ultimo from factura f")->row_array();
     }
-    
-    function get_all_motivos(){
-        $sql = "select * from motivo_anulacion";
-                
-        return $this->db->query($sql)->result_array();
-    }
-    
-    
 }

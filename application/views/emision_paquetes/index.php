@@ -1,4 +1,4 @@
-<script src="<?php echo base_url('resources/js/funcionessin.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/emision_paquetes.js'); ?>"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!----------------------------- script buscador --------------------------------------->
 <script type="text/javascript">
@@ -19,13 +19,13 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-    <font size='4' face='Arial'><b>Eventos Significativos</b></font>
+    <font size='4' face='Arial'><b>Emision de Paquetes</b></font>
     <div class="box-tools no-print">
 
     <!-- Button trigger modal -->
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modaleventos">
-            <fa class="fa fa-reddit"> </fa> 
-            Registrar evento
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalpaquetes">
+            <fa class="fa fa-square-o"> </fa> 
+            Enviar paquete
         </button>
 
     </div>
@@ -77,84 +77,59 @@
     </div>
 </div>
 
-    <a class="btn btn-warning btn-xs" onclick="consulta_EventoSignificativo()"><fa class="fa fa-cart-arrow-down"></fa> Consulta Evento Significativo</a>
-
-    <a class="btn btn-warning btn-xs" onclick="mostrar_modalregistrarpuntoventa()"><fa class="fa fa-cart-arrow-down"></fa> Registrar Punto de Venta</a>
-    
-
-    
-
 <!-- Modal -->
-<div class="modal fade" id="modaleventos" tabindex="-1" role="dialog" aria-labelledby="modaleventos" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background: #3399cc">
-        <b style="color: white;">REGISTRO DE EVENTOS SIGNIFICATIVOS</b>
-        
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-        
-        
-      <div class="modal-body">
-            <div class="row" id='loader2'  style='display:none; text-align: center'>
-                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+<div class="modal fade" id="modalpaquetes" tabindex="-1" role="dialog" aria-labelledby="modalpaquetes" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">REGISTRO DE EMISION DE PAQUETES</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-          
-          
-        <div class="col-md-12">
-            <label for="dosificacion_nitemisor" class="control-label">Eventos</label>
-            <div class="form-group">
-                
-                <select id="select_eventos" class="form-control">
+            <div class="modal-body">
+                <div class="row" id='loader2'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="col-md-12">
+                    <label for="dosificacion_nitemisor" class="control-label">Descripción</label>
+                    <div class="form-group">
+                        <select id="select_eventos" class="form-control">
+                            <?php  foreach ($eventos as $evento) {?>
+                                <option value="<?= $evento['ces_codigoclasificador']; ?>"><?= $evento['ces_descripcion']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <!--<div class="col-md-6">
+                    <label for="ces_fechainicio" class="control-label">Fecha Inicio</label>
+                    <div class="form-group">
+                        <input type="datetime-local" name="ces_fechainicio" value="<?= Date("d/m/y");  ?>" class="form-control" id="ces_fechainicio" onchange="seleccionar_cufd()"/>
+                    </div>
+                </div>
 
-                    <?php  foreach ($eventos as $evento) {?>
-                
-                        <option value="<?= $evento['ces_codigoclasificador']; ?>"><?= $evento['ces_descripcion']; ?></option>
-
-                    <?php } ?>
-
-                </select>
-                
+                <div class="col-md-6">
+                    <label for="ces_fechafin" class="control-label">Fecha Fin</label>
+                    <div class="form-group">
+                        <input type="datetime-local" name="ces_fechafin" value="<?= date("d/m/y");  ?>" class="form-control" id="ces_fechafin" />
+                    </div>
+                </div>
+                -->
             </div>
-        </div>
-          
-        <div class="col-md-6">
-            <label for="ces_fechainicio" class="control-label">Fecha Inicio</label>
-            <div class="form-group">
-                <input type="datetime-local" name="ces_fechainicio" value="<?= Date("d/m/y");  ?>" class="form-control" id="ces_fechainicio" onchange="seleccionar_cufd()"/>
+            <div class="col-md-12">
+                <label for="dosificacion_cufd" class="control-label">CUFD DEL EVENTO</label>
+                <div class="form-group">
+                    <select id="select_cufd" class="form-control">
+                        <option>- NO EXISTEN CUFD SELECCIONADOS -</option>
+                    </select>
+                </div>
             </div>
-        </div>
-          
-        <div class="col-md-6">
-            <label for="ces_fechafin" class="control-label">Fecha Fin</label>
-            <div class="form-group">
-                <input type="datetime-local" name="ces_fechafin" value="<?= date("d/m/y");  ?>" class="form-control" id="ces_fechafin" />
-            </div>
-        </div>
-
-        
-      </div>
-
-        <div class="col-md-12">
-            <label for="dosificacion_cufd" class="control-label">CUFD DEL EVENTO</label>
-            <div class="form-group">
-
-                <select id="select_cufd" class="form-control">
-                    <option>- NO EXISTEN CUFD SELECCIONADOS -</option>
-                </select>
-
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+                <button type="button" class="btn btn-success" onclick="emision_paquetes()"><fa class="fa fa-floppy-o"></fa> Emision de Paquetes</button>
             </div>
         </div>
-        
-        <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
-            <button type="button" class="btn btn-success" onclick="registrar_evento()"><fa class="fa fa-floppy-o"></fa> Registrar Evento</button>
-        </div>
-        
     </div>
-  </div>
 </div>
         
     

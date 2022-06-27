@@ -5,6 +5,7 @@
         <razonSocialEmisor>PASSWORD</razonSocialEmisor>
         <municipio>CERCADO - COCHABAMBA</municipio>
         <telefono>4511518 * (591) 79999097</telefono>
+<<<<<<< HEAD
         <numeroFactura>347</numeroFactura>
         <cuf>1608A399D64B14B99EBD5CCC4640954D799C795FAF319850123AD86D74</cuf>
         <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q3w/blVRY0dXVUJIwRjM5RTI3N0RBO</cufd>
@@ -24,6 +25,27 @@
         <codigoMoneda>1</codigoMoneda>
         <tipoCambio>1</tipoCambio>
         <montoTotalMoneda>100.00</montoTotalMoneda>
+=======
+        <numeroFactura>483</numeroFactura>
+        <cuf>1608A399D64B14B99CB056DB5A9D73154E13B657FE61446FC50AD86D74</cuf>
+        <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q1VkazVMY0dXVUFIwRjM5RTI3N0RBO</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-06-27T18:28:24.859</fechaEmision>
+        <nombreRazonSocial>MARIO ESCOBAR VASQUEZ</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>5196226</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>MAZ1277 OK</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta xsi:nil="true"/>
+        <montoTotal>60.00</montoTotal>
+        <montoTotalSujetoIva>60.00</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>60.00</montoTotalMoneda>
+>>>>>>> master
         <montoGiftCard xsi:nil="true"/>        
         <descuentoAdicional xsi:nil="true"/>
         <codigoExcepcion xsi:nil="true"/>  
@@ -35,6 +57,7 @@
     <detalle>
         <actividadEconomica>465000</actividadEconomica>
         <codigoProductoSin>61187</codigoProductoSin>
+<<<<<<< HEAD
         <codigoProducto>TEC-00239</codigoProducto>
         <descripcion>TECLADO USB SOFY  </descripcion>
         <cantidad>2</cantidad>
@@ -44,5 +67,16 @@
         <subTotal>100.00</subTotal>
         <numeroSerie xsi:nil="true"></numeroSerie>
         <numeroImei>null</numeroImei>
+=======
+        <codigoProducto>TEC-00149</codigoProducto>
+        <descripcion>TECLADO MULTIMEDIA SURE</descripcion>
+        <cantidad>1</cantidad>
+        <unidadMedida>6</unidadMedida>
+        <precioUnitario>60.00</precioUnitario>
+        <montoDescuento>0.00</montoDescuento>
+        <subTotal>60.00</subTotal>
+        <numeroSerie xsi:nil="true"></numeroSerie>
+        <numeroImei></numeroImei>
+>>>>>>> master
     </detalle>
 </facturaComputarizadaCompraVenta>
