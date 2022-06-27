@@ -5,13 +5,13 @@
         <razonSocialEmisor>PASSWORD</razonSocialEmisor>
         <municipio>CERCADO - COCHABAMBA</municipio>
         <telefono>4511518 * (591) 79999097</telefono>
-        <numeroFactura>332</numeroFactura>
-        <cuf>1608A399D64B14B99D258F01427EEA1B126D47F178E19850123AD86D74</cuf>
+        <numeroFactura>346</numeroFactura>
+        <cuf>1608A399D64B14B99EA9F090472E12910767694744F19850123AD86D74</cuf>
         <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q3w/blVRY0dXVUJIwRjM5RTI3N0RBO</cufd>
         <codigoSucursal>0</codigoSucursal>
         <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
         <codigoPuntoVenta>1</codigoPuntoVenta>
-        <fechaEmision>2022-06-27T18:34:05.301</fechaEmision>
+        <fechaEmision>2022-06-27T18:53:28.471</fechaEmision>
         <nombreRazonSocial>DIGRAFIKA DIATEC SRL</nombreRazonSocial>
         <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
         <numeroDocumento>140727024</numeroDocumento>
@@ -19,11 +19,11 @@
         <codigoCliente>-</codigoCliente>
         <codigoMetodoPago>1</codigoMetodoPago>
         <numeroTarjeta xsi:nil="true"/>
-        <montoTotal>130.00</montoTotal>
-        <montoTotalSujetoIva>130.00</montoTotalSujetoIva>
+        <montoTotal>85.00</montoTotal>
+        <montoTotalSujetoIva>85.00</montoTotalSujetoIva>
         <codigoMoneda>1</codigoMoneda>
         <tipoCambio>1</tipoCambio>
-        <montoTotalMoneda>130.00</montoTotalMoneda>
+        <montoTotalMoneda>85.00</montoTotalMoneda>
         <montoGiftCard xsi:nil="true"/>        
         <descuentoAdicional xsi:nil="true"/>
         <codigoExcepcion xsi:nil="true"/>  
@@ -35,13 +35,13 @@
     <detalle>
         <actividadEconomica>465000</actividadEconomica>
         <codigoProductoSin>61187</codigoProductoSin>
-        <codigoProducto>TEC-00256</codigoProducto>
-        <descripcion>TECLADO DELUX MULTIMEDIA MODELO DLK 3100</descripcion>
-        <cantidad>2</cantidad>
-        <unidadMedida></unidadMedida>
-        <precioUnitario>65.00</precioUnitario>
+        <codigoProducto>TEC-00148</codigoProducto>
+        <descripcion>TECLADO FLEXIBLE KEYBOARD</descripcion>
+        <cantidad>1</cantidad>
+        <unidadMedida>47</unidadMedida>
+        <precioUnitario>85.00</precioUnitario>
         <montoDescuento>0.00</montoDescuento>
-        <subTotal>130.00</subTotal>
+        <subTotal>85.00</subTotal>
         <numeroSerie xsi:nil="true"></numeroSerie>
         <numeroImei>null</numeroImei>
     </detalle>

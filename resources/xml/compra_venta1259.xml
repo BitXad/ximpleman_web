@@ -5,25 +5,25 @@
         <razonSocialEmisor>PASSWORD</razonSocialEmisor>
         <municipio>CERCADO - COCHABAMBA</municipio>
         <telefono>4511518 * (591) 79999097</telefono>
-        <numeroFactura>467</numeroFactura>
-        <cuf>1608A399D64B14B9770F977596E742EAC96CB4D15E51446FC50AD86D74</cuf>
-        <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q1VkazVMY0dXVUFIwRjM5RTI3N0RBO</cufd>
+        <numeroFactura>331</numeroFactura>
+        <cuf>1608A399D64B14B99D155AE6A445AD4B30DE87D90F219850123AD86D74</cuf>
+        <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q3w/blVRY0dXVUJIwRjM5RTI3N0RBO</cufd>
         <codigoSucursal>0</codigoSucursal>
         <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
-        <codigoPuntoVenta>0</codigoPuntoVenta>
-        <fechaEmision>2022-06-27T13:51:25.803</fechaEmision>
-        <nombreRazonSocial>MARIO ESCOBAR VASQUEZ</nombreRazonSocial>
-        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
-        <numeroDocumento>5196226</numeroDocumento>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <fechaEmision>2022-06-27T18:33:25.065</fechaEmision>
+        <nombreRazonSocial>CLINICA COBIJA SRL</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>110181405</numeroDocumento>
         <complemento></complemento>
-        <codigoCliente>MAZ1277 OK</codigoCliente>
+        <codigoCliente>-</codigoCliente>
         <codigoMetodoPago>1</codigoMetodoPago>
         <numeroTarjeta xsi:nil="true"/>
-        <montoTotal>56.00</montoTotal>
-        <montoTotalSujetoIva>56.00</montoTotalSujetoIva>
+        <montoTotal>100.00</montoTotal>
+        <montoTotalSujetoIva>100.00</montoTotalSujetoIva>
         <codigoMoneda>1</codigoMoneda>
         <tipoCambio>1</tipoCambio>
-        <montoTotalMoneda>56.00</montoTotalMoneda>
+        <montoTotalMoneda>100.00</montoTotalMoneda>
         <montoGiftCard xsi:nil="true"/>        
         <descuentoAdicional xsi:nil="true"/>
         <codigoExcepcion xsi:nil="true"/>  
@@ -35,14 +35,14 @@
     <detalle>
         <actividadEconomica>465000</actividadEconomica>
         <codigoProductoSin>61187</codigoProductoSin>
-        <codigoProducto>TEC-00150</codigoProducto>
-        <descripcion>TECLADO ULTRA SLIM GENIUS</descripcion>
-        <cantidad>1</cantidad>
-        <unidadMedida>14</unidadMedida>
-        <precioUnitario>56.00</precioUnitario>
+        <codigoProducto>TEC-00239</codigoProducto>
+        <descripcion>TECLADO USB SOFY  </descripcion>
+        <cantidad>2</cantidad>
+        <unidadMedida>75</unidadMedida>
+        <precioUnitario>50.00</precioUnitario>
         <montoDescuento>0.00</montoDescuento>
-        <subTotal>56.00</subTotal>
+        <subTotal>100.00</subTotal>
         <numeroSerie xsi:nil="true"></numeroSerie>
-        <numeroImei></numeroImei>
+        <numeroImei>null</numeroImei>
     </detalle>
 </facturaComputarizadaCompraVenta>

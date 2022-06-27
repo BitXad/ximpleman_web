@@ -97,7 +97,15 @@ function mostrar_facturas() {
                         html += "   <td>0</td>";
                         html += "   <td>1</td>";
                         html += "   <td>"+formato_fecha(factura[i]["factura_fecha"])+"</td>";
-                        html += "   <td>"+factura[i]["factura_numero"]+"</td>";
+                        html += "   <td><center>"+factura[i]["factura_numero"];
+                         
+                        if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
+                            
+                            html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";
+                        
+                        }
+                                
+                        html += "</center></td>";
                         html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
                         if(factura[i]["estado_id"]==1){
                                 html += "   <td>V</td>";
@@ -107,6 +115,7 @@ function mostrar_facturas() {
                         }
                             
                         html += "   <td>"+factura[i]["factura_nit"]+"</td>";
+                        
                         html += "   <td>"+factura[i]["factura_razonsocial"]+"</td>";
                         html += "   <td>"+Number(factura[i]["factura_subtotal"]).toFixed(2)+"</td>";
                         html += "   <td>"+Number(factura[i]["factura_ice"]).toFixed(2)+"</td>";

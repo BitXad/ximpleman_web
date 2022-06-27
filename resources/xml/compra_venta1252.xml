@@ -5,18 +5,18 @@
         <razonSocialEmisor>PASSWORD</razonSocialEmisor>
         <municipio>CERCADO - COCHABAMBA</municipio>
         <telefono>4511518 * (591) 79999097</telefono>
-        <numeroFactura>460</numeroFactura>
-        <cuf>1608A399D64B14B96E5441B042F67C990D7404267841446FC50AD86D74</cuf>
-        <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q1VkazVMY0dXVUFIwRjM5RTI3N0RBO</cufd>
+        <numeroFactura>324</numeroFactura>
+        <cuf>1608A399D64B14B9950854A1093B2A32A4B0572E29019850123AD86D74</cuf>
+        <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q3w/blVRY0dXVUJIwRjM5RTI3N0RBO</cufd>
         <codigoSucursal>0</codigoSucursal>
         <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
-        <codigoPuntoVenta>0</codigoPuntoVenta>
-        <fechaEmision>2022-06-27T12:40:56.960</fechaEmision>
-        <nombreRazonSocial>MARIO ESCOBAR VASQUEZ</nombreRazonSocial>
-        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
-        <numeroDocumento>5196226</numeroDocumento>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <fechaEmision>2022-06-27T17:31:19.366</fechaEmision>
+        <nombreRazonSocial>ANA GARCIA</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>6555319015</numeroDocumento>
         <complemento></complemento>
-        <codigoCliente>MAZ1277 OK</codigoCliente>
+        <codigoCliente>-</codigoCliente>
         <codigoMetodoPago>1</codigoMetodoPago>
         <numeroTarjeta xsi:nil="true"/>
         <montoTotal>60.00</montoTotal>
@@ -28,7 +28,7 @@
         <descuentoAdicional xsi:nil="true"/>
         <codigoExcepcion xsi:nil="true"/>  
         <cafc xsi:nil="true"/>
-        <leyenda></leyenda>
+        <leyenda>Ley N° 453: Está prohibido importar, distribuir o comercializar productos expirados o prontos a expirar.</leyenda>
         <usuario>DIRLENIA ROJAS AGUILAR</usuario>
         <codigoDocumentoSector>1</codigoDocumentoSector>
     </cabecera>

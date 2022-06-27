@@ -5,25 +5,25 @@
         <razonSocialEmisor>PASSWORD</razonSocialEmisor>
         <municipio>CERCADO - COCHABAMBA</municipio>
         <telefono>4511518 * (591) 79999097</telefono>
-        <numeroFactura>466</numeroFactura>
-        <cuf>1608A399D64B14B976ED44449ADB1C454EB3A4B8F441446FC50AD86D74</cuf>
-        <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q1VkazVMY0dXVUFIwRjM5RTI3N0RBO</cufd>
+        <numeroFactura>330</numeroFactura>
+        <cuf>1608A399D64B14B99D07A8D81EBC84720BE5F7C0A4E19850123AD86D74</cuf>
+        <cufd>BQXxCKlhQRkE=NzTBERDJENzdEMjc=Q3w/blVRY0dXVUJIwRjM5RTI3N0RBO</cufd>
         <codigoSucursal>0</codigoSucursal>
         <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
-        <codigoPuntoVenta>0</codigoPuntoVenta>
-        <fechaEmision>2022-06-27T13:49:55.834</fechaEmision>
-        <nombreRazonSocial>MARIO ESCOBAR VASQUEZ</nombreRazonSocial>
-        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
-        <numeroDocumento>5196226</numeroDocumento>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <fechaEmision>2022-06-27T18:32:57.248</fechaEmision>
+        <nombreRazonSocial>BT GROUP SRL</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>17092012</numeroDocumento>
         <complemento></complemento>
-        <codigoCliente>MAZ1277 OK</codigoCliente>
+        <codigoCliente>-</codigoCliente>
         <codigoMetodoPago>1</codigoMetodoPago>
         <numeroTarjeta xsi:nil="true"/>
-        <montoTotal>85.00</montoTotal>
-        <montoTotalSujetoIva>85.00</montoTotalSujetoIva>
+        <montoTotal>56.00</montoTotal>
+        <montoTotalSujetoIva>56.00</montoTotalSujetoIva>
         <codigoMoneda>1</codigoMoneda>
         <tipoCambio>1</tipoCambio>
-        <montoTotalMoneda>85.00</montoTotalMoneda>
+        <montoTotalMoneda>56.00</montoTotalMoneda>
         <montoGiftCard xsi:nil="true"/>        
         <descuentoAdicional xsi:nil="true"/>
         <codigoExcepcion xsi:nil="true"/>  
@@ -35,14 +35,14 @@
     <detalle>
         <actividadEconomica>465000</actividadEconomica>
         <codigoProductoSin>61187</codigoProductoSin>
-        <codigoProducto>TEC-00148</codigoProducto>
-        <descripcion>TECLADO FLEXIBLE KEYBOARD</descripcion>
+        <codigoProducto>TEC-00150</codigoProducto>
+        <descripcion>TECLADO ULTRA SLIM GENIUS</descripcion>
         <cantidad>1</cantidad>
-        <unidadMedida>47</unidadMedida>
-        <precioUnitario>85.00</precioUnitario>
+        <unidadMedida>14</unidadMedida>
+        <precioUnitario>56.00</precioUnitario>
         <montoDescuento>0.00</montoDescuento>
-        <subTotal>85.00</subTotal>
+        <subTotal>56.00</subTotal>
         <numeroSerie xsi:nil="true"></numeroSerie>
-        <numeroImei></numeroImei>
+        <numeroImei>null</numeroImei>
     </detalle>
 </facturaComputarizadaCompraVenta>
