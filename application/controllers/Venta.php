@@ -712,7 +712,7 @@ class Venta extends CI_Controller{
                     $documentoSector = $dosificacion[0]['docsec_codigoclasificador'];
                     $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
                     $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion[0]['dosificacion_cufd']);
-                    $factura_clientecodigo = $cliente_codigo;
+                    $factura_codigocliente = $cliente_codigo;
 
                     $cadFechahora = str_replace("-", "", $factura_fecha_hora);
                     $cadFechahora = str_replace("T", "", $cadFechahora);
@@ -740,9 +740,7 @@ class Venta extends CI_Controller{
                     
                 }
                 // PARA NUEVA FACTURACION
-            //$factura_efectivo = $factura_total;
-            $factura_efectivo = $venta_efectivo;
-            $factura_cambio = $venta_cambio;
+            
             
             //$factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
             
@@ -756,40 +754,43 @@ class Venta extends CI_Controller{
                         factura_ice, factura_exento, factura_descuento, factura_total, 
                         factura_numero, factura_autorizacion, factura_llave, 
                         factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                        factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
-                        usuario_id, tipotrans_id, factura_efectivo, factura_cambio) value(".
+                        factura_nit, factura_razonsocial, factura_nitemisor,factura_sucursal,
+                        factura_sfc, factura_actividad, usuario_id, tipotrans_id, 
+                        factura_efectivo, factura_cambio) value(".
                         $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                         $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                         $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                         $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                         $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-                        $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
-                        $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".c.")";
+                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
+                        $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
+                        $venta_efectivo.",".$venta_cambio.")";
                 }else{
                     // nuevo sistema de facturacion
-                    $sql = "insert into factura(estado_id, factura_fechaventa, 
+                    $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                         factura_fecha, factura_hora, factura_subtotal, 
                         factura_ice, factura_exento, factura_descuento, factura_total, 
                         factura_numero, factura_autorizacion, factura_llave, 
                         factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                        factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id, venta_id,
-                        factura_efectivo, factura_cambio, tipotrans_id, factura_tokendelegado,
+                        factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal,
+                        factura_sfc, factura_actividad, usuario_id, tipotrans_id,
+                        factura_efectivo, factura_cambio, factura_tokendelegado,
                         factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
                         factura_codsistema, factura_puntoventa, factura_sectoreconomico,
                         factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
                         docsec_codigoclasificador, factura_codigocliente) value(".
-                        $estado_id.",'".$factura_fechaventa."','".
-                        $factura_fecha."','".$factura_hora."',".$factura_subtotal.",".
+                        $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
+                        $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                         $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                         $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                         $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-                        $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
-                        $factura_efectivo.",".$factura_cambio.",".$tipo_transaccion.",'".$factura_tokendelegado."','".
+                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
+                        $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
+                        $venta_efectivo.",".$venta_cambio.",'".$factura_tokendelegado."','".
                         $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
                         $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
-                        $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,$documentoSector,'$factura_clientecodigo')";
+                        $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
+                        $documentoSector,'$factura_codigocliente')";
                 }
                 $factura_id = $this->Venta_model->ejecutar($sql);
                 //$factura_id= $this->Factura_model->ejecutar2($sql2);
@@ -911,9 +912,7 @@ class Venta extends CI_Controller{
                     
                 }
             }
-                // var_dump($factura_id);
-                $this->ultimaventa($factura_id);
-       //     }
+            $this->ultimaventa(1);
         }
         
         if($orden_id > 0)
@@ -2419,7 +2418,7 @@ function modificarcliente()
 
 
 /*************** funcion para mostrar la vista de la factura******************/
-function ultimaventa($factura_id){
+function ultimaventa($tipo){
     
     if($this->acceso(12)||$this->acceso(30)){
 
@@ -2427,12 +2426,13 @@ function ultimaventa($factura_id){
         $venta = $this->Venta_model->ultima_venta();
         $venta_tipodoc = $venta[0]['venta_tipodoc'];
         $venta_id = $venta[0]['venta_id'];
-        
-        if ($venta_tipodoc==1){
-            // redirect('factura/imprimir_factura/'.$venta_id."/".$tipo);
-            redirect("factura/imprimir_factura_id/$factura_id/1");
+
+        if ($venta_tipodoc==1){ 
+            redirect('factura/imprimir_factura/'.$venta_id."/".$tipo);
             //redirect('factura/factura_boucher/'.$venta_id);
-        }else{
+
+        }
+        else{
             redirect('factura/imprimir_recibo/'.$venta_id);
             //redirect('factura/recibo_boucher/'.$venta_id);        
         }
