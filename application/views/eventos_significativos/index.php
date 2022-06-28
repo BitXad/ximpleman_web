@@ -98,9 +98,12 @@
         
         
       <div class="modal-body">
-            <div class="row" id='loader2'  style='display:none; text-align: center'>
+          
+        <div class="col-md-12" style="display:none;">
+            <div class="row" id='loader2'  style='text-align: center'>
                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
             </div>
+        </div>
           
           
         <div class="col-md-12">
@@ -156,6 +159,7 @@
     </div>
   </div>
 </div>
+<!-- Fin Modal -->
         
     
     
