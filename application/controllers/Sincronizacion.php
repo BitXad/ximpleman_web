@@ -375,7 +375,7 @@ class Sincronizacion extends CI_Controller{
 //                        $this->Actividad_model->add_activity($params);
 //                }
 //            }
-//            return $transaccion;
+            return $transaccion;
         }catch (Exception $e){
             return false;
         }
