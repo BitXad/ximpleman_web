@@ -113,7 +113,7 @@ class Emision_paquetes extends CI_Controller{
                 /*$handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
                     $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
                     fclose($handle);*/
-                $nom_archivo = "compra_venta1619.tar.gz";
+                $nom_archivo = "compra_venta1618.tar.gz";
                 $handle = fopen($directorio.$nom_archivo, "rb");
                 $contents = fread($handle, filesize($directorio.$nom_archivo));
                 fclose($handle);
@@ -143,7 +143,7 @@ class Emision_paquetes extends CI_Controller{
                     "hashArchivo"=>$has_archivo, //$dosificacion['dosificacion_cuis'],
                     "cafc"               => 0, //$dosificacion['dosificacion_nitemisor'],
                     "cantidadFacturas"     => 1, //$dosificacion['dosificacion_nitemisor'],
-                    "codigoEvento"         => 490115, //489970, //$dosificacion['dosificacion_nitemisor']
+                    "codigoEvento"         => 487759, //$dosificacion['dosificacion_nitemisor']
                 ]];
 
                 //var_dump($parametros);
