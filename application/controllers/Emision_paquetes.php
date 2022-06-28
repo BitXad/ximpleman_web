@@ -113,7 +113,7 @@ class Emision_paquetes extends CI_Controller{
                 /*$handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
                     $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
                     fclose($handle);*/
-                $nom_archivo = "compra_venta1270.tar.gz";
+                $nom_archivo = "compra_venta1618.tar.gz";
                 $handle = fopen($directorio.$nom_archivo, "rb");
                 $contents = fread($handle, filesize($directorio.$nom_archivo));
                 fclose($handle);
