@@ -7,7 +7,7 @@ function emision_paquetes(){
     //var opcion = confirm("Permite informar al SIN de la contingencia del Sistema Informático de Facturación autorizado. \n ¿Desea Continuar?");
     
     //if (opcion == true) {
-        var eventos = document.getElementById('select_eventos').value;
+        //var eventos = document.getElementById('select_eventos').value;
         document.getElementById('loader').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
@@ -15,8 +15,9 @@ function emision_paquetes(){
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
                         console.log(registros);
-                        let transaccion = registros.RespuestaListaEventos.transaccion;
-                        if(transaccion == true){
+                        //let transaccion = registros.RespuestaListaEventos.transaccion;
+                        alert(registros);
+                        /*if(transaccion == true){
                             alert("Consulta realizada con exito;");
                         }
                         else{
@@ -30,7 +31,7 @@ function emision_paquetes(){
                             //let codigo = registros.RespuestaListaEventos.mensajesList.codigo;
                             //let mensaje = registros.RespuestaListaEventos.mensajesList.descripcion;
                             //alert("Algo fallo...!! "+codigo+" "+mensaje);
-                        }
+                        }*/
                         document.getElementById('loader').style.display = 'none';
                 },
                 error:function(respuesta){

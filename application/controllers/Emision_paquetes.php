@@ -95,16 +95,32 @@ class Emision_paquetes extends CI_Controller{
                 $base_url = explode('/', base_url());
                 //$doc_xml = site_url("resources/xml/$archivoXml.xml");
                 $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+                
+                /*$tarfile = "compra_venta1269.tar";
+                $pd = new \PharData($tarfile);
+                $pd->buildFromDirectory($directorio);
+                $pd->compress(\Phar::GZ);
+                
+                
+                $datos = implode("", file($directorio."compra_venta1268.tar"));
+                $gzdata = gzencode($datos, 9);
+                $fp = fopen($directorio."compra_venta1268.tar.gz", "w");
+                // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+                fwrite($fp, $gzdata);
+                fclose($fp);
+                */
+                
                 /*$handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
                     $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
                     fclose($handle);*/
                 
-                $handle = fopen($directorio."compra_venta1244.xml.zip", "rb");
-                    $contents = fread($handle, filesize($directorio."compra_venta1244.xml.zip"));
-                    fclose($handle);
-                $archivo_compreso = $handle;
+                $handle = fopen($directorio."compra_venta1267.tar.gz", "rb");
+                $contents = fread($handle, filesize($directorio."compra_venta1267.tar.gz"));
+                fclose($handle);
+                //$archivo_compreso = $contents;
+                //$content = base64_encode($contents);
                 
-                $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta1244.xml.zip");
+                $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta1267.xml.zip");
                 $has_archivo = $xml_comprimido;
                 
                 $tipo_emision = 2;//1 offline
@@ -121,19 +137,19 @@ class Emision_paquetes extends CI_Controller{
                     "cufd"              => $dosificacion['dosificacion_cufd'],
                     "cuis"              => $dosificacion['dosificacion_cuis'],
                     "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
-                    "archivo" => $archivo_compreso, //$dosificacion['dosificacion_cuis'],
+                    "archivo" => $contents, //$dosificacion['dosificacion_cuis'],
                     "fechaEnvio"=>$fecha_hora, //$dosificacion['dosificacion_cuis'],
                     "hashArchivo"=>$has_archivo, //$dosificacion['dosificacion_cuis'],
                     "cafc"               => 0, //$dosificacion['dosificacion_nitemisor'],
                     "cantidadFacturas"     => 1, //$dosificacion['dosificacion_nitemisor'],
-                    "codigoEvento"         => 484872, //$dosificacion['dosificacion_nitemisor']
+                    "codigoEvento"         => 487759, //$dosificacion['dosificacion_nitemisor']
                 ]];
 
                 //var_dump($parametros);
                 $resultado = $cliente->recepcionPaqueteFactura($parametros);
                 $res = $resultado->RespuestaServicioFacturacion;
                 //$mensaje = "";
-                var_dump($resultado);
+                //var_dump($resultado);
                 
                 /*if ($res){
 //                    
