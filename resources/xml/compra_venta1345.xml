@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>318728021</nitEmisor>
+        <razonSocialEmisor>PASSWORD</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4511518 * (591) 79999097</telefono>
+        <numeroFactura>553</numeroFactura>
+        <cuf>15CEE9E094FD6CBDFB9343CBD1FDE5E2B5E6D04FA140F677CEDD86D74</cuf>
+        <cufd>BQUtDYylmQUE=NzUEzODRDMzg3MEY=Q0FzRGNRZEdXVUFIwRjFBNDkyQTlCN</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-06-28T18:23:57.094</fechaEmision>
+        <nombreRazonSocial>MARIO ESOBAR VASQUEZ</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>5196226</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>-</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta xsi:nil="true"/>
+        <montoTotal>60.00</montoTotal>
+        <montoTotalSujetoIva>60.00</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>60.00</montoTotalMoneda>
+        <montoGiftCard xsi:nil="true"/>        
+        <descuentoAdicional xsi:nil="true"/>
+        <codigoExcepcion xsi:nil="true"/>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: Puedes acceder a la reclamación cuando tus derechos han sido vulnerados. </leyenda>
+        <usuario>DIRLENIA ROJAS AGUILAR</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    <detalle>
+        
+    <actividadEconomica>466300</actividadEconomica><codigoProductoSin>61162</codigoProductoSin><codigoProducto>TEC-00149</codigoProducto><descripcion>TECLADO MULTIMEDIA SURE</descripcion><cantidad>1</cantidad><unidadMedida>6</unidadMedida><precioUnitario>60.00</precioUnitario><montoDescuento>0.00</montoDescuento><subTotal>60.00</subTotal><numeroSerie/><numeroImei/></detalle>
+</facturaComputarizadaCompraVenta>
