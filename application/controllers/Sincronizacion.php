@@ -62,7 +62,7 @@ class Sincronizacion extends CI_Controller{
                 $data['_view'] = 'sincronizacion/actividades';
                 break;
             case 2:
-                // $data['datos'] = 
+                $this->fechaHora($wsdl,$token,$parametros);// $data['datos'] = 
                 $data['_view'] = 'sincronizacion/fecha_hora';
                 break;
             case 3:
@@ -170,7 +170,7 @@ class Sincronizacion extends CI_Controller{
                         $data['transaccion'] = $this->sincronizar_actividades();
                         break;
                     case 2: // FECHA Y HORA
-                        //$this->fechaHora($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->fechaHora($wsdl,$token,$parametros);
                         break;
                     case 3: // CODIGOS DE ACTIVIDADES DOCUMENTO SECTOR
                         $data['transaccion'] = $this->codigos_actividades_doc_sector($wsdl,$token,$parametros);
@@ -353,6 +353,9 @@ class Sincronizacion extends CI_Controller{
             ]];
             $resultados = $cliente->sincronizarFechaHora($parametros);
             
+            $transaccion = $resultados->RespuestaFechaHora->transaccion;
+            
+            
 //            $activities = $this->Actividad_model->get_all_activities();
 //            
 //            $transaccion = $resultados->RespuestaListaActividades->transaccion;
@@ -372,7 +375,7 @@ class Sincronizacion extends CI_Controller{
 //                        $this->Actividad_model->add_activity($params);
 //                }
 //            }
-//            return $transaccion;
+            return $transaccion;
         }catch (Exception $e){
             return false;
         }
