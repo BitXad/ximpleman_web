@@ -589,9 +589,12 @@ class Dosificacion extends CI_Controller{
                 $cufd_direccion = "'".$this->input->post('direccion')."'";
                 $cufd_fechavigencia = "'".$this->input->post('fechavigencia')."'";
                 $cufd_transaccion = "'".$this->input->post('transaccion')."'";
+
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                $cufd_puntodeventa = $dosificacion["dosificacion_puntoventa"];
                 
-                $sql = "insert into cufd(cufd_codigo,cufd_codigocontrol,cufd_direccion,cufd_fechavigencia,cufd_transaccion) value(".
-                        $cufd_codigo.",".$cufd_codigocontrol.",".$cufd_direccion.",".$cufd_fechavigencia.",".$cufd_transaccion.")";
+                $sql = "insert into cufd(cufd_codigo,cufd_codigocontrol,cufd_direccion,cufd_fechavigencia,cufd_transaccion, cufd_puntodeventa) value(".
+                        $cufd_codigo.",".$cufd_codigocontrol.",".$cufd_direccion.",".$cufd_fechavigencia.",".$cufd_transaccion.",".$cufd_puntodeventa.")";
                 $this->Dosificacion_model->ejecutar($sql);
                 
                 $sql = "update dosificacion set dosificacion_cufd = ".$cufd_codigo;
