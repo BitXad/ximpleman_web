@@ -113,15 +113,15 @@ class Emision_paquetes extends CI_Controller{
                 /*$handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
                     $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
                     fclose($handle);*/
-                
-                $handle = fopen($directorio."compra_venta1270.tar.gz", "rb");
-                $contents = fread($handle, filesize($directorio."compra_venta1270.tar.gz"));
+                $nom_archivo = "compra_venta1270.tar.gz";
+                $handle = fopen($directorio.$nom_archivo, "rb");
+                $contents = fread($handle, filesize($directorio.$nom_archivo));
                 fclose($handle);
                 //$archivo_compreso = $contents;
                 //$content = base64_encode($contents);
                 
                 //$xml_comprimido = hash_file('sha256',"{$directorio}compra_venta1270.xml.zip");
-                $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta1270.tar.gz");
+                $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo);
                 $has_archivo = $xml_comprimido;
                 
                 $tipo_emision = 2;//1 offline
