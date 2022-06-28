@@ -98,13 +98,16 @@ function mostrar_facturas() {
                         html += "   <td>"+formato_fecha(factura[i]["factura_fecha"])+"</td>";
                         html += "   <td><center>"+factura[i]["factura_numero"];
                          
-                        if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
-                            
-                            html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";
-                        
+                         
+                        html += "<br>";
+                        if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){                            
+                            html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";                        
+                        }else{
+                            html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;' title='"+factura[i]["factura_mensajeslist"]+"'><small>FALLA</small></span>";
                         }
                                 
                         html += "</center></td>";
+                        
                         html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
                         if(factura[i]["estado_id"]==1){
                                 html += "   <td>V</td>";

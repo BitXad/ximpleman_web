@@ -4073,7 +4073,7 @@ function anular_venta($venta_id){
             
             $resultados = $cliente->verificarComunicacion();
 
-            $transaccion = $resultados->return->transaccion;
+            $transaccion = $resultados->return->transaccion; //
             return $transaccion;
         }catch(Exception $e){
             return false;
