@@ -29,17 +29,7 @@
     <codigoDocumentoSector>1</codigoDocumentoSector>
   </cabecera>
   <detalle>
-    <actividadEconomica>620100</actividadEconomica>
-    <codigoProductoSin>83141</codigoProductoSin>
-    <codigoProducto>JN-131231</codigoProducto>
-    <descripcion>JUGO DE NARANJA EN VASO</descripcion>
-    <cantidad>10</cantidad>
-    <unidadMedida>58</unidadMedida>
-    <precioUnitario>2.5</precioUnitario>
-    <montoDescuento xsi:nil="true" />
-    <subTotal>25</subTotal>
-    <numeroSerie xsi:nil="true" />
-	<numeroImei xsi:nil="true" />
+
   </detalle>
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
 <SignedInfo>
