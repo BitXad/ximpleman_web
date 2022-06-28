@@ -227,12 +227,13 @@ border-bottom : 1px solid #aaa;
                             $total_descuento = 0;
                             $total_final = 0;
                             $total_subtotal = 0;
+                            $ice = 0.00;
     
                             if ($factura[0]['estado_id']<>3){ 
                                 foreach($detalle_factura as $d){
                                     $cont = $cont+1;
                                     $cantidad += $d['detallefact_cantidad'];
-                                    $sub_total = $d['detallefact_subtotal']+5.64;
+                                    $sub_total = $d['detallefact_subtotal'];
                                     $total_subtotal += $sub_total;
                                     $total_descuento += $d['detallefact_descuento']; 
                                     $total_final += $d['detallefact_total']; 
@@ -252,37 +253,37 @@ border-bottom : 1px solid #aaa;
                                     ?>
                                 </font>
                             </td>
-                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_precio'],2,'.',','); ?></font></td>
-                            <td align="right" style="padding-right: 3px;"><?= number_format($d['detallefact_descuento'],2,'.',',') ?></td>
-                            <td align="right" style="padding-right: 3px;">0.00</td>
-                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> 5.64</font></td>
+                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></font></td>
+                            <td align="right" style="padding-right: 3px;"><?= number_format($d['detallefact_descuento']*$d['detallefact_cantidad'],2,'.',',') ?></td>
+                            <td align="right" style="padding-right: 3px;"><?= number_format($ice,2,'.',',') ?></td>
+                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?= number_format($ice,2,'.',',') ?></font></td>
                             <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($sub_total,2,'.',','); ?></font></td>
                         </tr>
                     <?php }} ?>
                     <tr>
                         <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="5" rowspan="6"><b>SON: <?= num_to_letras($total_final,' Bolivianos') ?></b></td>
                         <td style="padding:0; padding-right: 3px;" colspan="3" align="right">SUBTOTAL Bs</td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><?= $total_subtotal; ?></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_subtotal'],2,'.',','); ?></td>
                     </tr>
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="3" align="right">(-)DESCUENTO Bs</td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_descuento,2,'.',','); ?></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
                     </tr>
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="3" align="right"><b>TOTAL Bs</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= $total_final + (5.64*4) ?></b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'] ,2,'.',',') ?></b></td>
                     </tr>
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="3" align="right">(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><?= 5.64*4 ?></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($ice,2,'.',',') ?></td>
                     </tr>
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="3" align="right">(-) TOTAL ICE PORCENTUAL Bs</td>
-                        <td style="padding:0; padding-right: 3px;" align="right">0.00</td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($ice,2,'.',',') ?></td>
                     </tr>
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="3" align="right"><b>IMPORTE BASE CR&Eacute;DITO FISCAL</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= $total_final-(5.64*4) ?></b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'] ,2,'.',',')?></b></td>
                     </tr>
                 </table>
             </td>
