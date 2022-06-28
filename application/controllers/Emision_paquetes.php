@@ -113,7 +113,8 @@ class Emision_paquetes extends CI_Controller{
                 /*$handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
                     $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
                     fclose($handle);*/
-                $nom_archivo = "compra_venta1618.tar.gz";
+                $nom_archivo = "compra_venta1283.tar.gz";
+                $codigo_evento = 489969;
                 $handle = fopen($directorio.$nom_archivo, "rb");
                 $contents = fread($handle, filesize($directorio.$nom_archivo));
                 fclose($handle);
@@ -143,12 +144,38 @@ class Emision_paquetes extends CI_Controller{
                     "hashArchivo"=>$has_archivo, //$dosificacion['dosificacion_cuis'],
                     "cafc"               => 0, //$dosificacion['dosificacion_nitemisor'],
                     "cantidadFacturas"     => 1, //$dosificacion['dosificacion_nitemisor'],
-                    "codigoEvento"         => 487759, //$dosificacion['dosificacion_nitemisor']
+                    "codigoEvento"         => $codigo_evento, //$dosificacion['dosificacion_nitemisor']
                 ]];
-
+                
+                $fecha_hora1 = (new DateTime())->format('Y-m-d H:i:s');
                 //var_dump($parametros);
                 $resultado = $cliente->recepcionPaqueteFactura($parametros);
                 $res = $resultado->RespuestaServicioFacturacion;
+                if($res->codigoDescripcion == "PENDIENTE"){
+                    $params = array(
+                        'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                        'recpaquete_codigoestado' => $res->codigoEstado,
+                        'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                        'recpaquete_transaccion' => $res->transaccion,
+                        'recpaquete_fechahora' => $fecha_hora1,
+                        'codigo_evento' => $codigo_evento,
+                    );
+                }else{
+                    $cad = $res->mensajesList;
+                            $mensajecadena = "";
+                            foreach ($cad as $c) {
+                                $mensajecadena .= $c.";";
+                            }
+                    $params = array(
+                        'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                        'recpaquete_codigoestado' => $res->codigoEstado,
+                        'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                        'recpaquete_mensajeslist' => $mensajecadena,
+                        'recpaquete_fechahora' => $fecha_hora1,
+                        'codigo_evento' => $codigo_evento,
+                    );
+                }
+                $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
                 //$mensaje = "";
                 //var_dump($resultado);
                 

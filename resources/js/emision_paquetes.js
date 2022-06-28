@@ -28,8 +28,8 @@ function emision_paquetes(){
                             mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
                             mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
                             mensaje += "Lista de mensajes: \n";
-                            mensaje += "&nbsp;&nbsp;"+registros.mensajesList.codigo+"\n";
-                            mensaje += "&nbsp;&nbsp;"+registros.mensajesList.descripcion+"\n";
+                            mensaje += " -"+registros.mensajesList.codigo+"\n";
+                            mensaje += " -"+registros.mensajesList.descripcion+"\n";
                             mensaje += "Codigo transacción: "+registros.transaccion+"\n";
                         }
                         alert(mensaje);
