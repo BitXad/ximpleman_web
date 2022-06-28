@@ -14,9 +14,25 @@ function emision_paquetes(){
                 data:{},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
-                        console.log(registros);
+                        //console.log(registros);
                         //let transaccion = registros.RespuestaListaEventos.transaccion;
-                        alert(registros);
+                        //salert(registros);
+                        //registros.codigoDescripcion;
+                        let mensaje = "";
+                        if(registros.codigoDescripcion == "PENDIENTE"){
+                            mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
+                            mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
+                            mensaje += "Codigo recepcion: "+registros.codigoRecepcion+"\n";
+                            mensaje += "Codigo transacción: "+registros.transaccion+"\n";
+                        }else if(registros.codigoDescripcion == "RECHAZADA"){
+                            mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
+                            mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
+                            mensaje += "Lista de mensajes: \n";
+                            mensaje += "&nbsp;&nbsp;"+registros.mensajesList.codigo+"\n";
+                            mensaje += "&nbsp;&nbsp;"+registros.mensajesList.descripcion+"\n";
+                            mensaje += "Codigo transacción: "+registros.transaccion+"\n";
+                        }
+                        alert(mensaje);
                         /*if(transaccion == true){
                             alert("Consulta realizada con exito;");
                         }
