@@ -259,7 +259,7 @@
         foreach ($detalle_factura as $df){
             
             $detalle = $xml->createElement('detalle');
-            $detalle->setAttribute('id', $id);
+            // $detalle->setAttribute('id', $id);
 
             $actividadEconomica = $xml->createElement('actividadEconomica',"{$factura['factura_actividad']}");
             $detalle->appendChild($actividadEconomica);
@@ -294,18 +294,18 @@
             $numeroImei = $xml->createElement('numeroImei',"{$df['detallefact_caracteristicas']}");
             $detalle->appendChild($numeroImei);
             $id++;
-            if($computarizada == 1){
-                $xml->documentElement->appendChild($detalle);
-            }else{
-                $xml->documentElement->appendChild($detalle);
-            }
+            // if($computarizada == 1){
+            //     $xml->documentElement->appendChild($detalle);
+            // }else{
+            // }
+            $xml->documentElement->appendChild($detalle);
         }
         // DETALLE
         $xml->saveXML();
         $base_url = explode('/', base_url());
         //$doc_xml = site_url("resources/xml/$archivoXml.xml");
-        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-        // $xml->save('C:\Users\shemo\Desktop\compra_venta27_06_2022.xml');
+        // $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+        $xml->save('C:\Users\shemo\Desktop\compra_venta27_06_2022.xml');
         $xml->save($directorio.'compra_venta'.$factura['factura_id'].'.xml');
         return $xml;
     }
