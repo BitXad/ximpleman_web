@@ -304,47 +304,9 @@
         $xml->saveXML();
         $base_url = explode('/', base_url());
         //$doc_xml = site_url("resources/xml/$archivoXml.xml");
-        // $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-        $xml->save('C:\Users\shemo\Desktop\compra_venta27_06_2022.xml');
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+        // $xml->save('C:\Users\shemo\Desktop\compra_venta27_06_2022.xml');
         $xml->save($directorio.'compra_venta'.$factura['factura_id'].'.xml');
         return $xml;
     }
-
-    function detalle_factura($factura_actividad,$df,$xml){
-        $actividadEconomica = $xml->createElement('actividadEconomica',"{$factura_actividad}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($actividadEconomica);
-            // $xml->getElementsByTagName('codigoProductoSin')->item(0)->nodeValue = "{$df['producto_codigosin']}";
-            $codigoProductoSin = $xml->createElement('codigoProductoSin',"{$df['producto_codigosin']}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($codigoProductoSin);
-            // $xml->getElementsByTagName('codigoProducto')->item(0)->nodeValue = "{$df['detallefact_codigo']}";
-            $codigoProducto = $xml->createElement('codigoProducto',"{$df['detallefact_codigo']}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($codigoProducto);
-            // $xml->getElementsByTagName('descripcion')->item(0)->nodeValue = "{$df['detallefact_descripcion']}";
-            $descripcion = $xml->createElement('descripcion',"{$df['detallefact_descripcion']}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($descripcion);
-            // $xml->getElementsByTagName('cantidad')->item(0)->nodeValue = "{$df['detallefact_cantidad']}";
-            $cantidad = $xml->createElement('cantidad',"{$df['detallefact_cantidad']}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($cantidad);
-            // $xml->getElementsByTagName('unidadMedida')->item(0)->nodeValue = "{$df['unidad_codigo']}";
-            $unidadMedida = $xml->createElement('unidadMedida',"{$df['unidad_codigo']}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($unidadMedida);
-            // $xml->getElementsByTagName('precioUnitario')->item(0)->nodeValue = "{$df['detallefact_precio']}";
-            $precioUnitario = $xml->createElement('precioUnitario',"{$df['detallefact_precio']}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($precioUnitario);
-            // $xml->getElementsByTagName('montoDescuento')->item(0)->nodeValue = "{$df['detallefact_descuento']}";
-            $montoDescuento = $xml->createElement('montoDescuento',"{$df['detallefact_descuento']}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($montoDescuento);
-            // $xml->getElementsByTagName('subTotal')->item(0)->nodeValue = "{$df['detallefact_subtotal']}";
-            $subTotal = $xml->createElement('subTotal',"{$df['detallefact_subtotal']}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($subTotal);
-            // $xml->getElementsByTagName('numeroSerie')->item(0)->nodeValue = "{$df['detallefact_preferencia']}";
-            $numeroSerie = $xml->createElement('numeroSerie',"{$df['detallefact_preferencia']}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($numeroSerie);
-            // $xml->getElementsByTagName('numeroImei')->item(0)->nodeValue = "{$df['detallefact_caracteristicas']}";
-            $numeroImei = $xml->createElement('numeroImei',"{$df['detallefact_caracteristicas']}");
-            $xml->getElementsByTagName("detalle")->item(0)->appendChild($numeroImei);
-            
-            return $xml;
-    }
-
 ?>
