@@ -255,15 +255,63 @@
         // $parent_path  = "//facturaComputarizadaCompraVenta/detalle";
         // $next_path_actividadEconomica = "//facturaComputarizadaCompraVenta/detalle/actividadEconomica";
 
+        $id = 1;
         foreach ($detalle_factura as $df){
-            // $detalle = $xml->createElement('detalle');
-            // if($computarizada == 1){
-            //     $xml->getElementsByTagName("facturaComputarizadaCompraVenta")->item(0)->appendChild($detalle);
-            // }else{
-            //     $xml->getElementsByTagName("facturaElectronicaCompraVenta")->item(0)->appendChild($detalle);
-            // }
-            // $xml->getElementsByTagName('actividadEconomica')->item(0)->nodeValue = "{$factura['factura_actividad']}";
+            
+            $detalle = $xml->createElement('detalle');
+            $detalle->setAttribute('id', $id);
+
             $actividadEconomica = $xml->createElement('actividadEconomica',"{$factura['factura_actividad']}");
+            $detalle->appendChild($actividadEconomica);
+
+            $codigoProductoSin = $xml->createElement('codigoProductoSin',"{$df['producto_codigosin']}");
+            $detalle->appendChild($codigoProductoSin);
+
+            $codigoProducto = $xml->createElement('codigoProducto',"{$df['detallefact_codigo']}");
+            $detalle->appendChild($codigoProducto);
+
+            $descripcion = $xml->createElement('descripcion',"{$df['detallefact_descripcion']}");
+            $detalle->appendChild($descripcion);
+
+            $cantidad = $xml->createElement('cantidad',"{$df['detallefact_cantidad']}");
+            $detalle->appendChild($cantidad);
+
+            $unidadMedida = $xml->createElement('unidadMedida',"{$df['unidad_codigo']}");
+            $detalle->appendChild($unidadMedida);
+
+            $precioUnitario = $xml->createElement('precioUnitario',"{$df['detallefact_precio']}");
+            $detalle->appendChild($precioUnitario);
+
+            $montoDescuento = $xml->createElement('montoDescuento',"{$df['detallefact_descuento']}");
+            $detalle->appendChild($montoDescuento);
+
+            $subTotal = $xml->createElement('subTotal',"{$df['detallefact_subtotal']}");
+            $detalle->appendChild($subTotal);
+
+            $numeroSerie = $xml->createElement('numeroSerie',"{$df['detallefact_preferencia']}");
+            $detalle->appendChild($numeroSerie);
+
+            $numeroImei = $xml->createElement('numeroImei',"{$df['detallefact_caracteristicas']}");
+            $detalle->appendChild($numeroImei);
+            $id++;
+            if($computarizada == 1){
+                $xml->documentElement->appendChild($detalle);
+            }else{
+                $xml->documentElement->appendChild($detalle);
+            }
+        }
+        // DETALLE
+        $xml->saveXML();
+        $base_url = explode('/', base_url());
+        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+        // $xml->save('C:\Users\shemo\Desktop\compra_venta27_06_2022.xml');
+        $xml->save($directorio.'compra_venta'.$factura['factura_id'].'.xml');
+        return $xml;
+    }
+
+    function detalle_factura($factura_actividad,$df,$xml){
+        $actividadEconomica = $xml->createElement('actividadEconomica',"{$factura_actividad}");
             $xml->getElementsByTagName("detalle")->item(0)->appendChild($actividadEconomica);
             // $xml->getElementsByTagName('codigoProductoSin')->item(0)->nodeValue = "{$df['producto_codigosin']}";
             $codigoProductoSin = $xml->createElement('codigoProductoSin',"{$df['producto_codigosin']}");
@@ -295,15 +343,8 @@
             // $xml->getElementsByTagName('numeroImei')->item(0)->nodeValue = "{$df['detallefact_caracteristicas']}";
             $numeroImei = $xml->createElement('numeroImei',"{$df['detallefact_caracteristicas']}");
             $xml->getElementsByTagName("detalle")->item(0)->appendChild($numeroImei);
-        }
-        // DETALLE
-        $xml->saveXML();
-        $base_url = explode('/', base_url());
-        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
-        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-        $xml->save('C:\Users\shemo\Desktop\compra_venta27_06_2022.xml');
-        // $xml->save($directorio.'compra_venta'.$factura['factura_id'].'.xml');
-        // return $xml;
+            
+            return $xml;
     }
 
 ?>
