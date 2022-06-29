@@ -126,86 +126,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+                <button type="button" class="btn btn-facebook" onclick="emisionpaquetes_vacio()"><fa class="fa fa-floppy-o"></fa> Emision de Paquetes Vacio</button>
                 <button type="button" class="btn btn-success" onclick="emision_paquetes()"><fa class="fa fa-floppy-o"></fa> Emision de Paquetes</button>
             </div>
         </div>
     </div>
 </div>
-        
-    
-    
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script>
-    
-    function registrar_evento(){
-        
-        let base_url = $("#base_url").val();
-        let controlador = `${base_url}eventos_significativos/registroEventoSignificativo`;
-        let fecha_inicio =  document.getElementById('ces_fechainicio').value;
-        let fecha_fin =  document.getElementById('ces_fechafin').value;
-        let cufd_evento =  document.getElementById('select_cufd').value;
-        let codigo_evento =  document.getElementById('select_eventos').value;
-        let combo = document.getElementById('select_eventos');
-        let texto_evento = combo.options[combo.selectedIndex].text;
-        
-        //alert(fecha_inicio+" ** "+fecha_fin+" ** "+codigo_evento+" ** "+texto_evento);
-        fecha_inicio =  fecha_inicio+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-        fecha_fin =  fecha_fin+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-        document.getElementById('loader2').style.display = 'block';
-        
-        $.ajax({
-            url: controlador,
-            type:"POST",
-            data:{
-                fecha_inicio: fecha_inicio, fecha_fin:fecha_fin, cufd_evento:cufd_evento,
-                codigo_evento:codigo_evento, texto_evento:texto_evento,
-            },
-            // async: false,
-            success: (respuesta)=>{
-                
-                alert(respuesta);
-
-                document.getElementById('loader2').style.display = 'none';
-                
-            },
-            error: ()=>{
-                alert("Ocurrio un error al realizar la verificación del evento, por favor intente en unos minutos")
-                document.getElementById('loader').style.display = 'none';
-            }
-        });
-        
-        document.getElementById('loader2').style.display = 'none';
-    }
-    
-    function seleccionar_cufd(){
-        let base_url = $("#base_url").val();
-        let controlador = `${base_url}eventos_significativos/buscar_cufd`;
-        let fecha =  document.getElementById('ces_fechainicio').value;
-        //document.getElementById('loader').style.display = 'block';
-        fecha = fecha.substring(0,10);
-       // alert(fecha);
-        $.ajax({
-            url: controlador,
-            type:"POST",
-            data:{
-                fecha: fecha
-            },
-            // async: false,
-            success: (respuesta)=>{
-                let res = JSON.parse(respuesta);
-                let html = "";
-
-                for(i=0; i<res.length; i++){                    
-                    html += "<option value="+res[i]["cufd_codigo"]+">"+res[i]["cufd_fechavigencia"]+" "+res[i]["cufd_codigo"]+"</option>"               
-                }
-                
-                $("#select_cufd").html(html);                
-                document.getElementById('loader2').style.display = 'none';
-            },
-            error: ()=>{
-                alert("Ocurrio un error al realizar la verificación del evento, por favor intente en unos minutos")
-                document.getElementById('loader').style.display = 'none';
-            }
-        });
-    }
-</script>

@@ -113,8 +113,8 @@ class Emision_paquetes extends CI_Controller{
                 /*$handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
                     $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
                     fclose($handle);*/
-                $nom_archivo = "compra_venta1345.tar.gz";
-                $codigo_evento = 491116;
+                $nom_archivo = "compra_venta1370.tar.gz";
+                $codigo_evento = 490129;
                 $handle = fopen($directorio.$nom_archivo, "rb");
                 $contents = fread($handle, filesize($directorio.$nom_archivo));
                 fclose($handle);
@@ -142,7 +142,7 @@ class Emision_paquetes extends CI_Controller{
                     "archivo" => $contents, //$dosificacion['dosificacion_cuis'],
                     "fechaEnvio"=>$fecha_hora, //$dosificacion['dosificacion_cuis'],
                     "hashArchivo"=>$has_archivo, //$dosificacion['dosificacion_cuis'],
-                    "cafc"               => null, //$dosificacion['dosificacion_nitemisor'],
+                    "cafc"               => '101F6AC5B9E0D', //$dosificacion['dosificacion_nitemisor'],
                     "cantidadFacturas"     => 1, //$dosificacion['dosificacion_nitemisor'],
                     "codigoEvento"         => $codigo_evento, //$dosificacion['dosificacion_nitemisor']
                 ]];
@@ -209,6 +209,106 @@ class Emision_paquetes extends CI_Controller{
             }
         }catch (Exception $e){
             echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    
+    function registroEmisionPaquetes_vacio(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_factura'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                $base_url = explode('/', base_url());
+                //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+                $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+                
+                //$nom_archivo = ''; //"compra_venta1319.tar.gz";
+                $codigo_recepcion = '5bd0af7a-f7bf-11ec-b8e0-8b7176865696';
+                /*$handle = fopen($directorio.$nom_archivo, "rb");
+                $contents = fread($handle, filesize($directorio.$nom_archivo));
+                fclose($handle);
+                 * 
+                $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo);
+                 */
+                 
+                $has_archivo = ''; //$xml_comprimido;
+                
+                $tipo_emision = 2; //1 offline
+                //$fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                $parametros = ["SolicitudServicioValidacionRecepcionPaquete" => [
+                    "codigoAmbiente" => $dosificacion['dosificacion_ambiente'],
+                    "codigoPuntoVenta"    => $dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"        => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"       => $dosificacion['dosificacion_sucursal'],
+                    "nit"              => $dosificacion['dosificacion_nitemisor'],
+                    "codigoDocumentoSector"=> $dosificacion['docsec_codigoclasificador'],
+                    "codigoEmision"  => $tipo_emision,
+                    "codigoModalidad"     => $dosificacion['dosificacion_modalidad'],
+                    "cufd"              => $dosificacion['dosificacion_cufd'],
+                    "cuis"              => $dosificacion['dosificacion_cuis'],
+                    "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
+                    "codigoRecepcion"         => $codigo_recepcion, //$dosificacion['dosificacion_nitemisor']
+                ]];
+                
+                $fecha_hora1 = (new DateTime())->format('Y-m-d H:i:s');
+                //var_dump($parametros);
+                $resultado = $cliente->validacionRecepcionPaqueteFactura($parametros);
+                $res = $resultado->RespuestaServicioFacturacion;
+                var_dump($res);
+                /*if($res->codigoDescripcion == "PENDIENTE"){
+                    $params = array(
+                        'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                        'recpaquete_codigoestado' => $res->codigoEstado,
+                        'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                        'recpaquete_transaccion' => $res->transaccion,
+                        'recpaquete_fechahora' => $fecha_hora1,
+                        'codigo_evento' => $codigo_evento,
+                    );
+                }else{
+                    $cad = $res->mensajesList;
+                            $mensajecadena = "";
+                            foreach ($cad as $c) {
+                                $mensajecadena .= $c.";";
+                            }
+                    $params = array(
+                        'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                        'recpaquete_codigoestado' => $res->codigoEstado,
+                        //'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                        'recpaquete_mensajeslist' => $mensajecadena,
+                        'recpaquete_fechahora' => $fecha_hora1,
+                        'codigo_evento' => $codigo_evento,
+                    );
+                }
+                $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
+                */
+                echo json_encode($res);
+                //echo $res;
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaListaEventos->transaccion;
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.'.$e;
         }
     }
     
