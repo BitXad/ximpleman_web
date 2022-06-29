@@ -255,7 +255,7 @@
         // $parent_path  = "//facturaComputarizadaCompraVenta/detalle";
         // $next_path_actividadEconomica = "//facturaComputarizadaCompraVenta/detalle/actividadEconomica";
 
-        $id = 1;
+        //$id = 1;
         foreach ($detalle_factura as $df){
             
             $detalle = $xml->createElement('detalle');
@@ -293,7 +293,7 @@
 
             $numeroImei = $xml->createElement('numeroImei',"{$df['detallefact_caracteristicas']}");
             $detalle->appendChild($numeroImei);
-            $id++;
+            //$id++;
             // if($computarizada == 1){
             //     $xml->documentElement->appendChild($detalle);
             // }else{

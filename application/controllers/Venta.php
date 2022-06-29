@@ -3725,6 +3725,7 @@ function anular_venta($venta_id){
                             $this->Factura_model->update_factura($factura_id, $params);
                         }else{
                             $cad = $eniada->mensajesList;
+                            //var_dump($cad);
                             $mensajecadena = "";
                             foreach ($cad as $c) {
                                 $mensajecadena .= $c.";";

@@ -86,12 +86,13 @@ class Producto extends CI_Controller{
             {
                 $producto_nombre = $this->input->post('producto_nombre');
                 $resultado = $this->Producto_model->es_producto_registrado($producto_nombre);
+                $data['unidades'] = $this->Producto_model->get_all_unidad();
                 if($resultado > 0){
                     $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
                     $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
                     $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
                     $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
-                    $data['unidades'] = $this->Producto_model->get_all_unidad();
+                    
                     $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
                     $data['parametro'] = $this->Parametro_model->get_parametro(1);
                     $data['prod_servicios'] = $this->ProductosServicios_model->get_productosServicios_actividad();
@@ -158,6 +159,15 @@ class Producto extends CI_Controller{
                     }
                     /* *********************FIN imagen***************************** */
                     // est estado sera ACTIVO
+                    $codigounidad = 0;
+                    $lasunidades = $data['unidades'];
+                    $nom_unidad = $this->input->post('producto_unidad');
+                    foreach ($lasunidades as $unid){
+                        if($nom_unidad == $unid['unidad_nombre']){
+                            $codigounidad = $unid['unidad_codigo'];
+                            break;
+                        }
+                    }
                     $estado_id = 1;
                     $params = array(
                         'estado_id' => $estado_id,
@@ -214,6 +224,7 @@ class Producto extends CI_Controller{
                         'producto_coleste' => $this->input->post('producto_coleste'),
                         'producto_coloeste' => $this->input->post('producto_coloeste'),
                         'producto_codigosin' => $this->input->post('cod_product_sin'),
+                        'producto_codigounidadsin' => $codigounidad,
                     );
                     
                     $producto_id = $this->Producto_model->add_producto($params);
@@ -253,7 +264,7 @@ class Producto extends CI_Controller{
 
             $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
             $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
-
+            $data['unidades'] = $this->Producto_model->get_all_unidad();
             if($this->form_validation->run())     
             {
                 $producto_catalogo = $this->input->post('producto_catalogo');
@@ -327,6 +338,15 @@ class Producto extends CI_Controller{
                     $foto = $foto1;
                 }
             /* *********************FIN imagen***************************** */
+                $codigounidad = 0;
+                $lasunidades = $data['unidades'];
+                $nom_unidad = $this->input->post('producto_unidad');
+                foreach ($lasunidades as $unid){
+                    if($nom_unidad == $unid['unidad_nombre']){
+                        $codigounidad = $unid['unidad_codigo'];
+                        break;
+                    }
+                }
                 $params = array(
                     'estado_id' => $this->input->post('estado_id'),
                     'categoria_id' => $this->input->post('categoria_id'),
@@ -381,7 +401,8 @@ class Producto extends CI_Controller{
                     'producto_colsur' => $this->input->post('producto_colsur'),
                     'producto_coleste' => $this->input->post('producto_coleste'),
                     'producto_coloeste' => $this->input->post('producto_coloeste'),
-                    'producto_codigosin' => $this->input->post('cod_product_sin')
+                    'producto_codigosin' => $this->input->post('cod_product_sin'),
+                    'producto_codigounidadsin' => $codigounidad,
                 );
 
                 $this->Producto_model->update_producto($producto_id,$params);
@@ -399,7 +420,7 @@ class Producto extends CI_Controller{
                 
                 $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
                 $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-                $data['unidades'] = $this->Producto_model->get_all_unidad();
+                
                 
                 $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
                 

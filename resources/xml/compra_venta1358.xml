@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>318728021</nitEmisor>
+        <razonSocialEmisor>PASSWORD</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4511518 * (591) 79999097</telefono>
+        <numeroFactura>566</numeroFactura>
+        <cuf>15CEE9E094FD6CEB6774D329A397C24944EBE425C740F677CEDD86D74</cuf>
+        <cufd>BQUtDYylmQUE=NzUEzODRDMzg3MEY=Q0FzRGNRZEdXVUFIwRjFBNDkyQTlCN</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-06-29T10:36:12.747</fechaEmision>
+        <nombreRazonSocial>MARIO ESOBAR VASQUEZ</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>5196226</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>-</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta xsi:nil="true"/>
+        <montoTotal>297.00</montoTotal>
+        <montoTotalSujetoIva>297.00</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>297.00</montoTotalMoneda>
+        <montoGiftCard xsi:nil="true"/>        
+        <descuentoAdicional xsi:nil="true"/>
+        <codigoExcepcion xsi:nil="true"/>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: Puedes acceder a la reclamación cuando tus derechos han sido vulnerados. </leyenda>
+        <usuario>DIRLENIA ROJAS AGUILAR</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>99100</codigoProductoSin><codigoProducto>TEC-00148</codigoProducto><descripcion>TECLADO FLEXIBLE KEYBOARD</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>85.00</precioUnitario><montoDescuento>0.00</montoDescuento><subTotal>85.00</subTotal><numeroSerie/><numeroImei/></detalle><detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>TEC-00150</codigoProducto><descripcion>TECLADO ULTRA SLIM GENIUS</descripcion><cantidad>2</cantidad><unidadMedida>14</unidadMedida><precioUnitario>56.00</precioUnitario><montoDescuento>0.00</montoDescuento><subTotal>112.00</subTotal><numeroSerie/><numeroImei/></detalle><detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>TEC-00239</codigoProducto><descripcion>TECLADO USB SOFY  </descripcion><cantidad>2</cantidad><unidadMedida>4</unidadMedida><precioUnitario>50.00</precioUnitario><montoDescuento>0.00</montoDescuento><subTotal>100.00</subTotal><numeroSerie/><numeroImei/></detalle></facturaComputarizadaCompraVenta>
