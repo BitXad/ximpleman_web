@@ -28,7 +28,7 @@ class Eventos_significativos_model extends CI_Model{
      */
     function get_all_fecha($fecha){
         
-        $sql = "select c.* from cufd c where date(c.cufd_fechavigencia) = '".$fecha."'";
+        $sql = "select c.* from cufd c where date(c.cufd_fecharegistro) = '".$fecha."'";
         //echo $sql;
         return $this->db->query($sql)->result_array();
     }
