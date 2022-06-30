@@ -227,15 +227,25 @@ class Emision_paquetes extends CI_Controller{
                 $resultado = $cliente->validacionRecepcionPaqueteFactura($parametros);
                 $res = $resultado->RespuestaServicioFacturacion;
                 //var_dump($res);
+                $recepcion_paquete = $this->Emision_paquetes_model->getcod_recepcionpaquetes($res->codigoRecepcion);
                 if($res->codigoDescripcion == "VALIDADA"){
-                    $recepcion_paquete = $this->Emision_paquetes_model->getcod_recepcionpaquetes($res->codigoRecepcion);
                     $params = array(
                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
                         'recpaquete_codigoestado' => $res->codigoEstado,
                     );
-                    
-                    $this->Emision_paquetes_model->update_recepcionpaquetes($recepcion_paquete['recpaquete_id'],$params);
+                }elseif($res->codigoDescripcion == "OBSERVADA"){
+                    $cad = $res->mensajesList;
+                    $mensajecadena = "";
+                    foreach ($cad as $c) {
+                        $mensajecadena .= $c.";";
+                    }
+                    $params = array(
+                        'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                        'recpaquete_codigoestado' => $res->codigoEstado,
+                        'recpaquete_mensajeslist' => $mensajecadena,
+                    );
                 }
+                $this->Emision_paquetes_model->update_recepcionpaquetes($recepcion_paquete['recpaquete_id'],$params);
                 
                 echo json_encode($res);
                 //echo $res;

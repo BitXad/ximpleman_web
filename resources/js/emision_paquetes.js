@@ -68,14 +68,13 @@ function emisionpaquetes_vacio(){
                             mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
                             //mensaje += "Codigo recepcion: "+registros.codigoRecepcion+"\n";
                             //mensaje += "Codigo transacción: "+registros.transaccion+"\n";
-                        }else if(registros.codigoDescripcion == "RECHAZADA"){
+                        }else if(registros.codigoDescripcion == "OBSERVADA"){
                             mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
                             mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
-                            /*mensaje += "Lista de mensajes: \n";
+                            mensaje += "Lista de mensajes: \n";
                             mensaje += " -"+registros.mensajesList.codigo+"\n";
                             mensaje += " -"+registros.mensajesList.descripcion+"\n";
-                            mensaje += "Codigo transacción: "+registros.transaccion+"\n";
-                            */
+                            mensaje += " -"+registros.mensajesList.numeroArchivo+"\n";
                         }
                         alert(mensaje);
                         
