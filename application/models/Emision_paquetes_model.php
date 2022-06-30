@@ -13,6 +13,26 @@ class Emision_paquetes_model extends CI_Model{
         return $this->db->insert_id();
     }
     
+    function update_recepcionpaquetes($recpaquete_id,$params)
+    {
+        $this->db->where('recpaquete_id',$recpaquete_id);
+        return $this->db->update('recepcion_paquetes',$params);
+    }
+    
+    
+    function getcod_recepcionpaquetes($recpaquete_codigorecepcion)
+    {
+        $categoria_insumo = $this->db->query("
+            SELECT
+                rp.recpaquete_id
+            FROM
+                `recepcion_paquetes` rp
+            WHERE
+                rp.recpaquete_codigorecepcion = '$recpaquete_codigorecepcion'
+        ")->row_array();
+
+        return $categoria_insumo;
+    }
     
     /**
      * Consultar

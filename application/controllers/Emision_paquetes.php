@@ -65,12 +65,6 @@ class Emision_paquetes extends CI_Controller{
         try{
             if ($this->input->is_ajax_request()) {
                 
-                /*$fecha_inicio =  $this->input->post("fecha_inicio");
-                $fecha_fin =  $this->input->post("fecha_fin");
-                $cufd_evento =  $this->input->post("cufd_evento");
-                $codigo_evento =  $this->input->post("codigo_evento");
-                $texto_evento = $this->input->post("texto_evento");
-                */
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
@@ -96,32 +90,14 @@ class Emision_paquetes extends CI_Controller{
                 //$doc_xml = site_url("resources/xml/$archivoXml.xml");
                 $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
                 
-                /*$tarfile = "compra_venta1269.tar";
-                $pd = new \PharData($tarfile);
-                $pd->buildFromDirectory($directorio);
-                $pd->compress(\Phar::GZ);
-                
-                
-                $datos = implode("", file($directorio."compra_venta1268.tar"));
-                $gzdata = gzencode($datos, 9);
-                $fp = fopen($directorio."compra_venta1268.tar.gz", "w");
-                // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
-                fwrite($fp, $gzdata);
-                fclose($fp);
-                */
-                
-                /*$handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
-                    $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
-                    fclose($handle);*/
-                $nom_archivo = "compra_venta1370.tar.gz";
-                $codigo_evento = 490129;
+                $nom_archivo =  $this->input->post("nombre_archivo");
+                $codigo_evento =  $this->input->post("codigo_evento");
+                /*$nom_archivo = "compra_venta1395.tar.gz";
+                $codigo_evento = 495914;*/
                 $handle = fopen($directorio.$nom_archivo, "rb");
                 $contents = fread($handle, filesize($directorio.$nom_archivo));
                 fclose($handle);
-                //$archivo_compreso = $contents;
-                //$content = base64_encode($contents);
                 
-                //$xml_comprimido = hash_file('sha256',"{$directorio}compra_venta1270.xml.zip");
                 $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo);
                 $has_archivo = $xml_comprimido;
                 
@@ -176,34 +152,9 @@ class Emision_paquetes extends CI_Controller{
                     );
                 }
                 $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
-                //$mensaje = "";
-                //var_dump($resultado);
-                
-                /*if ($res){
-//                    
-//                    var_dump($resultado);
-//                    var_dump($res);
-
-                    $codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;
-                    
-                    $sql = "insert into registro_eventos(registroeventos_codigo,registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha) value('".
-                            $codigo_recepcion."',".$codigo_evento.",'".$descripcion."',now())";
-                    
-                    $this->Eventos_significativos_model->ejecutar($sql);
-                    $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;
-                    
-                    
-                }else{
-                        
-                    $mensajeresultado = $resultado->RespuestaListaEventos->mensajesList;
-                    $mensaje = "OCURRIO UN ERROR, CODIGO: ".$mensajeresultado->codigo.", ".$mensajeresultado->descripcion;
-                    
-                }*/
                 
                 echo json_encode($res);
-                //echo $res;
-                //print_r($resultado);
-                //$lresptransaccion = $resultado->RespuestaListaEventos->transaccion;
+                
             }else{                 
                 show_404();
             }
@@ -242,7 +193,9 @@ class Emision_paquetes extends CI_Controller{
                 $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
                 
                 //$nom_archivo = ''; //"compra_venta1319.tar.gz";
-                $codigo_recepcion = '5bd0af7a-f7bf-11ec-b8e0-8b7176865696';
+                
+                $codigo_recepcion =  $this->input->post("codigo_recepcion");
+                //$codigo_recepcion = '2d3b23e5-f882-11ec-8853-632ba520e7ec';
                 /*$handle = fopen($directorio.$nom_archivo, "rb");
                 $contents = fread($handle, filesize($directorio.$nom_archivo));
                 fclose($handle);
@@ -250,7 +203,7 @@ class Emision_paquetes extends CI_Controller{
                 $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo);
                  */
                  
-                $has_archivo = ''; //$xml_comprimido;
+                //$has_archivo = ''; //$xml_comprimido;
                 
                 $tipo_emision = 2; //1 offline
                 //$fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
@@ -273,33 +226,27 @@ class Emision_paquetes extends CI_Controller{
                 //var_dump($parametros);
                 $resultado = $cliente->validacionRecepcionPaqueteFactura($parametros);
                 $res = $resultado->RespuestaServicioFacturacion;
-                var_dump($res);
-                /*if($res->codigoDescripcion == "PENDIENTE"){
+                //var_dump($res);
+                $recepcion_paquete = $this->Emision_paquetes_model->getcod_recepcionpaquetes($res->codigoRecepcion);
+                if($res->codigoDescripcion == "VALIDADA"){
                     $params = array(
                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
                         'recpaquete_codigoestado' => $res->codigoEstado,
-                        'recpaquete_codigorecepcion' => $res->codigoRecepcion,
-                        'recpaquete_transaccion' => $res->transaccion,
-                        'recpaquete_fechahora' => $fecha_hora1,
-                        'codigo_evento' => $codigo_evento,
                     );
-                }else{
+                }elseif($res->codigoDescripcion == "OBSERVADA"){
                     $cad = $res->mensajesList;
-                            $mensajecadena = "";
-                            foreach ($cad as $c) {
-                                $mensajecadena .= $c.";";
-                            }
+                    $mensajecadena = "";
+                    foreach ($cad as $c) {
+                        $mensajecadena .= $c.";";
+                    }
                     $params = array(
                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
                         'recpaquete_codigoestado' => $res->codigoEstado,
-                        //'recpaquete_codigorecepcion' => $res->codigoRecepcion,
                         'recpaquete_mensajeslist' => $mensajecadena,
-                        'recpaquete_fechahora' => $fecha_hora1,
-                        'codigo_evento' => $codigo_evento,
                     );
                 }
-                $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
-                */
+                $this->Emision_paquetes_model->update_recepcionpaquetes($recepcion_paquete['recpaquete_id'],$params);
+                
                 echo json_encode($res);
                 //echo $res;
                 //print_r($resultado);
