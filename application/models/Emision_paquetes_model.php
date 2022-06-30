@@ -24,7 +24,7 @@ class Emision_paquetes_model extends CI_Model{
     {
         $categoria_insumo = $this->db->query("
             SELECT
-                rp.*recpaquete_id
+                rp.recpaquete_id
             FROM
                 `recepcion_paquetes` rp
             WHERE
