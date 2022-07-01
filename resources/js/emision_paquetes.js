@@ -93,6 +93,7 @@ function ejecutar_emisionpaquetes_vacio(codigo_recepcion){
                             mensaje += " -"+registros.mensajesList.descripcion+"\n";
                             mensaje += " -"+registros.mensajesList.numeroArchivo+"\n";
                         }
+                        tablaresultados();
                         alert(mensaje);
                         
                         document.getElementById('loader').style.display = 'none';
