@@ -34,6 +34,18 @@ class Emision_paquetes_model extends CI_Model{
         return $categoria_insumo;
     }
     
+    /* obtiene todas las emisiones de paquete */
+    function getall_recepcionpaquete()
+    {
+        $sql = "
+            select rp.*
+                FROM recepcion_paquetes rp
+                order by rp.`recpaquete_id` desc";
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
+    
     /**
      * Consultar
      */

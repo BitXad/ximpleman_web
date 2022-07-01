@@ -19,7 +19,7 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-    <font size='4' face='Arial'><b>Emision de Paquetes</b></font>
+    <font size='4' face='Arial'><b>Validación de Recepción de Paquetes</b></font>
     <div class="box-tools no-print">
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalpaquetes">
             <fa class="fa fa-square-o"> </fa> 
@@ -47,30 +47,30 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <thead>
                         <tr>
-                            <th width="50px">#</th>
-                            <th>EVENTOS SIGNIFICATIVOS</th>
+                            <th>#</th>
+                            <th>Estado Descripción</th>
+                            <th>Codigo Estado</th>
+                            <th>Codigo Recepción</th>
+                            <th>Codigo Transacción</th>
+                            <th>Mensajes</th>
+                            <th>Fecha Hora</th>
+                            <th>Evento</th>
+                            <th></th>
                             <!--<th width="100px" class="no-print"></th>-->
                         </tr>
                     </thead>
-                    <tbody class="buscar">
+                    <tbody class="buscar" id="tablaresultados">
                         <?php 
-                        $i=1;
+                        /*$i=1;
                         foreach ($eventos as $evento) {?>
                             <tr>
                                 <td><?= $i ?></td>
                                 <td><?= $evento['ces_descripcion'] ?></td>                            
-<!--                                <td>
-                                    <button class="btn btn-primary btn-xs" title="ventos <?= strtolower($evento['ces_descripcion']) ?>" onclick="eventos(<?= $evento['ces_id'] ?>)">
-                                        <i class="fa-solid fa-arrows-rotate"></i>
-                                    </button>
-                                    <a class="btn btn-info btn-xs" title="Ver datos" href="<?= site_url("ces_significativos/show_eventos/{$evento['ces_id']}") ?>">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </a>
-                                </td>-->
+<!--                               
                             </tr>
                         <?php
                             $i++; 
-                        }
+                        }*/
                     ?>
                     </tbody>
                 </table>                                

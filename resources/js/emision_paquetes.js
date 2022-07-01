@@ -1,3 +1,109 @@
+$(document).on("ready",inicio);
+function inicio(){
+    tablaresultados();
+}
+//Recepcion de paquetes
+function tablaresultados()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'emision_paquetes/buscar_recepcion';
+    /*let parametro = "";
+    if(limite == 2){
+        parametro = document.getElementById('filtrar').value;
+    }else if(limite == 3){
+        parametro = "";
+    }*/
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    $.ajax({url: controlador,
+            type:"POST",
+            //data:{parametro:parametro},
+            data:{},
+            success:function(respuesta){
+                var registros =  JSON.parse(respuesta);
+                
+                if (registros != null){
+                    //var formaimagen = document.getElementById('formaimagen').value;
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    //$("#encontrados").html(n);
+                    html = "";
+                    for (var i = 0; i < n ; i++){
+                        html += "<tr>";
+                        html += "<td style='padding: 2px;' class='text-center'>"+(i+1)+"</td>";
+                            html += "<td style='padding: 2px;'>"+registros[i]['recpaquete_codigodescripcion']+"</td>";
+                        html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_codigoestado']+"</td>";
+                        html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_codigorecepcion']+"</td>";
+                        html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_transaccion']+"</td>";
+                        html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_mensajeslist']+"</td>";
+                        html += "<td style='padding: 2px;' class='text-center'>";
+                        html += moment(registros[i]["recpaquete_fechahora"]).format("DD/MM/YYYY H:i:s");
+                        html += "</td>";
+                        html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['codigo_evento']+"</td>";
+                        html += "<td>";
+                        if(registros[i]['recpaquete_codigodescripcion'] == "PENDIENTE"){
+                            html += "<a class='btn btn-success btn-xs' onclick='ejecutar_emisionpaquetes_vacio("+JSON.stringify(registros[i]['recpaquete_codigorecepcion'])+")' title='Ejecutar validacion servicio Recepcion'><fa class='fa fa-bolt'></fa></a>&nbsp;";
+                        }/*else if(registros[i]['estado_id'] == 35){
+                            html += "<a class='btn btn-warning btn-xs' onclick='modal_anularordencmpra("+registros[i]['ordencompra_id']+")' title='Anular orden compra'><fa class='fa fa-minus-circle'></fa></a>";
+                        }*/
+                        html += "</td>";
+                        
+                        html += "</td>";
+                        html += "</tr>";
+                    }
+                    $("#tablaresultados").html(html);
+                    document.getElementById('loader').style.display = 'none';
+                }
+                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "";
+               $("#tablaresultados").html(html);
+            },
+            complete: function (jqXHR, textStatus) {
+                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+                //tabla_inventario();
+            }
+    });
+}
+function ejecutar_emisionpaquetes_vacio(codigo_recepcion){
+     var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'emision_paquetes/registroEmisionPaquetes_vacio';
+    //let codigo_recepcion = document.getElementById('codigo_recepcion').value;
+    if(codigo_recepcion == ""){
+        alert("El codigo de recepcion no debe ser vacio");
+    }else{
+        document.getElementById('loader').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{codigo_recepcion:codigo_recepcion},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        //console.log(registros);
+                        let mensaje = "";
+                        if(registros.codigoDescripcion == "VALIDADA"){
+                            mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
+                            mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
+                            //mensaje += "Codigo recepcion: "+registros.codigoRecepcion+"\n";
+                            //mensaje += "Codigo transacción: "+registros.transaccion+"\n";
+                        }else if(registros.codigoDescripcion == "OBSERVADA"){
+                            mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
+                            mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
+                            mensaje += "Lista de mensajes: \n";
+                            mensaje += " -"+registros.mensajesList.codigo+"\n";
+                            mensaje += " -"+registros.mensajesList.descripcion+"\n";
+                            mensaje += " -"+registros.mensajesList.numeroArchivo+"\n";
+                        }
+                        alert(mensaje);
+                        
+                        document.getElementById('loader').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader').style.display = 'none';
+                }                
+        }); 
+    }
+}
 /**
  * Consumo del metodo de emision de paquetes
  * */

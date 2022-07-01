@@ -53,9 +53,21 @@ class Emision_paquetes extends CI_Controller{
 
     function index(){
         if($this->acceso(149)){
-            $data['eventos'] = $this->Eventos_significativos_model->get_all_codigos();
+            //$data['eventos'] = $this->Eventos_significativos_model->get_all_codigos();
             $data['_view'] = 'emision_paquetes/index';
             $this->load->view('layouts/main',$data);
+        }
+    }
+    function buscar_recepcion(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $rec_paquetes = $this->Emision_paquetes_model->getall_recepcionpaquete();
+                echo json_encode($rec_paquetes);
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.'.$e;
         }
     }
     /**
@@ -118,7 +130,7 @@ class Emision_paquetes extends CI_Controller{
                     "archivo" => $contents, //$dosificacion['dosificacion_cuis'],
                     "fechaEnvio"=>$fecha_hora, //$dosificacion['dosificacion_cuis'],
                     "hashArchivo"=>$has_archivo, //$dosificacion['dosificacion_cuis'],
-                    "cafc"               => '101F6AC5B9E0D', //$dosificacion['dosificacion_nitemisor'],
+                    "cafc"               => '1014B4066964D' , //$dosificacion['dosificacion_nitemisor'],
                     "cantidadFacturas"     => 1, //$dosificacion['dosificacion_nitemisor'],
                     "codigoEvento"         => $codigo_evento, //$dosificacion['dosificacion_nitemisor']
                 ]];
