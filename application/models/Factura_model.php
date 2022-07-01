@@ -166,7 +166,7 @@ class Factura_model extends CI_Model
                 and factura_fechaventa <= '".$fin."'
                 
 
-            ORDER BY `factura_id` ASC";
+            ORDER BY `factura_id` DESC";
         
         $factura = $this->db->query($sql)->result_array();
        

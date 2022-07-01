@@ -225,7 +225,7 @@
                 let html = "";
 
                 for(i=0; i<res.length; i++){                    
-                    html += "<option value="+res[i]["cufd_codigo"]+">"+res[i]["cufd_fechavigencia"]+" "+res[i]["cufd_codigo"]+"</option>"               
+                    html += "<option value="+res[i]["cufd_codigo"]+">"+res[i]["cufd_fecharegistro"]+" (PV: "+res[i]["cufd_puntodeventa"]+") "+res[i]["cufd_codigo"]+"</option>"               
                 }
                 
                 $("#select_cufd").html(html);                
