@@ -366,581 +366,598 @@ class Venta extends CI_Controller{
          return $code;
     }
     
+    function sumar_2segundos($factura_fecha_hora){
+        $fechaAuxiliar = strtotime( "+2 seconds" ,strtotime($factura_fecha_hora));  
+        $factura_fecha_hora_mod = date('Y-m-d\TH:i:s.v' , $fechaAuxiliar );
+        return $factura_fecha_hora_mod;
+    }
+
     function registrarventa()
     {
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
+            $factura_fecha_hora = '2022-07-01 14:19:00.000';
+            $nombres_xml=[];
         
-        $usuario_id = $this->session_data['usuario_id'];
-        
-        $porcentaje = 0;
-        // $factura_id = 0;
-        $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-        $sql = "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
-               "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,".
-               "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,".
-               "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id".
-               ") value($cad)";
-        
-        $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
-        $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
-        $cuota_inicial = $this->input->post('cuota_inicial'); // recuperamos la consulta sql enviada mediante JS
-        $venta_total = $this->input->post('venta_total'); // recuperamos la consulta sql enviada mediante JS
-        $credito_interes = $this->input->post('credito_interes'); // interes por ventas
-        $pedido_id = $this->input->post('pedido_id'); // interes por ventas
-        $numero_doc_identidad = $this->input->post('nit'); // nit del cliente
-        $razon = $this->input->post('razon'); // nit del cliente
-        $fecha_venta  = $this->input->post('venta_fecha'); // fecha de la venta
-        $hora_venta = $this->input->post('venta_hora'); // hora de la venta
-        $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
-        $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
-        $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
-        $venta_efectivo = $this->input->post('venta_efectivo'); // efectivo cancelado
-        $venta_cambio = $this->input->post('venta_cambio'); // Cambio devuelto  
-        $cuota_fecha_i = $fecha_venta == '' ? date('Y-m-d') : $fecha_venta;
-        $facturado = $this->input->post('facturado'); // si la venta es facturada
-        $tipo_doc_identidad = $this->input->post('tipo_doc_identidad');
-
-        $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
-        if (($venta_total+$venta_descuento)>0)
-            $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
-        else
-            $porcentaje = 0;
-            
-        $sql =  "insert into detalle_venta
-        (producto_id,
-          venta_id,
-          moneda_id,
-          detalleven_codigo,
-          detalleven_cantidad,
-          detalleven_unidad,
-          detalleven_costo,
-          detalleven_precio,
-          detalleven_subtotal,
-          detalleven_descuento,
-          detalleven_total,
-          detalleven_caracteristicas,
-          detalleven_preferencia,
-          detalleven_comision,
-          detalleven_tipocambio,
-          detalleven_envase,
-          detalleven_nombreenvase,
-          detalleven_costoenvase,
-          detalleven_precioenvase,
-          detalleven_cantidadenvase,
-          detalleven_garantiaenvase,
-          detalleven_devueltoenvase,
-          detalleven_fechadevolucion,
-          detalleven_horadevolucion,
-          detalleven_montodevolucion,
-          detalleven_prestamoenvase,
-          detalleven_fechavenc,
-          usuario_id,
-          factura_id,
-          clasificador_id,
-          detalleven_unidadfactor,
-          preferencia_id,
-          detalleven_tc
-        )
-
-        (SELECT 
-          producto_id,
-          ".$venta_id." as venta_id,
-          moneda_id,
-          detalleven_codigo,
-          detalleven_cantidad,
-          detalleven_unidad,
-          detalleven_costo,
-          detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-          detalleven_subtotal,
-          (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-          detalleven_total * (1 - ".$porcentaje."),
-          detalleven_caracteristicas,
-          detalleven_preferencia,
-          detalleven_comision,
-          detalleven_tipocambio,
-            detalleven_envase,
-            detalleven_nombreenvase,
-            detalleven_costoenvase,
-            detalleven_precioenvase,
-            detalleven_cantidadenvase,
-            detalleven_garantiaenvase,
-            detalleven_devueltoenvase,
-            detalleven_fechadevolucion,
-            detalleven_horadevolucion,
-            detalleven_montodevolucion,
-            detalleven_prestamoenvase,
-            detalleven_fechavenc,
-            usuario_id,
-            0 as factura_id,
-            clasificador_id,
-            detalleven_unidadfactor,
-            preferencia_id,
-            detalleven_tc
-          
-        FROM
-          detalle_venta_aux
-        WHERE 
-          usuario_id=".$usuario_id.")";
-        
-        //$sqldetalle = $sql;
-        $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
-        
-        
-        //************* reducri inventario
-        
-        $this->Inventario_model->reducir_inventario_aux($usuario_id);
-        
-  
-        if($tipo_transaccion==2) //Si la transaccion es a credito
-        {
-            //$credito_id =  
-            $estado_id =  8; //8 pendiente 9 cancelado
-            $compra_id =  0;
-            $venta_id =  $venta_id;
-            $credito_monto =  $venta_total - $cuota_inicial;
-            $credito_cuotainicial =  $cuota_inicial;
-            $credito_interesproc =  $credito_interes;
-            // $credito_interesmonto =  $venta_total * $venta_interes; //revisar
-            $credito_interesmonto =  $venta_total * 0; //revisar
-            $credito_numpagos =  $cuotas;
-            $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
-            // $credito_fecha = date('Y-m-d');
-            $credito_fecha = $fecha_venta;
-            // $time = time();
-            $credito_hora =  date("H:i:s");
-            $credito_tipo = 1; // 1- ventas 2 - compras
-         
-            $cuotas       = $this->input->post('cuotas');
-            $interes       = $this->input->post('interes');
-            $modalidad    = $this->input->post('modalidad');
-            $dia_pago     = $this->input->post('dia_pago');
-            $fecha_inicio = $this->input->post('fecha_inicio');
-            $numcuota = $cuotas; //numero de cuotas
-            
-            $intervalo = $modalidad == "MENSUAL" ? 'month':'week';
-            // if ($modalidad == "MENSUAL") $intervalo = 'month'; //si los pagos son mensuales
-            // else $intervalo = 'week'; //si los pagos son semanales
-            
-                // $cuota_numcuota = 1;
-            $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$numcuota $intervalo"));
-                // for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
-                //     $cuota_numcuota = $i;
-                    
-                //     $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    // if ($modalidad == "MENSUAL") 
-                    //     $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
-                    // else 
-                    //     $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
-
-                // }
-                $credito_fechalimite = $cuota_fechalimite;
-            $metodo_frances = $this->input->post('metodo_frances');
-            $metodo = "";
-            if($metodo_frances == "true"){
-                $metodo = "FRANCES";
-            }
-            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo, credito_metodo) value(".
-                    $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.", '".$metodo."')";
-            $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
-
-            
-            $estado_id =  8; //8 pendiente 9 cancelado
-            $cuota_numcuota = 1;
-            $cuota_capital = $venta_total - $cuota_inicial;
-            $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
-            $cuota_moradias = 0;
-            $cuota_multa = 0;
-            $cuota_subtotal =  $venta_total - $cuota_inicial;
-            $cuota_descuento = 0;
-            $cuota_total = $venta_total - $cuota_inicial+$cuota_interes;
-            
-            $cuota_cancelado = 0;
-            $cuota_fecha = "'1900-01-01'";
-            $cuota_hora = "'00:00'";
-            $cuota_numercibo =  0;
-            $cuota_saldo = $venta_total - $cuota_inicial;
-            $cuota_glosa = "''";
-            $cuota_saldocredito = $venta_total - $cuota_inicial;
-                 
-            $dias_mora = 0;
-            $multa = 0;
-            $descuento = 0;
-            $cancelado = 0;
-            $credito_monto = $venta_total - $cuota_inicial;
-            
-            $patron = ($numcuota*0.5) + 0.5;
-            $cuota_capital = ($credito_monto)/$numcuota;   // bien         
-            $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
-            $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
-            $total = $cuota_subtotal - $descuento;
-            $saldo_deudor = $credito_monto;
-            
-            $siguiente= 0;
-            // $cuota_fechalimite = $fecha_inicio;
-           
-           // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
-            
-            // $cuota_fechalimite = $fecha_inicio;
-            $cuota_fecha_i = $fecha_inicio;
-            $anio = date("Y",strtotime($cuota_fecha_i));
-            $month = date("m",strtotime($cuota_fecha_i));
+            for($numero = 1;$numero <= 500;$numero++){ 
                 
-            $cuota_fecha_i = "$anio-$month-$dia_pago";
-            
-            if($metodo_frances == "true"){
-                $Co = $credito_monto;
-                $i  = $credito_interes;
-                $n  = $cuotas;
-                $Ci = $Co;
-                $Ii = 0;
-                $Ai = 0;
-                //$a = $Co*($i/(1-(1+$i) ** (-$n)));
-                $a = $Co*($i/(1-(pow((1+$i),-$n))));
-                for($k = 1; $k <= $cuotas; $k++){
-                    $cuota_numcuota = $k;
-                    
-                    $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$k $intervalo"));
-                    $cuota_fechalimite = $cuota_fechalimitex;
-                    
-                    $Ii = $Ci*$i;
-                    $Ai = $a-$Ii;
-                    $cuota_subtotal = $Ai + $Ii + $dias_mora + $multa;
-                    $total = $cuota_subtotal - $descuento;
-                    $params = array(
-                        'credito_id' => $credito_id,
-                        'usuario_id' => $usuario_id,
-                        'estado_id' => $estado_id,
-                        'cuota_numcuota' => $cuota_numcuota,
-                        'cuota_capital' => $Ai,
-                        'cuota_interes' => $Ii,
-                        'cuota_moradias' => $dias_mora,
-                        'cuota_multa' => $multa,
-                        'cuota_subtotal' => $cuota_subtotal,
-                        'cuota_descuento' => $descuento,
-                        'cuota_total' => $total,
-                        'cuota_fechalimite' => $cuota_fechalimite,
-                        'cuota_cancelado' => $cancelado,
-                        'cuota_saldo' => $Ci,
-                    );
-                    $this->load->model('Cuotum_model');
-                    $cuotum_id = $this->Cuotum_model->add_cuotum($params);
-                    $Ci = $Ci-$Ai;
-                }
-            }else{
-                for ($j=1; $j <= $numcuota; $j++) { // ciclo para llenar las cuotas
-                    $cuota_numcuota = $j;
-                    
-                    // $cuota_fechalimitex = (time() + ($jntervalo * $j * 24 * 60 * 60 ));
-                    $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$j $intervalo"));
-                    
-                    $cuota_fechalimite = $cuota_fechalimitex;
-                    
-                    $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
-                            $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
-                            $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
-                  
-                    $this->Venta_model->ejecutar($cuota);
-
-//                    $saldo_deudor = $cuota_total - $cuota_capital;
-//                    $cuota_total = $saldo_deudor;
-                    $saldo_deudor = $saldo_deudor - $cuota_capital;
-                    //$cuota_total = $saldo_deudor;
-                }
-            }
-            
-        }
-              
-        if($pedido_id > 0)
-        {
-            $sql = "update pedido set estado_id = 13  where pedido_id = ".$pedido_id;
-            $this->Venta_model->ejecutar($sql);
-        }
+                $usuario_id = $this->session_data['usuario_id'];
                 
+                $porcentaje = 0;
+                // $factura_id = 0;
+                $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
+                $sql = "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
+                       "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,".
+                       "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,".
+                       "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id".
+                       ") value($cad)";
+                
+                $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
+                $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
+                $cuota_inicial = $this->input->post('cuota_inicial'); // recuperamos la consulta sql enviada mediante JS
+                $venta_total = $this->input->post('venta_total'); // recuperamos la consulta sql enviada mediante JS
+                $credito_interes = $this->input->post('credito_interes'); // interes por ventas
+                $pedido_id = $this->input->post('pedido_id'); // interes por ventas
+                $numero_doc_identidad = $this->input->post('nit'); // nit del cliente
+                $razon = $this->input->post('razon'); // nit del cliente
+                $fecha_venta  = $this->input->post('venta_fecha'); // fecha de la venta
+                $hora_venta = $this->input->post('venta_hora'); // hora de la venta
+                $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
+                $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
+                $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
+                $venta_efectivo = $this->input->post('venta_efectivo'); // efectivo cancelado
+                $venta_cambio = $this->input->post('venta_cambio'); // Cambio devuelto  
+                $cuota_fecha_i = $fecha_venta == '' ? date('Y-m-d') : $fecha_venta;
+                $facturado = $this->input->post('facturado'); // si la venta es facturada
+                $tipo_doc_identidad = $this->input->post('tipo_doc_identidad');
         
-        if($facturado=="true"){//si la venta es facturada
-            // $parametro = $this->Parametro_model->get_parametro(1);
-            $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
-            // PARA NUEVO SISTEMA DE FACTURACION
-            $parametro = $this->Parametro_model->get_parametros();
-            $tamanio_hoja = 2;
-            if($parametro[0]['parametro_tipoimpresora'] == "FACTURADORA"){
-                $tamanio_hoja = 1;
-            }
-            // PARA NUEVO SISTEMA DE FACTURACION
-
-  //          if (sizeof($dosificacion)>0){ //si existe una dosificacion activa
-                
-                $estado_id = 1; 
-                
-                $factura_fechaventa    = $fecha_venta;
-                $factura_fecha         = "date(now())";
-                $factura_hora          =  $hora_venta; //"time(now())";
-                $factura_subtotal = $venta_total+$venta_descuento;
-                $factura_nit           = $numero_doc_identidad;
-                $factura_razonsocial   = $razon;
-                $factura_ice           = 0;
-                $factura_exento        = 0;
-                $factura_descuento     = $venta_descuento;
-                $factura_total         = $venta_total;
-                $factura_numero        = $dosificacion[0]['dosificacion_numfact']+1;
-                $factura_autorizacion  = $dosificacion[0]['dosificacion_autorizacion'];
-                $factura_llave         = $dosificacion[0]['dosificacion_llave'];
-                $factura_fechalimite   = $dosificacion[0]['dosificacion_fechalimite'];
-                $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $numero_doc_identidad,$factura_fechaventa, $factura_total);
-                $factura_leyenda1      = $dosificacion[0]['dosificacion_leyenda1'];
-                $factura_leyenda2      = $dosificacion[0]['dosificacion_leyenda2'];
-                $factura_nitemisor     = $dosificacion[0]['dosificacion_nitemisor'];
-                $factura_sucursal      = $dosificacion[0]['dosificacion_sucursal'];
-                $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
-                $factura_actividad     = $dosificacion[0]['dosificacion_actividad'];
-                // $tipo_doc_identidad    = $tipo_doc_identidad;
-                if($parametro[0]['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
-                    // facturacion nueva
-                    $cliente_codigo = $this->Cliente_model->get_codigo_cliente($factura_nit, $factura_razonsocial);
-                    $factura_tokendelegado   = $dosificacion[0]['dosificacion_tokendelegado'];
-                    $factura_ambiente        = $dosificacion[0]['dosificacion_ambiente'];
-                    $factura_cuis            = $dosificacion[0]['dosificacion_cuis'];
-                    $factura_cufd            = $dosificacion[0]['dosificacion_cufd'];
-                    $factura_modalidad       = $dosificacion[0]['dosificacion_modalidad'];
-                    $factura_codsistema      = $dosificacion[0]['dosificacion_codsistema'];
-                    $factura_puntoventa      = $dosificacion[0]['dosificacion_puntoventa'];
-                    $factura_sectoreconomico = $dosificacion[0]['dosificacion_sectoreconomico'];
-                    $factura_ruta            = $dosificacion[0]['dosificacion_ruta'];
-                    $factura_tamanio         = $tamanio_hoja;
-                    $tipoDocumentoIdentidad  = $this->input->post('tipo_doc_identidad');
-                    $documentoSector = $dosificacion[0]['docsec_codigoclasificador'];
-                    $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
-                    $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion[0]['dosificacion_cufd']);
-                    $factura_codigocliente = $cliente_codigo;
-
-                    $cadFechahora = str_replace("-", "", $factura_fecha_hora);
-                    $cadFechahora = str_replace("T", "", $cadFechahora);
-                    $cadFechahora = str_replace(":", "", $cadFechahora);
-                    $cadFechahora = str_replace(".", "", $cadFechahora);
-
-                    $tipo_emision = 1;//1 online
-                    $tipo_factura = $dosificacion[0]['tipofac_codigo'];
-                    $tipo_documento_sector = $dosificacion[0]['docsec_codigoclasificador'];
-                    $pos = $dosificacion[0]['dosificacion_puntoventa'];
-
-                    // LLAMANDO AL HELPER
-                    $factura_cuf = generarCuf(trim($factura_nitemisor),
-                                            trim($cadFechahora),
-                                            trim($factura_sucursal),
-                                            trim($factura_modalidad),
-                                            trim($tipo_emision),
-                                            trim($tipo_factura),
-                                            trim($tipo_documento_sector),
-                                            trim($factura_numero),
-                                            trim($pos),
-                                            trim($facturaCufdCodControl['cufd_codigocontrol']));
-
-                    $fecha_hora = $factura_fecha_hora;
+                $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+                if (($venta_total+$venta_descuento)>0)
+                    $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
+                else
+                    $porcentaje = 0;
                     
-                }
-                // PARA NUEVA FACTURACION
-            
-            
-            //$factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
-            
-            $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
-            $this->Venta_model->ejecutar($sql);
-                
-                if($parametro[0]['parametro_tiposistema'] == 1){
-                    // sistema de facturacion antiguo
-                        $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
-                        factura_fecha, factura_hora, factura_subtotal, 
-                        factura_ice, factura_exento, factura_descuento, factura_total, 
-                        factura_numero, factura_autorizacion, factura_llave, 
-                        factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                        factura_nit, factura_razonsocial, factura_nitemisor,factura_sucursal,
-                        factura_sfc, factura_actividad, usuario_id, tipotrans_id, 
-                        factura_efectivo, factura_cambio) value(".
-                        $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
-                        $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
-                        $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
-                        $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
-                        $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
-                        $venta_efectivo.",".$venta_cambio.")";
-                }else{
-                    // nuevo sistema de facturacion
-                    $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
-                        factura_fecha, factura_hora, factura_subtotal, 
-                        factura_ice, factura_exento, factura_descuento, factura_total, 
-                        factura_numero, factura_autorizacion, factura_llave, 
-                        factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                        factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal,
-                        factura_sfc, factura_actividad, usuario_id, tipotrans_id,
-                        factura_efectivo, factura_cambio, factura_tokendelegado,
-                        factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
-                        factura_codsistema, factura_puntoventa, factura_sectoreconomico,
-                        factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
-                        docsec_codigoclasificador, factura_codigocliente) value(".
-                        $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
-                        $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
-                        $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
-                        $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
-                        $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
-                        $venta_efectivo.",".$venta_cambio.",'".$factura_tokendelegado."','".
-                        $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
-                        $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
-                        $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
-                        $documentoSector,'$factura_codigocliente')";
-                }
-                $factura_id = $this->Venta_model->ejecutar($sql);
-                //$factura_id= $this->Factura_model->ejecutar2($sql2);
-            
-                $sql =  "insert into detalle_factura(
-                producto_id,
-                venta_id,
-                factura_id,
-                detallefact_codigo,
-                detallefact_unidad,
-                detallefact_cantidad,            
-                detallefact_descripcion,
-                detallefact_precio,
-                detallefact_subtotal,
-                detallefact_descuento,
-                detallefact_total,                
-                detallefact_preferencia,
-                detallefact_caracteristicas,
-                detallefact_unidadfactor)
-
+                $sql =  "insert into detalle_venta
+                (producto_id,
+                  venta_id,
+                  moneda_id,
+                  detalleven_codigo,
+                  detalleven_cantidad,
+                  detalleven_unidad,
+                  detalleven_costo,
+                  detalleven_precio,
+                  detalleven_subtotal,
+                  detalleven_descuento,
+                  detalleven_total,
+                  detalleven_caracteristicas,
+                  detalleven_preferencia,
+                  detalleven_comision,
+                  detalleven_tipocambio,
+                  detalleven_envase,
+                  detalleven_nombreenvase,
+                  detalleven_costoenvase,
+                  detalleven_precioenvase,
+                  detalleven_cantidadenvase,
+                  detalleven_garantiaenvase,
+                  detalleven_devueltoenvase,
+                  detalleven_fechadevolucion,
+                  detalleven_horadevolucion,
+                  detalleven_montodevolucion,
+                  detalleven_prestamoenvase,
+                  detalleven_fechavenc,
+                  usuario_id,
+                  factura_id,
+                  clasificador_id,
+                  detalleven_unidadfactor,
+                  preferencia_id,
+                  detalleven_tc
+                )
+        
                 (SELECT 
-                    producto_id,
-                    ".$venta_id." as venta_id,          
-                    ".$factura_id." as factura_id,
-                    detalleven_codigo,
-                    detalleven_unidad,
-                    detalleven_cantidad,
-                    producto_nombre,          
-                    detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-                    detalleven_subtotal,
-                    (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-                    detalleven_total * (1 - ".$porcentaje."),     
-                    detalleven_preferencia,
-                    detalleven_caracteristicas,
-                    detalleven_unidadfactor
-
+                  producto_id,
+                  ".$venta_id." as venta_id,
+                  moneda_id,
+                  detalleven_codigo,
+                  detalleven_cantidad,
+                  detalleven_unidad,
+                  detalleven_costo,
+                  detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                  detalleven_subtotal,
+                  (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                  detalleven_total * (1 - ".$porcentaje."),
+                  detalleven_caracteristicas,
+                  detalleven_preferencia,
+                  detalleven_comision,
+                  detalleven_tipocambio,
+                    detalleven_envase,
+                    detalleven_nombreenvase,
+                    detalleven_costoenvase,
+                    detalleven_precioenvase,
+                    detalleven_cantidadenvase,
+                    detalleven_garantiaenvase,
+                    detalleven_devueltoenvase,
+                    detalleven_fechadevolucion,
+                    detalleven_horadevolucion,
+                    detalleven_montodevolucion,
+                    detalleven_prestamoenvase,
+                    detalleven_fechavenc,
+                    usuario_id,
+                    0 as factura_id,
+                    clasificador_id,
+                    detalleven_unidadfactor,
+                    preferencia_id,
+                    detalleven_tc
+                  
                 FROM
-                    detalle_venta_aux
+                  detalle_venta_aux
                 WHERE 
-                    usuario_id=".$usuario_id.")";
-                $this->Factura_model->ejecutar($sql);               
-                if($parametro[0]['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
-                // el parametro uno es para computarizada en linea ojo
-                $computarizada_enlinea = 1;
-                $factura = $this->Factura_model->get_factura_id($factura_id);
-                $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
-                $empresa = $this->Empresa_model->get_empresa(1);
+                  usuario_id=".$usuario_id.")";
                 
-                $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
-
-                $base_url = explode('/', base_url());
-                //$doc_xml = site_url("resources/xml/$archivoXml.xml");
-                $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+                //$sqldetalle = $sql;
+                $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
                 
-                $valXSD = new ValidacionXSD();
-                if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
-                    // echo "No ingreso";
-                    print $valXSD->mostrarError();
-                }else{
-                    // COMPRESION XML EN GZIP
-                    $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
-                    $gzdata = gzencode($datos, 9);
-                    $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
-                    // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
-                    fwrite($fp, $gzdata);
-                    fclose($fp);
-
-                    //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
-                    //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
-
-                    $handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
-                    $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
-                    fclose($handle);
-                    /*//$content = base64_encode($contents);
-                    //$b= unpack("C*",$contents);*/
-
-                    //var_dump($contents);
-
-
-                    /*//var_dump($byteArr);
-                    // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml*");*/
-
-                    // HASH (SHA 256)
-                    $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
-                    //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
-                    //var_dump($xml_comprimido);
-                    //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
-                    $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-                    $wsdl = $dosificacion['dosificacion_factura'];
-                    $token = $dosificacion['dosificacion_tokendelegado'];
-                    $comunicacion = $this->verificar_comunicacion($token,$wsdl);
-                    if($comunicacion){
-                        $eniada = $this->mandarFactura($contents, $xml_comprimido);
-                        //var_dump($eniada->transaccion);
-                        //var_dump($eniada);
-                        if($eniada->transaccion){
+                
+                //************* reducri inventario
+                
+                $this->Inventario_model->reducir_inventario_aux($usuario_id);
+                
+          
+                if($tipo_transaccion==2) //Si la transaccion es a credito
+                {
+                    //$credito_id =  
+                    $estado_id =  8; //8 pendiente 9 cancelado
+                    $compra_id =  0;
+                    $venta_id =  $venta_id;
+                    $credito_monto =  $venta_total - $cuota_inicial;
+                    $credito_cuotainicial =  $cuota_inicial;
+                    $credito_interesproc =  $credito_interes;
+                    // $credito_interesmonto =  $venta_total * $venta_interes; //revisar
+                    $credito_interesmonto =  $venta_total * 0; //revisar
+                    $credito_numpagos =  $cuotas;
+                    $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                    // $credito_fecha = date('Y-m-d');
+                    $credito_fecha = $fecha_venta;
+                    // $time = time();
+                    $credito_hora =  date("H:i:s");
+                    $credito_tipo = 1; // 1- ventas 2 - compras
+                 
+                    $cuotas       = $this->input->post('cuotas');
+                    $interes       = $this->input->post('interes');
+                    $modalidad    = $this->input->post('modalidad');
+                    $dia_pago     = $this->input->post('dia_pago');
+                    $fecha_inicio = $this->input->post('fecha_inicio');
+                    $numcuota = $cuotas; //numero de cuotas
+                    
+                    $intervalo = $modalidad == "MENSUAL" ? 'month':'week';
+                    // if ($modalidad == "MENSUAL") $intervalo = 'month'; //si los pagos son mensuales
+                    // else $intervalo = 'week'; //si los pagos son semanales
+                    
+                        // $cuota_numcuota = 1;
+                    $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$numcuota $intervalo"));
+                        // for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                        //     $cuota_numcuota = $i;
+                            
+                        //     $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+                            // if ($modalidad == "MENSUAL") 
+                            //     $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+                            // else 
+                            //     $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+        
+                        // }
+                        $credito_fechalimite = $cuota_fechalimite;
+                    $metodo_frances = $this->input->post('metodo_frances');
+                    $metodo = "";
+                    if($metodo_frances == "true"){
+                        $metodo = "FRANCES";
+                    }
+                    $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo, credito_metodo) value(".
+                            $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.", '".$metodo."')";
+                    $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+        
+                    
+                    $estado_id =  8; //8 pendiente 9 cancelado
+                    $cuota_numcuota = 1;
+                    $cuota_capital = $venta_total - $cuota_inicial;
+                    $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
+                    $cuota_moradias = 0;
+                    $cuota_multa = 0;
+                    $cuota_subtotal =  $venta_total - $cuota_inicial;
+                    $cuota_descuento = 0;
+                    $cuota_total = $venta_total - $cuota_inicial+$cuota_interes;
+                    
+                    $cuota_cancelado = 0;
+                    $cuota_fecha = "'1900-01-01'";
+                    $cuota_hora = "'00:00'";
+                    $cuota_numercibo =  0;
+                    $cuota_saldo = $venta_total - $cuota_inicial;
+                    $cuota_glosa = "''";
+                    $cuota_saldocredito = $venta_total - $cuota_inicial;
+                         
+                    $dias_mora = 0;
+                    $multa = 0;
+                    $descuento = 0;
+                    $cancelado = 0;
+                    $credito_monto = $venta_total - $cuota_inicial;
+                    
+                    $patron = ($numcuota*0.5) + 0.5;
+                    $cuota_capital = ($credito_monto)/$numcuota;   // bien         
+                    $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
+                    $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
+                    $total = $cuota_subtotal - $descuento;
+                    $saldo_deudor = $credito_monto;
+                    
+                    $siguiente= 0;
+                    // $cuota_fechalimite = $fecha_inicio;
+                   
+                   // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
+                    
+                    // $cuota_fechalimite = $fecha_inicio;
+                    $cuota_fecha_i = $fecha_inicio;
+                    $anio = date("Y",strtotime($cuota_fecha_i));
+                    $month = date("m",strtotime($cuota_fecha_i));
+                        
+                    $cuota_fecha_i = "$anio-$month-$dia_pago";
+                    
+                    if($metodo_frances == "true"){
+                        $Co = $credito_monto;
+                        $i  = $credito_interes;
+                        $n  = $cuotas;
+                        $Ci = $Co;
+                        $Ii = 0;
+                        $Ai = 0;
+                        //$a = $Co*($i/(1-(1+$i) ** (-$n)));
+                        $a = $Co*($i/(1-(pow((1+$i),-$n))));
+                        for($k = 1; $k <= $cuotas; $k++){
+                            $cuota_numcuota = $k;
+                            
+                            $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$k $intervalo"));
+                            $cuota_fechalimite = $cuota_fechalimitex;
+                            
+                            $Ii = $Ci*$i;
+                            $Ai = $a-$Ii;
+                            $cuota_subtotal = $Ai + $Ii + $dias_mora + $multa;
+                            $total = $cuota_subtotal - $descuento;
                             $params = array(
-                                'factura_codigodescripcion' => $eniada->codigoDescripcion,
-                                'factura_codigoestado'    => $eniada->codigoEstado,
-                                'factura_codigorecepcion' => $eniada->codigoRecepcion,
-                                'factura_transaccion'    => $eniada->transaccion,
+                                'credito_id' => $credito_id,
+                                'usuario_id' => $usuario_id,
+                                'estado_id' => $estado_id,
+                                'cuota_numcuota' => $cuota_numcuota,
+                                'cuota_capital' => $Ai,
+                                'cuota_interes' => $Ii,
+                                'cuota_moradias' => $dias_mora,
+                                'cuota_multa' => $multa,
+                                'cuota_subtotal' => $cuota_subtotal,
+                                'cuota_descuento' => $descuento,
+                                'cuota_total' => $total,
+                                'cuota_fechalimite' => $cuota_fechalimite,
+                                'cuota_cancelado' => $cancelado,
+                                'cuota_saldo' => $Ci,
                             );
-                            $this->Factura_model->update_factura($factura_id, $params);
-                        }else{
-                            $cad = $eniada->mensajesList;
-                            $mensajecadena = "";
-                            foreach ($cad as $c) {
-                                $mensajecadena .= $c.";";
-                            }
-                            $params = array(
-                                'factura_codigodescripcion' => $eniada->codigoDescripcion,
-                                'factura_codigoestado' => $eniada->codigoEstado,
-                                'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
-                                'factura_transaccion'  => $eniada->transaccion,
-                            );
-                            $this->Factura_model->update_factura($factura_id, $params);
+                            $this->load->model('Cuotum_model');
+                            $cuotum_id = $this->Cuotum_model->add_cuotum($params);
+                            $Ci = $Ci-$Ai;
+                        }
+                    }else{
+                        for ($j=1; $j <= $numcuota; $j++) { // ciclo para llenar las cuotas
+                            $cuota_numcuota = $j;
+                            
+                            // $cuota_fechalimitex = (time() + ($jntervalo * $j * 24 * 60 * 60 ));
+                            $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$j $intervalo"));
+                            
+                            $cuota_fechalimite = $cuota_fechalimitex;
+                            
+                            $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
+                                    $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
+                                    $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
+                          
+                            $this->Venta_model->ejecutar($cuota);
+        
+        //                    $saldo_deudor = $cuota_total - $cuota_capital;
+        //                    $cuota_total = $saldo_deudor;
+                            $saldo_deudor = $saldo_deudor - $cuota_capital;
+                            //$cuota_total = $saldo_deudor;
                         }
                     }
                     
                 }
-            }
-            $this->ultimaventa(1);
-        }
+                      
+                if($pedido_id > 0)
+                {
+                    $sql = "update pedido set estado_id = 13  where pedido_id = ".$pedido_id;
+                    $this->Venta_model->ejecutar($sql);
+                }
+                        
+                
+                if($facturado=="true"){//si la venta es facturada
+                    // $parametro = $this->Parametro_model->get_parametro(1);
+                    $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
+                    // PARA NUEVO SISTEMA DE FACTURACION
+                    $parametro = $this->Parametro_model->get_parametros();
+                    $tamanio_hoja = 2;
+                    if($parametro[0]['parametro_tipoimpresora'] == "FACTURADORA"){
+                        $tamanio_hoja = 1;
+                    }
+                    // PARA NUEVO SISTEMA DE FACTURACION
         
-        if($orden_id > 0)
-        {
-            $sql = "update orden_trabajo set estado_id = 18  where orden_id = ".$orden_id;
-            $this->Venta_model->ejecutar($sql);
-            $proceso_fechaproceso = "now()";
-            $contador = 1;
-            $detalle = "SELECT detalleorden_id from detalle_orden where orden_id=".$orden_id." ";
-            $detalle_orden = $this->db->query($detalle)->result_array();
-            foreach ($detalle_orden as $det) {
+          //          if (sizeof($dosificacion)>0){ //si existe una dosificacion activa
+                        
+                        $estado_id = 1; 
+                        
+                        $factura_fechaventa    = $fecha_venta;
+                        $factura_fecha         = "date(now())";
+                        $factura_hora          =  $hora_venta; //"time(now())";
+                        $factura_subtotal = $venta_total+$venta_descuento;
+                        $factura_nit           = $numero_doc_identidad;
+                        $factura_razonsocial   = $razon;
+                        $factura_ice           = 0;
+                        $factura_exento        = 0;
+                        $factura_descuento     = $venta_descuento;
+                        $factura_total         = $venta_total;
+                        $factura_numero        = $dosificacion[0]['dosificacion_numfact']+1;
+                        $factura_autorizacion  = $dosificacion[0]['dosificacion_autorizacion'];
+                        $factura_llave         = $dosificacion[0]['dosificacion_llave'];
+                        $factura_fechalimite   = $dosificacion[0]['dosificacion_fechalimite'];
+                        $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $numero_doc_identidad,$factura_fechaventa, $factura_total);
+                        $factura_leyenda1      = $dosificacion[0]['dosificacion_leyenda1'];
+                        $factura_leyenda2      = $dosificacion[0]['dosificacion_leyenda2'];
+                        $factura_nitemisor     = $dosificacion[0]['dosificacion_nitemisor'];
+                        $factura_sucursal      = $dosificacion[0]['dosificacion_sucursal'];
+                        $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
+                        $factura_actividad     = $dosificacion[0]['dosificacion_actividad'];
+                        // $tipo_doc_identidad    = $tipo_doc_identidad;
+                        if($parametro[0]['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
+                            // facturacion nueva
+                            $cliente_codigo = $this->Cliente_model->get_codigo_cliente($factura_nit, $factura_razonsocial);
+                            $factura_tokendelegado   = $dosificacion[0]['dosificacion_tokendelegado'];
+                            $factura_ambiente        = $dosificacion[0]['dosificacion_ambiente'];
+                            $factura_cuis            = $dosificacion[0]['dosificacion_cuis'];
+                            $factura_cufd            = $dosificacion[0]['dosificacion_cufd'];
+                            $factura_modalidad       = $dosificacion[0]['dosificacion_modalidad'];
+                            $factura_codsistema      = $dosificacion[0]['dosificacion_codsistema'];
+                            $factura_puntoventa      = $dosificacion[0]['dosificacion_puntoventa'];
+                            $factura_sectoreconomico = $dosificacion[0]['dosificacion_sectoreconomico'];
+                            $factura_ruta            = $dosificacion[0]['dosificacion_ruta'];
+                            $factura_tamanio         = $tamanio_hoja;
+                            $tipoDocumentoIdentidad  = $this->input->post('tipo_doc_identidad');
+                            $documentoSector = $dosificacion[0]['docsec_codigoclasificador'];
+                            
+                            // $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                            $factura_fecha_hora = $this->sumar_2segundos($factura_fecha_hora);
+                            
+                            $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion[0]['dosificacion_cufd']);
+                            $factura_codigocliente = $cliente_codigo;
+        
+                            $cadFechahora = str_replace("-", "", $factura_fecha_hora);
+                            $cadFechahora = str_replace("T", "", $cadFechahora);
+                            $cadFechahora = str_replace(":", "", $cadFechahora);
+                            $cadFechahora = str_replace(".", "", $cadFechahora);
+        
+                            $tipo_emision = 1;//1 online
+                            $tipo_factura = $dosificacion[0]['tipofac_codigo'];
+                            $tipo_documento_sector = $dosificacion[0]['docsec_codigoclasificador'];
+                            $pos = $dosificacion[0]['dosificacion_puntoventa'];
+        
+                            // LLAMANDO AL HELPER
+                            $factura_cuf = generarCuf(trim($factura_nitemisor),
+                                                    trim($cadFechahora),
+                                                    trim($factura_sucursal),
+                                                    trim($factura_modalidad),
+                                                    trim($tipo_emision),
+                                                    trim($tipo_factura),
+                                                    trim($tipo_documento_sector),
+                                                    trim($factura_numero),
+                                                    trim($pos),
+                                                    trim($facturaCufdCodControl['cufd_codigocontrol']));
+        
+                            $fecha_hora = $factura_fecha_hora;
+                            
+                        }
+                        // PARA NUEVA FACTURACION
+                    
+                    
+                    //$factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
+                    
+                    $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+                    $this->Venta_model->ejecutar($sql);
+                        
+                        if($parametro[0]['parametro_tiposistema'] == 1){
+                            // sistema de facturacion antiguo
+                                $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
+                                factura_fecha, factura_hora, factura_subtotal, 
+                                factura_ice, factura_exento, factura_descuento, factura_total, 
+                                factura_numero, factura_autorizacion, factura_llave, 
+                                factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
+                                factura_nit, factura_razonsocial, factura_nitemisor,factura_sucursal,
+                                factura_sfc, factura_actividad, usuario_id, tipotrans_id, 
+                                factura_efectivo, factura_cambio) value(".
+                                $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
+                                $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
+                                $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                                $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
+                                $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
+                                $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
+                                $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
+                                $venta_efectivo.",".$venta_cambio.")";
+                        }else{
+                            // nuevo sistema de facturacion
+                            $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
+                                factura_fecha, factura_hora, factura_subtotal, 
+                                factura_ice, factura_exento, factura_descuento, factura_total, 
+                                factura_numero, factura_autorizacion, factura_llave, 
+                                factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
+                                factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal,
+                                factura_sfc, factura_actividad, usuario_id, tipotrans_id,
+                                factura_efectivo, factura_cambio, factura_tokendelegado,
+                                factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
+                                factura_codsistema, factura_puntoventa, factura_sectoreconomico,
+                                factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
+                                docsec_codigoclasificador, factura_codigocliente) value(".
+                                $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
+                                $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
+                                $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                                $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
+                                $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
+                                $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
+                                $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
+                                $venta_efectivo.",".$venta_cambio.",'".$factura_tokendelegado."','".
+                                $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
+                                $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
+                                $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
+                                $documentoSector,'$factura_codigocliente')";
+                        }
+                        $factura_id = $this->Venta_model->ejecutar($sql);
+                        //$factura_id= $this->Factura_model->ejecutar2($sql2);
+                    
+                        $sql =  "insert into detalle_factura(
+                        producto_id,
+                        venta_id,
+                        factura_id,
+                        detallefact_codigo,
+                        detallefact_unidad,
+                        detallefact_cantidad,            
+                        detallefact_descripcion,
+                        detallefact_precio,
+                        detallefact_subtotal,
+                        detallefact_descuento,
+                        detallefact_total,                
+                        detallefact_preferencia,
+                        detallefact_caracteristicas,
+                        detallefact_unidadfactor)
+        
+                        (SELECT 
+                            producto_id,
+                            ".$venta_id." as venta_id,          
+                            ".$factura_id." as factura_id,
+                            detalleven_codigo,
+                            detalleven_unidad,
+                            detalleven_cantidad,
+                            producto_nombre,          
+                            detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                            detalleven_subtotal,
+                            (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                            detalleven_total * (1 - ".$porcentaje."),     
+                            detalleven_preferencia,
+                            detalleven_caracteristicas,
+                            detalleven_unidadfactor
+        
+                        FROM
+                            detalle_venta_aux
+                        WHERE 
+                            usuario_id=".$usuario_id.")";
+                        $this->Factura_model->ejecutar($sql);               
+                        if($parametro[0]['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
+                        // el parametro uno es para computarizada en linea ojo
+                        $computarizada_enlinea = $parametro[0]['parametro_tiposistema'] == 2 ? 1:2;// 1 para computarizada y 2 para electronica
+                        $factura = $this->Factura_model->get_factura_id($factura_id);
+                        $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
+                        $empresa = $this->Empresa_model->get_empresa(1);
+                        
+                        $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+        
+                        $base_url = explode('/', base_url());
+                        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+                        
+                        
+                        array_push($nombres_xml,"{$directorio}compra_venta{$factura[0]['factura_id']}.xml");
+
+                        $valXSD = new ValidacionXSD();
+                        if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
+                            // echo "No ingreso";
+                            print $valXSD->mostrarError();
+                        }else{
+                            // COMPRESION XML EN GZIP
+                            $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
+                            $gzdata = gzencode($datos, 9);
+                            $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
+                            // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+                            fwrite($fp, $gzdata);
+                            fclose($fp);
+        
+                            //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
+                            //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
+        
+                            $handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
+                            $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
+                            fclose($handle);
+                            /*//$content = base64_encode($contents);
+                            //$b= unpack("C*",$contents);*/
+        
+                            //var_dump($contents);
+        
+        
+                            /*//var_dump($byteArr);
+                            // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml*");*/
+        
+                            // HASH (SHA 256)
+                            $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
+                            //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
+                            //var_dump($xml_comprimido);
+                            //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
+                            $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                            $wsdl = $dosificacion['dosificacion_factura'];
+                            $token = $dosificacion['dosificacion_tokendelegado'];
+                            $comunicacion = $this->verificar_comunicacion($token,$wsdl);
+                            if($comunicacion){
+                                $eniada = $this->mandarFactura($contents, $xml_comprimido);
+                                //var_dump($eniada->transaccion);
+                                //var_dump($eniada);
+                                if($eniada->transaccion){
+                                    $params = array(
+                                        'factura_codigodescripcion' => $eniada->codigoDescripcion,
+                                        'factura_codigoestado'    => $eniada->codigoEstado,
+                                        'factura_codigorecepcion' => $eniada->codigoRecepcion,
+                                        'factura_transaccion'    => $eniada->transaccion,
+                                    );
+                                    $this->Factura_model->update_factura($factura_id, $params);
+                                }else{
+                                    $cad = $eniada->mensajesList;
+                                    $mensajecadena = "";
+                                    foreach ($cad as $c) {
+                                        $mensajecadena .= $c.";";
+                                    }
+                                    $params = array(
+                                        'factura_codigodescripcion' => $eniada->codigoDescripcion,
+                                        'factura_codigoestado' => $eniada->codigoEstado,
+                                        'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
+                                        'factura_transaccion'  => $eniada->transaccion,
+                                    );
+                                    $this->Factura_model->update_factura($factura_id, $params);
+                                }
+                            }
+                            
+                        }
+                    }
+                    // $this->ultimaventa(1);
+                }
+                
+                if($orden_id > 0)
+                {
+                    $sql = "update orden_trabajo set estado_id = 18  where orden_id = ".$orden_id;
+                    $this->Venta_model->ejecutar($sql);
+                    $proceso_fechaproceso = "now()";
+                    $contador = 1;
+                    $detalle = "SELECT detalleorden_id from detalle_orden where orden_id=".$orden_id." ";
+                    $detalle_orden = $this->db->query($detalle)->result_array();
+                    foreach ($detalle_orden as $det) {
+                    
+                    $prisql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,proceso_fechaproceso,proceso_fechaterminado,detalleorden_id) value(".$orden_id.",17,26,0,".$proceso_fechaproceso.",".$proceso_fechaproceso.",".$det['detalleorden_id'].")";
+                    $primid = $this->Venta_model->ejecutar($prisql); 
+        
+                    for ($contador = 18; $contador<=23; $contador++){
+                         
+                        
+                        $estado = $contador;
+                        $estado_id = 24;
+                        
+                        $sql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,detalleorden_id) value(".
+                                $orden_id.",".$estado.",".$estado_id.",0,".$det['detalleorden_id'].")";
+                        $id = $this->Venta_model->ejecutar($sql);              
+                        
+                    }  
+            }
             
-            $prisql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,proceso_fechaproceso,proceso_fechaterminado,detalleorden_id) value(".$orden_id.",17,26,0,".$proceso_fechaproceso.",".$proceso_fechaproceso.",".$det['detalleorden_id'].")";
-            $primid = $this->Venta_model->ejecutar($prisql); 
-
-            for ($contador = 18; $contador<=23; $contador++){
-                 
-                
-                $estado = $contador;
-                $estado_id = 24;
-                
-                $sql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,detalleorden_id) value(".
-                        $orden_id.",".$estado.",".$estado_id.",0,".$det['detalleorden_id'].")";
-                $id = $this->Venta_model->ejecutar($sql);              
-                
-            }  
-
-            }          
+            }       
         }
 
         //**************** fin contenido ***************
