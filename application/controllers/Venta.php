@@ -857,7 +857,12 @@ class Venta extends CI_Controller{
                     // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
                     fwrite($fp, $gzdata);
                     fclose($fp);
-
+                    $eltipo_emision = 2;
+                    if($eltipo_emision == 2){
+                        $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
+                        $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
+                        $p1 = $p->compress(Phar::GZ);
+                    }
                     //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
                     //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
 
