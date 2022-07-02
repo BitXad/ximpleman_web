@@ -365,21 +365,21 @@ class Venta extends CI_Controller{
                                             );        
          return $code;
     }
-    
+    // Borrar
     function sumar_2segundos($factura_fecha_hora){
         $fechaAuxiliar = strtotime( "+2 seconds" ,strtotime($factura_fecha_hora));  
         $factura_fecha_hora_mod = date('Y-m-d\TH:i:s.v' , $fechaAuxiliar );
         return $factura_fecha_hora_mod;
     }
-
+    // Borrar
+    // borrar llamada a la funcion sumar_2segundos() en la linea 725 y descomentar la linea 724
     function registrarventa()
     {
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
-            $factura_fecha_hora = '2022-07-01 14:19:00.000';
-            $nombres_xml=[];
+            $factura_fecha_hora = '2022-07-01 19:13:00.000';//borrar
         
-            for($numero = 1;$numero <= 500;$numero++){ 
+            for($numero = 1;$numero <= 500;$numero++){ //borrar el for, mantener su contenido
                 
                 $usuario_id = $this->session_data['usuario_id'];
                 
