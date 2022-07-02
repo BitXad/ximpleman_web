@@ -93,20 +93,18 @@
                 <div class="row" id='loader2'  style='display:none; text-align: center'>
                     <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
                 </div>
-                
-                <div class="col-md-12">
-                    <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Nombre Archivo</label>
-                    <div class="form-group">
-                        <input type="text" name="nombre_archivo" value="compra_venta00.tar.gz" class="form-control" id="nombre_archivo" />
-                    </div>
-                </div>
                 <div class="col-md-12">
                     <label for="codigo_evento" class="control-label"><span class="text-danger">*</span>Código Evento</label>
                     <div class="form-group">
                         <input type="text" name="codigo_evento" class="form-control" id="codigo_evento" />
                     </div>
                 </div>
-                
+                <div class="col-md-12">
+                    <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Nombre Archivo</label>
+                    <div class="form-group">
+                        <input type="text" name="nombre_archivo" value="compra_venta00.tar.gz" class="form-control" id="nombre_archivo" />
+                    </div>
+                </div>
             </div>
             
             <div class="modal-footer" style="text-align: center">

@@ -140,6 +140,7 @@ function emision_paquetes(){
                             mensaje += " -"+registros.mensajesList.descripcion+"\n";
                             mensaje += "Codigo transacción: "+registros.transaccion+"\n";
                         }
+                        tablaresultados();
                         alert(mensaje);
                         
                         document.getElementById('loader').style.display = 'none';

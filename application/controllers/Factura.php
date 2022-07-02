@@ -154,7 +154,7 @@ class Factura extends CI_Controller{
             $cuf       = $factura[0]['factura_cufd'];
             $tamanio   = $factura[0]['factura_tamanio'];
             // nuevo
-            $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
+            $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
         }
         
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
@@ -211,6 +211,7 @@ class Factura extends CI_Controller{
         $factura = $this->Factura_model->get_factura_venta($venta_id);
         $data['factura'] = $factura;
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $parametros = $data['parametro'][0];
         $data['tipo'] = $tipo;
         
         if(sizeof($factura)>=1){
@@ -222,15 +223,18 @@ class Factura extends CI_Controller{
         $total         = $factura[0]['factura_total'];
         $codcontrol    = $factura[0]['factura_codigocontrol'];
         $nit           = $factura[0]['factura_nit'];
-        $ruta          = $factura[0]['factura_ruta'];
-        $cuf           = $factura[0]['factura_cufd'];
-        $tamanio       = $factura[0]['factura_tamanio'];
         
-        $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
-        // $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
+        if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
+            // Antiguo
+            $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
+        }else{
+            $ruta      = $factura[0]['factura_ruta'];
+            $cuf       = $factura[0]['factura_cuf'];
+            $tamanio   = $factura[0]['factura_tamanio'];
+            // nuevo
+            $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+        }
         
-        
-               
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
         //Generador de Codigo QR
                 //cargamos la librería	
@@ -250,8 +254,11 @@ class Factura extends CI_Controller{
          
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
-        
-        $data['_view'] = 'factura/factura_boucher';
+        if($data['parametro'][0]['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
+            $data['_view'] = 'factura/factura_boucher';
+        }else{
+            $data['_view'] = 'factura/factura_bouchern';
+        }
         //$data['_view'] = 'factura/factura_bouchern';
         $this->load->view('layouts/main',$data);
         
@@ -287,7 +294,7 @@ class Factura extends CI_Controller{
         $data['factura'] = $factura;
         $data['tipo'] = $tipo;
         $data['parametro'] = $this->Parametro_model->get_parametros();
-        
+        $parametros = $data['parametro'][0];
         if(sizeof($factura)>=1){
         
         $nit_emisor    = $factura[0]['factura_nitemisor'];
@@ -297,13 +304,18 @@ class Factura extends CI_Controller{
         $total         = $factura[0]['factura_total'];
         $codcontrol    = $factura[0]['factura_codigocontrol'];
         $nit           = $factura[0]['factura_nit'];
-        $ruta          = $factura[0]['factura_ruta'];
-        $cuf           = $factura[0]['factura_cufd'];
-        $tamanio       = $factura[0]['factura_tamanio'];
         
-        $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
-        // $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
-               
+        if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
+            // Antiguo
+            $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
+        }else{
+            $ruta      = $factura[0]['factura_ruta'];
+            $cuf       = $factura[0]['factura_cuf'];
+            $tamanio   = $factura[0]['factura_tamanio'];
+            // nuevo
+            $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+        }
+            
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
         //Generador de Codigo QR
                 //cargamos la librería	
@@ -324,7 +336,12 @@ class Factura extends CI_Controller{
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
-        $data['_view'] = 'factura/factura_boucher';
+        if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
+            $data['_view'] = 'factura/factura_boucher';
+        }else{
+            $data['_view'] = 'factura/factura_bouchern'; 
+        }
+        
         $this->load->view('layouts/main',$data);
         
         }
@@ -379,10 +396,10 @@ class Factura extends CI_Controller{
             $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
         }else{
             $ruta      = $factura[0]['factura_ruta'];
-            $cuf       = $factura[0]['factura_cufd'];
+            $cuf       = $factura[0]['factura_cuf'];
             $tamanio   = $factura[0]['factura_tamanio'];
             // nuevo
-            $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero'.$num_fact.'&t='.$tamanio;
+            $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
         }
          
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras

@@ -376,7 +376,7 @@ class Venta extends CI_Controller{
     function registrarventa()
     {
         if($this->acceso(12)){
-        //**************** inicio contenido ***************        
+        //**************** inicio contenido ***************   
             $factura_fecha_hora = '2022-07-01 22:00:40.000';//borrar
         
             for($numero = 1;$numero <= 500;$numero++){ //borrar el for, mantener su contenido
@@ -871,7 +871,15 @@ class Venta extends CI_Controller{
                             // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
                             fwrite($fp, $gzdata);
                             fclose($fp);
-        
+                            //para borrar comprime en tar-gz
+                            $eltipo_emision = 1;
+                            if($eltipo_emision == 2){
+                                $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
+                                $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
+                                $p1 = $p->compress(Phar::GZ);
+                            }
+                            //fin para borrar
+                            
                             //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
                             //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
         

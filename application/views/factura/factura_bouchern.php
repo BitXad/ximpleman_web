@@ -119,10 +119,10 @@
                                 <td class="text-center"><?php echo $factura[0]['factura_numero']; ?></td>
                             </tr>
                             <tr>
-                                <td class="text-center"><b>C&Oacute;D. AUTORIZACI&Oacute;N</b></td>
+                                <td class="text-center"><b>CUF</b></td>
                             </tr>
                             <tr>
-                                <td class="text-center"><?php echo $factura[0]['factura_autorizacion'] ?></td>
+                                <td class="text-center"><div style="word-wrap: break-word; width:<?php echo $ancho?>" ><?php echo $factura[0]['factura_cuf'] ?></div></td>
                             </tr>
                         </table>
                     </td>
@@ -131,7 +131,7 @@
                     <td colspan="4" style="padding: 0;">
                         <table style="width:<?php echo $ancho?>" >
                             <tr style="border-top-style: dashed; border-top-width: 1px;">
-                                <td class="text-right text-bold" style="padding: 0; white-space: nowrap">NOMBRE/RAZ&Aacute;N SOCIAL:</td>
+                                <td class="text-right text-bold" style="padding: 0; white-space: nowrap">NOMBRE/RAZ&Oacute;N SOCIAL:</td>
                                 <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_razonsocial'].""; ?></td>
                             </tr>
                             <tr>
@@ -140,7 +140,7 @@
                             </tr>
                             <tr>
                                 <td class="text-right text-bold" style="padding: 0;">COD. CLIENTE:</td><!-- PONER CODIGO DE CLIENTE -->
-                                <td style="padding: 0; padding-left: 3px"><?php echo "GFRJHDEs"; //$factura[0]['cliente_codigo']; ?> <br></td>
+                                <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_codigocliente']; ?> <br></td>
                             </tr>
                             <tr style="border-bottom-style: dashed; border-bottom-width: 1px;">
                                 <td class="text-right text-bold" style="padding: 0;">FECHA DE EMISI&Oacute;N:</td>
@@ -195,9 +195,9 @@
                                     <?php
                                     echo number_format($d['detallefact_cantidad'],2,'.',',')." X ";
                                     echo number_format($d['detallefact_precio'],2,'.',',')." - ";
-                                    echo number_format($d['detallefact_descuento'],2,'.',',')." + "."0.00 +  0.00";
-                                    /*echo number_format($d['detallefact_ice'],2,'.',',')." + ";
-                                    echo number_format($d['detallefact_iceesp'],2,'.',',');*/
+                                    echo number_format($d['detallefact_descuento'],2,'.',',')." + "; //."0.00 +  0.00";
+                                    //echo number_format($d['detallefact_ice'],2,'.',',')." + ";
+                                    //echo number_format($d['detallefact_iceesp'],2,'.',',');
                                     ?>
                                 </td>
                                 <td style="width: 0.5cm !important;"></td>
