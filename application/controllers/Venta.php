@@ -367,7 +367,7 @@ class Venta extends CI_Controller{
     }
     // Borrar
     function sumar_2segundos($factura_fecha_hora){
-        $fechaAuxiliar = strtotime( "+2 seconds" ,strtotime($factura_fecha_hora));  
+        $fechaAuxiliar = strtotime( "+10 seconds" ,strtotime($factura_fecha_hora));  
         $factura_fecha_hora_mod = date('Y-m-d\TH:i:s.v' , $fechaAuxiliar );
         return $factura_fecha_hora_mod;
     }
@@ -377,7 +377,7 @@ class Venta extends CI_Controller{
     {
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
-            $factura_fecha_hora = '2022-07-01 19:13:00.000';//borrar
+            $factura_fecha_hora = '2022-07-01 22:00:40.000';//borrar
         
             for($numero = 1;$numero <= 500;$numero++){ //borrar el for, mantener su contenido
                 
@@ -858,8 +858,6 @@ class Venta extends CI_Controller{
                         //$doc_xml = site_url("resources/xml/$archivoXml.xml");
                         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
                         
-                        
-                        array_push($nombres_xml,"{$directorio}compra_venta{$factura[0]['factura_id']}.xml");
 
                         $valXSD = new ValidacionXSD();
                         if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
