@@ -248,6 +248,12 @@
                             <input type="email" name="dosificacion_email" value="<?php echo ($this->input->post('dosificacion_email') ? $this->input->post('dosificacion_email') : $dosificacion['dosificacion_email']); ?>" class="form-control" id="dosificacion_email" />
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <label for="dosificacion_cafc" class="control-label">CAFC</label>
+                        <div class="form-group">
+                            <input type="text" name="dosificacion_cafc" value="<?php echo ($this->input->post('dosificacion_cafc') ? $this->input->post('dosificacion_cafc') : $dosificacion['dosificacion_cafc']); ?>" class="form-control" id="dosificacion_cafc" />
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <label for="estado_id" class="control-label">Estado</label>
                         <div class="form-group">

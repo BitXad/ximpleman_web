@@ -251,6 +251,12 @@
         </div>
         <div class="col-md-12 linea">
             <div class="col-md-1">
+                <label class="control-label">CAFC</label>
+            </div>
+            <div class="col-md-3">
+                <?php echo $dosificacion['dosificacion_cafc']; ?>
+            </div>
+            <div class="col-md-1">
                 <label class="control-label">Correo Electrónico</label>
             </div>
             <div class="col-md-3">

@@ -109,6 +109,7 @@ class Dosificacion extends CI_Controller{
                 'dosificacion_sectoreconomico' => $this->input->post('dosificacion_sectoreconomico'),
                 'dosificacion_email' => $this->input->post('dosificacion_email'),
                 'docsec_codigoclasificador' => $this->input->post('docsec_codigoclasificador'),
+                'dosificacion_cafc' => $this->input->post('dosificacion_cafc'),
             );
             
             $dosificacion_id = $this->Dosificacion_model->add_dosificacion($params);
@@ -170,6 +171,7 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_email' => $this->input->post('dosificacion_email'),
                     'docsec_codigoclasificador' => $this->input->post('docsec_codigoclasificador'),
                     'tipofac_codigo' => $this->input->post('tipofac_codigo'),
+                    'dosificacion_cafc' => $this->input->post('dosificacion_cafc'),
                 );
 
                 $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);            

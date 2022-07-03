@@ -130,7 +130,7 @@ class Emision_paquetes extends CI_Controller{
                     "archivo" => $contents, //$dosificacion['dosificacion_cuis'],
                     "fechaEnvio"=>$fecha_hora, //$dosificacion['dosificacion_cuis'],
                     "hashArchivo"=>$has_archivo, //$dosificacion['dosificacion_cuis'],
-                    "cafc"               => '101ECDD8AF57D', //$dosificacion['dosificacion_nitemisor'],
+                    "cafc"               => $dosificacion['dosificacion_cafc'],
                     "cantidadFacturas"     => 1, //$dosificacion['dosificacion_nitemisor'],
                     "codigoEvento"         => $codigo_evento, //$dosificacion['dosificacion_nitemisor']
                 ]];
