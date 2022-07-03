@@ -46,17 +46,28 @@
                     <thead>
                         <tr>
                             <th width="50px">#</th>
-                            <th>EVENTOS SIGNIFICATIVOS</th>
+                            <th>CODIGO</th>
+                            <th>EVENTO</th>
+                            <th>FECHA<br>REGISTRO</th>
+                            <th>PUNTO<br>VENTA</th>
+                            <th>FECHA<br>INICIO</th>
+                            <th>FECHA<br>FIN</th>
                             <!--<th width="100px" class="no-print"></th>-->
                         </tr>
                     </thead>
                     <tbody class="buscar">
                         <?php 
                         $i=1;
-                        foreach ($eventos as $evento) {?>
-                            <tr>
+                        foreach ($eventos_significativos as $evento) {?>
+                                              
+                            <tr>                                
                                 <td><?= $i ?></td>
-                                <td><?= $evento['ces_descripcion'] ?></td>                            
+                                <td><?= $evento['registroeventos_codigo'] ?></td>                            
+                                <td><?= $evento['registroeventos_detalle'] ?></td>                            
+                                <td><?= $evento['registroeventos_fecha'] ?></td>                            
+                                <td><?= $evento['registroeventos_puntodeventa'] ?></td>                            
+                                <td><?= $evento['registroeventos_inicio'] ?></td>                            
+                                <td><?= $evento['registroeventos_fin'] ?></td>
 <!--                                <td>
                                     <button class="btn btn-primary btn-xs" title="ventos <?= strtolower($evento['ces_descripcion']) ?>" onclick="eventos(<?= $evento['ces_id'] ?>)">
                                         <i class="fa-solid fa-arrows-rotate"></i>

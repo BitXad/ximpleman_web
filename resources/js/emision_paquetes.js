@@ -27,20 +27,28 @@ function tablaresultados()
                     //$("#encontrados").html(n);
                     html = "";
                     for (var i = 0; i < n ; i++){
+                                                
                         html += "<tr>";
                         html += "<td style='padding: 2px;' class='text-center'>"+(i+1)+"</td>";
                             html += "<td style='padding: 2px;'>"+registros[i]['recpaquete_codigodescripcion']+"</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_codigoestado']+"</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_codigorecepcion']+"</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_transaccion']+"</td>";
-                        html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_mensajeslist']+"</td>";
-                        html += "<td style='padding: 2px;' class='text-center'>";
-                        html += moment(registros[i]["recpaquete_fechahora"]).format("DD/MM/YYYY H:i:s");
-                        html += "</td>";
+                        
+                        if(registros[i]['recpaquete_mensajeslist']!=null){
+                            html += "<td style='padding: 2px;' class='text-center'><span class='btn btn-xs btn-info' title='"+registros[i]['recpaquete_mensajeslist']+"'><fa class='fa fa-times'> </fa> Mensaje </span></td>";
+                        }else{
+                            html += "<td style='padding: 2px;' class='text-center'></td>";
+                        }
+                        
+                        html += "<td style='padding: 2px;' class='text-center'>";                        
+                        html += moment(registros[i]["recpaquete_fechahora"]).format("DD/MM/YYYY H:i:s");                        
+                        html += "</td>";                        
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['codigo_evento']+"</td>";
+                        
                         html += "<td>";
                         if(registros[i]['recpaquete_codigodescripcion'] == "PENDIENTE"){
-                            html += "<a class='btn btn-success btn-xs' onclick='ejecutar_emisionpaquetes_vacio("+JSON.stringify(registros[i]['recpaquete_codigorecepcion'])+")' title='Ejecutar validacion servicio Recepcion'><fa class='fa fa-bolt'></fa></a>&nbsp;";
+                            html += "<a class='btn btn-success btn-xs' onclick='ejecutar_emisionpaquetes_vacio("+JSON.stringify(registros[i]['recpaquete_codigorecepcion'])+")' title='Ejecutar validacion servicio Recepcion'><fa class='fa fa-bolt'></fa> Validar</a>&nbsp;";
                         }/*else if(registros[i]['estado_id'] == 35){
                             html += "<a class='btn btn-warning btn-xs' onclick='modal_anularordencmpra("+registros[i]['ordencompra_id']+")' title='Anular orden compra'><fa class='fa fa-minus-circle'></fa></a>";
                         }*/
