@@ -48,6 +48,7 @@
         $fecha_hora = add_ceros($fecha_hora,17);
         $factura_sucursal = add_ceros($factura_sucursal,4);
         $factura_modalidad = add_ceros($factura_modalidad,1);
+        //$tipo_emision = add_ceros(2,1);
         $tipo_emision = add_ceros($tipo_emision,1);
         $tipo_factura = add_ceros($tipo_factura,1);
         $tipo_documento_sector = add_ceros($tipo_documento_sector,2);
