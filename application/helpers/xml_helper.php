@@ -306,8 +306,43 @@
         $base_url = explode('/', base_url());
         //$doc_xml = site_url("resources/xml/$archivoXml.xml");
         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+        $direccion = $directorio.'compra_venta'.$factura['factura_id'].'.xml';
         // $xml->save('C:\Users\shemo\Desktop\compra_venta27_06_2022.xml');
-        $xml->save($directorio.'compra_venta'.$factura['factura_id'].'.xml');
+        $xml->save($direccion);
+        if($computarizada != 1) firmar_XML($direccion);
         return $xml;
+    }
+
+    function firmar_XML($direccion_xml){
+        $xml = new DOMDocument();
+        $xml->load($direccion_xml);
+        $base_url = explode('/', base_url());
+        $firma_nombre = "ROBERTO CARLOS SOTO SIERRA.p12";
+        $firma_url = "{$_SERVER['DOCUMENT_ROOT']}/{$base_url[3]}/resources/firmaDigital/{$firma_nombre}";
+        $certs = [];
+        // $firma_password = "5152377";
+        $firma_password = ".1q2w3e4r.";
+        if(!file_exists($firma_url)){
+            $aux3 = $xml->createElement("aux3","Error: No se pudo encontrar el certificados.");
+            $xml->documentElement->appendChild($aux3);
+        }else{
+            $aux2 = $xml->createElement("aux2","Se pudo encontrar el certificados.");
+            $xml->documentElement->appendChild($aux2);
+            if(function_exists("openssl_x509_read")){
+                if(openssl_pkcs12_read($firma_url, $certs, $firma_password)){
+                    // echo "Información del certificado\n";
+                    print_r($certs);
+                    $aux = $xml->createElement("aux", implode($certs));
+                    $xml->documentElement->appendChild($aux);
+                }else{
+                    $aux = $xml->createElement("aux","Error: No se puede leer el almacén de certificados.\n");
+                    $xml->documentElement->appendChild($aux);
+                }
+            }else{
+                $aux4 = $xml->createElement("aux4","Error: No existe la funcion openssl_x509_read");
+                $xml->documentElement->appendChild($aux4);
+            }
+        }
+        $xml->save('C:\Users\shemo\Desktop\compra_venta03_07_2022.xml');
     }
 ?>
