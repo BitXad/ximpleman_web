@@ -1189,7 +1189,7 @@ function compraproveedor(opcion)
                         html += "<span class='btn-danger btn-xs'>NO FINALIZADO</span>";  }  
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td><td class='no-print'>";
                         if (Number(registros[i]["compra_placamovil"])==1) {
-                        html += "<a href='#' data-toggle='modal' data-target='#cambi"+registros[i]["compra_id"]+"' class='btn btn-info btn-xs' title='Modificar Compra'><i class='fa fa-pencil '></i></a>";
+                        //html += "<a href='#' data-toggle='modal' data-target='#cambi"+registros[i]["compra_id"]+"' class='btn btn-info btn-xs' title='Modificar Compra'><i class='fa fa-pencil '></i></a>";
                         html += "<div class='modal fade' id='cambi"+registros[i]["compra_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
                         html += "<div class='modal-dialog' style='border: 1px;' role='document'>";
                         html += "<div class='modal-content'>";
@@ -1334,7 +1334,7 @@ function fechadecompra(filtro)
                         html += "<span class='btn-danger btn-xs'>NO FINALIZADO</span>";  }  
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td><td class='no-print'>";
                         if (Number(registros[i]["compra_placamovil"])==1) {
-                        html += "<a href='#' data-toggle='modal' data-target='#cambi"+registros[i]["compra_id"]+"' class='btn btn-info btn-xs' title='Modificar Compra'><i class='fa fa-pencil '></i></a>";
+                        //html += "<a href='#' data-toggle='modal' data-target='#cambi"+registros[i]["compra_id"]+"' class='btn btn-info btn-xs' title='Modificar Compra'><i class='fa fa-pencil '></i></a>";
                         html += "<div class='modal fade' id='cambi"+registros[i]["compra_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
                         html += "<div class='modal-dialog' style='border: 1px;' role='document'>";
                         html += "<div class='modal-content'>";

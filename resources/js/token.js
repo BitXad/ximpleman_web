@@ -1,14 +1,13 @@
 $(document).on("ready",inicio);
 function inicio(){
-    //tablaresultadosproducto(1);
-    tablaresultadosordencompra(1);
+    tablaresultadostoken(1);
 }
 
-//Tabla resultados de la busqueda en el index de producto
-function tablaresultadosordencompra(limite)
+//Tabla resultados de la busqueda en el index de token
+function tablaresultadostoken(limite)
 {
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'orden_compra/buscar_ordenescompra';
+    var controlador = base_url+'token/buscar_token';
     let parametro = "";
     if(limite == 2){
         parametro = document.getElementById('filtrar').value;
@@ -21,36 +20,31 @@ function tablaresultadosordencompra(limite)
             data:{parametro:parametro},
             success:function(respuesta){
                 var registros =  JSON.parse(respuesta);
+                $("#encontrados").html("0");
                 var color =  "";
                 if (registros != null){
-                    //var formaimagen = document.getElementById('formaimagen').value;
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").html(n);
                     html = "";
                     for (var i = 0; i < n ; i++){
                         html += "<tr>";
                         html += "<td style='padding: 2px;' class='text-center'>"+(i+1)+"</td>";
-                        html += "<td style='padding: 2px;'>"+registros[i]['usuario_nombre']+"</td>";
-                        html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['ordencompra_id']+"</td>";
-                        html += "<td style='padding: 2px;' class='text-center'>";
-                        html += moment(registros[i]["ordencompra_fecha"]).format("DD/MM/YYYY");
+                        html += "<td class='text-center' style='padding: 2px;'>",
+                        html += "<a class='btn btn-info btn-xs' onclick='modal_ejecutarordencompra("+registros[i]['token_delegado']+")' title='Mostrat token delegado'><fa class='fa fa-align-justify'></fa> Ver token delegado</a>&nbsp;";
                         html += "</td>";
-                        html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['ordencompra_hora']+"</td>";
-                        html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['proveedor_nombre']+"</td>";
-                        html += "<td style='padding: 2px;' class='text-right'>"+registros[i]['ordencompra_totalfinal']+"</td>";
+                        html += "<td style='padding: 2px;' class='text-center'>";
+                        html += moment(registros[i]["token_fechadesde"]).format("DD/MM/YYYY");
+                        html += "</td>";
+                        html += "<td style='padding: 2px;' class='text-center'>";
+                        html += moment(registros[i]["token_fechahasta"]).format("DD/MM/YYYY");
+                        html += "</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['estado_descripcion']+"</td>";
                         html += "<td style='padding: 2px;' class='no-print'>";
-                        html += "<a href='"+base_url+"orden_compra/edit/"+registros[i]["ordencompra_id"]+"' class='btn btn-info btn-xs' title='Modificar orden compra' ><span class='fa fa-pencil'></span></a>&nbsp;";
+                        html += "<a href='"+base_url+"token/edit/"+registros[i]["token_id"]+"' class='btn btn-info btn-xs' title='Modificar token' ><span class='fa fa-pencil'></span></a>&nbsp;";
                         html += "<a class='btn btn-success btn-xs' onclick='mostrar_reciboorden("+registros[i]['ordencompra_id']+")' title='Ver reporte orden compra'><fa class='fa fa-print'></fa></a>&nbsp;";
                         html += "<a class='btn btn-facebook btn-xs' onclick='mostrar_reciboordenp("+registros[i]['ordencompra_id']+")' title='Ver reporte orden compra para proveedor'><fa class='fa fa-print'></fa></a>&nbsp;";
-                        if(registros[i]['estado_id'] == 33){
-                            html += "<a class='btn btn-danger btn-xs' onclick='modal_ejecutarordencompra("+registros[i]['ordencompra_id']+")' title='Ejecutar orden compra'><fa class='fa fa-bolt'></fa></a>&nbsp;";
-                            html += "<a class='btn btn-warning btn-xs' onclick='modal_anularordencompra("+registros[i]['ordencompra_id']+")' title='Anular orden compra'><fa class='fa fa-minus-circle'></fa></a>";
-                        }/*else if(registros[i]['estado_id'] == 35){
-                            html += "<a class='btn btn-warning btn-xs' onclick='modal_anularordencmpra("+registros[i]['ordencompra_id']+")' title='Anular orden compra'><fa class='fa fa-minus-circle'></fa></a>";
-                        }*/
-                        
                         html += "</td>";
+                        
                         html += "</tr>";
                     }
                     $("#tablaresultados").html(html);
@@ -70,12 +64,24 @@ function tablaresultadosordencompra(limite)
     });
 }
 
-function buscar_ordencompra(e) {
+function buscar_token(e) {
   tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){
-        tablaresultadosordencompra(2);
+        tablaresultadostoken(2);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* muestra el detalle de la orden de compra */
 function mostrar_reciboorden(ordencompra_id){

@@ -79,6 +79,16 @@ class Orden_compra_model extends CI_Model
         return $this->db->delete('detalle_ordencompra_aux',array('usuario_id'=>$usuario_id));
     }
     
+    function delete_detalleoc_aux($ordencompra_id)
+    {
+        return $this->db->delete('detalle_ordencompra_aux',array('ordencompra_id'=>$ordencompra_id));
+    }
+    
+    function delete_detalleoc($ordencompra_id)
+    {
+        return $this->db->delete('detalle_ordencompra',array('ordencompra_id'=>$ordencompra_id));
+    }
+    
     /*
      * function to add new detalle orden compra aux
      */
@@ -101,6 +111,18 @@ class Orden_compra_model extends CI_Model
         return $this->db->query($sql)->result_array();
     }
     
+    function get_detalleoc_aux($ordencompra_id)
+    {
+        $sql="select dca.*, p.producto_nombre, p.existencia, pr.proveedor_nombre
+                from detalle_ordencompra_aux dca
+                left join proveedor pr on dca.proveedor_id = pr.proveedor_id
+                left join inventario p on dca.producto_id = p.producto_id
+                where
+                    dca.ordencompra_id = $ordencompra_id 
+                order by dca.detalleordencomp_id desc
+                ";
+        return $this->db->query($sql)->result_array();
+    }
     /*
      * function to add new detalle orden compra
      */

@@ -441,6 +441,7 @@ function cerrar_ventana(){
                         Buscar 
                       </span>           
                       <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,4)">
+                      <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaresultados(1)" title="Buscar"><span class="fa fa-search"></span></div>
                   </div>
             
 <!--            ------------------- fin parametro de buscador ------------------- -->
@@ -1278,6 +1279,7 @@ function cerrar_ventana(){
                                                        <i class="fa fa-binoculars"></i>
                                                      </span>           
                                                      <input type="text" name="filtrar4" id="filtrar4" class="form-control" placeholder="Ingrese el nombre, CI, codigo del cliente " onkeyup="validar(event,8)">
+                                                     <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="buscar_clientes_pedido()" title="Buscar"><span class="fa fa-search"></span></div>
                                                  </div>
                                            </div>      
                                           <!--------------------- fin buscador por codigo --------------------->

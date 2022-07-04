@@ -101,7 +101,7 @@ class Compra_model extends CI_Model
                 and c.proveedor_id = p.proveedor_id
                 and c.tipotrans_id = t.tipotrans_id
                 and c.usuario_id=u.usuario_id
-                and (p.proveedor_nombre like '%".$parametro."%' or c.compra_id = $parametro)
+                and (p.proveedor_nombre like '%".$parametro."%' or c.compra_id = '$parametro')
 
             ORDER BY `compra_id` DESC
 
