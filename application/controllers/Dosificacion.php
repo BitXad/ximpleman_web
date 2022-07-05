@@ -29,6 +29,7 @@ class Dosificacion extends CI_Controller{
                             'Moneda_model',
                             'Tipo_puntoventa_model',
                             'TipoFactura_model',
+                            'Parametro_model',
                             'Unidad_model']);
         //$this->load->library('lib_nusoap/nusoap');    
     
@@ -431,18 +432,25 @@ class Dosificacion extends CI_Controller{
                 
                 /* ---------------------F I N  segun EJEMPLO ---------------------- */
                 /* ordenado segun SoapUI */
-                $nit_verificar = $this->input->post("nit");
-                //$nit_verificar = 5196226;
-                $parametros = ["SolicitudVerificarNit" => [
-                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
-                    "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
-                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
-                    "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
-                    "cuis"=>            $dosificacion['dosificacion_cuis'],
-                    "nit"=>             $dosificacion['dosificacion_nitemisor'],
-                    "nitParaVerificacion"=>$nit_verificar]];
+                $reesultado = "";
+                $parametro = $this->Parametro_model->get_parametros();
+                if($parametro[0]["parametro_tiposistema"] != 1){
+                    $comunicacion = $this->verificar_comunicacion($token,$wsdl);
+                    if($comunicacion){
+                        $nit_verificar = $this->input->post("nit");
+                        //$nit_verificar = 5196226;
+                        $parametros = ["SolicitudVerificarNit" => [
+                            "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                            "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
+                            "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                            "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                            "cuis"=>            $dosificacion['dosificacion_cuis'],
+                            "nit"=>             $dosificacion['dosificacion_nitemisor'],
+                            "nitParaVerificacion"=>$nit_verificar]];
 
-                $resultado = $cliente->verificarNit($parametros);
+                        $resultado = $cliente->verificarNit($parametros);
+                    }
+                }
                 echo json_encode($resultado);
                 //print_r($resultado);
                 /*$elres = $resultado->RespuestaVerificarNit->mensajesList;

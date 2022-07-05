@@ -105,18 +105,17 @@
 
 
 <!------------------------ INICIO modal para confirmar ejecutar orden compra ------------------->
-<div class="modal fade" id="modal_ejecutarordencompra" tabindex="-1" role="dialog" aria-labelledby="modal_ejecutarordencompralabel">
+<div class="modal fade" id="modal_vertoken_delegado" tabindex="-1" role="dialog" aria-labelledby="modal_vertoken_delegadolabel">
     <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                <span class="text-bold">EJECUTAR ORDEN DE COMPRA</span><br>
-                <span class="text-bold">No. <span id="laordencompra_id"></span></span>
+                <span class="text-bold">Token Delegado</span><br>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
                 <span>
-                    Esta seguro de ejecutar esta orden de compra?
+                    <textarea cols="40" rows="9" id="content_tokendeleg"></textarea>
                 </span>
             </div>
             <div class="modal-footer" style="text-align: center">

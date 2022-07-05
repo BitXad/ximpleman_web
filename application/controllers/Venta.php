@@ -377,9 +377,9 @@ class Venta extends CI_Controller{
     {
         if($this->acceso(12)){
         //**************** inicio contenido ***************   
-            $factura_fecha_hora = '2022-07-01 22:00:40.000';//borrar
-        
-            for($numero = 1;$numero <= 500;$numero++){ //borrar el for, mantener su contenido
+            //$factura_fecha_hora = '2022-07-03 13:17:10.000';//borrar
+            //$factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+            //for($numero = 1;$numero <= 2;$numero++){ //borrar el for, mantener su contenido
                 
                 $usuario_id = $this->session_data['usuario_id'];
                 
@@ -721,8 +721,8 @@ class Venta extends CI_Controller{
                             $tipoDocumentoIdentidad  = $this->input->post('tipo_doc_identidad');
                             $documentoSector = $dosificacion[0]['docsec_codigoclasificador'];
                             
-                            // $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
-                            $factura_fecha_hora = $this->sumar_2segundos($factura_fecha_hora);
+                            $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                            //$factura_fecha_hora = $this->sumar_2segundos($factura_fecha_hora);
                             
                             $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion[0]['dosificacion_cufd']);
                             $factura_codigocliente = $cliente_codigo;
@@ -967,7 +967,7 @@ class Venta extends CI_Controller{
         }
 
         //**************** fin contenido ***************
-        }
+        //}
                
         
     }
