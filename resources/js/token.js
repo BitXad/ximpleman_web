@@ -30,7 +30,7 @@ function tablaresultadostoken(limite)
                         html += "<tr>";
                         html += "<td style='padding: 2px;' class='text-center'>"+(i+1)+"</td>";
                         html += "<td class='text-center' style='padding: 2px;'>",
-                        html += "<a class='btn btn-info btn-xs' onclick='modal_ejecutarordencompra("+registros[i]['token_delegado']+")' title='Mostrat token delegado'><fa class='fa fa-align-justify'></fa> Ver token delegado</a>&nbsp;";
+                        html += "<a class='btn btn-info btn-xs' onclick='modal_mostrartoken("+JSON.stringify(registros[i]['token_delegado'])+")' title='Mostrat token delegado'><fa class='fa fa-align-justify'></fa> Ver token delegado</a>&nbsp;";
                         html += "</td>";
                         html += "<td style='padding: 2px;' class='text-center'>";
                         html += moment(registros[i]["token_fechadesde"]).format("DD/MM/YYYY");
@@ -71,6 +71,27 @@ function buscar_token(e) {
     }
 }
 
+function modal_mostrartoken(token_delegado){
+    $("#content_tokendeleg").val(token_delegado);
+    $("#content_tokendeleg").prop("readonly", true);
+    $('#modal_vertoken_delegado').on('shown.bs.modal', function (e) {
+        $('#content_tokendeleg').focus();
+    });
+   $("#content_tokendeleg").select(); //on("click","this.select()");
+    //  onclick='this.select();'
+    
+    
+    $("#modal_vertoken_delegado").modal("show");
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -98,10 +119,7 @@ function mostrar_reciboordenp(ordencompra_id){
     window.open(dir_url, '_blank');
 }
 
-function modal_ejecutarordencompra(ordencompra_id){
-    $("#laordencompra_id").html(ordencompra_id);
-    $("#modal_ejecutarordencompra").modal("show");
-}
+
 
 /* Ejecuta la orden de compra */
 function ejecutarordencompra()
