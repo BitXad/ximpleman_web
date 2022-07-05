@@ -2371,7 +2371,7 @@ function modificarcliente()
             $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
             $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
             $zona_id = $this->input->post('zona_id');
-            $tipo_doc_identidad = $this->input->post('tipo_doc_identidad');
+            $cdi_codigoclasificador = $this->input->post('cdi_codigoclasificador');
             
             
             if ($cliente_id>0){
@@ -2391,7 +2391,7 @@ function modificarcliente()
                         ",cliente_direccion= ".$cliente_direccion.
                         ",cliente_departamento = ".$cliente_departamento.
                         ",cliente_celular = ".$cliente_celular.
-                        ",cdi_codigoclasificador = $tipo_doc_identidad".
+                        ",cdi_codigoclasificador = $cdi_codigoclasificador".
                         ",zona_id = ".$zona_id." where cliente_id = ".$cliente_id;
                 //echo $sql;
                 $datos = $this->Venta_model->modificarcliente($sql);            

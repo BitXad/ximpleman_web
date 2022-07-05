@@ -181,7 +181,7 @@ class Venta_model extends CI_Model
                 ,'SIN NOMBRE' as cliente_nombre, 0 as cliente_ci, '-' as cliente_nombrenegocio, 0 as tipocliente_id,'-' as cliente_codigo 
                 ,'' as cliente_direccion,  '' as cliente_celular, '' as cliente_departamento,'NO DEFINIDO' zona_nombre,'0' as zona_id
                 ,'' as cliente_foto, 'NO DEFINIDO' as cliente_email, 'NO DEFINIDO' as tipocliente_descripcion 
-                ,'NO DEFINIDO' as categoriaclie_descripcion, 0 as zona_id";
+                ,'NO DEFINIDO' as categoriaclie_descripcion, 0 as zona_id, 1 as cdi_codigoclasificador";
         
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;

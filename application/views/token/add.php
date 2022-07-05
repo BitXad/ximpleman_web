@@ -31,7 +31,7 @@
                     <button type="submit" class="btn btn-success">
                         <i class="fa fa-check"></i> Guardar
                     </button>
-                    <a href="<?php echo site_url('estado/index'); ?>" class="btn btn-danger">
+                    <a href="<?php echo site_url('token'); ?>" class="btn btn-danger">
                         <i class="fa fa-times"></i> Cancelar</a>
                 </div>
             <?php echo form_close(); ?>

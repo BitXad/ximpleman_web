@@ -2083,6 +2083,7 @@ function registrarcliente()
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'venta/registrarcliente';
     var cliente_id = document.getElementById('cliente_id').value;
+    var cdi_codigoclasificador = document.getElementById('cdi_codigoclasificador').value;
     
     var nit = document.getElementById('nit').value;
     var razon = document.getElementById('razon_social').value;
@@ -2116,7 +2117,8 @@ function registrarcliente()
                     type:"POST",
                     data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular,zona_id:zona_id},
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento,
+                        cliente_celular:cliente_celular,zona_id:zona_id, cdi_codigoclasificador:cdi_codigoclasificador},
                     
                     success:function(respuesta){ 
                         var datos = JSON.parse(respuesta);

@@ -162,6 +162,7 @@ function cerrar_ventana(){
 <!--------------------- cliente_id --------------------->
 <div class="container" hidden>
     <input type="text" name="cliente_id" id="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
+    <input type="text" name="cdi_codigoclasificador" id="cdi_codigoclasificador" value="<?php echo $cliente[0]['cdi_codigoclasificador']; ?>" class="form-control" id="cdi_codigoclasificador" >
 </div>
 
 <!--------------------- fin cliente_id --------------------->

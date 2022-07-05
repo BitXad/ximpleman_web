@@ -104,7 +104,7 @@
 
 
 
-<!------------------------ INICIO modal para confirmar ejecutar orden compra ------------------->
+<!------------------------ INICIO modal para mostrar token delegado ------------------->
 <div class="modal fade" id="modal_vertoken_delegado" tabindex="-1" role="dialog" aria-labelledby="modal_vertoken_delegadolabel">
     <div class="modal-dialog" role="document">
         <br><br>
@@ -119,26 +119,25 @@
                 </span>
             </div>
             <div class="modal-footer" style="text-align: center">
-                <a class="btn btn-success" onclick="ejecutarordencompra()"><span class="fa fa-check"></span> Ejecutar</a>
-                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</a>
             </div>
         </div>
     </div>
 </div>
-<!------------------------ F I N  modal para confirmar ejecutar orden compra ------------------->
+<!------------------------ F I N  modal para mostrar token delegado ------------------->
 <!------------------------ INICIO modal para confirmar anunlar orden compra ------------------->
-<div class="modal fade" id="modal_anularordencompra" tabindex="-1" role="dialog" aria-labelledby="modal_anularordencompralabel">
+<div class="modal fade" id="modal_guardar_tokendelegado" tabindex="-1" role="dialog" aria-labelledby="modal_guardar_tokendelegadolabel">
     <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                <span class="text-bold">ANULAR ORDEN DE COMPRA</span><br>
-                <span class="text-bold">No. <span id="anularordencompra_id"></span></span>
+                <span class="text-bold">GUARDAR TOKEN EN DOSIFICACION</span>
             </div>
             <div class="modal-body">
                 <span>
-                    Esta seguro de anular esta orden de compra?
+                    Esta seguro de <b>guardar el token delegado</b> en dosificacion?
+                    <input type="hidden"  />
                 </span>
             </div>
             <div class="modal-footer" style="text-align: center">
