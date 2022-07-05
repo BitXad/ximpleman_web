@@ -132,16 +132,16 @@
         <div class="modal-content">
             <div class="modal-header text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                <span class="text-bold">GUARDAR TOKEN EN DOSIFICACION</span>
+                <span class="text-bold">REGISTRAR TOKEN EN DOSIFICACION</span>
             </div>
             <div class="modal-body">
                 <span>
-                    Esta seguro de <b>guardar el token delegado</b> en dosificacion?
-                    <input type="hidden"  />
+                    Esta seguro de <b>registrar el token delegado</b> en dosificación?
+                    <input type="hidden" name="tokendeleg" id="tokendeleg" />
                 </span>
             </div>
             <div class="modal-footer" style="text-align: center">
-                <a class="btn btn-success" onclick="anularordencompra()"><span class="fa fa-minus-circle"></span> Anular</a>
+                <a class="btn btn-success" onclick="registrar_tokendelegado()"><span class="fa fa-minus-circle"></span> Registrar</a>
                 <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>

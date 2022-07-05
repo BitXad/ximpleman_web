@@ -63,5 +63,9 @@ class Token_model extends CI_Model
 
         return $token;
     }
-    
+    function update_tokendelegdosif($dosificacion_id,$params)
+    {
+        $this->db->where('dosificacion_id',$dosificacion_id);
+        return $this->db->update('dosificacion',$params);
+    }
 }

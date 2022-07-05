@@ -115,6 +115,26 @@ class Token extends CI_Controller{
         }
     }
     
+    /** registra el token delegado en dosificacion */
+    function registrar_tokendelegado()
+    {
+        if($this->acceso(1)) {
+            if ($this->input->is_ajax_request()){
+                $params = array(
+                    'dosificacion_tokendelegado' => $this->input->post('token_delegado'),
+                );
+                $dosificacion_id = 1;
+                $this->Token_model->update_tokendelegdosif($dosificacion_id,$params);  
+                
+                echo json_encode("ok");
+            }else{                 
+                show_404();
+            }
+        }
+    }
+    
+    
+    
     
     
     
