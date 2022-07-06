@@ -141,26 +141,25 @@ function almacenar_cuis(datos){
 
 // verificarComunicacion -> obtenciond e codigos
 function verificarComunicacion(){
-    
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/verificarcomunicacion';
-   
-    
-        $.ajax({url:controlador,
-                type:"POST",
-                data:{},
-                success:function(respuesta){
-                    
-                    var registros = JSON.parse(respuesta);
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){
+                let registros = JSON.parse(respuesta);
+                if(registros.return.transaccion == true){
                     let codigo = registros.RespuestaComunicacion.mensajesList.codigo;
                     let descripcion = registros.RespuestaComunicacion.mensajesList.descripcion;
-
                     alert(codigo+" "+descripcion);
-
-                },
-                error:function(respuesta){
-                    alert("Error: Conexión fallida. Vuelva a intentar...!");
-                }                
+                }else{
+                    registros.faultcode
+                }
+                
+            },
+            error:function(respuesta){
+                alert("Error: Conexión fallida. Vuelva a intentar...!");
+            }                
         }); 
     
 }
@@ -401,36 +400,60 @@ function cierre_PuntoVenta(){
         }); 
     }
 }
+
+/* muestra un modal para la fechadel evento signiifcativo */
+function modal_consulta_EventoSignificativo(){
+    //$("#fecha_evento").val();
+    $("#modal_consultar_eventosignif").modal("show");
+}
 function consulta_EventoSignificativo(){
     var base_url = document.getElementById('base_url').value;
+    let fecha_evento = document.getElementById('fecha_evento').value;
     var controlador = base_url+'dosificacion/consultaEventoSignificativo';
-    var opcion = confirm("Consulta de eventos significativos de una fecha \n ¿Desea Continuar?");
+    //var opcion = confirm("Consulta de eventos significativos de una fecha \n ¿Desea Continuar?");
     
-    if (opcion == true) {
-        document.getElementById('loader_revocado').style.display = 'block';
-        $.ajax({url:controlador,
-                type:"POST",
-                data:{},
-                success:function(respuesta){
-                    var registros = JSON.parse(respuesta);
-                        //console.log(registros);
-                        let transaccion = registros.RespuestaListaEventos.transaccion;
-                        if(transaccion == true){
-                            alert("Consulta realizada con exito;");
+    //if (opcion == true) {
+    document.getElementById('loader').style.display = 'block';
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{fecha_evento:fecha_evento},
+            success:function(respuesta){
+                var registros = JSON.parse(respuesta);
+                    //console.log(registros);
+                    let transaccion = registros.RespuestaListaEventos.transaccion;
+                    
+                    if(transaccion == true){
+                        let eventos = registros.RespuestaListaEventos.listaCodigos;
+                        let n = eventos.length;
+                        //alert(n);
+                        let codigo = "";
+                        let codigoevento = "";
+                        let descripcion = "";
+                        let fechainicio = "";
+                        let fechafin = "";
+                        for (var i = 0; i < n; i++) {
+                            codigo = eventos[i]["codigoEvento"];
+                            codigoevento = eventos[i]["codigoRecepcionEventoSignificativo"];
+                            descripcion = eventos[i]["descripcion"];
+                            fechainicio = eventos[i]["fechaInicio"];
+                            fechafin = eventos[i]["fechaFin"];
+                            alert("Codigo:"+codigo+" \n cod. Evento: "+codigoevento+" \n Descripcion: "+descripcion+" \n F. Inicio: "+fechainicio+" \n F. Fin: "+fechafin);
                         }
-                        else{
-                            let codigo = registros.RespuestaListaEventos.mensajesList.codigo;
-                            let mensaje = registros.RespuestaListaEventos.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
-                        }
-                        document.getElementById('loader_revocado').style.display = 'none';
-                },
-                error:function(respuesta){
-                    alert("Algo salio mal; por favor verificar sus datos!.");
-                    document.getElementById('loader_revocado').style.display = 'none';
-                }                
-        }); 
-    }
+                    }
+                    else{
+                        let codigo = registros.RespuestaListaEventos.mensajesList.codigo;
+                        let mensaje = registros.RespuestaListaEventos.mensajesList.descripcion;
+                        alert(codigo+" "+mensaje);
+                    }
+                    document.getElementById('loader').style.display = 'none';
+                    $("#modal_consultar_eventosignif").modal("hide");
+            },
+            error:function(respuesta){
+                alert("Algo salio mal; por favor verificar sus datos!.");
+                document.getElementById('loader').style.display = 'none';
+            }                
+    });
+    //}
 }
 
 function consulta_PuntoVenta(){
@@ -448,7 +471,7 @@ function consulta_PuntoVenta(){
                         console.log(registros);
                         let transaccion = registros.RespuestaConsultaPuntoVenta.transaccion;
                         if(transaccion == true){
-                            let puntosventa = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas;
+                                let puntosventa = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas;
                             let n = puntosventa.length;
                             if(n== undefined){
                                 let codigo = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.codigoPuntoVenta;

@@ -704,6 +704,7 @@ class Venta extends CI_Controller{
                         $factura_sucursal      = $dosificacion[0]['dosificacion_sucursal'];
                         $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
                         $factura_actividad     = $dosificacion[0]['dosificacion_actividad'];
+                        $factura_enviada = 0;// 0 = falso
                         // $tipo_doc_identidad    = $tipo_doc_identidad;
                         if($parametro[0]['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
                             // facturacion nueva
@@ -769,7 +770,7 @@ class Venta extends CI_Controller{
                                 factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                                 factura_nit, factura_razonsocial, factura_nitemisor,factura_sucursal,
                                 factura_sfc, factura_actividad, usuario_id, tipotrans_id, 
-                                factura_efectivo, factura_cambio) value(".
+                                factura_efectivo, factura_cambio,factura_enviada) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
@@ -777,7 +778,7 @@ class Venta extends CI_Controller{
                                 $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                                 $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
                                 $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
-                                $venta_efectivo.",".$venta_cambio.")";
+                                $venta_efectivo.",".$venta_cambio.",'$factura_enviada')";
                         }else{
                             // nuevo sistema de facturacion
                             $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
@@ -791,7 +792,7 @@ class Venta extends CI_Controller{
                                 factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
                                 factura_codsistema, factura_puntoventa, factura_sectoreconomico,
                                 factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
-                                docsec_codigoclasificador, factura_codigocliente) value(".
+                                docsec_codigoclasificador, factura_codigocliente,factura_enviada) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
@@ -803,7 +804,7 @@ class Venta extends CI_Controller{
                                 $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
                                 $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
                                 $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
-                                $documentoSector,'$factura_codigocliente')";
+                                $documentoSector,'$factura_codigocliente','$factura_enviada')";
                         }
                         $factura_id = $this->Venta_model->ejecutar($sql);
                         //$factura_id= $this->Factura_model->ejecutar2($sql2);
@@ -914,6 +915,7 @@ class Venta extends CI_Controller{
                                         'factura_codigoestado'    => $eniada->codigoEstado,
                                         'factura_codigorecepcion' => $eniada->codigoRecepcion,
                                         'factura_transaccion'    => $eniada->transaccion,
+                                        'factura_enviada' => true,//Factura enviada a impuestos, por defecto en false(No fue enviada)
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
                                 }else{
@@ -927,6 +929,7 @@ class Venta extends CI_Controller{
                                         'factura_codigoestado' => $eniada->codigoEstado,
                                         'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
                                         'factura_transaccion'  => $eniada->transaccion,
+                                        'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
                                 }

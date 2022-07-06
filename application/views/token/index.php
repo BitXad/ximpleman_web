@@ -125,7 +125,7 @@
     </div>
 </div>
 <!------------------------ F I N  modal para mostrar token delegado ------------------->
-<!------------------------ INICIO modal para confirmar anunlar orden compra ------------------->
+<!------------------------ INICIO modal para registrar token en dosificacion ------------------->
 <div class="modal fade" id="modal_guardar_tokendelegado" tabindex="-1" role="dialog" aria-labelledby="modal_guardar_tokendelegadolabel">
     <div class="modal-dialog" role="document">
         <br><br>
@@ -147,4 +147,4 @@
         </div>
     </div>
 </div>
-<!------------------------ F I N  modal para confirmar anular orden compra ------------------->
+<!------------------------ F I N  modal para registrar token en dosificacion ------------------->

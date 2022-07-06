@@ -59,23 +59,41 @@ class Verificar extends CI_Controller
                 $dosif="SELECT DATEDIFF(dosificacion_fechalimite, CURDATE()) as dias FROM dosificacion WHERE dosificacion_id = 1";
                 $dosificacion = $this->db->query($dosif)->row_array();
                 //print "<pre>"; print_r( $session_data); print "</pre>";
-                
-                if ($session_data['tipousuario_id'] == 1) {// admin page
-                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
-                        redirect('alerta/dosificacion'); 
-                    } 
-                    redirect('admin/dashb'); 
-                }elseif($session_data['tipousuario_id'] == 7){ // usuario tipo Cocina
-                    redirect('detalle_venta/recepcion');
-                    //redirect('reportes/ventacategoriap');
-                }else{  // En caso de otro usuario no administrador 
-                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
-                        redirect('alerta/dosificacion'); 
-                    } 
-                   // $this->load->model('Cliente_model'); 
-                    //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']); 
-                    redirect('admin/dashb/index_user'); 
-                } 
+                if($parametro[0]["parametro_tiposistema"] == 1){
+                    if ($session_data['tipousuario_id'] == 1) {// admin page
+                        if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
+                            redirect('alerta/dosificacion'); 
+                        } 
+                        redirect('admin/dashb'); 
+                    }elseif($session_data['tipousuario_id'] == 7){ // usuario tipo Cocina
+                        redirect('detalle_venta/recepcion');
+                        //redirect('reportes/ventacategoriap');
+                    }else{  // En caso de otro usuario no administrador 
+                        if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
+                            redirect('alerta/dosificacion'); 
+                        } 
+                       // $this->load->model('Cliente_model'); 
+                        //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']); 
+                        redirect('admin/dashb/index_user'); 
+                    }
+                }else{
+                    $tok="SELECT DATEDIFF(token_fechahasta, CURDATE()) as dias FROM token WHERE estado_id = 1 order by token_id desc limit 1";
+                    $token = $this->db->query($tok)->row_array();
+                    if ($session_data['tipousuario_id'] == 1) {// admin page
+                        if ($token['dias']<=10 && $token['dias']!=null) {
+                            redirect('alerta/token'); 
+                        } 
+                        redirect('admin/dashb'); 
+                    }elseif($session_data['tipousuario_id'] == 7){ // usuario tipo Cocina
+                        redirect('detalle_venta/recepcion');
+                    }else{  // En caso de otro usuario no administrador 
+                        if ($token['dias']<=10 && $token['dias']!=null) { 
+                            redirect('alerta/token'); 
+                        }
+                        redirect('admin/dashb/index_user'); 
+                    }
+                    
+                }
                 // if($session_data['tipousuario_id'] == 5) { 
                 //     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
                 //        redirect('alerta/dosificacion'); 

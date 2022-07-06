@@ -1084,7 +1084,7 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
-                $fechaevento = date("Y-m-d");
+                //$fechaevento = date("Y-m-d");
                 /* ordenado segun SoapUI */
                 $parametros = ["SolicitudConsultaEvento" => [
                     "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
@@ -1093,12 +1093,12 @@ class Dosificacion extends CI_Controller{
                     "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
                     "cufd"=>            $dosificacion['dosificacion_cufd'],
                     "cuis"=>            $dosificacion['dosificacion_cuis'],
-                    "fechaEvento"=>     $fechaevento, //$dosificacion['dosificacion_cuis'],
+                    "fechaEvento"=>     $this->input->post('fecha_evento'),
                     "nit"=>             $dosificacion['dosificacion_nitemisor']
                 ]];
 
-                //var_dump($parametros);
                 $resultado = $cliente->consultaEventoSignificativo($parametros);
+                //var_dump($resultado);
                 echo json_encode($resultado);
                 //print_r($resultado);
                 //$lresptransaccion = $resultado->RespuestaListaEventos->transaccion;

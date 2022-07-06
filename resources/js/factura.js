@@ -114,11 +114,12 @@ function mostrar_facturas() {
                         
                         
                         html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
+                        let enviada = factura[i]['factura_enviada'] == 1 ? "Enviada":"No enviada";
                         if(factura[i]["estado_id"]==1){
-                                html += "   <td>V</td>";
+                                html += "   <td>V<br>"+enviada+"</td>";
                         }
                         else{
-                                html += "   <td>A</td>";
+                                html += "   <td>A<br>"+enviada+"</td>";
                         }
                             
                         html += "   <td>"+factura[i]["factura_nit"]+"</td>";
