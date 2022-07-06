@@ -1,11 +1,11 @@
 <?php
-class Token extends CI_Controller{
+class Punto_venta extends CI_Controller{
     var $session_data;
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Token_model');
-        $this->load->model('Estado_model');
+        $this->load->model('Dosificacion_model');
+        //$this->load->model('Estado_model');
         //$this->load->model('Usuario_model');
         //$this->load->helper('numeros_helper');
         
@@ -32,11 +32,33 @@ class Token extends CI_Controller{
     function index()
     {
         if($this->acceso(1)) {
-            $data['page_title'] = "Tokens";
-            $data['_view'] = 'token/index';
+            $data['page_title'] = "Puntos de venta";
+            $data['_view'] = 'punto_venta/index';
             $this->load->view('layouts/main',$data);
         }    
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     /*
      * Adding a new token
@@ -132,4 +154,5 @@ class Token extends CI_Controller{
             }
         }
     }
+    
 }

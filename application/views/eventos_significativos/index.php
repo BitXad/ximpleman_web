@@ -32,10 +32,18 @@
 </div>
 <div class="row">
     <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese nombre">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-warning btn-xs" onclick="modal_consulta_EventoSignificativo()"><fa class="fa fa-angle-double-up"></fa> Consulta Evento Significativo</a>
+        </div>
+    </div>
+    <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese nombre">
-                  </div>
+                  
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
             <div class="row" id='loader'  style='display:none; text-align: center'>
@@ -88,7 +96,7 @@
     </div>
 </div>
 
-    <a class="btn btn-warning btn-xs" onclick="consulta_EventoSignificativo()"><fa class="fa fa-angle-double-up"></fa> Consulta Evento Significativo</a>
+    
 
     <a class="btn btn-warning btn-xs" onclick="mostrar_modalregistrarpuntoventa()"><fa class="fa fa-address-card-o"></fa> Registrar Punto de Venta</a>
     
@@ -171,7 +179,31 @@
   </div>
 </div>
 <!-- Fin Modal -->
-        
+<!------------------------ INICIO modal para consultar evento significativo ------------------->
+<div class="modal fade" id="modal_consultar_eventosignif" tabindex="-1" role="dialog" aria-labelledby="modal_consultar_eventosigniflabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">CONSULTAR EVENTO SIGNIFICATIVO</span>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-7">
+                    <label for="fecha_evento" class="control-label"><span class="text-danger">*</span>Fecha de Evento</label>
+                    <div class="form-group">
+                        <input type="date" name="fecha_evento" value="<?php echo ($this->input->post('fecha_evento') ? $this->input->post('fecha_evento') : date("Y-m-d")); ?>" class="form-control" id="fecha_evento" required />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a class="btn btn-success" onclick="consulta_EventoSignificativo()"><span class="fa fa-check"></span> Consultar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para consultar evento significativo ------------------->
     
     
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
