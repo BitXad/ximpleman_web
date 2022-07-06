@@ -2513,6 +2513,7 @@ function registrarcliente()
     var cliente_direccion = document.getElementById('cliente_direccion').value;
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;
+    
     var zona_id = document.getElementById('zona_id').value;
     //if (Number.isInteger(zona_id)){
     if (zona_id >0){
@@ -2520,8 +2521,7 @@ function registrarcliente()
     }else{        
         zona_id = 0;
     }
-    
-
+   
 //   alert(nit+" ** "+razon+" ** "+telefono+" ** "+cliente_id+" ** "+cliente_nombre+" ** "+tipocliente_id+" ** "+cliente_nombre+" ** "+cliente_ci+" ** "+cliente_nombrenegocio+" ** "+
 //           cliente_codigo+" ** "+cliente_direccion+" ** "+cliente_departamento+" ** "+cliente_celular+" ** "+zona_id);
    
@@ -2791,6 +2791,7 @@ function finalizarventa(){
     var tipo_trans   = document.getElementById('tipo_transaccion').value;
     let met_frances  = $('#metodofrances').is(':checked');
     let interes_porc = document.getElementById('credito_interes').value;
+    
     if(tipo_trans == 2 && met_frances == true && (interes_porc <= 0 || interes_porc == "")){
         alert("El interes debe ser mayor a 0 para el metodo Frances");
     }else{
@@ -3681,8 +3682,10 @@ function seleccionar_cliente(){
                     $("#cliente_celular").val(resultado[0]["cliente_celular"]);
                     $("#tipo_doc_identidad").val(resultado[0]["cdi_codigoclasificador"]);
                     $("#tipocliente_porcdesc").val(resultado[0]["tipocliente_porcdesc"]);
-                    $("#tipocliente_montodesc").val(resultado[0]["tipocliente_montodesc"]);                    
+                    $("#tipocliente_montodesc").val(resultado[0]["tipocliente_montodesc"]);
 
+                    //alert(resultado[0]["cdi_codigoclasificador"]);
+                                        
                     if (resultado[0]["tipocliente_id"] != null && resultado[0]["tipocliente_id"] >=0)
                     {   //si tiene definido un tipo de cliente 
                         
@@ -4463,6 +4466,8 @@ function cargar_factura2(venta_id){
                     $("#generar_venta_id").val(registros[0]['venta_id']);
                     $("#generar_monto").val(Number(total_final).toFixed(2));
                     
+                    //alert(resultado[0]["cdi_codigoclasificador"]);
+                                        
                     if (esMobil()){
                         $("#botonaniadir").html("<a onclick='aniadirdetalleaux("+venta_id+")' class='btn btn-sm btn-success btn-block' class='form-control'><span class='fa fa-plus'></span>  Añadir al detalle</a>");
                     }

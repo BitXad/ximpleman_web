@@ -2371,7 +2371,7 @@ function modificarcliente()
             $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
             $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
             $zona_id = $this->input->post('zona_id');
-            $cdi_codigoclasificador = $this->input->post('cdi_codigoclasificador');
+            $cdi_codigoclasificador = $tipo_doc_identidad; //$this->input->post('cdi_codigoclasificador'); el JS no evnia esta variable
             
             
             if ($cliente_id>0){
