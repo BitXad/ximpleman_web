@@ -2749,8 +2749,10 @@ function registrarventa(cliente_id)
                 venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,tipo_doc_identidad:tipo_doc_identidad},
             success:function(respuesta){
+                let res = JSON.parse(respuesta);
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
+                console.log(res.comunicacion);
                 //if (pedido_id>0){ pedidos_pendientes(); }
             },
             error: function(respuesta){
@@ -3152,6 +3154,7 @@ function tabla_ventas(filtro)
                     html += "                       <td align='center'  style='padding:0;' bgcolor='"+v[i]['estado_color']+"'>"+v[i]['forma_nombre'];
                     html += "                           <br> "+v[i]['tipotrans_nombre'];
                     html += "                           <br><span><b>"+(v[i]['banco_nombre'] == null ? '':v[i]['banco_nombre'])+"</b></span> ";
+                    html += "                           <br><span><b>"+(v[i]['factura_enviada'] == 1 ? 'ENVIADA':'NO ENVIADA')+"</b></span> ";
                     html += "                           <br><br><span class='btn btn-facebook btn-xs' ><b>"+v[i]['estado_descripcion']+"</b></span> ";
                     html += "                       </td>";
 
