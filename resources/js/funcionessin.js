@@ -148,18 +148,18 @@ function verificarComunicacion(){
             data:{},
             success:function(respuesta){
                 let registros = JSON.parse(respuesta);
-                if(registros.return.transaccion == true){
+                //if(registros.return.transaccion == true){
                     let codigo = registros.RespuestaComunicacion.mensajesList.codigo;
                     let descripcion = registros.RespuestaComunicacion.mensajesList.descripcion;
                     alert(codigo+" "+descripcion);
-                }else{
+                /*}else{
                     registros.faultcode
-                }
+                }*/
                 
             },
             error:function(respuesta){
                 alert("Error: Conexión fallida. Vuelva a intentar...!");
-            }                
+            }
         }); 
     
 }

@@ -680,7 +680,6 @@ class Dosificacion extends CI_Controller{
                 $resultado = $cliente->verificarComunicacion();
                 echo json_encode($resultado);
                 
-                
             }else{                 
                 show_404();
             }
@@ -2023,7 +2022,7 @@ class Dosificacion extends CI_Controller{
             ]);
             
             $resultados = $cliente->verificarComunicacion();
-
+            
             $transaccion = $resultados->return->transaccion;
 
             if($transaccion){
