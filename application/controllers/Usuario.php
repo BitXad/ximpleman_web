@@ -9,11 +9,14 @@ class Usuario extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Usuario_model');
-        $this->load->model('Rol_usuario_model');
-        $this->load->model('Tipo_usuario_model');
+        $this->load->model([
+            'Usuario_model',
+            'Rol_usuario_model',
+            'Tipo_usuario_model',
+            'user_model',
+            'Tipo_puntoventa_model',
+        ]);
         $this->load->library('form_validation');
-        $this->load->model('user_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -165,6 +168,7 @@ private function acceso($id_rol){
                         'usuario_clave' => md5($this->input->post('usuario_clave')),
                         'usuario_imagen' => $foto,
                         'parametro_id' => $this->input->post('parametro_id'),
+                        'tipopuntoventa_codigo' => $this->input->post('punto_venta'),
                     );
 
 
@@ -175,6 +179,7 @@ private function acceso($id_rol){
                     $this->load->model('Tipo_usuario_model');
                     $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
                     $this->load->model('parametro_model');
+                    $data['puntos_venta'] = $this->Tipo_puntoventa_model->get_all_tipopuntoventa();
                     $data['all_parametros'] = $this->parametro_model->get_all_parametros();
                     $data['page_title'] = "Usuarios";
                     $data['_view'] = 'usuario/add';
@@ -210,6 +215,7 @@ private function acceso($id_rol){
                 $data['all_parametros'] = $this->parametro_model->get_all_parametros();
                 $this->load->model('Tipo_usuario_model');
                 $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
+                $data['puntos_venta'] = $this->Tipo_puntoventa_model->get_all_tipopuntoventa();
                 $data['page_title'] = "Usuario";
                 $data['_view'] = 'usuario/edit';
                 $this->load->view('layouts/main', $data);
@@ -321,13 +327,14 @@ private function acceso($id_rol){
                     'usuario_login' => $this->input->post('usuario_login'),
                     'usuario_clave' => $this->input->post('usuario_clave'),
                     'usuario_imagen' => $foto,
+                    'tipopuntoventa_codigo' => $this->input->post('punto_venta'),
                 );
                 $this->Usuario_model->update_usuario($usuario_id, $params);
                 redirect('usuario/index');
             } else {
                 $this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-
+                $data['puntos_venta'] = $this->Tipo_puntoventa_model->get_all_tipopuntoventa();
                 $this->load->model('Tipo_usuario_model');
                 $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
                 $data['page_title'] = "Usuario";
@@ -551,7 +558,8 @@ private function acceso($id_rol){
                         'usuario_login' => $this->input->post('usuario_login'),
                         'estado_id' => $this->input->post('estado_id'),
                         'tipousuario_id' => $this->input->post('tipousuario_id'),
-                        'parametro_id' => $this->input->post('parametro_id')
+                        'parametro_id' => $this->input->post('parametro_id'),
+                        'tipopuntoventa_codigo' => $this->input->post('punto_venta'),
                     );
 
                     if (!$this->user_model->update_usuario($data, $usuario_id)) {

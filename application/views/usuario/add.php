@@ -10,16 +10,16 @@
             <div class="box-body">
                 <div class="row clearfix">
                     <div class="col-md-5">
-                        <label for="usuario_nombre" class="control-label">Nombre</label>
+                        <label for="usuario_nombre" class="control-label">Nombre(s) y Apellido(s)</label>
                         <div class="form-group">
-                                <input type="text" name="usuario_nombre" value="<?php echo $this->input->post('usuario_nombre'); ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <input type="text" name="usuario_nombre" value="<?php echo $this->input->post('usuario_nombre'); ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autocomplete="off"/>
                                 <span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <label for="usuario_ci" class="control-label">C.I.</label>
                         <div class="form-group">
-                                <input type="text" name="usuario_ci" value="<?php echo $this->input->post('usuario_ci'); ?>" class="form-control" id="usuario_ci" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <input type="text" name="usuario_ci" value="<?php echo $this->input->post('usuario_ci'); ?>" class="form-control" id="usuario_ci" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autocomplete="off"/>
                                 <span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
                         </div>
                     </div>
@@ -41,31 +41,11 @@
                     <div class="col-md-6">
                         <label for="usuario_email" class="control-label">Email</label>
                         <div class="form-group">
-                            <input type="email" name="usuario_email" value="<?php echo $this->input->post('usuario_email'); ?>" class="form-control" id="usuario_email" />
+                            <input type="email" name="usuario_email" value="<?php echo $this->input->post('usuario_email'); ?>" class="form-control" id="usuario_email" autocomplete="off"/>
                             <span class="text-danger"><?php echo form_error('usuario_email');?></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="user_login" class="control-label">Login</label>
-                        <div class="form-group">
-                            <input type="text" name="usuario_login" value="<?php echo $this->input->post('usuario_login'); ?>" class="form-control" id="usuario_login"  autocomplete="off" />
-                            <span class="text-danger"><?php echo form_error('usuario_login');?></span>
-                            <div id="user-result"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="usuario_clave" class="control-label">Clave</label>
-                        <div class="form-group">
-                            <input type="password" name="usuario_clave"  class="form-control" id="usuario_clave" required/>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="usuario_clave" class="control-label">Repetir Clave</label>
-                        <div class="form-group">
-                            <input type="password" name="rusuario_clave"  class="form-control" id="rusuario_clave" required/>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="parametro_id" class="control-label">Perfil</label>
                         <div class="form-group">
                             <select name="parametro_id" id="parametro_id" class="form-control">
@@ -78,11 +58,44 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <label for="punto_venta" class="control-label">Punto de venta</label>
+                        <div class="form-group">
+                            <select name="punto_venta" id="punto_venta" class="form-control" required>
+                                <option value="-1">NINGUNO</option>
+                                <?php 
+                                foreach($puntos_venta as $pv){
+                                    echo "<option value='{$pv['tipopuntoventa_codigo']}'>{$pv['tipopuntoventa_codigo']}. {$pv['tipopuntoventa_descripcion']}</option>";
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="user_login" class="control-label">Nombre de usuario</label>
+                        <div class="form-group">
+                            <input type="text" name="usuario_login" value="<?php echo $this->input->post('usuario_login'); ?>" class="form-control" id="usuario_login"  autocomplete="off" />
+                            <span class="text-danger"><?php echo form_error('usuario_login');?></span>
+                            <div id="user-result"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="usuario_clave" class="control-label">Contraseña</label>
+                        <div class="form-group">
+                            <input type="password" name="usuario_clave"  class="form-control" id="usuario_clave" required autocomplete="off"/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="usuario_clave" class="control-label">Repetir Contraseña</label>
+                        <div class="form-group">
+                            <input type="password" name="rusuario_clave"  class="form-control" id="rusuario_clave" required autocomplete="off"/>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <label for="user_imagen" class="control-label">Imagen</label>
                         <div class="form-group">
-                            <input type="file" name="usuario_imagen"  id="usuario_imagen" kl_virtual_keyboard_secure_input="on" class="form-control.input"  value="<?php echo $this->input->post('usuario_imagen'); ?>">
-                            <small class="help-block" data-fv-result="INVALID" data-fv-for="chivo" data-fv-validator="notEmpty" style=""></small>
+                            <input type="file" name="usuario_imagen"  id="usuario_imagen" kl_virtual_keyboard_secure_input="on" class="form-control input"  value="<?php echo $this->input->post('usuario_imagen'); ?>">
+                            <small class="help-block" data-fv-result="INVALID" data-fv-for="chivo" data-fv-validator="notEmpty"></small>
                             <h4 id='loading' ></h4>
                             <div id="message"></div>
                         </div>

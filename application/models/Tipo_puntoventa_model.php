@@ -16,7 +16,7 @@
             return $this->db->query(
                 "SELECT * 
                 from tipo_puntoventa
-                order by tipopuntoventa_descripcion asc"
+                order by tipopuntoventa_codigo asc"
                 )->result_array();
         }
         
