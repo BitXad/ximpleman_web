@@ -3653,7 +3653,8 @@ function buscar_clientes()
 
 function seleccionar_cliente(){
     
-    var cliente_id = document.getElementById('razon_social').value;
+    //var cliente_id = document.getElementById('razon_social').value;
+    var cliente_id = document.getElementById('nit').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/seleccionar_cliente/"+cliente_id;
     //alert(controlador);

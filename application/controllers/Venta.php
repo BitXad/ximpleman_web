@@ -3075,6 +3075,7 @@ function anular_venta($venta_id){
                     where 
                     c.cliente_id = $cliente_id";
 
+            //echo "revisar: ".$sql;
             $resultado = $this->Venta_model->consultar($sql);
             echo json_encode($resultado);
             //**************** fin contenido ***************
