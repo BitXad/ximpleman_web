@@ -888,6 +888,9 @@
                         <li>
                             <a href="<?php echo site_url('emision_paquetes');?>"><i class="fa fa-link"></i> Envio/Emision de Paquetes</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('token');?>"><i class="fa fa-align-justify"></i> Token</a>
+                        </li>
                         <?php
                         }
                         ?>
