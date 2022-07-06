@@ -18,9 +18,9 @@
 			<div class="box-body">
 				<div class="row clearfix">
                     <div class="col-md-5">
-						<label for="usuario_nombre" class="control-label">Nombre</label>
+						<label for="usuario_nombre" class="control-label">Nombre(s) y Apellido(s)</label>
 						<div class="form-group">
-							<input type="text" name="usuario_nombre" value="<?php echo $usuario['usuario_nombre'] ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+							<input type="text" name="usuario_nombre" value="<?php echo $usuario['usuario_nombre'] ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"autocomplete="off" />
 							<span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
 						</div>
 					</div>
@@ -51,16 +51,8 @@
 					<div class="col-md-6">
 						<label for="usuario_email" class="control-label">Email</label>
 						<div class="form-group">
-                                                    <input type="email" minlength="5" maxlength="250" name="usuario_email" value="<?php echo $usuario['usuario_email'] ?>" class="form-control" id="usuario_email" />
+                            <input type="email" minlength="5" maxlength="250" name="usuario_email" value="<?php echo $usuario['usuario_email'] ?>" class="form-control" id="usuario_email" autocomplete="off"/>
 							<span class="text-danger"><?php echo form_error('usuario_email');?></span>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="usuario_login" class="control-label">Login</label>
-						<div class="form-group">
-							<input type="text" name="usuario_login" value="<?php echo $usuario['usuario_login'] ?>" class="form-control" id="usuario_login" required/>
-							<span class="text-danger"><?php echo form_error('usuario_login');?></span>
-                            <div id="user-result"></div>
 						</div>
 					</div>
                     <div class="col-md-3">
@@ -78,6 +70,28 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <label for="punto_venta" class="control-label">Punto de venta</label>
+                        <div class="form-group">
+                            <select name="punto_venta" id="punto_venta" class="form-control">
+                                <option value="-1" selected>NINGUNO</option>
+                                <?php 
+                                foreach($puntos_venta as $pv){
+                                    $selected = ($pv['tipopuntoventa_codigo'] == $usuario['tipopuntoventa_codigo']) ? ' selected="selected"' : "";
+                                    echo "<option value='{$pv['tipopuntoventa_codigo']}'$selected>{$pv['tipopuntoventa_codigo']}. {$pv['tipopuntoventa_descripcion']}</option>";
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+					<div class="col-md-6">
+						<label for="usuario_login" class="control-label">Nombre de usuario</label>
+						<div class="form-group">
+							<input type="text" name="usuario_login" value="<?php echo $usuario['usuario_login'] ?>" class="form-control" id="usuario_login" required/>
+							<span class="text-danger"><?php echo form_error('usuario_login');?></span>
+                            <div id="user-result"></div>
+						</div>
+					</div>
                     <div class="col-md-3">
                         <label for="estado_id" class="control-label">Estado</label>
                         <div class="form-group">
