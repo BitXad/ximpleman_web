@@ -84,6 +84,7 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TITULO PEDIDO</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">APERTURA/CIERRA<br>DE CAJA</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TIPO DE SISTEMA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TIPO DE EMISION</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_tituldoc']; ?></td>
@@ -91,6 +92,16 @@ foreach($all_parametros as $p)
                         <td><?php echo $p['parametro_pedidotitulo']; ?></td>
                         <td><?php echo $p['parametro_manejocaja']; ?></td>
                         <td><?php echo $p['parametro_tiposistema']; ?></td>
+                        <td><?php
+                            if($p['parametro_tipoemision'] == 1){
+                                echo 'ONLINE';
+                            }else if($p['parametro_tipoemision'] == 2){
+                                echo 'OFFLINE';
+                            }else if($p['parametro_tipoemision'] == 3){
+                                echo 'MASIVA';
+                            }
+                            ?>
+                        </td>
                     </tr>
                     <tr>
                         <th style="font-size: 12px;color:black; background: rgba(0, 255, 0, 0.3);" rowspan="2" ><u>CREDITOS</u></th>

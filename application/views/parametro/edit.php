@@ -112,6 +112,16 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-md-2">
+                    <label for="parametro_tipoemision" class="control-label"> TIPO EMISION</label>
+                    <div class="form-group">
+                        <select name="parametro_tipoemision" class="form-control" id="parametro_tipoemision">
+                            <option value="1" <?php if($parametro['parametro_tipoemision']=="1"){ ?> selected <?php } ?>>ONLINE</option>
+                            <option value="2" <?php if($parametro['parametro_tipoemision']=="2"){ ?> selected <?php } ?>>OFFLINE</option>
+                            <option value="3" <?php if($parametro['parametro_tipoemision']=="3"){ ?> selected <?php } ?>>MASIVA</option>
+                        </select>
+                    </div>
+                </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(0, 255, 0, 0.3);"><u><b>CREDITOS</b></u><br>
                 <div class="col-md-2">
