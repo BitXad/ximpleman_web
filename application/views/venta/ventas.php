@@ -416,105 +416,88 @@ window.onkeydown = compruebaTecla;
         </div> 
     </div>
     <div id="collapse1" class="panel-collapse collapse">
-<!---------------------- contenido collapse ----------------------------->
-        
-          
-      
-            
-            
-
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        <!---------------------- contenido collapse ----------------------------->
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="nombre" class="control-label" style="margin-bottom: 0;">CLIENTE</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_nombre" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            
-            </div>
-
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="cliente_ci" class="control-label" style="margin-bottom: 0;">C.I.</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_ci" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_ci" value="<?php echo $cliente[0]['cliente_ci']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            
-            </div>
-        
-
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="cliente_nombrenegocio" class="control-label" style="margin-bottom: 0;">NEGOCIO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_nombrenegocio" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            
-            </div>
-        
-
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="cliente_codigo" class="control-label" style="margin-bottom: 0;">CÓDIGO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_codigo" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            
-            </div>
-            
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="cliente_direccion" class="control-label" style="margin-bottom: 0;">DIRECCIÓN</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_direccion" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_direccion" value="<?php echo $cliente[0]['cliente_direccion']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            </div>
-            
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="cliente_departamento" class="control-label" style="margin-bottom: 0;">DEPARTAMENTO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_departamento" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_departamento" value="<?php echo $cliente[0]['cliente_departamento']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?> hidden="">
+            <label for="telefono" class="control-label" style="margin-bottom: 0;">TELEFONO</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <input type="telefono" name="telefono" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="telefono"  value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
             </div>
-                    
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
-                <label for="telefono" class="control-label" style="margin-bottom: 0;">TELEFONO</label>
-                <div class="form-group" <?php echo $estilo_div; ?>>
-                    <input type="telefono" name="telefono" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="telefono"  value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
-                </div>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
+            <label for="telefono" class="control-label" style="margin-bottom: 0;">CORREO ELECTRONICO</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="email"  value="<?php echo $cliente[0]['cliente_email']; ?>"/>
             </div>
-
-
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="zona_id" class="control-label" style="margin-bottom: 0;">ZONA</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                        <select name="zona_id" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="zona_id">
-                            <option value="0">- ZONAS -</option>
-                            <?php 
-                            foreach($zonas as $categoria_clientezona)
-                            {
-                                    $selected = ($categoria_clientezona['zona_id'] == $cliente[0]['zona_id']) ? ' selected="selected"' : "";
-
-                                    echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
-                            } 
-                            ?>
-                        </select>
+                <select name="zona_id" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="zona_id">
+                    <option value="0">- ZONAS -</option>
+                    <?php 
+                    foreach($zonas as $categoria_clientezona)
+                    {
+                        $selected = ($categoria_clientezona['zona_id'] == $cliente[0]['zona_id']) ? ' selected="selected"' : "";
+                        echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
+                    }
+                    ?>
+                </select>
                 <!--<input type="text" name="cliente_zona" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['zona_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>-->
             </div>
-            </div>
-            
-            <div class="col-md-14" >
-                <br>
-                <small>
-                    <b>
-                        * Información complementaria del cliente                   
-                    </b>
-                </small>
-            </div>
-    
-<!--        
         </div>
+        <div class="col-md-14" >
+            <br>
+            <small>
+                <b>
+                    * Información complementaria del cliente                   
+                </b>
+            </small>
+        </div>
+    <!--        
+            </div>
 
-    </div>-->
+        </div>-->
 
-<!--  </div>
-</div>  -->
-<!-------------------- fin inicio collapse ---------------------->
-</div>
+    <!--  </div>
+    </div>  -->
+    <!-------------------- fin inicio collapse ---------------------->
+    </div>
     </div>
         
       

@@ -221,6 +221,7 @@ function buscarcliente(){
                     $("#cliente_direccion").val(registros[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(registros[0]["cliente_departamento"]);
                     $("#cliente_celular").val(registros[0]["cliente_celular"]);
+                    $("#email").val(registros[0]["cliente_email"]);
                     $("#tipocliente_id").val(1);
                     $("#tipocliente_porcdesc").val(0);
                     $("#tipocliente_montodesc").val(0);
@@ -263,7 +264,7 @@ function buscarcliente(){
                         $("#zona_id").val(0);
                     }
                     
-                    
+                    document.getElementById('loader_documento').style.display = 'none';
                 }
                 else //Si el cliente es nuevo o no existe
                 {
@@ -292,11 +293,12 @@ function buscarcliente(){
                         //alert(res);
                         if(res){
                             verificarnit();
+                            document.getElementById('loader_documento').style.display = 'block';
                         }
                     }
                     
                 }
-                document.getElementById('loader_documento').style.display = 'none';
+                //document.getElementById('loader_documento').style.display = 'none';
             },
             error:function(respuesta){			
                 $("#razon_social").val('SIN NOMBRE');
