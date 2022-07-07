@@ -460,9 +460,9 @@ window.onkeydown = compruebaTecla;
             </div>
         </div>
         <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="telefono" class="control-label" style="margin-bottom: 0;">CORREO ELECTRONICO</label>
+            <label for="email" class="control-label" style="margin-bottom: 0;">CORREO ELECTRONICO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="email"  value="<?php echo $cliente[0]['cliente_email']; ?>"/>
+                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="email"  value="<?php echo $cliente[0]['cliente_email']; ?>" onclick="this.select()"/>
             </div>
         </div>
         <div class="col-md-3" <?php echo $estilo_div; ?>>

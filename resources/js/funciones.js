@@ -2689,6 +2689,7 @@ function registrarventa(cliente_id)
     var usuarioprev_id = document.getElementById('usuarioprev_id').value; 
     var nit = document.getElementById('nit').value;
     var razon = document.getElementById('razon_social').value;
+    let cliente_email = document.getElementById('email').value;
     
     var moneda_id = 1; 
     var estado_id = 1; 
@@ -2757,7 +2758,8 @@ function registrarventa(cliente_id)
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
                 venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
-                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,tipo_doc_identidad:tipo_doc_identidad},
+                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,
+                tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email},
             success:function(respuesta){
                 let res = JSON.parse(respuesta);
                 registrarpuntos(cliente_id, venta_total);
@@ -2779,7 +2781,8 @@ function registrarventa(cliente_id)
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 venta_descuento:venta_descuento,orden_id:orden_id,
-                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad},
+                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad,
+                cliente_email:cliente_email},
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();

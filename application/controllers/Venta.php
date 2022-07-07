@@ -932,7 +932,8 @@ class Venta extends CI_Controller{
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
                                 }
-                                //envia
+                                $email = $this->input->post('cliente_email');
+                                $this->enviarcorreo($factura_id, $email, $razon);
                             }else{
                                 echo json_ecode("false");
                             }
@@ -4116,6 +4117,91 @@ function anular_venta($venta_id){
             return $transaccion;
         }catch(Exception $e){
             return false;
+        }
+    }
+    /* envia correo  a cliente */
+    function enviarcorreo($factura_id, $email_destino, $razon){
+        if($email_destino != ""){
+            $this->load->library('email');
+            $this->email->set_newline("\r\n");
+            $this->load->model('Configuracion_email_model');
+            $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
+            
+            $config['protocol'] = $configuracion['email_protocolo'];
+            $config['smtp_host'] = $configuracion['email_host'];
+            $config['smtp_port'] = $configuracion['email_puerto'];
+            $config['smtp_user'] = $configuracion['email_usuario'];
+            $config['smtp_pass'] = $configuracion['email_clave'];
+            $config['smtp_from_name'] = $configuracion['email_nombre'];
+            $config['priority'] = $configuracion['email_prioridad'];
+            $config['charset'] = $configuracion['email_charset'];
+            $config['smtp_crypto'] = $configuracion['email_encriptacion'];
+            $config['wordwrap'] = TRUE;
+            $config['newline'] = "\r\n";
+            $config['mailtype'] = $configuracion['email_tipo'];
+            $email_copia = '';
+            
+            $this->email->initialize($config);
+
+            $this->email->from($config['smtp_user'], $config['smtp_from_name']);
+            $this->email->to($email_destino);
+            $this->email->cc($configuracion['email_copia']);
+//            $this->email->bcc($attributes['cc']);
+            $this->email->subject("Factura Digital, gracias por comprar, vuelva pronto");
+
+            
+            $html = "<html>";
+            $html = "<head>";
+            $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
+            $html = "</head>";
+            $html = "<body>";
+            
+            $html .= "<div class='container' style='font-family: Arial'>";
+            $html .= "<div class='col-md-2' style='background:gray;'></div>";
+            
+            $html .= "<div class='col-md-10'>";
+            $html .= "<center>";
+            $html .= "<h3>Facturacion Electronica</h3>";
+            $html .= " ";
+            $html .= "<h4>Estimado Usuario</h4>";
+            $html .= "<br>";
+            //$html .= $configuracion['email_cabecera'];
+            $html .= "Le informamos que su factura electrónica se encuentra disponible y adjunta el presente correo.
+                      Tambien puede consultarla en formato PDF y XML en el siguiente enlace:";
+            $html .= "<br>";
+            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
+//            $html .= "<form method='get' action='/".$direccion."'>";
+//            $html .= "<button type='submit'>Activar mi Cuenta</button>";
+//            $html .= "</form>";
+            
+            $html .= "<br>";
+            $html .= "<br>";
+
+            //$html .= $configuracion['email_pie'];
+            $html .= "<br>";
+            $html .= "<br>";
+            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm'>".$direccion."</a>";
+           
+            $html .= "</center>";
+            $html .= "</div>";
+            
+            $html .= "<div class='col-md-2'></div>";            
+            $html .= "</div>";
+            
+            $html .= "</body>";
+            $html .= "</html>";
+            
+            
+            $this->email->message($html);
+
+            if($this->email->send()) {
+                return true;        
+            } else {
+                return false;
+            }       
+
+        }else{
+            return "correo invalido";
         }
     }
 }
