@@ -240,7 +240,6 @@ function buscarcliente(){
                             calculardesc();
                         } 
                         else{
-                            
                             if(registros[0]["tipocliente_porcdesc"]>0){                                
                                 $("#tipo_descuento").val(2); 
                                 $("#venta_descuento").val(registros[0]["tipocliente_porcdesc"]);
@@ -282,6 +281,7 @@ function buscarcliente(){
                     $("#cliente_direccion").val("-");
                     $("#cliente_departamento").val("-");
                     $("#cliente_celular").val("");
+                    $("#email").val("");
                     $("#zona_id").val(0);
                     $("#tipocliente_id").val(1);
                     $("#venta_descuento").val(0);
@@ -2522,6 +2522,7 @@ function registrarcliente()
     var cliente_direccion = document.getElementById('cliente_direccion').value;
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;
+    var cliente_email = document.getElementById('email').value;
     
     var zona_id = document.getElementById('zona_id').value;
     //if (Number.isInteger(zona_id)){
@@ -2544,7 +2545,7 @@ function registrarcliente()
                     data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
-                        tipo_doc_identidad:tipo_doc_identidad,
+                        tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,
                     },
                     
                     success:function(respuesta){ 

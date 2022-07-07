@@ -932,6 +932,9 @@ class Venta extends CI_Controller{
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
                                 }
+                                //envia
+                            }else{
+                                echo json_ecode("false");
                             }
                             
                         }
@@ -2372,6 +2375,7 @@ function modificarcliente()
             $cliente_direccion =  "'".$this->input->post('cliente_direccion')."'";
             $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
             $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
+            $cliente_email   =  "'".$this->input->post('cliente_email')."'";
             $zona_id = $this->input->post('zona_id');
             $cdi_codigoclasificador = $tipo_doc_identidad; //$this->input->post('cdi_codigoclasificador'); el JS no evnia esta variable
             
@@ -2393,6 +2397,7 @@ function modificarcliente()
                         ",cliente_direccion= ".$cliente_direccion.
                         ",cliente_departamento = ".$cliente_departamento.
                         ",cliente_celular = ".$cliente_celular.
+                        ",cliente_email = ".$cliente_email.
                         ",cdi_codigoclasificador = $cdi_codigoclasificador".
                         ",zona_id = ".$zona_id." where cliente_id = ".$cliente_id;
                 //echo $sql;
@@ -2412,6 +2417,7 @@ function modificarcliente()
                             ",cliente_nit = ".$cliente_nit.
                             ",cliente_razon = ".$cliente_razon.
                             ",cliente_telefono = ".$cliente_telefono.
+                            ",cliente_email = ".$cliente_email.
                             " where cliente_id = ".$cliente_id;
 
                     $datos = $this->Venta_model->modificarcliente($sql);   
@@ -2420,8 +2426,8 @@ function modificarcliente()
                 else{
                         $cliente_ci = $cliente_nit;
                         $cliente_nombre = $cliente_razon;
-                        $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,cliente_razon,cliente_telefono,estado_id,usuario_id) value(1,1,".
-                               $cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".$cliente_razon.",".$cliente_telefono.",1,0)";
+                        $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,cliente_razon,cliente_telefono,estado_id,usuario_id, cliente_email) value(1,1,".
+                               $cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".$cliente_razon.",".$cliente_telefono.",1,0,".$cliente_email.")";
 
                         $datos = $this->Venta_model->registrarcliente($sql);
                         return json_encode($datos);
