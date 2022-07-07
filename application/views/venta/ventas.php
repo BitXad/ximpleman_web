@@ -1,6 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/tipo_emision.js'); ?>"></script>
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -255,6 +256,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
 <input type="text" id="parametro_factura" value="<?php echo $parametro[0]['parametro_factura']; ?>" name="parametro_factura"  hidden>
 <input type="text" id="parametro_tiposistema" value="<?php echo $parametro[0]['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
+<input type="text" id="elparametro_id" value="<?php echo $parametro[0]['parametro_id']; ?>" name="elparametro_id"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 
@@ -391,11 +393,28 @@ window.onkeydown = compruebaTecla;
             ?>
             <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> <label class="btn btn-default btn-xs" for="check_agrupar"> Agrupar</label> 
             <input type="checkbox" class="form-check-input" id="busqueda_serie"><label class="btn btn-default btn-xs" for="busqueda_serie">Búsqueda por serie</label>
+            <?php if($parametro[0]["parametro_tiposistema"] != 1){ ?>
+            <a class="btn btn-default btn-xs" onclick="modal_cambiartipoemision()" title="Forma de emitir factura" >
+                <span id="eltipo_emision">
+                    <?php
+                    if($parametro[0]["parametro_tipoemision"] == 1){
+                        echo "online";
+                    }elseif($parametro[0]["parametro_tipoemision"] == 2){
+                        echo "offline";
+                    }if($parametro[0]["parametro_tipoemision"] == 3){
+                        echo "masiva";
+                    }
+                    ?>
+                </span>
+            </a>
+            <?php } ?>
         </h4>
-
-
-
-      </div>
+        <div class="row" id='loader_documento' style='display:none;'>
+            <center>
+                <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
+            </center>
+        </div> 
+    </div>
     <div id="collapse1" class="panel-collapse collapse">
 <!---------------------- contenido collapse ----------------------------->
         
@@ -1687,3 +1706,35 @@ window.onkeydown = compruebaTecla;
   </div>
 </div>
 <!-- --------------- F I N  modal Advertencia ---------------------------------->
+
+<!------------------------ INICIO modal para cambiar el tipo de emision de facturas ------------------->
+<div class="modal fade" id="modal_tipoemision" tabindex="-1" role="dialog" aria-labelledby="modal_tipoemisionlabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">CAMBIAR TIPO DE EMISION DE FACTURA</span>
+            </div>
+            <div class="modal-body">
+                <span>
+                    <div class="col-md-6">
+                        <label for="elparametro_tipoemision" class="control-label">Tipo de Emisión</label>
+                        <div class="form-group">
+                            <select name="elparametro_tipoemision" class="form-control" id="elparametro_tipoemision" required>
+                                <option value="1" <?php if($parametro[0]['parametro_tipoemision']=="1"){ ?> selected <?php } ?>>ONLINE</option>
+                                <option value="2" <?php if($parametro[0]['parametro_tipoemision']=="2"){ ?> selected <?php } ?>>OFFLINE</option>
+                                <option value="3" <?php if($parametro[0]['parametro_tipoemision']=="3"){ ?> selected <?php } ?>>MASIVA</option>
+                            </select>
+                        </div>
+                    </div>
+                </span>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a class="btn btn-success" onclick="cambiar_tipoemision()"><span class="fa fa-check"></span> Cambiar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para cambiar el tipo de emision de facturas ------------------->

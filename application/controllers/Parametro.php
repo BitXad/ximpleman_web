@@ -456,5 +456,16 @@ class Parametro extends CI_Controller{
         else
             show_error('The parametro you are trying to delete does not exist.');
     }
+    /* cambia el tipo de emision dela factura */
+    function cambiar_tipoemision(){
+        if($this->input->is_ajax_request()){
+            $parametro_id = $this->input->post('parametro_id');
+             $params = array(
+                    'parametro_tipoemision' => $this->input->post('parametro_tipoemision'),
+                );
+                $this->Parametro_model->update_parametro($parametro_id,$params);   
+            echo json_encode("ok");
+        }
+    }
     
 }

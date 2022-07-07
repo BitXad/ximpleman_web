@@ -432,11 +432,11 @@ class Dosificacion extends CI_Controller{
                 
                 /* ---------------------F I N  segun EJEMPLO ---------------------- */
                 /* ordenado segun SoapUI */
-                $reesultado = "";
+                $resultado = "";
                 $parametro = $this->Parametro_model->get_parametros();
-                if($parametro[0]["parametro_tiposistema"] != 1){
+                /*if($parametro[0]["parametro_tiposistema"] != 1){
                     $comunicacion = $this->verificar_comunicacion($token,$wsdl);
-                    if($comunicacion){
+                    if($comunicacion){*/
                         $nit_verificar = $this->input->post("nit");
                         //$nit_verificar = 5196226;
                         $parametros = ["SolicitudVerificarNit" => [
@@ -449,8 +449,9 @@ class Dosificacion extends CI_Controller{
                             "nitParaVerificacion"=>$nit_verificar]];
 
                         $resultado = $cliente->verificarNit($parametros);
-                    }
-                }
+                        //var_dump($resultado);
+                   /* }
+                }*/
                 echo json_encode($resultado);
                 //print_r($resultado);
                 /*$elres = $resultado->RespuestaVerificarNit->mensajesList;
@@ -458,11 +459,11 @@ class Dosificacion extends CI_Controller{
                 echo "Codigo: ".$elres->codigo."<br>";
                 echo "Descripción: ".$elres->descripcion."<br>";
                 echo "Transacción: ".$elres2;*/
-            }else{                 
-                show_404();
+            }else{
+                return false; //show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            return false;
         }
     }
     
@@ -2582,6 +2583,35 @@ class Dosificacion extends CI_Controller{
             $actividadSecundaria = $this->input->post('actividadSecundaria');
             $leyendas = $this->Dosificacion_model->get_leyendas_por_actividad($actividadPrincipal, $actividadSecundaria); 
             echo json_encode($leyendas);
+        }
+    }
+    /*
+     * verifica la comunicacion en compra y venta
+     */
+    function verificar_lacomunicacion(){
+        try{
+            $opts = array(
+                'http' => array(
+                    'header' => "" // "apiKey: TokenApi $token"
+                )
+            );
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+            $wsdl = $dosificacion['dosificacion_factura'];
+            $context = stream_context_create($opts);
+            $cliente = new \SoapClient($wsdl, [
+                'stream_context'    => $context,
+                'cache_wsdl'        => WSDL_CACHE_NONE,
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+            ]);
+            
+            $resultados = $cliente->verificarComunicacion();
+            //var_dump($resultados);
+            $transaccion = $resultados->return->transaccion; //
+            //var_dump($transaccion);
+            echo json_encode($transaccion);
+        }catch(Exception $e){
+            echo json_encode("false");
         }
     }
 }

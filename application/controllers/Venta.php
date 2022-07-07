@@ -732,8 +732,7 @@ class Venta extends CI_Controller{
                             $cadFechahora = str_replace("T", "", $cadFechahora);
                             $cadFechahora = str_replace(":", "", $cadFechahora);
                             $cadFechahora = str_replace(".", "", $cadFechahora);
-        
-                            $tipo_emision = 1;//1 online
+                            $tipo_emision = $parametro[0]['parametro_tipoemision'];
                             $tipo_factura = $dosificacion[0]['tipofac_codigo'];
                             $tipo_documento_sector = $dosificacion[0]['docsec_codigoclasificador'];
                             $pos = $dosificacion[0]['dosificacion_puntoventa'];
@@ -873,7 +872,7 @@ class Venta extends CI_Controller{
                             fwrite($fp, $gzdata);
                             fclose($fp);
                             //para borrar comprime en tar-gz
-                            $eltipo_emision = 1;
+                            $eltipo_emision = $parametro[0]['parametro_tipoemision'];
                             if($eltipo_emision == 2){
                                 $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
                                 $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
@@ -3571,7 +3570,7 @@ function anular_venta($venta_id){
                 $cadFechahora = str_replace(".", "", $cadFechahora);
                 //echo $cadFechahora."QWE";
                 //$fecha_hora = str_replace(".", "", $fecha_hora_aux);
-                $tipo_emision = 1;//1 online
+                $tipo_emision = $parametro[0]['parametro_tipoemision'];
                 $tipo_factura = $dosificacion['tipofac_codigo'];
                 $tipo_documento_sector = $dosificacion['docsec_codigoclasificador'];
                 $pos = $dosificacion['dosificacion_puntoventa'];
@@ -3713,7 +3712,13 @@ function anular_venta($venta_id){
                     // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
                     fwrite($fp, $gzdata);
                     fclose($fp);
-
+                    
+                    $eltipo_emision = $parametro[0]['parametro_tipoemision'];
+                            if($eltipo_emision == 2){
+                                $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
+                                $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
+                                $p1 = $p->compress(Phar::GZ);
+                            }
                     //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
                     //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
 

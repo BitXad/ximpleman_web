@@ -151,7 +151,7 @@ class Factura extends CI_Controller{
             $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
         }else{
             $ruta      = $factura[0]['factura_ruta'];
-            $cuf       = $factura[0]['factura_cufd'];
+            $cuf       = $factura[0]['factura_cuf'];
             $tamanio   = $factura[0]['factura_tamanio'];
             // nuevo
             $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;

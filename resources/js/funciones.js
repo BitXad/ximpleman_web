@@ -196,10 +196,10 @@ function seleccionar(opcion) {
 // sino existe.. deja abierta la posibilidad de ingresar datos de nuevos de clientes
 function buscarcliente(){
 
-   var base_url = document.getElementById('base_url').value;
-   var nit = document.getElementById('nit').value;
-   var controlador = base_url+'venta/buscarcliente';
- 
+    var base_url = document.getElementById('base_url').value;
+    var nit = document.getElementById('nit').value;
+    var controlador = base_url+'venta/buscarcliente';
+    document.getElementById('loader_documento').style.display = 'block';
     $.ajax({url:controlador,
             type:"POST",
             data:{nit:nit},
@@ -285,18 +285,25 @@ function buscarcliente(){
                     $("#tipocliente_id").val(1);
                     $("#venta_descuento").val(0);
                     let tipo_sistema = document.getElementById('parametro_tiposistema').value;
+                    
                     if(tipo_sistema != 1){
-                        verificarnit();
+                        let result = verificar_conexion_enventas();
+                        let res = result;
+                        //alert(res);
+                        if(res){
+                            verificarnit();
+                        }
                     }
                     
                 }
-
+                document.getElementById('loader_documento').style.display = 'none';
             },
             error:function(respuesta){			
                 $("#razon_social").val('SIN NOMBRE');
                 document.getElementById('telefono').focus();
                 
                 $("#cliente_id").val(0);
+                document.getElementById('loader_documento').style.display = 'none';   
             }                
     }); 
 
@@ -5036,11 +5043,12 @@ function mostrar(forma_id,glosa_banco){
     $(`#${glosa_banco}`).css('display',forma != 1 ? 'block':'none');
 }
 
-/*  */
+/* verifica si el nit/ci es correcto */
 function verificarnit(){
     var base_url = document.getElementById('base_url').value;
     var nit = document.getElementById('nit').value;
     var controlador = base_url+'dosificacion/verificarNit';
+    document.getElementById('loader_documento').style.display = 'block';
     $.ajax({url:controlador,
             type:"POST",
             data:{nit:nit},
@@ -5060,11 +5068,34 @@ function verificarnit(){
                 /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
                     
                 }*/
-
+                document.getElementById('loader_documento').style.display = 'none';
             },
             error:function(respuesta){
                 alert("Algo salio mal; por favor verificar sus datos!.");
+                document.getElementById('loader_documento').style.display = 'none';
             }                
     }); 
 
+}
+/* verifica si el nit/ci es correcto */
+function verificar_conexion_enventas(){
+    var base_url = document.getElementById('base_url').value;
+    var nit = document.getElementById('nit').value;
+    var controlador = base_url+'dosificacion/verificar_lacomunicacion';
+    let resultado = "";
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{nit:nit},
+            async: false,
+            success:function(respuesta){
+                let registros = JSON.parse(respuesta);
+                //alert(registros);
+                resultado = registros;
+            },
+            error:function(respuesta){
+                resultado = false;
+                //alert("Algo salio mal; por favor verificar sus datos!.");
+            }  
+    });
+    return resultado;
 }
