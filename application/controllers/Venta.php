@@ -4148,8 +4148,9 @@ function anular_venta($venta_id){
             $this->email->cc($configuracion['email_copia']);
 //            $this->email->bcc($attributes['cc']);
             $this->email->subject("Factura Digital, gracias por comprar, vuelva pronto");
-
-            
+            $base_url = explode('/', base_url());
+            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+            $this->email->attach($directorio."compra_venta".$factura_id.".xml");
             $html = "<html>";
             $html = "<head>";
             $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
