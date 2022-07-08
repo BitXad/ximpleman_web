@@ -136,11 +136,13 @@ function emision_paquetes(){
                         
                         let mensaje = "";
                         if(registros.codigoDescripcion == "PENDIENTE"){
+                            
                             mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
                             mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
                             mensaje += "Codigo recepcion: "+registros.codigoRecepcion+"\n";
                             mensaje += "Codigo transacción: "+registros.transaccion+"\n";
-                        }else if(registros.codigoDescripcion == "RECHAZADA"){
+                        
+                    }else if(registros.codigoDescripcion == "RECHAZADA"){
                             mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
                             mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
                             mensaje += "Lista de mensajes: \n";

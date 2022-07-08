@@ -437,11 +437,16 @@ class Venta_model extends CI_Model
                 f.factura_tamanio, f.factura_cuf, f.factura_fechahora, f.cdi_codigoclasificador, 
                 f.docsec_codigoclasificador, f.factura_codigoestado, f.factura_codigorecepcion, 
                 f.factura_transaccion, f.factura_mensajeslist, f.factura_codigocliente, 
-                f.factura_codigodescripcion, f.factura_enviada
+                f.factura_codigodescripcion, f.factura_enviada,
+                e.recpaquete_id, e.recpaquete_codigodescripcion, 
+                e.recpaquete_codigoestado, e.recpaquete_codigorecepcion, 
+                e.recpaquete_transaccion, e.recpaquete_mensajeslist, 
+                e.recpaquete_fechahora, e.codigo_evento
                 
                 from consventastotales v
                 left join banco b on b.banco_id = v.banco_id
                 left join factura f on f.venta_id = v.venta_id
+                left join recepcion_paquetes e on e.venta_id = v.venta_id
                 where 1 = 1 
                 ".$condicion."
                 order by v.venta_id desc";

@@ -77,6 +77,20 @@ class Emision_paquetes extends CI_Controller{
         try{
             if ($this->input->is_ajax_request()) {
                 
+//                //Verificar si existe el archivo
+//                $nom_archivo =  $this->input->post("nombre_archivo");
+//                $base_url = explode('/', base_url());
+//                $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+//                
+//                if(isset($nom_archivo) && !empty($nom_archivo)){
+//                    
+//                    if(file_exists($directorio.$nom_archivo)){
+//                        
+//                //Verificar si existe el archivo
+//                        
+
+                
+                
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
@@ -106,6 +120,8 @@ class Emision_paquetes extends CI_Controller{
                 $codigo_evento =  $this->input->post("codigo_evento");
                 /*$nom_archivo = "compra_venta1395.tar.gz";
                 $codigo_evento = 495914;*/
+                $venta_id = substr($nom_archivo,12, strlen($nom_archivo));
+                
                 $handle = fopen($directorio.$nom_archivo, "rb");
                 $contents = fread($handle, filesize($directorio.$nom_archivo));
                 fclose($handle);
@@ -147,6 +163,7 @@ class Emision_paquetes extends CI_Controller{
                         'recpaquete_transaccion' => $res->transaccion,
                         'recpaquete_fechahora' => $fecha_hora1,
                         'codigo_evento' => $codigo_evento,
+                        'venta_id' => $venta_id,
                     );
                 }else{
                     $cad = $res->mensajesList;
@@ -161,15 +178,24 @@ class Emision_paquetes extends CI_Controller{
                         'recpaquete_mensajeslist' => $mensajecadena,
                         'recpaquete_fechahora' => $fecha_hora1,
                         'codigo_evento' => $codigo_evento,
+                        'venta_id' => $venta_id,
                     );
                 }
                 $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
                 
                 echo json_encode($res);
                 
+                
+                
+                
+                
             }else{                 
                 show_404();
             }
+                
+                
+                
+                
         }catch (Exception $e){
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }

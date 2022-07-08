@@ -3171,13 +3171,26 @@ function tabla_ventas(filtro)
                     html += "                           <br><span><b>"+(v[i]['banco_nombre'] == null ? '':v[i]['banco_nombre'])+"</b></span> ";
                     
                     
+                    //alert(v[i]['recpaquete_codigorecepcion']);
+                    var paquete = "";                    
+                    paquete = v[i]['recpaquete_codigorecepcion'];
+                    
                     if(v[i]['factura_enviada'] == 1){
                         html += "<br><span style='padding:0; border:0' class='btn btn-info btn-xs' title='"+v[i]['factura_mensajeslist']+"'><b><small> ENVIADA </small></b></span> ";
                     }else{
-//                        html += "<br><span style='padding:0; border:0' class='btn btn-danger btn-xs' title='"+v[i]['factura_mensajeslist']+"'><b><small>NO ENVIADA</small></b></span> ";
-                        
-                          html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['venta_id']+");'>";
-                          html += "<fa class='fa fa-chain-broken'> </fa> <small>NO ENVIADA</small> </button>";
+
+                         if (paquete==null ){
+                             
+                              html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['venta_id']+");'>";
+                              html += "<fa class='fa fa-chain-broken'> </fa> <small>NO ENVIADA</small> </button>";
+
+                        }else{
+                                                           
+                              html += "<button type='button' class='btn btn-warning btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalvalidacion' onclick='cargar_codigovalidacion("+JSON.stringify(paquete)+");'>";
+                              html += "<fa class='fa fa-chain'> </fa> VALID. PENDIENTE </button>";
+                              
+                         }
+                             
                         
                     }
                     
@@ -5126,6 +5139,18 @@ function verificar_conexion_enventas(){
 }
 
 function cargar_eventos(venta_id){
-    $("#nombre_archivo").val("compra_venta"+venta_id+".xml.gtz")
     
+    var base_url = document.getElementById('base_url').value;
+    var ubicacion = base_url+'resources/xml/';
+    var archivo = "compra_venta"+venta_id+".xml.tgz";
+    
+    $("#nombre_archivo").val(archivo);
+   
+}
+
+function cargar_codigovalidacion(codigo_recepcion){
+    
+    //alert(codigo_recepcion);
+    $("#codigo_recepcion").val(codigo_recepcion);
+   
 }
