@@ -942,7 +942,7 @@ class Venta extends CI_Controller{
                                     $this->Factura_model->update_factura($factura_id, $params);
                                 }
                                 $email = $this->input->post('cliente_email');
-                                $this->enviarcorreo($factura_id, $email, $razon);
+                                $this->enviarcorreo($venta_id, $factura_id, $email, $razon);
                             }else{
                                 echo json_encode("false");
                             }
@@ -4149,7 +4149,7 @@ function anular_venta($venta_id){
     }
 
     /* envia correo  a cliente */
-    function enviarcorreo($factura_id, $email_destino, $razon){
+    function enviarcorreo($venta_id, $factura_id, $email_destino, $razon){
         if($email_destino != ""){
             $this->load->library('email');
             $this->email->set_newline("\r\n");
@@ -4196,8 +4196,10 @@ function anular_venta($venta_id){
             $html .= "<h4>Estimado Usuario</h4>";
             $html .= "<br>";
             //$html .= $configuracion['email_cabecera'];
-            $html .= "Le informamos que su factura electrónica se encuentra disponible y adjunta el presente correo.
-                      Tambien puede consultarla en formato PDF y XML en el siguiente enlace:";
+            $html .= "Le informamos que su factura electrónica se encuentra disponible para verlo en el siguiente enlace: <br>";
+            $direccion = base_url("tufactura/verfactura/".md5($venta_id));
+            $html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
+            $html .= "<br>Tambien le enviamos el XML adjunto";
             $html .= "<br>";
             //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
 //            $html .= "<form method='get' action='/".$direccion."'>";

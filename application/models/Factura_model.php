@@ -242,5 +242,19 @@ class Factura_model extends CI_Model
         return $this->db->query($sql)->result_array();
     }
     
+    function get_tufactura_venta($venta_id)
+    {
+        $sql = "select f.*,t.tipotrans_nombre, u.usuario_nombre, m.moneda_codigoclasificador, m.moneda_tc, moneda_descripcion, c.cliente_codigo
+                from factura f
+                left join venta v on v.venta_id = f.venta_id
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join moneda m on m.moneda_id = v.moneda_id
+                left join tipo_transaccion t on t.tipotrans_id = f.tipotrans_id
+                left join usuario u on u.usuario_id = f.usuario_id
+                where MD5(f.venta_id) = '".$venta_id."'";
+        $factura = $this->db->query($sql)->result_array();
+        return $factura;
+        
+    }
     
 }
