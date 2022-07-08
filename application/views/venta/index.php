@@ -1,6 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/emision_paquetes.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     window.onload = function() {
         buscar_ventas()
@@ -89,6 +90,7 @@
                     <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Ventas</a>
                     <?php if($rolusuario[186-1]['rolusuario_asignado'] == 1){ ?>
                     <a class="btn btn-success btn-sm" onclick="imprimirtodo()" title="Imprime todas la ventas" style="background-color: #761c19"><span class="fa fa-print"></span> Imprimir</a>
+                    <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-success btn-sm" title="Registro de eventos significativos" style="background-color: #8BC34A" target="_BLANK"><span class="fa fa-print"></span> Eventos Significativos</a>
                     <?php } ?>
                 </div>
 </div>
@@ -475,3 +477,86 @@
     }
 </script>
 <!------------------------ FIN modal para Modificar fecha de una venta ------------------->
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- EMISION DE PAQUETES ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+<div class="modal fade" id="modalpaquetes" tabindex="-1" role="dialog" aria-labelledby="modalpaquetes" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">SOLICITUD SERVICIO RECEPCION PAQUETE</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id='loader'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="row" id='loader2'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="col-md-12">
+                    <label for="codigo_evento" class="control-label"><span class="text-danger">*</span>Código Evento</label>
+<!--                    <div class="form-group">
+                        <input type="text" name="codigo_evento" class="form-control" id="codigo_evento" />
+                    </div>
+                    -->
+                    <select name="codigo_evento" class="form-control" id="codigo_evento" >
+                        <?php 
+                            foreach($eventos as $evento){ ?>
+                                <option value="<?php echo $evento['registroeventos_codigo']; ?>">    
+                                    <?php echo $evento['registroeventos_codigo']." [".$evento['registroeventos_puntodeventa']."] ".$evento['registroeventos_detalle']." ".$evento['registroeventos_inicio']; ?>
+                                </option>
+                        <?php    } ?>
+                            
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Nombre Archivo</label>
+                    <div class="form-group">
+                        <input type="text" name="nombre_archivo" value="compra_venta00.tar.gz" class="form-control" id="nombre_archivo" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" onclick="emision_paquetes()"><fa class="fa fa-floppy-o"></fa> Recepcion de Paquetes</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalvalidacion" tabindex="-1" role="dialog" aria-labelledby="modalvalidacion" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">SOLICITUD SERVICIO VALIDACION RECEPCION PAQUETE</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id='loader3' style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                
+                <div class="col-md-12">
+                    <label for="codigo_recepcion" class="control-label"><span class="text-danger">*</span>Codigo Recepción</label>
+                    <div class="form-group">
+                        <input type="text" name="codigo_recepcion" class="form-control" id="codigo_recepcion" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-facebook" onclick="emisionpaquetes_vacio()"><fa class="fa fa-floppy-o"></fa> Validación de Paquetes</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

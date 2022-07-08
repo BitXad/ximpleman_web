@@ -39,6 +39,7 @@ class Venta extends CI_Controller{
             'Moneda_model',
             'Banco_model',
             'Caja_model',
+            'Eventos_significativos_model',
         ]);
         
 
@@ -103,6 +104,9 @@ class Venta extends CI_Controller{
         $data['estado'] = $this->Estado_model->get_tipo_estado(1);
         $data['usuario'] = $this->Venta_model->get_usuarios();
         $data['modelos_c'] = $this->Modelo_contrato_model->get_all_modelo_contrato();
+
+        $puntoventa = 0; //$this->session_data['tipopuntoventa_codigo'];
+        $data['eventos'] = $this->Eventos_significativos_model->consultar("select * from registro_eventos where registroeventos_puntodeventa = ".$puntoventa);
         $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
         if(sizeof($dosificacion)>0){
             $data['dosificado'] = 1;
