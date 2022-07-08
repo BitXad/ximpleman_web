@@ -7,6 +7,7 @@
 class Venta extends CI_Controller{
     
     private $caja_id = 0;
+    private $parametros;
     
     function __construct()
     {
@@ -45,6 +46,10 @@ class Venta extends CI_Controller{
         
         $this->load->helper('xml');
         $this->load->helper('validacionxmlxsd_helper');
+        
+        //Carga los parametros en una variable global
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
 
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -672,9 +677,9 @@ class Venta extends CI_Controller{
                     // $parametro = $this->Parametro_model->get_parametro(1);
                     $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
                     // PARA NUEVO SISTEMA DE FACTURACION
-                    $parametro = $this->Parametro_model->get_parametros();
+                    //$parametro = $this->Parametro_model->get_parametros(); replazado por $parametros, variable global
                     $tamanio_hoja = 2;
-                    if($parametro[0]['parametro_tipoimpresora'] == "FACTURADORA"){
+                    if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
                         $tamanio_hoja = 1;
                     }
                     // PARA NUEVO SISTEMA DE FACTURACION
@@ -706,7 +711,7 @@ class Venta extends CI_Controller{
                         $factura_actividad     = $dosificacion[0]['dosificacion_actividad'];
                         $factura_enviada = 0;// 0 = falso
                         // $tipo_doc_identidad    = $tipo_doc_identidad;
-                        if($parametro[0]['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
+                        if($this->parametros['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
                             // facturacion nueva
                             $cliente_codigo = $this->Cliente_model->get_codigo_cliente($factura_nit, $factura_razonsocial);
                             $factura_tokendelegado   = $dosificacion[0]['dosificacion_tokendelegado'];
@@ -732,7 +737,7 @@ class Venta extends CI_Controller{
                             $cadFechahora = str_replace("T", "", $cadFechahora);
                             $cadFechahora = str_replace(":", "", $cadFechahora);
                             $cadFechahora = str_replace(".", "", $cadFechahora);
-                            $tipo_emision = $parametro[0]['parametro_tipoemision'];
+                            $tipo_emision = $this->parametros['parametro_tipoemision'];
                             $tipo_factura = $dosificacion[0]['tipofac_codigo'];
                             $tipo_documento_sector = $dosificacion[0]['docsec_codigoclasificador'];
                             $pos = $dosificacion[0]['dosificacion_puntoventa'];
@@ -760,7 +765,7 @@ class Venta extends CI_Controller{
                     $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
                     $this->Venta_model->ejecutar($sql);
                         
-                        if($parametro[0]['parametro_tiposistema'] == 1){
+                        if($this->parametros['parametro_tiposistema'] == 1){
                             // sistema de facturacion antiguo
                                 $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                                 factura_fecha, factura_hora, factura_subtotal, 
@@ -845,9 +850,9 @@ class Venta extends CI_Controller{
                         WHERE 
                             usuario_id=".$usuario_id.")";
                         $this->Factura_model->ejecutar($sql);               
-                        if($parametro[0]['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
+                        if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
                         // el parametro uno es para computarizada en linea ojo
-                        $computarizada_enlinea = $parametro[0]['parametro_tiposistema'] == 2 ? 1:2;// 1 para computarizada y 2 para electronica
+                        $computarizada_enlinea = $this->parametros['parametro_tiposistema'] == 2 ? 1:2;// 1 para computarizada y 2 para electronica
                         $factura = $this->Factura_model->get_factura_id($factura_id);
                         $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
                         $empresa = $this->Empresa_model->get_empresa(1);
@@ -872,7 +877,7 @@ class Venta extends CI_Controller{
                             fwrite($fp, $gzdata);
                             fclose($fp);
                             //para borrar comprime en tar-gz
-                            $eltipo_emision = $parametro[0]['parametro_tipoemision'];
+                            $eltipo_emision = $this->parametros['parametro_tipoemision'];
                             if($eltipo_emision == 2){
                                 $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
                                 $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
@@ -935,7 +940,7 @@ class Venta extends CI_Controller{
                                 $email = $this->input->post('cliente_email');
                                 $this->enviarcorreo($factura_id, $email, $razon);
                             }else{
-                                echo json_ecode("false");
+                                echo json_encode("false");
                             }
                             
                         }
@@ -2679,16 +2684,35 @@ function anular_venta($venta_id){
         
         if ($this->input->is_ajax_request()) {
             
-            $filtro = $this->input->post('filtro');
+            if($this->parametros['parametro_tiposistema'] == 1){// Si es diferente a Sistema de facturacion computarizado(1)
             
-            if ($filtro == null){
-                $result = $this->Venta_model->get_ventas(" and v.venta_fecha = date(now())");
+                $filtro = $this->input->post('filtro');
+
+                if ($filtro == null){
+                    $result = $this->Venta_model->get_ventas(" and v.venta_fecha = date(now())");
+                }
+                else{
+                    $result = $this->Venta_model->get_ventas($filtro);            
+                }
+                
             }
             else{
-                $result = $this->Venta_model->get_ventas($filtro);            
-            }
+            
+                $filtro = $this->input->post('filtro');
 
-           echo json_encode($result);
+                if ($filtro == null){
+                    $result = $this->Venta_model->get_ventas_enlinea(" and v.venta_fecha = date(now())");
+                }
+                else{
+                    $result = $this->Venta_model->get_ventas_enlinea($filtro);            
+                }
+                
+                
+                
+            }
+            
+            echo json_encode($result);
+           
             
         }
         else
@@ -3497,10 +3521,10 @@ function anular_venta($venta_id){
             //$dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
             // PARA NUEVA FACTURACION
-            $parametro = $this->Parametro_model->get_parametros();
+            //$parametro = $this->Parametro_model->get_parametros(); Se cambio por $parametros, variable global
             $empresa = $this->Empresa_model->get_empresa(1);
             $tamanio_hoja = 2;
-            if($parametro[0]['parametro_tipoimpresora'] == "FACTURADORA"){
+            if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
                 $tamanio_hoja = 1;
             }
             // PARA NUEVA FACTURACION
@@ -3539,7 +3563,7 @@ function anular_venta($venta_id){
             $factura_sfc = $dosificacion["dosificacion_sfc"];
             $factura_actividad = $dosificacion["dosificacion_actividad"];
             // PARA NUEVA FACTURACION
-            if($parametro[0]['parametro_tiposistema'] != 1){
+            if($this->parametros['parametro_tiposistema'] != 1){
                 $cliente_codigo = $this->Cliente_model->get_codigo_cliente($nit_factura, $razon_social);
                 $factura_tokendelegado   = $dosificacion['dosificacion_tokendelegado'];
                 $factura_ambiente        = $dosificacion['dosificacion_ambiente'];
@@ -3577,7 +3601,7 @@ function anular_venta($venta_id){
                 $cadFechahora = str_replace(".", "", $cadFechahora);
                 //echo $cadFechahora."QWE";
                 //$fecha_hora = str_replace(".", "", $fecha_hora_aux);
-                $tipo_emision = $parametro[0]['parametro_tipoemision'];
+                $tipo_emision = $this->parametros['parametro_tipoemision'];
                 $tipo_factura = $dosificacion['tipofac_codigo'];
                 $tipo_documento_sector = $dosificacion['docsec_codigoclasificador'];
                 $pos = $dosificacion['dosificacion_puntoventa'];
@@ -3620,7 +3644,7 @@ function anular_venta($venta_id){
             $this->Venta_model->ejecutar($sql);
             
             
-            if($parametro[0]['parametro_tiposistema'] == 1){ //1 = istema de facturacion computarizado
+            if($this->parametros['parametro_tiposistema'] == 1){ //1 = istema de facturacion computarizado
                 // antiguo sistema de facturacion
                 $sql = "insert into factura(estado_id, factura_fechaventa, 
                         factura_fecha, factura_hora, factura_subtotal, 
@@ -3694,7 +3718,7 @@ function anular_venta($venta_id){
                 $sql = "update venta set venta_tipodoc = 1 where venta_id = ".$venta_id;
                 $this->Venta_model->ejecutar($sql);
             }
-            if($parametro[0]['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
+            if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
                 // el parametro uno es para computarizada en linea ojo
                 $computarizada_enlinea = 1;
                 $factura = $this->Factura_model->get_factura_id($factura_id);
@@ -3720,7 +3744,7 @@ function anular_venta($venta_id){
                     fwrite($fp, $gzdata);
                     fclose($fp);
                     
-                    $eltipo_emision = $parametro[0]['parametro_tipoemision'];
+                    $eltipo_emision = $this->parametros['parametro_tipoemision'];
                             if($eltipo_emision == 2){
                                 $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
                                 $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
@@ -4119,6 +4143,7 @@ function anular_venta($venta_id){
             return false;
         }
     }
+
     /* envia correo  a cliente */
     function enviarcorreo($factura_id, $email_destino, $razon){
         if($email_destino != ""){
@@ -4205,4 +4230,20 @@ function anular_venta($venta_id){
             return "correo invalido";
         }
     }
+
+    
+    function email(){
+
+            $to = $this->input->post('empresa_email');
+            $from = $this->input->post('froemail');
+            $subject = $this->input->post('nomemail');
+            $message = $this->input->post('mensaje12');
+            $headers = "From: ".$from."";
+             
+            mail($to, $subject, $message, $headers);
+                
+            redirect('website/index/1');
+            
+    }    
+    
 }

@@ -88,10 +88,6 @@ class Parametro_model extends CI_Model
      */
     function get_parametros()
     {         
-//        $sql = "select * from parametros";
-//        $parametros = $this->db->query($sql)->result_array();
-//        return $parametros;
-
 
         if (isset($this->session_data['usuario_id'])){
         
@@ -102,8 +98,7 @@ class Parametro_model extends CI_Model
             
             $sql = "select p.*,m.moneda_tc, m.moneda_descripcion  from parametros p, moneda m where p.moneda_id = m.moneda_id and parametro_id = (select min(parametro_id) from parametros)";            
 
-        }
-        
+        }        
         $parametros = $this->db->query($sql)->result_array();
         return $parametros;
         
