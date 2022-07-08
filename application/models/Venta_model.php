@@ -427,6 +427,29 @@ class Venta_model extends CI_Model
 
         return $ventas;
     }
+
+    function get_ventas_enlinea($condicion)
+    {    
+
+        $sql = "select v.*, b.banco_nombre,f.factura_tokendelegado, f.factura_ambiente, 
+                f.factura_cuis, f.factura_cufd, f.factura_modalidad, f.factura_codsistema, 
+                f.factura_puntoventa, f.factura_sectoreconomico, f.factura_ruta, 
+                f.factura_tamanio, f.factura_cuf, f.factura_fechahora, f.cdi_codigoclasificador, 
+                f.docsec_codigoclasificador, f.factura_codigoestado, f.factura_codigorecepcion, 
+                f.factura_transaccion, f.factura_mensajeslist, f.factura_codigocliente, 
+                f.factura_codigodescripcion, f.factura_enviada
+                
+                from consventastotales v
+                left join banco b on b.banco_id = v.banco_id
+                left join factura f on f.venta_id = v.venta_id
+                where 1 = 1 
+                ".$condicion."
+                order by v.venta_id desc";
+        
+        $ventas = $this->db->query($sql)->result_array();
+
+        return $ventas;
+    }
       
     function mostrar_ventas($condicion)
     {    

@@ -217,7 +217,7 @@ border-bottom : 1px solid #aaa;
                             <td align="center"><b>UNIDAD <br>DE MEDIDA</b></td>
                             <td align="center"><b>DESCRIPCI&Oacute;N</b></td>
                             <td align="center"><b>PRECIO<br> UNITARIO</b></td>               
-                            <td align="center"><b>DESCUENTO</b></td>
+                            <td align="center"><b>DESC.</b></td>
                             <td align="center"><b>ICE %</b></td>
                             <td align="center"><b>ICE ESP.</b></td>
                             <td align="center"><b>SUBTOTAL</b></td>
@@ -240,8 +240,8 @@ border-bottom : 1px solid #aaa;
                         ?>
                         <tr style="border: 1px solid black">
                             <td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"> <?= $d['detallefact_codigo']; ?></font></td>
-                            <td align="right" style="padding: 0; padding-right:3px;"><font style="size:7px; font-family: arial"> <?= $d['detallefact_cantidad']; ?></font></td>
-                            <td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"> <?= $d['producto_unidad'] ?></font></td>
+                            <td align="right" style="padding: 0; padding-right:3px;"><font style="size:7px; font-family: arial"><center> <?= $d['detallefact_cantidad']; ?></center></font></td>
+                            <td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"><center>  <?= $d['producto_unidad'] ?></center></font></td>
                             <td colspan="1" style="padding: 0; line-height: 10px;">
                                 <font style="size:7px; font-family: arial; padding-left:3px"> 
                                     <?php echo $d['detallefact_descripcion']; ?>

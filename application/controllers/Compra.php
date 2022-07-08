@@ -1349,14 +1349,17 @@ function ingresarproducto()
 
 
         $existe = "SELECT producto_id from detalle_compra_aux WHERE compra_id=".$compra_id." and producto_id=". $producto_id." ";
-        $exis=$this->db->query($existe)->result_array();
-        if ($exis[0]['producto_id'] > 0) {
+        $exis = $this->db->query($existe)->result_array();
+        
+        
+        if ( $exis[0]['producto_id'] > 0) {
+            
          $sumar="UPDATE detalle_compra_aux
           SET detallecomp_cantidad=detallecomp_cantidad+".$nuevacan.",
               detallecomp_subtotal = detallecomp_subtotal+(".$nuevacan." * detallecomp_costo),
               detallecomp_total = detallecomp_total+(".$nuevacan." * detallecomp_costo) - ".$descuento."  
-              WHERE compra_id = ".$compra_id." and producto_id = ".$producto_id."
-    ";
+              WHERE compra_id = ".$compra_id." and producto_id = ".$producto_id." ";
+         
          $this->db->query($sumar);
         }else{
           $sql = "INSERT into detalle_compra_aux(
@@ -1390,6 +1393,7 @@ function ingresarproducto()
         
         from producto where producto_id = ".$producto_id."
     )";
+          
     $this->db->query($sql);
     $detalles = $this->db->insert_id();
         }

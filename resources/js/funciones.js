@@ -82,6 +82,8 @@ function validar(e,opcion) {
         }
         
         if (opcion==1){   //si la pulsacion proviene del nit  
+            
+             verificarnit();
             nit = document.getElementById('nit').value;            
             if (nit==''){
                 var cod = generar_codigo();
@@ -3167,8 +3169,22 @@ function tabla_ventas(filtro)
                     html += "                       <td align='center'  style='padding:0;' bgcolor='"+v[i]['estado_color']+"'>"+v[i]['forma_nombre'];
                     html += "                           <br> "+v[i]['tipotrans_nombre'];
                     html += "                           <br><span><b>"+(v[i]['banco_nombre'] == null ? '':v[i]['banco_nombre'])+"</b></span> ";
-                    html += "                           <br><span><b>"+(v[i]['factura_enviada'] == 1 ? 'ENVIADA':'NO ENVIADA')+"</b></span> ";
-                    html += "                           <br><br><span class='btn btn-facebook btn-xs' ><b>"+v[i]['estado_descripcion']+"</b></span> ";
+                    
+                    
+                    if(v[i]['factura_enviada'] == 1){
+                        html += "<br><span style='padding:0; border:0' class='btn btn-info btn-xs' title='"+v[i]['factura_mensajeslist']+"'><b><small> ENVIADA </small></b></span> ";
+                    }else{
+//                        html += "<br><span style='padding:0; border:0' class='btn btn-danger btn-xs' title='"+v[i]['factura_mensajeslist']+"'><b><small>NO ENVIADA</small></b></span> ";
+                        
+                          html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['venta_id']+");'>";
+                          html += "<fa class='fa fa-chain-broken'> </fa> <small>NO ENVIADA</small> </button>";
+                        
+                    }
+                    
+                    
+                    
+                    
+                    html += "                           <br><span class='btn btn-facebook btn-xs' ><b>"+v[i]['estado_descripcion']+"</b></span> ";
                     html += "                       </td>";
 
                     html += "                       <td style='padding:0;'><center>";
@@ -5051,10 +5067,13 @@ function mostrar(forma_id,glosa_banco){
 
 /* verifica si el nit/ci es correcto */
 function verificarnit(){
+    
     var base_url = document.getElementById('base_url').value;
     var nit = document.getElementById('nit').value;
     var controlador = base_url+'dosificacion/verificarNit';
-    document.getElementById('loader_documento').style.display = 'block';
+
+    document.getElementById('loader_documento').style.display = 'block';    
+    
     $.ajax({url:controlador,
             type:"POST",
             data:{nit:nit},
@@ -5104,4 +5123,9 @@ function verificar_conexion_enventas(){
             }  
     });
     return resultado;
+}
+
+function cargar_eventos(venta_id){
+    $("#nombre_archivo").val("compra_venta"+venta_id+".xml.gtz")
+    
 }

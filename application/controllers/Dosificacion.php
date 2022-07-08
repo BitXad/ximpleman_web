@@ -437,6 +437,10 @@ class Dosificacion extends CI_Controller{
                 /*if($parametro[0]["parametro_tiposistema"] != 1){
                     $comunicacion = $this->verificar_comunicacion($token,$wsdl);
                     if($comunicacion){*/
+//                if($parametro[0]["parametro_tiposistema"] != 1){
+//                    $comunicacion = $this->verificar_comunicacion($token,$wsdl);
+//                    if($comunicacion){
+//                        
                         $nit_verificar = $this->input->post("nit");
                         //$nit_verificar = 5196226;
                         $parametros = ["SolicitudVerificarNit" => [
@@ -449,9 +453,14 @@ class Dosificacion extends CI_Controller{
                             "nitParaVerificacion"=>$nit_verificar]];
 
                         $resultado = $cliente->verificarNit($parametros);
+
                         //var_dump($resultado);
                    /* }
                 }*/
+            
+//                    }
+//                }
+
                 echo json_encode($resultado);
                 //print_r($resultado);
                 /*$elres = $resultado->RespuestaVerificarNit->mensajesList;
