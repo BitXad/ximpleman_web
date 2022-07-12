@@ -26,6 +26,7 @@ class Sincronizacion extends CI_Controller{
             'Tipo_puntoventa_model',
             'TipoFactura_model',
             'Unidad_model',
+            'Usuario_model',
             'ProductosServicios_model',
         ]);
         //$this->load->library('lib_nusoap/nusoap');    
@@ -35,6 +36,7 @@ class Sincronizacion extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $usuario_id = $this->session_data['usuario_id'];
     }
 
     private function acceso($id_rol){
@@ -56,6 +58,9 @@ class Sincronizacion extends CI_Controller{
     }
 
     function show_sincronizacion($sincronizacion_id){
+        $usuario_id = $this->session_data['usuario_id'];
+        $data['punto_venta'] = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+        var_dump($data['punto_venta']);
         switch(intval($sincronizacion_id)){
             case 1:
                 $data['datos'] = $this->Actividad_model->get_all_activities();

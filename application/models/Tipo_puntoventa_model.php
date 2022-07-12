@@ -14,9 +14,17 @@
 
         function get_all_tipopuntoventa(){
             return $this->db->query(
-                "SELECT * 
-                from tipo_puntoventa
-                order by tipopuntoventa_codigo asc"
+                "SELECT tp.*,cu.cufd_codigo,ci.cuis_codigo
+                from tipo_puntoventa tp
+                left join (
+                    select max(cd.cufd_fecharegistro) as ultimo_registro, cd.cufd_codigo, cd.cufd_puntodeventa
+                    from cufd cd 
+                ) as cu on cu.cufd_puntodeventa = tp.tipopuntoventa_codigo 
+                left join (
+                    select max(c.cuis_fechavigencia),c.tipopuntoventa_codigo,c.cuis_codigo
+                    from cuis c
+                ) as ci on ci.tipopuntoventa_codigo = tp.tipopuntoventa_codigo 
+                order by tp.tipopuntoventa_codigo asc"
                 )->result_array();
         }
         

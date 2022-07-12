@@ -230,4 +230,12 @@ class Dosificacion_model extends CI_Model
             from documento_sector ds
         ")->result_array();
     }
+
+    function get_cuis_puntoventa($punto_venta){
+        return $this->db->query(
+            "SELECT max(c.cuis_codigo) as cuis_codigo
+            from cuis c
+            where c.tipopuntoventa_codigo = $punto_venta"
+        )->row_array();
+    }
 }
