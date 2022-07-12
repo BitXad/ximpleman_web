@@ -62,7 +62,7 @@
                         <label for="punto_venta" class="control-label">Punto de venta</label>
                         <div class="form-group">
                             <select name="punto_venta" id="punto_venta" class="form-control" required>
-                                <option value="-1">NINGUNO</option>
+                                <option value="0">NINGUNO</option>
                                 <?php 
                                 foreach($puntos_venta as $pv){
                                     echo "<option value='{$pv['tipopuntoventa_codigo']}'>{$pv['tipopuntoventa_codigo']}. {$pv['tipopuntoventa_descripcion']}</option>";

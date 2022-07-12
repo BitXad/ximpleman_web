@@ -302,4 +302,12 @@ class Usuario_model extends CI_Model
                   u.usuario_id = $usuario_id ")->result_array();
         return $usuario;
     }
+
+    public function get_punto_venta_usuario($usuario_id){
+        return $this->db->query(
+            "SELECT u.tipopuntoventa_codigo
+            from usuario u
+            where usuario_id = $usuario_id"
+        )->row_array();
+    }
 }

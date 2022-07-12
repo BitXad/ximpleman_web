@@ -74,7 +74,7 @@
                         <label for="punto_venta" class="control-label">Punto de venta</label>
                         <div class="form-group">
                             <select name="punto_venta" id="punto_venta" class="form-control">
-                                <option value="-1" selected>NINGUNO</option>
+                                <option value="0" selected>NINGUNO</option>
                                 <?php 
                                 foreach($puntos_venta as $pv){
                                     $selected = ($pv['tipopuntoventa_codigo'] == $usuario['tipopuntoventa_codigo']) ? ' selected="selected"' : "";

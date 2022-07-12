@@ -1,3 +1,4 @@
+<script src="<?php echo base_url('resources/js/funcionessin.js'); ?>"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!----------------------------- script buscador --------------------------------------->
 <script type="text/javascript">
@@ -38,6 +39,9 @@
                             <th>#</th>
                             <th>CODIGO</th>
                             <th>DESCRIPCION</th>
+                            <th>CUFD</th>
+                            <th>CUIS</th>
+                            <th></th>
                         </tr>
                         </thead>
                     <tbody class="buscar">
@@ -48,6 +52,16 @@
                                 <td><?= $i ?></td>
                                 <td><?= $sincronizacion['tipopuntoventa_codigo'] ?></td>
                                 <td><?= $sincronizacion['tipopuntoventa_descripcion'] ?></td>
+                                <td><?= $sincronizacion['cufd_codigo'] ?></td>
+                                <td><?= $sincronizacion['cuis_codigo'] ?></td>
+                                <td>
+                                    <button class="btn btn-info btn-xs" title="Obtener CUIS" onclick="solicitudCuis(<?= $sincronizacion['tipopuntoventa_codigo'] ?>)">
+                                        <i class="fa fa-paste"></i>
+                                    </button>
+                                    <button class="btn btn-success btn-xs" title="Obtener CUFD" onclick="solicitudCufd(<?= $sincronizacion['tipopuntoventa_codigo'] ?>)">
+                                        <i class="fa-solid fa-arrows-rotate"></i>
+                                    </button>
+                                </td>
                             </tr>
                         <?php
                             $i++; 
