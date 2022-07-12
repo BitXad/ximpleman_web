@@ -488,7 +488,7 @@ class Dosificacion extends CI_Controller{
                 $punto_venta = $this->input->post('punto_venta');
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-                $cuis_puntoventa = $this->Dosificacion_model->get_cuis_puntoventa($punto_venta);
+                // $cuis_puntoventa = $this->Dosificacion_model->get_cuis_puntoventa($punto_venta); 
                 /* ---------------------INICIO segun EJEMPLO ---------------------- */
                 /*fuente:
                  * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/autenticacion/token-de-autenticacion
@@ -522,12 +522,12 @@ class Dosificacion extends CI_Controller{
                 $parametros = ["SolicitudCufd" => [
                     "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
                     "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
-                    // "codigoPuntoVenta"=>   $dosificacion['dosificacion_puntoventa'],
-                    "codigoPuntoVenta"=>   $punto_venta,
+                    "codigoPuntoVenta"=>   $dosificacion['dosificacion_puntoventa'],
+                    // "codigoPuntoVenta"=>   $punto_venta,
                     "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
-                    // "cuis"=>            $dosificacion['dosificacion_cuis'],
-                    "cuis"=>            $cuis_puntoventa,
+                    "cuis"=>            $dosificacion['dosificacion_cuis'],
+                    // "cuis"=>            $cuis_puntoventa,
                     "nit"=>             $dosificacion['dosificacion_nitemisor']
                         ]];
 
@@ -583,8 +583,8 @@ class Dosificacion extends CI_Controller{
                 $parametros = ["SolicitudCuis" => [
                     "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
                     "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
-                    // "codigoPuntoVenta"=>   $dosificacion['dosificacion_puntoventa'],
-                    "codigoPuntoVenta"=>   $punto_venta,
+                    "codigoPuntoVenta"=>   $dosificacion['dosificacion_puntoventa'],
+                    // "codigoPuntoVenta"=>   $punto_venta,
                     "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
                     "nit"=>             $dosificacion['dosificacion_nitemisor']
@@ -620,15 +620,15 @@ class Dosificacion extends CI_Controller{
                 $cufd_transaccion = "'".$this->input->post('transaccion')."'";
                 $punto_venta =  $this->input->post('punto_venta');
 
-                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-                // $cufd_puntodeventa = $dosificacion["dosificacion_puntoventa"];
+                // $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                $cufd_puntodeventa = $dosificacion["dosificacion_puntoventa"];
                 
                 $sql = "insert into cufd(cufd_codigo,cufd_codigocontrol,cufd_direccion,cufd_fechavigencia,cufd_transaccion, cufd_puntodeventa, cufd_fecharegistro) value(".
                         $cufd_codigo.",".$cufd_codigocontrol.",".$cufd_direccion.",".$cufd_fechavigencia.",".$cufd_transaccion.",".$punto_venta.", now())";
                 $this->Dosificacion_model->ejecutar($sql);
                 
-                // $sql = "update dosificacion set dosificacion_cufd = ".$cufd_codigo;
-                // $this->Dosificacion_model->ejecutar($sql);
+                $sql = "update dosificacion set dosificacion_cufd = ".$cufd_codigo;
+                $this->Dosificacion_model->ejecutar($sql);
                 
                 echo json_encode("ok");
                 
@@ -649,14 +649,17 @@ class Dosificacion extends CI_Controller{
                 $cuis_codigo = "'".$this->input->post('codigo')."'";
                 $cuis_fechavigencia = "'".$this->input->post('fechavigencia')."'";
                 $cuis_transaccion = "'".$this->input->post('transaccion')."'";
-                $punto_venta = $this->input->post('punto_venta');
+                // $punto_venta = $this->input->post('punto_venta');
                 
-                $sql = "insert into cuis(cuis_codigo,cuis_fechavigencia,cuis_transaccion,tipopuntoventa_codigo) value(".
-                        $cuis_codigo.",".$cuis_fechavigencia.",".$cuis_transaccion.",$punto_venta)";
+                
+                // $sql = "insert into cuis(cuis_codigo,cuis_fechavigencia,cuis_transaccion,tipopuntoventa_codigo) value(".
+                //         $cuis_codigo.",".$cuis_fechavigencia.",".$cuis_transaccion.",$punto_venta)";
+                $sql = "insert into cuis(cuis_codigo,cuis_fechavigencia,cuis_transaccion) value(".
+                        $cuis_codigo.",".$cuis_fechavigencia.",".$cuis_transaccion.")";
                 $this->Dosificacion_model->ejecutar($sql);
                 
-                // $sql = "update dosificacion set dosificacion_cuis = ".$cuis_codigo;
-                // $this->Dosificacion_model->ejecutar($sql);
+                $sql = "update dosificacion set dosificacion_cuis = ".$cuis_codigo;
+                $this->Dosificacion_model->ejecutar($sql);
                 
                 echo json_encode("ok");
                 
