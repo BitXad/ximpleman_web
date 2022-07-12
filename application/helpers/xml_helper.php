@@ -210,6 +210,7 @@
      * 2 = ELECTRONICA
      */
     function generarfacturaCompra_ventaXML($computarizada, $factura, $detalle_factura, $empresa){
+        
         $factura = $factura[0];
         $empresa = $empresa[0];
         // $detalle_factura = $detalle_factura[0];
@@ -241,11 +242,11 @@
         $xml->getElementsByTagName('numeroDocumento')->item(0)->nodeValue = "{$factura['factura_nit']}";
         $xml->getElementsByTagName('codigoCliente')->item(0)->nodeValue = "{$factura['cliente_codigo']}";
         $xml->getElementsByTagName('codigoMetodoPago')->item(0)->nodeValue = "{$factura['tipotrans_id']}";
-        $xml->getElementsByTagName('montoTotalSujetoIva')->item(0)->nodeValue = "{$factura['factura_subtotal']}";
+        $xml->getElementsByTagName('montoTotalSujetoIva')->item(0)->nodeValue = "{$factura['factura_total']}";
         $xml->getElementsByTagName('codigoMoneda')->item(0)->nodeValue = "{$factura['moneda_codigoclasificador']}";
         $xml->getElementsByTagName('tipoCambio')->item(0)->nodeValue = "{$factura['moneda_tc']}";
-        $xml->getElementsByTagName('montoTotal')->item(0)->nodeValue = "{$factura['factura_total']}";
-        $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "{$factura['factura_total']}";
+        $xml->getElementsByTagName('montoTotal')->item(0)->nodeValue = "{$factura['factura_subtotal']}";
+        $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "{$factura['factura_subtotal']}";
         $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "{$factura['factura_leyenda1']}";
         $xml->getElementsByTagName('usuario')->item(0)->nodeValue = "{$factura['usuario_nombre']}";
         $xml->getElementsByTagName('codigoDocumentoSector')->item(0)->nodeValue = "{$factura['docsec_codigoclasificador']}";

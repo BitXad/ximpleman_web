@@ -5,9 +5,11 @@ function inicio(){
         tablaresultados(1);
         tablaproductos(); 
         //pedidos_pendientes();
+        verificar_cufd();
         
         document.getElementById('nit').focus();
         document.getElementById('nit').select();
+        
 }
 
 function calculardesc(){
@@ -355,6 +357,7 @@ function tablaproductos(){
                         }else{
                             html += "                            <th style='padding:0'>Cant.</th>";                    
                             html += "                            <th style='padding:0'>Precio <br>"+parametro_moneda_descripcion+"</th>";
+                            html += "                            <th style='padding:0'>Desc <br>"+parametro_moneda_descripcion+"</th>";
                             html += "                            <th style='padding:0'>Precio<br>Total "+parametro_moneda_descripcion+"</th>";
                         } 
                         html += "                            <th style='padding:0'><button onclick='quitartodo()' class='btn btn-danger btn-xs' title='Vaciar el detalle de la venta'><span class='fa fa-trash'></span><b></b></button></th>";
@@ -366,6 +369,7 @@ function tablaproductos(){
                     var total_detalle = 0;
                     var categoria = '';
                     var total_equivalente = 0;
+                    var total_descuentoparcial = 0;
                     var x = registros.length; //tamaño del arreglo de la consulta
                       
                     for (var i = 0; i < x ; i++){
@@ -376,6 +380,7 @@ function tablaproductos(){
                            cont = cont+1;
                            cant_total+= parseFloat(registros[i]["detalleven_cantidad"]);
                            total_detalle+= parseFloat(registros[i]["detalleven_total"]);
+                           total_descuentoparcial += parseFloat(registros[i]["detalleven_descuentoparcial"] * registros[i]["detalleven_cantidad"]);
 
 
                             if (i == 0){
@@ -568,6 +573,8 @@ html += "  </div>";
                         html += "</td>";
                         html += "<td align='right' "+color+"><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         
+                        html += "<td align='right' "+color+"><input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_descuentoparcial"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        
                         
                         html += "                       <td align='right' "+color+"><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font><br>"+total_equivalente;
                         html += "</td>";
@@ -595,7 +602,11 @@ html += "  </div>";
                         html += "                            <th style='padding:0'></th>";
                         html += "                            <th style='padding:0'><font size='3'>"+cant_total.toFixed(2)+"</font></th>";
                         html += "                            <th style='padding:0'></th>"; 
-                                                
+                        html += "                            <th style='padding:0'><font size='3'>"+total_descuentoparcial.toFixed(2)+"</font></th>";
+                        html += "                            <th style='padding:0'></th>"; 
+                        
+                        html += "<input type='hidden' id='venta_descuentoparcial' value="+total_descuentoparcial.toFixed(2)+" />";
+                       
                         html += "                            <th style='padding:0' align='right'><font size='3'>"+parametro_moneda_descripcion+" "+formato_numerico(total_detalle.toFixed(2))+"</font><br>";
                         
                        if (parametro_moneda_id == 1){
@@ -1165,10 +1176,11 @@ function actualizarprecios(e,detalleven_id)
         var base_url =  document.getElementById('base_url').value;
         var precio = document.getElementById('precio'+detalleven_id).value;
         var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
+        var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
         var controlador =  base_url+"venta/actualizarprecio";
         $.ajax({url: controlador,
                 type:"POST",
-                data:{precio:precio, cantidad:cantidad,detalleven_id:detalleven_id},
+                data:{precio:precio, cantidad:cantidad,detalleven_id:detalleven_id, descuentoparcial:descuentoparcial},
                 success:function(respuesta){
                     tablaproductos();
                    // tabladetalle();
@@ -1334,8 +1346,10 @@ function ingresorapidojs2(cantidad,producto,serie = ''){
     var existencia =  producto.existencia;    
     var producto_id =  producto.producto_id;
     var datos1 = "";
+    var descuentoparcial = 0;
     var descuento = 0;
     var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
+    var descuentoparcial = 0; 
     var check_agrupar = document.getElementById('check_agrupar').checked;
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
     var preferencia_id = document.getElementById('preferencia_id').value;
@@ -1399,11 +1413,11 @@ function ingresorapidojs2(cantidad,producto,serie = ''){
             
         
         datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
-        datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
+        datos1 += descuentoparcial+","+descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
         datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
+        datos1 += cantidad+",0"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
         //alert(datos1);
 
         $.ajax({url: controlador,
@@ -1536,6 +1550,7 @@ function ingresorapidojs(cantidad,producto)
     var existencia =  producto.existencia;    
     var producto_id =  producto.producto_id;
     var datos1 = "";
+    var descuentoparcial = 0;
     var descuento = 0;
     var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
     var check_agrupar = document.getElementById('check_agrupar').checked;
@@ -1598,7 +1613,7 @@ function ingresorapidojs(cantidad,producto)
         
 
         datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
-        datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
+        datos1 += descuento+","+descuentoparcial+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
         datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
@@ -1607,7 +1622,7 @@ function ingresorapidojs(cantidad,producto)
 
         $.ajax({url: controlador,
             type:"POST",
-            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento, agrupado:agrupado, detalleven_id:detalleven_id},
+            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento,descuentoparcial:descuentoparcial, agrupado:agrupado, detalleven_id:detalleven_id},
             success:function(respuesta){
                                 
                 tablaproductos();
@@ -1638,7 +1653,7 @@ function cambiarcantidadjs(e,producto)
          
         var sql = ""
         
-        var descuento = 0;
+        var descuento = document.getElementById('descuento'+producto.detalleven_id).value;
         var cantidad_total = parseFloat(cantidad_en_detalle_otros(producto.producto_id)) + parseFloat(cantidad); 
 
         if (Number(cantidad)>0){
@@ -2703,6 +2718,7 @@ function registrarventa(cliente_id)
     
     var venta_subtotal = document.getElementById('venta_subtotal').value;     
     var venta_descuento = document.getElementById('venta_descuento').value; 
+    var venta_descuentoparcial = document.getElementById('venta_descuentoparcial').value; 
     var venta_total = document.getElementById('venta_totalfinal').value; 
     var venta_efectivo = document.getElementById('venta_efectivo').value; 
     var venta_cambio = document.getElementById('venta_cambio').value; 
@@ -2743,7 +2759,7 @@ function registrarventa(cliente_id)
     
     var cad =   ""+forma_id+","+tipotrans_id+","+usuario_id+","+cliente_id
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
-                +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
+                +","+venta_descuentoparcial+","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
                 +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id+","+banco_id+"";
         
@@ -3945,6 +3961,7 @@ function limpiar_parametros()
     $("#factura_fecha").val("");
     $("#factura_total").val("");
     $("#factura_codigocontrol").val("");
+    $("#venta_descuentoparcial").val("0");
     
 }
 
@@ -5153,4 +5170,39 @@ function cargar_codigovalidacion(codigo_recepcion){
     //alert(codigo_recepcion);
     $("#codigo_recepcion").val(codigo_recepcion);
    
+}
+
+function verificar_cufd(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var nit = document.getElementById('nit').value;
+    var controlador = base_url+'venta/verificar_cufd';    
+    let resultado = "";
+    
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{nit:nit},
+            async: false,
+            success:function(respuesta){
+                let registros = JSON.parse(respuesta);
+                //alert(registros);
+                resultado = registros;
+                if(!registros){
+
+                    var mensaje;
+                    var opcion = confirm("No existe un CUFD VIGENTE. \r\n ¿Desea registrar un nuevo CUFD?");
+                    
+                    if (opcion == true) {
+                        
+                        window.location.href = base_url+"dosificacion";
+                    }
+                }                
+            },
+            error:function(respuesta){
+                resultado = false;
+                //alert("Algo salio mal; por favor verificar sus datos!.");
+            }  
+    });
+
+    
 }

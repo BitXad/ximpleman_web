@@ -138,6 +138,11 @@ class Dosificacion extends CI_Controller{
             $data['page_title'] = "Dosificación";
         // check if the dosificacion exists before trying to edit it
         $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+//        
+//        echo 
+//        "<br>LEYENDAS-1: ".$this->input->post('dosificacion_leyenda1').
+//        "<br>LEYENDAs-2: ".$this->input->post('dosificacion_leyenda2').
+//        "<br>LEYENDAs-3: ".$this->input->post('dosificacion_leyenda3');
         
         if(isset($data['dosificacion']['dosificacion_id']))
         {

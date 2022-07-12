@@ -132,8 +132,9 @@
                     <div class="col-md-6">
                         <label for="dosificacion_leyenda1" class="control-label">Leyenda1</label>
                         <div class="form-group">
-                            <input type="hidden" id="dosificacion_leyenda1_select" name="dosificacion_leyenda1_select" value="<?php echo ($this->input->post('dosificacion_leyenda1') ? $this->input->post('dosificacion_leyenda1') : $dosificacion['dosificacion_leyenda1']); ?>" class="form-control"/>
-                            <select name="dosificacion_leyenda1" id="dosificacion_leyenda1" class="form-control" size='1'></select>
+                            <input type="text" id="dosificacion_leyenda1" name="dosificacion_leyenda1" value="<?php echo ($this->input->post('dosificacion_leyenda1') ? $this->input->post('dosificacion_leyenda1') : $dosificacion['dosificacion_leyenda1']); ?>" class="form-control"/>
+                            <!--<select name="dosificacion_leyenda1" id="dosificacion_leyenda1" class="form-control" size='1'></select>-->
+                            <!--<input name="dosificacion_leyenda1" id="dosificacion_leyenda1" class="form-control" size='1'/>-->
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -146,22 +147,25 @@
                     <div class="col-md-6">
                         <label for="dosificacion_leyenda3" class="control-label">Leyenda3</label>
                         <div class="form-group">
-                            <input type="hidden" id="dosificacion_leyenda3_select" name="dosificacion_leyenda3_select" value="<?php echo ($this->input->post('dosificacion_leyenda3') ? $this->input->post('dosificacion_leyenda3') : $dosificacion['dosificacion_leyenda3']); ?>" class="form-control"/>
-                            <select name="dosificacion_leyenda3" id="dosificacion_leyenda3" class="form-control" size='1'></select>
+                            <input type="text" id="dosificacion_leyenda3" name="dosificacion_leyenda3" value="<?php echo ($this->input->post('dosificacion_leyenda3') ? $this->input->post('dosificacion_leyenda3') : $dosificacion['dosificacion_leyenda3']); ?>" class="form-control"/>
+                            <!--<select name="dosificacion_leyenda3" id="dosificacion_leyenda3" class="form-control" size='1'></select>-->
+                            <!--<input name="dosificacion_leyenda3" id="dosificacion_leyenda3" class="form-control" size='1'/>-->
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="dosificacion_leyenda4" class="control-label">Leyenda4</label>
                         <div class="form-group">
-                            <input type="hidden" id="dosificacion_leyenda4_select" name="dosificacion_leyenda4_select" value="<?php echo ($this->input->post('dosificacion_leyenda4') ? $this->input->post('dosificacion_leyenda4') : $dosificacion['dosificacion_leyenda4']); ?>" class="form-control"/>
-                            <select name="dosificacion_leyenda4" id="dosificacion_leyenda4" class="form-control" size='1'></select>
+                            <input type="text" id="dosificacion_leyenda4" name="dosificacion_leyenda4" value="<?php echo ($this->input->post('dosificacion_leyenda4') ? $this->input->post('dosificacion_leyenda4') : $dosificacion['dosificacion_leyenda4']); ?>" class="form-control"/>
+<!--                            <input type="hidden" id="dosificacion_leyenda4_select" name="dosificacion_leyenda4_select" value="<?php echo ($this->input->post('dosificacion_leyenda4') ? $this->input->post('dosificacion_leyenda4') : $dosificacion['dosificacion_leyenda4']); ?>" class="form-control"/>
+                            <select name="dosificacion_leyenda4" id="dosificacion_leyenda4" class="form-control" size='1'></select>-->
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="dosificacion_leyenda5" class="control-label">Leyenda5</label>
                         <div class="form-group">
-                            <input type="hidden" id="dosificacion_leyenda5_select" name="dosificacion_leyenda5_select" value="<?php echo ($this->input->post('dosificacion_leyenda5') ? $this->input->post('dosificacion_leyenda5') : $dosificacion['dosificacion_leyenda5']); ?>" class="form-control"/>
-                            <select name="dosificacion_leyenda5" id="dosificacion_leyenda5" class="form-control" size='1'></select>
+                            <input type="text" id="dosificacion_leyenda5" name="dosificacion_leyenda5" value="<?php echo ($this->input->post('dosificacion_leyenda5') ? $this->input->post('dosificacion_leyenda5') : $dosificacion['dosificacion_leyenda5']); ?>" class="form-control"/>
+<!--                            <input type="hidden" id="dosificacion_leyenda5_select" name="dosificacion_leyenda5_select" value="<?php echo ($this->input->post('dosificacion_leyenda5') ? $this->input->post('dosificacion_leyenda5') : $dosificacion['dosificacion_leyenda5']); ?>" class="form-control"/>
+                            <select name="dosificacion_leyenda5" id="dosificacion_leyenda5" class="form-control" size='1'></select>-->
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -332,23 +336,23 @@
             success: (respuesta) => {
                 let leyendas = JSON.parse(respuesta);
 
-                let dosificacion_leyenda1_select = $('#dosificacion_leyenda1_select').val();
+//                let dosificacion_leyenda1_select = $('#dosificacion_leyenda1_select').val();
                 let dosificacion_leyenda2_select = $('#dosificacion_leyenda2_select').val();
-                let dosificacion_leyenda3_select = $('#dosificacion_leyenda3_select').val();
-                let dosificacion_leyenda4_select = $('#dosificacion_leyenda4_select').val();
-                let dosificacion_leyenda5_select = $('#dosificacion_leyenda5_select').val();
+//                let dosificacion_leyenda3_select = $('#dosificacion_leyenda3_select').val();
+//                let dosificacion_leyenda4_select = $('#dosificacion_leyenda4_select').val();
+//                let dosificacion_leyenda5_select = $('#dosificacion_leyenda5_select').val();
                 
-                let htmlLeyenda1 = getHtmlLeyenda(leyendas, dosificacion_leyenda1_select);
+//                let htmlLeyenda1 = getHtmlLeyenda(leyendas, dosificacion_leyenda1_select);
                 let htmlLeyenda2 = getHtmlLeyenda(leyendas, dosificacion_leyenda2_select);
-                let htmlLeyenda3 = getHtmlLeyenda(leyendas, dosificacion_leyenda3_select);
-                let htmlLeyenda4 = getHtmlLeyenda(leyendas, dosificacion_leyenda4_select);
-                let htmlLeyenda5 = getHtmlLeyenda(leyendas, dosificacion_leyenda5_select);
+//                let htmlLeyenda3 = getHtmlLeyenda(leyendas, dosificacion_leyenda3_select);
+//                let htmlLeyenda4 = getHtmlLeyenda(leyendas, dosificacion_leyenda4_select);
+//                let htmlLeyenda5 = getHtmlLeyenda(leyendas, dosificacion_leyenda5_select);
 
-                $("#dosificacion_leyenda1").html(htmlLeyenda1); 
+//                $("#dosificacion_leyenda1").html(htmlLeyenda1); 
                 $("#dosificacion_leyenda2").html(htmlLeyenda2); 
-                $("#dosificacion_leyenda3").html(htmlLeyenda3); 
-                $("#dosificacion_leyenda4").html(htmlLeyenda4); 
-                $("#dosificacion_leyenda5").html(htmlLeyenda5); 
+//                $("#dosificacion_leyenda3").html(htmlLeyenda3); 
+//                $("#dosificacion_leyenda4").html(htmlLeyenda4); 
+//                $("#dosificacion_leyenda5").html(htmlLeyenda5); 
             },
             error: () => {
                 alert('Error: no se obtuvieron las leyendas de esas actividades')
