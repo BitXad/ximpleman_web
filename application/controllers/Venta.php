@@ -477,11 +477,11 @@ class Venta extends CI_Controller{
                   detalleven_cantidad,
                   detalleven_unidad,
                   detalleven_costo,
-                  detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                  detalleven_precio,
                   detalleven_subtotal,
-                  detalleven_descuentoparcial,                  
-                  (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-                  detalleven_total * (1 - ".$porcentaje."),
+                  detalleven_descuentoparcial,
+                  (detalleven_subtotal/".$venta_total."*".$venta_descuento."),
+                  detalleven_total - ((detalle_descuentoparcial - descuento)*detalleven_cantidad) ,
                   detalleven_caracteristicas,
                   detalleven_preferencia,
                   detalleven_comision,
@@ -4286,9 +4286,7 @@ function anular_venta($venta_id){
     
     
     function verificar_cufd(){
-        
-        
-        
+
         $sql =" select * from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$this->puntodeventa;
         $cufd = $this->Venta_model->consultar($sql);
         if(sizeof($cufd)>0){
@@ -4298,7 +4296,6 @@ function anular_venta($venta_id){
             echo json_encode(false);
         }
 
-        
     }
     
 }
