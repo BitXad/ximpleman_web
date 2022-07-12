@@ -1,14 +1,14 @@
-function solicitudCufd(){
+function solicitudCufd(punto_venta=1){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/cufd';
     var opcion = confirm("Esta a punto de generar el C.U.F.D., el cual reamplazara el existente...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
-        document.getElementById('loader_cufd').style.display = 'block';
+        // document.getElementById('loader_cufd').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
-                data:{},
+                data:{punto_venta:punto_venta},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
                     /*console.log(registros);
@@ -25,12 +25,12 @@ function solicitudCufd(){
 
                     if(transaccion == true){
                        // $("#modal_mensajeadvertencia").modal("show");
-                       almacenar_cufd((registros['RespuestaCufd']));
+                        almacenar_cufd((registros['RespuestaCufd']),punto_venta);
                     }
                     else{
                         alert("Algo fallo...!!");
                     }
-                    document.getElementById('loader_cufd').style.display = 'none';
+                    // document.getElementById('loader_cufd').style.display = 'none';
                     //alert("hola");
                     /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
 
@@ -45,7 +45,7 @@ function solicitudCufd(){
     }
 }
 
-function almacenar_cufd(datos){
+function almacenar_cufd(datos,punto_venta=1){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/almacenarcufd';   
@@ -65,7 +65,9 @@ function almacenar_cufd(datos){
                         codigoControl:codigoControl, 
                         direccion:direccion,
                         fechavigencia:fechavigencia, 
-                        transaccion:transaccion},
+                        transaccion:transaccion,
+                        punto_venta:punto_venta
+                    },
                     success:function(respuesta){
 
                         alert("C.U.F.D generado y almacenado correctamente...!");
@@ -78,23 +80,23 @@ function almacenar_cufd(datos){
     
 }
 
-function solicitudCuis(){
+function solicitudCuis(punto_venta = 1){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/cuis';
     var opcion = confirm("Esta a punto de generar el C.U.I.S., el cual reamplazara el existente...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
-        document.getElementById('loader_cuis').style.display = 'block';
+        // document.getElementById('loader_cuis').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
-                data:{},
+                data:{punto_venta:punto_venta},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
                     let transaccion = registros.RespuestaCuis.transaccion;
 
                     if(transaccion == true){
-                       almacenar_cuis((registros['RespuestaCuis']));
+                        almacenar_cuis((registros['RespuestaCuis']),punto_venta);
                     }
                     else{
                         
@@ -102,7 +104,7 @@ function solicitudCuis(){
                         let descripcion = registros.RespuestaCuis.mensajesList.descripcion;
                         alert("ERROR: "+transaccion+" "+descripcion);
                     }
-                    document.getElementById('loader_cuis').style.display = 'none';
+                    // document.getElementById('loader_cuis').style.display = 'none';
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
@@ -112,7 +114,7 @@ function solicitudCuis(){
     }
 }
 
-function almacenar_cuis(datos){
+function almacenar_cuis(datos,punto_venta=1){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/almacenarcuis';   
@@ -126,7 +128,7 @@ function almacenar_cuis(datos){
     
             $.ajax({url:controlador,
                     type:"POST",
-                    data:{codigo:codigo, fechavigencia:fechavigencia, transaccion:transaccion},
+                    data:{codigo:codigo, fechavigencia:fechavigencia, transaccion:transaccion,punto_venta:punto_venta},
                     success:function(respuesta){
 
                         alert("C.U.I.S. generado y almacenado correctamente...!");
