@@ -954,13 +954,9 @@ class Venta extends CI_Controller{
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
                                 }
-<<<<<<< HEAD
-                               // $email = $this->input->post('cliente_email');
-                               // $this->enviarcorreo($factura_id, $email, $razon);
-=======
+                                
                                 $email = $this->input->post('cliente_email');
                                 $this->enviarcorreo($venta_id, $factura_id, $email, $razon);
->>>>>>> master
                             }else{
                                 echo json_encode("false");
                             }
@@ -4185,12 +4181,7 @@ function anular_venta($venta_id){
     }
 
     /* envia correo  a cliente */
-<<<<<<< HEAD
-    function enviarcorreo($factura_id, $email_destino, $razon){
-        
-=======
     function enviarcorreo($venta_id, $factura_id, $email_destino, $razon){
->>>>>>> master
         if($email_destino != ""){
             $this->load->library('email');
             $this->email->set_newline("\r\n");
