@@ -2777,7 +2777,7 @@ function registrarventa(cliente_id)
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
                 venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,
-                tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email},
+                tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal},
             success:function(respuesta){
                 let res = JSON.parse(respuesta);
                 registrarpuntos(cliente_id, venta_total);
@@ -2800,7 +2800,7 @@ function registrarventa(cliente_id)
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 venta_descuento:venta_descuento,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad,
-                cliente_email:cliente_email},
+                cliente_email:cliente_email, venta_subtotal:venta_subtotal},
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();

@@ -170,10 +170,11 @@ border-bottom : 1px solid #aaa;
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>CANT</b></td>
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>DESCRIPCIÓN</b></td>
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>UNIDAD</b></td>
-                <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>P.UNIT<br><?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>
+                <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>P.UNIT<br><?php echo substr($parametro[0]["moneda_descripcion"],0,3); ?></b></td>
+                <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>DESC<br><?php echo substr($parametro[0]["moneda_descripcion"],0,3); ?></b></td>
                 <!--<td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>SUB.TOT<br><?php //echo $parametro[0]["moneda_descripcion"]; ?></b></td>-->
                 <!--<td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>DESC.<br><?php //echo $parametro[0]["moneda_descripcion"]; ?></b></td>-->
-                <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>TOTAL<br><?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>
+                <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>TOTAL<br><?php echo substr($parametro[0]["moneda_descripcion"],0,3); ?></b></td>
                 <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;">
                     <b>TOTAL<br>
@@ -202,7 +203,9 @@ border-bottom : 1px solid #aaa;
  
             ?>
            <tr>
+               <!-- CANTIDAD -->
                 <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
+               <!-- DESCRIPCION -->
                 <td style="padding: 0"><font style="font-size:10px; font-family: arial;">
                     <?php
                     $codigo  =  "";
@@ -242,16 +245,23 @@ border-bottom : 1px solid #aaa;
                         
                         ?>
                 </td>
+               <!-- UNIDAD -->
                 <td align="right" style="padding: 0">
                     <center>
                         <?php echo $d["producto_unidad"] ; ?>
                     </center>
                 </td>
                 
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
+               <!-- PRECIO UNITARIO -->
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
+               
+                <!-- SUB TOTAL -->
                 <!--<td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>-->
-                <!--<td align="right" style="padding: 0"><?php echo number_format($d['detalleven_descuento']*$d['detalleven_cantidad'],2,'.',','); ?></td>-->
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
+                
+                <!-- DESCUENTO PARCIAL -->
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_descuentoparcial']*$d['detalleven_cantidad'],2,'.',','); ?></td>
+                <!-- TOTAL FINAL -->
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal']-($d['detalleven_descuentoparcial']*$d['detalleven_cantidad']),2,'.',','); ?></td>
                 <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                 <td align="right" style="padding: 0">
                     <?php
@@ -313,7 +323,7 @@ border-bottom : 1px solid #aaa;
             
             <font size="2">
             <b>
-                <br><?php echo "TOTAL FINAL ".$parametro[0]["moneda_descripcion"].": ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
+                <br><?php echo "TOTAL FINAL ".  substr($parametro[0]["moneda_descripcion"],0,3).": ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
             </b>
             </font>
             
@@ -329,7 +339,7 @@ border-bottom : 1px solid #aaa;
                 
                 ?>
             
-                <?php echo "SON: ".num_to_letras($total_final,$moneda_nombre); ?><br>            
+                <?php echo "SON: ".num_to_letras($venta[0]['venta_total'],$moneda_nombre); ?><br>            
             
             </font>
             <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>

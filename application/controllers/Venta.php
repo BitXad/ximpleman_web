@@ -53,7 +53,7 @@ class Venta extends CI_Controller{
         $parametro = $this->Parametro_model->get_parametros();
         $this->parametros = $parametro[0];
         
-        $puntodeventa =  0; //Colcoar la variable respectiva
+        $this->puntodeventa =  0; //Colcoar la variable respectiva
 
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -409,6 +409,7 @@ class Venta extends CI_Controller{
                 $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
                 $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
                 $cuota_inicial = $this->input->post('cuota_inicial'); // recuperamos la consulta sql enviada mediante JS
+                $venta_subtotal = $this->input->post('venta_subtotal'); // recuperamos la consulta sql enviada mediante JS
                 $venta_total = $this->input->post('venta_total'); // recuperamos la consulta sql enviada mediante JS
                 $credito_interes = $this->input->post('credito_interes'); // interes por ventas
                 $pedido_id = $this->input->post('pedido_id'); // interes por ventas
@@ -427,6 +428,7 @@ class Venta extends CI_Controller{
                 $tipo_doc_identidad = $this->input->post('tipo_doc_identidad');
         
                 $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+                
                 if (($venta_total+$venta_descuento)>0)
                     $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
                 else
@@ -480,8 +482,8 @@ class Venta extends CI_Controller{
                   detalleven_precio,
                   detalleven_subtotal,
                   detalleven_descuentoparcial,
-                  (detalleven_subtotal/".$venta_total."*".$venta_descuento."),
-                  detalleven_total - ((detalle_descuentoparcial - descuento)*detalleven_cantidad) ,
+                  ((detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad,
+                  detalleven_subtotal - ((detalleven_descuentoparcial*detalleven_cantidad) + (detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento."),
                   detalleven_caracteristicas,
                   detalleven_preferencia,
                   detalleven_comision,
@@ -511,7 +513,7 @@ class Venta extends CI_Controller{
                   usuario_id=".$usuario_id.")";
                 
                 //$sqldetalle = $sql;
-                //echo $sql
+                //echo $sql;
                 $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
                 
                 
@@ -1588,7 +1590,7 @@ function edit($venta_id)
         $cliente_id = $this->input->post('cliente_id');
         $venta_fecha = $this->input->post('venta_fecha');
         $venta_subtotal = $this->input->post('venta_subtotal');
-        $venta_descuentoparcial = 0;
+        $venta_descuentoparcial = $this->input->post('venta_descuentoparcial'); // descuento de la venta
         $venta_descuento = $this->input->post('venta_descuento');
         $venta_total = $this->input->post('venta_total');
         $venta_total = $venta_total - $venta_descuento;
@@ -1614,86 +1616,85 @@ function edit($venta_id)
             $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
         else
             $porcentaje = 0;
+         
             
-        $sql =  "insert into detalle_venta
-        (producto_id,
-          venta_id,
-          moneda_id,
-          detalleven_codigo,
-          detalleven_cantidad,
-          detalleven_unidad,
-          detalleven_costo,
-          detalleven_precio,
-          detalleven_subtotal,
-          detalleven_descuentoparcial,
-          detalleven_descuento,
-          detalleven_total,
-          detalleven_caracteristicas,
-          detalleven_preferencia,
-          detalleven_comision,
-          detalleven_tipocambio,
-          detalleven_envase,
-          detalleven_nombreenvase,
-          detalleven_costoenvase,
-          detalleven_precioenvase,
-          detalleven_cantidadenvase,
-          detalleven_garantiaenvase,
-          detalleven_devueltoenvase,
-          detalleven_fechadevolucion,
-          detalleven_horadevolucion,
-          detalleven_montodevolucion,
-          detalleven_prestamoenvase,
-          detalleven_fechavenc,
-          usuario_id,
-          factura_id,
-          clasificador_id,
-          detalleven_unidadfactor,
-          preferencia_id,
-          detalleven_tc
-        )
-
-        (SELECT 
-          producto_id,
-          ".$venta_id." as venta_id,
-          moneda_id,
-          detalleven_codigo,
-          detalleven_cantidad,
-          detalleven_unidad,
-          detalleven_costo,
-          detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-          detalleven_subtotal,
-          0 as detalleven_descuentoparcial,
-          (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-          detalleven_total * (1 - ".$porcentaje."),
-          detalleven_caracteristicas,
-          detalleven_preferencia,
-          detalleven_comision,
-          detalleven_tipocambio,
-            detalleven_envase,
-            detalleven_nombreenvase,
-            detalleven_costoenvase,
-            detalleven_precioenvase,
-            detalleven_cantidadenvase,
-            detalleven_garantiaenvase,
-            detalleven_devueltoenvase,
-            detalleven_fechadevolucion,
-            detalleven_horadevolucion,
-            detalleven_montodevolucion,
-            detalleven_prestamoenvase,
-            detalleven_fechavenc,
-            usuario_id,
-            0 as factura_id,
-            clasificador_id,
-            detalleven_unidadfactor,
-            preferencia_id,
-            detalleven_tc
-          
-        FROM
-          detalle_venta_aux
-        WHERE 
-          usuario_id=".$usuario_id.")";
-
+                $sql =  "insert into detalle_venta
+                (producto_id,
+                  venta_id,
+                  moneda_id,
+                  detalleven_codigo,
+                  detalleven_cantidad,
+                  detalleven_unidad,
+                  detalleven_costo,
+                  detalleven_precio,
+                  detalleven_subtotal,
+                  detalleven_descuentoparcial,
+                  detalleven_descuento,
+                  detalleven_total,
+                  detalleven_caracteristicas,
+                  detalleven_preferencia,
+                  detalleven_comision,
+                  detalleven_tipocambio,
+                  detalleven_envase,
+                  detalleven_nombreenvase,
+                  detalleven_costoenvase,
+                  detalleven_precioenvase,
+                  detalleven_cantidadenvase,
+                  detalleven_garantiaenvase,
+                  detalleven_devueltoenvase,
+                  detalleven_fechadevolucion,
+                  detalleven_horadevolucion,
+                  detalleven_montodevolucion,
+                  detalleven_prestamoenvase,
+                  detalleven_fechavenc,
+                  usuario_id,
+                  factura_id,
+                  clasificador_id,
+                  detalleven_unidadfactor,
+                  preferencia_id,
+                  detalleven_tc
+                )
         
+                (SELECT 
+                  producto_id,
+                  ".$venta_id." as venta_id,
+                  moneda_id,
+                  detalleven_codigo,
+                  detalleven_cantidad,
+                  detalleven_unidad,
+                  detalleven_costo,
+                  detalleven_precio,
+                  detalleven_subtotal,
+                  detalleven_descuentoparcial,
+                  ((detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad,
+                  detalleven_subtotal - ((detalleven_descuentoparcial*detalleven_cantidad) + (detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento."),
+                  detalleven_caracteristicas,
+                  detalleven_preferencia,
+                  detalleven_comision,
+                  detalleven_tipocambio,
+                    detalleven_envase,
+                    detalleven_nombreenvase,
+                    detalleven_costoenvase,
+                    detalleven_precioenvase,
+                    detalleven_cantidadenvase,
+                    detalleven_garantiaenvase,
+                    detalleven_devueltoenvase,
+                    detalleven_fechadevolucion,
+                    detalleven_horadevolucion,
+                    detalleven_montodevolucion,
+                    detalleven_prestamoenvase,
+                    detalleven_fechavenc,
+                    usuario_id,
+                    0 as factura_id,
+                    clasificador_id,
+                    detalleven_unidadfactor,
+                    preferencia_id,
+                    detalleven_tc
+                  
+                FROM
+                  detalle_venta_aux
+                WHERE 
+                  usuario_id=".$usuario_id.")";
         
         $this->Venta_model->ejecutar($sql);        
         
@@ -3564,6 +3565,10 @@ function anular_venta($venta_id){
             
             $venta_id = $this->input->post('venta_id');
             
+            //RECUPERAR DATOS DE LA VENTA PARA INGRESAR A FACTURA
+            $sql = "select * from factura where venta_id = ".$venta_id;
+            $venta = $this->Venta_model->consultar($sql);
+            
             $nit_factura = $this->input->post('numeroDocumento');
             $razon_social = $this->input->post('razon');
             
@@ -3576,11 +3581,12 @@ function anular_venta($venta_id){
             $factura_fechaventa = $fecha_venta;
             $factura_fecha = "date(now())";
             $factura_hora = "time(now())";
-            $factura_subtotal = $monto_factura;
+            $factura_subtotal = $venta[0]["venta_subtotal"];//$monto_factura;
             $factura_ice = 0;
             $factura_exento = 0;
-            $factura_descuento = 0;
-            $factura_total = $monto_factura;
+            $factura_descuentoparcial = $venta[0]["venta_descuentoparcial"];
+            $factura_descuento = $venta[0]["venta_descuento"];
+            $factura_total = $venta[0]["venta_total"]; //$monto_factura;
             $factura_numero = $numero_factura;
             $factura_autorizacion = $dosificacion["dosificacion_autorizacion"];
             $factura_llave = $dosificacion["dosificacion_llave"];
@@ -3681,24 +3687,24 @@ function anular_venta($venta_id){
                 // antiguo sistema de facturacion
                 $sql = "insert into factura(estado_id, factura_fechaventa, 
                         factura_fecha, factura_hora, factura_subtotal, 
-                        factura_ice, factura_exento, factura_descuento, factura_total, 
+                        factura_ice, factura_exento, factura_descuentoparcial,factura_descuento, factura_total, 
                         factura_numero, factura_autorizacion, factura_llave, 
                         factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                         factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id, venta_id,
                         factura_efectivo, factura_cambio, tipotrans_id, factura_leyenda3, factura_leyenda4) value(".
                         $estado_id.",'".$factura_fechaventa."',".
                         $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-                        $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                        $factura_ice.",".$factura_exento.",".$factura_descuentoparcial+",".$factura_descuento.",".$factura_total.",".
                         $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                         $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                         $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
                         $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
-                        $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_leyenda1."','".factura_leyenda2."')";
+                        $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_leyenda1."','".$factura_leyenda2."')";
             }else{
                 // nuevo sistema de facturacion
                 $sql = "insert into factura(estado_id, factura_fechaventa, 
                         factura_fecha, factura_hora, factura_subtotal, 
-                        factura_ice, factura_exento, factura_descuento, factura_total, 
+                        factura_ice, factura_exento, factura_descuentoparcial, factura_descuento, factura_total, 
                         factura_numero, factura_autorizacion, factura_llave, 
                         factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                         factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id, venta_id,
@@ -3709,7 +3715,7 @@ function anular_venta($venta_id){
                         docsec_codigoclasificador, factura_codigocliente, factura_leyenda1, factura_leyenda2 value(".
                         $estado_id.",'".$factura_fechaventa."',".
                         $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-                        $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                        $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                         $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                         $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                         $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
@@ -3726,6 +3732,7 @@ function anular_venta($venta_id){
             
             $this->load->model('Detalle_factura_aux_model');
             $all_detalle_factura_aux = $this->Detalle_factura_aux_model->getall_detalle_factura_aux($venta_id);
+            
             foreach($all_detalle_factura_aux as $detalle_fact){
                 $params = array(
                     'producto_id' => $detalle_fact['producto_id'],
@@ -3737,6 +3744,7 @@ function anular_venta($venta_id){
                     'detallefact_descripcion' => $detalle_fact['detallefact_descripcion'],
                     'detallefact_precio' => $detalle_fact['detallefact_precio'],
                     'detallefact_subtotal' => $detalle_fact['detallefact_subtotal'],
+                    'detallefact_descuentoparcial' => $detalle_fact['detallefact_descuentoparcial'],
                     'detallefact_descuento' => $detalle_fact['detallefact_descuento'],
                     'detallefact_total' => $detalle_fact['detallefact_total'],
                     'detallefact_preferencia' => $detalle_fact['detallefact_preferencia'],
@@ -4287,7 +4295,7 @@ function anular_venta($venta_id){
     
     function verificar_cufd(){
 
-        $sql =" select * from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$this->puntodeventa;
+        $sql ="select * from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$this->puntodeventa;
         $cufd = $this->Venta_model->consultar($sql);
         if(sizeof($cufd)>0){
             echo json_encode(true);

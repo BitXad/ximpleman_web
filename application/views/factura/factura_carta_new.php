@@ -293,31 +293,36 @@ border-bottom : 1px solid #aaa;
                             <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']) ,2,'.',','); ?></font></td>
                         </tr>
                     <?php }} 
-                        $total_final_factura = $factura[0]['factura_subtotal'] + $total_descuentoparcial;
+                        $total_final_factura = $factura[0]['factura_subtotal'];
                         $span = ($mostrarice==1)? 3: 2;
                     ?>
+                    <!-------------- SUB TOTAL ---------->
                     <tr>
                         <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($total_final_factura,' Bolivianos') ?></b></td>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">SUBTOTAL Bs</td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_final_factura,2,'.',','); ?></td>
                     </tr>
+                    <!-------------- DESCUENTO ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO Bs</td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_descuentoparcial,2,'.',','); ?></td>
                     </tr>
                     
-                    <?php if($factura[0]['factura_descuento']>0){ ?>
-                        <tr>
+                    <!-------------- DECUENTO GLOBAL ---------->
+                    <?php //if($factura[0]['factura_descuento']>0){ ?>
+<!--                        <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO GLOBAL Bs</td>
                             <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
-                        </tr>
-                    <?php } ?>
+                        </tr>-->
+                    <?php //} ?>
 
+                    <!-------------- FACTURA TOTAL ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>TOTAL Bs</b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'] ,2,'.',',') ?></b></td>
                     </tr>
                     
+                    <!-------------- ICE / ICE ESPECIFICO ---------->
                     <?php if($mostrarice==1){ ?>
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>
@@ -329,7 +334,7 @@ border-bottom : 1px solid #aaa;
                     </tr>
                     <?php } ?>
                     
-                    
+                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>IMPORTE BASE<br>CR&Eacute;DITO FISCAL</b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'] ,2,'.',',')?></b></td>

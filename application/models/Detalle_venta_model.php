@@ -336,7 +336,7 @@ function ventas_dia($estado)
             d.detalleven_subtotal,
             d.detalleven_descuentoparcial,
             d.detalleven_descuento,
-            d.detalleven_total+ (d.detalleven_descuento*d.detalleven_cantidad),
+            d.detalleven_subtotal,
             d.detalleven_caracteristicas,
             d.detalleven_preferencia,
             d.detalleven_comision,
