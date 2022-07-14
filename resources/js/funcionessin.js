@@ -1,4 +1,4 @@
-function solicitudCufd(punto_venta=1){
+function solicitudCufd(punto_venta){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/cufd';

@@ -85,7 +85,7 @@ function validar(e,opcion) {
         
         if (opcion==1){   //si la pulsacion proviene del nit  
             
-             verificarnit();
+             //verificarnit();
             nit = document.getElementById('nit').value;            
             if (nit==''){
                 var cod = generar_codigo();

@@ -305,7 +305,7 @@ border-bottom : 1px solid #aaa;
                     <!-------------- DESCUENTO ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO Bs</td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_descuentoparcial,2,'.',','); ?></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
                     </tr>
                     
                     <!-------------- DECUENTO GLOBAL ---------->

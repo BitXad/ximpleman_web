@@ -199,7 +199,7 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="descuentoAdicional" nillable="true">
+                            <xs:element name="descuentoAdicional">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:decimal">
                                         <xs:totalDigits value="17"/>

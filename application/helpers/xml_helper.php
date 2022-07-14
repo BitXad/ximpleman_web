@@ -245,6 +245,7 @@
         $xml->getElementsByTagName('montoTotalSujetoIva')->item(0)->nodeValue = "{$factura['factura_total']}";
         $xml->getElementsByTagName('codigoMoneda')->item(0)->nodeValue = "{$factura['moneda_codigoclasificador']}";
         $xml->getElementsByTagName('tipoCambio')->item(0)->nodeValue = "{$factura['moneda_tc']}";
+        $xml->getElementsByTagName('descuentoAdicional')->item(0)->nodeValue = "{$factura['factura_descuento']}";
         $xml->getElementsByTagName('montoTotal')->item(0)->nodeValue = "{$factura['factura_subtotal']}";
         $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "{$factura['factura_subtotal']}";
         $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "{$factura['factura_leyenda1']}";
@@ -284,10 +285,11 @@
             $precioUnitario = $xml->createElement('precioUnitario',"{$df['detallefact_precio']}");
             $detalle->appendChild($precioUnitario);
 
-            $montoDescuento = $xml->createElement('montoDescuento',"{$df['detallefact_descuento']}");
+            $descuentoparcial = $df['detallefact_descuentoparcial'] * $df['detallefact_cantidad'];
+            $montoDescuento = $xml->createElement('montoDescuento',"{$descuentoparcial}");
             $detalle->appendChild($montoDescuento);
 
-            $subTotal = $xml->createElement('subTotal',"{$df['detallefact_subtotal']}");
+            $subTotal = $xml->createElement('subTotal',"{$df['detallefact_total']}");
             $detalle->appendChild($subTotal);
 
             $numeroSerie = $xml->createElement('numeroSerie',"{$df['detallefact_preferencia']}");

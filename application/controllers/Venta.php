@@ -927,8 +927,9 @@ class Venta extends CI_Controller{
                             $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                             $wsdl = $dosificacion['dosificacion_factura'];
                             $token = $dosificacion['dosificacion_tokendelegado'];
-                            $comunicacion = $this->verificar_comunicacion($token,$wsdl);
-                            if($comunicacion){
+//                            $comunicacion = $this->verificar_comunicacion($token,$wsdl);
+//                            
+//                            if($comunicacion){
                                 $eniada = $this->mandarFactura($contents, $xml_comprimido);
                                 //var_dump($eniada->transaccion);
                                 //var_dump($eniada);
@@ -942,11 +943,23 @@ class Venta extends CI_Controller{
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
                                 }else{
+                                    
                                     $cad = $eniada->mensajesList;
+                                    //var_dump($eniada->mensajesList);
+                                    
                                     $mensajecadena = "";
                                     foreach ($cad as $c) {
-                                        $mensajecadena .= $c.";";
+                                        $mensajecadena .= $c->codigo.", ".$c->descripcion." | ";
                                     }
+                                    
+//                                  
+//                                      $mensajecadena = "";
+//                                    foreach ($cad as $c) {
+//                                        $mensajecadena .= $c.";";
+//                                    }
+//                                    $mensajecadena = $eniada->codigoDescripcion;
+//                                    echo "<br><br>".$mensajecadena;
+//                                    
                                     $params = array(
                                         'factura_codigodescripcion' => $eniada->codigoDescripcion,
                                         'factura_codigoestado' => $eniada->codigoEstado,
@@ -959,9 +972,9 @@ class Venta extends CI_Controller{
                                 
                                 $email = $this->input->post('cliente_email');
                                 $this->enviarcorreo($venta_id, $factura_id, $email, $razon);
-                            }else{
-                                echo json_encode("false");
-                            }
+//                            }else{
+//                                echo json_encode("false");
+//                            }
                             
                         }
                     }
