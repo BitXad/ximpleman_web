@@ -4010,7 +4010,7 @@ function anular_venta($venta_id){
                         factura_efectivo, factura_cambio, tipotrans_id, factura_leyenda3, factura_leyenda4) value(".
                         $estado_id.",'".$factura_fechaventa."',".
                         $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-                        $factura_ice.",".$factura_exento.",".$factura_descuentoparcial",".$factura_descuento.",".$factura_total.",".
+                        $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                         $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                         $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                         $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
