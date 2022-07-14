@@ -50,6 +50,7 @@ class Venta extends CI_Controller{
         
         $this->load->helper('xml');
         $this->load->helper('validacionxmlxsd_helper');
+        $this->load->helper('numeros_helper');
         
         //Carga los parametros en una variable global
         $parametro = $this->Parametro_model->get_parametros();
