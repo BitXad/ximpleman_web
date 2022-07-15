@@ -94,20 +94,34 @@ border-bottom : 1px solid #aaa;
         <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" ></td>
         <td class="borde_pagina" style="padding: 0;">
         <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
+            <tr>                
+            <td>
+            <table style="width: 100%; margin: 0;" >
             <tr>
                 <!--<td rowspan="3" style="width: 5cm;"></td>-->
-                <td style="width: <?php echo round($ancho/3,2);?>cm;  padding: 0; line-height: 9px;" colspan="3">
+                <td  style="width: <?php echo round($ancho/3,2);?>cm;  padding: 0; line-height: 9px;">
                     <center>
                             <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                             <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
                                 <small>
-                                    <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                                    
+                                    <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font>
                                 </small>
                             <?php } ?>
                                     
                             <font size="1" face="Arial narrow">
-                            <small style="display:inline-block; margin-top:8px;">
-                                <b><?php echo $factura[0]['factura_sucursal'];?></b><br>
+                            <small style="display:inline-block;margin-top: 0px;">
+                                <b>
+                                    <?php 
+                                        if($factura[0]['factura_sucursal']==0){
+                                            echo "CASA MATRIZ";
+                                        }else{
+                                            echo "SUCURSAL ".$factura[0]['factura_sucursal'];
+                                        }
+                                        
+                                    ?>
+                                
+                                </b><br>
+                                <?php echo "Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']; ?><br>
                                 <?php echo $empresa[0]['empresa_direccion']; ?><br>
                                 Teléfono:<?php echo $empresa[0]['empresa_telefono']; ?><br>
                                 <?php echo $empresa[0]['empresa_ubicacion']; ?>
@@ -125,17 +139,17 @@ border-bottom : 1px solid #aaa;
                             <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= " ".$factura[0]['factura_nitemisor'] ?></td>
                         </tr>
                         <tr>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>FACTURA No.: </b></td>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>FACTURA Nº: </b></td>
                             <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= "00".$factura[0]['factura_numero'] ?></td>
                         </tr>
                         <tr>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b> CUF: </b></td>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>CÓD AUTORIZACIÓN: </b></td>
                             <td style="font-family: arial; font-size: 8pt; padding-left: 5px; white-space: intial; max-width: 3cm"><span class="width:100%"><?= $factura[0]['factura_cuf'] ?></span></td>
                         </tr>
-                        <tr>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b> ACTIVIDAD: </b></td>
+<!--                        <tr>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>ACTIVIDAD: </b></td>
                             <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= $factura[0]['factura_actividad']?></td>
-                        </tr>
+                        </tr>-->
                     </table>     
                 </td>
             </tr>
@@ -146,7 +160,7 @@ border-bottom : 1px solid #aaa;
             ?> 
             
             <tr style="padding: 0;">
-                <td colspan="5" style="padding: 0;">
+                <td colspan="6" style="padding: 0;">
                     <center style="margin-bottom:15px">
                         <font size="4" face="arial"><b>FACTURA</b></font> <br>
                         <font size="1" face="arial">(Con Derecho a Cr&eacute;dito Fiscal)</font> <br>
@@ -154,7 +168,7 @@ border-bottom : 1px solid #aaa;
                 </td>  
             </tr>
             <tr>
-                <td colspan="5">
+                <td colspan="6">
                     <div style="display: inline-block; float:left; width:70%">
                         <table style="word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;">
                             <tr>
@@ -182,9 +196,13 @@ border-bottom : 1px solid #aaa;
                     </div>
                 </td>
             </tr>
-        </table>
-    
-        <table class="table"  style="width: <?php echo $ancho;?>cm; height: <?php echo $tipo_factura."cm"; ?>; margin: 0; padding: 0; border-collapse: collapse;" >
+        <!--</table>-->
+            </table>
+            </td>
+            </tr>
+        <?php $mostrarice = 0; //sin ice ?>
+            
+        <!--<table class="table"  style="width: <?php echo $ancho;?>cm; height: <?php echo $tipo_factura."cm"; ?>; margin: 0; padding: 0; border-collapse: collapse;" >-->
             <tr>
                 <td>
                     <table class="table-condensed"  style="width: 100%; margin: 0;" >
@@ -195,14 +213,21 @@ border-bottom : 1px solid #aaa;
                             <td align="center"><b>DESCRIPCI&Oacute;N</b></td>
                             <td align="center"><b>PRECIO<br> UNITARIO</b></td>               
                             <td align="center"><b>DESC.</b></td>
+                            <?php if ($mostrarice==1){ ?>
+                            
                             <td align="center"><b>ICE %</b></td>
                             <td align="center"><b>ICE ESP.</b></td>
+                            
+                            <?php } ?>
+                            
                             <td align="center"><b>SUBTOTAL</b></td>
                         </tr>
                         <?php $cont = 0;
                             $cantidad = 0;
+                            $total_descuentoparcial = 0;
                             $total_descuento = 0;
                             $total_final = 0;
+                            
                             $total_subtotal = 0;
                             $ice = 0.00;
     
@@ -212,6 +237,7 @@ border-bottom : 1px solid #aaa;
                                     $cantidad += $d['detallefact_cantidad'];
                                     $sub_total = $d['detallefact_subtotal'];
                                     $total_subtotal += $sub_total;
+                                    $total_descuentoparcial += $d['detallefact_descuentoparcial'] * $d['detallefact_cantidad']; 
                                     $total_descuento += $d['detallefact_descuento']; 
                                     $total_final += $d['detallefact_total']; 
                         ?>
@@ -231,51 +257,78 @@ border-bottom : 1px solid #aaa;
                                 </font>
                             </td>
                             <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></font></td>
-                            <td align="right" style="padding-right: 3px;"><?= number_format($d['detallefact_descuento']*$d['detallefact_cantidad'],2,'.',',') ?></td>
-                            <td align="right" style="padding-right: 3px;"><?= number_format($ice,2,'.',',') ?></td>
-                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?= number_format($ice,2,'.',',') ?></font></td>
-                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($sub_total,2,'.',','); ?></font></td>
+                            <td align="right" style="padding-right: 3px;"><?= number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',',') ?></td>
+                            
+                            <?php if($mostrarice==1){ ?>
+                                <td align="right" style="padding-right: 3px;"><?= number_format($ice,2,'.',',') ?></td>
+                                <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?= number_format($ice,2,'.',',') ?></font></td>
+                            <?php } ?>
+                            
+                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']) ,2,'.',','); ?></font></td>
                         </tr>
-                    <?php }} ?>
+                    <?php }} 
+                        $total_final_factura = $factura[0]['factura_subtotal'];
+                        $span = ($mostrarice==1)? 3: 2;
+                    ?>
+                    <!-------------- SUB TOTAL ---------->
                     <tr>
-                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="5" rowspan="6"><b>SON: <?= num_to_letras($total_final,' Bolivianos') ?></b></td>
-                        <td style="padding:0; padding-right: 3px;" colspan="3" align="right">SUBTOTAL Bs</td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_subtotal'],2,'.',','); ?></td>
+                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($total_final_factura,' Bolivianos') ?></b></td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">SUBTOTAL Bs</td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_final_factura,2,'.',','); ?></td>
                     </tr>
+                    <!-------------- DESCUENTO ---------->
                     <tr>
-                        <td style="padding:0; padding-right: 3px;" colspan="3" align="right">(-)DESCUENTO Bs</td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO Bs</td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
                     </tr>
+                    
+                    <!-------------- DECUENTO GLOBAL ---------->
+                    <?php //if($factura[0]['factura_descuento']>0){ ?>
+<!--                        <tr>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO GLOBAL Bs</td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
+                        </tr>-->
+                    <?php //} ?>
+
+                    <!-------------- FACTURA TOTAL ---------->
                     <tr>
-                        <td style="padding:0; padding-right: 3px;" colspan="3" align="right"><b>TOTAL Bs</b></td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>TOTAL Bs</b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'] ,2,'.',',') ?></b></td>
                     </tr>
+                    
+                    <!-------------- ICE / ICE ESPECIFICO ---------->
+                    <?php if($mostrarice==1){ ?>
                     <tr>
-                        <td style="padding:0; padding-right: 3px;" colspan="3" align="right">(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($ice,2,'.',',') ?></td>
                     </tr>
                     <tr>
-                        <td style="padding:0; padding-right: 3px;" colspan="3" align="right">(-) TOTAL ICE PORCENTUAL Bs</td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) TOTAL ICE PORCENTUAL Bs</td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($ice,2,'.',',') ?></td>
                     </tr>
+                    <?php } ?>
+                    
+                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
                     <tr>
-                        <td style="padding:0; padding-right: 3px;" colspan="3" align="right"><b>IMPORTE BASE CR&Eacute;DITO FISCAL</b></td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>IMPORTE BASE<br>CR&Eacute;DITO FISCAL</b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'] ,2,'.',',')?></b></td>
                     </tr>
                 </table>
             </td>
         </tr>
-        <tr+ >
-            <td>
+        <tr>
+            <td style="padding-top: 0px; padding-bottom: 0px;">
                 <div style="width: 100%; margin-top: 25px;">
                     <div style="float: left;width: 78%;">
                         <center style="width:100%;">
-                            <?php echo $factura[0]['factura_leyenda1'];?> <br>
-                            <font face="Arial" size="1">
-                                <?php echo $factura[0]['factura_leyenda2']; ?> 
-                            </font>
-                            <br>
-                            <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
+                            <?php echo $factura[0]['factura_leyenda1'];?> <br><br>
+                            
+                            <font face="Arial" size="1"><?php echo $factura[0]['factura_leyenda2']; ?> 
+                            </font><br><br>
+                            
+                            <?php echo $factura[0]['factura_leyenda3'];?> <br><br>                         
+                            
+                                <?php echo $factura[0]['factura_leyenda4'];?>
                         </center>
                     </div>
                     <div style="float: right;width: 80px;">

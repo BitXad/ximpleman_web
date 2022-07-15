@@ -5,6 +5,7 @@
  */
 require_once(APPPATH.'libraries/vendor/autoload.php');
 use Dompdf\Dompdf;
+//use Dompdf\Options;
 
 class Venta extends CI_Controller{
     
@@ -984,7 +985,10 @@ class Venta extends CI_Controller{
                                         $micad .= "<html>"; 
                                         $micad .= "    <head>"; 
                                         $micad .= "    <link rel='stylesheet' href='http://localhost/ximpleman_web3/resources/css/bootstrap.min.css'>"; 
-                                        $micad .= "       <style type='text/css'>"; 
+                                        $micad .= "        <style type='text/css'>"; 
+                                        $micad .= "            @font-face {";
+                                        $micad .= "                font-family : 'Arial';";
+                                        $micad .= "            }";
                                         $micad .= "           p {"; 
                                         $micad .= "               font-family: Arial;"; 
                                         $micad .= "               font-size: 7pt;"; 
@@ -1105,8 +1109,8 @@ class Venta extends CI_Controller{
                                         $micad .= "                </td>"; 
                                         $micad .= "            </tr>"; 
                                         $micad .= "            <tr>"; 
-                                        $micad .= "                <td colspan='6'>"; 
-                                        $micad .= "                    <div style='display: inline-block; float:left; width:70%'>"; 
+                                        $micad .= "                <td colspan='2'>";
+                                        //$micad .= "                    <div style='display: inline-block; float:left; width:70%'>"; 
                                         $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
                                         $micad .= "                            <tr>"; 
                                         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px;'  class='autoColor'><b>Fecha:</b></td>"; 
@@ -1117,8 +1121,10 @@ class Venta extends CI_Controller{
                                         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_razonsocial']."</td>"; 
                                         $micad .= "                            </tr>"; 
                                         $micad .= "                        </table>"; 
-                                        $micad .= "                    </div>"; 
-                                        $micad .= "                    <div style='display: inline-block; float:left; width:30%'>"; 
+                                        //$micad .= "                    </div>"; 
+                                        $micad .= "                </td>"; 
+                                        $micad .= "                <td>"; 
+                                        //$micad .= "                    <div style='display: inline-block; float:left; width:30%'>"; 
                                         $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
                                         $micad .= "                            <tr>"; 
                                         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; ' class='autoColor'><b>NIT/CI/CEX:</b></td>"; 
@@ -1129,17 +1135,18 @@ class Venta extends CI_Controller{
                                         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_codigocliente']."</td>"; 
                                         $micad .= "                            </tr>"; 
                                         $micad .= "                        </table>"; 
-                                        $micad .= "                    </div>"; 
+                                        //$micad .= "                    </div>"; 
                                         $micad .= "                </td>"; 
                                         $micad .= "            </tr>"; 
-                                        $micad .= "            </table>"; 
+                                        $micad .= "            </table>";
+                                        $micad .= "            <br>";
                                         $micad .= "            </td>"; 
                                         $micad .= "            </tr>"; 
                                                          $mostrarice = 0; //sin ice  
                                         $micad .= "            <tr>"; 
                                         $micad .= "                <td>"; 
                                         $micad .= "                    <table class='table-condensed'  style='width: 100%; margin: 0;' >"; 
-                                        $micad .= "                        <tr  style=' font-family: Arial; border: 1px solid black '>"; 
+                                        $micad .= "                        <tr  style=' font-family: arial; border: 1px solid black '>"; 
                                         $micad .= "                            <td align='center'><b>C&Oacute;DIGO<br> PRODUCTO</b></td>"; 
                                         $micad .= "                            <td align='center'><b>CANTIDAD</b></td>"; 
                                         $micad .= "                            <td align='center'><b>UNIDAD <br>DE MEDIDA</b></td>"; 
@@ -1203,22 +1210,22 @@ class Venta extends CI_Controller{
                                         $micad .= "                    <!-------------- DESCUENTO ---------->"; 
                                         $micad .= "                    <tr>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)DESCUENTO Bs</td>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($total_descuentoparcial,2,'.',',')."</td>"; 
+                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>"; 
                                         $micad .= "                    </tr>"; 
                                         $micad .= "                    <!-------------- DECUENTO GLOBAL ---------->"; 
                                                              //if($factura[0]['factura_descuento']>0){ 
                                         /*$micad .= "                        <!--<tr>"; 
-                                        $micad .= "                            <td style='padding:0; padding-right: 3px;' colspan='<?= $span; ?>' align='right'>(-)DESCUENTO GLOBAL Bs</td>"; 
-                                        $micad .= "                            <td style='padding:0; padding-right: 3px;' align='right'><?= number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>"; 
+                                        $micad .= "                            <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)DESCUENTO GLOBAL Bs</td>"; 
+                                        $micad .= "                            <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
                                         $micad .= "                        </tr>--> */ 
                                                              //} 
                                         $micad .= "                    <!-------------- FACTURA TOTAL ---------->"; 
                                         $micad .= "                    <tr>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='<?= $span; ?>' align='right'><b>TOTAL Bs</b></td>"; 
+                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'><b>TOTAL Bs</b></td>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'><b>".number_format($factura[0]['factura_total'] ,2,'.',',')."</b></td>"; 
                                         $micad .= "                    </tr>"; 
                                         $micad .= "                    <!-------------- ICE / ICE ESPECIFICO ---------->"; 
-                                                            if($mostrarice==1){ 
+                                                            if($mostrarice==1){
                                         $micad .= "                    <tr>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ice,2,'.',',')."</td>"; 
@@ -1249,8 +1256,15 @@ class Venta extends CI_Controller{
                                         $micad .= "                        </center>"; 
                                         $micad .= "                    </div>"; 
                                         $micad .= "                    <div style='float: right;width: 80px;'>"; 
-                                        $micad .= "                        <figure>"; 
-                                        $micad .= "                            <img src='".$codigoqr."' width='80' height='80' alt='Codigo QR'>"; 
+                                        $micad .= "                        <figure>";
+                                                                                $base_url = explode('/', base_url());
+                                                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
+                                                    $codigoqr = $directorio.'/images/qrcode'.$usuario_id.'.png';
+                                                    $path = $codigoqr;
+                                                    $type = pathinfo($path, PATHINFO_EXTENSION);
+                                                    $data = file_get_contents($path);
+                                                    $elcodigoqrbase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                                        $micad .= "                            <img src='".$elcodigoqrbase64."' width='80' height='80' alt='Codigo QR'>"; 
                                         $micad .= "                        </figure>"; 
                                         $micad .= "                    </div>"; 
                                         $micad .= "                </div>"; 
@@ -1263,16 +1277,26 @@ class Venta extends CI_Controller{
                                         $micad .= "</body>"; 
                                         $micad .= "</html>"; 
                                          
-                                    } 
-                                    $dompdf = new Dompdf(); 
+                                    }
+                                    
+                                    $dompdf = new Dompdf();
+                                    $options = $dompdf->getOptions();
+                                    $options->setDefaultFont('Arial');
+                                    $dompdf->setOptions($options);
+                                    
+                                    //$options = new Options();
+                                    //$options->set('defaultFont', 'Arial');
+                                    //$dompdf = new Dompdf($options);
+
+                                    //$dompdf = new Dompdf(); 
                                     $dompdf->loadHtml($micad); 
                                     $dompdf->render(); 
                                     //salida al navegador 
                                     //$dompdf->stream(); 
                                     $base_url = explode('/', base_url()); 
-                                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/'; 
+                                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/'; 
                                     $output = $dompdf->output(); 
-                                    file_put_contents($directorio.'pdf_flie_name5.pdf', $output); 
+                                    file_put_contents($directorio.'compra_venta'.$factura[0]['factura_id'].'.pdf', $output); 
                                     /* F I N  generar el pdf */ 
                                     $this->enviarcorreo($venta_id, $factura_id, $email, $razon);
                                 }
@@ -4532,6 +4556,7 @@ function anular_venta($venta_id){
         $base_url = explode('/', base_url());
         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
         $this->email->attach($directorio."compra_venta".$factura_id.".xml");
+        $this->email->attach($directorio."compra_venta".$factura_id.".pdf");
         $html = "<html>";
         $html = "<head>";
         $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
@@ -4551,7 +4576,7 @@ function anular_venta($venta_id){
         $html .= "Le informamos que su factura electrónica se encuentra disponible para verlo en el siguiente enlace: <br>";
         $direccion = base_url("tufactura/verfactura/".md5($venta_id));
         $html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
-        $html .= "<br>Tambien le enviamos el XML adjunto";
+        $html .= "<br>Tambien le enviamos los archivos en formato PDF y XML adjuntos";
         $html .= "<br>";
         //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
 //            $html .= "<form method='get' action='/".$direccion."'>";
