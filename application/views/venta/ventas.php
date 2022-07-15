@@ -1689,7 +1689,7 @@ window.onkeydown = compruebaTecla;
             </label>
         </div>  
         <div class="col-md-4">
-            <!--<button class="btn btn-warning btn-block" onclick="abrir_caja()"><fa class="fa fa-money"></fa> Registrar</button>-->
+            <button class="btn btn-warning btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>
             <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
         </div>  
       
