@@ -208,7 +208,7 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="codigoExcepcion" nillable="true">
+                            <xs:element name="codigoExcepcion" base="xs:integer">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:integer">
                                         <xs:minInclusive value="0"/>

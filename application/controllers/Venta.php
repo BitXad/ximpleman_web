@@ -423,6 +423,7 @@ class Venta extends CI_Controller{
                 $cuota_fecha_i = $fecha_venta == '' ? date('Y-m-d') : $fecha_venta;
                 $facturado = $this->input->post('facturado'); // si la venta es facturada
                 $tipo_doc_identidad = $this->input->post('tipo_doc_identidad');
+                $codigo_excepcion = $this->input->post('codigo_excepcion');
         
                 //******** ACTUALIZAR LA TABLA detalle_Venta_aux
                 
@@ -800,7 +801,7 @@ class Venta extends CI_Controller{
                                 factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                                 factura_nit, factura_razonsocial, factura_nitemisor,factura_sucursal,
                                 factura_sfc, factura_actividad, usuario_id, tipotrans_id, 
-                                factura_efectivo, factura_cambio,factura_enviada, factura_leyenda3, factura_leyenda4) value(".
+                                factura_efectivo, factura_cambio,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -808,7 +809,7 @@ class Venta extends CI_Controller{
                                 $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                                 $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
                                 $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
-                                $venta_efectivo.",".$venta_cambio.",".$factura_enviada.",'".$factura_leyenda3."','".$factura_leyenda4."')";
+                                $venta_efectivo.",".$venta_cambio.",".$factura_enviada.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.")";
                         }else{
                             // nuevo sistema de facturacion
                             $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
@@ -822,7 +823,7 @@ class Venta extends CI_Controller{
                                 factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
                                 factura_codsistema, factura_puntoventa, factura_sectoreconomico,
                                 factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
-                                docsec_codigoclasificador, factura_codigocliente,factura_enviada, factura_leyenda3, factura_leyenda4) value(".
+                                docsec_codigoclasificador, factura_codigocliente,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion, factura_tipoemision) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -834,7 +835,7 @@ class Venta extends CI_Controller{
                                 $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
                                 $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
                                 $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
-                                $documentoSector,'$factura_codigocliente','$factura_enviada'".",'".$factura_leyenda3."','".$factura_leyenda4."')";
+                                $documentoSector,'$factura_codigocliente','$factura_enviada'".",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".$tipo_emision.")";
                         }
                         $factura_id = $this->Venta_model->ejecutar($sql);
                         //$factura_id= $this->Factura_model->ejecutar2($sql2);
@@ -1423,6 +1424,7 @@ class Venta extends CI_Controller{
             
             $llave_foranea = $this->input->post('llave_foranea');            
             $llave_valor = $this->input->post('llave_valor');            
+            $codigo_excepcion = 0;            
             
             $tipotrans_id = 1;            
             
@@ -1498,7 +1500,7 @@ class Venta extends CI_Controller{
                     factura_numero, factura_autorizacion, factura_llave, 
                     factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                     factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id,".$llave_foranea.",
-                    factura_efectivo, factura_cambio, tipotrans_id, factura_leyenda3, factura_leyenda4) value(".
+                    factura_efectivo, factura_cambio, tipotrans_id, factura_leyenda3, factura_leyenda4, factura_excepcion) value(".
                     $estado_id.",'".$factura_fechaventa."',".
                     $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
@@ -1506,7 +1508,7 @@ class Venta extends CI_Controller{
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
                     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$llave_valor.",".
-                    $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_leyenda3."','".$factura_leyenda4."')";
+                    $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.")";
             $factura_id = $this->Venta_model->ejecutar($sql);
 
 
@@ -3968,6 +3970,8 @@ function anular_venta($venta_id){
             $factura_sucursal = $dosificacion["dosificacion_sucursal"];
             $factura_sfc = $dosificacion["dosificacion_sfc"];
             $factura_actividad = $dosificacion["dosificacion_actividad"];
+            $codigo_excepcion = 0;
+            
             // PARA NUEVA FACTURACION
             if($this->parametros['parametro_tiposistema'] != 1){
                 $cliente_codigo = $this->Cliente_model->get_codigo_cliente($nit_factura, $razon_social);
@@ -4079,7 +4083,7 @@ function anular_venta($venta_id){
                         factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
                         factura_codsistema, factura_puntoventa, factura_sectoreconomico,
                         factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
-                        docsec_codigoclasificador, factura_codigocliente, factura_leyenda1, factura_leyenda2 value(".
+                        docsec_codigoclasificador, factura_codigocliente, factura_leyenda1, factura_leyenda2, factura_excepcion) value(".
                         $estado_id.",'".$factura_fechaventa."',".
                         $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                         $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -4091,7 +4095,7 @@ function anular_venta($venta_id){
                         $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
                         $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
                         $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,$documentoSector,'$factura_clientecodigo'".
-                        ",'".$factura_leyenda3."','".$factura_leyenda4."')";
+                        ",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.")";
             }
 
 

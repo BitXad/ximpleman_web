@@ -2738,9 +2738,17 @@ function registrarventa(cliente_id)
     var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
     let banco_id = forma_id == 1 ? '0':$('#banco').val();
     let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
+    var codigoexcepcion = document.getElementById('codigoexcepcion').checked;
    
     //alert(venta_efectivo);
     //alert(venta_descuento);
+    if(codigoexcepcion==true){
+        codigo_excepcion = 1;
+    }else{
+        codigo_excepcion = 0;
+    }
+    
+   // alert(codigo_excepcion);
     
     var venta_numeroventa = 0;
     var venta_tipodoc = 0;
@@ -2780,7 +2788,7 @@ function registrarventa(cliente_id)
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
                 venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,
-                tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal},
+                tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion},
             success:function(respuesta){
                 let res = JSON.parse(respuesta);
                 registrarpuntos(cliente_id, venta_total);
@@ -2803,7 +2811,7 @@ function registrarventa(cliente_id)
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad,
-                cliente_email:cliente_email, venta_subtotal:venta_subtotal},
+                cliente_email:cliente_email, venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion},
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
@@ -3190,12 +3198,24 @@ function tabla_ventas(filtro)
                     html += "                           <br><span><b>"+(v[i]['banco_nombre'] == null ? '':v[i]['banco_nombre'])+"</b></span> ";
                     
                     
+                    //INDICADOR DE TIPO DE EMISION 1 = online, 2 offline, 3 masiva
+                    if(v[i]['factura_tipoemision'] == 1){
+                        html += "<button class='btn btn-danger btn-xs' title='Emisión en linea'><small><fa class='fa fa-heart'></fa></small></button>";
+                    }
+                    if(v[i]['factura_tipoemision'] == 2){
+                        html += "<button class='btn btn-facebook btn-xs' style='background: gray; ' title='Emision fuera de linea'><small><fa class='fa fa-heartbeat'></fa></small></button>";
+                    }
+                    //----------------------------------------------------
                     //alert(v[i]['recpaquete_codigorecepcion']);
+                    
+                    
                     var paquete = "";                    
                     paquete = v[i]['recpaquete_codigorecepcion'];
                     
                     if(v[i]['factura_enviada'] == 1){
-                        html += "<br><span style='padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small> ENVIADA </small></b></span> ";
+                        
+                        html += "<span style='padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small> ENVIADA </small></b></span> ";
+                    
                     }else{
 
                          if (paquete==null ){
@@ -3213,7 +3233,11 @@ function tabla_ventas(filtro)
                         
                     }
                     
-                    
+                    //INDICADOR DE CODIGO DE EXCEPCION 1
+                    if(v[i]['factura_excepcion'] == 1){
+                        html += "<button class='btn btn-default btn-circle btn-xs' title='Cod. Excepcion = 1'><small><fa class='fa fa-thumbs-up'></fa></small></button>";
+                    }
+                    //----------------------------------------------------
                     
                     
                     html += "                           <br><span class='btn btn-facebook btn-xs' ><b>"+v[i]['estado_descripcion']+"</b></span> ";

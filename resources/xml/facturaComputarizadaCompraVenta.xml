@@ -26,7 +26,7 @@
         <montoTotalMoneda>25</montoTotalMoneda>
         <montoGiftCard xsi:nil="true"></montoGiftCard>        
         <descuentoAdicional></descuentoAdicional>
-        <codigoExcepcion xsi:nil="true"></codigoExcepcion>  
+        <codigoExcepcion></codigoExcepcion>  
         <cafc xsi:nil="true"></cafc>
         <leyenda>Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.</leyenda>
         <usuario>pperez</usuario>
