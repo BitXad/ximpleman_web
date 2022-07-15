@@ -2738,6 +2738,7 @@ function registrarventa(cliente_id)
     let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
    
     //alert(venta_efectivo);
+    //alert(venta_descuento);
     
     var venta_numeroventa = 0;
     var venta_tipodoc = 0;
@@ -2775,7 +2776,7 @@ function registrarventa(cliente_id)
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
-                venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
+                venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,
                 tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal},
             success:function(respuesta){
@@ -2798,7 +2799,7 @@ function registrarventa(cliente_id)
             data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
-                venta_descuento:venta_descuento,orden_id:orden_id,
+                venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad,
                 cliente_email:cliente_email, venta_subtotal:venta_subtotal},
             success:function(respuesta){
@@ -3192,7 +3193,7 @@ function tabla_ventas(filtro)
                     paquete = v[i]['recpaquete_codigorecepcion'];
                     
                     if(v[i]['factura_enviada'] == 1){
-                        html += "<br><span style='padding:0; border:0' class='btn btn-info btn-xs' title='"+v[i]['factura_mensajeslist']+"'><b><small> ENVIADA </small></b></span> ";
+                        html += "<br><span style='padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small> ENVIADA </small></b></span> ";
                     }else{
 
                          if (paquete==null ){

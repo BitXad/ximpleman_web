@@ -282,9 +282,14 @@ border-bottom : 1px solid #aaa;
                                     ?>
                                 </font>
                             </td>
-                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></font></td>
+                            
+                            <!-------------- PRECIO UNITARIO ---------->
+                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_precio'],2,'.',','); ?></font></td>
+                            
+                            <!-------------- DESCUENTO PARCIAL ---------->
                             <td align="right" style="padding-right: 3px;"><?= number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',',') ?></td>
                             
+                            <!-------------- ICE/ICE ESPC ---------->
                             <?php if($mostrarice==1){ ?>
                                 <td align="right" style="padding-right: 3px;"><?= number_format($ice,2,'.',',') ?></td>
                                 <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?= number_format($ice,2,'.',',') ?></font></td>

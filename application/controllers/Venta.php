@@ -46,8 +46,7 @@ class Venta extends CI_Controller{
         ]);
         
 
-        $this->load->library('ControlCode');
-        
+        $this->load->library('ControlCode');        
         $this->load->helper('xml');
         $this->load->helper('validacionxmlxsd_helper');
         
@@ -401,12 +400,6 @@ class Venta extends CI_Controller{
                 
                 $porcentaje = 0;
                 // $factura_id = 0;
-                $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-                $sql = "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
-                       "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuentoparcial,venta_descuento,venta_total,".
-                       "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,".
-                       "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id".
-                       ") value($cad)";
                 
                 $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
                 $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
@@ -429,12 +422,23 @@ class Venta extends CI_Controller{
                 $facturado = $this->input->post('facturado'); // si la venta es facturada
                 $tipo_doc_identidad = $this->input->post('tipo_doc_identidad');
         
+                //******** ACTUALIZAR LA TABLA detalle_Venta_aux
+                
+                $sql = "update detalle_venta_aux set
+                        detalleven_descuento = ((detalleven_total - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad
+                        where usuario_id = ".$usuario_id;               
+                $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+                
+                
+                //******** REGISTRA LA TABLA VENTA
+                $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
+                $sql = "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
+                       "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuentoparcial,venta_descuento,venta_total,".
+                       "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,".
+                       "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id".
+                       ") value($cad)";
                 $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
                 
-                if (($venta_total+$venta_descuento)>0)
-                    $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
-                else
-                    $porcentaje = 0;
                     
                 $sql =  "insert into detalle_venta
                 (producto_id,
@@ -484,8 +488,8 @@ class Venta extends CI_Controller{
                   detalleven_precio,
                   detalleven_subtotal,
                   detalleven_descuentoparcial,
-                  ((detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad,
-                  detalleven_subtotal - ((detalleven_descuentoparcial*detalleven_cantidad) + (detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento."),
+                  detalleven_descuento,
+                  detalleven_subtotal - ((detalleven_descuentoparcial + detalleven_subtotal)* detalleven_cantidad),
                   detalleven_caracteristicas,
                   detalleven_preferencia,
                   detalleven_comision,
@@ -708,11 +712,12 @@ class Venta extends CI_Controller{
                         $factura_fechaventa    = $fecha_venta;
                         $factura_fecha         = "date(now())";
                         $factura_hora          =  $hora_venta; //"time(now())";
-                        $factura_subtotal = $venta_total+$venta_descuento;
+                        $factura_subtotal = $venta_subtotal;
                         $factura_nit           = $numero_doc_identidad;
                         $factura_razonsocial   = $razon;
                         $factura_ice           = 0;
                         $factura_exento        = 0;
+                        $factura_descuentoparcial     = $venta_descuentoparcial;
                         $factura_descuento     = $venta_descuento;
                         $factura_total         = $venta_total;
                         $factura_numero        = $dosificacion[0]['dosificacion_numfact']+1;
@@ -788,7 +793,7 @@ class Venta extends CI_Controller{
                             // sistema de facturacion antiguo
                                 $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                                 factura_fecha, factura_hora, factura_subtotal, 
-                                factura_ice, factura_exento, factura_descuento, factura_total, 
+                                factura_ice, factura_exento, factura_descuentoparcial, factura_descuento, factura_total, 
                                 factura_numero, factura_autorizacion, factura_llave, 
                                 factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                                 factura_nit, factura_razonsocial, factura_nitemisor,factura_sucursal,
@@ -796,7 +801,7 @@ class Venta extends CI_Controller{
                                 factura_efectivo, factura_cambio,factura_enviada, factura_leyenda3, factura_leyenda4) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
-                                $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                                $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                                 $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                                 $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                                 $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
@@ -806,7 +811,7 @@ class Venta extends CI_Controller{
                             // nuevo sistema de facturacion
                             $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                                 factura_fecha, factura_hora, factura_subtotal, 
-                                factura_ice, factura_exento, factura_descuento, factura_total, 
+                                factura_ice, factura_exento, factura_descuentoparcial, factura_descuento, factura_total, 
                                 factura_numero, factura_autorizacion, factura_llave, 
                                 factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                                 factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal,
@@ -818,7 +823,7 @@ class Venta extends CI_Controller{
                                 docsec_codigoclasificador, factura_codigocliente,factura_enviada, factura_leyenda3, factura_leyenda4) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
-                                $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                                $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                                 $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                                 $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                                 $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
@@ -857,11 +862,11 @@ class Venta extends CI_Controller{
                             detalleven_unidad,
                             detalleven_cantidad,
                             producto_nombre,          
-                            detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                            detalleven_precio,
                             detalleven_subtotal,
                             detalleven_descuentoparcial,
-                            (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-                            detalleven_total * (1 - ".$porcentaje."),     
+                            detalleven_descuento,
+                            detalleven_total,
                             detalleven_preferencia,
                             detalleven_caracteristicas,
                             detalleven_unidadfactor
@@ -870,6 +875,7 @@ class Venta extends CI_Controller{
                             detalle_venta_aux
                         WHERE 
                             usuario_id=".$usuario_id.")";
+                        
                         $this->Factura_model->ejecutar($sql);               
                         if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
                         // el parametro uno es para computarizada en linea ojo
@@ -934,7 +940,7 @@ class Venta extends CI_Controller{
 //                            if($comunicacion){
                                 $eniada = $this->mandarFactura($contents, $xml_comprimido);
                                 //var_dump($eniada->transaccion);
-                                //var_dump($eniada);
+                                var_dump($eniada);
                                 if($eniada->transaccion){
                                     $params = array(
                                         'factura_codigodescripcion' => $eniada->codigoDescripcion,
@@ -947,7 +953,7 @@ class Venta extends CI_Controller{
                                 }else{
                                     
                                     $cad = $eniada->mensajesList;
-                                    //var_dump($eniada->mensajesList);
+                                    var_dump($eniada->mensajesList);
                                     
                                     $mensajecadena = "";
                                     foreach ($cad as $c) {
@@ -1478,8 +1484,8 @@ class Venta extends CI_Controller{
             $detallefact_cantidad = $cantidad;
             $detallefact_precio = $precio;
             $detallefact_subtotal =  $monto_factura;
-            $detallefact_descuentoparcial = 0;
-            $detallefact_descuento = 0;
+            $detallefact_descuentoparcial = 0; //generacion de factura no tiene descuento parcial
+            $detallefact_descuento = 0; //generacion de factura no tiene descuento general
             $detallefact_total = $monto_factura;
             $detallefact_preferencia =  "";
             $detallefact_caracteristicas = "";
@@ -1925,6 +1931,12 @@ function edit($venta_id)
         
         $porcentaje = 0;
         
+        $sql = "update detalle_venta_aux set
+                detalleven_descuento = ((detalleven_total - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad
+                where usuario_id = ".$usuario_id;                
+        $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+        
+        
         $sql = "delete from detalle_venta where venta_id = ".$venta_id;
         $this->Venta_model->ejecutar($sql);
         
@@ -1982,8 +1994,8 @@ function edit($venta_id)
                   detalleven_precio,
                   detalleven_subtotal,
                   detalleven_descuentoparcial,
-                  ((detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad,
-                  detalleven_subtotal - ((detalleven_descuentoparcial*detalleven_cantidad) + (detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento."),
+                  detalleven_descuento,
+                  detalleven_subtotal - ((detalleven_descuentoparcial + detalleven_subtotal)* detalleven_cantidad),
                   detalleven_caracteristicas,
                   detalleven_preferencia,
                   detalleven_comision,
@@ -2019,7 +2031,7 @@ function edit($venta_id)
                 "cliente_id = ".$cliente_id.
                 ",venta_fecha = '".$venta_fecha."'".
                 ",venta_subtotal = ".$venta_subtotal.
-                ",venta_descuentoparcial = 0".
+                ",venta_descuentoparcial = ".$venta_descuentoparcial.
                 ",venta_descuento = ".$venta_descuento.
                 ",venta_total = ".($venta_total).
                 ",venta_efectivo = ".$venta_efectivo.
@@ -2340,6 +2352,7 @@ function edit($venta_id)
         
             $sql = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
+                    ", detalleven_descuentoparcial = ".$descuento.
                     ", detalleven_descuento = ".$descuento.
                     ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                     "  where detalleven_id = ".$detalleven_id;
@@ -2368,6 +2381,7 @@ function edit($venta_id)
         
             $sql = "update detalle_venta set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
+                    ", detalleven_descuentoparcial = ".$descuento.
                     ", detalleven_descuento = ".$descuento.
                     ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                     "  where detalleven_id = ".$detalleven_id;
@@ -2401,6 +2415,7 @@ function edit($venta_id)
         
             $sql = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad - ".$cantidad.
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
+                    ", detalleven_descuentoparcial = ".$descuento.
                     ", detalleven_descuento = ".$descuento.
                     ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                     "  where detalleven_id = ".$detalleven_id." and detalleven_cantidad > 1";
@@ -2432,6 +2447,7 @@ function edit($venta_id)
         
             $sql = "update detalle_venta set detalleven_cantidad = detalleven_cantidad - ".$cantidad.
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
+                    ", detalleven_descuentoparcial = ".$descuento.
                     ", detalleven_descuento = ".$descuento.
                     ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                     "  where detalleven_id = ".$detalleven_id;
@@ -4146,10 +4162,15 @@ function anular_venta($venta_id){
                             $this->Factura_model->update_factura($factura_id, $params);
                         }else{
                             $cad = $eniada->mensajesList;
-                            //var_dump($cad);
+                            var_dump($cad);
+//                            $mensajecadena = "";
+//                            foreach ($cad as $c) {
+//                                $mensajecadena .= $c.";";
+//                            }
+//                            
                             $mensajecadena = "";
                             foreach ($cad as $c) {
-                                $mensajecadena .= $c.";";
+                                $mensajecadena .= $c->codigo.", ".$c->descripcion." | ";
                             }
                             $params = array(
                                 'factura_codigodescripcion' => $eniada->codigoDescripcion,
@@ -4221,6 +4242,7 @@ function anular_venta($venta_id){
             $factura_subtotal = $monto_factura;
             $factura_ice = 0;
             $factura_exento = 0;
+            $factura_descuentoparcial = 0;
             $factura_descuento = 0;
             $factura_total = $monto_factura;
             $factura_numero = $numero_factura;
@@ -4248,14 +4270,14 @@ function anular_venta($venta_id){
             
             $sql = "insert into factura(estado_id, factura_fechaventa, 
                     factura_fecha, factura_hora, factura_subtotal, 
-                    factura_ice, factura_exento, factura_descuento, factura_total, 
+                    factura_ice, factura_exento, factura_descuentoparcial, factura_descuento, factura_total, 
                     factura_numero, factura_autorizacion, factura_llave, 
                     factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                     factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id, ".$llave_foranea.",
                     factura_efectivo, factura_cambio, tipotrans_id, factura_leyenda3, factura_leyenda4) value(".
                     $estado_id.",'".$factura_fechaventa."',".
                     $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-                    $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                    $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
