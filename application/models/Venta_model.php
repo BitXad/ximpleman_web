@@ -446,7 +446,7 @@ class Venta_model extends CI_Model
                 from consventastotales v
                 left join banco b on b.banco_id = v.banco_id
                 left join factura f on f.venta_id = v.venta_id
-                left join recepcion_paquetes e on e.venta_id = v.venta_id
+                left join recepcion_paquetes e on e.factura_id = f.factura_id
                 where 1 = 1 
                 ".$condicion."
                 order by v.venta_id desc";
@@ -464,13 +464,11 @@ class Venta_model extends CI_Model
                 v.venta_id,
                 round(v.venta_total,2) as venta,
                 round(sum(d.detalleven_cantidad * d.detalleven_precio),2) as detalle,
-
                 if((
                 round(v.venta_total,2) =
                 round(sum(d.detalleven_cantidad * d.detalleven_precio),2))
                 , 0, 1) as resultado,
                 sum(d.detalleven_cantidad) as items
-
 
                 from venta v,detalle_venta d
                 
