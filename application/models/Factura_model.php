@@ -35,7 +35,8 @@ class Factura_model extends CI_Model
      */
     function get_factura_venta($venta_id)
     {
-        $sql = "select f.*,t.tipotrans_nombre, u.usuario_nombre, m.moneda_codigoclasificador, m.moneda_tc, moneda_descripcion, c.cliente_codigo
+        $sql = "select f.*,t.tipotrans_nombre, u.usuario_nombre, m.moneda_codigoclasificador, m.moneda_tc, moneda_descripcion, c.cliente_codigo,
+                c.cliente_complementoci, c.cliente_email
                 from factura f
                 left join venta v on v.venta_id = f.venta_id
                 left join cliente c on c.cliente_id = v.cliente_id

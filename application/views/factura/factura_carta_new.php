@@ -212,7 +212,7 @@ border-bottom : 1px solid #aaa;
                         <table style="word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;">
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; "  class="autoColor"><b>NIT/CI/CEX:</b></td>
-                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_nit'] ?></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_nit'] ?> <?php if ($factura[0]['cdi_codigoclasificador']!=5){ echo $factura[0]["cliente_complementoci"];} ?></td>
                             </tr>
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Cod. Cliente:</b></td>
@@ -359,13 +359,21 @@ border-bottom : 1px solid #aaa;
                             
                             <?php echo $factura[0]['factura_leyenda3'];?> <br><br>                         
                             
-                                <?php echo $factura[0]['factura_leyenda4'];?>
+                            <?php echo $factura[0]['factura_leyenda4'];?>
+                            
+                            <?php 
+                                    if ($factura[0]['factura_tipoemision']==2){
+                                        echo "<b>Este documento es la representación gráfica de un Documento Fiscal Digital emitidofuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b>";
+                                   }
+                            ?>
                         </center>
                     </div>
                     <div style="float: right;width: 80px;">
-                        <figure>
-                            <img src="<?php echo $codigoqr;?>" width="80" height="80" alt="Codigo QR">
-                        </figure>
+                        <center>
+                            <figure>
+                                <img src="<?php echo $codigoqr;?>" width="80" height="80" alt="Codigo QR">
+                            </figure>                            
+                        </center>
                     </div>
                 </div>
             </td>

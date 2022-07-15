@@ -3199,9 +3199,9 @@ function tabla_ventas(filtro)
                     
                     
                     //INDICADOR DE TIPO DE EMISION 1 = online, 2 offline, 3 masiva
-                    if(v[i]['factura_tipoemision'] == 1){
-                        html += "<button class='btn btn-danger btn-xs' title='Emisión en linea'><small><fa class='fa fa-heart'></fa></small></button>";
-                    }
+//                    if(v[i]['factura_tipoemision'] == 1){
+//                        html += "<button class='btn btn-danger btn-xs' title='Emisión en linea'><small><fa class='fa fa-heart'></fa></small></button>";
+//                    }
                     if(v[i]['factura_tipoemision'] == 2){
                         html += "<button class='btn btn-facebook btn-xs' style='background: gray; ' title='Emision fuera de linea'><small><fa class='fa fa-heartbeat'></fa></small></button>";
                     }
@@ -3558,6 +3558,7 @@ function borrar_datos_cliente()
     $("#venta_descuentoparc").val("0");
     $("#venta_descuento").val("0");
     $("#preferencia_id").val("0");
+    $("#cliente_complementoci").val("");
      
     document.getElementById("forma_pago").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
