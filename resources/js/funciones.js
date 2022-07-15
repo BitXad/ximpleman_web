@@ -3337,6 +3337,7 @@ function tabla_ventas(filtro)
                     }
                     if (v[i]['venta_tipodoc']==1){
                         html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
+                        html += " <a onclick='modal_enviocorreo("+v[i]['factura_id']+","+JSON.stringify(v[i]['cliente_email'])+")' class='btn btn-warning btn-xs' style='background: #95ace8' title='Enviar factura al correo'><span class='fa fa-envelope-o'></span></a>";
                     }
                     else{
                         if(generar_factura == 1){
@@ -5233,4 +5234,10 @@ function verificar_cufd(){
     });
 
     
+}
+
+function modal_enviocorreo(factura_id, cliente_email){
+    $("#la_factura").html(factura_id);
+    $("#elcorreo").val(cliente_email);
+    $("#modal_enviofactura").modal("show");
 }

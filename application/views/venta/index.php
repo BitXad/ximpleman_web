@@ -560,3 +560,32 @@
         </div>
     </div>
 </div>
+
+<!------------------------ INICIO modal para envio de facturas a correos ------------------->
+<div class="modal fade" id="modal_enviofactura" tabindex="-1" role="dialog" aria-labelledby="modal_enviofacturalabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">ENVIAR FACTURA POR CORREO</span>
+            </div>
+            <div class="modal-body">
+                <span>
+                    <div class="col-md-6">
+                        <label for="enviar_porcorreo" class="control-label">Correo</label>
+                        <div class="form-group">
+                            <input type="email" name="elcorreo" id="elcorreo" />
+                            <input type="hidden" name="la_factura" id="la_factura" />
+                        </div>
+                    </div>
+                </span>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a class="btn btn-success" onclick="enviar_correo()"><span class="fa fa-envelope"></span> Enviar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para envio de facturas a correos ------------------->
