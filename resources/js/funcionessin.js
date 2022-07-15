@@ -22,7 +22,7 @@ function solicitudCufd(punto_venta=0){
                     let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
                     let transaccion = registros.RespuestaCufd.transaccion;
 
-                    alert(registros);
+                    //alert(registros);
                     if(transaccion == true){
                        // $("#modal_mensajeadvertencia").modal("show");
                         almacenar_cufd((registros['RespuestaCufd']),punto_venta);
