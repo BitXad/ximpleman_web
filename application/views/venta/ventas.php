@@ -418,6 +418,7 @@ window.onkeydown = compruebaTecla;
                         
                     <?php }
                     ?>
+            <input type="checkbox" class="form-check-input" id="codigoexcepcion"><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
             <?php } ?>
         </h4>
         <div class="row" id='loader_documento' style='display:none;'>
@@ -1695,7 +1696,7 @@ window.onkeydown = compruebaTecla;
             </label>
         </div>  
         <div class="col-md-4">
-            <button class="btn btn-warning btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>
+            <!--<button class="btn btn-warning btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>-->
             <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
         </div>  
       
