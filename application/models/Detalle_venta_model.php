@@ -318,10 +318,8 @@ function ventas_dia($estado)
             clasificador_id,
             detalleven_unidadfactor,
             preferencia_id,
-            detalleven_tc
-            
+            detalleven_tc            
         )
-
 
         (SELECT 
             d.producto_id,
@@ -336,7 +334,7 @@ function ventas_dia($estado)
             d.detalleven_subtotal,
             d.detalleven_descuentoparcial,
             d.detalleven_descuento,
-            d.detalleven_subtotal,
+            d.detalleven_subtotal - (d.detalleven_cantidad*d.detalleven_descuentoparcial),
             d.detalleven_caracteristicas,
             d.detalleven_preferencia,
             d.detalleven_comision,

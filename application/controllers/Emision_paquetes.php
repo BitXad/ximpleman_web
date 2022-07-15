@@ -120,7 +120,7 @@ class Emision_paquetes extends CI_Controller{
                 $codigo_evento =  $this->input->post("codigo_evento");
                 /*$nom_archivo = "compra_venta1395.tar.gz";
                 $codigo_evento = 495914;*/
-                $venta_id = substr($nom_archivo,12, strlen($nom_archivo));
+                $factura_id = substr($nom_archivo,12, strlen($nom_archivo));
                 
                 $handle = fopen($directorio.$nom_archivo, "rb");
                 $contents = fread($handle, filesize($directorio.$nom_archivo));
@@ -163,7 +163,7 @@ class Emision_paquetes extends CI_Controller{
                         'recpaquete_transaccion' => $res->transaccion,
                         'recpaquete_fechahora' => $fecha_hora1,
                         'codigo_evento' => $codigo_evento,
-                        'venta_id' => $venta_id,
+                        'factura_id' => $factura_id,
                     );
                 }else{
                     $cad = $res->mensajesList;
@@ -178,7 +178,7 @@ class Emision_paquetes extends CI_Controller{
                         'recpaquete_mensajeslist' => $mensajecadena,
                         'recpaquete_fechahora' => $fecha_hora1,
                         'codigo_evento' => $codigo_evento,
-                        'venta_id' => $venta_id,
+                        'factura_id' => $factura_id,
                     );
                 }
                 $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);

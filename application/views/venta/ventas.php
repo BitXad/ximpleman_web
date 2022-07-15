@@ -394,19 +394,30 @@ window.onkeydown = compruebaTecla;
             <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> <label class="btn btn-default btn-xs" for="check_agrupar"> Agrupar</label> 
             <input type="checkbox" class="form-check-input" id="busqueda_serie"><label class="btn btn-default btn-xs" for="busqueda_serie">Búsqueda por serie</label>
             <?php if($parametro[0]["parametro_tiposistema"] != 1){ ?>
-            <a class="btn btn-default btn-xs" onclick="modal_cambiartipoemision()" title="Forma de emitir factura" >
-                <span id="eltipo_emision">
                     <?php
-                    if($parametro[0]["parametro_tipoemision"] == 1){
-                        echo "online";
-                    }elseif($parametro[0]["parametro_tipoemision"] == 2){
-                        echo "offline";
-                    }if($parametro[0]["parametro_tipoemision"] == 3){
-                        echo "masiva";
-                    }
+                    if($parametro[0]["parametro_tipoemision"] == 1){?>
+                
+                        <a class="btn btn-danger btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" >
+                        <span id="eltipo_emision" style="color: white;">online</span>
+                        </a>        
+                
+                    <?php
+                    }elseif($parametro[0]["parametro_tipoemision"] == 2){ ?>
+                
+                        <a class="btn btn-facebook btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" style="background: grey">
+                        <span id="eltipo_emision" style="color: white;">offline</span>
+                        </a>        
+                
+                       
+                    <?php
+                    }if($parametro[0]["parametro_tipoemision"] == 3){ ?>
+                        
+                        <a class="btn btn-info btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión">
+                        <span id="eltipo_emision" style="color: white;">masiva</span>
+                        </a>        
+                        
+                    <?php }
                     ?>
-                </span>
-            </a>
             <?php } ?>
         </h4>
         <div class="row" id='loader_documento' style='display:none;'>
