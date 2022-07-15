@@ -5162,7 +5162,7 @@ function cargar_eventos(factura_id){
     
     var base_url = document.getElementById('base_url').value;
     var ubicacion = base_url+'resources/xml/';
-    var archivo = "compra_venta"+factura_id+".xml.gz";
+    var archivo = "compra_venta"+factura_id+".tar.gz";
     
     $("#nombre_archivo").val(archivo);
    

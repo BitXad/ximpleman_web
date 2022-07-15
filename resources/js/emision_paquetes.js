@@ -190,9 +190,13 @@ function emisionpaquetes_vacio(){
                             mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
                             mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
                             mensaje += "Lista de mensajes: \n";
-                            mensaje += " -"+registros.mensajesList.codigo+"\n";
-                            mensaje += " -"+registros.mensajesList.descripcion+"\n";
-                            mensaje += " -"+registros.mensajesList.numeroArchivo+"\n";
+                            
+                            mensaje += JSON.stringify(registros.mensajesList);
+
+//                            mensaje += " -"+registros.mensajesList.codigo+"\n";
+//                            mensaje += " -"+registros.mensajesList.descripcion+"\n";
+//                            mensaje += " -"+registros.mensajesList.numeroArchivo+"\n";
+                            
                         }
                         alert(mensaje);
                         

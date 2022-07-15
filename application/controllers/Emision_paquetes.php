@@ -273,10 +273,11 @@ class Emision_paquetes extends CI_Controller{
                     );
                 }elseif($res->codigoDescripcion == "OBSERVADA"){
                     $cad = $res->mensajesList;
-                    $mensajecadena = "";
-                    foreach ($cad as $c) {
+                    $mensajecadena = json_encode($cad);
+                    
+                    /*foreach ($cad as $c) {
                         $mensajecadena .= $c.";";
-                    }
+                    }*/
                     $params = array(
                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
                         'recpaquete_codigoestado' => $res->codigoEstado,
