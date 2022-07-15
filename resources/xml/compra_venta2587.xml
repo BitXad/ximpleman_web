@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>8688070018</nitEmisor>
+        <razonSocialEmisor>PASSWORD</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4511518 * (591) 79999097</telefono>
+        <numeroFactura>51</numeroFactura>
+        <cuf>252763D5BB64BB80A46FD7FA1EF4351A47812D251E26086A43C12A6D74</cuf>
+        <cufd>BQT5CwqE+P0lBNzzlFRkRBNjUwMTc=QzlOUGJKUUhXVUFIxOThFQUVGQjZBM</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-07-15T10:54:07.541</fechaEmision>
+        <nombreRazonSocial>JUAN RAMOS</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>2</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>458457845</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>JU44738</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta xsi:nil="true"/>
+        <montoTotal>85.00</montoTotal>
+        <montoTotalSujetoIva>85.00</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>85.00</montoTotalMoneda>
+        <montoGiftCard xsi:nil="true"/>        
+        <descuentoAdicional>0.00</descuentoAdicional>
+        <codigoExcepcion xsi:nil="true"/>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: Los alimentos declarados de primera necesidad deben ser suministrados de manera adecuada, oportuna, continua y a precio justo.</leyenda>
+        <usuario>DIRLENIA ROJAS AGUILAR</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>472000</actividadEconomica><codigoProductoSin>99100</codigoProductoSin><codigoProducto>TEC-00148</codigoProducto><descripcion>TECLADO FLEXIBLE KEYBOARD</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>85.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>85.00</subTotal><numeroSerie/><numeroImei/></detalle></facturaComputarizadaCompraVenta>

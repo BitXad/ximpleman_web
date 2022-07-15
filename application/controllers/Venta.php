@@ -1139,7 +1139,11 @@ class Venta extends CI_Controller{
                                         $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
                                         $micad .= "                            <tr>"; 
                                         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; ' class='autoColor'><b>NIT/CI/CEX:</b></td>"; 
-                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_nit']."</td>"; 
+                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_nit'];
+                                                                                    if ($factura[0]['cdi_codigoclasificador']!=5){
+                                        $micad .=                                        $factura[0]["cliente_complementoci"];
+                                                                                    }
+                                        $micad .= "</td>"; 
                                         $micad .= "                            </tr>"; 
                                         $micad .= "                            <tr>"; 
                                         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'><b>Cod. Cliente:</b></td>"; 
@@ -1264,6 +1268,9 @@ class Venta extends CI_Controller{
                                         $micad .= "                            </font><br><br>"; 
                                         $micad .=                             $factura[0]['factura_leyenda3']."<br><br>"; 
                                         $micad .=                                 $factura[0]['factura_leyenda4']; 
+                                                                                if ($factura[0]['factura_tipoemision']==2){
+                                        $micad .= "                                 <b>Este documento es la representación gráfica de un Documento Fiscal Digital emitidofuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b>";
+                                                                                }
                                         $micad .= "                        </center>"; 
                                         $micad .= "                    </div>"; 
                                         $micad .= "                    <div style='float: right;width: 80px;'>"; 

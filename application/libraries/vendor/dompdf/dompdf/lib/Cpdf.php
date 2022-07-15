@@ -379,7 +379,7 @@ class Cpdf
      * @var array The list of the core fonts
      */
     protected static $coreFonts = [
-        'courier',
+		'courier',
         'courier-bold',
         'courier-oblique',
         'courier-boldoblique',
