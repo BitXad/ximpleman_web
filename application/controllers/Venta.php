@@ -940,6 +940,10 @@ class Venta extends CI_Controller{
 //                            $comunicacion = $this->verificar_comunicacion($token,$wsdl);
 //                            
 //                            if($comunicacion){
+                            
+                            if( $this->parametros["parametro_tipoemision"] == 1) //Si la emision de la factura es de tipo 1 ONLINE
+                            {
+  
                                 $eniada = $this->mandarFactura($contents, $xml_comprimido);
                                 //var_dump($eniada->transaccion);
                                 var_dump($eniada);
@@ -957,10 +961,10 @@ class Venta extends CI_Controller{
                                     $cad = $eniada->mensajesList;
                                     var_dump($eniada->mensajesList);
                                     
-                                    $mensajecadena = "";
-                                    foreach ($cad as $c) {
-                                        $mensajecadena .= $c->codigo.", ".$c->descripcion." | ";
-                                    }
+                                    $mensajecadena = json_encode($eniada->mensajesList);
+//                                    foreach ($cad as $c) {
+//                                        $mensajecadena .= $c->codigo.", ".$c->descripcion." | ";
+//                                    }
                                     
 //                                  
 //                                      $mensajecadena = "";
@@ -1305,6 +1309,8 @@ class Venta extends CI_Controller{
                                     file_put_contents($directorio.'compra_venta'.$factura[0]['factura_id'].'.pdf', $output); 
                                     /* F I N  generar el pdf */ 
                                     $this->enviarcorreo($venta_id, $factura_id, $email, $razon);
+                                }
+                                // ******************************
                                 }
 //                            }else{
 //                                echo json_encode("false");
