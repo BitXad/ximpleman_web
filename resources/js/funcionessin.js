@@ -1,4 +1,4 @@
-function solicitudCufd(punto_venta){
+function solicitudCufd(punto_venta=0){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/cufd';
@@ -22,7 +22,7 @@ function solicitudCufd(punto_venta){
                     let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
                     let transaccion = registros.RespuestaCufd.transaccion;
 
-
+                    alert(registros);
                     if(transaccion == true){
                        // $("#modal_mensajeadvertencia").modal("show");
                         almacenar_cufd((registros['RespuestaCufd']),punto_venta);
@@ -150,13 +150,14 @@ function verificarComunicacion(){
             data:{},
             success:function(respuesta){
                 let registros = JSON.parse(respuesta);
-                //if(registros.return.transaccion == true){
+                
+                if(registros.return.transaccion == true){
                     let codigo = registros.RespuestaComunicacion.mensajesList.codigo;
                     let descripcion = registros.RespuestaComunicacion.mensajesList.descripcion;
                     alert(codigo+" "+descripcion);
-                /*}else{
-                    registros.faultcode
-                }*/
+                }else{
+                    registros.faultcode;
+                }
                 
             },
             error:function(respuesta){

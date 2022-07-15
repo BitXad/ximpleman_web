@@ -3198,7 +3198,7 @@ function tabla_ventas(filtro)
 
                          if (paquete==null ){
                              
-                              html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['venta_id']+");'>";
+                              html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['factura_id']+");'>";
                               html += "<fa class='fa fa-chain-broken'> </fa> <small>NO ENVIADA</small> </button>";
 
                         }else{
@@ -5156,11 +5156,11 @@ function verificar_conexion_enventas(){
     return resultado;
 }
 
-function cargar_eventos(venta_id){
+function cargar_eventos(factura_id){
     
     var base_url = document.getElementById('base_url').value;
     var ubicacion = base_url+'resources/xml/';
-    var archivo = "compra_venta"+venta_id+".xml.tgz";
+    var archivo = "compra_venta"+factura_id+".xml.gz";
     
     $("#nombre_archivo").val(archivo);
    
