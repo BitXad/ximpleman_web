@@ -2540,6 +2540,7 @@ function registrarcliente()
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;
     var cliente_email = document.getElementById('email').value;
+    var cliente_complementoci = document.getElementById('cliente_complementoci').value;
     
     var zona_id = document.getElementById('zona_id').value;
     //if (Number.isInteger(zona_id)){
@@ -2562,7 +2563,7 @@ function registrarcliente()
                     data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
-                        tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,
+                        tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,cliente_complementoci:cliente_complementoci,
                     },
                     
                     success:function(respuesta){ 
@@ -2591,7 +2592,8 @@ function registrarcliente()
             type:"POST",
             data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id},
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
+                        tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,cliente_complementoci:cliente_complementoci,},
             success:function(respuesta){  
             
                 var registro = JSON.parse(respuesta);

@@ -2711,17 +2711,20 @@ function registrarcliente()
             $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
             $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
             $zona_id =  $this->input->post('zona_id');
+            $tipo_doc_identidad =  $this->input->post('tipo_doc_identidad');
+            $cliente_email =  "'".$this->input->post('cliente_email')."'";
+            $cliente_complementoci =  "'".$this->input->post('cliente_complementoci')."'";
             
             $cliente_ci = $cliente_nit;
             $cliente_nombre = $cliente_razon;
             $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,
                     cliente_razon,cliente_telefono,estado_id,usuario_id,
                     cliente_nombrenegocio, cliente_codigo, cliente_direccion, cliente_departamento,
-                    cliente_celular, zona_id
+                    cliente_celular, zona_id, cdi_codigoclasificador, cliente_email, cliente_complementoci
                     ) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
                     $cliente_razon.",".$cliente_telefono.",1,0,".
                    $cliente_nombrenegocio.",".$cliente_codigo.",".$cliente_direccion.",".$cliente_departamento.",".
-                   $cliente_celular.",".$zona_id.")";
+                   $cliente_celular.",".$zona_id.",".$tipo_doc_identidad.",".$cliente_email.",".$cliente_complementoci.")";
 //            echo $sql;
             $datos = $this->Venta_model->registrarcliente($sql);
             echo json_encode($datos);
@@ -2771,7 +2774,7 @@ function modificarcliente()
             $cliente_email   =  "'".$this->input->post('cliente_email')."'";
             $zona_id = $this->input->post('zona_id');
             $cdi_codigoclasificador = $tipo_doc_identidad; //$this->input->post('cdi_codigoclasificador'); el JS no evnia esta variable
-            
+            $cliente_complementoci =  "'".$this->input->post('cliente_complementoci')."'";
             
             if ($cliente_id>0){
                 $sql = "update cliente set ".
@@ -2792,7 +2795,8 @@ function modificarcliente()
                         ",cliente_celular = ".$cliente_celular.
                         ",cliente_email = ".$cliente_email.
                         ",cdi_codigoclasificador = $cdi_codigoclasificador".
-                        ",zona_id = ".$zona_id." where cliente_id = ".$cliente_id;
+                        ",zona_id = ".$zona_id.
+                        ",cliente_complementoci = ".$cliente_complementoci." where cliente_id = ".$cliente_id;
                 //echo $sql;
                 $datos = $this->Venta_model->modificarcliente($sql);            
                 echo  '[{"cliente_id":'.$cliente_id.'}]';

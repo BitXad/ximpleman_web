@@ -434,10 +434,16 @@ window.onkeydown = compruebaTecla;
                 <input type="text" name="cliente_nombre" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
         </div>
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
+        <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="cliente_ci" class="control-label" style="margin-bottom: 0;">C.I.</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_ci" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_ci" value="<?php echo $cliente[0]['cliente_ci']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+        </div>
+        <div class="col-md-1" <?php echo $estilo_div; ?>>
+            <label for="cliente_complementoci" class="control-label" style="margin-bottom: 0;">Compl. C.I.</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <input type="text" name="cliente_complementoci" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_complementoci" value="<?php echo $cliente[0]['cliente_complementoci']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
         </div>
         <div class="col-md-3" <?php echo $estilo_div; ?>>
