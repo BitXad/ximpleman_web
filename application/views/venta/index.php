@@ -571,18 +571,19 @@
                 <span class="text-bold">ENVIAR FACTURA POR CORREO</span>
             </div>
             <div class="modal-body">
-                <span>
-                    <div class="col-md-6">
-                        <label for="enviar_porcorreo" class="control-label">Correo</label>
-                        <div class="form-group">
-                            <input type="email" name="elcorreo" id="elcorreo" />
-                            <input type="hidden" name="la_factura" id="la_factura" />
-                        </div>
+                
+              <div class="col-md-12">
+                    <label for="elcorreo" class="control-label"><span class="text-danger">*</span>Correo</label>
+                    <div class="form-group">
+                        <input type="email" name="elcorreo" class="form-control" id="elcorreo" />
+                        <input type="hidden" name="lafactura" class="form-control" id="lafactura" /> 
+                        <input type="hidden" name="laventa" class="form-control" id="laventa" /> 
                     </div>
-                </span>
+                </div>  
+                
             </div>
             <div class="modal-footer" style="text-align: center">
-                <a class="btn btn-success" onclick="enviar_correo()"><span class="fa fa-envelope"></span> Enviar</a>
+                <a class="btn btn-success" onclick="enviarfactura_porcorreo()"><span class="fa fa-envelope"></span> Enviar</a>
                 <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>

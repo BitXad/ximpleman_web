@@ -1146,8 +1146,10 @@ class Factura extends CI_Controller{
                     $this->Factura_model->ejecutar($sql);
 
                     $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
-                    $this->Factura_model->ejecutar($sql);                    
+                    $this->Factura_model->ejecutar($sql);
                     
+                    $correo = $this->input->post("factura_correo");
+                    $res = $this->enviar_correoanulacion($venta_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $codigoMotivo);
                     
                     
                 }else{
@@ -1444,6 +1446,111 @@ class Factura extends CI_Controller{
             
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
+    }
+    /* obtiene el correo de un cliente.. sele manda venta_id */
+    function get_correo()
+    {
+        if($this->input->is_ajax_request()){
+            $venta_id = $this->input->post("venta_id");
+            $datos = $this->Factura_model->get_correoe($venta_id);
+            echo json_encode($datos);
+        }
+        else
+        {
+            show_404();
+        }
+    }
+    
+    function enviar_correoanulacion($venta_id, $correo,$factura_numero, $factura_fecha, $codigoMotivo)
+    {
+        //if ($this->input->is_ajax_request()) {
+            $this->load->library('email');
+            $this->email->set_newline("\r\n");
+            $this->load->model('Configuracion_email_model');
+            $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
+            
+            $config['protocol'] = $configuracion['email_protocolo'];
+            $config['smtp_host'] = $configuracion['email_host'];
+            $config['smtp_port'] = $configuracion['email_puerto'];
+            $config['smtp_user'] = $configuracion['email_usuario'];
+            $config['smtp_pass'] = $configuracion['email_clave'];
+            $config['smtp_from_name'] = $configuracion['email_nombre'];
+            $config['priority'] = $configuracion['email_prioridad'];
+            $config['charset'] = $configuracion['email_charset'];
+            $config['smtp_crypto'] = $configuracion['email_encriptacion'];
+            $config['wordwrap'] = TRUE;
+            $config['newline'] = "\r\n";
+            $config['mailtype'] = $configuracion['email_tipo'];
+            $email_copia = '';
+
+            $this->email->initialize($config);
+
+            $this->email->from($config['smtp_user'], $config['smtp_from_name']);
+            $this->email->to($correo);
+            $this->email->cc($configuracion['email_copia']);
+    //            $this->email->bcc($attributes['cc']);
+            $this->email->subject("Factura Digital, Anulación de su factura");
+            /*$base_url = explode('/', base_url());
+            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+            $this->email->attach($directorio."compra_venta".$factura_id.".xml");
+            $this->email->attach($directorio."compra_venta".$factura_id.".pdf");*/
+            $html = "<html>";
+            $html = "<head>";
+            $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
+            $html = "</head>";
+            $html = "<body>";
+
+            $html .= "<div class='container' style='font-family: Arial'>";
+            $html .= "<div class='col-md-2' style='background:gray;'></div>";
+
+            $html .= "<div class='col-md-10'>";
+            $html .= "<center>";
+            $html .= "<h3>Facturacion Electronica</h3>";
+            $html .= " ";
+            $html .= "<h4>Estimado Usuario</h4>";
+            $html .= "<br>";
+            //$html .= $configuracion['email_cabecera'];
+            $la_fecha = date("d/m/Y", strtotime($factura_fecha));
+            $html .= "Le informamos que su factura electrónica numero <b>".$factura_numero."</b> de fecha <b>".$la_fecha."</b> fue anulada.<br>";
+            //$direccion = base_url("tufactura/verfactura/".md5($venta_id));
+            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
+            //$html .= "<br>Tambien le enviamos los archivos en formato PDF y XML adjuntos";
+            $html .= "<br>";
+            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
+    //            $html .= "<form method='get' action='/".$direccion."'>";
+    //            $html .= "<button type='submit'>Activar mi Cuenta</button>";
+    //            $html .= "</form>";
+
+            $html .= "<br>";
+            $html .= "<br>";
+
+            //$html .= $configuracion['email_pie'];
+            $html .= "<br>";
+            $html .= "<br>";
+            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm'>".$direccion."</a>";
+
+            $html .= "</center>";
+            $html .= "</div>";
+
+            $html .= "<div class='col-md-2'></div>";            
+            $html .= "</div>";
+
+            $html .= "</body>";
+            $html .= "</html>";
+
+
+            $this->email->message($html);
+
+            if($this->email->send()) {
+                $resultado = true;        
+            } else {
+                $resultado = false;
+            }
+            return $resultado;
+            //echo json_encode($resultado);
+        /*}else{                 
+            show_404();
+        }*/              
     }
     
 }

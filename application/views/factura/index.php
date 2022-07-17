@@ -130,12 +130,10 @@
             <label for="factura_numero" class="control-label">ADVERTENCIA: Esta a punto de eliminar la factura</label>
         </div>
           
-        <div class="col-md-12" style="display:block;">
-            <div class="row" id='loader2'  style='text-align: center'>
-                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-            </div>
+        
+        <div class="col-md-12 text-center" id="loader2" style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
         </div>
-          
           <input type="hidden" name="factura_id" value="00" class="form-control" id="factura_id" readonly="true" />
           <input type="hidden" name="venta_id" value="00" class="form-control" id="venta_id" readonly="true" />
         
@@ -164,6 +162,12 @@
             <label for="factura_cliente" class="control-label">Cliente</label>
             <div class="form-group">
                 <input type="input" name="factura_cliente" value="-" class="form-control" id="factura_cliente" readonly="true"  />
+            </div>
+        </div>
+        <div class="col-md-12">
+            <label for="factura_correo" class="control-label">Correo Electrónico</label>
+            <div class="form-group">
+                <input type="input" name="factura_correo" value="-" class="form-control" id="factura_correo" />
             </div>
         </div>
           
