@@ -257,5 +257,18 @@ class Factura_model extends CI_Model
         return $factura;
         
     }
+    /*
+     * Get cliente_correo de una venta realizada
+     */
+    function get_correoe($venta_id)
+    {
+        $sql = "select c.cliente_email
+                from venta v
+                left join cliente c on v.cliente_id = c.cliente_id
+                where v.venta_id = ".$venta_id;
+        $correo = $this->db->query($sql)->row_array();
+        return $correo;
+        
+    }
     
 }

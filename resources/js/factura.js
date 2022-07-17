@@ -615,10 +615,7 @@ function anular_factura(factura_id, venta_id, factura_numero, factura_razon, fac
 }
 
 function anular_factura_electronica()
-{    
-        
-    document.getElementById('loader2').style.display = 'block';
-    
+{
     var factura_id = document.getElementById("factura_id").value; 
     var venta_id = document.getElementById("venta_id").value; 
     var factura_numero = document.getElementById("factura_numero").value; 
@@ -626,6 +623,7 @@ function anular_factura_electronica()
     var factura_total = document.getElementById("factura_monto").value; 
     var factura_fecha = document.getElementById("factura_fecha").value;
     var motivo_id = document.getElementById("motivo_anulacion").value;
+    let factura_correo = document.getElementById("factura_correo").value;
 
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'factura/anular_factura/'+factura_id+"/"+venta_id;
@@ -638,20 +636,23 @@ function anular_factura_electronica()
                                   "Fecha: "+formato_fecha(factura_fecha)+ "\n Esta operación es irreversible, ¿Desea Continuar?");
         if (r == true) {
             
-   
+            document.getElementById('loader2').style.display = 'block';
             $.ajax({url:controlador,
                     type:"POST",
-                    data:{motivo_id: motivo_id},
+                    data:{motivo_id: motivo_id, factura_correo:factura_correo},
                     success:function(result){
                         res = JSON.parse(result);
                         
                         mostrar_facturas();
                         alert(JSON.stringify(res));
                         
+                        document.getElementById('loader2').style.display = 'none';
                         $('#boton_cerrar').click();
                     },
             });
             
+            document.getElementById('loader2').style.display = 'none';
+        }else{
             document.getElementById('loader2').style.display = 'none';
         }
 
@@ -660,13 +661,22 @@ function anular_factura_electronica()
 
 function cargar_modal_anular(factura_id, venta_id, factura_numero, factura_razon, factura_total, factura_fecha)
 {
-    
     $("#factura_id").val(factura_id);
     $("#venta_id").val(venta_id);
     $("#factura_numero").val(factura_numero);
     $("#factura_monto").val(factura_total);
     $("#factura_fecha").val(formato_fecha(factura_fecha));
     $("#factura_cliente").val(factura_razon);
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'factura/get_correo';
+    $.ajax({url:controlador,
+                    type:"POST",
+                    data:{venta_id: venta_id},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        $("#factura_correo").val(res['cliente_email']);
+                    },
+            });
 
 }
 

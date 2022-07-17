@@ -1005,8 +1005,8 @@ class Venta extends CI_Controller{
                                         $micad .= "        <style type='text/css'>"; 
                                         $micad .= "            @font-face {";
                                         $micad .= "                font-family : 'Arial';";
-                                        $base_url = explode('/', base_url());
-                                                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/application/';
+                                                        $base_url = explode('/', base_url());
+                                                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/application/';
                                         $micad .= "                 src: url('"+$directorio+"libraries/vendor/dompdf/dompdf/lib/fonts/arial.ttf') format('truetype')";
                                         $micad .= "            }";
                                         $micad .= "           p {"; 
