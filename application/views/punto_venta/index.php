@@ -40,18 +40,9 @@
     <a class="btn btn-warning btn-xs" onclick="mostrar_modalregistrarpuntoventacomisionista()"><fa class="fa fa-cart-arrow-down"></fa> Registrar Punto de Venta Comisionista</a>
     
 </div>
-<!--
-<div class="row no-print">
-    <div class="col-md-5">
-        <div class="input-group">
-            <span class="input-group-addon"> Buscar </span>           
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el token, fecha, estado..." onkeypress="buscar_token(event)" autocomplete="off">
-            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaresultadostoken(2)" title="Buscar"><span class="fa fa-search"></span></div>
-            <div style="border-color: #d58512; background: #e08e0b !important; color: white" class="btn btn-warning input-group-addon" onclick="tablaresultadostoken(3)" title="Mostrar todos los tokens"><span class="fa fa-globe"></span></div>
-        </div>
-    </div>
-     <div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
-        <img src="<?php //echo base_url("resources/images/loader.gif"); ?>"  >
+<div class="row no-print">    
+    <div class="row col-md-12" id='loader_revocado' style='display:none; text-align: center'>
+        <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
     </div>
 </div>
 <!--
@@ -78,3 +69,74 @@
 </div>
 -->
 
+<div class="modal fade" id="modalregistrarpventa" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center !important">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <span style="font-size: 16px"><b> REGISTRAR NUEVO PUNTO DE VENTA</b></span>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <span class="text-danger" id="mensaje"></span>
+                    <label for="codigoTipoPuntoVenta" class="control-label">Tipo Punto de Venta</label>
+                    <div class="form-group">
+                        <select name="codigoTipoPuntoVenta" class="form-control" id="codigoTipoPuntoVenta">
+                            <?php 
+                            foreach($all_tipopuntoventa as $tipopuntoventa){ ?>
+                                <option value="<?php echo $tipopuntoventa['tipopuntoventa_codigo']; ?>"> <?php echo $tipopuntoventa['tipopuntoventa_descripcion']; ?> </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="nombrePuntoVenta" class="control-label">Nombre de Punto de Venta</label>
+                    <div class="form-group">
+                        <input type="text" name="nombrePuntoVenta" class="form-control" id="nombrePuntoVenta" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="descripcion" class="control-label">Descripción</label>
+                    <div class="form-group">
+                         <input type="text" name="descripcion" class="form-control" id="descripcion" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center !important">
+                <!--<div class="col-md-4 text-center">-->
+                    <button class="btn btn-success" onclick="registroPuntoVenta()"><fa class="fa fa-check"></fa> Registrar</button>
+                <!--</div>-->
+                <!--<div class="col-md-4 text-center">-->
+                    <button class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cancelar</button>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-body  table-responsive">
+               <table class="table table-condensed" id="mitabla" role="table">
+                    <thead>
+                        <tr role="row">
+                            <th >#</th>
+                            <th>C&oacute;digo</th>
+                            <th>Nombre</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>CUIS</th>
+                            <th>CUFD</th>
+                            <th class="no-print"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="buscar" id="tabla_puntos_venta"></tbody>
+                </table>
+            </div>             
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = function(){
+        dibujar_tabla_puntos_venta();
+    }
+</script>
