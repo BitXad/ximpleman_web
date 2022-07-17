@@ -5241,3 +5241,39 @@ function modal_enviocorreo(factura_id, cliente_email){
     $("#elcorreo").val(cliente_email);
     $("#modal_enviofactura").modal("show");
 }
+
+function enviarfactura_porcorreo(){
+    
+    var base_url = document.getElementById('base_url').value;
+    let elcorreo = document.getElementById('elcorreo').value;
+    let lafactura= document.getElementById('lafactura').value;
+    var controlador = base_url+'venta/verificar_cufd';    
+    let resultado = "";
+    
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{nit:nit},
+            async: false,
+            success:function(respuesta){
+                let registros = JSON.parse(respuesta);
+                //alert(registros);
+                resultado = registros;
+                if(!registros){
+
+                    var mensaje;
+                    var opcion = confirm("No existe un CUFD VIGENTE. \r\n ¿Desea registrar un nuevo CUFD?");
+                    
+                    if (opcion == true) {
+                        
+                        window.location.href = base_url+"dosificacion";
+                    }
+                }                
+            },
+            error:function(respuesta){
+                resultado = false;
+                //alert("Algo salio mal; por favor verificar sus datos!.");
+            }  
+    });
+
+    
+}
