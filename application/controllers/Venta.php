@@ -105,7 +105,8 @@ class Venta extends CI_Controller{
         //$data['venta'] = $this->Venta_model->get_all_venta($params);
         $data['page_title'] = "Ventas del dia";
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();  
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+//        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->parametros;
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['estado'] = $this->Estado_model->get_tipo_estado(1);
         $data['usuario'] = $this->Venta_model->get_usuarios();
@@ -147,7 +148,7 @@ class Venta extends CI_Controller{
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
@@ -727,7 +728,12 @@ class Venta extends CI_Controller{
                         $factura_autorizacion  = $dosificacion[0]['dosificacion_autorizacion'];
                         $factura_llave         = $dosificacion[0]['dosificacion_llave'];
                         $factura_fechalimite   = $dosificacion[0]['dosificacion_fechalimite'];
-                        $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $numero_doc_identidad,$factura_fechaventa, $factura_total);
+                        
+                        if ($this->parametros["parametro_tiposistema"]==1)
+                            $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $numero_doc_identidad,$factura_fechaventa, $factura_total);
+                        else
+                            $factura_codigocontrol = "-"; 
+                                
                         $factura_leyenda1      = $dosificacion[0]['dosificacion_leyenda1'];
                         $factura_leyenda2      = $dosificacion[0]['dosificacion_leyenda2'];
                         $factura_leyenda3      = $dosificacion[0]['dosificacion_leyenda3'];
@@ -806,8 +812,8 @@ class Venta extends CI_Controller{
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                                 $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                                $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                                $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
+                                $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
+                                $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
                                 $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
                                 $venta_efectivo.",".$venta_cambio.",".$factura_enviada.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.")";
                         }else{
@@ -828,8 +834,8 @@ class Venta extends CI_Controller{
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                                 $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                                $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                                $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
+                                $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
+                                $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
                                 $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
                                 $venta_efectivo.",".$venta_cambio.",'".$factura_tokendelegado."','".
                                 $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
@@ -1505,8 +1511,8 @@ class Venta extends CI_Controller{
                     $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                    $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
+                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
+                    $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".
                     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$llave_valor.",".
                     $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.")";
             $factura_id = $this->Venta_model->ejecutar($sql);
@@ -2705,7 +2711,7 @@ function registrarcliente()
     
         if ($this->input->is_ajax_request()) {
             
-            $cliente_nit = $this->input->post('nit');
+            $cliente_nit = "'".$this->input->post('nit')."'";
             $cliente_razon = "'".$this->input->post('razon')."'";
             $cliente_telefono = "'".$this->input->post('telefono')."'";
             $tipocliente_id = $this->input->post('tipocliente_id');
@@ -2759,9 +2765,9 @@ function modificarcliente()
     
         if ($this->input->is_ajax_request()) {
             
-            $cliente_nit = $this->input->post('nit');    
+            $cliente_nit = "'".$this->input->post('nit')."'";    
             
-            if($cliente_nit == null || $cliente_nit==0) $cliente_nit = 0;
+            if($cliente_nit == null || $cliente_nit==0) $cliente_nit = "'0'";
             
             $cliente_razon = "'".$this->input->post('razon')."'";
             $cliente_telefono = "'".$this->input->post('telefono')."'";
@@ -4067,8 +4073,8 @@ function anular_venta($venta_id){
                         $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                         $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                         $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
+                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
+                        $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".
                         $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
                         $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_leyenda1."','".$factura_leyenda2."')";
             }else{
@@ -4088,8 +4094,8 @@ function anular_venta($venta_id){
                         $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                         $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                         $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                        $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
+                        $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
+                        $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".
                         $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
                         $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_tokendelegado."','".
                         $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
@@ -4318,8 +4324,8 @@ function anular_venta($venta_id){
                     $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                    $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
+                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
+                    $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".
                     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$llave_valor.",".
                     $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_leyenda3."','".$factura_leyenda4."')";
 

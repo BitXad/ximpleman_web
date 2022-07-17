@@ -2,7 +2,7 @@
 
 class Dashb extends CI_Controller
 {
-
+    private $parametros;
     public function __construct()
     {
         parent::__construct();
@@ -27,7 +27,10 @@ class Dashb extends CI_Controller
         $this->load->model('Rol_usuario_model');
         $this->load->model('Tipo_usuario_model');
         // $this->load->model('Dashb_model');
-
+        
+        $parametros = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametros[0];
+        
         $this->session_data = $this->session->userdata('logged_in');
     }
 
@@ -51,7 +54,8 @@ class Dashb extends CI_Controller
                 
                 $data['resumen_usuario'] = $this->Venta_model->get_resumen_usuarios();
                 $data['ventas_semanales'] = $this->Venta_model->get_ventas_semanales();
-                $data['parametro'] = $this->Parametro_model->get_parametros();
+                //$data['parametro'] = $this->Parametro_model->get_parametros();
+                $data['parametro'] = $this->parametros;
                 $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera                
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
                 

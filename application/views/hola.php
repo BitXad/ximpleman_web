@@ -30,13 +30,13 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
-<script src="<?php if($parametro[0]["parametro_manejocaja"] == "Si"){ echo base_url('resources/js/caja.js');} ?>"></script>
+<script src="<?php if($parametro["parametro_manejocaja"] == "Si"){ echo base_url('resources/js/caja.js');} ?>"></script>
 <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/dashb_existenciamin.js'); ?>"></script>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro['moneda_descripcion']; ?>" />
 <input type="hidden" name="caja_id" id="caja_id" value="<?php echo $caja[0]['caja_id']; ?>" />
 <input type="hidden" name="estado_id" id="estado_id" value="<?php echo $caja[0]['estado_id']; ?>" />
 <input type="hidden" name="tipousuario" id="tipousuario" value="<?= $tipousuario_id ?>" />
@@ -131,7 +131,7 @@
                 </script>
                 
                 
-                <h4><b><?php echo number_format($pedidos[0]['total_pedidos'],2,'.',',')." ".$parametro[0]["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h4>
+                <h4><b><?php echo number_format($pedidos[0]['total_pedidos'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h4>
 
               <p><?php echo "En ".$pedidos[0]['cantidad_pedidos']." pedidos"; ?></p>
             </div>
@@ -161,7 +161,7 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-                <h4><b><?php echo number_format($compras[0]['total_compras'],2,'.',',')." ".$parametro[0]["moneda_descripcion"]; ?></b></h3>
+                <h4><b><?php echo number_format($compras[0]['total_compras'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?></b></h3>
 
               <p><?php echo "En ".$compras[0]['cantidad_compras']." compras"; ?></p>
             </div>
@@ -179,7 +179,7 @@
            <!--small box--> 
           <div class="small-box bg-fuchsia">
             <div class="inner">
-                <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." ".$parametro[0]["moneda_descripcion"]; ?></b></h4>
+                <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?></b></h4>
 
               <p><?php echo "En ".$ventas[0]['cantidad_ventas']." ventas"; ?></p>
             </div>
@@ -194,7 +194,7 @@
            <!--small box--> 
           <div class="small-box bg-blue-active">
             <div class="inner">
-                <h4><b><?php echo number_format($pedidos[0]['total_pedidos'],2,'.',',')." ".$parametro[0]["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h4>
+                <h4><b><?php echo number_format($pedidos[0]['total_pedidos'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h4>
 
               <p><?php echo "En ".$pedidos[0]['cantidad_pedidos']." inventario"; ?></p>
             </div>
@@ -224,7 +224,7 @@
            <!--small box--> 
           <div class="small-box bg-lime-active">
             <div class="inner">
-                <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." ".$parametro[0]["moneda_descripcion"]; ?></b></h4>
+                <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?></b></h4>
 
               <p><?php echo "Movimiento Diario"; ?></p>
             </div>
@@ -255,7 +255,7 @@
               <div class="inner" >
 
                 <h3><b><fa class="fa fa-cart-plus"></fa></b></h3>
-                <h5><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." ".$parametro[0]["moneda_descripcion"]; ?></b></h5>
+                <h5><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?></b></h5>
             </div>
               
             <div class="icon">
@@ -272,7 +272,7 @@
               <div class="inner" >
 
                 <h3><b><fa class="fa fa-pie-chart"></fa></b></h3>
-                <h5><b><?php echo number_format($compras[0]['total_compras'],2,'.',',')." ".$parametro[0]["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h5>
+                <h5><b><?php echo number_format($compras[0]['total_compras'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h5>
             </div>
               
             <div class="icon">
@@ -290,7 +290,7 @@
               <div class="inner" >
 
                 <h3><b><fa class="fa fa-bar-chart"></fa></b></h3>
-                <h5><b><?php echo number_format($pedidos[0]['total_pedidos'],2,'.',',')." ".$parametro[0]["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h5>
+                <h5><b><?php echo number_format($pedidos[0]['total_pedidos'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h5>
             </div>
               
             <div class="icon">
@@ -360,7 +360,7 @@
               <div class="inner" >
 
                 <h3><b><fa class="fa fa-cubes"></fa></b></h3>
-                <h5><b><?php echo number_format($productos['total_inventario'],2,'.',',')." ".$parametro[0]["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h5>
+                <h5><b><?php echo number_format($productos['total_inventario'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h5>
             </div>
               
             <div class="icon">
@@ -398,7 +398,7 @@
            small box 
           <div class="small-box bg-lime-active">
             <div class="inner">
-                <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." ".$parametro[0]["moneda_descripcion"]; ?></b></h4>
+                <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?></b></h4>
 
               <p><?php echo "Movimiento Diario"; ?></p>
             </div>
@@ -495,7 +495,7 @@
                   </th>
                   <th>Proveedor/Detalle</th>
                   <th>
-                        <?php echo $parametro[0]["moneda_descripcion"]; ?>
+                        <?php echo $parametro["moneda_descripcion"]; ?>
                         <a href="<?php echo base_url("pedido_diario/pedido_nuevo"); ?>" class="btn btn-default btn-xs" title="Registrar nuevo pedido"><fa class="fa fa-cube"></fa> </a>
                   </th>
                 </tr>
@@ -554,7 +554,7 @@
                 
                 <?php } ?>
                 <tr>
-                    <td colspan="3"><b>TOTAL PEDIDOS PARA HOY <?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>
+                    <td colspan="3"><b>TOTAL PEDIDOS PARA HOY <?php echo $parametro["moneda_descripcion"]; ?></b></td>
                     <td >
                         <!--<span class="badge bg-purple">-->
                         <b>
@@ -606,7 +606,7 @@
                   <th style="width: 10px">#</th>
                   <th>Operación</th>
                   <th>Ventas</th>
-                  <th style="width: 40px"><?php echo $parametro[0]["moneda_descripcion"]; ?></th>
+                  <th style="width: 40px"><?php echo $parametro["moneda_descripcion"]; ?></th>
                 </tr>
                 <?php $cont = 0; $total_ventas = 0;
                     foreach($resumen_usuario as $user){
@@ -687,7 +687,7 @@
                   <th style="width: 10px">#</th>
                   <th>Fecha</th>
                   <th>Ventas</th>
-                  <th style="width: 40px"><?php echo $parametro[0]["moneda_descripcion"]; ?></th>
+                  <th style="width: 40px"><?php echo $parametro["moneda_descripcion"]; ?></th>
                 </tr>
                  <?php $cont = 0; $total_dia = 0;
                     foreach($ventas_semanales as $ventas){

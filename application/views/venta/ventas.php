@@ -240,23 +240,23 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio" hidden>
 <input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id" hidden>
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
-<input type="text" id="parametro_modoventas" value="<?php echo $parametro[0]['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
-<input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
-<input type="text" id="parametro_altoboton" value="<?php echo $parametro[0]['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
-<input type="text" id="parametro_colorboton" value="<?php echo $parametro[0]['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
-<input type="text" id="parametro_altoimagen" value="<?php echo $parametro[0]['parametro_altoimagen']; ?>" name="parametro_altoimagen"  hidden>
-<input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
-<input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
-<input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
-<input type="text" id="parametro_imprimircomanda" value="<?php echo $parametro[0]['parametro_imprimircomanda']; ?>" name="parametro_imprimircomanda"  hidden>
-<input type="text" id="parametro_diasvenc" value="<?php echo $parametro[0]['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
-<input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro[0]['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>
-<input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
-<input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
-<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
-<input type="text" id="parametro_factura" value="<?php echo $parametro[0]['parametro_factura']; ?>" name="parametro_factura"  hidden>
-<input type="text" id="parametro_tiposistema" value="<?php echo $parametro[0]['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
-<input type="text" id="elparametro_id" value="<?php echo $parametro[0]['parametro_id']; ?>" name="elparametro_id"  hidden>
+<input type="text" id="parametro_modoventas" value="<?php echo $parametro['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
+<input type="text" id="parametro_anchoboton" value="<?php echo $parametro['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
+<input type="text" id="parametro_altoboton" value="<?php echo $parametro['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
+<input type="text" id="parametro_colorboton" value="<?php echo $parametro['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
+<input type="text" id="parametro_altoimagen" value="<?php echo $parametro['parametro_altoimagen']; ?>" name="parametro_altoimagen"  hidden>
+<input type="text" id="parametro_anchoimagen" value="<?php echo $parametro['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
+<input type="text" id="parametro_formaimagen" value="<?php echo $parametro['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
+<input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+<input type="text" id="parametro_imprimircomanda" value="<?php echo $parametro['parametro_imprimircomanda']; ?>" name="parametro_imprimircomanda"  hidden>
+<input type="text" id="parametro_diasvenc" value="<?php echo $parametro['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
+<input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>
+<input type="text" id="parametro_datosboton" value="<?php echo $parametro['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="parametro_moneda_id" value="<?php echo $parametro['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
+<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
+<input type="text" id="parametro_factura" value="<?php echo $parametro['parametro_factura']; ?>" name="parametro_factura"  hidden>
+<input type="text" id="parametro_tiposistema" value="<?php echo $parametro['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
+<input type="text" id="elparametro_id" value="<?php echo $parametro['parametro_id']; ?>" name="elparametro_id"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 
@@ -314,7 +314,9 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="nit" class="control-label" style="margin-bottom: 0;">NUMERO DE DOCUMENTO</label>
             <div class="form-group"  <?php echo $estilo_div; ?>>
-                <input type="number" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" />
+                
+                <input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();"/>
+            
             </div>
         </div>
         
@@ -369,11 +371,11 @@ window.onkeydown = compruebaTecla;
         <h4 class="panel-title">
             <?php
             if(sizeof($dosificacion)>0){
-                if($parametro[0]['parametro_factura'] == 1){
+                if($parametro['parametro_factura'] == 1){
                     $eschecked = "checked disabled";
-                }elseif($parametro[0]['parametro_factura'] == 2){
+                }elseif($parametro['parametro_factura'] == 2){
                     $eschecked = "";
-                }elseif($parametro[0]['parametro_factura'] == 3){
+                }elseif($parametro['parametro_factura'] == 3){
                     $eschecked = "hidden";
                 }
             ?>
@@ -387,22 +389,22 @@ window.onkeydown = compruebaTecla;
             
             
             <?php 
-            if ($parametro[0]["parametro_agruparitems"] == 1 )
+            if ($parametro["parametro_agruparitems"] == 1 )
                     { $agrupar = "checked='true'";}
               else {$agrupar = " ";}
             ?>
             <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> <label class="btn btn-default btn-xs" for="check_agrupar"> Agrupar</label> 
             <input type="checkbox" class="form-check-input" id="busqueda_serie"><label class="btn btn-default btn-xs" for="busqueda_serie">Búsqueda por serie</label>
-            <?php if($parametro[0]["parametro_tiposistema"] != 1){ ?>
+            <?php if($parametro["parametro_tiposistema"] != 1){ ?>
                     <?php
-                    if($parametro[0]["parametro_tipoemision"] == 1){?>
+                    if($parametro["parametro_tipoemision"] == 1){?>
                 
                         <a class="btn btn-danger btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" >
                         <span id="eltipo_emision" style="color: white;">online</span>
                         </a>        
                 
                     <?php
-                    }elseif($parametro[0]["parametro_tipoemision"] == 2){ ?>
+                    }elseif($parametro["parametro_tipoemision"] == 2){ ?>
                 
                         <a class="btn btn-facebook btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" style="background: grey">
                         <span id="eltipo_emision" style="color: white;">offline</span>
@@ -410,7 +412,7 @@ window.onkeydown = compruebaTecla;
                 
                        
                     <?php
-                    }if($parametro[0]["parametro_tipoemision"] == 3){ ?>
+                    }if($parametro["parametro_tipoemision"] == 3){ ?>
                         
                         <a class="btn btn-info btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión">
                         <span id="eltipo_emision" style="color: white;">masiva</span>
@@ -572,7 +574,7 @@ window.onkeydown = compruebaTecla;
                 <option value="0" >- CATEGORIAS -</option>
         <?php 
             foreach($categoria_producto as $categ){ 
-                $selected = ($categ['categoria_id'] == $parametro[0]['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+                $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
                 ?>
                 
                 <option value="<?php echo $categ['categoria_id']; ?>" <?php echo $selected; ?>><?php echo $categ['categoria_nombre']; ?></option>
@@ -593,7 +595,7 @@ window.onkeydown = compruebaTecla;
        
 <!-------------------------- BOTON AGRUPAR --------------------------------------->    
         <?php 
-//            if ($parametro[0]["parametro_agruparitems"] == 1 )
+//            if ($parametro["parametro_agruparitems"] == 1 )
 //                    { $agrupar = "checked='true'";}
 //              else {$agrupar = " ";}
 //        ?>
@@ -671,14 +673,14 @@ window.onkeydown = compruebaTecla;
                 
                 
             <!--------------- botones ---------------------->
-            <?php if($parametro[0]["parametro_modulorestaurante"]==0){ //1 es normal ?>
+            <?php if($parametro["parametro_modulorestaurante"]==0){ //1 es normal ?>
                 <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
             <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-facebook btn-xs" style="background-color: black" onclick="ordenes_pendientes()" title="Ordenes de Trabajo"><span class="fa fa-book"></span><b> OT's</b></a> 
                 <?php }
                 } ?>
                     
-            <?php if($parametro[0]["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
+            <?php if($parametro["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
                     <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda" title="Comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
             <?php } ?>            
            
@@ -720,7 +722,7 @@ window.onkeydown = compruebaTecla;
             <div class="col-md-4" style="background-color: black; line-height: 15px;">
                 <center>
                     
-                <font size="3" style="color:white;" face="Arial"><b>Total Final <?php echo $parametro[0]['moneda_descripcion']; ?></b></font>
+                <font size="3" style="color:white;" face="Arial"><b>Total Final <?php echo $parametro['moneda_descripcion']; ?></b></font>
                 
                 <font size="6" style="color:white;" face="Arial"><b>
                     <input type="text" id="venta_subtotal" name="venta_subtotal" values="0.00" style="width: 180px; border-color: black; border-width: 0; background-color: black; text-align: center; padding:0;" readonly> </b>                
@@ -806,7 +808,7 @@ window.onkeydown = compruebaTecla;
         <!----------------------------------- fin Botones ---------------------------------->
         <font face="Arial" size="1">
                    
-            <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro[0]["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro[0]["moneda_tc"]; ?></b></span>
+            <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?></b></span>
         
         <b>            
         <br>TECLAS DE ACCESO DIRECTO <br>
@@ -924,7 +926,7 @@ window.onkeydown = compruebaTecla;
                                     </div>
                                     <?php 
                                             $ocultar = "none";
-                                        if ($parametro[0]["parametro_modulorestaurante"]==1){    
+                                        if ($parametro["parametro_modulorestaurante"]==1){    
                                             $ocultar = "block";
                                             
                                     } ?>   
@@ -993,7 +995,7 @@ window.onkeydown = compruebaTecla;
             <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
                 
                 <tr>
-                        <td  style="padding: 0" >Total <?php echo $parametro[0]['moneda_descripcion']; ?></td>
+                        <td  style="padding: 0" >Total <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right">
                             <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
@@ -1001,7 +1003,7 @@ window.onkeydown = compruebaTecla;
                     
                 </tr>                
                 <tr style="padding: 0">
-                        <td style="padding: 0">Descuento <?php echo $parametro[0]['moneda_descripcion']; ?></td>
+                        <td style="padding: 0">Descuento <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
                             <input class="btn btn-foursquarexs" style="padding: 0" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
@@ -1010,7 +1012,7 @@ window.onkeydown = compruebaTecla;
 
                         
                 <tr style="padding: 0">
-                        <td align="right" style="padding: 0"><b>Sub Total <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
+                        <td align="right" style="padding: 0"><b>Sub Total <?php echo $parametro['moneda_descripcion']; ?></b></td>
                         <td align="right" style="padding: 0">                
                             
                             <input class="btn btn-foursquarexs"  style="padding: 0" id="venta_subtotal" size="<?php echo $ancho_boton; ?>"  name="venta_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
@@ -1019,11 +1021,11 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0">Descuento <?php echo $parametro[0]['moneda_descripcion']; ?></td>
+                        <td style="padding: 0">Descuento <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
                             <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
                             <select id="tipo_descuento" onchange="calculardesc()">
-                                <option value="1"><?php echo $parametro[0]['moneda_descripcion']; ?></option>
+                                <option value="1"><?php echo $parametro['moneda_descripcion']; ?></option>
                                 <option value="2">%</option>
                                 
                             </select>
@@ -1031,7 +1033,7 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0"><b>Total Final <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
+                        <td style="padding: 0"><b>Total Final <?php echo $parametro['moneda_descripcion']; ?></b></td>
                         <td align="right" style="padding: 0">
 
                               <input class="btn btn-foursquarexs" style="font-size: 20px; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">
@@ -1040,14 +1042,14 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0">Efectivo <?php echo $parametro[0]['moneda_descripcion']; ?></td>
+                        <td style="padding: 0">Efectivo <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
                             <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
                         </td>
                 </tr>
                 
                 <tr style="padding: 0">                      
-                    <td style="padding: 0"><b>Cambio <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
+                    <td style="padding: 0"><b>Cambio <?php echo $parametro['moneda_descripcion']; ?></b></td>
                         <td align="right" style="padding: 0;">
                             <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>
@@ -1120,7 +1122,7 @@ window.onkeydown = compruebaTecla;
                 </div>
 
                 <div class="col-md-4">
-                    <h5 class="modal-title" id="myModalLabel"><b>CUOTA INIC. <?php echo $parametro[0]['moneda_descripcion']; ?></b></h5>
+                    <h5 class="modal-title" id="myModalLabel"><b>CUOTA INIC. <?php echo $parametro['moneda_descripcion']; ?></b></h5>
                     <input type="text" class="form-control  input-sm"  value="0.00"name="cuota_inicial" id="cuota_inicial" >
                 </div>
 
@@ -1226,7 +1228,7 @@ window.onkeydown = compruebaTecla;
 	</div>
 </div>
             
-    <?php if($parametro[0]['parametro_mostrarcategoria']>0){ ?>
+    <?php if($parametro['parametro_mostrarcategoria']>0){ ?>
             <script type="text/javascript">   
                tablaresultados(2);
             </script>
@@ -1577,7 +1579,7 @@ window.onkeydown = compruebaTecla;
                                                         
                                                     </small>
                                                     <b>
-                                                        <?php echo $parametro[0]['moneda_descripcion']." ".number_format($prom["promocion_preciototal"],2,".",","); ?>
+                                                        <?php echo $parametro['moneda_descripcion']." ".number_format($prom["promocion_preciototal"],2,".",","); ?>
                                                     </b>
                                                 </button>
 
@@ -1723,9 +1725,9 @@ window.onkeydown = compruebaTecla;
                         <label for="elparametro_tipoemision" class="control-label">Tipo de Emisión</label>
                         <div class="form-group">
                             <select name="elparametro_tipoemision" class="form-control" id="elparametro_tipoemision" required>
-                                <option value="1" <?php if($parametro[0]['parametro_tipoemision']=="1"){ ?> selected <?php } ?>>ONLINE</option>
-                                <option value="2" <?php if($parametro[0]['parametro_tipoemision']=="2"){ ?> selected <?php } ?>>OFFLINE</option>
-                                <option value="3" <?php if($parametro[0]['parametro_tipoemision']=="3"){ ?> selected <?php } ?>>MASIVA</option>
+                                <option value="1" <?php if($parametro['parametro_tipoemision']=="1"){ ?> selected <?php } ?>>ONLINE</option>
+                                <option value="2" <?php if($parametro['parametro_tipoemision']=="2"){ ?> selected <?php } ?>>OFFLINE</option>
+                                <option value="3" <?php if($parametro['parametro_tipoemision']=="3"){ ?> selected <?php } ?>>MASIVA</option>
                             </select>
                         </div>
                     </div>
