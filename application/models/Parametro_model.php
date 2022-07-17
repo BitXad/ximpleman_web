@@ -92,6 +92,7 @@ class Parametro_model extends CI_Model
         if (isset($this->session_data['usuario_id'])){
         
             $usuario_id = $this->session_data['usuario_id'];  
+            
             $sql = "select p.*,m.moneda_tc, m.moneda_descripcion from parametros p, usuario u, moneda m  where p.parametro_id = u.parametro_id and p.moneda_id = m.moneda_id and u.usuario_id = ".$usuario_id;
         
         }else{

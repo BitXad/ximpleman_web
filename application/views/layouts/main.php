@@ -114,7 +114,7 @@
     
     <?php if (isset($parametro)&&isset($moneda)){ ?>
     <span name="moneda" id="moneda" style="color: #FFF; font-size: 12px; "> 
-        | <b>MND:</b> <?php echo $parametro[0]["moneda_descripcion"]; ?> 
+        | <b>MND:</b> <?php echo $parametro["moneda_descripcion"]; ?> 
         <b>TC:</b> <?php echo $moneda["moneda_tc"]; ?>            
         </b>
     </span>  
