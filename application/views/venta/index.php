@@ -577,12 +577,13 @@
                     <div class="form-group">
                         <input type="email" name="elcorreo" class="form-control" id="elcorreo" />
                         <input type="hidden" name="lafactura" class="form-control" id="lafactura" /> 
+                        <input type="hidden" name="laventa" class="form-control" id="laventa" /> 
                     </div>
                 </div>  
                 
             </div>
             <div class="modal-footer" style="text-align: center">
-                <a class="btn btn-success" onclick="enviar_correo()"><span class="fa fa-envelope"></span> Enviar</a>
+                <a class="btn btn-success" onclick="enviarfactura_porcorreo()"><span class="fa fa-envelope"></span> Enviar</a>
                 <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>

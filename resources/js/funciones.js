@@ -3337,7 +3337,7 @@ function tabla_ventas(filtro)
                     }
                     if (v[i]['venta_tipodoc']==1){
                         html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
-                        html += " <a onclick='modal_enviocorreo("+v[i]['factura_id']+","+JSON.stringify(v[i]['cliente_email'])+")' class='btn btn-warning btn-xs' style='background: #95ace8' title='Enviar factura al correo'><span class='fa fa-envelope-o'></span></a>";
+                        html += " <a onclick='modal_enviocorreo("+v[i]['venta_id']+","+v[i]['factura_id']+","+JSON.stringify(v[i]['cliente_email'])+")' class='btn btn-warning btn-xs' style='background: #95ace8' title='Enviar factura al correo'><span class='fa fa-envelope-o'></span></a>";
                     }
                     else{
                         if(generar_factura == 1){
@@ -5236,44 +5236,50 @@ function verificar_cufd(){
     
 }
 
-function modal_enviocorreo(factura_id, cliente_email){
-    $("#la_factura").html(factura_id);
+function modal_enviocorreo(venta_id, factura_id, cliente_email){
+    $("#lafactura").val(factura_id);
+    $("#laventa").val(venta_id);
     $("#elcorreo").val(cliente_email);
     $("#modal_enviofactura").modal("show");
 }
 
 function enviarfactura_porcorreo(){
     
-    var base_url = document.getElementById('base_url').value;
-    let elcorreo = document.getElementById('elcorreo').value;
-    let lafactura= document.getElementById('lafactura').value;
-    var controlador = base_url+'venta/verificar_cufd';    
-    let resultado = "";
+    let base_url  = document.getElementById('base_url').value;
+    let elcorreo  = document.getElementById('elcorreo').value;
+    let factura_id= document.getElementById('lafactura').value;
+    let venta_id  = document.getElementById('laventa').value;
+    var controlador = base_url+'venta/enviarfactura_porcorreo';
     
-    $.ajax({url:controlador,
-            type:"POST",
-            data:{nit:nit},
-            async: false,
-            success:function(respuesta){
-                let registros = JSON.parse(respuesta);
-                //alert(registros);
-                resultado = registros;
-                if(!registros){
-
-                    var mensaje;
-                    var opcion = confirm("No existe un CUFD VIGENTE. \r\n ¿Desea registrar un nuevo CUFD?");
-                    
-                    if (opcion == true) {
-                        
-                        window.location.href = base_url+"dosificacion";
+    var pattern = new RegExp(/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/);
+    let res = pattern.test(elcorreo);
+    if(!res){
+        alert("El correo electrónico es invalido, por favor verifique sus datos!.");
+    }else{    
+        document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{venta_id:venta_id, factura_id:factura_id, elcorreo:elcorreo},
+                success:function(respuesta){
+                    var res = JSON.parse(respuesta);
+                    if(res){
+                        alert("Correo enviado satisfactoriamente");
+                    }else{
+                        alert("Correo invalido, por favor verifique sus datos!.");
                     }
-                }                
-            },
-            error:function(respuesta){
-                resultado = false;
-                //alert("Algo salio mal; por favor verificar sus datos!.");
-            }  
-    });
-
+                    $("#modal_enviofactura").modal("hide");
+                    document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+                },
+                error:function(respuesta){
+                   // alert("Algo salio mal...!!!");
+                   html = "";
+                   $("#tablaresultados").html(html);
+                },
+                complete: function (jqXHR, textStatus) {
+                    document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader 
+                    //tabla_inventario();
+                }
+        });
+    }
     
 }
