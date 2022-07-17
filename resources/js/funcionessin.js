@@ -5,7 +5,7 @@ function solicitudCufd(punto_venta=0){
     var opcion = confirm("Esta a punto de generar el C.U.F.D., el cual reamplazara el existente...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
-        // document.getElementById('loader_cufd').style.display = 'block';
+        document.getElementById('loader_revocado').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
                 data:{punto_venta:punto_venta},
@@ -45,7 +45,7 @@ function solicitudCufd(punto_venta=0){
     }
 }
 
-function almacenar_cufd(datos,punto_venta=1){
+function almacenar_cufd(datos,punto_venta=0){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/almacenarcufd';   
@@ -71,6 +71,8 @@ function almacenar_cufd(datos,punto_venta=1){
                     success:function(respuesta){
 
                         alert("C.U.F.D generado y almacenado correctamente...!");
+                        document.getElementById('loader_revocado').style.display = 'none';
+                        dibujar_tabla_puntos_venta();
                        
                     },
                     error:function(respuesta){
@@ -80,7 +82,7 @@ function almacenar_cufd(datos,punto_venta=1){
     
 }
 
-function solicitudCuis(punto_venta = 1){
+function solicitudCuis(punto_venta = 0){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/cuis';
@@ -88,12 +90,14 @@ function solicitudCuis(punto_venta = 1){
     
     if (opcion == true) {
         // document.getElementById('loader_cuis').style.display = 'block';
+        document.getElementById('loader_revocado').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
                 data:{punto_venta:punto_venta},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
                     let transaccion = registros.RespuestaCuis.transaccion;
+                    let codigo = registros.RespuestaCuis.codigo;
 
                     if(transaccion == true){
                         almacenar_cuis((registros['RespuestaCuis']),punto_venta);
@@ -123,7 +127,7 @@ function almacenar_cuis(datos,punto_venta=1){
     var fechavigencia = datos.fechaVigencia;
     var transaccion = datos.transaccion;    
 
-    //alert(codigo+" * "+fechavigencia+" * "+transaccion);
+    // alert(codigo+" * "+fechavigencia+" * "+transaccion);
     
     
             $.ajax({url:controlador,
@@ -132,6 +136,8 @@ function almacenar_cuis(datos,punto_venta=1){
                     success:function(respuesta){
 
                         alert("C.U.I.S. generado y almacenado correctamente...!");
+                        document.getElementById('loader_revocado').style.display = 'none';
+                        dibujar_tabla_puntos_venta();
                        
                     },
                     error:function(respuesta){
@@ -366,7 +372,7 @@ function cierre_OperacionesSistema(){
         }); 
     }
 }
-function cierre_PuntoVenta(){
+function cierre_PuntoVenta(punto_venta){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/cierrePuntoVenta';
     var opcion = confirm("Realiza el cierre definitivo de un punto de venta; esta operación se realiza solo si para el punto de venta no existe CUIS o CUFD activo. Una vez que el punto de venta se haya cerrado no podrá generarse nuevamente con el mismo correlativo.! \n ¿Desea Continuar?");
@@ -375,7 +381,7 @@ function cierre_PuntoVenta(){
         document.getElementById('loader_revocado').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
-                data:{},
+                data:{punto_venta:punto_venta},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
                         //console.log(registros);
@@ -462,44 +468,74 @@ function consulta_EventoSignificativo(){
 function consulta_PuntoVenta(){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/consultaPuntoVenta';
-    var opcion = confirm("Realizar consulta de puntos de venta asociados al Sujeto Pasivo \n ¿Desea Continuar?");
+    // var opcion = confirm("Realizar consulta de puntos de venta asociados al Sujeto Pasivo \n ¿Desea Continuar?");
     
-    if (opcion == true) {
+    if (true) {
         document.getElementById('loader_revocado').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
                 data:{},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
-                        console.log(registros);
-                        let transaccion = registros.RespuestaConsultaPuntoVenta.transaccion;
-                        if(transaccion == true){
-                                let puntosventa = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas;
-                            let n = puntosventa.length;
-                            if(n== undefined){
-                                let codigo = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.codigoPuntoVenta;
-                                let nombre = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.nombrePuntoVenta;
-                                let tipopv = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.tipoPuntoVenta;
-                                /*let codigo = puntosventa["codigoPuntoVenta"];
-                                let nombre = puntosventa["nombrePuntoVenta"];
-                                let tipopv = puntosventa["tipoPuntoVenta"];*/
-                                alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
-                            }else if(n>1){
-                                for (var i = 0; i < n; i++) {
-                                    let codigo = puntosventa[i]["codigoPuntoVenta"];
-                                    let nombre = puntosventa[i]["nombrePuntoVenta"];
-                                    let tipopv = puntosventa[i]["tipoPuntoVenta"];
-                                    alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
-                                }
-                            }
-                            
-                            //alert("Consulta realizada con exito;");
-                        }else{
-                            let codigo = registros.RespuestaConsultaPuntoVenta.mensajesList.codigo;
-                            let mensaje = registros.RespuestaConsultaPuntoVenta.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
-                        }
-                        document.getElementById('loader_revocado').style.display = 'none';
+                    console.log(registros);
+                    let html = ``;
+                    let aux = 1;
+                    let transaccion = registros.RespuestaConsultaPuntoVenta.transaccion;
+                    if(transaccion == true){
+                        dibujar_tabla_puntos_venta();
+                        // let puntosventa = registros.RespuestaConsultaPuntoVenta;
+                        // let n = puntosventa.length;
+                        
+                        
+                        // if(n== undefined){
+                        //     let codigo = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.codigoPuntoVenta;
+                        //     let nombre = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.nombrePuntoVenta;
+                        //     let tipopv = registros.RespuestaConsultaPuntoVenta.listaPuntosVentas.tipoPuntoVenta;
+                        //     /*let codigo = puntosventa["codigoPuntoVenta"];
+                        //     let nombre = puntosventa["nombrePuntoVenta"];
+                        //     let tipopv = puntosventa["tipoPuntoVenta"];*/
+                        //     // alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
+                        //     html += `<tr>
+                        //                 <td>${1}</td>
+                        //                 <td>${codigo}</td>
+                        //                 <td>${nombre}</td>
+                        //                 <td>${tipopv}</td>
+                        //                 <td>
+                        //                     <button class="btn btn-xs btn-danger">
+                        //                         Delete
+                        //                     </button>
+                        //                 </td>
+                        //             </tr>`;
+                        //     $('#tabla_puntos_venta').html(html);
+                        // }else if(n>1){
+                        //     for (var i = 0; i < n; i++) {
+                        //         let codigo = puntosventa[i]["codigoPuntoVenta"];
+                        //         let nombre = puntosventa[i]["nombrePuntoVenta"];
+                        //         let tipopv = puntosventa[i]["tipoPuntoVenta"];
+                        //         // alert("Codigo:"+codigo+" \n Nombre: "+nombre+" \n Tipo P. Venta: "+tipopv);
+                        //         html += `<tr>
+                        //                     <td>${i+1}</td>
+                        //                     <td>${codigo}</td>
+                        //                     <td>${nombre}</td>
+                        //                     <td>${tipopv}</td>
+                        //                     <td>
+                        //                         <button class="btn btn-xs btn-danger">
+                        //                             Delete
+                        //                         </button>
+                        //                     </td>
+                        //                 </tr>`
+                                        
+                        //     }
+                        //     $('#tabla_puntos_venta').html(html);
+                        // }
+                        
+                        //alert("Consulta realizada con exito;");
+                    }else{
+                        let codigo = registros.RespuestaConsultaPuntoVenta.mensajesList.codigo;
+                        let mensaje = registros.RespuestaConsultaPuntoVenta.mensajesList.descripcion;
+                        alert("Algo fallo...!! "+codigo+" "+mensaje);
+                    }
+                    document.getElementById('loader_revocado').style.display = 'none';
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
@@ -581,6 +617,7 @@ function registroPuntoVenta(){
                         if(transaccion == true){
                             let codigo = registros.RespuestaRegistroPuntoVenta.codigoPuntoVenta;
                             alert("Registro realizado con exito!; Codigo: "+codigo);
+                            consulta_PuntoVenta();
                         }else{
                             let codigo = registros.RespuestaRegistroPuntoVenta.mensajesList.codigo;
                             let mensaje = registros.RespuestaRegistroPuntoVenta.mensajesList.descripcion;
@@ -1030,4 +1067,41 @@ function verificar_comunicacionRecCompras(){
                 }                
         }); 
     //}
+}
+
+function dibujar_tabla_puntos_venta(){
+    let base_url = document.getElementById('base_url').value;
+    let controlador = `${base_url}punto_venta/get_puntos_venta`;
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){
+                let registros = JSON.parse(respuesta);
+                let puntosVenta = registros.puntos_ventas;
+                let i = 1;
+                console.log(registros);
+                let html = ``;
+                puntosVenta.map((pv)=>{
+                    html += `<tr>
+                                <td>${i}</td>
+                                <td>${pv.puntoventa_codigo}</td>
+                                <td>${pv.puntoventa_nombre}</td>
+                                <td>${pv.puntoventa_descripcion}</td>
+                                <td>${pv.cuis_codigo}</td>
+                                <td>${pv.cufd_codigo}</td>
+                                <td>
+                                <button class="btn btn-xs btn-primary" title="Solicitar CUIS" onclick="solicitudCuis(${pv.puntoventa_codigo})">CUIS</button>
+                                <button class="btn btn-xs btn-success" title="Solicitar CUFD" onclick="solicitudCufd(${pv.puntoventa_codigo})">CUFD</button>
+                                    <button class="btn btn-xs btn-danger" title="Cierre punto de venta" onclick="cierre_PuntoVenta(${pv.puntoventa_codigo})">delete</button>
+                                </td>
+                            </tr>`;
+                    i++;
+                });
+                $('#tabla_puntos_venta').html(html);
+            },
+            error:function(respuesta){
+                alert("Algo salio mal al obtener los datos; por favor verificar sus datos!.");
+                document.getElementById('loader_revocado').style.display = 'none';
+            }                
+    }); 
 }
