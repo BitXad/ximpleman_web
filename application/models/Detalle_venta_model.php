@@ -629,4 +629,14 @@ function ventas_dia($estado)
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
     }
+    
+    function leyenda_aleatoria($venta_id)
+    { //aun no se reviso esto
+        $sql = "SELECT df.*,p.producto_unidad,p.producto_codigosin, p.producto_codigounidadsin as unidad_codigo
+                from detalle_factura df
+                left join producto p on p.producto_id = df.producto_id 
+                where MD5(df.venta_id) = '".$venta_id."'";
+        $detalle_venta = $this->db->query($sql)->result_array();        
+        return $detalle_venta;
+    }
 }
