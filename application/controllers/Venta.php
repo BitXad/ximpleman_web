@@ -5,7 +5,7 @@
  */
 require_once(APPPATH.'libraries/vendor/autoload.php');
 use Dompdf\Dompdf;
-//use Dompdf\Options;
+use Dompdf\Options;
 
 class Venta extends CI_Controller{
     
@@ -1009,10 +1009,10 @@ class Venta extends CI_Controller{
                                         $micad .= "    <link rel='stylesheet' href='http://localhost/ximpleman_web3/resources/css/bootstrap.min.css'>"; 
                                         $micad .= "        <style type='text/css'>"; 
                                         $micad .= "            @font-face {";
-                                        $micad .= "                font-family : 'Arial';";
+                                        $micad .= "                font-family : 'Arial' !important;";
                                                         $base_url = explode('/', base_url());
                                                         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/application/';
-                                        $micad .= "                 src: url('"+$directorio+"libraries/vendor/dompdf/dompdf/lib/fonts/arial.ttf') format('truetype')";
+                                        $micad .= "                 src: url('"+$directorio+"libraries/vendor/dompdf/dompdf/lib/fonts/arial.ttf') format('truetype');";
                                         $micad .= "            }";
                                         $micad .= "           p {"; 
                                         $micad .= "               font-family: Arial;"; 
@@ -1106,19 +1106,19 @@ class Venta extends CI_Controller{
                                         $micad .= "                </td>"; 
                                         $micad .= "                <td style='width: ".round($ancho/3,2)."cm; padding:0;line-height: 9px;'>"; 
                                         $micad .= "                </td>"; 
-                                        $micad .= "                <td style='word-wrap: break-word; width: ".round($ancho/3,2)."cm;  padding: 0; line-height: 10px;'>"; 
-                                        $micad .= "                    <table style='word-wrap: break-word; max-width: 6cm; padding:0; border-bottom: #0000eb'>"; 
+                                        $micad .= "                <td style='width: ".round($ancho/3,2)."cm;  padding: 0; line-height: 10px;'>"; 
+                                        $micad .= "                    <table style='width: ".round($ancho/3,2)."cm; word-wrap: break-word; max-width: 6cm; padding:0; border-bottom: #0000eb'>"; 
                                         $micad .= "                        <tr>"; 
                                         $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'><b>NIT: </b></td>"; 
-                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;'> ".$factura[0]['factura_nitemisor']."</td>"; 
+                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'> ".$factura[0]['factura_nitemisor']."</td>"; 
                                         $micad .= "                        </tr>"; 
                                         $micad .= "                        <tr>"; 
                                         $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'><b>FACTURA Nº: </b></td>"; 
-                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;'>00".$factura[0]['factura_numero']."</td>"; 
+                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'>00".$factura[0]['factura_numero']."</td>"; 
                                         $micad .= "                        </tr>"; 
                                         $micad .= "                        <tr>"; 
                                         $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'><b>CÓD AUTORIZACIÓN: </b></td>"; 
-                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; padding-left: 5px; white-space: intial; max-width: 3cm'><span class='width:100%'>".$factura[0]['factura_cuf']."</span></td>"; 
+                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; padding-left: 5px; max-width: 3cm'><div style='word-wrap: break-word !important; padding=0px'>".$factura[0]['factura_cuf']."</div></td>"; 
                                         $micad .= "                        </tr>"; 
                                         $micad .= "                    </table>"; 
                                         $micad .= "                </td>"; 
@@ -1126,7 +1126,7 @@ class Venta extends CI_Controller{
                                                         $fecha = new DateTime($factura[0]['factura_fechaventa']);  
                                                         $fecha_d_m_a = $fecha->format('d/m/Y'); 
                                         $micad .= "            <tr style='padding: 0;'>"; 
-                                        $micad .= "                <td colspan='6' style='padding: 0;'>"; 
+                                        $micad .= "                <td colspan='3' style='padding: 0; font-family: Arial'>"; 
                                         $micad .= "                    <center style='margin-bottom:15px'>"; 
                                         $micad .= "                        <font size='4' face='arial'><b>FACTURA</b></font> <br>"; 
                                         $micad .= "                        <font size='1' face='arial'>(Con Derecho a Cr&eacute;dito Fiscal)</font> <br>"; 
@@ -1274,8 +1274,11 @@ class Venta extends CI_Controller{
                                         $micad .= "        </tr>"; 
                                         $micad .= "        <tr>"; 
                                         $micad .= "            <td style='padding-top: 0px; padding-bottom: 0px;'>"; 
-                                        $micad .= "                <div style='width: 100%; margin-top: 25px;'>"; 
-                                        $micad .= "                    <div style='float: left;width: 78%;'>"; 
+                                        $micad .= "                <table style='width: 100%; margin-top: 25px;'>"; 
+                                        $micad .= "                    <tr>"; 
+                                        $micad .= "                       <td style='float: left;width: 78%;'>"; 
+                                        //$micad .= "                <div style='width: 100%; margin-top: 25px;'>"; 
+                                        //$micad .= "                    <div style='float: left;width: 78%;'>"; 
                                         $micad .= "                        <center style='width:100%;'>"; 
                                         $micad .=                             $factura[0]['factura_leyenda1']."<br><br>"; 
                                         $micad .= "                            <font face='Arial' size='1'>".$factura[0]['factura_leyenda2']; 
@@ -1283,12 +1286,14 @@ class Venta extends CI_Controller{
                                         $micad .=                             $factura[0]['factura_leyenda3']."<br><br>"; 
                                         $micad .=                                 $factura[0]['factura_leyenda4']; 
                                                                                 if ($factura[0]['factura_tipoemision']==2){
-                                        $micad .= "                                 <b>Este documento es la representación gráfica de un Documento Fiscal Digital emitidofuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b>";
+                                        $micad .= "                                 <span><b>Este documento es la representación gráfica de un Documento Fiscal Digital emitido fuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b></span>";
                                                                                 }
                                         $micad .= "                        </center>"; 
-                                        $micad .= "                    </div>"; 
-                                        $micad .= "                    <div style='float: right;width: 80px;'>"; 
-                                        $micad .= "                        <figure>";
+                                        //$micad .= "                    </div>"; 
+                                        $micad .= "                        </td>";
+                                        $micad .= "                        <td style='float: right;width: 80px;'>"; 
+                                        //$micad .= "                    <div style='float: right;width: 80px;'>"; 
+                                        //$micad .= "                        <figure>";
                                                                                 $base_url = explode('/', base_url());
                                                     $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
                                                     $codigoqr = $directorio.'/images/qrcode'.$usuario_id.'.png';
@@ -1297,9 +1302,12 @@ class Venta extends CI_Controller{
                                                     $data = file_get_contents($path);
                                                     $elcodigoqrbase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
                                         $micad .= "                            <img src='".$elcodigoqrbase64."' width='80' height='80' alt='Codigo QR'>"; 
-                                        $micad .= "                        </figure>"; 
-                                        $micad .= "                    </div>"; 
-                                        $micad .= "                </div>"; 
+                                        //$micad .= "                        </figure>"; 
+                                        //$micad .= "                    </div>"; 
+                                        //$micad .= "                </div>"; 
+                                        $micad .= "                      </td>"; 
+                                        $micad .= "                   </tr>"; 
+                                        $micad .= "                </table>"; 
                                         $micad .= "            </td>"; 
                                         $micad .= "        </tr>"; 
                                         $micad .= "    </table>"; 
@@ -1312,10 +1320,16 @@ class Venta extends CI_Controller{
                                     }
                                     
                                     $dompdf = new Dompdf();
-                                    $options = $dompdf->getOptions();
-                                    $options->setDefaultFont('Arial');
-                                    $dompdf->setOptions($options);
+                                    //$options = $dompdf->getOptions();
+                                    //$options->setDefaultFont('Arial');
+                                    //$dompdf->setOptions($options);
+                                    $options = new Options();
                                     
+                                    $options->set(array(
+                                    'isRemoteEnabled' => true
+                                    ));
+                                    $dompdf->setOptions($options);
+                                    //$dompdf->getFontMetrics()->setFontFamily("Arial", "bold");
                                     //$options = new Options();
                                     //$options->set('defaultFont', 'Arial');
                                     //$dompdf = new Dompdf($options);

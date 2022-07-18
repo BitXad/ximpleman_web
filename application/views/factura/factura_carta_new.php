@@ -412,7 +412,7 @@ border-bottom : 1px solid #aaa;
                             
                             <?php 
                                     if ($factura[0]['factura_tipoemision']==2){
-                                        echo "<b>Este documento es la representación gráfica de un Documento Fiscal Digital emitidofuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b>";
+                                        echo "<b>Este documento es la representación gráfica de un Documento Fiscal Digital emitido fuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b>";
                                    }
                             ?>
                         </center>
