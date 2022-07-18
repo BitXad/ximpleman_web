@@ -180,6 +180,7 @@ class Factura extends CI_Controller{
         if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_carta';
         }else{
+            $data['motivos'] = $this->Factura_model->get_all_motivos();
             $data['_view'] = 'factura/factura_carta_new'; 
         }
         $this->load->view('layouts/main',$data);        
@@ -425,6 +426,7 @@ class Factura extends CI_Controller{
         if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_carta';
         }else{
+            $data['motivos'] = $this->Factura_model->get_all_motivos();
             $data['_view'] = 'factura/factura_carta_new'; 
         }
         $this->load->view('layouts/main',$data);
@@ -1464,6 +1466,7 @@ class Factura extends CI_Controller{
     //monto, codigo de recepcion
     function enviar_correoanulacion($venta_id, $correo,$factura_numero, $factura_fecha, $total, $cod_recepcion)
     {
+        if($correo != null || $correo != ""){
         //if ($this->input->is_ajax_request()) {
             $this->load->library('email');
             $this->email->set_newline("\r\n");
@@ -1512,7 +1515,12 @@ class Factura extends CI_Controller{
             $html .= "<br>";
             //$html .= $configuracion['email_cabecera'];
             $la_fecha = date("d/m/Y", strtotime($factura_fecha));
-            $html .= "Le informamos que su factura electrónica numero <b>".$factura_numero."</b> de fecha <b>".$la_fecha."</b> con un moto total de <b>".$total."</b> y el codigo de recepcion <b>".$cod_recepcion."</b> fue anulada.<br>";
+            
+            $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+            $literal =  num_to_letras($total,' Bolivianos');
+            
+            $html .= "Le informamos que su factura electrónica numero <b>".$factura_numero."</b> de fecha <b>".$la_fecha."</b> ";
+            $html .= "con un moto total de Bs <b>".$total."</b> (".$literal.") y el codigo de recepcion <b>".$cod_recepcion."</b> fue anulada.<br>";
             //$direccion = base_url("tufactura/verfactura/".md5($venta_id));
             //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
             //$html .= "<br>Tambien le enviamos los archivos en formato PDF y XML adjuntos";
@@ -1552,6 +1560,7 @@ class Factura extends CI_Controller{
         /*}else{                 
             show_404();
         }*/              
+        }
     }
     
 }

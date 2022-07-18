@@ -62,6 +62,7 @@ function mostrar_facturas() {
                 if (opcion==1){
                     
                     html += "<table class='table table-striped' id='mitabla' nowrap >";
+                    html += "<tr>";
                     html += "<th>#</th>";
                     html += "<th>ESPEC.</th>";
                     html += "<th>N°</th>";
@@ -154,13 +155,16 @@ function mostrar_facturas() {
 
                             }
 
-                                    html += "</tr>";
 
                                     totalfinal += Number(factura[i]["factura_subtotal"]);                
                         }
+                                    html += "</tr>";
                     }    
                         var debitofiscal =  totalfinal * 0.13;
                         
+                        html += "<tr";
+                        html += "<th> </th> ";
+                        html += "<th> </th> ";
                         html += "<th> </th> ";
                         html += "<th> </th> ";
                         html += "<th> </th> ";
@@ -180,7 +184,8 @@ function mostrar_facturas() {
                         html += "<th>"+Number(debitofiscal).toFixed(2)+"</th> ";
                         html += "<th> </th> ";
                         html += "<th> </th> ";
-                   html += "<tbody>";
+                        html += "</tr> ";
+                   html += "</tbody>";
                     html += "</table>";
                     $("#tabla_factura").html(html);
                 }
@@ -674,7 +679,9 @@ function cargar_modal_anular(factura_id, venta_id, factura_numero, factura_razon
                     data:{venta_id: venta_id},
                     success:function(result){
                         res = JSON.parse(result);
-                        $("#factura_correo").val(res['cliente_email']);
+                        if(res != null){
+                            $("#factura_correo").val(res['cliente_email']);
+                        }
                     },
             });
 
