@@ -817,6 +817,11 @@ class Venta extends CI_Controller{
                                 $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
                                 $venta_efectivo.",".$venta_cambio.",".$factura_enviada.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.")";
                         }else{
+                            
+                                $leyendas = $this->Venta_model->consultar("select * from leyenda");
+                                $valor = rand(0,7);
+                                $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
+                        
                             // nuevo sistema de facturacion
                             $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                                 factura_fecha, factura_hora, factura_subtotal, 
@@ -2775,15 +2780,16 @@ function modificarcliente()
     
         if ($this->input->is_ajax_request()) {
             
-            $cliente_nit = "'".$this->input->post('nit')."'";    
+            $cliente_nit = $this->input->post('nit');    
             
-            if($cliente_nit == null || $cliente_nit==0) $cliente_nit = "'0'";
+            if($cliente_nit == null) $cliente_nit = "0";
             
             $cliente_razon = "'".$this->input->post('razon')."'";
             $cliente_telefono = "'".$this->input->post('telefono')."'";
             $cliente_id = $this->input->post('cliente_id');
             $cliente_nombre =  "'".$this->input->post('cliente_nombre')."'";
             $tipo_doc_identidad = $this->input->post('tipo_doc_identidad');
+            $cliente_nit = "'".$cliente_nit."'";
             
             $tipocliente_id = $this->input->post('tipocliente_id');
             
@@ -2835,7 +2841,7 @@ function modificarcliente()
 
                     $sql = "update cliente set ".
                             " cliente_nombre = ".$cliente_nombre.
-                            ",cliente_nit = ".$cliente_nit.
+                            ",cliente_nit = '".$cliente_nit."'".
                             ",cliente_razon = ".$cliente_razon.
                             ",cliente_telefono = ".$cliente_telefono.
                             ",cliente_email = ".$cliente_email.
@@ -2848,7 +2854,7 @@ function modificarcliente()
                         $cliente_ci = $cliente_nit;
                         $cliente_nombre = $cliente_razon;
                         $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,cliente_razon,cliente_telefono,estado_id,usuario_id, cliente_email) value(1,1,".
-                               $cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".$cliente_razon.",".$cliente_telefono.",1,0,".$cliente_email.")";
+                               $cliente_nombre.",".$cliente_ci.",'".$cliente_nit."',".$cliente_razon.",".$cliente_telefono.",1,0,".$cliente_email.")";
 
                         $datos = $this->Venta_model->registrarcliente($sql);
                         echo json_encode($datos);
@@ -4088,6 +4094,10 @@ function anular_venta($venta_id){
                         $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$venta_id.",".
                         $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.",'".$factura_leyenda1."','".$factura_leyenda2."')";
             }else{
+                
+                        $leyendas = $this->Venta_model->consultar("select * from leyenda");
+                        $valor = rand(0,7);
+                        $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
                 // nuevo sistema de facturacion
                 $sql = "insert into factura(estado_id, factura_fechaventa, 
                         factura_fecha, factura_hora, factura_subtotal, 
