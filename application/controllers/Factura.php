@@ -1129,6 +1129,8 @@ class Factura extends CI_Controller{
                 if ($res){
                     //$codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;                    
                     //$mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;
+                    $factura_codigorecepcion = $factura[0]["factura_codigorecepcion"];
+                    $factura_total           = $factura[0]["factura_total"];
 
                     $sql = "update factura set ".                
                             "factura_subtotal = 0".
@@ -1149,8 +1151,7 @@ class Factura extends CI_Controller{
                     $this->Factura_model->ejecutar($sql);
                     
                     $correo = $this->input->post("factura_correo");
-                    $res = $this->enviar_correoanulacion($venta_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $codigoMotivo);
-                    
+                    $res = $this->enviar_correoanulacion($venta_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_codigorecepcion);
                     
                 }else{
                         
@@ -1460,8 +1461,8 @@ class Factura extends CI_Controller{
             show_404();
         }
     }
-    
-    function enviar_correoanulacion($venta_id, $correo,$factura_numero, $factura_fecha, $codigoMotivo)
+    //monto, codigo de recepcion
+    function enviar_correoanulacion($venta_id, $correo,$factura_numero, $factura_fecha, $total, $cod_recepcion)
     {
         //if ($this->input->is_ajax_request()) {
             $this->load->library('email');
@@ -1511,7 +1512,7 @@ class Factura extends CI_Controller{
             $html .= "<br>";
             //$html .= $configuracion['email_cabecera'];
             $la_fecha = date("d/m/Y", strtotime($factura_fecha));
-            $html .= "Le informamos que su factura electrónica numero <b>".$factura_numero."</b> de fecha <b>".$la_fecha."</b> fue anulada.<br>";
+            $html .= "Le informamos que su factura electrónica numero <b>".$factura_numero."</b> de fecha <b>".$la_fecha."</b> con un moto total de <b>".$total."</b> y el codigo de recepcion <b>".$cod_recepcion."</b> fue anulada.<br>";
             //$direccion = base_url("tufactura/verfactura/".md5($venta_id));
             //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
             //$html .= "<br>Tambien le enviamos los archivos en formato PDF y XML adjuntos";

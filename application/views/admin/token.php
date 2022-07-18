@@ -1,4 +1,4 @@
-<?php if($diasdo['dias'] < 0){ ?>
+<?php if($diasdo['dias'] <= 0){ ?>
 <div class="box-body table-responsive">
   <table class="table table-striped table-condensed" >
     <td>

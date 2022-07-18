@@ -131,7 +131,7 @@
         </div>
           
         
-        <div class="col-md-12 text-center" id="loader2" style='display:none; text-align: center'>
+        <div class="col-md-12 text-center" id="loader2" style='display:none;'>
             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
         </div>
           <input type="hidden" name="factura_id" value="00" class="form-control" id="factura_id" readonly="true" />
@@ -196,5 +196,6 @@
         
     </div>
   </div>
+</div>
 </div>
 <!-- Fin Modal Anular -->
