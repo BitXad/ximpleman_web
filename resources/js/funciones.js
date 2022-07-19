@@ -5223,7 +5223,7 @@ function verificar_cufd(){
                     
                     if (opcion == true) {
                         
-                        window.location.href = base_url+"dosificacion";
+                        window.location.href = base_url+"punto_venta";
                     }
                 }                
             },

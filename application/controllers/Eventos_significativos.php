@@ -27,6 +27,7 @@ class Eventos_significativos extends CI_Controller{
             'Tipo_puntoventa_model',
             'TipoFactura_model',
             'Unidad_model',
+            'Usuario_model',
             'ProductosServicios_model',
         ]);
         //$this->load->library('lib_nusoap/nusoap');        
@@ -1226,17 +1227,21 @@ class Eventos_significativos extends CI_Controller{
                     "<br>nit"               ." : ". $dosificacion['dosificacion_nitemisor'];
                 
                 */
-                $puntodeventa = $dosificacion['dosificacion_puntoventa'];
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                $puntodeventa = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
                 
                 $parametros = ["SolicitudEventoSignificativo" => [
                     "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
                     "codigoMotivoEvento"=> $codigo_evento, //$dosificacion['dosificacion_codsistema'],
-                    "codigoPuntoVenta"  => $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta"  => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"     => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"    => $dosificacion['dosificacion_codsucursal'],
-                    "cufd"              => $dosificacion['dosificacion_cufd'],
+                    "cufd"              => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
                     "cufdEvento"        => $cufdEvento, //$dosificacion['dosificacion_cuis'],
-                    "cuis"              => $dosificacion['dosificacion_cuis'],
+                    "cuis"              => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "descripcion"       => $descripcion, //$dosificacion['dosificacion_cuis'],
                     "fechaHoraFinEvento"=> $fechaHoraFinEvento, //$dosificacion['dosificacion_cuis'],
                     "fechaHoraInicioEvento"=>$fechaHoraInicioEvento, //$dosificacion['dosificacion_cuis'],

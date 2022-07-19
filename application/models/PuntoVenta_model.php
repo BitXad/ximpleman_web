@@ -6,8 +6,9 @@
 
         function get_all_puntoVenta(){
             return $this->db->query(
-                "SELECT p.*
+                "SELECT p.*, tp.tipopuntoventa_descripcion
                 from punto_venta p
+                left join tipo_puntoventa tp on p.tipopuntoventa_codigo = tp.tipopuntoventa_codigo
                 order by p.puntoventa_codigo"
                 )->result_array();
         }
@@ -49,8 +50,16 @@
                 "SELECT c.cuis_codigo 
                 from cuis c
                 where c.tipopuntoventa_codigo = $punto_venta
-                and c.cuis_fechavigencia >= now()"
-                )->row_array();
+                    and c.cuis_fechavigencia >= now()
+                /*order by c.cuis_id desc*/
+                ")->row_array();
+        }
+        /* obtiene informacion de un punto de venta*/
+        function get_puntoventa($puntoventa_codigo){
+            return $this->db->query(
+                "SELECT pv.*
+                from punto_venta pv
+                where pv.puntoventa_codigo = $puntoventa_codigo
+                ")->row_array();
         }
     }  
-?>

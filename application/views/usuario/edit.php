@@ -77,8 +77,8 @@
                                 <option value="0" selected>NINGUNO</option>
                                 <?php 
                                 foreach($puntos_venta as $pv){
-                                    $selected = ($pv['tipopuntoventa_codigo'] == $usuario['tipopuntoventa_codigo']) ? ' selected="selected"' : "";
-                                    echo "<option value='{$pv['tipopuntoventa_codigo']}'$selected>{$pv['tipopuntoventa_codigo']}. {$pv['tipopuntoventa_descripcion']}</option>";
+                                    $selected = ($pv['puntoventa_codigo'] == $usuario['puntoventa_codigo']) ? ' selected="selected"' : "";
+                                    echo "<option value='{$pv['puntoventa_codigo']}'$selected>{$pv['puntoventa_codigo']}. {$pv['tipopuntoventa_descripcion']}: {$pv['puntoventa_nombre']}</option>";
                                 } 
                                 ?>
                             </select>

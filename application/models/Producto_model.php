@@ -527,7 +527,7 @@ class Producto_model extends CI_Model
             FROM
                 inventario p
             WHERE
-                p.producto_id = $producto_id
+                p.producto_id = '$producto_id'
                 
         ")->row_array();
 

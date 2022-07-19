@@ -122,6 +122,7 @@
                         <tr role="row">
                             <th >#</th>
                             <th>C&oacute;digo</th>
+                            <th>Tipo Punto de Venta</th>
                             <th>Nombre</th>
                             <th>Descripci&oacute;n</th>
                             <th>CUIS</th>

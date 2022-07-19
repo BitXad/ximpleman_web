@@ -1072,15 +1072,20 @@ class Factura extends CI_Controller{
                       // other options
                 ]);
 
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                
                 $codigoAmbiente = $dosificacion['dosificacion_ambiente'];
                 $codigoDocumentoSector = $factura[0]["docsec_codigoclasificador"];
                 $codigoEmision = 1;
                 $codigoModalidad = $factura[0]['factura_modalidad'];
-                $codigoPuntoVenta = $dosificacion['dosificacion_puntoventa'];
+                $codigoPuntoVenta = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
                 $codigoSistema = $dosificacion['dosificacion_codsistema'];
                 $codigoSucursal = $dosificacion['dosificacion_codsucursal'];
-                $cufd = $dosificacion['dosificacion_cufd'];
-                $cuis = $dosificacion['dosificacion_cuis']; 
+                $cufd = $punto_venta['cufd_codigo']; //$dosificacion['dosificacion_cufd'];
+                $cuis = $punto_venta['cuis_codigo']; //$dosificacion['dosificacion_cuis']; 
                 $nit =  $dosificacion['dosificacion_nitemisor'];
                 $tipoFacturaDocumento = 1; 
                 $codigoMotivo = $codigo_motivo;

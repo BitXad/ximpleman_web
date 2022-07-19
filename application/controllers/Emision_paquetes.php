@@ -9,6 +9,7 @@ class Emision_paquetes extends CI_Controller{
             'Emision_paquetes_model',
             'Eventos_significativos_model',
             'Dosificacion_model',
+            'Usuario_model',
             /*'Actividad_model',
             'Leyenda_model',
             'Estado_model',
@@ -129,19 +130,23 @@ class Emision_paquetes extends CI_Controller{
                 $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo);
                 $has_archivo = $xml_comprimido;
                 
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 $tipo_emision = 2;//1 offline
                 $fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
                 $parametros = ["SolicitudServicioRecepcionPaquete" => [
                     "codigoAmbiente" => $dosificacion['dosificacion_ambiente'],
-                    "codigoPuntoVenta"    => $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta"    => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"        => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"       => $dosificacion['dosificacion_sucursal'],
                     "nit"              => $dosificacion['dosificacion_nitemisor'],
                     "codigoDocumentoSector"=> $dosificacion['docsec_codigoclasificador'],
                     "codigoEmision"  => $tipo_emision,
                     "codigoModalidad"     => $dosificacion['dosificacion_modalidad'],
-                    "cufd"              => $dosificacion['dosificacion_cufd'],
-                    "cuis"              => $dosificacion['dosificacion_cuis'],
+                    "cufd"              => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                    "cuis"              => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
                     "archivo" => $contents, //$dosificacion['dosificacion_cuis'],
                     "fechaEnvio"=>$fecha_hora, //$dosificacion['dosificacion_cuis'],
@@ -243,19 +248,23 @@ class Emision_paquetes extends CI_Controller{
                  
                 //$has_archivo = ''; //$xml_comprimido;
                 
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 $tipo_emision = 2; //1 offline
                 //$fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
                 $parametros = ["SolicitudServicioValidacionRecepcionPaquete" => [
                     "codigoAmbiente" => $dosificacion['dosificacion_ambiente'],
-                    "codigoPuntoVenta"    => $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta"    => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"        => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"       => $dosificacion['dosificacion_sucursal'],
                     "nit"              => $dosificacion['dosificacion_nitemisor'],
                     "codigoDocumentoSector"=> $dosificacion['docsec_codigoclasificador'],
                     "codigoEmision"  => $tipo_emision,
                     "codigoModalidad"     => $dosificacion['dosificacion_modalidad'],
-                    "cufd"              => $dosificacion['dosificacion_cufd'],
-                    "cuis"              => $dosificacion['dosificacion_cuis'],
+                    "cufd"              => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                    "cuis"              => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
                     "codigoRecepcion"         => $codigo_recepcion, //$dosificacion['dosificacion_nitemisor']
                 ]];

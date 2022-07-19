@@ -11,7 +11,7 @@ class Venta extends CI_Controller{
     
     private $caja_id = 0;
     private $parametros;
-    private $puntodeventa = 0;
+    //private $puntodeventa = 0;
     
     function __construct()
     {
@@ -746,14 +746,18 @@ class Venta extends CI_Controller{
                         // $tipo_doc_identidad    = $tipo_doc_identidad;
                         if($this->parametros['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
                             // facturacion nueva
+                            $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                            $this->load->model('PuntoVenta_model');
+                            $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                            
                             $cliente_codigo = $this->Cliente_model->get_codigo_cliente($factura_nit, $factura_razonsocial);
                             $factura_tokendelegado   = $dosificacion[0]['dosificacion_tokendelegado'];
                             $factura_ambiente        = $dosificacion[0]['dosificacion_ambiente'];
-                            $factura_cuis            = $dosificacion[0]['dosificacion_cuis'];
-                            $factura_cufd            = $dosificacion[0]['dosificacion_cufd'];
+                            $factura_cuis            = $punto_venta['cuis_codigo']; //$dosificacion[0]['dosificacion_cuis'];
+                            $factura_cufd            = $punto_venta['cufd_codigo']; //$dosificacion[0]['dosificacion_cufd'];
                             $factura_modalidad       = $dosificacion[0]['dosificacion_modalidad'];
                             $factura_codsistema      = $dosificacion[0]['dosificacion_codsistema'];
-                            $factura_puntoventa      = $dosificacion[0]['dosificacion_puntoventa'];
+                            $factura_puntoventa      = $punto_venta['puntoventa_codigo']; //$dosificacion[0]['dosificacion_puntoventa'];
                             $factura_sectoreconomico = $dosificacion[0]['dosificacion_sectoreconomico'];
                             $factura_ruta            = $dosificacion[0]['dosificacion_ruta'];
                             $factura_tamanio         = $tamanio_hoja;
@@ -763,7 +767,7 @@ class Venta extends CI_Controller{
                             $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
                             //$factura_fecha_hora = $this->sumar_2segundos($factura_fecha_hora);
                             
-                            $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($dosificacion[0]['dosificacion_cufd']);
+                            $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($punto_venta['cufd_codigo']); //$dosificacion[0]['dosificacion_cufd']);
                             $factura_codigocliente = $cliente_codigo;
         
                             $cadFechahora = str_replace("-", "", $factura_fecha_hora);
@@ -1006,13 +1010,13 @@ class Venta extends CI_Controller{
                                         $micad .= "<!DOCTYPE html>"; 
                                         $micad .= "<html>"; 
                                         $micad .= "    <head>"; 
-                                        $micad .= "    <link rel='stylesheet' href='http://localhost/ximpleman_web3/resources/css/bootstrap.min.css'>"; 
+                                        //$micad .= "    <link rel='stylesheet' href='".base_url()."resources/css/bootstrap.min.css'>"; 
                                         $micad .= "        <style type='text/css'>"; 
                                         $micad .= "            @font-face {";
                                         $micad .= "                font-family : 'Arial' !important;";
                                                         $base_url = explode('/', base_url());
-                                                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/application/';
-                                        $micad .= "                 src: url('"+$directorio+"libraries/vendor/dompdf/dompdf/lib/fonts/arial.ttf') format('truetype');";
+                                                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
+                                        $micad .= "                 src: url('"+$directorio+"fonts/arial.ttf') format('truetype');";
                                         $micad .= "            }";
                                         $micad .= "           p {"; 
                                         $micad .= "               font-family: Arial;"; 
@@ -4531,6 +4535,10 @@ function anular_venta($venta_id){
         $wsdl = $dosificacion['dosificacion_factura'];
         $token = $dosificacion['dosificacion_tokendelegado'];
 
+        $usuario_id = $this->session_data['usuario_id'];
+        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+        $this->load->model('PuntoVenta_model');
+        $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
         /*$comunicacion = $this->verificar_comunicacion($token,$wsdl);
         if($comunicacion){*/
             $fecha_envio = date('Y-m-d\TH:i:s.v');
@@ -4539,11 +4547,11 @@ function anular_venta($venta_id){
                 "codigoDocumentoSector" => $dosificacion['docsec_codigoclasificador'], //documento_sector: para compra y venta es 1
                 "codigoEmision"         =>  1, //$dosificacion['dosificacion_ambiente'],   //Describe si la emisión se realizó en línea. El valor permitido es: Online: 1
                 "codigoModalidad"       => $dosificacion['dosificacion_modalidad'],  //Uno (1) Electrónica  y dos (2) Computarizada en línea
-                "codigoPuntoVenta"      => $dosificacion['dosificacion_puntoventa'], //se realiza utilizando un punto de venta. Caso contrario enviar 0.
+                "codigoPuntoVenta"      => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'], //se realiza utilizando un punto de venta. Caso contrario enviar 0.
                 "codigoSistema"         => $dosificacion['dosificacion_codsistema'],
                 "codigoSucursal"        => $dosificacion['dosificacion_codsucursal'],
-                "cufd"                  => $dosificacion['dosificacion_cufd'],
-                "cuis"                  => $dosificacion['dosificacion_cuis'],
+                "cufd"                  => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                "cuis"                  => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                 "nit"                   => $dosificacion['dosificacion_nitemisor'],
                 "tipoFacturaDocumento"  => $dosificacion['tipofac_codigo'],
                 "archivo"               => $el_archivo,
@@ -4703,8 +4711,9 @@ function anular_venta($venta_id){
     
     
     function verificar_cufd(){
-
-        $sql ="select * from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$this->puntodeventa;
+        $usuario_id = $this->session_data['usuario_id'];
+        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+        $sql ="select * from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$puntoventa['puntoventa_codigo'];
         $cufd = $this->Venta_model->consultar($sql);
         if(sizeof($cufd)>0){
             echo json_encode(true);

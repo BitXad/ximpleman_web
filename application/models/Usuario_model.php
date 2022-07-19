@@ -305,7 +305,7 @@ class Usuario_model extends CI_Model
 
     public function get_punto_venta_usuario($usuario_id){
         return $this->db->query(
-            "SELECT u.tipopuntoventa_codigo
+            "SELECT u.puntoventa_codigo
             from usuario u
             where usuario_id = $usuario_id"
         )->row_array();

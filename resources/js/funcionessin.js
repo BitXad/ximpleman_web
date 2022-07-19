@@ -89,7 +89,6 @@ function solicitudCuis(punto_venta = 0){
     var opcion = confirm("Esta a punto de generar el C.U.I.S., el cual reamplazara el existente...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
-        // document.getElementById('loader_cuis').style.display = 'block';
         document.getElementById('loader_revocado').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
@@ -101,18 +100,17 @@ function solicitudCuis(punto_venta = 0){
 
                     if(transaccion == true){
                         almacenar_cuis((registros['RespuestaCuis']),punto_venta);
-                    }
-                    else{
+                    }else{
                         
                         let transaccion = registros.RespuestaCuis.mensajesList.codigo;
                         let descripcion = registros.RespuestaCuis.mensajesList.descripcion;
                         alert("ERROR: "+transaccion+" "+descripcion);
                     }
-                    // document.getElementById('loader_cuis').style.display = 'none';
+                    document.getElementById('loader_revocado').style.display = 'none';
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
-                    document.getElementById('loader_cuis').style.display = 'none';
+                    document.getElementById('loader_revocado').style.display = 'none';
                 }                
         }); 
     }
@@ -617,7 +615,7 @@ function registroPuntoVenta(){
                         if(transaccion == true){
                             let codigo = registros.RespuestaRegistroPuntoVenta.codigoPuntoVenta;
                             alert("Registro realizado con exito!; Codigo: "+codigo);
-                            consulta_PuntoVenta();
+                            dibujar_tabla_puntos_venta();
                         }else{
                             let codigo = registros.RespuestaRegistroPuntoVenta.mensajesList.codigo;
                             let mensaje = registros.RespuestaRegistroPuntoVenta.mensajesList.descripcion;
@@ -1083,12 +1081,25 @@ function dibujar_tabla_puntos_venta(){
                 let html = ``;
                 puntosVenta.map((pv)=>{
                     html += `<tr>
-                                <td>${i}</td>
-                                <td>${pv.puntoventa_codigo}</td>
+                                <td class='text-center'>${i}</td>
+                                <td class='text-center'>${pv.puntoventa_codigo}</td>
+                                <td>`;
+                                if(pv.tipopuntoventa_descripcion != null && pv.tipopuntoventa_descripcion != ""){
+                    html +=         pv.tipopuntoventa_descripcion;
+                                }
+                    html +=    `</td>
                                 <td>${pv.puntoventa_nombre}</td>
                                 <td>${pv.puntoventa_descripcion}</td>
-                                <td>${pv.cuis_codigo}</td>
-                                <td>${pv.cufd_codigo}</td>
+                                <td class='text-center'>`;
+                                if(pv.cuis_codigo != null && pv.cuis_codigo != ""){
+                    html +=         pv.cuis_codigo;
+                                }
+                                html += `</td>
+                                <td>`;
+                                if(pv.cufd_codigo != null && pv.cufd_codigo != ""){
+                    html +=         pv.cufd_codigo;
+                                }
+                    html +=    `</td>
                                 <td>
                                 <button class="btn btn-xs btn-primary" title="Solicitar CUIS" onclick="solicitudCuis(${pv.puntoventa_codigo})">CUIS</button>
                                 <button class="btn btn-xs btn-success" title="Solicitar CUFD" onclick="solicitudCufd(${pv.puntoventa_codigo})">CUFD</button>

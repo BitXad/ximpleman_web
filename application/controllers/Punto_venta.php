@@ -37,16 +37,17 @@ class Punto_venta extends CI_Controller{
     {
         if($this->acceso(1)) {
             $data['page_title'] = "Puntos de venta";
-            $data['_view'] = 'punto_venta/index';
             $data['all_tipopuntoventa'] = $this->Tipo_puntoventa_model->get_all_tipopuntoventa();
             // $data['puntos_ventas'] = $this->Puntoventa_model->get_all_puntoventa();
+            $data['_view'] = 'punto_venta/index';
             $this->load->view('layouts/main',$data);
         }    
     }
 
     function get_puntos_venta(){
         if($this->input->is_ajax_request()){
-            $data['puntos_ventas'] = $this->PuntoVenta_model->get_all_puntoVenta_cuis_cudf();
+            //$data['puntos_ventas'] = $this->PuntoVenta_model->get_all_puntoVenta_cuis_cudf();
+            $data['puntos_ventas'] = $this->PuntoVenta_model->get_all_puntoVenta();
             echo json_encode($data);
         }
     }

@@ -65,7 +65,7 @@
                                 <option value="0">NINGUNO</option>
                                 <?php 
                                 foreach($puntos_venta as $pv){
-                                    echo "<option value='{$pv['tipopuntoventa_codigo']}'>{$pv['tipopuntoventa_codigo']}. {$pv['tipopuntoventa_descripcion']}</option>";
+                                    echo "<option value='{$pv['puntoventa_codigo']}'>{$pv['puntoventa_codigo']}. {$pv['tipopuntoventa_descripcion']}: {$pv['puntoventa_nombre']}</option>";
                                 } 
                                 ?>
                             </select>
