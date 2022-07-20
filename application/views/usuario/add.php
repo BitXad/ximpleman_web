@@ -62,11 +62,16 @@
                         <label for="punto_venta" class="control-label">Punto de venta</label>
                         <div class="form-group">
                             <select name="punto_venta" id="punto_venta" class="form-control" required>
-                                <option value="0">NINGUNO</option>
-                                <?php 
-                                foreach($puntos_venta as $pv){
-                                    echo "<option value='{$pv['puntoventa_codigo']}'>{$pv['puntoventa_codigo']}. {$pv['tipopuntoventa_descripcion']}: {$pv['puntoventa_nombre']}</option>";
-                                } 
+                                <?php
+                                if($all_parametros['parametro_tiposistema'] == 1){
+                                ?>
+                                    <option value="0">NINGUNO</option>
+                                <?php
+                                }else{
+                                    foreach($puntos_venta as $pv){
+                                        echo "<option value='{$pv['puntoventa_codigo']}'>{$pv['puntoventa_codigo']}. {$pv['tipopuntoventa_descripcion']}: {$pv['puntoventa_nombre']}</option>";
+                                    }
+                                }
                                 ?>
                             </select>
                         </div>

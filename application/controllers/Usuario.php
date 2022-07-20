@@ -337,6 +337,7 @@ private function acceso($id_rol){
                 $data['puntos_venta'] = $this->PuntoVenta_model->get_all_puntoVenta();
                 $this->load->model('Tipo_usuario_model');
                 $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
+                $data['all_parametros'] = $this->parametro_model->get_all_parametros();
                 $data['page_title'] = "Usuario";
                 $data['_view'] = 'usuario/edit';
                 $this->load->view('layouts/main', $data);
