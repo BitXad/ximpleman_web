@@ -449,13 +449,18 @@ class Dosificacion extends CI_Controller{
 //                        
                         $nit_verificar = $this->input->post("nit");
                         //$nit_verificar = 5196226;
+                        $usuario_id = $this->session_data['usuario_id'];
+                        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                        $this->load->model('PuntoVenta_model');
+                        $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                        
                         $parametros = ["SolicitudVerificarNit" => [
-                            "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
-                            "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
-                            "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
-                            "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
-                            "cuis"=>            $dosificacion['dosificacion_cuis'],
-                            "nit"=>             $dosificacion['dosificacion_nitemisor'],
+                            "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
+                            "codigoModalidad"   => $dosificacion['dosificacion_modalidad'],
+                            "codigoSistema"     => $dosificacion['dosificacion_codsistema'],
+                            "codigoSucursal"    => $dosificacion['dosificacion_codsucursal'],
+                            "cuis"              => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
+                            "nit"               => $dosificacion['dosificacion_nitemisor'],
                             "nitParaVerificacion"=>$nit_verificar]];
 
                         $resultado = $cliente->verificarNit($parametros);
@@ -748,13 +753,15 @@ class Dosificacion extends CI_Controller{
                       // other options
                 ]);
                 
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
                 /* ordenado segun SoapUI */
                 $parametros = ["SolicitudCuisMasivoSistemas" => [
-                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                    "codigoAmbiente" =>  $dosificacion['dosificacion_ambiente'],
                     "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
-                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                    "codigoSistema"  =>   $dosificacion['dosificacion_codsistema'],
                     "datosSolicitud" => [
-                        "codigoPuntoVenta"=>$dosificacion['dosificacion_puntoventa'],
+                        "codigoPuntoVenta"=> $puntoventa['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                         "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal']
                     ],
                     "nit"=>             $dosificacion['dosificacion_nitemisor'],
@@ -813,15 +820,19 @@ class Dosificacion extends CI_Controller{
                       // other options
                 ]);
                 
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 /* ordenado segun SoapUI */
                 $parametros = ["SolicitudCufdMasivo" => [
                     "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
                     "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
                     "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
                     "datosSolicitud" => [
-                        "codigoPuntoVenta"=>$dosificacion['dosificacion_puntoventa'],
+                        "codigoPuntoVenta"=> $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                         "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
-                        "cuis"=>  $dosificacion['dosificacion_cuis']
+                        "cuis"=> $punto_venta['cuis_codigo'] //$dosificacion['dosificacion_cuis']
                     ],
                     "nit"=>             $dosificacion['dosificacion_nitemisor'],
                 ]];
@@ -907,12 +918,17 @@ class Dosificacion extends CI_Controller{
                 $fecharevocacion = "2022-03-28";
                 $razonrevocacion = "Sustracción de codigos...";
                 /* ordenado segun SoapUI */
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                
                 $parametros = ["SolicitudNotificaRevocado" => [
-                    "certificado"=>  $certificado,  //$dosificacion['dosificacion_ambiente'],
-                    "codigoAmbiente"=> $dosificacion['dosificacion_ambiente'],
+                    "certificado"=>     $certificado,  //$dosificacion['dosificacion_ambiente'],
+                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
                     "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
-                    "cuis"=>            $dosificacion['dosificacion_cuis'],
+                    "cuis"=>            $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "fechaRevocacion"=> $fecharevocacion, //$dosificacion['dosificacion_nitemisor'],
                     "nit"=>             $dosificacion['dosificacion_nitemisor'],
                     "razonRevocacion"=> $razonrevocacion]];
@@ -952,12 +968,17 @@ class Dosificacion extends CI_Controller{
                 'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
             ]);
             
+            $usuario_id = $this->session_data['usuario_id'];
+            $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+            $this->load->model('PuntoVenta_model');
+            $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+            
             $parametros = ["SolicitudSincronizacion" => [
                 "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoPuntoVenta"  =>  $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                 "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
                 "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "cuis"              =>  $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                 "nit"               =>  $dosificacion['dosificacion_nitemisor']]
             ];
             $resultados = $cliente->sincronizarActividades($parametros);
@@ -1023,15 +1044,19 @@ class Dosificacion extends CI_Controller{
                       // other options
                 ]);
                 
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 /* ordenado segun SoapUI */
                 $parametros = ["SolicitudOperaciones" => [
-                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
-                    "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
-                    "codigoPuntoVenta"=>$dosificacion['dosificacion_puntoventa'],
-                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
-                    "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
-                    "cuis"=>            $dosificacion['dosificacion_cuis'],
-                    "nit"=>             $dosificacion['dosificacion_nitemisor']
+                    "codigoAmbiente"  => $dosificacion['dosificacion_ambiente'],
+                    "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
+                    "codigoPuntoVenta"=> $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
+                    "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
+                    "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
+                    "cuis"            => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
+                    "nit"             => $dosificacion['dosificacion_nitemisor']
                 ]];
 
                 //var_dump($parametros);
@@ -1071,6 +1096,11 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
+                
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 /* ordenado segun SoapUI */
                 $parametros = ["SolicitudCierrePuntoVenta" => [
                     "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
@@ -1078,8 +1108,8 @@ class Dosificacion extends CI_Controller{
                     "codigoPuntoVenta"=>$puntoventa,
                     "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
-                    "cuis"=>            $dosificacion['dosificacion_cuis'],
-                    "nit"=>             $dosificacion['dosificacion_nitemisor']
+                    "cuis"          => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
+                    "nit"           => $dosificacion['dosificacion_nitemisor']
                 ]];
 
                 //var_dump($parametros);
@@ -1172,12 +1202,16 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 /* ordenado segun SoapUI */
                 $parametros = ["SolicitudConsultaPuntoVenta" => [
                     "codigoAmbiente"=> $dosificacion['dosificacion_ambiente'],
                     "codigoSistema" => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"=> $dosificacion['dosificacion_codsucursal'],
-                    "cuis"          => $dosificacion['dosificacion_cuis'],
+                    "cuis"          => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"           => $dosificacion['dosificacion_nitemisor']
                 ]];
                 $resultado = $cliente->consultaPuntoVenta($parametros);
@@ -2152,12 +2186,17 @@ class Dosificacion extends CI_Controller{
             
             if (true) {
                 
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                
                 $parametros = ["SolicitudSincronizacion" => [
                     "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                    "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta"  =>  $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                    "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                    "cuis"              =>  $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"               =>  $dosificacion['dosificacion_nitemisor']
                 ]];
 
@@ -2247,16 +2286,21 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                
                 $parametros = ["SolicitudServicioRecepcionDocumentoAjuste" => [
                     "codigoAmbiente"       => $dosificacion['dosificacion_ambiente'],
                     "codigoDocumentoSector"=> 1, //$this->input->post('descripcion'),
                     "codigoEmision" => 1, //si es en linea$dosificacion['dosificacion_modalidad'],
                     "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
-                    "codigoPuntoVenta" => $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta" => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
-                    "cufd"            => $dosificacion['dosificacion_cufd'],
-                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "cufd"            => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                    "cuis"            => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"             => $dosificacion['dosificacion_nitemisor'],
                     "tipoFacturaDocumento" => 3, //$this->input->post('descripcion'),
                     "archivo"     => "gddfDFGDSfdGFSDDdfd", //$this->input->post('descripcion'),
@@ -2299,16 +2343,21 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                
                 $parametros = ["SolicitudServicioVerificacionEstadoDocumentoAjuste" => [
                     "codigoAmbiente"       => $dosificacion['dosificacion_ambiente'],
                     "codigoDocumentoSector"=> 1, //$this->input->post('descripcion'),
                     "codigoEmision" => 1, //si es en linea$dosificacion['dosificacion_modalidad'],
                     "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
-                    "codigoPuntoVenta" => $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta"=> $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
-                    "cufd"            => $dosificacion['dosificacion_cufd'],
-                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "cufd"            => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                    "cuis"            => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"             => $dosificacion['dosificacion_nitemisor'],
                     "tipoFacturaDocumento" => 3, //$this->input->post('descripcion'),
                     "cuf"     => "BQXxCKlhQRkE=NzjQ0NjJDQzVEMjc=Qz43ZzZKRkVXVUFFFN0E2NTQ2RTA4Q", //$this->input->post('descripcion'),
@@ -2349,16 +2398,21 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                
                 $parametros = ["SolicitudServicioAnulacionDocumentoAjuste" => [
                     "codigoAmbiente"       => $dosificacion['dosificacion_ambiente'],
                     "codigoDocumentoSector"=> 1, //$this->input->post('descripcion'),
                     "codigoEmision" => 1, //si es en linea$dosificacion['dosificacion_modalidad'],
                     "codigoModalidad" => $dosificacion['dosificacion_modalidad'],
-                    "codigoPuntoVenta" => $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta" => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
-                    "cufd"            => $dosificacion['dosificacion_cufd'],
-                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "cufd"            => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                    "cuis"            => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"             => $dosificacion['dosificacion_nitemisor'],
                     "tipoFacturaDocumento"=> 3, //$this->input->post('descripcion'),
                     "codigoMotivo"        => 7, // $dosificacion['dosificacion_nitemisor'],
@@ -2400,13 +2454,18 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                
                 $parametros = ["SolicitudAnulacionCompra" => [
                     "codigoAmbiente"   => $dosificacion['dosificacion_ambiente'],
-                    "codigoPuntoVenta" => $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta" => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"    => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"   => $dosificacion['dosificacion_codsucursal'],
-                    "cufd"             => $dosificacion['dosificacion_cufd'],
-                    "cuis"             => $dosificacion['dosificacion_cuis'],
+                    "cufd"             => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                    "cuis"             => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"              => $dosificacion['dosificacion_nitemisor'],
                     "codigoAutorizacion"=> 0, //$this->input->post('descripcion'),
                     "nitProveedor" => 5152377019, //si es en linea$dosificacion['dosificacion_modalidad'],
@@ -2449,13 +2508,14 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
+                
                 $parametros = ["SolicitudConfirmacionCompras" => [
                     "codigoAmbiente"   => $dosificacion['dosificacion_ambiente'],
-                    "codigoPuntoVenta" => $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta" => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"    => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"   => $dosificacion['dosificacion_codsucursal'],
-                    "cufd"             => $dosificacion['dosificacion_cufd'],
-                    "cuis"             => $dosificacion['dosificacion_cuis'],
+                    "cufd"             => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                    "cuis"             => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"              => $dosificacion['dosificacion_nitemisor'],
                     "archivo"          => "cid:1476575835872",//$dosificacion['dosificacion_nitemisor'],
                     "cantidadFacturas" => 5, //$dosificacion['dosificacion_nitemisor'],
@@ -2500,13 +2560,18 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                
                 $parametros = ["SolicitudConsultaCompras" => [
                     "codigoAmbiente"  => $dosificacion['dosificacion_ambiente'],
-                    "codigoPuntoVenta"=> $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta"=> $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
-                    "cufd"            => $dosificacion['dosificacion_cufd'],
-                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "cufd"            => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                    "cuis"            => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"             => $dosificacion['dosificacion_nitemisor'],
                     "fecha"           => "2022-04-13T17:27:05.125", //$dosificacion['dosificacion_nitemisor'],
                 ]];
@@ -2546,13 +2611,18 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                
                 $parametros = ["SolicitudRecepcionCompras" => [
                     "codigoAmbiente"  => $dosificacion['dosificacion_ambiente'],
-                    "codigoPuntoVenta"=> $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta"=> $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
-                    "cufd"            => $dosificacion['dosificacion_cufd'],
-                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "cufd"            => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                    "cuis"            => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"             => $dosificacion['dosificacion_nitemisor'],
                     "archivo"         => "cid:579302390480", //$dosificacion['dosificacion_nitemisor'],
                     "cantidadFacturas"=> 40, //$dosificacion['dosificacion_nitemisor'],
@@ -2598,13 +2668,18 @@ class Dosificacion extends CI_Controller{
 
                       // other options
                 ]);
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                
                 $parametros = ["SolicitudRecepcionCompras" => [
                     "codigoAmbiente"  => $dosificacion['dosificacion_ambiente'],
-                    "codigoPuntoVenta"=> $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta"=> $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"   => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"  => $dosificacion['dosificacion_codsucursal'],
-                    "cufd"            => $dosificacion['dosificacion_cufd'],
-                    "cuis"            => $dosificacion['dosificacion_cuis'],
+                    "cufd"            => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                    "cuis"            => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"             => $dosificacion['dosificacion_nitemisor'],
                     "codigoRecepcion" => "12", //$dosificacion['dosificacion_nitemisor'],
                 ]];

@@ -71,5 +71,14 @@ class Eventos_significativos_model extends CI_Model{
         
         return $this->db->query($sql);
     }
+    
+    /**
+     * get Codigos Nis for activity and secondary activity
+     */
+    function get_eventossignificativos(){
+        return $this->db->query(
+            "select * from registro_eventos order by registroeventos_id desc
+        ")->result_array();
+    }
 
 }

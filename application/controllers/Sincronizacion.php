@@ -60,7 +60,7 @@ class Sincronizacion extends CI_Controller{
     function show_sincronizacion($sincronizacion_id){
         $usuario_id = $this->session_data['usuario_id'];
         $data['punto_venta'] = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
-        var_dump($data['punto_venta']);
+        //var_dump($data['punto_venta']);
         switch(intval($sincronizacion_id)){
             case 1:
                 $data['datos'] = $this->Actividad_model->get_all_activities();
@@ -159,13 +159,17 @@ class Sincronizacion extends CI_Controller{
 
             $comunicacion = $this->verificar_comunicacion($token,$wsdl);
             if ($comunicacion) {
-
+                
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 $parametros = ["SolicitudSincronizacion" => [
                     "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                    "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                    "codigoPuntoVenta"  =>  $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                     "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                    "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                    "cuis"              =>  $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"               =>  $dosificacion['dosificacion_nitemisor']
                 ]];
                 
@@ -282,12 +286,16 @@ class Sincronizacion extends CI_Controller{
                 'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
             ]);
             
+            $usuario_id = $this->session_data['usuario_id'];
+            $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+            $this->load->model('PuntoVenta_model');
+            $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
             $parametros = ["SolicitudSincronizacion" => [
                 "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoPuntoVenta"  =>  $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                 "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
                 "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "cuis"              =>  $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                 "nit"               =>  $dosificacion['dosificacion_nitemisor']
             ]];
             $resultados = $cliente->sincronizarActividades($parametros);
@@ -297,19 +305,32 @@ class Sincronizacion extends CI_Controller{
             $transaccion = $resultados->RespuestaListaActividades->transaccion;
             if($transaccion){
                 $listaActividades = $resultados->RespuestaListaActividades->listaActividades;
-                foreach($listaActividades as $list_actividad){
+                //var_dump($listaActividades->codigoCaeb);
+                if(isset($listaActividades->codigoCaeb)){
                     $params = array(
-                        'actividad_codigocaeb' => $list_actividad->codigoCaeb,
-                        'actividad_descripcion' => $list_actividad->descripcion,
-                        'actividad_tipoactividad' => $list_actividad->tipoActividad
+                        'actividad_codigocaeb' => $listaActividades->codigoCaeb,
+                        'actividad_descripcion' => $listaActividades->descripcion,
+                        'actividad_tipoactividad' => $listaActividades->tipoActividad
                     );
-                    
-                    $actividad_id = $this->buscar_str_array_obj($list_actividad->codigoCaeb,$activities,'actividad_codigocaeb','actividad_id');
+                    $actividad_id = $this->buscar_str_array_obj($listaActividades->codigoCaeb,$activities,'actividad_codigocaeb','actividad_id');
                     if($actividad_id != 0)
                         $this->Actividad_model->update_activity($actividad_id,$params);
                     else
                         $this->Actividad_model->add_activity($params);
-                }
+                }else{
+                    foreach($listaActividades as $list_actividad){
+                        $params = array(
+                            'actividad_codigocaeb' => $list_actividad->codigoCaeb,
+                            'actividad_descripcion' => $list_actividad->descripcion,
+                            'actividad_tipoactividad' => $list_actividad->tipoActividad
+                        );
+                        $actividad_id = $this->buscar_str_array_obj($list_actividad->codigoCaeb,$activities,'actividad_codigocaeb','actividad_id');
+                        if($actividad_id != 0)
+                            $this->Actividad_model->update_activity($actividad_id,$params);
+                        else
+                            $this->Actividad_model->add_activity($params);
+                    }
+                } 
             }
             return $transaccion;
         }catch (Exception $e){
@@ -348,12 +369,16 @@ class Sincronizacion extends CI_Controller{
                 'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
             ]);
             
+            $usuario_id = $this->session_data['usuario_id'];
+            $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+            $this->load->model('PuntoVenta_model');
+            $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
             $parametros = ["SolicitudSincronizacion" => [
                 "codigoAmbiente"    =>  $dosificacion['dosificacion_ambiente'],
-                "codigoPuntoVenta"  =>  $dosificacion['dosificacion_puntoventa'],
+                "codigoPuntoVenta"  =>  $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
                 "codigoSistema"     =>  $dosificacion['dosificacion_codsistema'],
                 "codigoSucursal"    =>  $dosificacion['dosificacion_codsucursal'],
-                "cuis"              =>  $dosificacion['dosificacion_cuis'],
+                "cuis"              =>  $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                 "nit"               =>  $dosificacion['dosificacion_nitemisor']
             ]];
             $resultados = $cliente->sincronizarFechaHora($parametros);

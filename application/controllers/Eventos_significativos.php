@@ -52,13 +52,42 @@ class Eventos_significativos extends CI_Controller{
     function index(){
         if($this->acceso(149)){
             $data['eventos'] = $this->Eventos_significativos_model->get_all_codigos();
-            $sql = "select * from registro_eventos order by registroeventos_id desc";
-            $data['eventos_significativos'] = $this->Eventos_significativos_model->consultar($sql);
+            //$sql = "select * from registro_eventos order by registroeventos_id desc";
+            //$data['eventos_significativos'] = $this->Eventos_significativos_model->consultar($sql);
             $data['_view'] = 'eventos_significativos/index';
             $this->load->view('layouts/main',$data);
         }
     }
 
+    function buscar_eventossignificativos(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $datos = $this->Eventos_significativos_model->get_eventossignificativos();
+                
+                echo json_encode($datos);
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     function show_eventos($eventos_id){
         switch(intval($eventos_id)){
             case 1:

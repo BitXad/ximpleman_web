@@ -1,4 +1,5 @@
 <script src="<?php echo base_url('resources/js/funcionessin.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/sin_eventos_signif.js'); ?>"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!----------------------------- script buscador --------------------------------------->
 <script type="text/javascript">
@@ -63,9 +64,10 @@
                             <!--<th width="100px" class="no-print"></th>-->
                         </tr>
                     </thead>
-                    <tbody class="buscar">
+                    <tbody class="buscar" id="tablaresultados"></tbody>
+                    <!--<tbody class="buscar">-->
                         <?php 
-                        $i=1;
+                        /*$i=1;
                         foreach ($eventos_significativos as $evento) {?>
                                               
                             <tr>                                
@@ -87,21 +89,14 @@
                             </tr>
                         <?php
                             $i++; 
-                        }
+                        }*/
                     ?>
-                    </tbody>
+                    <!--</tbody>-->
                 </table>                                
             </div>
         </div>
     </div>
 </div>
-
-    
-
-    <a class="btn btn-warning btn-xs" onclick="mostrar_modalregistrarpuntoventa()"><fa class="fa fa-address-card-o"></fa> Registrar Punto de Venta</a>
-    
-
-    
 
 <!-- Modal -->
 <div class="modal fade" id="modaleventos" tabindex="-1" role="dialog" aria-labelledby="modaleventos" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
@@ -204,80 +199,3 @@
     </div>
 </div>
 <!------------------------ F I N  modal para consultar evento significativo ------------------->
-    
-    
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script>
-    
-    function registrar_evento(){
-        
-        let base_url = $("#base_url").val();
-        let controlador = `${base_url}eventos_significativos/registroEventoSignificativo`;
-        let fecha_inicio =  document.getElementById('ces_fechainicio').value;
-        let fecha_fin =  document.getElementById('ces_fechafin').value;
-        let cufd_evento =  document.getElementById('select_cufd').value;
-        let codigo_evento =  document.getElementById('select_eventos').value;
-        let combo = document.getElementById('select_eventos');
-        let texto_evento = combo.options[combo.selectedIndex].text;
-        
-        //alert(fecha_inicio+" ** "+fecha_fin+" ** "+codigo_evento+" ** "+texto_evento);
-        fecha_inicio =  fecha_inicio+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-        fecha_fin =  fecha_fin+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-        document.getElementById('loader2').style.display = 'block';
-        
-        $.ajax({
-            url: controlador,
-            type:"POST",
-            data:{
-                fecha_inicio: fecha_inicio, fecha_fin:fecha_fin, cufd_evento:cufd_evento,
-                codigo_evento:codigo_evento, texto_evento:texto_evento,
-            },
-            // async: false,
-            success: (respuesta)=>{
-                
-                alert(respuesta);
-
-                document.getElementById('loader2').style.display = 'none';
-                
-            },
-            error: ()=>{
-                alert("Ocurrio un error al realizar la verificación del evento, por favor intente en unos minutos")
-                document.getElementById('loader').style.display = 'none';
-            }
-        });
-        
-        document.getElementById('loader2').style.display = 'none';
-    }
-    
-    function seleccionar_cufd(){
-        let base_url = $("#base_url").val();
-        let controlador = `${base_url}eventos_significativos/buscar_cufd`;
-        let fecha =  document.getElementById('ces_fechainicio').value;
-        //document.getElementById('loader').style.display = 'block';
-        fecha = fecha.substring(0,10);
-       // alert(fecha);
-        $.ajax({
-            url: controlador,
-            type:"POST",
-            data:{
-                fecha: fecha
-            },
-            // async: false,
-            success: (respuesta)=>{
-                let res = JSON.parse(respuesta);
-                let html = "";
-
-                for(i=0; i<res.length; i++){                    
-                    html += "<option value="+res[i]["cufd_codigo"]+">"+res[i]["cufd_fecharegistro"]+" (PV: "+res[i]["cufd_puntodeventa"]+") "+res[i]["cufd_codigo"]+"</option>"               
-                }
-                
-                $("#select_cufd").html(html);                
-                document.getElementById('loader2').style.display = 'none';
-            },
-            error: ()=>{
-                alert("Ocurrio un error al realizar la verificación del evento, por favor intente en unos minutos")
-                document.getElementById('loader').style.display = 'none';
-            }
-        });
-    }
-</script>
