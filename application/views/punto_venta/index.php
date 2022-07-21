@@ -141,3 +141,25 @@
         dibujar_tabla_puntos_venta();
     }
 </script>
+
+<script src="<?php echo base_url('resources/js/verificar_conexion.js'); ?>"></script>
+<style type="text/css">
+    .online, .offline{
+      display: inline-block;
+      padding: 0.5rem;
+      border-radius: 5px;
+      margin: 1rem;
+    }
+
+    .online{
+      border: 3px solid green;
+      color: green;
+    }
+
+    .offline{
+      border: 3px solid red;
+      color: red;
+    }
+</style>
+
+<p id="status" class="online">online</p>

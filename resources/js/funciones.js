@@ -551,6 +551,7 @@ html += "  </div>";
                         html += "<br><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font><br>"+total_equivalente;
                         html += "</td>";
                         html += "			<td "+color+">";
+                        html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
                         html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
                         html += "                        </td>";                        
                     }
@@ -580,6 +581,7 @@ html += "  </div>";
                         html += "</td>";
 
                         html += "			<td "+color+">";
+                        html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
                         html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
                         html += "                        </td>";
                         html += "                    </tr>";  
@@ -1172,6 +1174,27 @@ function actualizarprecios(e,detalleven_id)
 {
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){
+        actualizar_losprecios(detalleven_id);
+        /*var base_url =  document.getElementById('base_url').value;
+        var precio = document.getElementById('precio'+detalleven_id).value;
+        var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
+        var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
+        var controlador =  base_url+"venta/actualizarprecio";
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{precio:precio, cantidad:cantidad,detalleven_id:detalleven_id, descuentoparcial:descuentoparcial},
+                success:function(respuesta){
+                    tablaproductos();
+                   // tabladetalle();
+
+                }        
+        });*/
+    }
+}
+function actualizar_losprecios(detalleven_id)
+{
+    /*tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){*/
     
         var base_url =  document.getElementById('base_url').value;
         var precio = document.getElementById('precio'+detalleven_id).value;
@@ -1187,7 +1210,7 @@ function actualizarprecios(e,detalleven_id)
 
                 }        
         });
-    }
+    //}
 }
 
 function actualizar_cantidad_inventario()
