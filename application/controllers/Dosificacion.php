@@ -1211,7 +1211,7 @@ class Dosificacion extends CI_Controller{
                     "codigoAmbiente"=> $dosificacion['dosificacion_ambiente'],
                     "codigoSistema" => $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"=> $dosificacion['dosificacion_codsucursal'],
-                    "cuis"          => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_cuis'],
+                    "cuis"          => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "nit"           => $dosificacion['dosificacion_nitemisor']
                 ]];
                 $resultado = $cliente->consultaPuntoVenta($parametros);
