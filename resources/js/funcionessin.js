@@ -1075,7 +1075,14 @@ function dibujar_tabla_puntos_venta(){
             data:{},
             success:function(respuesta){
                 let registros = JSON.parse(respuesta);
+                $('#encontrados').html(0);
                 let puntosVenta = registros.puntos_ventas;
+                let n = puntosVenta.length;
+                $('#encontrados').html(n);
+                if(n<= 0){
+                    $('#pventa_cero').css("display", "block");
+                }
+                
                 let i = 1;
                 console.log(registros);
                 let html = ``;
@@ -1115,4 +1122,44 @@ function dibujar_tabla_puntos_venta(){
                 document.getElementById('loader_revocado').style.display = 'none';
             }                
     }); 
+}
+
+function modal_puntoventa(){
+    $('#modal_puntoventa_cero').modal("show");
+}
+
+function registroPuntoVenta_cero(){
+    var codigoTipoPuntoVenta = document.getElementById('codigoTipoPuntoVenta0').value;
+    var cuis0 = document.getElementById('cuis0').value;
+    var nombrePuntoVenta = document.getElementById('nombrePuntoVenta0').value;
+    var descripcion = document.getElementById('descripcion0').value;
+    let mensaje = "";
+    
+    if(nombrePuntoVenta.trim() == "" || descripcion.trim() == ""){
+        mensaje = "Punto de venta y Descripción no deben estar vacios<br>";
+        $("#mensaje").html(mensaje);
+    }else{
+        $("#modal_puntoventa_cero").modal("hide");
+        var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'dosificacion/registroPuntoVenta_cero';
+        //var opcion = confirm("Permite informar al SIN de la contingencia del Sistema Informático de Facturación autorizado. \n ¿Desea Continuar?");
+
+        //if (opcion == true) {
+        document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{codigoTipoPuntoVenta:Number(codigoTipoPuntoVenta), nombrePuntoVenta:nombrePuntoVenta,
+                      descripcion:descripcion, cuis0:cuis0},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                    alert("Registro realizado con exito!");
+                    dibujar_tabla_puntos_venta();
+                    document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }                
+        }); 
+    }
 }

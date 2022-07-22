@@ -26,7 +26,7 @@ window.addEventListener('offline', function() {
     alert("No Conectado");
     alert(isOnline());
     //ChkConnection();
-    //res();
+    //alert(res());
 }, false);
 
 function isOnline(){
@@ -61,5 +61,44 @@ async function res(){
     const resultError = await request("siatinfo.impuestos.gob.bo");
 }
 
+/*
+cadena = "https://siat.impuestos.gob.bo/";
 
+var request1 = new XMLHttpRequest();
+request1.open('GET', cadena, false);
 
+//TE FALTA
+request1.send()
+
+if (request1.status == "200") {
+document.write(cadena + " OK");
+}
+
+if (request1.status === "404") {
+document.write (" Error conexión");
+
+}
+*/
+var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'venta/index';
+var candena = controlador;
+
+var request1 = new XMLHttpRequest();
+
+request1.open('GET', url, true);
+
+request1.onload = function() {
+
+	if (request1.status === 200) {
+
+		console.log(cadena + "  OK");
+
+	} else if (request1.status === 404) {
+
+		console.log("Error conexión");
+
+	}
+
+};
+
+request1.send(null);

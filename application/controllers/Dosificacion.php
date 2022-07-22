@@ -2770,4 +2770,32 @@ class Dosificacion extends CI_Controller{
             echo json_encode("false");
         }
     }
+    /* se registra el punto de venta cero */
+    function registroPuntoVenta_cero(){
+        try{
+            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                //if($elres){
+                    //$codigo = $resultado->RespuestaRegistroPuntoVenta->codigoPuntoVenta;
+                    $params = array(
+                        'puntoventa_codigo'      => $this->input->post('codigoTipoPuntoVenta'),
+                        'puntoventa_nombre'      => $this->input->post('nombrePuntoVenta'),
+                        'puntoventa_descripcion' => $this->input->post('descripcion'),
+                        'tipopuntoventa_codigo'  => $this->input->post('codigoTipoPuntoVenta'),
+                        'cuis_codigo'  => $this->input->post('cuis0'),
+                    );
+                    $this->PuntoVenta_model->add_puntoVenta($params);
+                //}
+                echo json_encode("ok");
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaRegistroPuntoVenta->transaccion;
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
 }
