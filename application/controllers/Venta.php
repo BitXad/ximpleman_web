@@ -777,7 +777,7 @@ class Venta extends CI_Controller{
                             $tipo_emision = $this->parametros['parametro_tipoemision'];
                             $tipo_factura = $dosificacion[0]['tipofac_codigo'];
                             $tipo_documento_sector = $dosificacion[0]['docsec_codigoclasificador'];
-                            $pos = $dosificacion[0]['dosificacion_puntoventa'];
+                            $pos = $punto_venta['puntoventa_codigo']; //$dosificacion[0]['dosificacion_puntoventa'];
         
                             // LLAMANDO AL HELPER
                             $factura_cuf = generarCuf(trim($factura_nitemisor),
