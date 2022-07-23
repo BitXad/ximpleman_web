@@ -194,6 +194,10 @@ function seleccionar(opcion) {
         if (opcion==5){
             document.getElementById('venta_efectivo').select();
         }
+        
+        if (opcion==6){
+            document.getElementById('venta_giftcard').select();
+        }
 }
 // esta funcion busca la cliente mediante su nit e inserta los datos 
 // en cada input corresponiente si es que existe
@@ -2762,6 +2766,8 @@ function registrarventa(cliente_id)
     let banco_id = forma_id == 1 ? '0':$('#banco').val();
     let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
     var codigoexcepcion = document.getElementById('codigoexcepcion').checked;
+    var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').checked;
+    var venta_giftcard = document.getElementById('venta_giftcard').checked;
    
     //alert(venta_efectivo);
     //alert(venta_descuento);
@@ -2811,7 +2817,8 @@ function registrarventa(cliente_id)
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
                 venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,
-                tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion},
+                tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
+                venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ic: venta_ic},
             success:function(respuesta){
                 let res = JSON.parse(respuesta);
                 registrarpuntos(cliente_id, venta_total);
@@ -2834,7 +2841,8 @@ function registrarventa(cliente_id)
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad,
-                cliente_email:cliente_email, venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion},
+                cliente_email:cliente_email, venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
+                venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ic: venta_ic},
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
@@ -4030,6 +4038,9 @@ function modificar_venta(cliente_id)
     var venta_cambio = document.getElementById('venta_cambio').value;
     var modificar_credito = document.getElementById('modificar_credito').value;
     var credito_id = document.getElementById('credito_id').value;
+    var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').value;
+    var venta_giftcard = document.getElementById('venta_giftcard').value;
+    var venta_ic = document.getElementById('venta_ic').value;
     
     var cuotas = document.getElementById('cuotas').value;
     var modalidad = document.getElementById('modalidad').value;
@@ -4051,7 +4062,8 @@ function modificar_venta(cliente_id)
             tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
             venta_total:venta_total, credito_interes:credito_interes,
             facturado:facturado,venta_fecha:venta_fecha, tipo_transaccion:tipo_transaccion, forma_pago:forma_pago,
-            modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio, banco:banco, metodo_frances:metodo_frances},
+            modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio, banco:banco, metodo_frances:metodo_frances,
+            venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ic: venta_ic},
             success:function(respuesta){
                 //window.opener.location.reload();
                 window.close();
@@ -5142,9 +5154,9 @@ function registrarpuntos(cliente_id, venta_total){
     });
 }
 
-function mostrar(forma_id,glosa_banco){
+function mostrar(forma_id,venta_detalletransaccion){
     let forma = $(`#${forma_id}`).val();
-    $(`#${glosa_banco}`).css('display',forma != 1 ? 'block':'none');
+    $(`#${venta_detalletransaccion}`).css('display',forma != 1 ? 'block':'none');
 }
 
 /* verifica si el nit/ci es correcto */

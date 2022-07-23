@@ -906,9 +906,9 @@ window.onkeydown = compruebaTecla;
                                     <div class="col-md-6" id="glosa_banco" style="display: none;">
                                         <div class="row">
                                             <div class="col-md-7">
-                                                <label for="glosa_compra">Glosa</label>
+                                                <label for="glosa_compra">Detalle</label>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control">
+                                                    <input type="text" class="form-control" id="venta_detalletransaccion">
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
@@ -1002,7 +1002,8 @@ window.onkeydown = compruebaTecla;
                         </td>
                     
                     
-                </tr>                
+                </tr>   
+                
                 <tr style="padding: 0">
                         <td style="padding: 0">Descuento <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
@@ -1010,6 +1011,14 @@ window.onkeydown = compruebaTecla;
                         </td>
                     
                 </tr>
+
+                <tr style="padding: 0">
+                        <td style="padding: 0">Total ICE</td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn" style="padding:0;" id="venta_ice" size="<?php echo $ancho_boton; ?>" name="venta_ice" value="<?php echo "0.00"; ?>"  onKeyUp="calcularcambio(event)"  readonly="true">
+                        </td>
+                </tr>
+                
 
                         
                 <tr style="padding: 0">
@@ -1020,7 +1029,6 @@ window.onkeydown = compruebaTecla;
                         </td>
 
                 </tr>
-
                 <tr style="padding: 0">                      
                         <td style="padding: 0">Descuento <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
@@ -1039,6 +1047,14 @@ window.onkeydown = compruebaTecla;
 
                               <input class="btn btn-foursquarexs" style="font-size: 20px; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">
 
+                        </td>
+                </tr>
+
+
+                <tr style="padding: 0">
+                        <td style="padding: 0"><b>Tarjeta  Gift</b></td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn" style="padding:0; background-color:orange; font-size:20px;" id="venta_giftcard" size="<?php echo $ancho_boton; ?>" name="venta_giftcard" value="<?php echo 0.00; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(6)">
                         </td>
                 </tr>
 

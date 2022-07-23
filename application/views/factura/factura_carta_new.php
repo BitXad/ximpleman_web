@@ -370,6 +370,12 @@ border-bottom : 1px solid #aaa;
                         </tr>-->
                     <?php //} ?>
 
+                    <!-------------- FACTURA GIFTA CARD ---------->
+                    <tr>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>GIFT CARD Bs</b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_montogiftcard'] ,2,'.',',') ?></b></td>
+                    </tr>
+                    
                     <!-------------- FACTURA TOTAL ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>TOTAL Bs</b></td>
