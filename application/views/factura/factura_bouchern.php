@@ -88,8 +88,8 @@
                             <tr>
                                 <td class="text-center" style="padding-bottom: 5px">
                                     <?php $titulo1 = "FACTURA";  
-                                    if ($tipo==1) $subtitulo = "CON DERECHO A CREDITO FISCAL"; //$subtitulo = "ORIGINAL";
-                                    else $subtitulo = "CON DERECHO A CREDITO FISCAL"; //$subtitulo = "COPIA";
+                                    if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
+                                    else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";
                                     ?>
                                     <b><?php echo $titulo1; ?></b><br>
                                     <b><?php echo $subtitulo; ?></b><br>
@@ -98,7 +98,16 @@
                                     <?php if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
                                         <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?><br>
                                     <?php } ?>
-                                    <?php echo $factura[0]['factura_sucursal'];?><br>
+                                    <?php 
+                                        if($factura[0]['factura_sucursal']==0){
+                                            echo "CASA MATRIZ";
+                                        }else{
+                                            echo "SUCURSAL ".$factura[0]['factura_sucursal'];
+                                        }
+                                        
+                                    ?>
+                                    <?php //echo $factura[0]['factura_sucursal'];?><br>
+                                    <?php echo "Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']; ?><br>
                                     <?php echo $empresa[0]['empresa_direccion']; ?><br>
                                     <?php echo "Tel. ".$empresa[0]['empresa_telefono']; ?><br>
                                     <?php echo $empresa[0]['empresa_ubicacion']; ?><br>
@@ -119,7 +128,7 @@
                                 <td class="text-center"><?php echo $factura[0]['factura_numero']; ?></td>
                             </tr>
                             <tr>
-                                <td class="text-center"><b>CUF</b></td>
+                                <td class="text-center"><b>CÓD. AUTORIZACIÓN</b></td>
                             </tr>
                             <tr>
                                 <td class="text-center"><div style="word-wrap: break-word; width:<?php echo $ancho?>" ><?php echo $factura[0]['factura_cuf'] ?></div></td>
@@ -165,6 +174,7 @@
                             $cantidad = 0;
                             $total_descuento = 0;
                             $total_final = 0;
+                            $mostrarice = 0;
                             if($factura[0]['estado_id']<>3){
                                 foreach($detalle_factura as $d){;
                                     $cont = $cont+1;
@@ -195,9 +205,11 @@
                                     <?php
                                     echo number_format($d['detallefact_cantidad'],2,'.',',')." X ";
                                     echo number_format($d['detallefact_precio'],2,'.',',')." - ";
-                                    echo number_format($d['detallefact_descuento'],2,'.',',')." + "; //."0.00 +  0.00";
-                                    //echo number_format($d['detallefact_ice'],2,'.',',')." + ";
-                                    //echo number_format($d['detallefact_iceesp'],2,'.',',');
+                                    echo number_format($d['detallefact_descuento'],2,'.',','); //." + "; //."0.00 +  0.00";
+                                    if ($mostrarice==1){
+                                        echo " + ".number_format($d['detallefact_ice'],2,'.',',')." + ";
+                                        echo number_format($d['detallefact_iceesp'],2,'.',',');
+                                    }
                                     ?>
                                 </td>
                                 <td style="width: 0.5cm !important;"></td>
@@ -231,6 +243,7 @@
                                 <td></td>
                                 <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_total'],2,'.',','); ?></td>
                             </tr>
+                            <?php if ($mostrarice==1){ ?>
                             <tr>
                                 <td class="text-right">(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>
                                 <td></td>
@@ -241,6 +254,7 @@
                                 <td></td>
                                 <td class="text-right"><?php echo "0.00"; //number_format($factura[0]['factura_iceesp'],2,'.',','); ?></td>
                             </tr>
+                            <?php } ?>
                             <tr>
                                 <td class="text-right text-bold">IMPORTE BASE CR&Eacute;DITO FISCAL</td>
                                 <td></td>
@@ -257,10 +271,15 @@
                 </tr>
                 <tr>
                     <td class="text-center" style="padding: 0; padding-top: 5px;" colspan="4">
-                        <span style="font-size: 8.5pt"><?php echo $factura[0]['factura_leyenda1'];?> <br></span>
-                        <span style="font-size: 6.5pt !important"><?php echo $factura[0]['factura_leyenda2']; ?> <br></span>
-                        <span style="font-size: 7.5pt !important"><?php echo "Este documento es la Representación Gráfica de un Documento Fiscal Digital"; ?>  
-                        <?php echo " emitido en una modalidad de facturación en linea"; ?></span>
+                        <span style="font-size: 8.5pt"><p><?php echo $factura[0]['factura_leyenda1'];?> </p></span>
+                        <span style="font-size: 8pt !important;"><div style="line-height: 1.1;"><?php echo $factura[0]['factura_leyenda2']; ?> </div></span>
+                        <span style="font-size: 6.5pt !important"><p style="padding-bottom: 0px"><?php echo $factura[0]['factura_leyenda3']; ?> </p></span>
+                        <!--<span style="font-size: 6.5pt !important"><?php //echo $factura[0]['factura_leyenda4']; ?> <br></span>-->
+                        <span style="font-size: 6.5pt !important"><?php
+                        if ($factura[0]['factura_tipoemision']==2){
+                            echo "<p style='padding-bottom: 0px'><b>Este documento es la representación gráfica de un Documento Fiscal Digital emitido fuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b></p>";
+                        } ?>
+                        </span>
                     </td>           
                 </tr>
                 <tr>
