@@ -88,9 +88,12 @@
                     <?php } ?>
                     <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>
                     <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Ventas</a>
-                    <?php if($rolusuario[186-1]['rolusuario_asignado'] == 1){ ?>
+                    <?php if($rolusuario[186-1]['rolusuario_asignado'] == 1){    ?>
                     <a class="btn btn-success btn-sm" onclick="imprimirtodo()" title="Imprime todas la ventas" style="background-color: #761c19"><span class="fa fa-print"></span> Imprimir</a>
                     <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-success btn-sm" title="Registro de eventos significativos" style="background-color: #8BC34A" target="_BLANK"><span class="fa fa-print"></span> Eventos Significativos</a>
+                    <?php } ?>
+                    <?php if($parametro['parametro_tiposistema']!= 1){    ?>
+                    <a href="<?php echo base_url("envio_contingencias"); ?>" class="btn btn-danger btn-sm" title="Enviar Facturas por Contingencia" target="_BLANK"><span class="fa fa-compress"></span> Facturas no enviadas</a>
                     <?php } ?>
                 </div>
 </div>
