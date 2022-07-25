@@ -2766,8 +2766,10 @@ function registrarventa(cliente_id)
     let banco_id = forma_id == 1 ? '0':$('#banco').val();
     let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
     var codigoexcepcion = document.getElementById('codigoexcepcion').checked;
-    var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').checked;
-    var venta_giftcard = document.getElementById('venta_giftcard').checked;
+
+    var venta_ice = document.getElementById('venta_ice').value;
+    var venta_giftcard = document.getElementById('venta_giftcard').value;
+    var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').value;
    
     //alert(venta_efectivo);
     //alert(venta_descuento);
@@ -2801,8 +2803,10 @@ function registrarventa(cliente_id)
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuentoparcial+","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
-                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id+","+banco_id+"";
-        
+                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id+","+banco_id
+                +","+venta_ice+","+venta_giftcard+",'"+venta_detalletransaccion+"'";
+                
+    //alert(cad);
     if (tipo_transaccion==2){
         var cuotas = document.getElementById('cuotas').value;
         var modalidad = document.getElementById('modalidad').value;
@@ -2812,13 +2816,13 @@ function registrarventa(cliente_id)
         $.ajax({url: controlador,
             type:"POST",
             data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
-                venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
+                venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id, forma_id:forma_id,
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
                 venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,
                 tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
-                venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ic: venta_ic},
+                venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice},
             success:function(respuesta){
                 let res = JSON.parse(respuesta);
                 registrarpuntos(cliente_id, venta_total);
@@ -2837,12 +2841,12 @@ function registrarventa(cliente_id)
         $.ajax({url: controlador,
             type:"POST",
             data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
-                venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
+                venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,forma_id:forma_id,
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad,
                 cliente_email:cliente_email, venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
-                venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ic: venta_ic},
+                venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice},
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
@@ -4040,7 +4044,7 @@ function modificar_venta(cliente_id)
     var credito_id = document.getElementById('credito_id').value;
     var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').value;
     var venta_giftcard = document.getElementById('venta_giftcard').value;
-    var venta_ic = document.getElementById('venta_ic').value;
+    var venta_ice = document.getElementById('venta_ice').value;
     
     var cuotas = document.getElementById('cuotas').value;
     var modalidad = document.getElementById('modalidad').value;
@@ -4063,7 +4067,7 @@ function modificar_venta(cliente_id)
             venta_total:venta_total, credito_interes:credito_interes,
             facturado:facturado,venta_fecha:venta_fecha, tipo_transaccion:tipo_transaccion, forma_pago:forma_pago,
             modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio, banco:banco, metodo_frances:metodo_frances,
-            venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ic: venta_ic},
+            venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice},
             success:function(respuesta){
                 //window.opener.location.reload();
                 window.close();

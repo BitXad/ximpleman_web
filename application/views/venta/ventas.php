@@ -906,9 +906,9 @@ window.onkeydown = compruebaTecla;
                                     <div class="col-md-6" id="glosa_banco" style="display: none;">
                                         <div class="row">
                                             <div class="col-md-7">
-                                                <label for="glosa_compra">Detalle</label>
+                                                <label for="glosa_compra">Numero Tarjeta</label>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" id="venta_detalletransaccion">
+                                                    <input type="text" class="form-control" id="venta_detalletransaccion" value="0">
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
@@ -1015,7 +1015,7 @@ window.onkeydown = compruebaTecla;
                 <tr style="padding: 0">
                         <td style="padding: 0">Total ICE</td>
                         <td align="right" style="padding: 0">
-                            <input class="btn" style="padding:0;" id="venta_ice" size="<?php echo $ancho_boton; ?>" name="venta_ice" value="<?php echo "0.00"; ?>"  onKeyUp="calcularcambio(event)"  readonly="true">
+                            <input class="btn" style="padding:0;" id="venta_ice" size="<?php echo $ancho_boton; ?>" name="venta_ice" value="<?php echo "0.00"; ?>"  onKeyUp="calcularcambio(event)"  >
                         </td>
                 </tr>
                 
