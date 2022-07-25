@@ -166,7 +166,7 @@
     }
 </script>
 
-<script src="<?php echo base_url('resources/js/verificar_conexion.js'); ?>"></script>
+<!--<script src="<?php echo base_url('resources/js/verificar_conexion.js'); ?>"></script>-->
 <style type="text/css">
     .online, .offline{
       display: inline-block;
