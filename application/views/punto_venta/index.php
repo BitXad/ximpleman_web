@@ -150,7 +150,9 @@
                             <th>Nombre</th>
                             <th>Descripci&oacute;n</th>
                             <th>CUIS</th>
+                            <th>Fecha Vigencia<br>CUIS</th>
                             <th>CUFD</th>
+                            <th>Fecha Vigencia<br>CUFD</th>
                             <th class="no-print"></th>
                         </tr>
                     </thead>

@@ -6,9 +6,11 @@
 
         function get_all_puntoVenta(){
             return $this->db->query(
-                "SELECT p.*, tp.tipopuntoventa_descripcion
+                "SELECT p.*, tp.tipopuntoventa_descripcion, cf.cufd_fechavigencia, cu.cuis_fechavigencia
                 from punto_venta p
                 left join tipo_puntoventa tp on p.tipopuntoventa_codigo = tp.tipopuntoventa_codigo
+                left join cufd cf on p.cufd_codigo = cf.cufd_codigo
+                left join cuis cu on p.cuis_codigo = cu.cuis_codigo
                 order by p.puntoventa_codigo"
                 )->result_array();
         }

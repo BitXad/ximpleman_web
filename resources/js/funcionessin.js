@@ -1112,11 +1112,13 @@ function dibujar_tabla_puntos_venta(){
                     html +=         pv.cuis_codigo;
                                 }
                                 html += `</td>
+                                <td>${moment(pv.cuis_fechavigencia).format("DD/MM/YYYY HH:mm:ss")}</td>
                                 <td>`;
-                                if(pv.cufd_codigo != null && pv.cufd_codigo != ""){
+                                if(pv.cufd_codigo != null && pv.cuis_codigo != ""){
                     html +=         pv.cufd_codigo;
                                 }
                     html +=    `</td>
+                                <td>${moment(pv.cufd_fechavigencia).format("DD/MM/YYYY HH:mm:ss")}</td>
                                 <td>
                                 <button class="btn btn-xs btn-primary" title="Solicitar CUIS" onclick="solicitudCuis(${pv.puntoventa_codigo})">CUIS</button>
                                 <button class="btn btn-xs btn-success" title="Solicitar CUFD" onclick="solicitudCufd(${pv.puntoventa_codigo})">CUFD</button>
