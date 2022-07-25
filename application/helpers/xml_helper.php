@@ -240,8 +240,15 @@
         $xml->getElementsByTagName('codigoTipoDocumentoIdentidad')->item(0)->nodeValue = "{$factura['cdi_codigoclasificador']}";
         $xml->getElementsByTagName('complemento')->item(0)->nodeValue = "";
         $xml->getElementsByTagName('numeroDocumento')->item(0)->nodeValue = "{$factura['factura_nit']}";
-        $xml->getElementsByTagName('codigoCliente')->item(0)->nodeValue = "{$factura['cliente_codigo']}";
-        $xml->getElementsByTagName('codigoMetodoPago')->item(0)->nodeValue = "{$factura['tipotrans_id']}";
+        $xml->getElementsByTagName('codigoCliente')->item(0)->nodeValue = "{$factura['cliente_codigo']}";        
+        $xml->getElementsByTagName('codigoMetodoPago')->item(0)->nodeValue = "{$factura['forma_id']}";
+
+        //if (strlen($factura['factura_detalletransaccion'])>1){
+            $xml->getElementsByTagName('numeroTarjeta')->item(0)->nodeValue = "{$factura['factura_detalletransaccion']}";
+        //}
+
+        
+        $xml->getElementsByTagName('montoGiftCard')->item(0)->nodeValue = "{$factura['factura_giftcard']}";
         $total_creditofiscal = $factura['factura_total'];
         $xml->getElementsByTagName('montoTotalSujetoIva')->item(0)->nodeValue = "{$total_creditofiscal}";
         $xml->getElementsByTagName('codigoMoneda')->item(0)->nodeValue = "{$factura['moneda_codigoclasificador']}";
@@ -253,6 +260,7 @@
         $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "{$factura['factura_leyenda1']}";
         $xml->getElementsByTagName('usuario')->item(0)->nodeValue = "{$factura['usuario_nombre']}";
         $xml->getElementsByTagName('codigoDocumentoSector')->item(0)->nodeValue = "{$factura['docsec_codigoclasificador']}";
+ 
         // CABECERA
         // $nit =  $xml->getElementsByTagName('nitEmisor')->item(0)->nodeValue;
         // DETALLE

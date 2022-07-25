@@ -18,13 +18,13 @@
         <complemento>ABC</complemento>
         <codigoCliente>PMamani</codigoCliente>
         <codigoMetodoPago>2</codigoMetodoPago>
-        <numeroTarjeta xsi:nil="true"></numeroTarjeta>
+        <numeroTarjeta></numeroTarjeta>
         <montoTotal>25</montoTotal>
         <montoTotalSujetoIva>25</montoTotalSujetoIva>
         <codigoMoneda>1</codigoMoneda>
         <tipoCambio>1</tipoCambio>
         <montoTotalMoneda>25</montoTotalMoneda>
-        <montoGiftCard xsi:nil="true"></montoGiftCard>        
+        <montoGiftCard></montoGiftCard>        
         <descuentoAdicional></descuentoAdicional>
         <codigoExcepcion></codigoExcepcion>  
         <cafc xsi:nil="true"></cafc>
