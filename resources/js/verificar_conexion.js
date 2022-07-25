@@ -38,7 +38,7 @@ function isOnline(){
 
 function ChkConnection(){
 
-  var content= UrlFetchApp.fetch("https://www.google.com/", {method: "POST",
+  var content= UrlFetchApp.fetch("pilotosiatservicios.impuestos.gob.bo/", {method: "POST",
           muteHttpExceptions: true});
   var res = content.getResponseCode();
   return res;
@@ -82,7 +82,7 @@ document.write (" Error conexión");
 var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'venta/index';
 var candena = controlador;
-
+let url = "pilotosiatservicios.impuestos.gob.bo/";
 var request1 = new XMLHttpRequest();
 
 request1.open('GET', url, true);
@@ -91,7 +91,7 @@ request1.onload = function() {
 
 	if (request1.status === 200) {
 
-		console.log(cadena + "  OK");
+		console.log("mmmss" + "  OK");
 
 	} else if (request1.status === 404) {
 

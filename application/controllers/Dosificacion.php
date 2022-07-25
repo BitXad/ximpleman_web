@@ -536,10 +536,13 @@ class Dosificacion extends CI_Controller{
                     "cuis"=>            $cuis_puntoventa, //$dosificacion['dosificacion_cuis'],
                     "nit"=>             $dosificacion['dosificacion_nitemisor']
                         ]];
-
-            $resultado = $cliente->cufd($parametros);
-                echo json_encode($resultado);
                 
+            $resultado = $cliente->cufd($parametros);
+            //var_dump($resultado);
+            $datos['respuesta'] = $resultado;
+                $datos['falla'] = "";
+                echo json_encode($datos);
+            
                 //print_r($resultado);
                 //print_r($resultado);
                 /*$elres = $resultado->RespuestaVerificarNit->mensajesList;
@@ -551,9 +554,10 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            
-            
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            $datos['respuesta'] = "Ocurrio algo inesperado; revisar datos!.";
+            $datos['falla'] = $e;
+            echo json_encode($datos);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
 

@@ -10,12 +10,19 @@ function solicitudCufd(punto_venta=0){
                 type:"POST",
                 data:{punto_venta:punto_venta},
                 success:function(respuesta){
-                    var registros = JSON.parse(respuesta);
+                    var datos = JSON.parse(respuesta);
+                    //var datos =  JSON.parse(registros);
+                let registros = datos['respuesta'];
+                let lafalla = datos['falla']
+                    
                     /*console.log(registros);
                     console.log(registros.RespuestaVerificarNit.mensajesList.codigo);
                     console.log(registros.RespuestaVerificarNit.mensajesList.descripcion);
                     console.log(registros.RespuestaVerificarNit.transaccion);*/
                     //let elcodigo = registros.RespuestaVerificarNit.mensajesList.codigo;
+                    if(lafalla != ""){
+                        alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                    }else{
                     let codigo = registros.RespuestaCufd.codigo;
                     let codigoControl = registros.RespuestaCufd.codigoControl;
                     let direccion = registros.RespuestaCufd.direccion;
@@ -35,12 +42,15 @@ function solicitudCufd(punto_venta=0){
                     /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
 
                     }*/
+                    }
 
                 },
                 error:function(respuesta){
-                    alert("Algo salio mal; por favor verificar sus datos!.");
-                    document.getElementById('loader_cufd').style.display = 'none';
-                }                
+                    let datos = JSON.parse(respuesta);
+                    let registros = datos['respuesta'];
+                    let lafalla = datos['falla']
+                   alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                }
         }); 
     }
 }
@@ -1062,7 +1072,7 @@ function verificar_comunicacionRecCompras(){
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
                     document.getElementById('loader_revocado').style.display = 'none';
-                }                
+                }
         }); 
     //}
 }
