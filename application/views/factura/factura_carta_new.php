@@ -287,7 +287,7 @@ border-bottom : 1px solid #aaa;
                             <td align="center"><b>UNIDAD <br>DE MEDIDA</b></td>
                             <td align="center"><b>DESCRIPCI&Oacute;N</b></td>
                             <td align="center"><b>PRECIO<br> UNITARIO</b></td>               
-                            <td align="center"><b>DESC.</b></td>
+                            <td align="center"><b>DESCUENTO</b></td>
                             <?php if ($mostrarice==1){ ?>
                             
                             <td align="center"><b>ICE %</b></td>
@@ -348,6 +348,9 @@ border-bottom : 1px solid #aaa;
                         </tr>
                     <?php }} 
                         $total_final_factura = $factura[0]['factura_subtotal'];
+                        
+                        $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
+                        //$total_final_factura = $factura_total;
                         $span = ($mostrarice==1)? 3: 2;
                     ?>
                     <!-------------- SUB TOTAL ---------->
@@ -379,7 +382,7 @@ border-bottom : 1px solid #aaa;
                     <!-------------- FACTURA TOTAL ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>TOTAL Bs</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'] ,2,'.',',') ?></b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',') ?></b></td>
                     </tr>
                     
                     <!-------------- ICE / ICE ESPECIFICO ---------->
@@ -395,9 +398,10 @@ border-bottom : 1px solid #aaa;
                     <?php } ?>
                     
                     <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
-                    <tr>
+                    <tr>           
+                        
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>IMPORTE BASE<br>CR&Eacute;DITO FISCAL</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'] ,2,'.',',')?></b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',')?></b></td>
                     </tr>
                 </table>
             </td>
@@ -442,4 +446,4 @@ border-bottom : 1px solid #aaa;
     <?php } ?>
 </td>
 </tr>
-</table>
+</table><?php echo $cadenaqr; ?>

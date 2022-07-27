@@ -176,6 +176,8 @@ class Factura extends CI_Controller{
         //fin generador de codigo QR        
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
+        $data['cadenaqr'] = $cadenaQR;
+        
         
         if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_carta';
@@ -423,6 +425,7 @@ class Factura extends CI_Controller{
          
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
+        $data['cadenaqr'] = $cadenaQR;
         
         if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_carta';

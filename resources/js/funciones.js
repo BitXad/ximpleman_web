@@ -3563,90 +3563,6 @@ function eliminar_producto_vendido(detalleven_id)
     location.reload();
 }
 
-function borrar_datos_cliente()
-{
-    
-    var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
-    var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
-    $("#nit").val(0);
-    $("#razon_social").val("SIN NOMBRE");
-    $("#cliente_id").val("0");
-    $("#cliente_nombre").val("SIN NOMBRE");
-    $("#cliente_ci").val("0");
-    $("#cliente_nombrenegocio").val("-");
-    $("#cliente_codigo").val("0");
-    $("#pedido_id").val("0");
-    $("#usuarioprev_id").val("0");
-    
-    $("#cliente_direccion").val("-");
-    $("#cliente_departamento").val("-");
-    $("#cliente_celular").val("-");
-    $("#tipocliente_id").val("1");
-    $("#cliente_telefono").val("-");
-    
-    $("#tiposerv_id").val("1");
-    $("#venta_numeromesa").val("0");
-    $("#venta_glosa").val("");  
-    
-    $("#venta_efectivo").val("0");
-    $("#venta_cambio").val("0");
-    $("#zona_id").val("0");
-    $("#venta_descuentoparc").val("0");
-    $("#venta_descuento").val("0");
-    $("#preferencia_id").val("0");
-    $("#cliente_complementoci").val("");
-     
-    document.getElementById("forma_pago").selectedIndex = 0
-    document.getElementById("tipo_transaccion").selectedIndex = 0
-    document.getElementById("tipo_transaccion").selectedIndex = 0
-    document.getElementById('creditooculto').style.display = 'none';
-    
-    try{
-        
-        document.getElementById('imagenqr').style.display = 'none';
-    
-    }
-    catch (error){}
-    
-            
-    //document.getElementById('creditooculto').style.display = 'none';
-    
-    $("#filtrar").focus();
-    
-    var facturado = document.getElementById('facturado').checked;  
-    
-    //Si esta actuvo el modulo para restaurante
-    if (modulo_restaurante == 1){
-        if (parametro_imprimircomanda==1){
-            boton = document.getElementById("imprimir_comanda");
-            boton.click();
-            boton.click();
-            if (facturado != 1){
-                brecibo = document.getElementById("imprimir");
-                brecibo.click();
-            }
-        }
-    }
-    
-    //Imprimir la factura
-    if (facturado == 1){
-        var boton = document.getElementById("imprimir_factura");
-        boton.click();                    
-    }
-    
-    document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
-    tablaproductos();
-    
-    tablaresultados(1); //redibuja la tabla de busqueda de productos      
-    // var parametro_factura = document.getElementById('parametro_factura').value;
-    // if(parametro_factura == 2){
-    //     $("#facturado").prop("checked", false);
-    // }
-    document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
-    document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-    
-}
-
 function verificar_ventas()
 {
     var base_url = document.getElementById('base_url').value;    
@@ -3779,7 +3695,7 @@ function buscar_clientes()
 function seleccionar_cliente(){
     
     //var cliente_id = document.getElementById('razon_social').value;
-    var cliente_id = document.getElementById('nit').value;
+    var  = document.getElementById('nit').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/seleccionar_cliente/"+cliente_id;
     //alert(controlador);
@@ -3917,7 +3833,6 @@ function ordenaventas(orden_id,usuario_id,cliente_id)
     });
    
 }
-
 
 function datoscliente(cliente_id)
 {
@@ -4506,6 +4421,7 @@ function ordenes_pendientes()
     });
     
 }
+
 /* elimina un detalle de factura aux */
 function quitardetalle_aux(detallefact_id, venta_id){
     var base_url = document.getElementById("base_url").value;
@@ -4527,6 +4443,7 @@ function quitardetalle_aux(detallefact_id, venta_id){
     })
     
 }
+
 function cargar_factura2(venta_id){
     var base_url = document.getElementById("base_url").value;
     var controlador = base_url+"detalle_venta/get_detalle_factura_aux";
@@ -4728,6 +4645,7 @@ function modificar_usuario(venta_id){
             }
         });
 }
+
 function imprimirtodo(){
     var base_url = document.getElementById('base_url').value;
     var resventa = document.getElementById('resventa').value;
@@ -4778,9 +4696,6 @@ function mostrar_clasificador(producto_id,detalleven_id){
            }
        });
        
-
-    
-    
 }
 
 function mostrar_clasificador_boton(producto_id){
@@ -5320,5 +5235,92 @@ function enviarfactura_porcorreo(){
                 }
         });
     }
+    
+}
+
+function borrar_datos_cliente()
+{
+    
+    var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
+    var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
+    $("#nit").val(0);
+    $("#razon_social").val("SIN NOMBRE");
+    $("#cliente_id").val("0");
+    $("#cliente_nombre").val("SIN NOMBRE");
+    $("#cliente_ci").val("0");
+    $("#cliente_nombrenegocio").val("-");
+    $("#cliente_codigo").val("0");
+    $("#pedido_id").val("0");
+    $("#usuarioprev_id").val("0");
+    
+    $("#cliente_direccion").val("-");
+    $("#cliente_departamento").val("-");
+    $("#cliente_celular").val("-");
+    $("#tipocliente_id").val("1");
+    $("#cliente_telefono").val("-");
+    
+    $("#tiposerv_id").val("1");
+    $("#venta_numeromesa").val("0");
+    $("#venta_glosa").val("");  
+    
+    $("#venta_efectivo").val("0");
+    $("#venta_cambio").val("0");
+    $("#zona_id").val("0");
+    $("#venta_descuentoparc").val("0");
+    $("#venta_descuento").val("0");
+    $("#preferencia_id").val("0");
+    $("#cliente_complementoci").val("");
+    $("#venta_ice").val("0.00");
+    $("#venta_detalletransaccion").val("0");
+    $("#venta_giftcard").val("0.00");
+     
+    document.getElementById("forma_pago").selectedIndex = 0
+    document.getElementById("tipo_transaccion").selectedIndex = 0
+    document.getElementById("tipo_transaccion").selectedIndex = 0
+    document.getElementById('creditooculto').style.display = 'none';
+    
+    try{
+        
+        document.getElementById('imagenqr').style.display = 'none';
+    
+    }
+    catch (error){}
+    
+            
+    //document.getElementById('creditooculto').style.display = 'none';
+    
+    $("#filtrar").focus();
+    
+    var facturado = document.getElementById('facturado').checked;  
+    
+    //Si esta actuvo el modulo para restaurante
+    if (modulo_restaurante == 1){
+        if (parametro_imprimircomanda==1){
+            boton = document.getElementById("imprimir_comanda");
+            boton.click();
+            boton.click();
+            if (facturado != 1){
+                brecibo = document.getElementById("imprimir");
+                brecibo.click();
+            }
+        }
+    }
+    
+    //Imprimir la factura
+    if (facturado == 1){
+        var boton = document.getElementById("imprimir_factura");
+        boton.click();                    
+    }
+    
+    document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
+    tablaproductos();
+    
+    tablaresultados(1); //redibuja la tabla de busqueda de productos      
+    // var parametro_factura = document.getElementById('parametro_factura').value;
+    // if(parametro_factura == 2){
+    //     $("#facturado").prop("checked", false);
+    // }
+    document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+    document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
     
 }
