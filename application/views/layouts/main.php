@@ -860,6 +860,13 @@
                         </li>
                         <?php
                         }
+                        if($rolusuario[153-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('plan_cuentas');?>"><i class="fa fa-shopping-basket"></i> <span>Plan de Cuentas</span></a>
+                        </li>
+                        <?php
+                        }
                         if($rolusuario[154-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>

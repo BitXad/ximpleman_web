@@ -22,6 +22,7 @@ function solicitudCufd(punto_venta=0){
                     //let elcodigo = registros.RespuestaVerificarNit.mensajesList.codigo;
                     if(lafalla != ""){
                         alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                        document.getElementById('loader_revocado').style.display = 'none';
                     }else{
                     let codigo = registros.RespuestaCufd.codigo;
                     let codigoControl = registros.RespuestaCufd.codigoControl;

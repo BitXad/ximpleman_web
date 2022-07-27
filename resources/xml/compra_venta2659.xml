@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>8688070018</nitEmisor>
+        <razonSocialEmisor>PASSWORD</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4511518 * (591) 79999097</telefono>
+        <numeroFactura>123</numeroFactura>
+        <cuf>252763D5BB64BB99429BDD81205525DDA7CF6402EE96A8E289EB3A6D74</cuf>
+        <cufd>BQT5CwqE+P0lBNzzlFRkRBNjUwMTc=Q29mT1ZMWEhXVUFIxOThFQUVGQjZBM</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-07-23T09:43:59.608</fechaEmision>
+        <nombreRazonSocial>JOSUE GARCIA</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>5196226</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>JO43466</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta xsi:nil="true"/>
+        <montoTotal>356.00</montoTotal>
+        <montoTotalSujetoIva>356.00</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>356.00</montoTotalMoneda>
+        <montoGiftCard xsi:nil="true"/>        
+        <descuentoAdicional>0.00</descuentoAdicional>
+        <codigoExcepcion>0</codigoExcepcion>  
+        <cafc xsi:nil="true"/>
+        <leyenda>ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAIS, EL USO ILICITO DE ESTÁ SERÁ SANCINADO DE ACUERDO A LEY</leyenda>
+        <usuario>LIDIA CALA CALDERON</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>472000</actividadEconomica><codigoProductoSin>62226</codigoProductoSin><codigoProducto>TEC-00149</codigoProducto><descripcion>TECLADO MULTIMEDIA SURE</descripcion><cantidad>5</cantidad><unidadMedida>6</unidadMedida><precioUnitario>60.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>300.00</subTotal><numeroSerie/><numeroImei/></detalle><detalle><actividadEconomica>472000</actividadEconomica><codigoProductoSin>62226</codigoProductoSin><codigoProducto>TEC-00150</codigoProducto><descripcion>TECLADO ULTRA SLIM GENIUS</descripcion><cantidad>1</cantidad><unidadMedida>14</unidadMedida><precioUnitario>56.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>56.00</subTotal><numeroSerie/><numeroImei/></detalle></facturaComputarizadaCompraVenta>
