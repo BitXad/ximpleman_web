@@ -536,7 +536,11 @@ class Dosificacion extends CI_Controller{
                     "cuis"=>            $cuis_puntoventa, //$dosificacion['dosificacion_cuis'],
                     "nit"=>             $dosificacion['dosificacion_nitemisor']
                         ]];
-                
+
+//            $resultado = $cliente->cufd($parametros);
+            //var_dump($resultado);
+//            echo json_encode($resultado);
+
             $resultado = $cliente->cufd($parametros);
             //var_dump($resultado);
             $datos['respuesta'] = $resultado;

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>318180021</nitEmisor>
+        <razonSocialEmisor>SUPER DEL VALLE</razonSocialEmisor>
+        <municipio>COCHABAMBA</municipio>
+        <telefono>4511518 * (591) 79999097</telefono>
+        <numeroFactura>549</numeroFactura>
+        <cuf>15C5508F6EED75619C466FF99EEBC3825025CA3523066EC82574A6D74</cuf>
+        <cufd>BQUtDPjxmQUE=NzzhCQjY3OEE2OTc=Q297dHlSYUhXVUFIxMDIzM0JGNTRDQ</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, E. SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-07-25T23:49:29.733</fechaEmision>
+        <nombreRazonSocial>PASSWORD SRL</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>141349024</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>PA82616</codigoCliente>
+        <codigoMetodoPago>27</codigoMetodoPago>
+        <numeroTarjeta>0</numeroTarjeta>
+        <montoTotal>60.50</montoTotal>
+        <montoTotalSujetoIva>60.50</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>60.50</montoTotalMoneda>
+        <montoGiftCard>60.500</montoGiftCard>        
+        <descuentoAdicional>0.00</descuentoAdicional>
+        <codigoExcepcion>0</codigoExcepcion>  
+        <cafc xsi:nil="true"/>
+        <leyenda>ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAIS, EL USO ILICITO DE ESTÁ SERÁ SANCINADO DE ACUERDO A LEY</leyenda>
+        <usuario>DIRLENIA ROJAS AGUILAR</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>471110</actividadEconomica><codigoProductoSin>1970</codigoProductoSin><codigoProducto>-</codigoProducto><descripcion>MERMELADA DEL VALLE TUTTI FRUTTI 200 GR.</descripcion><cantidad>2</cantidad><unidadMedida>47</unidadMedida><precioUnitario>6.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>12.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle><detalle><actividadEconomica>471110</actividadEconomica><codigoProductoSin>1970</codigoProductoSin><codigoProducto>7771200000291</codigoProducto><descripcion>MERMELADA DEL VALLE MEMBRILLO 350 GR.</descripcion><cantidad>5</cantidad><unidadMedida>47</unidadMedida><precioUnitario>8.50</precioUnitario><montoDescuento>0</montoDescuento><subTotal>42.50</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle><detalle><actividadEconomica>471110</actividadEconomica><codigoProductoSin>1970</codigoProductoSin><codigoProducto>-</codigoProducto><descripcion>MERMELADA DEL VALLE DURAZNO 200 GR.</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>6.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>6.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle></facturaComputarizadaCompraVenta>

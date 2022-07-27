@@ -358,7 +358,7 @@ class Venta_model extends CI_Model
         $sql = "select c.*,t.tipocliente_descripcion, t.tipocliente_montodesc,t.tipocliente_porcdesc from cliente c
                 left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id
                 where 
-                c.cliente_nit = ".$nit;
+                c.cliente_nit = '".$nit."'";
        // echo $sql;
        $resultado = $this->db->query($sql)->result_array();
         
