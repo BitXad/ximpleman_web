@@ -429,6 +429,7 @@ class Venta extends CI_Controller{
                 $venta_giftcard = $this->input->post('venta_giftcard');
                 $venta_ice = $this->input->post('venta_ice');
                 $forma_id = $this->input->post('forma_id');
+                $factura_complementoci = $this->input->post('factura_complementoci');
         
                 //******** ACTUALIZAR LA TABLA detalle_Venta_aux
                 
@@ -816,7 +817,7 @@ class Venta extends CI_Controller{
                                 factura_nit, factura_razonsocial, factura_nitemisor,factura_sucursal,
                                 factura_sfc, factura_actividad, usuario_id, tipotrans_id, 
                                 factura_efectivo, factura_cambio,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion,
-                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id) value(".
+                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -825,7 +826,7 @@ class Venta extends CI_Controller{
                                 $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
                                 $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
                                 $venta_efectivo.",".$venta_cambio.",".$factura_enviada.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".
-                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.")";
+                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."')";
                         }else{
                             
                                 $leyendas = $this->Venta_model->consultar("select * from leyenda");
@@ -845,7 +846,7 @@ class Venta extends CI_Controller{
                                 factura_codsistema, factura_puntoventa, factura_sectoreconomico,
                                 factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
                                 docsec_codigoclasificador, factura_codigocliente,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion, factura_tipoemision,
-                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id) value(".
+                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -858,7 +859,7 @@ class Venta extends CI_Controller{
                                 $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
                                 $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
                                 $documentoSector,'$factura_codigocliente','$factura_enviada'".",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".$tipo_emision.",".
-                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.")";
+                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."')";
                                     
                         }
                         $factura_id = $this->Venta_model->ejecutar($sql);
@@ -971,7 +972,7 @@ class Venta extends CI_Controller{
   
                                 $eniada = $this->mandarFactura($contents, $xml_comprimido);
                                 //var_dump($eniada->transaccion);
-                                var_dump($eniada);
+                                //var_dump($eniada);
                                 if($eniada->transaccion){
                                     $params = array(
                                         'factura_codigodescripcion' => $eniada->codigoDescripcion,
@@ -984,7 +985,7 @@ class Venta extends CI_Controller{
                                 }else{
                                     
                                     $cad = $eniada->mensajesList;
-                                    var_dump($eniada->mensajesList);
+                                    //var_dump($eniada->mensajesList);
                                     
                                     $mensajecadena = json_encode($eniada->mensajesList);
 //                                    foreach ($cad as $c) {
@@ -4517,7 +4518,7 @@ function anular_venta($venta_id){
                             $this->Factura_model->update_factura($factura_id, $params);
                         }else{
                             $cad = $eniada->mensajesList;
-                            var_dump($cad);
+                            //var_dump($cad);
 //                            $mensajecadena = "";
 //                            foreach ($cad as $c) {
 //                                $mensajecadena .= $c.";";

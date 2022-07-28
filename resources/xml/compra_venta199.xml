@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>318180021</nitEmisor>
+        <razonSocialEmisor>SUPER DEL VALLE</razonSocialEmisor>
+        <municipio>COCHABAMBA</municipio>
+        <telefono>4511518 * (591) 79999097</telefono>
+        <numeroFactura>568</numeroFactura>
+        <cuf>15C5508F6EED75EDAD4BDC95AF036440D973E73304960DC3C025A6D74</cuf>
+        <cufd>BQUtDPjxmQUE=NzzhCQjY3OEE2OTc=Qz5uSHBGZEhXVUFIxMDIzM0JGNTRDQ</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, E. SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-07-28T07:58:15.635</fechaEmision>
+        <nombreRazonSocial/>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>7984651254015</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>CR15476</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta>0</numeroTarjeta>
+        <montoTotal>130.00</montoTotal>
+        <montoTotalSujetoIva>130</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>130.00</montoTotalMoneda>
+        <montoGiftCard>0.000</montoGiftCard>        
+        <descuentoAdicional>10.00</descuentoAdicional>
+        <codigoExcepcion>1</codigoExcepcion>  
+        <cafc xsi:nil="true"/>
+        <leyenda>ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAIS, EL USO ILICITO DE ESTÁ SERÁ SANCINADO DE ACUERDO A LEY</leyenda>
+        <usuario>DIRLENIA ROJAS AGUILAR</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>471110</actividadEconomica><codigoProductoSin>1970</codigoProductoSin><codigoProducto>7751851944274</codigoProducto><descripcion>DESODORANTE AVAL HOMBRE ELEGANT 160 ML.</descripcion><cantidad>5</cantidad><unidadMedida>47</unidadMedida><precioUnitario>11.00</precioUnitario><montoDescuento>5</montoDescuento><subTotal>50.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle><detalle><actividadEconomica>471110</actividadEconomica><codigoProductoSin>1970</codigoProductoSin><codigoProducto>7751851975575</codigoProducto><descripcion>DESODORANTE AVAL MUJER FANTASY 12X160 ML.</descripcion><cantidad>5</cantidad><unidadMedida>47</unidadMedida><precioUnitario>11.00</precioUnitario><montoDescuento>5</montoDescuento><subTotal>50.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle><detalle><actividadEconomica>471110</actividadEconomica><codigoProductoSin>1970</codigoProductoSin><codigoProducto>9038868</codigoProducto><descripcion>LOMITO REAL AL AGUA 80 GR.</descripcion><cantidad>5</cantidad><unidadMedida>47</unidadMedida><precioUnitario>8.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>40.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle></facturaComputarizadaCompraVenta>

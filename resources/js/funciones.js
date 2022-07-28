@@ -2735,6 +2735,7 @@ function registrarventa(cliente_id)
     var usuarioprev_id = document.getElementById('usuarioprev_id').value; 
     var nit = document.getElementById('nit').value;
     var razon = document.getElementById('razon_social').value;
+    var factura_complementoci = document.getElementById('cliente_complementoci').value;
     let cliente_email = document.getElementById('email').value;
     
     var moneda_id = 1; 
@@ -2822,7 +2823,9 @@ function registrarventa(cliente_id)
                 venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,
                 tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
-                venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice},
+                venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
+                factura_complementoci:factura_complementoci 
+            },
             success:function(respuesta){
                 let res = JSON.parse(respuesta);
                 registrarpuntos(cliente_id, venta_total);
@@ -2846,7 +2849,9 @@ function registrarventa(cliente_id)
                 venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad,
                 cliente_email:cliente_email, venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
-                venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice},
+                venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
+                factura_complementoci:factura_complementoci
+            },
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
@@ -3695,7 +3700,7 @@ function buscar_clientes()
 function seleccionar_cliente(){
     
     //var cliente_id = document.getElementById('razon_social').value;
-    var  = document.getElementById('nit').value;
+    var nit = document.getElementById('nit').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/seleccionar_cliente/"+cliente_id;
     //alert(controlador);

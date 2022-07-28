@@ -165,14 +165,16 @@ function verificarComunicacion(){
             data:{},
             success:function(respuesta){
                 let registros = JSON.parse(respuesta);
+  
+                alert(JSON.stringify(registros));
                 
-                if(registros.return.transaccion == true){
-                    let codigo = registros.RespuestaComunicacion.mensajesList.codigo;
-                    let descripcion = registros.RespuestaComunicacion.mensajesList.descripcion;
-                    alert(codigo+" "+descripcion);
-                }else{
-                    registros.faultcode;
-                }
+//                if(registros.return.transaccion == true){
+//                    let codigo = registros.RespuestaComunicacion.mensajesList.codigo;
+//                    let descripcion = registros.RespuestaComunicacion.mensajesList.descripcion;
+//                    alert(codigo+" "+descripcion);
+//                }else{
+//                    registros.faultcode;
+//                }
                 
             },
             error:function(respuesta){

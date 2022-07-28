@@ -238,7 +238,9 @@
         $xml->getElementsByTagName('fechaEmision')->item(0)->nodeValue = "{$factura['factura_fechahora']}";
         $xml->getElementsByTagName('nombreRazonSocial')->item(0)->nodeValue = "{$factura['factura_razonsocial']}";
         $xml->getElementsByTagName('codigoTipoDocumentoIdentidad')->item(0)->nodeValue = "{$factura['cdi_codigoclasificador']}";
-        $xml->getElementsByTagName('complemento')->item(0)->nodeValue = "";
+        
+        $xml->getElementsByTagName('complemento')->item(0)->nodeValue = "{$factura['factura_complementoci']}";
+        
         $xml->getElementsByTagName('numeroDocumento')->item(0)->nodeValue = "{$factura['factura_nit']}";
         $xml->getElementsByTagName('codigoCliente')->item(0)->nodeValue = "{$factura['cliente_codigo']}";        
         $xml->getElementsByTagName('codigoMetodoPago')->item(0)->nodeValue = "{$factura['forma_id']}";
