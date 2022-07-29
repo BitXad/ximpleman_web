@@ -318,7 +318,7 @@ border-bottom : 1px solid #aaa;
                         ?>
                         <tr style="border: 1px solid black">
                             <td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"> <?= $d['detallefact_codigo']; ?></font></td>
-                            <td align="right" style="padding: 0; padding-right:3px;"><font style="size:7px; font-family: arial"><center> <?= $d['detallefact_cantidad']; ?></center></font></td>
+                            <td align="right" style="padding: 0; padding-right:3px;"><font style="size:7px; font-family: arial"><?= number_format($d['detallefact_cantidad'],2,'.',','); ?></font></td>
                             <td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"><center>  <?= $d['producto_unidad'] ?></center></font></td>
                             <td colspan="1" style="padding: 0; line-height: 10px;">
                                 <font style="size:7px; font-family: arial; padding-left:3px"> 
@@ -373,18 +373,18 @@ border-bottom : 1px solid #aaa;
                         </tr>-->
                     <?php //} ?>
 
-                    <!-------------- FACTURA GIFTA CARD ---------->
-                    <tr>
-                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>GIFT CARD Bs</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_giftcard'] ,2,'.',',') ?></b></td>
-                    </tr>
                     
                     <!-------------- FACTURA TOTAL ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>TOTAL Bs</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',') ?></b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'],2,'.',',') ?></b></td>
                     </tr>
                     
+                    <!-------------- FACTURA GIFTA CARD ---------->
+                    <tr>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO GIFT CARD Bs</b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_giftcard'] ,2,'.',',') ?></b></td>
+                    </tr>
                     <!-------------- ICE / ICE ESPECIFICO ---------->
                     <?php if($mostrarice==1){ ?>
                     <tr>
@@ -396,6 +396,13 @@ border-bottom : 1px solid #aaa;
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($ice,2,'.',',') ?></td>
                     </tr>
                     <?php } ?>
+                    
+                    <!-------------- MONTO A PAGAR ---------->
+                    <tr>           
+                        
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO A PAGAR Bs</b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',')?></b></td>
+                    </tr>
                     
                     <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
                     <tr>           
@@ -416,15 +423,10 @@ border-bottom : 1px solid #aaa;
                             <font face="Arial" size="1"><?php echo $factura[0]['factura_leyenda2']; ?> 
                             </font><br><br>
                             
-                            <?php echo $factura[0]['factura_leyenda3'];?> <br><br>                         
+                            <?php echo $factura[0]['factura_leyenda3'];?> <br><br>     
                             
                             <?php echo $factura[0]['factura_leyenda4'];?>
-                            
-                            <?php 
-                                    if ($factura[0]['factura_tipoemision']==2){
-                                        echo "<b>Este documento es la representación gráfica de un Documento Fiscal Digital emitido fuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b>";
-                                   }
-                            ?>
+
                         </center>
                     </div>
                     <div style="float: right;width: 80px;">

@@ -248,9 +248,7 @@
         //if (strlen($factura['factura_detalletransaccion'])>1){
             $xml->getElementsByTagName('numeroTarjeta')->item(0)->nodeValue = "{$factura['factura_detalletransaccion']}";
         //}
-
-        
-        $xml->getElementsByTagName('montoGiftCard')->item(0)->nodeValue = "{$factura['factura_giftcard']}";
+        $xml->getElementsByTagName('montoGiftCard')->item(0)->nodeValue = "{$factura['factura_giftcard']}"; 
         $total_creditofiscal = $factura['factura_total'] - $factura['factura_giftcard'];
         $xml->getElementsByTagName('montoTotalSujetoIva')->item(0)->nodeValue = "{$total_creditofiscal}";
         $xml->getElementsByTagName('codigoMoneda')->item(0)->nodeValue = "{$factura['moneda_codigoclasificador']}";
@@ -259,9 +257,36 @@
         $xml->getElementsByTagName('codigoExcepcion')->item(0)->nodeValue = "{$factura['factura_excepcion']}";
         $xml->getElementsByTagName('montoTotal')->item(0)->nodeValue = "{$factura['factura_total']}";
         $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "{$factura['factura_total']}";
+
+            
+        $xml->getElementsByTagName('cafc')->item(0)->nodeValue = "{$factura['factura_cafc']}";
+
         $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "{$factura['factura_leyenda1']}";
         $xml->getElementsByTagName('usuario')->item(0)->nodeValue = "{$factura['usuario_nombre']}";
         $xml->getElementsByTagName('codigoDocumentoSector')->item(0)->nodeValue = "{$factura['docsec_codigoclasificador']}";
+        
+        
+
+       
+//        if($factura['factura_cafc'] == 0){
+
+//            $valid_elem = $xml->createElement('field', 'correct attribute');
+//            $valid_attr = $xml->createAttribute('name');
+//            $valid_attr->value = 'foo&amp;bar';
+//            $valid_elem->appendChild($valid_attr);
+//            $xml->appendChild($valid_elem);
+//            
+//            xmlDoc=loadXMLDoc("books.xml");
+//
+//            x=xmlDoc.getElementsByTagName("title")[0].childNodes[0];
+//            x.nodeValue="Easy Cooking";
+            
+                    
+            
+//        }else{
+//            $xml->getElementsByTagName('cafc')->item(0)->nodeValue = "{$factura['factura_cafc']}";
+//        }
+//        
  
         // CABECERA
         // $nit =  $xml->getElementsByTagName('nitEmisor')->item(0)->nodeValue;

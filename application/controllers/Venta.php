@@ -390,8 +390,10 @@ class Venta extends CI_Controller{
         return $factura_fecha_hora_mod;
     }
     // Borrar
+    // 
     // borrar llamada a la funcion sumar_2segundos() en la linea 725 y descomentar la linea 724
-    function registrarventa()
+    
+    function registrarventa() // registra la venta y genera la factura
     {
         if($this->acceso(12)){
         //**************** inicio contenido ***************   
@@ -743,6 +745,7 @@ class Venta extends CI_Controller{
                         $factura_leyenda2      = $dosificacion[0]['dosificacion_leyenda2'];
                         $factura_leyenda3      = $dosificacion[0]['dosificacion_leyenda3'];
                         $factura_leyenda4      = $dosificacion[0]['dosificacion_leyenda4'];
+                        $factura_leyenda5      = $dosificacion[0]['dosificacion_leyenda5'];
                         $factura_nitemisor     = $dosificacion[0]['dosificacion_nitemisor'];
                         $factura_sucursal      = $dosificacion[0]['dosificacion_sucursal'];
                         $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
@@ -833,6 +836,15 @@ class Venta extends CI_Controller{
                                 $valor = rand(0,7);
                                 $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
                         
+                                if ($tipo_emision==2){ //1 en linea, 2 fuera de linea 3 masiva    
+                                    $factura_leyenda3 =  $factura_leyenda5;
+                                    $factura_cafc = $dosificacion[0]["dosificacion_cafc"];                          
+
+                                }else{
+                                    $factura_cafc = "";
+                                }
+                                
+                                
                             // nuevo sistema de facturacion
                             $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                                 factura_fecha, factura_hora, factura_subtotal, 
@@ -846,7 +858,7 @@ class Venta extends CI_Controller{
                                 factura_codsistema, factura_puntoventa, factura_sectoreconomico,
                                 factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
                                 docsec_codigoclasificador, factura_codigocliente,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion, factura_tipoemision,
-                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci) value(".
+                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_cafc) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -859,7 +871,7 @@ class Venta extends CI_Controller{
                                 $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
                                 $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
                                 $documentoSector,'$factura_codigocliente','$factura_enviada'".",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".$tipo_emision.",".
-                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."')";
+                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_cafc."')";
                                     
                         }
                         $factura_id = $this->Venta_model->ejecutar($sql);
@@ -1712,7 +1724,7 @@ class Venta extends CI_Controller{
 
     
 
-    function generar_factura()
+    function generar_factura() //Genera factura depues de realizar una venta
     {  
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
@@ -1790,6 +1802,7 @@ class Venta extends CI_Controller{
             $factura_leyenda2 = $dosificacion["dosificacion_leyenda2"];
             $factura_leyenda3 = $dosificacion["dosificacion_leyenda3"];
             $factura_leyenda4 = $dosificacion["dosificacion_leyenda4"];
+            $factura_cafc = $dosificacion["dosificacion_cafc"];
             $factura_nit = $nit_factura;
             $factura_razonsocial = $razon_social;
             $factura_nitemisor = $dosificacion["dosificacion_nitemisor"];
@@ -4227,6 +4240,8 @@ function anular_venta($venta_id){
         }
         
    }
+   
+   
    /* genera factura desde el index de ventas  */
     function generar_factura_detalle_aux()
     {
@@ -4277,6 +4292,7 @@ function anular_venta($venta_id){
             $factura_leyenda2 = $dosificacion["dosificacion_leyenda2"];
             $factura_leyenda3 = $dosificacion["dosificacion_leyenda3"];
             $factura_leyenda4 = $dosificacion["dosificacion_leyenda4"];
+            $factura_leyenda5 = $dosificacion["dosificacion_leyenda5"];
             $factura_nit = $nit_factura;
             $factura_razonsocial = $razon_social;
             $factura_nitemisor = $dosificacion["dosificacion_nitemisor"];
@@ -4324,7 +4340,7 @@ function anular_venta($venta_id){
                 $cadFechahora = str_replace(".", "", $cadFechahora);
                 //echo $cadFechahora."QWE";
                 //$fecha_hora = str_replace(".", "", $fecha_hora_aux);
-                $tipo_emision = $this->parametros['parametro_tipoemision'];
+                $tipo_emision = $this->parametros['parametro_tipoemision']; //Especifica si es linea o fuera de linea
                 $tipo_factura = $dosificacion['tipofac_codigo'];
                 $tipo_documento_sector = $dosificacion['docsec_codigoclasificador'];
                 $pos = $dosificacion['dosificacion_puntoventa'];
@@ -4389,6 +4405,14 @@ function anular_venta($venta_id){
                         $leyendas = $this->Venta_model->consultar("select * from leyenda");
                         $valor = rand(0,7);
                         $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
+                   
+                        if ($tipo_emision==2){    
+                          $factura_leyenda3 =  $factura_leyenda5;
+                          $factura_cafc = $dosificacion['dosificacion_ruta'];
+                        }else{
+                            $factura_cafc = "";
+                        }
+                        
                 // nuevo sistema de facturacion
                 $sql = "insert into factura(estado_id,forma_id, factura_fechaventa, 
                         factura_fecha, factura_hora, factura_subtotal, 
@@ -4400,7 +4424,7 @@ function anular_venta($venta_id){
                         factura_ambiente, factura_cuis, factura_cufd, factura_modalidad,
                         factura_codsistema, factura_puntoventa, factura_sectoreconomico,
                         factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
-                        docsec_codigoclasificador, factura_codigocliente, factura_leyenda1, factura_leyenda2, factura_excepcion, forma_id) value(".
+                        docsec_codigoclasificador, factura_codigocliente, factura_leyenda1, factura_leyenda2, factura_excepcion, forma_id, factura_cafc) value(".
                         $estado_id.",".$forma_id.",'".$factura_fechaventa."',".
                         $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                         $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -4412,7 +4436,7 @@ function anular_venta($venta_id){
                         $factura_ambiente."','".$factura_cuis."','".$factura_cufd."','".$factura_modalidad."','".
                         $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
                         $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,$documentoSector,'$factura_clientecodigo'".
-                        ",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".$forma_id.")";
+                        ",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".$forma_id.",'".$factura_cafc."')";
             }
 
 
@@ -4474,12 +4498,12 @@ function anular_venta($venta_id){
                     fwrite($fp, $gzdata);
                     fclose($fp);
                     
-                    $eltipo_emision = $this->parametros['parametro_tipoemision'];
-                            if($eltipo_emision == 2){
-                                $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
-                                $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
-                                $p1 = $p->compress(Phar::GZ);
-                            }
+                    
+                    if($tipo_emision == 2){
+                        $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
+                        $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
+                        $p1 = $p->compress(Phar::GZ);
+                    }
                     //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
                     //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
 
@@ -4504,6 +4528,7 @@ function anular_venta($venta_id){
                     $wsdl = $dosificacion['dosificacion_factura'];
                     $token = $dosificacion['dosificacion_tokendelegado'];
                     $comunicacion = $this->verificar_comunicacion($token,$wsdl);
+                    
                     if($comunicacion){
                         $eniada = $this->mandarFactura($contents, $xml_comprimido);
                         //var_dump($eniada->transaccion);
