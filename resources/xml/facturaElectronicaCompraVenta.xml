@@ -19,10 +19,14 @@
     <codigoCliente>PMamani</codigoCliente>
     <codigoMetodoPago>2</codigoMetodoPago>
     <numeroTarjeta xsi:nil="true"></numeroTarjeta>
+    <montoGiftCard></montoGiftCard>        
     <montoTotal>25</montoTotal>
-	<montoTotalSujetoIva>25</montoTotalSujetoIva>
+	  <montoTotalSujetoIva>25</montoTotalSujetoIva>
     <codigoMoneda>1</codigoMoneda>
     <tipoCambio>1</tipoCambio>
+    <descuentoAdicional>0</descuentoAdicional>
+    <codigoExcepcion>0</codigoExcepcion>
+    <cafc></cafc>
     <montoTotalMoneda>25</montoTotalMoneda>
     <leyenda>Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.</leyenda>
     <usuario>pperez</usuario>
@@ -30,28 +34,28 @@
   </cabecera>
   
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-<SignedInfo>
-<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></CanonicalizationMethod>
-<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></SignatureMethod> 
-<Reference URI="">
-<Transforms>
-<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></Transform>
-<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"></Transform>
-</Transforms>
-<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue></DigestValue>
-</Reference>
-</SignedInfo>
-<SignatureValue></SignatureValue>
-<KeyInfo>
-<X509Data>
-<X509Certificate></X509Certificate>
-<X509SubjectName></X509SubjectName>
-<X509IssuerSerial>
-<X509IssuerName>1</X509IssuerName>
-<X509SerialNumber>1</X509SerialNumber>
-</X509IssuerSerial>
-</X509Data>
-</KeyInfo>
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></CanonicalizationMethod>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></SignatureMethod> 
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"></Transform>
+          <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"></Transform>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+        <DigestValue></DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue></SignatureValue>
+    <KeyInfo>
+      <X509Data>
+        <X509Certificate></X509Certificate>
+        <X509SubjectName></X509SubjectName>
+        <X509IssuerSerial>
+          <X509IssuerName>1</X509IssuerName>
+          <X509SerialNumber>1</X509SerialNumber>
+        </X509IssuerSerial>
+      </X509Data>
+    </KeyInfo>
 </Signature>
 </facturaElectronicaCompraVenta>

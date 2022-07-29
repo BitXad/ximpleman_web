@@ -1840,7 +1840,7 @@ class Venta extends CI_Controller{
                     factura_efectivo, factura_cambio, tipotrans_id, factura_leyenda3, factura_leyenda4, factura_excepcion) value(".
                     $estado_id.",'".$factura_fechaventa."',".
                     $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-                    $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                    $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
                     $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".
@@ -4487,7 +4487,8 @@ function anular_venta($venta_id){
             }
             if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
                 // el parametro uno es para computarizada en linea ojo
-                $computarizada_enlinea = 1;
+                // $computarizada_enlinea = 1;
+                $computarizada_enlinea = $this->parametros['parametro_tiposistema'];
                 $factura = $this->Factura_model->get_factura_id($factura_id);
                 $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
                 $empresa = $this->Empresa_model->get_empresa(1);
@@ -4497,9 +4498,9 @@ function anular_venta($venta_id){
                 $base_url = explode('/', base_url());
                 //$doc_xml = site_url("resources/xml/$archivoXml.xml");
                 $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-                
+                $xsd = $computarizada_enlinea == 1 ? "compra_venta.xsd":"facturaElectronicaCompraVenta.xsd";
                 $valXSD = new ValidacionXSD();
-                if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
+                if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}{$xsd}")){
                     // echo "No ingreso";
                     print $valXSD->mostrarError();
                 }else{
