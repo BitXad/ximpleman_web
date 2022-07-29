@@ -283,7 +283,7 @@ border-bottom : 1px solid #aaa;
                     ?>
                     <!-------------- SUB TOTAL ---------->
                     <tr>
-                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($total_final_factura,' Bolivianos') ?></b></td>
+                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($factura_total,' Bolivianos') ?></b></td>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">SUBTOTAL Bs</td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_final_factura,2,'.',','); ?></td>
                     </tr>

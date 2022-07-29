@@ -1137,7 +1137,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'><b>NIT/CI/CEX:</b></td>";
-                                        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_nit']."</td>";
+                                        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_nit']."  ".$factura[0]['factura_complementoci']."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'><b>COD. CLIENTE:</b></td><!-- PONER CODIGO DE CLIENTE -->";
@@ -1206,6 +1206,8 @@ class Venta extends CI_Controller{
                                         $micad .= "                    </table>";
                                         $micad .= "                    </td>";
                                         $micad .= "                </tr>";
+                                                                $total_final_factura = $factura[0]['factura_subtotal']; 
+                                                                $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
                                         $micad .= "                <tr>";
                                         $micad .= "                    <td colspan='4' style='padding: 0'>";
                                         $micad .= "                        <table style='width: ".$ancho."; font-size: 8pt !important' >";
@@ -1246,7 +1248,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
                                         $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px'>";
                                         $micad .= "                                    <br>";
-                                        $micad .= "                                    SON: ".num_to_letras($factura[0]['factura_total'],' Bolivianos');
+                                        $micad .= "                                    SON: ".num_to_letras($factura_total,' Bolivianos');
                                         $micad .= "                                </td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                        </table>";
@@ -1438,7 +1440,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
                                         $micad .= "                            <tr>"; 
                                         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; ' class='autoColor'><b>NIT/CI/CEX:</b></td>"; 
-                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_nit'];
+                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_nit']."  ";
                                                                                     if ($factura[0]['cdi_codigoclasificador']!=5){
                                         $micad .=                                        $factura[0]["cliente_complementoci"];
                                                                                     }
@@ -1518,7 +1520,7 @@ class Venta extends CI_Controller{
                                                                 $span = ($mostrarice==1)? 3: 2; 
                                         $micad .= "                    <!-------------- SUB TOTAL ---------->"; 
                                         $micad .= "                    <tr>"; 
-                                        $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'><b style='font-family: Arial; size:9px;'>SON: ".num_to_letras($total_final_factura,' Bolivianos')."</b></td>"; 
+                                        $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'><b style='font-family: Arial; size:9px;'>SON: ".num_to_letras($factura_total,' Bolivianos')."</b></td>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>SUBTOTAL Bs</td>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($total_final_factura,2,'.',',')."</td>"; 
                                         $micad .= "                    </tr>"; 
