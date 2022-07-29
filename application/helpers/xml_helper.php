@@ -261,7 +261,10 @@
         $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "{$factura['factura_total']}";
 
         //if($factura['factura_cafc'])
-        $xml->getElementsByTagName('cafc')->item(0)->nodeValue = "{$factura['factura_cafc']}";
+        if($factura['factura_cafc'] != 0 || $factura['factura_cafc'] != ""){
+            $xml->getElementsByTagName('cafc')->item(0)->setAttribute("xsi:nil","false");
+            $xml->getElementsByTagName('cafc')->item(0)->nodeValue = "{$factura['factura_cafc']}";
+        }
 
         $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "{$factura['factura_leyenda2']}";
         $xml->getElementsByTagName('usuario')->item(0)->nodeValue = "{$factura['usuario_nombre']}";
