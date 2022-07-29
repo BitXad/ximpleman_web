@@ -300,8 +300,15 @@ function buscarcliente(){
                         let res = result;
                         //alert(res);
                         if(res){
-                            verificarnit();
-                            document.getElementById('loader_documento').style.display = 'block';
+                            let tipo_doc_identidad = base_url = document.getElementById('tipo_doc_identidad').value;
+                            if(tipo_doc_identidad == 5){
+                                verificarnit();
+                            }else{
+                                document.getElementById('loader_documento').style.display = 'none';
+                            }
+                        }else{
+                            alert("No hay comunicación con Impuestos");
+                            document.getElementById('loader_documento').style.display = 'none';
                         }
                     }
                     
