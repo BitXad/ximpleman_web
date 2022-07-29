@@ -236,7 +236,9 @@
         $xml->getElementsByTagName('direccion')->item(0)->nodeValue = "{$empresa['empresa_direccion']}";
         $xml->getElementsByTagName('codigoPuntoVenta')->item(0)->nodeValue = "{$factura['factura_puntoventa']}";
         $xml->getElementsByTagName('fechaEmision')->item(0)->nodeValue = "{$factura['factura_fechahora']}";
-        $xml->getElementsByTagName('nombreRazonSocial')->item(0)->nodeValue = "{$factura['factura_razonsocial']}";
+        
+        $razonSocial = str_replace("&","&amp;",$factura['factura_razonsocial']);
+        $xml->getElementsByTagName('nombreRazonSocial')->item(0)->nodeValue = "{$razonSocial}";
         $xml->getElementsByTagName('codigoTipoDocumentoIdentidad')->item(0)->nodeValue = "{$factura['cdi_codigoclasificador']}";
         
         $xml->getElementsByTagName('complemento')->item(0)->nodeValue = "{$factura['factura_complementoci']}";
@@ -258,7 +260,7 @@
         $xml->getElementsByTagName('montoTotal')->item(0)->nodeValue = "{$factura['factura_total']}";
         $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "{$factura['factura_total']}";
 
-            
+        //if($factura['factura_cafc'])
         $xml->getElementsByTagName('cafc')->item(0)->nodeValue = "{$factura['factura_cafc']}";
 
         $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "{$factura['factura_leyenda1']}";
