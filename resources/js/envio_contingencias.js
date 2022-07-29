@@ -121,10 +121,10 @@ function tabla_ventas()
                             let cod_descripcion = v[i]['recpaquete_codigodescripcion'];
                             if(cod_descripcion == "PENDIENTE"){
                                 html += "<button type='button' class='btn btn-warning btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalvalidacion' onclick='cargar_codigovalidacion("+JSON.stringify(paquete)+");'>";
-                            html += "<fa class='fa fa-chain'> </fa> PENDIENTE </button>";
+                            html += "<fa class='fa fa-chain'> </fa> <small>PENDIENTE</small> </button>";
                             }else{
-                                html += "<button type='button' class='btn btn-success btn-xs' style='padding:0;' data-toggle='modal'>";
-                                html += "<fa class='fa fa-chain'> </fa> VALIDADA </button>";
+                                html += "<button type='button' class='btn btn-soundcloud btn-xs' style='padding:0;' data-toggle='modal'>";
+                                html += "<fa class='fa fa-chain'> </fa> <small>"+cod_descripcion+"</small> </button>";
                             }
                             
                          }
@@ -301,7 +301,7 @@ function emision_allfpaquetes(){
                       fact_aenviar:fact_aenviar},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
-                        console.log(registros);
+                        /*console.log(registros);
                         
                         let mensaje = "";
                         if(registros.codigoDescripcion == "PENDIENTE"){
@@ -321,7 +321,9 @@ function emision_allfpaquetes(){
                         }
                         tablaresultados();
                         alert(mensaje);
-                        
+                        */
+                       $("#modal_allpaquetes").modal("hide");
+                       location.reload();
                         document.getElementById('loader').style.display = 'none';
                 },
                 error:function(respuesta){
@@ -361,15 +363,13 @@ function validacion_paquetes(){
     });
     let base_url = document.getElementById('base_url').value;
     let controlador = base_url+'envio_contingencias/registro_validacionpaquetes';
-    //let codigo_recepcion = document.getElementById('codigo_recepcion').value;
-
         document.getElementById('loader').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
                 data:{fact_avalidar:fact_avalidar},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
-                        console.log(registros);
+                        /*console.log(registros);
                         //let transaccion = registros.RespuestaListaEventos.transaccion;
                         //salert(registros);
                         //registros.codigoDescripcion;
@@ -392,7 +392,9 @@ function validacion_paquetes(){
                             
                         }
                         alert(mensaje);
-                        
+                        */
+                       $("#modal_allvalidacion").modal("hide");
+                       location.reload();
                         document.getElementById('loader').style.display = 'none';
                 },
                 error:function(respuesta){

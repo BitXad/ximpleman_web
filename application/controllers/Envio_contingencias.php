@@ -262,7 +262,7 @@ class Envio_contingencias extends CI_Controller{
                 
                 $fact_avalidar =  $this->input->post("fact_avalidar");
                 $f = $fact_avalidar;
-                
+                $res= "";
                 for ($i = 0; $i < count($f); $i++) {
                     var_dump($f[$i]['codigo_recepcion']);
                     echo "<br>";
