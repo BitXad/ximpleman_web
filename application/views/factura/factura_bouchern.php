@@ -1,3 +1,4 @@
+<script src="<?php echo base_url('resources/js/factura_anular.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function()
     {
@@ -52,30 +53,73 @@
       $ancho = $parametro[0]["parametro_anchofactura"]."cm";
       $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 ?>
-<!---------------------- Modal ---------------------------->
-<div id="myModalAnular" class="modal fade no-print" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
+<!------------------------ INICIO modal para confirmar anulacion de factura ------------------->
+<div class="modal fade" id="myModalAnular" tabindex="-1" role="dialog" aria-labelledby="myModalAnularlabel" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <br><br>
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Anular Factura</h4>
+            <div class="modal-header text-center" style="background: #3399cc">
+                <b style="color: white;">ANULAR FACTURA</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
             </div>
             <div class="modal-body">
-                <p>
-                    <h3>              
-                        ADVERTENCIA: La factura Nº: <?php echo $factura[0]['factura_numero']; ?>, esta a punto de ser ANULADA. ¿Desea continuar?
-                    </h3>
-                </p>
+                <div class="col-md-12">
+                    <label for="factura_numero" class="control-label">ADVERTENCIA: Esta a punto de eliminar la factura</label>
+                </div>
+                <div class="row col-md-12 text-center" id='loader2' style='display:none;'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" />
+                </div>
+                <input type="hidden" name="factura_id" value="<?php echo $factura[0]['factura_id']; ?>" class="form-control" id="factura_id" readonly="true" />
+                <input type="hidden" name="venta_id" value="<?php echo $factura[0]['venta_id']; ?>" class="form-control" id="venta_id" readonly="true" />
+                <div class="col-md-4">
+                    <label for="factura_numero" class="control-label">Factura Nº</label>
+                    <div class="form-group">
+                        <input type="text" name="factura_numero" value="<?php echo $factura[0]['factura_numero']; ?>" class="form-control" id="factura_numero" readonly="true"/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="factura_monto" class="control-label">Monto</label>
+                    <div class="form-group">
+                        <input type="text" name="factura_monto" value="<?php echo $factura[0]['factura_total']; ?>" class="form-control" id="factura_monto" readonly="true"/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="factura_fecha" class="control-label">Fecha</label>
+                    <div class="form-group">
+                        <input type="text" name="factura_fecha" value="<?php echo date("d/m/Y", strtotime($factura[0]['factura_fecha'])); ?>" class="form-control" id="factura_fecha" readonly="true"/>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="factura_cliente" class="control-label">Cliente</label>
+                    <div class="form-group">
+                        <input type="text" name="factura_cliente" value="<?php echo $factura[0]['factura_razonsocial']; ?>" class="form-control" id="factura_cliente" readonly="true"  />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="factura_correo" class="control-label">Correo Electrónico</label>
+                    <div class="form-group">
+                        <input type="text" name="factura_correo" value="<?php echo $factura[0]['cliente_email']; ?>" class="form-control" id="factura_correo" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="dosificacion_nitemisor" class="control-label">Motivo Anulación</label>
+                    <div class="form-group">
+                        <select id="motivo_anulacion" class="form-control">
+                            <?php  foreach ($motivos as $motivo) {?>
+                                <option value="<?= $motivo['motivo_codigo']; ?>"><?= $motivo['motivo_descripcion']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <a href="<?php echo base_url('factura/anular_factura/'.$factura[0]['factura_id']."/".$factura[0]['factura_numero']); ?>" type="button" class="btn btn-warning" ><i class="fa fa-times-rectangle"></i> Anular</a>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrar"><fa class="fa fa-times"></fa> Cerrar</button>
+                <button type="button" class="btn btn-success" onclick="anular_factura_electronica()"><fa class="fa fa-floppy-o"></fa> Anular Factura</button>
             </div>
         </div>
     </div>
 </div>
-<!-------------------------------------------------------->
+<!------------------------ F I N  modal para confirmar anulacion de factura ------------------->
 <table class="table">
     <tr>
         <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>"></td>
@@ -145,7 +189,7 @@
                             </tr>
                             <tr>
                                 <td class="text-right text-bold" style="padding: 0;">NIT/CI/CEX:</td>
-                                <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_nit']; ?></td>
+                                <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_nit']; ?><?php if ($factura[0]['cdi_codigoclasificador']!=5){ echo "-".$factura[0]["cliente_complementoci"];} ?></td>
                             </tr>
                             <tr>
                                 <td class="text-right text-bold" style="padding: 0;">COD. CLIENTE:</td><!-- PONER CODIGO DE CLIENTE -->

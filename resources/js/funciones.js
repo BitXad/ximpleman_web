@@ -5221,7 +5221,7 @@ function enviarfactura_porcorreo(){
     let res = pattern.test(elcorreo);
     if(!res){
         alert("El correo electrónico es invalido, por favor verifique sus datos!.");
-    }else{    
+    }else{
         document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
         $.ajax({url: controlador,
                 type:"POST",

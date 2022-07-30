@@ -261,6 +261,7 @@ class Factura extends CI_Controller{
         if($data['parametro'][0]['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_boucher';
         }else{
+            $data['motivos'] = $this->Factura_model->get_all_motivos();
             $data['_view'] = 'factura/factura_bouchern';
         }
         //$data['_view'] = 'factura/factura_bouchern';
