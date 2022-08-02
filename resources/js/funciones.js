@@ -1451,7 +1451,7 @@ function ingresorapidojs2(cantidad,producto,serie = ''){
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
         datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
+        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
         //alert(datos1);
 
         $.ajax({url: controlador,
