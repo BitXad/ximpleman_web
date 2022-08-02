@@ -313,9 +313,10 @@ window.onkeydown = compruebaTecla;
         
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="nit" class="control-label" style="margin-bottom: 0;">NUMERO DE DOCUMENTO</label>
-            <div class="form-group"  <?php echo $estilo_div; ?>>
+            <div class="input-group"  <?php echo $estilo_div; ?>>
                 
                 <input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();"/>
+                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="buscarcliente()" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true"></span></div>
             
             </div>
         </div>
@@ -326,9 +327,7 @@ window.onkeydown = compruebaTecla;
                 
                 <!--<input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>-->
                 <input type="search" name="razon_social" list="listaclientes" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" />
-                <datalist id="listaclientes">
-
-                </datalist>
+                <datalist id="listaclientes"></datalist>
                 
             </div>
         </div>

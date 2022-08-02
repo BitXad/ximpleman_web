@@ -206,6 +206,13 @@ function buscarcliente(){
 
     var base_url = document.getElementById('base_url').value;
     var nit = document.getElementById('nit').value;
+    if (nit==''){
+        var cod = generar_codigo();
+        $("#nit").val(cod);
+        $("#razon_social").focus();
+        $("#razon_social").select();
+        $("#zona_id").val(0);
+    }
     var controlador = base_url+'venta/buscarcliente';
     document.getElementById('loader_documento').style.display = 'block';
     $.ajax({url:controlador,
@@ -223,6 +230,7 @@ function buscarcliente(){
                     $("#telefono").val(registros[0]["cliente_telefono"]);
                     $("#cliente_nombre").val(registros[0]["cliente_nombre"]);
                     $("#cliente_ci").val(registros[0]["cliente_ci"]);
+                    $("#cliente_complementoci").val(registros[0]["cliente_complementoci"]);
                     $("#cliente_nombrenegocio").val(registros[0]["cliente_nombrenegocio"]);
                     $("#cliente_id").val(registros[0]["cliente_id"]);
                     $("#cliente_codigo").val(registros[0]["cliente_codigo"]);
@@ -3706,7 +3714,7 @@ function buscar_clientes()
 
 function seleccionar_cliente(){
     
-    //var cliente_id = document.getElementById('razon_social').value;
+    var cliente_id = document.getElementById('razon_social').value;
     var nit = document.getElementById('nit').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/seleccionar_cliente/"+cliente_id;
@@ -3728,12 +3736,14 @@ function seleccionar_cliente(){
                     $("#telefono").val(resultado[0]["cliente_telefono"]);
                     $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
                     $("#cliente_ci").val(resultado[0]["cliente_ci"]);     
+                    $("#cliente_complementoci").val(resultado[0]["cliente_complementoci"]);
                     $("#cliente_nombrenegocio").val(resultado[0]["cliente_nombrenegocio"]);
                     $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);  
                     $("#tipocliente_id").val(resultado[0]["tipocliente_id"]);  
                     $("#cliente_direccion").val(resultado[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(resultado[0]["cliente_departamento"]);
                     $("#cliente_celular").val(resultado[0]["cliente_celular"]);
+                    $("#email").val(resultado[0]["cliente_email"]);
                     $("#tipo_doc_identidad").val(resultado[0]["cdi_codigoclasificador"]);
                     $("#tipocliente_porcdesc").val(resultado[0]["tipocliente_porcdesc"]);
                     $("#tipocliente_montodesc").val(resultado[0]["tipocliente_montodesc"]);
