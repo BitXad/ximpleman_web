@@ -3166,7 +3166,7 @@ function modificarcliente()
             }
             else{
                 //si el cliente ingresa con nit 0 se debe
-                              
+                $cliente_nit = str_replace("'","",$cliente_nit);
                 $datos = $this->Venta_model->buscar_cliente($cliente_nit); 
                 
                 if (sizeof($datos)>0){
