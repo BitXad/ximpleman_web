@@ -794,6 +794,8 @@ class Venta extends CI_Controller{
                                 
                                 $factura_fecha_hora = (new DateTime())->format('H:i:s.v');
                                 $factura_fecha_hora = $fecha_cafc."T".$factura_fecha_hora;
+                            }else{
+                                $factura_cafc = "";
                             }
                             
                             $cadFechahora = str_replace("-", "", $factura_fecha_hora);
