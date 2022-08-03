@@ -261,6 +261,7 @@ class Factura extends CI_Controller{
         if($data['parametro'][0]['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_boucher';
         }else{
+            $data['motivos'] = $this->Factura_model->get_all_motivos();
             $data['_view'] = 'factura/factura_bouchern';
         }
         //$data['_view'] = 'factura/factura_bouchern';
@@ -1140,7 +1141,7 @@ class Factura extends CI_Controller{
                 if ($res){
                     //$codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;                    
                     //$mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;
-                    $factura_codigorecepcion = $factura[0]["factura_codigorecepcion"];
+                    $factura_cuf = $factura[0]["factura_cuf"];
                     $factura_total           = $factura[0]["factura_total"];
 
                     $sql = "update factura set ".                
@@ -1162,7 +1163,7 @@ class Factura extends CI_Controller{
                     $this->Factura_model->ejecutar($sql);
                     
                     $correo = $this->input->post("factura_correo");
-                    $res = $this->enviar_correoanulacion($venta_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_codigorecepcion);
+                    $res = $this->enviar_correoanulacion($venta_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf);
                     
                 }else{
                         
@@ -1473,7 +1474,7 @@ class Factura extends CI_Controller{
         }
     }
     //monto, codigo de recepcion
-    function enviar_correoanulacion($venta_id, $correo,$factura_numero, $factura_fecha, $total, $cod_recepcion)
+    function enviar_correoanulacion($venta_id, $correo,$factura_numero, $factura_fecha, $total, $cod_autorizacion)
     {
         if($correo != null || $correo != ""){
         //if ($this->input->is_ajax_request()) {
@@ -1529,7 +1530,7 @@ class Factura extends CI_Controller{
             $literal =  num_to_letras($total,' Bolivianos');
             
             $html .= "Le informamos que su factura electrónica numero <b>".$factura_numero."</b> de fecha <b>".$la_fecha."</b> ";
-            $html .= "con un moto total de Bs <b>".$total."</b> (".$literal.") y el codigo de recepcion <b>".$cod_recepcion."</b> fue anulada.<br>";
+            $html .= "con un moto total de Bs <b>".$total."</b> (".$literal.") y el código de autorización <b>".$cod_autorizacion."</b> fue anulada.<br>";
             //$direccion = base_url("tufactura/verfactura/".md5($venta_id));
             //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
             //$html .= "<br>Tambien le enviamos los archivos en formato PDF y XML adjuntos";

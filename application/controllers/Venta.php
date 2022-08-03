@@ -1155,7 +1155,11 @@ class Venta extends CI_Controller{
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'><b>NIT/CI/CEX:</b></td>";
-                                        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_nit']."</td>";
+                                        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_nit']."  ";
+                                                                               if($factura[0]['cdi_codigoclasificador']!=5){
+                                        $micad .=                                  $factura[0]["cliente_complementoci"];
+                                                                               }
+                                        $micad .= "                                </td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'><b>COD. CLIENTE:</b></td><!-- PONER CODIGO DE CLIENTE -->";
@@ -1182,7 +1186,9 @@ class Venta extends CI_Controller{
                                                                             $cantidad = 0;";
                                                                             $total_descuento = 0;
                                                                             $total_final = 0;
+                                                                            $total_subtotal = 0;
                                                                             $mostrarice = 0;
+                                                                            $ice = 0;
                                                                             if($factura[0]['estado_id']<>3){
                                                                                 foreach($detalle_factura as $d){;
                                                                                     $cont = $cont+1;
@@ -1210,7 +1216,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                                <td style='font-size: 8pt; padding: 0;'>";
                                         $micad .=                                     number_format($d['detallefact_cantidad'],2,'.',',')." X ";
                                         $micad .=                                     number_format($d['detallefact_precio'],2,'.',',')." - ";
-                                        $micad .=                                     number_format($d['detallefact_descuento'],2,'.',','); //." + "; //."0.00 +  0.00";
+                                        $micad .=                                     number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),2,'.',','); //." + "; //."0.00 +  0.00";
                                                                                     if ($mostrarice==1){
                                         $micad .= "                                         + ".number_format($d['detallefact_ice'],2,'.',',')." + ";
                                         $micad .=                                         number_format($d['detallefact_iceesp'],2,'.',',');
@@ -1224,13 +1230,15 @@ class Venta extends CI_Controller{
                                         $micad .= "                    </table>";
                                         $micad .= "                    </td>";
                                         $micad .= "                </tr>";
+                                                                $total_final_factura = $factura[0]['factura_subtotal']; 
+                                                                $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
                                         $micad .= "                <tr>";
                                         $micad .= "                    <td colspan='4' style='padding: 0'>";
                                         $micad .= "                        <table style='width: ".$ancho."; font-size: 8pt !important' >";
                                         $micad .= "                            <tr style='border-top-style: dotted; border-top-width: 1px;'>";
                                         $micad .= "                                <td class='text-right' style='text-align: right'>SUBTOTAL Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right'>".number_format($factura[0]['factura_subtotal'],2,'.',',')."</td>";
+                                        $micad .= "                                <td class='text-right'>".number_format($total_final_factura,2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right' style='text-align: right'>(-) DESCUENTO Bs</td>";
@@ -1238,33 +1246,43 @@ class Venta extends CI_Controller{
                                         $micad .= "                                <td class='text-right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>TOTAL Bs</td>";
+                                        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right text-bold'>".number_format($factura[0]['factura_total'],2,'.',',')."</td>";
+                                        $micad .= "                                <td class='text-right'>".number_format($factura[0]['factura_total'],2,'.',',')."</td>";
+                                        $micad .= "                            </tr>";
+                                        $micad .= "                            <tr>";
+                                        $micad .= "                                <td class='text-right' style='text-align: right'>MONTO GIFT CARD Bs</td>";
+                                        $micad .= "                                <td></td>";
+                                        $micad .= "                                <td class='text-right'>".number_format($factura[0]['factura_giftcard'],2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                                                                 if ($mostrarice==1){
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right' style='text-align: right'>(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right'>"."0.00"; //number_format($factura[0]['factura_ice'],2,'.',',');
+                                        $micad .= "                                <td class='text-right'>".number_format($ice,2,'.',','); //number_format($factura[0]['factura_ice'],2,'.',',');
                                         $micad .= "                                </td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right' style='text-align: right'>(-) TOTAL ICE PORCENTUAL Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right'> "."0.00"; //number_format($factura[0]['factura_iceesp'],2,'.',',');
+                                        $micad .= "                                <td class='text-right'> ".number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',',');
                                         $micad .= "                                </td>";
                                         $micad .= "                            </tr>";
                                                                                 }
                                         $micad .= "                            <tr>";
+                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'><b>MONTO A PAGAR Bs</b></td>";
+                                        $micad .= "                                <td></td>";
+                                        $micad .= "                                <td class='text-right text-bold'><b>".number_format($factura_total,2,'.',',')."</b></td>";
+                                        $micad .= "                            </tr>";
+                                        $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right text-bold' style='text-align: right'><b>IMPORTE BASE CR&Eacute;DITO FISCAL</b></td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right text-bold'><b>".number_format($factura[0]['factura_subtotal'],2,'.',',')."</b></td>";
+                                        $micad .= "                                <td class='text-right text-bold'><b>".number_format($factura_total,2,'.',',')."</b></td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
-                                        $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px'>";
+                                        $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px; font-size: 10px; font-weight: bold'>";
                                         $micad .= "                                    <br>";
-                                        $micad .= "                                    SON: ".num_to_letras($factura[0]['factura_total'],' Bolivianos');
+                                        $micad .= "                                    SON: ".num_to_letras($factura_total,' Bolivianos');
                                         $micad .= "                                </td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                        </table>";
@@ -1276,11 +1294,12 @@ class Venta extends CI_Controller{
                                         $micad .= "                        <span style='font-size: 8.5pt'><p>".$factura[0]['factura_leyenda1']."</p></span>";
                                         $micad .= "                        <span style='font-size: 8pt !important;'><div style='line-height: 1.1;'>".$factura[0]['factura_leyenda2']."</div></span>";
                                         $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda3']."</p></span>";
-                                        $micad .= "                        <span style='font-size: 6.5pt !important'>";
+                                        $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda3']."</p></span>";
+                                        /*$micad .= "                        <span style='font-size: 6.5pt !important'>";
                                                                            if ($factura[0]['factura_tipoemision']==2){
                                         $micad .= "                            <p style='padding-bottom: 0px'><b>Este documento es la representación gráfica de un Documento Fiscal Digital emitido fuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b></p>";
                                                                            }
-                                        $micad .= "                        </span>";
+                                        $micad .= "                        </span>";*/
                                         $micad .= "                    </center>";
                                         $micad .= "                    </td>";   
                                         $micad .= "                </tr>";
@@ -1456,7 +1475,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
                                         $micad .= "                            <tr>"; 
                                         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; ' class='autoColor'><b>NIT/CI/CEX:</b></td>"; 
-                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_nit'];
+                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_nit']."  ";
                                                                                     if ($factura[0]['cdi_codigoclasificador']!=5){
                                         $micad .=                                        $factura[0]["cliente_complementoci"];
                                                                                     }
@@ -1484,7 +1503,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                            <td align='center'><b>UNIDAD <br>DE MEDIDA</b></td>"; 
                                         $micad .= "                            <td align='center'><b>DESCRIPCI&Oacute;N</b></td>"; 
                                         $micad .= "                            <td align='center'><b>PRECIO<br> UNITARIO</b></td>"; 
-                                        $micad .= "                            <td align='center'><b>DESC.</b></td>"; 
+                                        $micad .= "                            <td align='center'><b>DESCUENTO</b></td>"; 
                                                                     if ($mostrarice==1){ 
                                         $micad .= "                            <td align='center'><b>ICE %</b></td>"; 
                                         $micad .= "                            <td align='center'><b>ICE ESP.</b></td>"; 
@@ -1509,7 +1528,7 @@ class Venta extends CI_Controller{
                                                                             $total_final += $d['detallefact_total'];  
                                         $micad .= "                        <tr style='border: 1px solid black'>"; 
                                         $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".$d['detallefact_codigo']."</font></td>"; 
-                                        $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'><font style='size:7px; font-family: arial'><center>".$d['detallefact_cantidad']."</center></font></td>"; 
+                                        $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_cantidad'],2,'.',',')."</font></td>"; 
                                         $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'><center>".$d['producto_unidad']."</center></font></td>"; 
                                         $micad .= "                            <td colspan='1' style='padding: 0; line-height: 10px;'>"; 
                                         $micad .= "                                <font style='size:7px; font-family: arial; padding-left:3px'> "; 
@@ -1522,7 +1541,7 @@ class Venta extends CI_Controller{
                                                                             } 
                                         $micad .= "                                </font>"; 
                                         $micad .= "                            </td>"; 
-                                        $micad .= "                            <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',',')."</font></td>"; 
+                                        $micad .= "                            <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_precio'],2,'.',',')."</font></td>"; 
                                         $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',',')."</td>"; 
                                                                     if($mostrarice==1){ 
                                         $micad .= "                                <td align='right' style='padding-right: 3px;'>".number_format($ice,2,'.',',')."</td>"; 
@@ -1532,10 +1551,11 @@ class Venta extends CI_Controller{
                                         $micad .= "                        </tr>"; 
                                                              }} 
                                                                 $total_final_factura = $factura[0]['factura_subtotal']; 
+                                                                $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
                                                                 $span = ($mostrarice==1)? 3: 2; 
                                         $micad .= "                    <!-------------- SUB TOTAL ---------->"; 
                                         $micad .= "                    <tr>"; 
-                                        $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'><b style='font-family: Arial; size:9px;'>SON: ".num_to_letras($total_final_factura,' Bolivianos')."</b></td>"; 
+                                        $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'><b style='font-family: Arial; size:9px;'>SON: ".num_to_letras($factura_total,' Bolivianos')."</b></td>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>SUBTOTAL Bs</td>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($total_final_factura,2,'.',',')."</td>"; 
                                         $micad .= "                    </tr>"; 
@@ -1556,6 +1576,11 @@ class Venta extends CI_Controller{
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'><b>TOTAL Bs</b></td>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'><b>".number_format($factura[0]['factura_total'] ,2,'.',',')."</b></td>"; 
                                         $micad .= "                    </tr>"; 
+                                          $micad .= "                          <!-------------- FACTURA GIFTA CARD ---------->";
+                                          $micad .= "      <tr>";
+                                          $micad .= "          <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'><b>MONTO GIFT CARD Bs</b></td>";
+                                          $micad .= "          <td style='padding:0; padding-right: 3px;' align='right'><b>".number_format($factura[0]['factura_giftcard'] ,2,'.',',')."</b></td>";
+                                          $micad .= "      </tr>";
                                         $micad .= "                    <!-------------- ICE / ICE ESPECIFICO ---------->"; 
                                                             if($mostrarice==1){
                                         $micad .= "                    <tr>"; 
@@ -1567,10 +1592,15 @@ class Venta extends CI_Controller{
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ice,2,'.',',')."</td>"; 
                                         $micad .= "                    </tr>"; 
                                                              } 
+                                        $micad .= "                                             <!-------------- MONTO A PAGAR ---------->";
+                                        $micad .= "    <tr>           ";
+                                        $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'><b>MONTO A PAGAR Bs</b></td>";
+                                        $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'><b>".number_format($factura_total,2,'.',',')."</b></td>";
+                                        $micad .= "    </tr>";
                                         $micad .= "                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->"; 
                                         $micad .= "                    <tr>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'><b>IMPORTE BASE<br>CR&Eacute;DITO FISCAL</b></td>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'><b>".number_format($factura[0]['factura_total'] ,2,'.',',')."</b></td>"; 
+                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'><b>".number_format($factura_total ,2,'.',',')."</b></td>"; 
                                         $micad .= "                    </tr>"; 
                                         $micad .= "                </table>"; 
                                         $micad .= "            </td>"; 
@@ -1845,7 +1875,7 @@ class Venta extends CI_Controller{
                     factura_efectivo, factura_cambio, tipotrans_id, factura_leyenda3, factura_leyenda4, factura_excepcion) value(".
                     $estado_id.",'".$factura_fechaventa."',".
                     $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-                    $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                    $factura_ice.",".$factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
                     $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".
@@ -3154,7 +3184,7 @@ function modificarcliente()
             }
             else{
                 //si el cliente ingresa con nit 0 se debe
-                              
+                $cliente_nit = str_replace("'","",$cliente_nit);
                 $datos = $this->Venta_model->buscar_cliente($cliente_nit); 
                 
                 if (sizeof($datos)>0){
@@ -3845,12 +3875,12 @@ function anular_venta($venta_id){
 //                       " cliente_id = ".$cliente_id;
             
             $sql = "SELECT c.cliente_id ,c.cliente_nit ,c.cliente_razon ,c.cliente_telefono ,c.cliente_nombre ,c.cliente_ci ,c.cliente_nombrenegocio ,c.cliente_codigo ,
-                    c.tipocliente_id ,c.cliente_direccion ,c.cliente_departamento ,c.cliente_celular,
+                    c.tipocliente_id ,c.cliente_direccion ,c.cliente_departamento ,c.cliente_celular, c.cliente_email, c.cliente_complementoci,
                     ifnull(c.cdi_codigoclasificador, 5) as cdi_codigoclasificador,t.tipocliente_descripcion, t.tipocliente_montodesc,t.tipocliente_porcdesc
                     from cliente c
                     left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id
                     where 
-                    c.cliente_id = $cliente_id";
+                    c.cliente_id = '$cliente_id'";
 
             //echo "revisar: ".$sql;
             $resultado = $this->Venta_model->consultar($sql);
@@ -4492,7 +4522,8 @@ function anular_venta($venta_id){
             }
             if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
                 // el parametro uno es para computarizada en linea ojo
-                $computarizada_enlinea = 1;
+                // $computarizada_enlinea = 1;
+                $computarizada_enlinea = $this->parametros['parametro_tiposistema'];
                 $factura = $this->Factura_model->get_factura_id($factura_id);
                 $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
                 $empresa = $this->Empresa_model->get_empresa(1);
@@ -4502,9 +4533,9 @@ function anular_venta($venta_id){
                 $base_url = explode('/', base_url());
                 //$doc_xml = site_url("resources/xml/$archivoXml.xml");
                 $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-                
+                $xsd = $computarizada_enlinea == 1 ? "compra_venta.xsd":"facturaElectronicaCompraVenta.xsd";
                 $valXSD = new ValidacionXSD();
-                if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}compra_venta.xsd")){
+                if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}{$xsd}")){
                     // echo "No ingreso";
                     print $valXSD->mostrarError();
                 }else{
