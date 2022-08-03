@@ -421,7 +421,27 @@ window.onkeydown = compruebaTecla;
                     <?php }
                     ?>
             <input type="checkbox" class="form-check-input" id="codigoexcepcion"><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
-            <?php } ?>
+            <?php }  ?>
+            
+            <?php if ($parametro["parametro_tiposistema"]!=1){ ?>
+                
+            <select class="btn btn-facebook btn-xs" id="evento_contingencia" onchange="cargar_contingencia()" >
+                    <option value="0">- SIN CONTINGENCIA -</option>
+                        <?php 
+                                foreach($eventos as $evento){ ?>
+                                    <option value="<?= $evento["registroeventos_codigo"]; ?>"><?= $evento["registroeventos_fecha"]." ".$evento["registroeventos_detalle"]; ?></option>
+                        <?php } ?>
+
+                </select>
+            
+            <?php }else{ ?>
+                           
+                    <input type="hidden" id="evento_contingencia" value="0" />
+
+            <?php    }  ?>
+
+            
+            
         </h4>
         <div class="row" id='loader_documento' style='display:none;'>
             <center>
@@ -785,9 +805,13 @@ window.onkeydown = compruebaTecla;
 
             <center>
             <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+<!--            <a href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;" id="boton_finaventa">
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar Venta <br>
-            </a>
+            </a>-->
+
+            <button href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;" id="boton_finventa">
+                <i class="fa fa-money fa-4x"></i><br><br>Finalizar Venta <br>
+            </button>
             <?php } ?>
 
             <?php if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
@@ -980,7 +1004,33 @@ window.onkeydown = compruebaTecla;
                             <input id="total_descuento" name="total_descuento" value="<?php echo $total_descuento; ?>">
                             
             </div>
-                 
+        
+        <!-------------------------------------------------------------------->
+        <!----------------- DATOS FACTURA CAFC ----------------------------------->
+        <div class="row" id="div_cafc" style="display:none">
+            
+            
+            <div class="col-md-6">
+                <h5 class="modal-title" id="myModalLabel"><b>FECHA</b></h5>                                        
+                <input type="date" id="fecha_cafc" class="btn btn-default btn-xs" style="width: 160px;" value="<?= date("Y-m-d"); ?>"/>
+            </div>
+            
+            
+            <div class="col-md-3">
+                <h5 class="modal-title" id="myModalLabel"><b>NRO.FACT.</b></h5>
+                <input type="number" id="numfact_cafc" class="btn btn-default btn-xs" style="width: 120px;"/>
+            </div>
+            
+            <div class="col-md-3">
+                <h5 class="modal-title" id="myModalLabel"><b>COD. CAFC</b></h5>
+                <input type="text" id="codigo_cafc" class="btn btn-default btn-xs" style="width: 120px;" value="<?php echo $dosificacion[0]["dosificacion_cafc"]; ?>"/>
+            </div>
+            
+            
+        </div>
+                    
+        <!-------------------------------------------------------------------->
+        
         <div class="row">
             
             

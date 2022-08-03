@@ -27,7 +27,7 @@
         <montoGiftCard></montoGiftCard>        
         <descuentoAdicional></descuentoAdicional>
         <codigoExcepcion></codigoExcepcion>  
-        <cafc xsi:nil="true"></cafc>
+        <cafc xsi:nil="false"></cafc>
         <leyenda>Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.</leyenda>
         <usuario>pperez</usuario>
         <codigoDocumentoSector>1</codigoDocumentoSector>

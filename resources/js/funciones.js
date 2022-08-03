@@ -2771,7 +2771,28 @@ function registrarventa(cliente_id)
     var venta_ice = document.getElementById('venta_ice').value;
     var venta_giftcard = document.getElementById('venta_giftcard').value;
     var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').value;
-   
+
+
+    var registroeventos_codigo = document.getElementById('evento_contingencia').value;
+    
+    if (registroeventos_codigo>0){
+        
+        var fecha_cafc = document.getElementById('fecha_cafc').value;
+        var numfact_cafc = document.getElementById('numfact_cafc').value;
+        var codigo_cafc = document.getElementById('codigo_cafc').value;
+        
+    }else{
+        
+        var fecha_cafc = "";
+        var numfact_cafc = 0;
+        var codigo_cafc = "";
+        
+    }
+    
+    alert("registroeventos_codigo: "+registroeventos_codigo+
+          " * fecha_cafc: "+fecha_cafc+
+          " * numfact_cafc: "+numfact_cafc+
+          " * codigo_cafc: "+codigo_cafc);
     //alert(venta_efectivo);
     //alert(venta_descuento);
     if(codigoexcepcion==true){
@@ -2824,7 +2845,7 @@ function registrarventa(cliente_id)
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,
                 tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
                 venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
-                factura_complementoci:factura_complementoci 
+                factura_complementoci:factura_complementoci,fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo
             },
             success:function(respuesta){
                 let res = JSON.parse(respuesta);
@@ -2850,7 +2871,7 @@ function registrarventa(cliente_id)
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad,
                 cliente_email:cliente_email, venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
                 venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
-                factura_complementoci:factura_complementoci
+                factura_complementoci:factura_complementoci, fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo
             },
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
@@ -5239,6 +5260,26 @@ function enviarfactura_porcorreo(){
                     //tabla_inventario();
                 }
         });
+    }
+    
+}
+
+function cargar_contingencia(){
+   //alert("cargando contingencia..!");
+   
+   var tipoevento_id = document.getElementById("evento_contingencia").value;
+   
+    if (tipoevento_id == 0){
+      
+        document.getElementById("div_cafc").style.display = "none";      
+        document.getElementById("codigoexcepcion").checked = false;
+  
+    }else{
+      
+        document.getElementById("div_cafc").style.display = "block";
+        $("#boton_finventa").click();
+        document.getElementById("codigoexcepcion").checked = true;
+        
     }
     
 }

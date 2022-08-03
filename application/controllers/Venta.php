@@ -158,6 +158,7 @@ class Venta extends CI_Controller{
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
+        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos");
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
@@ -432,6 +433,11 @@ class Venta extends CI_Controller{
                 $venta_ice = $this->input->post('venta_ice');
                 $forma_id = $this->input->post('forma_id');
                 $factura_complementoci = $this->input->post('factura_complementoci');
+                
+                $fecha_cafc = $this->input->post('fecha_cafc');
+                $numfact_cafc = $this->input->post('numfact_cafc');
+                $codigo_cafc = $this->input->post('codigo_cafc');
+                $registroeventos_codigo = $this->input->post('registroeventos_codigo');
         
                 //******** ACTUALIZAR LA TABLA detalle_Venta_aux
                 
@@ -778,6 +784,18 @@ class Venta extends CI_Controller{
                             $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($punto_venta['cufd_codigo']); //$dosificacion[0]['dosificacion_cufd']);
                             $factura_codigocliente = $cliente_codigo;
         
+
+                            
+                            if($registroeventos_codigo>0){
+                                
+                                $factura_fecha = "'".$fecha_cafc."'";
+                                $factura_numero = $numfact_cafc;
+                                $factura_cafc = $codigo_cafc;                                    
+                                
+                                $factura_fecha_hora = (new DateTime())->format('H:i:s.v');
+                                $factura_fecha_hora = $fecha_cafc."T".$factura_fecha_hora;
+                            }
+                            
                             $cadFechahora = str_replace("-", "", $factura_fecha_hora);
                             $cadFechahora = str_replace("T", "", $cadFechahora);
                             $cadFechahora = str_replace(":", "", $cadFechahora);
@@ -786,7 +804,8 @@ class Venta extends CI_Controller{
                             $tipo_factura = $dosificacion[0]['tipofac_codigo'];
                             $tipo_documento_sector = $dosificacion[0]['docsec_codigoclasificador'];
                             $pos = $punto_venta['puntoventa_codigo']; //$dosificacion[0]['dosificacion_puntoventa'];
-        
+
+                                                        
                             // LLAMANDO AL HELPER
                             $factura_cuf = generarCuf(trim($factura_nitemisor),
                                                     trim($cadFechahora),
@@ -838,14 +857,13 @@ class Venta extends CI_Controller{
                         
                                 if ($tipo_emision==2){ //1 en linea, 2 fuera de linea 3 masiva    
                                     $factura_leyenda3 =  $factura_leyenda5;
-                                    $factura_cafc = $dosificacion[0]["dosificacion_cafc"];                          
+                                    //$factura_cafc = $dosificacion[0]["dosificacion_cafc"];                          
 
-                                }else{
-                                    $factura_cafc = "";
                                 }
                                 
                                 
-                            // nuevo sistema de facturacion
+                            // nuevo sistema de facturacion                                
+                                
                             $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                                 factura_fecha, factura_hora, factura_subtotal, 
                                 factura_exento, factura_descuentoparcial, factura_descuento, factura_total, 
