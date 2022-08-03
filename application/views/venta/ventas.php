@@ -1009,9 +1009,15 @@ window.onkeydown = compruebaTecla;
         <div class="row" id="div_cafc" style="display:none">
             
             
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <h5 class="modal-title" id="myModalLabel"><b>FECHA</b></h5>                                        
-                <input type="date" id="fecha_cafc" class="btn btn-default btn-xs" style="width: 160px;" value="<?= date("Y-m-d"); ?>"/>
+                <input type="date" id="fecha_cafc" class="btn btn-default btn-xs" style="width: 120px;" value="<?= date("Y-m-d"); ?>"/>
+            </div>
+            
+            
+            <div class="col-md-3">
+                <h5 class="modal-title" id="myModalLabel"><b>HORA</b></h5>                                        
+                <input type="time" id="hora_cafc" class="btn btn-default btn-xs" style="width: 120px;" value="<?= date("Y-m-d"); ?>"/>
             </div>
             
             

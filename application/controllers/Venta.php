@@ -435,6 +435,7 @@ class Venta extends CI_Controller{
                 $factura_complementoci = $this->input->post('factura_complementoci');
                 
                 $fecha_cafc = $this->input->post('fecha_cafc');
+                $hora_cafc = $this->input->post('hora_cafc');
                 $numfact_cafc = $this->input->post('numfact_cafc');
                 $codigo_cafc = $this->input->post('codigo_cafc');
                 $registroeventos_codigo = $this->input->post('registroeventos_codigo');
@@ -792,8 +793,9 @@ class Venta extends CI_Controller{
                                 $factura_numero = $numfact_cafc;
                                 $factura_cafc = $codigo_cafc;                                    
                                 
-                                $factura_fecha_hora = (new DateTime())->format('H:i:s.v');
-                                $factura_fecha_hora = $fecha_cafc."T".$factura_fecha_hora;
+                                //$factura_fecha_hora = (new DateTime())->format('H:i:s.v');
+                                $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
+                                
                             }else{
                                 $factura_cafc = "";
                             }
@@ -808,6 +810,7 @@ class Venta extends CI_Controller{
                             $pos = $punto_venta['puntoventa_codigo']; //$dosificacion[0]['dosificacion_puntoventa'];
 
                                                         
+                            $tipo_emision = 2;
                             // LLAMANDO AL HELPER
                             $factura_cuf = generarCuf(trim($factura_nitemisor),
                                                     trim($cadFechahora),

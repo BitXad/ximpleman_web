@@ -2793,21 +2793,23 @@ function registrarventa(cliente_id)
     if (registroeventos_codigo>0){
         
         var fecha_cafc = document.getElementById('fecha_cafc').value;
+        var hora_cafc = document.getElementById('hora_cafc').value;
         var numfact_cafc = document.getElementById('numfact_cafc').value;
         var codigo_cafc = document.getElementById('codigo_cafc').value;
         
     }else{
         
         var fecha_cafc = "";
+        var hora_cafc = "";
         var numfact_cafc = 0;
         var codigo_cafc = "";
         
     }
-    
-    alert("registroeventos_codigo: "+registroeventos_codigo+
-          " * fecha_cafc: "+fecha_cafc+
-          " * numfact_cafc: "+numfact_cafc+
-          " * codigo_cafc: "+codigo_cafc);
+//    
+//    alert("registroeventos_codigo: "+registroeventos_codigo+
+//          " * fecha_cafc: "+fecha_cafc+
+//          " * numfact_cafc: "+numfact_cafc+
+//          " * codigo_cafc: "+codigo_cafc);
     //alert(venta_efectivo);
     //alert(venta_descuento);
     if(codigoexcepcion==true){
@@ -2886,7 +2888,8 @@ function registrarventa(cliente_id)
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio,tipo_doc_identidad:tipo_doc_identidad,
                 cliente_email:cliente_email, venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
                 venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
-                factura_complementoci:factura_complementoci, fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo
+                factura_complementoci:factura_complementoci, fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, 
+                codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo, hora_cafc:hora_cafc
             },
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
