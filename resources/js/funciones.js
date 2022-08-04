@@ -3296,19 +3296,23 @@ function tabla_ventas(filtro)
                         html += "<span style='padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small> ENVIADA </small></b></span> ";
                     
                     }else{
-
-                         if (paquete==null ){
-                             
-                              html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['factura_id']+");'>";
-                              html += "<fa class='fa fa-chain-broken'> </fa> <small>NO ENVIADA</small> </button>";
-
+    
+                        if(v[i]['factura_enviada'] == 2){
+                            html += "<span style='padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small> VALIDADA </small></b></span> ";
                         }else{
-                                                           
-                              html += "<button type='button' class='btn btn-warning btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalvalidacion' onclick='cargar_codigovalidacion("+JSON.stringify(paquete)+");'>";
-                              html += "<fa class='fa fa-chain'> </fa> VALID. PENDIENTE </button>";
-                              
-                         }
-                             
+                        
+                                if (paquete==null ){
+
+                                      html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['factura_id']+");'>";
+                                      html += "<fa class='fa fa-chain-broken'> </fa> <small>NO ENVIADA</small> </button>";
+
+                                }else{
+
+                                      html += "<button type='button' class='btn btn-warning btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalvalidacion' onclick='cargar_codigovalidacion("+JSON.stringify(paquete)+","+v[i]['factura_id']+");'>";
+                                      html += "<fa class='fa fa-chain'> </fa> VALID. PENDIENTE </button>";
+
+                                 }
+                        }     
                         
                     }
                     
@@ -5194,10 +5198,11 @@ function cargar_eventos(factura_id){
    
 }
 
-function cargar_codigovalidacion(codigo_recepcion){
+function cargar_codigovalidacion(codigo_recepcion,factura_id){
     
     //alert(codigo_recepcion);
     $("#codigo_recepcion").val(codigo_recepcion);
+    $("#factura_id").val(factura_id);
    
 }
 

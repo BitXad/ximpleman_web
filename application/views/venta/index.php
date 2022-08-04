@@ -552,6 +552,8 @@
                 <div class="col-md-12">
                     <label for="codigo_recepcion" class="control-label"><span class="text-danger">*</span>Codigo Recepción</label>
                     <div class="form-group">
+                        
+                        <input type="text" name="factura_id" class="form-control" id="factura_id" />
                         <input type="text" name="codigo_recepcion" class="form-control" id="codigo_recepcion" />
                     </div>
                 </div>

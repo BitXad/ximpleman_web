@@ -167,13 +167,14 @@ function emisionpaquetes_vacio(){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'emision_paquetes/registroEmisionPaquetes_vacio';
     let codigo_recepcion = document.getElementById('codigo_recepcion').value;
+    let factura_id = document.getElementById('factura_id').value;
     if(codigo_recepcion == ""){
         alert("El codigo de recepcion no debe ser vacio");
     }else{
         document.getElementById('loader').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
-                data:{codigo_recepcion:codigo_recepcion},
+                data:{codigo_recepcion:codigo_recepcion, factura_id: factura_id},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
                         console.log(registros);
