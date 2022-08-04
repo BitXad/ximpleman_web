@@ -1307,7 +1307,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                        <span style='font-size: 8.5pt'><p>".$factura[0]['factura_leyenda1']."</p></span>";
                                         $micad .= "                        <span style='font-size: 8pt !important;'><div style='line-height: 1.1;'>".$factura[0]['factura_leyenda2']."</div></span>";
                                         $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda3']."</p></span>";
-                                        $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda3']."</p></span>";
+                                        $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda4']."</p></span>";
                                         /*$micad .= "                        <span style='font-size: 6.5pt !important'>";
                                                                            if ($factura[0]['factura_tipoemision']==2){
                                         $micad .= "                            <p style='padding-bottom: 0px'><b>Este documento es la representación gráfica de un Documento Fiscal Digital emitido fuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b></p>";
@@ -1612,7 +1612,7 @@ class Venta extends CI_Controller{
                                         $micad .= "    </tr>";
                                         $micad .= "                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->"; 
                                         $micad .= "                    <tr>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'><b>IMPORTE BASE<br>CR&Eacute;DITO FISCAL</b></td>"; 
+                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'><b>IMPORTE BASE CR&Eacute;DITO FISCAL</b></td>"; 
                                         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'><b>".number_format($factura_total ,2,'.',',')."</b></td>"; 
                                         $micad .= "                    </tr>"; 
                                         $micad .= "                </table>"; 
