@@ -140,7 +140,7 @@
         <div class="col-md-6">
             <label for="ces_fechainicio" class="control-label">Fecha Inicio</label>
             <div class="form-group">
-                <input type="datetime-local" name="ces_fechainicio" value="<?= Date("d/m/y");  ?>" class="form-control" id="ces_fechainicio" onchange="seleccionar_cufd()"/>
+                <input type="datetime-local" name="ces_fechainicio" value="<?= Date("d/m/y");  ?>" class="form-control" id="ces_fechainicio"/>
             </div>
         </div>
           
@@ -154,8 +154,14 @@
         
       </div>
 
-        <div class="col-md-12">
-            <label for="dosificacion_cufd" class="control-label">CUFD DEL EVENTO</label>
+        <div class="col-md-3">
+            <label for="ces_fechainicio" class="control-label">Buscar</label>
+            <div class="form-group">
+                <input type="date" name="ces_fechainicio" value="<?= Date("d/m/y");  ?>" class="form-control" id="buscar_fecha" onchange="seleccionar_cufd()"/>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <label for="dosificacion_cufd" class="control-label">CUFD del evento</label>
             <div class="form-group">
 
                 <select id="select_cufd" class="form-control">

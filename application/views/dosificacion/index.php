@@ -192,7 +192,8 @@
             </div>
            <div class="col-md-1">
                 <label class="control-label">Codigo Unico de Facturación Diaria (CUFD) </label>
-                <button class="btn btn-info btn-xs" onclick="solicitudCufd()"><fa class="fa fa-download"></fa> Solicitar CUFD</button>
+                <!--<button class="btn btn-info btn-xs" onclick="solicitudCufd()"><fa class="fa fa-download"></fa> Solicitar CUFD</button>-->
+                <a href="<?php echo base_url("punto_venta"); ?>" class="btn btn-info btn-xs" onclick="solicitudCufd()"><fa class="fa fa-download"></fa> Solicitar CUFD</a>
                 <div class="row" id='loader_cufd' style='display:none; text-align: center'>
                     <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
                 </div>

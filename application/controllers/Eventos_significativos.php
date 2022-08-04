@@ -29,6 +29,7 @@ class Eventos_significativos extends CI_Controller{
             'Unidad_model',
             'Usuario_model',
             'ProductosServicios_model',
+            'Venta_model',
         ]);
         //$this->load->library('lib_nusoap/nusoap');        
         
@@ -153,6 +154,11 @@ class Eventos_significativos extends CI_Controller{
                 $res = $resultado->RespuestaListaEventos->transaccion;
                 $mensaje = "";
                 
+                $cufdes = $this->Venta_model->consultar("select * from cufd where cufd_codigo = '".$cufd_evento."'");
+                $registroeventos_cufd = $cufdes[0]["cufd_codigo"];
+                $registroeventos_codigocontrol = $cufdes[0]["cufd_codigocontrol"];
+                
+                
                 if ($res){
 //                    
 //                    var_dump($resultado);
@@ -160,8 +166,8 @@ class Eventos_significativos extends CI_Controller{
 
                     $codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;
                     
-                    $sql = "insert into registro_eventos(registroeventos_codigo,registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha, registroeventos_puntodeventa, registroeventos_inicio,registroeventos_fin) value('".
-                            $codigo_recepcion."',".$codigo_evento.",'".$descripcion."',now(),".$puntodeventa.",'".$fecha_inicio."','".$fecha_fin."')";
+                    $sql = "insert into registro_eventos(registroeventos_codigo,registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha, registroeventos_puntodeventa, registroeventos_inicio,registroeventos_fin,registroeventos_cufd,registroeventos_codigocontrol ) value('".
+                            $codigo_recepcion."',".$codigo_evento.",'".$descripcion."',now(),".$puntodeventa.",'".$fecha_inicio."','".$fecha_fin."','".$registroeventos_cufd."','".$registroeventos_codigocontrol."')";
                     
                     $this->Eventos_significativos_model->ejecutar($sql);
                     $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;

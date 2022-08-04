@@ -405,11 +405,13 @@ border-bottom : 1px solid #aaa;
                     </tr>
                     
                     <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
+                    <?php if ($factura_total>0){ ?>
                     <tr>           
                         
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>IMPORTE BASE<br>CR&Eacute;DITO FISCAL</b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',')?></b></td>
                     </tr>
+                    <?php } ?>
                 </table>
             </td>
         </tr>

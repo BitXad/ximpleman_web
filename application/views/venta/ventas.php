@@ -424,15 +424,16 @@ window.onkeydown = compruebaTecla;
             
             <?php if ($parametro["parametro_tiposistema"]!=1){ ?>
                 
-            <select class="btn btn-facebook btn-xs" id="evento_contingencia" onchange="cargar_contingencia()" >
+                <select class="btn btn-facebook btn-xs" id="evento_contingencia" onchange="cargar_contingencia()" >
                     <option value="0">- SIN CONTINGENCIA -</option>
                         <?php 
                                 foreach($eventos as $evento){ ?>
-                                    <option value="<?= $evento["registroeventos_codigo"]; ?>"><?= $evento["registroeventos_fecha"]." ".$evento["registroeventos_detalle"]; ?></option>
+                    <option value="<?= $evento["registroeventos_codigo"]; ?>"><?= $evento["registroeventos_fecha"]." ".substr($evento["registroeventos_detalle"],0,30)."..."; ?></option>
                         <?php } ?>
 
                 </select>
-            
+           
+            <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-warning btn-xs" title="Registrar evento significativo"><fa class="fa fa-floppy-o"> </fa> </a>
             <?php }else{ ?>
                            
                     <input type="hidden" id="evento_contingencia" value="0" />

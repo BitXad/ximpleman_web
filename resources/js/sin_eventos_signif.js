@@ -114,7 +114,7 @@ function registrar_evento(){
     function seleccionar_cufd(){
         let base_url = $("#base_url").val();
         let controlador = `${base_url}eventos_significativos/buscar_cufd`;
-        let fecha =  document.getElementById('ces_fechainicio').value;
+        let fecha =  document.getElementById('buscar_fecha').value;
         //document.getElementById('loader').style.display = 'block';
         fecha = fecha.substring(0,10);
        // alert(fecha);
