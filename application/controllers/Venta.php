@@ -1347,7 +1347,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                font-family : 'Arial' !important;";
                                                         $base_url = explode('/', base_url());
                                                         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
-                                        $micad .= "                 src: url('"+$directorio+"fonts/arial.ttf') format('truetype');";
+                                        $micad .= "                 src: url('".$directorio."fonts/arial.ttf') format('truetype');";
                                         $micad .= "            }";
                                         $micad .= "           p {"; 
                                         $micad .= "               font-family: Arial;"; 
@@ -1640,6 +1640,31 @@ class Venta extends CI_Controller{
                                         $micad .= "                        <td style='float: right;width: 80px;'>"; 
                                         //$micad .= "                    <div style='float: right;width: 80px;'>"; 
                                         //$micad .= "                        <figure>";
+                                        
+         
+         //generamos el código qr
+                                        //$this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+        //Generador de Codigo QR
+                //cargamos la librerí­a	
+         $this->load->library('ciqrcode');
+         //$nit_emisor    = $factura[0]['factura_nitemisor'];
+        $num_fact      = $factura[0]['factura_numero'];
+        //$autorizacion  = $factura[0]['factura_autorizacion'];
+        //$fecha_factura = $factura[0]['factura_fechaventa'];
+        //$total         = $factura[0]['factura_total'];
+        //$codcontrol    = $factura[0]['factura_codigocontrol'];
+        //$nit           = $factura[0]['factura_nit'];
+         $nit_emisor    = $factura[0]['factura_nitemisor'];
+         $ruta      = $factura[0]['factura_ruta'];
+            $cuf       = $factura[0]['factura_cuf'];
+            $tamanio   = $factura[0]['factura_tamanio'];
+                 $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+         //hacemos configuraciones
+         $params['data'] = $cadenaQR;//$this->random(30);
+         $params['level'] = 'H';
+         $params['size'] = 5;
+         $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+                                                $this->ciqrcode->generate($params);
                                                                                 $base_url = explode('/', base_url());
                                                     $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
                                                     $codigoqr = $directorio.'/images/qrcode'.$usuario_id.'.png';
