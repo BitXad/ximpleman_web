@@ -261,10 +261,10 @@
         $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "{$factura['factura_total']}";
 
         //if($factura['factura_cafc'])
-        if($factura['factura_cafc'] != 0 || $factura['factura_cafc'] != ""){
-            $xml->getElementsByTagName('cafc')->item(0)->setAttribute("xsi:nil","false");
-            $xml->getElementsByTagName('cafc')->item(0)->nodeValue = "{$factura['factura_cafc']}";
-        }
+        // if($factura['factura_cafc'] != 0 || $factura['factura_cafc'] != ""){
+        //     $xml->getElementsByTagName('cafc')->item(0)->setAttribute("xsi:nil","false");
+        //     $xml->getElementsByTagName('cafc')->item(0)->nodeValue = "{$factura['factura_cafc']}";
+        // }
 
         $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "{$factura['factura_leyenda2']}";
         $xml->getElementsByTagName('usuario')->item(0)->nodeValue = "{$factura['usuario_nombre']}";
@@ -309,11 +309,14 @@
             $numeroImei = $xml->createElement('numeroImei',"{$df['detallefact_caracteristicas']}");
             $detalle->appendChild($numeroImei);
             //$id++;
-            // if($computarizada == 1){
-            //     $xml->documentElement->appendChild($detalle);
-            // }else{
-            // }
-            $xml->documentElement->appendChild($detalle);
+            if($computarizada != 1){
+                // $electronica = $xml->getElementsByTagName('cabecera')->item(0);
+                $signature = $xml->getElementsByTagName('Signature')->item(0);
+                // $xml->insertBefore($detalle);
+                $xml->documentElement->insertBefore($detalle,$signature);
+            }else{
+                $xml->documentElement->appendChild($detalle);
+            }
         }
         // DETALLE
         
@@ -336,7 +339,47 @@
         $llave_privada_url = "{$_SERVER['DOCUMENT_ROOT']}/{$base_url[3]}/resources/firmaDigital/clave_privada.pem";
         $llave_publica_url = __DIR__."/resources/firmaDigital/clave_publica.pem";
         $firma_password = ".1q2w3e4r.";
-
+        $llave_publica = "MIIGSDCCBDCgAwIBAgIIG/4haxeCBFQwDQYJKoZIhvcNAQELBQAwVDEyMDAGA1UE
+        AwwpRW50aWRhZCBDZXJ0aWZpY2Fkb3JhIEF1dG9yaXphZGEgRGlnaWNlcnQxETAP
+        BgNVBAoMCERpZ2ljZXJ0MQswCQYDVQQGEwJCTzAeFw0yMjA1MTAxODEzMDBaFw0y
+        MzA1MTAxODEzMDBaMHsxDzANBgNVBA0MBk5PUk1BTDELMAkGA1UELhMCQ0kxIzAh
+        BgNVBAMMGlJPQkVSVE8gQ0FSTE9TIFNPVE8gU0lFUlJBMRMwEQYDVQQFEwo1MTUy
+        Mzc3MDE5MQswCQYDVQQGEwJCTzEUMBIGBysGAQEBAQAMBzUxNTIzNzcwggEiMA0G
+        CSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDOp5L6igc1kZItwFf+CDhDqSP22ibr
+        XJI4bxCLlriDXEr8uFhHvUy3R9YiKDvEoxpFIawA1m0aUQkG7YPIN3DJ1LBA6EYp
+        uSf9/aeY/8RJm/6fsrVCZH4/bsZCLabKLYu1L43KgEnS77Hd9r9+xIgJR610IwBP
+        Iyp+Nr+1KKG/MV9+KRtSlxxAFslJCHK82deF8MRz+PKqSXBIsgjrH+4NeZbQOpzp
+        dASZJd4a4zjd5EoMBiCqx1iq/YW1SEeSF4y3PUjZ/HtUNph5cxulA4JOzw6LU+NZ
+        I5b/CJL2DUekin2wOx+T/BV107rSJstmrExLNOouLamVsAB1VY2c14hNAgMBAAGj
+        ggH1MIIB8TAJBgNVHRMEAjAAMB8GA1UdIwQYMBaAFHm2OnQv1jK4XhBbE8AYx6Dc
+        eS7dMGkGCCsGAQUFBwEBBF0wWzAvBggrBgEFBQcwAoYjaHR0cDovL3d3dy5kaWdp
+        Y2VydC5iby9kaWdpY2VydC5wZW0wKAYIKwYBBQUHMAGGHGh0dHA6Ly93d3cuZGln
+        aWNlcnQuYm8vb2NzcC8wJAYDVR0RBB0wG4EZci5jYXJsb3Muc290b0Bob3RtYWls
+        LmNvbTBSBgNVHSAESzBJMEcGD2BEAAAAAQ4BAgACAgABADA0MDIGCCsGAQUFBwIB
+        FiZodHRwOi8vd3d3LmRpZ2ljZXJ0LmJvL2VjcGRpZ2ljZXJ0LnBkZjAnBgNVHSUE
+        IDAeBggrBgEFBQcDAgYIKwYBBQUHAwMGCCsGAQUFBwMEMIGFBgNVHR8EfjB8MHqg
+        HqAchhpodHRwOi8vd3d3LmRpZ2ljZXJ0LmJvL2NybKJYpFYwVDEyMDAGA1UEAwwp
+        RW50aWRhZCBDZXJ0aWZpY2Fkb3JhIEF1dG9yaXphZGEgRGlnaWNlcnQxETAPBgNV
+        BAoMCERpZ2ljZXJ0MQswCQYDVQQGEwJCTzAdBgNVHQ4EFgQUPUdzkyseYaCys4Ni
+        bCVwtGCt5k8wDgYDVR0PAQH/BAQDAgTwMA0GCSqGSIb3DQEBCwUAA4ICAQCHb5VQ
+        ByC2qY7BhdhTAipcYRwjX16OzVkQUBORULH70ZrPm/xlX/SiKoyj298NCHSUX2P1
+        ah6ygkMegesRrK6yBRpL060htAmR3qZrv51kez4R3qZJXQ1FA6WRgjGQ7jErmtYk
+        hIeTqf93ToTB8af3aIEe9jDTMg3pslWSvLKtlA9cJKZN7X67huzTDBzqs3quA7Qz
+        wGJxkseEghX63ZIZYcE40u1BagdO34peMeAoVSxeFX9xU5ucXSTgRtP9VDhllI2g
+        QAdfxGSSsDWzstz3i3bdWxIHIImvEjzuJojGIk2fCok4iUsw+fGnJfE7N1vsSBeC
+        jGdJmlnsskyqy7NC+zSQg4u8Xo/8wG2EJKOMQQ5otkwD7c/Clk16XSj5a8l152uB
+        splZzkJPlnMKJul9cJ7yXTLdd6tyj3Izy7MrgfiNIx7XpACztGsH/y37KZb7xFV1
+        23X7wV8udQf/Xyk5SkejIMmFv1RGixWdAm9OJj3sd++R39ORcgIxZTAFOe+58tCQ
+        uVm8Y6vM/X+lBGpDeM3F9PDjsz9izri7y97quN7nGVpLrd3PZ7AgUMBzNx+R3uw1
+        26ZcmYsSfzeE/r1fbe1WKn3TNBGxIqfnHK6hkF4hPTCR+jPUFMOSBXHRU6jFGI0H
+        d3+lIpL15G7mdgJ6djr6ktdQyFjJPVH9vJSJBQ=="; 
+        // $llave_publica = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy0TRQ+jwY8XAxwfpsiHL
+        // U1xcffrqjVMBMUcAvwtrXugFuOY8catO52Neh1WCW/PT9pnJtcgP6GHgVx/aEoJa
+        // XzALKVDdS12giNFtQEt7VW1+qzLBv/g4HlVGcuzY5Mie/GwijgjTJNXVAfLtdV+C
+        // YmR992UEIe/FphrM2rv3qGscLawIuO704d8F9VSSo/SflJ6EnKQHqxeRNpX8gQQZ
+        // j50H/kFM+LmG2uwKiGWXhoujgq0pkMTBgt17KE0x7xe8nGae0rweTiQOf84w6xLr
+        // kHTAfViIxVySq0KaDhfXChuaSw3aH1U67YHFZ4XeHuR0aIoQ+V1P6Ey8Y3sl9o3f
+        // gQIDAQAB";
         $xml = new DOMDocument();
         // $doc_xml = site_url($direccion);
         $xml->load($direccion);
@@ -359,9 +402,10 @@
             // $signature->appendChild($digest);
             $xml->getElementsByTagName('DigestValue')->item(0)->nodeValue = "$xml_base64";
             // 6. Tomar la sección de la firma y obtener un HASH del mismo aplicando el algoritmo SHA256.
-            $hash_firma = hash_file('sha256',$firma_url);
+            // $hash_firma = hash_file('sha256',$firma_url);
+            $hash_firma = hash('sha256',$llave_publica);
             // 7. Encriptar el HASH obtenido utilizando el algoritmo RSA SHA256 con la llave privada.
-            $llave_privada = openssl_pkey_get_private($llave_privada_url, $firma_password);
+            // $llave_privada = openssl_pkey_get_private($llave_privada_url, $firma_password);
             $fp = fopen ($llave_privada_url,"r");
             $priv_key = fread ($fp,8192);
             // fclose($fp);
@@ -376,40 +420,7 @@
             // $xml->appendChild($xml_firma_b64);
             // // 10. Finalmente colocar en la etiqueta X509 Certificate la llave publica.
             
-            $llave_publica = "MIIGSDCCBDCgAwIBAgIIG/4haxeCBFQwDQYJKoZIhvcNAQELBQAwVDEyMDAGA1UE
-            AwwpRW50aWRhZCBDZXJ0aWZpY2Fkb3JhIEF1dG9yaXphZGEgRGlnaWNlcnQxETAP
-            BgNVBAoMCERpZ2ljZXJ0MQswCQYDVQQGEwJCTzAeFw0yMjA1MTAxODEzMDBaFw0y
-            MzA1MTAxODEzMDBaMHsxDzANBgNVBA0MBk5PUk1BTDELMAkGA1UELhMCQ0kxIzAh
-            BgNVBAMMGlJPQkVSVE8gQ0FSTE9TIFNPVE8gU0lFUlJBMRMwEQYDVQQFEwo1MTUy
-            Mzc3MDE5MQswCQYDVQQGEwJCTzEUMBIGBysGAQEBAQAMBzUxNTIzNzcwggEiMA0G
-            CSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDOp5L6igc1kZItwFf+CDhDqSP22ibr
-            XJI4bxCLlriDXEr8uFhHvUy3R9YiKDvEoxpFIawA1m0aUQkG7YPIN3DJ1LBA6EYp
-            uSf9/aeY/8RJm/6fsrVCZH4/bsZCLabKLYu1L43KgEnS77Hd9r9+xIgJR610IwBP
-            Iyp+Nr+1KKG/MV9+KRtSlxxAFslJCHK82deF8MRz+PKqSXBIsgjrH+4NeZbQOpzp
-            dASZJd4a4zjd5EoMBiCqx1iq/YW1SEeSF4y3PUjZ/HtUNph5cxulA4JOzw6LU+NZ
-            I5b/CJL2DUekin2wOx+T/BV107rSJstmrExLNOouLamVsAB1VY2c14hNAgMBAAGj
-            ggH1MIIB8TAJBgNVHRMEAjAAMB8GA1UdIwQYMBaAFHm2OnQv1jK4XhBbE8AYx6Dc
-            eS7dMGkGCCsGAQUFBwEBBF0wWzAvBggrBgEFBQcwAoYjaHR0cDovL3d3dy5kaWdp
-            Y2VydC5iby9kaWdpY2VydC5wZW0wKAYIKwYBBQUHMAGGHGh0dHA6Ly93d3cuZGln
-            aWNlcnQuYm8vb2NzcC8wJAYDVR0RBB0wG4EZci5jYXJsb3Muc290b0Bob3RtYWls
-            LmNvbTBSBgNVHSAESzBJMEcGD2BEAAAAAQ4BAgACAgABADA0MDIGCCsGAQUFBwIB
-            FiZodHRwOi8vd3d3LmRpZ2ljZXJ0LmJvL2VjcGRpZ2ljZXJ0LnBkZjAnBgNVHSUE
-            IDAeBggrBgEFBQcDAgYIKwYBBQUHAwMGCCsGAQUFBwMEMIGFBgNVHR8EfjB8MHqg
-            HqAchhpodHRwOi8vd3d3LmRpZ2ljZXJ0LmJvL2NybKJYpFYwVDEyMDAGA1UEAwwp
-            RW50aWRhZCBDZXJ0aWZpY2Fkb3JhIEF1dG9yaXphZGEgRGlnaWNlcnQxETAPBgNV
-            BAoMCERpZ2ljZXJ0MQswCQYDVQQGEwJCTzAdBgNVHQ4EFgQUPUdzkyseYaCys4Ni
-            bCVwtGCt5k8wDgYDVR0PAQH/BAQDAgTwMA0GCSqGSIb3DQEBCwUAA4ICAQCHb5VQ
-            ByC2qY7BhdhTAipcYRwjX16OzVkQUBORULH70ZrPm/xlX/SiKoyj298NCHSUX2P1
-            ah6ygkMegesRrK6yBRpL060htAmR3qZrv51kez4R3qZJXQ1FA6WRgjGQ7jErmtYk
-            hIeTqf93ToTB8af3aIEe9jDTMg3pslWSvLKtlA9cJKZN7X67huzTDBzqs3quA7Qz
-            wGJxkseEghX63ZIZYcE40u1BagdO34peMeAoVSxeFX9xU5ucXSTgRtP9VDhllI2g
-            QAdfxGSSsDWzstz3i3bdWxIHIImvEjzuJojGIk2fCok4iUsw+fGnJfE7N1vsSBeC
-            jGdJmlnsskyqy7NC+zSQg4u8Xo/8wG2EJKOMQQ5otkwD7c/Clk16XSj5a8l152uB
-            splZzkJPlnMKJul9cJ7yXTLdd6tyj3Izy7MrgfiNIx7XpACztGsH/y37KZb7xFV1
-            23X7wV8udQf/Xyk5SkejIMmFv1RGixWdAm9OJj3sd++R39ORcgIxZTAFOe+58tCQ
-            uVm8Y6vM/X+lBGpDeM3F9PDjsz9izri7y97quN7nGVpLrd3PZ7AgUMBzNx+R3uw1
-            26ZcmYsSfzeE/r1fbe1WKn3TNBGxIqfnHK6hkF4hPTCR+jPUFMOSBXHRU6jFGI0H
-            d3+lIpL15G7mdgJ6djr6ktdQyFjJPVH9vJSJBQ=="; 
+            
             $xml->getElementsByTagName('X509Certificate')->item(0)->nodeValue = "$llave_publica";
 
             // $signature->appendChild($x509);
@@ -421,7 +432,7 @@
         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
         $direccion = $directorio.'compra_venta'.$factura_id.'.xml';
         $xml->save($direccion);
-        $xml->save("C:\Users\shemo\Desktop\compra_venta_18-07-2022.xml");
+        // $xml->save("C:\Users\shemo\Desktop\compra_venta_18-07-2022.xml");
         return $xml;
     }
 ?>

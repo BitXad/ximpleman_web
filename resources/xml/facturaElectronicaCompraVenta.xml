@@ -10,24 +10,24 @@
     <cufd>F00F840D939A5512913A06FC88ADEA84</cufd>
     <codigoSucursal>0</codigoSucursal>
     <direccion>Calle Juan Pablo II #54</direccion>
-    <codigoPuntoVenta xsi:nil="true" />
+    <codigoPuntoVenta />
     <fechaEmision>2019-07-26T11:00:12.208</fechaEmision>
     <nombreRazonSocial>Rios</nombreRazonSocial>
     <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
     <numeroDocumento>1548971</numeroDocumento>
     <complemento xsi:nil="true" />
     <codigoCliente>PMamani</codigoCliente>
-    <codigoMetodoPago>2</codigoMetodoPago>
-    <numeroTarjeta xsi:nil="true"></numeroTarjeta>
-    <montoGiftCard></montoGiftCard>        
+    <codigoMetodoPago>2</codigoMetodoPago>  
+    <numeroTarjeta></numeroTarjeta>
     <montoTotal>25</montoTotal>
 	  <montoTotalSujetoIva>25</montoTotalSujetoIva>
     <codigoMoneda>1</codigoMoneda>
     <tipoCambio>1</tipoCambio>
+    <montoTotalMoneda>25</montoTotalMoneda>
+    <montoGiftCard></montoGiftCard> 
     <descuentoAdicional>0</descuentoAdicional>
     <codigoExcepcion>0</codigoExcepcion>
-    <cafc></cafc>
-    <montoTotalMoneda>25</montoTotalMoneda>
+    <cafc xsi:nil="true"></cafc>
     <leyenda>Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los servicios que utilices.</leyenda>
     <usuario>pperez</usuario>
     <codigoDocumentoSector>1</codigoDocumentoSector>
@@ -50,11 +50,6 @@
     <KeyInfo>
       <X509Data>
         <X509Certificate></X509Certificate>
-        <X509SubjectName></X509SubjectName>
-        <X509IssuerSerial>
-          <X509IssuerName>1</X509IssuerName>
-          <X509SerialNumber>1</X509SerialNumber>
-        </X509IssuerSerial>
       </X509Data>
     </KeyInfo>
 </Signature>
