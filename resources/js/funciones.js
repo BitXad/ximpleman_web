@@ -5309,6 +5309,25 @@ function cargar_contingencia(){
     
 }
 
+function excepcion_nit(){
+    
+    //alert("Pasa por aqui...!!");
+    document.getElementById("codigoexcepcion").checked = true;
+    $("#razon_social").focus();
+    $("#razon_social").select();
+    
+}
+
+function cancelar_excepcion_nit(){
+    
+    //alert("Pasa por aqui...!!");
+    document.getElementById("codigoexcepcion").checked = false;
+    $("#razon_social").val("");
+    $("#nit").focus();
+    $("#nit").select();
+    
+}
+
 function borrar_datos_cliente()
 {
     
