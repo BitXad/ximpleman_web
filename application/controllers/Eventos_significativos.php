@@ -166,8 +166,9 @@ class Eventos_significativos extends CI_Controller{
 
                     $codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;
                     
-                    $sql = "insert into registro_eventos(registroeventos_codigo,registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha, registroeventos_puntodeventa, registroeventos_inicio,registroeventos_fin,registroeventos_cufd,registroeventos_codigocontrol ) value('".
-                            $codigo_recepcion."',".$codigo_evento.",'".$descripcion."',now(),".$puntodeventa.",'".$fecha_inicio."','".$fecha_fin."','".$registroeventos_cufd."','".$registroeventos_codigocontrol."')";
+                    $sql = "insert into registro_eventos(registroeventos_codigo,registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha, registroeventos_puntodeventa, registroeventos_inicio,
+                            registroeventos_fin,registroeventos_cufd,registroeventos_codigocontrol,estado_id ) value('".
+                            $codigo_recepcion."',".$codigo_evento.",'".$descripcion."',now(),".$puntodeventa.",'".$fecha_inicio."','".$fecha_fin."','".$registroeventos_cufd."','".$registroeventos_codigocontrol."',1)";
                     
                     $this->Eventos_significativos_model->ejecutar($sql);
                     $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;

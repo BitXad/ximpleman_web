@@ -159,7 +159,7 @@ class Venta extends CI_Controller{
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
-        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos");
+        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         

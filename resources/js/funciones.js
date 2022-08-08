@@ -80,11 +80,12 @@ function validar(e,opcion) {
     
     
         if (opcion==0){   //si la pulsacion proviene del telefono
-              document.getElementById('tipocliente_id').focus();
+            document.getElementById('tipocliente_id').focus();
         }
         
         if (opcion==1){   //si la pulsacion proviene del nit  
             
+            document.getElementById('nit').checked = false;
              //verificarnit();
             nit = document.getElementById('nit').value;            
             if (nit==''){
@@ -5328,6 +5329,13 @@ function cancelar_excepcion_nit(){
     
 }
 
+function seleccion_documento(){
+    $("#nit").focus();
+    $("#nit").select();
+    
+}
+
+
 function borrar_datos_cliente()
 {
     
@@ -5363,9 +5371,11 @@ function borrar_datos_cliente()
     $("#venta_ice").val("0.00");
     $("#venta_detalletransaccion").val("0");
     $("#venta_giftcard").val("0.00");
+    $("#tipo_doc_identidad").val("5");
+    
      
+    document.getElementById("codigoexcepcion").checked = false;
     document.getElementById("forma_pago").selectedIndex = 0
-    document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById('creditooculto').style.display = 'none';
     

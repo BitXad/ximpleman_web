@@ -247,24 +247,54 @@
         $xml->getElementsByTagName('codigoCliente')->item(0)->nodeValue = "{$factura['cliente_codigo']}";        
         $xml->getElementsByTagName('codigoMetodoPago')->item(0)->nodeValue = "{$factura['forma_id']}";
 
-        //if (strlen($factura['factura_detalletransaccion'])>1){
+        if (strlen($factura['factura_detalletransaccion'])>1){
+            
+            if (strlen($factura['factura_detalletransaccion'])==1){
+                
+                $xml->getElementsByTagName('numeroTarjeta')->item(0)->nodeValue = "{$factura['factura_detalletransaccion']}";
+            
+            }else{
+                
+                $codigo_tarjeta =  $factura['factura_detalletransaccion'];
+                $num_tarjeta = substr($codigo_tarjeta, 0,4)."00000000".substr($codigo_tarjeta, 12,15);
+                $xml->getElementsByTagName('numeroTarjeta')->item(0)->nodeValue = "{$num_tarjeta}";            
+            }
+            
+        }else{
             $xml->getElementsByTagName('numeroTarjeta')->item(0)->nodeValue = "{$factura['factura_detalletransaccion']}";
-        //}
+        }
+        
         $xml->getElementsByTagName('montoGiftCard')->item(0)->nodeValue = "{$factura['factura_giftcard']}"; 
         $total_creditofiscal = $factura['factura_total'] - $factura['factura_giftcard'];
         $xml->getElementsByTagName('montoTotalSujetoIva')->item(0)->nodeValue = "{$total_creditofiscal}";
         $xml->getElementsByTagName('codigoMoneda')->item(0)->nodeValue = "{$factura['moneda_codigoclasificador']}";
         $xml->getElementsByTagName('tipoCambio')->item(0)->nodeValue = "{$factura['moneda_tc']}";
         $xml->getElementsByTagName('descuentoAdicional')->item(0)->nodeValue = "{$factura['factura_descuento']}";
-        $xml->getElementsByTagName('codigoExcepcion')->item(0)->nodeValue = "{$factura['factura_excepcion']}";
+        
+        if ($factura['factura_excepcion']==1){
+            
+            if ($factura['cdi_codigoclasificador']==5){
+                $factura_excepcion = $factura['factura_excepcion'];
+            }else{
+                $factura_excepcion = 0;
+            }
+
+            $xml->getElementsByTagName('codigoExcepcion')->item(0)->nodeValue = "{$factura_excepcion}";            
+        }
+        else{
+            
+            $xml->getElementsByTagName('codigoExcepcion')->item(0)->nodeValue = "{$factura['factura_excepcion']}";
+            
+        }
+        
         $xml->getElementsByTagName('montoTotal')->item(0)->nodeValue = "{$factura['factura_total']}";
         $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "{$factura['factura_total']}";
 
         //if($factura['factura_cafc'])
-        // if($factura['factura_cafc'] != 0 || $factura['factura_cafc'] != ""){
-        //     $xml->getElementsByTagName('cafc')->item(0)->setAttribute("xsi:nil","false");
-        //     $xml->getElementsByTagName('cafc')->item(0)->nodeValue = "{$factura['factura_cafc']}";
-        // }
+         if($factura['factura_cafc'] != 0 || $factura['factura_cafc'] != ""){
+             $xml->getElementsByTagName('cafc')->item(0)->setAttribute("xsi:nil","false");
+             $xml->getElementsByTagName('cafc')->item(0)->nodeValue = "{$factura['factura_cafc']}";
+         }
 
         $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "{$factura['factura_leyenda2']}";
         $xml->getElementsByTagName('usuario')->item(0)->nodeValue = "{$factura['usuario_nombre']}";

@@ -464,6 +464,7 @@ class Parametro extends CI_Controller{
                     'parametro_tipoemision' => $this->input->post('parametro_tipoemision'),
                 );
                 $this->Parametro_model->update_parametro($parametro_id,$params);   
+                
             echo json_encode("ok");
         }
     }
