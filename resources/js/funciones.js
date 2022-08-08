@@ -9,7 +9,6 @@ function inicio(){
         
         document.getElementById('nit').focus();
         document.getElementById('nit').select();
-        
 }
 
 function calculardesc(){
@@ -5374,7 +5373,7 @@ function borrar_datos_cliente()
     $("#tipo_doc_identidad").val("5");
     
      
-    document.getElementById("codigoexcepcion").checked = false;
+    //document.getElementById("codigoexcepcion").checked = false;
     document.getElementById("forma_pago").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById('creditooculto').style.display = 'none';

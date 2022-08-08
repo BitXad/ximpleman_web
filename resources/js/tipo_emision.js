@@ -29,8 +29,9 @@ function cambiar_tipoemision()
                     var mensaje;                    
                     var opcion = confirm("ADVERTENCIA: Debe actualizar el CUFD, continuar?");
                     if (opcion == true) {
-                        window.location.href = base_url+"eventos_significativos";
-                    }
+                        window.location.href = base_url+"punto_venta";
+                }
+                
 //                       else {
 //                            mensaje = "Has clickado Cancelar";
 //                        }

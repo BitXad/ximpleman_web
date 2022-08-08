@@ -419,7 +419,7 @@ window.onkeydown = compruebaTecla;
                         
                     <?php }
                     ?>
-            <input type="checkbox" class="form-check-input" id="codigoexcepcion"><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+            <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($parametro["parametro_tipoemision"]>1)?"checked":"";?>><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
             <?php }  ?>
             
             <?php if ($parametro["parametro_tiposistema"]!=1){ ?>
