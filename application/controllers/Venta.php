@@ -1052,8 +1052,8 @@ class Venta extends CI_Controller{
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
                                 }
-                                $email = $this->input->post('cliente_email'); 
-                                if($email !=""){
+                            }
+                                
                                     /* INICIO generar el pdf */ 
                                     $micad = ""; 
                                     if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){ 
@@ -1718,10 +1718,15 @@ class Venta extends CI_Controller{
                                     $output = $dompdf->output(); 
                                     file_put_contents($directorio.'compra_venta'.$factura[0]['factura_id'].'.pdf', $output); 
                                     /* F I N  generar el pdf */ 
+                                    
+                                    if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
+                                    $email = $this->input->post('cliente_email'); 
+                                if($email !=""){
                                     $this->enviarcorreo($venta_id, $factura_id, $email);
                                 }
-                                // ******************************
                                 }
+                                // ******************************
+                                //}
 //                            }else{
 //                                echo json_encode("false");
 //                            }
