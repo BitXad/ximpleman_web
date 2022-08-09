@@ -45,6 +45,33 @@
             momentoActual = new Date();
             var today = moment(momentoActual).format('DD/MM/YYYY HH:mm:ss');
             $("#reloj").html(today);
+            
+            
+            if( navitagor.onLine ) {
+                fetch('https://www.google.com')
+                    .then(function(response) {
+
+                        if(!response.ok) {
+                            // Parece que hay acceso a Internet,
+                            // pero la respuesta no ha sido ok
+                            // También se puede comprobar el código de estado con response.status
+                            // Y hacer algo específico según el estado exacto recibido
+                            alert("conexion");
+                            throw Error(response.statusText);
+                        }
+
+                        return response;
+
+                    }).then(function(response) {
+                        // response.ok fue true
+                        console.log('ok');   
+                        resolve(response);
+                    }).catch(function(error) {
+                        console.log('Problema al realizar la solicitud: ' + error.message);
+                        reject(error);
+                    });
+        }
+
         }
         setInterval("mueveReloj()",1000);
         
