@@ -1120,6 +1120,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                                <td class='text-center' style='padding-bottom: 5px'>";
                                         $micad .= "                                     <center>";
                                                                                        $titulo1 = "FACTURA";
+                                                                                       $tipo = 1;
                                                                                     if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
                                                                                     else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";";
                                         $micad .= "                                    <b>".$titulo1."</b><br>";
@@ -1168,7 +1169,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                    <td colspan='4' style='padding: 0;'>";
                                         $micad .= "                        <table style='width: ".$ancho."'>";
                                         $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
-                                            $micad .= "                                <td class='text-right text-bold' style='padding: 0; white-space: nowrap; text-align: right'><b>NOMBRE/RAZ&Oacute;N SOCIAL:</b></td>";
+                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; white-space: nowrap; text-align: right'><b>NOMBRE/RAZ&Oacute;N SOCIAL:</b></td>";
                                         $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_razonsocial']."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
@@ -1200,8 +1201,8 @@ class Venta extends CI_Controller{
                                         $micad .= "                <tr>";
                                         $micad .= "                    <td colspan='4' style='padding: 0'>";
                                         $micad .= "                        <table style='width: ".$ancho."'>";
-                                                                            $cont = 0;";
-                                                                            $cantidad = 0;";
+                                                                            $cont = 0;
+                                                                            $cantidad = 0;
                                                                             $total_descuento = 0;
                                                                             $total_final = 0;
                                                                             $total_subtotal = 0;
@@ -1234,14 +1235,14 @@ class Venta extends CI_Controller{
                                         $micad .= "                                <td style='font-size: 8pt; padding: 0;'>";
                                         $micad .=                                     number_format($d['detallefact_cantidad'],2,'.',',')." X ";
                                         $micad .=                                     number_format($d['detallefact_precio'],2,'.',',')." - ";
-                                        $micad .=                                     number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),2,'.',','); //." + "; //."0.00 +  0.00";
+                                        $micad .=                                     number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',','); //." + "; //."0.00 +  0.00";
                                                                                     if ($mostrarice==1){
                                         $micad .= "                                         + ".number_format($d['detallefact_ice'],2,'.',',')." + ";
                                         $micad .=                                         number_format($d['detallefact_iceesp'],2,'.',',');
                                                                                     }
                                         $micad .= "                                </td>";
                                         $micad .= "                                <td style='width: 0.5cm !important;'></td>";
-                                        $micad .= "                                <td align='right' style='font-size: 8pt; padding: 0;'>". number_format($d['detallefact_subtotal'],2,'.',',')."</td>";
+                                        $micad .= "                                <td align='right' style='font-size: 8pt; padding: 0;'>". number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                                                                 }
                                                                             }
@@ -1269,9 +1270,9 @@ class Venta extends CI_Controller{
                                         $micad .= "                                <td class='text-right'>".number_format($factura[0]['factura_total'],2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>MONTO GIFT CARD Bs</td>";
+                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO GIFT CARD Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right'>".number_format($factura[0]['factura_giftcard'],2,'.',',')."</td>";
+                                        $micad .= "                                <td class='text-right text-bold'>".number_format($factura[0]['factura_giftcard'],2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                                                                 if ($mostrarice==1){
                                         $micad .= "                            <tr>";
@@ -1324,7 +1325,20 @@ class Venta extends CI_Controller{
                                         $micad .= "                <tr>";
                                         $micad .= "                    <td style='padding: 0; padding-top: 10px' colspan='4'>";
                                         $micad .= "                        <center>";
-                                        $base_url = explode('/', base_url());
+                                                $this->load->library('ciqrcode');
+                                                $num_fact      = $factura[0]['factura_numero'];
+                                                $nit_emisor    = $factura[0]['factura_nitemisor'];
+                                                $ruta      = $factura[0]['factura_ruta'];
+                                                $cuf       = $factura[0]['factura_cuf'];
+                                                $tamanio   = $factura[0]['factura_tamanio'];
+                                                $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+                                                 //hacemos configuraciones
+                                                $params['data'] = $cadenaQR;//$this->random(30);
+                                                $params['level'] = 'H';
+                                                $params['size'] = 5;
+                                                $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+                                                $this->ciqrcode->generate($params);
+                                                $base_url = explode('/', base_url());
                                                                                             $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
                                                                                             $codigoqr = $directorio.'/images/qrcode'.$usuario_id.'.png';
                                                                                             $path = $codigoqr;
@@ -1647,28 +1661,28 @@ class Venta extends CI_Controller{
                                         //$micad .= "                        <figure>";
                                         
          
-         //generamos el código qr
+                                             //generamos el código qr
                                         //$this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-        //Generador de Codigo QR
-                //cargamos la librerí­a	
-         $this->load->library('ciqrcode');
-         //$nit_emisor    = $factura[0]['factura_nitemisor'];
-        $num_fact      = $factura[0]['factura_numero'];
-        //$autorizacion  = $factura[0]['factura_autorizacion'];
-        //$fecha_factura = $factura[0]['factura_fechaventa'];
-        //$total         = $factura[0]['factura_total'];
-        //$codcontrol    = $factura[0]['factura_codigocontrol'];
-        //$nit           = $factura[0]['factura_nit'];
-         $nit_emisor    = $factura[0]['factura_nitemisor'];
-         $ruta      = $factura[0]['factura_ruta'];
-            $cuf       = $factura[0]['factura_cuf'];
-            $tamanio   = $factura[0]['factura_tamanio'];
-                 $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
-         //hacemos configuraciones
-         $params['data'] = $cadenaQR;//$this->random(30);
-         $params['level'] = 'H';
-         $params['size'] = 5;
-         $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+                                                //Generador de Codigo QR
+                                                        //cargamos la librerí­a	
+                                                 $this->load->library('ciqrcode');
+                                                 //$nit_emisor    = $factura[0]['factura_nitemisor'];
+                                                $num_fact      = $factura[0]['factura_numero'];
+                                                //$autorizacion  = $factura[0]['factura_autorizacion'];
+                                                //$fecha_factura = $factura[0]['factura_fechaventa'];
+                                                //$total         = $factura[0]['factura_total'];
+                                                //$codcontrol    = $factura[0]['factura_codigocontrol'];
+                                                //$nit           = $factura[0]['factura_nit'];
+                                                 $nit_emisor    = $factura[0]['factura_nitemisor'];
+                                                 $ruta      = $factura[0]['factura_ruta'];
+                                                    $cuf       = $factura[0]['factura_cuf'];
+                                                    $tamanio   = $factura[0]['factura_tamanio'];
+                                                         $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+                                                 //hacemos configuraciones
+                                                 $params['data'] = $cadenaQR;//$this->random(30);
+                                                 $params['level'] = 'H';
+                                                 $params['size'] = 5;
+                                                 $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
                                                 $this->ciqrcode->generate($params);
                                                                                 $base_url = explode('/', base_url());
                                                     $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
@@ -1725,11 +1739,11 @@ class Venta extends CI_Controller{
                                     /* F I N  generar el pdf */ 
                                     
                                     if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
-                                    $email = $this->input->post('cliente_email'); 
-                                if($email !=""){
-                                    $this->enviarcorreo($venta_id, $factura_id, $email);
-                                }
-                                }
+                                        $email = $this->input->post('cliente_email'); 
+                                        if($email !=""){
+                                            $this->enviarcorreo($venta_id, $factura_id, $email);
+                                        }
+                                    }
                                 // ******************************
                                 //}
 //                            }else{
