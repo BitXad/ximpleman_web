@@ -494,6 +494,7 @@ class Dosificacion extends CI_Controller{
                 $dosificacion_id = 1;
                 
                 $punto_venta = $this->input->post('punto_venta');
+                
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
                 $cuis_puntoventa = $this->PuntoVenta_model->get_cuis_puntoventa($punto_venta);
                 $cuis_puntoventa = $cuis_puntoventa['cuis_codigo'];

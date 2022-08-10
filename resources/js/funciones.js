@@ -5210,8 +5210,11 @@ function verificar_cufd(){
     
     var base_url = document.getElementById('base_url').value;
     var nit = document.getElementById('nit').value;
+    var punto_venta = document.getElementById('punto_venta').value;
     var controlador = base_url+'venta/verificar_cufd';    
     let resultado = "";
+    
+    //alert(punto_venta+" *** "+nit);
     
     $.ajax({url:controlador,
             type:"POST",
@@ -5227,8 +5230,9 @@ function verificar_cufd(){
                     var opcion = confirm("No existe un CUFD VIGENTE. \r\n ¿Desea registrar un nuevo CUFD?");
                     
                     if (opcion == true) {
-                        
-                        window.location.href = base_url+"punto_venta";
+                        //alert("solicitanto cufd...!!"+punto_venta);
+                        solicitudCufd(punto_venta);
+                       // window.location.href = base_url+"punto_venta";
                     }
                 }                
             },
@@ -5334,6 +5338,154 @@ function seleccion_documento(){
     
 }
 
+function solicitudCufd(punto_venta=0){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/cufd';
+    var opcion = confirm("Esta a punto de generar el C.U.F.D., el cual reamplazara el existente...! \n ¿Desea Continuar?");
+    
+    if (opcion == true) {
+        //alert("gegegegenerando cufd: "+punto_venta);
+        //document.getElementById('loader_revocado').style.display = 'block';  
+        
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{punto_venta:punto_venta},
+                success:function(respuesta){
+                    var datos = JSON.parse(respuesta);
+                    //var datos =  JSON.parse(registros);
+                let registros = datos['respuesta'];
+                let lafalla = datos['falla']
+                    
+                    /*console.log(registros);
+                    console.log(registros.RespuestaVerificarNit.mensajesList.codigo);
+                    console.log(registros.RespuestaVerificarNit.mensajesList.descripcion);
+                    console.log(registros.RespuestaVerificarNit.transaccion);*/
+                    //let elcodigo = registros.RespuestaVerificarNit.mensajesList.codigo;
+                    if(lafalla != ""){
+                        alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                       // document.getElementById('loader_revocado').style.display = 'none';
+                    }else{
+                    let codigo = registros.RespuestaCufd.codigo;
+                    let codigoControl = registros.RespuestaCufd.codigoControl;
+                    let direccion = registros.RespuestaCufd.direccion;
+                    let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
+                    let transaccion = registros.RespuestaCufd.transaccion;
+
+                    //alert(registros);
+                    if(transaccion == true){
+                       // $("#modal_mensajeadvertencia").modal("show");
+                        almacenar_cufd((registros['RespuestaCufd']),punto_venta);
+                    }
+                    else{
+                        alert("Algo fallo...!!");
+                    }
+                    // document.getElementById('loader_cufd').style.display = 'none';
+                    //alert("hola");
+                    /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
+
+                    }*/
+                    }
+
+                },
+                error:function(respuesta){
+                    let datos = JSON.parse(respuesta);
+                    let registros = datos['respuesta'];
+                    let lafalla = datos['falla']
+                   alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                }
+        }); 
+    }
+}
+
+function almacenar_cufd(datos,punto_venta=0){
+    
+    var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'dosificacion/almacenarcufd';   
+    
+    var codigo = datos.codigo;
+    let codigoControl = datos.codigoControl;
+    let direccion = datos.direccion;
+    var fechavigencia = datos.fechaVigencia;
+    var transaccion = datos.transaccion;    
+
+//    alert(codigo+" * "+codigoControl+" * "+direccion+" * "+fechaVigencia+" * "+transaccion);
+    //alert("ña ña ña ña ña ña ña ña ña ñaaaaa, batman..!!")
+    
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{codigo:codigo, 
+                        codigoControl:codigoControl, 
+                        direccion:direccion,
+                        fechavigencia:fechavigencia, 
+                        transaccion:transaccion,
+                        punto_venta:punto_venta
+                    },
+                    success:function(respuesta){
+
+                        alert("C.U.F.D generado y almacenado correctamente...!");
+                        document.getElementById('loader_revocado').style.display = 'none';
+                        dibujar_tabla_puntos_venta();
+                       
+                    },
+                    error:function(respuesta){
+                        alert("Algo salio mal; por favor verificar sus datos!.");
+                    }                
+            }); 
+    
+}
+
+function modal_cambiartipoemision(){
+    $("#modal_tipoemision").modal("show");
+}
+
+
+function cambiar_tipoemision()
+{
+    var base_url = document.getElementById('base_url').value;
+    var parametro_id = document.getElementById('elparametro_id').value;
+    var punto_venta = document.getElementById('punto_venta').value;
+    var parametro_tipoemision = document.getElementById('elparametro_tipoemision').value;
+    var controlador = base_url+'parametro/cambiar_tipoemision';
+    
+    document.getElementById('loader_documento').style.display = 'block'; //muestra el bloque del loader
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{parametro_tipoemision:parametro_tipoemision, parametro_id:parametro_id},
+            success:function(respuesta){
+                var registros =  JSON.parse(respuesta);
+                $("#modal_tipoemision").modal("hide");
+                location.reload();
+                
+                if(parametro_tipoemision == 1){
+                    
+                    var mensaje;                    
+                    var opcion = confirm("ADVERTENCIA: Debe actualizar el CUFD, continuar?");
+                    if (opcion == true) {
+                        solicitudCufd(punto_venta);                      
+                    }
+                
+//                       else {
+//                            mensaje = "Has clickado Cancelar";
+//                        }
+//                        document.getElementById("ejemplo").innerHTML = mensaje;
+                }
+                
+                //document.getElementById('loader_documento').style.display = 'none';
+                
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "";
+               $("#tablaresultados").html(html);
+               document.getElementById('loader_documento').style.display = 'none';
+            },
+            complete: function (jqXHR, textStatus) {
+                document.getElementById('loader_documento').style.display = 'none'; //ocultar el bloque del loader 
+                //tabla_inventario();
+            }
+    });
+}
 
 function borrar_datos_cliente()
 {
@@ -5423,3 +5575,7 @@ function borrar_datos_cliente()
     document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
     
 }
+
+//function generar_cufd(){
+//    alert("Generando CUFD");
+//}

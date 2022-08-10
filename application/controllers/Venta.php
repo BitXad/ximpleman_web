@@ -161,6 +161,11 @@ class Venta extends CI_Controller{
         $data['tipousuario_id'] = $tipousuario_id;
         $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
         
+        $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
+        $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
+        
+        $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
+        
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
         $data['_view'] = 'venta/ventas';
@@ -5114,6 +5119,7 @@ function anular_venta($venta_id){
         $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
         $sql ="select * from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$puntoventa['puntoventa_codigo'];
         $cufd = $this->Venta_model->consultar($sql);
+        
         if(sizeof($cufd)>0){
             echo json_encode(true);
         }

@@ -1,7 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/tipo_emision.js'); ?>"></script>
+<!--<script src="<?php //echo base_url('resources/js/tipo_emision.js'); ?>"></script>-->
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -266,6 +266,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="rol_factor2" value="<?php echo $rolusuario[163-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="punto_venta" value="<?php echo $puntoventa_codigo; ?>" hidden>
 
 <input type="text" id="tipocliente_porcdesc" value="0" hidden>
 <input type="text" id="tipocliente_montodesc" value="0" hidden>
@@ -1805,6 +1806,24 @@ window.onkeydown = compruebaTecla;
                             </select>
                         </div>
                     </div>
+                    
+                    <div class="col-md-6">
+                        <label for="dosificacion_nitemisor" class="control-label">Eventos</label>
+                        <div class="form-group">
+
+                            <select id="select_eventos" class="form-control">
+
+                                <?php  foreach ($eventos_significativos as $evento) {?>
+
+                                    <option value="<?= $evento['ces_codigoclasificador']; ?>"><?= $evento['ces_descripcion']; ?></option>
+
+                                <?php } ?>
+
+                            </select>
+
+                        </div>
+                    </div>
+                    
                 </span>
             </div>
             <div class="modal-footer" style="text-align: center">
@@ -1815,3 +1834,26 @@ window.onkeydown = compruebaTecla;
     </div>
 </div>
 <!------------------------ F I N  modal para cambiar el tipo de emision de facturas ------------------->
+
+
+<script src="<?php echo base_url('resources/js/verificar_conexion.js'); ?>"></script>
+<style type="text/css">
+    .online, .offline{
+      display: inline-block;
+      padding: 0.5rem;
+      border-radius: 5px;
+      margin: 1rem;
+    }
+
+    .online{
+      border: 3px solid green;
+      color: green;
+    }
+
+    .offline{
+      border: 3px solid red;
+      color: red;
+    }
+</style>
+
+<p id="status" class="online">online</p>
