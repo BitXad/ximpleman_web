@@ -1191,10 +1191,27 @@ function reducir_detalle(cantidad,detalleven_id,venta_id)
 
 
 function actualizarprecios(e,detalleven_id)
-{
+{    
+    var precio = document.getElementById('precio'+detalleven_id).value;
+    var descuentoparcial = document.getElementById('descuento'+detalleven_id).value;
+    
+    alert(descuentoparcial);
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){
-        actualizar_losprecios(detalleven_id);
+    
+        if (Number(descuentoparcial) < Number(precio)){
+        
+               actualizar_losprecios(detalleven_id);
+               
+        }else{
+            
+            alert("ADVERTENCIA: Descuento no permitido..!!");
+            $('#descuento'+detalleven_id).val(0);
+            actualizar_losprecios(detalleven_id);
+            
+        }
+        
+        
         /*var base_url =  document.getElementById('base_url').value;
         var precio = document.getElementById('precio'+detalleven_id).value;
         var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
@@ -1218,11 +1235,11 @@ function actualizar_losprecios(detalleven_id)
     
     var base_url =  document.getElementById('base_url').value;
     var precio = document.getElementById('precio'+detalleven_id).value;
-    var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
     var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
+    var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
     var controlador =  base_url+"venta/actualizarprecio";
         
-    if (descuentoparcial < precio){
+    if (Number(descuentoparcial) < Number(precio)){
         
         $.ajax({url: controlador,
                 type:"POST",

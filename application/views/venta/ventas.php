@@ -149,6 +149,13 @@ var keyCode = document.all ? e.which : e.keyCode;
     //$('#imprimir').click();
   }
 
+  if (keyCode == 121) //f9
+  {   
+      $("#boton_modal_paquetes").click();
+      
+    //$('#imprimir').click();
+  }
+
   //if (keyCode == 121) //f10
   //{       
     //$('#nit').focus();
@@ -1828,6 +1835,70 @@ window.onkeydown = compruebaTecla;
             </div>
             <div class="modal-footer" style="text-align: center">
                 <a class="btn btn-success" onclick="cambiar_tipoemision()"><span class="fa fa-check"></span> Cambiar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para cambiar el tipo de emision de facturas ------------------->
+
+
+
+
+<!------------------------ envio de paquete de facturas ------------------->
+<div hidden>
+    <button type="button" id="boton_modal_paquetes" class="btn btn-primary" data-toggle="modal" data-target="#modal_enviopaquetes" >
+      ENVIO PAQUETES
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modal_enviopaquetes" tabindex="-1" role="dialog" aria-labelledby="modal_enviopaqueteslabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">ENVIANDO FACTURAS GENERADAS FUERA DE LINEA</span>
+            </div>
+            
+            <div class="modal-body">
+                <span>
+                    <div class="col-md-6">
+                        <label for="elparametro_tipoemision" class="control-label">Enviando archivos</label>
+                        <img src="<?php echo base_url("resources/images/enviando.gif"); ?>" width="100" height="80" >
+                        <div class="form-group">
+<!--                            <select name="elparametro_tipoemision" class="form-control" id="elparametro_tipoemision" required>
+                                <option value="1" <?php if($parametro['parametro_tipoemision']=="1"){ ?> selected <?php } ?>>ONLINE</option>
+                                <option value="2" <?php if($parametro['parametro_tipoemision']=="2"){ ?> selected <?php } ?>>OFFLINE</option>
+                                <option value="3" <?php if($parametro['parametro_tipoemision']=="3"){ ?> selected <?php } ?>>MASIVA</option>
+                            </select>-->
+                            
+                            
+                        </div>
+                    </div>
+                    
+<!--                    <div class="col-md-6">
+                        <label for="dosificacion_nitemisor" class="control-label">Eventos</label>
+                        <div class="form-group">
+
+                            <select id="select_eventos" class="form-control">
+
+                                <?php  foreach ($eventos_significativos as $evento) {?>
+
+                                    <option value="<?= $evento['ces_codigoclasificador']; ?>"><?= $evento['ces_descripcion']; ?></option>
+
+                                <?php } ?>
+
+                            </select>
+
+                        </div>
+                    </div>-->
+                    
+                </span>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <!--<a class="btn btn-success" onclick="cambiar_tipoemision()"><span class="fa fa-check"></span> Cambiar</a>-->
                 <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>
