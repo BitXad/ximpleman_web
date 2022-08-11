@@ -593,6 +593,7 @@ html += "  </div>";
                         html += "</td>";
                         html += "<td align='right' "+color+"><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         
+                        
                         html += "<td align='right' "+color+"><input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_descuentoparcial"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         
                         
@@ -1215,11 +1216,14 @@ function actualizar_losprecios(detalleven_id)
     /*tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){*/
     
-        var base_url =  document.getElementById('base_url').value;
-        var precio = document.getElementById('precio'+detalleven_id).value;
-        var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
-        var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
-        var controlador =  base_url+"venta/actualizarprecio";
+    var base_url =  document.getElementById('base_url').value;
+    var precio = document.getElementById('precio'+detalleven_id).value;
+    var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
+    var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
+    var controlador =  base_url+"venta/actualizarprecio";
+        
+    if (descuentoparcial < precio){
+        
         $.ajax({url: controlador,
                 type:"POST",
                 data:{precio:precio, cantidad:cantidad,detalleven_id:detalleven_id, descuentoparcial:descuentoparcial},
@@ -1229,6 +1233,13 @@ function actualizar_losprecios(detalleven_id)
 
                 }        
         });
+        
+    }else{
+        alert("ADVERTENCIA: Descuento no permitido..!!");
+        $('#descuento'+detalleven_id).val(0);
+        actualizar_losprecios(detalleven_id);
+    }
+        
     //}
 }
 
