@@ -5337,6 +5337,10 @@ function cargar_contingencia(){
         $("#boton_finventa").click();
         document.getElementById("codigoexcepcion").checked = true;
         
+        $("#fecha_cafc").val("2022-08-10");
+        $("#hora_cafc").val("10:30");
+        $("#numfact_cafc").val("2081");
+        
     }
     
 }
