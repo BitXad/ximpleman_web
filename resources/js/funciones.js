@@ -1195,7 +1195,7 @@ function actualizarprecios(e,detalleven_id)
     var precio = document.getElementById('precio'+detalleven_id).value;
     var descuentoparcial = document.getElementById('descuento'+detalleven_id).value;
     
-    alert(descuentoparcial);
+    //alert(descuentoparcial);
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){
     
