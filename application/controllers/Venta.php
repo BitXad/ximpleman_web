@@ -1750,12 +1750,12 @@ class Venta extends CI_Controller{
                                     file_put_contents($directorio.'compra_venta'.$factura[0]['factura_id'].'.pdf', $output); 
                                     /* F I N  generar el pdf */ 
                                     
-                                    if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
+                                    //if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
                                         $email = $this->input->post('cliente_email'); 
                                         if($email !=""){
                                             $this->enviarcorreo($venta_id, $factura_id, $email);
                                         }
-                                    }
+                                    //}
                                 // ******************************
                                 //}
 //                            }else{

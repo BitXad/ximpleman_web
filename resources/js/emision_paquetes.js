@@ -210,3 +210,52 @@ function emisionpaquetes_vacio(){
         }); 
     }
 }
+
+/* borrar borrar ojo */
+function emision_paquetesmas(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'emision_paquetes/registroEmisionPaquetesmas';
+    //var opcion = confirm("Permite informar al SIN de la contingencia del Sistema Informático de Facturación autorizado. \n ¿Desea Continuar?");
+    
+    let nombre_archivo = document.getElementById('nombre_archivo').value;
+    let codigo_evento = document.getElementById('codigo_evento').value;
+    let cant_fact = document.getElementById('cant_fact').value;
+    if(nombre_archivo == "" || codigo_evento == ""){
+        alert("Nombre del Archivo y Codigo del Evento no deben ser vacios");
+    }else{
+        document.getElementById('loader').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{nombre_archivo:nombre_archivo, codigo_evento:codigo_evento, cant_fact:cant_fact},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        //console.log(registros);
+                        
+                        let mensaje = "";
+                        if(registros.codigoDescripcion == "PENDIENTE"){
+                            
+                            mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
+                            mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
+                            mensaje += "Codigo recepcion: "+registros.codigoRecepcion+"\n";
+                            mensaje += "Codigo transacción: "+registros.transaccion+"\n";
+                        
+                    }else if(registros.codigoDescripcion == "RECHAZADA"){
+                            mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
+                            mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
+                            mensaje += "Lista de mensajes: \n";
+                            mensaje += " -"+registros.mensajesList.codigo+"\n";
+                            mensaje += " -"+registros.mensajesList.descripcion+"\n";
+                            mensaje += "Codigo transacción: "+registros.transaccion+"\n";
+                        }
+                        tablaresultados();
+                        alert(mensaje);
+                        
+                        document.getElementById('loader').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader').style.display = 'none';
+                }                
+        }); 
+    }
+}

@@ -146,16 +146,22 @@
                             
                     </select>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-8">
                     <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Nombre Archivo</label>
                     <div class="form-group">
                         <input type="text" name="nombre_archivo" value="compra_venta00.tar.gz" class="form-control" id="nombre_archivo" />
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <label for="cant_fact" class="control-label"><span class="text-danger">*</span>Cantidad Facturas</label>
+                    <div class="form-group">
+                        <input type="number" name="cant_fact" value="1" class="form-control" id="cant_fact" />
+                    </div>
+                </div>
             </div>
             
             <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-success" onclick="emision_paquetes()"><fa class="fa fa-floppy-o"></fa> Recepcion de Paquetes</button>
+                <button type="button" class="btn btn-success" onclick="emision_paquetesmas()"><fa class="fa fa-floppy-o"></fa> Recepcion de Paquetes</button>
                 <button type="button" class="btn btn-danger" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
             </div>
             
