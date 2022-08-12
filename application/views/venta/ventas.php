@@ -1928,3 +1928,5 @@ window.onkeydown = compruebaTecla;
 </style>
 
 <p id="status" class="online">online</p>
+
+<button class="btn btn-info btn-xs" onclick="ping()"><fa class="fa fa-cloud"></fa> verificar conexion</button>

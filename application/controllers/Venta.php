@@ -1662,9 +1662,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                            </font><br><br>"; 
                                         $micad .=                             $factura[0]['factura_leyenda3']."<br><br>"; 
                                         $micad .=                                 $factura[0]['factura_leyenda4']; 
-//                                                                                if ($factura[0]['factura_tipoemision']==2){
-//                                        $micad .= "                                 <span>Este documento es la representación gráfica de un Documento Fiscal Digital emitido fuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</span>";
-//                                                                                }
+
                                         $micad .= "                        </center>"; 
                                         //$micad .= "                    </div>"; 
                                         $micad .= "                        </td>";
