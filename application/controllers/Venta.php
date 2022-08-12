@@ -1448,7 +1448,7 @@ class Venta extends CI_Controller{
                                                                        if (isset($empresa[0]['empresa_eslogan'])){ 
                                         $micad .= "                                <small>"; 
                                         $micad .= "                                    <font size='1' face='Arial'>".$empresa[0]['empresa_eslogan']."</font><br>"; 
-                                        $micad .= "                                </small>"; 
+                                        $micad .= "                                </small><br>"; 
                                                                        } 
                                         $micad .= "                            <font size='1' face='Arial'>"; 
                                         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
