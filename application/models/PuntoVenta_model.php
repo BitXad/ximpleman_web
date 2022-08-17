@@ -53,7 +53,7 @@
                 from cuis c
                 where c.tipopuntoventa_codigo = $punto_venta
                     and c.cuis_fechavigencia >= now()
-                /*order by c.cuis_id desc*/
+                order by c.cuis_id desc
                 ")->row_array();
         }
         /* obtiene informacion de un punto de venta*/

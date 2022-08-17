@@ -10,6 +10,11 @@ class Parametro extends CI_Controller{
         parent::__construct();
         $this->load->model('Parametro_model');
         $this->load->model('Moneda_model');
+        $this->load->model('Usuario_model');
+        $this->load->model('Dosificacion_model');
+        $this->load->model('Eventos_significativos_model');
+        $this->load->model('Venta_model');
+        $this->load->model('PuntoVenta_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -456,16 +461,267 @@ class Parametro extends CI_Controller{
         else
             show_error('The parametro you are trying to delete does not exist.');
     }
+    
     /* cambia el tipo de emision dela factura */
     function cambiar_tipoemision(){
+        
         if($this->input->is_ajax_request()){
+            
             $parametro_id = $this->input->post('parametro_id');
+            $parametro_tipoemision = $this->input->post('parametro_tipoemision');
+            $evento_id = $this->input->post('select_eventos');
+            $evento_nombre = $this->input->post('select_texto');
+            
              $params = array(
-                    'parametro_tipoemision' => $this->input->post('parametro_tipoemision'),
+                    'parametro_tipoemision' => $parametro_tipoemision,
                 );
-                $this->Parametro_model->update_parametro($parametro_id,$params);   
+                $this->Parametro_model->update_parametro($parametro_id,$params);
+            
                 
-            echo json_encode("ok");
+            
+                
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                
+                $puntoventa_codigo = $puntoventa['puntoventa_codigo'];
+                
+                $puntoventa = $this->PuntoVenta_model->get_puntoventa($puntoventa_codigo);
+               
+                
+                
+                $sql = "select * from cufd where cufd_codigo = (select cufd_codigo FROM punto_venta where tipopuntoventa_codigo = ".$puntoventa['puntoventa_codigo'].")";
+                $resultado = $this->Venta_model->consultar($sql);
+                $cufds = $resultado[0];
+                
+//                $this->load->model('PuntoVenta_model');
+//                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+//                $dosificacion_id = 1;
+//                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                
+            if ($parametro_tipoemision == 1){ //Si regresa a en linea en linea
+
+                    //PASO 1: Generamos un nuevo CUFD
+
+                        $dosificacion_id = 1;
+
+                        $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+                        $cuis_puntoventa = $this->PuntoVenta_model->get_cuis_puntoventa($puntoventa_codigo);
+                        $cuis_puntoventa = $cuis_puntoventa['cuis_codigo'];
+                        
+                        //$wsdl = "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl";
+                        $wsdl = $dosificacion['dosificacion_obtencioncodigos']; //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
+                        $token = $dosificacion['dosificacion_tokendelegado'];
+
+                        $opts = array(
+                              'http' => array(
+                                   'header' => "apiKey: TokenApi $token",
+                              )
+                        );
+
+
+                        $context = stream_context_create($opts);
+
+                        $cliente = new \SoapClient($wsdl, [
+                              'stream_context' => $context,
+                              'cache_wsdl' => WSDL_CACHE_NONE,
+                              'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                              // other options
+                        ]);
+
+                /* ---------------------F I N  segun EJEMPLO ---------------------- */
+                /* ordenado segun SoapUI */
+
+//                echo
+//                    "codigoAmbiente: ".$dosificacion['dosificacion_ambiente']."<br>".
+//                    "codigoModalidad: ".$dosificacion['dosificacion_modalidad']."<br>".
+//                    "codigoPuntoVenta: ".$puntoventa_codigo."<br>".
+//                    "codigoSistema: ".$dosificacion['dosificacion_codsistema']."<br>".
+//                    "codigoSucursal: ".$dosificacion['dosificacion_codsucursal']."<br>".
+//                    "cuis: ".$cuis_puntoventa."<br>".
+//                    "nit: ".$dosificacion['dosificacion_nitemisor']."<br><br>";
+
+                        $parametros = ["SolicitudCufd" => [
+                            "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                            "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
+                            "codigoPuntoVenta"=>   $puntoventa_codigo, //$dosificacion['dosificacion_puntoventa'],
+                            "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                            "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                            "cuis"=>            $cuis_puntoventa, //$dosificacion['dosificacion_cuis'],
+                            "nit"=>             $dosificacion['dosificacion_nitemisor']
+                                ]];
+                        
+                    $resultado = $cliente->cufd($parametros);
+                    
+                    if($resultado->RespuestaCufd->transaccion){ //Si genero el CUFD correctamente
+
+                            $cufd_codigo = "'".$resultado->RespuestaCufd->codigo."'";
+                            $cufd_codigocontrol = "'".$resultado->RespuestaCufd->codigoControl."'";
+                            $cufd_direccion = "'".$resultado->RespuestaCufd->direccion."'";
+                            $cufd_fechavigencia = "'".$resultado->RespuestaCufd->fechaVigencia."'";
+                            //$cufd_transaccion = true;
+                            $cufd_puntodeventa =  $puntoventa_codigo;
+
+                            $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                            // $cufd_puntodeventa = $dosificacion["dosificacion_puntoventa"];
+
+                            $sql = "insert into cufd(cufd_codigo,cufd_codigocontrol,cufd_direccion,cufd_fechavigencia,cufd_transaccion, cufd_puntodeventa, cufd_fecharegistro) value(".
+                                        $cufd_codigo.",".$cufd_codigocontrol.",".$cufd_direccion.",".$cufd_fechavigencia.",'true',".$cufd_puntodeventa.", now())";
+                            $this->Dosificacion_model->ejecutar($sql);
+
+                            // $sql = "update dosificacion set dosificacion_cufd = ".$cufd_codigo;
+                            // $this->Dosificacion_model->ejecutar($sql);
+                            $sql = "UPDATE punto_venta 
+                                    set cufd_codigo = $cufd_codigo
+                                    where puntoventa_codigo = $cufd_puntodeventa";
+                            $this->Dosificacion_model->ejecutar($sql);
+                        
+                    }
+            
+                    //PASO 3: Actualizamos el registro del evento vigente                
+                    //Actualizamos la fecha del evento vigente
+                    
+                    $sql = "update registro_eventos set registroeventos_fin = now()
+                            where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa_codigo;
+                    $this->Venta_model->ejecutar($sql);
+                
+
+                    //PASO 4: Registramos el evento en el SIN
+
+                    $wsdl = $dosificacion['dosificacion_operaciones'];
+                    $token = $dosificacion['dosificacion_tokendelegado'];
+                    
+                    $opts = array(
+                          'http' => array(
+                               'header' => "apiKey: TokenApi $token",
+                          )
+                    );
+                    $context = stream_context_create($opts);
+
+                    $cliente = new \SoapClient($wsdl, [
+                          'stream_context' => $context,
+                          'cache_wsdl' => WSDL_CACHE_NONE,
+                          'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                          // other options
+                    ]);
+
+                    
+                    $sql = "select * from registro_eventos where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa_codigo;
+                    $eventos = $this->Venta_model->consultar($sql);
+                    $evento = $eventos[0];
+                    
+//                    $usuario_id = $this->session_data['usuario_id'];
+//                    $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+//                    $this->load->model('PuntoVenta_model');
+//                    $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+//                    $puntodeventa = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
+//                    
+                    $fecha_inicio = $evento['registroeventos_inicio'];
+                    $fecha_i = date("Y-m-d\TH:i:s", strtotime($fecha_inicio));
+                    $fecha_i = $fecha_i.".".rand(10,50);
+                    
+                    $fecha_fin = $evento['registroeventos_fin'];
+                    $fecha_f = date("Y-m-d\TH:i:s", strtotime($fecha_fin));
+                    $fecha_f = $fecha_f.".".rand(10,50);
+                    
+                    //echo $fecha_i." *** ".$fecha_f;
+                    /*
+                    echo
+                        "<br>codigoAmbiente: ".$dosificacion['dosificacion_ambiente'].
+                        "<br>codigoMotivoEvento: ".$evento['registroeventos_codigoevento']. //$dosificacion['dosificacion_codsistema'],
+                        "<br>codigoPuntoVenta: ".$puntoventa_codigo. //$dosificacion['dosificacion_puntoventa'],
+                        "<br>codigoSistema: ".$dosificacion['dosificacion_codsistema'].
+                        "<br>codigoSucursal: ".$dosificacion['dosificacion_codsucursal'].
+                        "<br>cufd: ".$puntoventa['cufd_codigo']. //$dosificacion['dosificacion_cufd'],
+                        "<br>cufdEvento: ".$evento['registroeventos_cufd']. //$dosificacion['dosificacion_cuis'],
+                        "<br>cuis: ".$puntoventa['cuis_codigo']. //$dosificacion['dosificacion_cuis'],
+                        "<br>descripcion: ".$evento['registroeventos_detalle']. //$dosificacion['dosificacion_cuis'],
+                        "<br>fechaHoraFinEvento: ".$fecha_f. //$dosificacion['dosificacion_cuis'],
+                        "<br>fechaHoraInicioEvento: ".$fecha_i. //$dosificacion['dosificacion_cuis'],
+                        "<br>nit: ".$dosificacion['dosificacion_nitemisor'];
+                    
+                    */
+                    
+                    $parametros = ["SolicitudEventoSignificativo" => [
+                        "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
+                        "codigoMotivoEvento"=> $evento['registroeventos_codigoevento'], //$dosificacion['dosificacion_codsistema'],
+                        "codigoPuntoVenta"  => $puntoventa_codigo, //$dosificacion['dosificacion_puntoventa'],
+                        "codigoSistema"     => $dosificacion['dosificacion_codsistema'],
+                        "codigoSucursal"    => $dosificacion['dosificacion_codsucursal'],
+                        "cufd"              => $puntoventa['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                        "cufdEvento"        => $evento['registroeventos_cufd'], //$dosificacion['dosificacion_cuis'],
+                        "cuis"              => $puntoventa['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
+                        "descripcion"       => $evento['registroeventos_detalle'], //$dosificacion['dosificacion_cuis'],
+                        "fechaHoraFinEvento"=> $fecha_f, //$dosificacion['dosificacion_cuis'],
+                        "fechaHoraInicioEvento"=>$fecha_i, //$dosificacion['dosificacion_cuis'],
+                        "nit"               => $dosificacion['dosificacion_nitemisor']
+                    ]];
+
+                    //Agarramos el registro del evento significativo
+                    //var_dump($parametros);
+                    $resultado = $cliente->registroEventoSignificativo($parametros);
+                    $res = $resultado->RespuestaListaEventos->transaccion;
+                    $mensaje = "";
+
+                    var_dump($resultado);
+                    var_dump($res);
+                    
+                    
+                    $cufdes = $this->Venta_model->consultar("select * from cufd where cufd_codigo = '".$puntoventa['cufd_codigo']."'");
+                    $registroeventos_cufd = $cufdes[0]["cufd_codigo"];
+                    $registroeventos_codigocontrol = $cufdes[0]["cufd_codigocontrol"];
+
+//                        var_dump($resultado);
+//                        var_dump($res);
+
+                  
+                    //PASO 5: Si todo esta OK, actualizamos el codigo devuelto por el SIN
+
+                    if ($res){
+                        $codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;
+
+                        $sql = "update registro_eventos set registroeventos_codigo = '".$codigo_recepcion."'"." where registroeventos_id = ".$evento['registroeventos_id'];
+                        $this->Eventos_significativos_model->ejecutar($sql);
+                        
+                        $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$evento['registroeventos_codigoevento'];
+
+                        //comprimir los archivos***************
+
+
+                    }else{
+
+                        $mensajeresultado = $resultado->RespuestaListaEventos->mensajesList;
+                        $mensaje = "OCURRIO UN ERROR, CODIGO: ".$mensajeresultado->codigo.", ".$mensajeresultado->descripcion;
+
+                    }
+                
+                    echo json_encode("ok");
+                
+            }else{ //Si es fuera de linea
+                
+                $registroeventos_codigo = "''";
+                $registroeventos_codigoevento = $evento_id;
+                $registroeventos_detalle = "'".$evento_nombre."'";
+                $registroeventos_fecha = "now()";
+                $registroeventos_puntodeventa = $cufds["cufd_puntodeventa"];
+                $registroeventos_inicio = "now()";
+                $registroeventos_cufd = "'".$cufds["cufd_codigo"]."'";
+                $registroeventos_codigocontrol = "'".$cufds["cufd_codigocontrol"]."'";
+                $estado_id = 1;
+                
+                //inactivamos los eventos anteriores
+                $sql = "update registro_eventos set estado_id = 2 where registroeventos_puntodeventa = ".$puntoventa['puntoventa_codigo'];
+                $this->Venta_model->ejecutar($sql);
+                
+                //registramos el nuevo evento
+                $sql = "insert into registro_eventos(registroeventos_codigo, registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha, registroeventos_puntodeventa, registroeventos_inicio, registroeventos_cufd, registroeventos_codigocontrol, estado_id) value(".
+                        $registroeventos_codigo.",".$registroeventos_codigoevento.",".$registroeventos_detalle.",".$registroeventos_fecha.",".$registroeventos_puntodeventa.",".$registroeventos_inicio.",".$registroeventos_cufd.",".$registroeventos_codigocontrol.",".$estado_id.")";
+                $this->Venta_model->ejecutar($sql);
+                echo json_encode("Evento registrado correctamente..!!");
+            }
+                
         }
     }
     

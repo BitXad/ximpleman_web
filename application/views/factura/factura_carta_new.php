@@ -214,7 +214,7 @@ border-bottom : 1px solid #aaa;
                         </tr>
                         <tr>
                             <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>FACTURA Nº: </b></td>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= "00".$factura[0]['factura_numero'] ?></td>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= $factura[0]['factura_numero'] ?></td>
                         </tr>
                         <tr>
                             <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>CÓD AUTORIZACIÓN: </b></td>

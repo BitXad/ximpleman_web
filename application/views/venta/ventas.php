@@ -1,6 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/offline.js'); ?>"></script>
 <!--<script src="<?php //echo base_url('resources/js/tipo_emision.js'); ?>"></script>-->
 
 <script type="text/javascript">
@@ -1801,6 +1802,12 @@ window.onkeydown = compruebaTecla;
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                 <span class="text-bold">CAMBIAR TIPO DE EMISION DE FACTURA</span>
             </div>
+            
+            <div class="row" id='loader_emision' style='display:none;'>
+                <center>
+                    <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
+                </center>
+            </div> 
             <div class="modal-body">
                 <span>
                     <div class="col-md-6">
@@ -1907,7 +1914,7 @@ window.onkeydown = compruebaTecla;
 <!------------------------ F I N  modal para cambiar el tipo de emision de facturas ------------------->
 
 
-<script src="<?php echo base_url('resources/js/verificar_conexion.js'); ?>"></script>
+<!--<script src="<?php echo base_url('resources/js/verificar_conexion.js'); ?>"></script>-->
 <style type="text/css">
     .online, .offline{
       display: inline-block;
@@ -1927,6 +1934,53 @@ window.onkeydown = compruebaTecla;
     }
 </style>
 
-<p id="status" class="online">online</p>
+<!--<p id="status" class="online">online</p>-->
 
-<button class="btn btn-info btn-xs" onclick="ping()"><fa class="fa fa-cloud"></fa> verificar conexion</button>
+<!--<button class="btn btn-info btn-xs" onclick="verificar_conexion()"><fa class="fa fa-cloud"></fa> verificar conexion</button>-->
+
+
+<script type="text/javascript"> 
+    /*
+        function verificar_conexion(){
+            
+
+
+            if (navigator.onLine){ //Si existe conexion 
+                //verficar si hay conexion a impuestos
+
+                        var base_url = document.getElementById('base_url').value;
+                        var controlador = base_url+'dosificacion/verificarcomunicacion';
+                        $.ajax({url:controlador,
+                                type:"POST",
+                                data:{},
+                                success:function(respuesta){
+                                    
+                                    let registros = JSON.stringify()(respuesta);
+                                    alert(registros);
+                                    
+//                                    if(registros.return.transaccion == true){ //Si hay servicio de impuestos nacionales
+//                                        
+//                                        let codigo = registros.RespuestaComunicacion.mensajesList.codigo;
+//                                        let descripcion = registros.RespuestaComunicacion.mensajesList.descripcion;
+//                                        alert(codigo+" "+descripcion);
+//                                        
+//                                    }else{
+//                                        registros.faultcode;
+//                                    }
+
+                                },
+                                error:function(respuesta){
+                                    alert("Error: Conexión fallida. Vuelva a intentar...!");
+                                }
+                            }); 
+
+                    
+                $("#elparametro_tipoemision").val(2);
+            }else{
+                $("#elparametro_tipoemision").val(1);
+                
+            }
+        }
+        setInterval("verificar_conexion()",3000);
+      */  
+</script>

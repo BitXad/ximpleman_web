@@ -11,6 +11,7 @@ class Venta extends CI_Controller{
     
     private $caja_id = 0;
     private $parametros;
+    private $registroeventos_id = 0;
     //private $puntodeventa = 0;
     
     function __construct()
@@ -65,6 +66,15 @@ class Venta extends CI_Controller{
             redirect('', 'refresh');
         }
         
+        //***************** seleccionare punto de venta ***********
+        $usuario_id = $this->session_data['usuario_id'];
+        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                
+        $evento = $this->Eventos_significativos_model->get_evento_vigente($puntoventa["puntoventa_codigo"]);
+        $this->registroeventos_id = $evento["registroeventos_id"];
+        
+        //***************** fin seleccionare punto de venta ***********
+        
         //*********** Administracion de caja *********
                 $usuario_id = $this->session_data['usuario_id'];
                 $caja = $this->Caja_model->get_caja_usuario($usuario_id);
@@ -113,8 +123,12 @@ class Venta extends CI_Controller{
         $data['usuario'] = $this->Venta_model->get_usuarios();
         $data['modelos_c'] = $this->Modelo_contrato_model->get_all_modelo_contrato();
 
-        $puntoventa = 0; //$this->session_data['tipopuntoventa_codigo'];
-        $data['eventos'] = $this->Eventos_significativos_model->consultar("select * from registro_eventos where registroeventos_puntodeventa = ".$puntoventa);
+        $sql = "select * from usuario where usuario_id = ".$this->session_data['tipousuario_id'];
+        $x = $this->Venta_model->consultar($sql);
+        
+        $puntoventa = $x[0]["puntoventa_codigo"]; //$this->session_data['tipopuntoventa_codigo'];
+        
+        $data['eventos'] = $this->Eventos_significativos_model->consultar("select * from registro_eventos where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa);
         $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
         if(sizeof($dosificacion)>0){
             $data['dosificado'] = 1;
@@ -791,9 +805,7 @@ class Venta extends CI_Controller{
                             $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($punto_venta['cufd_codigo']); //$dosificacion[0]['dosificacion_cufd']);
                             $factura_codigocliente = $cliente_codigo;
         
-
-                            
-                            
+    
                             if($registroeventos_codigo>0){ //Si es una factura transcrita con CAFC cambia los parametros para generar la factura
                                 
                                 $factura_fecha = "'".$fecha_cafc."'";
@@ -874,9 +886,11 @@ class Venta extends CI_Controller{
                                 $valor = rand(0,7);
                                 $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
                         
+                                $registroeventos_id = 0;
                                 if ($tipo_emision == 2){ //1 en linea, 2 fuera de linea 3 masiva    
                                     $factura_leyenda3 =  $factura_leyenda5;
                                     //$factura_cafc = $dosificacion[0]["dosificacion_cafc"];                          
+                                    $registroeventos_id = $this->registroeventos_id;
 
                                 }
                                 
@@ -894,7 +908,7 @@ class Venta extends CI_Controller{
                                 factura_codsistema, factura_puntoventa, factura_sectoreconomico,
                                 factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
                                 docsec_codigoclasificador, factura_codigocliente,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion, factura_tipoemision,
-                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_cafc) value(".
+                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_cafc, registroeventos_id) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -907,7 +921,7 @@ class Venta extends CI_Controller{
                                 $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
                                 $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
                                 $documentoSector,'$factura_codigocliente','$factura_enviada'".",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".$tipo_emision.",".
-                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_cafc."')";
+                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_cafc."',".$registroeventos_id.")";
                                     
                         }
                         $factura_id = $this->Venta_model->ejecutar($sql);
@@ -983,17 +997,24 @@ class Venta extends CI_Controller{
                             //Copiar el archivo .tar al directorio con id del usuario en curso
                             
                             $path = $directorio."envio".$usuario_id;
-                            echo $path;
+                            //echo $path;
                             if (!file_exists($path)) {
                                 mkdir($path, 0777, true);
                             }
 
                             //para borrar comprime en tar-gz
                             //$eltipo_emision = $this->parametros['parametro_tipoemision'];
-                            if($tipo_emision == 2){
+                            if($tipo_emision == 2){ // Si es emision fuera de linea
+                                
                                 $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
                                 $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
                                 $p1 = $p->compress(Phar::GZ);
+                               
+                                
+                                $origen = $directorio.'compra_venta'.$factura[0]['factura_id'].'.tar';
+                                $destino = $directorio.'envio'.$usuario_id.'/'.'compra_venta'.$factura[0]['factura_id'].'.tar';
+                                copy($origen, $destino);
+                                
                             }
                             //fin para borrar
                             
@@ -1365,7 +1386,9 @@ class Venta extends CI_Controller{
                                         $micad .= "</table>";
                                         $micad .= "</body>"; 
                                         $micad .= "</html>";
+                                        
                                     }else{ //para carta o media carta 
+                                        
                                         $micad .= "<!DOCTYPE html>"; 
                                         $micad .= "<html>"; 
                                         $micad .= "    <head>"; 
@@ -1445,18 +1468,18 @@ class Venta extends CI_Controller{
                                         $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
                                         $micad .= "                    <center>"; 
                                         $micad .= "                            <font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font><br>"; 
-                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
-                                        $micad .= "                                <small>"; 
-                                        $micad .= "                                    <font size='1' face='Arial'>".$empresa[0]['empresa_eslogan']."</font>"; 
-                                        $micad .= "                                </small>"; 
-                                                                       } 
+//                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
+//                                        $micad .= "                                "; 
+//                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
+//                                        $micad .= "                                "; 
+//                                                                       } 
                                         $micad .= "                            <font size='1' face='Arial'>"; 
                                         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
                                         $micad .= "                                "; 
                                                                                 if($factura[0]['factura_sucursal']==0){ 
-                                        $micad .= "                                            CASA MATRIZ"; 
+                                        $micad .= "                                            <br>CASA MATRIZ"; 
                                                                                 }else{ 
-                                        $micad .= "                                            SUCURSAL ".$factura[0]['factura_sucursal']; 
+                                        $micad .= "                                            <br>SUCURSAL ".$factura[0]['factura_sucursal']; 
                                                                                 } 
                                         $micad .= "                                <br>"; 
                                         $micad .= "                                Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>"; 
@@ -1477,7 +1500,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                        </tr>"; 
                                         $micad .= "                        <tr>"; 
                                         $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>FACTURA Nº: </td>"; 
-                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'>00".$factura[0]['factura_numero']."</td>"; 
+                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'>".$factura[0]['factura_numero']."</td>"; 
                                         $micad .= "                        </tr>"; 
                                         $micad .= "                        <tr>"; 
                                         $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>CÓD AUTORIZACIÓN: </td>"; 
@@ -1762,6 +1785,8 @@ class Venta extends CI_Controller{
                             
                         }
                         
+                        
+                        //Funcion en eventos con cafc
                         if ($registroeventos_codigo > 0){
                             $codigo_recepcion = $this->registroEmisionPaquetes($factura_id,$registroeventos_codigo);
                             
@@ -1769,6 +1794,7 @@ class Venta extends CI_Controller{
                                 $this->registroEmisionPaquetes_vacio($codigo_recepcion, $factura_id);
                             }
                         }
+                        // Fin Funcion en eventos con cafc
                         
                     }
                     // $this->ultimaventa(1);
@@ -5453,7 +5479,369 @@ function anular_venta($venta_id){
         }
     }    
         
+
+    function enviar_facturas($registroeventos_id){
     
+        try{
+            
+                //los datos del evento
+                $sql = "SELECT * FROM registro_eventos WHERE registroeventos_id = ".$registroeventos_id;
+                $evento = $this->Venta_model->consultar($sql);
+                $sql = "select * from factura where registroeventos_id = ".$registroeventos_id;
+                $facturas = $this->Venta_model->consultar($sql);
+                
+//            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_factura'];                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                $nom_archivo = "facturas_eventos".$registroeventos_id.".tar.gz";  //$this->input->post("nombre_archivo");
+                $codigo_evento = $evento[0]["registroeventos_codigo"]; //$this->input->post("codigo_evento"); 
+                $cantotalf   = sizeof($facturas);  //$this->input->post("cantotalf");
+                $fact_enviar =  $this->input->post("fact_aenviar");
+                
+                $usar_fact_enviar = $fact_enviar;
+                $rescant = $cantotalf/500;
+                $cont = 1;
+                
+                
+                $base_url = explode('/', base_url());
+                //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+                $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+               
+                
+                    // COMPRESION XML EN GZIP
+                    $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
+                    $gzdata = gzencode($datos, 9);
+                    $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
+                    // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+                    fwrite($fp, $gzdata);
+                    fclose($fp);
+
+                    //Copiar el archivo .tar al directorio con id del usuario en curso
+
+                    $path = $directorio."envio".$usuario_id;
+                    //echo $path;
+                    if (!file_exists($path)) {
+                        mkdir($path, 0777, true);
+                    }
+
+                    //para borrar comprime en tar-gz
+                    //$eltipo_emision = $this->parametros['parametro_tipoemision'];
+                    if($tipo_emision == 2){ // Si es emision fuera de linea
+
+                        $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
+                        $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
+                        $p1 = $p->compress(Phar::GZ);
+
+                    }
+
+                
+                
+                
+                
+                foreach($facturas as $fact){
+                    
+                        $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
+                        $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
+                        $p1 = $p->compress(Phar::GZ);
+                                
+                    
+                }
+                
+                
+                
+                
+                
+                while($rescant >0){
+                    
+                    $p = new PharData($directorio.$nom_archivo.$cont.'.tar');
+                    $numf = 0;
+                    foreach($usar_fact_enviar as $f){
+                        if($numf == 500){
+                            break;
+                        }else{
+                            if(file_exists($directorio."compra_venta".$f.".pdf")){
+                                $datos = implode("", file($directorio."compra_venta".$f.".xml"));
+                                $p['compra_venta'.$f.'.xml'] = $datos;
+                                unset($usar_fact_enviar[$f]);
+                            }
+                        }
+                        $numf++;
+                    }
+
+                    $p1 = $p->compress(Phar::GZ);
+                    
+                    $handle = fopen($directorio.$nom_archivo.$cont, "rb");
+                    $contents = fread($handle, filesize($directorio.$nom_archivo.$cont));
+                    fclose($handle);
+
+                    $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo.$cont);
+                    $has_archivo = $xml_comprimido;
+
+                    $usuario_id = $this->session_data['usuario_id'];
+                    $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                    $this->load->model('PuntoVenta_model');
+                    $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                    $tipo_emision = 2;//1 offline
+                    $fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                    $parametros = ["SolicitudServicioRecepcionPaquete" => [
+                        "codigoAmbiente" => $dosificacion['dosificacion_ambiente'],
+                        "codigoPuntoVenta"    => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
+                        "codigoSistema"        => $dosificacion['dosificacion_codsistema'],
+                        "codigoSucursal"       => $dosificacion['dosificacion_sucursal'],
+                        "nit"              => $dosificacion['dosificacion_nitemisor'],
+                        "codigoDocumentoSector"=> $dosificacion['docsec_codigoclasificador'],
+                        "codigoEmision"  => $tipo_emision,
+                        "codigoModalidad"     => $dosificacion['dosificacion_modalidad'],
+                        "cufd"              => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                        "cuis"              => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
+                        "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
+                        "archivo" => $contents, //$dosificacion['dosificacion_cuis'],
+                        "fechaEnvio"=>$fecha_hora, //$dosificacion['dosificacion_cuis'],
+                        "hashArchivo"=>$has_archivo, //$dosificacion['dosificacion_cuis'],
+                        "cafc"               => $dosificacion['dosificacion_cafc'],
+                        "cantidadFacturas"     => $numf, //1, //$dosificacion['dosificacion_nitemisor'],
+                        "codigoEvento"         => $codigo_evento, //$dosificacion['dosificacion_nitemisor']
+                    ]];
+
+                    $fecha_hora1 = (new DateTime())->format('Y-m-d H:i:s');
+                    //var_dump($parametros);
+                    $resultado = $cliente->recepcionPaqueteFactura($parametros);
+                    $res = $resultado->RespuestaServicioFacturacion;
+                    $factura_id = "0";
+                    if($res->codigoDescripcion == "PENDIENTE"){
+                        $params = array(
+                            'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                            'recpaquete_codigoestado' => $res->codigoEstado,
+                            'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                            'recpaquete_transaccion' => $res->transaccion,
+                            'recpaquete_fechahora' => $fecha_hora1,
+                            'codigo_evento' => $codigo_evento,
+                            'factura_id' => $factura_id,
+                        );
+                    }else{
+                        $cad = $res->mensajesList;
+                                $mensajecadena = "";
+                                foreach ($cad as $c) {
+                                    $mensajecadena .= $c.";";
+                                }
+                        $params = array(
+                            'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                            'recpaquete_codigoestado' => $res->codigoEstado,
+                            //'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                            'recpaquete_mensajeslist' => $mensajecadena,
+                            'recpaquete_fechahora' => $fecha_hora1,
+                            'codigo_evento' => $codigo_evento,
+                            'factura_id' => $factura_id,
+                        );
+                    }
+                    $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
+
+                    
+                    
+                    $datos[] = $res;
+                    $rescant--;
+                    $cont++;
+                }
+                
+                
+                echo json_encode($datos);
+//            }else{
+//                show_404();
+//            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }    
+ /*   function enviar_facturas($registroeventos_id){
     
+        try{
+            
+                //los datos del evento
+                $sql = "SELECT * FROM registro_eventos WHERE registroeventos_id = ".$registroeventos_id;
+                $evento = $this->Venta_model->consultar($sql);
+                $sql = "select * from factura where registroeventos_id = ".$registroeventos_id;
+                $facturas = $this->Venta_model->consultar($sql);
+                
+//            if ($this->input->is_ajax_request()) {
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_factura'];                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                $nom_archivo = "facturas_eventos".$registroeventos_id.".tar.gz";  //$this->input->post("nombre_archivo");
+                $codigo_evento = $evento[0]["registroeventos_codigo"]; //$this->input->post("codigo_evento"); 
+                $cantotalf   = sizeof($facturas);  //$this->input->post("cantotalf");
+                $fact_enviar =  $this->input->post("fact_aenviar");
+                
+                $usar_fact_enviar = $fact_enviar;
+                $base_url = explode('/', base_url());
+                $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+                $rescant = $cantotalf/500;
+                $cont = 1;
+                
+                while($rescant >0){
+                    
+                    $p = new PharData($directorio.$nom_archivo.$cont.'.tar');
+                    $numf = 0;
+                    foreach($usar_fact_enviar as $f){
+                        if($numf == 500){
+                            break;
+                        }else{
+                            if(file_exists($directorio."compra_venta".$f.".pdf")){
+                                $datos = implode("", file($directorio."compra_venta".$f.".xml"));
+                                $p['compra_venta'.$f.'.xml'] = $datos;
+                                unset($usar_fact_enviar[$f]);
+                            }
+                        }
+                        $numf++;
+                    }
+
+                    $p1 = $p->compress(Phar::GZ);
+                    
+                    $handle = fopen($directorio.$nom_archivo.$cont, "rb");
+                    $contents = fread($handle, filesize($directorio.$nom_archivo.$cont));
+                    fclose($handle);
+
+                    $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo.$cont);
+                    $has_archivo = $xml_comprimido;
+
+                    $usuario_id = $this->session_data['usuario_id'];
+                    $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                    $this->load->model('PuntoVenta_model');
+                    $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                    $tipo_emision = 2;//1 offline
+                    $fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                    $parametros = ["SolicitudServicioRecepcionPaquete" => [
+                        "codigoAmbiente" => $dosificacion['dosificacion_ambiente'],
+                        "codigoPuntoVenta"    => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
+                        "codigoSistema"        => $dosificacion['dosificacion_codsistema'],
+                        "codigoSucursal"       => $dosificacion['dosificacion_sucursal'],
+                        "nit"              => $dosificacion['dosificacion_nitemisor'],
+                        "codigoDocumentoSector"=> $dosificacion['docsec_codigoclasificador'],
+                        "codigoEmision"  => $tipo_emision,
+                        "codigoModalidad"     => $dosificacion['dosificacion_modalidad'],
+                        "cufd"              => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                        "cuis"              => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
+                        "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
+                        "archivo" => $contents, //$dosificacion['dosificacion_cuis'],
+                        "fechaEnvio"=>$fecha_hora, //$dosificacion['dosificacion_cuis'],
+                        "hashArchivo"=>$has_archivo, //$dosificacion['dosificacion_cuis'],
+                        "cafc"               => $dosificacion['dosificacion_cafc'],
+                        "cantidadFacturas"     => $numf, //1, //$dosificacion['dosificacion_nitemisor'],
+                        "codigoEvento"         => $codigo_evento, //$dosificacion['dosificacion_nitemisor']
+                    ]];
+
+                    $fecha_hora1 = (new DateTime())->format('Y-m-d H:i:s');
+                    //var_dump($parametros);
+                    $resultado = $cliente->recepcionPaqueteFactura($parametros);
+                    $res = $resultado->RespuestaServicioFacturacion;
+                    $factura_id = "0";
+                    if($res->codigoDescripcion == "PENDIENTE"){
+                        $params = array(
+                            'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                            'recpaquete_codigoestado' => $res->codigoEstado,
+                            'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                            'recpaquete_transaccion' => $res->transaccion,
+                            'recpaquete_fechahora' => $fecha_hora1,
+                            'codigo_evento' => $codigo_evento,
+                            'factura_id' => $factura_id,
+                        );
+                    }else{
+                        $cad = $res->mensajesList;
+                                $mensajecadena = "";
+                                foreach ($cad as $c) {
+                                    $mensajecadena .= $c.";";
+                                }
+                        $params = array(
+                            'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                            'recpaquete_codigoestado' => $res->codigoEstado,
+                            //'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                            'recpaquete_mensajeslist' => $mensajecadena,
+                            'recpaquete_fechahora' => $fecha_hora1,
+                            'codigo_evento' => $codigo_evento,
+                            'factura_id' => $factura_id,
+                        );
+                    }
+                    $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
+
+                    
+                    
+                    $datos[] = $res;
+                    $rescant--;
+                    $cont++;
+                }
+                
+                
+                echo json_encode($datos);
+//            }else{
+//                show_404();
+//            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }    */
+    
+    function comprimir(){
+        
+        $base_url = explode('/', base_url());  //convierte un cadena en array
+        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+
+        echo $directorio;
+
+        // COMPRESION XML EN GZIP
+//            $gzdata = gzencode($datos, 9); 
+//        
+//        $fp = fopen($directorio."prueba.xml.zip", "w");
+//        
+//        // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+//        fwrite($fp, $gzdata);
+//        fclose($fp);
+        
+        $p = new PharData($directorio.'prueba.tar');
+        $datos = implode("", file($directorio."compra_venta235.xml")); //convierte un array en cadena y asignamos a datos
+        $datos2 = implode("", file($directorio."compra_venta236.xml")); //convierte un array en cadena y asignamos a datos
+        $datos3 = implode("", file($directorio."compra_venta237.xml")); //convierte un array en cadena y asignamos a datos
+        $p['compra_venta235.xml'] = $datos;
+        $p['compra_venta236.xml'] = $datos2;
+        $p['compra_venta237.xml'] = $datos3;
+        $p->compress(Phar::GZ);
+        
+       // echo "tar -czf ".$directorio."envio18/backup.tar.gz ".$directorio;
+        //exec("tar -czf ".$directorio."envio18/backup.tar.gz ".$directorio);
+    }
     
 }

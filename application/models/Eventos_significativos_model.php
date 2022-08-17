@@ -80,5 +80,18 @@ class Eventos_significativos_model extends CI_Model{
             "select * from registro_eventos order by registroeventos_id desc
         ")->result_array();
     }
+    
+    /**
+     * get Codigos Nis for activity and secondary activity
+     */
+    function get_evento_vigente($punto_venta){
+        
+        $sql = "select if(count(*)>0, registroeventos_id, 0) as registroeventos_id
+                from registro_eventos
+                where estado_id = 1 and registroeventos_puntodeventa = ".$punto_venta;
+
+        return $this->db->query($sql)->row_array();
+        
+    }
 
 }

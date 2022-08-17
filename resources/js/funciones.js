@@ -1195,7 +1195,7 @@ function actualizarprecios(e,detalleven_id)
     var precio = document.getElementById('precio'+detalleven_id).value;
     var descuentoparcial = document.getElementById('descuento'+detalleven_id).value;
     
-    alert(descuentoparcial);
+    //alert(descuentoparcial);
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){
     
@@ -5479,29 +5479,36 @@ function cambiar_tipoemision()
     var punto_venta = document.getElementById('punto_venta').value;
     var parametro_tipoemision = document.getElementById('elparametro_tipoemision').value;
     var controlador = base_url+'parametro/cambiar_tipoemision';
+    var select_eventos = document.getElementById('select_eventos').value;
+    var select = document.getElementById('select_eventos'), //El <select>
+        //value = select.value, //El valor seleccionado
+        select_texto = select.options[select.selectedIndex].innerText; //El texto de la opción seleccionada
     
-    document.getElementById('loader_documento').style.display = 'block'; //muestra el bloque del loader
+    //alert(text);
+    
+    document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
+
     $.ajax({url: controlador,
             type:"POST",
-            data:{parametro_tipoemision:parametro_tipoemision, parametro_id:parametro_id},
+            data:{parametro_tipoemision:parametro_tipoemision, parametro_id:parametro_id, select_eventos: select_eventos, select_texto: select_texto},
             success:function(respuesta){
                 var registros =  JSON.parse(respuesta);
                 $("#modal_tipoemision").modal("hide");
-                location.reload();
+               
+                    location.reload();
                 
-                if(parametro_tipoemision == 1){
-                    
-                    var mensaje;                    
-                    var opcion = confirm("ADVERTENCIA: Debe actualizar el CUFD, continuar?");
-                    if (opcion == true) {
-                        solicitudCufd(punto_venta);                      
-                    }
-                
-//                       else {
-//                            mensaje = "Has clickado Cancelar";
-//                        }
-//                        document.getElementById("ejemplo").innerHTML = mensaje;
-                }
+//                if(parametro_tipoemision == 1){
+//                    
+//                    var mensaje;                    
+//                    var opcion = confirm("ADVERTENCIA: Debe actualizar el CUFD, continuar?");
+//                    
+//                    if (opcion == true) {
+//                        
+//                        
+//                        //solicitudCufd(punto_venta);                      
+//                    }
+//                  document.getElementById("ejemplo").innerHTML = mensaje;
+//                }
                 
                 //document.getElementById('loader_documento').style.display = 'none';
                 
@@ -5612,35 +5619,9 @@ function borrar_datos_cliente()
 //    alert("Generando CUFD");
 //}
 
-function ping() {
-         // Getting the URL from the User
-         var URL = "http://google.com";
-         var settings = {
-            // Defining the request configuration
-            cache: false,
-            dataType: "jsonp",
-            crossDomain: true,
-            url: URL,
-            method: "GET",
-            timeout: 5000,
-            headers: {accept: "application/json", "Access-Control-Allow-Origin": "*",},
 
-            // Defines the response to be made
-            // for certain status codes
-            statusCode: {
-               200: function (response) {
-                   alert("Status 200");
-//                  document.getElementById("outputDiv").innerHTML="<h3 style='color:green'>Status 200: Page is up!";
-               },
-               400: function (response) {
-                   alert("Status 400");
-//                  document.getElementById("outputDiv").innerHTML="<h3 style='color:red'>Status 400: Page is down.</h3>";
-               },
-               0: function (response) {
-                   alert("Status 0");
-//                  document.getElementById("outputDiv").innerHTML="<h3 style='color:red'>Status 0: Page is down.</h3>";
-               },
-            },
-         };
-         
+function verificar_conexion(){
+
+    alert("navegador en linea: "+navigator.onLine);
+
 }
