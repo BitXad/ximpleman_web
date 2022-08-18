@@ -239,7 +239,7 @@ class Factura_model extends CI_Model
     }
     
     function get_all_motivos(){
-        $sql = "select * from motivo_anulacion";
+        $sql = "select * from cod_motivo_anulacion";
                 
         return $this->db->query($sql)->result_array();
     }

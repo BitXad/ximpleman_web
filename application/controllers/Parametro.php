@@ -15,6 +15,7 @@ class Parametro extends CI_Controller{
         $this->load->model('Eventos_significativos_model');
         $this->load->model('Venta_model');
         $this->load->model('PuntoVenta_model');
+        $this->load->model('Emision_paquetes_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -643,6 +644,8 @@ class Parametro extends CI_Controller{
                         "<br>nit: ".$dosificacion['dosificacion_nitemisor'];
                     
                     */
+                    // Actualizamos punto de venta porque registramos un nuevo CUFD
+                    $puntoventa = $this->PuntoVenta_model->get_puntoventa($puntoventa_codigo);
                     
                     $parametros = ["SolicitudEventoSignificativo" => [
                         "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
@@ -665,8 +668,8 @@ class Parametro extends CI_Controller{
                     $res = $resultado->RespuestaListaEventos->transaccion;
                     $mensaje = "";
 
-                    var_dump($resultado);
-                    var_dump($res);
+//                    var_dump($resultado);
+//                    var_dump($res);
                     
                     
                     $cufdes = $this->Venta_model->consultar("select * from cufd where cufd_codigo = '".$puntoventa['cufd_codigo']."'");
@@ -685,9 +688,250 @@ class Parametro extends CI_Controller{
                         $sql = "update registro_eventos set registroeventos_codigo = '".$codigo_recepcion."'"." where registroeventos_id = ".$evento['registroeventos_id'];
                         $this->Eventos_significativos_model->ejecutar($sql);
                         
-                        $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$evento['registroeventos_codigoevento'];
+                       // $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$evento['registroeventos_codigoevento'];
 
-                        //comprimir los archivos***************
+                        //PASO 6: Contar los archivos que se deben subir
+                        $sql = "select * from factura where registroeventos_id = ".$evento['registroeventos_id'];
+                        $facturas = $this->Venta_model->consultar($sql);
+                        $cantidad_facturas = sizeof($facturas);
+                        
+                        //PASO 7: Comprimir archivos generados en la contingencia
+                        $base_url = explode('/', base_url());  //convierte un cadena en array
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+
+        
+                        $p = new PharData($directorio."contingencia".$codigo_recepcion.".tar");
+                        
+                        foreach ($facturas as $f){
+                            
+                            $datos = implode("", file($directorio."compra_venta".$f["factura_id"].".xml")); //convierte un array en cadena y asignamos a datos
+                            $p["compra_venta".$f['factura_id'].".xml"] = $datos;
+                            
+                        }
+                        
+                        $p->compress(Phar::GZ);                        
+                        
+                        //PASO 8: Enviar los archivos generados en el .tar.gz
+
+                        $wsdl = $dosificacion['dosificacion_factura'];
+
+                        $token = $dosificacion['dosificacion_tokendelegado'];
+                        $opts = array(
+                              'http' => array(
+                                   'header' => "apiKey: TokenApi $token",
+                              )
+                        );
+                        $context = stream_context_create($opts);
+
+                        $cliente = new \SoapClient($wsdl, [
+                              'stream_context' => $context,
+                              'cache_wsdl' => WSDL_CACHE_NONE,
+                              'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                              // other options
+                        ]);
+
+                        $base_url = explode('/', base_url());
+                        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+
+                        
+                        $nom_archivo =  "contingencia".$codigo_recepcion.".tar.gz";
+                        $codigo_evento =  $codigo_recepcion;
+                        $cant_fact =  $cantidad_facturas;
+                        
+                        
+//                        $factura_id = substr($nom_archivo,12, strlen($nom_archivo));
+                        $factura_id = 0;
+
+                        $handle = fopen($directorio.$nom_archivo, "rb");
+                        $contents = fread($handle, filesize($directorio.$nom_archivo));
+                        fclose($handle);
+
+                        $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo);
+                        $has_archivo = $xml_comprimido;
+
+                        //$usuario_id = $this->session_data['usuario_id'];
+//                        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+//                        $this->load->model('PuntoVenta_model');
+//                        $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+//                        
+                        $tipo_emision = 2;//1 offline
+                        
+                        $fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                        $parametros = ["SolicitudServicioRecepcionPaquete" => [
+                            "codigoAmbiente" => $dosificacion['dosificacion_ambiente'],
+                            "codigoPuntoVenta"    => $puntoventa['puntoventa_codigo'],
+                            "codigoSistema"        => $dosificacion['dosificacion_codsistema'],
+                            "codigoSucursal"       => $dosificacion['dosificacion_sucursal'],
+                            "nit"              => $dosificacion['dosificacion_nitemisor'],
+                            "codigoDocumentoSector"=> $dosificacion['docsec_codigoclasificador'],
+                            "codigoEmision"  => $tipo_emision,
+                            "codigoModalidad"     => $dosificacion['dosificacion_modalidad'],
+                            "cufd"              => $puntoventa['cufd_codigo'],
+                            "cuis"              => $puntoventa['cuis_codigo'],
+                            "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
+                            "archivo" => $contents,
+                            "fechaEnvio"=>$fecha_hora,
+                            "hashArchivo"=>$has_archivo,
+                            "cafc"               => $dosificacion['dosificacion_cafc'],
+                            "cantidadFacturas"     => $cant_fact,
+                            "codigoEvento"         => $codigo_evento,
+                        ]];
+
+                        $fecha_hora1 = (new DateTime())->format('Y-m-d H:i:s');
+                        //var_dump($parametros);
+                        $resultado = $cliente->recepcionPaqueteFactura($parametros);
+                        $res = $resultado->RespuestaServicioFacturacion;
+                        
+                        
+                        if($res->codigoDescripcion == "PENDIENTE"){
+                            $params = array(
+                                'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                                'recpaquete_codigoestado' => $res->codigoEstado,
+                                'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                                'recpaquete_transaccion' => $res->transaccion,
+                                'recpaquete_fechahora' => $fecha_hora1,
+                                'codigo_evento' => $codigo_evento,
+                                'factura_id' => $factura_id,
+                            );
+                        }else{
+                            $cad = $res->mensajesList;
+                                    $mensajecadena = "";
+                                    foreach ($cad as $c) {
+                                        $mensajecadena .= $c.";";
+                                    }
+                            $params = array(
+                                'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                                'recpaquete_codigoestado' => $res->codigoEstado,
+                                //'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                                'recpaquete_mensajeslist' => $mensajecadena,
+                                'recpaquete_fechahora' => $fecha_hora1,
+                                'codigo_evento' => $codigo_evento,
+                                'factura_id' => $factura_id,
+                            );
+                        } 
+                        
+                        $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
+                        
+                        //PASO 9: Envio de los archivos
+                       
+                        $wsdl = $dosificacion['dosificacion_factura'];
+                        $token = $dosificacion['dosificacion_tokendelegado'];
+                        
+                        $opts = array(
+                              'http' => array(
+                                   'header' => "apiKey: TokenApi $token",
+                              )
+                        );
+                        $context = stream_context_create($opts);
+
+                        $cliente = new \SoapClient($wsdl, [
+                              'stream_context' => $context,
+                              'cache_wsdl' => WSDL_CACHE_NONE,
+                              'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                              // other options
+                        ]);
+
+                        $codigo_recepcion =  $res->codigoRecepcion;
+                        $factura_id =  0;
+                        //$codigo_recepcion = '2d3b23e5-f882-11ec-8853-632ba520e7ec';
+                        /*$handle = fopen($directorio.$nom_archivo, "rb");
+                        $contents = fread($handle, filesize($directorio.$nom_archivo));
+                        fclose($handle);
+                         * 
+                        $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo);
+                         */
+
+                        //$has_archivo = ''; //$xml_comprimido;
+
+//                        $usuario_id = $this->session_data['usuario_id'];
+//                        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+//                        $this->load->model('PuntoVenta_model');
+//                        $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                        $tipo_emision = 2; //1 offline
+                        //$fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                        $parametros = ["SolicitudServicioValidacionRecepcionPaquete" => [
+                            "codigoAmbiente" => $dosificacion['dosificacion_ambiente'],
+                            "codigoPuntoVenta"    => $puntoventa['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
+                            "codigoSistema"        => $dosificacion['dosificacion_codsistema'],
+                            "codigoSucursal"       => $dosificacion['dosificacion_sucursal'],
+                            "nit"              => $dosificacion['dosificacion_nitemisor'],
+                            "codigoDocumentoSector"=> $dosificacion['docsec_codigoclasificador'],
+                            "codigoEmision"  => $tipo_emision,
+                            "codigoModalidad"     => $dosificacion['dosificacion_modalidad'],
+                            "cufd"              => $puntoventa['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                            "cuis"              => $puntoventa['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
+                            "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
+                            "codigoRecepcion"         => $codigo_recepcion, //$dosificacion['dosificacion_nitemisor']
+                        ]];
+
+                        $fecha_hora1 = (new DateTime())->format('Y-m-d H:i:s');
+                        var_dump($parametros);
+                        
+                        $resultado = $cliente->validacionRecepcionPaqueteFactura($parametros);
+                        $res = $resultado->RespuestaServicioFacturacion;
+                        echo "<br><br>";
+                        
+                        var_dump($res);
+                        
+                        $recepcion_paquete = $this->Emision_paquetes_model->getcod_recepcionpaquetes($res->codigoRecepcion);
+                        
+                        if($res->codigoDescripcion == "VALIDADA"){
+                            
+                            $params = array(
+                                'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                                'recpaquete_codigoestado' => $res->codigoEstado,
+                            );
+                            
+                            $sql = "update factura set factura_codigodescripcion ='VALIDADA', factura_enviada = 2  where factura_id='".$factura_id."'";
+                            $this->Venta_model->ejecutar($sql);
+
+                            
+                        }elseif($res->codigoDescripcion == "OBSERVADA"){
+                            
+                            $cad = $res->mensajesList;
+                            $mensajecadena = json_encode($cad);
+
+                            /*foreach ($cad as $c) {
+                                $mensajecadena .= $c.";";
+                            }*/
+                            $params = array(
+                                'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                                'recpaquete_codigoestado' => $res->codigoEstado,
+                                'recpaquete_mensajeslist' => $mensajecadena,
+                            );
+                            
+                        }
+                        $this->Emision_paquetes_model->update_recepcionpaquetes($recepcion_paquete['recpaquete_id'],$params);
+
+                        //echo json_encode($res);
+                        //PASO 10: Actualizar datos de envio en las facturas
+                        
+                        foreach ($facturas as $f){
+                            
+                            $sql = "update factura set 
+                                     factura_codigodescripcion = 'VALIDADA'
+                                    ,factura_enviada = 2
+                                    ,factura_codigorecepcion= '".$res->codigoRecepcion."'
+                                     where registroeventos_id = ".$evento['registroeventos_id'];
+                                   
+                                    ;
+                            
+                            $this->Venta_model->ejecutar($sql);
+                        }
+                        
+                        
+                        
+                        
+                        
+                        echo json_encode($res);
+
+                        
+                        
+                        
+                        
 
 
                     }else{
@@ -697,7 +941,7 @@ class Parametro extends CI_Controller{
 
                     }
                 
-                    echo json_encode("ok");
+                    //echo json_encode("ok");
                 
             }else{ //Si es fuera de linea
                 
@@ -721,6 +965,490 @@ class Parametro extends CI_Controller{
                 $this->Venta_model->ejecutar($sql);
                 echo json_encode("Evento registrado correctamente..!!");
             }
+                
+        }
+    }
+    
+    /* cambia el tipo de emision dela factura */
+    function enviar_paquete(){
+        
+        if($this->input->is_ajax_request()){
+            
+            
+            $codigo_evento = $this->input->post('codigo_evento');
+            
+            $dosificacion_id = 1;
+            $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+            
+            $usuario_id = $this->session_data['usuario_id'];
+            $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+
+            $puntoventa_codigo = $puntoventa['puntoventa_codigo'];
+
+            $puntoventa = $this->PuntoVenta_model->get_puntoventa($puntoventa_codigo);
+
+            $cuis_puntoventa = $this->PuntoVenta_model->get_cuis_puntoventa($puntoventa_codigo);
+            $cuis_puntoventa = $cuis_puntoventa['cuis_codigo'];
+                        
+
+            
+            
+                        
+           /* 
+            $parametro_id = $this->input->post('parametro_id');
+            $parametro_tipoemision = $this->input->post('parametro_tipoemision');
+            $evento_id = $this->input->post('select_eventos');
+            $evento_nombre = $this->input->post('select_texto');
+            
+             $params = array(
+                    'parametro_tipoemision' => $parametro_tipoemision,
+                );
+                $this->Parametro_model->update_parametro($parametro_id,$params);
+            
+                
+            
+                
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                
+                $puntoventa_codigo = $puntoventa['puntoventa_codigo'];
+                
+                $puntoventa = $this->PuntoVenta_model->get_puntoventa($puntoventa_codigo);
+               
+                
+                
+                $sql = "select * from cufd where cufd_codigo = (select cufd_codigo FROM punto_venta where tipopuntoventa_codigo = ".$puntoventa['puntoventa_codigo'].")";
+                $resultado = $this->Venta_model->consultar($sql);
+                $cufds = $resultado[0];
+                
+//                $this->load->model('PuntoVenta_model');
+//                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+//                $dosificacion_id = 1;
+//                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+
+                
+                    //PASO 1: Generamos un nuevo CUFD
+
+                        $dosificacion_id = 1;
+
+                        $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+                        $cuis_puntoventa = $this->PuntoVenta_model->get_cuis_puntoventa($puntoventa_codigo);
+                        $cuis_puntoventa = $cuis_puntoventa['cuis_codigo'];
+                        
+                        $wsdl = $dosificacion['dosificacion_obtencioncodigos']; //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
+                        $token = $dosificacion['dosificacion_tokendelegado'];
+
+                        $opts = array(
+                              'http' => array(
+                                   'header' => "apiKey: TokenApi $token",
+                              )
+                        );
+
+
+                        $context = stream_context_create($opts);
+
+                        $cliente = new \SoapClient($wsdl, [
+                              'stream_context' => $context,
+                              'cache_wsdl' => WSDL_CACHE_NONE,
+                              'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                        ]);
+
+                        $parametros = ["SolicitudCufd" => [
+                            "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                            "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
+                            "codigoPuntoVenta"=>   $puntoventa_codigo, //$dosificacion['dosificacion_puntoventa'],
+                            "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                            "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                            "cuis"=>            $cuis_puntoventa, //$dosificacion['dosificacion_cuis'],
+                            "nit"=>             $dosificacion['dosificacion_nitemisor']
+                                ]];
+                        
+                    $resultado = $cliente->cufd($parametros);
+                    
+                    if($resultado->RespuestaCufd->transaccion){ //Si genero el CUFD correctamente
+
+                            $cufd_codigo = "'".$resultado->RespuestaCufd->codigo."'";
+                            $cufd_codigocontrol = "'".$resultado->RespuestaCufd->codigoControl."'";
+                            $cufd_direccion = "'".$resultado->RespuestaCufd->direccion."'";
+                            $cufd_fechavigencia = "'".$resultado->RespuestaCufd->fechaVigencia."'";
+                            //$cufd_transaccion = true;
+                            $cufd_puntodeventa =  $puntoventa_codigo;
+
+                            $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                            // $cufd_puntodeventa = $dosificacion["dosificacion_puntoventa"];
+
+                            $sql = "insert into cufd(cufd_codigo,cufd_codigocontrol,cufd_direccion,cufd_fechavigencia,cufd_transaccion, cufd_puntodeventa, cufd_fecharegistro) value(".
+                                        $cufd_codigo.",".$cufd_codigocontrol.",".$cufd_direccion.",".$cufd_fechavigencia.",'true',".$cufd_puntodeventa.", now())";
+                            $this->Dosificacion_model->ejecutar($sql);
+
+                            $sql = "UPDATE punto_venta 
+                                    set cufd_codigo = $cufd_codigo
+                                    where puntoventa_codigo = $cufd_puntodeventa";
+                            $this->Dosificacion_model->ejecutar($sql);
+                        
+                    }
+            
+                    //PASO 3: Actualizamos el registro del evento vigente                
+                    //Actualizamos la fecha del evento vigente
+                    
+                    $sql = "update registro_eventos set registroeventos_fin = now()
+                            where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa_codigo;
+                    $this->Venta_model->ejecutar($sql);
+                
+
+                    //PASO 4: Registramos el evento en el SIN
+
+                    $wsdl = $dosificacion['dosificacion_operaciones'];
+                    $token = $dosificacion['dosificacion_tokendelegado'];
+                    
+                    $opts = array(
+                          'http' => array(
+                               'header' => "apiKey: TokenApi $token",
+                          )
+                    );
+                    $context = stream_context_create($opts);
+
+                    $cliente = new \SoapClient($wsdl, [
+                          'stream_context' => $context,
+                          'cache_wsdl' => WSDL_CACHE_NONE,
+                          'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                          // other options
+                    ]);
+
+                    
+                    $sql = "select * from registro_eventos where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa_codigo;
+                    $eventos = $this->Venta_model->consultar($sql);
+                    $evento = $eventos[0];
+
+                    $fecha_inicio = $evento['registroeventos_inicio'];
+                    $fecha_i = date("Y-m-d\TH:i:s", strtotime($fecha_inicio));
+                    $fecha_i = $fecha_i.".".rand(10,50);
+                    
+                    $fecha_fin = $evento['registroeventos_fin'];
+                    $fecha_f = date("Y-m-d\TH:i:s", strtotime($fecha_fin));
+                    $fecha_f = $fecha_f.".".rand(10,50);
+                    
+                    //echo $fecha_i." *** ".$fecha_f;
+
+                    // Actualizamos punto de venta porque registramos un nuevo CUFD
+                    $puntoventa = $this->PuntoVenta_model->get_puntoventa($puntoventa_codigo);
+                    
+                    $parametros = ["SolicitudEventoSignificativo" => [
+                        "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
+                        "codigoMotivoEvento"=> $evento['registroeventos_codigoevento'], //$dosificacion['dosificacion_codsistema'],
+                        "codigoPuntoVenta"  => $puntoventa_codigo, //$dosificacion['dosificacion_puntoventa'],
+                        "codigoSistema"     => $dosificacion['dosificacion_codsistema'],
+                        "codigoSucursal"    => $dosificacion['dosificacion_codsucursal'],
+                        "cufd"              => $puntoventa['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                        "cufdEvento"        => $evento['registroeventos_cufd'], //$dosificacion['dosificacion_cuis'],
+                        "cuis"              => $puntoventa['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
+                        "descripcion"       => $evento['registroeventos_detalle'], //$dosificacion['dosificacion_cuis'],
+                        "fechaHoraFinEvento"=> $fecha_f, //$dosificacion['dosificacion_cuis'],
+                        "fechaHoraInicioEvento"=>$fecha_i, //$dosificacion['dosificacion_cuis'],
+                        "nit"               => $dosificacion['dosificacion_nitemisor']
+                    ]];
+
+                    //Agarramos el registro del evento significativo
+                    //var_dump($parametros);
+                    $resultado = $cliente->registroEventoSignificativo($parametros);
+                    $res = $resultado->RespuestaListaEventos->transaccion;
+                    $mensaje = "";
+
+//                    var_dump($resultado);
+//                    var_dump($res);
+                    
+                    
+                    $cufdes = $this->Venta_model->consultar("select * from cufd where cufd_codigo = '".$puntoventa['cufd_codigo']."'");
+                    $registroeventos_cufd = $cufdes[0]["cufd_codigo"];
+                    $registroeventos_codigocontrol = $cufdes[0]["cufd_codigocontrol"];
+
+//                        var_dump($resultado);
+//                        var_dump($res);
+
+                  
+                    //PASO 5: Si todo esta OK, actualizamos el codigo devuelto por el SIN
+
+//                    if ($res){
+                        $codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;
+
+                        $sql = "update registro_eventos set registroeventos_codigo = '".$codigo_recepcion."'"." where registroeventos_id = ".$evento['registroeventos_id'];
+                        $this->Eventos_significativos_model->ejecutar($sql);
+                        */
+                        
+                       // $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$evento['registroeventos_codigoevento'];
+
+            
+                        //PASO 6: Contar los archivos que se deben subir
+            
+                        $sql = "select * from registro_eventos where registroeventos_codigo = ".$codigo_evento;
+                        $eventos = $this->Venta_model->consultar($sql);
+                        $evento = $eventos[0];
+
+                        $sql = "select * from factura where registroeventos_id =  ".$evento['registroeventos_id'];
+                        $facturas = $this->Venta_model->consultar($sql);
+                        $cantidad_facturas = sizeof($facturas);
+                        
+                        //PASO 7: Comprimir archivos generados en la contingencia
+                        $base_url = explode('/', base_url());  //convierte un cadena en array
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+
+                        $codigo_recepcion = $codigo_evento;
+                        $p = new PharData($directorio."contingencia".$codigo_recepcion.".tar");
+                        
+                        
+                        
+                        if(file_exists($directorio."contingencia".$codigo_recepcion.".tar")){
+                            unlink($directorio."contingencia".$codigo_recepcion.".tar");
+                            unlink($directorio."contingencia".$codigo_recepcion.".tar.gz");
+
+                        }
+                        
+                        
+                        foreach ($facturas as $f){
+                            
+                            $datos = implode("", file($directorio."compra_venta".$f["factura_id"].".xml")); //convierte un array en cadena y asignamos a datos
+                            $p["compra_venta".$f['factura_id'].".xml"] = $datos;
+                            
+                        }
+                        
+                        $p->compress(Phar::GZ);                        
+                        
+                        //PASO 8: Enviar los archivos generados en el .tar.gz
+
+                        $wsdl = $dosificacion['dosificacion_factura'];
+
+                        $token = $dosificacion['dosificacion_tokendelegado'];
+                        $opts = array(
+                              'http' => array(
+                                   'header' => "apiKey: TokenApi $token",
+                              )
+                        );
+                        $context = stream_context_create($opts);
+
+                        $cliente = new \SoapClient($wsdl, [
+                              'stream_context' => $context,
+                              'cache_wsdl' => WSDL_CACHE_NONE,
+                              'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                              // other options
+                        ]);
+
+                        $base_url = explode('/', base_url());
+                        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+
+                        
+                        $nom_archivo =  "contingencia".$codigo_recepcion.".tar.gz";
+                        $codigo_evento =  $codigo_recepcion;
+                        $cant_fact =  $cantidad_facturas;
+                        
+                        
+//                        $factura_id = substr($nom_archivo,12, strlen($nom_archivo));
+                        $factura_id = 0;
+
+                        $handle = fopen($directorio.$nom_archivo, "rb");
+                        $contents = fread($handle, filesize($directorio.$nom_archivo));
+                        fclose($handle);
+
+                        $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo);
+                        $has_archivo = $xml_comprimido;
+
+                        //$usuario_id = $this->session_data['usuario_id'];
+//                        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+//                        $this->load->model('PuntoVenta_model');
+//                        $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+//                        
+                        $tipo_emision = 2;//1 offline
+                        
+                        $fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                        $parametros = ["SolicitudServicioRecepcionPaquete" => [
+                            "codigoAmbiente" => $dosificacion['dosificacion_ambiente'],
+                            "codigoPuntoVenta"    => $puntoventa['puntoventa_codigo'],
+                            "codigoSistema"        => $dosificacion['dosificacion_codsistema'],
+                            "codigoSucursal"       => $dosificacion['dosificacion_sucursal'],
+                            "nit"              => $dosificacion['dosificacion_nitemisor'],
+                            "codigoDocumentoSector"=> $dosificacion['docsec_codigoclasificador'],
+                            "codigoEmision"  => $tipo_emision,
+                            "codigoModalidad"     => $dosificacion['dosificacion_modalidad'],
+                            "cufd"              => $puntoventa['cufd_codigo'],
+                            "cuis"              => $puntoventa['cuis_codigo'],
+                            "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
+                            "archivo" => $contents,
+                            "fechaEnvio"=>$fecha_hora,
+                            "hashArchivo"=>$has_archivo,
+                            "cafc"               => $dosificacion['dosificacion_cafc'],
+                            "cantidadFacturas"     => $cant_fact,
+                            "codigoEvento"         => $codigo_evento,
+                        ]];
+
+                        $fecha_hora1 = (new DateTime())->format('Y-m-d H:i:s');
+                        //var_dump($parametros);
+                        $resultado = $cliente->recepcionPaqueteFactura($parametros);
+                        $res = $resultado->RespuestaServicioFacturacion;
+                        
+                        
+                        if($res->codigoDescripcion == "PENDIENTE"){
+                            $params = array(
+                                'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                                'recpaquete_codigoestado' => $res->codigoEstado,
+                                'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                                'recpaquete_transaccion' => $res->transaccion,
+                                'recpaquete_fechahora' => $fecha_hora1,
+                                'codigo_evento' => $codigo_evento,
+                                'factura_id' => $factura_id,
+                            );
+                        }else{
+                            $cad = $res->mensajesList;
+                                    $mensajecadena = "";
+                                    foreach ($cad as $c) {
+                                        $mensajecadena .= $c.";";
+                                    }
+                            $params = array(
+                                'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                                'recpaquete_codigoestado' => $res->codigoEstado,
+                                //'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                                'recpaquete_mensajeslist' => $mensajecadena,
+                                'recpaquete_fechahora' => $fecha_hora1,
+                                'codigo_evento' => $codigo_evento,
+                                'factura_id' => $factura_id,
+                            );
+                        } 
+                        
+                        $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
+                        
+                        //PASO 9: Envio de los archivos
+                       
+                        $wsdl = $dosificacion['dosificacion_factura'];
+                        $token = $dosificacion['dosificacion_tokendelegado'];
+                        
+                        $opts = array(
+                              'http' => array(
+                                   'header' => "apiKey: TokenApi $token",
+                              )
+                        );
+                        $context = stream_context_create($opts);
+
+                        $cliente = new \SoapClient($wsdl, [
+                              'stream_context' => $context,
+                              'cache_wsdl' => WSDL_CACHE_NONE,
+                              'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                              // other options
+                        ]);
+
+                        $codigo_recepcion =  $res->codigoRecepcion;
+                        $factura_id =  0;
+                        //$codigo_recepcion = '2d3b23e5-f882-11ec-8853-632ba520e7ec';
+                        /*$handle = fopen($directorio.$nom_archivo, "rb");
+                        $contents = fread($handle, filesize($directorio.$nom_archivo));
+                        fclose($handle);
+                         * 
+                        $xml_comprimido = hash_file('sha256',$directorio.$nom_archivo);
+                         */
+
+                        //$has_archivo = ''; //$xml_comprimido;
+
+//                        $usuario_id = $this->session_data['usuario_id'];
+//                        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+//                        $this->load->model('PuntoVenta_model');
+//                        $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                        $tipo_emision = 2; //1 offline
+                        //$fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
+                        $parametros = ["SolicitudServicioValidacionRecepcionPaquete" => [
+                            "codigoAmbiente" => $dosificacion['dosificacion_ambiente'],
+                            "codigoPuntoVenta"    => $puntoventa['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
+                            "codigoSistema"        => $dosificacion['dosificacion_codsistema'],
+                            "codigoSucursal"       => $dosificacion['dosificacion_sucursal'],
+                            "nit"              => $dosificacion['dosificacion_nitemisor'],
+                            "codigoDocumentoSector"=> $dosificacion['docsec_codigoclasificador'],
+                            "codigoEmision"  => $tipo_emision,
+                            "codigoModalidad"     => $dosificacion['dosificacion_modalidad'],
+                            "cufd"              => $puntoventa['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                            "cuis"              => $puntoventa['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
+                            "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
+                            "codigoRecepcion"         => $codigo_recepcion, //$dosificacion['dosificacion_nitemisor']
+                        ]];
+
+                        $fecha_hora1 = (new DateTime())->format('Y-m-d H:i:s');
+//                        var_dump($parametros);
+                        
+                        $resultado = $cliente->validacionRecepcionPaqueteFactura($parametros);
+                        $res = $resultado->RespuestaServicioFacturacion;
+                        echo "<br><br>";
+                        
+//                        var_dump($res);
+                        
+                        $recepcion_paquete = $this->Emision_paquetes_model->getcod_recepcionpaquetes($res->codigoRecepcion);
+                        
+                        if($res->codigoDescripcion == "VALIDADA"){
+                            
+                            $params = array(
+                                'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                                'recpaquete_codigoestado' => $res->codigoEstado,
+                            );
+                            
+                            $sql = "update factura set factura_codigodescripcion ='VALIDADA', factura_enviada = 2  where factura_id='".$factura_id."'";
+                            $this->Venta_model->ejecutar($sql);
+
+                            
+                        }elseif($res->codigoDescripcion == "OBSERVADA"){
+                            
+                            $cad = $res->mensajesList;
+                            $mensajecadena = json_encode($cad);
+
+                            /*foreach ($cad as $c) {
+                                $mensajecadena .= $c.";";
+                            }*/
+                            $params = array(
+                                'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                                'recpaquete_codigoestado' => $res->codigoEstado,
+                                'recpaquete_mensajeslist' => $mensajecadena,
+                            );
+                            
+                        }
+                        $this->Emision_paquetes_model->update_recepcionpaquetes($recepcion_paquete['recpaquete_id'],$params);
+
+                        //echo json_encode($res);
+                        //PASO 10: Actualizar datos de envio en las facturas
+                        
+                        foreach ($facturas as $f){
+                            
+                            $sql = "update factura set 
+                                     factura_codigodescripcion = 'VALIDADA'
+                                    ,factura_enviada = 2
+                                    ,factura_codigorecepcion= '".$res->codigoRecepcion."'
+                                     where registroeventos_id = ".$evento['registroeventos_id'];
+                                   
+                                    ;
+                            
+                            $this->Venta_model->ejecutar($sql);
+                        }
+                        
+                        
+                        
+                        
+                        
+                        echo json_encode($res);
+
+                        
+                        
+                        
+                        
+
+
+//                    }else{
+//
+//                        $mensajeresultado = $resultado->RespuestaListaEventos->mensajesList;
+//                        $mensaje = "OCURRIO UN ERROR, CODIGO: ".$mensajeresultado->codigo.", ".$mensajeresultado->descripcion;
+//
+//                    }
+                
+                    //echo json_encode("ok");
+                
+
                 
         }
     }

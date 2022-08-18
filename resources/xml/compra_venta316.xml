@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>318728021</nitEmisor>
+        <razonSocialEmisor>ALUMINIO FUTURA SRL</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4595680 - 79347671</telefono>
+        <numeroFactura>233</numeroFactura>
+        <cuf>15CEE9E094FD9153465D884A437572239161E807AB595F09C51AB6D74</cuf>
+        <cufd>CQUFLQ2MpZkFBNzUEzODRDMzg3MEY=Q8KhX1BxR1RJV1VIwRjFBNDkyQTlCN</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>AV REDUCTO, 3 CUADRAS AL NORTE</direccion>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <fechaEmision>2022-08-18T13:30:48.515</fechaEmision>
+        <nombreRazonSocial>ANA GARCIA</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>6555319015</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>AN2265</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta>0</numeroTarjeta>
+        <montoTotal>776.00</montoTotal>
+        <montoTotalSujetoIva>776</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>776.00</montoTotalMoneda>
+        <montoGiftCard>0.000</montoGiftCard>        
+        <descuentoAdicional>0.00</descuentoAdicional>
+        <codigoExcepcion>0</codigoExcepcion>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: El proveedor debe brindar atención sin discriminación, con respeto, calidez y cordialidad a los usuarios y consumidores.</leyenda>
+        <usuario>Xenia Alexa Soto</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>BV01</codigoProducto><descripcion>RIEL INFERIOR L-20 BRONCE</descripcion><cantidad>2</cantidad><unidadMedida>47</unidadMedida><precioUnitario>100.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>200.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle><detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>BV06A</codigoProducto><descripcion>ZOCALO L-20 BRONCE</descripcion><cantidad>6</cantidad><unidadMedida>47</unidadMedida><precioUnitario>96.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>576.00</subTotal><numeroSerie>, </numeroSerie><numeroImei>null</numeroImei></detalle></facturaComputarizadaCompraVenta>

@@ -388,7 +388,9 @@ class Emision_paquetes extends CI_Controller{
                 $res = $resultado->RespuestaServicioFacturacion;
                 //var_dump($res);
                 $recepcion_paquete = $this->Emision_paquetes_model->getcod_recepcionpaquetes($res->codigoRecepcion);
+                
                 if($res->codigoDescripcion == "VALIDADA"){
+                    
                     $params = array(
                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
                         'recpaquete_codigoestado' => $res->codigoEstado,
@@ -397,6 +399,7 @@ class Emision_paquetes extends CI_Controller{
                     $this->Venta_model->ejecutar($sql);
                     
                 }elseif($res->codigoDescripcion == "OBSERVADA"){
+                    
                     $cad = $res->mensajesList;
                     $mensajecadena = json_encode($cad);
                     

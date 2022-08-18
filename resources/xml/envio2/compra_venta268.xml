@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>318728021</nitEmisor>
+        <razonSocialEmisor>ALUMINIO FUTURA SRL</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4595680 - 79347671</telefono>
+        <numeroFactura>532</numeroFactura>
+        <cuf>15CEE9E094FD9122E57DCF9BD0B63F2385581444928D3AC75FD9B6D74</cuf>
+        <cufd>CQUFLQ2MpZkFBNzUEzODRDMzg3MEY=Q2XDgVdJUFNJV1VIwRjFBNDkyQTlCN</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>AV REDUCTO, 3 CUADRAS AL NORTE</direccion>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <fechaEmision>2022-08-17T15:18:17.712</fechaEmision>
+        <nombreRazonSocial>CARLOS SOTO</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>5152377019</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>CA78884</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta>0</numeroTarjeta>
+        <montoTotal>101.00</montoTotal>
+        <montoTotalSujetoIva>101</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>101.00</montoTotalMoneda>
+        <montoGiftCard>0.000</montoGiftCard>        
+        <descuentoAdicional>0.00</descuentoAdicional>
+        <codigoExcepcion>1</codigoExcepcion>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: Tienes derecho a recibir información que te proteja de la publicidad engañosa.</leyenda>
+        <usuario>Administrador</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>CEL1</codigoProducto><descripcion>CELOSIA 2 ASPAS</descripcion><cantidad>2</cantidad><unidadMedida>47</unidadMedida><precioUnitario>28.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>56.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle><detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>CEL3</codigoProducto><descripcion>CELOSIA 4 ASPAS</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>45.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>45.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle></facturaComputarizadaCompraVenta>

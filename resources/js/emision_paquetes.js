@@ -42,7 +42,7 @@ function tablaresultados()
                         }
                         
                         html += "<td style='padding: 2px;' class='text-center'>";                        
-                        html += moment(registros[i]["recpaquete_fechahora"]).format("DD/MM/YYYY H:i:s");                        
+                        html += moment(registros[i]["recpaquete_fechahora"]).format("DD/MM/YYYY H:m:s");                        
                         html += "</td>";                        
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['codigo_evento']+"</td>";
                         

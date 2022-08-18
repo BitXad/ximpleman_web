@@ -144,7 +144,7 @@ border-bottom : 1px solid #aaa;
                     <div class="form-group">
                         <select id="motivo_anulacion" class="form-control">
                             <?php  foreach ($motivos as $motivo) {?>
-                                <option value="<?= $motivo['motivo_codigo']; ?>"><?= $motivo['motivo_descripcion']; ?></option>
+                                <option value="<?= $motivo['cma_id']; ?>"><?= $motivo['cma_descripcion']; ?></option>
                             <?php } ?>
                         </select>
                     </div>

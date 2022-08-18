@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>318728021</nitEmisor>
+        <razonSocialEmisor>ALUMINIO FUTURA SRL</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4595680 - 79347671</telefono>
+        <numeroFactura>517</numeroFactura>
+        <cuf>15CEE9E094FD91221901D4D0A60204E941FD99612B6AF2AD5ED9B6D74</cuf>
+        <cufd>CQUFLQ2MpZkFBNzUEzODRDMzg3MEY=Q1XDk2NzTlNJV1VIwRjFBNDkyQTlCN</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>AV REDUCTO, 3 CUADRAS AL NORTE</direccion>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <fechaEmision>2022-08-17T13:56:16.797</fechaEmision>
+        <nombreRazonSocial>ANA GARCIA</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>6555319015</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>AN2265</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta>0</numeroTarjeta>
+        <montoTotal>316.00</montoTotal>
+        <montoTotalSujetoIva>316</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>316.00</montoTotalMoneda>
+        <montoGiftCard>0.000</montoGiftCard>        
+        <descuentoAdicional>0.00</descuentoAdicional>
+        <codigoExcepcion>0</codigoExcepcion>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: El proveedor de productos debe habilitar medios e instrumentos para efectuar consultas y reclamaciones.</leyenda>
+        <usuario>Administrador</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>BV2011</codigoProducto><descripcion>ENGANCHE REFOR. L-20 BRONCE</descripcion><cantidad>2</cantidad><unidadMedida>47</unidadMedida><precioUnitario>110.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>220.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle><detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>BV04</codigoProducto><descripcion>ENGANCHE L-20 BRONCE</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>96.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>96.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle></facturaComputarizadaCompraVenta>

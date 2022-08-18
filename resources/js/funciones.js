@@ -84,19 +84,29 @@ function validar(e,opcion) {
         
         if (opcion==1){   //si la pulsacion proviene del nit  
             
-            document.getElementById('nit').checked = false;
-             //verificarnit();
-            nit = document.getElementById('nit').value;            
-            if (nit==''){
-                var cod = generar_codigo();
-                $("#nit").val(cod);
-                $("#razon_social").focus();
-                $("#razon_social").select();
-                $("#zona_id").val(0);
+            let tipo_sistema = document.getElementById('parametro_tiposistema').value;
+
                 
-            }else{                
-             buscarcliente();
-            }               
+                document.getElementById('nit').checked = false;
+                 //verificarnit();
+                nit = document.getElementById('nit').value;            
+            
+            if ( nit != 0){
+                
+                if (nit==''){
+                    var cod = generar_codigo();
+                    $("#nit").val(cod);
+                    $("#razon_social").focus();
+                    $("#razon_social").select();
+                    $("#zona_id").val(0);
+
+                }else{                
+                 buscarcliente();
+                }
+                
+            }else{
+                alert("ADVERTENCIA: El NIT No puede ser 0 en esta modalidad...!");
+            }
         }
 
         if (opcion==2){
@@ -206,6 +216,7 @@ function buscarcliente(){
 
     var base_url = document.getElementById('base_url').value;
     var nit = document.getElementById('nit').value;
+    
     if (nit==''){
         var cod = generar_codigo();
         $("#nit").val(cod);
@@ -213,8 +224,10 @@ function buscarcliente(){
         $("#razon_social").select();
         $("#zona_id").val(0);
     }
+    
     var controlador = base_url+'venta/buscarcliente';
     document.getElementById('loader_documento').style.display = 'block';
+    
     $.ajax({url:controlador,
             type:"POST",
             data:{nit:nit},
@@ -268,6 +281,7 @@ function buscarcliente(){
                             
                         }
                     
+                        $("#razon_social").focus();
                     
                     }
                     else //si no tiene asignado ningun tipo, le asignara el tipo 1 por defecto
@@ -302,24 +316,33 @@ function buscarcliente(){
                     $("#tipocliente_id").val(1);
                     $("#venta_descuento").val(0);
                     let tipo_sistema = document.getElementById('parametro_tiposistema').value;
+                    let dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
                     
-                    if(tipo_sistema != 1){
-                        let result = verificar_conexion_enventas();
-                        let res = result;
-                        //alert(res);
-                        if(res){
-                            let tipo_doc_identidad = base_url = document.getElementById('tipo_doc_identidad').value;
-                            if(tipo_doc_identidad == 5){
-                                verificarnit();
+                    
+                    if(tipo_sistema != 1){ //Si computarizado o electronico en linea
+                        if (dosificacion_modalidad==1){
+                        
+                            let result = verificar_conexion_enventas();
+                            let res = result;
+                            //alert(res);
+                            if(res){
+                                let tipo_doc_identidad = base_url = document.getElementById('tipo_doc_identidad').value;
+                                if(tipo_doc_identidad == 5){
+                                    verificarnit();
+                                }else{
+                                    document.getElementById('loader_documento').style.display = 'none';
+                                }
                             }else{
+                                alert("No hay comunicación con Impuestos");
                                 document.getElementById('loader_documento').style.display = 'none';
                             }
+                        
                         }else{
-                            alert("No hay comunicación con Impuestos");
-                            document.getElementById('loader_documento').style.display = 'none';
-                        }
-                    }
-                    
+                                document.getElementById('loader_documento').style.display = 'none';
+                                $('#razon_social').focus();
+                                //$('#razon_social').select();
+                        }                       
+                    }                    
                 }
                 //document.getElementById('loader_documento').style.display = 'none';
             },
@@ -5324,9 +5347,12 @@ function enviarfactura_porcorreo(){
 function cargar_contingencia(){
    //alert("cargando contingencia..!");
    
-   var tipoevento_id = document.getElementById("evento_contingencia").value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'venta/facturas_contingencia';
+    var codigo_evento = document.getElementById("evento_contingencia").value;
    
-    if (tipoevento_id == 0){
+    
+    if (codigo_evento == 0){
       
         document.getElementById("div_cafc").style.display = "none";      
         document.getElementById("codigoexcepcion").checked = false;
@@ -5337,9 +5363,54 @@ function cargar_contingencia(){
         $("#boton_finventa").click();
         document.getElementById("codigoexcepcion").checked = true;
         
-        $("#fecha_cafc").val("2022-08-10");
-        $("#hora_cafc").val("10:30");
-        $("#numfact_cafc").val("2081");
+        //******************************************************
+            if (codigo_evento>0){
+                
+                $.ajax({url: controlador,
+                          type:"POST",
+                          data:{codigo_evento:codigo_evento},
+                          success:function(respuesta){
+                              
+                              var registros =  JSON.parse(respuesta);
+                             // $("#modal_tipoemision").modal("hide");
+                                              
+                              //alert(registros.length);
+                              var fecha_hora = registros[0]["registroeventos_inicio"];
+                              var fecha = fecha_hora[0]+fecha_hora[1]+fecha_hora[2]+fecha_hora[3]+fecha_hora[4]+
+                                      fecha_hora[5]+fecha_hora[6]+fecha_hora[7]+fecha_hora[8]+fecha_hora[9];
+                              //alert(fecha);
+                              var hora = fecha_hora[11]+fecha_hora[12]+fecha_hora[13]+fecha_hora[14]+
+                                      fecha_hora[15]+fecha_hora[16]+fecha_hora[17]+fecha_hora[18];
+                             // alert(hora);
+                              
+                                $("#fecha_cafc").val(fecha);
+                                $("#hora_cafc").val(hora);
+                                $("#numfact_cafc").val(registros[0]["facturacontingencia_numero"]);
+                                $("#codigo_cafc").val(registros[0]["facturacontingencia_cafc"]);
+
+                          },
+                          error:function(respuesta){
+                             // alert("Algo salio mal...!!!");
+                             html = "";
+                             $("#tablaresultados").html(html);
+                             document.getElementById('loader_documento').style.display = 'none';
+                          },
+                          complete: function (jqXHR, textStatus) {
+                              document.getElementById('loader_documento').style.display = 'none'; //ocultar el bloque del loader 
+                              //tabla_inventario();
+                          }
+                  });    
+
+            }else{
+                alert("ERROR: Debe seleccionar un evento/archivo a enviar");
+            }        
+        
+        
+
+        //******************************************************
+        
+        
+
         
     }
     
@@ -5495,6 +5566,8 @@ function cambiar_tipoemision()
                 var registros =  JSON.parse(respuesta);
                 $("#modal_tipoemision").modal("hide");
                
+               
+                    alert(JSON.stringify(registros));
                     location.reload();
                 
 //                if(parametro_tipoemision == 1){
@@ -5563,6 +5636,14 @@ function borrar_datos_cliente()
     $("#venta_giftcard").val("0.00");
     $("#tipo_doc_identidad").val("5");
     
+    
+    
+//    var codigo = document.getElementById("evento_contingencia").value; //0 no, 1 si
+//    var num = document.getElementById("numfact_cafc").value; //0 no, 1 si
+//    
+//    if (codig>0){
+//        $("#numfact_cafc").val(Num(num+1))
+//    }
      
     //document.getElementById("codigoexcepcion").checked = false;
     document.getElementById("forma_pago").selectedIndex = 0
@@ -5624,4 +5705,70 @@ function verificar_conexion(){
 
     alert("navegador en linea: "+navigator.onLine);
 
+}
+
+
+function preparar_parametros(){
+    
+    var codigo_evento = document.getElementById("codigo_evento").value;
+    var archivo = "contingencia"+codigo_evento+".tar.gz"
+    //alert("contingencia"+codigo_evento+".tar.gz");
+    
+    $("#nombre_archivo").val(archivo);       
+    
+}
+
+function envio_paquetes(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var parametro_id = document.getElementById('elparametro_id').value;
+    var controlador = base_url+'parametro/enviar_paquete';
+    var codigo_evento = document.getElementById("codigo_evento").value;
+    var archivo = "contingencia"+codigo_evento+".tar.gz"
+    //alert("contingencia"+codigo_evento+".tar.gz");
+    
+    if (codigo_evento>0){
+
+        $.ajax({url: controlador,
+                  type:"POST",
+                  data:{codigo_evento:codigo_evento},
+                  success:function(respuesta){
+                      var registros =  JSON.parse(respuesta);
+                      $("#modal_tipoemision").modal("hide");
+
+
+                          alert(JSON.stringify(registros));
+                          //location.reload();
+
+      //                if(parametro_tipoemision == 1){
+      //                    
+      //                    var mensaje;                    
+      //                    var opcion = confirm("ADVERTENCIA: Debe actualizar el CUFD, continuar?");
+      //                    
+      //                    if (opcion == true) {
+      //                        
+      //                        
+      //                        //solicitudCufd(punto_venta);                      
+      //                    }
+      //                  document.getElementById("ejemplo").innerHTML = mensaje;
+      //                }
+
+                      //document.getElementById('loader_documento').style.display = 'none';
+
+                  },
+                  error:function(respuesta){
+                     // alert("Algo salio mal...!!!");
+                     html = "";
+                     $("#tablaresultados").html(html);
+                     document.getElementById('loader_documento').style.display = 'none';
+                  },
+                  complete: function (jqXHR, textStatus) {
+                      document.getElementById('loader_documento').style.display = 'none'; //ocultar el bloque del loader 
+                      //tabla_inventario();
+                  }
+          });    
+      
+    }else{
+        alert("ERROR: Debe seleccionar un evento/archivo a enviar");
+    }
 }

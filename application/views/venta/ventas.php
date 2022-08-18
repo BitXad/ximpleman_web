@@ -267,6 +267,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="elparametro_id" value="<?php echo $parametro['parametro_id']; ?>" name="elparametro_id"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
+<input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -443,6 +444,12 @@ window.onkeydown = compruebaTecla;
                 </select>
            
             <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-warning btn-xs" title="Registrar evento significativo"><fa class="fa fa-floppy-o"> </fa> </a>
+            
+    
+            <button type="button" id="boton_modalpaquetes" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modalpaquetes" >
+                <fa class="fa fa-cubes"></fa>
+            </button>
+        
             <?php }else{ ?>
                            
                     <input type="hidden" id="evento_contingencia" value="0" />
@@ -1984,3 +1991,70 @@ window.onkeydown = compruebaTecla;
         setInterval("verificar_conexion()",3000);
       */  
 </script>
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- EMISION DE PAQUETES ----------------------------------->
+<!------------------------------------------------------------------------------->
+<div hidden>
+    <button type="button" id="boton_modalpaquetes" class="btn btn-primary" data-toggle="modal" data-target="#modalpaquetes" >
+      ENVIO PAQUETES
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalpaquetes" tabindex="-1" role="dialog" aria-labelledby="modalpaquetes" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">SOLICITUD SERVICIO RECEPCION PAQUETE</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id='loader'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="row" id='loader2'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="col-md-12">
+                    <label for="codigo_evento" class="control-label"><span class="text-danger">*</span>Código Evento</label>
+<!--                    <div class="form-group">
+                        <input type="text" name="codigo_evento" class="form-control" id="codigo_evento" />
+                    </div>
+-->                    
+                    <select name="codigo_evento" class="form-control" id="codigo_evento" onchange="preparar_parametros()">
+                        <option value="0">- SELECCIONAR EVENTO -</option>
+                        <?php 
+                            foreach($eventos as $evento){ ?>
+                                <option value="<?php echo $evento['registroeventos_codigo']; ?>">    
+                                    <?php echo $evento['registroeventos_codigo']." [".$evento['registroeventos_puntodeventa']."] ".$evento['registroeventos_detalle']." ".$evento['registroeventos_inicio']; ?>
+                                </option>
+                        <?php    } ?>
+                            
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Nombre Archivo</label>
+                    <div class="form-group">
+                        <input type="text" name="nombre_archivo" value="compra_venta00.tar.gz" class="form-control" id="nombre_archivo" />
+                    </div>
+                </div>
+<!--                <div class="col-md-4">
+                    <label for="cant_fact" class="control-label"><span class="text-danger">*</span>Cantidad Facturas</label>
+                    <div class="form-group">
+                        <input type="number" name="cant_fact" value="1" class="form-control" id="cant_fact" />
+                    </div>
+                </div>-->
+            </div>
+            
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Envio de Paquetes</button>
+                <button type="button" class="btn btn-danger" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+            
+        </div>
+    </div>
+</div>

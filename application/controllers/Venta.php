@@ -1290,7 +1290,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                                <td class='text-right'>".number_format($total_final_factura,2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>(-) DESCUENTO Bs</td>";
+                                        $micad .= "                                <td class='text-right' style='text-align: right'>DESCUENTO Bs</td>";
                                         $micad .= "                                <td style='width: 1cm !important;'></td>";
                                         $micad .= "                                <td class='text-right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
@@ -1306,13 +1306,13 @@ class Venta extends CI_Controller{
                                         $micad .= "                            </tr>";
                                                                                 if ($mostrarice==1){
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
+                                        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
                                         $micad .= "                                <td></td>";
                                         $micad .= "                                <td class='text-right'>".number_format($ice,2,'.',','); //number_format($factura[0]['factura_ice'],2,'.',',');
                                         $micad .= "                                </td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>(-) TOTAL ICE PORCENTUAL Bs</td>";
+                                        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE PORCENTUAL Bs</td>";
                                         $micad .= "                                <td></td>";
                                         $micad .= "                                <td class='text-right'> ".number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',',');
                                         $micad .= "                                </td>";
@@ -1473,6 +1473,7 @@ class Venta extends CI_Controller{
 //                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
 //                                        $micad .= "                                "; 
 //                                                                       } 
+
                                         $micad .= "                            <font size='1' face='Arial'>"; 
                                         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
                                         $micad .= "                                "; 
@@ -1787,12 +1788,18 @@ class Venta extends CI_Controller{
                         
                         
                         //Funcion en eventos con cafc
-                        if ($registroeventos_codigo > 0){
+                        
+                        if ($registroeventos_codigo > 0){ //$registroeventos_codigo > 0 para que ingrese y envie los archivos con cafc
+                            
+//                            $sql = "update factura_contingencia set facturacontingencia_numero =  facturacontingencia_numero+1";
+//                            $this->Venta_model->ejecutar($sql);
+                            
                             $codigo_recepcion = $this->registroEmisionPaquetes($factura_id,$registroeventos_codigo);
                             
                             if ($codigo_recepcion>0){
                                 $this->registroEmisionPaquetes_vacio($codigo_recepcion, $factura_id);
                             }
+                            
                         }
                         // Fin Funcion en eventos con cafc
                         
@@ -5842,6 +5849,34 @@ function anular_venta($venta_id){
         
        // echo "tar -czf ".$directorio."envio18/backup.tar.gz ".$directorio;
         //exec("tar -czf ".$directorio."envio18/backup.tar.gz ".$directorio);
+    }
+    
+    
+    function facturas_contingencia(){
+        
+        $usuario_id = $this->session_data['usuario_id'];
+        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+        
+        $codigo_evento = $this->input->post("codigo_evento");
+        
+        $dosificacion_id = 1;
+        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+        $sql = "select * from factura_contingencia where facturacontingencia_cafc = '".$dosificacion["dosificacion_cafc"]."'";
+        
+        $sql = "select f.*,r.* from factura_contingencia f, registro_eventos r 
+                where 
+                f.facturacontingencia_cafc = '".$dosificacion["dosificacion_cafc"]."' and
+                r.registroeventos_codigo = ".$codigo_evento.
+                " and r.registroeventos_puntodeventa = ".$puntoventa["puntoventa_codigo"];
+        
+        //echo $sql;     
+        $factura_contingecia = $this->Venta_model->consultar($sql);
+      
+        echo json_encode($factura_contingecia);
+        
+
+
     }
     
 }

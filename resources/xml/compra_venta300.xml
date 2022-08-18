@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>318728021</nitEmisor>
+        <razonSocialEmisor>ALUMINIO FUTURA SRL</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4595680 - 79347671</telefono>
+        <numeroFactura>2086</numeroFactura>
+        <cuf>15CEE9E094FD9152BB924E4A9D7CF8D791B6577BC8372F3DC81AB6D74</cuf>
+        <cufd>QUFBS0NjKWZBQQ==NUEzODRDMzg3MEY=Q8Khw5NWd0xUSVdVNzIwRjFBNDkyQTlC</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>AV REDUCTO, 3 CUADRAS AL NORTE</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-08-18T12:20:52.133</fechaEmision>
+        <nombreRazonSocial>LINEA DE SUPERMERCADOS SRL</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>131501027</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>LI66367</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta>0</numeroTarjeta>
+        <montoTotal>300.00</montoTotal>
+        <montoTotalSujetoIva>300</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>300.00</montoTotalMoneda>
+        <montoGiftCard>0.000</montoGiftCard>        
+        <descuentoAdicional>10.00</descuentoAdicional>
+        <codigoExcepcion>0</codigoExcepcion>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: El proveedor debe brindar atención sin discriminación, con respeto, calidez y cordialidad a los usuarios y consumidores.</leyenda>
+        <usuario>Xavier Soto Garcia</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>BV02</codigoProducto><descripcion>RIEL SUPERIOR L-20 BRONCE</descripcion><cantidad>2</cantidad><unidadMedida>47</unidadMedida><precioUnitario>100.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>200.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle><detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>BV02</codigoProducto><descripcion>RIEL SUPERIOR L-20 SILVER</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>110.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>110.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle></facturaComputarizadaCompraVenta>

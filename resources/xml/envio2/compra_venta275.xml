@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>318728021</nitEmisor>
+        <razonSocialEmisor>ALUMINIO FUTURA SRL</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4595680 - 79347671</telefono>
+        <numeroFactura>539</numeroFactura>
+        <cuf>15CEE9E094FD91237E48762438CBC17CEBCE1EF2F323C337EFD9B6D74</cuf>
+        <cufd>BQUtDYylmQUE=NzUEzODRDMzg3MEY=Q3kjVkNRU0lXVUJIwRjFBNDkyQTlCN</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>AV REDUCTO, 3 CUADRAS AL NORTE</direccion>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <fechaEmision>2022-08-17T16:39:23.110</fechaEmision>
+        <nombreRazonSocial>JOHAN RICO TORO</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>234234</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>JO87122</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta>0</numeroTarjeta>
+        <montoTotal>191.00</montoTotal>
+        <montoTotalSujetoIva>191</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>191.00</montoTotalMoneda>
+        <montoGiftCard>0.000</montoGiftCard>        
+        <descuentoAdicional>0.00</descuentoAdicional>
+        <codigoExcepcion>1</codigoExcepcion>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: Los contratos de adhesión deben redactarse en términos claros, comprensibles, legibles y deben informar todas las facilidades y limitaciones.</leyenda>
+        <usuario>Administrador</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>BV06A</codigoProducto><descripcion>ZOCALO L-20 BRONCE</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>96.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>96.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle><detalle><actividadEconomica>466300</actividadEconomica><codigoProductoSin>61161</codigoProductoSin><codigoProducto>BV03A</codigoProducto><descripcion>JAMBA L-20 SILVER</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>95.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>95.00</subTotal><numeroSerie/><numeroImei>null</numeroImei></detalle></facturaComputarizadaCompraVenta>
