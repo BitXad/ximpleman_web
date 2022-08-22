@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>8688070018</nitEmisor>
+        <razonSocialEmisor>PASSWORD</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4511518 * (591) 79999097</telefono>
+        <numeroFactura>23</numeroFactura>
+        <cuf>252763D5BB64BCA875DA52F47AC05CAD4A18C0B986425673A6678B6D74</cuf>
+        <cufd>BQT5CwqE+P0lBNzzlFRkRBNjUwMTc=Q3w3NDNKTUlXVUFIxOThFQUVGQjZBM</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <fechaEmision>2022-08-11T10:38:47.111</fechaEmision>
+        <nombreRazonSocial>MAGO MERLIN</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>5196226</numeroDocumento>
+        <complemento>TR56</complemento>
+        <codigoCliente>MA65934</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta>0</numeroTarjeta>
+        <montoTotal>420.00</montoTotal>
+        <montoTotalSujetoIva>420</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>420.00</montoTotalMoneda>
+        <montoGiftCard>0.000</montoGiftCard>        
+        <descuentoAdicional>5.00</descuentoAdicional>
+        <codigoExcepcion>0</codigoExcepcion>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: En caso de incumplimiento a lo ofertado o convenido, el proveedor debe reparar o sustituir el producto..</leyenda>
+        <usuario>LIDIA CALA CALDERON</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>472000</actividadEconomica><codigoProductoSin>99100</codigoProductoSin><codigoProducto>TEC-00148</codigoProducto><descripcion>TECLADO FLEXIBLE KEYBOARD</descripcion><cantidad>5</cantidad><unidadMedida>47</unidadMedida><precioUnitario>85.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>425.00</subTotal><numeroSerie/><numeroImei/></detalle></facturaComputarizadaCompraVenta>
