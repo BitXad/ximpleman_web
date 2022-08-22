@@ -84,6 +84,15 @@ class Eventos_significativos_model extends CI_Model{
     /**
      * get Codigos Nis for activity and secondary activity
      */
+    function get_eventos_porid($registroevento_id){
+        
+        $sql = "select * from registro_eventos where registroeventos_id = ".$registroevento_id;
+        return $this->db->query($sql)->result_array();
+    }
+    
+    /**
+     * get Codigos Nis for activity and secondary activity
+     */
     function get_evento_vigente($punto_venta){
         
         $sql = "select if(count(*)>0, registroeventos_id, 0) as registroeventos_id

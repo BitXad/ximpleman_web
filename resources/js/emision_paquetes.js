@@ -117,6 +117,7 @@ function ejecutar_emisionpaquetes_vacio(codigo_recepcion){
  * Consumo del metodo de emision de paquetes
  * */
 function emision_paquetes(){
+    
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'emision_paquetes/registroEmisionPaquetes';
     //var opcion = confirm("Permite informar al SIN de la contingencia del Sistema Informático de Facturación autorizado. \n ¿Desea Continuar?");
@@ -161,6 +162,7 @@ function emision_paquetes(){
                 }                
         }); 
     }
+    
 }
 
 function emisionpaquetes_vacio(){

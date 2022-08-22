@@ -84,24 +84,26 @@ function validar(e,opcion) {
         
         if (opcion==1){   //si la pulsacion proviene del nit  
             
+            document.getElementById('codigoexcepcion').checked = false;
             let tipo_sistema = document.getElementById('parametro_tiposistema').value;
 
-                
-                document.getElementById('nit').checked = false;
                  //verificarnit();
                 nit = document.getElementById('nit').value;            
             
             if ( nit != 0){
                 
                 if (nit==''){
+                    
                     var cod = generar_codigo();
                     $("#nit").val(cod);
                     $("#razon_social").focus();
                     $("#razon_social").select();
-                    $("#zona_id").val(0);
+                    $("#zona_id").val(0);                    
 
-                }else{                
-                 buscarcliente();
+                }else{      
+                    
+                    buscarcliente();
+                 
                 }
                 
             }else{
@@ -217,7 +219,8 @@ function buscarcliente(){
     var base_url = document.getElementById('base_url').value;
     var nit = document.getElementById('nit').value;
     
-    if (nit==''){
+    
+    if (nit==''){ //Si el campo Nit esta vacio, genera NIT/Codigo automaticamente
         var cod = generar_codigo();
         $("#nit").val(cod);
         $("#razon_social").focus();
@@ -254,8 +257,8 @@ function buscarcliente(){
                     $("#tipocliente_id").val(1);
                     $("#tipocliente_porcdesc").val(0);
                     $("#tipocliente_montodesc").val(0);
-                   
-                    
+                                                        
+                    document.getElementById("codigoexcepcion").checked = (registros[0]["cliente_excepcion"] == 1)?1:0; 
                     
                     if (registros[0]["tipocliente_id"] != null && registros[0]["tipocliente_id"] >=0)
                     {   //si tiene definido un tipo de cliente 
@@ -297,6 +300,7 @@ function buscarcliente(){
                 }
                 else //Si el cliente es nuevo o no existe
                 {
+                    
                     //$("#razon_social").val('SIN NOMBRECILLO');
                     document.getElementById('razon_social').focus();
                     $("#razon_social").val("");
@@ -317,29 +321,36 @@ function buscarcliente(){
                     $("#venta_descuento").val(0);
                     let tipo_sistema = document.getElementById('parametro_tiposistema').value;
                     let dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
+                    let parametro_tipoemision = document.getElementById('parametro_tipoemision').value;
                     
-                    
-                    if(tipo_sistema != 1){ //Si computarizado o electronico en linea
-                        if (dosificacion_modalidad==1){
+                    if(tipo_sistema != 1){ //1 =SFV /2=elec en linea 3=comp. en linea
+                            //alert(dosificacion_modalidad);
+                            
+                        //if (dosificacion_modalidad == 1){ //modalidad 1= Elec.Enlinea 2=computarizada en linea
+                        if (parametro_tipoemision == 1){ //tipoemision 1 = En linea 2 = Fuera de linea
                         
                             let result = verificar_conexion_enventas();
                             let res = result;
                             //alert(res);
                             if(res){
+                                
                                 let tipo_doc_identidad = base_url = document.getElementById('tipo_doc_identidad').value;
+                                
                                 if(tipo_doc_identidad == 5){
                                     verificarnit();
                                 }else{
                                     document.getElementById('loader_documento').style.display = 'none';
                                 }
+                                
                             }else{
                                 alert("No hay comunicación con Impuestos");
                                 document.getElementById('loader_documento').style.display = 'none';
                             }
                         
-                        }else{
+                        }else{ // Si es computarizado o electronica en linea
                                 document.getElementById('loader_documento').style.display = 'none';
                                 $('#razon_social').focus();
+                                //verificarnit();
                                 //$('#razon_social').select();
                         }                       
                     }                    
@@ -2634,6 +2645,15 @@ function registrarcliente()
     var cliente_celular = document.getElementById('cliente_celular').value;
     var cliente_email = document.getElementById('email').value;
     var cliente_complementoci = document.getElementById('cliente_complementoci').value;
+//    var cliente_excepcion = (document.getElementById('codigoexcepcion').value == 1)?1:0;
+    var cliente_excepcion = 0;
+    if($('#codigoexcepcion').is(':checked'))
+    {    cliente_excepcion = 1; }
+    else
+    {    cliente_excepcion = 0; }
+        
+    
+    //var cliente_excepcion = $('#codigoexcepcion').is(':checked');
     
     var zona_id = document.getElementById('zona_id').value;
     //if (Number.isInteger(zona_id)){
@@ -2657,6 +2677,7 @@ function registrarcliente()
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
                         tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,cliente_complementoci:cliente_complementoci,
+                        cliente_excepcion: cliente_excepcion
                     },
                     
                     success:function(respuesta){ 
@@ -2686,7 +2707,7 @@ function registrarcliente()
             data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
-                        tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,cliente_complementoci:cliente_complementoci,},
+                        tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,cliente_complementoci:cliente_complementoci,cliente_excepcion:cliente_excepcion},
             success:function(respuesta){  
             
                 var registro = JSON.parse(respuesta);
@@ -2832,12 +2853,13 @@ function registrarventa(cliente_id)
     var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
     let banco_id = forma_id == 1 ? '0':$('#banco').val();
     let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
+    
     var codigoexcepcion = document.getElementById('codigoexcepcion').checked;
 
     var venta_ice = document.getElementById('venta_ice').value;
     var venta_giftcard = document.getElementById('venta_giftcard').value;
     var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').value;
-
+    var dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
 
     var registroeventos_codigo = document.getElementById('evento_contingencia').value;
     
@@ -2913,7 +2935,8 @@ function registrarventa(cliente_id)
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,
                 tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
                 venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
-                factura_complementoci:factura_complementoci,fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo
+                factura_complementoci:factura_complementoci,fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, codigo_cafc: codigo_cafc, 
+                registroeventos_codigo: registroeventos_codigo, dosificacion_modalidad:dosificacion_modalidad
             },
             success:function(respuesta){
                 let res = JSON.parse(respuesta);
@@ -2940,7 +2963,8 @@ function registrarventa(cliente_id)
                 cliente_email:cliente_email, venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
                 venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
                 factura_complementoci:factura_complementoci, fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, 
-                codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo, hora_cafc:hora_cafc
+                codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo, hora_cafc:hora_cafc,
+                dosificacion_modalidad:dosificacion_modalidad
             },
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
@@ -4115,6 +4139,16 @@ function registrarcliente_modificado()
     var cliente_celular = document.getElementById('cliente_celular').value;    
     var zona_id = document.getElementById('zona_id').value;    
     var tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;    
+//    var cliente_excepcion = document.getElementById("codigoexcepcion").checked;
+//    var cliente_excepcion = $('#codigoexcepcion').is(':checked');
+    //var cliente_excepcion = (document.getElementById('codigoexcepcion').value == 1)?1:0;
+    
+    var cliente_excepcion = 0;
+    if($('#codigoexcepcion').is(':checked'))
+    {    cliente_excepcion = 1; }
+    else
+    {    cliente_excepcion = 0; }
+    
     
    
     if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
@@ -4127,7 +4161,8 @@ function registrarcliente_modificado()
                 type:"POST",
                 data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,tipo_doc_identidad:tipo_doc_identidad},
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
+                        tipo_doc_identidad:tipo_doc_identidad, cliente_excepcion:cliente_excepcion},
                 success:function(respuesta){ 
                     var datos = JSON.parse(respuesta)
                     cliente_id = datos[0]["cliente_id"];
@@ -4337,12 +4372,11 @@ function focus_efectivo(){
         calculardesc();
     }
     
-        
-    
         $('#modalfinalizar').on('shown.bs.modal', function() {
         $('#venta_efectivo').focus();
         $('#venta_efectivo').select();
-    });
+        });
+        
 }
 
 function focus_ingreso_rapido(){
@@ -5201,6 +5235,12 @@ function verificarnit(){
                 $("#mensajeadvertencia").html(registros.RespuestaVerificarNit.mensajesList.descripcion);
                 if(elcodigo != 986){
                     $("#modal_mensajeadvertencia").modal("show");
+                        
+                    $('#modal_mensajeadvertencia').on('shown.bs.modal', function() {
+                    $('#boton_advertencia').focus();
+                    });
+
+                    
                 }
                 
                 //alert("hola");
@@ -5599,8 +5639,80 @@ function cambiar_tipoemision()
     });
 }
 
-function borrar_datos_cliente()
-{
+
+function verificar_conexion(){
+
+    alert("navegador en linea: "+navigator.onLine);
+
+}
+
+
+function preparar_parametros(){
+    
+    var codigo_evento = document.getElementById("codigo_evento").value;
+    var archivo = "contingencia"+codigo_evento+".tar.gz"
+    //alert("contingencia"+codigo_evento+".tar.gz");
+    
+    $("#nombre_archivo").val(archivo);       
+    
+}
+
+function envio_paquetes(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var parametro_id = document.getElementById('elparametro_id').value;
+    var controlador = base_url+'parametro/enviar_paquete';
+    var codigo_evento = document.getElementById("codigo_evento").value;
+    var archivo = "contingencia"+codigo_evento+".tar.gz"
+    //alert("contingencia"+codigo_evento+".tar.gz");
+    
+    if (codigo_evento>0){
+
+        $.ajax({url: controlador,
+                  type:"POST",
+                  data:{codigo_evento:codigo_evento},
+                  success:function(respuesta){
+                      var registros =  JSON.parse(respuesta);
+                      $("#modal_tipoemision").modal("hide");
+
+
+                          alert(JSON.stringify(registros));
+                          //location.reload();
+
+      //                if(parametro_tipoemision == 1){
+      //                    
+      //                    var mensaje;                    
+      //                    var opcion = confirm("ADVERTENCIA: Debe actualizar el CUFD, continuar?");
+      //                    
+      //                    if (opcion == true) {
+      //                        
+      //                        
+      //                        //solicitudCufd(punto_venta);                      
+      //                    }
+      //                  document.getElementById("ejemplo").innerHTML = mensaje;
+      //                }
+
+                      //document.getElementById('loader_documento').style.display = 'none';
+
+                  },
+                  error:function(respuesta){
+                     // alert("Algo salio mal...!!!");
+                     html = "";
+                     $("#tablaresultados").html(html);
+                     document.getElementById('loader_documento').style.display = 'none';
+                  },
+                  complete: function (jqXHR, textStatus) {
+                      document.getElementById('loader_documento').style.display = 'none'; //ocultar el bloque del loader 
+                      //tabla_inventario();
+                  }
+          });    
+      
+    }else{
+        alert("ERROR: Debe seleccionar un evento/archivo a enviar");
+    }
+}
+
+function borrar_datos_cliente(){
     
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
     var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
@@ -5699,76 +5811,3 @@ function borrar_datos_cliente()
 //function generar_cufd(){
 //    alert("Generando CUFD");
 //}
-
-
-function verificar_conexion(){
-
-    alert("navegador en linea: "+navigator.onLine);
-
-}
-
-
-function preparar_parametros(){
-    
-    var codigo_evento = document.getElementById("codigo_evento").value;
-    var archivo = "contingencia"+codigo_evento+".tar.gz"
-    //alert("contingencia"+codigo_evento+".tar.gz");
-    
-    $("#nombre_archivo").val(archivo);       
-    
-}
-
-function envio_paquetes(){
-    
-    var base_url = document.getElementById('base_url').value;
-    var parametro_id = document.getElementById('elparametro_id').value;
-    var controlador = base_url+'parametro/enviar_paquete';
-    var codigo_evento = document.getElementById("codigo_evento").value;
-    var archivo = "contingencia"+codigo_evento+".tar.gz"
-    //alert("contingencia"+codigo_evento+".tar.gz");
-    
-    if (codigo_evento>0){
-
-        $.ajax({url: controlador,
-                  type:"POST",
-                  data:{codigo_evento:codigo_evento},
-                  success:function(respuesta){
-                      var registros =  JSON.parse(respuesta);
-                      $("#modal_tipoemision").modal("hide");
-
-
-                          alert(JSON.stringify(registros));
-                          //location.reload();
-
-      //                if(parametro_tipoemision == 1){
-      //                    
-      //                    var mensaje;                    
-      //                    var opcion = confirm("ADVERTENCIA: Debe actualizar el CUFD, continuar?");
-      //                    
-      //                    if (opcion == true) {
-      //                        
-      //                        
-      //                        //solicitudCufd(punto_venta);                      
-      //                    }
-      //                  document.getElementById("ejemplo").innerHTML = mensaje;
-      //                }
-
-                      //document.getElementById('loader_documento').style.display = 'none';
-
-                  },
-                  error:function(respuesta){
-                     // alert("Algo salio mal...!!!");
-                     html = "";
-                     $("#tablaresultados").html(html);
-                     document.getElementById('loader_documento').style.display = 'none';
-                  },
-                  complete: function (jqXHR, textStatus) {
-                      document.getElementById('loader_documento').style.display = 'none'; //ocultar el bloque del loader 
-                      //tabla_inventario();
-                  }
-          });    
-      
-    }else{
-        alert("ERROR: Debe seleccionar un evento/archivo a enviar");
-    }
-}

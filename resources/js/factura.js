@@ -1,7 +1,3 @@
-/**
- * Comment
- */
-
 
 function formato_numerico(numer){
     var partdecimal = "";
@@ -106,9 +102,9 @@ function mostrar_facturas() {
                         html += "<br>";
                         
                         if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){                            
-                            html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";                        
+                            html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";                        
                         }else{
-                            html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;' title='"+factura[i]["factura_mensajeslist"]+"'><small>FALLA</small></span>";
+                            html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;' title='"+factura[i]["factura_mensajeslist"]+"'><small>FALLA</small></span>";
                         }
                                 
                         html += "</center></td>";
@@ -117,10 +113,10 @@ function mostrar_facturas() {
                         html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
                         let enviada = factura[i]['factura_enviada'] == 1 ? "Enviada":"No enviada";
                         if(factura[i]["estado_id"]==1){
-                                html += "   <td>V<br>"+enviada+"</td>";
+                                html += "   <td>V</td>";
                         }
                         else{
-                                html += "   <td>A<br>"+enviada+"</td>";
+                                html += "   <td>A</td>";
                         }
                             
                         html += "   <td>"+factura[i]["factura_nit"]+"</td>";
@@ -144,6 +140,8 @@ function mostrar_facturas() {
                             
                             if (factura["estado_id"]!=3){//si la factura esta anulada
                             
+                                if(factura[i]["estado_id"]==1){
+                                    
                                     if (parametro_tiposisistema == 1){
                                         html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button></td>";
                                     }
@@ -152,6 +150,7 @@ function mostrar_facturas() {
                                         html += "<fa class='fa fa-trash'> </fa> </button>";
 
                                     }
+                                }
 
                             }
 

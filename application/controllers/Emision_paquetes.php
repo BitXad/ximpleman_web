@@ -161,7 +161,9 @@ class Emision_paquetes extends CI_Controller{
                 //var_dump($parametros);
                 $resultado = $cliente->recepcionPaqueteFactura($parametros);
                 $res = $resultado->RespuestaServicioFacturacion;
+                
                 if($res->codigoDescripcion == "PENDIENTE"){
+                    
                     $params = array(
                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
                         'recpaquete_codigoestado' => $res->codigoEstado,
@@ -171,12 +173,18 @@ class Emision_paquetes extends CI_Controller{
                         'codigo_evento' => $codigo_evento,
                         'factura_id' => $factura_id,
                     );
+                    
+                    $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);                
+                    
                 }else{
+                    
                     $cad = $res->mensajesList;
                             $mensajecadena = "";
                             foreach ($cad as $c) {
                                 $mensajecadena .= $c.";";
                             }
+
+                    
                     $params = array(
                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
                         'recpaquete_codigoestado' => $res->codigoEstado,
@@ -186,14 +194,11 @@ class Emision_paquetes extends CI_Controller{
                         'codigo_evento' => $codigo_evento,
                         'factura_id' => $factura_id,
                     );
+                    
+                    //$recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
                 }
-                $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
-                
+                                
                 echo json_encode($res);
-                
-                
-                
-                
                 
             }else{                 
                 show_404();

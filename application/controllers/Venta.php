@@ -459,7 +459,20 @@ class Venta extends CI_Controller{
                 $numfact_cafc = $this->input->post('numfact_cafc');
                 $codigo_cafc = $this->input->post('codigo_cafc');
                 $registroeventos_codigo = $this->input->post('registroeventos_codigo');
-        
+                $modalidad    = $this->input->post('dosificacion_modalidad');
+                
+                //Modificar la excepcion en caso de ser fuera de linea
+                if($modalidad == 2){ //1 en liena * 2 fuera de liena   
+                    
+                    if($tipo_doc_identidad == 5){ //5 si es factura
+                        $codigo_excepcion = 1;
+                    }
+                    else{
+                        $codigo_excepcion = 0; 
+                    }
+                }
+                
+                
                 //******** ACTUALIZAR LA TABLA detalle_Venta_aux
                 
                 $sql = "update detalle_venta_aux set
@@ -733,6 +746,7 @@ class Venta extends CI_Controller{
                         
                 
                 if($facturado=="true"){//si la venta es facturada
+                //
                     // $parametro = $this->Parametro_model->get_parametro(1);
                     $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
                     // PARA NUEVO SISTEMA DE FACTURACION
@@ -809,17 +823,18 @@ class Venta extends CI_Controller{
                             if($registroeventos_codigo>0){ //Si es una factura transcrita con CAFC cambia los parametros para generar la factura
                                 
                                 $factura_fecha = "'".$fecha_cafc."'";
+                                $factura_hora = $hora_cafc;
                                 $factura_numero = $numfact_cafc;
                                 $factura_cafc = $codigo_cafc;                                    
                                 
                                 //$factura_fecha_hora = (new DateTime())->format('H:i:s.v');
-                                $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
+                                //$factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
+                                $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.".000";
                                 
                                 $tipo_emision = 2;   
                                 $eventos = $this->Venta_model->consultar("select * from registro_eventos where registroeventos_codigo=".$registroeventos_codigo);
                                 $cufd_codigocontrol =  $eventos[0]["registroeventos_codigocontrol"];
                                 $factura_cufd = $eventos[0]["registroeventos_cufd"];
-                                
                                 
                             }else{
                                 $factura_cafc = "";
@@ -1388,6 +1403,7 @@ class Venta extends CI_Controller{
                                         $micad .= "</html>";
                                         
                                     }else{ //para carta o media carta 
+                                            
                                         
                                         $micad .= "<!DOCTYPE html>"; 
                                         $micad .= "<html>"; 
@@ -1510,7 +1526,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                    </table>"; 
                                         $micad .= "                </td>"; 
                                         $micad .= "            </tr>"; 
-                                                        $fecha = new DateTime($factura[0]['factura_fechaventa']);  
+                                                        $fecha = new DateTime($factura[0]['factura_fecha']);  
                                                         $fecha_d_m_a = $fecha->format('d/m/Y'); 
                                         $micad .= "            <tr style='padding: 0;'>"; 
                                         $micad .= "                <td colspan='3' style='padding: 0; font-family: Arial'>"; 
@@ -1791,11 +1807,12 @@ class Venta extends CI_Controller{
                         
                         if ($registroeventos_codigo > 0){ //$registroeventos_codigo > 0 para que ingrese y envie los archivos con cafc
                             
-//                            $sql = "update factura_contingencia set facturacontingencia_numero =  facturacontingencia_numero+1";
-//                            $this->Venta_model->ejecutar($sql);
+                            $sqlx = "update factura_contingencia set facturacontingencia_numero =  facturacontingencia_numero + 1";
+                            $this->Venta_model->ejecutar($sqlx);
                             
                             $codigo_recepcion = $this->registroEmisionPaquetes($factura_id,$registroeventos_codigo);
                             
+                            sleep(1);
                             if ($codigo_recepcion>0){
                                 $this->registroEmisionPaquetes_vacio($codigo_recepcion, $factura_id);
                             }
@@ -3270,6 +3287,7 @@ function modificarcliente()
             $zona_id = $this->input->post('zona_id');
             $cdi_codigoclasificador = $tipo_doc_identidad; //$this->input->post('cdi_codigoclasificador'); el JS no evnia esta variable
             $cliente_complementoci =  "'".$this->input->post('cliente_complementoci')."'";
+            $cliente_excepcion = $this->input->post('cliente_excepcion');
             
             if ($cliente_id>0){
                 $sql = "update cliente set ".
@@ -3291,6 +3309,7 @@ function modificarcliente()
                         ",cliente_email = ".$cliente_email.
                         ",cdi_codigoclasificador = $cdi_codigoclasificador".
                         ",zona_id = ".$zona_id.
+                        ",cliente_excepcion = ".$cliente_excepcion.
                         ",cliente_complementoci = ".$cliente_complementoci." where cliente_id = ".$cliente_id;
                 //echo $sql;
                 $datos = $this->Venta_model->modificarcliente($sql);            
@@ -3310,6 +3329,7 @@ function modificarcliente()
                             ",cliente_razon = ".$cliente_razon.
                             ",cliente_telefono = ".$cliente_telefono.
                             ",cliente_email = ".$cliente_email.
+                            ",cliente_excepcion = ".$cliente_excepcion.
                             " where cliente_id = ".$cliente_id;
 
                     $datos = $this->Venta_model->modificarcliente($sql);   
@@ -3318,8 +3338,8 @@ function modificarcliente()
                 else{
                         $cliente_ci = $cliente_nit;
                         $cliente_nombre = $cliente_razon;
-                        $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,cliente_razon,cliente_telefono,estado_id,usuario_id, cliente_email) value(1,1,".
-                               $cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".$cliente_razon.",".$cliente_telefono.",1,0,".$cliente_email.")";
+                        $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,cliente_razon,cliente_telefono,estado_id,usuario_id, cliente_email, cliente_excepcion) value(1,1,".
+                               $cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".$cliente_razon.",".$cliente_telefono.",1,0,".$cliente_email.",".$cliente_excepcion.")";
 
                         $datos = $this->Venta_model->registrarcliente($sql);
                         echo json_encode($datos);

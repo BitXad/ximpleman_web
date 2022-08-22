@@ -780,6 +780,7 @@ class Sincronizacion extends CI_Controller{
                 $this->Forma_pago_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'forma_id' => $codigo->codigoClasificador,
                         'forma_codigoclasificador' => $codigo->codigoClasificador,
                         'forma_nombre'        => $codigo->descripcion
                     );

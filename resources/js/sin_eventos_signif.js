@@ -2,6 +2,49 @@ $(document).on("ready",inicio);
 function inicio(){
     tablaresultadoseventos();
 }
+
+function cargar_modal(registroevento_id)
+{
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"eventos_significativos/buscar_evento";
+
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{registroevento_id: registroevento_id},
+            success:function(respuesta){
+                
+                var registros =  JSON.parse(respuesta);
+                //var color =  "";
+                if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    $("#fecha_evento1").val(registros[0]["registroeventos_fecha"]);
+                    $("#fecha_inicio1").val(registros[0]["registroeventos_inicio"]);
+                    $("#fecha_fin1").val(registros[0]["registroeventos_fin"]);
+                    $("#evento_cufd1").val(registros[0]["registroeventos_cufd"]);
+                    $("#evento_codigocontrol1").val(registros[0]["registroeventos_codigocontrol"]);
+                    $("#evento_detalle1").val(registros[0]["registroeventos_detalle"]);
+                    $("#evento_codigo1").val(registros[0]["registroeventos_codigoevento"]);
+                }
+//                    $("#tablaresultados").html(html);
+                    document.getElementById('loader').style.display = 'none';
+                
+                //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+//               html = "";
+//               $("#tablaresultados").html(html);
+            },
+            complete: function (jqXHR, textStatus) {
+                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+                //tabla_inventario();
+            }
+    });
+}
+
 function tablaresultadoseventos()
 {
     var base_url    = document.getElementById('base_url').value;
@@ -33,7 +76,14 @@ function tablaresultadoseventos()
                         html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_puntodeventa']+"</td>";
                         html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_inicio']+"</td>";
                         html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_fin']+"</td>";
-                        /*
+                        if (! registros[i]['registroeventos_codigo']>0){
+//                            html += "<td style='padding: 2px;'><button  data-toggle='modal' data-target='#modal_cerrar_evento' class='btn btn-xs btn-facebook'><fa class='fa fa-floppy-o'> </fa> Cerrar Evento</button></td>";
+                            html += "<td style='padding: 2px;'><button  data-toggle='modal' data-target='#modal_cerrar_evento' class='btn btn-xs btn-facebook' onclick='cargar_modal("+registros[i]['registroeventos_id']+")'><fa class='fa fa-floppy-o'> </fa> Cerrar Evento</button></td>";
+                        }else{
+                            html += "<td style='padding: 2px;'></td>";
+                            
+                        }
+                            /*
                         html += "<td style='padding: 2px;' class='text-center'>";
                         html += moment(registros[i]["ordencompra_fecha"]).format("DD/MM/YYYY");
                         html += "</td>";
@@ -112,6 +162,7 @@ function registrar_evento(){
     }
     
     function seleccionar_cufd(){
+        
         let base_url = $("#base_url").val();
         let controlador = `${base_url}eventos_significativos/buscar_cufd`;
         let fecha =  document.getElementById('buscar_fecha').value;
@@ -133,7 +184,8 @@ function registrar_evento(){
                     html += "<option value="+res[i]["cufd_codigo"]+">"+res[i]["cufd_fecharegistro"]+" (PV: "+res[i]["cufd_puntodeventa"]+") "+res[i]["cufd_codigo"]+"</option>"               
                 }
                 
-                $("#select_cufd").html(html);                
+                $("#select_cufd").html(html);
+
                 document.getElementById('loader2').style.display = 'none';
             },
             error: ()=>{
@@ -141,4 +193,79 @@ function registrar_evento(){
                 document.getElementById('loader').style.display = 'none';
             }
         });
+    }
+    
+    function buscar_cufd(){
+        
+        let base_url = $("#base_url").val();
+        let controlador = `${base_url}eventos_significativos/buscar_cufd`;
+        let fecha =  document.getElementById('buscar_fecha1').value;
+        //document.getElementById('loader').style.display = 'block';
+        fecha = fecha.substring(0,10);
+       // alert(fecha);
+        $.ajax({
+            url: controlador,
+            type:"POST",
+            data:{
+                fecha: fecha
+            },
+            // async: false,
+            success: (respuesta)=>{
+                let res = JSON.parse(respuesta);
+                let html = "";
+
+                for(i=0; i<res.length; i++){                    
+                    html += "<option value="+res[i]["cufd_codigo"]+">"+res[i]["cufd_fecharegistro"]+" (PV: "+res[i]["cufd_puntodeventa"]+") "+res[i]["cufd_codigo"]+"</option>"               
+                }
+                
+                $("#select_cufd1").html(html);
+                document.getElementById('loader2').style.display = 'none';
+            },
+            error: ()=>{
+                alert("Ocurrio un error al realizar la verificación del evento, por favor intente en unos minutos")
+                document.getElementById('loader').style.display = 'none';
+            }
+        });
+    }
+
+
+
+function actualizar_registro_evento(){
+        
+        let base_url = $("#base_url").val();
+        let controlador = `${base_url}eventos_significativos/actualizarEventoSignificativo`;
+        let fecha_inicio =  document.getElementById('fecha_inicio1').value;
+        let fecha_fin =  document.getElementById('fecha_fin1').value;
+        let cufd_evento =  document.getElementById('evento_cufd1').value;
+        let codigo_evento =  document.getElementById('evento_codigo1').value;
+        let texto_evento = document.getElementById('evento_detalle1').value;
+        
+        //alert(fecha_inicio+" ** "+fecha_fin+" ** "+codigo_evento+" ** "+texto_evento);
+        fecha_inicio =  fecha_inicio+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
+        fecha_fin =  fecha_fin+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
+        document.getElementById('loader2').style.display = 'block';
+        
+        $.ajax({
+            url: controlador,
+            type:"POST",
+            data:{
+                fecha_inicio: fecha_inicio, fecha_fin:fecha_fin, cufd_evento:cufd_evento,
+                codigo_evento:codigo_evento, texto_evento:texto_evento,
+            },
+            // async: false,
+            success: (respuesta)=>{
+                
+                alert(respuesta);
+                tablaresultadoseventos();
+                document.getElementById('loader2').style.display = 'none';
+                $("#modaleventos").modal("hide");
+                
+            },
+            error: ()=>{
+                alert("Ocurrio un error al realizar la verificación del evento, por favor intente en unos minutos")
+                document.getElementById('loader').style.display = 'none';
+            }
+        });
+        
+        document.getElementById('loader2').style.display = 'none';
     }

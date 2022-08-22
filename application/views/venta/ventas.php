@@ -264,6 +264,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
 <input type="text" id="parametro_factura" value="<?php echo $parametro['parametro_factura']; ?>" name="parametro_factura"  hidden>
 <input type="text" id="parametro_tiposistema" value="<?php echo $parametro['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
+<input type="text" id="parametro_tipoemision" value="<?php echo $parametro['parametro_tipoemision']; ?>" name="parametro_tipoemision"  hidden>
 <input type="text" id="elparametro_id" value="<?php echo $parametro['parametro_id']; ?>" name="elparametro_id"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
@@ -429,8 +430,11 @@ window.onkeydown = compruebaTecla;
                         
                     <?php }
                     ?>
-            <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($parametro["parametro_tipoemision"]>1)?"checked":"";?> hidden><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
-            <?php }  ?>
+            <div hidden>                
+            <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($parametro["parametro_tipoemision"]>1)?"checked":"";?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+            </div>
+            
+                <?php }  ?>
             
             <?php if ($parametro["parametro_tiposistema"]!=1){ ?>
                 
@@ -1788,7 +1792,7 @@ window.onkeydown = compruebaTecla;
         </div>  
         <div class="col-md-4">
             <!--<button class="btn btn-warning btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>-->
-            <button class="btn btn-info btn-block" data-dismiss="modal" onclick="excepcion_nit()"><fa class="fa fa-save"></fa> Aceptar</button>
+            <button class="btn btn-info btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia"><fa class="fa fa-save"></fa> Aceptar</button>
             <button class="btn btn-danger btn-block" data-dismiss="modal" onclick="cancelar_excepcion_nit()"><fa class="fa fa-times"></fa> Cancelar</button>
         </div>  
       

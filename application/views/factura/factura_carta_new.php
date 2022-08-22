@@ -248,7 +248,12 @@ border-bottom : 1px solid #aaa;
                         <table style="word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;">
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px;"  class="autoColor"><b>Fecha:</b></td>
-                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= "$fecha_d_m_a {$factura[0]['factura_hora']}" ?></td>
+                                
+                                <?php 
+                                    $fecha_factura = new DateTime($factura[0]['factura_fecha']); 
+                                    $fecha = $fecha_factura->format('d/m/Y');
+                                ?> 
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $fecha." ".$factura[0]['factura_hora'] ?></td>
                             </tr>
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Nombre/Raz&oacute;n Social:</b></td>

@@ -47,9 +47,11 @@
                   
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
+            
             <div class="row" id='loader'  style='display:none; text-align: center'>
                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
             </div>
+            
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <thead>
@@ -61,6 +63,7 @@
                             <th>PUNTO<br>VENTA</th>
                             <th>FECHA<br>INICIO</th>
                             <th>FECHA<br>FIN</th>
+                            <th></th>
                             <!--<th width="100px" class="no-print"></th>-->
                         </tr>
                     </thead>
@@ -200,6 +203,100 @@
             <div class="modal-footer" style="text-align: center">
                 <a class="btn btn-success" onclick="consulta_EventoSignificativo()"><span class="fa fa-check"></span> Consultar</a>
                 <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para consultar evento significativo ------------------->
+
+<!-- Fin Modal -->
+<!------------------------ INICIO modal para consultar evento significativo ------------------->
+<div class="modal fade" id="modal_cerrar_evento" tabindex="-1" role="dialog" aria-labelledby="modal_consultar_eventosigniflabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">CERRAR EVENTO</span>
+            </div>
+            <div class="modal-body">
+                
+                <div class="col-md-4">
+                    <label for="fecha_evento1" class="control-label"><span class="text-danger"></span>Fecha Evento</label>
+                    <div class="form-group">
+                        <input type="text" name="fecha_evento1" value="" class="form-control" id="fecha_evento1" readonly/>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="fecha_inicio1" class="control-label"><span class="text-danger"></span>Fecha Inicio</label>
+                    <div class="form-group">
+                        <input type="text" name="fecha_inicio1" value="" class="form-control" id="fecha_inicio1"  readonly/>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="fecha_fin1" class="control-label"><span class="text-danger"></span>Fecha Fin</label>
+                    <div class="form-group">
+                        <input type="datetime-local" name="fecha_fin1" value="" class="form-control" id="fecha_fin1" />
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="evento_codigocontrol1" class="control-label"><span class="text-danger"></span>Código Control</label>
+                    <div class="form-group">
+                        <input type="text" name="evento_codigocontrol1" value="" class="form-control" id="evento_codigocontrol1" readonly />
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <label for="evento_cufd1" class="control-label"><span class="text-danger"></span>CUFD del Evento</label>
+                    <div class="form-group">
+                        <input type="text" name="evento_cufd1" value="" class="form-control" id="evento_cufd1" readonly />
+                    </div>
+                </div>                
+                
+                
+                
+                <div class="col-md-2">
+                    <label for="evento_codigo1" class="control-label"><span class="text-danger"></span>Código </label>
+                    <div class="form-group">
+                        <input type="text" name="evento_codigo1" value="" class="form-control" id="evento_codigo1" readonly />
+                    </div>
+                </div>
+                
+                <div class="col-md-10">
+                    <label for="evento_detalle1" class="control-label"><span class="text-danger"></span>Detalle evento</label>
+                    <div class="form-group">
+                        <input type="text" name="evento_detalle1" value="" class="form-control" id="evento_detalle1" readonly />
+                    </div>
+                </div>               
+                
+                <div class="col-md-4">
+                    <label for="buscar_fecha" class="control-label">Buscar</label>
+                    <div class="form-group">
+                        <input type="date" name="buscar_fecha1" value="<?= Date("d/m/y");  ?>" class="form-control" id="buscar_fecha1" onchange="buscar_cufd()"/>
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <label for="dosificacion_cufd1" class="control-label">CUFD del evento</label>
+                    <div class="form-group">
+
+                        <select id="select_cufd1" class="form-control">
+                            <option>- NO EXISTEN CUFD SELECCIONADOS -</option>
+                        </select>
+
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="modal-footer" style="text-align: center">
+                
+                <a class="btn btn-success" onclick="actualizar_registro_evento()"><span class="fa fa-check"></span> Generar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            
             </div>
         </div>
     </div>
