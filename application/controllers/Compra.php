@@ -45,6 +45,7 @@ class Compra extends CI_Controller{
     function index()
     {
         if($this->acceso(1)){
+            
             $data['page_title'] = "Compra";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -416,11 +417,61 @@ class Compra extends CI_Controller{
 
    }
    
+   function guardar_detalle_bitacora($compra_id){
+       
+        $usuario_id = $this->session_data['usuario_id'];
+        $sql_bitacora = "insert into detalle_compra_bitacora(compra_id
+                    , moneda_id
+                    , producto_id
+                    , detallecomp_id
+                    , detallecomp_codigo
+                    , detallecomp_cantidad
+                    , detallecomp_unidad
+                    , detallecomp_costo
+                    , detallecomp_precio
+                    , detallecomp_subtotal
+                    , detallecomp_descuento
+                    , detallecomp_total
+                    , detallecomp_descglobal
+                    , detallecomp_fechavencimiento
+                    , detallecomp_tipocambio
+                    , cambio_id
+                    , detallecomp_tc
+                    , detallecomp_series 
+                    , usuario_id) 
+
+                    (select compra_id
+                    , moneda_id
+                    , producto_id
+                    , detallecomp_id
+                    , detallecomp_codigo
+                    , detallecomp_cantidad
+                    , detallecomp_unidad
+                    , detallecomp_costo
+                    , detallecomp_precio
+                    , detallecomp_subtotal
+                    , detallecomp_descuento
+                    , detallecomp_total
+                    , detallecomp_descglobal
+                    , detallecomp_fechavencimiento
+                    , detallecomp_tipocambio
+                    , cambio_id
+                    , detallecomp_tc
+                    , detallecomp_series 
+                    , ".$usuario_id." from detalle_compra where compra_id = ".$compra_id.")";
+
+        $this->db->query($sql_bitacora);
+       
+   }
+
    function borrarauxycopiar($compra_id)
    {
     $bandera =1;
 
 
+    // 0. COPIAR DETALLE_VENTA EN BITACORA
+    $this->guardar_detalle_bitacora($compra_id);
+    
             ///////////1.  BORRAR AUX DE LA COMPRA//////////
     $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
     $this->db->query($eliminar_aux);
@@ -477,7 +528,9 @@ class Compra extends CI_Controller{
 
     function edit($compra_id,$bandera)
     {
+        
         if($this->acceso(1)){
+            
             $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
             $data['tipo_usu'] = $this->session_data['tipousuario_id'];
@@ -736,6 +789,7 @@ class Compra extends CI_Controller{
     function finalizarcompra($compra_id)
     {
         if($this->acceso(1)){
+            
             $usuario_id = $this->session_data['usuario_id'];
             //$this->load->model('Compra_model');
             $null = NULL;
@@ -757,10 +811,12 @@ class Compra extends CI_Controller{
             $nueva_fecha = date("Y-m-d"); 
             $nueva_hora = date("H:i:s"); 
             $banco_id = $this->input->post('forma_id') != 1 ? $this->input->post('banco') : "";
+            
             if ($descglobal>0) {
                 $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";
                 $this->db->query($descontar);
              }
+             
             if(isset($_POST) && count($_POST) > 0)     
             {   
             if ($banderafin==0) {
@@ -807,13 +863,18 @@ class Compra extends CI_Controller{
 
                 );
             }
+            
             $this->Compra_model->update_compra($compra_id,$params);
             $facturation=$this->input->post('documento_respaldo_id');
+            
             if ($facturation==1){
-                 $yafactu = "SELECT COUNT(factura_id) as 'facturas_compra', factura_id as facturanga FROM factura_compra WHERE factura_compra.compra_id=".$compra_id;
+                
+                $yafactu = "SELECT COUNT(factura_id) as 'facturas_compra', factura_id as facturanga FROM factura_compra WHERE factura_compra.compra_id=".$compra_id;
                 $tiene_factura = $this->db->query($yafactu)->result_array();
                 $fac_id = $tiene_factura[0]['facturanga'];
+                
                 if ($tiene_factura[0]['facturas_compra']<1) {
+                    
                     $factur =  $params = array(
                         'estado_id' => 1,
                         'compra_id' => $compra_id,
@@ -837,8 +898,12 @@ class Compra extends CI_Controller{
                         'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
                         //'factura_leyenda' => $this->input->post('factura_leyenda'),
                         );
+                    
                     $factura_id = $this->Compra_model->add_facturacompra($params);
+                
+                    
                 }else{
+                    
                     $factur =  $params = array(
                         'estado_id' => 1,
                         'compra_id' => $compra_id,
@@ -861,9 +926,11 @@ class Compra extends CI_Controller{
                         'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
                         //'factura_leyenda' => $this->input->post('factura_leyenda'),
                         );
+                    
                     $this->Compra_model->update_facturacompra($fac_id,$params);
                 }
             }
+            
             $actualizarprecios = $this->input->post('actualizarprecios');
             $fechalimite = $this->input->post('credito_fechalimite');
             $fecha = $this->Compra_model->normalize_date($fechalimite);
@@ -888,13 +955,21 @@ class Compra extends CI_Controller{
             // actualizar inventario //
             $sacar = "SELECT dc.producto_id, dc.detallecomp_cantidad from detalle_compra dc WHERE dc.compra_id=".$compra_id;
             $sacar_id=$this->db->query($sacar)->result_array();
+            
             foreach ($sacar_id as $saca) {
+                
                $this->Inventario_model->rebajar_cantidad_producto($saca['producto_id'],$saca['detallecomp_cantidad']);
-           }
-                   ///////////4. ELIMINAR DETALLE COMPRA////////////
-           $borrar_detalle = "DELETE from detalle_compra WHERE  detalle_compra.compra_id = ".$compra_id." "; 
+               
+            }
+          
+           ///////////4. ELIMINAR DETALLE COMPRA////////////
+
+            $this->guardar_detalle_bitacora($compra_id);
+            
+           $borrar_detalle = "DELETE from detalle_compra WHERE  detalle_compra.compra_id = ".$compra_id; 
            $this->db->query($borrar_detalle); 
-                    ///////////////5. COPIAR DE AUX A DETALLE/////////////////
+           
+           ///////////////5. COPIAR DE AUX A DETALLE/////////////////
            $vaciar_detalle = "INSERT INTO detalle_compra 
            (compra_id,
            moneda_id,
@@ -1066,10 +1141,10 @@ class Compra extends CI_Controller{
 
            }          
 
-            //////////////////6. ELIMINAR AUX///////////////////////////
-           $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
-           $this->db->query($eliminar_aux);
-           ///////////si elige generar orden de pago/////////////////////////
+//            //////////////////6. ELIMINAR AUX///////////////////////////
+//           $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
+//           $this->db->query($eliminar_aux);
+//           ///////////si elige generar orden de pago/////////////////////////
            if ($_POST['compra_caja']==2 ) {
              $this->load->model('Orden_pago_model');
               $nodoc=$this->input->post('compra_numdoc');
@@ -1119,7 +1194,7 @@ class Compra extends CI_Controller{
            }
 
 
-            if ($_POST['tipotrans_id']==2 ) { // tipotrans_id = 2 : CREDITO
+            if ($_POST['tipotrans_id']==2 ){ // tipotrans_id = 2 : CREDITO
 
              $yacredito  = "SELECT COUNT(credito_id) as 'creditos' FROM credito WHERE credito.compra_id=".$compra_id;
              $tiene_credito = $this->db->query($yacredito)->result_array();
@@ -1279,22 +1354,28 @@ class Compra extends CI_Controller{
               $saldo_deudor = $cuota_total;
 
               $siguiente= 0;
-              for ($i=1; $i <= $numcuota; $i++) { 
+                    for ($i=1; $i <= $numcuota; $i++) { 
 
-                $cuota_numcuota = $i;
-                $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
-                $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-                $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
-                $this->db->query($cuota);
-                $siguiente = $siguiente+$periodo;
-                $saldo_deudor = $cuota_total - $cuota_capital;
-                $cuota_total = $saldo_deudor;
+                      $cuota_numcuota = $i;
+                      $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
+                      $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
+                      $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
+                      $this->db->query($cuota);
+                      $siguiente = $siguiente+$periodo;
+                      $saldo_deudor = $cuota_total - $cuota_capital;
+                      $cuota_total = $saldo_deudor;
+                  }
             }
-                }
 
-                } }
+            } 
+                
+        }
 
-
+        //////////////////6. ELIMINAR AUX///////////////////////////
+                   $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
+                   $this->db->query($eliminar_aux);
+        //           ///////////si elige generar orden de pago/////////////////////////
+        
                 redirect('compra/index');
 
                  }
@@ -1656,6 +1737,34 @@ function nota($compra_id){
         $this->load->view('layouts/main',$data);
     }else{
         $data['_view'] = 'compra/boucher';
+        $this->load->view('layouts/main',$data);
+ 
+    }
+
+}
+
+function notaingreso($compra_id){
+
+  $data['parametro'] = $this->Parametro_model->get_parametros();
+  $num = $this->Compra_model->numero();
+  $este = $num[0]['parametro_tipoimpresora'];
+
+  if($this->acceso(1)){
+        $data['page_title'] = "Compra";
+        $usuario_id = $this->session_data['usuario_id'];
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['compra'] = $this->Compra_model->join_compras($compra_id);
+        $this->load->model('Detalle_compra_model');
+        $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
+        $data['credito'] = $this->Compra_model->get_credito($compra_id);
+        
+    }
+    if ($este == 'NORMAL') {
+        $data['_view'] = 'compra/notaIngreso';
+        $this->load->view('layouts/main',$data);
+    }else{
+        $data['_view'] = 'compra/notaIngreso';
         $this->load->view('layouts/main',$data);
  
     }

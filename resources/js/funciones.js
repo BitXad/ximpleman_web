@@ -816,21 +816,24 @@ function buscarporcodigojs()
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
+    //revisará si existe algun producto con el codigo especificado
     $.ajax({url: controlador,
            type:"POST",
            data:{codigo:codigo},
            success:function(respuesta){
                
                var precio = 0;
+               var factor = 1;
                var factor_nombre = "";
                res = JSON.parse(respuesta);
 
                 //alert("tipo: "+res[0].tipo);
                 
-                    if (res.length>0){
+                    if (res.length>0){ //verifica si el producto existe
                         
-                         if (res[0].existencia > 0){
+                         if (res[0].existencia > 0){ //verifica si el producto tiene existencia > 0
                              
+                            //verificara si el codigo le pertenece a algun factor
                             if (res[0].producto_codigobarra == codigo){
                                 factor = 1;
                                 precio = res[0].producto_precio;
@@ -875,13 +878,14 @@ function buscarporcodigojs()
                             html = "";
                             html += "   <select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor"+res[0]["producto_id"]+"' name='select_factor"+res[0]["producto_id"]+"' onchange='mostrar_saldo("+JSON.stringify(res[0])+")'>";
                             html += "       <option value='"+factor_nombre+"'>";                            
-                            html += "           "+res[0]["producto_unidad"]+" "+res[0]["moneda_descripcion"]+": "+precio_unidad.fixed(2)+"";
+                            html += "           "+res[0]["producto_unidad"]+" "+res[0]["moneda_descripcion"]+": "+Number(precio_unidad).toFixed(2)+"";
                             html += "       </option>";
                             html += "       </select>";
 
                             $("#selector").html(html);
                             
-                            ingresorapidojs2(factor, res[0]); 
+                            // Como ya se tiene idetificado el factor se procede a ingresar el producto
+                            ingresorapidojs(factor, res[0]); 
                             //ingresorapidojs(factor,res[0]);
                          }
                          else{    
@@ -2862,6 +2866,7 @@ function registrarventa(cliente_id)
     var dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
 
     var registroeventos_codigo = document.getElementById('evento_contingencia').value;
+    var parametro_tipoemision = document.getElementById('parametro_tipoemision').value;
     
     if (registroeventos_codigo>0){
         
@@ -2936,7 +2941,7 @@ function registrarventa(cliente_id)
                 tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
                 venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
                 factura_complementoci:factura_complementoci,fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, codigo_cafc: codigo_cafc, 
-                registroeventos_codigo: registroeventos_codigo, dosificacion_modalidad:dosificacion_modalidad
+                registroeventos_codigo: registroeventos_codigo, dosificacion_modalidad:dosificacion_modalidad, parametro_tipoemision:parametro_tipoemision
             },
             success:function(respuesta){
                 let res = JSON.parse(respuesta);
@@ -2964,7 +2969,7 @@ function registrarventa(cliente_id)
                 venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
                 factura_complementoci:factura_complementoci, fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, 
                 codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo, hora_cafc:hora_cafc,
-                dosificacion_modalidad:dosificacion_modalidad
+                dosificacion_modalidad:dosificacion_modalidad, parametro_tipoemision:parametro_tipoemision
             },
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
@@ -2980,6 +2985,7 @@ function registrarventa(cliente_id)
 } 
 
 function finalizarventa(){
+    
     var monto = document.getElementById('venta_totalfinal').value;
     var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value;
     //var base_url = document.getElementById('base_url').value;
@@ -5811,3 +5817,36 @@ function borrar_datos_cliente(){
 //function generar_cufd(){
 //    alert("Generando CUFD");
 //}
+
+function ofuscar_tarjeta(){
+    
+    $cadena = document.getElementById("venta_detalletransaccion").value;
+    $tarjeta = "";
+    $tam = $cadena.length;
+    
+        if ($tam<16){
+            
+            for(var i = 0; i<$cadena.length; i++){
+
+                if(i>=4 && i <12){
+                    $tarjeta += "0";           
+                }else{
+                    $tarjeta += $cadena[i];            
+                }
+
+            }
+        }else{
+            
+            for(var i = 0; i<16; i++){
+                if(i>=4 && i <12){
+                    $tarjeta += "0";           
+                }else{
+                    $tarjeta += $cadena[i];            
+                }                
+            }            
+        }
+
+        $("#venta_detalletransaccion").val($tarjeta);
+        //alert($tarjeta);        
+    
+}

@@ -314,6 +314,7 @@
                    
                 <?php } ?>
                 <a href="<?php echo site_url('compra/nota/'.$c['compra_id']); ?>" target="_blank" class="btn btn-success btn-xs" title='Nota de Compra'><span class="fa fa-print"></span></a>  
+                <a href="<?php echo site_url('compra/notaingreso/'.$c['compra_id']); ?>" target="_blank" class="btn btn-facebook btn-xs" title='Nota de Compra/utilidades'><span class="fa fa-print"></span></a>  
                  <?php if($rolusuario[8-1]['rolusuario_asignado'] == 1 && $c['elestado']==1){ ?> 
                    <a href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-info btn-xs" title='Modificar Compra'><span class="fa fa-pencil"></span></a>
                 <a href="#" data-toggle="modal" data-target="#anularmodal<?php echo $c['compra_id'] ?>" class="btn btn-xs btn-warning" title="Anular Compra" >

@@ -693,7 +693,14 @@ class Parametro extends CI_Controller{
                                // $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$evento['registroeventos_codigoevento'];
 
                                 //PASO 6: Contar los archivos que se deben subir
-                                $sql = "select * from factura where registroeventos_id = ".$evento['registroeventos_id'];
+                                // Solo contabamos las facturas, necesitamos el email del cliente
+                                // $sql = "select * from factura where registroeventos_id = ".$evento['registroeventos_id'];
+                                $sql = "select f.*, c.cliente_email  from factura f, venta v, cliente c
+                                        where                                         
+                                        f.registroeventos_id = ".$evento['registroeventos_id']." and 
+                                        f.venta_id = v.venta_id and
+                                        v.cliente_id = c.cliente_id ";
+                                
                                 $facturas = $this->Venta_model->consultar($sql);
                                 $cantidad_facturas = sizeof($facturas);
 
@@ -925,7 +932,21 @@ class Parametro extends CI_Controller{
                                                     ;
 
                                             $this->Venta_model->ejecutar($sql);
+                                        
+                                            $venta_id = $f["venta_id"];
+                                            $factura_id = $f["factura_id"];
+                                            $email = $f["cliente_email"];
+                                            
+                                            if ($f["cliente_email"]!=null){
+                                                
+                                                $this->enviarcorreo($venta_id, $factura_id, $email);
+                                            
+                                            }
+                                         
+                                            
                                         }
+                                        
+                                        
 
 
 
@@ -961,11 +982,12 @@ class Parametro extends CI_Controller{
             }else{ //Si es fuera de linea
                 
                 //Verificar si exite un evento
-                $sql = "select * from registro_eventos 
-                        where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa["puntoventa_codigo"];
-                $result =  $this->Venta_model->consultar($sql);
+                //$sql = "select * from registro_eventos 
+                //        where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa["puntoventa_codigo"];
+                //$result =  $this->Venta_model->consultar($sql);
                 
-                if(!sizeof($result)>0){
+                //if(!sizeof($result)>0){
+                if(1>0){
                 
                     $registroeventos_codigo = "''";
                     $registroeventos_codigoevento = $evento_id;
@@ -1477,6 +1499,92 @@ class Parametro extends CI_Controller{
                 
 
                 
+        }
+    }
+    
+        /* envia correo  a cliente */
+    function enviarcorreo($venta_id, $factura_id, $email_destino){
+        
+        $this->load->library('email');
+        $this->email->set_newline("\r\n");
+        $this->load->model('Configuracion_email_model');
+        $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
+
+        $config['protocol'] = $configuracion['email_protocolo'];
+        $config['smtp_host'] = $configuracion['email_host'];
+        $config['smtp_port'] = $configuracion['email_puerto'];
+        $config['smtp_user'] = $configuracion['email_usuario'];
+        $config['smtp_pass'] = $configuracion['email_clave'];
+        $config['smtp_from_name'] = $configuracion['email_nombre'];
+        $config['priority'] = $configuracion['email_prioridad'];
+        $config['charset'] = $configuracion['email_charset'];
+        $config['smtp_crypto'] = $configuracion['email_encriptacion'];
+        $config['wordwrap'] = TRUE;
+        $config['newline'] = "\r\n";
+        $config['mailtype'] = $configuracion['email_tipo'];
+        $email_copia = '';
+
+        $this->email->initialize($config);
+
+        $this->email->from($config['smtp_user'], $config['smtp_from_name']);
+        $this->email->to($email_destino);
+        $this->email->cc($configuracion['email_copia']);
+//            $this->email->bcc($attributes['cc']);
+        $this->email->subject("Factura Digital, gracias por comprar, vuelva pronto");
+        $base_url = explode('/', base_url());
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+        $this->email->attach($directorio."compra_venta".$factura_id.".xml");
+        $this->email->attach($directorio."compra_venta".$factura_id.".pdf");
+        $html = "<html>";
+        $html = "<head>";
+        $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
+        $html = "</head>";
+        $html = "<body>";
+
+        $html .= "<div class='container' style='font-family: Arial'>";
+        $html .= "<div class='col-md-2' style='background:gray;'></div>";
+
+        $html .= "<div class='col-md-10'>";
+        $html .= "<center>";
+        $html .= "<h3>Facturacion Electronica</h3>";
+        $html .= " ";
+        $html .= "<h4>Estimado Usuario</h4>";
+        $html .= "<br>";
+        //$html .= $configuracion['email_cabecera'];
+        $html .= "Le informamos que su factura electrónica se encuentra disponible para verlo en el siguiente enlace: <br>";
+        $direccion = base_url("tufactura/verfactura/".md5($venta_id));
+        $html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
+        $html .= "<br>Tambien le enviamos los archivos en formato PDF y XML adjuntos";
+        $html .= "<br>";
+        //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
+//            $html .= "<form method='get' action='/".$direccion."'>";
+//            $html .= "<button type='submit'>Activar mi Cuenta</button>";
+//            $html .= "</form>";
+
+        $html .= "<br>";
+        $html .= "<br>";
+
+        //$html .= $configuracion['email_pie'];
+        $html .= "<br>";
+        $html .= "<br>";
+        //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm'>".$direccion."</a>";
+
+        $html .= "</center>";
+        $html .= "</div>";
+
+        $html .= "<div class='col-md-2'></div>";            
+        $html .= "</div>";
+
+        $html .= "</body>";
+        $html .= "</html>";
+
+
+        $this->email->message($html);
+
+        if($this->email->send()) {
+            return true;        
+        } else {
+            return false;
         }
     }
     
