@@ -55,16 +55,14 @@ class Usuario_model extends CI_Model
         
         $usuario = $this->db->query("
             SELECT
-                u.*, t.*, e.*
-
+                u.*, t.*, e.*, pv.puntoventa_nombre
             FROM
-                usuario u, tipo_usuario t, estado e
-
+                usuario u
+                left join tipo_usuario t on u.tipousuario_id = t.tipousuario_id
+                left join estado e on u.estado_id = e.estado_id
+                left join punto_venta pv on u.puntoventa_codigo = pv.puntoventa_codigo
             WHERE
-                u.tipousuario_id=t.tipousuario_id and
-                u.estado_id=e.estado_id
-               
-
+                1=1
             ORDER BY `usuario_id` DESC
 
             

@@ -59,6 +59,7 @@
                         <th>Email</th>
                         <th>Login</th>
                         <th>Perfil</th>
+                        <th>Punto Venta</th>
                         <!--<th>Imagen</th>-->
                         <th>Estado</th>
                         <th></th>
@@ -84,6 +85,7 @@
                       	<td><?php echo $u['usuario_email']; ?></td>
                         <td><?php echo $u['usuario_login']; ?></td>
                         <td class="text-center"><?php echo $u['parametro_id']; ?></td>
+                        <td class="text-center"><?php echo $u['puntoventa_codigo']; ?></td>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['estado_descripcion']; ?></td>
                         <td>
                             <a href="<?php echo site_url('usuario/editar/'. $u['usuario_id']); ?>" class="btn btn-info btn-xs" title="Modificar datos de usuario"><span class="fa fa-pencil"></span></a>
