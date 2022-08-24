@@ -952,7 +952,7 @@ window.onkeydown = compruebaTecla;
                                             <div class="col-md-7">
                                                 <label for="glosa_compra">Numero Tarjeta</label>
                                                 <div class="form-group">
-                                                    <input type="text" class="form-control" id="venta_detalletransaccion" value="0">
+                                                    <input type="text" class="form-control" id="venta_detalletransaccion" value="0" onkeyup="ofuscar_tarjeta()">
                                                 </div>
                                             </div>
                                             <div class="col-md-5">

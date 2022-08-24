@@ -460,9 +460,12 @@ class Venta extends CI_Controller{
                 $codigo_cafc = $this->input->post('codigo_cafc');
                 $registroeventos_codigo = $this->input->post('registroeventos_codigo');
                 $modalidad    = $this->input->post('dosificacion_modalidad');
+                $parametro_tipoemision    = $this->input->post('parametro_tipoemision');
                 
+                echo "modalidad: ".$parametro_tipoemision." * codigo excepcion: ".$codigo_excepcion;
                 //Modificar la excepcion en caso de ser fuera de linea
-                if($modalidad == 2){ //1 en liena * 2 fuera de liena   
+                
+                if($parametro_tipoemision == 2){ //1 en liena * 2 fuera de liena   
                     
                     if($tipo_doc_identidad == 5){ //5 si es factura
                         $codigo_excepcion = 1;
