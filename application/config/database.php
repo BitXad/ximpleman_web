@@ -78,7 +78,11 @@ $db['default'] = array(
 	'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
+<<<<<<< Updated upstream
         'database' => 'ximpleman_delvalle',
+=======
+        'database' => 'ximpleman_rosigas',
+>>>>>>> Stashed changes
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
