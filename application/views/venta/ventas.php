@@ -353,28 +353,18 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-2" <?php echo $estilo_div; ?>>
         <label for="cliente_celular" class="control-label" style="margin-bottom: 0;">CELULAR</label>
         <div class="form-group" <?php echo $estilo_div; ?>>
-            <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>" onKeyUp="this.value = this.value.toUpperCase();"/>
+            <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,12)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>" onKeyUp="this.value = this.value.toUpperCase();"/>
         </div>
         </div>
 
-        
         <div class="col-md-2" <?php echo $estilo_div; ?>>
-            <label for="tipo" class="control-label" style="margin-bottom: 0;">TIPO CLIENTE</label>           
+            <label for="email" class="control-label" style="margin-bottom: 0;">CORREO ELECTRONICO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                
-                <select  class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="tipocliente_id" name="tipocliente_id" onchange="validar(event,7)">
-                    <option value="<?php echo $tipo_cliente[0]['tipocliente_id']; ?>"><?php echo $tipo_cliente[0]['tipocliente_descripcion']; ?></option>
-                    <?php $contador = 0;
-                            foreach($tipo_cliente as $tc){                          
-                                if ($contador>0){?>                    
-                                     <option value="<?php echo $tc['tipocliente_id'];?>"><?php echo $tc['tipocliente_descripcion'];?></option>
-                    <?php       }
-                                $contador++;
-                            }?>
-                </select>
-              
+                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="email"  value="<?php echo ($cliente[0]['cliente_email']==null)? $empresa_email : $cliente[0]['cliente_email'];  ; ?>" onclick="this.select()" onkeypress="validar(event,13)"/>
             </div>
-        </div>        
+        </div>
+        
+      
 
 <!---------------------- collapse ----------------------------->
  
@@ -472,6 +462,24 @@ window.onkeydown = compruebaTecla;
     <div id="collapse1" class="panel-collapse collapse">
         <!---------------------- contenido collapse ----------------------------->
         <div class="col-md-3" <?php echo $estilo_div; ?>>
+            <label for="tipo" class="control-label" style="margin-bottom: 0;">TIPO CLIENTE</label>           
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                
+                <select  class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="tipocliente_id" name="tipocliente_id" onchange="validar(event,7)">
+                    <option value="<?php echo $tipo_cliente[0]['tipocliente_id']; ?>"><?php echo $tipo_cliente[0]['tipocliente_descripcion']; ?></option>
+                    <?php $contador = 0;
+                            foreach($tipo_cliente as $tc){                          
+                                if ($contador>0){?>                    
+                                     <option value="<?php echo $tc['tipocliente_id'];?>"><?php echo $tc['tipocliente_descripcion'];?></option>
+                    <?php       }
+                                $contador++;
+                            }?>
+                </select>
+              
+            </div>
+        </div>  
+        
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="nombre" class="control-label" style="margin-bottom: 0;">CLIENTE</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_nombre" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
@@ -519,12 +527,7 @@ window.onkeydown = compruebaTecla;
                 <input type="telefono" name="telefono" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="telefono"  value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
             </div>
         </div>
-        <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="email" class="control-label" style="margin-bottom: 0;">CORREO ELECTRONICO</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="email"  value="<?php echo $cliente[0]['cliente_email']; ?>" onclick="this.select()"/>
-            </div>
-        </div>
+
         <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="zona_id" class="control-label" style="margin-bottom: 0;">ZONA</label>
             <div class="form-group" <?php echo $estilo_div; ?>>

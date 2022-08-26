@@ -11,6 +11,7 @@ class Venta extends CI_Controller{
     
     private $caja_id = 0;
     private $parametros;
+    private $empresa;
     private $registroeventos_id = 0;
     //private $puntodeventa = 0;
     
@@ -57,6 +58,9 @@ class Venta extends CI_Controller{
         //Carga los parametros en una variable global
         $parametro = $this->Parametro_model->get_parametros();
         $this->parametros = $parametro[0];
+        
+        $empresa = $this->Empresa_model->get_empresa(1);
+        $this->empresa = $empresa[0];
         
         $this->puntodeventa =  0; //Colcoar la variable respectiva
 
@@ -174,6 +178,7 @@ class Venta extends CI_Controller{
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
         $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
+        $data['empresa_email'] = $this->empresa["empresa_email"];
         
         $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
         $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];

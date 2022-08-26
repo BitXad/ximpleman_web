@@ -78,19 +78,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
-<<<<<<< HEAD
         'database' => 'ximpleman_delvalle',
-=======
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-        'database' => 'ximpleman_futurasin',
-=======
-        'database' => 'ximpleman_web',
->>>>>>> Stashed changes
-=======
-        'database' => 'ximpleman_delvalle',
->>>>>>> master
->>>>>>> master
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

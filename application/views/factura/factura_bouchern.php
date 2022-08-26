@@ -153,13 +153,13 @@
                                     <?php //echo $factura[0]['factura_sucursal'];?><br>
                                     <?php echo "Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']; ?><br>
                                     <?php echo $empresa[0]['empresa_direccion']; ?><br>
-                                    <?php echo "Tel. ".$empresa[0]['empresa_telefono']; ?><br>
+                                    <?php echo "Telf. ".$empresa[0]['empresa_telefono']; ?><br>
                                     <?php echo $empresa[0]['empresa_ubicacion']; ?><br>
                                 </td>
                             </tr>
                         </table>
                         <table style="width:<?php echo $ancho?>" >
-                            <tr style="border-top-style: dashed; border-top-width: 1px;">
+<!--                            <tr style="border-top-style: dashed; border-top-width: 1px;">
                                 <td class="text-center text-bold"><b>NIT:</b></td>
                             </tr>
                             <tr>
@@ -171,6 +171,20 @@
                             <tr>
                                 <td class="text-center"><?php echo $factura[0]['factura_numero']; ?></td>
                             </tr>
+                            <tr>
+                                <td class="text-center"><b>CÓD. AUTORIZACIÓN</b></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><div style="word-wrap: break-word; width:<?php echo $ancho?>" ><?php echo $factura[0]['factura_cuf'] ?></div></td>
+                            </tr>-->
+                            <tr style="border-top-style: dashed; border-top-width: 1px;">
+                                <td class="text-center"><b>NIT:</b> <?php echo $factura[0]['factura_nitemisor']; ?></td>
+                            </tr>
+  
+                            <tr>
+                                <td class="text-center"><b>FACTURA N&deg;</b> <?php echo $factura[0]['factura_numero']; ?></td>
+                            </tr>
+
                             <tr>
                                 <td class="text-center"><b>CÓD. AUTORIZACIÓN</b></td>
                             </tr>
@@ -288,16 +302,21 @@
                                 <td style="width: 1cm !important;"></td>
                                 <td class="text-right"><?php echo number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
                             </tr>
+                            <?php if ($factura[0]['factura_giftcard']>0){ ?>
                             <tr>
                                 <td class="text-right">TOTAL Bs</td>
                                 <td></td>
                                 <td class="text-right"><?php echo number_format($factura[0]['factura_total'],2,'.',','); ?></td>
                             </tr>
+                            
                             <tr>
                                 <td class="text-right text-bold">MONTO GIFT CARD Bs</td>
                                 <td></td>
                                 <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_giftcard'],2,'.',','); ?></td>
                             </tr>
+                            <?php } ?>
+                                    
+                            
                             <?php if ($mostrarice==1){ ?>
                             <tr>
                                 <td class="text-right">(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>
@@ -326,6 +345,18 @@
                                     <?php echo "SON: ".num_to_letras($factura_total,' Bolivianos'); ?>
                                 </td>
                             </tr>
+                            
+                            <tr>
+                                <td class="text-right text-bold">EFECTIVO Bs</td>
+                                <td></td>
+                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_efectivo'],2,'.',','); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="text-right text-bold">CAMBIO Bs</td>
+                                <td></td>
+                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_cambio'],2,'.',','); ?></td>
+                            </tr>
+                            
                         </table>
                     </td>
                 </tr>

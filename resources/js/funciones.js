@@ -89,8 +89,8 @@ function validar(e,opcion) {
 
                  //verificarnit();
                 nit = document.getElementById('nit').value;            
-            
-            if ( nit != 0){
+                        
+            if (nit != 0 && $('#facturado').is(':checked')){
                 
                 if (nit==''){
                     
@@ -121,12 +121,13 @@ function validar(e,opcion) {
             $("#telefono").val(''); //si la tecla proviene del input razon social
             
             $("#cliente_codigo").val(codigo);
-           document.getElementById('cliente_celular').focus();
+            document.getElementById('cliente_celular').focus();
         } 
         
         if (opcion==3){   //si la tecla proviene del input codigo de barras          
             
             $('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojs();
+            
         } 
         
         if (opcion==4){   //si la tecla proviene del input codigo de barras
@@ -173,6 +174,16 @@ function validar(e,opcion) {
         
         if (opcion==11){ //si el evento proviene del ingreso rapido
             $("#boton_ingreso_rapido").click();
+        }
+        
+        if (opcion==12){ //Si el evento viene desde el campo celular
+            $("#email").focus();
+            $("#email").select()();
+        }
+        
+        if (opcion==13){ //Si el evento viene desde el campo email
+            $("#codigo").focus();
+            $("#codigo").select()();
         }
                 
     }
