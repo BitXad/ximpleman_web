@@ -467,12 +467,12 @@ class Venta extends CI_Controller{
                 $modalidad    = $this->input->post('dosificacion_modalidad');
                 $parametro_tipoemision    = $this->input->post('parametro_tipoemision');
                 
-                echo "modalidad: ".$parametro_tipoemision." * codigo excepcion: ".$codigo_excepcion;
+                //echo "modalidad: ".$parametro_tipoemision." * codigo excepcion: ".$codigo_excepcion;
                 //Modificar la excepcion en caso de ser fuera de linea
                 
                 if($parametro_tipoemision == 2){ //1 en liena * 2 fuera de liena   
                     
-                    if($tipo_doc_identidad == 5){ //5 si es factura
+                    if($tipo_doc_identidad == 5){ //5 si es NIT
                         $codigo_excepcion = 1;
                     }
                     else{
@@ -1072,9 +1072,10 @@ class Venta extends CI_Controller{
                             {
   
                                 $eniada = $this->mandarFactura($contents, $xml_comprimido);
-                                //var_dump($eniada->transaccion);
                                 //var_dump($eniada);
-                                if($eniada->transaccion){
+                                //var_dump($eniada);
+                                if($eniada->transaccion){ // Si la factura fue enviada                                    
+                                    
                                     $params = array(
                                         'factura_codigodescripcion' => $eniada->codigoDescripcion,
                                         'factura_codigoestado'    => $eniada->codigoEstado,
@@ -1083,12 +1084,16 @@ class Venta extends CI_Controller{
                                         'factura_enviada' => true,//Factura enviada a impuestos, por defecto en false(No fue enviada)
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
+                                    
+                                    
                                 }else{
                                     
                                     $cad = $eniada->mensajesList;
                                     //var_dump($eniada->mensajesList);
                                     
                                     $mensajecadena = json_encode($eniada->mensajesList);
+                                    
+                                    
 //                                    foreach ($cad as $c) {
 //                                        $mensajecadena .= $c->codigo.", ".$c->descripcion." | ";
 //                                    }
@@ -1109,6 +1114,9 @@ class Venta extends CI_Controller{
                                         'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
+                                    
+                                   echo json_encode($eniada);
+                                    
                                 }
                             }
                                 
@@ -2361,9 +2369,44 @@ function edit($venta_id)
         
         if($this->acceso(20)){
         //**************** inicio contenido ***************      
+//        $data['rolusuario'] = $this->session_data['rol'];
+//        $usuario_id = $this->session_data['usuario_id'];
+//        $tipousuario_id = $this->session_data['tipousuario_id']; 
+//        
+//        // check if the venta exists before trying to edit it
+//        $venta = $this->Venta_model->get_venta($venta_id);
+//        
+//        $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
+//        $cliente_id = $venta["cliente_id"];       
+//        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+//        $data['page_title'] = "Modificar Venta";
+//
+//        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+//        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+//        
+//        $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+//        $data['cliente'] = $cliente;
+//        
+//        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+//        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+//        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+//        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+//        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+//        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+//        $data['parametro'] = $this->Parametro_model->get_parametros();
+//        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+//        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+//        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+//        $data['promociones'] = $this->Promocion_model->get_promociones();
+//        $data['mesas'] = $this->Mesa_model->get_all_mesa();
+//        $data['usuario_id'] = $usuario_id;
+//        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+//        $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
+//        $data['tipousuario_id'] = $tipousuario_id;
+        
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
-        $tipousuario_id = $this->session_data['tipousuario_id']; 
+        $tipousuario_id = $this->session_data['tipousuario_id'];        
         
         // check if the venta exists before trying to edit it
         $venta = $this->Venta_model->get_venta($venta_id);
@@ -2372,20 +2415,20 @@ function edit($venta_id)
         $cliente_id = $venta["cliente_id"];       
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['page_title'] = "Modificar Venta";
-
-        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
-        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         
         $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
         $data['cliente'] = $cliente;
-        
+        $data['page_title'] = "Ventas";
+        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+//        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
@@ -2395,7 +2438,15 @@ function edit($venta_id)
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
-
+        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
+        $data['empresa_email'] = $this->empresa["empresa_email"];
+        
+        $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
+        $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
+        
+        $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
+        
+            
         //**************** inicio contenido ***************     
                 
        
@@ -3233,17 +3284,19 @@ function registrarcliente()
             $tipo_doc_identidad =  $this->input->post('tipo_doc_identidad');
             $cliente_email =  "'".$this->input->post('cliente_email')."'";
             $cliente_complementoci =  "'".$this->input->post('cliente_complementoci')."'";
+            $cliente_excepcion = $this->input->post('cliente_excepcion');
             
             $cliente_ci = $cliente_nit;
             $cliente_nombre = $cliente_razon;
             $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,
                     cliente_razon,cliente_telefono,estado_id,usuario_id,
                     cliente_nombrenegocio, cliente_codigo, cliente_direccion, cliente_departamento,
-                    cliente_celular, zona_id, cdi_codigoclasificador, cliente_email, cliente_complementoci
-                    ) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
+                    cliente_celular, zona_id, cdi_codigoclasificador, cliente_email, cliente_complementoci,
+                    cliente_excepcion) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
                     $cliente_razon.",".$cliente_telefono.",1,0,".
                    $cliente_nombrenegocio.",".$cliente_codigo.",".$cliente_direccion.",".$cliente_departamento.",".
-                   $cliente_celular.",".$zona_id.",".$tipo_doc_identidad.",".$cliente_email.",".$cliente_complementoci.")";
+                   $cliente_celular.",".$zona_id.",".$tipo_doc_identidad.",".$cliente_email.",".$cliente_complementoci.
+                    ",".$cliente_excepcion.")";
 //            echo $sql;
             $datos = $this->Venta_model->registrarcliente($sql);
             echo json_encode($datos);
@@ -5011,6 +5064,7 @@ function anular_venta($venta_id){
      * Enviar factura a impuestos
      */
     function mandarFactura($el_archivo, $hash_archivo){
+        
         static $array;
         // $sincronizacion_id = $this->input->post('codigo_sincronizar');
         if(!isset($array['dosificacion'])){

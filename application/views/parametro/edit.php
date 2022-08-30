@@ -398,7 +398,8 @@
                         <div class="form-group">
                             <select name="parametro_factura" class="form-control" required id="parametro_factura">
                                 <option value="1" <?php if($parametro['parametro_factura']=='1') echo 'selected'; ?> >TODO FACTURADO</option>
-                                <option value="2" <?php if($parametro['parametro_factura']=='2') echo 'selected'; ?> >FACTURA OPCIONAL</option>
+                                <option value="2" <?php if($parametro['parametro_factura']=='2') echo 'selected'; ?> >FACTURA OPCIONAL TIPO 1</option>
+                                <option value="4" <?php if($parametro['parametro_factura']=='4') echo 'selected'; ?> >FACTURA OPCIONAL TIPO 2</option>
                                 <option value="3" <?php if($parametro['parametro_factura']=='3') echo 'selected'; ?> >SIN FACTURA</option>
                             </select>
                         </div>

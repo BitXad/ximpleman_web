@@ -70,6 +70,13 @@ function mostrar_formapago(){
     var mostrarimagen = "";
     var encontrado = 0;
     
+    if(forma_id==2){
+        $("#venta_detalletransaccion").val("123400000000567");
+    }
+    else{
+        $("#venta_detalletransaccion").val("0");        
+    }
+    
     for(var i=0; i<tam ;i++)
     {
         if(forma_id == dato[i]["forma_id"]){
@@ -82,7 +89,7 @@ function mostrar_formapago(){
                 //alert(mostrarimagen);
                 html += "<center>";
                 html += "<img src='"+mostrarimagen+"' >";
-                html += "</center>";
+//                html += "</center>";
                 $("#imagenqr").html(html);
                 //$("#imagenqr").style = 'display:block';  
                 
@@ -282,6 +289,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipocliente_montodesc" value="0" hidden>
 <input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
+<input type="text" id="cliente_valido" value="1" hidden>
 
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
@@ -326,7 +334,7 @@ window.onkeydown = compruebaTecla;
             <label for="nit" class="control-label" style="margin-bottom: 0;">NUMERO DE DOCUMENTO</label>
             <div class="input-group"  <?php echo $estilo_div; ?>>
                 
-                <input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();"/>
+                <input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" />
                 <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="buscarcliente()" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true"></span></div>
             
             </div>
@@ -377,6 +385,8 @@ window.onkeydown = compruebaTecla;
                     $eschecked = "";
                 }elseif($parametro['parametro_factura'] == 3){
                     $eschecked = "hidden";
+                }elseif($parametro['parametro_factura'] == 4){
+                    $eschecked = "checked";
                 }
             ?>
             <input type="checkbox" id="facturado" value="1" name="facturado" <?php echo $eschecked; ?>>
@@ -1248,7 +1258,8 @@ window.onkeydown = compruebaTecla;
                 </h4>
             </button>
             -->
-            <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">
+            <!--<button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">-->
+            <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa_sin()" style="display: block;">
                 <h4>
                 <span class="fa fa-save"></span>   Finalizar Venta  
                 </h4>
@@ -1855,7 +1866,7 @@ window.onkeydown = compruebaTecla;
                 </span>
             </div>
             <div class="modal-footer" style="text-align: center">
-                <a class="btn btn-success" onclick="cambiar_tipoemision()"><span class="fa fa-check"></span> Cambiar</a>
+                <button class="btn btn-success" onclick="cambiar_tipoemision()" id="boton_tipoemision"><span class="fa fa-check"></span> Cambiar</button>
                 <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>
@@ -2065,3 +2076,5 @@ window.onkeydown = compruebaTecla;
         </div>
     </div>
 </div>
+                
+<!--<button type="button" class="btn btn-success" onclick="finalizarventa_sin()"><fa class="fa fa-floppy-o"></fa> Envio de Paquetes</button>-->
