@@ -71,7 +71,7 @@ function mostrar_formapago(){
     var encontrado = 0;
     
     if(forma_id==2){
-        $("#venta_detalletransaccion").val("123400000000567");
+        $("#venta_detalletransaccion").val("1234000000005678");
     }
     else{
         $("#venta_detalletransaccion").val("0");        
@@ -430,9 +430,9 @@ window.onkeydown = compruebaTecla;
                         
                     <?php }
                     ?>
-            <div hidden>                
+            <!--<div hidden>-->                
             <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($parametro["parametro_tipoemision"]>1)?"checked":"";?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
-            </div>
+            <!--</div>-->
             
                 <?php }  ?>
             
@@ -756,10 +756,7 @@ window.onkeydown = compruebaTecla;
             
             <?php } 
             ?>
-            
 
-            
-            
             <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
             <?php } ?>
@@ -825,6 +822,9 @@ window.onkeydown = compruebaTecla;
             <?php
             }
             ?>
+            <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-info btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
+            
+            
             </div>
         </div>
         
@@ -866,6 +866,7 @@ window.onkeydown = compruebaTecla;
         <!----------------------------------- fin Botones ---------------------------------->
         <font face="Arial" size="1">
                    
+            <span class="btn btn-info btn-xs"> <b> PUNTO DE VENTA <?php echo $puntoventa_codigo; ?></b></span>
             <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?></b></span>
         
         <b>            

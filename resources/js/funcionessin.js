@@ -2,7 +2,7 @@ function solicitudCufd(punto_venta=0){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/cufd';
-    var opcion = confirm("Esta a punto de generar el C.U.F.D., el cual reamplazara el existente...! \n ¿Desea Continuar?");
+    var opcion = confirm("Esta a punto de generar el C.U.F.D. para el PUNTO DE VENTA "+punto_venta+", el cual reemplazará el existente...! \n ¿Desea Continuar?");
     
     if (opcion == true) {
         document.getElementById('loader_revocado').style.display = 'block';

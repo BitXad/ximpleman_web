@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+    <cabecera>
+        <nitEmisor>318180021</nitEmisor>
+        <razonSocialEmisor>SUPERMERCADOS DEL VALLE S.R.L.</razonSocialEmisor>
+        <municipio>WARNES - SANTA CRUZ</municipio>
+        <telefono>78158571</telefono>
+        <numeroFactura>803</numeroFactura>
+        <cuf>15C5508F6EED9771E7C108D60C7623A0C89D4DC7F064B92D35ADC6D74</cuf>
+        <cufd>BQUtDPjxmQUE=NzzhCQjY3OEE2OTc=Q1VodDJIREpXVUJIxMDIzM0JGNTRDQ</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>CALLE OFELIA SANCHEZ Nº 777 </direccion>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <fechaEmision>2022-09-02T10:35:21.531</fechaEmision>
+        <nombreRazonSocial>ANA GARCIA TERRAZAS</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>6555319015</numeroDocumento>
+        <complemento></complemento>
+        <codigoCliente>AN77683</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta>0</numeroTarjeta>
+        <montoTotal>233.00</montoTotal>
+        <montoTotalSujetoIva>233</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>233.00</montoTotalMoneda>
+        <montoGiftCard>0.000</montoGiftCard>        
+        <descuentoAdicional>0.00</descuentoAdicional>
+        <codigoExcepcion>1</codigoExcepcion>  
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: En caso de incumplimiento a lo ofertado o convenido, el proveedor debe reparar o sustituir el producto..</leyenda>
+        <usuario>Super Usuario</usuario>
+        <codigoDocumentoSector>1</codigoDocumentoSector>
+    </cabecera>
+    
+<detalle><actividadEconomica>471110</actividadEconomica><codigoProductoSin>36990</codigoProductoSin><codigoProducto>5786046</codigoProducto><descripcion>COLCHA NEGRO C/AZUL</descripcion><cantidad>2</cantidad><unidadMedida>47</unidadMedida><precioUnitario>34.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>68.00</subTotal><numeroSerie/><numeroImei/></detalle><detalle><actividadEconomica>471110</actividadEconomica><codigoProductoSin>36990</codigoProductoSin><codigoProducto>5786044</codigoProducto><descripcion>COLCHA A COLORES</descripcion><cantidad>2</cantidad><unidadMedida>47</unidadMedida><precioUnitario>65.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>130.00</subTotal><numeroSerie/><numeroImei/></detalle><detalle><actividadEconomica>471110</actividadEconomica><codigoProductoSin>36990</codigoProductoSin><codigoProducto>5786047</codigoProducto><descripcion>TOALLA COLOR ENTERO</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>35.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>35.00</subTotal><numeroSerie/><numeroImei/></detalle></facturaComputarizadaCompraVenta>
