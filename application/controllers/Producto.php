@@ -21,6 +21,7 @@ class Producto extends CI_Controller{
             'Empresa_model',
             'Clasificador_model',
             'Inventario_model',
+            'Venta_model',
             'Sincronizacion_model',
             'Dosificacion_model',
         ]);
@@ -574,6 +575,21 @@ class Producto extends CI_Controller{
             $factor = $this->input->post('unidad_compra');
             $fecha_venc = $this->input->post('fecha_venc');
             $moneda_tc = $this->input->post('moneda_tc1');
+            $cod_product_sin = $this->input->post('cod_product_sin');
+            
+            $sql = "select * from unidad where unidad_nombre = '".$this->input->post('producto_unidad')."'";
+            $unidades = $this->Venta_model->consultar($sql);
+            //echo $sql;
+            
+            if (sizeof($unidades)>0){
+                
+                $producto_codigounidadsin = $unidades[0]["unidad_codigo"];
+                
+            }else{
+                
+                $producto_codigounidadsin = 0;
+                
+            }
             
         $this->load->model('Compra_model');
         $this->load->library('form_validation');
@@ -659,6 +675,8 @@ class Producto extends CI_Controller{
                     'producto_unidadfactor' => $this->input->post('producto_unidadfactor'),
                     'producto_codigofactor' => $this->input->post('producto_codigofactor'),
                     'producto_preciofactor' => $this->input->post('producto_preciofactor'),
+                    'producto_codigosin' => $this->input->post('cod_product_sin'),
+                    'producto_codigounidadsin' => $producto_codigounidadsin,
                 );
                 $producto_id = $this->Producto_model->add_producto($params);
                 

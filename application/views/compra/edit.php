@@ -148,7 +148,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     <div class="col-md-4">
     <div class="box-tools">
         <center>            
-            <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-success btn-foursquarexs" title="Registrar nuevo Proveedor"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Proveedor</small></a>
+            <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-success btn-foursquarexs" title="Registrar nuevo Proveedor"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Prov.</small></a>
             <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" title="Buscar Proveedores"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Prov.</small></a>
             <a href="#" data-toggle="modal" data-target="#modalproducto" class="btn btn-primary btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod</small></a> 
        
@@ -625,12 +625,10 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <select name="producto_unidad" class="form-control" id="producto_unidad" onchange="select_unidad()">
                                 <option value="PIEZA">--Unidad--</option>
                                <?php 
-                foreach($unidades as $u){ ?>
-                                                                    
-                          <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
-                         
+                                foreach($unidades as $u){ ?>
+                                    <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
 
-                      <?php } ?>
+                               <?php } ?>
                             </select>
                         </div>
                     </div>  
@@ -655,7 +653,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <input id="banderanga" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
                         </div>
                     </div>
-                    <div class="col-md-4" id="select_unidad">
+                    <div class="col-md-4" id="select_unidad" hidden>
                         <label for="unidad_compra" class="control-label">Unidad Compra</label>
                         <div class="form-group">
                             <select name="unidad_compra" class="form-control" id="unidad_compra" >
@@ -664,6 +662,19 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             </select>
                         </div>
                     </div>
+                    
+                    <div class="col-md-4">
+                        <label for="producto_" class="control-label"><span class="text-danger">*</span>Codigo Producto SIN</label>
+                        <div class="form-group">                            
+                            <select name="cod_product_sin" id="cod_product_sin" class="form-control selectpicker" title="Actividad - Codigo NIS" data-hide-disabled="true" data-live-search="true">
+                                <option value="0">- SIN CODIGO -</option>
+                                <?php foreach ($nis_codigos as $cod_nis){?>
+                                    <option value="<?= $cod_nis['prodserv_codigoproducto'] ?>"><?= "{$cod_nis['prodserv_codigoactividad']} - {$cod_nis['prodserv_codigoproducto']} {$cod_nis['prodserv_descripcion']}" ?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                    </div>
+                    
                     <div class="col-md-4">
                         <label for="fecha_venc" class="control-label">Fecha Venc.</label>
                         <div class="form-group">

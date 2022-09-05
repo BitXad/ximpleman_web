@@ -27,7 +27,7 @@
         border-spacing : 0 0;
         border-collapse : collapse;
         font-family: Arial narrow;
-        font-size: 10pt;
+        font-size: 8pt;
         td{
             border:hidden;
         }
@@ -54,6 +54,7 @@
       $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 ?>
 <!------------------------ INICIO modal para confirmar anulacion de factura ------------------->
+
 <div class="modal fade" id="myModalAnular" tabindex="-1" role="dialog" aria-labelledby="myModalAnularlabel" style="font-family: Arial; font-size: 10pt;">
     <div class="modal-dialog" role="document">
         <br><br>
@@ -131,6 +132,28 @@
                         <table style="width:<?php echo $ancho?>" >
                             <tr>
                                 <td class="text-center" style="padding-bottom: 5px">
+                                    
+                                    
+                                            <div class="col-md-12 no-print" style="padding:0;" >
+
+
+                                                    <?php 
+                                                        //echo $factura[0]['factura_codigodescripcion'];
+                                                        if ($factura[0]['factura_codigodescripcion']=="VALIDADA"){ ?>
+
+                                                            <button class="btn btn-info btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"><b style="font-size: 20pt;"> ENVIADA </b></button>
+
+                                                    <?php }else{ ?>
+                                                            
+                                                            <button class="btn btn-danger btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"> <b style="font-size: 20pt;"> NO ENVIADA</b> <br> Ocurrio un error en el envio, debe rehacer la operación
+                                                                <br> <?= $factura[0]['factura_mensajeslist'] ?>
+                                                            </button>
+                                                            
+                                                    <?php } ?>
+
+                                          </div>                                  
+                                    
+                                    
                                     <?php $titulo1 = "FACTURA";  
                                     if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
                                     else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";
@@ -159,24 +182,7 @@
                             </tr>
                         </table>
                         <table style="width:<?php echo $ancho?>" >
-<!--                            <tr style="border-top-style: dashed; border-top-width: 1px;">
-                                <td class="text-center text-bold"><b>NIT:</b></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center"><?php echo $factura[0]['factura_nitemisor']; ?></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center"><b>FACTURA N&deg;</b></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center"><?php echo $factura[0]['factura_numero']; ?></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center"><b>CÓD. AUTORIZACIÓN</b></td>
-                            </tr>
-                            <tr>
-                                <td class="text-center"><div style="word-wrap: break-word; width:<?php echo $ancho?>" ><?php echo $factura[0]['factura_cuf'] ?></div></td>
-                            </tr>-->
+
                             <tr style="border-top-style: dashed; border-top-width: 1px;">
                                 <td class="text-center"><b>NIT:</b> <?php echo $factura[0]['factura_nitemisor']; ?></td>
                             </tr>
@@ -226,6 +232,7 @@
                 </tr>
                 <tr>
                     <td colspan="4" style="padding: 0">
+                        <?php $tamanio_fuente = "10pt"; ?>
                         <table style="width:<?php echo $ancho?>">
                             <?php
                             $cont = 0;
@@ -243,7 +250,7 @@
                                     $total_final += $d['detallefact_total']; 
                             ?>
                             <tr>
-                                <td class="text-bold" colspan="0" style="font-size: 8pt; padding: 0;">
+                                <td class="text-bold" colspan="0" style="font-size: <?= $tamanio_fuente; ?>; padding: 0;">
                                     <?php echo $d['detallefact_codigo']." - ".$d['detallefact_descripcion']; ?>
                                     <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo " [".$d['detallefact_unidadfactor']."]";?>
 
@@ -261,7 +268,7 @@
                                 <td colspan="2"></td>
                             </tr>
                             <tr>
-                                <td style="font-size: 8pt; padding: 0;">
+                                <td style="font-size: <?= $tamanio_fuente; ?>; padding: 0;">
                                     <?php
                                     echo number_format($d['detallefact_cantidad'],2,'.',',')." X ";
                                     echo number_format($d['detallefact_precio'],2,'.',',')." - ";
@@ -273,7 +280,7 @@
                                     ?>
                                 </td>
                                 <td style="width: 0.5cm !important;"></td>
-                                <td align="right" style="font-size: 8pt; padding: 0;"><?php echo number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),2,'.',','); ?></td>
+                                <td align="right" style="font-size: <?= $tamanio_fuente; ?>; padding: 0;"><?php echo number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),2,'.',','); ?></td>
                             </tr>
 
                             <!--<td align="right" style="padding: 0;"><?php //echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></td>-->
@@ -362,10 +369,10 @@
                 </tr>
                 <tr>
                     <td class="text-center" style="padding: 0; padding-top: 5px;" colspan="4">
-                        <span style="font-size: 8.5pt"><p><?php echo $factura[0]['factura_leyenda1'];?> </p></span>
-                        <span style="font-size: 8pt !important;"><div style="line-height: 1.1;"><?php echo $factura[0]['factura_leyenda2']; ?> </div></span>
-                        <span style="font-size: 6.5pt !important"><p style="padding-bottom: 0px"><?php echo $factura[0]['factura_leyenda3']; ?> </p></span>
-                        <span style="font-size: 6.5pt !important"><p style="padding-bottom: 0px"><?php echo $factura[0]['factura_leyenda4']; ?> </p></span>
+                        <span style="font-size: 8pt"><p style="padding: 0;"><?php echo $factura[0]['factura_leyenda1'];?> </p></span>
+                        <span style="font-size: 8pt !important;"><p style="padding-bottom: 0px; padding: 0;"><?php echo $factura[0]['factura_leyenda2']; ?> </p></span>
+                        <span style="font-size: 6.5pt !important"><p style="padding-bottom: 0px; padding: 0;"><?php echo $factura[0]['factura_leyenda3']; ?> </p></span>
+                        <span style="font-size: 6.5pt !important"><p style="padding-bottom: 0px; padding: 0;"><?php echo $factura[0]['factura_leyenda4']; ?> </p></span>
                         <!--<span style="font-size: 6.5pt !important"><?php //echo $factura[0]['factura_leyenda4']; ?> <br></span>-->
                         <!-- <span style="font-size: 6.5pt !important"><?php
                         /*if ($factura[0]['factura_tipoemision']==2){
@@ -378,12 +385,15 @@
                     <td style="padding: 0; padding-top: 10px" colspan="4">
                         <center>
                             <img src="<?php echo $codigoqr; ?>" width="100" height="100">
+                            
                         </center>
                     </td>
                 </tr>
+                <tr><td></td></tr>
             </table>
         </td>
     </tr>
+    
 </table>
 
 

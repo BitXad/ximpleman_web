@@ -184,6 +184,7 @@ class Venta extends CI_Controller{
         $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
         
         $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
+        $data['empresa_email'] = $this->empresa["empresa_email"];
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
@@ -467,12 +468,12 @@ class Venta extends CI_Controller{
                 $modalidad    = $this->input->post('dosificacion_modalidad');
                 $parametro_tipoemision    = $this->input->post('parametro_tipoemision');
                 
-                echo "modalidad: ".$parametro_tipoemision." * codigo excepcion: ".$codigo_excepcion;
+                //echo "modalidad: ".$parametro_tipoemision." * codigo excepcion: ".$codigo_excepcion;
                 //Modificar la excepcion en caso de ser fuera de linea
                 
                 if($parametro_tipoemision == 2){ //1 en liena * 2 fuera de liena   
                     
-                    if($tipo_doc_identidad == 5){ //5 si es factura
+                    if($tipo_doc_identidad == 5){ //5 si es NIT
                         $codigo_excepcion = 1;
                     }
                     else{
@@ -587,7 +588,7 @@ class Venta extends CI_Controller{
                 $this->Inventario_model->reducir_inventario_aux($usuario_id);
                 
           
-                if($tipo_transaccion==2) //Si la transaccion es a credito
+                if($tipo_transaccion == 2) //Si la transaccion es a credito
                 {
                     //$credito_id =  
                     $estado_id =  8; //8 pendiente 9 cancelado
@@ -629,7 +630,7 @@ class Venta extends CI_Controller{
                             //     $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
         
                         // }
-                        $credito_fechalimite = $cuota_fechalimite;
+                    $credito_fechalimite = $cuota_fechalimite;
                     $metodo_frances = $this->input->post('metodo_frances');
                     $metodo = "";
                     if($metodo_frances == "true"){
@@ -684,6 +685,7 @@ class Venta extends CI_Controller{
                     $cuota_fecha_i = "$anio-$month-$dia_pago";
                     
                     if($metodo_frances == "true"){
+                        
                         $Co = $credito_monto;
                         $i  = $credito_interes;
                         $n  = $cuotas;
@@ -692,6 +694,7 @@ class Venta extends CI_Controller{
                         $Ai = 0;
                         //$a = $Co*($i/(1-(1+$i) ** (-$n)));
                         $a = $Co*($i/(1-(pow((1+$i),-$n))));
+                        
                         for($k = 1; $k <= $cuotas; $k++){
                             $cuota_numcuota = $k;
                             
@@ -745,7 +748,8 @@ class Venta extends CI_Controller{
                     }
                     
                 }
-                      
+                    
+                
                 if($pedido_id > 0)
                 {
                     $sql = "update pedido set estado_id = 13  where pedido_id = ".$pedido_id;
@@ -759,7 +763,8 @@ class Venta extends CI_Controller{
                     $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
                     // PARA NUEVO SISTEMA DE FACTURACION
                     //$parametro = $this->Parametro_model->get_parametros(); replazado por $parametros, variable global
-                    $tamanio_hoja = 2;
+                    
+                    $tamanio_hoja = 2;                    
                     if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
                         $tamanio_hoja = 1;
                     }
@@ -880,10 +885,14 @@ class Venta extends CI_Controller{
                     
                     //$factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
                     
-                    $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
-                    $this->Venta_model->ejecutar($sql);
+                    //********** INICIO ACTUALIZAR NUMERO DE FACTURA
+//                        $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+//                        $this->Venta_model->ejecutar($sql);
+                        
+                    //********** FIN INICIO ACTUALIZAR NUMERO DE FACTURA
                         
                         if($this->parametros['parametro_tiposistema'] == 1){
+                            
                             // sistema de facturacion antiguo
                                 $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
                                 factura_fecha, factura_hora, factura_subtotal, 
@@ -903,6 +912,8 @@ class Venta extends CI_Controller{
                                 $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
                                 $venta_efectivo.",".$venta_cambio.",".$factura_enviada.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".
                                 $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."')";
+                        
+                                
                         }else{
                             
                                 $leyendas = $this->Venta_model->consultar("select * from leyenda");
@@ -989,7 +1000,8 @@ class Venta extends CI_Controller{
                         WHERE 
                             usuario_id=".$usuario_id.")";
                         
-                        $this->Factura_model->ejecutar($sql);               
+                        $this->Factura_model->ejecutar($sql);   
+                        
                         if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
                         // el parametro uno es para computarizada en linea ojo
                         $computarizada_enlinea = $this->parametros['parametro_tiposistema'] == 2 ? 1:2;// 1 para computarizada y 2 para electronica
@@ -1005,9 +1017,12 @@ class Venta extends CI_Controller{
                         $xsd = $this->parametros['parametro_tiposistema'] == 2 ? "compra_venta.xsd":"facturaElectronicaCompraVenta.xsd";
 
                         $valXSD = new ValidacionXSD();
+                        
                         if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","$directorio"."$xsd")){
-                            // echo "No ingreso";
+                            //echo "No ingreso";
+                            var_dump($valXSD);
                             print $valXSD->mostrarError();
+                            
                         }else{
                             // COMPRESION XML EN GZIP
                             $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
@@ -1072,9 +1087,9 @@ class Venta extends CI_Controller{
                             {
   
                                 $eniada = $this->mandarFactura($contents, $xml_comprimido);
-                                //var_dump($eniada->transaccion);
                                 //var_dump($eniada);
-                                if($eniada->transaccion){
+                                if($eniada->transaccion){ // Si la factura fue enviada                                    
+                                    
                                     $params = array(
                                         'factura_codigodescripcion' => $eniada->codigoDescripcion,
                                         'factura_codigoestado'    => $eniada->codigoEstado,
@@ -1083,12 +1098,20 @@ class Venta extends CI_Controller{
                                         'factura_enviada' => true,//Factura enviada a impuestos, por defecto en false(No fue enviada)
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
+                                    
+                                    //SI TODO SALE BIEN HASTA AQUI ACTUALIZA EN NUMERO DE FACTURA
+                                    $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+                                    $this->Venta_model->ejecutar($sql);
+                                    
+                                    
                                 }else{
                                     
                                     $cad = $eniada->mensajesList;
                                     //var_dump($eniada->mensajesList);
                                     
                                     $mensajecadena = json_encode($eniada->mensajesList);
+                                    
+                                    
 //                                    foreach ($cad as $c) {
 //                                        $mensajecadena .= $c->codigo.", ".$c->descripcion." | ";
 //                                    }
@@ -1109,7 +1132,17 @@ class Venta extends CI_Controller{
                                         'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
+                                    
+                                   echo json_encode($eniada);
+                                    
                                 }
+                                /*
+                                $sql = "update dosificacion set
+                                        dosificacion_numfact = dosificacion_numfact - (select count(*) as cantidad from factura where factura_id = ".$factura_id." and factura_codigodescripcion <> 'VALIDADA')
+                                        where dosificacion_id = 1";
+                                echo $sql;
+                                $this->Venta_model->ejecutar($sql);*/
+                                
                             }
                                 
                                     /* INICIO generar el pdf */ 
@@ -1122,7 +1155,7 @@ class Venta extends CI_Controller{
                                         $micad .= "  p {";
                                         $micad .= "      font-family: Arial;";
                                         $micad .= "      font-size: 8pt;";
-                                        $micad .= "      line-height: 100%;";   /*esta es la propiedad para el interlineado*/
+                                        $micad .= "      line-height: 80%;";   /*esta es la propiedad para el interlineado*/
                                         $micad .= "      color: #000;";
                                         $micad .= "      padding: 10px;";
                                         $micad .= "  }";
@@ -1139,8 +1172,8 @@ class Venta extends CI_Controller{
                                         $micad .= "      padding : 0 0 0 0;";
                                         $micad .= "      border-spacing : 0 0;";
                                         $micad .= "      border-collapse : collapse;";
-                                        $micad .= "      font-family: Arial narrow;";
-                                        $micad .= "      font-size: 10pt;";
+                                        $micad .= "      font-family: Arial;";
+                                        $micad .= "      font-size: 8pt;";
                                         $micad .= "      td{";
                                         $micad .= "          border:hidden;";
                                         $micad .= "      }";
@@ -1170,18 +1203,18 @@ class Venta extends CI_Controller{
                                         $micad .= "                    <td style='padding: 0;' colspan='4'>";
                                         $micad .= "                        <table style='width: ".$ancho."' style='font-family: Arial'>";
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-center' style='padding-bottom: 5px; font-family: Arial;'>";
-                                        $micad .= "                                     <center>";
+                                        $micad .= "                                <td class='text-center' style='padding-bottom: 5px;'><center>";
+                                        $micad .= "                                     ";
                                                                                        $titulo1 = "FACTURA";
                                                                                        $tipo = 1;
                                                                                     if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
                                                                                     else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";";
-                                        $micad .= "                                    <b style='font-family: Arial;'>".$titulo1."</b><br>";
-                                        $micad .= "                                    <b>".$subtitulo."</b><br>";
+                                        $micad .= "                                    ".$titulo1."<br>";
+                                        $micad .= "                                    ".$subtitulo."<br>";
                                         $micad .=                                       $empresa[0]['empresa_nombre']."<br>";
                                         $micad .=                                       $empresa[0]['empresa_eslogan']."<br>";
                                                                                     if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){
-                                        $micad .= "                                        <b> DE: ".$empresa[0]['empresa_propietario']."<br>";
+                                        $micad .= "                                       DE: ".$empresa[0]['empresa_propietario']."<br>";
                                                                                     }
                                                                                     if($factura[0]['factura_sucursal']==0){
                                         $micad .= "                                            CASA MATRIZ";
@@ -1192,25 +1225,25 @@ class Venta extends CI_Controller{
                                         $micad .=                                     $empresa[0]['empresa_direccion']."<br>";
                                         $micad .= "                                    Tel. ".$empresa[0]['empresa_telefono']."<br>";
                                         $micad .=                                     $empresa[0]['empresa_ubicacion']."<br>";
-                                        $micad .= "                                </center>";
-                                        $micad .= "                                </td>";
+                                        $micad .= "                                ";
+                                        $micad .= "                                </center></td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                        </table>";
-                                        $micad .= "                        <table style='width:".$ancho."'>";
+                                        $micad .= "                        <table style='width:".$ancho."  font-family: Arial'>";
                                         $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
-                                        $micad .= "                                <td class='text-center text-bold'><center><b>NIT:</b></center></td>";
+                                        $micad .= "                                <td class='text-center'><center>NIT: ".$factura[0]['factura_nitemisor']."</center></td>";
                                         $micad .= "                            </tr>";
+//                                        $micad .= "                            <tr>";
+//                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_nitemisor']."</center></td>";
+//                                        $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_nitemisor']."</center></td>";
+                                        $micad .= "                                <td class='text-center'><center>FACTURA Nº: ".$factura[0]['factura_numero']."</center></td>";
                                         $micad .= "                            </tr>";
+//                                        $micad .= "                            <tr>";
+//                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_numero']."</center></td>";
+//                                        $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-center'><center><b style='font-family: Arial;'>FACTURA N&deg;</b></center></td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_numero']."</center></td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-center'><center><b>CÓD. AUTORIZACIÓN</b></center></td>";
+                                        $micad .= "                                <td class='text-center'><center>CÓD. AUTORIZACIÓN</center></td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-center'><div style='word-wrap: break-word; width: ".$ancho."' ><center>".$factura[0]['factura_cuf']."</center></div></td>";
@@ -1220,13 +1253,13 @@ class Venta extends CI_Controller{
                                         $micad .= "                </tr>";
                                         $micad .= "                <tr>";
                                         $micad .= "                    <td colspan='4' style='padding: 0;'>";
-                                        $micad .= "                        <table style='width: ".$ancho."'>";
+                                        $micad .= "                        <table style='width: ".$ancho."' >";
                                         $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
-                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; white-space: nowrap; text-align: right'><b>NOMBRE/RAZ&Oacute;N SOCIAL:</b></td>";
+                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; white-space: nowrap; text-align: right'>NOMBRE/RAZ&Oacute;N SOCIAL: </td>";
                                         $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_razonsocial']."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'><b>NIT/CI/CEX:</b></td>";
+                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>NIT/CI/CEX: </td>";
                                         $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_nit']."  ";
                                                                                if($factura[0]['cdi_codigoclasificador']!=5){
                                         $micad .=                                  $factura[0]["cliente_complementoci"];
@@ -1234,11 +1267,11 @@ class Venta extends CI_Controller{
                                         $micad .= "                                </td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'><b>COD. CLIENTE:</b></td><!-- PONER CODIGO DE CLIENTE -->";
+                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>COD. CLIENTE: </td><!-- PONER CODIGO DE CLIENTE -->";
                                         $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_codigocliente']."</b><br></td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
-                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'><b>FECHA DE EMISI&Oacute;N:</b></td>";
+                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>FECHA DE EMISI&Oacute;N: </td>";
                                         $micad .= "                                <td style='padding: 0; padding-left: 3px'>";
                                                                                     $fecha = new DateTime($factura[0]['factura_fechaventa']);
                                                                                     $fecha_d_m_a = $fecha->format('d/m/Y');
@@ -1249,7 +1282,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                    </td>";
                                         $micad .= "                </tr>";
                                         $micad .= "                <tr>";
-                                        $micad .= "                    <td colspan='4' align='center' style='padding: 0;'><b>DETALLE</b></td>";
+                                        $micad .= "                    <td colspan='4' align='center' style='padding: 0;'>DETALLE</td>";
                                         $micad .= "                </tr>";
                                         $micad .= "                <tr>";
                                         $micad .= "                    <td colspan='4' style='padding: 0'>";
@@ -1269,7 +1302,7 @@ class Venta extends CI_Controller{
                                                                                     $total_final += $d['detallefact_total']; 
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class=-text-bold' colspan='0' style='font-size: 8pt; padding: 0;'>";
-                                        $micad .= "                                <b>";
+                                        $micad .= "                                ";
                                         $micad .=                                     $d['detallefact_codigo']." - ".$d['detallefact_descripcion'];
                                                                                     if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != ""){
                                         $micad .= "                                      [".$d['detallefact_unidadfactor']."]";
@@ -1280,7 +1313,7 @@ class Venta extends CI_Controller{
                                                                                     if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ){
                                         $micad .= "                                        <br>".nl2br($d['detallefact_caracteristicas']);
                                                                                     }
-                                        $micad .= "                                </b>";
+                                        $micad .= "                                ";
                                         $micad .= "                                </td>";
                                         $micad .= "                                <td colspan='2'></td>";
                                         $micad .= "                            </tr>";
@@ -1310,49 +1343,49 @@ class Venta extends CI_Controller{
                                         $micad .= "                            <tr style='border-top-style: dotted; border-top-width: 1px;'>";
                                         $micad .= "                                <td class='text-right' style='text-align: right'>SUBTOTAL Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right'>".number_format($total_final_factura,2,'.',',')."</td>";
+                                        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($total_final_factura,2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right' style='text-align: right'>DESCUENTO Bs</td>";
                                         $micad .= "                                <td style='width: 1cm !important;'></td>";
-                                        $micad .= "                                <td class='text-right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
+                                        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right'>".number_format($factura[0]['factura_total'],2,'.',',')."</td>";
+                                        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_total'],2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO GIFT CARD Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right text-bold'>".number_format($factura[0]['factura_giftcard'],2,'.',',')."</td>";
+                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura[0]['factura_giftcard'],2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                                                                 if ($mostrarice==1){
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right'>".number_format($ice,2,'.',','); //number_format($factura[0]['factura_ice'],2,'.',',');
+                                        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($ice,2,'.',','); //number_format($factura[0]['factura_ice'],2,'.',',');
                                         $micad .= "                                </td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
                                         $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE PORCENTUAL Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right'> ".number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',',');
+                                        $micad .= "                                <td class='text-right' style='text-align: right'> ".number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',',');
                                         $micad .= "                                </td>";
                                         $micad .= "                            </tr>";
                                                                                 }
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'><b>MONTO A PAGAR Bs</b></td>";
+                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO A PAGAR Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right text-bold'><b>".number_format($factura_total,2,'.',',')."</b></td>";
+                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'><b>IMPORTE BASE CR&Eacute;DITO FISCAL</b></td>";
+                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>IMPORTE BASE CR&Eacute;DITO FISCAL Bs</td>";
                                         $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right text-bold'><b>".number_format($factura_total,2,'.',',')."</b></td>";
+                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
                                         $micad .= "                            </tr>";
                                         $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
-                                        $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px; font-size: 10px; font-weight: bold'>";
+                                        $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px; font-size: 10px;'>";
                                         $micad .= "                                    <br>";
                                         $micad .= "                                    SON: ".num_to_letras($factura_total,' Bolivianos');
                                         $micad .= "                                </td>";
@@ -1757,7 +1790,7 @@ class Venta extends CI_Controller{
                                         $micad .= "                   </tr>"; 
                                         $micad .= "                </table>"; 
                                         $micad .= "            </td>"; 
-                                        $micad .= "        </tr>"; 
+                                        $micad .= "        </tr>";                                        
                                         $micad .= "    </table>"; 
                                         $micad .= "</td>"; 
                                         $micad .= "</tr>"; 
@@ -1840,25 +1873,26 @@ class Venta extends CI_Controller{
                     $contador = 1;
                     $detalle = "SELECT detalleorden_id from detalle_orden where orden_id=".$orden_id." ";
                     $detalle_orden = $this->db->query($detalle)->result_array();
+                    
                     foreach ($detalle_orden as $det) {
                     
-                    $prisql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,proceso_fechaproceso,proceso_fechaterminado,detalleorden_id) value(".$orden_id.",17,26,0,".$proceso_fechaproceso.",".$proceso_fechaproceso.",".$det['detalleorden_id'].")";
-                    $primid = $this->Venta_model->ejecutar($prisql); 
-        
-                    for ($contador = 18; $contador<=23; $contador++){
-                         
-                        
-                        $estado = $contador;
-                        $estado_id = 24;
-                        
-                        $sql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,detalleorden_id) value(".
-                                $orden_id.",".$estado.",".$estado_id.",0,".$det['detalleorden_id'].")";
-                        $id = $this->Venta_model->ejecutar($sql);              
-                        
-                    }  
-            }
-            
-            }       
+                        $prisql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,proceso_fechaproceso,proceso_fechaterminado,detalleorden_id) value(".$orden_id.",17,26,0,".$proceso_fechaproceso.",".$proceso_fechaproceso.",".$det['detalleorden_id'].")";
+                        $primid = $this->Venta_model->ejecutar($prisql); 
+
+                        for ($contador = 18; $contador<=23; $contador++){
+
+
+                            $estado = $contador;
+                            $estado_id = 24;
+
+                            $sql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,detalleorden_id) value(".
+                                    $orden_id.",".$estado.",".$estado_id.",0,".$det['detalleorden_id'].")";
+                            $id = $this->Venta_model->ejecutar($sql);              
+
+                        }  
+                    }
+
+                }       
         }
 
         //**************** fin contenido ***************
@@ -2001,9 +2035,11 @@ class Venta extends CI_Controller{
             $factura_cambio = 0;
           
             $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
-            
+
+            //********** INICIO ACTUALIZAR NUMERO DE FACTURA
             $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
             $this->Venta_model->ejecutar($sql);
+            //********** FIN ACTUALIZAR NUMERO DE FACTURA
             
             $sql = "insert into factura(estado_id, factura_fechaventa, 
                     factura_fecha, factura_hora, factura_subtotal, 
@@ -2361,9 +2397,44 @@ function edit($venta_id)
         
         if($this->acceso(20)){
         //**************** inicio contenido ***************      
+//        $data['rolusuario'] = $this->session_data['rol'];
+//        $usuario_id = $this->session_data['usuario_id'];
+//        $tipousuario_id = $this->session_data['tipousuario_id']; 
+//        
+//        // check if the venta exists before trying to edit it
+//        $venta = $this->Venta_model->get_venta($venta_id);
+//        
+//        $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
+//        $cliente_id = $venta["cliente_id"];       
+//        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+//        $data['page_title'] = "Modificar Venta";
+//
+//        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+//        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+//        
+//        $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+//        $data['cliente'] = $cliente;
+//        
+//        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+//        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+//        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+//        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+//        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+//        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+//        $data['parametro'] = $this->Parametro_model->get_parametros();
+//        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+//        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+//        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+//        $data['promociones'] = $this->Promocion_model->get_promociones();
+//        $data['mesas'] = $this->Mesa_model->get_all_mesa();
+//        $data['usuario_id'] = $usuario_id;
+//        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+//        $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
+//        $data['tipousuario_id'] = $tipousuario_id;
+        
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
-        $tipousuario_id = $this->session_data['tipousuario_id']; 
+        $tipousuario_id = $this->session_data['tipousuario_id'];        
         
         // check if the venta exists before trying to edit it
         $venta = $this->Venta_model->get_venta($venta_id);
@@ -2372,20 +2443,20 @@ function edit($venta_id)
         $cliente_id = $venta["cliente_id"];       
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['page_title'] = "Modificar Venta";
-
-        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
-        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         
         $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
         $data['cliente'] = $cliente;
-        
+        $data['page_title'] = "Ventas";
+        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+//        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
@@ -2395,7 +2466,15 @@ function edit($venta_id)
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
-
+        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
+        $data['empresa_email'] = $this->empresa["empresa_email"];
+        
+        $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
+        $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
+        
+        $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
+        
+            
         //**************** inicio contenido ***************     
                 
        
@@ -3233,17 +3312,19 @@ function registrarcliente()
             $tipo_doc_identidad =  $this->input->post('tipo_doc_identidad');
             $cliente_email =  "'".$this->input->post('cliente_email')."'";
             $cliente_complementoci =  "'".$this->input->post('cliente_complementoci')."'";
+            $cliente_excepcion = $this->input->post('cliente_excepcion');
             
             $cliente_ci = $cliente_nit;
             $cliente_nombre = $cliente_razon;
             $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,
                     cliente_razon,cliente_telefono,estado_id,usuario_id,
                     cliente_nombrenegocio, cliente_codigo, cliente_direccion, cliente_departamento,
-                    cliente_celular, zona_id, cdi_codigoclasificador, cliente_email, cliente_complementoci
-                    ) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
+                    cliente_celular, zona_id, cdi_codigoclasificador, cliente_email, cliente_complementoci,
+                    cliente_excepcion) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
                     $cliente_razon.",".$cliente_telefono.",1,0,".
                    $cliente_nombrenegocio.",".$cliente_codigo.",".$cliente_direccion.",".$cliente_departamento.",".
-                   $cliente_celular.",".$zona_id.",".$tipo_doc_identidad.",".$cliente_email.",".$cliente_complementoci.")";
+                   $cliente_celular.",".$zona_id.",".$tipo_doc_identidad.",".$cliente_email.",".$cliente_complementoci.
+                    ",".$cliente_excepcion.")";
 //            echo $sql;
             $datos = $this->Venta_model->registrarcliente($sql);
             echo json_encode($datos);
@@ -5011,12 +5092,15 @@ function anular_venta($venta_id){
      * Enviar factura a impuestos
      */
     function mandarFactura($el_archivo, $hash_archivo){
+        
         static $array;
         // $sincronizacion_id = $this->input->post('codigo_sincronizar');
         if(!isset($array['dosificacion'])){
+            
             $dosificacion_id = 1;
             $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
             $array['dosificacion'] = $dosificacion;
+            
         }else{
             $dosificacion = $array['dosificacion'];
         }
@@ -5034,7 +5118,7 @@ function anular_venta($venta_id){
             $parametros = ["SolicitudServicioRecepcionFactura" => [
                 "codigoAmbiente"        => $dosificacion['dosificacion_ambiente'],   // Producción: 1 Pruebas y Piloto: 2
                 "codigoDocumentoSector" => $dosificacion['docsec_codigoclasificador'], //documento_sector: para compra y venta es 1
-                "codigoEmision"         =>  1, //$dosificacion['dosificacion_ambiente'],   //Describe si la emisión se realizó en línea. El valor permitido es: Online: 1
+                "codigoEmision"         =>  "1", //$dosificacion['dosificacion_ambiente'],   //Describe si la emisión se realizó en línea. El valor permitido es: Online: 1
                 "codigoModalidad"       => $dosificacion['dosificacion_modalidad'],  //Uno (1) Electrónica  y dos (2) Computarizada en línea
                 "codigoPuntoVenta"      => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'], //se realiza utilizando un punto de venta. Caso contrario enviar 0.
                 "codigoSistema"         => $dosificacion['dosificacion_codsistema'],
@@ -5047,14 +5131,19 @@ function anular_venta($venta_id){
                 "fechaEnvio"            => $fecha_envio,
                 "hashArchivo"           => $hash_archivo,
             ]];
+            
+            //var_dump($parametros);
         //}
         
         try{
+            
             $opts = array(
                 'http' => array(
                     'header' => "apiKey: TokenApi $token"
                 )
             );
+            //var_dump($wsdl);
+            //var_dump($opts);
 
             $context = stream_context_create($opts);
             $cliente = new \SoapClient($wsdl, [
@@ -5063,12 +5152,15 @@ function anular_venta($venta_id){
                 'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
             ]);
 
+            //var_dump($parametros);    
             $resultado = $cliente->recepcionFactura($parametros);
+            //var_dump($resultado);
             
-                $mensaje = $resultado->RespuestaServicioFacturacion;
+            $mensaje = $resultado->RespuestaServicioFacturacion;
             return $mensaje;
+            
         }catch(Exception $e){
-            // var_dump("No se realizo la sincronizacion");
+            var_dump("FALLA: No se realizo la sincronizacion");
             return false;
         }
 
@@ -5905,6 +5997,15 @@ function anular_venta($venta_id){
         
 
 
+    }
+        
+    function actualizar_numerofactura(){
+        
+        $sql = "update dosificacion set dosificacion_numfact = dosificacion_numfact - 1";        
+        $this->Venta_model->ejecutar($sql);
+      
+        echo json_encode("ok");
+        
     }
     
 }

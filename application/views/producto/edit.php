@@ -167,7 +167,7 @@
                                 <?php foreach ($nis_codigos as $cod_nis){
                                     $selected =  ($cod_nis['prodserv_codigoproducto'] == $producto['producto_codigosin']) ? "selected":"";
                                     ?>
-                                    <option value="<?= $cod_nis['prodserv_codigoproducto'] ?>" <?= $selected ?>><?= "{$cod_nis['prodserv_codigoactividad']} - {$cod_nis['prodserv_codigoproducto']}" ?></option>
+                                    <option value="<?= $cod_nis['prodserv_codigoproducto'] ?>" <?= $selected ?>><?= "{$cod_nis['prodserv_codigoactividad']} - {$cod_nis['prodserv_codigoproducto']} {$cod_nis['prodserv_descripcion']}" ?></option>
                                 <?php }?>
                             </select>
                         </div>

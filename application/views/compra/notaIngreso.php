@@ -192,8 +192,10 @@ border-bottom:1px solid black;
                          
         <br><br><br><font size="2" face="Arial"> <b>PROVEEDOR: </b><?php echo $compra[0]['proveedor_nombre'];?><br>
         <b>FORMA DE PAGO: </b><?php echo $compra[0]['tipotrans_nombre'];?><br>
-        <b>FECHA: </b><?php echo date('d/m/Y',strtotime($compra[0]['compra_fecha'])) ; ?> <?php echo $compra[0]['compra_hora'];?></font>
-                         
+        <b>FECHA: </b><?php echo date('d/m/Y',strtotime($compra[0]['compra_fecha'])) ; ?> <?php echo $compra[0]['compra_hora'];?>      
+        <?php //if ($compra[0]['documento_respaldo_id']==1){ ?>
+        <br><b>FACTURA Nº: </b><?php echo $compra[0]['compra_numdoc'];?></font>
+        <?php //} ?>
          
                    
         </td>

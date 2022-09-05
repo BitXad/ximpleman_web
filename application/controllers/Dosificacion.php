@@ -181,6 +181,14 @@ class Dosificacion extends CI_Controller{
                     'docsec_codigoclasificador' => $this->input->post('docsec_codigoclasificador'),
                     'tipofac_codigo' => $this->input->post('tipofac_codigo'),
                     'dosificacion_cafc' => $this->input->post('dosificacion_cafc'),
+                    
+                    'dosificacion_sincronizacion' => $this->input->post('dosificacion_sincronizacion'),
+                    'dosificacion_recepcioncompras' => $this->input->post('dosificacion_recepcioncompras'),
+                    'dosificacion_operaciones' => $this->input->post('dosificacion_operaciones'),
+                    'dosificacion_obtencioncodigos' => $this->input->post('dosificacion_obtencioncodigos'),
+                    'dosificacion_notacredito' => $this->input->post('dosificacion_notacredito'),
+                    'dosificacion_factura' => $this->input->post('dosificacion_factura'),
+                    'dosificacion_ruta' => $this->input->post('dosificacion_ruta'),
                 );
 
                 $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);            
@@ -539,7 +547,7 @@ class Dosificacion extends CI_Controller{
 //                    "codigoSucursal: ".$dosificacion['dosificacion_codsucursal']."<br>".
 //                    "cuis: ".$cuis_puntoventa."<br>".
 //                    "nit: ".$dosificacion['dosificacion_nitemisor'];
-                
+//                
                 $parametros = ["SolicitudCufd" => [
                     "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
                     "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
@@ -581,6 +589,7 @@ class Dosificacion extends CI_Controller{
     function cuis(){
         try{
             if ($this->input->is_ajax_request()) {
+                
                 $dosificacion_id = 1;
                 $punto_venta = $this->input->post('punto_venta');
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
@@ -607,6 +616,13 @@ class Dosificacion extends CI_Controller{
                 /* ---------------------F I N  segun EJEMPLO ---------------------- */
                 /* ordenado segun SoapUI */
 
+//                echo    "<br>codigoAmbiente: ".$dosificacion['dosificacion_ambiente'].
+//                    "<br>codigoModalidad: ".$dosificacion['dosificacion_modalidad'].
+//                    "<br>codigoPuntoVenta: ".$punto_venta.
+//                    "<br>codigoSistema: ".$dosificacion['dosificacion_codsistema'].
+//                    "<br>codigoSucursal: ".$dosificacion['dosificacion_codsucursal'].
+//                    "<br>nit: ".$dosificacion['dosificacion_nitemisor'];
+                
                 $parametros = ["SolicitudCuis" => [
                     "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
                     "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
@@ -618,6 +634,7 @@ class Dosificacion extends CI_Controller{
                         ]];
 
                 $resultado = $cliente->cuis($parametros);
+                //var_dump($resultado);
                 echo json_encode($resultado);
                 
 //                codigo: "A6FD9CF6"

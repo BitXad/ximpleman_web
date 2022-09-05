@@ -1203,7 +1203,9 @@ function compraproveedor(opcion)
                         } else {
                         
                         }
+                        
                         html += "<a href='"+base_url+"compra/nota/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Nota de Compra'><span class='fa fa-print'></span></a>";
+                        html += "<a href='"+base_url+"compra/notaingreso/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-facebook btn-xs' title='Nota de Ingreso/utilidades'><span class='fa fa-print'></span></a>";
 
                         if (Number(registros[i]["elestado"])==1) {
                         html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
@@ -1349,6 +1351,7 @@ function fechadecompra(filtro)
                         
                         }
                         html += "<a href='"+base_url+"compra/nota/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Nota de Compra'><span class='fa fa-print'></span></a>";
+                        html += "<a href='"+base_url+"compra/notaingreso/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-facebook btn-xs' title='Nota de ingreso/utilidades'><span class='fa fa-print'></span></a>";
                         if (Number(registros[i]["elestado"])==1) {
                         html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
                         html += "<a href='#' data-toggle='modal' data-target='#anularmodal"+registros[i]["compra_id"]+"' class='btn btn-xs btn-warning' title='Anular Compra' ><i class='fa fa-minus-circle'></i></a>";

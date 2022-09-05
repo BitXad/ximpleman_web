@@ -21,6 +21,8 @@ class Compra extends CI_Controller{
         $this->load->helper('numeros');
         $this->load->model('Usuario_model');
         $this->load->model('Banco_model');
+        $this->load->model('Sincronizacion_model');
+        $this->load->model('Venta_model');
         
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -542,6 +544,8 @@ class Compra extends CI_Controller{
              $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
              $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc(); //0-->bs; 1-->USD
              $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+             $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis(); 
+             
              if ($bandera==0) {
               $this->Compra_model->volvermal($compra_id);
              }
@@ -627,7 +631,8 @@ class Compra extends CI_Controller{
 
                 $this->load->model('Categoria_producto_model');
                 $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-
+                $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
+                
               
                 $data['_view'] = 'compra/edit';
                 $this->load->view('layouts/main',$data);
