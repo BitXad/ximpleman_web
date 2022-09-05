@@ -1020,7 +1020,7 @@ class Venta extends CI_Controller{
                         
                         if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","$directorio"."$xsd")){
                             //echo "No ingreso";
-                            var_dump($valXSD);
+                            //var_dump($valXSD);
                             print $valXSD->mostrarError();
                             
                         }else{
