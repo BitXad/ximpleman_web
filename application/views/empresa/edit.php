@@ -42,7 +42,7 @@ function mostrar(a) {
 						</div>
 					</div>
 					<div class="col-md-3">
-						<label for="empresa_telefono" class="control-label">Teléfono</label>
+						<label for="empresa_telefono" class="control-label">Teléfono (Máximo 20 Caracteres)</label>
 						<div class="form-group">
                                                     <input type="text" maxlength="25" name="empresa_telefono" value="<?php echo ($this->input->post('empresa_telefono') ? $this->input->post('empresa_telefono') : $empresas['empresa_telefono']); ?>" class="form-control" id="empresa_telefono" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>

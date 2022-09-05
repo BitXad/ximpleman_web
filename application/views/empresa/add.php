@@ -42,13 +42,13 @@
 						</div>
 					</div>
 					<div class="col-md-3">
-						<label for="empresa_telefono" class="control-label">Teléfono</label>
+						<label for="empresa_telefono" class="control-label">Teléfono (Máximo 20 Caracteres)</label>
 						<div class="form-group">
                                                     <input type="text" maxlength="25" name="empresa_telefono" value="<?php echo $this->input->post('empresa_telefono'); ?>" class="form-control" id="empresa_telefono" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-3">
-						<label for="empresa_imagen" class="control-label">Imagen</label>
+						<label for="empresa_imagen" class="control-label">Imagen (recomendado 4:3)</label>
 						<div class="form-group">
                                                     <input type="file" name="empresa_imagen" value="<?php echo $this->input->post('empresa_imagen'); ?>" class="form-control" id="empresa_imagen" accept="image/png, image/jpeg, image/jpg, image/gif" />
 						</div>
