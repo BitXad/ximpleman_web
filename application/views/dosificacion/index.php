@@ -178,7 +178,7 @@
                 <label class="control-label">Ambiente</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_ambiente']; ?>
+                <?php echo ($dosificacion['dosificacion_ambiente'] == 1)?'1-PRODUCCION':'2-PRUEBAS'; ?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Codigo Unico de Inicio de Sistema (CUIS)</label>
@@ -227,7 +227,7 @@
                 <label class="control-label">Modalidad</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_modalidad']; ?>
+                <?php echo ($dosificacion['dosificacion_modalidad']==1)?"1-ELECTRONICA EN LINEA":"2-COMPUTARIZADA EN LINEA"; ?>
             </div>
         </div>
         <div class="col-md-12 linea">
@@ -269,6 +269,7 @@
             <div class="col-md-2">
                 <?php echo $dosificacion['estado_descripcion']; ?>
             </div>
+
         </div>
     </div>
 

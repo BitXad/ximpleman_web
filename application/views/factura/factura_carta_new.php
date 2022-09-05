@@ -91,6 +91,7 @@ border-bottom : 1px solid #aaa;
         $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 ?>
 
+
 <!------------------------ INICIO modal para confirmar anulacion de factura ------------------->
 <div class="modal fade" id="myModalAnular" tabindex="-1" role="dialog" aria-labelledby="myModalAnularlabel" style="font-family: Arial; font-size: 10pt;">
     <div class="modal-dialog" role="document">
@@ -169,6 +170,26 @@ border-bottom : 1px solid #aaa;
         <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
             <tr>                
             <td>
+                                                    
+                <div class="col-md-12 no-print" style="padding:0;" >
+
+
+                        <?php 
+                            //echo $factura[0]['factura_codigodescripcion'];
+                            if ($factura[0]['factura_codigodescripcion']=="VALIDADA"){ ?>
+
+                                <button class="btn btn-info btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"><b style="font-size: 20pt;"> ENVIADA </b></button>
+
+                        <?php }else{ ?>
+
+                                <button class="btn btn-danger btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"> <b style="font-size: 20pt;"> NO ENVIADA</b> <br> Ocurrio un error en el envio, debe rehacer la operación
+                                    <br> <?= $factura[0]['factura_mensajeslist'] ?>
+                                </button>
+
+                        <?php } ?>
+                                <br>
+              </div>       
+                
             <table style="width: 100%; margin: 0;" >
                 
             <tr>

@@ -200,10 +200,10 @@ function validar(e,opcion) {
             $("#email").select()();
         }
         
-        if (opcion==13){ //Si el evento viene desde el campo email
-            $("#codigo").focus();
-            $("#codigo").select()();
-        }
+//        if (opcion==13){ //Si el evento viene desde el campo email
+//            $("#codigo").focus();
+//            $("#codigo").select()();
+//        }
                 
     }
     

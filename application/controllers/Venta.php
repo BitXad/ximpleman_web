@@ -630,7 +630,7 @@ class Venta extends CI_Controller{
                             //     $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
         
                         // }
-                        $credito_fechalimite = $cuota_fechalimite;
+                    $credito_fechalimite = $cuota_fechalimite;
                     $metodo_frances = $this->input->post('metodo_frances');
                     $metodo = "";
                     if($metodo_frances == "true"){
@@ -748,7 +748,8 @@ class Venta extends CI_Controller{
                     }
                     
                 }
-                      
+                    
+                
                 if($pedido_id > 0)
                 {
                     $sql = "update pedido set estado_id = 13  where pedido_id = ".$pedido_id;
@@ -762,7 +763,8 @@ class Venta extends CI_Controller{
                     $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
                     // PARA NUEVO SISTEMA DE FACTURACION
                     //$parametro = $this->Parametro_model->get_parametros(); replazado por $parametros, variable global
-                    $tamanio_hoja = 2;
+                    
+                    $tamanio_hoja = 2;                    
                     if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
                         $tamanio_hoja = 1;
                     }
@@ -1017,7 +1019,8 @@ class Venta extends CI_Controller{
                         $valXSD = new ValidacionXSD();
                         
                         if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","$directorio"."$xsd")){
-                            // echo "No ingreso";
+                            //echo "No ingreso";
+                            var_dump($valXSD);
                             print $valXSD->mostrarError();
                             
                         }else{
@@ -1084,7 +1087,6 @@ class Venta extends CI_Controller{
                             {
   
                                 $eniada = $this->mandarFactura($contents, $xml_comprimido);
-                                //var_dump($eniada);
                                 //var_dump($eniada);
                                 if($eniada->transaccion){ // Si la factura fue enviada                                    
                                     
@@ -5094,9 +5096,11 @@ function anular_venta($venta_id){
         static $array;
         // $sincronizacion_id = $this->input->post('codigo_sincronizar');
         if(!isset($array['dosificacion'])){
+            
             $dosificacion_id = 1;
             $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
             $array['dosificacion'] = $dosificacion;
+            
         }else{
             $dosificacion = $array['dosificacion'];
         }
@@ -5114,7 +5118,7 @@ function anular_venta($venta_id){
             $parametros = ["SolicitudServicioRecepcionFactura" => [
                 "codigoAmbiente"        => $dosificacion['dosificacion_ambiente'],   // Producción: 1 Pruebas y Piloto: 2
                 "codigoDocumentoSector" => $dosificacion['docsec_codigoclasificador'], //documento_sector: para compra y venta es 1
-                "codigoEmision"         =>  1, //$dosificacion['dosificacion_ambiente'],   //Describe si la emisión se realizó en línea. El valor permitido es: Online: 1
+                "codigoEmision"         =>  "1", //$dosificacion['dosificacion_ambiente'],   //Describe si la emisión se realizó en línea. El valor permitido es: Online: 1
                 "codigoModalidad"       => $dosificacion['dosificacion_modalidad'],  //Uno (1) Electrónica  y dos (2) Computarizada en línea
                 "codigoPuntoVenta"      => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'], //se realiza utilizando un punto de venta. Caso contrario enviar 0.
                 "codigoSistema"         => $dosificacion['dosificacion_codsistema'],
@@ -5127,14 +5131,19 @@ function anular_venta($venta_id){
                 "fechaEnvio"            => $fecha_envio,
                 "hashArchivo"           => $hash_archivo,
             ]];
+            
+            //var_dump($parametros);
         //}
         
         try{
+            
             $opts = array(
                 'http' => array(
                     'header' => "apiKey: TokenApi $token"
                 )
             );
+            //var_dump($wsdl);
+            //var_dump($opts);
 
             $context = stream_context_create($opts);
             $cliente = new \SoapClient($wsdl, [
@@ -5143,12 +5152,15 @@ function anular_venta($venta_id){
                 'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
             ]);
 
+            //var_dump($parametros);    
             $resultado = $cliente->recepcionFactura($parametros);
+            //var_dump($resultado);
             
-                $mensaje = $resultado->RespuestaServicioFacturacion;
+            $mensaje = $resultado->RespuestaServicioFacturacion;
             return $mensaje;
+            
         }catch(Exception $e){
-            // var_dump("No se realizo la sincronizacion");
+            var_dump("FALLA: No se realizo la sincronizacion");
             return false;
         }
 
