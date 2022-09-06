@@ -2999,7 +2999,7 @@ function registrarventa(cliente_id)
             data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id, forma_id:forma_id,
                 facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
-                cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
+                modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
                 venta_descuentoparcial:venta_descuentoparcial, venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, metodo_frances:metodo_frances,
                 tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
@@ -3010,9 +3010,22 @@ function registrarventa(cliente_id)
             success:function(respuesta){
                 
                 let res = JSON.parse(respuesta);
-                alert(JSON.stringify(res));
+                //alert(JSON.stringify(res));
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
+                
+                if(res.mensajesList.codigoDescripcion == "VALIDADA"){
+                    
+                }else
+                if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){                    
+                    alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
+                    
+                    if(res.mensajesList.codigo == 953){                    
+                        //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
+                        solicitudCufd(punto_venta);                    
+                    }
+                    
+                }
                 //console.log(res.comunicacion);
                 //alert(JSON.stringify(res));
                 //if (pedido_id>0){ pedidos_pendientes(); }
@@ -3054,6 +3067,9 @@ function registrarventa(cliente_id)
 //                }
 //                
 //                if((res.mensajesList.codigo >= 1037)||(res.mensajesList.codigo == 988)||(res.mensajesList.codigo == 993)||(res.mensajesList.codigo == 988) ){                    
+                if(res.mensajesList.codigoDescripcion == "VALIDADA"){
+                    
+                }else
                 if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){                    
                     alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
                     
