@@ -476,4 +476,4 @@ border-bottom : 1px solid #aaa;
     <?php } ?>
 </td>
 </tr>
-</table><?php echo $cadenaqr; ?>
+</table><span class="no-print"><?php echo $cadenaqr; ?></span>
