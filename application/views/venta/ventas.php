@@ -1,3 +1,4 @@
+
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
@@ -823,6 +824,8 @@ window.onkeydown = compruebaTecla;
             }
             ?>
             <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-info btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
+            
+            <button onclick='finalizarventa();' class='btn btn-info btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar venta</b></button> 
             
             
             </div>

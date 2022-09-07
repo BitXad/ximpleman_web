@@ -6159,11 +6159,12 @@ function borrar_datos_cliente(){
     }
     
     //Imprimir la factura
+    /*
     if (facturado == 1){
         var boton = document.getElementById("imprimir_factura");
         boton.click();                    
     }
-    
+    */
     document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
     tablaproductos();
     

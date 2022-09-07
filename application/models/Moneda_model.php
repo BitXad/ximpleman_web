@@ -16,16 +16,9 @@ class Moneda_model extends CI_Model
      */
     function get_moneda($moneda_id)
     {
-        $moneda = $this->db->query("
-            SELECT
-                *
-
-            FROM
-                `moneda`
-
-            WHERE
-                `moneda_id` = ?
-        ",array($moneda_id))->row_array();
+        $sql = "select * from moneda where moneda_id = ".$moneda_id;
+        
+        $moneda = $this->db->query($sql)->row_array();
 
         return $moneda;
     }
@@ -166,4 +159,11 @@ class Moneda_model extends CI_Model
             where m.moneda_codigoclasificador = $moneda_codigoclasificador"
             )->row_array();
     }
+    
+    function truncate_table(){
+        $sql = "truncate moneda";
+        $this->db->query($sql);
+        return true;
+    }
+    
 }

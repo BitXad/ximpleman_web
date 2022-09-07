@@ -192,7 +192,7 @@
                                     foreach($all_documentosector as $docsector)
                                     {
                                         $selected = ($docsector['docsec_codigoclasificador'] == $dosificacion['docsec_codigoclasificador']) ? ' selected="selected"' : "";
-                                        echo '<option value="'.$docsector['docsec_codigoclasificador'].'" '.$selected.'>'.$docsector['docsec_descripcion'].'</option>';
+                                        echo '<option value="'.$docsector['docsec_codigoclasificador'].'" '.$selected.'>'.$docsector['docsec_codigoclasificador']."-".$docsector['docsec_descripcion'].'</option>';
                                     } 
                                 ?>
                             </select>
@@ -315,6 +315,23 @@
                         <label for="dosificacion_factura" class="control-label">Factura</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_factura" value="<?php echo ($this->input->post('dosificacion_factura') ? $this->input->post('dosificacion_factura') : $dosificacion['dosificacion_factura']); ?>" class="form-control" id="dosificacion_factura" />
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="col-md-6">
+                            <label for="dosificacion_facturaservicios" class="control-label">Factura Servicios</label>
+                        <div class="form-group">
+                            <input type="text" name="dosificacion_facturaservicios" value="<?php echo ($this->input->post('dosificacion_facturaservicios') ? $this->input->post('dosificacion_facturaservicios') : $dosificacion['dosificacion_facturaservicios']); ?>" class="form-control" id="dosificacion_facturaservicios" />
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="col-md-6">
+                        <label for="dosificacion_facturaglp" class="control-label">Factura Comercializacion GN/GLP</label>
+                        <div class="form-group">
+                            <input type="text" name="dosificacion_facturaglp" value="<?php echo ($this->input->post('dosificacion_facturaglp') ? $this->input->post('dosificacion_facturaglp') : $dosificacion['dosificacion_facturaglp']); ?>" class="form-control" id="dosificacion_facturaglp" />
                         </div>
                     </div>
                     

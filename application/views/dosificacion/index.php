@@ -46,231 +46,258 @@
         background-color: #dddddd;
     }
 </style>
+<?php $estilo = "style='background: #1883ba; font-weight: bold; color: white; font-size: 9pt; text-align:right;'"; ?>
 <div class="row">
     <div class="box">
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">Empresa</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['empresa_nombre']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Fecha Limite</label>
-            </div>
-            <div class="col-md-3">
-                <?php
-                if($dosificacion['dosificacion_fechalimite']){
-                    echo date("d/m/Y",strtotime($dosificacion['dosificacion_fechalimite']));
-                }?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Nit Emisor</label>
-            </div>
-            <div class="col-md-2">
-                <?php echo $dosificacion['dosificacion_nitemisor']; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">Autorización</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_autorizacion']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Llave</label>
-            </div>
-            <div class="col-md-3" style="word-break: break-word;">
-                <?php echo $dosificacion['dosificacion_llave']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Num. Factura</label>
-            </div>
-            <div class="col-md-2">
-                <?php echo $dosificacion['dosificacion_numfact']; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">Sucursal</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_sucursal']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Sfc</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_sfc']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Actividad</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['actividad_descripcion']; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">Leyenda 1</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_leyenda1']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Leyenda 2</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_leyenda2']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Leyenda 3</label>
-            </div>
-            <div class="col-md-2">
-                <?php echo $dosificacion['dosificacion_leyenda3']; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">Leyenda 4</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_leyenda4']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Leyenda 5</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_leyenda5']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Actividad Secundaria</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificasion_actividadsec']; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">Documento Sector</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['docsec_descripcion']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Documento Ajuste</label>
-            </div>
-            <div class="col-md-7">
-                <?php echo $dosificacion['tipofac_descripcion']; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">Token Delegado</label>
-            </div>
-            <div class="col-md-11" style="word-break: break-word;">
-                <?php echo $dosificacion['dosificacion_tokendelegado']; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">Ambiente</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo ($dosificacion['dosificacion_ambiente'] == 1)?'1-PRODUCCION':'2-PRUEBAS'; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Codigo Unico de Inicio de Sistema (CUIS)</label>
-                <button class="btn btn-info btn-xs" onclick="solicitudCuis()"><fa class="fa fa-download"></fa> Solicitar CUIS</button>
-                <div class="row" id='loader_cuis' style='display:none; text-align: center'>
-                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-                </div>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_cuis']; ?>
-            </div>
-           <div class="col-md-1">
-                <label class="control-label">Codigo Unico de Facturación Diaria (CUFD) </label>
-                <!--<button class="btn btn-info btn-xs" onclick="solicitudCufd()"><fa class="fa fa-download"></fa> Solicitar CUFD</button>-->
-                <a href="<?php echo base_url("punto_venta"); ?>" class="btn btn-info btn-xs" onclick="solicitudCufd()"><fa class="fa fa-download"></fa> Solicitar CUFD</a>
-                <div class="row" id='loader_cufd' style='display:none; text-align: center'>
-                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-                </div>
-            </div>
-            <div class="col-md-2" style="word-break: break-word;">
-                <?php echo $dosificacion['dosificacion_cufd']; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">Codigo Unico de Inicio de Sistema Masivo (CUIS Masivo)</label>
-                <button class="btn btn-info btn-xs" onclick="solicitudCuisMasivo()"><fa class="fa fa-download"></fa> Solicitar CUIS Masivo</button>
-                <div class="row" id='loader_cuism' style='display:none; text-align: center'>
-                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-                </div>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_cuismasivo']; ?>
-            </div>
-           <div class="col-md-1">
-                <label class="control-label">Codigo Unico de Facturación Diaria Masivo (CUFD Masivo) </label>
-                <button class="btn btn-info btn-xs" onclick="solicitudCufdMasivo()"><fa class="fa fa-download"></fa> Solicitar CUFD Masivo</button>
-                <div class="row" id='loader_cufdm'  style='display:none; text-align: center'>
-                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-                </div>
-            </div>
-            <div class="col-md-2">
-                <?php echo $dosificacion['dosificacion_cufdmasivo']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Modalidad</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo ($dosificacion['dosificacion_modalidad']==1)?"1-ELECTRONICA EN LINEA":"2-COMPUTARIZADA EN LINEA"; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">Cod. Sistema</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_codsistema']; ?>
-            </div>
-           <div class="col-md-1">
-                <label class="control-label">Punto Venta</label>
-            </div>
-            <div class="col-md-2">
-                <?php echo $dosificacion['dosificacion_puntoventa']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Sector Económico</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_sectoreconomico']; ?>
-            </div>
-        </div>
-        <div class="col-md-12 linea">
-            <div class="col-md-1">
-                <label class="control-label">CAFC</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_cafc']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Correo Electrónico</label>
-            </div>
-            <div class="col-md-3">
-                <?php echo $dosificacion['dosificacion_email']; ?>
-            </div>
-            <div class="col-md-1">
-                <label class="control-label">Estado</label>
-            </div>
-            <div class="col-md-2">
-                <?php echo $dosificacion['estado_descripcion']; ?>
-            </div>
+        <div class="col-md-12 linea table-responsive">
+            <table class="table table-striped table-responsive table-condensed" style="font-family: Arial;">
+                <tr>
+                    <td <?= $estilo; ?> >Empresa:</td>
+                    <td><?php echo $dosificacion['empresa_nombre']; ?></td>
 
+                    <td <?= $estilo; ?> >Fecha Limite:</td>
+                    <td> <?php
+                            if($dosificacion['dosificacion_fechalimite']){
+                                echo date("d/m/Y",strtotime($dosificacion['dosificacion_fechalimite']));
+                            }?>
+                    </td>
+
+                    <td <?= $estilo; ?> >Nit Emisor:</td>
+                    <td><?php echo $dosificacion['dosificacion_nitemisor']; ?></td>
+                    
+                    <td <?= $estilo; ?> >Autorización:</td>
+                    <td><?php echo $dosificacion['dosificacion_autorizacion']; ?></td>
+
+                    <td <?= $estilo; ?> >Sfc:</td>
+                    <td> <?php echo $dosificacion['dosificacion_sfc']; ?>
+                    </td>
+                    
+                </tr>                
+                <tr>
+
+                    <td <?= $estilo; ?> >Llave:</td>
+                    <td colspan="5"> <?php echo $dosificacion['dosificacion_llave']; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >Num. Factura:</td>
+                    <td><?php echo $dosificacion['dosificacion_numfact']; ?></td>
+                   
+                    <td <?= $estilo; ?> >Sucursal:</td>
+                    <td><?php echo $dosificacion['dosificacion_sucursal']; ?></td>
+                </tr>
+                
+                <tr>
+
+                    <td <?= $estilo; ?>>Actividad Princ.:</td>
+                    <td colspan="3"><?php echo $dosificacion['dosificacion_actividad']; ?></td>
+                    
+                    <td <?= $estilo; ?> >Actividad Secundaria:</td>
+                    <td colspan="5"><?php echo $dosificacion['dosificasion_actividadsec']; ?></td>
+                    
+                </tr>
+                
+                <tr>
+
+                    <td <?= $estilo; ?> >Sfc:</td>
+                    <td> <?php echo $dosificacion['dosificacion_sfc']; ?>
+                    </td>
+                    
+                    <td <?= $estilo; ?> >Leyenda 1:</td>
+                    <td colspan="3"><?php echo $dosificacion['dosificacion_leyenda1']; ?></td>
+
+                    <td <?= $estilo; ?> >Leyenda 2:</td>
+                    <td colspan="3"><?php echo $dosificacion['dosificacion_leyenda2']; ?></td>
+                    
+                </tr>
+                
+                <tr>
+                    <td <?= $estilo; ?> >Leyenda 3:</td>
+                    <td><?php echo $dosificacion['dosificacion_leyenda3']; ?></td>
+
+                    <td <?= $estilo; ?> >Leyenda 4:</td>
+                    <td colspan="3"> <?php echo $dosificacion['dosificacion_leyenda4']; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >Leyenda 5:</td>
+                    <td colspan="3"><?php echo $dosificacion['dosificacion_leyenda5']; ?></td>
+                </tr>
+                
+                
+                <tr>
+                    <td <?= $estilo; ?> >Ambiente:</td>
+                    <td> <?php echo ($dosificacion['dosificacion_ambiente'] == 1)?'1-PRODUCCION':'2-PRUEBAS'; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >Documento Sector:</td>
+                    <td> <?php echo $dosificacion['docsec_descripcion']; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >Documento Ajuste:</td>
+                    <td><?php echo $dosificacion['tipofac_descripcion']; ?></td>
+
+                    <td <?= $estilo; ?> >Modalidad</td>
+                    <td> 
+                        <?php echo ($dosificacion['dosificacion_modalidad']==1)?"1-ELECTRONICA EN LINEA":"2-COMPUTARIZADA EN LINEA"; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >Punto Venta</td>
+                    <td>
+                        <?php echo $dosificacion['dosificacion_puntoventa']; ?>                        
+                    </td>
+                </tr>                                
+                
+                <tr>
+
+                    <td <?= $estilo; ?> >Cod. Sistema</td>
+                    <td>                         
+                         <?php echo $dosificacion['dosificacion_codsistema']; ?>
+                    </td>
+                    
+                    <td <?= $estilo; ?> >Token Delegado:</td>
+                    <td colspan="7" ><?php echo substr($dosificacion['dosificacion_tokendelegado'],0,70)."...."; ?></td>
+
+
+                </tr>
+                
+                <tr>
+                    <td <?= $estilo; ?> >CUIS:<br></td>
+                    <td>
+                        <label class="control-label"><small>Codigo Unico de Inicio de Sistema:</small></label>
+                        <button class="btn btn-info btn-xs" onclick="solicitudCuis()"><fa class="fa fa-download"></fa> Solicitar CUIS</button>
+                        <div class="row" id='loader_cuis' style='display:none; text-align: center'>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                        </div>
+                        <?php echo $dosificacion['dosificacion_cuis']; ?>
+                    </td>
+                    <td <?= $estilo; ?>>(CUFD):</td>
+                    <td   colspan="8">
+                        <label class="control-label"><small>Codigo Unico de Facturacion Diaria:</small></label><br>
+                            <a href="<?php echo base_url("punto_venta"); ?>" class="btn btn-info btn-xs" onclick="solicitudCufd()"><fa class="fa fa-download"></fa> Solicitar CUFD</a>
+                            <div class="row" id='loader_cufd' style='display:none; text-align: center'>
+                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                            </div>
+                    </td>
+                </tr>
+                
+                <tr>
+
+                    <td <?= $estilo; ?> >CUIS Masivo:</td>
+                    <td colspan="4"> 
+                        
+                        <label class="control-label"><small>Codigo Unico de Inicio de Sistema Masivo:</small></label><br>
+                        <button class="btn btn-info btn-xs" onclick="solicitudCuisMasivo()"><fa class="fa fa-download"></fa> Solicitar CUIS Masivo</button>
+                        <div class="row" id='loader_cuism' style='display:none; text-align: center'>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                        </div>
+                        <?php echo $dosificacion['dosificacion_cuismasivo']; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >CUFD Masivo:</td>
+                    <td  colspan="4">
+                        <label class="control-label"><small>Codigo Unico de Facturación Diaria Masivo:</small></label><br>
+                        <button class="btn btn-info btn-xs" onclick="solicitudCufdMasivo()"><fa class="fa fa-download"></fa> Solicitar CUFD Masivo</button>
+                        <div class="row" id='loader_cufdm'  style='display:none; text-align: center'>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                        </div>
+                        <?php echo $dosificacion['dosificacion_cufdmasivo']; ?>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td <?= $estilo; ?> >Sector Económico:</td>
+                    <td>
+                        <?php echo $dosificacion['dosificacion_sectoreconomico']; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >CAFC:</td>
+                    <td>    <?php echo $dosificacion['dosificacion_cafc']; ?>                      
+                    </td>                    
+
+                    <td <?= $estilo; ?> >Correo Electrónico:</td>
+                    <td>
+                       <?php echo $dosificacion['dosificacion_email']; ?> 
+                    </td>
+                    
+                    <td <?= $estilo; ?> >Estado:</td>
+                    <td>
+                       <?php echo $dosificacion['estado_descripcion']; ?>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td <?= $estilo; ?> >Sincronizacion:</td>
+                    <td colspan="3">
+                        <?php echo $dosificacion['dosificacion_sincronizacion']; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >Recepción Compras:</td>
+                    <td colspan="4">    <?php echo $dosificacion['dosificacion_recepcioncompras']; ?>                      
+                    </td>                    
+                </tr>
+                
+                <tr>
+                    <td <?= $estilo; ?> >Operaciones:</td>
+                    <td colspan="3">
+                        <?php echo $dosificacion['dosificacion_operaciones']; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >Obtención Codigos:</td>
+                    <td colspan="4">    <?php echo $dosificacion['dosificacion_obtencioncodigos']; ?>                      
+                    </td>                    
+                </tr>
+                
+                <tr>
+                    <td <?= $estilo; ?> >Notas Credito/Debito:</td>
+                    <td colspan="3">
+                        <?php echo $dosificacion['dosificacion_notacredito']; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >Facturas Compra/venta:</td>
+                    <td colspan="4">    <?php echo $dosificacion['dosificacion_factura']; ?>                      
+                    </td>                    
+                </tr>
+                
+                <tr>
+                    <td <?= $estilo; ?> >Facturas Servicios Básicos:</td>
+                    <td colspan="3">
+                        <?php echo $dosificacion['dosificacion_facturaservicios']; ?>
+                    </td>
+
+                    <td <?= $estilo; ?> >Facturas dosificacion_facturaglp:</td>
+                    <td colspan="4">    <?php echo $dosificacion['dosificacion_facturaglp']; ?>                      
+                    </td>                    
+                </tr>
+
+                <tr>
+                    <td <?= $estilo; ?> >Ruta QR:</td>
+                    <td colspan="3">
+                        <?php echo $dosificacion['dosificacion_ruta']; ?>
+                    </td>
+<!--
+                    <td <?= $estilo; ?> >Facturas dosificacion_facturaglp:</td>
+                    <td colspan="4">    <?php echo $dosificacion['dosificacion_facturaglp']; ?>                      
+                    </td>                    -->
+                </tr>
+
+                <tr>
+                    <td <?= $estilo; ?> >Sincronización:</td>
+                    <td colspan="3">
+                        <a href="<?php echo base_url("sincronizacion"); ?>" class="btn btn-xs btn-info" target="_blank"> Sincronizar datos</a>
+                    </td>
+<!--
+                    <td <?= $estilo; ?> >Facturas dosificacion_facturaglp:</td>
+                    <td colspan="4">    <?php echo $dosificacion['dosificacion_facturaglp']; ?>                      
+                    </td>                    -->
+                </tr>
+
+                
+            </table>
         </div>
+    
+        
+
+        
+        
     </div>
 
 </div>

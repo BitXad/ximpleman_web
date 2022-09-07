@@ -1,4 +1,5 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<script src="<?php echo base_url('resources/js/funcionessin.js'); ?>"></script>
 <!----------------------------- script buscador --------------------------------------->
 <script type="text/javascript">
         $(document).ready(function () {
@@ -48,10 +49,20 @@
                         foreach ($datos as $sincronizacion) {?>
                             <tr>
                                 <td><?= $i ?></td>
-                                <td><?= $sincronizacion['prodserv_codigoactividad'] ?></td>
-                                <td><?= $sincronizacion['prodserv_codigoproducto'] ?></td>
+                                <td style="text-align: center;"><?php 
+                                        echo $sincronizacion['prodserv_codigoactividad']; 
+                                        
+                                        if($sincronizacion['prodserv_codigoactividad']==$dosificacion["dosificacion_actividad"])
+                                                    echo "<small style='color:red;'><br>PRINCIPAL<small>";
+                                        else
+                                                    echo "<small style='color:blue;'><br>SECUNDARIA<small>";
+                                        
+                                    ?>                                
+                                </td>
+                                <td style="text-align: center;"><?= $sincronizacion['prodserv_codigoproducto']; ?></td>
                                 <td><?= $sincronizacion['prodserv_descripcion'] ?></td>
                                 <td><?= $sincronizacion['prodserv_nandina'] ?></td>
+                                <td><button class="btn btn-info btn-xs" onclick="cargar_datos(<?= $sincronizacion['prodserv_codigoactividad'] ?>,<?= $sincronizacion['prodserv_codigoproducto'] ?>)"><fa class="fa fa-bomb"> </fa> Homologar</button></td>
                             </tr>
                         <?php
                             $i++; 
@@ -65,3 +76,78 @@
     </div>
 </div>
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+
+
+<div>
+    <button type="button" id="boton_modalhomologacion" class="btn btn-primary" data-toggle="modal" data-target="#modalpaquetes" >
+      ENVIO PAQUETES
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalpaquetes" tabindex="-1" role="dialog" aria-labelledby="modalpaquetes" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">HOMOLOGACIÓN DE PRODUCTOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id='loader'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="row" id='loader2'  style='display:none; text-align: center'>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="col-md-12">
+                    <label for="codigo_evento" class="control-label"><span class="text-danger">*</span>Código Evento</label>
+<!--                    <div class="form-group">
+                        <input type="text" name="codigo_evento" class="form-control" id="codigo_evento" />
+                    </div>
+-->                    
+                    <select name="categoria_id" class="form-control" id="categoria_id">
+                        <option value="00">- SELECCIONAR CATEGORIA -</option>
+                        <option value="0">- APLICAR A TODAS LAS CATEGORIAS -</option>
+                        <?php 
+                            foreach($categorias as $categoria){ ?>
+                                <option value="<?php echo $categoria['categoria_id']; ?>">    
+                                    <?php echo $categoria['categoria_nombre']; ?>
+                                </option>
+                        <?php    } ?>
+                            
+                    </select>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Codigo Actividad</label>
+                    <div class="form-group">
+                        <input type="text" name="codigo_actividad" value="00" class="form-control" id="codigo_actividad" />
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Codigo Producto</label>
+                    <div class="form-group">
+                        <input type="text" name="codigo_producto" value="00" class="form-control" id="codigo_producto" />
+                    </div>
+                </div>
+<!--                <div class="col-md-4">
+                    <label for="cant_fact" class="control-label"><span class="text-danger">*</span>Cantidad Facturas</label>
+                    <div class="form-group">
+                        <input type="number" name="cant_fact" value="1" class="form-control" id="cant_fact" />
+                    </div>
+                </div>-->
+            </div>
+            
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" onclick="homologar_categoria()"><fa class="fa fa-floppy-o"></fa> Actualizar Codigo</button>
+                <button type="button" class="btn btn-danger" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+                
+<!--<button type="button" class="btn btn-success" onclick="finalizarventa_sin()"><fa class="fa fa-floppy-o"></fa> Envio de Paquetes</button>-->
