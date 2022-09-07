@@ -1237,3 +1237,41 @@ function homologar_categoria(){
         }); 
     }
 }
+function cargar_datosunidad(unidad_codigo){
+    let la_unidad = $("#la_unidad"+unidad_codigo).text();
+    $("#unidad_codigo").val(unidad_codigo);
+    $("#nombre_unidad").text(la_unidad);
+    $("#modalunidad").modal("show");
+}
+
+function homologar_categoriaunidad(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'sincronizacion/homologar_categoriaunidad';
+    let unidad_codigo = $("#unidad_codigo").val();
+    let unidad_nombre = $("#nombre_unidad").text();
+    let categoria_id = document.getElementById("categoria_id").value;
+    var opcion = confirm("Esta Operación afectará a la Base de datos. \n ¿Desea Continuar?");
+    if (opcion == true){
+        //document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{unidad_codigo:unidad_codigo, unidad_nombre:unidad_nombre, categoria_id:categoria_id},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);                        
+                        //alert(registros);
+                        if(registros == true){
+                            alert("Categoria homologada con exito...!");
+                            $("#boton_cerrar_recepcion").click();
+                        }else{
+                            alert("Algo fallo...!!");
+                        }
+                        //document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    //document.getElementById('loader_revocado').style.display = 'none';
+                }
+        }); 
+    }
+}
