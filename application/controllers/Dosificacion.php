@@ -188,6 +188,8 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_obtencioncodigos' => $this->input->post('dosificacion_obtencioncodigos'),
                     'dosificacion_notacredito' => $this->input->post('dosificacion_notacredito'),
                     'dosificacion_factura' => $this->input->post('dosificacion_factura'),
+                    'dosificacion_facturaservicios' => $this->input->post('dosificacion_facturaservicios'),
+                    'dosificacion_facturaglp' => $this->input->post('dosificacion_facturaglp'),
                     'dosificacion_ruta' => $this->input->post('dosificacion_ruta'),
                 );
 

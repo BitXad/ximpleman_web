@@ -1009,8 +1009,15 @@ class Venta extends CI_Controller{
                         $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
                         $empresa = $this->Empresa_model->get_empresa(1);
                         
-                        $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
-        
+                        if ($dosificacion[0]["dosificacion_sectoreconomico"]==1){ //FACTURA COMPRA VENTA
+                            $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+                        }
+                        
+                        if ($dosificacion[0]["dosificacion_sectoreconomico"]==11){ //FACTURA SECTORES EDUCATIVOS
+                            $xml = generarfacturaEducativoXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+                        }
+                        
+                        
                         $base_url = explode('/', base_url());
                         //$doc_xml = site_url("resources/xml/$archivoXml.xml");
                         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
@@ -1834,6 +1841,7 @@ class Venta extends CI_Controller{
                                         $email = $this->input->post('cliente_email'); 
                                         if($email !=""){
                                             $this->enviarcorreo($venta_id, $factura_id, $email);
+                                            
                                         }
                                     //}
                                 // ******************************

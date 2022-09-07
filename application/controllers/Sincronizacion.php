@@ -9,6 +9,7 @@ class Sincronizacion extends CI_Controller{
             'Dosificacion_model',
             'Actividad_model',
             'Leyenda_model',
+            'Moneda_model',
             'Estado_model',
             'Empresa_model',
             'MensajeServicio_model',
@@ -17,9 +18,11 @@ class Sincronizacion extends CI_Controller{
             'CodMotivosAnulacion_model',
             'Pais_model',
             'CodTipoDocumentoIdentidad_model',
+            'Categoria_producto_model',
             'Tipo_puntoventa_model',
             'CodTipoDocumentoSector_model',
             'TipoEmision_model',
+            'Venta_model',
             'Forma_pago_model',
             'TipoHabitacion_model',
             'Moneda_model',
@@ -84,6 +87,12 @@ class Sincronizacion extends CI_Controller{
                 break;
             case 6:
                 $data['datos'] = $this->ProductosServicios_model->get_all_productosServicios();
+                $data['categorias'] = $this->Categoria_producto_model->get_all_categoria_producto();
+                $data['actividad_principal'] = $this->Categoria_producto_model->get_all_categoria_producto();
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+                $data['dosificacion'] = $dosificacion;
+                
                 $data['_view'] = 'sincronizacion/productos_servicios';
                 break;
             case 7:
@@ -864,12 +873,16 @@ class Sincronizacion extends CI_Controller{
             if($transaccion){
                 $listaCodigos = $resultados->RespuestaListaParametricas->listaCodigos;
                 // $this->TipoHabitacion_model->truncate_table();
+                $this->Moneda_model->truncate_table();
+                
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
                         'estado_id'                 => 2,//2 INACTIVO
                         'moneda_codigoclasificador' => $codigo->codigoClasificador,
-                        'moneda_descripcion'        => $codigo->descripcion
+                        'moneda_descripcion'        => $codigo->descripcion,
+                        'moneda_tc'        => 1
                     );
+                    
                     $moneda_id = $this->Moneda_model->buscar_codigo_clasificador($codigo->codigoClasificador);
                     if($moneda_id['moneda_id'] == 0){
                         $this->Moneda_model->add_moneda($params);
@@ -1131,5 +1144,60 @@ class Sincronizacion extends CI_Controller{
             return false;
         }
     }
+    
+    function cargar_datos(){
+        
+        //Eliminamos la tabla sincronizacion
+        $sql = "truncate sincronizacion";
+        $this->Venta_model->ejecutar($sql);
+        
+        //Cargamos los datos a la tabla para luego sincronizar
+        $sql = "INSERT INTO `sincronizacion` (`sincronizacion_id`, `sincronizacion_descripcion`) VALUES 
+                (1,'CODIGOS DE ACTIVIDADES'),
+                (2,'FECHA Y HORA'),
+                (3,'CODIGOS DE ACTIVIDADES DOCUMENTO SECTOR'),
+                (4,'CODIGOS DE LEYENDAS FACTURAS'),
+                (5,'CODIGOS DE MENSAJES SERVICIOS'),
+                (6,'CODIGOS DE PRODUCTOS Y SERVICIOS'),
+                (7,'CODIGOS DE EVENTOS SIGNIFICATIVOS'),
+                (8,'CODIGOS DE MOTIVOS ANULACION'),
+                (9,'CODIGOS DE PAIS DE ORIGEN'),
+                (10,'CODIGOS DE TIPO DOCUMENTO IDENTIDAD'),
+                (11,'CODIGOS DE TIPO DOCUMENTO SECTOR'),
+                (12,'CODIGOS DE TIPO EMISION'),
+                (13,'CODIGOS DE TIPO HABITACION'),
+                (14,'CODIGOS DE TIPO METODO PAGO'),
+                (15,'CODIGOS DE TIPO MONEDA'),
+                (16,'CODIGOS DE TIPO PUNTO DE VENTA'),
+                (17,'CODIGOS DE FACTURA'),
+                (18,'CODIGOS DE UNIDAD DE MEDIDA');
+              ";
+        $this->Venta_model->ejecutar($sql);
+        
+        echo json_encode(true);
+        
+    }
+
+    function homologar_categoria(){
+        
+        $codigo_actividad = $this->input->post("codigo_actividad");
+        $codigo_producto = $this->input->post("codigo_producto");
+        $categoria_id = $this->input->post("categoria_id");
+        
+        //Eliminamos la tabla sincronizacion
+        if ($categoria_id == 0){
+            $sql = "update producto set producto_codigosin = ".$codigo_producto;            
+            
+        }else{
+            $sql = "update producto set producto_codigosin = ".$codigo_producto." where categoria_id = ".$categoria_id;            
+        }
+        $this->Venta_model->ejecutar($sql);
+        
+        
+        echo json_encode(true);
+        
+    }
+    
+    //function 
 }
 ?>

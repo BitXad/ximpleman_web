@@ -20,6 +20,7 @@
 <div class="box-header">
     <font size='4' face='Arial'><b>Sincronizaci&oacute;n c&oacute;digos y cat&aacute;logos</b></font>
     <div class="box-tools no-print">
+        <button class="btn btn-facebook float-right" onclick="cargar_datos()"><i class="fa-solid fa-arrows-rotate"></i> Cargar Datos</button>
         <button class="btn btn-success float-right" onclick="sincronizar(0)"><i class="fa-solid fa-arrows-rotate"></i> Sincronizar Todo</button>
     </div>
 </div>
@@ -87,6 +88,38 @@
                 console.log(res)
                 if(res){
                     alert("Se completo la sincronización")
+                }else{
+                    alert("No se logro completar la sincronización");
+                }
+                document.getElementById('loader').style.display = 'none';
+            },
+            error: ()=>{
+                alert("Ocurrio un error al realizar la sincronización, por favor intente en unos minutos")
+                document.getElementById('loader').style.display = 'none';
+            }
+        });
+    }
+
+    function cargar_datos(){
+        let base_url = $("#base_url").val();
+        let controlador = `${base_url}sincronizacion/cargar_datos`;
+        document.getElementById('loader').style.display = 'block';
+        let codigo_sincronizar = 0;
+        
+        $.ajax({
+            url: controlador,
+            type:"POST",
+            data:{
+                codigo_sincronizar: codigo_sincronizar
+            },
+            // async: false,
+            success: (respuesta)=>{
+                let res = JSON.parse(respuesta);
+                console.log(res)
+                if(res){
+                    
+                    alert("Se completo la sincronización");
+                     location. reload();
                 }else{
                     alert("No se logro completar la sincronización");
                 }

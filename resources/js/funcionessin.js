@@ -115,7 +115,11 @@ function solicitudCuis(punto_venta = 0){
                         
                         let transaccion = registros.RespuestaCuis.mensajesList.codigo;
                         let descripcion = registros.RespuestaCuis.mensajesList.descripcion;
-                        alert("ERROR: "+transaccion+" "+descripcion);
+                        let cuis = registros.RespuestaCuis.codigo;
+                        let vigencia = registros.RespuestaCuis.fechaVigencia;
+                        alert("ERROR: "+transaccion+" "+descripcion+ ". \nCUIS Asignado: "+cuis+"\nVigencia: "+vigencia);
+                        
+                        
                     }
                     document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -1175,6 +1179,61 @@ function registroPuntoVenta_cero(){
                     alert("Algo salio mal; por favor verificar sus datos!.");
                     document.getElementById('loader_revocado').style.display = 'none';
                 }                
+        }); 
+    }
+}
+
+function cargar_datos(codigo_actividad, codigo_producto){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/verificar_comunicacionRecCompras';
+
+    $("#codigo_actividad").val(codigo_actividad);
+    $("#codigo_producto").val(codigo_producto);
+    $("#boton_modalhomologacion").click();
+    
+
+}
+
+
+function homologar_categoria(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'sincronizacion/homologar_categoria';
+    var codigo_actividad = document.getElementById("codigo_actividad").value;
+    var codigo_producto = document.getElementById("codigo_producto").value;
+    var categoria_id = document.getElementById("categoria_id").value;
+    
+    $("#codigo_actividad").val(codigo_actividad);
+    $("#codigo_producto").val(codigo_producto);
+    
+    //alert(codigo_actividad+" * "+codigo_producto+" * "+categoria_id)
+    
+        var opcion = confirm("Esta Operación afectará a la Base de datos. \n ¿Desea Continuar?");
+
+        if (opcion == true){
+        
+        //document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{codigo_actividad:codigo_actividad, codigo_producto:codigo_producto, categoria_id:categoria_id},
+                success:function(respuesta){
+                    
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);                        
+                        //alert(registros);
+                        if(registros == true){
+                            alert("Categoria homologada con exito...!");
+                            $("#boton_cerrar_recepcion").click();
+                        }else{
+                            alert("Algo fallo...!!");
+                        }
+                        //document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    document.getElementById('loader_revocado').style.display = 'none';
+                }
         }); 
     }
 }
