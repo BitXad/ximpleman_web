@@ -359,6 +359,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         
       <div class="input-group"> <span class="input-group-addon" onclick="ocultar_busqueda();">Buscar</span>
         <input id="comprar" type="text" class="form-control"  placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="compravalidar(event)">
+        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaresultados(1)" title="Buscar"><span class="fa fa-search"></span></div>
       </div>
       <!-------------------- CATEGORIAS------------------------------------->
 <div class="container" id="categoria">
