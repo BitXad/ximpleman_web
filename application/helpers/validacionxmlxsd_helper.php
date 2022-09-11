@@ -134,7 +134,8 @@ class ValidacionXSD {
      * @return bool TRUE El arcivo XML es valido
      *              FALSE El archiv XML no es valido
      */
-    public function validar(string $filexml, string $xsd): bool {
+    public function validar(string $filexml, string $xsd) {
+        
         if (!file_exists($filexml) || !file_exists($xsd)) {
             echo "Archivo <b>$filexml</b> o <b>$xsd</b> no existe.";
             return false;
@@ -160,7 +161,7 @@ class ValidacionXSD {
     /**
      * Retorna un string con los errores de validacion si es que existieran
      */
-    public function mostrarError(): string {
+    public function mostrarError() {
         $msg = '';
         if ($this->errors == NULL) {
             return '';
