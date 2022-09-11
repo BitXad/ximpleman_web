@@ -10,7 +10,7 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Editar Dosificación</h3>
             </div>
-            <?php echo form_open('dosificacion/edit/'.$dosificacion['dosificacion_id']); ?>
+            <?php echo form_open_multipart('dosificacion/edit/'.$dosificacion['dosificacion_id']); ?>
             <div class="box-body">
                 <div class="row clearfix">
                     <div class="col-md-6">
@@ -344,6 +344,21 @@
                         </div>
                     </div>
                     
+                    
+                    <div class="col-md-6">
+                            <label for="dosificacion_contenedorp12" class="control-label">Certificado Contenedor p12</label>
+                            <div class="form-group">
+                                <input style="text-align: left !important" type="file" name="dosificacion_contenedorp12" value="<?php echo ($this->input->post('dosificacion_contenedorp12') ? $this->input->post('dosificacion_contenedorp12') : $dosificacion['dosificacion_contenedorp12']); ?>" class=" btn btn-success btn-sm form-control" id="dosificacion_contenedorp12" accept=".p12" />
+                                    <input type="hidden" name="dosificacion_contenedorp121" value="<?php echo ($this->input->post('dosificacion_contenedorp12') ? $this->input->post('dosificacion_contenedorp12') : $dosificacion['dosificacion_contenedorp12']); ?>" class="form-control" id="dosificacion_contenedorp121" />
+                            </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="dosificacion_clavep12" class="control-label">Clave p12</label>
+                        <div class="form-group">
+                            <input type="text" name="dosificacion_clavep12" value="<?php echo ($this->input->post('dosificacion_clavep12') ? $this->input->post('dosificacion_clavep12') : $dosificacion['dosificacion_clavep12']); ?>" class="form-control" id="dosificacion_clavep12" />
+                        </div>
+                    </div>
                     
                 </div>
             </div>
