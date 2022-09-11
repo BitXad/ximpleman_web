@@ -150,6 +150,80 @@ class Dosificacion extends CI_Controller{
         {
             if(isset($_POST) && count($_POST) > 0)     
             {
+                /* *********************INICIO ARCHIVO***************************** */
+                    $archivop12="";
+                        $archivop121= $this->input->post('dosificacion_contenedorp121');
+                    if (!empty($_FILES['dosificacion_contenedorp12']['name']))
+                    {
+                        $borrar1 = $_FILES['dosificacion_contenedorp12']['name'];
+                        
+                        $borrar = str_replace(" ", "_", $borrar1);
+                        $base_url = explode('/', base_url());
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/firmaDigital/';
+                        if(isset($borrar) && !empty($borrar)){
+                            if(file_exists($directorio.$borrar)){
+                                unlink($directorio.$borrar);
+                            }
+                        }
+                      
+                        $this->load->library('image_lib');
+                        $config['upload_path'] = './resources/firmaDigital/';
+                        //$config['allowed_types'] = 'gif|jpeg|jpg|png';
+                        $config['allowed_types'] = '*';
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 0;
+                        $config['max_height'] = 0;
+
+                        $new_name = $_FILES["dosificacion_contenedorp12"]["name"];
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
+
+                        
+                        $this->load->library('upload', $config);
+                        $this->upload->do_upload('dosificacion_contenedorp12');
+
+                        $img_data = $this->upload->data();
+                        $extension = $img_data['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/firmaDigital/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 800;
+                            $conf['height'] = 600;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+
+                            $confi['image_library'] = 'gd2';
+                            $confi['source_image'] = './resources/firmaDigital/'.$new_name.$extension;
+                            $confi['new_image'] = './resources/firmaDigital/'."thumb_".$new_name.$extension;
+                            $confi['create_thumb'] = FALSE;
+                            $confi['maintain_ratio'] = TRUE;
+                            $confi['width'] = 100;
+                            $confi['height'] = 100;
+
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($confi);
+                            $this->image_lib->resize();
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        //$directorio = base_url().'resources/imagenes/';
+                        /*$directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/firmaDigital/';
+                        if(isset($archivop121) && !empty($archivop121)){
+                          if(file_exists($directorio.$archivop121)){
+                              unlink($directorio.$archivop121);
+                          }
+                      }*/
+                        $archivop12 = str_replace(" ", "_", $new_name);
+                    }else{
+                        $archivop12 = $archivop121;
+                    }
+                /* *********************F I N  ARCHIVO***************************** */
                 $params = array(
                     'estado_id' => $this->input->post('estado_id'),
                     'empresa_id' => $this->input->post('empresa_id'),
@@ -191,6 +265,8 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_facturaservicios' => $this->input->post('dosificacion_facturaservicios'),
                     'dosificacion_facturaglp' => $this->input->post('dosificacion_facturaglp'),
                     'dosificacion_ruta' => $this->input->post('dosificacion_ruta'),
+                    'dosificacion_contenedorp12' => $archivop12,
+                    'dosificacion_clavep12' => $this->input->post('dosificacion_clavep12'),
                 );
 
                 $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);            

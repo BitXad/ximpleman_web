@@ -583,7 +583,7 @@ class Venta extends CI_Controller{
                 $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
                 
                 
-                //************* reducri inventario
+                //************* reducir inventario
                 
                 $this->Inventario_model->reducir_inventario_aux($usuario_id);
                 
@@ -1205,7 +1205,8 @@ class Venta extends CI_Controller{
                                     //SI TODO SALE BIEN HASTA AQUI ACTUALIZA EN NUMERO DE FACTURA
                                     $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
                                     $this->Venta_model->ejecutar($sql);
-                                    
+                                    $res  = array("mensajesList" => $eniada);
+                                    echo json_encode($res);
                                     
                                 }else{
                                     

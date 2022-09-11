@@ -273,13 +273,18 @@
                     <td colspan="3">
                         <?php echo $dosificacion['dosificacion_ruta']; ?>
                     </td>
-<!--
-                    <td <?= $estilo; ?> >Facturas dosificacion_facturaglp:</td>
-                    <td colspan="4">    <?php echo $dosificacion['dosificacion_facturaglp']; ?>                      
-                    </td>                    -->
+
+                    <td <?= $estilo; ?> >Certificado contenedor P12:</td>
+                    <td colspan="4">    <?php echo $dosificacion['dosificacion_contenedorp12']; ?>                      
+                    </td>
+                    
                 </tr>
 
                 <tr>
+                    <td <?= $estilo; ?> >Clave contenedor:</td>
+                    <td colspan="3">    <?php echo $dosificacion['dosificacion_clavep12']; ?>                      
+                    </td>
+                    
                     <td <?= $estilo; ?> >Sincronización:</td>
                     <td colspan="3">
                         <a href="<?php echo base_url("sincronizacion"); ?>" class="btn btn-xs btn-info" target="_blank"> Sincronizar datos</a>

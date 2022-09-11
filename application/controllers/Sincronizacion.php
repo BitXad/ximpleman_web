@@ -141,6 +141,7 @@ class Sincronizacion extends CI_Controller{
                 break;
             case 18:
                 $data['datos'] = $this->Unidad_model->get_all_unidad();
+                $data['categorias'] = $this->Categoria_producto_model->get_all_categoria_producto();
                 $data['_view'] = 'sincronizacion/unidad_medida';
                 break;
             default:
@@ -1190,6 +1191,25 @@ class Sincronizacion extends CI_Controller{
             
         }else{
             $sql = "update producto set producto_codigosin = ".$codigo_producto." where categoria_id = ".$categoria_id;            
+        }
+        $this->Venta_model->ejecutar($sql);
+        
+        
+        echo json_encode(true);
+        
+    }
+    
+    function homologar_categoriaunidad(){
+        
+        $unidad_codigo = $this->input->post("unidad_codigo");
+        $unidad_nombre = $this->input->post("unidad_nombre");
+        $categoria_id = $this->input->post("categoria_id");
+        
+        if ($categoria_id == 0){
+            $sql = "update producto set producto_codigounidadsin = ".$unidad_codigo.", producto_unidad = '".$unidad_nombre."'";
+            
+        }else{
+            $sql = "update producto set producto_codigounidadsin = ".$unidad_codigo.", producto_unidad = '".$unidad_nombre."' where categoria_id = ".$categoria_id;
         }
         $this->Venta_model->ejecutar($sql);
         
