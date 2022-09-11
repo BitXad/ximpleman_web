@@ -15,34 +15,23 @@
         <nombreRazonSocial>Nombre o Razon Social</nombreRazonSocial>
         <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
         <numeroDocumento>5115889</numeroDocumento>
-        <complemento xsi:nil="true"/>
+        <complemento/>
         <codigoCliente>51158891</codigoCliente>
         <nombreEstudiante>Marcelo Campos Vargas</nombreEstudiante>
         <periodoFacturado>JUNIO 2019</periodoFacturado>
         <codigoMetodoPago>1</codigoMetodoPago>
-        <numeroTarjeta xsi:nil="true"/>
+        <numeroTarjeta/>
         <montoTotal>100</montoTotal>
         <montoTotalSujetoIva>100</montoTotalSujetoIva>
         <codigoMoneda>1</codigoMoneda>
         <tipoCambio>1</tipoCambio>
         <montoTotalMoneda>100</montoTotalMoneda>
-        <montoGiftCard xsi:nil="true"/>
-        <descuentoAdicional xsi:nil="true"/>
-        <codigoExcepcion xsi:nil="true"/>
+        <montoGiftCard/>
+        <descuentoAdicional/>
+        <codigoExcepcion/>
         <cafc xsi:nil="true"/>
         <leyenda>Una leyenda</leyenda>
         <usuario>vjcm</usuario>
         <codigoDocumentoSector>11</codigoDocumentoSector>
     </cabecera>
-    <detalle>
-        <actividadEconomica>451010</actividadEconomica>
-        <codigoProductoSin>49111</codigoProductoSin>
-        <codigoProducto>123456</codigoProducto>
-        <descripcion>Pension mes de Junio</descripcion>
-        <cantidad>1</cantidad>
-        <unidadMedida>1</unidadMedida>
-        <precioUnitario>100</precioUnitario>
-        <montoDescuento xsi:nil="true"/>
-        <subTotal>100</subTotal>
-    </detalle>
 </facturaComputarizadaSectorEducativo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<facturaElectronicaServicioBasico xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaServicioBasico.xsd">
+        <cabecera>
+        <nitEmisor>1028317027</nitEmisor>
+        <razonSocialEmisor>Cosmol RL</razonSocialEmisor>
+        <municipio>MONTERO</municipio>
+        <telefono>76054987</telefono>
+        <numeroFactura>5540745</numeroFactura>
+        <cuf>2BF9A62461A6910D652317AAA15DB66D2CBB6CD8BAD</cuf>
+        <cufd>QUHCoUNSLENCQQ==Q0MzNzBDRTcxMkU=QsKhc0U2WEhJV1VCNzIxQUUwQ0EwQjc2</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>Calle isaias parada</direccion>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <mes>12</mes>
+        <gestion>2020</gestion>
+        <ciudad>MONTERO</ciudad>
+        <zona>CENTRAL</zona>
+        <numeroMedidor>24733</numeroMedidor>
+        <fechaEmision>2022-08-09T19:11:40.000</fechaEmision>
+        <nombreRazonSocial>CRUZ APACA VIRGINIA                     </nombreRazonSocial>
+        <domicilioCliente>JESUS DE NAZARETH, EL PANTANAL</domicilioCliente>
+        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>7730935</numeroDocumento>
+        <complemento xsi:nil="true"/>
+        <codigoCliente>24733</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta xsi:nil="true"/>
+        <montoTotal>1199.35</montoTotal>
+        <montoTotalSujetoIva>1199.35</montoTotalSujetoIva>
+        <consumoPeriodo xsi:nil="true"/>
+        <beneficiarioLey1886 xsi:nil="true"/>
+        <montoDescuentoLey1886 xsi:nil="true"/>
+        <montoDescuentoTarifaDignidad xsi:nil="true"/>
+        <tasaAseo>0</tasaAseo>        
+        <tasaAlumbrado>0</tasaAlumbrado>
+        <ajusteNoSujetoIva>0</ajusteNoSujetoIva>
+        <detalleAjusteNoSujetoIva>0</detalleAjusteNoSujetoIva>
+        <ajusteSujetoIva>0</ajusteSujetoIva>
+        <detalleAjusteSujetoIva>0</detalleAjusteSujetoIva>
+        <otrosPagosNoSujetoIva>0</otrosPagosNoSujetoIva>
+        <detalleOtrosPagosNoSujetoIva>0</detalleOtrosPagosNoSujetoIva>
+        <otrasTasas>0</otrasTasas>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>1199.35</montoTotalMoneda>
+        <descuentoAdicional xsi:nil="true"/>
+        <codigoExcepcion xsi:nil="true"/>
+        <cafc xsi:nil="true"/>
+        <leyenda>Ley N° 453: Tienes derecho a un trato equitativo sin discriminación en la oferta de servicios.</leyenda>
+        <usuario>JCP</usuario>
+        <codigoDocumentoSector>13</codigoDocumentoSector>
+        </cabecera><detalle>
+         <actividadEconomica>P</actividadEconomica>
+         <codigoProductoSin>99100</codigoProductoSin>
+         <codigoProducto>5</codigoProducto>
+         <descripcion>OTROS PRODUCTOS O SERVICIOS ALCANZADOS POR EL IVA</descripcion>
+         <cantidad>1.00</cantidad>
+         <unidadMedida>32</unidadMedida>
+         <precioUnitario>1091.68</precioUnitario>
+         <montoDescuento xsi:nil="true"/>
+         <subTotal>1091.68</subTotal>
+         </detalle><detalle>
+         <actividadEconomica>P</actividadEconomica>
+         <codigoProductoSin>99100</codigoProductoSin>
+         <codigoProducto>11</codigoProducto>
+         <descripcion>OTROS PRODUCTOS O SERVICIOS ALCANZADOS POR EL IVA</descripcion>
+         <cantidad>1.00</cantidad>
+         <unidadMedida>32</unidadMedida>
+         <precioUnitario>107.67</precioUnitario>
+         <montoDescuento xsi:nil="true"/>
+         <subTotal>107.67</subTotal>
+         </detalle><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><Reference xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><DigestValue>ccPOh+fE0lO9EpN0MFLGSHZ1iRI=</DigestValue></Reference></SignedInfo><SignatureValue xmlns:ds="http://www.w3.org/2000/09/xmldsig#">Pm+iPdn6pHfDJTCQHbbm95n9x5HGtYwY2MMHvON0+LBI7T1qpIFXMEJ3xLs9OLt/BXiHZyW0jVuRv+9O+iwRq5lnVi/ljnWVaZMWBIRdCHZTTfpVJvnaCI3G+MZaCNeZ1rlOiMj7d10aPrbjvGA9723cppoO/P/zMlTuYIzbQE9U6ZtfXXPptaX5f3OJq5dGVnnfP+UVobHqIQrL/5Ypw6Eb5oFK5YyFpJtQYBXdPX7n7qw7cjQCn9UIEZUM1NO2Ti153253s1bUzFoElBsD7s2Yg4sTPFOFoFX1HVy4jMbassCxROXNuwyQCG7JFvupKzKDx0fw+GmUxfKd5MZUfQ==</SignatureValue><KeyInfo><X509Data><X509Certificate>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</X509Certificate></X509Data></KeyInfo></Signature></facturaElectronicaServicioBasico>

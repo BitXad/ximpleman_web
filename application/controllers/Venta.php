@@ -1002,72 +1002,167 @@ class Venta extends CI_Controller{
                         
                         $this->Factura_model->ejecutar($sql);   
                         
-                        if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado (computarizado en linea o electronico)
+                        if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado SFV (computarizado en linea o electronico)
                         // el parametro uno es para computarizada en linea ojo
-                        $computarizada_enlinea = $this->parametros['parametro_tiposistema'] == 2 ? 1:2;// 1 para computarizada y 2 para electronica
+                        $computarizada_enlinea = $dosificacion[0]["dosificacion_modalidad"];// 1 para electronica y 2 para computarizada
                         $factura = $this->Factura_model->get_factura_id($factura_id);
                         $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
                         $empresa = $this->Empresa_model->get_empresa(1);
                         
-                        if ($dosificacion[0]["dosificacion_sectoreconomico"]==1){ //FACTURA COMPRA VENTA
-                            $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
-                        }
-                        
-                        if ($dosificacion[0]["dosificacion_sectoreconomico"]==11){ //FACTURA SECTORES EDUCATIVOS
-                            $xml = generarfacturaEducativoXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
-                        }
-                        
-                        
                         $base_url = explode('/', base_url());
-                        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
-                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-                        $xsd = $this->parametros['parametro_tiposistema'] == 2 ? "compra_venta.xsd":"facturaElectronicaCompraVenta.xsd";
+                        
+                    
+                        if ($dosificacion[0]["docsec_codigoclasificador"]=="1"){ //FACTURA COMPRA VENTA
+                            
+                            $archivo_computarizado = "compra_venta";
+                            $archivo_electronico = "facturaElectronicaCompraVenta";
+                            $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+                        
+                            
+                        }
+                        
+                        if ($dosificacion[0]["docsec_codigoclasificador"]=="11"){ //FACTURA SECTORES EDUCATIVOS
+                            
+                            $archivo_computarizado = "facturaComputarizadaSectorEducativo";
+                            $archivo_electronico = "facturaElectronicaSectorEducativo";
+                            
+                            $xml = generarfacturaEducativoXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+                            
+                            
+//                            $xml = generarfacturaEducativoXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+//                            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+//                            $xsd = $this->parametros['parametro_tiposistema'] == 2 ? "facturaComputarizadaSectorEducativo.xsd":"facturaElectronicaSectorEducativo.xsd";
+//                            
+                        }
+                        
+                        if ($dosificacion[0]["docsec_codigoclasificador"]=="39"){ //FACTURA SECTORES EDUCATIVOS
 
+                            $archivo_computarizado = "facturaComputarizadaComercializacionGnGlp";
+                            $archivo_electronico = "facturaElectronicaComercializacionGnGlp";
+                            
+                            $xml = generarfacturaComercializacionGnGlpXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+                            
+                            
+//                            $xml = generarfacturaEducativoXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+//                            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+//                            $xsd = $this->parametros['parametro_tiposistema'] == 2 ? "facturaComputarizadaSectorEducativo.xsd":"facturaElectronicaSectorEducativo.xsd";
+//                            
+                        }
+                        
+                        
+                        //$xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+                        $xsd = $dosificacion[0]["dosificacion_modalidad"] == 2 ? "{$archivo_computarizado}.xsd":"{$archivo_electronico}.xsd";
+
+                        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+                        
+                        
                         $valXSD = new ValidacionXSD();
                         
-                        if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","$directorio"."$xsd")){
+                        
+//                        echo "<br>"."$directorio{$archivo_computarizado}{$factura[0]['factura_id']}.xml";
+//                        echo "<br>"."$directorio"."$xsd";
+                        if ($modalidad==1){ //si es Eletronico en linea
+                            
+                            //echo "<br>"."$directorio{$archivo_electronico}{$factura[0]['factura_id']}.xml";
+                            //echo "<br>"."$directorio"."$xsd";
+                            $es_valido = $valXSD->validar("$directorio{$archivo_electronico}{$factura[0]['factura_id']}.xml","$directorio"."$xsd");
+                        
+                            
+                        }else{ // Sino, es Computarizado en linea
+                            
+                            $es_valido = $valXSD->validar("$directorio{$archivo_computarizado}{$factura[0]['factura_id']}.xml","$directorio"."$xsd");
+                            
+                        }
+                        
+                        
+                        if(!$es_valido){
                             //echo "No ingreso";
                             //var_dump($valXSD);
-                            print $valXSD->mostrarError();
                             
+                            if($modalidad==1) //electronico en linea
+                                print "ERROR: ".$valXSD->mostrarError()." ARCHIVO: "."$directorio/{$archivo_computarizado}{$factura[0]['factura_id']}.xml  XSD: "."$directorio"."$xsd";
+                            else
+                                print "ERROR: ".$valXSD->mostrarError()." ARCHIVO: "."$directorio/{$archivo_electronico}{$factura[0]['factura_id']}.xml  XSD: "."$directorio"."$xsd";
+                                
+                                
                         }else{
-                            // COMPRESION XML EN GZIP
-                            $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
-                            $gzdata = gzencode($datos, 9);
-                            $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
-                            // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
-                            fwrite($fp, $gzdata);
-                            fclose($fp);
                             
-                            //Copiar el archivo .tar al directorio con id del usuario en curso
+                            if($modalidad==1){ //electronico en linea
+
+                                // COMPRESION XML EN GZIP
+                                $datos = implode("", file($directorio."{$archivo_electronico}".$factura[0]['factura_id'].".xml"));
+                                $gzdata = gzencode($datos, 9);
+                                $fp = fopen($directorio."{$archivo_electronico}".$factura[0]['factura_id'].".xml.zip", "w");
+                                // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+                                fwrite($fp, $gzdata);
+                                fclose($fp);
+
+                                //Copiar el archivo .tar al directorio con id del usuario en curso
+
+                                $path = $directorio."envio".$usuario_id;
+                                //echo $path;
+                                if (!file_exists($path)) {
+                                    mkdir($path, 0777, true);
+                                }
+                                
+                            }else{
+                                
+
+                                // COMPRESION XML EN GZIP
+                                $datos = implode("", file($directorio."{$archivo_computarizado}".$factura[0]['factura_id'].".xml"));
+                                $gzdata = gzencode($datos, 9);
+                                $fp = fopen($directorio."{$archivo_computarizado}".$factura[0]['factura_id'].".xml.zip", "w");
+                                // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+                                fwrite($fp, $gzdata);
+                                fclose($fp);
+
+                                //Copiar el archivo .tar al directorio con id del usuario en curso
+
+                                $path = $directorio."envio".$usuario_id;
+                                //echo $path;
+                                if (!file_exists($path)) {
+                                    mkdir($path, 0777, true);
+
+                                
+                                }
                             
-                            $path = $directorio."envio".$usuario_id;
-                            //echo $path;
-                            if (!file_exists($path)) {
-                                mkdir($path, 0777, true);
                             }
 
                             //para borrar comprime en tar-gz
                             //$eltipo_emision = $this->parametros['parametro_tipoemision'];
                             if($tipo_emision == 2){ // Si es emision fuera de linea
+                                if($modalidad==1){ // 1 electronica; 2 computarizada
+                                    $p = new PharData($directorio.$archivo_electronico.$factura[0]['factura_id'].'.tar');
+                                    $p[$archivo_computarizado.$factura[0]['factura_id'].'.xml'] = $datos;
+                                    $p1 = $p->compress(Phar::GZ);
+
+                                    $origen = $directorio.$archivo_electronico.$factura[0]['factura_id'].'.tar';
+                                    $destino = $directorio.'envio'.$usuario_id.'/'.$archivo_electronico.$factura[0]['factura_id'].'.tar';
+                                    copy($origen, $destino);
+                                }else{
+                                    $p = new PharData($directorio.$archivo_computarizado.$factura[0]['factura_id'].'.tar');
+                                    $p[$archivo_computarizado.$factura[0]['factura_id'].'.xml'] = $datos;
+                                    $p1 = $p->compress(Phar::GZ);
+
+                                    $origen = $directorio.$archivo_computarizado.$factura[0]['factura_id'].'.tar';
+                                    $destino = $directorio.'envio'.$usuario_id.'/'.$archivo_computarizado.$factura[0]['factura_id'].'.tar';
+                                    copy($origen, $destino);
+                                }
                                 
-                                $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
-                                $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
-                                $p1 = $p->compress(Phar::GZ);
-                               
-                                
-                                $origen = $directorio.'compra_venta'.$factura[0]['factura_id'].'.tar';
-                                $destino = $directorio.'envio'.$usuario_id.'/'.'compra_venta'.$factura[0]['factura_id'].'.tar';
-                                copy($origen, $destino);
                                 
                             }
                             //fin para borrar
                             
                             //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
                             //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
-        
-                            $handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
-                            $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
+                            if($modalidad==1){ // 1 electronica; 2 computarizada
+                                $nombre_archivo = $archivo_electronico;
+                            }else{
+                                $nombre_archivo = $archivo_computarizado;
+                            }
+                            $handle = fopen($directorio.$nombre_archivo.$factura[0]['factura_id'].".xml.zip", "rb");
+                            $contents = fread($handle, filesize($directorio.$nombre_archivo.$factura[0]['factura_id'].".xml.zip"));
                             fclose($handle);
                             /*//$content = base64_encode($contents);
                             //$b= unpack("C*",$contents);*/
@@ -1079,7 +1174,7 @@ class Venta extends CI_Controller{
                             // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml*");*/
         
                             // HASH (SHA 256)
-                            $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
+                            $xml_comprimido = hash_file('sha256',"{$directorio}{$nombre_archivo}{$factura[0]['factura_id']}.xml.zip");
                             //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
                             //var_dump($xml_comprimido);
                             //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
@@ -1115,26 +1210,22 @@ class Venta extends CI_Controller{
                                 }else{
                                     
                                     $cad = $eniada->mensajesList;
-                                    //var_dump($eniada->mensajesList);
+                                    var_dump($eniada);
                                     
                                     $mensajecadena = json_encode($eniada->mensajesList);
+
                                     
+//                                    $params = array(
+//                                        'factur a_codigodescripcion' => $eniada->codigoDescripcion,
+//                                        'factura_codigoestado' => $eniada->codigoEstado,
+//                                        'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
+//                                        'factura_transaccion'  => $eniada->transaccion,
+//                                        'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
+//                                    );
                                     
-//                                    foreach ($cad as $c) {
-//                                        $mensajecadena .= $c->codigo.", ".$c->descripcion." | ";
-//                                    }
-                                    
-//                                  
-//                                      $mensajecadena = "";
-//                                    foreach ($cad as $c) {
-//                                        $mensajecadena .= $c.";";
-//                                    }
-//                                    $mensajecadena = $eniada->codigoDescripcion;
-//                                    echo "<br><br>".$mensajecadena;
-//                                    
                                     $params = array(
-                                        'factura_codigodescripcion' => $eniada->codigoDescripcion,
-                                        'factura_codigoestado' => $eniada->codigoEstado,
+                                        'factura_codigodescripcion' => $cad->codigo,
+                                        'factura_codigoestado' => "NO ENVIADA",//$cod->codigoEstado,
                                         'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
                                         'factura_transaccion'  => $eniada->transaccion,
                                         'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
@@ -1834,7 +1925,7 @@ class Venta extends CI_Controller{
                                     $base_url = explode('/', base_url()); 
                                     $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/'; 
                                     $output = $dompdf->output(); 
-                                    file_put_contents($directorio.'compra_venta'.$factura[0]['factura_id'].'.pdf', $output); 
+                                    file_put_contents($directorio.$nombre_archivo.$factura[0]['factura_id'].'.pdf', $output); 
                                     /* F I N  generar el pdf */ 
                                     
                                     //if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
@@ -5114,7 +5205,12 @@ function anular_venta($venta_id){
             $dosificacion = $array['dosificacion'];
         }
         
-        $wsdl = $dosificacion['dosificacion_factura'];
+        if ($dosificacion['docsec_codigoclasificador']==1)
+               $wsdl = $dosificacion['dosificacion_factura'];
+        
+        if ($dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+            $wsdl = $dosificacion['dosificacion_facturaglp'];
+        
         $token = $dosificacion['dosificacion_tokendelegado'];
 
         $usuario_id = $this->session_data['usuario_id'];
