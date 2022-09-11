@@ -342,10 +342,12 @@
             $detalle->appendChild($numeroImei);
             //$id++;
             if($modalidad_factura == 1){ //1 electronica en linea - 2 computarizada en linea
+            //
                 // $electronica = $xml->getElementsByTagName('cabecera')->item(0);
                 $signature = $xml->getElementsByTagName('Signature')->item(0);
                 // $xml->insertBefore($detalle);
                 $xml->documentElement->insertBefore($detalle,$signature);
+                
             }else{
                 $xml->documentElement->appendChild($detalle);
             }
@@ -372,44 +374,45 @@
     }
 
     function firmar_XML($xml,$factura_id,$archivo_xml){
+
+        $CI = & get_instance();
         
+        $CI->load->model([
+            'Dosificacion_model',
+        ]);
+        
+        $dosificacion = $CI->Dosificacion_model->get_dosificacion(1);
+         
         $base_url = explode('/', base_url());
-        $firma_nombre = "ROBERTOCARLOSSOTOSIERRA.p12";
-        $firma_url = "{$_SERVER['DOCUMENT_ROOT']}/{$base_url[3]}/resources/firmaDigital/{$firma_nombre}";
+        //$firma_nombre = "ROBERTOCARLOSSOTOSIERRA.p12";
+        $contenedorP12 = $dosificacion["dosificacion_contenedorp12"];
+        $claveP12 = $dosificacion["dosificacion_clavep12"];
         
-        $archivo_p12 = "{$_SERVER['DOCUMENT_ROOT']}/{$base_url[3]}/resources/firmaDigital/{$firma_nombre}";
+        $archivo_p12 = "{$_SERVER['DOCUMENT_ROOT']}/{$base_url[3]}/resources/firmaDigital/{$contenedorP12}";
 
         //echo $archivo_p12;
         if (!$almacén_cert = file_get_contents($archivo_p12)) {
+            
             echo "Error: No se puede leer el almacen de certificados .p12\n";
             exit;
+            
         }else{
 
-            if (openssl_pkcs12_read($almacén_cert, $info_cert, "5152377")) {
-            //echo "Información del certificado\n";
-                 //print_r($info_cert);
+            if (openssl_pkcs12_read($almacén_cert, $info_cert, $claveP12)){
+
+            
                  $certificado = trim($info_cert["cert"]);
-                 //echo $certificado;
-                 //echo "<br><br>";
-
                  $llave_privada = trim($info_cert["pkey"]);
-//                 echo $llave_privada;
-//                 echo "<br><br>";
-
-                // $certificado_extra1 = trim($info_cert["extracerts"][0]);
-//                 echo $certificado_extra1;
-//                 echo "<br><br>";
-
-
-                 //$certificado_extra2 = $info_cert["extracerts"][1];
-//                 echo $certificado_extra2;
-//                 echo "<br><br>";
-                 //$certificado = trim($certificado_extra2);
+                 $certificado_extra1 = trim($info_cert["extracerts"][0]);
+                 $certificado_extra2 = $info_cert["extracerts"][1];
+                 
                  $pub_key = openssl_pkey_get_public($certificado);
-                  $keyData = openssl_pkey_get_details($pub_key);
+                 $keyData = openssl_pkey_get_details($pub_key);
         //          file_put_contents('./key.pub', $keyData['key']);
                 $llave_publica = trim($keyData['key']);
 
+                $certificado = str_replace("-----BEGIN CERTIFICATE-----\n", "", $certificado);
+                $certificado = str_replace("\n-----END CERTIFICATE-----", "", $certificado);
 
             } else {
                 echo "Error: No se puede leer el almacén de certificados.\n";
@@ -417,83 +420,27 @@
             }
 
         }
-        /*
-        $certificado = "MIIE2zCCA8OgAwIBAgIIBomRNJy09AAwDQYJKoZIhvcNAQEFBQAwgbUxCzAJBgNV
-BAYTAkJPMQ8wDQYDVQQIDAZMQSBQQVoxDzANBgNVBAcMBkxBIFBBWjEeMBwGA1UE
-CgwVRW50aWRhZCBDZXJ0aWZpY2Fkb3JhMQwwCgYDVQQLDANVSUQxEzARBgNVBAMM
-CkFEU0lCIEZBS0UxJDAiBgkqhkiG9w0BCQEWFW5jb2FyaXRlQGFkc2liLmdvYi5i
-bzEbMBkGA1UEBRMSNzM1MjQyNDI0NDY0NjM0MjM0MB4XDTIyMDkwNzE5NTYwMloX
-DTIyMTAwNzE5NTYwMlowggEJMSMwIQYDVQQDExpST0JFUlRPIENBUkxPUyBTT1RP
-IFNJRVJSQTEjMCEGA1UEChMaUk9CRVJUTyBDQVJMT1MgU09UTyBTSUVSUkExIzAh
-BgNVBAsTGlJPQkVSVE8gQ0FSTE9TIFNPVE8gU0lFUlJBMRYwFAYDVQQMEw1ERVNB
-UlJPTExBRE9SMQswCQYDVQQGEwJCTzELMAkGA1UELhMCQ0kxFDASBgcrBgEBAQEA
-Ewc1MTUyMzc3MREwDwYKCZImiZPyLGQBARMBMDETMBEGA1UEBRMKNTE1MjM3NzAx
-OTEoMCYGCSqGSIb3DQEJARYZci5jYXJsb3Muc290b0Bob3RtYWlsLmNvbTCCASIw
-DQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPBqX4njWzCzUtBnl3NOFswgVXRs
-peJAgCQ7rc3vzID93ediJoSoGxcoNzxjCrSnzfH2JegPp+Bpc+cxEqa7ZJhQhCCN
-EgIAj30cvgL96xL3psYf5wSSjybKQEDLBhJkVrMaGnsbVkgpBfY0OdU1TIQEyEKx
-rRnzyCgHn/86UZB2jm15l8/7lzAzKN/SRQBvzfeZn9qsAImNzjOMYuvIE1KNMGBl
-sjuf3BUJeN4dYtbYxhzqnJadIee+5iUQNJqyPLWxPVKFaE0rCBU0rDaqvuFUoVfL
-3cXeLrG7QAZYjrHZ4rRLh5UJSOqsREesc9CtwwJlkuWNKtMjY22FLYtAPx0CAwEA
-AaOBlzCBlDAMBgNVHRMEBTADAQH/MAsGA1UdDwQEAwIE8DAkBgNVHREEHTAbhhly
-LmNhcmxvcy5zb3RvQGhvdG1haWwuY29tMFEGA1UdHwRKMEgwRqBEoEKGQGh0dHBz
-Oi8vZGVzYXJyb2xsby5hZHNpYi5nb2IuYm8vZGVzYV9hZ2VuY2lhL2xpc3RfcmV2
-b2NhY2lvbi5jcmwwDQYJKoZIhvcNAQEFBQADggEBAElQheREOV1xVZlZynZtYfic
-V8DSkVZ2pgvgPBavDhaKVEyrG4WGlcwf8CJf68WQv2kJO8FDOgCiwPYH2MxB0fv7
-/kwxGurZ9gvXoL3bg9FSneBbIw2liGXuAGcJ5UB+SdG6zltmwZ0m1tZrFvvwE8Af
-IzK2dsGlYvHvoLJmC5bzehN33tA874noGa8/LAAoJ/S1FICLOPiapBR51H53qnqV
-shsP6eYuv1o0oIwxK/sbIjU2d8y1swwfsETDpl+O/Jpu0/QPPJ4tkedMIu9Em770
-2F5tlWaAkfMsBk9H7MpGN5F+zUTR1jn7Q41ulkRM1rL2BL+Ha5ZhXv9qLcWyfCg=";
         
-        $llave_publica = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzqeS+ooHNZGSLcBX/gg4
-Q6kj9tom61ySOG8Qi5a4g1xK/LhYR71Mt0fWIig7xKMaRSGsANZtGlEJBu2DyDdw
-ydSwQOhGKbkn/f2nmP/ESZv+n7K1QmR+P27GQi2myi2LtS+NyoBJ0u+x3fa/fsSI
-CUetdCMATyMqfja/tSihvzFffikbUpccQBbJSQhyvNnXhfDEc/jyqklwSLII6x/u
-DXmW0Dqc6XQEmSXeGuM43eRKDAYgqsdYqv2FtUhHkheMtz1I2fx7VDaYeXMbpQOC
-Ts8Oi1PjWSOW/wiS9g1HpIp9sDsfk/wVddO60ibLZqxMSzTqLi2plbAAdVWNnNeI
-TQIDAQAB";
-        
-        $llave_privada = "-----BEGIN RSA PRIVATE KEY-----
-MIIEowIBAAKCAQEAzqeS+ooHNZGSLcBX/gg4Q6kj9tom61ySOG8Qi5a4g1xK/LhY
-R71Mt0fWIig7xKMaRSGsANZtGlEJBu2DyDdwydSwQOhGKbkn/f2nmP/ESZv+n7K1
-QmR+P27GQi2myi2LtS+NyoBJ0u+x3fa/fsSICUetdCMATyMqfja/tSihvzFffikb
-UpccQBbJSQhyvNnXhfDEc/jyqklwSLII6x/uDXmW0Dqc6XQEmSXeGuM43eRKDAYg
-qsdYqv2FtUhHkheMtz1I2fx7VDaYeXMbpQOCTs8Oi1PjWSOW/wiS9g1HpIp9sDsf
-k/wVddO60ibLZqxMSzTqLi2plbAAdVWNnNeITQIDAQABAoIBAAUA/yjMfWn/v6uw
-IlFQrwmwYRV1AqE+iUnb72lTeap9alFq2bRiMicNkoyA/EvoH4nR/wGFyUS5Kczk
-2ATzY4QRMtoqsnXUxmuhIAhIrsUrhYOMOiH37F8QoxtVUkCuA3NPlsRzAJaeq2gy
-m9nWQqCa5c/PzME3Z3iz6BN0y7alHV3WwIm1yFA9sI6OTR4reQbsl2D3ZQaljXRJ
-QFNNfOUJfHnE0KvPgWRttCnRSXZFvzo/Rnh6QAXelLsVUnkA98GiTxPLSJPStLZU
-LSjJKtkcgZuytaaZaPWcspRZ7VdTOkJb1Q3dW7lyrQ3tFDbpZWiUQgYqOOZd3YgT
-YcdXQKECgYEA7JUtjCOi0+fh6B8Z+/Afg3sXUaUajaemF3tdW3TbfqZofCyPWwMb
-Hh5Gg6TNnpHEFd7ww5VSHXeiHLsojSdr8sSoWfYadTPUHjpqxedmq4kf0PT+W2KG
-N+SYL1XpTNHvsulzU+SMZoOZnyTGMMjw61LQYzzyu+oxDoJQPEA+9V0CgYEA352U
-CyHeKWZB0Vz2yt5guzD/snjbVKluXnVMD6pW7EbrLOyahaJe1iH4Hg8vlCQ2rQGf
-iDJEOM9WaLmFxU05BYg6gtIk2Pzlk8cXpWxRnA4LVeGm5LisgpL8IGlSmkvHHAUV
-fFUDkWQm1HQq6Ow6m/gj1kKTqRgeaTkpL9HGP7ECgYBU4FAu7roD/DT36fCQil1D
-9m0vRWR5XaQg2Iltvkbg8SKbKgFkTYD1FTeHEyERuon2rr0B7hg/qiPm2t55haMc
-vaEIZVqooaeAEMUtqw8Si2d2t+5pKresZb6TfObuQIMWVNqjRmN4g84hYjgYWH7W
-bieE8uDCugpPgkD23LW5oQKBgQClVLWrkWvXwiIxsIFLtyVf4bd79j18GBVhQ2ps
-Pq4r3bdtrLYGzek+ezkeyG2OI0RFn+ia40drlWi230xXd2QMgg94v/S8dicrns0N
-4stoDT42TjN98kih9hjxwc1wBUz+m4eqOJT9v0WyWP2M33Pp84pTlT/lis6ZT8jy
-8S+Z0QKBgDwwtCEE5+4WhATHKxAFVaSIJtjSRssFh/Pai6Dh+JtGXHE8UdLfiThx
-NAoaSs71B2QvviIcp4zA18nfEhfzqtOwZHLCVp5LRkGuJgKtLmzTf3pfw40jyrFB
-k35Sb8YcDO04LX9yMrCeJoszRzZG3DM60aMz7vlDMBHU2S5RtD9x
------END RSA PRIVATE KEY-----";
-        */
         $xml = new DOMDocument();
-        // $doc_xml = site_url($archivo_xml);
         $xml->load($archivo_xml);
 
-        if(!file_exists($firma_url)){
-            $aux3 = $xml->createElement("aux3","Error: No se pudo encontrar el certificados.");
+        if(!file_exists($archivo_p12)){
+            
+            $aux3 = $xml->createElement("aux3","Error: No se pudo encontrar el contenedor de certificados.");
             $xml->documentElement->appendChild($aux3);
+            
         }else{
+            
+            
             //echo "<br> URL ARCHIVO XML: ",$archivo_xml;
             
             // 1. Aplicar el algoritmo de canonicalización al documento XML, es decir realizar un procesamiento que permita obtener su forma canónica o se normalice el documento original.
+            $xml->getElementsByTagName('X509Certificate')->item(0)->nodeValue = $certificado;
+            
             $xml_canonicalizado = $xml->C14N();
-            echo '<br><br>CANONICALIZADO 1: '.$xml_canonicalizado;
+            
+            echo "<br><br>CANONICALIZADO1: ".$xml_canonicalizado;
+            
             // 2. Aplicara al resultado el algoritmo sha256 a objeto de obtener el HASH.
             $xml_hash = hash("sha256", $xml_canonicalizado);
             
@@ -580,26 +527,22 @@ k35Sb8YcDO04LX9yMrCeJoszRzZG3DM60aMz7vlDMBHU2S5RtD9x
                             $X509Certificate = $xml->createElement('X509Certificate',"");
                             $X509Data->appendChild($X509Certificate);
 
-*/
-                            
+                    */
             // 5. Agregar a la etiqueta Digest Value el valor obtenido en el paso 4.
             $xml->getElementsByTagName('DigestValue')->item(0)->nodeValue = $xml_base64;
             
             
             // 6. Tomar la sección de la firma y obtener un HASH del mismo aplicando el algoritmo SHA256.
-            $seccion_firma = $xml->getElementsByTagName('SignedInfo')->Item(0)->nodeValue;
-            //$seccion_firma = $llave_publica;
+            //$seccion_firma = $xml->getElementsByTagName('SignedInfo')->Item(0)->nodeValue;
+            $seccion_firma = $xml_base64; //$llave_publica;
             //var_dump("seccion_firma: ".$seccion_firma);
             $hash_firma = hash('sha256',$keyData['key']);
             
             // 7. Encriptar el HASH obtenido utilizando el algoritmo RSA SHA256 con la llave privada.
             
-            openssl_sign(
-                    $hash_firma,
-                    $firma_encriptada,
-                    $llave_privada,
-                    OPENSSL_ALGO_SHA256
-                  );
+            openssl_sign($hash_firma, $firma_encriptada, $llave_privada, OPENSSL_ALGO_SHA256);
+            
+            //openssl_private_encrypt($hash_firma,$firma_encriptada,$llave_privada); //METODO DOUG
             
 //            echo "firma encriptada: ".$firma_encriptada;
             
@@ -612,8 +555,6 @@ k35Sb8YcDO04LX9yMrCeJoszRzZG3DM60aMz7vlDMBHU2S5RtD9x
             
             // 10. Finalmente colocar en la etiqueta X509 Certificate la llave publica.
             
-            $certificado = str_replace("-----BEGIN CERTIFICATE-----\n", "", $certificado);
-            $certificado = str_replace("\n-----END CERTIFICATE-----", "", $certificado);
             $xml->getElementsByTagName('X509Certificate')->item(0)->nodeValue = $certificado;
 
             // $signature->appendChild($x509);
@@ -623,7 +564,7 @@ k35Sb8YcDO04LX9yMrCeJoszRzZG3DM60aMz7vlDMBHU2S5RtD9x
                 
         }
          $xml_canonicalizado = $xml->C14N();
-         echo '<br><br>CANONICALIZADO 2: '.$xml_canonicalizado;
+         echo "<br><br>CANONICALIZADO2: ".$xml_canonicalizado;
         
         $base_url = explode('/', base_url());
         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';

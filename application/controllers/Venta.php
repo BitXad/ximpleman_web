@@ -1132,6 +1132,7 @@ class Venta extends CI_Controller{
                             //para borrar comprime en tar-gz
                             //$eltipo_emision = $this->parametros['parametro_tipoemision'];
                             if($tipo_emision == 2){ // Si es emision fuera de linea
+                                
                                 if($modalidad==1){ // 1 electronica; 2 computarizada
                                     $p = new PharData($directorio.$archivo_electronico.$factura[0]['factura_id'].'.tar');
                                     $p[$archivo_computarizado.$factura[0]['factura_id'].'.xml'] = $datos;
