@@ -1058,8 +1058,18 @@ class Factura extends CI_Controller{
                 $codigo_motivo =  $this->input->post("motivo_id");
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+                $modalidad = $dosificacion["dosificacion_modalidad"];
+                if($modalidad==1){ // 1 electronica; 2 computarizada
+                    $nombre_archivo = $archivo_electronico;
+                }else{ //  aqui por la computarizada en linea
+                    if ($dosificacion["docsec_codigoclasificador"]=="1"){ //FACTURA COMPRA VENTA
+                        $wsdl = $dosificacion['dosificacion_factura'];
+                    }
+                    if ($dosificacion["docsec_codigoclasificador"]=="11" ||$dosificacion["docsec_codigoclasificador"]=="39"){ //FACTURA SECTORES EDUCATIVOS; GLP
+                        $wsdl = $dosificacion['dosificacion_facturaglp'];
+                    }
+                }
                 
-                $wsdl = $dosificacion['dosificacion_factura'];                
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 
                 $opts = array(
