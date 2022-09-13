@@ -391,7 +391,16 @@ border-bottom : 1px solid #aaa;
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO Bs</td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
                     </tr>
-                   
+                    
+                    <!-------------- DECUENTO GLOBAL ---------->
+                    <?php //if($factura[0]['factura_descuento']>0){ ?>
+<!--                        <tr>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO GLOBAL Bs</td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
+                        </tr>-->
+                    <?php //} ?>
+
+                    
                     <!-------------- FACTURA TOTAL ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>TOTAL Bs</b></td>
@@ -418,16 +427,15 @@ border-bottom : 1px solid #aaa;
                     
                     <!-------------- MONTO A PAGAR ---------->
                     <tr>           
-                        
-                        <td style="padding:0; padding-right: 3px;" colspan="4" align="right"></td>
-                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>TOTAL Bs</b></td>
+                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($factura_total,' Bolivianos') ?></b></td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO A PAGAR Bs</b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',')?></b></td>
                     </tr>
                     
                     <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
                     <?php //if ($factura_total>0){ ?>
                     <tr>           
-                        <td style="padding:0; padding-right: 3px;" colspan="4" align="right"></td>
+                        
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>IMPORTE BASE CR&Eacute;DITO FISCAL</b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',')?></b></td>
                     </tr>
