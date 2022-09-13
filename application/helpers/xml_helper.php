@@ -943,6 +943,161 @@ k35Sb8YcDO04LX9yMrCeJoszRzZG3DM60aMz7vlDMBHU2S5RtD9x
             $xml = firmar_XML($xml,$factura['factura_id'],$direccion);
         return $xml; 
     }
+    
+    function generarfacturaPrevaloradaXML($modalidad_factura, $factura, $detalle_factura, $empresa){
+
+        $factura = $factura[0];
+        $empresa = $empresa[0];
+        // $detalle_factura = $detalle_factura[0];
+        // var_dump($empresa);
+        $CI = & get_instance();
+        $CI->load->model([
+            'Dosificacion_model',
+        ]);
+        
+        $dosificacion = $CI->Dosificacion_model->get_dosificacion(1);
+        // var_dump($factura);
+        $doc_xml = $modalidad_factura == 1 ? "facturaElectronicaPrevalorada" : "facturaComputarizadaPrevalorada";
+        $xml = loadXML2($doc_xml);
+        // CABECERA
+        $xml->getElementsByTagName('nitEmisor')->item(0)->nodeValue = "{$factura['factura_nitemisor']}";
+        $xml->getElementsByTagName('razonSocialEmisor')->item(0)->nodeValue = "{$empresa['empresa_nombre']}";
+        $xml->getElementsByTagName('municipio')->item(0)->nodeValue = "{$empresa['empresa_ubicacion']}";
+        $xml->getElementsByTagName('telefono')->item(0)->nodeValue = "{$empresa['empresa_telefono']}";
+        $xml->getElementsByTagName('numeroFactura')->item(0)->nodeValue = "{$factura['factura_numero']}";
+        $xml->getElementsByTagName('cufd')->item(0)->nodeValue = "{$factura['factura_cufd']}";
+        $xml->getElementsByTagName('cuf')->item(0)->nodeValue = "{$factura['factura_cuf']}";
+        $xml->getElementsByTagName('codigoSucursal')->item(0)->nodeValue = "{$factura['factura_sucursal']}";
+        $xml->getElementsByTagName('direccion')->item(0)->nodeValue = "{$empresa['empresa_direccion']}";
+        $xml->getElementsByTagName('codigoPuntoVenta')->item(0)->nodeValue = "{$factura['factura_puntoventa']}";
+        $xml->getElementsByTagName('fechaEmision')->item(0)->nodeValue = "{$factura['factura_fechahora']}";
+        
+        $razonSocial = str_replace("&","&amp;",$factura['factura_razonsocial']);
+        
+        $xml->getElementsByTagName('nombreRazonSocial')->item(0)->nodeValue = "{$razonSocial}";
+        //$xml->getElementsByTagName('nombreEstudiante')->item(0)->nodeValue = "{$razonSocial}";
+        $xml->getElementsByTagName('codigoTipoDocumentoIdentidad')->item(0)->nodeValue = "{$factura['cdi_codigoclasificador']}";
+        
+        //$xml->getElementsByTagName('complemento')->item(0)->nodeValue = "{$factura['factura_complementoci']}";
+        
+        $xml->getElementsByTagName('numeroDocumento')->item(0)->nodeValue = "{$factura['factura_nit']}";
+        $xml->getElementsByTagName('codigoCliente')->item(0)->nodeValue = "{$factura['cliente_codigo']}";        
+        $xml->getElementsByTagName('codigoMetodoPago')->item(0)->nodeValue = "{$factura['forma_id']}";
+
+        if (strlen($factura['factura_detalletransaccion'])>1){
+            
+            if (strlen($factura['factura_detalletransaccion'])==1){
+                
+                $xml->getElementsByTagName('numeroTarjeta')->item(0)->nodeValue = "{$factura['factura_detalletransaccion']}";
+            
+            }else{
+                
+                $codigo_tarjeta =  $factura['factura_detalletransaccion'];
+                $num_tarjeta = substr($codigo_tarjeta, 0,4)."00000000".substr($codigo_tarjeta, 12,15);
+                $xml->getElementsByTagName('numeroTarjeta')->item(0)->nodeValue = "{$num_tarjeta}";            
+            }
+            
+        }else{
+            $xml->getElementsByTagName('numeroTarjeta')->item(0)->nodeValue = "{$factura['factura_detalletransaccion']}";
+        }
+        
+//        $xml->getElementsByTagName('montoGiftCard')->item(0)->nodeValue = "{$factura['factura_giftcard']}"; 
+        $total_creditofiscal = $factura['factura_total'] - $factura['factura_giftcard'];
+        $xml->getElementsByTagName('montoTotalSujetoIva')->item(0)->nodeValue = "{$total_creditofiscal}";
+        $xml->getElementsByTagName('codigoMoneda')->item(0)->nodeValue = "{$factura['moneda_codigoclasificador']}";
+        $xml->getElementsByTagName('tipoCambio')->item(0)->nodeValue = "{$factura['moneda_tc']}";
+        //$xml->getElementsByTagName('descuentoAdicional')->item(0)->nodeValue = "{$factura['factura_descuento']}";
+        
+        if ($factura['factura_excepcion']==1){
+            
+            if ($factura['cdi_codigoclasificador']==5){
+                $factura_excepcion = $factura['factura_excepcion'];
+            }else{
+                $factura_excepcion = 0;
+            }
+
+            //$xml->getElementsByTagName('codigoExcepcion')->item(0)->nodeValue = "{$factura_excepcion}";            
+        }
+        else{
+            
+            //$xml->getElementsByTagName('codigoExcepcion')->item(0)->nodeValue = "{$factura['factura_excepcion']}";
+            
+        }
+        
+        $xml->getElementsByTagName('montoTotal')->item(0)->nodeValue = "{$factura['factura_total']}";
+        $xml->getElementsByTagName('montoTotalMoneda')->item(0)->nodeValue = "{$factura['factura_total']}";
+
+        //if($factura['factura_cafc'])
+         if($factura['factura_cafc'] != 0 || $factura['factura_cafc'] != ""){
+             $xml->getElementsByTagName('cafc')->item(0)->setAttribute("xsi:nil","false");
+             $xml->getElementsByTagName('cafc')->item(0)->nodeValue = "{$factura['factura_cafc']}";
+         }
+
+        $xml->getElementsByTagName('leyenda')->item(0)->nodeValue = "{$factura['factura_leyenda2']}";
+        $xml->getElementsByTagName('usuario')->item(0)->nodeValue = "{$factura['usuario_nombre']}";
+        $xml->getElementsByTagName('codigoDocumentoSector')->item(0)->nodeValue = "{$factura['docsec_codigoclasificador']}";
+
+        foreach ($detalle_factura as $df){
+            
+            $detalle = $xml->createElement('detalle');
+            // $detalle->setAttribute('id', $id);
+
+            $actividadEconomica = $xml->createElement('actividadEconomica',"{$factura['factura_actividad']}");
+            $detalle->appendChild($actividadEconomica);
+
+            $codigoProductoSin = $xml->createElement('codigoProductoSin',"{$df['producto_codigosin']}");
+            $detalle->appendChild($codigoProductoSin);
+
+            $codigoProducto = $xml->createElement('codigoProducto',"{$df['detallefact_codigo']}");
+            $detalle->appendChild($codigoProducto);
+
+            $descripcion = $xml->createElement('descripcion',"{$df['detallefact_descripcion']}");
+            $detalle->appendChild($descripcion);
+
+            $cantidad = $xml->createElement('cantidad',"{$df['detallefact_cantidad']}");
+            $detalle->appendChild($cantidad);
+
+            $unidadMedida = $xml->createElement('unidadMedida',"{$df['unidad_codigo']}");
+            $detalle->appendChild($unidadMedida);
+
+            $precioUnitario = $xml->createElement('precioUnitario',"{$df['detallefact_precio']}");
+            $detalle->appendChild($precioUnitario);
+
+            $descuentoparcial = $df['detallefact_descuentoparcial'] * $df['detallefact_cantidad'];
+            $montoDescuento = $xml->createElement('montoDescuento',"{$descuentoparcial}");
+            $detalle->appendChild($montoDescuento);
+
+            $subTotal = $xml->createElement('subTotal',"{$df['detallefact_total']}");
+            $detalle->appendChild($subTotal);
+
+//            $numeroSerie = $xml->createElement('numeroSerie',"{$df['detallefact_preferencia']}");
+//            $detalle->appendChild($numeroSerie);
+
+//            $numeroImei = $xml->createElement('numeroImei',"{$df['detallefact_caracteristicas']}");
+//            $detalle->appendChild($numeroImei);
+            //$id++;
+            if($modalidad_factura == 1){
+                // $electronica = $xml->getElementsByTagName('cabecera')->item(0);
+                $signature = $xml->getElementsByTagName('Signature')->item(0);
+                // $xml->insertBefore($detalle);
+                $xml->documentElement->insertBefore($detalle,$signature);
+            }else{
+                $xml->documentElement->appendChild($detalle);
+            }
+        }
+        // DETALLE
+        
+        $base_url = explode('/', base_url());
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+        $direccion = $directorio.$doc_xml.$factura['factura_id'].'.xml';
+        //$doc_xml = site_url("resources/xml/$archivoXml.xml");
+        // $xml->save('C:\Users\shemo\Desktop\compra_venta27_06_2022.xml');
+        // $xml->saveXML();
+        $xml->save($direccion);
+        if($modalidad_factura == 1) //Firma
+            $xml = firmar_XML($xml,$factura['factura_id'],$direccion);
+        return $xml; 
+    }
 
     
 ?>
