@@ -325,7 +325,8 @@ function tabladetallecompra(){
                     html += "<br><span style='white-space: nowrap; font-size: 10px'>";
                     html += mon_secundaria+" "+Number(totaldescuento_otramoneda).toFixed(2)+"</span></th>";
                     html += "<th align='right'><font size='2' face='Arial'<b>"+Number(descglo).toFixed(2)+"</b></th>";
-                    html += "<th align='right' style='padding: 0px'><font size='2' face='Arial'<b>"+Number(total_estamoneda).toFixed(2)+"</b>";
+                    //html += "<th align='right' style='padding: 0px'><font size='2' face='Arial'<b>"+Number(total_estamoneda).toFixed(2)+"</b>";
+                    html += "<th align='right' style='padding: 0px'><font size='2' face='Arial'<b>"+Number(subtotal_estamoneda-totaldescuento_estamoneda-descglo).toFixed(2)+"</b>";
                     html += "<br><span style='white-space: nowrap; font-size: 10px'>";
                     html += mon_secundaria+" "+Number(total_otramoneda).toFixed(2)+"</span></th>";
                     html += "<th colspan='2'></th>";
@@ -611,7 +612,8 @@ function tablatotales(total_detalle,descuento,subtotal)
 
      var parcial = Number(subtotal-descuento);
      var globaly = Number(document.getElementById('compra_descglobal').value);
-     var totalfinal = Number(total_detalle-globaly);
+     //var totalfinal = Number(total_detalle-globaly);
+     var totalfinal = Number(subtotal-globaly-descuento);
     $('#compra_subtotal').val(subtotal.toFixed(2));
 $('#compra_descuento').val(descuento.toFixed(2));
    $('#compra_total').val(parcial.toFixed(2));
