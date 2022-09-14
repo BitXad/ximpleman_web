@@ -178,12 +178,26 @@ class Factura extends CI_Controller{
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         $data['cadenaqr'] = $cadenaQR;
         
-        
+        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
         if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_carta';
         }else{
             $data['motivos'] = $this->Factura_model->get_all_motivos();
-            $data['_view'] = 'factura/factura_carta_new'; 
+            if($dosificacion['docsec_codigoclasificador'] == 1){ //FACTURA COMPRA VENTA
+                $data['_view'] = 'factura/factura_carta_new';
+            }
+            
+            if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
+                $data['_view'] = 'factura/factura_carta_new';
+            }
+            
+            if($dosificacion['docsec_codigoclasificador'] == 23){ // FACTURA PREVALORADA
+                $data['_view'] = 'factura/factura_carta_prev';
+            }else{ // por  el momento para otro tipo de facturas 
+                $data['_view'] = 'factura/factura_carta_new';
+            }
+            
+            
         }
         $this->load->view('layouts/main',$data);        
         
@@ -261,8 +275,22 @@ class Factura extends CI_Controller{
         if($data['parametro'][0]['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_boucher';
         }else{
+            $dosificacion = $this->Dosificacion_model->get_dosificacion(1); 
             $data['motivos'] = $this->Factura_model->get_all_motivos();
-            $data['_view'] = 'factura/factura_bouchern';
+            if($dosificacion['docsec_codigoclasificador'] == 1){ //FACTURA COMPRA VENTA
+                $data['_view'] = 'factura/factura_carta_new';
+            }
+            
+            if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
+                $data['_view'] = 'factura/factura_bouchern';
+            }
+            
+            if($dosificacion['docsec_codigoclasificador'] == 23){ // FACTURA PREVALORADA
+                $data['_view'] = 'factura/factura_boucher_prev';
+            }else{ // por  el momento para otro tipo de facturas 
+                $data['_view'] = 'factura/factura_bouchern';
+            }
+            
         }
         //$data['_view'] = 'factura/factura_bouchern';
         $this->load->view('layouts/main',$data);
@@ -1058,8 +1086,18 @@ class Factura extends CI_Controller{
                 $codigo_motivo =  $this->input->post("motivo_id");
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+                $modalidad = $dosificacion["dosificacion_modalidad"];
+                if($modalidad==1){ // 1 electronica; 2 computarizada
+                    $nombre_archivo = $archivo_electronico;
+                }else{ //  aqui por la computarizada en linea
+                    if ($dosificacion["docsec_codigoclasificador"]=="1"){ //FACTURA COMPRA VENTA
+                        $wsdl = $dosificacion['dosificacion_factura'];
+                    }
+                    if ($dosificacion["docsec_codigoclasificador"]=="11" ||$dosificacion["docsec_codigoclasificador"]=="39"){ //FACTURA SECTORES EDUCATIVOS; GLP
+                        $wsdl = $dosificacion['dosificacion_facturaglp'];
+                    }
+                }
                 
-                $wsdl = $dosificacion['dosificacion_factura'];                
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 
                 $opts = array(

@@ -1049,6 +1049,20 @@ class Venta extends CI_Controller{
 //                            
                         }
                         
+                        if ($dosificacion[0]["docsec_codigoclasificador"]=="23"){ //FACTURA PREVALORADA
+
+                            $archivo_computarizado = "facturaComputarizadaPrevalorada";
+                            $archivo_electronico = "facturaElectronicaPrevalorada";
+                            
+                            $xml = generarfacturaPrevaloradaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+                            
+                            
+//                            $xml = generarfacturaEducativoXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
+//                            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+//                            $xsd = $this->parametros['parametro_tiposistema'] == 2 ? "facturaComputarizadaSectorEducativo.xsd":"facturaElectronicaSectorEducativo.xsd";
+//                            
+                        }
+                        
                         
                         //$xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
                         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
@@ -5213,7 +5227,7 @@ function anular_venta($venta_id){
         if ($dosificacion['docsec_codigoclasificador']==1)
                $wsdl = $dosificacion['dosificacion_factura'];
         
-        if ($dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+        if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
             $wsdl = $dosificacion['dosificacion_facturaglp'];
         
         $token = $dosificacion['dosificacion_tokendelegado'];
