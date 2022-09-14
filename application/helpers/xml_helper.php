@@ -340,17 +340,9 @@
 
             $numeroImei = $xml->createElement('numeroImei',"{$df['detallefact_caracteristicas']}");
             $detalle->appendChild($numeroImei);
-            //$id++;
-            if($modalidad_factura == 1){ //1 electronica en linea - 2 computarizada en linea
-            //
-                // $electronica = $xml->getElementsByTagName('cabecera')->item(0);
-                $signature = $xml->getElementsByTagName('Signature')->item(0);
-                // $xml->insertBefore($detalle);
-                $xml->documentElement->insertBefore($detalle,$signature);
-                
-            }else{
-                $xml->documentElement->appendChild($detalle);
-            }
+            
+            $xml->documentElement->appendChild($detalle);
+            
         }
         // DETALLE
         
@@ -360,8 +352,8 @@
         if($modalidad_factura == 1){
             
             $archivo_xml = $directorio.'facturaElectronicaCompraVenta'.$factura['factura_id'].'.xml';
-            $xml->save($archivo_xml);
-            $xml = firmar_XML($xml,$factura['factura_id'],$archivo_xml);
+            //$xml->save($archivo_xml);
+            $xml = firmar_XML($factura['factura_id'],$xml);
             
         }else{
             
@@ -373,7 +365,7 @@
         return $xml;
     }
 
-    function firmar_XML($xml,$factura_id,$archivo_xml){
+    function firmar_XML($factura_id,$archivo_xml){
 
         $CI = & get_instance();
         
@@ -384,7 +376,7 @@
         $dosificacion = $CI->Dosificacion_model->get_dosificacion(1);
          
         $base_url = explode('/', base_url());
-        //$firma_nombre = "ROBERTOCARLOSSOTOSIERRA.p12";
+        
         $contenedorP12 = $dosificacion["dosificacion_contenedorp12"];
         $claveP12 = $dosificacion["dosificacion_clavep12"];
         
@@ -401,18 +393,27 @@
             if (openssl_pkcs12_read($almacén_cert, $info_cert, $claveP12)){
 
             
-                 $certificado = trim($info_cert["cert"]);
-                 $llave_privada = trim($info_cert["pkey"]);
-                 $certificado_extra1 = trim($info_cert["extracerts"][0]);
+                 $certificado = $info_cert["cert"];
+                 $llave_privada = $info_cert["pkey"];
+                 $certificado_extra1 = $info_cert["extracerts"][0];
                  $certificado_extra2 = $info_cert["extracerts"][1];
                  
                  $pub_key = openssl_pkey_get_public($certificado);
                  $keyData = openssl_pkey_get_details($pub_key);
-        //          file_put_contents('./key.pub', $keyData['key']);
-                $llave_publica = trim($keyData['key']);
 
-                $certificado = str_replace("-----BEGIN CERTIFICATE-----\n", "", $certificado);
-                $certificado = str_replace("\n-----END CERTIFICATE-----", "", $certificado);
+                 $llave_publica = trim($keyData['key']);
+
+//                $certificado = $certificado_extra2;
+                
+//                $llave_publica = str_replace("-----BEGIN PUBLIC KEY-----\n", "", $llave_publica);
+//                $llave_publica = str_replace("\n-----END PUBLIC KEY-----", "", $llave_publica);
+//
+//                $llave_privada = str_replace("-----BEGIN PRIVATE KEY-----\n", "", $llave_privada);
+//                $llave_privada = str_replace("\n-----END PRIVATE KEY-----", "", $llave_privada);
+//                
+//                $certificado = str_replace("-----BEGIN CERTIFICATE-----\n", "", $certificado);
+//                $certificado = str_replace("\n -----END CERTIFICATE----- ", "", $certificado);
+                //echo $certificado;
 
             } else {
                 echo "Error: No se puede leer el almacén de certificados.\n";
@@ -421,8 +422,9 @@
 
         }
         
-        $xml = new DOMDocument();
-        $xml->load($archivo_xml);
+//        $xml = new DOMDocument();
+//        $xml->load($archivo_xml);
+        $xml = $archivo_xml;
 
         if(!file_exists($archivo_p12)){
             
@@ -430,25 +432,21 @@
             $xml->documentElement->appendChild($aux3);
             
         }else{
-            
-            
-            //echo "<br> URL ARCHIVO XML: ",$archivo_xml;
+
             
             // 1. Aplicar el algoritmo de canonicalización al documento XML, es decir realizar un procesamiento que permita obtener su forma canónica o se normalice el documento original.
-            $xml->getElementsByTagName('X509Certificate')->item(0)->nodeValue = $certificado;
+            $xml_canonicalizado = $xml->C14N(); //false, true with comments
             
-            $xml_canonicalizado = $xml->C14N();
-            
-            echo "<br><br>CANONICALIZADO1: ".$xml_canonicalizado;
-            
+
             // 2. Aplicara al resultado el algoritmo sha256 a objeto de obtener el HASH.
             $xml_hash = hash("sha256", $xml_canonicalizado);
             
             // 3. Obtener una cadena aplicando al anterior HASH el algoritmo Base64.
             $xml_base64 = base64_encode($xml_hash);
 
+            
             // 4. Adicionar las etiquetas de signature al XML.
-            /*
+            
             $facturaElectronicaCompraVenta = $xml->getElementsByTagName('facturaElectronicaCompraVenta')->item(0);
             $Signature = $xml->createElement('Signature',"");
             $facturaElectronicaCompraVenta->appendChild($Signature);
@@ -527,50 +525,50 @@
                             $X509Certificate = $xml->createElement('X509Certificate',"");
                             $X509Data->appendChild($X509Certificate);
 
-                    */
+
             // 5. Agregar a la etiqueta Digest Value el valor obtenido en el paso 4.
             $xml->getElementsByTagName('DigestValue')->item(0)->nodeValue = $xml_base64;
             
             
-            // 6. Tomar la sección de la firma y obtener un HASH del mismo aplicando el algoritmo SHA256.
-            //$seccion_firma = $xml->getElementsByTagName('SignedInfo')->Item(0)->nodeValue;
-            $seccion_firma = $xml_base64; //$llave_publica;
-            //var_dump("seccion_firma: ".$seccion_firma);
-            $hash_firma = hash('sha256',$keyData['key']);
+            // 6. Tomar la sección de la firma y obtener un HASH del mismo aplicando el algoritmo SHA256.            
+            $seccion_firma ='<SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>'.$xml_base64.'</DigestValue></Reference></SignedInfo>';
             
-            // 7. Encriptar el HASH obtenido utilizando el algoritmo RSA SHA256 con la llave privada.
+                //Cargamos el archivo xml
+                $xml2 = new DOMDocument();
+                $xml2 -> loadXML($seccion_firma);
+                $textoCanonicalizado = $xml2->c14n();
+                $texto_hash = hash("sha256", $textoCanonicalizado);
             
-            openssl_sign($hash_firma, $firma_encriptada, $llave_privada, OPENSSL_ALGO_SHA256);
+            //$hash_firma = hash('sha256',$seccion_firma);            
+            //openssl_sign(txt_a_firmar, $firma, $datos_certificado ["pkey"], OPENSSL_ALGO_SHA1);
             
-            //openssl_private_encrypt($hash_firma,$firma_encriptada,$llave_privada); //METODO DOUG
-            
-//            echo "firma encriptada: ".$firma_encriptada;
-            
-//            openssl_sign($data, $binary_signature, $private_key, $algo);
-            // // 8. Aplicar a la cadena resultante el algoritmo Base64 para obtener una cadena.
+
+            // 7. Encriptar el HASH obtenido utilizando el algoritmo RSA SHA256 con la llave privada.            
+            //openssl_sign($hash_firma, $firma_encriptada, $llave_privada, OPENSSL_ALGO_SHA256);            
+            openssl_sign($texto_hash, $firma_encriptada, $llave_privada, 'sha256WithRSAEncryption');
+           
+            // 8. Aplicar a la cadena resultante el algoritmo Base64 para obtener una cadena.
             $firma_b64 = base64_encode($firma_encriptada);
             
-            // // 9. Adicionar a la etiqueta de Signature Value la cadena anterior.
+            // 9. Adicionar a la etiqueta de Signature Value la cadena anterior.
             $xml->getElementsByTagName('SignatureValue')->item(0)->nodeValue = $firma_b64;
             
             // 10. Finalmente colocar en la etiqueta X509 Certificate la llave publica.
-            
+            $certificado = str_replace("-----BEGIN CERTIFICATE-----", "", $certificado);
+            $certificado = str_replace("-----END CERTIFICATE-----", "", $certificado);
+            $certificado = trim($certificado);
+
             $xml->getElementsByTagName('X509Certificate')->item(0)->nodeValue = $certificado;
-
-            // $signature->appendChild($x509);
-            // // 11. Devolver el XML firmado.
-
-            
-                
+        
         }
-         $xml_canonicalizado = $xml->C14N();
-         echo "<br><br>CANONICALIZADO2: ".$xml_canonicalizado;
+
         
         $base_url = explode('/', base_url());
         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
         $archivo_xml = $directorio.'facturaElectronicaCompraVenta'.$factura_id.'.xml';
         $xml->save($archivo_xml);
-        // $xml->save("C:\Users\shemo\Desktop\compra_venta_18-07-2022.xml");
+        
+        // 11. Devolver el XML firmado.
         return $xml;
     }
     

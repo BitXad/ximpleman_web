@@ -1081,9 +1081,9 @@ class Venta extends CI_Controller{
                             //var_dump($valXSD);
                             
                             if($modalidad==1) //electronico en linea
-                                print "ERROR: ".$valXSD->mostrarError()." ARCHIVO: "."$directorio/{$archivo_computarizado}{$factura[0]['factura_id']}.xml  XSD: "."$directorio"."$xsd";
+                                print "ERROR: ".$valXSD->mostrarError()." ARCHIVO: "."$directorio{$archivo_electronico}{$factura[0]['factura_id']}.xml  XSD: "."$directorio"."$xsd";
                             else
-                                print "ERROR: ".$valXSD->mostrarError()." ARCHIVO: "."$directorio/{$archivo_electronico}{$factura[0]['factura_id']}.xml  XSD: "."$directorio"."$xsd";
+                                print "ERROR: ".$valXSD->mostrarError()." ARCHIVO: "."$directorio{$archivo_computarizado}{$factura[0]['factura_id']}.xml  XSD: "."$directorio"."$xsd";
                                 
                                 
                         }else{
@@ -1134,6 +1134,7 @@ class Venta extends CI_Controller{
                             if($tipo_emision == 2){ // Si es emision fuera de linea
                                 
                                 if($modalidad==1){ // 1 electronica; 2 computarizada
+                                    
                                     $p = new PharData($directorio.$archivo_electronico.$factura[0]['factura_id'].'.tar');
                                     $p[$archivo_computarizado.$factura[0]['factura_id'].'.xml'] = $datos;
                                     $p1 = $p->compress(Phar::GZ);
@@ -1141,7 +1142,9 @@ class Venta extends CI_Controller{
                                     $origen = $directorio.$archivo_electronico.$factura[0]['factura_id'].'.tar';
                                     $destino = $directorio.'envio'.$usuario_id.'/'.$archivo_electronico.$factura[0]['factura_id'].'.tar';
                                     copy($origen, $destino);
+                                    
                                 }else{
+                                    
                                     $p = new PharData($directorio.$archivo_computarizado.$factura[0]['factura_id'].'.tar');
                                     $p[$archivo_computarizado.$factura[0]['factura_id'].'.xml'] = $datos;
                                     $p1 = $p->compress(Phar::GZ);
@@ -1149,6 +1152,7 @@ class Venta extends CI_Controller{
                                     $origen = $directorio.$archivo_computarizado.$factura[0]['factura_id'].'.tar';
                                     $destino = $directorio.'envio'.$usuario_id.'/'.$archivo_computarizado.$factura[0]['factura_id'].'.tar';
                                     copy($origen, $destino);
+                                    
                                 }
                                 
                                 
@@ -1211,7 +1215,7 @@ class Venta extends CI_Controller{
                                 }else{
                                     
                                     $cad = $eniada->mensajesList;
-                                    var_dump($eniada);
+                                    //var_dump($eniada);
                                     
                                     $mensajecadena = json_encode($eniada->mensajesList);
 

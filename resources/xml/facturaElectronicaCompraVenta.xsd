@@ -4,7 +4,7 @@
         attributeFormDefault="unqualified" elementFormDefault="qualified" 
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="./SignatureSchema.xsd" />
+    <xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="SignatureSchema.xsd" />
     <xs:element name="facturaElectronicaCompraVenta">
         <xs:complexType>
             <xs:sequence>
