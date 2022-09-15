@@ -1093,7 +1093,7 @@ class Factura extends CI_Controller{
                     if ($dosificacion["docsec_codigoclasificador"]=="1"){ //FACTURA COMPRA VENTA
                         $wsdl = $dosificacion['dosificacion_factura'];
                     }
-                    if ($dosificacion["docsec_codigoclasificador"]=="11" ||$dosificacion["docsec_codigoclasificador"]=="39"){ //FACTURA SECTORES EDUCATIVOS; GLP
+                    if ($dosificacion["docsec_codigoclasificador"]=="11" || $dosificacion["docsec_codigoclasificador"]=="23" ||$dosificacion["docsec_codigoclasificador"]=="39"){ //PREVALORADA, FACTURA SECTORES EDUCATIVOS; GLP
                         $wsdl = $dosificacion['dosificacion_facturaglp'];
                     }
                 }
