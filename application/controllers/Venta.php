@@ -1261,6 +1261,9 @@ class Venta extends CI_Controller{
                                 echo $sql;
                                 $this->Venta_model->ejecutar($sql);*/
                                 
+                            }else{ //Si la emision de la factura es de tipo 2 OFFLINE
+                                $res  = array("mensajesList" => "No Enviado por  estar en offline");
+                                    echo json_encode($res);
                             }
                                 
                                     /* INICIO generar el pdf */ 
