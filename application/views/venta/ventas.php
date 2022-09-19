@@ -1084,7 +1084,14 @@ window.onkeydown = compruebaTecla;
             <div class="box-body table-responsive table-condensed">
             <!--<form method="post" name="descuento">-->                
             
-            
+            <?php 
+                $prev_ocultar = "block";
+                $prev_mostrar = "none";
+                if($dosificacion[0]["docsec_codigoclasificador"] == 23){
+                    $prev_ocultar = "none";
+                    $prev_mostrar = "block";
+                }
+            ?> 
             
             <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
                 
@@ -1104,15 +1111,14 @@ window.onkeydown = compruebaTecla;
                         </td>
                     
                 </tr>
-
-                <tr style="padding: 0">
+                <tr style="padding: 0; display: <?php echo $prev_ocultar; ?>">
                         <td style="padding: 0">Total ICE</td>
                         <td align="right" style="padding: 0">
                             <input class="btn" style="padding:0;" id="venta_ice" size="<?php echo $ancho_boton; ?>" name="venta_ice" value="<?php echo "0.00"; ?>"  onKeyUp="calcularcambio(event)"  >
                         </td>
                 </tr>
-                
 
+                        
                         
                 <tr style="padding: 0">
                         <td align="right" style="padding: 0"><b>Sub Total <?php echo $parametro['moneda_descripcion']; ?></b></td>
@@ -1122,7 +1128,7 @@ window.onkeydown = compruebaTecla;
                         </td>
 
                 </tr>
-                <tr style="padding: 0">                      
+                <tr style="padding: 0; display: <?php echo $prev_ocultar; ?>">                      
                         <td style="padding: 0">Descuento <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
                             <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
@@ -1144,7 +1150,7 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
 
-                <tr style="padding: 0">
+                <tr style="padding: 0; display: <?php echo $prev_ocultar; ?>">
                         <td style="padding: 0"><b>Tarjeta  Gift</b></td>
                         <td align="right" style="padding: 0">
                             <input class="btn" style="padding:0; background-color:orange; font-size:20px;" id="venta_giftcard" size="<?php echo $ancho_boton; ?>" name="venta_giftcard" value="<?php echo 0.00; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(6)">
@@ -1165,7 +1171,12 @@ window.onkeydown = compruebaTecla;
                         </td>
                 </tr>
                 
-                
+                <tr style="padding: 0; display: <?php echo $prev_mostrar; ?>">
+                    <td style="padding: 0"><b>Cantidad de Facturas</b></td>
+                        <td align="right" style="padding: 0;">
+                            <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="cantidad_facturas" size="<?php echo $ancho_boton; ?>" name="cantidad_facturas" value="0"  required min="0">
+                        </td>
+                </tr>
                 
                 
             </table>
