@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<facturaComputarizadaPrevalorada xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaPrevalorada.xsd">
+    <cabecera>
+        <nitEmisor>5152377019</nitEmisor>
+        <razonSocialEmisor>PASSWORD</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4511518 *(591)79999097</telefono>
+        <numeroFactura>57</numeroFactura>
+        <cuf>1608A399D64B1830DF212C975668D5A10A53FEA79AC0561544EA0D6D74</cuf>
+        <cufd>CQUF8QipYUEZBNzzc0OTIzNjFEMjc=Q8KhSExSTFFKV1VIzNURFQzJFNTdGQ</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <fechaEmision>2022-09-15T11:50:05.625</fechaEmision>
+        <nombreRazonSocial>S/N</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>0</numeroDocumento>
+        <codigoCliente>N/A</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta>0</numeroTarjeta>
+        <montoTotal>150.00</montoTotal>
+        <montoTotalSujetoIva>150</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>150.00</montoTotalMoneda>
+        <leyenda>Ley N° 453: Está prohibido importar, distribuir o comercializar productos expirados o prontos a expirar.</leyenda>
+        <usuario>Administrador</usuario>
+        <codigoDocumentoSector>23</codigoDocumentoSector>
+    </cabecera>
+<detalle><actividadEconomica>465000</actividadEconomica><codigoProductoSin>611849</codigoProductoSin><codigoProducto>220802172042</codigoProducto><descripcion>HUB/SWICH TP-LINK 8-PUERTOS 10/100 MBPS TL-SF1008D</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>150.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>150.00</subTotal></detalle></facturaComputarizadaPrevalorada>
