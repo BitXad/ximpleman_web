@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<facturaComputarizadaServicioBasico xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                    xsi:noNamespaceSchemaLocation="facturaComputarizadaServicioBasico.xsd">
+    <cabecera>
+       <nitEmisor>1003579028</nitEmisor>
+        <razonSocialEmisor>Carlos Loza</razonSocialEmisor>
+        <municipio>La Paz</municipio>
+        <telefono>2846005</telefono>
+        <numeroFactura>1</numeroFactura>
+        <cuf>44AAEC00DBD34DAAA38D9FB2157BD77A9B0FEC06A567A75AC82F24C74</cuf>
+        <cufd>BQUE+QytqQUDBKVUFOSVRPQkxVRFZNVFVJBMDAwMDAwM</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>AV. JORGE LOPEZ #123</direccion>
+        <codigoPuntoVenta>0</codigoPuntoVenta>
+        <mes>Marzo</mes>
+        <gestion>2022</gestion>
+        <ciudad>La Paz</ciudad>
+        <zona>Alto Obrajes</zona>
+        <numeroMedidor>3456</numeroMedidor>
+        <fechaEmision>2021-10-13T11:46:53.507</fechaEmision>
+        <nombreRazonSocial>Mi razon social</nombreRazonSocial>
+        <domicilioCliente>Av. Tejada Sorzano 231</domicilioCliente>
+        <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>5115889</numeroDocumento>
+        <complemento xsi:nil="true"/>
+        <codigoCliente>51158891</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta xsi:nil="true"/>
+        <montoTotal>94.50</montoTotal>
+        <montoTotalSujetoIva>85</montoTotalSujetoIva>
+        <consumoPeriodo xsi:nil="true"/>
+        <beneficiarioLey1886 xsi:nil="true"/>
+        <montoDescuentoLey1886 xsi:nil="true"/>
+        <montoDescuentoTarifaDignidad xsi:nil="true"/>
+        <tasaAseo>5</tasaAseo>
+        <tasaAlumbrado>2</tasaAlumbrado>
+        <ajusteNoSujetoIva>5</ajusteNoSujetoIva>
+        <detalleAjusteNoSujetoIva>{"Ajuste por Reclamo":5}</detalleAjusteNoSujetoIva>
+        <ajusteSujetoIva>10</ajusteSujetoIva>
+        <detalleAjusteSujetoIva>{"Cobropor Reconexión":10}</detalleAjusteSujetoIva>
+        <otrosPagosNoSujetoIva>7</otrosPagosNoSujetoIva>
+        <detalleOtrosPagosNoSujetoIva>{"Pago Cuota Cooperativa":7}</detalleOtrosPagosNoSujetoIva>
+        <otrasTasas>0.50</otrasTasas>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>94.50</montoTotalMoneda>
+        <descuentoAdicional xsi:nil="true"/>
+        <codigoExcepcion xsi:nil="true"/>
+        <cafc xsi:nil="true"/>
+        <leyenda>Una leyenda</leyenda>
+        <usuario>vjcm</usuario>
+        <codigoDocumentoSector>13</codigoDocumentoSector>
+    </cabecera>
+    <detalle>
+        <actividadEconomica>451010</actividadEconomica>
+        <codigoProductoSin>49111</codigoProductoSin>
+        <codigoProducto>123456</codigoProducto>
+        <descripcion>Servicio Mes Febrero</descripcion>
+        <cantidad>1</cantidad>
+        <unidadMedida>58</unidadMedida>
+        <precioUnitario>76</precioUnitario>
+        <montoDescuento xsi:nil="true"/>
+        <subTotal>76</subTotal>
+    </detalle>
+</facturaComputarizadaServicioBasico>

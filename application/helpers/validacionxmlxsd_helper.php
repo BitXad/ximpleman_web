@@ -150,6 +150,7 @@ class ValidacionXSD {
         $this->doc->loadXML($contents, LIBXML_NOBLANKS);
         fclose($myfile);
         // Valida un documento basado en un esquema
+        //echo "archivoxxxxx: ".$xsd;
         if (!$this->doc->schemaValidate($xsd)) {
             //Recupera un array de errores
             $this->errors = libxml_get_errors();

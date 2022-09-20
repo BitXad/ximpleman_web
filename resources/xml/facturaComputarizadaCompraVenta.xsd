@@ -138,7 +138,7 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="numeroTarjeta">
+                            <xs:element name="numeroTarjeta" nillable="true">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:integer">
                                         <xs:minInclusive value="0"/>
@@ -190,7 +190,7 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="montoGiftCard">
+                            <xs:element name="montoGiftCard" nillable="true">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:decimal">
                                         <xs:totalDigits value="17"/>
@@ -199,7 +199,7 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="descuentoAdicional">
+                            <xs:element name="descuentoAdicional" nillable="true">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:decimal">
                                         <xs:totalDigits value="17"/>
@@ -208,7 +208,7 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="codigoExcepcion" base="xs:integer">
+                            <xs:element name="codigoExcepcion" nillable="true">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:integer">
                                         <xs:minInclusive value="0"/>

@@ -12,6 +12,10 @@ class ComposerStaticInit0e4543c0aad90bfef322b0100e83e762
             'Svg\\' => 4,
             'Sabberworm\\CSS\\' => 15,
         ),
+        'R' => 
+        array (
+            'RobRichards\\XMLSecLibs\\' => 23,
+        ),
         'M' => 
         array (
             'Masterminds\\' => 12,
@@ -34,6 +38,10 @@ class ComposerStaticInit0e4543c0aad90bfef322b0100e83e762
         'Sabberworm\\CSS\\' => 
         array (
             0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
+        ),
+        'RobRichards\\XMLSecLibs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/robrichards/xmlseclibs/src',
         ),
         'Masterminds\\' => 
         array (
