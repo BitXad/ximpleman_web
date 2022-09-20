@@ -468,6 +468,14 @@ class Venta extends CI_Controller{
                 $modalidad    = $this->input->post('dosificacion_modalidad');
                 $parametro_tipoemision    = $this->input->post('parametro_tipoemision');
                 
+                $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+                if($dosificacion[0]["docsec_codigoclasificador"] == 23){
+                    //$cliente_nombre = "'S/N'";
+                    $razon = "S/N";
+                    $tipo_doc_identidad = 5;
+                    $numero_doc_identidad = 0;
+                }
+                
                 //echo "modalidad: ".$parametro_tipoemision." * codigo excepcion: ".$codigo_excepcion;
                 //Modificar la excepcion en caso de ser fuera de linea
                 
@@ -3412,7 +3420,14 @@ function modificarcliente()
             $cdi_codigoclasificador = $tipo_doc_identidad; //$this->input->post('cdi_codigoclasificador'); el JS no evnia esta variable
             $cliente_complementoci =  "'".$this->input->post('cliente_complementoci')."'";
             $cliente_excepcion = $this->input->post('cliente_excepcion');
-            
+            $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+            if($dosificacion[0]["docsec_codigoclasificador"] == 23){
+                $cliente_nombre = "'S/N'";
+                $cliente_razon = "'S/N'";
+                $tipo_doc_identidad = 5;
+                $cliente_nit = "'0'";
+                $cliente_codigo =  "'N/A'";
+            }
             if ($cliente_id>0){
                 $sql = "update cliente set ".
                         " cliente_nombre = ".$cliente_nombre.
