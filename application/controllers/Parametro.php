@@ -490,7 +490,7 @@ class Parametro extends CI_Controller{
                
                 
                 
-                $sql = "select * from cufd where cufd_codigo = (select cufd_codigo FROM punto_venta where tipopuntoventa_codigo = ".$puntoventa['puntoventa_codigo'].")";
+                $sql = "select * from cufd where cufd_codigo = (select cufd_codigo FROM punto_venta where puntoventa_codigo = ".$puntoventa['puntoventa_codigo'].")";
                 $resultado = $this->Venta_model->consultar($sql);
                 $cufds = $resultado[0];
                 
