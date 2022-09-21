@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<facturaElectronicaPrevalorada xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaPrevalorada.xsd">
+    <cabecera>
+        <nitEmisor>5152377019</nitEmisor>
+        <razonSocialEmisor>PASSWORD</razonSocialEmisor>
+        <municipio>CERCADO - COCHABAMBA</municipio>
+        <telefono>4511518 *(591)79999097</telefono>
+        <numeroFactura>127</numeroFactura>
+        <cuf>1608A399D64B1830FB90703423E79FF0313686D496A8B114C90B0D6D74</cuf>
+        <cufd>CQUF8QipYUEZBNzzc0OTIzNjFEMjc=QsKheWNLUFFKV1VIzNURFQzJFNTdGQ</cufd>
+        <codigoSucursal>0</codigoSucursal>
+        <direccion>URUGUAY Nº 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+        <codigoPuntoVenta>1</codigoPuntoVenta>
+        <fechaEmision>2022-09-15T15:10:50.795</fechaEmision>
+        <nombreRazonSocial>S/N</nombreRazonSocial>
+        <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+        <numeroDocumento>0</numeroDocumento>
+        <codigoCliente>N/A</codigoCliente>
+        <codigoMetodoPago>1</codigoMetodoPago>
+        <numeroTarjeta xsi:nil="true">0</numeroTarjeta>
+        <montoTotal>150.00</montoTotal>
+        <montoTotalSujetoIva>150</montoTotalSujetoIva>
+        <codigoMoneda>1</codigoMoneda>
+        <tipoCambio>1</tipoCambio>
+        <montoTotalMoneda>150.00</montoTotalMoneda>
+        <leyenda>Ley N° 453: Está prohibido importar, distribuir o comercializar productos expirados o prontos a expirar.</leyenda>
+        <usuario>ALEJANDRA RAMIREZ COLQUE</usuario>
+        <codigoDocumentoSector>23</codigoDocumentoSector>
+    </cabecera>
+    <detalle>
+        <actividadEconomica>451010</actividadEconomica>
+        <codigoProductoSin>49111</codigoProductoSin>
+        <codigoProducto>JN-131231</codigoProducto>
+        <descripcion>PASAJE A COCHABAMBA</descripcion>
+        <cantidad>1</cantidad>
+        <unidadMedida>62</unidadMedida>
+        <precioUnitario>100</precioUnitario>
+        <montoDescuento>0</montoDescuento>
+        <subTotal>100</subTotal>
+    </detalle>
+    <detalle><actividadEconomica>465000</actividadEconomica><codigoProductoSin>611849</codigoProductoSin><codigoProducto>220802172042</codigoProducto><descripcion>HUB/SWICH TP-LINK 8-PUERTOS 10/100 MBPS TL-SF1008D</descripcion><cantidad>1</cantidad><unidadMedida>47</unidadMedida><precioUnitario>150.00</precioUnitario><montoDescuento>0</montoDescuento><subTotal>150.00</subTotal></detalle><Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <SignedInfo>
+            <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+            <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+            <Reference URI="">
+                <Transforms>
+                    <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                    <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
+                </Transforms>
+                <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+                <DigestValue>ThhPHFXAQiJxh3BAetrcZNq4gOog3kAMkFpuIcv3gCY=</DigestValue>
+            </Reference>
+        </SignedInfo>
+        <SignatureValue>
+            itb123fGGhh12DpFDFas34ASDAPpSSSSadasDasAS1smkRsj5ksdjasd8asdkasjd8asdkas8asdk21v
+            a1qf+kBKLwF39mj+5zKo1qf+kBKLD42qD/+yxSMMS6DM5SywPxO1oyjnSZtObIe/45fdS4sE9+aNOn
+            UncYUlSDAPpSSSSadasgIMWwlX2XMJ4SDAPpSSSSadas6qihJt/3dEIdta1RETSDAPpSSSSadas9S2W
+            ALbT3VV8pjLqikVLcSDAPpSSSSadaseCKG8abcdssM0Wm8p+5grNNpSDAPpSSSSadasy4TvT4C3xS
+            70zSbKWeBUUglRcU8FECEcacu+UJaBCgRW0S3Q==
+        </SignatureValue>
+        <KeyInfo>
+            <X509Data>
+                <X509Certificate>
+                    TIIEuzCCZ7OgZIZsdZsDSZDSsdZsdSZSDZSDZKoZIhvcNZQEZBQZgbUxCzZZBgNVBZYTZkZ
+                    TIIEuzCCZ7OgZIZsdZsDSZDSsdZsdSZSDZSDZKoZIhvcNZQEZBQZgbUxCzZZBgNVBZYTZkZ
+                    bnRhbTlsbGZZZ1dVzdG9zLTdvYi5ibzCCZSIDQYZKoZIhvcNZQEBBQZDgasdaACZQoCggEB
+                    TIIEuzCCZ7OgZIZsdZsDSZDSsdZsdSZSDZSDZKoZIhvcNZQEZBQZgbUxCzZZBgNVBZYTZkZ
+                    bnRhbTlsbGZZZ1dVzdG9zLTdvYi5ibzCCZSIDQYZKoZIhvcNZQEBBQZDgasdaACZQoCggEB
+                    TIIEuzCCZ7OgZIZsdZsDSZDSsdZsdSZSDZSDZKoZIhvcNZQEZBQZgbUxCzZZBgNVBZYTZkZ
+                    bnRhbTlsbGZZZ1dVzdG9zLTdvYi5ibzCCZSIDQYZKoZIhvcNZQEBBQZDgasdaACZQoCggEB
+                    k/IsZZEBEETRTEQYDVQQZEoxTDZzNTc5TDI4TTITZYZKoZIhvcNZQkBZiNhcT5vbGQucXVp
+                    bnRhbTlsbGZZZ1dVzdG9zLTdvYi5ibzCCZSIDQYZKoZIhvcNZQEBBQZDgasdaACZQoCggEB
+                    bnRhbTlsbGZZZ1dVzdG9zLTdvYi5ibzCCZSIDQYZKoZIhvcNZQEBBQZDgasdaACZQoCggEB
+                    kTIh+T9dIRZ9GghiSZbP2Zk082ycgic2ZepdZLu7p2LEUZUhTXSXGZQkO4o/ZNZZk0ZQKgi
+                    bnRhbTlsbGZZZ1dVzdG9zLTdvYi5ibzCCZSIDQYZKoZIhvcNZQEBBQZDgasdaACZQoCggEB
+                    V8ZVyTkIDRCTcBYZO4ZZ8oV1UTbQEiDZZOYTZDHT2ZRy+kS+OzCdpZZKZZyds0ZClCZRlTg
+                    bnRhbTlsbGZZZ1dVzdG9zLTdvYi5ibzCCZSIDQYZKoZIhvcNZQEBBQZDgasdaACZQoCggEB
+                    Z1UdDQEZIE8DZuBgNVHREEZzZlhiNhcT5vZZZXVpbnRhbTlsbGZZZ1dVzdG9zLTdvYi5i7Z
+                    bzBRBgNVHR8ESZBITEZgRKBChkBodHRczovL2Rlc2ZycT9sbG8uYRzZIuZ29iLTZvL2Rlc2
+                    bnRhbTlsbGZZZ1dVzdG9zLTdvYi5ibzCCZSIDQYZKoZIhvcNZQEBBQZDgasdaACZQoCggEB
+                    NRrZKQl3YhKZKRSZyeegVZIiXlYeEyOe5qdn3XdyTCDkz4bTn02KbcsnZP7oVTqsodBSd0B
+                    ptrxqoqeZHhGBzEl5/vxDS/Sx4eO7ZXd1T4HtZntETdsZXZuPZZt4Vr57R/hqdZeTkk7uO9
+                    bnRhbTlsbGZZZ1dVzdG9zLTdvYi5ibzCCZSIDQYZKoZIhvcNZQEBBQZDgasdaACZQoCggEB
+                    YB+PC1LO7gnh4Zz9UsYb0YBG
+                </X509Certificate>
+            </X509Data>
+        </KeyInfo>
+    </Signature>
+</facturaElectronicaPrevalorada>

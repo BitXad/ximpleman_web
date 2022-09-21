@@ -2723,14 +2723,26 @@ function registrarcliente()
                     success:function(respuesta){ 
                         var datos = JSON.parse(respuesta);
                         cliente_id = datos[0]["cliente_id"];
-                        
                         //console.log(datos);
                         
-                        if(cliente_id>0){
-                            registrarventa(cliente_id);                            
-                        }
-                        else{
-                            registrarventa(respuesta);                            
+                        docsec_codigoclasificador = document.getElementById('docsec_codigoclasificador').value;
+                        if(docsec_codigoclasificador == 23){
+                        cantidad_facturas = document.getElementById('cantidad_facturas').value;
+                            while (cantidad_facturas > 0) {
+                                if(cliente_id>0){
+                                    registrarventa(cliente_id);                            
+                                }else{
+                                    registrarventa(respuesta);                            
+                                }
+                                cantidad_facturas--;
+                                sleep(2000);
+                            }
+                        }else{
+                            if(cliente_id>0){
+                                registrarventa(cliente_id);                            
+                            }else{
+                                registrarventa(respuesta);                            
+                            }
                         }
                     },
                     error: function(respuesta){
@@ -2753,8 +2765,18 @@ function registrarcliente()
                 var registro = JSON.parse(respuesta);
                 
                 cliente_id = registro[0]["cliente_id"];
-                registrarventa(cliente_id);
                 
+                docsec_codigoclasificador = document.getElementById('docsec_codigoclasificador').value;
+                if(docsec_codigoclasificador == 23){
+                cantidad_facturas = document.getElementById('cantidad_facturas').value;
+                    while (cantidad_facturas > 0) {
+                        registrarventa(cliente_id);
+                        cantidad_facturas--;
+                        sleep(2000);
+                    }
+                }else{
+                    registrarventa(cliente_id);
+                }
             },
             error: function(respuesta){
                 cliente_id = 0;            
@@ -3125,7 +3147,6 @@ function finalizarventa(){
            
            document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
            document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
-
             registrarcliente();
         }
         else
@@ -5941,7 +5962,11 @@ function finalizarventa_sin(){
             if(parametro_tipoemision == 1){ // Si el tipo de emision es en linea
 
                 if(navigator.onLine){ //si esta el linea
-
+                    let docsec_codigoc = document.getElementById('docsec_codigoclasificador').value;
+                    let cantidad_facturas = document.getElementById('cantidad_facturas').value;
+                    if(docsec_codigoc == 23 && cantidad_facturas >0){ //Prevalorada
+                        cliente_valido = 1;
+                    
                     if ((cliente_valido == 0 && cliente_excepcion == 1) || (cliente_valido == 1)){
 
                         if(razon_social!=''){
@@ -6011,6 +6036,11 @@ function finalizarventa_sin(){
                                 $("nit").focus();
                                 $("nit").select();
                             }
+                        }else{
+                            alert("ADVERTENCIA: Cantidada de facturas  a imprimir debe ser mayor a acero.!");
+                            document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+                            document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+                        }
                     }else{
                             //se debe registrar como fuera de linea
                             alert("ADVERTENCIA: Se detecto una falla en la conexion a internet, se cambiara a emision fuera de linea...!");
@@ -6199,4 +6229,13 @@ function borrar_datos_cliente(){
         document.getElementById('facturado').checked = true;
     }
     
+}
+
+function sleep(milliseconds) {
+ var start = new Date().getTime();
+ for (var i = 0; i < 1e7; i++) {
+  if ((new Date().getTime() - start) > milliseconds) {
+   break;
+  }
+ }
 }

@@ -277,6 +277,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -711,6 +712,10 @@ window.onkeydown = compruebaTecla;
     
     <div class="col-md-6" id="divventas1" style="display:none;">
         <center>            
+            <button class="btn btn-warning" type="button" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Procesando las facturas; por favor espere!..
+            </button>
             <img src="<?php echo base_url("resources/images/loader.gif"); ?>">
         </center>
     </div>
@@ -1085,11 +1090,11 @@ window.onkeydown = compruebaTecla;
             <!--<form method="post" name="descuento">-->                
             
             <?php 
-                $prev_ocultar = "block";
+                $prev_ocultar = "";
                 $prev_mostrar = "none";
                 if($dosificacion[0]["docsec_codigoclasificador"] == 23){
                     $prev_ocultar = "none";
-                    $prev_mostrar = "block";
+                    $prev_mostrar = "";
                 }
             ?> 
             
@@ -1170,11 +1175,10 @@ window.onkeydown = compruebaTecla;
                             <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>
                 </tr>
-                
-                <tr style="padding: 0; display: <?php echo $prev_mostrar; ?>">
+                <tr style="padding: 0; display: <?php echo $prev_mostrar; ?>">                      
                     <td style="padding: 0"><b>Cantidad de Facturas</b></td>
                         <td align="right" style="padding: 0;">
-                            <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="cantidad_facturas" size="<?php echo $ancho_boton; ?>" name="cantidad_facturas" value="0"  required min="0">
+                            <input class="btn btn-warning  btn-foursquarexs" style="padding: 0; background-color: #e08e0b; font-size: 20px;"  id="cantidad_facturas" size="<?php echo $ancho_boton; ?>" name="cantidad_facturas" value="1" required min="0" onclick="this.select();">
                         </td>
                 </tr>
                 
