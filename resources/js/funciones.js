@@ -5964,7 +5964,7 @@ function finalizarventa_sin(){
                 if(navigator.onLine){ //si esta el linea
                     let docsec_codigoc = document.getElementById('docsec_codigoclasificador').value;
                     let cantidad_facturas = document.getElementById('cantidad_facturas').value;
-                    if(docsec_codigoc == 23 && cantidad_facturas >0){ //Prevalorada
+                    if((docsec_codigoc == 23 && cantidad_facturas >0) || (docsec_codigoc != 23)){ //Prevalorada
                         cliente_valido = 1;
                     
                     if ((cliente_valido == 0 && cliente_excepcion == 1) || (cliente_valido == 1)){
