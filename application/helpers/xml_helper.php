@@ -5,10 +5,11 @@
    // use Dompdf\Options;
     */
 
-    /*use RobRichards\XMLSecLibs\XMLSecurityDSig;
+    use RobRichards\XMLSecLibs\XMLSecurityDSig;
     use RobRichards\XMLSecLibs\XMLSecurityKey;
-     */
-
+    
+//    include ('application/libraries/xmlseclib/xmlsecuritydsig.php');
+//    include ('application/libraries/xmlseclib/xmlsecuritykey.php');
 
     /**
      * Carga un archivo XML para su uso
@@ -354,7 +355,7 @@ $salto_linea='
             
             
             
-            if($modalidad_factura==1){ //Si es electronica firmars
+            if($modalidad_factura==11){ //Si es electronica firmars
 
                     $valor_vacio = "";
                     $dosificacion = $CI->Dosificacion_model->get_dosificacion(1);
@@ -511,21 +512,69 @@ $salto_linea='
                 </Reference>
             </SignedInfo>';
              
-             $seccion_firma_total = $cabecera_facturaxml.$detalle_facturaxml.
-                               $signature_facturaxml.$signedinfo_facturaxml.$signaturevalue_facturaxml.
-                               $keyinfo_facturaxml.$pie_facturaxml;
+//             $seccion_firma_total = $cabecera_facturaxml.$detalle_facturaxml.
+//                               $signature_facturaxml.$signedinfo_facturaxml.$signaturevalue_facturaxml.
+//                               $keyinfo_facturaxml.$pie_facturaxml;
+
              
-             $seccion_firma = $seccion_firma_total;
-             
+             $seccion_firma = $signedinfo_facturaxml;
+                
+             print_r($seccion_firma); "<br>seccion firma: ".$seccion_firma;
+                
             // 6. Tomar la sección de la firma y obtener un HASH del mismo aplicando el algoritmo SHA256.            
                 //$seccion_firma = $signedinfo_facturaxml;
                 $xml2 = new DOMDocument();
                 $xml2 -> loadXML($seccion_firma);
+                
                 $signedinfo_canonicalizado = $xml2->c14n();
                 
+                echo "<br>signedinfo canonicalizado: ".$signedinfo_canonicalizado;
                 //echo $textoCanonicalizado;
                 $hash_seccionfirma = hash("sha256", $signedinfo_canonicalizado,true);    
              
+                echo "<br><br>HASH SIGENEDINFO: ".$hash_seccionfirma;
+                openssl_sign($hash_seccionfirma, $firma_encriptada, $llave_privada, 'sha256WithRSAEncryption');                
+                echo "<br><br>HASH BASE64: ".base64_encode($firma_encriptada);
+
+                $hash_seccionfirma = hash("sha256", $signedinfo_canonicalizado);    
+             
+                echo "<br><br>HASH SIGENEDINFO: ".$hash_seccionfirma;
+                openssl_sign($hash_seccionfirma, $firma_encriptada, $llave_privada, 'sha256WithRSAEncryption');                
+                echo "<br><br>HASH BASE64: ".base64_encode($firma_encriptada);
+                
+                $hash_firma = hash("sha256", $digestvalue,true);  
+                echo "<br><br>HASH DIGESTVALUE: ".$hash_firma;
+                openssl_sign($hash_firma, $firma_encriptada, $llave_privada, 'sha256WithRSAEncryption');
+                echo "<br><br>HASH BASE64: ".base64_encode($hash_seccionfirma);
+                
+                
+
+                // datos que se quieren firmar
+                $datos = $signedinfo_facturaxml;
+
+                // crear unas claves pública y privada nuevas
+                $new_key_pair = openssl_pkey_new(array(
+                    "private_key_bits" => 2048,
+                    "private_key_type" => OPENSSL_KEYTYPE_RSA,
+                ));
+//                openssl_pkey_export($new_key_pair, $private_key_pem);
+//
+//                $details = openssl_pkey_get_details($new_key_pair);
+                $public_key_pem = $llave_publica;
+                $private_key_pem = $llave_privada;
+
+                // crear la firma
+                openssl_sign($datos, $firma, $private_key_pem, OPENSSL_ALGO_SHA256);
+                  echo "<br><br>firmaaaaaaaaaaa: ".base64_encode($firma)."<br><br>";
+                // guardar para después
+//                file_put_contents('private_key.pem', $private_key_pem);
+//                file_put_contents('public_key.pem', $public_key_pem);
+//                file_put_contents('signature.dat', $firma);
+
+                // comprobar la firma
+                $r = openssl_verify($datos, $firma, $public_key_pem, "sha256WithRSAEncryption");
+                var_dump($r);
+
 
             // 7. Encriptar el HASH obtenido utilizando el algoritmo RSA SHA256 con la llave privada.                     
                 openssl_sign($hash_seccionfirma, $firma_encriptada, $llave_privada, 'sha256WithRSAEncryption');
@@ -567,6 +616,8 @@ $salto_linea='
             fwrite($archivo_xml, $factura_xml);
             fclose($archivo_xml);
             
+//            firmarxml();
+            firmarxml($nombreArchivo);
             //firmador_XML($directorio, $archivo.$factura['factura_id']);
             return $archivo_xml;
 
@@ -876,6 +927,103 @@ I2cRr7/RL5//3ERCtBAVWFhaPeHfeCXIFIkbiv9tEmjLUOTK0+jZ
         return $xml;
     }
 
+    
+function firmarxmlprueba(){
+    
+    $base_url = explode('/', base_url());
+    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+    $archivo = "pruebaxml.xml";
+    
+    // Load the XML to be signed
+    $doc = new DOMDocument();
+    $doc->load($directorio.$archivo);
+
+    // Create a new Security object 
+    $objDSig = new XMLSecurityDSig();
+    // Use the c14n exclusive canonicalization
+    $objDSig->setCanonicalMethod(XMLSecurityDSig::EXC_C14N);
+    // Sign using SHA-256
+    $objDSig->addReference(
+        $doc, 
+        XMLSecurityDSig::SHA256, 
+        array('http://www.w3.org/2000/09/xmldsig#enveloped-signature')
+    );
+
+    // Create a new (private) Security key
+    $objKey = new XMLSecurityKey(XMLSecurityKey::RSA_SHA256, array('type'=>'private'));
+    /*
+    If key has a passphrase, set it using
+    $objKey->passphrase = '<passphrase>';
+    */
+    // Load the private key
+    $objKey->loadKey($directorio.'privatekey.pem', TRUE);
+
+    // Sign the XML file
+    $objDSig->sign($objKey);
+
+    // Add the associated public key to the signature
+    $objDSig->add509Cert(file_get_contents($directorio.'certificado.pem'));
+
+    // Append the signature to the XML
+    $objDSig->appendSignature($doc->documentElement);
+    // Save the signed XML
+    $doc->save($directorio."pruebaxmlfirmado.xml");
+    
+}
+    
+
+//Aca lo meti en una funcion que está dentro de una clase
+//xmlFile es la ruta exacta donde esta el XML que vas a firmar
+//public y privatePath son del certificado
+//xmlpath es solo la ubicacion donde está, sin el nombre del archivo en xmlFile esta la ubicacion + el //nombre del archivo
+//xmlName es solo el nombre del archivo xml sin la ruta
+//    function signBill($xmlFile,$publicPath,$privatePath,$xmlpath,$xmlName){
+    function firmarxml($file){
+            $base_url = explode('/', base_url());
+            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+            $archivo = $file; //"pruebaxml.xml";        
+        
+        
+//        $ReferenceNodeName = 'ExtensionContent';
+        $ReferenceNodeName = 'facturaElectronicaCompraVenta';
+        
+        $privateKey = file_get_contents($directorio.'privatekey.pem');
+        
+        $publicKey = file_get_contents($directorio.'certificado.pem');
+        
+        $domDocument = new DOMDocument();
+        $domDocument->load($archivo);
+        
+        $objSign = new Xmlsecuritydsig();
+        
+        $objSign->setCanonicalMethod(XMLSecurityDSig::C14N);
+    
+        $objSign->addReference(
+                $domDocument,
+                XMLSecurityDSig::SHA256,
+                array('http://www.w3.org/2000/09/xmldsig#enveloped-signature'),
+                $options = array('force_uri' => true)
+                );
+        
+//        // Sign using SHA-256
+//         $objDSig->addReference(
+//             $doc, 
+//             XMLSecurityDSig::SHA256, 
+//             array('http://www.w3.org/2000/09/xmldsig#enveloped-signature')
+//         );
+        
+        $objKey = new Xmlsecuritykey(XMLSecurityKey::RSA_SHA256, array('type'=>'private'));
+        
+        $objKey->loadKey($privateKey);
+        
+        $objSign->sign($objKey, $domDocument->getElementsByTagName($ReferenceNodeName)->item(0));
+        
+        $objSign->add509Cert($publicKey);
+                
+        $content = $domDocument->save($archivo);
+        
+    
+    }
 
     
 ?>

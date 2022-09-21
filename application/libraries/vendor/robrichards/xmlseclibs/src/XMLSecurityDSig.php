@@ -109,9 +109,10 @@ class XMLSecurityDSig
      */
     public function __construct($prefix='ds')
     {
+        $prefix = '';// Linea añadida por Carlos
         $template = self::BASE_TEMPLATE;
         if (! empty($prefix)) {
-            $this->prefix = $prefix.':';
+            $this->prefix = ""; //$prefix.':'; //cambiado por carlos
             $search = array("<S", "</S", "xmlns=");
             $replace = array("<$prefix:S", "</$prefix:S", "xmlns:$prefix=");
             $template = str_replace($search, $replace, $template);
