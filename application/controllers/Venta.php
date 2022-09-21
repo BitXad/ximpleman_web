@@ -1038,18 +1038,17 @@ class Venta extends CI_Controller{
 //                            $xml = generarfacturaEducativoXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $nombre_archivo);
                         }
                         
-                        
-                        if ($dosificacion[0]["docsec_codigoclasificador"]=="39"){ //FACTURA SECTORES EDUCATIVOS
-
-                            $nombre_archivo = ($modalidad==1)?"facturaElectronicaComercializacionGnGlp" : "facturaComputarizadaComercializacionGnGlp";
-//                            $xml = generarfacturaComercializacionGnGlpXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $nombre_archivo);
-                        }
-                        
                         if ($dosificacion[0]["docsec_codigoclasificador"]=="23"){ //FACTURA PREVALORADA
 
                             $nombre_archivo = ($modalidad==1)?"facturaElectronicaPrevalorada" : "facturaComputarizadaPrevalorada";                            
                             //$xml = generarfacturaPrevaloradaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
                             
+                        }                        
+                        
+                        if ($dosificacion[0]["docsec_codigoclasificador"]=="39"){ //FACTURA SECTORES EDUCATIVOS
+
+                            $nombre_archivo = ($modalidad==1)?"facturaElectronicaComercializacionGnGlp" : "facturaComputarizadaComercializacionGnGlp";
+//                            $xml = generarfacturaComercializacionGnGlpXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $nombre_archivo);
                         }
                             
                         $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $nombre_archivo, $dosificacion[0]["docsec_codigoclasificador"]);
@@ -1067,9 +1066,9 @@ class Venta extends CI_Controller{
                         }else{
                             
                                 // COMPRESION XML EN GZIP
-                                $datos = implode("", file($directorio."{$nombre_archivo}".$factura[0]['factura_id'].".xml"));
+                                $datos = implode("", file($directorio.$nombre_archivo.$factura[0]['factura_id'].".xml"));
                                 $gzdata = gzencode($datos, 9);
-                                $fp = fopen($directorio."{$nombre_archivo}".$factura[0]['factura_id'].".xml.zip", "w");
+                                $fp = fopen($directorio.$nombre_archivo.$factura[0]['factura_id'].".xml.zip", "w");
                                 // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
                                 fwrite($fp, $gzdata);
                                 fclose($fp);
@@ -1114,7 +1113,7 @@ class Venta extends CI_Controller{
                             // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml*");*/
         
                             // HASH (SHA 256)
-                            $xml_comprimido = hash_file('sha256',"{$directorio}{$nombre_archivo}{$factura[0]['factura_id']}.xml.zip");
+                            $xml_comprimido = hash_file('sha256',$directorio.$nombre_archivo.$factura[0]['factura_id'].".xml.zip");
                             //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
                             //var_dump($xml_comprimido);
                             //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
@@ -5187,7 +5186,7 @@ function anular_venta($venta_id){
                 "hashArchivo"           => $hash_archivo,
             ]];
             
-            //var_dump($parametros);
+            var_dump($parametros);
         //}
         
         try{
