@@ -257,8 +257,8 @@ $salto_linea='
         
             $domicilioCliente = "CALLE JUAN MENDEZ N 23";
             $cabecera_facturaxml .= $salto_linea.'          <domicilioCliente>'.$domicilioCliente.'</domicilioCliente>';
-            
         }
+        
         $cabecera_facturaxml .= $salto_linea.'          <codigoTipoDocumentoIdentidad>'.$factura['cdi_codigoclasificador'].'</codigoTipoDocumentoIdentidad>';
         
         if ($documento_sector != 23){
@@ -617,7 +617,11 @@ $salto_linea='
             fclose($archivo_xml);
             
 //            firmarxml();
-            firmarxml($nombreArchivo);
+            if ($modalidad_factura == 1){
+                
+                firmarxml($nombreArchivo);
+            }
+            
             //firmador_XML($directorio, $archivo.$factura['factura_id']);
             return $archivo_xml;
 
@@ -986,6 +990,7 @@ function firmarxmlprueba(){
         
 //        $ReferenceNodeName = 'ExtensionContent';
         $ReferenceNodeName = 'facturaElectronicaCompraVenta';
+        $ReferenceNodeName = 'facturaElectronicaPrevalorada';
         
         $privateKey = file_get_contents($directorio.'privatekey.pem');
         
