@@ -1163,700 +1163,17 @@ class Venta extends CI_Controller{
                                 $res  = array("mensajesList" => "No Enviado por  estar en offline");
                                     echo json_encode($res);
                             }
-                                
-                                    /* INICIO generar el pdf */ 
-                                    $micad = ""; 
-                                    if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){ 
-                                        $micad .= "<!DOCTYPE html>"; 
-                                        $micad .= "<html>"; 
-                                        $micad .= "    <head>";
-                                        $micad .= "        <style type='text/css'>";
-                                        $micad .= "  p {";
-                                        $micad .= "      font-family: Arial;";
-                                        $micad .= "      font-size: 8pt;";
-                                        $micad .= "      line-height: 80%;";   /*esta es la propiedad para el interlineado*/
-                                        $micad .= "      color: #000;";
-                                        $micad .= "      padding: 10px;";
-                                        $micad .= "  }";
-                                        $micad .= "  div {";
-                                        $micad .= "      margin-top: 0px;";
-                                        $micad .= "      margin-right: 0px;";
-                                        $micad .= "      margin-bottom: 0px;";
-                                        $micad .= "      margin-left: 0px;";
-                                        $micad .= "      margin: 0px;";
-                                        $micad .= "  }";
-                                        $micad .= "  table{";
-                                        $micad .= "      width : 7cm;";
-                                        $micad .= "      margin : 0 0 0px 0;";
-                                        $micad .= "      padding : 0 0 0 0;";
-                                        $micad .= "      border-spacing : 0 0;";
-                                        $micad .= "      border-collapse : collapse;";
-                                        $micad .= "      font-family: Arial;";
-                                        $micad .= "      font-size: 8pt;";
-                                        $micad .= "      td{";
-                                        $micad .= "          border:hidden;";
-                                        $micad .= "      }";
-                                        $micad .= "  }";
-                                        $micad .= "  td#comentario {";
-                                        $micad .= "      vertical-align : bottom;";
-                                        $micad .= "      border-spacing : 0;";
-                                        $micad .= "  }";
-                                        $micad .= "  div#content {";
-                                        $micad .= "      background : #ddd;";
-                                        $micad .= "      font-size : 8px;";
-                                        $micad .= "      margin : 0 0 0 0;";
-                                        $micad .= "      padding : 0 0px 0 0px;";
-                                        $micad .= "  }";
-                                        $micad .= "       </style>"; 
-                                        $micad .= "   </head>";
-                                        $tipo_factura = $this->parametros["parametro_altofactura"]; //15 tamaño carta  
-                                        $ancho = $this->parametros["parametro_anchofactura"]."cm"; 
-                                        $margen_izquierdo = $this->parametros["parametro_margenfactura"]."cm"; 
-                                        $micad .= "  <body style='width: ".$ancho."'>"; 
-                                        $micad .= "  <table class='table'>";
-                                        $micad .= "    <tr>";
-                                        $micad .= "        <td style='padding: 0; width: ".$margen_izquierdo."'></td>";
-                                        $micad .= "        <td style='padding: 0;'>";
-                                        $micad .= "            <table class='table' style='width: ".$ancho."'>";
-                                        $micad .= "                <tr>";
-                                        $micad .= "                    <td style='padding: 0;' colspan='4'>";
-                                        $micad .= "                        <table style='width: ".$ancho."' style='font-family: Arial'>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-center' style='padding-bottom: 5px;'><center>";
-                                        $micad .= "                                     ";
-                                                                                       $titulo1 = "FACTURA";
-                                                                                       $tipo = 1;
-                                                                                    if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
-                                                                                    else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";";
-                                        $micad .= "                                    ".$titulo1."<br>";
-                                        $micad .= "                                    ".$subtitulo."<br>";
-                                        $micad .=                                       $empresa[0]['empresa_nombre']."<br>";
-                                        $micad .=                                       $empresa[0]['empresa_eslogan']."<br>";
-                                                                                    if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){
-                                        $micad .= "                                       DE: ".$empresa[0]['empresa_propietario']."<br>";
-                                                                                    }
-                                                                                    if($factura[0]['factura_sucursal']==0){
-                                        $micad .= "                                            CASA MATRIZ";
-                                                                                    }else{
-                                        $micad .= "                                            SUCURSAL ".$factura[0]['factura_sucursal'];
-                                                                                    }
-                                        $micad .= "                                    <br>Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>";
-                                        $micad .=                                     $empresa[0]['empresa_direccion']."<br>";
-                                        $micad .= "                                    Tel. ".$empresa[0]['empresa_telefono']."<br>";
-                                        $micad .=                                     $empresa[0]['empresa_ubicacion']."<br>";
-                                        $micad .= "                                ";
-                                        $micad .= "                                </center></td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                        </table>";
-                                        $micad .= "                        <table style='width:".$ancho."  font-family: Arial'>";
-                                        $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
-                                        $micad .= "                                <td class='text-center'><center>NIT: ".$factura[0]['factura_nitemisor']."</center></td>";
-                                        $micad .= "                            </tr>";
-//                                        $micad .= "                            <tr>";
-//                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_nitemisor']."</center></td>";
-//                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-center'><center>FACTURA Nº: ".$factura[0]['factura_numero']."</center></td>";
-                                        $micad .= "                            </tr>";
-//                                        $micad .= "                            <tr>";
-//                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_numero']."</center></td>";
-//                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-center'><center>CÓD. AUTORIZACIÓN</center></td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-center'><div style='word-wrap: break-word; width: ".$ancho."' ><center>".$factura[0]['factura_cuf']."</center></div></td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                        </table>";
-                                        $micad .= "                    </td>";
-                                        $micad .= "                </tr>";
-                                        $micad .= "                <tr>";
-                                        $micad .= "                    <td colspan='4' style='padding: 0;'>";
-                                        $micad .= "                        <table style='width: ".$ancho."' >";
-                                        $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
-                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; white-space: nowrap; text-align: right'>NOMBRE/RAZ&Oacute;N SOCIAL: </td>";
-                                        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_razonsocial']."</td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>NIT/CI/CEX: </td>";
-                                        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_nit']."  ";
-                                                                               if($factura[0]['cdi_codigoclasificador']!=5){
-                                        $micad .=                                  $factura[0]["cliente_complementoci"];
-                                                                               }
-                                        $micad .= "                                </td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>COD. CLIENTE: </td><!-- PONER CODIGO DE CLIENTE -->";
-                                        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_codigocliente']."</b><br></td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
-                                        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>FECHA DE EMISI&Oacute;N: </td>";
-                                        $micad .= "                                <td style='padding: 0; padding-left: 3px'>";
-                                                                                    $fecha = new DateTime($factura[0]['factura_fechaventa']);
-                                                                                    $fecha_d_m_a = $fecha->format('d/m/Y');
-                                        $micad .=                                   $fecha_d_m_a." ".$factura[0]['factura_hora'];
-                                        $micad .= "                                </td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                        </table>";
-                                        $micad .= "                    </td>";
-                                        $micad .= "                </tr>";
-                                        $micad .= "                <tr>";
-                                        $micad .= "                    <td colspan='4' align='center' style='padding: 0;'>DETALLE</td>";
-                                        $micad .= "                </tr>";
-                                        $micad .= "                <tr>";
-                                        $micad .= "                    <td colspan='4' style='padding: 0'>";
-                                        $micad .= "                        <table style='width: ".$ancho."'>";
-                                                                            $cont = 0;
-                                                                            $cantidad = 0;
-                                                                            $total_descuento = 0;
-                                                                            $total_final = 0;
-                                                                            $total_subtotal = 0;
-                                                                            $mostrarice = 0;
-                                                                            $ice = 0;
-                                                                            if($factura[0]['estado_id']<>3){
-                                                                                foreach($detalle_factura as $d){;
-                                                                                    $cont = $cont+1;
-                                                                                    $cantidad += $d['detallefact_cantidad'];
-                                                                                    $total_descuento += $d['detallefact_descuento']; 
-                                                                                    $total_final += $d['detallefact_total']; 
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class=-text-bold' colspan='0' style='font-size: 8pt; padding: 0;'>";
-                                        $micad .= "                                ";
-                                        $micad .=                                     $d['detallefact_codigo']." - ".$d['detallefact_descripcion'];
-                                                                                    if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != ""){
-                                        $micad .= "                                      [".$d['detallefact_unidadfactor']."]";
-                                                                                    }
-                                                                                    if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ){
-                                        $micad .=                                       $d['detallefact_preferencia'];
-                                                                                    }
-                                                                                    if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ){
-                                        $micad .= "                                        <br>".nl2br($d['detallefact_caracteristicas']);
-                                                                                    }
-                                        $micad .= "                                ";
-                                        $micad .= "                                </td>";
-                                        $micad .= "                                <td colspan='2'></td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td style='font-size: 8pt; padding: 0;'>";
-                                        $micad .=                                     number_format($d['detallefact_cantidad'],2,'.',',')." X ";
-                                        $micad .=                                     number_format($d['detallefact_precio'],2,'.',',')." - ";
-                                        $micad .=                                     number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',','); //." + "; //."0.00 +  0.00";
-                                                                                    if ($mostrarice==1){
-                                        $micad .= "                                         + ".number_format($d['detallefact_ice'],2,'.',',')." + ";
-                                        $micad .=                                         number_format($d['detallefact_iceesp'],2,'.',',');
-                                                                                    }
-                                        $micad .= "                                </td>";
-                                        $micad .= "                                <td style='width: 0.5cm !important;'></td>";
-                                        $micad .= "                                <td align='right' style='font-size: 8pt; padding: 0;'>". number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),2,'.',',')."</td>";
-                                        $micad .= "                            </tr>";
-                                                                                }
-                                                                            }
-                                        $micad .= "                    </table>";
-                                        $micad .= "                    </td>";
-                                        $micad .= "                </tr>";
-                                                                $total_final_factura = $factura[0]['factura_subtotal']; 
-                                                                $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
-                                        $micad .= "                <tr>";
-                                        $micad .= "                    <td colspan='4' style='padding: 0'>";
-                                        $micad .= "                        <table style='width: ".$ancho."; font-size: 8pt !important' >";
-                                        $micad .= "                            <tr style='border-top-style: dotted; border-top-width: 1px;'>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>SUBTOTAL Bs</td>";
-                                        $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($total_final_factura,2,'.',',')."</td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>DESCUENTO Bs</td>";
-                                        $micad .= "                                <td style='width: 1cm !important;'></td>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL Bs</td>";
-                                        $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_total'],2,'.',',')."</td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO GIFT CARD Bs</td>";
-                                        $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura[0]['factura_giftcard'],2,'.',',')."</td>";
-                                        $micad .= "                            </tr>";
-                                                                                if ($mostrarice==1){
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
-                                        $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($ice,2,'.',','); //number_format($factura[0]['factura_ice'],2,'.',',');
-                                        $micad .= "                                </td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE PORCENTUAL Bs</td>";
-                                        $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right' style='text-align: right'> ".number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',',');
-                                        $micad .= "                                </td>";
-                                        $micad .= "                            </tr>";
-                                                                                }
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO A PAGAR Bs</td>";
-                                        $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr>";
-                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>IMPORTE BASE CR&Eacute;DITO FISCAL Bs</td>";
-                                        $micad .= "                                <td></td>";
-                                        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
-                                        $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px; font-size: 10px;'>";
-                                        $micad .= "                                    <br>";
-                                        $micad .= "                                    SON: ".num_to_letras($factura_total,' Bolivianos');
-                                        $micad .= "                                </td>";
-                                        $micad .= "                            </tr>";
-                                        $micad .= "                        </table>";
-                                        $micad .= "                    </td>";
-                                        $micad .= "                </tr>";
-                                        $micad .= "                <tr>";
-                                        $micad .= "                    <td class='text-center' style='padding: 0; padding-top: 5px;' colspan='4'>";
-                                        $micad .= "                    <center>";
-                                        $micad .= "                        <span style='font-size: 8.5pt'><p>".$factura[0]['factura_leyenda1']."</p></span>";
-                                        $micad .= "                        <span style='font-size: 8pt !important;'><div style='line-height: 1.1;'>".$factura[0]['factura_leyenda2']."</div></span>";
-                                        $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda3']."</p></span>";
-                                        $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda4']."</p></span>";
-                                        /*$micad .= "                        <span style='font-size: 6.5pt !important'>";
-                                                                           if ($factura[0]['factura_tipoemision']==2){
-                                        $micad .= "                            <p style='padding-bottom: 0px'><b>Este documento es la representación gráfica de un Documento Fiscal Digital emitido fuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b></p>";
-                                                                           }
-                                        $micad .= "                        </span>";*/
-                                        $micad .= "                    </center>";
-                                        $micad .= "                    </td>";   
-                                        $micad .= "                </tr>";
-                                        $micad .= "                <tr>";
-                                        $micad .= "                    <td style='padding: 0; padding-top: 10px' colspan='4'>";
-                                        $micad .= "                        <center>";
-                                                $this->load->library('ciqrcode');
-                                                $num_fact      = $factura[0]['factura_numero'];
-                                                $nit_emisor    = $factura[0]['factura_nitemisor'];
-                                                $ruta      = $factura[0]['factura_ruta'];
-                                                $cuf       = $factura[0]['factura_cuf'];
-                                                $tamanio   = $factura[0]['factura_tamanio'];
-                                                $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
-                                                 //hacemos configuraciones
-                                                $params['data'] = $cadenaQR;//$this->random(30);
-                                                $params['level'] = 'H';
-                                                $params['size'] = 5;
-                                                $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
-                                                $this->ciqrcode->generate($params);
-                                                $base_url = explode('/', base_url());
-                                                                                            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
-                                                                                            $codigoqr = $directorio.'/images/qrcode'.$usuario_id.'.png';
-                                                                                            $path = $codigoqr;
-                                                                                            $type = pathinfo($path, PATHINFO_EXTENSION);
-                                                                                            $data = file_get_contents($path);
-                                                                                            $elcodigoqrbase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                                        $micad .= "                            <img src='".$elcodigoqrbase64."' width='100' height='100' alt='Codigo QR'>"; 
-                                        //$micad .= "                            <img src='".$codigoqr."' width='100' height='100'>";
-                                        $micad .= "                        </center>";
-                                        $micad .= "                    </td>";
-                                        $micad .= "                </tr>";
-                                        $micad .= "            </table>";
-                                        $micad .= "        </td>";
-                                        $micad .= "    </tr>";
-                                        $micad .= "</table>";
-                                        $micad .= "</body>"; 
-                                        $micad .= "</html>";
-                                        
-                                    }else{ //para carta o media carta 
-                                            
-                                        
-                                        $micad .= "<!DOCTYPE html>"; 
-                                        $micad .= "<html>"; 
-                                        $micad .= "    <head>"; 
-                                        //$micad .= "    <link rel='stylesheet' href='".base_url()."resources/css/bootstrap.min.css'>"; 
-                                        $micad .= "        <style type='text/css'>"; 
-                                        $micad .= "            @font-face {";
-                                        $micad .= "                font-family : 'Arial' !important;";
-                                                        $base_url = explode('/', base_url());
-                                                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
-                                        $micad .= "                 src: url('".$directorio."fonts/arial.ttf') format('truetype');";
-                                        $micad .= "            }";
-                                        $micad .= "           p {"; 
-                                        $micad .= "               font-family: Arial;"; 
-                                        $micad .= "               font-size: 7pt;"; 
-                                        $micad .= "               line-height: 120%;"; 
-                                        $micad .= "               color: #000;"; 
-                                        $micad .= "               padding: 10px;"; 
-                                        $micad .= "           }"; 
- 
-                                        $micad .= "           div {"; 
-                                        $micad .= "         margin-top: 0px;"; 
-                                        $micad .= "           margin-right: 0px;"; 
-                                        $micad .= "           margin-bottom: 0px;"; 
-                                        $micad .= "           margin-left: 0px;"; 
-                                        $micad .= "            margin: 0px;"; 
-                                        $micad .= "           }"; 
- 
- 
-                                        $micad .= "          table{"; 
-                                        $micad .= "          width : 7cm;"; 
-                                        $micad .= "           margin : 0 0 0px 0;"; 
-                                        $micad .= "          padding : 0 0 0 0;"; 
-                                        $micad .= "          border-spacing : 0 0;"; 
-                                        $micad .= "          border-collapse : collapse;"; 
-                                        $micad .= "          font-family: Arial;"; 
-                                        $micad .= "          font-size: 7pt;  "; 
- 
-                                        $micad .= "          }"; 
- 
-                                        $micad .= "          .table-condensed tr td{"; 
-                                        $micad .= "               border:1px solid black;"; 
-                                        $micad .= "           }"; 
- 
-                                        $micad .= "           td#comentario {"; 
-                                        $micad .= "               vertical-align : bottom;"; 
-                                        $micad .= "               border-spacing : 0;"; 
-                                        $micad .= "           }"; 
-                                        $micad .= "          div#content {"; 
-                                        $micad .= "            background : #ddd;"; 
-                                        $micad .= "            font-size : 7px;"; 
-                                        $micad .= "            margin : 0 0 0 0;"; 
-                                        $micad .= "            padding : 0 5px 0 5px;"; 
-                                        $micad .= "            border-left : 1px solid #aaa;"; 
-                                        $micad .= "           border-right : 1px solid #aaa;"; 
-                                        $micad .= "           border-bottom : 1px solid #aaa;"; 
-                                        $micad .= "           }"; 
-                                        $micad .= "       </style>"; 
- 
-                                        $micad .= "   </head>"; 
-                                        $tipo_factura = $this->parametros["parametro_altofactura"]; //15 tamaño carta  
-                                        $ancho = $this->parametros["parametro_anchofactura"]; 
-                                        $margen_izquierdo = $this->parametros["parametro_margenfactura"]."cm"; 
-                                        $micad .= "    <body style='width: ".$ancho."cm;'>"; 
-                                        $micad .= "    <table class='table' style='width: ".$ancho."cm; margin-top: 20px;'>"; 
-                                        $micad .= "        <tr>"; 
-                                        $micad .= "           <td style='padding: 0; width: ".$margen_izquierdo."'></td>"; 
-                                        $micad .= "            <td class='borde_pagina' style='padding: 0;'>"; 
-                                        $micad .= "        <table class='table' style='margin-top: 20px;'>"; 
-                                        $micad .= "        <tr>"; 
-                                        $micad .= "        <td style='padding: 0; width: ".$margen_izquierdo."'></td>"; 
-                                        $micad .= "        <td class='borde_pagina' style='padding: 0;'>"; 
-                                        $micad .= "        <table class='table' style='width: ".$ancho."cm; padding: 0;' >"; 
-                                        $micad .= "            <tr>"; 
-                                        $micad .= "            <td>"; 
-                                        $micad .= "            <table style='width: 100%; margin: 0;' >"; 
-                                        $micad .= "            <tr>"; 
-                                        $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
-                                        $micad .= "                    <center>"; 
-                                        $micad .= "                            <font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font><br>"; 
-//                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
-//                                        $micad .= "                                "; 
-//                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
-//                                        $micad .= "                                "; 
-//                                                                       } 
-
-                                        $micad .= "                            <font size='1' face='Arial'>"; 
-                                        $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
-                                        $micad .= "                                "; 
-                                                                                if($factura[0]['factura_sucursal']==0){ 
-                                        $micad .= "                                            <br>CASA MATRIZ"; 
-                                                                                }else{ 
-                                        $micad .= "                                            <br>SUCURSAL ".$factura[0]['factura_sucursal']; 
-                                                                                } 
-                                        $micad .= "                                <br>"; 
-                                        $micad .= "                                Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>"; 
-                                        $micad .=                                 $empresa[0]['empresa_direccion']."<br>"; 
-                                        $micad .= "                                Teléfono: ".$empresa[0]['empresa_telefono']."<br>"; 
-                                        $micad .=                                 $empresa[0]['empresa_ubicacion']; 
-                                        $micad .= "                            </small>"; 
-                                        $micad .= "                            </font>"; 
-                                        $micad .= "                    </center>"; 
-                                        $micad .= "                </td>"; 
-                                        $micad .= "                <td style='width: ".round($ancho/3,2)."cm; padding:0;line-height: 9px;'>"; 
-                                        $micad .= "                </td>"; 
-                                        $micad .= "                <td style='width: ".round($ancho/3,2)."cm;  padding: 0; line-height: 10px;'>"; 
-                                        $micad .= "                    <table style='width: ".round($ancho/3,2)."cm; word-wrap: break-word; max-width: 6cm; padding:0; border-bottom: #0000eb'>"; 
-                                        $micad .= "                        <tr>"; 
-                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>NIT: </td>"; 
-                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'> ".$factura[0]['factura_nitemisor']."</td>"; 
-                                        $micad .= "                        </tr>"; 
-                                        $micad .= "                        <tr>"; 
-                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>FACTURA Nº: </td>"; 
-                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'>".$factura[0]['factura_numero']."</td>"; 
-                                        $micad .= "                        </tr>"; 
-                                        $micad .= "                        <tr>"; 
-                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>CÓD AUTORIZACIÓN: </td>"; 
-                                        $micad .= "                            <td style='font-family: arial; font-size: 8pt; padding-left: 5px; max-width: 3cm'><div style='word-wrap: break-word !important; padding=0px'>".$factura[0]['factura_cuf']."</div></td>"; 
-                                        $micad .= "                        </tr>"; 
-                                        $micad .= "                    </table>"; 
-                                        $micad .= "                </td>"; 
-                                        $micad .= "            </tr>"; 
-                                                        $fecha = new DateTime($factura[0]['factura_fecha']);  
-                                                        $fecha_d_m_a = $fecha->format('d/m/Y'); 
-                                        $micad .= "            <tr style='padding: 0;'>"; 
-                                        $micad .= "                <td colspan='3' style='padding: 0; font-family: Arial'>"; 
-                                        $micad .= "                    <center style='margin-bottom:15px'>"; 
-                                        $micad .= "                        <font size='4' face='arial'>FACTURA</font> <br>"; 
-                                        $micad .= "                        <font size='1' face='arial'>(Con Derecho a Cr&eacute;dito Fiscal)</font> <br>"; 
-                                        $micad .= "                    </center>"; 
-                                        $micad .= "                </td>"; 
-                                        $micad .= "            </tr>"; 
-                                        $micad .= "            <tr>"; 
-                                        $micad .= "                <td colspan='2'>";
-                                        //$micad .= "                    <div style='display: inline-block; float:left; width:70%'>"; 
-                                        $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
-                                        $micad .= "                            <tr>"; 
-                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px;'  class='autoColor'>Fecha:</td>"; 
-                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$fecha_d_m_a." ".$factura[0]['factura_hora']."</td>"; 
-                                        $micad .= "                            </tr>"; 
-                                        $micad .= "                            <tr>"; 
-                                        $micad .= "                                <td style=' font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Nombre/Razón Social:</td>"; 
-                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_razonsocial']."</td>"; 
-                                        $micad .= "                            </tr>"; 
-                                        $micad .= "                        </table>"; 
-                                        //$micad .= "                    </div>"; 
-                                        $micad .= "                </td>"; 
-                                        $micad .= "                <td>"; 
-                                        //$micad .= "                    <div style='display: inline-block; float:left; width:30%'>"; 
-                                        $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
-                                        $micad .= "                            <tr>"; 
-                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; ' class='autoColor'>NIT/CI/CEX:</td>"; 
-                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_nit']."  ";
-                                                                                    if ($factura[0]['cdi_codigoclasificador']!=5){
-                                        $micad .=                                        $factura[0]["cliente_complementoci"];
-                                                                                    }
-                                        $micad .= "</td>"; 
-                                        $micad .= "                            </tr>"; 
-                                        $micad .= "                            <tr>"; 
-                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Cod. Cliente:</td>"; 
-                                        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_codigocliente']."</td>"; 
-                                        $micad .= "                            </tr>"; 
-                                        $micad .= "                        </table>"; 
-                                        //$micad .= "                    </div>"; 
-                                        $micad .= "                </td>"; 
-                                        $micad .= "            </tr>"; 
-                                        $micad .= "            </table>";
-                                        $micad .= "            <br>";
-                                        $micad .= "            </td>"; 
-                                        $micad .= "            </tr>"; 
-                                                         $mostrarice = 0; //sin ice  
-                                        $micad .= "            <tr>"; 
-                                        $micad .= "                <td>"; 
-                                        
-                                        $colorCelda = "style='padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;'";
-                                        
-                                        $micad .= "                    <table class='table-condensed'  style='width: 100%; margin: 0;' >"; 
-                                        $micad .= "                        <tr  style=' font-family: arial; border: 1px solid black '>"; 
-                                        $micad .= "                            <td align='center' ".$colorCelda.">C&Oacute;DIGO<br> PRODUCTO</td>"; 
-                                        $micad .= "                            <td align='center' ".$colorCelda.">CANTIDAD</td>"; 
-                                        $micad .= "                            <td align='center' ".$colorCelda.">UNIDAD <br>DE MEDIDA</td>"; 
-                                        $micad .= "                            <td align='center' ".$colorCelda.">DESCRIPCI&Oacute;N</td>"; 
-                                        $micad .= "                            <td align='center' ".$colorCelda.">PRECIO<br> UNITARIO</td>"; 
-                                        $micad .= "                            <td align='center' ".$colorCelda.">DESCUENTO</td>"; 
-                                                                    if ($mostrarice==1){ 
-                                        $micad .= "                            <td align='center' ".$colorCelda.">ICE %</td>"; 
-                                        $micad .= "                            <td align='center' ".$colorCelda.">ICE ESP.</td>"; 
-                                                                    } 
-                                        $micad .= "                            <td align='center' ".$colorCelda.">SUBTOTAL</td>"; 
-                                        $micad .= "                        </tr>"; 
-                                                                    $cont = 0; 
-                                                                    $cantidad = 0; 
-                                                                    $total_descuentoparcial = 0; 
-                                                                    $total_descuento = 0; 
-                                                                    $total_final = 0; 
-                                                                    $total_subtotal = 0; 
-                                                                    $ice = 0.00; 
-                                                                    if ($factura[0]['estado_id']<>3){  
-                                                                        foreach($detalle_factura as $d){ 
-                                                                            $cont = $cont+1; 
-                                                                            $cantidad += $d['detallefact_cantidad']; 
-                                                                            $sub_total = $d['detallefact_subtotal']; 
-                                                                            $total_subtotal += $sub_total; 
-                                                                            $total_descuentoparcial += $d['detallefact_descuentoparcial'] * $d['detallefact_cantidad'];  
-                                                                            $total_descuento += $d['detallefact_descuento'];  
-                                                                            $total_final += $d['detallefact_total'];  
-                                        $micad .= "                        <tr style='border: 1px solid black'>"; 
-                                        $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".$d['detallefact_codigo']."</font></td>"; 
-                                        $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_cantidad'],2,'.',',')."</font></td>"; 
-                                        $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'><center>".$d['producto_unidad']."</center></font></td>"; 
-                                        $micad .= "                            <td colspan='1' style='padding: 0; line-height: 10px;'>"; 
-                                        $micad .= "                                <font style='size:7px; font-family: arial; padding-left:3px'> "; 
-                                        $micad .=                                     $d['detallefact_descripcion']; 
-                                                                            if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) { 
-                                        $micad .=                                         $d['detallefact_preferencia']; 
-                                                                            } 
-                                                                            if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ){ 
-                                        $micad .= "                                        <br>".nl2br($d['detallefact_caracteristicas']); 
-                                                                            } 
-                                        $micad .= "                                </font>"; 
-                                        $micad .= "                            </td>"; 
-                                        $micad .= "                            <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_precio'],2,'.',',')."</font></td>"; 
-                                        $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',',')."</td>"; 
-                                                                    if($mostrarice==1){ 
-                                        $micad .= "                                <td align='right' style='padding-right: 3px;'>".number_format($ice,2,'.',',')."</td>"; 
-                                        $micad .= "                                <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($ice,2,'.',',')."</font></td>"; 
-                                                                    } 
-                                        $micad .= "                            <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']) ,2,'.',',')."</font></td>"; 
-                                        $micad .= "                        </tr>"; 
-                                                             }} 
-                                                                $total_final_factura = $factura[0]['factura_subtotal']; 
-                                                                $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
-                                                                $span = ($mostrarice==1)? 3: 2; 
-                                        $micad .= "                    <!-------------- SUB TOTAL ---------->"; 
-                                        $micad .= "                    <tr>"; 
-                                        $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>SUBTOTAL Bs</td>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($total_final_factura,2,'.',',')."</td>"; 
-                                        $micad .= "                    </tr>"; 
-                                        $micad .= "                    <!-------------- DESCUENTO ---------->"; 
-                                        $micad .= "                    <tr>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)DESCUENTO Bs</td>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>"; 
-                                        $micad .= "                    </tr>"; 
-                                        $micad .= "                    <!-------------- DECUENTO GLOBAL ---------->"; 
-                                                             //if($factura[0]['factura_descuento']>0){ 
-                                        /*$micad .= "                        <!--<tr>"; 
-                                        $micad .= "                            <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)DESCUENTO GLOBAL Bs</td>"; 
-                                        $micad .= "                            <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
-                                        $micad .= "                        </tr>--> */ 
-                                                             //} 
-                                        $micad .= "                    <!-------------- FACTURA TOTAL ---------->"; 
-                                        $micad .= "                    <tr>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>TOTAL Bs</td>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_total'] ,2,'.',',')."</td>"; 
-                                        $micad .= "                    </tr>"; 
-                                          $micad .= "                          <!-------------- FACTURA GIFTA CARD ---------->";
-                                          $micad .= "      <tr>";
-                                          $micad .= "          <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO GIFT CARD Bs</td>";
-                                          $micad .= "          <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_giftcard'] ,2,'.',',')."</td>";
-                                          $micad .= "      </tr>";
-                                        $micad .= "                    <!-------------- ICE / ICE ESPECIFICO ---------->"; 
-                                                            if($mostrarice==1){
-                                        $micad .= "                    <tr>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ice,2,'.',',')."</td>"; 
-                                        $micad .= "                    </tr>"; 
-                                        $micad .= "                    <tr>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-) TOTAL ICE PORCENTUAL Bs</td>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ice,2,'.',',')."</td>"; 
-                                        $micad .= "                    </tr>"; 
-                                                             } 
-                                        $micad .= "                                             <!-------------- MONTO A PAGAR ---------->";
-                                        $micad .= "    <tr>           ";
-                                        $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";
-                                        $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total,2,'.',',')."</td>";
-                                        $micad .= "    </tr>";
-                                        $micad .= "                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->"; 
-                                        $micad .= "                    <tr>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>IMPORTE BASE CR&Eacute;DITO FISCAL</td>"; 
-                                        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total ,2,'.',',')."</td>"; 
-                                        $micad .= "                    </tr>"; 
-                                        $micad .= "                </table>"; 
-                                        $micad .= "            </td>"; 
-                                        $micad .= "        </tr>"; 
-                                        $micad .= "        <tr>"; 
-                                        $micad .= "            <td style='padding-top: 0px; padding-bottom: 0px;'>"; 
-                                        $micad .= "                <table style='width: 100%; margin-top: 25px;'>"; 
-                                        $micad .= "                    <tr>"; 
-                                        $micad .= "                       <td style='float: left;width: 78%;'>"; 
-                                        //$micad .= "                <div style='width: 100%; margin-top: 25px;'>"; 
-                                        //$micad .= "                    <div style='float: left;width: 78%;'>"; 
-                                        $micad .= "                        <center style='width:100%;'>"; 
-                                        $micad .=                             $factura[0]['factura_leyenda1']."<br><br>"; 
-                                        $micad .= "                            <font face='Arial' size='1'>".$factura[0]['factura_leyenda2']; 
-                                        $micad .= "                            </font><br><br>"; 
-                                        $micad .=                             $factura[0]['factura_leyenda3']."<br><br>"; 
-                                        $micad .=                                 $factura[0]['factura_leyenda4']; 
-
-                                        $micad .= "                        </center>"; 
-                                        //$micad .= "                    </div>"; 
-                                        $micad .= "                        </td>";
-                                        $micad .= "                        <td style='float: right;width: 80px;'>"; 
-                                        //$micad .= "                    <div style='float: right;width: 80px;'>"; 
-                                        //$micad .= "                        <figure>";
-                                        
-         
-                                             //generamos el código qr
-                                        //$this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-                                                //Generador de Codigo QR
-                                                        //cargamos la librerí­a	
-                                                 $this->load->library('ciqrcode');
-                                                 //$nit_emisor    = $factura[0]['factura_nitemisor'];
-                                                $num_fact      = $factura[0]['factura_numero'];
-                                                //$autorizacion  = $factura[0]['factura_autorizacion'];
-                                                //$fecha_factura = $factura[0]['factura_fechaventa'];
-                                                //$total         = $factura[0]['factura_total'];
-                                                //$codcontrol    = $factura[0]['factura_codigocontrol'];
-                                                //$nit           = $factura[0]['factura_nit'];
-                                                 $nit_emisor    = $factura[0]['factura_nitemisor'];
-                                                 $ruta      = $factura[0]['factura_ruta'];
-                                                    $cuf       = $factura[0]['factura_cuf'];
-                                                    $tamanio   = $factura[0]['factura_tamanio'];
-                                                         $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
-                                                 //hacemos configuraciones
-                                                 $params['data'] = $cadenaQR;//$this->random(30);
-                                                 $params['level'] = 'H';
-                                                 $params['size'] = 5;
-                                                 $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
-                                                $this->ciqrcode->generate($params);
-                                                                                $base_url = explode('/', base_url());
-                                                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
-                                                    $codigoqr = $directorio.'/images/qrcode'.$usuario_id.'.png';
-                                                    $path = $codigoqr;
-                                                    $type = pathinfo($path, PATHINFO_EXTENSION);
-                                                    $data = file_get_contents($path);
-                                                    $elcodigoqrbase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                                        $micad .= "                            <img src='".$elcodigoqrbase64."' width='80' height='80' alt='Codigo QR'>"; 
-                                        //$micad .= "                        </figure>"; 
-                                        //$micad .= "                    </div>"; 
-                                        //$micad .= "                </div>"; 
-                                        $micad .= "                      </td>"; 
-                                        $micad .= "                   </tr>"; 
-                                        $micad .= "                </table>"; 
-                                        $micad .= "            </td>"; 
-                                        $micad .= "        </tr>";                                        
-                                        $micad .= "    </table>"; 
-                                        $micad .= "</td>"; 
-                                        $micad .= "</tr>"; 
-                                        $micad .= "</table>"; 
-                                        $micad .= "</body>"; 
-                                        $micad .= "</html>"; 
-                                         
-                                    }
-                                    $dompdf = new Dompdf();
-                                    //$options = $dompdf->getOptions();
-                                    //$options->setDefaultFont('Arial');
-                                    //$dompdf->setOptions($options);
-                                    $options = new Options();
-                                    
-                                    $options->set(array(
-                                    'isRemoteEnabled' => true
-                                    ));
-                                    $dompdf->setOptions($options);
-                                    //$dompdf->getFontMetrics()->setFontFamily("Arial", "bold");
-                                    //$options = new Options();
-                                    //$options->set('defaultFont', 'Arial');
-                                    //$dompdf = new Dompdf($options);
-                                    if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
-                                        $ancho = $this->parametros["parametro_anchofactura"];
-                                        $elancho = (($ancho+2)*28.34645669291);
-                                        $dompdf->set_paper(array(0, 0, $elancho, 841), 'portrait');
-                                    }
-                                    //$dompdf = new Dompdf(); 
-                                    $dompdf->loadHtml($micad); 
-                                    $dompdf->render(); 
-                                    //salida al navegador 
-                                    //$dompdf->stream(); 
-                                    $base_url = explode('/', base_url()); 
-                                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/'; 
-                                    $output = $dompdf->output(); 
-                                    file_put_contents($directorio.$nombre_archivo.$factura[0]['factura_id'].'.pdf', $output); 
-                                    /* F I N  generar el pdf */ 
-                                    
-                                    //if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
-                                        $email = $this->input->post('cliente_email'); 
-                                        if($email !=""){
-                                            $this->enviarcorreo($venta_id, $factura_id, $email,$nombre_archivo);
-                                            
-                                        }
-                                    //}
-                                // ******************************
+                            
+                            $this->pdf_generar($factura_id);
+                            
+                            //if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
+                            $email = $this->input->post('cliente_email'); 
+                            if($email !=""){
+                                $this->enviarcorreo($venta_id, $factura_id, $email,$nombre_archivo);
+                            }
                                 //}
+                            // ******************************
+                            //}
 //                            }else{
 //                                echo json_encode("false");
 //                            }
@@ -6029,4 +5346,1476 @@ function anular_venta($venta_id){
         
     }
     
+    function pdf_generar($factura_id){
+        if($this->parametros["parametro_tipoimpresora"]=="FACTURADORA"){
+            if($this->dosificacion["docsec_codigoclasificador"] == 23){
+                $this->pdf_factura_boucher_prev($factura_id);
+            }else{
+                $this->pdf_factura_boucher($factura_id);
+            }
+        }else{
+            if($this->dosificacion["docsec_codigoclasificador"] == 23){
+                $this->pdf_factura_carta_prev($factura_id);
+            }else{
+                $this->pdf_factura_carta($factura_id);
+            }
+        }
+    }
+    
+    function pdf_factura_boucher($factura_id){
+        $factura = $this->Factura_model->get_factura_id($factura_id);
+        $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
+        $empresa = $this->Empresa_model->get_empresa(1);
+        //$parametros = $this->Parametro_model->get_parametros();
+        $usuario_id = $this->session_data['usuario_id'];
+        $nombre_archivo = $this->nombre_archivo;
+        $micad = "";
+        $micad .= "<!DOCTYPE html>"; 
+        $micad .= "<html>"; 
+        $micad .= "    <head>";
+        $micad .= "        <style type='text/css'>";
+        $micad .= "  p {";
+        $micad .= "      font-family: Arial;";
+        $micad .= "      font-size: 8pt;";
+        $micad .= "      line-height: 80%;";   /*esta es la propiedad para el interlineado*/
+        $micad .= "      color: #000;";
+        $micad .= "      padding: 10px;";
+        $micad .= "  }";
+        $micad .= "  div {";
+        $micad .= "      margin-top: 0px;";
+        $micad .= "      margin-right: 0px;";
+        $micad .= "      margin-bottom: 0px;";
+        $micad .= "      margin-left: 0px;";
+        $micad .= "      margin: 0px;";
+        $micad .= "  }";
+        $micad .= "  table{";
+        $micad .= "      width : 7cm;";
+        $micad .= "      margin : 0 0 0px 0;";
+        $micad .= "      padding : 0 0 0 0;";
+        $micad .= "      border-spacing : 0 0;";
+        $micad .= "      border-collapse : collapse;";
+        $micad .= "      font-family: Arial;";
+        $micad .= "      font-size: 8pt;";
+        $micad .= "      td{";
+        $micad .= "          border:hidden;";
+        $micad .= "      }";
+        $micad .= "  }";
+        $micad .= "  td#comentario {";
+        $micad .= "      vertical-align : bottom;";
+        $micad .= "      border-spacing : 0;";
+        $micad .= "  }";
+        $micad .= "  div#content {";
+        $micad .= "      background : #ddd;";
+        $micad .= "      font-size : 8px;";
+        $micad .= "      margin : 0 0 0 0;";
+        $micad .= "      padding : 0 0px 0 0px;";
+        $micad .= "  }";
+        $micad .= "       </style>"; 
+        $micad .= "   </head>";
+        $tipo_factura = $this->parametros["parametro_altofactura"]; //15 tamaño carta  
+        $ancho = $this->parametros["parametro_anchofactura"]."cm"; 
+        $margen_izquierdo = $this->parametros["parametro_margenfactura"]."cm"; 
+        $micad .= "  <body style='width: ".$ancho."'>"; 
+        $micad .= "  <table class='table'>";
+        $micad .= "    <tr>";
+        $micad .= "        <td style='padding: 0; width: ".$margen_izquierdo."'></td>";
+        $micad .= "        <td style='padding: 0;'>";
+        $micad .= "            <table class='table' style='width: ".$ancho."'>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td style='padding: 0;' colspan='4'>";
+        $micad .= "                        <table style='width: ".$ancho."' style='font-family: Arial'>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-center' style='padding-bottom: 5px;'><center>";
+        $micad .= "                                     ";
+                                                       $titulo1 = "FACTURA";
+                                                       $tipo = 1;
+                                                    if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
+                                                    else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";";
+        $micad .= "                                    ".$titulo1."<br>";
+        $micad .= "                                    ".$subtitulo."<br>";
+        $micad .=                                       $empresa[0]['empresa_nombre']."<br>";
+        $micad .=                                       $empresa[0]['empresa_eslogan']."<br>";
+                                                    if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){
+        $micad .= "                                       DE: ".$empresa[0]['empresa_propietario']."<br>";
+                                                    }
+                                                    if($factura[0]['factura_sucursal']==0){
+        $micad .= "                                            CASA MATRIZ";
+                                                    }else{
+        $micad .= "                                            SUCURSAL ".$factura[0]['factura_sucursal'];
+                                                    }
+        $micad .= "                                    <br>Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>";
+        $micad .=                                     $empresa[0]['empresa_direccion']."<br>";
+        $micad .= "                                    Tel. ".$empresa[0]['empresa_telefono']."<br>";
+        $micad .=                                     $empresa[0]['empresa_ubicacion']."<br>";
+        $micad .= "                                ";
+        $micad .= "                                </center></td>";
+        $micad .= "                            </tr>";
+        $micad .= "                        </table>";
+        $micad .= "                        <table style='width:".$ancho."  font-family: Arial'>";
+        $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
+        $micad .= "                                <td class='text-center'><center>NIT: ".$factura[0]['factura_nitemisor']."</center></td>";
+        $micad .= "                            </tr>";
+//                                        $micad .= "                            <tr>";
+//                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_nitemisor']."</center></td>";
+//                                        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-center'><center>FACTURA Nº: ".$factura[0]['factura_numero']."</center></td>";
+        $micad .= "                            </tr>";
+//                                        $micad .= "                            <tr>";
+//                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_numero']."</center></td>";
+//                                        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-center'><center>CÓD. AUTORIZACIÓN</center></td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-center'><div style='word-wrap: break-word; width: ".$ancho."' ><center>".$factura[0]['factura_cuf']."</center></div></td>";
+        $micad .= "                            </tr>";
+        $micad .= "                        </table>";
+        $micad .= "                    </td>";
+        $micad .= "                </tr>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td colspan='4' style='padding: 0;'>";
+        $micad .= "                        <table style='width: ".$ancho."' >";
+        $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
+        $micad .= "                                <td class='text-right text-bold' style='padding: 0; white-space: nowrap; text-align: right'>NOMBRE/RAZ&Oacute;N SOCIAL: </td>";
+        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_razonsocial']."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>NIT/CI/CEX: </td>";
+        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_nit']."  ";
+                                               if($factura[0]['cdi_codigoclasificador']!=5){
+        $micad .=                                  $factura[0]["cliente_complementoci"];
+                                               }
+        $micad .= "                                </td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>COD. CLIENTE: </td><!-- PONER CODIGO DE CLIENTE -->";
+        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_codigocliente']."</b><br></td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
+        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>FECHA DE EMISI&Oacute;N: </td>";
+        $micad .= "                                <td style='padding: 0; padding-left: 3px'>";
+                                                    $fecha = new DateTime($factura[0]['factura_fechaventa']);
+                                                    $fecha_d_m_a = $fecha->format('d/m/Y');
+        $micad .=                                   $fecha_d_m_a." ".$factura[0]['factura_hora'];
+        $micad .= "                                </td>";
+        $micad .= "                            </tr>";
+        $micad .= "                        </table>";
+        $micad .= "                    </td>";
+        $micad .= "                </tr>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td colspan='4' align='center' style='padding: 0;'>DETALLE</td>";
+        $micad .= "                </tr>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td colspan='4' style='padding: 0'>";
+        $micad .= "                        <table style='width: ".$ancho."'>";
+                                            $cont = 0;
+                                            $cantidad = 0;
+                                            $total_descuento = 0;
+                                            $total_final = 0;
+                                            $total_subtotal = 0;
+                                            $mostrarice = 0;
+                                            $ice = 0;
+                                            if($factura[0]['estado_id']<>3){
+                                                foreach($detalle_factura as $d){;
+                                                    $cont = $cont+1;
+                                                    $cantidad += $d['detallefact_cantidad'];
+                                                    $total_descuento += $d['detallefact_descuento']; 
+                                                    $total_final += $d['detallefact_total']; 
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class=-text-bold' colspan='0' style='font-size: 8pt; padding: 0;'>";
+        $micad .= "                                ";
+        $micad .=                                     $d['detallefact_codigo']." - ".$d['detallefact_descripcion'];
+                                                    if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != ""){
+        $micad .= "                                      [".$d['detallefact_unidadfactor']."]";
+                                                    }
+                                                    if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ){
+        $micad .=                                       $d['detallefact_preferencia'];
+                                                    }
+                                                    if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ){
+        $micad .= "                                        <br>".nl2br($d['detallefact_caracteristicas']);
+                                                    }
+        $micad .= "                                ";
+        $micad .= "                                </td>";
+        $micad .= "                                <td colspan='2'></td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td style='font-size: 8pt; padding: 0;'>";
+        $micad .=                                     number_format($d['detallefact_cantidad'],2,'.',',')." X ";
+        $micad .=                                     number_format($d['detallefact_precio'],2,'.',',')." - ";
+        $micad .=                                     number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',','); //." + "; //."0.00 +  0.00";
+                                                    if ($mostrarice==1){
+        $micad .= "                                         + ".number_format($d['detallefact_ice'],2,'.',',')." + ";
+        $micad .=                                         number_format($d['detallefact_iceesp'],2,'.',',');
+                                                    }
+        $micad .= "                                </td>";
+        $micad .= "                                <td style='width: 0.5cm !important;'></td>";
+        $micad .= "                                <td align='right' style='font-size: 8pt; padding: 0;'>". number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+                                                }
+                                            }
+        $micad .= "                    </table>";
+        $micad .= "                    </td>";
+        $micad .= "                </tr>";
+                                $total_final_factura = $factura[0]['factura_subtotal']; 
+                                $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
+        $micad .= "                <tr>";
+        $micad .= "                    <td colspan='4' style='padding: 0'>";
+        $micad .= "                        <table style='width: ".$ancho."; font-size: 8pt !important' >";
+        $micad .= "                            <tr style='border-top-style: dotted; border-top-width: 1px;'>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>SUBTOTAL Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($total_final_factura,2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>DESCUENTO Bs</td>";
+        $micad .= "                                <td style='width: 1cm !important;'></td>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_total'],2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO GIFT CARD Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura[0]['factura_giftcard'],2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+                                                if ($mostrarice==1){
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($ice,2,'.',','); //number_format($factura[0]['factura_ice'],2,'.',',');
+        $micad .= "                                </td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE PORCENTUAL Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right' style='text-align: right'> ".number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',',');
+        $micad .= "                                </td>";
+        $micad .= "                            </tr>";
+                                                }
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO A PAGAR Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>IMPORTE BASE CR&Eacute;DITO FISCAL Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
+        $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px; font-size: 10px;'>";
+        $micad .= "                                    <br>";
+        $micad .= "                                    SON: ".num_to_letras($factura_total,' Bolivianos');
+        $micad .= "                                </td>";
+        $micad .= "                            </tr>";
+        $micad .= "                        </table>";
+        $micad .= "                    </td>";
+        $micad .= "                </tr>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td class='text-center' style='padding: 0; padding-top: 5px;' colspan='4'>";
+        $micad .= "                    <center>";
+        $micad .= "                        <span style='font-size: 8.5pt'><p>".$factura[0]['factura_leyenda1']."</p></span>";
+        $micad .= "                        <span style='font-size: 8pt !important;'><div style='line-height: 1.1;'>".$factura[0]['factura_leyenda2']."</div></span>";
+        $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda3']."</p></span>";
+        $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda4']."</p></span>";
+        /*$micad .= "                        <span style='font-size: 6.5pt !important'>";
+                                           if ($factura[0]['factura_tipoemision']==2){
+        $micad .= "                            <p style='padding-bottom: 0px'><b>Este documento es la representación gráfica de un Documento Fiscal Digital emitido fuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b></p>";
+                                           }
+        $micad .= "                        </span>";*/
+        $micad .= "                    </center>";
+        $micad .= "                    </td>";   
+        $micad .= "                </tr>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td style='padding: 0; padding-top: 10px' colspan='4'>";
+        $micad .= "                        <center>";
+                $this->load->library('ciqrcode');
+                $num_fact      = $factura[0]['factura_numero'];
+                $nit_emisor    = $factura[0]['factura_nitemisor'];
+                $ruta      = $factura[0]['factura_ruta'];
+                $cuf       = $factura[0]['factura_cuf'];
+                $tamanio   = $factura[0]['factura_tamanio'];
+                $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+                 //hacemos configuraciones
+                $params['data'] = $cadenaQR;//$this->random(30);
+                $params['level'] = 'H';
+                $params['size'] = 5;
+                $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+                $this->ciqrcode->generate($params);
+                $base_url = explode('/', base_url());
+                                                            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
+                                                            $codigoqr = $directorio.'/images/qrcode'.$usuario_id.'.png';
+                                                            $path = $codigoqr;
+                                                            $type = pathinfo($path, PATHINFO_EXTENSION);
+                                                            $data = file_get_contents($path);
+                                                            $elcodigoqrbase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $micad .= "                            <img src='".$elcodigoqrbase64."' width='100' height='100' alt='Codigo QR'>"; 
+        //$micad .= "                            <img src='".$codigoqr."' width='100' height='100'>";
+        $micad .= "                        </center>";
+        $micad .= "                    </td>";
+        $micad .= "                </tr>";
+        $micad .= "            </table>";
+        $micad .= "        </td>";
+        $micad .= "    </tr>";
+        $micad .= "</table>";
+        $micad .= "</body>"; 
+        $micad .= "</html>";
+
+        $dompdf = new Dompdf();
+        $options = new Options();
+
+        $options->set(array(
+        'isRemoteEnabled' => true
+        ));
+        $dompdf->setOptions($options);
+        
+        if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
+            $ancho = $this->parametros["parametro_anchofactura"];
+            $elancho = (($ancho+2)*28.34645669291);
+            $dompdf->set_paper(array(0, 0, $elancho, 841), 'portrait');
+        }
+        //$dompdf = new Dompdf(); 
+        $dompdf->loadHtml($micad); 
+        $dompdf->render(); 
+        //salida al navegador 
+        //$dompdf->stream(); 
+        $base_url = explode('/', base_url()); 
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/'; 
+        $output = $dompdf->output(); 
+        file_put_contents($directorio.$nombre_archivo.$factura[0]['factura_id'].'.pdf', $output); 
+        /* F I N  generar el pdf */ 
+
+        //if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
+            /*$email = $this->input->post('cliente_email'); 
+            if($email !=""){
+                $this->enviarcorreo($venta_id, $factura_id, $email,$nombre_archivo);
+
+            }*/
+    }
+    
+    function pdf_factura_boucher_prev($factura_id){
+        $factura = $this->Factura_model->get_factura_id($factura_id);
+        $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
+        $empresa = $this->Empresa_model->get_empresa(1);
+        //$parametros = $this->Parametro_model->get_parametros();
+        $usuario_id = $this->session_data['usuario_id'];
+        $nombre_archivo = $this->nombre_archivo;
+        $micad = "";
+        $micad .= "<!DOCTYPE html>"; 
+        $micad .= "<html>"; 
+        $micad .= "    <head>";
+        $micad .= "        <style type='text/css'>";
+        $micad .= "  p {";
+        $micad .= "      font-family: Arial;";
+        $micad .= "      font-size: 8pt;";
+        $micad .= "      line-height: 80%;";   /*esta es la propiedad para el interlineado*/
+        $micad .= "      color: #000;";
+        $micad .= "      padding: 10px;";
+        $micad .= "  }";
+        $micad .= "  div {";
+        $micad .= "      margin-top: 0px;";
+        $micad .= "      margin-right: 0px;";
+        $micad .= "      margin-bottom: 0px;";
+        $micad .= "      margin-left: 0px;";
+        $micad .= "      margin: 0px;";
+        $micad .= "  }";
+        $micad .= "  table{";
+        $micad .= "      width : 7cm;";
+        $micad .= "      margin : 0 0 0px 0;";
+        $micad .= "      padding : 0 0 0 0;";
+        $micad .= "      border-spacing : 0 0;";
+        $micad .= "      border-collapse : collapse;";
+        $micad .= "      font-family: Arial;";
+        $micad .= "      font-size: 8pt;";
+        $micad .= "      td{";
+        $micad .= "          border:hidden;";
+        $micad .= "      }";
+        $micad .= "  }";
+        $micad .= "  td#comentario {";
+        $micad .= "      vertical-align : bottom;";
+        $micad .= "      border-spacing : 0;";
+        $micad .= "  }";
+        $micad .= "  div#content {";
+        $micad .= "      background : #ddd;";
+        $micad .= "      font-size : 8px;";
+        $micad .= "      margin : 0 0 0 0;";
+        $micad .= "      padding : 0 0px 0 0px;";
+        $micad .= "  }";
+        $micad .= "       </style>"; 
+        $micad .= "   </head>";
+        $tipo_factura = $this->parametros["parametro_altofactura"]; //15 tamaño carta  
+        $ancho = $this->parametros["parametro_anchofactura"]."cm"; 
+        $margen_izquierdo = $this->parametros["parametro_margenfactura"]."cm"; 
+        $micad .= "  <body style='width: ".$ancho."'>"; 
+        $micad .= "  <table class='table'>";
+        $micad .= "    <tr>";
+        $micad .= "        <td style='padding: 0; width: ".$margen_izquierdo."'></td>";
+        $micad .= "        <td style='padding: 0;'>";
+        $micad .= "            <table class='table' style='width: ".$ancho."'>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td style='padding: 0;' colspan='4'>";
+        $micad .= "                        <table style='width: ".$ancho."' style='font-family: Arial'>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-center' style='padding-bottom: 5px;'><center>";
+        $micad .= "                                     ";
+                                                       $titulo1 = "FACTURA";
+                                                       $tipo = 1;
+                                                    if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
+                                                    else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";";
+        $micad .= "                                    ".$titulo1."<br>";
+        $micad .= "                                    ".$subtitulo."<br>";
+        $micad .=                                       $empresa[0]['empresa_nombre']."<br>";
+        $micad .=                                       $empresa[0]['empresa_eslogan']."<br>";
+                                                    if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){
+        $micad .= "                                       DE: ".$empresa[0]['empresa_propietario']."<br>";
+                                                    }
+                                                    if($factura[0]['factura_sucursal']==0){
+        $micad .= "                                            CASA MATRIZ";
+                                                    }else{
+        $micad .= "                                            SUCURSAL ".$factura[0]['factura_sucursal'];
+                                                    }
+        $micad .= "                                    <br>Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>";
+        $micad .=                                     $empresa[0]['empresa_direccion']."<br>";
+        $micad .= "                                    Tel. ".$empresa[0]['empresa_telefono']."<br>";
+        $micad .=                                     $empresa[0]['empresa_ubicacion']."<br>";
+        $micad .= "                                ";
+        $micad .= "                                </center></td>";
+        $micad .= "                            </tr>";
+        $micad .= "                        </table>";
+        $micad .= "                        <table style='width:".$ancho."  font-family: Arial'>";
+        $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
+        $micad .= "                                <td class='text-center'><center>NIT: ".$factura[0]['factura_nitemisor']."</center></td>";
+        $micad .= "                            </tr>";
+//                                        $micad .= "                            <tr>";
+//                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_nitemisor']."</center></td>";
+//                                        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-center'><center>FACTURA Nº: ".$factura[0]['factura_numero']."</center></td>";
+        $micad .= "                            </tr>";
+//                                        $micad .= "                            <tr>";
+//                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_numero']."</center></td>";
+//                                        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-center'><center>CÓD. AUTORIZACIÓN</center></td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-center'><div style='word-wrap: break-word; width: ".$ancho."' ><center>".$factura[0]['factura_cuf']."</center></div></td>";
+        $micad .= "                            </tr>";
+        $micad .= "                        </table>";
+        $micad .= "                    </td>";
+        $micad .= "                </tr>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td colspan='4' style='padding: 0;'>";
+        $micad .= "                        <table style='width: ".$ancho."' >";
+        $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
+        $micad .= "                                <td class='text-right text-bold' style='padding: 0; white-space: nowrap; text-align: right'>NOMBRE/RAZ&Oacute;N SOCIAL: </td>";
+        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_razonsocial']."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>NIT/CI/CEX: </td>";
+        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_nit']."  ";
+                                               if($factura[0]['cdi_codigoclasificador']!=5){
+        $micad .=                                  $factura[0]["cliente_complementoci"];
+                                               }
+        $micad .= "                                </td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>COD. CLIENTE: </td><!-- PONER CODIGO DE CLIENTE -->";
+        $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_codigocliente']."</b><br></td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
+        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>FECHA DE EMISI&Oacute;N: </td>";
+        $micad .= "                                <td style='padding: 0; padding-left: 3px'>";
+                                                    $fecha = new DateTime($factura[0]['factura_fechaventa']);
+                                                    $fecha_d_m_a = $fecha->format('d/m/Y');
+        $micad .=                                   $fecha_d_m_a." ".$factura[0]['factura_hora'];
+        $micad .= "                                </td>";
+        $micad .= "                            </tr>";
+        $micad .= "                        </table>";
+        $micad .= "                    </td>";
+        $micad .= "                </tr>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td colspan='4' align='center' style='padding: 0;'>DETALLE</td>";
+        $micad .= "                </tr>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td colspan='4' style='padding: 0'>";
+        $micad .= "                        <table style='width: ".$ancho."'>";
+                                            $cont = 0;
+                                            $cantidad = 0;
+                                            $total_descuento = 0;
+                                            $total_final = 0;
+                                            $total_subtotal = 0;
+                                            $mostrarice = 0;
+                                            $ice = 0;
+                                            if($factura[0]['estado_id']<>3){
+                                                foreach($detalle_factura as $d){;
+                                                    $cont = $cont+1;
+                                                    $cantidad += $d['detallefact_cantidad'];
+                                                    $total_descuento += $d['detallefact_descuento']; 
+                                                    $total_final += $d['detallefact_total']; 
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class=-text-bold' colspan='0' style='font-size: 8pt; padding: 0;'>";
+        $micad .= "                                ";
+        $micad .=                                     $d['detallefact_codigo']." - ".$d['detallefact_descripcion'];
+                                                    if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != ""){
+        $micad .= "                                      [".$d['detallefact_unidadfactor']."]";
+                                                    }
+                                                    if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ){
+        $micad .=                                       $d['detallefact_preferencia'];
+                                                    }
+                                                    if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ){
+        $micad .= "                                        <br>".nl2br($d['detallefact_caracteristicas']);
+                                                    }
+        $micad .= "                                ";
+        $micad .= "                                </td>";
+        $micad .= "                                <td colspan='2'></td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td style='font-size: 8pt; padding: 0;'>";
+        $micad .=                                     number_format($d['detallefact_cantidad'],2,'.',',')." X ";
+        $micad .=                                     number_format($d['detallefact_precio'],2,'.',',')." - ";
+        $micad .=                                     number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',','); //." + "; //."0.00 +  0.00";
+                                                    if ($mostrarice==1){
+        $micad .= "                                         + ".number_format($d['detallefact_ice'],2,'.',',')." + ";
+        $micad .=                                         number_format($d['detallefact_iceesp'],2,'.',',');
+                                                    }
+        $micad .= "                                </td>";
+        $micad .= "                                <td style='width: 0.5cm !important;'></td>";
+        $micad .= "                                <td align='right' style='font-size: 8pt; padding: 0;'>". number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+                                                }
+                                            }
+        $micad .= "                    </table>";
+        $micad .= "                    </td>";
+        $micad .= "                </tr>";
+                                $total_final_factura = $factura[0]['factura_subtotal']; 
+                                $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
+        $micad .= "                <tr>";
+        $micad .= "                    <td colspan='4' style='padding: 0'>";
+        $micad .= "                        <table style='width: ".$ancho."; font-size: 8pt !important' >";
+        $micad .= "                            <tr style='border-top-style: dotted; border-top-width: 1px;'>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>SUBTOTAL Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($total_final_factura,2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>DESCUENTO Bs</td>";
+        $micad .= "                                <td style='width: 1cm !important;'></td>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_total'],2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO GIFT CARD Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura[0]['factura_giftcard'],2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+                                                if ($mostrarice==1){
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($ice,2,'.',','); //number_format($factura[0]['factura_ice'],2,'.',',');
+        $micad .= "                                </td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE PORCENTUAL Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right' style='text-align: right'> ".number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',',');
+        $micad .= "                                </td>";
+        $micad .= "                            </tr>";
+                                                }
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO A PAGAR Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>IMPORTE BASE CR&Eacute;DITO FISCAL Bs</td>";
+        $micad .= "                                <td></td>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
+        $micad .= "                            </tr>";
+        $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
+        $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px; font-size: 10px;'>";
+        $micad .= "                                    <br>";
+        $micad .= "                                    SON: ".num_to_letras($factura_total,' Bolivianos');
+        $micad .= "                                </td>";
+        $micad .= "                            </tr>";
+        $micad .= "                        </table>";
+        $micad .= "                    </td>";
+        $micad .= "                </tr>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td class='text-center' style='padding: 0; padding-top: 5px;' colspan='4'>";
+        $micad .= "                    <center>";
+        $micad .= "                        <span style='font-size: 8.5pt'><p>".$factura[0]['factura_leyenda1']."</p></span>";
+        $micad .= "                        <span style='font-size: 8pt !important;'><div style='line-height: 1.1;'>".$factura[0]['factura_leyenda2']."</div></span>";
+        $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda3']."</p></span>";
+        $micad .= "                        <span style='font-size: 6.5pt !important'><p style='padding-bottom: 0px'>".$factura[0]['factura_leyenda4']."</p></span>";
+        /*$micad .= "                        <span style='font-size: 6.5pt !important'>";
+                                           if ($factura[0]['factura_tipoemision']==2){
+        $micad .= "                            <p style='padding-bottom: 0px'><b>Este documento es la representación gráfica de un Documento Fiscal Digital emitido fuera de linea, verifique su envio con su proveedor o en la página web www.impuestos.gob.bo</b></p>";
+                                           }
+        $micad .= "                        </span>";*/
+        $micad .= "                    </center>";
+        $micad .= "                    </td>";   
+        $micad .= "                </tr>";
+        $micad .= "                <tr>";
+        $micad .= "                    <td style='padding: 0; padding-top: 10px' colspan='4'>";
+        $micad .= "                        <center>";
+                $this->load->library('ciqrcode');
+                $num_fact      = $factura[0]['factura_numero'];
+                $nit_emisor    = $factura[0]['factura_nitemisor'];
+                $ruta      = $factura[0]['factura_ruta'];
+                $cuf       = $factura[0]['factura_cuf'];
+                $tamanio   = $factura[0]['factura_tamanio'];
+                $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+                 //hacemos configuraciones
+                $params['data'] = $cadenaQR;//$this->random(30);
+                $params['level'] = 'H';
+                $params['size'] = 5;
+                $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+                $this->ciqrcode->generate($params);
+                $base_url = explode('/', base_url());
+                                                            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
+                                                            $codigoqr = $directorio.'/images/qrcode'.$usuario_id.'.png';
+                                                            $path = $codigoqr;
+                                                            $type = pathinfo($path, PATHINFO_EXTENSION);
+                                                            $data = file_get_contents($path);
+                                                            $elcodigoqrbase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $micad .= "                            <img src='".$elcodigoqrbase64."' width='100' height='100' alt='Codigo QR'>"; 
+        //$micad .= "                            <img src='".$codigoqr."' width='100' height='100'>";
+        $micad .= "                        </center>";
+        $micad .= "                    </td>";
+        $micad .= "                </tr>";
+        $micad .= "            </table>";
+        $micad .= "        </td>";
+        $micad .= "    </tr>";
+        $micad .= "</table>";
+        $micad .= "</body>"; 
+        $micad .= "</html>";
+
+        $dompdf = new Dompdf();
+        $options = new Options();
+
+        $options->set(array(
+        'isRemoteEnabled' => true
+        ));
+        $dompdf->setOptions($options);
+        
+        if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
+            $ancho = $this->parametros["parametro_anchofactura"];
+            $elancho = (($ancho+2)*28.34645669291);
+            $dompdf->set_paper(array(0, 0, $elancho, 841), 'portrait');
+        }
+        //$dompdf = new Dompdf(); 
+        $dompdf->loadHtml($micad); 
+        $dompdf->render(); 
+        //salida al navegador 
+        //$dompdf->stream(); 
+        $base_url = explode('/', base_url()); 
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/'; 
+        $output = $dompdf->output(); 
+        file_put_contents($directorio.$nombre_archivo.$factura[0]['factura_id'].'.pdf', $output); 
+        /* F I N  generar el pdf */ 
+
+        //if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
+            /*$email = $this->input->post('cliente_email'); 
+            if($email !=""){
+                $this->enviarcorreo($venta_id, $factura_id, $email,$nombre_archivo);
+
+            }*/
+    }
+    
+    function pdf_factura_carta($factura_id){
+        $factura = $this->Factura_model->get_factura_id($factura_id);
+        $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
+        $empresa = $this->Empresa_model->get_empresa(1);
+        //$parametros = $this->Parametro_model->get_parametros();
+        $usuario_id = $this->session_data['usuario_id'];
+        $nombre_archivo = $this->nombre_archivo;
+        
+        $micad = ""; 
+        $micad .= "<!DOCTYPE html>"; 
+        $micad .= "<html>"; 
+        $micad .= "    <head>"; 
+        //$micad .= "    <link rel='stylesheet' href='".base_url()."resources/css/bootstrap.min.css'>"; 
+        $micad .= "        <style type='text/css'>"; 
+        $micad .= "            @font-face {";
+        $micad .= "                font-family : 'Arial' !important;";
+                        $base_url = explode('/', base_url());
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
+        $micad .= "                 src: url('".$directorio."fonts/arial.ttf') format('truetype');";
+        $micad .= "            }";
+        $micad .= "           p {"; 
+        $micad .= "               font-family: Arial;"; 
+        $micad .= "               font-size: 7pt;"; 
+        $micad .= "               line-height: 120%;"; 
+        $micad .= "               color: #000;"; 
+        $micad .= "               padding: 10px;"; 
+        $micad .= "           }"; 
+
+        $micad .= "           div {"; 
+        $micad .= "         margin-top: 0px;"; 
+        $micad .= "           margin-right: 0px;"; 
+        $micad .= "           margin-bottom: 0px;"; 
+        $micad .= "           margin-left: 0px;"; 
+        $micad .= "            margin: 0px;"; 
+        $micad .= "           }"; 
+
+
+        $micad .= "          table{"; 
+        $micad .= "          width : 7cm;"; 
+        $micad .= "           margin : 0 0 0px 0;"; 
+        $micad .= "          padding : 0 0 0 0;"; 
+        $micad .= "          border-spacing : 0 0;"; 
+        $micad .= "          border-collapse : collapse;"; 
+        $micad .= "          font-family: Arial;"; 
+        $micad .= "          font-size: 7pt;  "; 
+
+        $micad .= "          }"; 
+
+        $micad .= "          .table-condensed tr td{"; 
+        $micad .= "               border:1px solid black;"; 
+        $micad .= "           }"; 
+
+        $micad .= "           td#comentario {"; 
+        $micad .= "               vertical-align : bottom;"; 
+        $micad .= "               border-spacing : 0;"; 
+        $micad .= "           }"; 
+        $micad .= "          div#content {"; 
+        $micad .= "            background : #ddd;"; 
+        $micad .= "            font-size : 7px;"; 
+        $micad .= "            margin : 0 0 0 0;"; 
+        $micad .= "            padding : 0 5px 0 5px;"; 
+        $micad .= "            border-left : 1px solid #aaa;"; 
+        $micad .= "           border-right : 1px solid #aaa;"; 
+        $micad .= "           border-bottom : 1px solid #aaa;"; 
+        $micad .= "           }"; 
+        $micad .= "       </style>"; 
+
+        $micad .= "   </head>"; 
+        $tipo_factura = $this->parametros["parametro_altofactura"]; //15 tamaño carta  
+        $ancho = $this->parametros["parametro_anchofactura"]; 
+        $margen_izquierdo = $this->parametros["parametro_margenfactura"]."cm"; 
+        $micad .= "    <body style='width: ".$ancho."cm;'>"; 
+        $micad .= "    <table class='table' style='width: ".$ancho."cm; margin-top: 20px;'>"; 
+        $micad .= "        <tr>"; 
+        $micad .= "           <td style='padding: 0; width: ".$margen_izquierdo."'></td>"; 
+        $micad .= "            <td class='borde_pagina' style='padding: 0;'>"; 
+        $micad .= "        <table class='table' style='margin-top: 20px;'>"; 
+        $micad .= "        <tr>"; 
+        $micad .= "        <td style='padding: 0; width: ".$margen_izquierdo."'></td>"; 
+        $micad .= "        <td class='borde_pagina' style='padding: 0;'>"; 
+        $micad .= "        <table class='table' style='width: ".$ancho."cm; padding: 0;' >"; 
+        $micad .= "            <tr>"; 
+        $micad .= "            <td>"; 
+        $micad .= "            <table style='width: 100%; margin: 0;' >"; 
+        $micad .= "            <tr>"; 
+        $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
+        $micad .= "                    <center>"; 
+        $micad .= "                            <font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font><br>"; 
+//                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
+//                                        $micad .= "                                "; 
+//                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
+//                                        $micad .= "                                "; 
+//                                                                       } 
+
+        $micad .= "                            <font size='1' face='Arial'>"; 
+        $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
+        $micad .= "                                "; 
+                                                if($factura[0]['factura_sucursal']==0){ 
+        $micad .= "                                            <br>CASA MATRIZ"; 
+                                                }else{ 
+        $micad .= "                                            <br>SUCURSAL ".$factura[0]['factura_sucursal']; 
+                                                } 
+        $micad .= "                                <br>"; 
+        $micad .= "                                Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>"; 
+        $micad .=                                 $empresa[0]['empresa_direccion']."<br>"; 
+        $micad .= "                                Teléfono: ".$empresa[0]['empresa_telefono']."<br>"; 
+        $micad .=                                 $empresa[0]['empresa_ubicacion']; 
+        $micad .= "                            </small>"; 
+        $micad .= "                            </font>"; 
+        $micad .= "                    </center>"; 
+        $micad .= "                </td>"; 
+        $micad .= "                <td style='width: ".round($ancho/3,2)."cm; padding:0;line-height: 9px;'>"; 
+        $micad .= "                </td>"; 
+        $micad .= "                <td style='width: ".round($ancho/3,2)."cm;  padding: 0; line-height: 10px;'>"; 
+        $micad .= "                    <table style='width: ".round($ancho/3,2)."cm; word-wrap: break-word; max-width: 6cm; padding:0; border-bottom: #0000eb'>"; 
+        $micad .= "                        <tr>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>NIT: </td>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'> ".$factura[0]['factura_nitemisor']."</td>"; 
+        $micad .= "                        </tr>"; 
+        $micad .= "                        <tr>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>FACTURA Nº: </td>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'>".$factura[0]['factura_numero']."</td>"; 
+        $micad .= "                        </tr>"; 
+        $micad .= "                        <tr>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>CÓD AUTORIZACIÓN: </td>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; padding-left: 5px; max-width: 3cm'><div style='word-wrap: break-word !important; padding=0px'>".$factura[0]['factura_cuf']."</div></td>"; 
+        $micad .= "                        </tr>"; 
+        $micad .= "                    </table>"; 
+        $micad .= "                </td>"; 
+        $micad .= "            </tr>"; 
+                        $fecha = new DateTime($factura[0]['factura_fecha']);  
+                        $fecha_d_m_a = $fecha->format('d/m/Y'); 
+        $micad .= "            <tr style='padding: 0;'>"; 
+        $micad .= "                <td colspan='3' style='padding: 0; font-family: Arial'>"; 
+        $micad .= "                    <center style='margin-bottom:15px'>"; 
+        $micad .= "                        <font size='4' face='arial'>FACTURA</font> <br>"; 
+        $micad .= "                        <font size='1' face='arial'>(Con Derecho a Cr&eacute;dito Fiscal)</font> <br>"; 
+        $micad .= "                    </center>"; 
+        $micad .= "                </td>"; 
+        $micad .= "            </tr>"; 
+        $micad .= "            <tr>"; 
+        $micad .= "                <td colspan='2'>";
+        //$micad .= "                    <div style='display: inline-block; float:left; width:70%'>"; 
+        $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
+        $micad .= "                            <tr>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px;'  class='autoColor'>Fecha:</td>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$fecha_d_m_a." ".$factura[0]['factura_hora']."</td>"; 
+        $micad .= "                            </tr>"; 
+        $micad .= "                            <tr>"; 
+        $micad .= "                                <td style=' font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Nombre/Razón Social:</td>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_razonsocial']."</td>"; 
+        $micad .= "                            </tr>"; 
+        $micad .= "                        </table>"; 
+        //$micad .= "                    </div>"; 
+        $micad .= "                </td>"; 
+        $micad .= "                <td>"; 
+        //$micad .= "                    <div style='display: inline-block; float:left; width:30%'>"; 
+        $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
+        $micad .= "                            <tr>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; ' class='autoColor'>NIT/CI/CEX:</td>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_nit']."  ";
+                                                    if ($factura[0]['cdi_codigoclasificador']!=5){
+        $micad .=                                        $factura[0]["cliente_complementoci"];
+                                                    }
+        $micad .= "</td>"; 
+        $micad .= "                            </tr>"; 
+        $micad .= "                            <tr>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Cod. Cliente:</td>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_codigocliente']."</td>"; 
+        $micad .= "                            </tr>"; 
+        $micad .= "                        </table>"; 
+        //$micad .= "                    </div>"; 
+        $micad .= "                </td>"; 
+        $micad .= "            </tr>"; 
+        $micad .= "            </table>";
+        $micad .= "            <br>";
+        $micad .= "            </td>"; 
+        $micad .= "            </tr>"; 
+                         $mostrarice = 0; //sin ice  
+        $micad .= "            <tr>"; 
+        $micad .= "                <td>"; 
+
+        $colorCelda = "style='padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;'";
+
+        $micad .= "                    <table class='table-condensed'  style='width: 100%; margin: 0;' >"; 
+        $micad .= "                        <tr  style=' font-family: arial; border: 1px solid black '>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">C&Oacute;DIGO<br> PRODUCTO</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">CANTIDAD</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">UNIDAD <br>DE MEDIDA</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">DESCRIPCI&Oacute;N</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">PRECIO<br> UNITARIO</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">DESCUENTO</td>"; 
+                                    if ($mostrarice==1){ 
+        $micad .= "                            <td align='center' ".$colorCelda.">ICE %</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">ICE ESP.</td>"; 
+                                    } 
+        $micad .= "                            <td align='center' ".$colorCelda.">SUBTOTAL</td>"; 
+        $micad .= "                        </tr>"; 
+                                    $cont = 0; 
+                                    $cantidad = 0; 
+                                    $total_descuentoparcial = 0; 
+                                    $total_descuento = 0; 
+                                    $total_final = 0; 
+                                    $total_subtotal = 0; 
+                                    $ice = 0.00; 
+                                    if ($factura[0]['estado_id']<>3){  
+                                        foreach($detalle_factura as $d){ 
+                                            $cont = $cont+1; 
+                                            $cantidad += $d['detallefact_cantidad']; 
+                                            $sub_total = $d['detallefact_subtotal']; 
+                                            $total_subtotal += $sub_total; 
+                                            $total_descuentoparcial += $d['detallefact_descuentoparcial'] * $d['detallefact_cantidad'];  
+                                            $total_descuento += $d['detallefact_descuento'];  
+                                            $total_final += $d['detallefact_total'];  
+        $micad .= "                        <tr style='border: 1px solid black'>"; 
+        $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".$d['detallefact_codigo']."</font></td>"; 
+        $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_cantidad'],2,'.',',')."</font></td>"; 
+        $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'><center>".$d['producto_unidad']."</center></font></td>"; 
+        $micad .= "                            <td colspan='1' style='padding: 0; line-height: 10px;'>"; 
+        $micad .= "                                <font style='size:7px; font-family: arial; padding-left:3px'> "; 
+        $micad .=                                     $d['detallefact_descripcion']; 
+                                            if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) { 
+        $micad .=                                         $d['detallefact_preferencia']; 
+                                            } 
+                                            if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ){ 
+        $micad .= "                                        <br>".nl2br($d['detallefact_caracteristicas']); 
+                                            } 
+        $micad .= "                                </font>"; 
+        $micad .= "                            </td>"; 
+        $micad .= "                            <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_precio'],2,'.',',')."</font></td>"; 
+        $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',',')."</td>"; 
+                                    if($mostrarice==1){ 
+        $micad .= "                                <td align='right' style='padding-right: 3px;'>".number_format($ice,2,'.',',')."</td>"; 
+        $micad .= "                                <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($ice,2,'.',',')."</font></td>"; 
+                                    } 
+        $micad .= "                            <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']) ,2,'.',',')."</font></td>"; 
+        $micad .= "                        </tr>"; 
+                             }} 
+                                $total_final_factura = $factura[0]['factura_subtotal']; 
+                                $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
+                                $span = ($mostrarice==1)? 3: 2; 
+        $micad .= "                    <!-------------- SUB TOTAL ---------->"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>SUBTOTAL Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($total_final_factura,2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+        $micad .= "                    <!-------------- DESCUENTO ---------->"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)DESCUENTO Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+        $micad .= "                    <!-------------- DECUENTO GLOBAL ---------->"; 
+                             //if($factura[0]['factura_descuento']>0){ 
+        /*$micad .= "                        <!--<tr>"; 
+        $micad .= "                            <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)DESCUENTO GLOBAL Bs</td>"; 
+        $micad .= "                            <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
+        $micad .= "                        </tr>--> */ 
+                             //} 
+        $micad .= "                    <!-------------- FACTURA TOTAL ---------->"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>TOTAL Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_total'] ,2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+          $micad .= "                          <!-------------- FACTURA GIFTA CARD ---------->";
+          $micad .= "      <tr>";
+          $micad .= "          <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO GIFT CARD Bs</td>";
+          $micad .= "          <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_giftcard'] ,2,'.',',')."</td>";
+          $micad .= "      </tr>";
+        $micad .= "                    <!-------------- ICE / ICE ESPECIFICO ---------->"; 
+                            if($mostrarice==1){
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ice,2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-) TOTAL ICE PORCENTUAL Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ice,2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+                             } 
+        $micad .= "                                             <!-------------- MONTO A PAGAR ---------->";
+        $micad .= "    <tr>           ";
+        $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";
+        $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total,2,'.',',')."</td>";
+        $micad .= "    </tr>";
+        $micad .= "                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>IMPORTE BASE CR&Eacute;DITO FISCAL</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total ,2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+        $micad .= "                </table>"; 
+        $micad .= "            </td>"; 
+        $micad .= "        </tr>"; 
+        $micad .= "        <tr>"; 
+        $micad .= "            <td style='padding-top: 0px; padding-bottom: 0px;'>"; 
+        $micad .= "                <table style='width: 100%; margin-top: 25px;'>"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                       <td style='float: left;width: 78%;'>"; 
+        //$micad .= "                <div style='width: 100%; margin-top: 25px;'>"; 
+        //$micad .= "                    <div style='float: left;width: 78%;'>"; 
+        $micad .= "                        <center style='width:100%;'>"; 
+        $micad .=                             $factura[0]['factura_leyenda1']."<br><br>"; 
+        $micad .= "                            <font face='Arial' size='1'>".$factura[0]['factura_leyenda2']; 
+        $micad .= "                            </font><br><br>"; 
+        $micad .=                             $factura[0]['factura_leyenda3']."<br><br>"; 
+        $micad .=                                 $factura[0]['factura_leyenda4']; 
+
+        $micad .= "                        </center>"; 
+        //$micad .= "                    </div>"; 
+        $micad .= "                        </td>";
+        $micad .= "                        <td style='float: right;width: 80px;'>"; 
+        //$micad .= "                    <div style='float: right;width: 80px;'>"; 
+        //$micad .= "                        <figure>";
+
+
+             //generamos el código qr
+        //$this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+                //Generador de Codigo QR
+                        //cargamos la librerí­a	
+                 $this->load->library('ciqrcode');
+                 //$nit_emisor    = $factura[0]['factura_nitemisor'];
+                $num_fact      = $factura[0]['factura_numero'];
+                //$autorizacion  = $factura[0]['factura_autorizacion'];
+                //$fecha_factura = $factura[0]['factura_fechaventa'];
+                //$total         = $factura[0]['factura_total'];
+                //$codcontrol    = $factura[0]['factura_codigocontrol'];
+                //$nit           = $factura[0]['factura_nit'];
+                 $nit_emisor    = $factura[0]['factura_nitemisor'];
+                 $ruta      = $factura[0]['factura_ruta'];
+                    $cuf       = $factura[0]['factura_cuf'];
+                    $tamanio   = $factura[0]['factura_tamanio'];
+                         $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+                 //hacemos configuraciones
+                 $params['data'] = $cadenaQR;//$this->random(30);
+                 $params['level'] = 'H';
+                 $params['size'] = 5;
+                 $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+                $this->ciqrcode->generate($params);
+                                                $base_url = explode('/', base_url());
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
+                    $codigoqr = $directorio.'/images/qrcode'.$usuario_id.'.png';
+                    $path = $codigoqr;
+                    $type = pathinfo($path, PATHINFO_EXTENSION);
+                    $data = file_get_contents($path);
+                    $elcodigoqrbase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $micad .= "                            <img src='".$elcodigoqrbase64."' width='80' height='80' alt='Codigo QR'>"; 
+        //$micad .= "                        </figure>"; 
+        //$micad .= "                    </div>"; 
+        //$micad .= "                </div>"; 
+        $micad .= "                      </td>"; 
+        $micad .= "                   </tr>"; 
+        $micad .= "                </table>"; 
+        $micad .= "            </td>"; 
+        $micad .= "        </tr>";                                        
+        $micad .= "    </table>"; 
+        $micad .= "</td>"; 
+        $micad .= "</tr>"; 
+        $micad .= "</table>"; 
+        $micad .= "</body>"; 
+        $micad .= "</html>"; 
+
+        $dompdf = new Dompdf();
+        $options = new Options();
+
+        $options->set(array(
+            'isRemoteEnabled' => true
+        ));
+        $dompdf->setOptions($options);
+        
+        if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
+            $ancho = $this->parametros["parametro_anchofactura"];
+            $elancho = (($ancho+2)*28.34645669291);
+            $dompdf->set_paper(array(0, 0, $elancho, 841), 'portrait');
+        }
+        //$dompdf = new Dompdf(); 
+        $dompdf->loadHtml($micad); 
+        $dompdf->render(); 
+        //salida al navegador 
+        //$dompdf->stream(); 
+        $base_url = explode('/', base_url()); 
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/'; 
+        $output = $dompdf->output(); 
+        file_put_contents($directorio.$nombre_archivo.$factura[0]['factura_id'].'.pdf', $output); 
+        //file_put_contents($directorio."PRUEBAPDF".$factura[0]['factura_id'].'.pdf', $output); 
+        /* F I N  generar el pdf */ 
+
+         /*   $email = $this->input->post('cliente_email'); 
+            if($email !=""){
+                $this->enviarcorreo($venta_id, $factura_id, $email,$nombre_archivo);
+
+            }*/
+    }
+    function pdf_factura_carta_prev($factura_id){
+        $factura = $this->Factura_model->get_factura_id($factura_id);
+        $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
+        $empresa = $this->Empresa_model->get_empresa(1);
+        //$parametros = $this->Parametro_model->get_parametros();
+        $usuario_id = $this->session_data['usuario_id'];
+        $nombre_archivo = $this->nombre_archivo;
+        
+        $micad = ""; 
+        $micad .= "<!DOCTYPE html>"; 
+        $micad .= "<html>"; 
+        $micad .= "    <head>"; 
+        //$micad .= "    <link rel='stylesheet' href='".base_url()."resources/css/bootstrap.min.css'>"; 
+        $micad .= "        <style type='text/css'>"; 
+        $micad .= "            @font-face {";
+        $micad .= "                font-family : 'Arial' !important;";
+                        $base_url = explode('/', base_url());
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
+        $micad .= "                 src: url('".$directorio."fonts/arial.ttf') format('truetype');";
+        $micad .= "            }";
+        $micad .= "           p {"; 
+        $micad .= "               font-family: Arial;"; 
+        $micad .= "               font-size: 7pt;"; 
+        $micad .= "               line-height: 120%;"; 
+        $micad .= "               color: #000;"; 
+        $micad .= "               padding: 10px;"; 
+        $micad .= "           }"; 
+
+        $micad .= "           div {"; 
+        $micad .= "         margin-top: 0px;"; 
+        $micad .= "           margin-right: 0px;"; 
+        $micad .= "           margin-bottom: 0px;"; 
+        $micad .= "           margin-left: 0px;"; 
+        $micad .= "            margin: 0px;"; 
+        $micad .= "           }"; 
+
+
+        $micad .= "          table{"; 
+        $micad .= "          width : 7cm;"; 
+        $micad .= "           margin : 0 0 0px 0;"; 
+        $micad .= "          padding : 0 0 0 0;"; 
+        $micad .= "          border-spacing : 0 0;"; 
+        $micad .= "          border-collapse : collapse;"; 
+        $micad .= "          font-family: Arial;"; 
+        $micad .= "          font-size: 7pt;  "; 
+
+        $micad .= "          }"; 
+
+        $micad .= "          .table-condensed tr td{"; 
+        $micad .= "               border:1px solid black;"; 
+        $micad .= "           }"; 
+
+        $micad .= "           td#comentario {"; 
+        $micad .= "               vertical-align : bottom;"; 
+        $micad .= "               border-spacing : 0;"; 
+        $micad .= "           }"; 
+        $micad .= "          div#content {"; 
+        $micad .= "            background : #ddd;"; 
+        $micad .= "            font-size : 7px;"; 
+        $micad .= "            margin : 0 0 0 0;"; 
+        $micad .= "            padding : 0 5px 0 5px;"; 
+        $micad .= "            border-left : 1px solid #aaa;"; 
+        $micad .= "           border-right : 1px solid #aaa;"; 
+        $micad .= "           border-bottom : 1px solid #aaa;"; 
+        $micad .= "           }"; 
+        $micad .= "       </style>"; 
+
+        $micad .= "   </head>"; 
+        $tipo_factura = $this->parametros["parametro_altofactura"]; //15 tamaño carta  
+        $ancho = $this->parametros["parametro_anchofactura"]; 
+        $margen_izquierdo = $this->parametros["parametro_margenfactura"]."cm"; 
+        $micad .= "    <body style='width: ".$ancho."cm;'>"; 
+        $micad .= "    <table class='table' style='width: ".$ancho."cm; margin-top: 20px;'>"; 
+        $micad .= "        <tr>"; 
+        $micad .= "           <td style='padding: 0; width: ".$margen_izquierdo."'></td>"; 
+        $micad .= "            <td class='borde_pagina' style='padding: 0;'>"; 
+        $micad .= "        <table class='table' style='margin-top: 20px;'>"; 
+        $micad .= "        <tr>"; 
+        $micad .= "        <td style='padding: 0; width: ".$margen_izquierdo."'></td>"; 
+        $micad .= "        <td class='borde_pagina' style='padding: 0;'>"; 
+        $micad .= "        <table class='table' style='width: ".$ancho."cm; padding: 0;' >"; 
+        $micad .= "            <tr>"; 
+        $micad .= "            <td>"; 
+        $micad .= "            <table style='width: 100%; margin: 0;' >"; 
+        $micad .= "            <tr>"; 
+        $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
+        $micad .= "                    <center>"; 
+        $micad .= "                            <font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font><br>"; 
+//                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
+//                                        $micad .= "                                "; 
+//                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
+//                                        $micad .= "                                "; 
+//                                                                       } 
+
+        $micad .= "                            <font size='1' face='Arial'>"; 
+        $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
+        $micad .= "                                "; 
+                                                if($factura[0]['factura_sucursal']==0){ 
+        $micad .= "                                            <br>CASA MATRIZ"; 
+                                                }else{ 
+        $micad .= "                                            <br>SUCURSAL ".$factura[0]['factura_sucursal']; 
+                                                } 
+        $micad .= "                                <br>"; 
+        $micad .= "                                Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>"; 
+        $micad .=                                 $empresa[0]['empresa_direccion']."<br>"; 
+        $micad .= "                                Teléfono: ".$empresa[0]['empresa_telefono']."<br>"; 
+        $micad .=                                 $empresa[0]['empresa_ubicacion']; 
+        $micad .= "                            </small>"; 
+        $micad .= "                            </font>"; 
+        $micad .= "                    </center>"; 
+        $micad .= "                </td>"; 
+        $micad .= "                <td style='width: ".round($ancho/3,2)."cm; padding:0;line-height: 9px;'>"; 
+        $micad .= "                </td>"; 
+        $micad .= "                <td style='width: ".round($ancho/3,2)."cm;  padding: 0; line-height: 10px;'>"; 
+        $micad .= "                    <table style='width: ".round($ancho/3,2)."cm; word-wrap: break-word; max-width: 6cm; padding:0; border-bottom: #0000eb'>"; 
+        $micad .= "                        <tr>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>NIT: </td>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'> ".$factura[0]['factura_nitemisor']."</td>"; 
+        $micad .= "                        </tr>"; 
+        $micad .= "                        <tr>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>FACTURA Nº: </td>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;'>".$factura[0]['factura_numero']."</td>"; 
+        $micad .= "                        </tr>"; 
+        $micad .= "                        <tr>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'>CÓD AUTORIZACIÓN: </td>"; 
+        $micad .= "                            <td style='font-family: arial; font-size: 8pt; padding-left: 5px; max-width: 3cm'><div style='word-wrap: break-word !important; padding=0px'>".$factura[0]['factura_cuf']."</div></td>"; 
+        $micad .= "                        </tr>"; 
+        $micad .= "                    </table>"; 
+        $micad .= "                </td>"; 
+        $micad .= "            </tr>"; 
+                        $fecha = new DateTime($factura[0]['factura_fecha']);  
+                        $fecha_d_m_a = $fecha->format('d/m/Y'); 
+        $micad .= "            <tr style='padding: 0;'>"; 
+        $micad .= "                <td colspan='3' style='padding: 0; font-family: Arial'>"; 
+        $micad .= "                    <center style='margin-bottom:15px'>"; 
+        $micad .= "                        <font size='4' face='arial'>FACTURA</font> <br>"; 
+        $micad .= "                        <font size='1' face='arial'>(Con Derecho a Cr&eacute;dito Fiscal)</font> <br>"; 
+        $micad .= "                    </center>"; 
+        $micad .= "                </td>"; 
+        $micad .= "            </tr>"; 
+        $micad .= "            <tr>"; 
+        $micad .= "                <td colspan='2'>";
+        //$micad .= "                    <div style='display: inline-block; float:left; width:70%'>"; 
+        $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
+        $micad .= "                            <tr>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px;'  class='autoColor'>Fecha:</td>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$fecha_d_m_a." ".$factura[0]['factura_hora']."</td>"; 
+        $micad .= "                            </tr>"; 
+        $micad .= "                            <tr>"; 
+        $micad .= "                                <td style=' font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' class='autoColor'>Nombre/Razón Social:</td>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_razonsocial']."</td>"; 
+        $micad .= "                            </tr>"; 
+        $micad .= "                        </table>"; 
+        //$micad .= "                    </div>"; 
+        $micad .= "                </td>"; 
+        $micad .= "                <td>"; 
+        //$micad .= "                    <div style='display: inline-block; float:left; width:30%'>"; 
+        $micad .= "                        <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>"; 
+        $micad .= "                            <tr>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; ' class='autoColor'>NIT/CI/CEX:</td>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_nit']."  ";
+                                                    if ($factura[0]['cdi_codigoclasificador']!=5){
+        $micad .=                                        $factura[0]["cliente_complementoci"];
+                                                    }
+        $micad .= "</td>"; 
+        $micad .= "                            </tr>"; 
+        $micad .= "                            <tr>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Cod. Cliente:</td>"; 
+        $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_codigocliente']."</td>"; 
+        $micad .= "                            </tr>"; 
+        $micad .= "                        </table>"; 
+        //$micad .= "                    </div>"; 
+        $micad .= "                </td>"; 
+        $micad .= "            </tr>"; 
+        $micad .= "            </table>";
+        $micad .= "            <br>";
+        $micad .= "            </td>"; 
+        $micad .= "            </tr>"; 
+                         $mostrarice = 0; //sin ice  
+        $micad .= "            <tr>"; 
+        $micad .= "                <td>"; 
+
+        $colorCelda = "style='padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;'";
+
+        $micad .= "                    <table class='table-condensed'  style='width: 100%; margin: 0;' >"; 
+        $micad .= "                        <tr  style=' font-family: arial; border: 1px solid black '>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">C&Oacute;DIGO<br> PRODUCTO/SERVICIO</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">CANTIDAD</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">UNIDAD <br>DE MEDIDA</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">DESCRIPCI&Oacute;N</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">PRECIO<br> UNITARIO</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">DESCUENTO</td>"; 
+                                    /*if ($mostrarice==1){ 
+        $micad .= "                            <td align='center' ".$colorCelda.">ICE %</td>"; 
+        $micad .= "                            <td align='center' ".$colorCelda.">ICE ESP.</td>"; 
+                                    }*/ 
+        $micad .= "                            <td align='center' ".$colorCelda.">SUBTOTAL</td>"; 
+        $micad .= "                        </tr>"; 
+                                    $cont = 0; 
+                                    $cantidad = 0; 
+                                    $total_descuentoparcial = 0; 
+                                    $total_descuento = 0; 
+                                    $total_final = 0; 
+                                    $total_subtotal = 0; 
+                                    $ice = 0.00; 
+                                    if ($factura[0]['estado_id']<>3){  
+                                        foreach($detalle_factura as $d){ 
+                                            $cont = $cont+1; 
+                                            $cantidad += $d['detallefact_cantidad']; 
+                                            $sub_total = $d['detallefact_subtotal']; 
+                                            $total_subtotal += $sub_total; 
+                                            $total_descuentoparcial += $d['detallefact_descuentoparcial'] * $d['detallefact_cantidad'];  
+                                            $total_descuento += $d['detallefact_descuento'];  
+                                            $total_final += $d['detallefact_total'];  
+        $micad .= "                        <tr style='border: 1px solid black'>"; 
+        $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".$d['detallefact_codigo']."</font></td>"; 
+        $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_cantidad'],2,'.',',')."</font></td>"; 
+        $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'><center>".$d['producto_unidad']."</center></font></td>"; 
+        $micad .= "                            <td colspan='1' style='padding: 0; line-height: 10px;'>"; 
+        $micad .= "                                <font style='size:7px; font-family: arial; padding-left:3px'> "; 
+        $micad .=                                     $d['detallefact_descripcion']; 
+                                            if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) { 
+        $micad .=                                         $d['detallefact_preferencia']; 
+                                            } 
+                                            if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ){ 
+        $micad .= "                                        <br>".nl2br($d['detallefact_caracteristicas']); 
+                                            } 
+        $micad .= "                                </font>"; 
+        $micad .= "                            </td>"; 
+        $micad .= "                            <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_precio'],2,'.',',')."</font></td>"; 
+        $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',',')."</td>"; 
+                                    /*if($mostrarice==1){ 
+        $micad .= "                                <td align='right' style='padding-right: 3px;'>".number_format($ice,2,'.',',')."</td>"; 
+        $micad .= "                                <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($ice,2,'.',',')."</font></td>"; 
+                                    } */
+        $micad .= "                            <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']) ,2,'.',',')."</font></td>"; 
+        $micad .= "                        </tr>"; 
+                             }} 
+                                $total_final_factura = $factura[0]['factura_subtotal']; 
+                                $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
+                                $span = 2; //($mostrarice==1)? 3: 2; 
+        /*$micad .= "                    <!-------------- SUB TOTAL ---------->"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>SUBTOTAL Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($total_final_factura,2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+        $micad .= "                    <!-------------- DESCUENTO ---------->"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)DESCUENTO Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+        $micad .= "                    <!-------------- DECUENTO GLOBAL ---------->"; 
+                             //if($factura[0]['factura_descuento']>0){ 
+        /*$micad .= "                        <!--<tr>"; 
+        $micad .= "                            <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)DESCUENTO GLOBAL Bs</td>"; 
+        $micad .= "                            <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>";
+        $micad .= "                        </tr>--> */ 
+                             //} 
+       /* $micad .= "                    <!-------------- FACTURA TOTAL ---------->"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>TOTAL Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_total'] ,2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+          $micad .= "                          <!-------------- FACTURA GIFTA CARD ---------->";
+          $micad .= "      <tr>";
+          $micad .= "          <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO GIFT CARD Bs</td>";
+          $micad .= "          <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_giftcard'] ,2,'.',',')."</td>";
+          $micad .= "      </tr>";
+        $micad .= "                    <!-------------- ICE / ICE ESPECIFICO ---------->"; 
+        */
+                            /*if($mostrarice==1){
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ice,2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-) TOTAL ICE PORCENTUAL Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ice,2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+                             } */
+        $micad .= "                                             <!-------------- MONTO A PAGAR ---------->";
+        $micad .= "    <tr>           ";
+        $micad .= "        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
+        $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>TOTAL Bs</td>";
+        $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total,2,'.',',')."</td>";
+        $micad .= "    </tr>";
+        $micad .= "                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>IMPORTE BASE CR&Eacute;DITO FISCAL</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total ,2,'.',',')."</td>"; 
+        $micad .= "                    </tr>"; 
+        $micad .= "                </table>"; 
+        $micad .= "            </td>"; 
+        $micad .= "        </tr>"; 
+        $micad .= "        <tr>"; 
+        $micad .= "            <td style='padding-top: 0px; padding-bottom: 0px;'>"; 
+        $micad .= "                <table style='width: 100%; margin-top: 25px;'>"; 
+        $micad .= "                    <tr>"; 
+        $micad .= "                       <td style='float: left;width: 78%;'>"; 
+        //$micad .= "                <div style='width: 100%; margin-top: 25px;'>"; 
+        //$micad .= "                    <div style='float: left;width: 78%;'>"; 
+        $micad .= "                        <center style='width:100%;'>"; 
+        $micad .=                             $factura[0]['factura_leyenda1']."<br><br>"; 
+        $micad .= "                            <font face='Arial' size='1'>".$factura[0]['factura_leyenda2']; 
+        $micad .= "                            </font><br><br>"; 
+        $micad .=                             $factura[0]['factura_leyenda3']."<br><br>"; 
+        $micad .=                                 $factura[0]['factura_leyenda4']; 
+
+        $micad .= "                        </center>"; 
+        //$micad .= "                    </div>"; 
+        $micad .= "                        </td>";
+        $micad .= "                        <td style='float: right;width: 80px;'>"; 
+        //$micad .= "                    <div style='float: right;width: 80px;'>"; 
+        //$micad .= "                        <figure>";
+
+
+             //generamos el código qr
+        //$this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+                //Generador de Codigo QR
+                        //cargamos la librerí­a	
+                 $this->load->library('ciqrcode');
+                 //$nit_emisor    = $factura[0]['factura_nitemisor'];
+                $num_fact      = $factura[0]['factura_numero'];
+                //$autorizacion  = $factura[0]['factura_autorizacion'];
+                //$fecha_factura = $factura[0]['factura_fechaventa'];
+                //$total         = $factura[0]['factura_total'];
+                //$codcontrol    = $factura[0]['factura_codigocontrol'];
+                //$nit           = $factura[0]['factura_nit'];
+                 $nit_emisor    = $factura[0]['factura_nitemisor'];
+                 $ruta      = $factura[0]['factura_ruta'];
+                    $cuf       = $factura[0]['factura_cuf'];
+                    $tamanio   = $factura[0]['factura_tamanio'];
+                         $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+                 //hacemos configuraciones
+                 $params['data'] = $cadenaQR;//$this->random(30);
+                 $params['level'] = 'H';
+                 $params['size'] = 5;
+                 $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+                $this->ciqrcode->generate($params);
+                                                $base_url = explode('/', base_url());
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/';
+                    $codigoqr = $directorio.'/images/qrcode'.$usuario_id.'.png';
+                    $path = $codigoqr;
+                    $type = pathinfo($path, PATHINFO_EXTENSION);
+                    $data = file_get_contents($path);
+                    $elcodigoqrbase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        $micad .= "                            <img src='".$elcodigoqrbase64."' width='80' height='80' alt='Codigo QR'>"; 
+        //$micad .= "                        </figure>"; 
+        //$micad .= "                    </div>"; 
+        //$micad .= "                </div>"; 
+        $micad .= "                      </td>"; 
+        $micad .= "                   </tr>"; 
+        $micad .= "                </table>"; 
+        $micad .= "            </td>"; 
+        $micad .= "        </tr>";                                        
+        $micad .= "    </table>"; 
+        $micad .= "</td>"; 
+        $micad .= "</tr>"; 
+        $micad .= "</table>"; 
+        $micad .= "</body>"; 
+        $micad .= "</html>"; 
+
+        $dompdf = new Dompdf();
+        $options = new Options();
+
+        $options->set(array(
+            'isRemoteEnabled' => true
+        ));
+        $dompdf->setOptions($options);
+        
+        if($this->parametros['parametro_tipoimpresora'] == "FACTURADORA"){
+            $ancho = $this->parametros["parametro_anchofactura"];
+            $elancho = (($ancho+2)*28.34645669291);
+            $dompdf->set_paper(array(0, 0, $elancho, 841), 'portrait');
+        }
+        //$dompdf = new Dompdf(); 
+        $dompdf->loadHtml($micad); 
+        $dompdf->render(); 
+        //salida al navegador 
+        //$dompdf->stream(); 
+        $base_url = explode('/', base_url()); 
+        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/'; 
+        $output = $dompdf->output(); 
+        file_put_contents($directorio.$nombre_archivo.$factura[0]['factura_id'].'.pdf', $output); 
+        //file_put_contents($directorio."PRUEBAPDF".$factura[0]['factura_id'].'.pdf', $output); 
+        /* F I N  generar el pdf */ 
+
+         /*   $email = $this->input->post('cliente_email'); 
+            if($email !=""){
+                $this->enviarcorreo($venta_id, $factura_id, $email,$nombre_archivo);
+
+            }*/
+    }
 }
