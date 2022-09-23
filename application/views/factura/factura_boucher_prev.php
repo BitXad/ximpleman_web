@@ -352,18 +352,18 @@
                                     <?php echo "SON: ".num_to_letras($factura_total,' Bolivianos'); ?>
                                 </td>
                             </tr>
-                            
+                            <!--
                             <tr>
                                 <td class="text-right text-bold">EFECTIVO Bs</td>
                                 <td></td>
-                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_efectivo'],2,'.',','); ?></td>
+                                <td class="text-right text-bold"><?php /*echo number_format($factura[0]['factura_efectivo'],2,'.',','); ?></td>
                             </tr>
                             <tr>
                                 <td class="text-right text-bold">CAMBIO Bs</td>
                                 <td></td>
-                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_cambio'],2,'.',','); ?></td>
+                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_cambio'],2,'.',',');*/ ?></td>
                             </tr>
-                            
+                            -->
                         </table>
                     </td>
                 </tr>
