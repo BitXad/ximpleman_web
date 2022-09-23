@@ -220,6 +220,18 @@ class Dosificacion extends CI_Controller{
                           }
                       }*/
                         $archivop12 = str_replace(" ", "_", $new_name);
+                        
+                        //Actualizamos el nombre del documento sector
+                        $sql = "update dosificacion d, documentos_fiscales f
+                                set 
+                                d.`dosificacion_documentosector` = f.`documento_nombre`
+
+                                where
+                                f.`dosificacion_sectoreconomico` = d.`docsec_codigoclasificador` and
+                                f.`dosifcacion_modalidad` = d.dosificacion_modalidad";
+                        
+                        $this->Dosificacion_model->ejecutar($sql);
+                        
                     }else{
                         $archivop12 = $archivop121;
                     }
@@ -269,6 +281,17 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_clavep12' => $this->input->post('dosificacion_clavep12'),
                 );
 
+                                        //Actualizamos el nombre del documento sector
+                        $sql = "update dosificacion d, documentos_fiscales f
+                                set 
+                                d.`dosificacion_documentosector` = f.`documento_nombre`
+
+                                where
+                                f.`dosificacion_sectoreconomico` = d.`docsec_codigoclasificador` and
+                                f.`dosifcacion_modalidad` = d.dosificacion_modalidad";
+                        
+                        $this->Dosificacion_model->ejecutar($sql);
+                
                 $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);            
                 redirect('dosificacion/index');
             }
