@@ -283,7 +283,7 @@ class Venta extends CI_Controller{
                 ", detalleven_descuento = ".$descuento.
                 ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                 ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
-                ", detalleven_preferencia = concat(detalleven_preferencia,', $serie')".
+                //", detalleven_preferencia = concat(detalleven_preferencia,', $serie')".
                 "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
         
         $descuento = 0;
@@ -5879,10 +5879,10 @@ function anular_venta($venta_id){
         $micad .=                                     number_format($d['detallefact_cantidad'],2,'.',',')." X ";
         $micad .=                                     number_format($d['detallefact_precio'],2,'.',',')." - ";
         $micad .=                                     number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',','); //." + "; //."0.00 +  0.00";
-                                                    if ($mostrarice==1){
+                                                    /*if ($mostrarice==1){
         $micad .= "                                         + ".number_format($d['detallefact_ice'],2,'.',',')." + ";
         $micad .=                                         number_format($d['detallefact_iceesp'],2,'.',',');
-                                                    }
+                                                    }*/
         $micad .= "                                </td>";
         $micad .= "                                <td style='width: 0.5cm !important;'></td>";
         $micad .= "                                <td align='right' style='font-size: 8pt; padding: 0;'>". number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),2,'.',',')."</td>";
@@ -5897,7 +5897,7 @@ function anular_venta($venta_id){
         $micad .= "                <tr>";
         $micad .= "                    <td colspan='4' style='padding: 0'>";
         $micad .= "                        <table style='width: ".$ancho."; font-size: 8pt !important' >";
-        $micad .= "                            <tr style='border-top-style: dotted; border-top-width: 1px;'>";
+        /*$micad .= "                            <tr style='border-top-style: dotted; border-top-width: 1px;'>";
         $micad .= "                                <td class='text-right' style='text-align: right'>SUBTOTAL Bs</td>";
         $micad .= "                                <td></td>";
         $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($total_final_factura,2,'.',',')."</td>";
@@ -5930,9 +5930,9 @@ function anular_venta($venta_id){
         $micad .= "                                <td class='text-right' style='text-align: right'> ".number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',',');
         $micad .= "                                </td>";
         $micad .= "                            </tr>";
-                                                }
-        $micad .= "                            <tr>";
-        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO A PAGAR Bs</td>";
+                                                }*/
+        $micad .= "                            <tr style='border-top-style: dotted; border-top-width: 1px;'>";
+        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>TOTAL Bs</td>";
         $micad .= "                                <td></td>";
         $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
         $micad .= "                            </tr>";

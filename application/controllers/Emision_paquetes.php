@@ -96,7 +96,11 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_factura'];
+                if($dosificacion["docsec_codigoclasificador"] == 1){
+                    $wsdl = $dosificacion['dosificacion_factura'];
+                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
@@ -221,7 +225,11 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_factura'];
+                if($dosificacion["docsec_codigoclasificador"] == 1){
+                    $wsdl = $dosificacion['dosificacion_factura'];
+                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
@@ -330,7 +338,11 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_facturaglp'];
+                if($dosificacion["docsec_codigoclasificador"] == 1){
+                    $wsdl = $dosificacion['dosificacion_factura'];
+                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
@@ -452,7 +464,11 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_facturaglp'];
+                if($dosificacion["docsec_codigoclasificador"] == 1){
+                    $wsdl = $dosificacion['dosificacion_factura'];
+                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
