@@ -5,6 +5,7 @@
  */
  
 class Parametro extends CI_Controller{
+    private $nombre_archivo;
     function __construct()
     {
         parent::__construct();
@@ -16,6 +17,11 @@ class Parametro extends CI_Controller{
         $this->load->model('Venta_model');
         $this->load->model('PuntoVenta_model');
         $this->load->model('Emision_paquetes_model');
+        
+        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+        $this->dosificacion = $dosificacion;
+        $this->nombre_archivo = $this->dosificacion["dosificacion_documentosector"];
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -710,19 +716,24 @@ class Parametro extends CI_Controller{
 
 
                                 $p = new PharData($directorio."contingencia".$codigo_recepcion.".tar");
-
+                                $nombre_archivo = $this->nombre_archivo;
+                                
                                 foreach ($facturas as $f){
 
-                                    $datos = implode("", file($directorio."compra_venta".$f["factura_id"].".xml")); //convierte un array en cadena y asignamos a datos
-                                    $p["compra_venta".$f['factura_id'].".xml"] = $datos;
+                                    $datos = implode("", file($directorio.$nombre_archivo.$f["factura_id"].".xml")); //convierte un array en cadena y asignamos a datos
+                                    $p[$nombre_archivo.$f['factura_id'].".xml"] = $datos;
 
                                 }
 
                                 $p->compress(Phar::GZ);                        
 
                                 //PASO 8: Enviar los archivos generados en el .tar.gz
-
-                                $wsdl = $dosificacion['dosificacion_factura'];
+                                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                                if($dosificacion["docsec_codigoclasificador"] == 1){
+                                    $wsdl = $dosificacion['dosificacion_factura'];
+                                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+                                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                                }
 
                                 $token = $dosificacion['dosificacion_tokendelegado'];
                                 $opts = array(
@@ -825,8 +836,13 @@ class Parametro extends CI_Controller{
                                 $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
 
                                 //PASO 9: Envio de los archivos
-
-                                $wsdl = $dosificacion['dosificacion_factura'];
+                                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                                if($dosificacion["docsec_codigoclasificador"] == 1){
+                                        $wsdl = $dosificacion['dosificacion_factura'];
+                                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+                                        $wsdl = $dosificacion['dosificacion_facturaglp'];
+                                }
+                                
                                 $token = $dosificacion['dosificacion_tokendelegado'];
 
                                 $opts = array(
@@ -1255,19 +1271,23 @@ class Parametro extends CI_Controller{
 
                         }
                         
-                        
+                        $nombre_archivo = $this->nombre_archivo;
                         foreach ($facturas as $f){
                             
-                            $datos = implode("", file($directorio."compra_venta".$f["factura_id"].".xml")); //convierte un array en cadena y asignamos a datos
-                            $p["compra_venta".$f['factura_id'].".xml"] = $datos;
+                            $datos = implode("", file($directorio.$nombre_archivo.$f["factura_id"].".xml")); //convierte un array en cadena y asignamos a datos
+                            $p[$nombre_archivo.$f['factura_id'].".xml"] = $datos;
                             
                         }
                         
                         $p->compress(Phar::GZ);                        
                         
                         //PASO 8: Enviar los archivos generados en el .tar.gz
-
-                        $wsdl = $dosificacion['dosificacion_factura'];
+                        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                        if($dosificacion["docsec_codigoclasificador"] == 1){
+                            $wsdl = $dosificacion['dosificacion_factura'];
+                        }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+                            $wsdl = $dosificacion['dosificacion_facturaglp'];
+                        }
 
                         $token = $dosificacion['dosificacion_tokendelegado'];
                         $opts = array(
@@ -1369,8 +1389,13 @@ class Parametro extends CI_Controller{
                         $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
                         
                         //PASO 9: Envio de los archivos
-                       
-                        $wsdl = $dosificacion['dosificacion_factura'];
+                        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                       if($dosificacion["docsec_codigoclasificador"] == 1){
+                            $wsdl = $dosificacion['dosificacion_factura'];
+                        }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+                            $wsdl = $dosificacion['dosificacion_facturaglp'];
+                        }
+                        
                         $token = $dosificacion['dosificacion_tokendelegado'];
                         
                         $opts = array(
@@ -1532,9 +1557,10 @@ class Parametro extends CI_Controller{
 //            $this->email->bcc($attributes['cc']);
         $this->email->subject("Factura Digital, gracias por comprar, vuelva pronto");
         $base_url = explode('/', base_url());
+        $nombre_archivo = $this->nombre_archivo;
         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-        $this->email->attach($directorio."compra_venta".$factura_id.".xml");
-        $this->email->attach($directorio."compra_venta".$factura_id.".pdf");
+        $this->email->attach($directorio.$nombre_archivo.$factura_id.".xml");
+        $this->email->attach($directorio.$nombre_archivo.$factura_id.".pdf");
         $html = "<html>";
         $html = "<head>";
         $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
