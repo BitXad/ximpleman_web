@@ -277,7 +277,8 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
-<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador"  hidden>
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador"  true>
+<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector"  true>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -876,6 +877,7 @@ window.onkeydown = compruebaTecla;
                    
             <span class="btn btn-info btn-xs"> <b> PUNTO DE VENTA <?php echo $puntoventa_codigo; ?></b></span>
             <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?></b></span>
+            <span class="btn btn-facebook btn-xs"> <b> DOC. <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?></b></span>
         
         <b>            
         <br>TECLAS DE ACCESO DIRECTO <br>

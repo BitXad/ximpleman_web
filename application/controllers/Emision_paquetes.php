@@ -330,7 +330,7 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_factura'];
+                $wsdl = $dosificacion['dosificacion_facturaglp'];
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
@@ -452,7 +452,7 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_factura'];
+                $wsdl = $dosificacion['dosificacion_facturaglp'];
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
@@ -530,10 +530,10 @@ class Emision_paquetes extends CI_Controller{
                     );
                 }else{
                     $cad = $res->mensajesList;
-                            $mensajecadena = "";
-                            foreach ($cad as $c) {
-                                $mensajecadena .= $c.";";
-                            }
+                            $mensajecadena = json_encode($res);
+                            //foreach ($cad as $c) {
+                             //   $mensajecadena .= $c.";";
+                            //}
                     $params = array(
                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
                         'recpaquete_codigoestado' => $res->codigoEstado,

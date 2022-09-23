@@ -13,6 +13,9 @@ class Venta extends CI_Controller{
     private $parametros;
     private $empresa;
     private $registroeventos_id = 0;
+    private $dosificacion;
+    private $nombre_archivo;
+    
     //private $puntodeventa = 0;
     
     function __construct()
@@ -58,6 +61,11 @@ class Venta extends CI_Controller{
         //Carga los parametros en una variable global
         $parametro = $this->Parametro_model->get_parametros();
         $this->parametros = $parametro[0];
+        
+        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+        $this->dosificacion = $dosificacion;
+        $this->nombre_archivo = $this->dosificacion["dosificacion_documentosector"];
+        
         
         $empresa = $this->Empresa_model->get_empresa(1);
         $this->empresa = $empresa[0];
@@ -117,6 +125,7 @@ class Venta extends CI_Controller{
         //**************** inicio contenido ***************
         $data['rolusuario'] = $this->session_data['rol'];
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['dosificacion'] = $this->dosificacion;
         //$data['venta'] = $this->Venta_model->get_all_venta($params);
         $data['page_title'] = "Ventas del dia";
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();  
@@ -127,7 +136,7 @@ class Venta extends CI_Controller{
         $data['usuario'] = $this->Venta_model->get_usuarios();
         $data['modelos_c'] = $this->Modelo_contrato_model->get_all_modelo_contrato();
 
-        $sql = "select * from usuario where usuario_id = ".$this->session_data['tipousuario_id'];
+        $sql = "select * from usuario where usuario_id = ".$this->session_data['usuario_id'];
         $x = $this->Venta_model->consultar($sql);
         
         $puntoventa = $x[0]["puntoventa_codigo"]; //$this->session_data['tipopuntoventa_codigo'];
@@ -469,6 +478,8 @@ class Venta extends CI_Controller{
                 $parametro_tipoemision    = $this->input->post('parametro_tipoemision');
                 
                 $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+                $nombre_archivo =  $dosificacion[0]["dosificacion_documentosector"];
+               
                 if($dosificacion[0]["docsec_codigoclasificador"] == 23){
                     //$cliente_nombre = "'S/N'";
                     $razon = "S/N";
@@ -1019,39 +1030,9 @@ class Venta extends CI_Controller{
                         
                         $base_url = explode('/', base_url());
                         
-                    
-                        if ($dosificacion[0]["docsec_codigoclasificador"]=="1"){ //FACTURA COMPRA VENTA
-
-                            $nombre_archivo = ($modalidad==1)?"facturaElectronicaCompraVenta" : "facturaComputarizadaCompraVenta";                        
-//                            $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $nombre_archivo);
-                        }
-                        if ($dosificacion[0]["docsec_codigoclasificador"]=="11"){ //FACTURA SECTORES EDUCATIVOS
-
-                            $nombre_archivo = ($modalidad==1)?"facturaElectronicaSectorEducativo" : "facturaComputarizadaSectorEducativo";
-//                            $xml = generarfacturaEducativoXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $nombre_archivo);
-                        }
-                        
-                        
-                        if ($dosificacion[0]["docsec_codigoclasificador"]=="13"){ //FACTURA SECTORES EDUCATIVOS
-
-                            $nombre_archivo = ($modalidad==1)?"facturaElectronicaServicioBasico" : "facturaComputarizadaServicioBasico";
-//                            $xml = generarfacturaEducativoXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $nombre_archivo);
-                        }
-                        
-                        if ($dosificacion[0]["docsec_codigoclasificador"]=="23"){ //FACTURA PREVALORADA
-
-                            $nombre_archivo = ($modalidad==1)?"facturaElectronicaPrevalorada" : "facturaComputarizadaPrevalorada";                            
-                            //$xml = generarfacturaPrevaloradaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa);
-                            
-                        }                        
-                        
-                        if ($dosificacion[0]["docsec_codigoclasificador"]=="39"){ //FACTURA SECTORES EDUCATIVOS
-
-                            $nombre_archivo = ($modalidad==1)?"facturaElectronicaComercializacionGnGlp" : "facturaComputarizadaComercializacionGnGlp";
-//                            $xml = generarfacturaComercializacionGnGlpXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $nombre_archivo);
-                        }
-                            
+                        //********************** GENERANDO ARCHIVO XML ****************
                         $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $nombre_archivo, $dosificacion[0]["docsec_codigoclasificador"]);
+                        //********************** GENERANDO ARCHIVO XML ****************    
 
                         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
                         $xsd = $nombre_archivo.".xsd";
@@ -1069,9 +1050,9 @@ class Venta extends CI_Controller{
                                 $datos = implode("", file($directorio.$nombre_archivo.$factura[0]['factura_id'].".xml"));
                                 $gzdata = gzencode($datos, 9);
                                 $fp = fopen($directorio.$nombre_archivo.$factura[0]['factura_id'].".xml.zip", "w");
-                                // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+                               
                                 fwrite($fp, $gzdata);
-                                fclose($fp);
+                                fclose($fp); 
 
                                 //Copiar el archivo .tar al directorio con id del usuario en curso
 
@@ -1097,7 +1078,7 @@ class Venta extends CI_Controller{
                             //fin para borrar
                             
                             //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
-                            //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
+                            //$byteArr = file_get_contents($directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip");
 
                             
                             $handle = fopen($directorio.$nombre_archivo.$factura[0]['factura_id'].".xml.zip", "rb");
@@ -1114,9 +1095,6 @@ class Venta extends CI_Controller{
         
                             // HASH (SHA 256)
                             $xml_comprimido = hash_file('sha256',$directorio.$nombre_archivo.$factura[0]['factura_id'].".xml.zip");
-                            //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
-                            //var_dump($xml_comprimido);
-                            //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
                             $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                             $wsdl = $dosificacion['dosificacion_factura'];
                             $token = $dosificacion['dosificacion_tokendelegado'];
@@ -4805,46 +4783,35 @@ function anular_venta($venta_id){
                 $base_url = explode('/', base_url());
                 //$doc_xml = site_url("resources/xml/$archivoXml.xml");
                 $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-                $xsd = $computarizada_enlinea == 2 ? "compra_venta.xsd":"facturaElectronicaCompraVenta.xsd";
+                $xsd = $this->nombre_archivo.".xsd";
                 $valXSD = new ValidacionXSD();
-                if(!$valXSD->validar("$directorio/compra_venta{$factura[0]['factura_id']}.xml","{$directorio}{$xsd}")){
+                
+                if(!$valXSD->validar("$directorio/".$this->nombre_archivo.$factura[0]['factura_id']."xml",$directorio.$xsd)){
                     // echo "No ingreso";
                     print $valXSD->mostrarError();
                 }else{
                     // COMPRESION XML EN GZIP
-                    $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
+                    $datos = implode("", file($directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml"));
                     $gzdata = gzencode($datos, 9);
-                    $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
-                    // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+                    $fp = fopen($directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip", "w");
+                    // $xml_gzip = fopen($directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip", "r");
                     fwrite($fp, $gzdata);
                     fclose($fp);
                     
                     
                     if($tipo_emision == 2){
-                        $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
-                        $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
+                        $p = new PharData($directorio.$this->nombre_archivo.$factura[0]['factura_id'].'.tar');
+                        $p[$this->nombre_archivo.$factura[0]['factura_id'].'.xml'] = $datos;
                         $p1 = $p->compress(Phar::GZ);
                     }
-                    //$xmlString = file_get_contents($directorio.'compra_venta1.xml');
-                    //$byteArr = file_get_contents($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip");
-
-                    $handle = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "rb");
-                    $contents = fread($handle, filesize($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip"));
+                    
+                    $handle = fopen($directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip", "rb");
+                    $contents = fread($handle, filesize($directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip"));
                     fclose($handle);
-                    /*//$content = base64_encode($contents);
-                    //$b= unpack("C*",$contents);*/
 
-                    //var_dump($contents);
+                    
+                    $xml_comprimido = hash_file('sha256',$directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip");
 
-
-                    /*//var_dump($byteArr);
-                    // $gzip = new PharData("{$directorio}compra_venta{$factura[0]['factura_id']}.xml*");*/
-
-                    // HASH (SHA 256)
-                    $xml_comprimido = hash_file('sha256',"{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip");
-                    //var_dump(base64_encode(file_get_contents("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip")));
-                    //var_dump($xml_comprimido);
-                    //$eniada = $this->mandarFactura("{$directorio}compra_venta{$factura[0]['factura_id']}.xml.zip","compra_venta{$factura[0]['factura_id']}.xml.zip");
                     $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                     $wsdl = $dosificacion['dosificacion_factura'];
                     $token = $dosificacion['dosificacion_tokendelegado'];
@@ -5186,7 +5153,7 @@ function anular_venta($venta_id){
                 "hashArchivo"           => $hash_archivo,
             ]];
             
-            var_dump($parametros);
+            //var_dump($parametros);
         //}
         
         try{
@@ -5395,8 +5362,8 @@ function anular_venta($venta_id){
             $this->email->subject("Factura Digital, gracias por comprar, vuelva pronto");
             $base_url = explode('/', base_url());
             $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-            $this->email->attach($directorio."compra_venta".$factura_id.".xml");
-            $this->email->attach($directorio."compra_venta".$factura_id.".pdf");
+            $this->email->attach($directorio.$this->nombre_archivo.$factura_id.".xml");
+            $this->email->attach($directorio.$this->nombre_archivo.$factura_id.".pdf");
             $html = "<html>";
             $html = "<head>";
             $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
@@ -5486,7 +5453,7 @@ function anular_venta($venta_id){
                 //$doc_xml = site_url("resources/xml/$archivoXml.xml");
                 $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
                 
-                $nom_archivo =  "compra_venta".$factura_id.".tar.gz";  //$this->input->post("nombre_archivo");                
+                $nom_archivo =  $this->nombre_archivo.$factura_id.".tar.gz";  //$this->input->post("nombre_archivo");                
                 
                 $handle = fopen($directorio.$nom_archivo, "rb");
                 $contents = fread($handle, filesize($directorio.$nom_archivo));
@@ -5708,10 +5675,10 @@ function anular_venta($venta_id){
                
                 
                     // COMPRESION XML EN GZIP
-                    $datos = implode("", file($directorio."compra_venta".$factura[0]['factura_id'].".xml"));
+                    $datos = implode("", file($directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml"));
                     $gzdata = gzencode($datos, 9);
-                    $fp = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "w");
-                    // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+                    $fp = fopen($directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip", "w");
+                    // $xml_gzip = fopen($directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip", "r");
                     fwrite($fp, $gzdata);
                     fclose($fp);
 
@@ -5727,8 +5694,8 @@ function anular_venta($venta_id){
                     //$eltipo_emision = $this->parametros['parametro_tipoemision'];
                     if($tipo_emision == 2){ // Si es emision fuera de linea
 
-                        $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
-                        $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
+                        $p = new PharData($directorio.$this->nombre_archivo.$factura[0]['factura_id'].'.tar');
+                        $p[$this->nombre_archivo.$factura[0]['factura_id'].'.xml'] = $datos;
                         $p1 = $p->compress(Phar::GZ);
 
                     }
@@ -5739,8 +5706,8 @@ function anular_venta($venta_id){
                 
                 foreach($facturas as $fact){
                     
-                        $p = new PharData($directorio.'compra_venta'.$factura[0]['factura_id'].'.tar');
-                        $p['compra_venta'.$factura[0]['factura_id'].'.xml'] = $datos;
+                        $p = new PharData($directorio.$this->nombre_archivo.$factura[0]['factura_id'].'.tar');
+                        $p[$this->nombre_archivo.$factura[0]['factura_id'].'.xml'] = $datos;
                         $p1 = $p->compress(Phar::GZ);
                                 
                     
@@ -5758,9 +5725,9 @@ function anular_venta($venta_id){
                         if($numf == 500){
                             break;
                         }else{
-                            if(file_exists($directorio."compra_venta".$f.".pdf")){
-                                $datos = implode("", file($directorio."compra_venta".$f.".xml"));
-                                $p['compra_venta'.$f.'.xml'] = $datos;
+                            if(file_exists($directorio.$this->nombre_archivo.$f.".pdf")){
+                                $datos = implode("", file($directorio.$this->nombre_archivo.$f.".xml"));
+                                $p[$this->nombre_archivo.$f.'.xml'] = $datos;
                                 unset($usar_fact_enviar[$f]);
                             }
                         }
@@ -5901,9 +5868,9 @@ function anular_venta($venta_id){
                         if($numf == 500){
                             break;
                         }else{
-                            if(file_exists($directorio."compra_venta".$f.".pdf")){
-                                $datos = implode("", file($directorio."compra_venta".$f.".xml"));
-                                $p['compra_venta'.$f.'.xml'] = $datos;
+                            if(file_exists($directorio.$this->nombre_archivo.$f.".pdf")){
+                                $datos = implode("", file($directorio.$this->nombre_archivo.$f.".xml"));
+                                $p[$this->nombre_archivo.$f.'.xml'] = $datos;
                                 unset($usar_fact_enviar[$f]);
                             }
                         }
@@ -6008,7 +5975,7 @@ function anular_venta($venta_id){
 //        
 //        $fp = fopen($directorio."prueba.xml.zip", "w");
 //        
-//        // $xml_gzip = fopen($directorio."compra_venta".$factura[0]['factura_id'].".xml.zip", "r");
+//        // $xml_gzip = fopen($directorio.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip", "r");
 //        fwrite($fp, $gzdata);
 //        fclose($fp);
         

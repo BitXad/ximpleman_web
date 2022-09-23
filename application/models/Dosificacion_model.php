@@ -79,7 +79,8 @@ class Dosificacion_model extends CI_Model
                 d.`dosificacion_sfc`, d.`dosificacion_actividad`,
                 d.`dosificacion_fechahora`, d.`dosificacion_leyenda5`, 
                 d.`dosificacion_fechalimite`, d.`dosificasion_actividadsec`,
-                d.dosificacion_cafc,d.dosificacion_modalidad, docsec_codigoclasificador
+                d.dosificacion_cafc,d.dosificacion_modalidad, docsec_codigoclasificador,
+                d.dosificacion_documentosector
 
             FROM
                 dosificacion d, estado e, empresa em

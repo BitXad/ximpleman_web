@@ -63,6 +63,7 @@
 <input type="hidden" id="modif_fhora" value="<?php echo $rolusuario[188-1]['rolusuario_asignado']; ?>" name="modif_fhora">
 <input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
+<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion['dosificacion_documentosector']; ?>" name="dosificacion_documentosector"  hidden>
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
 <input type="hidden" name="all_usuario" id="all_usuario" value='<?php echo json_encode($usuario); ?>' />
