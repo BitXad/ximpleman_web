@@ -1062,7 +1062,7 @@ window.onkeydown = compruebaTecla;
             
             <div class="col-md-3">
                 <h5 class="modal-title" id="myModalLabel"><b>HORA</b></h5>                                        
-                <input type="time" id="hora_cafc" class="btn btn-default btn-xs" style="width: 120px;" value="<?= date("Y-m-d"); ?>"/>
+                <input type="time" id="hora_cafc" class="btn btn-default btn-xs" style="width: 120px;" value="<?= "00:00:00"; ?>"/>
             </div>
             
             

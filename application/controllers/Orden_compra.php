@@ -1337,64 +1337,89 @@ class Orden_compra extends CI_Controller{
     /** Registra una orden compra modificada desde aux. */
     function registrar_ordencompramodif()
     {
-        if($this->acceso(1)){
-            if ($this->input->is_ajax_request()){
-                $usuario_id = $this->session_data['usuario_id'];
-                $ordencompra_id = $this->input->post('ordencompra_id');
-                $parametro = $this->Parametro_model->get_parametros();
-                $detalle_compra_aux = $this->Orden_compra_model->get_detalleoc_aux($ordencompra_id);
-                $total = 0;
-                foreach ($detalle_compra_aux as $detalle){
-                    $total = $total + $detalle["detalleordencomp_total"];
-                }
-                
-                $proveedor_id = $this->input->post('proveedor_id');
-                if(!isset($proveedor_id)){
-                    $proveedor_id = $detalle_compra_aux[0]["proveedor_id"];
-                }
-                //$estadocompra_id = 33;
-                //date_default_timezone_set('America/La_Paz');
-                //$fecha_orden = date('Y-m-d');
-                //$hora_orden = date('H:i:s');
-                $params = array(
-                    'moneda_id' => $parametro[0]["moneda_id"],
-                    'usuario_id' => $usuario_id,
-                    'proveedor_id' => $proveedor_id,
-                    //'estado_id' => $estadocompra_id,
-                    //'ordencompra_fecha' => $fecha_orden,
-                    //'ordencompra_hora' => $hora_orden,
-                    'ordencompra_totalfinal' => $total,
-                );
-                $this->Orden_compra_model->update_ordencompra($ordencompra_id,$params);
-                $this->Orden_compra_model->delete_detalleoc($ordencompra_id);
-                
-                foreach ($detalle_compra_aux as $detalle){
+        try {
+            if($this->acceso(1)){
+                if ($this->input->is_ajax_request()){
+                    $usuario_id = $this->session_data['usuario_id'];
+                    $ordencompra_id = $this->input->post('ordencompra_id');
+                    $parametro = $this->Parametro_model->get_parametros();
+                    $detalle_compra_aux = $this->Orden_compra_model->get_detalleoc_aux($ordencompra_id);
+                    $total = 0;
+                    foreach ($detalle_compra_aux as $detalle){
+                        $total = $total + $detalle["detalleordencomp_total"];
+                    }
+
+                    $proveedor_id = $this->input->post('proveedor_id');
+                    if(!isset($proveedor_id)){
+                        $proveedor_id = $detalle_compra_aux[0]["proveedor_id"];
+                    }
+                    //$estadocompra_id = 33;
+                    //date_default_timezone_set('America/La_Paz');
+                    //$fecha_orden = date('Y-m-d');
+                    //$hora_orden = date('H:i:s');
                     $params = array(
-                        'ordencompra_id' => $ordencompra_id,
-                        'moneda_id' => $detalle["moneda_id"],
-                        'producto_id' => $detalle["producto_id"],
-                        'detalleordencomp_codigo' => $detalle["detalleordencomp_codigo"],
-                        'detalleordencomp_cantidad' => $detalle["detalleordencomp_cantidad"],
-                        'detalleordencomp_unidad' => $detalle["detalleordencomp_unidad"],
-                        'detalleordencomp_costo' => $detalle["detalleordencomp_costo"],
-                        'detalleordencomp_precio' => $detalle["detalleordencomp_precio"],
-                        'detalleordencomp_subtotal' => $detalle["detalleordencomp_subtotal"],
-                        'detalleordencomp_descuento' => $detalle["detalleordencomp_descuento"],
-                        'detalleordencomp_total' => $detalle["detalleordencomp_total"],
-                        'detalleordencomp_descglobal' => $detalle["detalleordencomp_descglobal"],
-                        'detalleordencomp_fechavencimiento' => $detalle["detalleordencomp_fechavencimiento"],
-                        'detalleordencomp_tipocambio' => $detalle["detalleordencomp_tipocambio"],
-                        'cambio_id' => $detalle["cambio_id"],
-                        'detalleordencomp_tc' => $detalle["detalleordencomp_tc"],
+                        'moneda_id' => $parametro[0]["moneda_id"],
+                        'usuario_id' => $usuario_id,
+                        'proveedor_id' => $proveedor_id,
+                        //'estado_id' => $estadocompra_id,
+                        //'ordencompra_fecha' => $fecha_orden,
+                        //'ordencompra_hora' => $hora_orden,
+                        'ordencompra_totalfinal' => $total,
                     );
-                    $detalleordencomp_id = $this->Orden_compra_model->add_detalle_ordencompra($params);
+                    $this->Orden_compra_model->update_ordencompra($ordencompra_id,$params);
+                    $this->Orden_compra_model->delete_detalleoc($ordencompra_id);
+
+                    foreach ($detalle_compra_aux as $detalle){
+                        $params = array(
+                            'ordencompra_id' => $ordencompra_id,
+                            'moneda_id' => $detalle["moneda_id"],
+                            'producto_id' => $detalle["producto_id"],
+                            'detalleordencomp_codigo' => $detalle["detalleordencomp_codigo"],
+                            'detalleordencomp_cantidad' => $detalle["detalleordencomp_cantidad"],
+                            'detalleordencomp_unidad' => $detalle["detalleordencomp_unidad"],
+                            'detalleordencomp_costo' => $detalle["detalleordencomp_costo"],
+                            'detalleordencomp_precio' => $detalle["detalleordencomp_precio"],
+                            'detalleordencomp_subtotal' => $detalle["detalleordencomp_subtotal"],
+                            'detalleordencomp_descuento' => $detalle["detalleordencomp_descuento"],
+                            'detalleordencomp_total' => $detalle["detalleordencomp_total"],
+                            'detalleordencomp_descglobal' => $detalle["detalleordencomp_descglobal"],
+                            'detalleordencomp_fechavencimiento' => $detalle["detalleordencomp_fechavencimiento"],
+                            'detalleordencomp_tipocambio' => $detalle["detalleordencomp_tipocambio"],
+                            'cambio_id' => $detalle["cambio_id"],
+                            'detalleordencomp_tc' => $detalle["detalleordencomp_tc"],
+                        );
+                        $detalleordencomp_id = $this->Orden_compra_model->add_detalle_ordencompra($params);
+                    }
+                    foreach ($detalle_compra_aux as $detalle){
+                        $params1 = array(
+                            'compra_id' => $ordencompra_id,
+                            'moneda_id' => $detalle["moneda_id"],
+                            'producto_id' => $detalle["producto_id"],
+                            'detallecomp_codigo' => $detalle["detalleordencomp_codigo"],
+                            'detallecomp_cantidad' => $detalle["detalleordencomp_cantidad"],
+                            'detallecomp_unidad' => $detalle["detalleordencomp_unidad"],
+                            'detallecomp_costo' => $detalle["detalleordencomp_costo"],
+                            'detallecomp_precio' => $detalle["detalleordencomp_precio"],
+                            'detallecomp_subtotal' => $detalle["detalleordencomp_subtotal"],
+                            'detallecomp_descuento' => $detalle["detalleordencomp_descuento"],
+                            'detallecomp_total' => $detalle["detalleordencomp_total"],
+                            'detallecomp_descglobal' => $detalle["detalleordencomp_descglobal"],
+                            'detallecomp_fechavencimiento' => $detalle["detalleordencomp_fechavencimiento"],
+                            'detallecomp_tipocambio' => $detalle["detalleordencomp_tipocambio"],
+                            'cambio_id' => $detalle["cambio_id"],
+                            'detallecomp_tc' => $detalle["detalleordencomp_tc"],
+                        );
+                        $detalleordencomp_id = $this->Orden_compra_model->add_detalle_compra_bitacora($params1);
+                    }
+                    $this->Orden_compra_model->delete_detalleoc_aux($ordencompra_id);
+                    $datos = $ordencompra_id;
+                    echo json_encode($datos);
+                }else{                 
+                    show_404();
                 }
-                $this->Orden_compra_model->delete_detalleoc_aux($ordencompra_id);
-                $datos = $ordencompra_id;
-                echo json_encode($datos);
-            }else{                 
-                show_404();
             }
+        } catch (Exception $exc) {
+            echo json_encode($exc);
         }
     }
 }

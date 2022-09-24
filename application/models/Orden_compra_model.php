@@ -131,6 +131,11 @@ class Orden_compra_model extends CI_Model
         $this->db->insert('detalle_ordencompra',$params);
         return $this->db->insert_id();
     }
+    function add_detalle_compra_bitacora($params)
+    {
+        $this->db->insert('detalle_compra_bitacora',$params);
+        return $this->db->insert_id();
+    }
     function get_detalle_ordencompra($ordencompra_id)
     {
         $sql="select doc.*, p.producto_nombre
