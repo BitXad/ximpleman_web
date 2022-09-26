@@ -74,19 +74,19 @@ class Pedido extends CI_Controller{
         $data['usuario_nombre'] = $usuario_nombre;
         //$data['usuarios'] = $this->Venta_model->get_usuarios(); corregido mediante left join
         
-        $filtro = $this->input->post('filtro');
+        /*$filtro = $this->input->post('filtro');
         
         if ($filtro == null){
             $data['pedido'] = $this->Pedido_model->get_pedidos(" and date(p.pedido_fecha) = date(now())");
         }
         else{
             $data['pedido'] = $this->Pedido_model->get_pedidos($filtro);
-        }
+        }*/
         
         $this->load->model('Categoria_clientezona_model');
         $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_asc();
 
-        $data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
+        //$data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
         $data['estado'] = $this->Estado_model->get_tipo_estado(5);
         
         $data['_view'] = 'pedido/index';
@@ -294,7 +294,7 @@ class Pedido extends CI_Controller{
         $tipousuario_id = $this->session_data['tipousuario_id'];
         $data['rolusuario'] = $this->session_data['rol'];
         $data['page_title'] = "Pedidos";
-        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+        //$data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         
         if ($cliente_id>0){

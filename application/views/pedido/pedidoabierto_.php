@@ -153,6 +153,152 @@ function cerrar_ventana(){
         $labelboton = "Reserva";
     }
 ?>
+´
+<div class="panel-group"  style="padding:0;" >
+  <div class="panel panel-warning" style="padding:0;">
+    <div class="panel-heading" style="padding:0;">
+        
+        
+<!--------------------- cliente_id --------------------->
+<div class="container" hidden>
+    <input type="text" name="cliente_id" id="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
+    <input type="text" name="cdi_codigoclasificador" id="cdi_codigoclasificador" value="<?php echo $cliente[0]['cdi_codigoclasificador']; ?>" class="form-control" id="cdi_codigoclasificador" >
+</div>
+
+<!--------------------- fin cliente_id --------------------->
+        
+        <div class="col-md-3" >
+            <label for="nit" class="control-label">NIT</label>
+            <div class="form-group">
+                <input type="number" name="nit" class="form-control" id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" />
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <label for="razon social" class="control-label">RAZON SOCIAL</label>
+            <div class="form-group">
+                
+                <!--<input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>-->
+                <input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" />
+                <datalist id="listaclientes">
+
+                </datalist>
+                
+            </div>
+        </div>
+
+        
+        <div class="col-md-2">
+            <label for="telefono" class="control-label">TELEFONO</label>
+            <div class="form-group">
+                <input type="telefono" name="telefono" class="form-control" id="telefono"  onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <label for="tipo" class="control-label">TIPO CLIENTE</label>           
+            <div class="form-group">
+                
+                <select  class="form-control" id="tipocliente_id" name="tipocliente_id" onkeypress="validar(event,7)">
+                    <option value="<?php echo $tipo_cliente[0]['tipocliente_id']; ?>"><?php echo $tipo_cliente[0]['tipocliente_descripcion']; ?></option>
+                    <?php $contador = 0;
+                            foreach($tipo_cliente as $tc){                          
+                                if ($contador>0){?>                    
+                                     <option value="<?php echo $tc['tipocliente_id'];?>"><?php echo $tc['tipocliente_descripcion'];?></option>
+                    <?php       }
+                                $contador++;
+                            }?>
+                </select>
+              
+            </div>
+        </div>        
+        
+      <h4 class="panel-title">
+        <?php if(sizeof($dosificacion)>0){ ?>
+          <input type="checkbox" id="facturado" value="1" name="facturado">
+        <?php } else{ ?>
+          <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
+          <font color="red" size="2"> Dosificación no activada</font>
+        <?php } ?>
+        <a data-toggle="collapse" href="#collapse1">Más</a> /
+        
+                        
+      </h4>
+
+    </div>
+    <div id="collapse1" class="panel-collapse collapse">
+      <ul class="list-group">
+        <div class="container">
+            
+            <div class="col-md-3">
+            <label for="nombre" class="control-label">CLIENTE</label>
+            <div class="form-group">
+                <input type="text" name="cliente_nombre" class="form-control" id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            
+            </div>
+
+            <div class="col-md-3">
+            <label for="cliente_ci" class="control-label">C.I.</label>
+            <div class="form-group">
+                <input type="text" name="cliente_ci" class="form-control" id="cliente_ci" value="<?php echo $cliente[0]['cliente_ci']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            
+            </div>
+        
+
+            <div class="col-md-3">
+            <label for="cliente_nombrenegocio" class="control-label">NEGOCIO</label>
+            <div class="form-group">
+                <input type="text" name="cliente_nombrenegocio" class="form-control" id="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            
+            </div>
+        
+
+            <div class="col-md-3">
+            <label for="cliente_codigo" class="control-label">CÓDIGO</label>
+            <div class="form-group">
+                <input type="text" name="cliente_codigo" class="form-control" id="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            
+            </div>
+            
+            <div class="col-md-3">
+            <label for="cliente_direccion" class="control-label">DIRECCIÓN</label>
+            <div class="form-group">
+                <input type="text" name="cliente_direccion" class="form-control" id="cliente_direccion" value="<?php echo $cliente[0]['cliente_direccion']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+            
+            <div class="col-md-3">
+            <label for="cliente_departamento" class="control-label">DEPARTAMENTO</label>
+            <div class="form-group">
+                <input type="text" name="cliente_departamento" class="form-control" id="cliente_departamento" value="<?php echo $cliente[0]['cliente_departamento']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+                    
+            <div class="col-md-3">
+            <label for="cliente_celular" class="control-label">CELULAR</label>
+            <div class="form-group">
+                <input type="text" name="cliente_celular" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['cliente_celular']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+
+            <div class="col-md-3">
+            <label for="zona_id" class="control-label">ZONA</label>
+            <div class="form-group">
+                <input type="text" name="zona_id" class="form-control" id="zona_id" value="<?php echo $cliente[0]['zona_id']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+        
+        </div>
+
+    </div>
+  </div>
+</div>  
+
+
 
 <center>
     <font size="3"><b><?php echo $pedido_titulo; ?></b></font>
@@ -378,7 +524,7 @@ function cerrar_ventana(){
                     <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
                 <?php }
                 } ?>
-                    <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+                    
             <?php if($parametro[0]["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
                     <!--<a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda"><span class="fa fa-print"></span><b> Comanda</b></a>--> 
             <?php } ?>            
