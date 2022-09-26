@@ -286,6 +286,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="rol_factor2" value="<?php echo $rolusuario[163-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_modificardetalle" value="<?php echo $rolusuario[20-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="punto_venta" value="<?php echo $puntoventa_codigo; ?>" hidden>
 
 <input type="text" id="tipocliente_porcdesc" value="0" hidden>

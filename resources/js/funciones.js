@@ -1306,6 +1306,8 @@ function actualizar_losprecios(detalleven_id)
     /*tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){*/
     
+    var rol_modificardetalle =  document.getElementById('rol_modificardetalle').value;
+    if(rol_modificardetalle == 1){
     var base_url =  document.getElementById('base_url').value;
     var precio = document.getElementById('precio'+detalleven_id).value;
     var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
@@ -1328,6 +1330,9 @@ function actualizar_losprecios(detalleven_id)
         alert("ADVERTENCIA: Descuento no permitido..!!");
         $('#descuento'+detalleven_id).val(0);
         actualizar_losprecios(detalleven_id);
+    }
+    }else{
+        alert("Usted no tiene permisos para modificar los detallles; consulte con su administrador.");
     }
         
     //}
