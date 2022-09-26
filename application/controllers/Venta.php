@@ -568,7 +568,9 @@ class Venta extends CI_Controller{
                   detalleven_subtotal,
                   detalleven_descuentoparcial,
                   detalleven_descuento,
-                  detalleven_subtotal - ((detalleven_descuentoparcial + detalleven_subtotal)* detalleven_cantidad),
+                  /*detalleven_subtotal - ((detalleven_descuentoparcial + detalleven_subtotal)* detalleven_cantidad),*/
+                  /*detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad),*/
+                  detalleven_total,
                   detalleven_caracteristicas,
                   detalleven_preferencia,
                   detalleven_comision,
