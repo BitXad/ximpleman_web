@@ -29,9 +29,11 @@ class Verificar extends CI_Controller
             if ($result->tipousuario_id >= 1 && $result->tipousuario_id <= 10) {
                 $this->load->model('Rol_usuario_model');
                 $this->load->model('Tipo_usuario_model');
-                $thumb = "default_thumb.jpg";
+                $thumb = "thumb_default.jpg";
+                $usuario_imagen = "default.jpg";
                 if ($result->usuario_imagen <> null && $result->usuario_imagen <> "") {
                     $thumb = "thumb_".$result->usuario_imagen;
+                    $usuario_imagen = $result->usuario_imagen;
                     //$thumb = $this->foto_thumb($result->usuario_imagen);
                 }
                 $rolusuario = $this->Rol_usuario_model->getall_rolusuario($result->tipousuario_id);
@@ -45,7 +47,7 @@ class Verificar extends CI_Controller
                     'estado_id' => $result->estado_id,
                     'tipousuario_id' => $result->tipousuario_id,
                     'tipousuario_descripcion' => $tipousuario_nombre,
-                    'usuario_imagen' => $result->usuario_imagen,
+                    'usuario_imagen' => $usuario_imagen,
                     'usuario_email' => $result->usuario_email,
                     'usuario_clave' => $result->usuario_clave,
                     'thumb' => $thumb,
