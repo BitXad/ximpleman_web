@@ -329,12 +329,17 @@
                     
                     
                     <div class="col-md-6">
-                        <label for="dosificacion_facturaglp" class="control-label">Factura Comercializacion GN/GLP</label>
+                        <label for="dosificacion_facturaglp" class="control-label">Factura Comercializacion GN/GLP/PREV</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_facturaglp" value="<?php echo ($this->input->post('dosificacion_facturaglp') ? $this->input->post('dosificacion_facturaglp') : $dosificacion['dosificacion_facturaglp']); ?>" class="form-control" id="dosificacion_facturaglp" />
                         </div>
                     </div>
-                    
+                    <div class="col-md-6">
+                        <label for="dosificacion_facturaglpe" class="control-label">Factura Comercializacion Electronica GN/GLP/PREV</label>
+                        <div class="form-group">
+                            <input type="text" name="dosificacion_facturaglpe" value="<?php echo ($this->input->post('dosificacion_facturaglpe') ? $this->input->post('dosificacion_facturaglpe') : $dosificacion['dosificacion_facturaglpe']); ?>" class="form-control" id="dosificacion_facturaglpe" />
+                        </div>
+                    </div>
                     
                     
                     <div class="col-md-6">

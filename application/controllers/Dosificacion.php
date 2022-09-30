@@ -279,6 +279,7 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_ruta' => $this->input->post('dosificacion_ruta'),
                     'dosificacion_contenedorp12' => $archivop12,
                     'dosificacion_clavep12' => $this->input->post('dosificacion_clavep12'),
+                    'dosificacion_facturaglpe' => $this->input->post('dosificacion_facturaglpe'),
                 );
 
                                         //Actualizamos el nombre del documento sector

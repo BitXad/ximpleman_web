@@ -267,6 +267,16 @@
                     <td colspan="4">    <?php echo $dosificacion['dosificacion_facturaglp']; ?>                      
                     </td>                    
                 </tr>
+                <tr>
+                    <td <?= $estilo; ?> >Facturas Electronicas glp/prev:</td>
+                    <td colspan="3">
+                        <?php echo $dosificacion['dosificacion_facturaglpe']; ?>
+                    </td>
+
+                    <!--<td <?php /*echo $estilo; ?> >Facturas dosificacion_facturaglp:</td>
+                    <td colspan="4">    <?php echo $dosificacion['dosificacion_facturaglp'];*/ ?>                      
+                    </td>-->
+                </tr>
 
                 <tr>
                     <td <?= $estilo; ?> >Ruta QR:</td>
