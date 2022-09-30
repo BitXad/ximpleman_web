@@ -46,7 +46,7 @@
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <input type="hidden" name="resproducto" id="resproducto" />
-<div class="cuerpo">
+<div class="cuerpo" style="font-family: Arial;">
     <div class="columna_derecha">
         <center> 
         <img src="<?php echo base_url('resources/images/empresas/'.$empresa[0]["empresa_imagen"].''); ?>"  style="width:80px;height:80px">
@@ -142,7 +142,7 @@
         <div class="col-md-2 no-print">
             <label for="exportar" class="control-label"> &nbsp; </label>
             <div class="form-group" style="display: flex; margin-bottom: 0px">
-                <a class="btn btn-facebook btn-sm form-control" onclick="reporte_general()" title="Buscar ventas"><i class="fa fa-search"> Buscar</i></a>
+                <a class="btn btn-facebook btn-sm form-control" onclick="reporte_general()" title="Buscar ventas"><i class="fa fa-search"> </i> Buscar</a>
                 <a class="btn btn-info" onclick="mostrar_masfventa()" style="display: block" id="boton_masfventa" title="Mostrar mas Filtros"><span class="fa fa-search-plus"></span></a>
                 <a class="btn btn-info" onclick="mostrar_menosfventa()" style="display: none" id="boton_menosfventa" title="Mostrar menos Filtros"><span class="fa fa-search-minus"></span></a>
             </div>
@@ -249,7 +249,7 @@
         <div class="col-md-2 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
-                <a onclick="imprimir()" class="btn btn-success btn-sm form-control"><i class="fa fa-print"> Imprimir</i></a>
+                <a onclick="imprimir()" class="btn btn-success btn-sm form-control"><i class="fa fa-print"> </i> Imprimir</a>
             </div>
         </div>
         <div class="col-md-2 no-print">
@@ -292,7 +292,7 @@
                 <th>PRECIO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                 <th>DESC(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                 <th>PRECIO<br>TOTAL(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                <th>PRECIO<br>TOTAL(<?php
+                <th>PRECIO<br>TOTAL(<?php //$lamoneda[0]['moneda_descripcion']; 
                                         if($parametro[0]["moneda_id"] == 1){
                                             echo $lamoneda[1]['moneda_descripcion'];
                                         }else{

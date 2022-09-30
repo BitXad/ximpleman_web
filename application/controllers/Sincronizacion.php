@@ -880,7 +880,8 @@ class Sincronizacion extends CI_Controller{
                     $params = array(
                         'estado_id'                 => 2,//2 INACTIVO
                         'moneda_codigoclasificador' => $codigo->codigoClasificador,
-                        'moneda_descripcion'        => $codigo->descripcion,
+                        'moneda_descripcion'        => substr($codigo->descripcion,0,3),
+                        'moneda_nombre'        => $codigo->descripcion,
                         'moneda_tc'        => 1
                     );
                     

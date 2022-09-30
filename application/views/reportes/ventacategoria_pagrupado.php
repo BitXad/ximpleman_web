@@ -60,10 +60,10 @@
 </div>
 <div class="row" >
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
-        <div class="col-md-3">
+        <div class="col-md-2">
             Desde: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
         </div> 
-        <div class="col-md-3">
+        <div class="col-md-2">
             Hasta: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
         </div>
         <div class="col-md-2">
@@ -79,19 +79,19 @@
         <div class="col-md-2 no-print">
             &nbsp;
            <div class="form-group">
-                <a class="btn btn-facebook btn-sm form-control" onclick="tabla_reportescatproducto()" title="Buscar productos agrupados"><i class="fa fa-search"> Buscar</i></a>
+                <a class="btn btn-facebook btn-sm form-control" onclick="tabla_reportescatproducto()" title="Buscar productos agrupados"><i class="fa fa-search"> </i> Buscar</a>
             </div>
         </div>
         <div class="col-md-2 no-print">
             &nbsp;
            <div class="form-group">
-                <a onclick="imprimir()" class="btn btn-success btn-sm form-control" ><i class="fa fa-print"> Imprimir</i></a>
+                <a onclick="imprimir()" class="btn btn-success btn-sm form-control" ><i class="fa fa-print"> </i> Imprimir</a>
             </div>
         </div>
-        <div class="col-md-2 no-print">
+        <div class="col-md-1 no-print">
             &nbsp;
            <div class="form-group">
-                <a onclick="generarexcel_vagrupado_porcategoria()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
+                <a onclick="generarexcel_vagrupado_porcategoria()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Excel</a>
             </div>
         </div>
     </div>

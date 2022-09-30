@@ -100,14 +100,14 @@
         <div class="col-md-1 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
             <div class="form-group">
-                <a onclick="reporte1()" class="btn btn-facebook btn-sm form-control" title="Buscar clientes"><i class="fa fa-search"> Buscar</i></a>
+                <a onclick="reporte1()" class="btn btn-facebook btn-sm form-control" title="Buscar clientes"><i class="fa fa-search"> </i> Buscar</a>
                 <!--<a data-toggle="modal" data-target="#modalbuscarcliente" class="btn btn-facebook btn-sm form-control" title="Buscar cliente"><i class="fa fa-search"> Buscar</i></a>-->
             </div>
         </div>
         <div class="col-md-1 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
-                <a onclick="imprimir()" class="btn btn-success btn-sm form-control"><i class="fa fa-print"> Imprimir</i></a>
+                <a onclick="imprimir()" class="btn btn-success btn-sm form-control"><i class="fa fa-print"> </i> Imprimir</a>
             </div>
         </div>
         <div class="col-md-2 no-print">

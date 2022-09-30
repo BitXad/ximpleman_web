@@ -48,21 +48,11 @@ class Moneda_model extends CI_Model
         if(isset($params) && !empty($params))
             $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
         
-        $moneda = $this->db->query("
-            SELECT
-                *
-
-            FROM
-                moneda m, estado e
-
-            WHERE
-                m.estado_id = e.estado_id
-
-            ORDER BY `moneda_id` 
-
-            " . $limit_condition . "
-        ")->result_array();
-
+        $sql = "SELECT * FROM moneda m, estado e
+                WHERE m.estado_id = e.estado_id
+                ORDER BY moneda_id ".$limit_condition;
+        
+        $moneda = $this->db->query($sql)->result_array();
         return $moneda;
     }
         
@@ -119,7 +109,7 @@ class Moneda_model extends CI_Model
     {
         $moneda = $this->db->query("
             SELECT
-                moneda_id, moneda_descripcion
+                m.*
             FROM
                 moneda m, estado e
 
@@ -137,16 +127,13 @@ class Moneda_model extends CI_Model
      */
     function getalls_monedasact_asc()
     {
-        $moneda = $this->db->query("
-            SELECT
-                m.moneda_id, m.moneda_descripcion, m.moneda_tc,m.moneda_codigoclasificador
-            FROM
-                moneda m, estado e
-            WHERE
-                m.estado_id = e.estado_id
-                and m.estado_id = 1
-            ORDER BY `moneda_id` ASC
-        ")->result_array();
+        $sql = "SELECT m.* FROM moneda m, estado e
+                WHERE
+                    m.estado_id = e.estado_id
+                    and m.estado_id = 1
+                ORDER BY `moneda_id` ASC";
+        
+        $moneda = $this->db->query($sql)->result_array();
         return $moneda;
     }
     /**

@@ -372,7 +372,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         filas++;
                         html += "<tr style='padding:0; ' id='ocultar_fila"+filas+"' >";
                         
-                            html += "<td "+estilo+">"+(i+1)+"</td>";
+                            html += "<td "+estilo+">"+(++i)+"</td>";
                             html += "<td "+estilo+">"+moment(registro["fecha"]).format("DD/MM/YYYY");+"</td>";
                             html += "<td style='text-align: right; padding:0;'>"+registro["recibo"];
                             

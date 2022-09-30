@@ -89,6 +89,35 @@ class Reportes extends CI_Controller{
         $this->load->view('layouts/main',$data);
         }
     }
+    /*
+     * Listing of cliente
+     */
+    function reportecaja()
+    {
+        if($this->acceso(141)){
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        
+        $data['tipousuario_id']  = $this->session_data['tipousuario_id'];
+        $data['usuario_id']  = $this->session_data['usuario_id'];
+        $data['usuario_nombre']  = $this->session_data['usuario_nombre'];
+        $this->load->model('Usuario_model');
+        
+        $rolusuario = $this->session_data['rol'];
+        $data['tienepermiso'] = $rolusuario[171-1]['rolusuario_asignado'];        
+        
+        $this->load->model('Parametro_model');
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $data['page_title'] = "Reportes";
+        $data['_view'] = 'reportes/reportecaja';
+
+        $this->load->view('layouts/main',$data);
+        }
+    }
 
     function graficas()
     {

@@ -136,22 +136,22 @@ function reporte_general(){
                         html += "</tr>";
                     }
                         html += "<tr>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
+                        html += "<th></th>";
+                        html += "<th></th>";
+                        html += "<th></th>";
+                        html += "<th></th>";
                         if(filtrar == 1 || filtrar == 2){
-                            html += "<td></td>";
-                            html += "<td></td>";
+                            html += "<th></th>";
+                            html += "<th></th>";
                         }
                         if(filtrar == 1 || filtrar == 2){
                             html += "<th style='text-align:right'>";
                             numberFormat(Number(cuotas).toFixed(2))
                             html += "</th>";
                         }
-                        html += "<td></td>";
-                        html += "<th>"+numberFormat(Number(cantidades).toFixed(2))+"</td>";
-                        html += "<td></td>";
+                        html += "<th></th>";
+                        html += "<th>"+numberFormat(Number(cantidades).toFixed(2))+"</th>";
+                        html += "<th></th>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(descuentos).toFixed(2))+"</th>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(total).toFixed(2))+"</th>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
@@ -160,10 +160,10 @@ function reporte_general(){
                             html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(2))+"</th>";
                         }
                         if(filtrar == 1 || filtrar == 2){
-                            html += "<td></td>";
+                            html += "<th></th>";
                         }
-                        html += "<td></td>";
-                        html += "<td></td>";
+                        html += "<th></th>";
+                        html += "<th></th>";
                         html += "</tr>";
                    desde1 = "Desde: <b>"+moment(fecha_desde).format('DD/MM/YYYY')+"</b>";
                    hasta1 = "Hasta: <b>"+moment(fecha_hasta).format('DD/MM/YYYY')+"</b>";
