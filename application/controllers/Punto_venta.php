@@ -146,15 +146,5 @@ class Punto_venta extends CI_Controller{
             }
         }
     }
-    function prueba()
-    {
-        if($this->acceso(1)) {
-            $data['page_title'] = "Prueba";
-            //$data['all_tipopuntoventa'] = $this->Tipo_puntoventa_model->get_all_tipopuntoventa();
-            // $data['puntos_ventas'] = $this->Puntoventa_model->get_all_puntoventa();
-            $data['_view'] = 'punto_venta/prueba';
-            $this->load->view('layouts/main',$data);
-        }    
-    }
     
 }
