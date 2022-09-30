@@ -64,6 +64,7 @@ function tabla_reportescatproducto(){
                         html += "<td align='right'> "+numberFormat(Number(registros[i]["total_descuento"]).toFixed(2))+" </td>";
                         html += "<td align='right'><b>"+numberFormat(Number(registros[i]["total_venta"]).toFixed(2))+"</b></td>";
                         html += "<td class='text-right'> ";
+                        
                         if(lamoneda_id == 1){
                             total_otram = Number(registros[i]["total_venta"])/Number(registros[i]["tipo_cambio"])
                             total_otramoneda += total_otram;
@@ -71,12 +72,16 @@ function tabla_reportescatproducto(){
                             total_otram = Number(registros[i]["total_venta"])*Number(registros[i]["tipo_cambio"])
                             total_otramoneda += total_otram;
                         }
+                        
                         html += numberFormat(Number(total_otram).toFixed(2));
                         html += "</td>";
+                        
                         if(tipousuario_id == 1){
+                        
                             html += "<td align='right'> "+numberFormat(Number(registros[i]["total_costo"]).toFixed(2))+" </td>";
                             html += "<td align='right'> "+numberFormat(Number(registros[i]["total_utilidad"]).toFixed(2))+" </td>";
                             html += "<td align='right'> ";
+                            
                             if(Number(registros[i]["total_venta"]) !=0){
                                 html += Number(Number(registros[i]["total_utilidad"])/Number(registros[i]["total_venta"])).toFixed(2);
                             }else{
@@ -89,12 +94,12 @@ function tabla_reportescatproducto(){
                        
                    }
                         html += "<tr>";
-                        html += "<td></td>";
-                        //html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<th>"+numberFormat(Number(cantidades).toFixed(2))+"</td>";
-                        html += "<td></td>";
+                        html += "<th></th>";
+                        //html += "<th></th>";
+                        html += "<th></th>";
+                        html += "<th></th>";
+                        html += "<th>"+numberFormat(Number(cantidades).toFixed(2))+"</th>";
+                        html += "<th></th>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(descuentos).toFixed(2))+"</th>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(total).toFixed(2))+"</th>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
@@ -102,6 +107,7 @@ function tabla_reportescatproducto(){
                             html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(2))+"</th>";
                             html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(2))+"</th>";
                         }
+                        html += "<th></th>";
                         
                         html += "</tr>";
                    desde1 = "Desde: <b>"+moment(desde).format('DD/MM/YYYY')+"</b>";

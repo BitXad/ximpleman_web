@@ -863,7 +863,7 @@ class Venta extends CI_Controller{
                                 
                                 //$factura_fecha_hora = (new DateTime())->format('H:i:s.v');
                                 //$factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
-                                $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.".000";
+                                $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
                                 
                                 $tipo_emision = 2;   
                                 $eventos = $this->Venta_model->consultar("select * from registro_eventos where registroeventos_codigo=".$registroeventos_codigo);
@@ -1033,7 +1033,8 @@ class Venta extends CI_Controller{
                         $base_url = explode('/', base_url());
                         
                         //********************** GENERANDO ARCHIVO XML ****************
-                        $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $nombre_archivo, $dosificacion[0]["docsec_codigoclasificador"]);
+                        $dosificacion_documentosector = $dosificacion[0]["dosificacion_documentosector"];
+                        $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $dosificacion_documentosector, $dosificacion_documentosector);
                         //********************** GENERANDO ARCHIVO XML ****************    
 
                         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';

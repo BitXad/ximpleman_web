@@ -150,7 +150,7 @@
      * 1 = COMPUTARIZADA
      * 2 = ELECTRONICA
      */
-    function generarfacturaCompra_ventaXML($modalidad_factura, $factura, $detalle_factura, $empresa, $nombre_archivo,$documento_sector){
+    function generarfacturaCompra_ventaXML($modalidad_factura, $factura, $detalle_factura, $empresa, $dosificacion_documentosector,$documento_sector){
         
         $factura = $factura[0];
         $empresa = $empresa[0];
@@ -163,7 +163,11 @@
         
         // var_dump($factura);
         //$archivo = $modalidad_factura == 1 ? "facturaElectronicaCompraVenta" : "facturaComputarizadaCompraVenta";
+        $nombre_archivo = $documento_sector; //$directorio.$dosificacion_documentosector.$factura['factura_id'];
         $archivo = $nombre_archivo;
+        
+        //echo "Directorio: ".$directorio."<br> Documento sector: ".$dosificacion_documentosector."<br> factura: ".$factura['factura_id'];
+
         
         if ($documento_sector != 23 ){ //23 factura prevalorada
             $razonSocial = str_replace("&","&amp;",$factura['factura_razonsocial']);
@@ -619,7 +623,7 @@ $salto_linea='
 //            firmarxml();
             if ($modalidad_factura == 1){
                 
-                firmarxml($nombreArchivo);
+                firmarxml($dosificacion_documentosector,$factura['factura_id']);
             }
             
             //firmador_XML($directorio, $archivo.$factura['factura_id']);
@@ -982,15 +986,16 @@ function firmarxmlprueba(){
 //xmlpath es solo la ubicacion donde está, sin el nombre del archivo en xmlFile esta la ubicacion + el //nombre del archivo
 //xmlName es solo el nombre del archivo xml sin la ruta
 //    function signBill($xmlFile,$publicPath,$privatePath,$xmlpath,$xmlName){
-    function firmarxml($file){
+    function firmarxml($dosificacion_documentosector,$factura_id){
+        
             $base_url = explode('/', base_url());
             $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-            $archivo = $file; //"pruebaxml.xml";        
+            $archivo = $directorio.$dosificacion_documentosector.$factura_id.".xml"; //"pruebaxml.xml";        
         
         
 //        $ReferenceNodeName = 'ExtensionContent';
-        $ReferenceNodeName = 'facturaElectronicaCompraVenta';
-        $ReferenceNodeName = 'facturaElectronicaPrevalorada';
+        $ReferenceNodeName = $dosificacion_documentosector;
+        //$ReferenceNodeName = 'facturaElectronicaCompraVenta';
         
         $privateKey = file_get_contents($directorio.'privatekey.pem');
         
