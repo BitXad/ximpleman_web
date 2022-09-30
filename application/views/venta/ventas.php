@@ -277,8 +277,8 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
-<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador"  true>
-<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector"  true>
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador"  hidden>
+<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -434,9 +434,9 @@ window.onkeydown = compruebaTecla;
                         
                     <?php }
                     ?>
-            <!--<div hidden>-->                
+            <div hidden>                
             <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($parametro["parametro_tipoemision"]>1)?"checked":"";?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
-            <!--</div>-->
+            </div>
             
                 <?php }  ?>
             
@@ -1826,6 +1826,7 @@ window.onkeydown = compruebaTecla;
                 </h2>
             </label>
         </div>  
+          
         <div class="col-md-4">
             <!--<button class="btn btn-warning btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>-->
             <button class="btn btn-info btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia"><fa class="fa fa-save"></fa> Aceptar</button>
