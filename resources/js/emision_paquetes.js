@@ -124,13 +124,14 @@ function emision_paquetes(){
     
     let nombre_archivo = document.getElementById('nombre_archivo').value;
     let codigo_evento = document.getElementById('codigo_evento').value;
+    let lafactura_id = document.getElementById('lafactura_id').value;
     if(nombre_archivo == "" || codigo_evento == ""){
         alert("Nombre del Archivo y Codigo del Evento no deben ser vacios");
     }else{
         document.getElementById('loader').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
-                data:{nombre_archivo:nombre_archivo, codigo_evento:codigo_evento},
+                data:{nombre_archivo:nombre_archivo, codigo_evento:codigo_evento, lafactura_id:lafactura_id},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
                         //console.log(registros);

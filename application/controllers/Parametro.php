@@ -729,12 +729,19 @@ class Parametro extends CI_Controller{
 
                                 //PASO 8: Enviar los archivos generados en el .tar.gz
                                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-                                if($dosificacion["docsec_codigoclasificador"] == 1){
+                                
+                                if ($dosificacion['docsec_codigoclasificador']==1)
                                     $wsdl = $dosificacion['dosificacion_factura'];
-                                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+
+                                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                                }
+                                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
                                     $wsdl = $dosificacion['dosificacion_facturaglp'];
                                 }
-
+                                
                                 $token = $dosificacion['dosificacion_tokendelegado'];
                                 $opts = array(
                                       'http' => array(
@@ -837,10 +844,17 @@ class Parametro extends CI_Controller{
 
                                 //PASO 9: Envio de los archivos
                                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-                                if($dosificacion["docsec_codigoclasificador"] == 1){
-                                        $wsdl = $dosificacion['dosificacion_factura'];
-                                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
-                                        $wsdl = $dosificacion['dosificacion_facturaglp'];
+                                
+                                if ($dosificacion['docsec_codigoclasificador']==1)
+                                    $wsdl = $dosificacion['dosificacion_factura'];
+
+                                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                                }
+                                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                                    $wsdl = $dosificacion['dosificacion_facturaglp'];
                                 }
                                 
                                 $token = $dosificacion['dosificacion_tokendelegado'];
@@ -1283,9 +1297,15 @@ class Parametro extends CI_Controller{
                         
                         //PASO 8: Enviar los archivos generados en el .tar.gz
                         $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-                        if($dosificacion["docsec_codigoclasificador"] == 1){
+                        if ($dosificacion['docsec_codigoclasificador']==1)
                             $wsdl = $dosificacion['dosificacion_factura'];
-                        }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+
+                        if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                            $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                        }
+                        if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
                             $wsdl = $dosificacion['dosificacion_facturaglp'];
                         }
 
@@ -1390,9 +1410,15 @@ class Parametro extends CI_Controller{
                         
                         //PASO 9: Envio de los archivos
                         $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-                       if($dosificacion["docsec_codigoclasificador"] == 1){
+                        if ($dosificacion['docsec_codigoclasificador']==1)
                             $wsdl = $dosificacion['dosificacion_factura'];
-                        }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+
+                        if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                            $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                        }
+                        if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
                             $wsdl = $dosificacion['dosificacion_facturaglp'];
                         }
                         

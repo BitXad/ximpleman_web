@@ -150,7 +150,8 @@
      * 1 = COMPUTARIZADA
      * 2 = ELECTRONICA
      */
-    function generarfacturaCompra_ventaXML($modalidad_factura, $factura, $detalle_factura, $empresa, $dosificacion_documentosector,$documento_sector){
+    //function generarfacturaCompra_ventaXML($modalidad_factura, $factura, $detalle_factura, $empresa, $dosificacion_documentosector,$documento_sector){
+    function generarfacturaCompra_ventaXML($modalidad_factura, $factura, $detalle_factura, $empresa, $documento_sector,$nombre_documento_sector){
         
         $factura = $factura[0];
         $empresa = $empresa[0];
@@ -163,7 +164,7 @@
         
         // var_dump($factura);
         //$archivo = $modalidad_factura == 1 ? "facturaElectronicaCompraVenta" : "facturaComputarizadaCompraVenta";
-        $nombre_archivo = $documento_sector; //$directorio.$dosificacion_documentosector.$factura['factura_id'];
+        $nombre_archivo = $nombre_documento_sector; //$directorio.$dosificacion_documentosector.$factura['factura_id'];
         $archivo = $nombre_archivo;
         
         //echo "Directorio: ".$directorio."<br> Documento sector: ".$dosificacion_documentosector."<br> factura: ".$factura['factura_id'];
@@ -623,7 +624,7 @@ $salto_linea='
 //            firmarxml();
             if ($modalidad_factura == 1){
                 
-                firmarxml($dosificacion_documentosector,$factura['factura_id']);
+                firmarxml($nombre_documento_sector,$factura['factura_id']);
             }
             
             //firmador_XML($directorio, $archivo.$factura['factura_id']);

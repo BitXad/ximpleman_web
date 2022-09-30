@@ -5460,6 +5460,7 @@ function cargar_eventos(factura_id){
     var archivo = nombre_archivo+factura_id+".tar.gz";
     
     $("#nombre_archivo").val(archivo);
+    $("#lafactura_id").val(factura_id);
    
 }
 

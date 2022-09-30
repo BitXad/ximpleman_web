@@ -1026,6 +1026,7 @@ class Venta extends CI_Controller{
                         if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado SFV (computarizado en linea o electronico)
                         // el parametro uno es para computarizada en linea ojo
                         $computarizada_enlinea = $dosificacion[0]["dosificacion_modalidad"];// 1 para electronica y 2 para computarizada
+                        $docsec_codigoclasificador = $dosificacion[0]["docsec_codigoclasificador"]; // 1->compra venta/23->prevalorada.....
                         $factura = $this->Factura_model->get_factura_id($factura_id);
                         $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
                         $empresa = $this->Empresa_model->get_empresa(1);
@@ -1034,7 +1035,7 @@ class Venta extends CI_Controller{
                         
                         //********************** GENERANDO ARCHIVO XML ****************
                         $dosificacion_documentosector = $dosificacion[0]["dosificacion_documentosector"];
-                        $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $dosificacion_documentosector, $dosificacion_documentosector);
+                        $xml = generarfacturaCompra_ventaXML($computarizada_enlinea, $factura, $detalle_factura, $empresa, $docsec_codigoclasificador, $dosificacion_documentosector);
                         //********************** GENERANDO ARCHIVO XML ****************    
 
                         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
@@ -1099,8 +1100,8 @@ class Venta extends CI_Controller{
                             // HASH (SHA 256)
                             $xml_comprimido = hash_file('sha256',$directorio.$nombre_archivo.$factura[0]['factura_id'].".xml.zip");
                             $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-                            $wsdl = $dosificacion['dosificacion_factura'];
-                            $token = $dosificacion['dosificacion_tokendelegado'];
+                            //$wsdl = $dosificacion['dosificacion_factura'];
+                            //$token = $dosificacion['dosificacion_tokendelegado'];
 //                            $comunicacion = $this->verificar_comunicacion($token,$wsdl);
 //                            
 //                            if($comunicacion){
@@ -4444,8 +4445,15 @@ function anular_venta($venta_id){
         if ($dosificacion['docsec_codigoclasificador']==1)
                $wsdl = $dosificacion['dosificacion_factura'];
         
-        if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+        if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+            $wsdl = $dosificacion['dosificacion_facturaglpe'];
+        }
+        if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
             $wsdl = $dosificacion['dosificacion_facturaglp'];
+        }
+        
         
         $token = $dosificacion['dosificacion_tokendelegado'];
 
@@ -4751,7 +4759,18 @@ function anular_venta($venta_id){
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_factura'];
+                //$wsdl = $dosificacion['dosificacion_factura'];
+                if ($dosificacion['docsec_codigoclasificador']==1)
+                   $wsdl = $dosificacion['dosificacion_factura'];
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                }
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
@@ -4863,7 +4882,18 @@ function anular_venta($venta_id){
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_factura'];
+                //$wsdl = $dosificacion['dosificacion_factura'];
+                if ($dosificacion['docsec_codigoclasificador']==1)
+                    $wsdl = $dosificacion['dosificacion_factura'];
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                }
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
@@ -4962,7 +4992,7 @@ function anular_venta($venta_id){
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_factura'];                
+                    $wsdl = $dosificacion['dosificacion_factura'];
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
                       'http' => array(

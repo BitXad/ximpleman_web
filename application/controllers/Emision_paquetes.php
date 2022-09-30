@@ -96,9 +96,15 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                if($dosificacion["docsec_codigoclasificador"] == 1){
+                if ($dosificacion['docsec_codigoclasificador']==1)
                     $wsdl = $dosificacion['dosificacion_factura'];
-                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                }
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
                     $wsdl = $dosificacion['dosificacion_facturaglp'];
                 }
                 
@@ -124,9 +130,10 @@ class Emision_paquetes extends CI_Controller{
                 
                 $nom_archivo =  $this->input->post("nombre_archivo");
                 $codigo_evento =  $this->input->post("codigo_evento");
+                $factura_id =  $this->input->post("lafactura_id");
                 /*$nom_archivo = "compra_venta1395.tar.gz";
                 $codigo_evento = 495914;*/
-                $factura_id = substr($nom_archivo,12, strlen($nom_archivo));
+                //$factura_id = substr($nom_archivo,12, strlen($nom_archivo));
                 
                 $handle = fopen($directorio.$nom_archivo, "rb");
                 $contents = fread($handle, filesize($directorio.$nom_archivo));
@@ -225,9 +232,15 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                if($dosificacion["docsec_codigoclasificador"] == 1){
+                if ($dosificacion['docsec_codigoclasificador']==1)
                     $wsdl = $dosificacion['dosificacion_factura'];
-                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                }
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
                     $wsdl = $dosificacion['dosificacion_facturaglp'];
                 }
                 
@@ -338,9 +351,15 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                if($dosificacion["docsec_codigoclasificador"] == 1){
+                if ($dosificacion['docsec_codigoclasificador']==1)
                     $wsdl = $dosificacion['dosificacion_factura'];
-                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                }
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
                     $wsdl = $dosificacion['dosificacion_facturaglp'];
                 }
                 
@@ -464,9 +483,15 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                if($dosificacion["docsec_codigoclasificador"] == 1){
+                if ($dosificacion['docsec_codigoclasificador']==1)
                     $wsdl = $dosificacion['dosificacion_factura'];
-                }elseif($dosificacion["docsec_codigoclasificador"] == 23){
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                }
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
                     $wsdl = $dosificacion['dosificacion_facturaglp'];
                 }
                 
