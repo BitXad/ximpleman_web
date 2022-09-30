@@ -74,11 +74,15 @@
                      /* $path_parts = pathinfo('./resources/images/usuarios/' .$u['usuario_imagen']);
                       $thumb = $path_parts['filename'] . '_thumb.' . $path_parts['extension'];
                       */
+                      $thumb_default  = "thumb_default.jpg";
+                      if ($u['usuario_imagen'] <> null && $u['usuario_imagen'] <> "") {
+                          $thumb_default = "thumb_".$u['usuario_imagen'];
+                      }
                   ?>
 
                     <tr>
                         <td><?php echo $cont ?></td>
-                        <td><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/"."thumb_".$u['usuario_imagen']."' width='40' height='40' class='img-circle'"; ?></center></td>
+                        <td><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/".$thumb_default."' width='40' height='40' class='img-circle'"; ?></center></td>
                         <td><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font>
                             <br>
                             <?php echo $u['tipousuario_descripcion']; ?></td>
