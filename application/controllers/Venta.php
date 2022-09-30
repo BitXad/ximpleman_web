@@ -6123,11 +6123,11 @@ function anular_venta($venta_id){
         $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
         $micad .= "                    <center>"; 
         $micad .= "                            <font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font><br>"; 
-//                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
-//                                        $micad .= "                                "; 
-//                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
-//                                        $micad .= "                                "; 
-//                                                                       } 
+                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
+                                        $micad .= "                                "; 
+                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
+                                        $micad .= "                                "; 
+                                                                       } 
 
         $micad .= "                            <font size='1' face='Arial'>"; 
         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
@@ -6515,11 +6515,11 @@ function anular_venta($venta_id){
         $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
         $micad .= "                    <center>"; 
         $micad .= "                            <font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font><br>"; 
-//                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
-//                                        $micad .= "                                "; 
-//                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
-//                                        $micad .= "                                "; 
-//                                                                       } 
+                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
+                                        $micad .= "                                "; 
+                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
+                                        $micad .= "                                "; 
+                                                                       } 
 
         $micad .= "                            <font size='1' face='Arial'>"; 
         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
