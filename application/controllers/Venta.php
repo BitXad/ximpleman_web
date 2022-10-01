@@ -6153,21 +6153,18 @@ function anular_venta($venta_id){
         $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
         $micad .= "                    <center>"; 
         $micad .= "                            <font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font><br>"; 
-                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
-                                        $micad .= "                                "; 
-                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
-                                        $micad .= "                                "; 
-                                                                       } 
+                                                if (isset($empresa[0]['empresa_eslogan'])){
+        $micad .= "                                 <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font><br>"; 
+                                                }
 
         $micad .= "                            <font size='1' face='Arial'>"; 
         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
         $micad .= "                                "; 
                                                 if($factura[0]['factura_sucursal']==0){ 
-        $micad .= "                                            <br>CASA MATRIZ"; 
+        $micad .= "                                            CASA MATRIZ<br>"; 
                                                 }else{ 
-        $micad .= "                                            <br>SUCURSAL ".$factura[0]['factura_sucursal']; 
-                                                } 
-        $micad .= "                                <br>"; 
+        $micad .= "                                            SUCURSAL ".$factura[0]['factura_sucursal']."<br>"; 
+                                                }
         $micad .= "                                Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>"; 
         $micad .=                                 $empresa[0]['empresa_direccion']."<br>"; 
         $micad .= "                                Teléfono: ".$empresa[0]['empresa_telefono']."<br>"; 
@@ -6545,21 +6542,18 @@ function anular_venta($venta_id){
         $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
         $micad .= "                    <center>"; 
         $micad .= "                            <font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font><br>"; 
-                                                                       if (isset($empresa[0]['empresa_eslogan'])){ 
-                                        $micad .= "                                "; 
-                                        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font>"; 
-                                        $micad .= "                                "; 
-                                                                       } 
+                                                if (isset($empresa[0]['empresa_eslogan'])){
+        $micad .= "                                    <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font><br>"; 
+                                                }
 
         $micad .= "                            <font size='1' face='Arial'>"; 
         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
         $micad .= "                                "; 
                                                 if($factura[0]['factura_sucursal']==0){ 
-        $micad .= "                                            <br>CASA MATRIZ"; 
+        $micad .= "                                            CASA MATRIZ<br>"; 
                                                 }else{ 
-        $micad .= "                                            <br>SUCURSAL ".$factura[0]['factura_sucursal']; 
-                                                } 
-        $micad .= "                                <br>"; 
+        $micad .= "                                            SUCURSAL ".$factura[0]['factura_sucursal']."<br>"; 
+                                                }
         $micad .= "                                Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>"; 
         $micad .=                                 $empresa[0]['empresa_direccion']."<br>"; 
         $micad .= "                                Teléfono: ".$empresa[0]['empresa_telefono']."<br>"; 
