@@ -121,8 +121,17 @@ class Envio_contingencias extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_factura'];
-                
+                if ($dosificacion['docsec_codigoclasificador']==1)
+                    $wsdl = $dosificacion['dosificacion_factura'];
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
+                }
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                }
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
                       'http' => array(
@@ -235,7 +244,18 @@ class Envio_contingencias extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                $wsdl = $dosificacion['dosificacion_factura'];
+                if ($dosificacion['docsec_codigoclasificador']==1)
+                    $wsdl = $dosificacion['dosificacion_factura'];
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
+                }
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                }
+                
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
                       'http' => array(
