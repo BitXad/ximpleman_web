@@ -506,7 +506,7 @@ class Parametro extends CI_Controller{
 //                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
                 
-            if ($parametro_tipoemision == 1){ //Si regresa a en linea en linea
+            if ($parametro_tipoemision == 1){ //Si regresa a en linea
 
                     //PASO 1: Generamos un nuevo CUFD
 
@@ -633,7 +633,8 @@ class Parametro extends CI_Controller{
                     $fecha_f = date("Y-m-d\TH:i:s", strtotime($fecha_fin));
                     $fecha_f = $fecha_f.".".rand(10,50);
                     
-                    //echo $fecha_i." *** ".$fecha_f;
+                    //echo "<br>".$evento['registroeventos_cufd'];
+                    //echo "<br>".$fecha_i." *** ".$fecha_f;
                     /*
                     echo
                         "<br>codigoAmbiente: ".$dosificacion['dosificacion_ambiente'].
