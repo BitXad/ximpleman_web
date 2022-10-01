@@ -101,7 +101,7 @@ class Emision_paquetes extends CI_Controller{
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
                     if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
                 }
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
                     if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
@@ -237,7 +237,7 @@ class Emision_paquetes extends CI_Controller{
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
                     if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
                 }
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
                     if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
@@ -356,7 +356,7 @@ class Emision_paquetes extends CI_Controller{
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
                     if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
                 }
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
                     if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
@@ -488,7 +488,7 @@ class Emision_paquetes extends CI_Controller{
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
                     if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-                    $wsdl = $dosificacion['dosificacion_facturaglpe'];
+                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
                 }
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
                     if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)

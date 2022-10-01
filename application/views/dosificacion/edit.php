@@ -335,9 +335,9 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="dosificacion_facturaglpe" class="control-label">Factura Comercializacion Electronica GN/GLP/PREV</label>
+                        <label for="dosificacion_glpelectronica" class="control-label">Factura Comercializacion Electronica GN/GLP/PREV</label>
                         <div class="form-group">
-                            <input type="text" name="dosificacion_facturaglpe" value="<?php echo ($this->input->post('dosificacion_facturaglpe') ? $this->input->post('dosificacion_facturaglpe') : $dosificacion['dosificacion_facturaglpe']); ?>" class="form-control" id="dosificacion_facturaglpe" />
+                            <input type="text" name="dosificacion_glpelectronica" value="<?php echo ($this->input->post('dosificacion_glpelectronica') ? $this->input->post('dosificacion_glpelectronica') : $dosificacion['dosificacion_glpelectronica']); ?>" class="form-control" id="dosificacion_glpelectronica" />
                         </div>
                     </div>
                     

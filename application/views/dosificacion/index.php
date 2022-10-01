@@ -270,7 +270,7 @@
                 <tr>
                     <td <?= $estilo; ?> >Facturas Electronicas glp/prev:</td>
                     <td colspan="3">
-                        <?php echo $dosificacion['dosificacion_facturaglpe']; ?>
+                        <?php echo $dosificacion['dosificacion_glpelectronica']; ?>
                     </td>
 
                     <!--<td <?php /*echo $estilo; ?> >Facturas dosificacion_facturaglp:</td>
