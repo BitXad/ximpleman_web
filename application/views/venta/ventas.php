@@ -160,7 +160,8 @@ var keyCode = document.all ? e.which : e.keyCode;
 
   if (keyCode == 121) //f9
   {   
-      $("#boton_modal_paquetes").click();
+      //$("#boton_modal_paquetes").click();
+      $("#boton_simulador").click();
       
     //$('#imprimir').click();
   }
@@ -890,6 +891,9 @@ window.onkeydown = compruebaTecla;
         [F5] Actualizar página<br>        
         [F7] Registrar NIT<br>
         [F8] Finalizar venta<br>
+        <div hidden>            
+        <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-warning btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
+        </div>
         
         </p>
         </font>

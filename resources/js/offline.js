@@ -289,10 +289,10 @@
   });
 }.call(this);
 
-    function verificar_conexion(){
+function verificar_conexion(){
 
-        //alert(Offline.check());
+    //alert(Offline.check());
 
-        alert("navegador en linea: "+navigator.onLine);
+    alert("navegador en linea: "+navigator.onLine);
 
-    }
+}

@@ -6845,4 +6845,12 @@ function anular_venta($venta_id){
 
             }*/
     }
+    
+    function simular_evento(){
+        
+        $sql = "select * from simulacion_evento";
+        $resultado = $this->Venta_model->consultar($sql);
+        echo json_encode($resultado);
+    }
+    
 }

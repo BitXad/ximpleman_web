@@ -6251,3 +6251,63 @@ function sleep(milliseconds) {
   }
  }
 }
+
+
+function simular_evento(){
+
+    var base_url = document.getElementById('base_url').value;    
+    var controlador = base_url+'venta/simular_evento';
+    var parametro_id = document.getElementById('elparametro_id').value;
+    
+        
+//    var punto_venta = emision;//document.getElementById('punto_venta').value;
+//    var parametro_tipoemision = document.getElementById('elparametro_tipoemision').value;
+//    var select_eventos = document.getElementById('select_eventos').value;
+//    var select = document.getElementById('select_eventos'), //El <select>
+//        //value = select.value, //El valor seleccionado
+//    select_texto = select.options[select.selectedIndex].innerText; //El texto de la opción seleccionada
+//    
+//    //alert(text);
+//    
+//    document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
+//
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){
+                
+                var registros =  JSON.parse(respuesta);
+                
+                //alert(JSON.stringify(registros));
+                var evento = registros[0]["simulacion_evento"];
+                var tipo_emision = registros[0]["simulacion_tipoemision"];
+                var mensaje_evento = "";
+                var mensaje_emision = "";
+                
+                if (tipo_emision == 1) mensaje_emision = " EN LINEA";
+                else mensaje_emision = " FUERA DE LINEA";
+
+                if (evento == 1) mensaje_evento = "ADVERTENCIA: Problema con el servicio de internet,\n el sistema pasara a modalidad "+mensaje_emision;
+                if (evento == 2) mensaje_evento = "ADVERTENCIA: Inaccesibilidad con el servicios de Impuetos Nacionales,\n el sistema pasara a modalidad "+mensaje_emision;
+                if (evento == 3) mensaje_evento = "ADVERTENCIA: Ingreso a zona sin internet por despliegue de punto de ventas,\n el sistema pasara a modalidad "+mensaje_emision;
+                   
+                //Cambiar los valores de los select
+                
+                $("#elparametro_tipoemision").val(tipo_emision);
+                $("#select_eventos").val(evento);
+              
+                alert(mensaje_evento);
+                $("#boton_tipoemision").click();
+                
+                
+                
+            },
+    });
+    
+//    modal_cambiartipoemision()
+    //document.getElementById('boton_tipoemision').click(); //muestra el bloque del loader
+    //document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
+    //sleep(2000);
+    //$("#modal_tipoemision").modal("hide");
+    
+}
