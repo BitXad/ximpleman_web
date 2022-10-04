@@ -1,261 +1,458 @@
-<script src="<?php echo base_url('resources/js/reporte_movimiento.js'); ?>" type="text/javascript"></script>
-<!--
-<link href="<?php /*echo base_url('resources/css/mitabladetalleimpresion.css'); ?>" rel="stylesheet">
-<link href="<?php echo base_url('resources/css/mitabla.css');*/ ?>" rel="stylesheet">
--->
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/reporte_ventapagrupado.js'); ?>" type="text/javascript"></script>
 
-<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <script type="text/javascript">
-    function imprimirdetalle(){
-        var f = new Date();
-        $('#fechaimpresion').html(moment(f).format("DD/MM/YYYY HH:mm:ss"));
-        window.print();
-    }
-
-</script>
-<?php $padding = "style='padding:0; '"; 
-   
-    
-    $logo = base_url("resources/images/empresas/").$empresa[0]['empresa_imagen'];
-    $logo_thumb = base_url("resources/images/empresa/")."thumb_".$empresa[0]['empresa_imagen'];
-?>
-<style type="text/css">
-    @media print {
-        /*.cabeceratabla {
-            background-color: rgba(127,127,127,0.5) !important;
-            color: black !important;
-            -webkit-print-color-adjust: exact;
+        /*$(document).ready(function () {
+            (function ($) {
+                $('#vender').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar tr').hide();
+                    $('.buscar tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });
+        */
+        function imprimir()
+        {
+             window.print(); 
         }
-        .lineatabla {
-            /*background-color: rgba(127,127,127,0.5) !important;*/
-        /*    color: black !important;
-            -webkit-print-color-adjust: exact;
-        }*/
-        #fondoprint {
-            background-color: #aaaaaa !important;
-            -webkit-print-color-adjust: exact; /*economy | exact*/
-            color-adjust: exact;
-}
-    }
-    table th{
-        font-size: 10px !important;
-    }
-    table td{
-        font-size: 10px !important;
-    }
-</style>
+</script>   
 
-<?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"];
-      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+<style type="text/css">
+ @page { 
+        size: landscape;
+    }
+     
+</style>
+<!----------------------------- fin script buscador --------------------------------------->
+<!------------------ ESTILO DE LAS TABLAS ----------------->
+<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
+<!-------------------------------------------------------->
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
+<input type="hidden" name="resproducto" id="resproducto" />
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
+<div class="row" >
+    <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
+        <div class="col-md-3">
+            Desde: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
+        </div> 
+        <div class="col-md-3">
+            Hasta: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
+        </div>
+        <div class="col-md-2">
+            Tipo Trans.:
+            <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-primary btn-sm form-control"  >
+                <option value="0">-TODOS-</option>
+                <?php
+                    foreach($all_tipo_transaccion as $tipo){ ?>
+                        <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
+                <?php } ?>
+            </select>
+        </div>
+        <div class="col-md-2">
+            Usuario:
+            <select id="usuario_id" name="usuario_id" class="btn btn-primary btn-sm form-control"  >
+                <option value="0">-TODOS-</option>
+                <?php
+                    foreach($all_usuario as $usuario){ ?>
+                        <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>                                                   
+                <?php } ?>
+             </select>
+        </div>
+        <div class="col-md-2">
+            Venta/Preventa:
+            <select id="esventa_preventa" name="esventa_preventa" class="btn btn-primary btn-sm form-control"  >
+                <!--<option value="0">-TODOS-</option>-->
+                <option value="1"> VENTA </option>
+                <option value="2"> PREVENTA </option>
+             </select>
+        </div>
+        <div class="col-md-2 no-print">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+                <a class="btn btn-facebook btn-sm form-control" onclick="tabla_reportesproducto()" title="Buscar productos agrupados"><i class="fa fa-search"> </i> Buscar</a>
+            </div>
+        </div>
+        <div class="col-md-2 no-print">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+                <a onclick="imprimir()" class="btn btn-success btn-sm form-control" ><i class="fa fa-print"> </i> Imprimir</a>
+            </div>
+        </div>
+        <div class="col-md-2 no-print">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+                <a onclick="generarexcel_vagrupado()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
+            </div>
+        </div>
+    </div>
+    <span id="desde"></span>
+    <span id="hasta"></span>
+    <div id="labusqueda"></div>
+    <span id="tipotrans"></span>
+    <span id="esteusuario"></span>
+    <span id="ventaprev"></span>
+</div>
+
+
+
+
+<div class="row no-print" id='loader'  style='display:none;'>
+    <center>
+        <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
+    </center>
+</div>
+<div class="box" style="padding: 0;">
+    <div class="box-body table-responsive" >
+        <table class="table table-striped table-condensed" id="mitabla" >
+            <tr>
+                <th>Nro.</th>
+                <th>PRODUCTO</th>
+                <th>TIPO<br>VENTA</th>
+                <th>UNIDAD</th>
+                <th>CANT.</th>
+                <th>PRECIO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>DESC(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>PRECIO<br>TOTAL(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>PRECIO<br>TOTAL(<?php
+                                        if($parametro[0]["moneda_id"] == 1){
+                                            echo $lamoneda[1]['moneda_descripcion'];
+                                        }else{
+                                            echo $lamoneda[0]['moneda_descripcion'];
+                                        }
+                                    ?>)
+                </th>
+                <?php if($tipousuario_id == 1){ ?>
+                    <th>COSTO<br>TOTAL(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                    <th>UTILID.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                    <th>%</th>
+                <?php } ?>
+            </tr>
+            <tbody class="buscar" id="reportefechadeventa"></tbody>
+        </table>
+    </div>
+</div>
+<center>
+    <ul style="margin-bottom: -5px;margin-top: 35px;" >--------------------------------</ul>
+    <ul style="margin-bottom: -5px;">RESPONSABLE</ul><ul>FIRMA - SELLO</ul>
+</center>
+    
+
+<!-------------------- FIN CATEGORIAS--------------------------------->
+                                
+          
+  
+
+
+
+
+
+
+
+
+<!------------------------------------------------------------------>
+<!------------------------------------------------------------------>
+<!------------------------------------------------------------------>
+<?php $factura = [0=>0]; ?>
+<?php $detalle_factura = [0=>0]; ?>
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        window.onload = window.print();
+    });
+</script>
+<!----------------------------- script buscador --------------------------------------->
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar tr').hide();
+                    $('.buscar tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });
+</script>
+
+<style type="text/css">
+
+
+p {
+    font-family: Arial;
+    font-size: 8pt;
+    line-height: 100%;   /*esta es la propiedad para el interlineado*/
+    color: #000;
+    padding: 10px;
+}
+
+div {
+margin-top: 0px;
+margin-right: 0px;
+margin-bottom: 0px;
+margin-left: 0px;
+margin: 0px;
+}
+
+
+table{
+width : 7cm;
+margin : 0 0 0px 0;
+padding : 0 0 0 0;
+border-spacing : 0 0;
+border-collapse : collapse;
+font-family: Arial narrow;
+font-size: 7pt;
+td {
+border:hidden;
+
+}
+}
+
+td#comentario {
+vertical-align : bottom;
+border-spacing : 0;
+}
+div#content {
+background : #ddd;
+font-size : 8px;
+margin : 0 0 0 0;
+padding : 0 0px 0 0px;
+/*border-left : 1px solid #aaa;
+border-right : 1px solid #aaa;
+border-bottom : 1px solid #aaa;*/
+}
+</style>
+<!----------------------------- fin script buscador --------------------------------------->
+<!------------------ ESTILO DE LAS TABLAS ----------------->
+<!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
+<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
       $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 ?>
-
-<input type="hidden" value="<?php echo $tipousuario_id; ?>" id="tipousuario_id" name="tipousuario_id" />
-<input type="hidden" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" id="nombre_moneda" name="nombre_moneda" />
 
 <table class="table" >
 <tr>
 <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
     
 </td>
-<td style="width: <?php echo $ancho;?>cm; padding: 0;">
+
+<td style="padding: 0;">
     
-<div class="box-header no-print">
-    <div class="text-center" hidden="true">
-        <h3 class="box-title"><b>REPORTE GENERAL DE MOVIMIENTO DIARIO</b><br>(Ingresos y Egresos)</h3><br><br>
-    </div>
-<div class="container">  
-        <div class="box-tools" style="font-family: Arial;">
-                <div class=" col-md-11">
-                    <!-- panel panel-primary -->
-                    <!--<div class="panel panel-primary col-md-8" id='buscador_oculto' > style='display:none; padding-top: 10px;'> -->
-                    <div class="col-md-2">
-                        Usuario:
-                        <?php if($tipousuario_id == 1 || $tienepermiso == 1){ ?>
-                        <select  class="btn btn-primary btn-sm form-control" id="buscarusuario_id" required>
-                            <option value="0"> TODOS </option>
-                            <?php foreach($all_usuario as $usuario){?>
-                            <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
-                            <?php } ?>
-                        </select>
-                        <?php }else{ ?>
-                        <select  class="btn btn-primary btn-sm form-control" id="buscarusuario_id" required>
-                            <?php
-                            $ischequed = "";
-                            foreach($all_usuario as $usuario){
-                                if($usuario_id == $usuario['usuario_id']){
-                                    $ischequed = "selected";
-                            ?>
-                            <option <?php echo $ischequed; ?> value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
-                            <?php }    
-                                } ?>
-                        </select>
-                        <?php } ?>
-                    </div>
-                        <div class="col-md-2">
-                            Desde: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
-                        </div>
-                        <div class="col-md-2">
-                            Hasta: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
-                        </div>
-                        <div class="col-md-2">
-                            <br>
-                            <button class="btn btn-sm btn-warning btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;" id="boton_buscar">
-                                <span class="fa fa-search"></span> Buscar
-                          </button>
-                            <br>
-                        </div>
-<!--                        <div class="col-md-2">
-                            <br>
-                            <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Ing. Egr. encontrados: <span class="badge btn-primary"><input style="border-width: 0;" id="resingegr" type="text" value="0" readonly="true"> </span></span>
-                        </div>-->
-                        <div class="col-md-3">
-                            <br>
-                            <a id="imprimirestedetalle" class="btn btn-sq-lg btn-success" onclick="imprimirdetalle()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>
-                        </div>
-                </div>
-
-        </div>
-
-    </div>
-
-</div>
-<div class="row" id='loader'  style='display:none; text-align: center'>
-    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div>
-        <!-- ********************************INICIO Cabecera******************************* -->
-<div class="row micontenedorep table-responsive" id="cabeceraprint">
-    <table style="width: <?php echo $ancho; ?>cm; font-family: Arial;">
-        
-    <!--<table class="table" style="width: 100%; padding: 0;" >-->
+    
+<table class="table" style="width: <?php echo $ancho?>" >
     <tr>
-        <td width="300" style="line-height: 10px; ">
-                     <center>                        
-                         <img src="<?php echo $logo; ?>" width="80" height="60"><br>
-                        <font size="1" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                        <?php if(isset($empresa[0]['empresa_slogan'])){ ?>
-                            <font size="0.5" face="Arial"><b><?php echo $empresa[0]['empresa_slogan']; ?></b></font><br>
-                        <?php } ?>
-                        
-                        <font size="0.5" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
-                        <font size="0.5" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
-                        <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_departamento']." - BOLIVIA"; ?></font><br>-->
-                    </center>           
-        </td>
-        <td width="400" style="line-height: 14px; ">
-            <center>
-                <font size="3" face="arial"><b>REPORTE DE MOVIMIENTO DIARIO</b></font> <br>
-                <label id="fechaimpresion"></label><br>
-                <label id="tituloimpresion"></label>
-                <!--<font size="1" face="Arial"><b><?php //echo $fecha_d_m_a; ?></b></font>-->
+<!--        <td style="padding: 0; width: 0cm">-->
+        <td style="padding: 0;" colspan="4">
                 
+            <center>
+                               
+                    
+                    <!--<img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
+                    <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                    
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <?php if (isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
+<!--                    <font size="1" face="Arial"></b>
+
+                        <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
+
+                        </b></font><br>-->
+                    <?php } ?>
+
+                    <font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>
+                
+                    <br>
+                    <?php //if($factura[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
+                         //else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>
+                    <?php $titulo1 = "REPORTE DE CAJA";  
+                            
+
+                    ?>
+                    
+                <font size="3" face="arial"><b><?php echo $titulo1; ?></b></font>
+                
+                   
+                <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
+                <table style="width:<?php echo $ancho?>" >
+                    <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
+                        <td style="font-family: arial; font-size: 8pt; padding: 0;">
+
+                            <b>NIT:      </b><br>
+                            <b>FACTURA No.:  </b><br>
+                            <b>AUTORIZACION: </b>
+
+                        </td>
+                        <td style="font-family: arial; font-size: 8pt; padding: 0;">
+                            <?php echo $factura[0]['factura_nitemisor']; ?> <br>
+                            <?php echo $factura[0]['factura_numero']; ?> <br>
+                            <?php echo $factura[0]['factura_autorizacion'] ?>           
+                        </td>
+                    </tr>
+                </table>
+                <br>    
+                <font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
             </center>
         </td>
-        <td width="300" style="text-align: center;">
-            -----------------------------<br>
-            <span style="font-size: 10px; font-family: Arial" id="fecha1impresion"></span>
-            <span style="font-size: 10px; font-family: Arial" id="fecha2impresion"></span><br>
-            <!--<b>Gestión: </b><?php //echo $inscripcion[0]['gestion_descripcion']; ?><br>-->
-            -----------------------------
-<!--                <h5><b>Tipo: </b><?php /*echo $inscripcion[0]['tipotrans_nombre']; ?> <br>
-                <b>Cred. Nº: </b><?php echo $inscripcion[0]['cliente_codigo']; ?> <br>
-                <b>Limite: </b><?php echo $inscripcion[0]['venta_fecha'];*/ ?></h5>       -->
-        
+    </tr>            
+<!--                <br>_______________________________________________
+                <br> -->
+    <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
+        <td colspan="4" style="padding: 0;  font-size: 9pt;">
+            
+                <?php $fecha = new DateTime($factura[0]['factura_fechaventa']); 
+                        $fecha_d_m_a = $fecha->format('d/m/Y');
+                  ?>    
+                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$factura[0]['factura_hora']; ?> <br>
+                    <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
+                    <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>            
         </td>
     </tr>
-    </table>       
-        
-</div>
-            <div class="box-body" id="cabizquierdafechas">
-                <span style="font-size: 10px; font-family: Arial" id="elusuario"></span><br>
-                    
-            </div>
-        <div class="table table-responsive">
-            <table class='table table-striped table-condensed table-responsive' id='mitabladetimpresion' style='width:<?php echo $ancho; ?>cm;'>
-                <tr style='background-color: #aaaaaa;' class='fondoprint'>
-                    <th id='fondoprint' class='fondoprint' style='width: 2%' class='text-center'>N°</th>
-                    <th id='fondoprint' style='width: 4%' class='text-center'>FECHA</th>
-                    <th id='fondoprint' style='width: 8%' class='text-center'>REC.</th>
-                    <th id='fondoprint' style='width: 8%' class='text-center'>FACT.</th>
-                    <th id='fondoprint' style='width: 48%' class='text-center'>DETALLE <input type='button' value='[-]' onclick='mostrar_detalle();' id='boton_detalle' class='btn btn-xs' style="padding:0;"/></th>
-                    <th id='fondoprint' style='width: 10%' class='text-center'>BANCO</th>
-                    <th id='fondoprint' style='width: 10%' class='text-center'>INGRESO</th>
-                    <th id='fondoprint' style='width: 10%' class='text-center'>EGRESO</th>
-                    <th id='fondoprint' style='width: 10%' class='text-center'>UTILD</th>
-                </tr>
-                <tbody id='tablatotalresultados'></tbody>
-<!--            </table>
-            
-            
-      
-             ********************************FIN Cabecera******************************* 
-            <table class='table table-striped table-condensed' id='mitabladetimpresion' style='width:<?php echo $ancho; ?>cm;'>-->
-                <tr >
-                    <td style="text-align: center;" colspan="3">
-                       
-                                  <br>
-                                  <br>
-                                  ________________________<br>ENTREGADO POR
-                     
-                    </td>
-                    <td>
-                    </td>
-                       
-                    <td style="text-align: center;" colspan="2">                   
-                                  <br>
-                                  <br>
-                                  ________________________<br>REVISADO POR
-                        
-                    </td>
-                    <td style="text-align: right;" colspan="4">
-                        
-                              <p class="subtitulo">EFECTIVO EN CAJA <?php echo $parametro[0]['moneda_descripcion']; ?> :.......................</p>
-                              <P class="subtitulo">UTILIDAD BRUTA <?php echo $parametro[0]['moneda_descripcion']; ?> :.......................</P>
-                              <P class="subtitulo">GASTOS OPERAT. <?php echo $parametro[0]['moneda_descripcion']; ?> :.......................</P>
-                              <p class="subtitulo">UTILIDAD NETA <?php echo $parametro[0]['moneda_descripcion']; ?> :.......................</P>
-                
-                        
-                    </td>
-                </tr>
-            </table>
-        </div>
-        </div>
-    </div>
-</div>
+     
+<!--</table>
 
+       <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
+           <tr  style="border-top-style: solid; border-bottom-style: solid; " >
+               
+                <td align="center" style="padding: 0;"><b>CANT</b></td>
+                <td align="center" style="padding: 0;"><b>DESCRIPCIÓN</b></td>
+                <td align="center" style="padding: 0;"><b>P.UNIT</b></td>
+                <td align="center" style="padding: 0;"><b>TOTAL</b></td>
+                
+           </tr>
+           <?php $cont = 0;
+                 $cantidad = 0;
+                 $total_descuento = 0;
+                 $total_final = 0;
+
+                if ($factura[0]['estado_id']<>3){ 
+                 foreach($detalle_factura as $d){;
+                        $cont = $cont+1;
+                        $cantidad += $d['detallefact_cantidad'];
+                        $total_descuento += $d['detallefact_descuento']; 
+                        $total_final += $d['detallefact_total']; 
+                        ?>
+           <tr style="font-size: 8pt;">
+                <td align="center" style="padding: 0;"><?php echo $d['detallefact_cantidad']; ?></td>
+                <!--<td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php //echo $d['detallefact_descripcion']; ?></td>-->
+                
+                <td style="padding: 0; line-height: 10px;"><font style="size:5px; font-family: arial;"> 
+                    
+                    <?php echo $d['detallefact_descripcion']; ?>
+                     <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo " [".$d['detallefact_unidadfactor']."]";?>
+                    
+                    <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
+                        echo  $d['detallefact_preferencia']; }
+                    ?>
+                    <?php if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
+                        echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
+                        //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
+
+                    ?>                                
+                    </font>
+                </td>
+                
+                
+                
+                <!--<td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></td>-->
+                <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_subtotal'],2,'.',','); ?></td>
+           </tr>
+           <?php }} ?>
+<!--       </table>
+        _____________________________________
+<table class="table" style="max-width: 7cm;">-->
+    
         
-</td>
-</tr>
+    <tr style="border-top-style: solid; border-top-width: 2px;">
+        
+            
+        <td align="right" style="padding: 0;" colspan="4">
+            
+            <font size="1">
+                <b><?php echo "SUB TOTAL Bs ".number_format($factura[0]['factura_subtotal'],2,'.',','); ?></b><br>
+            </font>
+            
+
+            <font size="1">
+                <?php echo "TOTAL DESCUENTO Bs ".number_format($factura[0]['factura_descuento'],2,'.',','); ?><br>
+            </font>
+            <font size="2">
+            <b>
+                <?php echo "TOTAL FINAL Bs: ".number_format($factura[0]['factura_total'] ,2,'.',','); ?><br>
+            </b>
+            </font>
+<!--            <font size="1" face="arial narrow">
+                <?php echo "SON: ".num_to_letras($factura[0]['factura_total'],' Bolivianos'); ?><br>            
+            </font>-->
+            
+            <font size="1">
+                <?php echo "EFECTIVO Bs ".number_format($factura[0]['factura_efectivo'],2,'.',','); ?><br>
+                <?php echo "CAMBIO Bs ".number_format($factura[0]['factura_cambio'],2,'.',','); ?>
+            </font>
+            
+        </td>          
+    </tr>
+    <tr>
+        <td nowrap style="padding: 0;" colspan="4">
+            <font size="2">
+            
+                COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
+                 <?php $fecha_lim = new DateTime($factura[0]['factura_fechalimite']); 
+                        $fecha_limite = $fecha_lim->format('d/m/Y');
+                  ?>    
+                LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
+            </font>
+        </td>           
+    </tr>
+    <tr>
+        <td style="padding: 0;" colspan="4">
+        <center>
+            <img src="<?php echo $codigoqr; ?>" width="100" height="100">
+        </center>
+
+        </td>
+       
+
+    </tr>    
+    <tr >
+        <td style="padding: 0;  line-height: 12px;" colspan="4">
+               USUARIO: <b><?php echo $factura[0]['usuario_nombre']; ?></b> / TRANS: 
+               <b><?php 
+                    if ($factura[0]['venta_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['venta_id']."V"; 
+                    if ($factura[0]['credito_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['credito_id']."Cr"; 
+                    if ($factura[0]['ingreso_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['ingreso_id']."I"; 
+                    if ($factura[0]['servicio_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['servicio_id']."S"; 
+                    if ($factura[0]['cuota_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['cuota_id']."C"; 
+               ?></b>
+               <?php
+                if ($factura[0]['venta_id']>0){
+                    if($parametro[0]['parametro_puntos'] >0){
+                        echo " / PUNTOS: <b>".$venta[0]['cliente_puntos']."</b>";
+                    }
+                }
+                ?>
+
+         </td>
+    </tr>    
+    
 </table>
-    
-<input type="text" id="saldo_caja" hidden>
-    
-    
-<script type="text/javascript">
-    $(document).ready(function(){
-        var resdebito   = $('#parasum2').val();
-        var rescredito  = $('#parasum3').val();
-        var resbancaria = $('#parasum4').val();
-        var rescheque   = $('#parasum5').val();
-        $('#sumtotalventas').val(resdebito+rescredito+resbancaria+rescheque);
-    });
-</script>
-<style type="text/css">
-#parafirmas{
-    display: flex;
-    max-width: 100%;
-    /*max-height: 5%;*/
-    font-family: "Arial", Arial Narrow;
-    text-align: center;
-}
-#firmaizquierda{
-    width: 50%;
-}
-#firmaderecha{
-    width: 50%;
-}
-</style>
+
+</td>    
+</tr>    
+</table>
+
+
