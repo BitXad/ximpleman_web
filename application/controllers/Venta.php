@@ -863,17 +863,19 @@ class Venta extends CI_Controller{
                                 
                                 //$factura_fecha_hora = (new DateTime())->format('H:i:s.v');
                                 //$factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
-                                $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
+                                $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.".000";
                                 
                                 $tipo_emision = 2;   
                                 $eventos = $this->Venta_model->consultar("select * from registro_eventos where registroeventos_codigo=".$registroeventos_codigo);
                                 $cufd_codigocontrol =  $eventos[0]["registroeventos_codigocontrol"];
                                 $factura_cufd = $eventos[0]["registroeventos_cufd"];
+                                $elregistroeventos_id = $eventos[0]["registroeventos_id"];
                                 
                             }else{
                                 $factura_cafc = "";
                                 $tipo_emision = $this->parametros['parametro_tipoemision'];
                                 $cufd_codigocontrol =  trim($facturaCufdCodControl['cufd_codigocontrol']);
+                                $elregistroeventos_id = 0;
                             }
                             
                             $cadFechahora = str_replace("-", "", $factura_fecha_hora);
@@ -946,6 +948,9 @@ class Venta extends CI_Controller{
                                     $factura_leyenda3 =  $factura_leyenda5;
                                     //$factura_cafc = $dosificacion[0]["dosificacion_cafc"];                          
                                     $registroeventos_id = $this->registroeventos_id;
+                                    if($elregistroeventos_id > 0){
+                                        $registroeventos_id = $elregistroeventos_id;
+                                    }
 
                                 }
                                 
@@ -1184,21 +1189,27 @@ class Venta extends CI_Controller{
                             
                         }
                         
-                        
-                        //Funcion en eventos con cafc
-                        
-                        if ($registroeventos_codigo > 0){ //$registroeventos_codigo > 0 para que ingrese y envie los archivos con cafc
-                            
-                            $sqlx = "update factura_contingencia set facturacontingencia_numero =  facturacontingencia_numero + 1";
-                            $this->Venta_model->ejecutar($sqlx);
-                            
-                            $codigo_recepcion = $this->registroEmisionPaquetes($factura_id,$registroeventos_codigo);
-                            
-                            sleep(1);
-                            if ($codigo_recepcion>0){
-                                $this->registroEmisionPaquetes_vacio($codigo_recepcion, $factura_id);
+                        $mandar_enuno = $this->input->post('mandar_enuno');
+                        // si esta destiqueado ingresa aqui!; manda factura por factura!......
+                        if($mandar_enuno == 0){
+                            //Funcion en eventos con cafc
+                            if ($registroeventos_codigo > 0){ //$registroeventos_codigo > 0 para que ingrese y envie los archivos con cafc
+                                $sqlx = "update factura_contingencia set facturacontingencia_numero =  facturacontingencia_numero + 1";
+                                $this->Venta_model->ejecutar($sqlx);
+
+                                $codigo_recepcion = $this->registroEmisionPaquetes($factura_id,$registroeventos_codigo);
+
+                                sleep(1);
+                                if ($codigo_recepcion>0){
+                                    $this->registroEmisionPaquetes_vacio($codigo_recepcion, $factura_id);
+                                }
                             }
-                            
+                        }elseif($mandar_enuno == 1){
+                            //Funcion en eventos con cafc
+                            if ($registroeventos_codigo > 0){ //$registroeventos_codigo > 0 para que ingrese y envie los archivos con cafc
+                                $sqlx = "update factura_contingencia set facturacontingencia_numero =  facturacontingencia_numero + 1";
+                                $this->Venta_model->ejecutar($sqlx);
+                            }
                         }
                         // Fin Funcion en eventos con cafc
                         
@@ -4750,7 +4761,8 @@ function anular_venta($venta_id){
         }              
     }
     
-
+    /** registra emision de paquetes (solicitud de recepcion de paquetes) fuera de linea con CAFC
+     * esto para un solo archivo al momento de fianalizar la venta e indicar que es con CAFC */
     function registroEmisionPaquetes($factura_id,$codigo_evento){
         try{
             if ($this->input->is_ajax_request()) {
@@ -4831,6 +4843,7 @@ function anular_venta($venta_id){
                 //var_dump($parametros);
                 $resultado = $cliente->recepcionPaqueteFactura($parametros);
                 $res = $resultado->RespuestaServicioFacturacion;
+                
                 if($res->codigoDescripcion == "PENDIENTE"){
                     $params = array(
                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
@@ -4874,7 +4887,8 @@ function anular_venta($venta_id){
         return 0;
     }
     
-    
+    /** Una vez echa la solicitud de recepcion ode paquetes, se manda aa validar el paquete.
+     *  todo esto lo  hace al finalizar una venta con CAFC!. */
     function registroEmisionPaquetes_vacio($codigo_recepcion,$factura_id){
         try{
   
