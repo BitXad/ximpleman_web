@@ -1067,7 +1067,7 @@ window.onkeydown = compruebaTecla;
             
             <div class="col-md-3">
                 <h5 class="modal-title" id="myModalLabel"><b>HORA</b></h5>                                        
-                <input type="time" id="hora_cafc" class="btn btn-default btn-xs" style="width: 120px;" value="<?= "00:00:00"; ?>"/>
+                <input type="time" step="any" id="hora_cafc" class="btn btn-default btn-xs" style="width: 120px;" value="<?= "00:00:00"; ?>"/>
             </div>
             
             
@@ -1196,6 +1196,7 @@ window.onkeydown = compruebaTecla;
 
           
             <div class="col-md-12">
+                <input type="checkbox" style="padding: 0;" id="mandar_enuno" value="1" name="mandar_enuno" checked disabled >
                 NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
                 
                 <div class="col-md-12" style="display:none" id="imagenqr">
@@ -2058,19 +2059,13 @@ window.onkeydown = compruebaTecla;
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" id='loader'  style='display:none; text-align: center'>
-                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-                </div>
-                <div class="row" id='loader2'  style='display:none; text-align: center'>
+                <div class="row" id="loader3" style="display:none; text-align: center">
                     <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
                 </div>
                 <div class="col-md-12">
-                    <label for="codigo_evento" class="control-label"><span class="text-danger">*</span>Código Evento</label>
-<!--                    <div class="form-group">
-                        <input type="text" name="codigo_evento" class="form-control" id="codigo_evento" />
-                    </div>
--->                    
-                    <select name="codigo_evento" class="form-control" id="codigo_evento" onchange="preparar_parametros()">
+                    <label for="codigo_evento" class="control-label"><span class="text-danger">*</span>Código Evento</label>  
+                    <!--<select name="codigo_evento" class="form-control" id="codigo_evento" onchange="preparar_parametros()">-->
+                    <select name="codigo_evento" class="form-control" id="codigo_evento">
                         <option value="0">- SELECCIONAR EVENTO -</option>
                         <?php 
                             foreach($eventos as $evento){ ?>
@@ -2081,22 +2076,18 @@ window.onkeydown = compruebaTecla;
                             
                     </select>
                 </div>
-                <div class="col-md-12">
+                <br>
+                <br>
+                <!--<div class="col-md-12">
                     <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Nombre Archivo</label>
                     <div class="form-group">
                         <input type="text" name="nombre_archivo" value="compra_venta00.tar.gz" class="form-control" id="nombre_archivo" />
-                    </div>
-                </div>
-<!--                <div class="col-md-4">
-                    <label for="cant_fact" class="control-label"><span class="text-danger">*</span>Cantidad Facturas</label>
-                    <div class="form-group">
-                        <input type="number" name="cant_fact" value="1" class="form-control" id="cant_fact" />
                     </div>
                 </div>-->
             </div>
             
             <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Envio de Paquetes</button>
+                <button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Enviar Paquete</button>
                 <button type="button" class="btn btn-danger" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
             </div>
             

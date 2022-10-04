@@ -102,5 +102,14 @@ class Eventos_significativos_model extends CI_Model{
         return $this->db->query($sql)->row_array();
         
     }
+    
+    /*
+     * function to update eventos significativos( registro eventos)
+     */
+    function update_registroevento($registroeventos_id,$params)
+    {
+        $this->db->where('registroeventos_id',$registroeventos_id);
+        return $this->db->update('registro_eventos',$params);
+    }
 
 }

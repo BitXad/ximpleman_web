@@ -160,10 +160,10 @@ class Envio_contingencias extends CI_Controller{
                 /*$nom_archivo = "compra_venta1395.tar.gz";
                 $codigo_evento = 495914;*/
                 //$factura_id = substr($nom_archivo,12, strlen($nom_archivo));
-                
+                $nombre_archivo = $dosificacion['dosificacion_documentosector'];
                 for ($i = 0; $i < count($f); $i++) {
                     $factura_id = $f[$i];
-                    $nom_archivo =  "compra_venta".$f[$i].".tar.gz";
+                    $nom_archivo =  $nombre_archivo.$f[$i].".tar.gz";
                     $handle = fopen($directorio.$nom_archivo, "rb");
                     $contents = fread($handle, filesize($directorio.$nom_archivo));
                     fclose($handle);

@@ -2963,9 +2963,10 @@ function registrarventa(cliente_id)
         var hora_cafc = document.getElementById('hora_cafc').value;
         var numfact_cafc = document.getElementById('numfact_cafc').value;
         var codigo_cafc = document.getElementById('codigo_cafc').value;
-        
+        // si esta tiqueado para que mande todo en uno; caso contrario manda al finalizar la venta
+        var mandar_enuno  = $('#mandar_enuno:checked').val();
     }else{
-        
+        var mandar_enuno  = 0;
         var fecha_cafc = "";
         var hora_cafc = "";
         var numfact_cafc = 0;
@@ -3032,7 +3033,8 @@ function registrarventa(cliente_id)
                 tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,venta_subtotal:venta_subtotal,codigo_excepcion:codigo_excepcion,
                 venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
                 factura_complementoci:factura_complementoci,fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, codigo_cafc: codigo_cafc, 
-                registroeventos_codigo: registroeventos_codigo, dosificacion_modalidad:dosificacion_modalidad, parametro_tipoemision:parametro_tipoemision
+                registroeventos_codigo: registroeventos_codigo, dosificacion_modalidad:dosificacion_modalidad,
+                parametro_tipoemision:parametro_tipoemision, mandar_enuno:mandar_enuno
             },
             success:function(respuesta){
                 
@@ -3077,7 +3079,8 @@ function registrarventa(cliente_id)
                 venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
                 factura_complementoci:factura_complementoci, fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, 
                 codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo, hora_cafc:hora_cafc,
-                dosificacion_modalidad:dosificacion_modalidad, parametro_tipoemision:parametro_tipoemision
+                dosificacion_modalidad:dosificacion_modalidad, parametro_tipoemision:parametro_tipoemision,
+                mandar_enuno:mandar_enuno
             },
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
@@ -5828,67 +5831,39 @@ function verificar_conexion(){
 
 }
 
-
-function preparar_parametros(){
-    
+/** viene de ventas, prepara el modal para mandar paquete con CAFC!. */
+/*function preparar_parametros(){
     var codigo_evento = document.getElementById("codigo_evento").value;
-    var archivo = "contingencia"+codigo_evento+".tar.gz"
-    //alert("contingencia"+codigo_evento+".tar.gz");
-    
-    $("#nombre_archivo").val(archivo);       
-    
-}
 
+}*/
+/**  desde ventas con CAFC; prepara y envia el paquete a impuestos para su recepcion y validacion!... */
 function envio_paquetes(){
-    
     var base_url = document.getElementById('base_url').value;
-    var parametro_id = document.getElementById('elparametro_id').value;
+    //var parametro_id = document.getElementById('elparametro_id').value;
     var controlador = base_url+'parametro/enviar_paquete';
     var codigo_evento = document.getElementById("codigo_evento").value;
-    var archivo = "contingencia"+codigo_evento+".tar.gz"
-    //alert("contingencia"+codigo_evento+".tar.gz");
     
     if (codigo_evento>0){
-
+        document.getElementById('loader3').style.display = 'block';
         $.ajax({url: controlador,
-                  type:"POST",
-                  data:{codigo_evento:codigo_evento},
-                  success:function(respuesta){
-                      var registros =  JSON.parse(respuesta);
-                      $("#modal_tipoemision").modal("hide");
-
-
-                          alert(JSON.stringify(registros));
-                          //location.reload();
-
-      //                if(parametro_tipoemision == 1){
-      //                    
-      //                    var mensaje;                    
-      //                    var opcion = confirm("ADVERTENCIA: Debe actualizar el CUFD, continuar?");
-      //                    
-      //                    if (opcion == true) {
-      //                        
-      //                        
-      //                        //solicitudCufd(punto_venta);                      
-      //                    }
-      //                  document.getElementById("ejemplo").innerHTML = mensaje;
-      //                }
-
-                      //document.getElementById('loader_documento').style.display = 'none';
-
+                type:"POST",
+                data:{codigo_evento:codigo_evento},
+                success:function(respuesta){
+                    var registros =  JSON.parse(respuesta);
+                    $("#modalpaquetes").modal("hide");
+                    alert(JSON.stringify(registros));
+                    document.getElementById('loader3').style.display = 'none';
+                    location.reload();
                   },
                   error:function(respuesta){
-                     // alert("Algo salio mal...!!!");
-                     html = "";
-                     $("#tablaresultados").html(html);
-                     document.getElementById('loader_documento').style.display = 'none';
+                     alert("Algo salio mal...!!!");
+                     document.getElementById('loader3').style.display = 'none';
                   },
                   complete: function (jqXHR, textStatus) {
-                      document.getElementById('loader_documento').style.display = 'none'; //ocultar el bloque del loader 
-                      //tabla_inventario();
+                      document.getElementById('loader3').style.display = 'none';
                   }
-          });    
-      
+          });
+          document.getElementById('loader3').style.display = 'none';
     }else{
         alert("ERROR: Debe seleccionar un evento/archivo a enviar");
     }
