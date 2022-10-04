@@ -5761,7 +5761,7 @@ function modal_cambiartipoemision(){
     $("#modal_tipoemision").modal("show");
 }
 
-
+/* desde ventas cuando  cambiamos el tipo de emision de la facturas (online, offline) */
 function cambiar_tipoemision()
 {
     var base_url = document.getElementById('base_url').value;
@@ -5770,7 +5770,7 @@ function cambiar_tipoemision()
     var parametro_tipoemision = document.getElementById('elparametro_tipoemision').value;
     var controlador = base_url+'parametro/cambiar_tipoemision';
     var select_eventos = document.getElementById('select_eventos').value;
-    var select = document.getElementById('select_eventos'), //El <select>
+    var select = document.getElementById('select_eventos'); //El <select>
         select_texto = select.options[select.selectedIndex].innerText; //El texto de la opción seleccionada
     
 //    alert(
