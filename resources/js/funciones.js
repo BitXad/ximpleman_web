@@ -5604,7 +5604,7 @@ function cargar_contingencia(){
                              // alert(hora);
                               
                                 $("#fecha_cafc").val(fecha);
-                                $("#hora_cafc").val(hora);
+                                //$("#hora_cafc").val(hora);
                                 $("#numfact_cafc").val(registros[0]["facturacontingencia_numero"]);
                                 $("#codigo_cafc").val(registros[0]["facturacontingencia_cafc"]);
 

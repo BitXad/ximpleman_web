@@ -1199,9 +1199,11 @@ class Parametro extends CI_Controller{
             $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
 
             /* empieza para la validadcion de recepcion de paquetes */
-            $codigo_recepcion = $res->codigoRecepcion;
+            $cod_recepcion = $res->codigoRecepcion;
+            //var_dump($codigo_recepcion."QQWWQQ");
             sleep(1);
-            if($codigo_recepcion>0){
+            //if($cod_recepcion != "" && $cod_recepcion != null){
+            if($res->codigoDescripcion == "PENDIENTE"){
                 $parametros = ["SolicitudServicioValidacionRecepcionPaquete" => [
                     "codigoAmbiente" => $dosificacion['dosificacion_ambiente'],
                     "codigoPuntoVenta"    => $puntoventa['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
@@ -1214,7 +1216,7 @@ class Parametro extends CI_Controller{
                     "cufd"              => $puntoventa['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
                     "cuis"              => $puntoventa['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                     "tipoFacturaDocumento" => $dosificacion['tipofac_codigo'],
-                    "codigoRecepcion"         => $codigo_recepcion, //$dosificacion['dosificacion_nitemisor']
+                    "codigoRecepcion"         => $cod_recepcion, //$dosificacion['dosificacion_nitemisor']
                 ]];
 
                 $fecha_hora1 = (new DateTime())->format('Y-m-d H:i:s');

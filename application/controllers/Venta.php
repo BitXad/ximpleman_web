@@ -1170,7 +1170,8 @@ class Venta extends CI_Controller{
                                 
                             }else{ //Si la emision de la factura es de tipo 2 OFFLINE
                                 //var_dump($registroeventos_codigo."QQWW");
-                                if ($registroeventos_codigo <= 0){ //$registroeventos_codigo <= 0 no e s con CAFC e incrementa num. factura
+                                //$registroeventos_codigo <= 0 no e s con CAFC e incrementa num. factura
+                                if ($registroeventos_codigo <= 0){ 
                                     $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
                                     $this->Venta_model->ejecutar($sql);
                                 }
