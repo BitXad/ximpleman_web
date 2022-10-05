@@ -3085,7 +3085,9 @@ function registrarventa(cliente_id)
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
                 eliminardetalleventa();
-                                
+                if (registroeventos_codigo>0){
+                    $('#evento_contingencia').prop('selectedIndex',0);
+                }
                 var res = JSON.parse(respuesta)                
 
 //                alert(res.codigoDescripcion);

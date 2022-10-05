@@ -862,8 +862,8 @@ class Venta extends CI_Controller{
                                 $factura_cafc = $codigo_cafc;                                    
                                 
                                 //$factura_fecha_hora = (new DateTime())->format('H:i:s.v');
-                                //$factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
-                                $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.".000";
+                                $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
+                                //$factura_fecha_hora = $fecha_cafc."T".$hora_cafc.".000";
                                 
                                 $tipo_emision = 2;   
                                 $eventos = $this->Venta_model->consultar("select * from registro_eventos where registroeventos_codigo=".$registroeventos_codigo);
@@ -1169,7 +1169,12 @@ class Venta extends CI_Controller{
                                 $this->Venta_model->ejecutar($sql);*/
                                 
                             }else{ //Si la emision de la factura es de tipo 2 OFFLINE
-                                $res  = array("mensajesList" => "No Enviado por  estar en offline");
+                                //var_dump($registroeventos_codigo."QQWW");
+                                if ($registroeventos_codigo <= 0){ //$registroeventos_codigo <= 0 no e s con CAFC e incrementa num. factura
+                                    $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+                                    $this->Venta_model->ejecutar($sql);
+                                }
+                                $res = array("mensajesList" => "No Enviado por  estar en offline");
                                     echo json_encode($res);
                             }
                             
