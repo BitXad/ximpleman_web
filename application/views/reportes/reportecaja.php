@@ -16,14 +16,14 @@
         */
         function imprimir()
         {
-             window.print(); 
+            // window.print(); 
         }
 </script>   
 
 <style type="text/css">
- @page { 
+/* @page { 
         size: landscape;
-    }
+    }*/
      
 </style>
 <!----------------------------- fin script buscador --------------------------------------->
@@ -76,7 +76,7 @@
         <div class="col-md-2 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
-                <a class="btn btn-facebook btn-sm form-control" onclick="tabla_reportesproducto()" title="Buscar productos agrupados"><i class="fa fa-search"> </i> Buscar</a>
+                <a class="btn btn-facebook btn-sm form-control" onclick="tabla_reporteagrupado()" title="Buscar productos agrupados"><i class="fa fa-search"> </i> Buscar</a>
             </div>
         </div>
         <div class="col-md-2 no-print">
@@ -92,12 +92,7 @@
             </div>
         </div>
     </div>
-    <span id="desde"></span>
-    <span id="hasta"></span>
-    <div id="labusqueda"></div>
-    <span id="tipotrans"></span>
-    <span id="esteusuario"></span>
-    <span id="ventaprev"></span>
+
 </div>
 
 
@@ -108,52 +103,6 @@
         <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
     </center>
 </div>
-<div class="box" style="padding: 0;">
-    <div class="box-body table-responsive" >
-        <table class="table table-striped table-condensed" id="mitabla" >
-            <tr>
-                <th>Nro.</th>
-                <th>PRODUCTO</th>
-                <th>TIPO<br>VENTA</th>
-                <th>UNIDAD</th>
-                <th>CANT.</th>
-                <th>PRECIO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                <th>DESC(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                <th>PRECIO<br>TOTAL(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                <th>PRECIO<br>TOTAL(<?php
-                                        if($parametro[0]["moneda_id"] == 1){
-                                            echo $lamoneda[1]['moneda_descripcion'];
-                                        }else{
-                                            echo $lamoneda[0]['moneda_descripcion'];
-                                        }
-                                    ?>)
-                </th>
-                <?php if($tipousuario_id == 1){ ?>
-                    <th>COSTO<br>TOTAL(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                    <th>UTILID.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                    <th>%</th>
-                <?php } ?>
-            </tr>
-            <tbody class="buscar" id="reportefechadeventa"></tbody>
-        </table>
-    </div>
-</div>
-<center>
-    <ul style="margin-bottom: -5px;margin-top: 35px;" >--------------------------------</ul>
-    <ul style="margin-bottom: -5px;">RESPONSABLE</ul><ul>FIRMA - SELLO</ul>
-</center>
-    
-
-<!-------------------- FIN CATEGORIAS--------------------------------->
-                                
-          
-  
-
-
-
-
-
-
 
 
 <!------------------------------------------------------------------>
@@ -161,13 +110,13 @@
 <!------------------------------------------------------------------>
 <?php $factura = [0=>0]; ?>
 <?php $detalle_factura = [0=>0]; ?>
-
+<!--
 <script type="text/javascript">
     $(document).ready(function()
     {
         window.onload = window.print();
     });
-</script>
+</script>-->
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
@@ -253,7 +202,7 @@ border-bottom : 1px solid #aaa;*/
 <table class="table" style="width: <?php echo $ancho?>" >
     <tr>
 <!--        <td style="padding: 0; width: 0cm">-->
-        <td style="padding: 0;" colspan="4">
+        <td style="padding: 0;" colspan="5">
                 
             <center>
                                
@@ -261,14 +210,6 @@ border-bottom : 1px solid #aaa;*/
                     <!--<img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                    
-                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
-                    <?php if (isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
-<!--                    <font size="1" face="Arial"></b>
-
-                        <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
-
-                        </b></font><br>-->
-                    <?php } ?>
 
                     <font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
@@ -287,30 +228,33 @@ border-bottom : 1px solid #aaa;*/
                 
                    
                 <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
-                <table style="width:<?php echo $ancho?>" >
+                <!--<table style="width:<?php echo $ancho?>" >-->
                     <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
-                        <td style="font-family: arial; font-size: 8pt; padding: 0;">
-
-                            <b>NIT:      </b><br>
-                            <b>FACTURA No.:  </b><br>
-                            <b>AUTORIZACION: </b>
-
+                        <td style="font-family: arial; font-size: 8pt; padding: 0;" colspan="5">
+                            <center>
+                                    <span id="desde"></span> <span id="hasta"></span><br>
+                                    <div id="labusqueda"></div>
+                                    <span id="tipotrans"></span>
+                                    <span id="esteusuario"></span>
+                                    <span id="ventaprev"></span>
+<!--                                    <b>DESDE:      </b><br>
+                                    <b>FACTURA No.:  </b><br>
+                                    <b>AUTORIZACION: </b>                        -->
+                            </center>                        
                         </td>
-                        <td style="font-family: arial; font-size: 8pt; padding: 0;">
-                            <?php echo $factura[0]['factura_nitemisor']; ?> <br>
-                            <?php echo $factura[0]['factura_numero']; ?> <br>
-                            <?php echo $factura[0]['factura_autorizacion'] ?>           
-                        </td>
+<!--                        <td style="font-family: arial; font-size: 8pt; padding: 0;">
+
+                            
+                        </td>-->
                     </tr>
-                </table>
-                <br>    
-                <font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
+                <!--</table>-->
+                
             </center>
         </td>
-    </tr>            
-<!--                <br>_______________________________________________
-                <br> -->
-    <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
+    </tr>
+
+    
+<!--    <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
         <td colspan="4" style="padding: 0;  font-size: 9pt;">
             
                 <?php $fecha = new DateTime($factura[0]['factura_fechaventa']); 
@@ -320,7 +264,7 @@ border-bottom : 1px solid #aaa;*/
                     <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>            
         </td>
-    </tr>
+    </tr>-->
      
 <!--</table>
 
@@ -333,95 +277,37 @@ border-bottom : 1px solid #aaa;*/
                 <td align="center" style="padding: 0;"><b>TOTAL</b></td>
                 
            </tr>
-           <?php $cont = 0;
-                 $cantidad = 0;
-                 $total_descuento = 0;
-                 $total_final = 0;
+           <tbody class="buscar" id="reportefechadeventa"></tbody>
 
-                if ($factura[0]['estado_id']<>3){ 
-                 foreach($detalle_factura as $d){;
-                        $cont = $cont+1;
-                        $cantidad += $d['detallefact_cantidad'];
-                        $total_descuento += $d['detallefact_descuento']; 
-                        $total_final += $d['detallefact_total']; 
-                        ?>
-           <tr style="font-size: 8pt;">
-                <td align="center" style="padding: 0;"><?php echo $d['detallefact_cantidad']; ?></td>
-                <!--<td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php //echo $d['detallefact_descripcion']; ?></td>-->
-                
-                <td style="padding: 0; line-height: 10px;"><font style="size:5px; font-family: arial;"> 
-                    
-                    <?php echo $d['detallefact_descripcion']; ?>
-                     <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo " [".$d['detallefact_unidadfactor']."]";?>
-                    
-                    <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
-                        echo  $d['detallefact_preferencia']; }
-                    ?>
-                    <?php if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
-                        echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
-                        //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
+           
 
-                    ?>                                
-                    </font>
-                </td>
-                
-                
-                
-                <!--<td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></td>-->
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_subtotal'],2,'.',','); ?></td>
-           </tr>
-           <?php }} ?>
 <!--       </table>
         _____________________________________
-<table class="table" style="max-width: 7cm;">-->
-    
+<table class="table" style="max-width: 7cm;">
+    -->
         
     <tr style="border-top-style: solid; border-top-width: 2px;">
         
             
         <td align="right" style="padding: 0;" colspan="4">
             
-            <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($factura[0]['factura_subtotal'],2,'.',','); ?></b><br>
-            </font>
             
-
-            <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($factura[0]['factura_descuento'],2,'.',','); ?><br>
-            </font>
-            <font size="2">
-            <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($factura[0]['factura_total'] ,2,'.',','); ?><br>
-            </b>
-            </font>
-<!--            <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($factura[0]['factura_total'],' Bolivianos'); ?><br>            
-            </font>-->
-            
-            <font size="1">
-                <?php echo "EFECTIVO Bs ".number_format($factura[0]['factura_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($factura[0]['factura_cambio'],2,'.',','); ?>
-            </font>
             
         </td>          
     </tr>
     <tr>
         <td nowrap style="padding: 0;" colspan="4">
             <font size="2">
+
             
-                COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
-                 <?php $fecha_lim = new DateTime($factura[0]['factura_fechalimite']); 
-                        $fecha_limite = $fecha_lim->format('d/m/Y');
-                  ?>    
-                LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
             </font>
         </td>           
     </tr>
     <tr>
         <td style="padding: 0;" colspan="4">
         <center>
-            <img src="<?php echo $codigoqr; ?>" width="100" height="100">
+            
+            
         </center>
 
         </td>
@@ -430,21 +316,7 @@ border-bottom : 1px solid #aaa;*/
     </tr>    
     <tr >
         <td style="padding: 0;  line-height: 12px;" colspan="4">
-               USUARIO: <b><?php echo $factura[0]['usuario_nombre']; ?></b> / TRANS: 
-               <b><?php 
-                    if ($factura[0]['venta_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['venta_id']."V"; 
-                    if ($factura[0]['credito_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['credito_id']."Cr"; 
-                    if ($factura[0]['ingreso_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['ingreso_id']."I"; 
-                    if ($factura[0]['servicio_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['servicio_id']."S"; 
-                    if ($factura[0]['cuota_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['cuota_id']."C"; 
-               ?></b>
-               <?php
-                if ($factura[0]['venta_id']>0){
-                    if($parametro[0]['parametro_puntos'] >0){
-                        echo " / PUNTOS: <b>".$venta[0]['cliente_puntos']."</b>";
-                    }
-                }
-                ?>
+               USUARIO: <b></b> / TRANS: 
 
          </td>
     </tr>    
