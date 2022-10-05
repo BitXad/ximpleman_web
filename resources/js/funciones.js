@@ -5941,12 +5941,15 @@ function finalizarventa_sin(){
     
     
     if ($('#facturado').is(':checked')){
-    
+        let docsec_codigoc = document.getElementById('docsec_codigoclasificador').value;
+        let venta_total = document.getElementById('venta_total').value;
+        if(docsec_codigoc == 23 && venta_total > 1000){
+            alert("ADVERTENCIA: El monto total debe ser menor o igual a mil para tipo PREVALORADAS");
+        }else{
 
             if(parametro_tipoemision == 1){ // Si el tipo de emision es en linea
 
                 if(navigator.onLine){ //si esta el linea
-                    let docsec_codigoc = document.getElementById('docsec_codigoclasificador').value;
                     let cantidad_facturas = document.getElementById('cantidad_facturas').value;
                     
                     if((docsec_codigoc == 23 && cantidad_facturas >0) || (docsec_codigoc != 23 && nit != 0)){ //Prevalorada
@@ -6022,9 +6025,9 @@ function finalizarventa_sin(){
                                 $("nit").select();
                             }
                         }else{
-                            if (docsec_codigoc == 23)
+                            if (docsec_codigoc == 23){
                                alert("ADVERTENCIA: Cantidad de facturas debe ser mayor a 0 (CERO) para tipo PREVALORADAS");
-                            else
+                           }else
                                 alert("ADVERENCIA: El NIT es INVALIDO...!");
                             
                             document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
@@ -6047,6 +6050,7 @@ function finalizarventa_sin(){
                     finalizarventa();
 
                 }
+            }
     }else{
         
         finalizarventa();
