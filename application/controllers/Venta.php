@@ -5548,7 +5548,7 @@ function anular_venta($venta_id){
         $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
         $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>FECHA DE EMISI&Oacute;N: </td>";
         $micad .= "                                <td style='padding: 0; padding-left: 3px'>";
-                                                    $fecha = new DateTime($factura[0]['factura_fechaventa']);
+                                                    $fecha = new DateTime($factura[0]['factura_fecha']);
                                                     $fecha_d_m_a = $fecha->format('d/m/Y');
         $micad .=                                   $fecha_d_m_a." ".$factura[0]['factura_hora'];
         $micad .= "                                </td>";
@@ -5883,7 +5883,7 @@ function anular_venta($venta_id){
         $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
         $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>FECHA DE EMISI&Oacute;N: </td>";
         $micad .= "                                <td style='padding: 0; padding-left: 3px'>";
-                                                    $fecha = new DateTime($factura[0]['factura_fechaventa']);
+                                                    $fecha = new DateTime($factura[0]['factura_fecha']);
                                                     $fecha_d_m_a = $fecha->format('d/m/Y');
         $micad .=                                   $fecha_d_m_a." ".$factura[0]['factura_hora'];
         $micad .= "                                </td>";
