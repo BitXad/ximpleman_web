@@ -260,6 +260,7 @@ function tabla_reporteagrupado(){
                         
                         html += "</tr>";
                         
+//                   desde1 = "DESDE: <b>"+moment(desde).format('DD/MM/YYYY')+"</b>";
                    desde1 = "DESDE: <b>"+moment(desde).format('DD/MM/YYYY')+"</b>";
                    hasta1 = "HASTA: <b>"+moment(hasta).format('DD/MM/YYYY')+"</b>";
                    $("#reportefechadeventa").html(html);
