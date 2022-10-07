@@ -265,6 +265,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_anchoimagen" value="<?php echo $parametro['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
 <input type="text" id="parametro_formaimagen" value="<?php echo $parametro['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
 <input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+<input type="text" id="parametro_imprimirticket" value="<?php echo $parametro['parametro_imprimirticket']; ?>" name="parametro_imprimirticket" hidden>
 <input type="text" id="parametro_imprimircomanda" value="<?php echo $parametro['parametro_imprimircomanda']; ?>" name="parametro_imprimircomanda"  hidden>
 <input type="text" id="parametro_diasvenc" value="<?php echo $parametro['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
 <input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>

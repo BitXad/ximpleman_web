@@ -1118,15 +1118,17 @@ class Factura extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
                 $modalidad = $dosificacion["dosificacion_modalidad"];
-                if($modalidad==1){ // 1 electronica; 2 computarizada
-                    $nombre_archivo = $archivo_electronico;
-                }else{ //  aqui por la computarizada en linea
-                    if ($dosificacion["docsec_codigoclasificador"]=="1"){ //FACTURA COMPRA VENTA
-                        $wsdl = $dosificacion['dosificacion_factura'];
-                    }
-                    if ($dosificacion["docsec_codigoclasificador"]=="11" || $dosificacion["docsec_codigoclasificador"]=="23" ||$dosificacion["docsec_codigoclasificador"]=="39"){ //PREVALORADA, FACTURA SECTORES EDUCATIVOS; GLP
-                        $wsdl = $dosificacion['dosificacion_facturaglp'];
-                    }
+                               
+                if ($dosificacion['docsec_codigoclasificador']==1)
+                    $wsdl = $dosificacion['dosificacion_factura'];
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
+                }
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                    $wsdl = $dosificacion['dosificacion_facturaglp'];
                 }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];

@@ -1095,9 +1095,18 @@ function ingresardetallejs(producto_id,producto)
    var controlador = base_url+'venta/insertarProducto';
    var cantidad = parseFloat(document.getElementById('cantidad'+producto_id).value);
    var existencia = document.getElementById('existencia'+producto_id).value;
+   let tipo_sistema = document.getElementById('parametro_tiposistema').checked;
+   let es_facturado = document.getElementById('facturado').checked;
    
-   //var cantidad_total = parseFloat(cantidad_en_detalle(producto_id)) + cantidad; 
-   
+   /* ********************INICIO para redondeo a dos decimales ***************
+    * Por norma de impuestos; controla si es electronico o computarizado en linea y si es facturado
+    * si fuese el caso la cantidad lo redondea a 2 digitos decimales */
+   if(tipo_sistema != 1){
+       if(es_facturado){
+           cantidad = Number(cantidad).toFixed(2);
+       }
+   }
+   /* ********************F I N  para redondeo a dos decimales ****************/
    ingresorapidojs(cantidad,producto)
  
 }
@@ -1757,27 +1766,32 @@ function ingresorapidojs(cantidad,producto)
             }
         
         }
-            
         
+        let documento_sector = document.getElementById('docsec_codigoclasificador').value;
+        let detallebolsa = 0;
+        detallebolsa = existen_bolsa(producto.producto_id, agrupado);
+        if((documento_sector == 23 && detallebolsa == 1) || documento_sector != 23 ){
+            datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
+            datos1 += descuento+","+descuentoparcial+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
+            datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
+            datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
+            datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
+            datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
+            //alert(datos1);
 
-        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
-        datos1 += descuento+","+descuentoparcial+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
-        datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
-        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
-        datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
-        //alert(datos1);
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento,descuentoparcial:descuentoparcial, agrupado:agrupado, detalleven_id:detalleven_id},
+                success:function(respuesta){
 
-        $.ajax({url: controlador,
-            type:"POST",
-            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento,descuentoparcial:descuentoparcial, agrupado:agrupado, detalleven_id:detalleven_id},
-            success:function(respuesta){
-                                
-                tablaproductos();
+                    tablaproductos();
 
-            }
-        });
-    
+                }
+            });
+
+        }else{
+            alert("ADVERTENCIA: Para prevaloradas solo se admite un item!.");
+        }
     }
     else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
     
@@ -2943,6 +2957,7 @@ function registrarventa(cliente_id)
     var tiposerv_id = document.getElementById('tiposerv_id').value;
     var venta_numeromesa = document.getElementById('venta_numeromesa').value;
     var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
+    var parametro_imprimirticket = document.getElementById('parametro_imprimirticket').value;
     let banco_id = forma_id == 1 ? '0':$('#banco').val();
     let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
     
@@ -2995,6 +3010,9 @@ function registrarventa(cliente_id)
 
 
     if (parametro_modulorestaurante==1){
+        venta_numeroventa = numero_venta();
+    }
+    if(parametro_imprimirticket == 1){
         venta_numeroventa = numero_venta();
     }
     
@@ -5941,12 +5959,16 @@ function finalizarventa_sin(){
     
     
     if ($('#facturado').is(':checked')){
-    
+        let docsec_codigoc = document.getElementById('docsec_codigoclasificador').value;
+        let venta_total = document.getElementById('venta_total').value;
+        if(docsec_codigoc == 23 && venta_total > 1000){
+            alert("ADVERTENCIA: El monto total debe ser menor o igual a mil para tipo PREVALORADAS");
+            location.reload();
+        }else{
 
             if(parametro_tipoemision == 1){ // Si el tipo de emision es en linea
 
                 if(navigator.onLine){ //si esta el linea
-                    let docsec_codigoc = document.getElementById('docsec_codigoclasificador').value;
                     let cantidad_facturas = document.getElementById('cantidad_facturas').value;
                     
                     if((docsec_codigoc == 23 && cantidad_facturas >0) || (docsec_codigoc != 23 && nit != 0)){ //Prevalorada
@@ -6022,9 +6044,9 @@ function finalizarventa_sin(){
                                 $("nit").select();
                             }
                         }else{
-                            if (docsec_codigoc == 23)
+                            if (docsec_codigoc == 23){
                                alert("ADVERTENCIA: Cantidad de facturas debe ser mayor a 0 (CERO) para tipo PREVALORADAS");
-                            else
+                           }else
                                 alert("ADVERENCIA: El NIT es INVALIDO...!");
                             
                             document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
@@ -6047,6 +6069,7 @@ function finalizarventa_sin(){
                     finalizarventa();
 
                 }
+            }
     }else{
         
         finalizarventa();
@@ -6287,4 +6310,33 @@ function simular_evento(){
     //sleep(2000);
     //$("#modal_tipoemision").modal("hide");
     
+}
+
+/** cuando el tipo de documento sector es prevalorada(23)
+ *  esta funcion verifica si hay en el auxiliar(parte derecha)
+ *  productos ya cargados. y si lo nuevo que se quiere adicionar es del mismo producto;
+ *  pero tabien verifica si esta para agrupado.
+ *  Recibe como argumento el producto que se quiere adicionar y el argumento agrupado = check_agrupar
+ *  */
+function existen_bolsa(producto_id, agrupado){
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/verificaritem_endetalle';
+    let res = 0;
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{producto_id:producto_id, agrupado:agrupado},
+        async: false, 
+        success:function(respuesta){
+            let registro =  JSON.parse(respuesta);
+            if(registro == "ok"){
+                res = 1;
+            }else{
+                res = 0;
+            }
+        },
+        error:function(respuesta){
+            res = 0;
+        }
+    });     
+    return res;
 }

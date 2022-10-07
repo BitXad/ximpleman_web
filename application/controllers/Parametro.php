@@ -434,6 +434,7 @@ class Parametro extends CI_Controller{
                     'parametro_codcatsubcat' => $this->input->post('parametro_codcatsubcat'),
                     'parametro_tiposistema' => $this->input->post('parametro_tiposistema'),
                     'parametro_tipoemision' => $this->input->post('parametro_tipoemision'),
+                    'parametro_imprimirticket' => $this->input->post('parametro_imprimirticket'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            
