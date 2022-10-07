@@ -1095,9 +1095,18 @@ function ingresardetallejs(producto_id,producto)
    var controlador = base_url+'venta/insertarProducto';
    var cantidad = parseFloat(document.getElementById('cantidad'+producto_id).value);
    var existencia = document.getElementById('existencia'+producto_id).value;
+   let tipo_sistema = document.getElementById('parametro_tiposistema').checked;
+   let es_facturado = document.getElementById('facturado').checked;
    
-   //var cantidad_total = parseFloat(cantidad_en_detalle(producto_id)) + cantidad; 
-   
+   /* ********************INICIO para redondeo a dos decimales ***************
+    * Por norma de impuestos; controla si es electronico o computarizado en linea y si es facturado
+    * si fuese el caso la cantidad lo redondea a 2 digitos decimales */
+   if(tipo_sistema != 1){
+       if(es_facturado){
+           cantidad = Number(cantidad).toFixed(2);
+       }
+   }
+   /* ********************F I N  para redondeo a dos decimales ****************/
    ingresorapidojs(cantidad,producto)
  
 }
