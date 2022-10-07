@@ -1766,27 +1766,32 @@ function ingresorapidojs(cantidad,producto)
             }
         
         }
-            
         
+        let documento_sector = document.getElementById('docsec_codigoclasificador').value;
+        let detallebolsa = 0;
+        detallebolsa = existen_bolsa(producto.producto_id, agrupado);
+        if((documento_sector == 23 && detallebolsa == 1) || documento_sector != 23 ){
+            datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
+            datos1 += descuento+","+descuentoparcial+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
+            datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
+            datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
+            datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
+            datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
+            //alert(datos1);
 
-        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
-        datos1 += descuento+","+descuentoparcial+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
-        datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
-        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
-        datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
-        //alert(datos1);
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento,descuentoparcial:descuentoparcial, agrupado:agrupado, detalleven_id:detalleven_id},
+                success:function(respuesta){
 
-        $.ajax({url: controlador,
-            type:"POST",
-            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento,descuentoparcial:descuentoparcial, agrupado:agrupado, detalleven_id:detalleven_id},
-            success:function(respuesta){
-                                
-                tablaproductos();
+                    tablaproductos();
 
-            }
-        });
-    
+                }
+            });
+
+        }else{
+            alert("ADVERTENCIA: Para prevaloradas solo se admite un item!.");
+        }
     }
     else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
     
@@ -6305,4 +6310,33 @@ function simular_evento(){
     //sleep(2000);
     //$("#modal_tipoemision").modal("hide");
     
+}
+
+/** cuando el tipo de documento sector es prevalorada(23)
+ *  esta funcion verifica si hay en el auxiliar(parte derecha)
+ *  productos ya cargados. y si lo nuevo que se quiere adicionar es del mismo producto;
+ *  pero tabien verifica si esta para agrupado.
+ *  Recibe como argumento el producto que se quiere adicionar y el argumento agrupado = check_agrupar
+ *  */
+function existen_bolsa(producto_id, agrupado){
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/verificaritem_endetalle';
+    let res = 0;
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{producto_id:producto_id, agrupado:agrupado},
+        async: false, 
+        success:function(respuesta){
+            let registro =  JSON.parse(respuesta);
+            if(registro == "ok"){
+                res = 1;
+            }else{
+                res = 0;
+            }
+        },
+        error:function(respuesta){
+            res = 0;
+        }
+    });     
+    return res;
 }
