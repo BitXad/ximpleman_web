@@ -2943,6 +2943,7 @@ function registrarventa(cliente_id)
     var tiposerv_id = document.getElementById('tiposerv_id').value;
     var venta_numeromesa = document.getElementById('venta_numeromesa').value;
     var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
+    var parametro_imprimirticket = document.getElementById('parametro_imprimirticket').value;
     let banco_id = forma_id == 1 ? '0':$('#banco').val();
     let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
     
@@ -2995,6 +2996,9 @@ function registrarventa(cliente_id)
 
 
     if (parametro_modulorestaurante==1){
+        venta_numeroventa = numero_venta();
+    }
+    if(parametro_imprimirticket == 1){
         venta_numeroventa = numero_venta();
     }
     
@@ -5945,6 +5949,7 @@ function finalizarventa_sin(){
         let venta_total = document.getElementById('venta_total').value;
         if(docsec_codigoc == 23 && venta_total > 1000){
             alert("ADVERTENCIA: El monto total debe ser menor o igual a mil para tipo PREVALORADAS");
+            location.reload();
         }else{
 
             if(parametro_tipoemision == 1){ // Si el tipo de emision es en linea

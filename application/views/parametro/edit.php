@@ -419,6 +419,15 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <label for="parametro_imprimirticket" class="control-label" title="Imprime los detalles uno a uno(Tickets)"><span class="text-danger">*</span>IMPRESION DE TICKETES</label>
+                        <div class="form-group">
+                            <select name="parametro_imprimirticket" class="form-control" required id="parametro_imprimirticket">
+                                <option value="0" <?php if($parametro['parametro_imprimirticket']=='0') echo 'selected'; ?> >NO IMIPRIMIR TICKETS</option>
+                                <option value="1" <?php if($parametro['parametro_imprimirticket']=='1') echo 'selected'; ?> >IMPRIMIR TICKETS</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(214, 114, 26, 0.3);"><u><b>CLIENTES</b></u><br>

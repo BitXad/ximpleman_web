@@ -211,6 +211,7 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR MONEDA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FACTURA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CODIGO EN RECIBOS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRESION DE TICKETES</th>
                     </tr>
                     <tr>
                         <td><?php
@@ -300,6 +301,14 @@ foreach($all_parametros as $p)
                                 echo 'SUB CATEGORIA, CODIGO';
                             }else if($p['parametro_codcatsubcat'] == 7){
                                 echo 'SUB CATEGORIA';
+                            }
+                            ?>
+                        </td>
+                        <td><?php
+                            if($p['parametro_imprimirticket'] == 0){
+                                echo 'NO IMIPRIMIR TICKETS';
+                            }else if($p['parametro_imprimirticket'] == 1){
+                                echo 'IMPRIMIR TICKETS';
                             }
                             ?>
                         </td>
