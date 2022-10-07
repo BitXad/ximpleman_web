@@ -6873,13 +6873,11 @@ function anular_venta($venta_id){
         echo json_encode($resultado);
     }
     
-    /** fue creada para verificar si hay un item(producto) en detalle
+    /** fue creada para verificar cuantos items(productos) hay en detalle
      *  es para el documento sector prevalorada(23) que solo admite un item */
     function verificaritem_endetalle()
     {
         $usuario_id = $this->session_data['usuario_id'];
-        $agrupado = $this->input->post('agrupado');
-        $producto_id = $this->input->post('producto_id');
         
         $sql = "select count(*) as cantidad from detalle_venta_aux where usuario_id = ".$usuario_id;
         $resultado = $this->Venta_model->consultar($sql);
@@ -6888,22 +6886,10 @@ function anular_venta($venta_id){
         if($res == 0){
             $respuesta = "ok";
         }elseif($res == 1){
-            if($agrupado == 1){
-                $sql = "select count(*) as elproducto from detalle_venta_aux where usuario_id = ".$usuario_id." and producto_id = ".$producto_id;
-                $producto = $this->Venta_model->consultar($sql);
-                $resul = $producto[0]['elproducto'];
-                if($resul == 1){
-                    $respuesta = "ok";
-                }else{
-                    $respuesta = "no";
-                }
-            }else{
-                $respuesta = "no";
-            }
+            $respuesta = "ok";
         }else{
             $respuesta = "no";
         }
         echo json_encode($respuesta);
     }
-    
 }
