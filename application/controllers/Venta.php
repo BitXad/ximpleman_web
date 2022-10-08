@@ -169,7 +169,11 @@ class Venta extends CI_Controller{
         $data['page_title'] = "Ventas";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 23){
+            $data['cliente'] = $this->Venta_model->get_cliente_inicialprevalorada();
+        }else{
+            $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        }
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
@@ -2739,7 +2743,7 @@ function modificarcliente()
             if($dosificacion[0]["docsec_codigoclasificador"] == 23){
                 $cliente_nombre = "'S/N'";
                 $cliente_razon = "'S/N'";
-                $tipo_doc_identidad = 5;
+                $cdi_codigoclasificador = 5;
                 $cliente_nit = "'0'";
                 $cliente_codigo =  "'N/A'";
             }
@@ -2784,6 +2788,7 @@ function modificarcliente()
                             ",cliente_telefono = ".$cliente_telefono.
                             ",cliente_email = ".$cliente_email.
                             ",cliente_excepcion = ".$cliente_excepcion.
+                            ",cliente_codigo = ".$cliente_codigo.
                             " where cliente_id = ".$cliente_id;
 
                     $datos = $this->Venta_model->modificarcliente($sql);   

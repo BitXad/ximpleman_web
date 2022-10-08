@@ -6141,14 +6141,21 @@ function borrar_datos_cliente(){
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
     var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
     var parametro_factura = document.getElementById("parametro_factura").value; //0 no, 1 si
+    let documento_sector = document.getElementById("docsec_codigoclasificador").value;
     
-    $("#nit").val(0);
     $("#razon_social").val("SIN NOMBRE");
-    $("#cliente_id").val("0");
     $("#cliente_nombre").val("SIN NOMBRE");
+    $("#cliente_codigo").val("0");
+    if(documento_sector == 23){ // si es prevalorada
+        $("#razon_social").val("S/N");
+        $("#cliente_nombre").val("S/N");
+        $("#cliente_codigo").val("N/A");
+    }
+    $("#nit").val(0);
+    $("#cliente_id").val("0");
     $("#cliente_ci").val("0");
     $("#cliente_nombrenegocio").val("-");
-    $("#cliente_codigo").val("0");
+    
     $("#pedido_id").val("0");
     $("#usuarioprev_id").val("0");
     

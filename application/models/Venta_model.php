@@ -186,6 +186,20 @@ class Venta_model extends CI_Model
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;
     }
+    /*
+     * Get cliente inicial para documento sesctor 23 (prevalorada)
+     */
+    function get_cliente_inicialprevalorada()
+    {
+        $sql = "select 0 as cliente_id, 0 as cliente_nit, 'S/N' as cliente_razon,'-' as cliente_telefono
+                ,'S/N' as cliente_nombre, 0 as cliente_ci, '-' as cliente_nombrenegocio, 0 as tipocliente_id,'N/A' as cliente_codigo 
+                ,'' as cliente_direccion,  '' as cliente_celular, '' as cliente_departamento,'NO DEFINIDO' zona_nombre
+                ,'' as cliente_foto, '' as cliente_email, 'NO DEFINIDO' as tipocliente_descripcion 
+                ,'NO DEFINIDO' as categoriaclie_descripcion, 0 as zona_id, 1 as cdi_codigoclasificador, '' as cliente_complementoci";
+        
+        $cliente = $this->db->query($sql)->result_array();
+        return $cliente;
+    }
 
     /*
      * Get categoria producto
