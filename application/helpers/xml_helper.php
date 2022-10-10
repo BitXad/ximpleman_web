@@ -1000,8 +1000,8 @@ function firmarxmlprueba(){
         
         $privateKey = file_get_contents($directorio.'privatekey.pem');
         
-        $publicKey = file_get_contents($directorio.'certificado.pem');
-        
+        $publicKey = file_get_contents($directorio.'certificado.crt');
+
         $domDocument = new DOMDocument();
         $domDocument->load($archivo);
         
