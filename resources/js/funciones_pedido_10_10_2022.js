@@ -455,7 +455,6 @@ function tablaproductos()
                         html += "<br><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font><br>"+total_equivalente;
                         html += "</td>";
                         html += "			<td "+color+">";
-                        html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
                         html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
                         html += "                        </td>";                        
                     }
@@ -483,7 +482,6 @@ function tablaproductos()
                         html += "</td>";
 
                         html += "			<td "+color+">";
-                        html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
                         html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
                         html += "                        </td>";
                         html += "                    </tr>";  
@@ -957,7 +955,7 @@ function reducir_detalle(cantidad,detalleven_id,venta_id)
 }
 
 
-/*function actualizarprecios(e,detalleven_id)
+function actualizarprecios(e,detalleven_id)
 {
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){
@@ -976,82 +974,6 @@ function reducir_detalle(cantidad,detalleven_id,venta_id)
                 }        
         });
     }
-}*/
-
-function actualizarprecios(e,detalleven_id)
-{
-    var precio = document.getElementById('precio'+detalleven_id).value;
-    var descuentoparcial = 0; //document.getElementById('descuento'+detalleven_id).value;
-    
-    //alert(descuentoparcial);
-    tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13){
-    
-        if (Number(descuentoparcial) < Number(precio)){
-        
-               actualizar_losprecios(detalleven_id);
-               
-        }else{
-            
-            alert("ADVERTENCIA: Descuento no permitido..!!");
-            $('#descuento'+detalleven_id).val(0);
-            actualizar_losprecios(detalleven_id);
-            
-        }
-        
-        
-        /*var base_url =  document.getElementById('base_url').value;
-        var precio = document.getElementById('precio'+detalleven_id).value;
-        var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
-        var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
-        var controlador =  base_url+"venta/actualizarprecio";
-        $.ajax({url: controlador,
-                type:"POST",
-                data:{precio:precio, cantidad:cantidad,detalleven_id:detalleven_id, descuentoparcial:descuentoparcial},
-                success:function(respuesta){
-                    tablaproductos();
-                   // tabladetalle();
-
-                }        
-        });*/
-    }
-}
-
-function actualizar_losprecios(detalleven_id)
-{
-    /*tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13){*/
-    
-    var rol_modificardetalle =  document.getElementById('rol_modificardetalle').value;
-    if(rol_modificardetalle == 1){
-    var base_url =  document.getElementById('base_url').value;
-    var precio = document.getElementById('precio'+detalleven_id).value;
-    var descuentoparcial = 0; //document.getElementById('descuento'+detalleven_id).value; 
-    var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
-    var controlador =  base_url+"venta/actualizarprecio";
-        
-    if (Number(descuentoparcial) < Number(precio)){
-        
-        $.ajax({url: controlador,
-                type:"POST",
-                data:{precio:precio, cantidad:cantidad,detalleven_id:detalleven_id, descuentoparcial:descuentoparcial},
-                success:function(respuesta){
-                    tablaproductos();
-                   // tabladetalle();
-
-                }        
-        });
-        
-    }else{
-        alert("ADVERTENCIA: Descuento no permitido..!!");
-        $('#descuento'+detalleven_id).val(0);
-        actualizar_losprecios(detalleven_id);
-    }
-    }else{
-        alert("Usted no tiene permisos para modificar los detallles; consulte con su administrador.");
-    }
-        
-    //}
 }
 
 function actualizar_cantidad_inventario()
@@ -1416,26 +1338,19 @@ function ingresorapidojs(cantidad,producto)
         
         }
             
-        var descuentoparcial = 0;
         
+
         datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
-        datos1 += descuento+","+descuentoparcial+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
-        datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
-        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
-        datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
-        /*datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
         datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
         datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
         datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id+","+tipo_cambio;
-        */
         //alert(datos1);
 
         $.ajax({url: controlador,
             type:"POST",
-            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento, descuentoparcial:descuentoparcial, agrupado:agrupado, detalleven_id:detalleven_id},
+            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento, agrupado:agrupado, detalleven_id:detalleven_id},
             success:function(respuesta){
                                 
                 tablaproductos();
@@ -2183,12 +2098,6 @@ function registrarcliente()
     var cliente_direccion = document.getElementById('cliente_direccion').value;
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;
-    /* se repite.. pero no borrar o dara error*/
-    let tipo_doc_identidad = cdi_codigoclasificador;
-    var cliente_email = document.getElementById('email').value;
-    var cliente_complementoci = document.getElementById('cliente_complementoci').value;
-    var cliente_excepcion = (document.getElementById('codigoexcepcion').value == 1)?1:0;
-    
     var zona = document.getElementById('zona_id').value;
     if (zona=='null' || zona=='' || zona==0) {
         zona_id=0;
@@ -2206,17 +2115,11 @@ function registrarcliente()
         
         $.ajax({url: controlador,
                     type:"POST",
-                    /*data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
+                    data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento,
                         cliente_celular:cliente_celular,zona_id:zona_id, cdi_codigoclasificador:cdi_codigoclasificador},
-                    */
-                    data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
-                        cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
-                        tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,cliente_complementoci:cliente_complementoci,
-                        cliente_excepcion: cliente_excepcion
-                    },
+                    
                     success:function(respuesta){ 
                         var datos = JSON.parse(respuesta);
                         cliente_id = datos[0]["cliente_id"];
@@ -2241,14 +2144,9 @@ function registrarcliente()
     
     $.ajax({url: controlador,
             type:"POST",
-            /*data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
+            data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
-                    */
-                   data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
-                        cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
-                        tipo_doc_identidad:tipo_doc_identidad, cliente_email:cliente_email,cliente_complementoci:cliente_complementoci,cliente_excepcion:cliente_excepcion},
             success:function(respuesta){  
             
                 var registro = JSON.parse(respuesta);

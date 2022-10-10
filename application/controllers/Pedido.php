@@ -324,7 +324,7 @@ class Pedido extends CI_Controller{
         $data['tipo_respuesta'] = $this->Usuario_model->get_tipo_respuesta();
         
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+
         $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
         

@@ -2765,7 +2765,7 @@ function modificarcliente()
                         ",cliente_departamento = ".$cliente_departamento.
                         ",cliente_celular = ".$cliente_celular.
                         ",cliente_email = ".$cliente_email.
-                        ",cdi_codigoclasificador = $cdi_codigoclasificador".
+                        ",cdi_codigoclasificador = '$cdi_codigoclasificador'".
                         ",zona_id = ".$zona_id.
                         ",cliente_excepcion = ".$cliente_excepcion.
                         ",cliente_complementoci = ".$cliente_complementoci." where cliente_id = ".$cliente_id;
