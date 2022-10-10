@@ -5956,6 +5956,7 @@ function finalizarventa_sin(){
         
         let detallebolsa = 0;
         if(docsec_codigoc == 23){
+            //devuelve la cantidad de items que exste en la parte derecha de ventas
             detallebolsa = existen_bolsa();
         }
         
