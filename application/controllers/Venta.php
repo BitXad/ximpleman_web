@@ -169,7 +169,11 @@ class Venta extends CI_Controller{
         $data['page_title'] = "Ventas";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 23){
+            $data['cliente'] = $this->Venta_model->get_cliente_inicialprevalorada();
+        }else{
+            $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        }
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
@@ -2739,7 +2743,7 @@ function modificarcliente()
             if($dosificacion[0]["docsec_codigoclasificador"] == 23){
                 $cliente_nombre = "'S/N'";
                 $cliente_razon = "'S/N'";
-                $tipo_doc_identidad = 5;
+                $cdi_codigoclasificador = 5;
                 $cliente_nit = "'0'";
                 $cliente_codigo =  "'N/A'";
             }
@@ -2784,6 +2788,7 @@ function modificarcliente()
                             ",cliente_telefono = ".$cliente_telefono.
                             ",cliente_email = ".$cliente_email.
                             ",cliente_excepcion = ".$cliente_excepcion.
+                            ",cliente_codigo = ".$cliente_codigo.
                             " where cliente_id = ".$cliente_id;
 
                     $datos = $this->Venta_model->modificarcliente($sql);   
@@ -6873,13 +6878,11 @@ function anular_venta($venta_id){
         echo json_encode($resultado);
     }
     
-    /** fue creada para verificar si hay un item(producto) en detalle
+    /** fue creada para verificar cuantos items(productos) hay en detalle
      *  es para el documento sector prevalorada(23) que solo admite un item */
     function verificaritem_endetalle()
     {
         $usuario_id = $this->session_data['usuario_id'];
-        $agrupado = $this->input->post('agrupado');
-        $producto_id = $this->input->post('producto_id');
         
         $sql = "select count(*) as cantidad from detalle_venta_aux where usuario_id = ".$usuario_id;
         $resultado = $this->Venta_model->consultar($sql);
@@ -6888,22 +6891,10 @@ function anular_venta($venta_id){
         if($res == 0){
             $respuesta = "ok";
         }elseif($res == 1){
-            if($agrupado == 1){
-                $sql = "select count(*) as elproducto from detalle_venta_aux where usuario_id = ".$usuario_id." and producto_id = ".$producto_id;
-                $producto = $this->Venta_model->consultar($sql);
-                $resul = $producto[0]['elproducto'];
-                if($resul == 1){
-                    $respuesta = "ok";
-                }else{
-                    $respuesta = "no";
-                }
-            }else{
-                $respuesta = "no";
-            }
+            $respuesta = "ok";
         }else{
             $respuesta = "no";
         }
         echo json_encode($respuesta);
     }
-    
 }
