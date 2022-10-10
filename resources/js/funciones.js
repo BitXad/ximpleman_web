@@ -5952,6 +5952,7 @@ function finalizarventa_sin(){
     var cad = "ABC";
         cad = venta_detalletransaccion.toString();
     var tam = cad.length;
+    var forma_id = document.getElementById('forma_pago').value;
             
     if (nit == 0 ) cliente_valido = 0;
 
@@ -5961,138 +5962,156 @@ function finalizarventa_sin(){
     else
     {    cliente_excepcion = 0; }    
 
-    document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
-    document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
 
     //alert(parametro_tipoemision);
     
     
-    if ($('#facturado').is(':checked')){
-        let docsec_codigoc = document.getElementById('docsec_codigoclasificador').value;
-        let venta_total = document.getElementById('venta_total').value;
+    if(forma_id==2 || forma_id==10 || forma_id==16 || forma_id==17 || forma_id==18 || forma_id==19 || forma_id==20 || forma_id==39 || forma_id==40 || forma_id==41 || forma_id==42 || forma_id==43 || forma_id==82 || forma_id==83 || forma_id==84 || forma_id==85 || forma_id==86 || forma_id==87 || forma_id==88 || forma_id==89 || forma_id==134 || forma_id==135 || forma_id==136 || forma_id==137 || forma_id==138 || forma_id==139 || forma_id==140 || forma_id==141 || forma_id==142 || forma_id==143 || forma_id==144 || forma_id==145 || forma_id==146 || forma_id==147 || forma_id==148 || forma_id==149 || forma_id==150 || forma_id==151 || forma_id==152 || forma_id==153 || forma_id==154 || forma_id==155 || forma_id==156 || forma_id==157 || forma_id==158 || forma_id==159 || forma_id==160 || forma_id==161 || forma_id==162 || forma_id==163 || forma_id==164 || forma_id==165 || forma_id==166 || forma_id==167 || forma_id==168 || forma_id==169 || forma_id==170 || forma_id==171 || forma_id==172 || forma_id==173 || forma_id==174 || forma_id==175 || forma_id==176 || forma_id==177 || forma_id==297){
         
-        let detallebolsa = 0;
-        if(docsec_codigoc == 23){
-            //devuelve la cantidad de items que exste en la parte derecha de ventas
-            detallebolsa = existen_bolsa();
+        var numero_tarjeta = "";       
+        numero_tarjeta =  document.getElementById('venta_detalletransaccion').value;
+        
+        if (numero_tarjeta.len>=12){
+            todobien = true;
+        }else{
+            $("#cancelar_venta").click();
+            todobien = false;
+            alert("ADVERTENCIA: Número de tarjeta de debito/credito invalida...!");
+            process.exit();
         }
         
-        if(docsec_codigoc == 23 && detallebolsa == 0){
-            alert("ADVERTENCIA: Para prevaloradas solo se admite un item!.");
-            location.reload();
-        }else if(docsec_codigoc == 23 && venta_total > 1000){
-            alert("ADVERTENCIA: El monto total debe ser menor o igual a mil para tipo PREVALORADAS");
-            location.reload();
-        }else{
+    }
+    
+    document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
+    document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
+    
+            if ($('#facturado').is(':checked')){
+                let docsec_codigoc = document.getElementById('docsec_codigoclasificador').value;
+                let venta_total = document.getElementById('venta_total').value;
 
-            if(parametro_tipoemision == 1){ // Si el tipo de emision es en linea
+                let detallebolsa = 0;
+                if(docsec_codigoc == 23){
+                    //devuelve la cantidad de items que exste en la parte derecha de ventas
+                    detallebolsa = existen_bolsa();
+                }
 
-                if(navigator.onLine){ //si esta el linea
-                    let cantidad_facturas = document.getElementById('cantidad_facturas').value;
-                    
-                    if((docsec_codigoc == 23 && cantidad_facturas >0) || (docsec_codigoc != 23 && nit != 0)){ //Prevalorada
-                        cliente_valido = 1;
-                    
-                    if ((cliente_valido == 0 && cliente_excepcion == 1) || (cliente_valido == 1)){
+                if(docsec_codigoc == 23 && detallebolsa == 0){
+                    alert("ADVERTENCIA: Para prevaloradas solo se admite un item!.");
+                    location.reload();
+                }else if(docsec_codigoc == 23 && venta_total > 1000){
+                    alert("ADVERTENCIA: El monto total debe ser menor o igual a mil para tipo PREVALORADAS");
+                    location.reload();
+                }else{
 
-                        if(razon_social!=''){
-                            //alert(forma_pago+" * "+tam+" = "+ (tam == 16));
-                            
-                            if(((Number(forma_pago) == 2) && (Number(tam) == 16)) || (forma_pago!=2)){ //(forma_pago==2 && venta_detalletransaccion.lenght == 16)||(forma_pago<>2)
+                    if(parametro_tipoemision == 1){ // Si el tipo de emision es en linea
 
-                            //alert("entra aqui: "+forma_pago+" * "+cad);
-                                    $.ajax({url:controlador, //Verificar si existe comunicacion con impuestos
-                                            type:"POST",
-                                            data:{},
-                                            success:function(respuesta){
-                                                let registros = JSON.parse(respuesta);
+                        if(navigator.onLine){ //si esta el linea
+                            let cantidad_facturas = document.getElementById('cantidad_facturas').value;
 
-                                                //alert(JSON.stringify(registros));
-                                                //alert(registros.RespuestaComunicacion.transaccion);
-                                                if(registros.RespuestaComunicacion.transaccion == true){ //Si existe comunicacion con impuestos
+                            if((docsec_codigoc == 23 && cantidad_facturas >0) || (docsec_codigoc != 23 && nit != 0)){ //Prevalorada
+                                cliente_valido = 1;
 
-                                                    //Finalizamos venta normalmente
-                                                    finalizarventa();
+                            if ((cliente_valido == 0 && cliente_excepcion == 1) || (cliente_valido == 1)){
+
+                                if(razon_social!=''){
+                                    //alert(forma_pago+" * "+tam+" = "+ (tam == 16));
+
+                                    if(((Number(forma_pago) == 2) && (Number(tam) == 16)) || (forma_pago!=2)){ //(forma_pago==2 && venta_detalletransaccion.lenght == 16)||(forma_pago<>2)
+
+                                    //alert("entra aqui: "+forma_pago+" * "+cad);
+                                            $.ajax({url:controlador, //Verificar si existe comunicacion con impuestos
+                                                    type:"POST",
+                                                    data:{},
+                                                    success:function(respuesta){
+                                                        let registros = JSON.parse(respuesta);
+
+                                                        //alert(JSON.stringify(registros));
+                                                        //alert(registros.RespuestaComunicacion.transaccion);
+                                                        if(registros.RespuestaComunicacion.transaccion == true){ //Si existe comunicacion con impuestos
+
+                                                            //Finalizamos venta normalmente
+                                                            finalizarventa();
 
 
-                                                }else{
+                                                        }else{
 
-                                                    //debe registrar como fuera de linea
-                                                    alert("ADVERTENCIA: Se detecto una falla en la conexion al servicio de impuestos nacionales, se cambiara a emision fuera de linea...!");
-                                                    modal_cambiartipoemision()
-                                                    document.getElementById("elparametro_tipoemision").value = 2;
-                                                    document.getElementById("select_eventos").value = 2;
-                                                    $("#boton_tipoemision").click();
+                                                            //debe registrar como fuera de linea
+                                                            alert("ADVERTENCIA: Se detecto una falla en la conexion al servicio de impuestos nacionales, se cambiara a emision fuera de linea...!");
+                                                            modal_cambiartipoemision()
+                                                            document.getElementById("elparametro_tipoemision").value = 2;
+                                                            document.getElementById("select_eventos").value = 2;
+                                                            $("#boton_tipoemision").click();
 
-                                                }
+                                                        }
 
-                                            },
-                                            error:function(respuesta){
-                                                alert("Error: Conexión fallida. Vuelva a intentar...!");
+                                                    },
+                                                    error:function(respuesta){
+                                                        alert("Error: Conexión fallida. Vuelva a intentar...!");
+                                                    }
+                                                });  
+
+
+                                        }//if((forma_pago==2 && venta_detalletransaccion.length==16)||(forma_pago<>2)){
+                                        else{                                    
+                                                document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+                                                document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+                                                alert("ADVERTENCIA: No registro correctamente el número de tarjeta de debito/credito...!!"); 
                                             }
-                                        });  
-                                
-                                
-                                }//if((forma_pago==2 && venta_detalletransaccion.length==16)||(forma_pago<>2)){
-                                else{                                    
+
+
+                                    }//if (razon_social<>'')
+                                    else{
+
+                                            document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+                                            document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+                                            alert("ADVERTENCIA: Los datos del cliente NO SON VALIDOS.!");
+
+                                            $("nit").focus();
+                                            $("nit").select();
+
+                                    }
+
+                                } //fin cliente_valido ==1
+                                else{ 
                                         document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
                                         document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-                                        alert("ADVERTENCIA: No registro correctamente el número de tarjeta de debito/credito...!!"); 
-                                    }
-                                
+                                        alert("ADVERTENCIA: Los datos del cliente NO SON VALIDOS.!");
 
-                            }//if (razon_social<>'')
-                            else{
+                                        $("nit").focus();
+                                        $("nit").select();
+                                    }
+                                }else{
+                                    if (docsec_codigoc == 23){
+                                       alert("ADVERTENCIA: Cantidad de facturas debe ser mayor a 0 (CERO) para tipo PREVALORADAS");
+                                   }else
+                                        alert("ADVERENCIA: El NIT es INVALIDO...!");
 
                                     document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
                                     document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-                                    alert("ADVERTENCIA: Los datos del cliente NO SON VALIDOS.!");
-
-                                    $("nit").focus();
-                                    $("nit").select();
+                                }
+                            }else{
+                                    //se debe registrar como fuera de linea
+                                    alert("ADVERTENCIA: Se detecto una falla en la conexion a internet, se cambiara a emision fuera de linea...!");
+                                    modal_cambiartipoemision()
+                                    document.getElementById("elparametro_tipoemision").value = 2;
+                                    document.getElementById("select_eventos").value = 1;
+                                    $("#boton_tipoemision").click();
 
                             }
 
-                        } //fin cliente_valido ==1
-                        else{ 
-                                document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
-                                document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-                                alert("ADVERTENCIA: Los datos del cliente NO SON VALIDOS.!");
-
-                                $("nit").focus();
-                                $("nit").select();
-                            }
                         }else{
-                            if (docsec_codigoc == 23){
-                               alert("ADVERTENCIA: Cantidad de facturas debe ser mayor a 0 (CERO) para tipo PREVALORADAS");
-                           }else
-                                alert("ADVERENCIA: El NIT es INVALIDO...!");
-                            
-                            document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
-                            document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-                        }
-                    }else{
-                            //se debe registrar como fuera de linea
-                            alert("ADVERTENCIA: Se detecto una falla en la conexion a internet, se cambiara a emision fuera de linea...!");
-                            modal_cambiartipoemision()
-                            document.getElementById("elparametro_tipoemision").value = 2;
-                            document.getElementById("select_eventos").value = 1;
-                            $("#boton_tipoemision").click();
 
+
+                            //alert("ADVERTENCIA: Se detecto una falla en la conexion a internet, se cambiara a emision fuera de linea...!");
+                            finalizarventa();
+
+                        }
                     }
 
-                }else{
+            }else{
 
-
-                    //alert("ADVERTENCIA: Se detecto una falla en la conexion a internet, se cambiara a emision fuera de linea...!");
-                    finalizarventa();
-
-                }
+                finalizarventa();
             }
-    }else{
-        
-        finalizarventa();
-    }
     
 }
 /*
