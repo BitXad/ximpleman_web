@@ -390,6 +390,68 @@
                     </td>
                 </tr>
                 <tr><td></td></tr>
+                
+                <tr>
+                    <td style="padding: 0">
+                        <?php $tamanio_fuente = "8pt"; ?>
+                        
+                    <?php
+                    if($factura[0]['estado_id']<>3){
+                        if($parametro[0]['parametro_imprimirticket'] == 1){
+                            foreach($detalle_factura as $d){
+                                $cantidad = $d['detallefact_cantidad'];
+                                
+                                for ($i = 0; $i < $cantidad; $i++) {
+                                    ?>
+                                    <table style="width:<?php echo $ancho?>">
+                                        <tr style="border-top-style: dashed; border-top-width: 1px;">
+                                            <td class="text-center" colspan="2" style="font-size: <?= $tamanio_fuente; ?>; padding-right: 0; padding-left: 0; padding-top: 5px;">
+                                                <?php
+                                                echo "TICKET : ".$venta[0]['venta_numeroventa'];
+                                                ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size: <?= $tamanio_fuente; ?>; padding: 0; width: 15%" >
+                                                <?php
+                                                echo "Num.  ";
+                                                ?>
+                                            </td>
+                                            <td class="text-left" style="font-size: <?= $tamanio_fuente; ?>; padding: 0; width: 75%">
+                                                <?php
+                                                echo ": &nbsp;".$factura[0]['factura_id'];
+                                                ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size: <?= $tamanio_fuente; ?>; padding: 0">
+                                                <?php
+                                                echo "Fecha ";
+                                                ?>
+                                            </td>
+                                            <td class="text-left" style="font-size: <?= $tamanio_fuente; ?>; padding: 0">
+                                                <?php $fecha = new DateTime($factura[0]['factura_fechaventa']); 
+                                                    $fecha_d_m_a = $fecha->format('d/m/Y');
+                                                    echo ": &nbsp;".$fecha_d_m_a." ".$factura[0]['factura_hora'];
+                                                ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left" colspan="2" style="font-size: <?= $tamanio_fuente; ?>; padding: 0">
+                                                <?php
+                                                echo $d['detallefact_descripcion'];
+                                                ?>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <?php
+                                }
+                            }
+                        }
+                    }
+                    ?>
+                    </td>
+                </tr>
             </table>
         </td>
     </tr>

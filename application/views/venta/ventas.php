@@ -442,7 +442,9 @@ window.onkeydown = compruebaTecla;
             
                 <?php }  ?>
             
-            <?php if ($parametro["parametro_tiposistema"]!=1){ ?>
+            <?php if ($parametro["parametro_tiposistema"]!=1){ 
+                    if($dosificacion[0]['docsec_codigoclasificador'] != 23){
+                ?>
                 
                 <select class="btn btn-facebook btn-xs" id="evento_contingencia" onchange="cargar_contingencia()" >
                     <option value="0">- SIN CONTINGENCIA -</option>
@@ -452,7 +454,7 @@ window.onkeydown = compruebaTecla;
                         <?php } ?>
 
                 </select>
-           
+                <?php } ?>
             <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-warning btn-xs" title="Registrar evento significativo"><fa class="fa fa-floppy-o"> </fa> </a>
             
     
@@ -460,7 +462,8 @@ window.onkeydown = compruebaTecla;
                 <fa class="fa fa-cubes"></fa>
             </button>
         
-            <?php }else{ ?>
+            <?php 
+                }else{ ?>
                            
                     <input type="hidden" id="evento_contingencia" value="0" />
 
