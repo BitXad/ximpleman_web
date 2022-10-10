@@ -764,6 +764,7 @@ window.onkeydown = compruebaTecla;
             <?php            
             if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
             <a href="<?php echo base_url('venta/ultimaventa/1');?>" data-toggle="modal" target="_blank" class="btn btn-warning btn-xs" id="imprimir_factura"><span class="fa fa-list-alt" title="Imprimir factura"></span><b> Factura</b></a> 
+            <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-danger btn-xs" id="imprimir_factura"><span class="fa fa-file-pdf" title="Imprimir factura en PDF"></span></a>
             
             <?php } 
             ?>
