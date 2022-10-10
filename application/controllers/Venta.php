@@ -6898,7 +6898,7 @@ function anular_venta($venta_id){
         echo json_encode($respuesta);
     }
     
-    /*************** funcion para mostrar la vista de la factura en PDF******************/
+    /*************** funcion para mostrar la vista de la ultima factura en PDF******************/
     function ultimaventapdf(){
         if($this->acceso(12)||$this->acceso(30)){
             $venta = $this->Venta_model->ultima_venta();
@@ -6910,9 +6910,26 @@ function anular_venta($venta_id){
                 $resultado = $this->Venta_model->consultar($sql);
                 $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
                 
-                redirect('resources/xml/'.$dosificacion[0]['dosificacion_documentosector'].$resultado[0]['factura_id'].'.pdf'); //.$venta_id."/".$tipo);
-
+                $base_url = explode('/', base_url());
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+                    $nombre_archivo = $dosificacion[0]['dosificacion_documentosector'].$resultado[0]['factura_id'].'.pdf';
+                      if(file_exists($directorio.$nombre_archivo)){
+                          redirect('resources/xml/'.$dosificacion[0]['dosificacion_documentosector'].$resultado[0]['factura_id'].'.pdf');
+                      }
             }
+        }
+    }
+    /*************** funcion para mostrar la vista de la factura en PDF******************/
+    function facturaventapdf($factura_id){
+        if($this->acceso(12)||$this->acceso(30)){
+                $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+                $base_url = explode('/', base_url());
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+                    $nombre_archivo = $dosificacion[0]['dosificacion_documentosector'].$factura_id.'.pdf';
+                      if(file_exists($directorio.$nombre_archivo)){
+                          redirect('resources/xml/'.$dosificacion[0]['dosificacion_documentosector'].$factura_id.'.pdf');
+                      }
+            //}
         }
 
     }
