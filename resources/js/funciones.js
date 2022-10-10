@@ -2785,6 +2785,7 @@ function registrarcliente()
                         cantidad_facturas--;
                         sleep(2000);
                     }
+                    //eliminardetalleventa();
                 }else{
                     registrarventa(cliente_id);
                 }
@@ -3094,6 +3095,10 @@ function registrarventa(cliente_id)
             },
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
+                //let docsec_codigoclasificador = document.getElementById('docsec_codigoclasificador').value;
+                /*if(docsec_codigoclasificador != 23){
+                    eliminardetalleventa();
+                }*/
                 eliminardetalleventa();
                 if (registroeventos_codigo>0){
                     $('#evento_contingencia').prop('selectedIndex',0);
