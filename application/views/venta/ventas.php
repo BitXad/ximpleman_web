@@ -71,7 +71,7 @@ function mostrar_formapago(){
     var mostrarimagen = "";
     var encontrado = 0;
     
-    if(forma_id==2){
+    if(forma_id==2 || forma_id==10 || forma_id==16 || forma_id==17 || forma_id==18 || forma_id==19 || forma_id==20 || forma_id==39 || forma_id==40 || forma_id==41 || forma_id==42 || forma_id==43 || forma_id==82 || forma_id==83 || forma_id==84 || forma_id==85 || forma_id==86 || forma_id==87 || forma_id==88 || forma_id==89 || forma_id==134 || forma_id==135 || forma_id==136 || forma_id==137 || forma_id==138 || forma_id==139 || forma_id==140 || forma_id==141 || forma_id==142 || forma_id==143 || forma_id==144 || forma_id==145 || forma_id==146 || forma_id==147 || forma_id==148 || forma_id==149 || forma_id==150 || forma_id==151 || forma_id==152 || forma_id==153 || forma_id==154 || forma_id==155 || forma_id==156 || forma_id==157 || forma_id==158 || forma_id==159 || forma_id==160 || forma_id==161 || forma_id==162 || forma_id==163 || forma_id==164 || forma_id==165 || forma_id==166 || forma_id==167 || forma_id==168 || forma_id==169 || forma_id==170 || forma_id==171 || forma_id==172 || forma_id==173 || forma_id==174 || forma_id==175 || forma_id==176 || forma_id==177 || forma_id==297){
         $("#venta_detalletransaccion").val("1234000000005678");
     }
     else{
@@ -109,7 +109,6 @@ function mostrar_formapago(){
 //    $("#imagenqr").html(html);
 
 }
-
 
 function compruebaTecla (e) {
 var keyCode = document.all ? e.which : e.keyCode;
@@ -442,8 +441,7 @@ window.onkeydown = compruebaTecla;
             
                 <?php }  ?>
             
-            <?php if ($parametro["parametro_tiposistema"]!=1){ 
-                    if($dosificacion[0]['docsec_codigoclasificador'] != 23){
+            <?php if ($parametro["parametro_tiposistema"]!=1){
                 ?>
                 
                 <select class="btn btn-facebook btn-xs" id="evento_contingencia" onchange="cargar_contingencia()" >
@@ -454,7 +452,6 @@ window.onkeydown = compruebaTecla;
                         <?php } ?>
 
                 </select>
-                <?php } ?>
             <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-warning btn-xs" title="Registrar evento significativo"><fa class="fa fa-floppy-o"> </fa> </a>
             
     
@@ -766,6 +763,7 @@ window.onkeydown = compruebaTecla;
             <?php            
             if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
             <a href="<?php echo base_url('venta/ultimaventa/1');?>" data-toggle="modal" target="_blank" class="btn btn-warning btn-xs" id="imprimir_factura"><span class="fa fa-list-alt" title="Imprimir factura"></span><b> Factura</b></a> 
+            <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-danger btn-xs" id="imprimir_factura"><span class="fa fa-file-pdf" title="Imprimir factura en PDF"></span></a>
             
             <?php } 
             ?>

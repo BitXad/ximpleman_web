@@ -2785,6 +2785,7 @@ function registrarcliente()
                         cantidad_facturas--;
                         sleep(2000);
                     }
+                    //eliminardetalleventa();
                 }else{
                     registrarventa(cliente_id);
                 }
@@ -3094,6 +3095,10 @@ function registrarventa(cliente_id)
             },
             success:function(respuesta){
                 registrarpuntos(cliente_id, venta_total);
+                //let docsec_codigoclasificador = document.getElementById('docsec_codigoclasificador').value;
+                /*if(docsec_codigoclasificador != 23){
+                    eliminardetalleventa();
+                }*/
                 eliminardetalleventa();
                 if (registroeventos_codigo>0){
                     $('#evento_contingencia').prop('selectedIndex',0);
@@ -3151,6 +3156,8 @@ function finalizarventa(){
     
     var monto = document.getElementById('venta_totalfinal').value;
     var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value;
+    var cliente_codigo = document.getElementById('cliente_codigo').value;
+    var codigo = document.getElementById('razon_social').value;
     //var base_url = document.getElementById('base_url').value;
     //var controlador = base_url+'/verificardetalle/'+monto;
     
@@ -3158,6 +3165,14 @@ function finalizarventa(){
     var tipo_trans   = document.getElementById('tipo_transaccion').value;
     let met_frances  = $('#metodofrances').is(':checked');
     let interes_porc = document.getElementById('credito_interes').value;
+
+    if (cliente_codigo == "-" || cliente_codigo == ""){ //Si el cliente no tiene generado el codigo
+        
+        codigo = codigo[0]+codigo[1] + Math.floor((Math.random()*100000)+50);
+        $("#cliente_codigo").val(codigo);
+        
+    }
+    
     
     if(tipo_trans == 2 && met_frances == true && (interes_porc <= 0 || interes_porc == "")){
         alert("El interes debe ser mayor a 0 para el metodo Frances");
@@ -3441,6 +3456,7 @@ function tabla_ventas(filtro)
     var parametro_moneda_id = document.getElementById('parametro_moneda_id').value;
     var moneda_descripcion = document.getElementById('moneda_descripcion').value;
     var moneda_tc = document.getElementById('moneda_tc').value;
+    let dosificacion_documentosector = document.getElementById('dosificacion_documentosector').value;
     
     $.ajax({url:controlador,
         type:"POST",
@@ -3683,6 +3699,7 @@ function tabla_ventas(filtro)
                     
                     if (v[i]['venta_tipodoc']==1){
                         html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
+                        html += " <a href='"+base_url+"resources/xml/"+dosificacion_documentosector+v[i]['factura_id']+".pdf' target='_blank' class='btn btn-danger btn-xs' title='Ver factura en PDF'><span class='fa fa-file-pdf'></span></a> ";
                         html += " <a onclick='modal_enviocorreo("+v[i]['venta_id']+","+v[i]['factura_id']+","+JSON.stringify(v[i]['cliente_email'])+")' class='btn btn-warning btn-xs' style='background: #95ace8' title='Enviar factura al correo'><span class='fa fa-envelope-o'></span></a>";
                     }
                     else{

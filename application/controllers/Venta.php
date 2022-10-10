@@ -6897,4 +6897,23 @@ function anular_venta($venta_id){
         }
         echo json_encode($respuesta);
     }
+    
+    /*************** funcion para mostrar la vista de la factura en PDF******************/
+    function ultimaventapdf(){
+        if($this->acceso(12)||$this->acceso(30)){
+            $venta = $this->Venta_model->ultima_venta();
+            $venta_tipodoc = $venta[0]['venta_tipodoc'];
+            $venta_id = $venta[0]['venta_id'];
+
+            if ($venta_tipodoc==1){
+                $sql = "select factura_id from factura where venta_id = ".$venta[0]['venta_id'];
+                $resultado = $this->Venta_model->consultar($sql);
+                $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+                
+                redirect('resources/xml/'.$dosificacion[0]['dosificacion_documentosector'].$resultado[0]['factura_id'].'.pdf'); //.$venta_id."/".$tipo);
+
+            }
+        }
+
+    }
 }
