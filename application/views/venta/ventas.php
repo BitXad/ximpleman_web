@@ -1294,7 +1294,7 @@ window.onkeydown = compruebaTecla;
                 </h4>
             </button>
 
-            <button class="btn btn-lg btn-danger btn-sm btn-block" data-dismiss="modal">
+            <button class="btn btn-lg btn-danger btn-sm btn-block" data-dismiss="modal" id="cancelar_venta">
                 <h4>
                 <span class="fa fa-close"></span>   Cancelar  
                 </h4>
