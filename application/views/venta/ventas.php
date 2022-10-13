@@ -836,9 +836,10 @@ window.onkeydown = compruebaTecla;
             </select>
             <?php
             }
+            if($parametro['parametro_tiposistema'] != 1){
             ?>
             <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-info btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
-            
+            <?php } ?>
             <button onclick='finalizarventa();' class='btn btn-info btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar venta</b></button> 
             
             
@@ -882,10 +883,21 @@ window.onkeydown = compruebaTecla;
         </div>    
         <!----------------------------------- fin Botones ---------------------------------->
         <font face="Arial" size="1">
-                   
+             <?php
+            if($parametro['parametro_tiposistema'] != 1){
+            ?>
             <span class="btn btn-info btn-xs"> <b> PUNTO DE VENTA <?php echo $puntoventa_codigo; ?></b></span>
+            <?php
+            }
+            ?>
             <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?></b></span>
+            <?php
+            if($parametro['parametro_tiposistema'] != 1){
+            ?>
             <span class="btn btn-facebook btn-xs"> <b> DOC. <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?></b></span>
+            <?php
+            }
+            ?>
         
         <b>            
         <br>TECLAS DE ACCESO DIRECTO <br>
@@ -1350,6 +1362,7 @@ window.onkeydown = compruebaTecla;
                                     <th>Cliente</th>
                                     <th align="center">COD</th>
                                     <th>Total</th>
+                                    <th></th>
                                 </tr>
 
                                 <tbody class="buscar3" id="pedidos_pendientes">

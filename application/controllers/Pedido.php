@@ -401,7 +401,8 @@ class Pedido extends CI_Controller{
             categoria_id,
             producto_codigobarra,
             existencia,
-            detalleven_tc
+            detalleven_tc,
+            detalleven_descuentoparcial
             )
             
             (select 
@@ -426,7 +427,8 @@ class Pedido extends CI_Controller{
             p.categoria_id,
             p.producto_codigobarra,
             p.existencia,
-            d.detalleped_tc
+            d.detalleped_tc,
+            0
 
             from detalle_pedido d, pedido e,usuario u, consinventario p
             where p.producto_id = d.producto_id and e.pedido_id =".$pedido_id." and d.pedido_id = e.pedido_id and e.usuario_id = u.usuario_id)";

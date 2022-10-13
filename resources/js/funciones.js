@@ -5,7 +5,10 @@ function inicio(){
         tablaresultados(1);
         tablaproductos(); 
         //pedidos_pendientes();
-        verificar_cufd();
+        let tiposistema = document.getElementById('parametro_tiposistema').value;
+        if(tiposistema != 1){
+            verificar_cufd();
+        }
         
         document.getElementById('nit').focus();
         document.getElementById('nit').select();
