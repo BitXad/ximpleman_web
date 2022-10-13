@@ -4185,17 +4185,21 @@ function datoscliente(cliente_id)
             var datos = JSON.parse(result);            
             //console.log(datos);
             $("#cliente_id").val(datos[0]["cliente_id"]);
+            $("#tipo_doc_identidad").val(datos[0]["cdi_codigoclasificador"]);
             $("#nit").val(datos[0]["cliente_nit"]);
             $("#razon_social").val(datos[0]["cliente_razon"]);
             $("#telefono").val(datos[0]["cliente_telefono"]);
+            $("#email").val(datos[0]["cliente_email"]);
             $("#tipocliente_id").val(datos[0]["tipocliente_id"]);  
             $("#cliente_nombre").val(datos[0]["cliente_nombre"]);
             $("#cliente_ci").val(datos[0]["cliente_ci"]);     
+            $("#cliente_complementoci").val(datos[0]["cliente_complementoci"]);     
             $("#cliente_nombrenegocio").val(datos[0]["cliente_nombrenegocio"]);
             $("#cliente_codigo").val(datos[0]["cliente_codigo"]);  
             $("#cliente_direccion").val(datos[0]["cliente_direccion"]);  
             $("#cliente_departamento").val(datos[0]["cliente_departamento"]);  
-            $("#cliente_celular").val(datos[0]["cliente_celular"]);  
+            $("#cliente_celular").val(datos[0]["cliente_celular"]);
+            $("#zona_id").val(datos[0]["zona_id"]);
             $("#codigo").select();
         }
         
