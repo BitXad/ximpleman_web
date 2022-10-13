@@ -960,14 +960,13 @@ class Parametro extends CI_Controller{
                                                     ,factura_enviada = 2
                                                     ,factura_codigorecepcion= '".$res->codigoRecepcion."'
                                                      where registroeventos_id = ".$evento['registroeventos_id'];
-
-                                                    ;
-
                                             $this->Venta_model->ejecutar($sql);
                                         
                                             $venta_id = $f["venta_id"];
                                             $factura_id = $f["factura_id"];
                                             $email = $f["cliente_email"];
+                                            
+                                            //Esto debe ocurrir solo en el evento 1
                                             
                                             if ($f["cliente_email"]!=null){
                                                 
