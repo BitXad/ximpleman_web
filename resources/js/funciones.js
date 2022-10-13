@@ -5971,7 +5971,7 @@ function finalizarventa_sin(){
         var numero_tarjeta = "";       
         numero_tarjeta =  document.getElementById('venta_detalletransaccion').value;
         
-        if (numero_tarjeta.len>=12){
+        if (numero_tarjeta.length >= 16){
             todobien = true;
         }else{
             $("#cancelar_venta").click();
