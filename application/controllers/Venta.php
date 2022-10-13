@@ -1223,6 +1223,11 @@ class Venta extends CI_Controller{
                         }
                         // Fin Funcion en eventos con cafc
                         
+                    }else{ // para tipo sistema == 1 Facturación Computarizada SFV
+                        //********** INICIO ACTUALIZAR NUMERO DE FACTURA
+                        $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+                        $this->Venta_model->ejecutar($sql);
+                        //********** FIN INICIO ACTUALIZAR NUMERO DE FACTURA
                     }
                     // $this->ultimaventa(1);
                 }
@@ -2765,7 +2770,7 @@ function modificarcliente()
                         ",cliente_departamento = ".$cliente_departamento.
                         ",cliente_celular = ".$cliente_celular.
                         ",cliente_email = ".$cliente_email.
-                        ",cdi_codigoclasificador = $cdi_codigoclasificador".
+                        ",cdi_codigoclasificador = '$cdi_codigoclasificador'".
                         ",zona_id = ".$zona_id.
                         ",cliente_excepcion = ".$cliente_excepcion.
                         ",cliente_complementoci = ".$cliente_complementoci." where cliente_id = ".$cliente_id;

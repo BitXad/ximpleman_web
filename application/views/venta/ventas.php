@@ -275,6 +275,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_tiposistema" value="<?php echo $parametro['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
 <input type="text" id="parametro_tipoemision" value="<?php echo $parametro['parametro_tipoemision']; ?>" name="parametro_tipoemision"  hidden>
 <input type="text" id="elparametro_id" value="<?php echo $parametro['parametro_id']; ?>" name="elparametro_id"  hidden>
+<input type="text" id="parametro_puntos" value="<?php echo $parametro['parametro_puntos']; ?>" name="parametro_puntos"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
@@ -439,7 +440,10 @@ window.onkeydown = compruebaTecla;
             <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($parametro["parametro_tipoemision"]>1)?"checked":"";?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
             </div>
             
-                <?php }  ?>
+                <?php }else{ ?>
+            <div hidden><input type="checkbox" class="form-check-input" id="codigoexcepcion" ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label></div>
+                <?php
+                }  ?>
             
             <?php if ($parametro["parametro_tiposistema"]!=1){
                 ?>
@@ -832,9 +836,10 @@ window.onkeydown = compruebaTecla;
             </select>
             <?php
             }
+            if($parametro['parametro_tiposistema'] != 1){
             ?>
             <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-info btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
-            
+            <?php } ?>
             <button onclick='finalizarventa();' class='btn btn-info btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar venta</b></button> 
             
             
@@ -878,10 +883,21 @@ window.onkeydown = compruebaTecla;
         </div>    
         <!----------------------------------- fin Botones ---------------------------------->
         <font face="Arial" size="1">
-                   
+             <?php
+            if($parametro['parametro_tiposistema'] != 1){
+            ?>
             <span class="btn btn-info btn-xs"> <b> PUNTO DE VENTA <?php echo $puntoventa_codigo; ?></b></span>
+            <?php
+            }
+            ?>
             <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?></b></span>
+            <?php
+            if($parametro['parametro_tiposistema'] != 1){
+            ?>
             <span class="btn btn-facebook btn-xs"> <b> DOC. <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?></b></span>
+            <?php
+            }
+            ?>
         
         <b>            
         <br>TECLAS DE ACCESO DIRECTO <br>
@@ -1346,6 +1362,7 @@ window.onkeydown = compruebaTecla;
                                     <th>Cliente</th>
                                     <th align="center">COD</th>
                                     <th>Total</th>
+                                    <th></th>
                                 </tr>
 
                                 <tbody class="buscar3" id="pedidos_pendientes">

@@ -127,6 +127,33 @@ function cerrar_ventana(){
 <input type="hidden" id="modificar_precioventa" value="<?php echo $rolusuario[183-1]['rolusuario_asignado']; ?>" name="modificar_precioventa">
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
+<input type="text" id="cliente_id" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" hidden>
+<input type="text" id="cdi_codigoclasificador" name="cdi_codigoclasificador" value="<?php echo $cliente[0]['cdi_codigoclasificador']; ?>" hidden>
+<input type="text" id="nit" name="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>" hidden>
+<input type="text" id="razon_social" name="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" hidden>
+<input type="text" id="telefono" name="telefono" value="<?php echo $cliente[0]['cliente_telefono']; ?>" hidden>
+<input type="text" id="tipocliente_id" name="tipocliente_id" value="<?php echo $cliente[0]['tipocliente_id']; ?>" hidden>
+<input type="text" id="cliente_nombre" name="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>" hidden>
+<input type="text" id="cliente_ci" name="cliente_ci" value="<?php echo $cliente[0]['cliente_ci']; ?>" hidden>
+<input type="text" id="cliente_nombrenegocio" name="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>" hidden>
+<input type="text" id="cliente_codigo" name="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>" hidden>
+<input type="text" id="cliente_direccion" name="cliente_direccion" value="<?php echo $cliente[0]['cliente_direccion']; ?>" hidden>
+<input type="text" id="cliente_departamento" name="cliente_departamento" value="<?php echo $cliente[0]['cliente_departamento']; ?>" hidden>
+<input type="text" id="cliente_celular" name="cliente_celular" value="<?php echo $cliente[0]['cliente_celular']; ?>" hidden>
+<input type="text" id="zona_id" name="zona_id" value="<?php echo $cliente[0]['zona_id']; ?>" hidden>
+<input type="text" id="cliente_complementoci" name="cliente_complementoci" value="<?php echo $cliente[0]['cliente_complementoci']; ?>" hidden>
+<?php
+if($cliente[0]['cliente_id'] >0){
+?>
+<input type="text" id="codigoexcepcion" name="codigoexcepcion" value="<?php echo $cliente[0]['cliente_excepcion']; ?>" hidden>
+<?php
+}else{
+?>
+<input type="text" id="codigoexcepcion" name="codigoexcepcion" value="" hidden>  
+<?php
+}
+?>
+<input type="text" id="email" name="email" value="<?php echo $cliente[0]['cliente_email']; ?>" hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -134,6 +161,7 @@ function cerrar_ventana(){
 <input type="text" id="rol_factor2" value="<?php echo $rolusuario[163-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_modificardetalle" value="<?php echo $rolusuario[20-1]['rolusuario_asignado']; ?>" hidden>
 
 
 <input type="text" value="<?php echo 0; ?>" id="pedido_latitud" hidden>

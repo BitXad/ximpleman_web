@@ -1,4 +1,5 @@
 <script src="<?php echo base_url('resources/js/factura_anular.js'); ?>" type="text/javascript"></script>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <script type="text/javascript">
     $(document).ready(function()
     {

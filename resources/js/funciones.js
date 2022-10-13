@@ -5,7 +5,10 @@ function inicio(){
         tablaresultados(1);
         tablaproductos(); 
         //pedidos_pendientes();
-        verificar_cufd();
+        let tiposistema = document.getElementById('parametro_tiposistema').value;
+        if(tiposistema != 1){
+            verificar_cufd();
+        }
         
         document.getElementById('nit').focus();
         document.getElementById('nit').select();
@@ -2964,6 +2967,7 @@ function registrarventa(cliente_id)
     var registroeventos_codigo = document.getElementById('evento_contingencia').value;
     var parametro_tipoemision = document.getElementById('parametro_tipoemision').value;
     var punto_venta = document.getElementById('punto_venta').value;
+    let parametro_puntos = document.getElementById('parametro_puntos').value;
     
     if (registroeventos_codigo>0){
         
@@ -3051,7 +3055,10 @@ function registrarventa(cliente_id)
                 
                 let res = JSON.parse(respuesta);
                 //alert(JSON.stringify(res));
-                registrarpuntos(cliente_id, venta_total);
+                if(parametro_puntos >0){
+                    registrarpuntos(cliente_id, venta_total);
+                }
+                
                 eliminardetalleventa();
                 
                 if(res.mensajesList.codigoDescripcion == "VALIDADA"){
@@ -3094,7 +3101,9 @@ function registrarventa(cliente_id)
                 mandar_enuno:mandar_enuno
             },
             success:function(respuesta){
-                registrarpuntos(cliente_id, venta_total);
+                if(parametro_puntos >0){
+                    registrarpuntos(cliente_id, venta_total);
+                }
                 //let docsec_codigoclasificador = document.getElementById('docsec_codigoclasificador').value;
                 /*if(docsec_codigoclasificador != 23){
                     eliminardetalleventa();
@@ -3161,7 +3170,7 @@ function finalizarventa(){
     //var base_url = document.getElementById('base_url').value;
     //var controlador = base_url+'/verificardetalle/'+monto;
     
-    calculardesc();    
+    calculardesc();
     var tipo_trans   = document.getElementById('tipo_transaccion').value;
     let met_frances  = $('#metodofrances').is(':checked');
     let interes_porc = document.getElementById('credito_interes').value;
@@ -5942,6 +5951,7 @@ function finalizarventa_sin(){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'dosificacion/verificarcomunicacion';
     var parametro_tipoemision = document.getElementById('elparametro_tipoemision').value;
+    var parametro_tiposistema = document.getElementById('parametro_tiposistema').value;
     var cliente_valido = document.getElementById('cliente_valido').value;
     var excepcion = document.getElementById('cliente_valido').value;    
     var nit = document.getElementById('nit').value;
@@ -5953,7 +5963,10 @@ function finalizarventa_sin(){
         cad = venta_detalletransaccion.toString();
     var tam = cad.length;
     var forma_id = document.getElementById('forma_pago').value;
-            
+    
+    if(parametro_tiposistema == 1){ //facturacion computarizada SFV
+        finalizarventa();
+    }else{ // facturacioon computarizada o electronica en linea
     if (nit == 0 ) cliente_valido = 0;
 
 
@@ -6112,7 +6125,7 @@ function finalizarventa_sin(){
 
                 finalizarventa();
             }
-    
+    }
 }
 /*
 function cambiar_emision(emision)
