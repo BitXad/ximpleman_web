@@ -952,48 +952,32 @@ class Parametro extends CI_Controller{
 
                                         //echo json_encode($res);
                                         //PASO 10: Actualizar datos de envio en las facturas
-
-                                        foreach ($facturas as $f){
-
-                                            $sql = "update factura set 
-                                                     factura_codigodescripcion = 'VALIDADA'
-                                                    ,factura_enviada = 2
-                                                    ,factura_codigorecepcion= '".$res->codigoRecepcion."'
-                                                     where registroeventos_id = ".$evento['registroeventos_id'];
-                                            $this->Venta_model->ejecutar($sql);
                                         
-                                            $venta_id = $f["venta_id"];
-                                            $factura_id = $f["factura_id"];
-                                            $email = $f["cliente_email"];
-                                            
-                                            //Esto debe ocurrir solo en el evento 1
-                                            
-                                            if ($f["cliente_email"]!=null){
-                                                
-                                                $this->enviarcorreo($venta_id, $factura_id, $email);
-                                            
+                                        $sql = "update factura set 
+                                                 factura_codigodescripcion = 'VALIDADA'
+                                                ,factura_enviada = 2
+                                                ,factura_codigorecepcion= '".$res->codigoRecepcion."'
+                                                 where registroeventos_id = ".$evento['registroeventos_id'];
+                                        $this->Venta_model->ejecutar($sql);
+                                        //Esto debe ocurrir solo en el evento 1
+                                        if($evento['registroeventos_codigoevento'] == 1){
+                                            foreach ($facturas as $f){
+                                                $venta_id = $f["venta_id"];
+                                                $factura_id = $f["factura_id"];
+                                                $email = $f["cliente_email"];
+                                                if ($f["cliente_email"]!=null){
+                                                    $this->enviarcorreo($venta_id, $factura_id, $email);
+                                                }
                                             }
-                                         
-                                            
                                         }
                                         
-                                        
-
-
-
-
-
                                         echo json_encode($res);
-
-
-
+                                        
                             //*************
                             }else{
                                 echo json_encode($res);
                             }
                             //*************
-
-
 
                             }else{
 
@@ -1262,7 +1246,6 @@ class Parametro extends CI_Controller{
     
         /* envia correo  a cliente */
     function enviarcorreo($venta_id, $factura_id, $email_destino){
-        
         $this->load->library('email');
         $this->email->set_newline("\r\n");
         $this->load->model('Configuracion_email_model');
@@ -1341,10 +1324,12 @@ class Parametro extends CI_Controller{
         $this->email->message($html);
 
         if($this->email->send()) {
-            return true;        
+            $valor = true;        
         } else {
-            return false;
+            $valor = false;
         }
+        $this->email->clear(true);
+        return $valor;
     }
     
 }

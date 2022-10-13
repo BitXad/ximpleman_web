@@ -219,7 +219,7 @@
                             <tr style="border-bottom-style: dashed; border-bottom-width: 1px;">
                                 <td class="text-right text-bold" style="padding: 0;">FECHA DE EMISI&Oacute;N:</td>
                                 <td style="padding: 0; padding-left: 3px">
-                                    <?php $fecha = new DateTime($factura[0]['factura_fechaventa']); 
+                                    <?php $fecha = new DateTime($factura[0]['factura_fecha']); 
                                         $fecha_d_m_a = $fecha->format('d/m/Y');
                                         echo $fecha_d_m_a." ".$factura[0]['factura_hora'];
                                     ?>
