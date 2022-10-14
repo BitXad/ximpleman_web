@@ -960,7 +960,7 @@ class Parametro extends CI_Controller{
                                                  where registroeventos_id = ".$evento['registroeventos_id'];
                                         $this->Venta_model->ejecutar($sql);
                                         //Esto debe ocurrir solo en el evento 1
-                                        if($evento['registroeventos_codigoevento'] == 1){
+                                        if($evento['registroeventos_codigoevento'] == 1 || $evento['registroeventos_codigoevento'] == 3){
                                             foreach ($facturas as $f){
                                                 $venta_id = $f["venta_id"];
                                                 $factura_id = $f["factura_id"];
