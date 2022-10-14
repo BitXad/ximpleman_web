@@ -1129,7 +1129,7 @@ function dibujar_tabla_puntos_venta(){
                                 <td>
                                 <button class="btn btn-xs btn-primary" title="Solicitar CUIS" onclick="solicitudCuis(${pv.puntoventa_codigo})">CUIS</button>
                                 <button class="btn btn-xs btn-success" title="Solicitar CUFD" onclick="solicitudCufd(${pv.puntoventa_codigo})">CUFD</button>
-                                    <button class="btn btn-xs btn-danger" title="Cierre punto de venta" onclick="cierre_PuntoVenta(${pv.puntoventa_codigo})">delete</button>
+                                <button class="btn btn-xs btn-danger" title="Cierre punto de venta" onclick="cierre_PuntoVenta(${pv.puntoventa_codigo})"><span class='fa fa-trash'></span></button>
                                 </td>
                             </tr>`;
                     i++;

@@ -168,8 +168,8 @@
     }
 </script>
 
-<!--<script src="<?php echo base_url('resources/js/verificar_conexion.js'); ?>"></script>-->
-<style type="text/css">
+<!--<script src="<?php //echo base_url('resources/js/verificar_conexion.js'); ?>"></script>-->
+<!--<style type="text/css">
     .online, .offline{
       display: inline-block;
       padding: 0.5rem;
@@ -186,12 +186,12 @@
       border: 3px solid red;
       color: red;
     }
-</style>
+</style>-->
 
-<p id="status" class="online">online</p>
+<!--<p id="status" class="online">online</p>-->
 
 <?php
-$base_url = explode('/', base_url());
+/*$base_url = explode('/', base_url());
 $llave_privada_url = "{$_SERVER['DOCUMENT_ROOT']}/{$base_url[3]}/resources/firmaDigital/ROBERTOCARLOSSOTOSIERRA.p12";
 $archivo_xml = "{$_SERVER['DOCUMENT_ROOT']}/{$base_url[3]}/resources/xml/entel.xml";
 //echo $llave_privada_url;
@@ -303,7 +303,7 @@ print(base64_encode($binary_signature) ."\n");
 
 
 
-}
+}*/
 
 //function Firmado_digital($src_file, $llave_privada, $llave_publica)
 //{        
@@ -335,7 +335,7 @@ print(base64_encode($binary_signature) ."\n");
  * @author   liuml  <liumenglei0211@163.com>
  * @DateTime 2018/12/21  16:37
  */
-function generateXMLSignFields($xml)
+/*function generateXMLSignFields($xml)
 {
     // Cargue el XML para firmar
     $doc = new \DOMDocument();
@@ -371,7 +371,7 @@ function generateXMLSignFields($xml)
     $objDSig->appendSignature($doc->documentElement);
 
     return $doc->saveXML();
-}
+}*/
 
 /**
    * checkResponseSign firma de verificación
@@ -382,7 +382,7 @@ function generateXMLSignFields($xml)
  * @author   liuml  <liumenglei0211@163.com>
  * @DateTime 2018/12/21  17:51
  */
-function checkResponseSign($xml)
+/*function checkResponseSign($xml)
 {
     $doc = new \DOMDocument();
     $doc->loadXML($xml);
@@ -420,5 +420,6 @@ function checkResponseSign($xml)
         return false;
     }
 }    
+*/
 
 ?>
