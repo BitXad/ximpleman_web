@@ -5826,10 +5826,11 @@ function cambiar_tipoemision()
 //    "select: "+select+"\n\l"+
 //    "select_texto: "+select_texto);
 //    
-    document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas
-    document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
-    
-    document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
+    if(parametro_tipoemision == 1){
+        document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas
+        document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
+        document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
+    }
 
     $.ajax({url: controlador,
             type:"POST",
