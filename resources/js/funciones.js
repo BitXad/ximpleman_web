@@ -6209,6 +6209,7 @@ function borrar_datos_cliente(){
         $("#razon_social").val("S/N");
         $("#cliente_nombre").val("S/N");
         $("#cliente_codigo").val("N/A");
+        $("#email").val("");
     }
     $("#nit").val(0);
     $("#cliente_id").val("0");
