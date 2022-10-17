@@ -1856,34 +1856,39 @@ function edit($venta_id)
     
     function modificar_detalle()
     {
-        
-        
         if($this->acceso(12)){
-        //**************** inicio contenido ***************      
-
-                
+            //**************** inicio contenido ***************      
+            
         $usuario_id = $this->session_data['usuario_id'];
         
         $venta_id = $this->input->post('venta_id');
         $cliente_id = $this->input->post('cliente_id');
+        $forma_id = $this->input->post('forma_pago');
+        $tipotrans_id = $this->input->post('tipo_transaccion');
+        $elusuario_id = $this->input->post('usuario_id');
         $venta_fecha = $this->input->post('venta_fecha');
         $venta_subtotal = $this->input->post('venta_subtotal');
-        $venta_descuentoparcial = $this->input->post('venta_descuentoparcial'); // descuento de la venta
         $venta_descuento = $this->input->post('venta_descuento');
+        //$venta_descuentoparcial = $this->input->post('venta_descuentoparcial'); // descuento de la venta
         $venta_total = $this->input->post('venta_total');
-        $venta_total = $venta_total - $venta_descuento;
+        //$venta_total = $venta_total - $venta_descuento;
         $venta_efectivo = $this->input->post('venta_efectivo');
         $venta_cambio = $this->input->post('venta_cambio');
-        $tipotrans_id = $this->input->post('tipo_transaccion');
-        $forma_id = $this->input->post('forma_pago');
-        $credito_id = $this->input->post('credito_id');
-        $cuota_inicial = $this->input->post('cuota_inicial');
-        $credito_interes = $this->input->post('credito_interes');
-        $venta_interes = $this->input->post('venta_interes');
-        $cuotas = $this->input->post('cuotas');
-        $banco_id = $forma_id == 1 ? '0':$this->input->post('banco');
         
         $modificar_credito = $this->input->post('modificar_credito');
+        $credito_id = $this->input->post('credito_id');
+        $cuotas = $this->input->post('cuotas');
+        $cuota_inicial = $this->input->post('cuota_inicial');
+        $credito_interes = $this->input->post('credito_interes');
+        $modalidad = $this->input->post('modalidad');
+        $dia_pago = $this->input->post('dia_pago');
+        $fecha_inicio = $this->input->post('fecha_inicio');
+        $metodo_frances = $this->input->post('metodo_frances');
+        $banco_id = $this->input->post('banco_id');
+        $venta_giftcard = $this->input->post('venta_giftcard');
+        $venta_ice = $this->input->post('venta_ice');
+        $venta_detalletransaccion = $this->input->post('venta_detalletransaccion');
+        $venta_glosa = $this->input->post('venta_glosa');
         
         $porcentaje = 0;
         
@@ -1987,14 +1992,14 @@ function edit($venta_id)
                 "cliente_id = ".$cliente_id.
                 ",venta_fecha = '".$venta_fecha."'".
                 ",venta_subtotal = ".$venta_subtotal.
-                ",venta_descuentoparcial = ".$venta_descuentoparcial.
+                //",venta_descuentoparcial = ".$venta_descuentoparcial.
                 ",venta_descuento = ".$venta_descuento.
                 ",venta_total = ".($venta_total).
                 ",venta_efectivo = ".$venta_efectivo.
                 ",venta_cambio = ".$venta_cambio.                
                 ",tipotrans_id = ".$tipotrans_id.                
                 ",forma_id = ".$forma_id.              
-                ",banco_id = ".$banco_id.              
+                ",banco_id = '".$banco_id."'".
                 " where venta_id = ".$venta_id;
         echo $sql;
         $this->Venta_model->ejecutar($sql);        
@@ -2368,12 +2373,13 @@ function edit($venta_id)
         
         $detalleven_id = $this->input->post('detalleven_id');
         $cantidad = $this->input->post('cantidad');
+        $descuentoparcial = $this->input->post('descuentoparcial');
         $descuento = 0;
         
             $sql = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad - ".$cantidad.
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
-                    ", detalleven_descuentoparcial = ".$descuento.
-                    ", detalleven_descuento = ".$descuento.
+                    ", detalleven_descuentoparcial = ".$descuentoparcial.
+                    //", detalleven_descuento = ".$descuento.
                     ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                     "  where detalleven_id = ".$detalleven_id." and detalleven_cantidad > 1";
             

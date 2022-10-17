@@ -327,7 +327,7 @@ window.onkeydown = compruebaTecla;
                 <select class="form-control <?php echo $atributos; ?>" name="tipo_doc_identidad" id="tipo_doc_identidad" <?= $estilos_facturacion ?> onchange="seleccion_documento()">
                     <?php 
                         $select = 5;
-                        if(isset($cliente[0]['cliente_codidentidad'])) $select = $cliente[0]['cliente_codidentidad'];
+                        if(isset($cliente[0]['cdi_codigoclasificador'])) $select = $cliente[0]['cdi_codigoclasificador'];
                         foreach ($docs_identidad as $di){
                             if($dosificacion[0]['docsec_codigoclasificador'] == 23){
                                 if($di['cdi_codigoclasificador'] == 5){
@@ -890,7 +890,7 @@ window.onkeydown = compruebaTecla;
 <?php 
     $total_detalle = 0;
     $subtotal = $total_detalle;
-    $descuento = 0;
+    $descuento = $venta[0]['venta_descuento'];// 0;
     $totalfinal = $total_detalle;
 ?>
         
@@ -1173,7 +1173,7 @@ window.onkeydown = compruebaTecla;
                     </center>                    
                 </div>
             
-            </div
+            </div>
             <div class="col-md-4">
                 <b>FECHA VENTA </b><input type="date" style="padding: 0;" id="venta_fecha" name="venta_fecha" value="<?php echo $venta[0]['venta_fecha']; ?>" class="form-control  input-sm">
             </div>

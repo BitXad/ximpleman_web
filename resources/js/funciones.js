@@ -1239,12 +1239,13 @@ function reducir(cantidad,detalleven_id)
 
         var base_url = document.getElementById('base_url').value;
         var controlador = base_url+"venta/reducir/";
+        let descuentoparcial = document.getElementById('descuento'+detalleven_id).value;
         
         if (Number(cantidad)>0){
             
             $.ajax({url: controlador,
                 type:"POST",
-                data:{cantidad:cantidad,detalleven_id:detalleven_id},
+                data:{cantidad:cantidad,detalleven_id:detalleven_id, descuentoparcial:descuentoparcial},
                 success:function(respuesta){
                     tablaproductos();
                    // tabladetalle();                
@@ -1710,8 +1711,9 @@ function ingresorapidojs(cantidad,producto)
     var existencia =  producto.existencia;    
     var producto_id =  producto.producto_id;
     var datos1 = "";
-    var descuentoparcial = 0;
-    var descuento = 0;
+    //var descuentoparcial = 0;
+    var descuentoparcial = producto.detalleven_descuentoparcial;
+    var descuento = producto.detalleven_descuento;
     var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
     var check_agrupar = document.getElementById('check_agrupar').checked;
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
@@ -4297,52 +4299,72 @@ function modificar_venta(cliente_id)
     var controlador = base_url+"venta/modificar_detalle";    
     
     var venta_id = document.getElementById('venta_id').value; 
-    var forma_id = document.getElementById('forma_pago').value; 
-    var tipotrans_id = document.getElementById('tipo_transaccion').value; 
+    var forma_pago = document.getElementById('forma_pago').value; 
+    var tipo_transaccion = document.getElementById('tipo_transaccion').value;
     var usuario_id = document.getElementById('usuario_id').value; 
-    var pedido_id = document.getElementById('pedido_id').value; 
-    var orden_id = document.getElementById('orden_id').value; 
-    var usuarioprev_id = document.getElementById('usuarioprev_id').value; 
-    var nit = document.getElementById('nit').value;
-    var razon = document.getElementById('razon_social').value;
-    var factura_complementoci = document.getElementById('cliente_complementoci').value;
-    let cliente_email = document.getElementById('email').value;
+    var venta_fecha = document.getElementById('venta_fecha').value; 
+    var venta_subtotal = document.getElementById('venta_subtotal').value;
+    var venta_descuento = document.getElementById('venta_descuento').value;
+    var venta_total = document.getElementById('venta_totalfinal').value;
+    var venta_efectivo = document.getElementById('venta_efectivo').value;
+    var venta_cambio = document.getElementById('venta_cambio').value;
     
-    var moneda_id = 1; 
-    var estado_id = 1; 
+    let modificar_credito  = $('#modificar_credito').is(':checked');
+    var credito_id = document.getElementById('credito_id').value;
+    var cuotas = document.getElementById('cuotas').value;   
+    var cuota_inicial = document.getElementById('cuota_inicial').value;
+    var credito_interes = document.getElementById('credito_interes').value;
+    var modalidad = document.getElementById('modalidad').value;
+    var dia_pago = document.getElementById('dia_pago').value;
+    var fecha_inicio = document.getElementById('fecha_inicio').value;
+    let metodo_frances  = $('#metodofrances').is(':checked');
+    let banco_id = forma_pago == 1 ? '0':$('#banco').val();
+    var venta_giftcard = document.getElementById('venta_giftcard').value;
+    var venta_ice = document.getElementById('venta_ice').value;
+    var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').value;
+    var venta_glosa = "'"+document.getElementById('venta_glosa').value+"'"; 
     
-    var venta_fecha = fecha();//retorna la fecha actual  //"date(now())";
+    
     var hora = new Date();
     
     var venta_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getSeconds();
     
-    var venta_subtotal = document.getElementById('venta_subtotal').value;     
-    var venta_descuento = document.getElementById('venta_descuento').value; 
-    var venta_descuentoparcial = document.getElementById('venta_descuentoparcial').value; 
-    var venta_total = document.getElementById('venta_totalfinal').value; 
-    var venta_efectivo = document.getElementById('venta_efectivo').value; 
-    var venta_cambio = document.getElementById('venta_cambio').value; 
-    var venta_glosa = "'"+document.getElementById('venta_glosa').value+"'"; 
+    
+    
+    //var tipo_transaccion = document.getElementById('tipo_transaccion').value; 
+    //var pedido_id = document.getElementById('pedido_id').value;
+    //var orden_id = document.getElementById('orden_id').value; 
+    //var usuarioprev_id = document.getElementById('usuarioprev_id').value;
+    //var nit = document.getElementById('nit').value;
+    //var razon = document.getElementById('razon_social').value; 
+    //var factura_complementoci = document.getElementById('cliente_complementoci').value;
+    //let cliente_email = document.getElementById('email').value;
+    //var venta_descuentoparcial = document.getElementById('venta_descuentoparcial').value; 
+    //var facturado = document.getElementById('facturado').checked;
+    
+    
+    /*
+    var moneda_id = 1; 
+    var estado_id = 1; 
+    
     var venta_comision = document.getElementById('venta_comision').value; 
     var venta_tipocambio = document.getElementById('venta_tipocambio').value; 
     var detalleserv_id = document.getElementById('detalleserv_id').value;
-    var tipo_transaccion = document.getElementById('tipo_transaccion').value;
-    var cuotas = document.getElementById('cuotas').value;   
-    var cuota_inicial = document.getElementById('cuota_inicial').value;
-    var credito_interes = document.getElementById('credito_interes').value;
-    var facturado = document.getElementById('facturado').checked;
+    
+    
+    
+    
     var tiposerv_id = document.getElementById('tiposerv_id').value;
     var venta_numeromesa = document.getElementById('venta_numeromesa').value;
     var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
     var parametro_imprimirticket = document.getElementById('parametro_imprimirticket').value;
-    let banco_id = forma_id == 1 ? '0':$('#banco').val();
+    
     let tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
     
     var codigoexcepcion = document.getElementById('codigoexcepcion').checked;
 
-    var venta_ice = document.getElementById('venta_ice').value;
-    var venta_giftcard = document.getElementById('venta_giftcard').value;
-    var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').value;
+    
+    
     var dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
 
     var registroeventos_codigo = document.getElementById('evento_contingencia').value;
@@ -4350,7 +4372,7 @@ function modificar_venta(cliente_id)
     var punto_venta = document.getElementById('punto_venta').value;
     let parametro_puntos = document.getElementById('parametro_puntos').value;
     
-    if (registroeventos_codigo>0){
+    /*if (registroeventos_codigo>0){
         
         var fecha_cafc = document.getElementById('fecha_cafc').value;
         var hora_cafc = document.getElementById('hora_cafc').value;
@@ -4365,7 +4387,7 @@ function modificar_venta(cliente_id)
         var numfact_cafc = 0;
         var codigo_cafc = "";
         
-    }
+    }*/
 //    
 //    alert("registroeventos_codigo: "+registroeventos_codigo+
 //          " * fecha_cafc: "+fecha_cafc+
@@ -4373,15 +4395,15 @@ function modificar_venta(cliente_id)
 //          " * codigo_cafc: "+codigo_cafc);
     //alert(venta_efectivo);
     //alert(venta_descuento);
-    if(codigoexcepcion==true){
+    /*if(codigoexcepcion==true){
         codigo_excepcion = 1;
     }else{
         codigo_excepcion = 0;
-    }
+    }*/
     
    // alert(codigo_excepcion);
     
-    var venta_numeroventa = 0;
+    /*var venta_numeroventa = 0;
     var venta_tipodoc = 0;
     var entrega_id = 1;
     var entregaestado_id = 1;
@@ -4392,35 +4414,28 @@ function modificar_venta(cliente_id)
     }
     if(parametro_imprimirticket == 1){
         venta_numeroventa = numero_venta();
-    }
+    }*/
     
     document.getElementById('boton_finalizar').style.display = 'none'; //mostrar el bloque del loader
    
-    if( facturado == 1){     
+    /*if( facturado == 1){     
         venta_tipodoc = 1;}
     else{
         venta_tipodoc = 0;}
+    */
+    /*facturado:facturado,*/
     
-
-
-        var cuotas = document.getElementById('cuotas').value;
-        var modalidad = document.getElementById('modalidad').value;
-        var dia_pago = document.getElementById('dia_pago').value;
-        var fecha_inicio = document.getElementById('fecha_inicio').value;
-        let metodo_frances  = $('#metodofrances').is(':checked');
-
-    
-    
+        alert(modificar_credito);
         $.ajax({url: controlador,
             type:"POST",
-            data:{venta_id:venta_id, cliente_id:cliente_id, venta_fecha:venta_fecha,venta_subtotal:venta_subtotal,
-            venta_descuento:venta_descuento, venta_total:venta_total, venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, 
-            modificar_credito:modificar_credito, credito_id: credito_id, 
-            tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
-            credito_interes:credito_interes,
-            facturado:facturado, tipo_transaccion:tipo_transaccion, forma_pago:forma_pago,
-            modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio, banco:banco, metodo_frances:metodo_frances,
-            venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice},
+            data:{venta_id:venta_id, cliente_id:cliente_id, forma_pago:forma_pago, tipo_transaccion:tipo_transaccion,
+                  usuario_id:usuario_id, venta_fecha:venta_fecha, venta_subtotal:venta_subtotal,
+                  venta_descuento:venta_descuento, venta_total:venta_total, venta_efectivo:venta_efectivo,
+                  venta_cambio:venta_cambio, modificar_credito:modificar_credito, credito_id: credito_id, 
+                  cuotas:cuotas, cuota_inicial:cuota_inicial, credito_interes:credito_interes,
+                  modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio, metodo_frances:metodo_frances,
+                  banco:banco_id, venta_giftcard:venta_giftcard, venta_ice: venta_ice,
+                  venta_detalletransaccion:venta_detalletransaccion, venta_glosa:venta_glosa},
             success:function(respuesta){
                 //window.opener.location.reload();
                 window.close();
@@ -4445,6 +4460,7 @@ function registrarcliente_modificado()
     var cliente_id = document.getElementById('cliente_id').value;
     var tipocliente_id = document.getElementById('tipocliente_id').value;
     var cliente_ci = document.getElementById('cliente_ci').value;
+    var cliente_complementoci = document.getElementById('cliente_complementoci').value;
     var cliente_nombrenegocio = document.getElementById('cliente_nombrenegocio').value;    
     var cliente_codigo = document.getElementById('cliente_codigo').value;    
     var cliente_direccion = document.getElementById('cliente_direccion').value;
@@ -4475,7 +4491,7 @@ function registrarcliente_modificado()
                 data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
-                        tipo_doc_identidad:tipo_doc_identidad, cliente_excepcion:cliente_excepcion},
+                        tipo_doc_identidad:tipo_doc_identidad, cliente_excepcion:cliente_excepcion, cliente_complementoci:cliente_complementoci},
                 success:function(respuesta){ 
                     var datos = JSON.parse(respuesta)
                     cliente_id = datos[0]["cliente_id"];
