@@ -1,6 +1,8 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/offline.js'); ?>"></script>
+<!--<script src="<?php //echo base_url('resources/js/tipo_emision.js'); ?>"></script>-->
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -44,12 +46,68 @@ function mostrar_ocultar(){
     if (x=='2'){ //si la transaccion es a credito
         
         document.getElementById('creditooculto').style.display = 'block';
+//        var hoy = new Date();
+//        var dd = hoy.getDate();
+//        var mm = hoy.getMonth()+1;
+//        var yyyy = hoy.getFullYear();
+//        
+//        dd = addZero(dd);
+//        mm = addZero(mm);
 
         }
     else{
         document.getElementById('creditooculto').style.display = 'none';}
 }
 
+function mostrar_formapago(){
+    
+    var forma_id = document.getElementById('forma_pago').value;    
+    var result = <?php echo json_encode($forma_pago); ?>;
+    var html = "";
+    
+    var dato = result;
+    var tam = dato.length;
+    var mostrarimagen = "";
+    var encontrado = 0;
+    
+    if(forma_id==2 || forma_id==10 || forma_id==16 || forma_id==17 || forma_id==18 || forma_id==19 || forma_id==20 || forma_id==39 || forma_id==40 || forma_id==41 || forma_id==42 || forma_id==43 || forma_id==82 || forma_id==83 || forma_id==84 || forma_id==85 || forma_id==86 || forma_id==87 || forma_id==88 || forma_id==89 || forma_id==134 || forma_id==135 || forma_id==136 || forma_id==137 || forma_id==138 || forma_id==139 || forma_id==140 || forma_id==141 || forma_id==142 || forma_id==143 || forma_id==144 || forma_id==145 || forma_id==146 || forma_id==147 || forma_id==148 || forma_id==149 || forma_id==150 || forma_id==151 || forma_id==152 || forma_id==153 || forma_id==154 || forma_id==155 || forma_id==156 || forma_id==157 || forma_id==158 || forma_id==159 || forma_id==160 || forma_id==161 || forma_id==162 || forma_id==163 || forma_id==164 || forma_id==165 || forma_id==166 || forma_id==167 || forma_id==168 || forma_id==169 || forma_id==170 || forma_id==171 || forma_id==172 || forma_id==173 || forma_id==174 || forma_id==175 || forma_id==176 || forma_id==177 || forma_id==297){
+        $("#venta_detalletransaccion").val("1234000000005678");
+    }
+    else{
+        $("#venta_detalletransaccion").val("0");        
+    }
+    
+    for(var i=0; i<tam ;i++)
+    {
+        if(forma_id == dato[i]["forma_id"]){
+            imagen = dato[i]["forma_imagen"];
+            
+            if (imagen != null){
+            
+                mostrarimagen = "<?php echo base_url('resources/images/formapago/'); ?>";
+                mostrarimagen += imagen;
+                //alert(mostrarimagen);
+                html += "<center>";
+                html += "<img src='"+mostrarimagen+"' >";
+//                html += "</center>";
+                $("#imagenqr").html(html);
+                //$("#imagenqr").style = 'display:block';  
+                
+                document.getElementById('imagenqr').style.display = 'block';
+                entontrado == 1;
+            }
+        }
+    }    
+    
+    if (encontrado==0)
+        document.getElementById('imagenqr').style.display = 'none';
+    
+    //alert(mostrarimagen);
+////                <div class="col-md-12" style="display:none" id="imagenqr">
+//               
+//    $("#imagenqr").html(html);
+
+}
 
 function compruebaTecla (e) {
 var keyCode = document.all ? e.which : e.keyCode;
@@ -98,6 +156,14 @@ var keyCode = document.all ? e.which : e.keyCode;
     //$('#imprimir').click();
   }
 
+  if (keyCode == 121) //f9
+  {   
+      //$("#boton_modal_paquetes").click();
+      $("#boton_simulador").click();
+      
+    //$('#imprimir').click();
+  }
+
   //if (keyCode == 121) //f10
   //{       
     //$('#nit').focus();
@@ -132,7 +198,7 @@ window.onkeydown = compruebaTecla;
 <link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
  <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
 <!-------------------------------------------------------->
-<div id="selector" hidden="">
+<div id="selector" hidden>
     <!--  Aqui inserta in input temporal que sirve para almacenar el factor de conversion del producto -->
     
 </div>
@@ -197,15 +263,23 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_anchoimagen" value="<?php echo $parametro['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
 <input type="text" id="parametro_formaimagen" value="<?php echo $parametro['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
 <input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+<input type="text" id="parametro_imprimirticket" value="<?php echo $parametro['parametro_imprimirticket']; ?>" name="parametro_imprimirticket" hidden>
 <input type="text" id="parametro_imprimircomanda" value="<?php echo $parametro['parametro_imprimircomanda']; ?>" name="parametro_imprimircomanda"  hidden>
 <input type="text" id="parametro_diasvenc" value="<?php echo $parametro['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
 <input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>
 <input type="text" id="parametro_datosboton" value="<?php echo $parametro['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="parametro_moneda_id" value="<?php echo $parametro['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
+<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
+<input type="text" id="parametro_factura" value="<?php echo $parametro['parametro_factura']; ?>" name="parametro_factura"  hidden>
+<input type="text" id="parametro_tiposistema" value="<?php echo $parametro['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
+<input type="text" id="parametro_tipoemision" value="<?php echo $parametro['parametro_tipoemision']; ?>" name="parametro_tipoemision"  hidden>
+<input type="text" id="elparametro_id" value="<?php echo $parametro['parametro_id']; ?>" name="elparametro_id"  hidden>
+<input type="text" id="parametro_puntos" value="<?php echo $parametro['parametro_puntos']; ?>" name="parametro_puntos"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
-<input type="text" id="parametro_moneda_id" value="<?php echo $parametro['moneda_id']; ?>" name="parametro_datosboton"  hidden>
-<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro['moneda_descripcion']; ?>" name="parametro_datosboton"  hidden>
-
+<input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador"  hidden>
+<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -214,15 +288,17 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_modificardetalle" value="<?php echo $rolusuario[20-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="punto_venta" value="<?php echo $puntoventa_codigo; ?>" hidden>
 
 <input type="text" id="tipocliente_porcdesc" value="0" hidden>
 <input type="text" id="tipocliente_montodesc" value="0" hidden>
-
 <input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
+<input type="text" id="cliente_valido" value="1" hidden>
 
 <input type="text" id="venta_id" value="<?php echo $venta[0]['venta_id']; ?>" hidden>
 <input type="text" id="credito_id" value="<?php if(isset($credito['credito_id'])){if($credito['credito_id']>0){ echo $credito['credito_id'];}else{ echo 0;} }else{ echo 0;}?>" hidden>
+
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 
@@ -248,25 +324,39 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-3" <?= $estilo_div ?>>
             <label for="tipo_doc_identidad" class="control-label" style="margin-bottom: 0;">TIPO DOCUMENTO IDENTIDAD</label>
             <div class="form-group" <?= $estilo_div ?>>
-                
-                <select class="form-control <?php echo $atributos; ?>" name="tipo_doc_identidad" id="tipo_doc_identidad" <?= $estilos_facturacion ?>>
+                <select class="form-control <?php echo $atributos; ?>" name="tipo_doc_identidad" id="tipo_doc_identidad" <?= $estilos_facturacion ?> onchange="seleccion_documento()">
                     <?php 
-                        foreach ($docs_identidad as $di){  
-                            
-                            $selected = $di['cdi_codigoclasificador'] == $cliente[0]['cdi_codigoclasificador'] ? "selected" : "" ;// por defecto que esté seleccionado NIT                           
-                       
-                         ?>                    
+                        $select = 5;
+                        if(isset($cliente[0]['cliente_codidentidad'])) $select = $cliente[0]['cliente_codidentidad'];
+                        foreach ($docs_identidad as $di){
+                            if($dosificacion[0]['docsec_codigoclasificador'] == 23){
+                                if($di['cdi_codigoclasificador'] == 5){
+                                    ?>
+                                    <option value="<?= $di['cdi_codigoclasificador'] ?>" selected><?= $di['cdi_descripcion'] ?></option>
+                                    <?php
+                                    break;
+                                }
+                                
+                            }else{
+                            $selected = $di['cdi_codigoclasificador'] == $select ? "selected" : "" ;// por defecto que esté seleccionado NIT
+                        ?>                    
                         <option value="<?= $di['cdi_codigoclasificador'] ?>" <?= $selected ?>><?= $di['cdi_descripcion'] ?></option>
-                    <?php } ?>
+                    <?php
+                            }
+                    }?>
                 </select>
-                
             </div>
         </div>
-        
+
+        <?php
+        $sololectura = "";
+        if($dosificacion[0]['docsec_codigoclasificador'] == 23){ $sololectura = "readonly"; } ?>
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="nit" class="control-label" style="margin-bottom: 0;">NUMERO DE DOCUMENTO</label>
-            <div class="form-group"  <?php echo $estilo_div; ?>>
-                <input type="number" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" />
+            <div class="input-group"  <?php echo $estilo_div; ?>>
+                <input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?> />
+                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="buscarcliente()" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true"></span></div>
+            
             </div>
         </div>
         
@@ -275,10 +365,8 @@ window.onkeydown = compruebaTecla;
             <div class="form-group" <?php echo $estilo_div; ?>>
                 
                 <!--<input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>-->
-                <input type="search" name="razon_social" list="listaclientes" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" />
-                <datalist id="listaclientes">
-
-                </datalist>
+                <input type="search" name="razon_social" list="listaclientes" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" <?php echo $sololectura?> />
+                <datalist id="listaclientes"></datalist>
                 
             </div>
         </div>
@@ -293,12 +381,121 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-2" <?php echo $estilo_div; ?>>
         <label for="cliente_celular" class="control-label" style="margin-bottom: 0;">CELULAR</label>
         <div class="form-group" <?php echo $estilo_div; ?>>
-            <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>" onKeyUp="this.value = this.value.toUpperCase();"/>
+            <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,12)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>" onKeyUp="this.value = this.value.toUpperCase();"/>
         </div>
         </div>
 
-        
         <div class="col-md-2" <?php echo $estilo_div; ?>>
+            <label for="email" class="control-label" style="margin-bottom: 0;">CORREO ELECTRONICO</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="email"  value="<?php echo ($cliente[0]['cliente_email']==null)? $empresa_email : $cliente[0]['cliente_email'];  ; ?>" onclick="this.select()" onkeypress="validar(event,13)"/>
+            </div>
+        </div>
+        
+      
+
+<!---------------------- collapse ----------------------------->
+ 
+        <h4 class="panel-title">
+            <?php
+            if(sizeof($dosificacion)>0){
+                if($parametro['parametro_factura'] == 1){
+                    $eschecked = "checked disabled";
+                }elseif($parametro['parametro_factura'] == 2){
+                    $eschecked = "";
+                }elseif($parametro['parametro_factura'] == 3){
+                    $eschecked = "hidden";
+                }elseif($parametro['parametro_factura'] == 4){
+                    $eschecked = "checked";
+                }
+            ?>
+            <input type="checkbox" id="facturado" value="1" name="facturado" <?php echo $eschecked; ?>>
+          <?php } else{ ?>
+            <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
+            <font color="red" size="2"> Dosificación no activada</font>
+          <?php } ?> 
+          <a data-toggle="collapse" href="#collapse1" style="padding: 0;" class="btn btn-default btn-sm"> 
+            Más información</a>
+            
+            
+            <?php 
+            if ($parametro["parametro_agruparitems"] == 1 )
+                    { $agrupar = "checked='true'";}
+              else {$agrupar = " ";}
+            ?>
+            <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> <label class="btn btn-default btn-xs" for="check_agrupar"> Agrupar</label> 
+            <input type="checkbox" class="form-check-input" id="busqueda_serie"><label class="btn btn-default btn-xs" for="busqueda_serie">Búsqueda por serie</label>
+            <?php if($parametro["parametro_tiposistema"] != 1){ ?>
+                    <?php
+                    if($parametro["parametro_tipoemision"] == 1){?>
+                
+                        <a class="btn btn-danger btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" >
+                        <span id="eltipo_emision" style="color: white;">online</span>
+                        </a>        
+                
+                    <?php
+                    }elseif($parametro["parametro_tipoemision"] == 2){ ?>
+                
+                        <a class="btn btn-facebook btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" style="background: grey">
+                        <span id="eltipo_emision" style="color: white;">offline</span>
+                        </a>        
+                
+                       
+                    <?php
+                    }if($parametro["parametro_tipoemision"] == 3){ ?>
+                        
+                        <a class="btn btn-info btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión">
+                        <span id="eltipo_emision" style="color: white;">masiva</span>
+                        </a>        
+                        
+                    <?php }
+                    ?>
+            <div hidden>                
+            <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($parametro["parametro_tipoemision"]>1)?"checked":"";?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+            </div>
+            
+                <?php }else{ ?>
+            <div hidden><input type="checkbox" class="form-check-input" id="codigoexcepcion" ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label></div>
+                <?php
+                }  ?>
+            
+            <?php if ($parametro["parametro_tiposistema"]!=1){
+                ?>
+                
+                <select class="btn btn-facebook btn-xs" id="evento_contingencia" onchange="cargar_contingencia()" >
+                    <option value="0">- SIN CONTINGENCIA -</option>
+                        <?php 
+                                foreach($eventos as $evento){ ?>
+                    <option value="<?= $evento["registroeventos_codigo"]; ?>"><?= $evento["registroeventos_fecha"]." ".substr($evento["registroeventos_detalle"],0,30)."..."; ?></option>
+                        <?php } ?>
+
+                </select>
+            <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-warning btn-xs" title="Registrar evento significativo"><fa class="fa fa-floppy-o"> </fa> </a>
+            
+    
+            <button type="button" id="boton_modalpaquetes" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modalpaquetes" >
+                <fa class="fa fa-cubes"></fa>
+            </button>
+        
+            <?php 
+                }else{ ?>
+                           
+                    <input type="hidden" id="evento_contingencia" value="0" />
+
+            <?php    }  ?>
+
+            
+            
+        </h4>
+        <div class="row" id='loader_documento' style='display:none;'>
+            <center>
+                <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
+            </center>
+        </div> 
+    </div>
+    <div id="collapse1" class="panel-collapse collapse">
+        <!---------------------- contenido collapse ----------------------------->
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="tipo" class="control-label" style="margin-bottom: 0;">TIPO CLIENTE</label>           
             <div class="form-group" <?php echo $estilo_div; ?>>
                 
@@ -314,133 +511,90 @@ window.onkeydown = compruebaTecla;
                 </select>
               
             </div>
-        </div>        
-
-<!---------------------- collapse ----------------------------->
- 
-        <h4 class="panel-title">
-          <?php if(sizeof($dosificacion)>0){ ?>
-            <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
-          <?php } else{ ?>
-            <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
-            <font color="red" size="2"> Dosificación no activada</font>
-          <?php } ?> 
-          <a data-toggle="collapse" href="#collapse1" style="padding: 0;" class="btn btn-default btn-sm"> 
-            Más información</a>
-            
-            
-            
-        </h4>
-
-      </div>
-    <div id="collapse1" class="panel-collapse collapse">
-<!---------------------- contenido collapse ----------------------------->
+        </div>  
         
-          
-      
-            
-            
-
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="nombre" class="control-label" style="margin-bottom: 0;">CLIENTE</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_nombre" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            
-            </div>
-
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="cliente_ci" class="control-label" style="margin-bottom: 0;">C.I.</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_ci" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_ci" value="<?php echo $cliente[0]['cliente_ci']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            
+        </div>
+        <div class="col-md-1" <?php echo $estilo_div; ?>>
+            <label for="cliente_complementoci" class="control-label" style="margin-bottom: 0;">Compl. C.I.</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <input type="text" name="cliente_complementoci" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_complementoci" value="<?php echo $cliente[0]['cliente_complementoci']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-        
-
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="cliente_nombrenegocio" class="control-label" style="margin-bottom: 0;">NEGOCIO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_nombrenegocio" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            
-            </div>
-        
-
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="cliente_codigo" class="control-label" style="margin-bottom: 0;">CÓDIGO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_codigo" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            
-            </div>
-            
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="cliente_direccion" class="control-label" style="margin-bottom: 0;">DIRECCIÓN</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_direccion" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_direccion" value="<?php echo $cliente[0]['cliente_direccion']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            </div>
-            
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="cliente_departamento" class="control-label" style="margin-bottom: 0;">DEPARTAMENTO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cliente_departamento" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_departamento" value="<?php echo $cliente[0]['cliente_departamento']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
-            </div>
-                    
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
-                <label for="telefono" class="control-label" style="margin-bottom: 0;">TELEFONO</label>
-                <div class="form-group" <?php echo $estilo_div; ?>>
-                    <input type="telefono" name="telefono" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="telefono"  value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
-                </div>
-            </div>
-
-
-            <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="zona_id" class="control-label" style="margin-bottom: 0;">ZONA</label>
+        </div>
+        <div class="col-md-3" <?php echo $estilo_div; ?> hidden="">
+            <label for="telefono" class="control-label" style="margin-bottom: 0;">TELEFONO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                        <select name="zona_id" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="zona_id">
-                            <option value="0">- ZONAS -</option>
-                            <?php 
-                            foreach($zonas as $categoria_clientezona)
-                            {
-                                    $selected = ($categoria_clientezona['zona_id'] == $cliente[0]['zona_id']) ? ' selected="selected"' : "";
-
-                                    echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
-                            } 
-                            ?>
-                        </select>
-                <!--<input type="text" name="cliente_zona" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['zona_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>-->
+                <input type="telefono" name="telefono" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="telefono"  value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
             </div>
-            
-            <div class="col-md-2" <?php echo $estilo_div; ?>>
-                <label for="email" class="control-label" style="margin-bottom: 0;">CORREO ELECTRONICO</label>
-                <div class="form-group" <?php echo $estilo_div; ?>>
-                    <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="email"  value="<?php echo ($cliente[0]['cliente_email']==null)? $empresa_email : $cliente[0]['cliente_email'];  ; ?>" onclick="this.select()" onkeypress="validar(event,13)"/>
-                </div>
-            </div>
-            
-            </div>
-            
-            <div class="col-md-14" >
-                <br>
-                <small>
-                    <b>
-                        * Información complementaria del cliente                   
-                    </b>
-                </small>
-            </div>
-    
-<!--        
         </div>
 
-    </div>-->
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
+            <label for="zona_id" class="control-label" style="margin-bottom: 0;">ZONA</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <select name="zona_id" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="zona_id">
+                    <option value="0">- ZONAS -</option>
+                    <?php 
+                    foreach($zonas as $categoria_clientezona)
+                    {
+                        $selected = ($categoria_clientezona['zona_id'] == $cliente[0]['zona_id']) ? ' selected="selected"' : "";
+                        echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
+                    }
+                    ?>
+                </select>
+                <!--<input type="text" name="cliente_zona" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['zona_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>-->
+            </div>
+        </div>
+        <div class="col-md-14" >
+            <br>
+            <small>
+                <b>
+                    * Información complementaria del cliente                   
+                </b>
+            </small>
+        </div>
+    <!--        
+            </div>
 
-<!--  </div>
-</div>  -->
-<!-------------------- fin inicio collapse ---------------------->
-</div>
+        </div>-->
+
+    <!--  </div>
+    </div>  -->
+    <!-------------------- fin inicio collapse ---------------------->
+    </div>
     </div>
         
       
@@ -1010,7 +1164,7 @@ window.onkeydown = compruebaTecla;
             
 
           
-            <div class="col-md-12">
+            <div class="col-md-8">
                 NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
                 
                 <div class="col-md-12" style="display:none" id="imagenqr">
@@ -1019,6 +1173,9 @@ window.onkeydown = compruebaTecla;
                     </center>                    
                 </div>
             
+            </div
+            <div class="col-md-4">
+                <b>FECHA VENTA </b><input type="date" style="padding: 0;" id="venta_fecha" name="venta_fecha" value="<?php echo $venta[0]['venta_fecha']; ?>" class="form-control  input-sm">
             </div>
            
         </div>
@@ -1030,6 +1187,10 @@ window.onkeydown = compruebaTecla;
            <!-- ************************************* datos credito ************************************************-->
                 
             <div class="row" id='creditooculto'  style='display:none;'>
+                <div class="col-md-12">
+                    <input type="checkbox" checked="true" value="1" id="modificar_credito" hidden="true"> Modificar credito
+                </div>
+                
                 <div class="col-md-12">
                     <label style="margin-bottom: 0px">
                         <input type="checkbox" name="metodofrances" id="metodofrances"> Metodo Frances
@@ -1044,7 +1205,6 @@ window.onkeydown = compruebaTecla;
                         <?php } ?>
                     </select>                                      
                 </div>
-
                 
                 <div class="col-md-4">
                     <h5 class="modal-title" id="myModalLabel"><b>MODALIDAD</b></h5>
@@ -1100,7 +1260,7 @@ window.onkeydown = compruebaTecla;
             </button>
             -->
             <!--<button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">-->
-            <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa_sin()" style="display: block;">
+            <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarcambios()" style="display: block;">
                 <h4>
                 <span class="fa fa-save"></span>   Finalizar Venta  
                 </h4>

@@ -1764,41 +1764,8 @@ function edit($venta_id)
         
         if($this->acceso(20)){
         //**************** inicio contenido ***************      
-//        $data['rolusuario'] = $this->session_data['rol'];
-//        $usuario_id = $this->session_data['usuario_id'];
-//        $tipousuario_id = $this->session_data['tipousuario_id']; 
-//        
-//        // check if the venta exists before trying to edit it
-//        $venta = $this->Venta_model->get_venta($venta_id);
-//        
-//        $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
-//        $cliente_id = $venta["cliente_id"];       
-//        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
-//        $data['page_title'] = "Modificar Venta";
-//
-//        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
-//        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-//        
-//        $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
-//        $data['cliente'] = $cliente;
-//        
-//        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-//        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
-//        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-//        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
-//        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-//        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-//        $data['parametro'] = $this->Parametro_model->get_parametros();
-//        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-//        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
-//        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
-//        $data['promociones'] = $this->Promocion_model->get_promociones();
-//        $data['mesas'] = $this->Mesa_model->get_all_mesa();
-//        $data['usuario_id'] = $usuario_id;
-//        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
-//        $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
-//        $data['tipousuario_id'] = $tipousuario_id;
-        
+
+           
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];        
@@ -1808,15 +1775,14 @@ function edit($venta_id)
         
         $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
         $cliente_id = $venta["cliente_id"];       
-        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['page_title'] = "Modificar Venta";
         
         $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
         $data['cliente'] = $cliente;
-        $data['page_title'] = "Ventas";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
 //        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+        $data['cliente'] = $cliente;
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
@@ -2013,7 +1979,7 @@ function edit($venta_id)
                   detalle_venta_aux
                 WHERE 
                   usuario_id=".$usuario_id.")";
-        
+        echo $sql;
         $this->Venta_model->ejecutar($sql);        
         
         
@@ -2029,7 +1995,8 @@ function edit($venta_id)
                 ",tipotrans_id = ".$tipotrans_id.                
                 ",forma_id = ".$forma_id.              
                 ",banco_id = ".$banco_id.              
-                " where venta_id = ".$venta_id;       
+                " where venta_id = ".$venta_id;
+        echo $sql;
         $this->Venta_model->ejecutar($sql);        
 
         
