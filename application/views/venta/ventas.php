@@ -732,7 +732,7 @@ window.onkeydown = compruebaTecla;
     
     <div class="col-md-6" id="divventas1" style="display:none;">
         <center>            
-            <button class="btn btn-warning" type="button" disabled>
+            <button class="btn btn-warning" type="button" disabled style="background: grey">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Procesando las facturas; por favor espere!..
             </button>

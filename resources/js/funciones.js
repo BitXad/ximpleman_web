@@ -3205,6 +3205,9 @@ function finalizarventa(){
                 document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
 
                 registrarcliente();
+            }else{
+                document.getElementById('divventas0').style.display = 'block'; //mostrar el vid de ventas 
+                document.getElementById('divventas1').style.display = 'none'; // ocultar el div de loader   
             } 
 
         }
@@ -5920,8 +5923,11 @@ function cambiar_tipoemision()
 //    "select: "+select+"\n\l"+
 //    "select_texto: "+select_texto);
 //    
-    
-    document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
+    if(parametro_tipoemision == 1){
+        document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas
+        document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
+        document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
+    }
 
     $.ajax({url: controlador,
             type:"POST",
@@ -5929,7 +5935,6 @@ function cambiar_tipoemision()
             success:function(respuesta){
                 var registros =  JSON.parse(respuesta);
                 $("#modal_tipoemision").modal("hide");
-               
                
                     alert(JSON.stringify(registros));
                     location.reload();
@@ -6301,6 +6306,7 @@ function borrar_datos_cliente(){
         $("#razon_social").val("S/N");
         $("#cliente_nombre").val("S/N");
         $("#cliente_codigo").val("N/A");
+        $("#email").val("");
     }
     $("#nit").val(0);
     $("#cliente_id").val("0");
