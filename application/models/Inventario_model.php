@@ -99,7 +99,7 @@ class Inventario_model extends CI_Model
         
         $sql = "SELECT p.*,c.categoria_nombre FROM inventario p
         left join categoria_producto c on c.categoria_id = p.categoria_id
-        left join detalle_compra dc on dc.producto_id = p.producto_id 
+        /*left join detalle_compra dc on dc.producto_id = p.producto_id*/ 
         WHERE p.estado_id=1 
         and p.producto_nombre like '%$parametro%' 
         or p.producto_codigobarra like '%$parametro%' 

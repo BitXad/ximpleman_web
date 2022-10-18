@@ -2523,7 +2523,7 @@ function edit($venta_id)
     }
     
 /*
-* buscar productos
+* buscar productos desde ventas
 */
 function buscarproductos(){
     
@@ -3446,7 +3446,7 @@ function anular_venta($venta_id){
 //                       " cliente_id = ".$cliente_id;
             
             $sql = "SELECT c.cliente_id ,c.cliente_nit ,c.cliente_razon ,c.cliente_telefono ,c.cliente_nombre ,c.cliente_ci ,c.cliente_nombrenegocio ,c.cliente_codigo ,
-                    c.tipocliente_id ,c.cliente_direccion ,c.cliente_departamento ,c.cliente_celular, c.cliente_email, c.cliente_complementoci,
+                    c.tipocliente_id ,c.cliente_direccion ,c.cliente_departamento ,c.cliente_celular, c.cliente_email, c.cliente_complementoci, c.zona_id,
                     ifnull(c.cdi_codigoclasificador, 5) as cdi_codigoclasificador,t.tipocliente_descripcion, t.tipocliente_montodesc,t.tipocliente_porcdesc
                     from cliente c
                     left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id
