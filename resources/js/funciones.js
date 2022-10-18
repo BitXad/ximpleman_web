@@ -1783,7 +1783,7 @@ function ingresorapidojs(cantidad,producto)
         }
         
         datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
-        datos1 += descuento+","+descuentoparcial+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
+        datos1 += descuento+","+descuentoparcial+","+(precio-descuentoparcial)+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
         datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
@@ -4477,7 +4477,8 @@ function registrarcliente_modificado()
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;    
     var zona_id = document.getElementById('zona_id').value;    
-    var tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;    
+    var tipo_doc_identidad = document.getElementById('tipo_doc_identidad').value;
+    var cliente_email = document.getElementById('email').value;
 //    var cliente_excepcion = document.getElementById("codigoexcepcion").checked;
 //    var cliente_excepcion = $('#codigoexcepcion').is(':checked');
     //var cliente_excepcion = (document.getElementById('codigoexcepcion').value == 1)?1:0;
@@ -4499,7 +4500,7 @@ function registrarcliente_modificado()
         $.ajax({url: controlador,
                 type:"POST",
                 data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
-                        cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
+                        cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo, cliente_email:cliente_email,
                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
                         tipo_doc_identidad:tipo_doc_identidad, cliente_excepcion:cliente_excepcion, cliente_complementoci:cliente_complementoci},
                 success:function(respuesta){ 
@@ -4523,7 +4524,10 @@ function registrarcliente_modificado()
     
     $.ajax({url: controlador,
             type:"POST",
-            data:{nit:nit,razon:razon,telefono:telefono},
+            data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
+                        cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo, cliente_email:cliente_email,
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
+                        tipo_doc_identidad:tipo_doc_identidad, cliente_excepcion:cliente_excepcion, cliente_complementoci:cliente_complementoci},
             success:function(respuesta){  
             
                 var registro = JSON.parse(respuesta);
@@ -6328,11 +6332,11 @@ function borrar_datos_cliente(){
     $("#razon_social").val("SIN NOMBRE");
     $("#cliente_nombre").val("SIN NOMBRE");
     $("#cliente_codigo").val("0");
+    $("#email").val("");
     if(documento_sector == 23){ // si es prevalorada
         $("#razon_social").val("S/N");
         $("#cliente_nombre").val("S/N");
         $("#cliente_codigo").val("N/A");
-        $("#email").val("");
     }
     $("#nit").val(0);
     $("#cliente_id").val("0");

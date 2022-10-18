@@ -285,7 +285,7 @@ class Venta extends CI_Controller{
                 ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
                 ", detalleven_descuentoparcial = ".$descuentoparcial.
                 ", detalleven_descuento = ".$descuento.
-                ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
+                ", detalleven_total = (detalleven_precio - ".$descuentoparcial.")*(detalleven_cantidad)".
                 ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
                 //", detalleven_preferencia = concat(detalleven_preferencia,', $serie')".
                 "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
@@ -1997,7 +1997,8 @@ function edit($venta_id)
                 ",venta_descuento = ".$venta_descuento.
                 ",venta_total = ".($venta_total).
                 ",venta_efectivo = ".$venta_efectivo.
-                ",venta_cambio = ".$venta_cambio.                
+                ",venta_glosa = ".$venta_glosa.
+                ",venta_cambio = ".$venta_cambio.
                 ",tipotrans_id = ".$tipotrans_id.                
                 ",forma_id = ".$forma_id.              
                 ",banco_id = '".$banco_id."'".
@@ -2380,8 +2381,8 @@ function edit($venta_id)
             $sql = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad - ".$cantidad.
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
                     ", detalleven_descuentoparcial = ".$descuentoparcial.
-                    //", detalleven_descuento = ".$descuento.
-                    ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
+                    ", detalleven_descuento = ".$descuento.
+                    ", detalleven_total = (detalleven_precio - ".$descuentoparcial.")*(detalleven_cantidad)".
                     "  where detalleven_id = ".$detalleven_id." and detalleven_cantidad > 1";
             
         $this->Venta_model->ejecutar($sql);
