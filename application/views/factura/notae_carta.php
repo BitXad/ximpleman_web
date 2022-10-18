@@ -146,6 +146,7 @@ border-bottom : 1px solid #aaa;
                 <td align="center" style="padding: 0"><b>CANT</b></td>
                 <td align="center" style="padding: 0"><b>DESCRIPCIÓN</b></td>
                 <td align="center" style="padding: 0"><b>P.UNIT <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
+                <td align="center" style="padding: 0"><b>DESC. <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>               
                 <td align="center" style="padding: 0"><b>TOTAL <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>               
                 
                 <?php
@@ -218,7 +219,8 @@ border-bottom : 1px solid #aaa;
                     <!--<textarea onload="autosize()"></textarea>-->
                 </td>
                 <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_descuentoparcial']*$d['detalleven_cantidad'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
                 <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                 <td align="right" style="padding: 0">
                     <?php 

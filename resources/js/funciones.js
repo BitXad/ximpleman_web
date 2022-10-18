@@ -471,7 +471,11 @@ function tablaproductos(){
                            cont = cont+1;
                            cant_total+= parseFloat(registros[i]["detalleven_cantidad"]);
                            total_detalle+= parseFloat(registros[i]["detalleven_total"]);
-                           total_descuentoparcial += parseFloat(registros[i]["detalleven_descuentoparcial"] * registros[i]["detalleven_cantidad"]);
+                           let descuento_parcial = registros[i]["detalleven_descuentoparcial"];
+                           if(descuento_parcial == null || descuento_parcial == "" ){
+                               descuento_parcial = 0;
+                           }
+                           total_descuentoparcial += parseFloat(descuento_parcial * registros[i]["detalleven_cantidad"]);
 
 
                             if (i == 0){
@@ -666,7 +670,7 @@ html += "  </div>";
                         html += "<td align='right' "+color+"><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         
                         
-                        html += "<td align='right' "+color+"><input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_descuentoparcial"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        html += "<td align='right' "+color+"><input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         
                         
                         html += "                       <td align='right' "+color+"><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font><br>"+total_equivalente;

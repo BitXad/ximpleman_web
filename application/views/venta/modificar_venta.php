@@ -1165,7 +1165,7 @@ window.onkeydown = compruebaTecla;
 
           
             <div class="col-md-8">
-                NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
+                NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="<?php echo $venta[0]['venta_glosa']; ?>" class="form-control  input-sm">           
                 
                 <div class="col-md-12" style="display:none" id="imagenqr">
                     <center>

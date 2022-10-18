@@ -1956,7 +1956,8 @@ function edit($venta_id)
                   detalleven_subtotal,
                   detalleven_descuentoparcial,
                   detalleven_descuento,
-                  detalleven_subtotal - ((detalleven_descuentoparcial + detalleven_subtotal)* detalleven_cantidad),
+                  /*detalleven_subtotal - ((detalleven_descuentoparcial + detalleven_subtotal)* detalleven_cantidad),*/
+                  detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad),
                   detalleven_caracteristicas,
                   detalleven_preferencia,
                   detalleven_comision,
