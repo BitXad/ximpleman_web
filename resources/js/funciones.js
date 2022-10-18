@@ -1711,9 +1711,15 @@ function ingresorapidojs(cantidad,producto)
     var existencia =  producto.existencia;    
     var producto_id =  producto.producto_id;
     var datos1 = "";
-    //var descuentoparcial = 0;
+    
     var descuentoparcial = producto.detalleven_descuentoparcial;
     var descuento = producto.detalleven_descuento;
+    if(descuentoparcial == undefined){
+        descuentoparcial = 0;
+    }
+    if(descuento == undefined){
+        descuento = 0;
+    }
     var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
     var check_agrupar = document.getElementById('check_agrupar').checked;
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
@@ -4425,7 +4431,7 @@ function modificar_venta(cliente_id)
     */
     /*facturado:facturado,*/
     
-        alert(modificar_credito);
+        //alert(modificar_credito);
         $.ajax({url: controlador,
             type:"POST",
             data:{venta_id:venta_id, cliente_id:cliente_id, forma_pago:forma_pago, tipo_transaccion:tipo_transaccion,
