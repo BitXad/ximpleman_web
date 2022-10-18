@@ -323,7 +323,7 @@ if($cliente[0]['cliente_id'] >0){
                       <span class="input-group-addon" onclick="ocultar_busqueda();"> 
                         Buscar 
                       </span>           
-                      <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,4)">
+                      <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,4)" autocomplete="off">
                       <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaresultados(1)" title="Buscar"><span class="fa fa-search"></span></div>
                   </div>
             
@@ -394,7 +394,7 @@ if($cliente[0]['cliente_id'] >0){
             <div class="col-md-8" style="padding:0;">
             <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar2" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código">
+                    <input id="filtrar2" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" autocomplete="off">
                   </div>
             
             <center>
