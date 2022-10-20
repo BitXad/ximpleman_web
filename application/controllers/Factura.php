@@ -1644,4 +1644,37 @@ class Factura extends CI_Controller{
         }
     }
     
+    function ticket($venta_id, $descripcion)
+    {
+        if($this->acceso(17)){
+        //**************** inicio contenido ***************           
+    
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        //$data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+       // $data['venta'] = $this->Detalle_venta_model->get_venta_id($venta_id);
+        //$detalle_factura = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
+        $ladescripcion = str_replace("%20", "", $descripcion);
+        $ladescripcion = str_replace("%22", "", $ladescripcion);
+        $data['descripcion'] = $ladescripcion;
+        //$data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Ticket";
+        $factura = $this->Factura_model->get_factura_venta($venta_id);
+        $data['factura'] = $factura;
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $parametros = $data['parametro'][0];
+        //$data['tipo'] = $tipo;
+        
+        /*if(sizeof($factura)>=1){
+            }
+        */
+        
+        
+        $data['_view'] = 'factura/ticket';
+        $this->load->view('layouts/main',$data);
+        //**************** fin contenido ***************
+        }
+    }
+    
 }
