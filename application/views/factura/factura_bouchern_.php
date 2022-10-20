@@ -1,41 +1,9 @@
 <script src="<?php echo base_url('resources/js/factura_anular.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<input type="hidden" name="detalle_factura" id="detalle_factura" value='<?php echo json_encode($detalle_factura); ?>' />
 <script type="text/javascript">
     $(document).ready(function()
     {
         window.onload = window.print();
-        let base_url = document.getElementById('base_url').value;
-        let venta_id = document.getElementById('venta_id').value;
-        let detalle_factura = JSON.parse(document.getElementById('detalle_factura').value);
-        let descripcion = "";
-        var n = detalle_factura.length;
-        for (var i = 0; i < n ; i++){
-            cantidad = detalle_factura[i]["detallefact_cantidad"];
-            for (var j = 0; j < cantidad; j++) {
-                descripcion = detalle_factura[i]["detallefact_descripcion"];
-                dir_url = base_url+"factura/ticket/"+venta_id+"/"+JSON.stringify(descripcion);
-                window.open(dir_url, '_blank');
-            }
-        }
-        
-        
-        /**/
-        
-        /*printContents(print_ticket);
-        printContents(print_ticket);*/
-        /*max = 2;
-        let nombre = "print_ticket";
-        for (var i = 0; i < max; i++) {
-            window.open(dir_url, '_blank');
-            //printdiv(nombre);
-            //printContents();
-            //sleep(100);
-        }*/
-        
-        //printContents();
-        
-        
     });
 </script>
 <style type="text/css">
@@ -154,7 +122,7 @@
     </div>
 </div>
 <!------------------------ F I N  modal para confirmar anulacion de factura ------------------->
-<table class="table ">
+<table class="table">
     <tr>
         <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>"></td>
         <td style="padding: 0;">
@@ -430,7 +398,7 @@
                         
                     <?php
                     if($factura[0]['estado_id']<>3){
-                        if($parametro[0]['parametro_imprimirticket'] == 2){
+                        if($parametro[0]['parametro_imprimirticket'] == 1){
                             foreach($detalle_factura as $d){
                                 $cantidad = $d['detallefact_cantidad'];
                                 
