@@ -7,7 +7,7 @@
 
 <?php  $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'  "; ?>
 <!-------------------- inicio collapse ---------------------->
-<div >
+<div hidden>
 
     <input  type="text" id="buscarusuario_id" value="<?php echo $usuario_id; ?>">
     <input  type="text" id="base_url" value="<?php echo base_url(""); ?>">
@@ -27,7 +27,7 @@
         <br>CAJERO(A): <?php echo $usuario_nombre; ?>
     </div>
 
-    <div class="container" >  
+    <div class="container" hidden>  
         <div class="box-tools" style="font-family: Arial;">
                 <div class=" col-md-11">
 
@@ -84,13 +84,13 @@
                     <div class="row clearfix">
 
                         
-                        <div class="col-md-6">
+                        <div class="col-md-6" hidden>
                             <label for="saldo_caja" class="control-label">Caja Transacciones</label>
                             <div class="form-group">
                                 <input type="text" name="saldo_caja" value="0.00" class="form-control" id="saldo_caja" />
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" hidden>
                             <label for="caja_diferencia" class="control-label">Caja Diferencia</label>
                             <div class="form-group">
                                 <input type="text" name="caja_diferencia" value="0.00" class="form-control" id="caja_diferencia" />
@@ -224,7 +224,7 @@
                         <div class="col-md-3">
                             <label for="caja_cierre" class="control-label"><span class="text-danger">*</span>Monto Bs</label>
                             <div class="form-group">
-                                <input type="number" step="any" min="0" name="caja_cierre" value="<?php echo ($this->input->post('caja_cierre') ? $this->input->post('caja_cierre') : $caja['caja_cierre']); ?>" class="form-control" id="caja_cierre" autofocus required readonly/>
+                                <input type="number" step="any" min="0" name="caja_cierre" value="<?php echo ($this->input->post('caja_cierre') ? $this->input->post('caja_cierre') : $caja['caja_cierre']); ?>" class="form-control" id="caja_cierre" />
                                 <button class="btn btn-primary btn-xs" type="button" onclick="verificar_caja()"><fa class="fa fa-spinner"> </fa>Verificar</button>
                             </div>
                         </div>

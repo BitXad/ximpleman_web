@@ -18,7 +18,9 @@ class Reportes extends CI_Controller{
         $this->load->model('Inventario_model');
         $this->load->model('Compra_model');
         $this->load->model('Parametro_model');
+        $this->load->model('Detalle_venta_model');
         $this->load->model('Banco_model');
+        $this->load->model('Venta_model');
         $this->load->model('Categoria_producto_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -96,6 +98,7 @@ class Reportes extends CI_Controller{
     {
         if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $usuario_id = $this->session_data['usuario_id']; 
             $this->load->model('Tipo_transaccion_model');
             $data['page_title'] = "Reporte de ventas agrupado";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
@@ -107,6 +110,25 @@ class Reportes extends CI_Controller{
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
+            $data['caja'] = $this->Venta_model->consultar("select c.*,u.* from caja c, usuario u
+                                                            where 
+                                                            c.usuario_id = u.usuario_id and
+                                                            c.usuario_id = ".$usuario_id." and
+                                                            c.caja_fechaapertura = date(now())");
+            
+            $sql = "select MIN(factura_numero) as desde, MAX(factura_numero) as hasta,
+                    MAX(factura_numero)-MIN(factura_numero) as ventas from factura
+                    where usuario_id = 1 and factura_fecha = date(now())";
+            $data['resumen'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select count(*) as anuladas
+                    from factura
+                    where usuario_id = ".$usuario_id." and factura_fecha = date(now()) and estado_id<>1";
+            $data['anuladas'] = $this->Venta_model->consultar($sql);
+            
+            
             $data['_view'] = 'reportes/reportecaja';
             $this->load->view('layouts/main',$data);
         }

@@ -127,11 +127,21 @@ class Moneda_model extends CI_Model
      */
     function getalls_monedasact_asc()
     {
-        $sql = "SELECT m.* FROM moneda m, estado e
-                WHERE
-                    m.estado_id = e.estado_id
-                    and m.estado_id = 1
-                ORDER BY `moneda_id` ASC";
+        $sql = "SELECT vs.producto_id, vs.`producto_codigo`, vs.`producto_nombre`, tt.tipotrans_nombre, 
+                vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad, 
+                (sum(`vs`.`detalleven_total`) / sum(vs.detalleven_cantidad)) as total_punitario, 
+                sum(`vs`.`detalleven_descuento`*`vs`.`detalleven_cantidad`) as total_descuento, 
+                sum(`vs`.`detalleven_total`) as total_venta, (sum(`vs`.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_costo, 
+                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_utilidad, 
+                avg(vs.detalleven_tc) as tipo_cambio 
+                FROM ventas vs 
+                LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id 
+                WHERE 
+                date(venta_fecha) >= '2022-10-20' and 
+                date(venta_fecha) <='2022-10-20' and 
+                vs.usuario_id = 1 
+                group by `vs`.producto_id 
+                order by total_venta";
         
         $moneda = $this->db->query($sql)->result_array();
         return $moneda;

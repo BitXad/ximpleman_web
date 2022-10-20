@@ -37,7 +37,10 @@
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
+
+<!--<div class="row" <?php echo ($tipousuario_id == 1)?"hidden":""; ?>>-->
 <div class="row" >
+    
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
         <div class="col-md-3">
             Desde: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
@@ -139,7 +142,7 @@
 
 p {
     font-family: Arial;
-    font-size: 8pt;
+    font-size: 10pt;
     line-height: 100%;   /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 10px;
@@ -155,13 +158,13 @@ margin: 0px;
 
 
 table{
-width : 7cm;
+width : 10cm;
 margin : 0 0 0px 0;
 padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
 font-family: Arial narrow;
-font-size: 7pt;
+font-size: 9pt; //tamaño contenido de tabla
 td {
 border:hidden;
 
@@ -230,22 +233,27 @@ border-bottom : 1px solid #aaa;*/
                 <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
                 <!--<table style="width:<?php echo $ancho?>" >-->
                     <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
-                        <td style="font-family: arial; font-size: 8pt; padding: 0;" colspan="5">
-                            <center>
-                                    <span id="desde"></span> <span id="hasta"></span><br>
+                        <td style="font-family: arial; font-size: 9pt; padding: 0; align:right;" colspan="1">
+                            <!--<center>-->
+<!--                                    <span id="desde"></span> <span id="hasta"></span><br>
                                     <div id="labusqueda"></div>
                                     <span id="tipotrans"></span>
                                     <span id="esteusuario"></span>
                                     <span id="ventaprev"></span>
-<!--                                    <b>DESDE:      </b><br>
+                                    <b>DESDE:      </b><br>
                                     <b>FACTURA No.:  </b><br>
                                     <b>AUTORIZACION: </b>                        -->
-                            </center>                        
-                        </td>
-<!--                        <td style="font-family: arial; font-size: 8pt; padding: 0;">
+
 
                             
-                        </td>-->
+                            <!--</center>-->                        
+                        </td>
+                        <td style="font-family: Arial; font-size: 9pt; padding: 0;" colspan="4">
+                            PUNTO DE VENTA:<?php echo "Caja 1"; ?>
+                            <br>FECHA INICIO: <?php echo $caja[0]["caja_fechaapertura"]." ".$caja[0]["caja_horaapertura"]; ?>
+                            <br>FECHA FIN: <?php echo $caja[0]["caja_fechacierre"]." ".$caja[0]["caja_horacierre"]; ?>
+                            
+                        </td>
                     </tr>
                 <!--</table>-->
                 
@@ -277,8 +285,37 @@ border-bottom : 1px solid #aaa;*/
                 <td align="center" style="padding: 0;"><b>TOTAL</b></td>
                 
            </tr>
-           <tbody class="buscar" id="reportefechadeventa"></tbody>
+           <!--<tbody class="buscar" id="reportefechadeventa"></tbody>-->
+           
+           <?php 
+                    $total = 0;
+                    $cantidades = 0;
+                    $descuentos = 0;
+                    $costos = 0;
+                    $utilidades = 0;
+                    
+                    foreach($reporte as $registros){
+               
+                        $total += $registros["total_venta"];
+                        $cantidades += $registros["total_cantidad"];
+                        $descuentos += $registros["total_descuento"];
+                        $costos += $registros["total_costo"];
+                        $utilidades += $registros["total_utilidad"]; ?>
 
+                        <td align='center'><?php echo $registros["total_cantidad"] ?></td>
+                        <td><?php echo $registros["producto_nombre"] ?> </td>
+                        <td align='right'><?php  echo number_format($registros["total_punitario"],2,".",","); ?> </td>
+                        <td align='right'><b><?php echo number_format($registros["total_venta"],2,".",","); ?> </b></td>
+                        <?php
+                        if($tipousuario_id == 1){?>
+                            <td align='right'> <?php number_format($registros["total_utilidad"],2,".",","); ?> </td>
+                        <?php } ?>
+                        
+                        </tr>
+            <?php } ?> 
+               
+           
+           
            
 
 <!--       </table>
@@ -289,36 +326,44 @@ border-bottom : 1px solid #aaa;*/
     <tr style="border-top-style: solid; border-top-width: 2px;">
         
             
-        <td align="right" style="padding: 0;" colspan="4">
+        <td align="right" style="padding: 0; font-family: Arial; font-size: 10pt;" colspan="4">
             
-            
-            
+            <b>VENTAS AL CONTADO Bs.: <?php echo number_format($total,2,".",","); ?></b>
+            <br><b>EFECTIVO INICIAL Bs: <?php echo $caja[0]["caja_apertura"]; ?></b>
+            <br>INGRESOS Bs: <?php echo "0.00"; ?>
+            <br>EGRESOS Bs:<?php echo "0.00"; ?>            
         </td>          
     </tr>
-    <tr>
-        <td nowrap style="padding: 0;" colspan="4">
-            <font size="2">
-
-            
-            </font>
+    <tr style="border-top-style: solid; border-top-width: 2px;">
+        <td nowrap style="padding: 0; font-family: Arial; font-size: 10pt;" colspan="4">
+            <?php $efectivo_caja = $total + $caja[0]["caja_apertura"]; ?> 
+            <b>EFECTIVO EN CAJA Bs: <?php echo number_format($efectivo_caja,2,".",","); ?> </b>
+            <br><b>DIFERENCIA Bs: <?php echo number_format($caja[0]["caja_diferencia"],2,".",","); ?> </b>
         </td>           
     </tr>
-    <tr>
+     <tr style="border-top-style: solid; border-top-width: 2px;">
         <td style="padding: 0;" colspan="4">
-        <center>
+        RANGO NUMERACION VENTAS: <?php echo $resumen[0]["desde"]." - ".$resumen[0]["hasta"]; ?>
+        <br>CANTIDAD TOTAL VENTAS: <?php echo $resumen[0]["ventas"]; ?>
+        <br>VENTAS VALIDAS: <?php echo $resumen[0]["ventas"] - $anuladas[0]["anuladas"]; ?>
+        <br>VENTAS ANULADAS: <?php echo $anuladas[0]["anuladas"]; ?>
             
-            
-        </center>
-
         </td>
        
 
     </tr>    
-    <tr >
-        <td style="padding: 0;  line-height: 12px;" colspan="4">
+
+    <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
+        <td colspan="5" style="padding: 0; text-align: center;">
+            <small>Declaro veracidad de la información de este documento.</small>
+            <br><br><br><br><br>
+            <b><?php echo $caja[0]["usuario_nombre"]; ?><br>CAJERO(A)</b>
+        </td>
+
+<!--        <td style="padding: 0;  line-height: 12px;" colspan="4">
                USUARIO: <b></b> / TRANS: 
 
-         </td>
+         </td>-->
     </tr>    
     
 </table>

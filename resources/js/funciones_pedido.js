@@ -1563,7 +1563,6 @@ function registrar_cantidad(e,producto_id){
     
 }
 
-//Tabla resultados de la busqueda
 function tablaresultados(opcion)
 {   
     

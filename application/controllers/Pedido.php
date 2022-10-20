@@ -286,56 +286,54 @@ class Pedido extends CI_Controller{
     {
         
         if($this->acceso(31)){
-        //**************** inicio contenido ***************        
+            //**************** inicio contenido ***************        
 
-        
-        
-        $usuario_id = $this->session_data['usuario_id'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];
-        $data['rolusuario'] = $this->session_data['rol'];
-        $data['page_title'] = "Pedidos";
-        //$data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
-        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        
-        if ($cliente_id>0){
-            $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
-            if (sizeof($cliente)>0)
-                $data['cliente'] = $cliente;
+            $usuario_id = $this->session_data['usuario_id'];
+            $tipousuario_id = $this->session_data['tipousuario_id'];
+            $data['rolusuario'] = $this->session_data['rol'];
+            $data['page_title'] = "Pedidos";
+            //$data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+            //$data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+
+            if ($cliente_id>0){
+                $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+                if (sizeof($cliente)>0)
+                    $data['cliente'] = $cliente;
+                else
+                    $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+            }        
             else
-                $data['cliente'] = $this->Venta_model->get_cliente_inicial();
-        }        
-        else
-        {    $data['cliente'] = $this->Venta_model->get_cliente_inicial();}
-        
-        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
-        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
-        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['all_moneda'] = $this->Moneda_model->getalls_monedasact_asc();
-        $this->load->model('Banco_model');
-        $data['all_banco'] = $this->Banco_model->getall_bancosact_asc();
-        $data['usuario_id'] = $usuario_id;
-        $data['tipousuario_id'] = $tipousuario_id;
-        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
-        $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
-        $data['tipo_respuesta'] = $this->Usuario_model->get_tipo_respuesta();
-        
-        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+            {    $data['cliente'] = $this->Venta_model->get_cliente_inicial();}
 
-        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
-        $data['promociones'] = $this->Promocion_model->get_promociones();
-        
-        $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
-        
-        //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
-        
-        $data['_view'] = 'pedido/pedidoabierto';
-        $this->load->view('layouts/main',$data);
-        		
-        //**************** fin contenido ***************
+            $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+            $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+            $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['all_moneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $this->load->model('Banco_model');
+            $data['all_banco'] = $this->Banco_model->getall_bancosact_asc();
+            $data['usuario_id'] = $usuario_id;
+            $data['tipousuario_id'] = $tipousuario_id;
+            $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+            $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
+            $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['tipo_respuesta'] = $this->Usuario_model->get_tipo_respuesta();
+
+            $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+
+            $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+            $data['promociones'] = $this->Promocion_model->get_promociones();
+
+            $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
+
+            //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
+
+            $data['_view'] = 'pedido/pedidoabierto';
+            $this->load->view('layouts/main',$data);
+
+            //**************** fin contenido ***************
         }       
         
     }

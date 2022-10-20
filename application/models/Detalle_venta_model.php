@@ -542,8 +542,7 @@ function ventas_dia($estado)
     }
     function reporteventas_prodagrupados($filtro)
     {
-        $reporte = $this->db->query(
-            "SELECT
+            $sql = "SELECT
 		vs.producto_id, vs.`producto_codigo`, vs.`producto_nombre`, tt.tipotrans_nombre,
                 vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad,
                 (sum(`vs`.`detalleven_total`) / sum(vs.detalleven_cantidad)) as total_punitario, 
@@ -558,10 +557,13 @@ function ventas_dia($estado)
             WHERE 
                 $filtro
             group by `vs`.producto_id
-            order by total_venta desc
-        ")->result_array();
+            order by total_venta desc";
+            //echo $sql;
+            
+        $reporte = $this->db->query($sql)->result_array();
         return $reporte;
     }
+    
     function getdetalles_paravender()
     {
         $get_detalle = $this->db->query(
@@ -576,6 +578,7 @@ function ventas_dia($estado)
         ")->result_array();
         return $get_detalle;
     }
+    
     function reporteventas_prodagrupados_porcategoria($filtro)
     {
         $reporte = $this->db->query(
@@ -637,6 +640,27 @@ function ventas_dia($estado)
                 from detalle_factura df
                 left join producto p on p.producto_id = df.producto_id 
                 where MD5(df.venta_id) = '".$venta_id."'";
+        $detalle_venta = $this->db->query($sql)->result_array();        
+        return $detalle_venta;
+    }
+    
+    function get_resumenventas($usuario_id)
+    { //aun no se reviso esto
+        $sql = "SELECT vs.producto_id, vs.`producto_codigo`, vs.`producto_nombre`, tt.tipotrans_nombre, 
+                vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad, 
+                (sum(`vs`.`detalleven_total`) / sum(vs.detalleven_cantidad)) as total_punitario, 
+                sum(`vs`.`detalleven_descuento`*`vs`.`detalleven_cantidad`) as total_descuento, 
+                sum(`vs`.`detalleven_total`) as total_venta, (sum(`vs`.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_costo, 
+                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_utilidad, 
+                avg(vs.detalleven_tc) as tipo_cambio 
+                FROM ventas vs 
+                LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id 
+                WHERE 
+                date(venta_fecha) >= date(now()) and 
+                date(venta_fecha) <= date(now()) and 
+                vs.usuario_id = ".$usuario_id." 
+                group by `vs`.producto_id 
+                order by total_venta";
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
     }
