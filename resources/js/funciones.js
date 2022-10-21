@@ -356,7 +356,7 @@ function buscarcliente(){
                     $("#tipocliente_id").val(1);
                     $("#venta_descuento").val(0);
                     let tipo_sistema = document.getElementById('parametro_tiposistema').value;
-                    let dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
+                    //let dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
                     let parametro_tipoemision = document.getElementById('parametro_tipoemision').value;
                     
                     if(tipo_sistema != 1){ //1 =SFV /2=elec en linea 3=comp. en linea
@@ -391,6 +391,9 @@ function buscarcliente(){
                                 //verificarnit();
                                 //$('#razon_social').select();
                         }                       
+                    }else{
+                        document.getElementById('loader_documento').style.display = 'none';
+                        $('#razon_social').focus();
                     }                    
                 }
                 //document.getElementById('loader_documento').style.display = 'none';
