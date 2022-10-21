@@ -1657,6 +1657,7 @@ class Factura extends CI_Controller{
         //$detalle_factura = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
         $ladescripcion = str_replace("%20", "", $descripcion);
         $ladescripcion = str_replace("%22", "", $ladescripcion);
+        $ladescripcion = str_replace("%C3%", "Ñ", $ladescripcion);
         $data['descripcion'] = $ladescripcion;
         //$data['empresa'] = $this->Empresa_model->get_empresa(1);        
         $data['page_title'] = "Ticket";

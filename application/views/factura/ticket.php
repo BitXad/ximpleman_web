@@ -13,9 +13,9 @@
 
 <table id="print_ticket" style="width:<?php echo $ancho?>">
     <tr style="border-top-style: dashed; border-top-width: 1px;">
-        <td class="text-center" colspan="2" style="font-size: <?= $tamanio_fuente; ?>; padding-right: 0; padding-left: 0; padding-top: 5px;">
+        <td class="text-center text-bold" colspan="2" style="font-size: 12pt; padding-right: 0; padding-left: 0; padding-top: 5px;">
             <?php
-            echo "TICKET : ".$venta[0]['venta_numeroventa'];
+            echo $descripcion;
             ?>
         </td>
     </tr>
@@ -45,9 +45,9 @@
         </td>
     </tr>
     <tr>
-        <td class="text-left" colspan="2" style="font-size: <?= $tamanio_fuente; ?>; padding: 0">
+        <td class="text-center" colspan="2" style="font-size: <?= $tamanio_fuente; ?>; padding: 0;">
             <?php
-            echo $descripcion;
+            echo "TICKET : ".$venta[0]['venta_numeroventa'];
             ?>
         </td>
     </tr>
