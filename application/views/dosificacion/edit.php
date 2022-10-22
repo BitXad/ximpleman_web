@@ -70,17 +70,17 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="dosificacion_sucursal" class="control-label">Sucursal</label>
+                        <label for="dosificacion_sucursal" class="control-label">Sucursal (0 Casa Matriz)</label>
                         <div class="form-group">
-                            <!-- <input type="text" name="dosificacion_sucursal" value="<?php echo ($this->input->post('dosificacion_sucursal') ? $this->input->post('dosificacion_sucursal') : $dosificacion['dosificacion_sucursal']); ?>" class="form-control" id="dosificacion_sucursal" /> -->
-                            <select class="form-control" name="dosificacion_sucursal" id="dosificacion_sucursal">
-                                <option value="0" <?= ($dosificacion['dosificacion_sucursal']==0)?'selected':'' ?>>CASA MATRIZ</option>
+                            <input type="text" name="dosificacion_sucursal" value="<?php echo ($this->input->post('dosificacion_sucursal') ? $this->input->post('dosificacion_sucursal') : $dosificacion['dosificacion_sucursal']); ?>" class="form-control" id="dosificacion_sucursal" />
+                            <!--<select class="form-control" name="dosificacion_sucursal" id="dosificacion_sucursal">
+                                <option value="0" <?php /*= ($dosificacion['dosificacion_sucursal']==0)?'selected':'' ?>>CASA MATRIZ</option>
                                 <option value="1" <?= ($dosificacion['dosificacion_sucursal']==1)?'selected':'' ?>>SUCURSAL 1</option>
                                 <option value="2" <?= ($dosificacion['dosificacion_sucursal']==2)?'selected':'' ?>>SUCURSAL 2</option>
                                 <option value="3" <?= ($dosificacion['dosificacion_sucursal']==3)?'selected':'' ?>>SUCURSAL 3</option>
                                 <option value="4" <?= ($dosificacion['dosificacion_sucursal']==4)?'selected':'' ?>>SUCURSAL 4</option>
-                                <option value="5" <?= ($dosificacion['dosificacion_sucursal']==5)?'selected':'' ?>>SUCURSAL 5</option>
-                            </select>
+                                <option value="5" <?= ($dosificacion['dosificacion_sucursal']==5)?'selected':'' */ ?>>SUCURSAL 5</option>
+                            </select>-->
                         </div>
                     </div>
                     <div class="col-md-6">
