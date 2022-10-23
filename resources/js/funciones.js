@@ -697,6 +697,7 @@ html += "  </div>";
                         //html += "                            <th style='padding:0'></th>";
                         html += "                            <th colspan=2 style='padding:0' align='right'><font size='1'> Producto(s): "+cant_total.toFixed(2)+"</font><br><font size='3'>Total "+parametro_moneda_descripcion+": "+total_detalle.toFixed(2)+"</font></th>";
                         html += "                            <th style='padding:0'></th> ";                                       
+                        html += "<input type='hidden' id='venta_descuentoparcial' value="+total_descuentoparcial.toFixed(2)+" />";
                    }
                    else{                       
                         html += "                            <th style='padding:0'></th>";
@@ -3075,18 +3076,20 @@ function registrarventa(cliente_id)
                 }
                 
                 eliminardetalleventa();
-                
-                if(res.mensajesList.codigoDescripcion == "VALIDADA"){
-                    
-                }else
-                if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){                    
-                    alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
-                    
-                    if(res.mensajesList.codigo == 953){                    
-                        //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
-                        solicitudCufd(punto_venta);                    
+                let parametro_tiposistema = document.getElementById('parametro_tiposistema').value;
+                if(parametro_tiposistema != 1){
+                    if(res.mensajesList.codigoDescripcion == "VALIDADA"){
+
+                    }else
+                    if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){                    
+                        alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
+
+                        if(res.mensajesList.codigo == 953){                    
+                            //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
+                            solicitudCufd(punto_venta);                    
+                        }
+
                     }
-                    
                 }
                 //console.log(res.comunicacion);
                 //alert(JSON.stringify(res));
@@ -3127,7 +3130,7 @@ function registrarventa(cliente_id)
                 if (registroeventos_codigo>0){
                     $('#evento_contingencia').prop('selectedIndex',0);
                 }
-                var res = JSON.parse(respuesta)                
+                var res = JSON.parse(respuesta);                
 
 //                alert(res.codigoDescripcion);
 //                alert(res.mensajesList.codigo);
@@ -3138,17 +3141,20 @@ function registrarventa(cliente_id)
 //                }
 //                
 //                if((res.mensajesList.codigo >= 1037)||(res.mensajesList.codigo == 988)||(res.mensajesList.codigo == 993)||(res.mensajesList.codigo == 988) ){                    
-                if(res.mensajesList.codigoDescripcion == "VALIDADA"){
-                    
-                }else
-                if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){                    
-                    alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
-                    
-                    if(res.mensajesList.codigo == 953){                    
-                        //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
-                        solicitudCufd(punto_venta);                    
+                let parametro_tiposistema = document.getElementById('parametro_tiposistema').value;
+                if(parametro_tiposistema != 1){
+                    if(res.mensajesList.codigoDescripcion == "VALIDADA"){
+
+                    }else
+                    if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){                    
+                        alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
+
+                        if(res.mensajesList.codigo == 953){                    
+                            //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
+                            solicitudCufd(punto_venta);                    
+                        }
+
                     }
-                    
                 }
 //
 //                if(res.mensajesList.codigo == 988){                    

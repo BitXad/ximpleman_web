@@ -5,7 +5,7 @@
     $(document).ready(function()
     {
         window.onload = window.print();
-        let base_url = document.getElementById('base_url').value;
+        /*let base_url = document.getElementById('base_url').value;
         let venta_id = document.getElementById('venta_id').value;
         let detalle_factura = JSON.parse(document.getElementById('detalle_factura').value);
         let descripcion = "";
@@ -17,7 +17,7 @@
                 dir_url = base_url+"factura/ticket/"+venta_id+"/"+JSON.stringify(descripcion);
                 window.open(dir_url, '_blank');
             }
-        }
+        }*/
         
         
         /**/

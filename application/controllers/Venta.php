@@ -1227,6 +1227,7 @@ class Venta extends CI_Controller{
                         //********** INICIO ACTUALIZAR NUMERO DE FACTURA
                         $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
                         $this->Venta_model->ejecutar($sql);
+                        echo json_encode("");
                         //********** FIN INICIO ACTUALIZAR NUMERO DE FACTURA
                     }
                     // $this->ultimaventa(1);
@@ -1259,7 +1260,10 @@ class Venta extends CI_Controller{
                         }  
                     }
 
-                }       
+                }   
+                if($facturado=="false" && $tipo_transaccion == 2){
+                    echo json_encode("");
+                }
         }
 
         //**************** fin contenido ***************
