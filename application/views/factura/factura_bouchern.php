@@ -18,24 +18,6 @@
                 window.open(dir_url, '_blank');
             }
         }*/
-        
-        
-        /**/
-        
-        /*printContents(print_ticket);
-        printContents(print_ticket);*/
-        /*max = 2;
-        let nombre = "print_ticket";
-        for (var i = 0; i < max; i++) {
-            window.open(dir_url, '_blank');
-            //printdiv(nombre);
-            //printContents();
-            //sleep(100);
-        }*/
-        
-        //printContents();
-        
-        
     });
 </script>
 <style type="text/css">
@@ -424,13 +406,13 @@
                 </tr>
                 <tr><td></td></tr>
                 
-                <tr>
+                <!--<tr>
                     <td style="padding: 0">
-                        <?php $tamanio_fuente = "8pt"; ?>
+                        <?php /*$tamanio_fuente = "8pt"; ?>
                         
                     <?php
                     if($factura[0]['estado_id']<>3){
-                        if($parametro[0]['parametro_imprimirticket'] == 2){
+                        if($parametro[0]['parametro_imprimirticket'] == 1){
                             foreach($detalle_factura as $d){
                                 $cantidad = $d['detallefact_cantidad'];
                                 
@@ -481,10 +463,10 @@
                                 }
                             }
                         }
-                    }
+                    }*/
                     ?>
                     </td>
-                </tr>
+                </tr>-->
             </table>
         </td>
     </tr>

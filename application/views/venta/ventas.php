@@ -777,9 +777,14 @@ window.onkeydown = compruebaTecla;
             ?>
             
             <?php            
-            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="<?php echo base_url('venta/ultimaventa/1');?>" data-toggle="modal" target="_blank" class="btn btn-warning btn-xs" id="imprimir_factura"><span class="fa fa-list-alt" title="Imprimir factura"></span><b> Factura</b></a> 
-            <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-danger btn-xs" id="imprimir_factura"><span class="fa fa-file-pdf" title="Imprimir factura en PDF"></span></a>
+            if($rolusuario[17-1]['rolusuario_asignado'] == 1){
+                $nomostrar = "";
+                if($tipousuario_id != 1){
+                    $nomostrar = "style='display: none'";
+                }
+                ?>
+            <a href="<?php echo base_url('venta/ultimaventa/1');?>" <?php echo $nomostrar; ?> data-toggle="modal" target="_blank" class="btn btn-warning btn-xs" id="imprimir_factura" title="Imprimir factura"><span class="fa fa-list-alt" ></span><b> Factura</b></a> 
+            <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-danger btn-xs" id="imprimir_factura" title="Imprimir factura en PDF"><span class="fa fa-file-pdf"></span></a>
             
             <?php } 
             ?>
@@ -840,8 +845,13 @@ window.onkeydown = compruebaTecla;
             
             <!--<a href="<?php //echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs"  style="background-color: purple"  id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> Garantias</b></a>-->
             <?php
-            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
-            <select  id="select_imprimir_factura" style="font-weight: bold" onclick="imprimir_factura()" class='btn btn-warning btn-xs' title="Imprimir factura">
+            if($rolusuario[17-1]['rolusuario_asignado'] == 1){
+                $nomostrar = "";
+                if($tipousuario_id != 1){
+                    $nomostrar = "display: none";
+                }
+                ?>
+            <select   id="select_imprimir_factura" style="font-weight: bold; <?php echo $nomostrar?>" onclick="imprimir_factura()" class='btn btn-warning btn-xs' title="Imprimir factura">
                 <option value="0">Imprimir</option>
                 <option value="1">Factura</option>
                 <option value="2">Copia</option>
@@ -882,7 +892,14 @@ window.onkeydown = compruebaTecla;
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
             </a>
-            <?php } ?>    
+            <?php } ?>
+                
+            <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
+                <a href="<?php echo site_url('admin/dashb'); ?>" class="btn btn-sq-lg btn-info" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <i class="fa fa-calculator fa-4x"></i><br><br>
+               Cierre de Caja <br>
+            </a>
+            <?php //} ?>
 
             <?php if($rolusuario[18-1]['rolusuario_asignado'] == 1){ ?>
             <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
@@ -910,22 +927,32 @@ window.onkeydown = compruebaTecla;
             <?php
             }
             ?>
-        
-        <b>            
-        <br>TECLAS DE ACCESO DIRECTO <br>
-        </b>
-        <p>
-            
-        [F2] Busqueda por código de barras <br>
-        [F4] Busqueda por parámetros<br>
-        [F5] Actualizar página<br>        
-        [F7] Registrar NIT<br>
-        [F8] Finalizar venta<br>
-        <div hidden>            
-        <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-warning btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
-        </div>
-        
-        </p>
+            <?php
+            $nomostrar = "";
+                if($tipousuario_id != 1){
+                    $nomostrar = "display: none";
+                }
+            if(sizeof($dosificacion)>0 && $parametro['parametro_factura'] != 3){
+            ?>
+                <a class="btn btn-sq-lg btn-warning btn-xs" href="<?php echo site_url('factura'); ?>" style="padding-left: 2px; <?php echo $nomostrar; ?>">
+                    Anular Factura
+                </a>
+            <?php   
+            }
+            ?>
+            <b>
+                <br>TECLAS DE ACCESO DIRECTO <br>
+            </b>
+            <p>
+                [F2] Busqueda por código de barras <br>
+                [F4] Busqueda por parámetros<br>
+                [F5] Actualizar página<br>        
+                [F7] Registrar NIT<br>
+                [F8] Finalizar venta<br>
+                <div hidden>            
+                    <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-warning btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
+                </div>
+            </p>
         </font>
     </div>
 </div>
