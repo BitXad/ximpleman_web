@@ -783,7 +783,7 @@ window.onkeydown = compruebaTecla;
                     $nomostrar = "style='display: none'";
                 }
                 ?>
-            <a href="<?php echo base_url('venta/ultimaventa/1');?>" <?php echo $nomostrar; ?> data-toggle="modal" target="_blank" class="btn btn-warning btn-xs" id="imprimir_factura" title="Imprimir factura"><span class="fa fa-list-alt" ></span><b> Factura</b></a> 
+            <a href="<?php echo base_url('venta/ultimaventa/1');?>" <?php //echo $nomostrar; ?> data-toggle="modal" target="_blank" class="btn btn-warning btn-xs" id="imprimir_factura" title="Imprimir factura"><span class="fa fa-list-alt" ></span><b> Factura</b></a> 
             <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-danger btn-xs" id="imprimir_factura" title="Imprimir factura en PDF"><span class="fa fa-file-pdf"></span></a>
             
             <?php } 

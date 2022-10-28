@@ -494,7 +494,7 @@ function torta3($anio,$mes)
                 /*$detalles = $this->Reporte_ing_egr_model->get_detalleventas_reporte($valfecha1, $valfecha2, $usuario_id);
                 $ventas   = $this->Reporte_ing_egr_model->get_reportes($valfecha1, $valfecha2, $usuario_id);
                 $datos=array("ventas" => $ventas, "detalles" => $detalles);*/
-                echo json_encode($data  );
+                echo json_encode($data);
             }else{                 
                 show_404();
             }

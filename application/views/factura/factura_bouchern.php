@@ -476,7 +476,7 @@
 
 
   
-<?php if ($tipousuario_id == 1){ ?>
+<?php //if ($tipousuario_id == 1){ ?>
         
             
     <div class="col-md-12 no-print" style="max-width:<?php echo $ancho?>;">
@@ -487,7 +487,7 @@
     </div>    
     
         
-<?php } ?>
+<?php //} ?>
 
         
           
