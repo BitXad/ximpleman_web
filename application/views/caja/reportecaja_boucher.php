@@ -294,11 +294,19 @@ border-bottom : 1px solid #aaa;
             </tr>
         <?php } ?>
         
-        <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
+        <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 8pt; padding: 0;">
             <td colspan="2" style="padding: 0; text-align: center;">
                 <small>Declaro veracidad de la información de este documento.</small>
-                <br><br><br><br><br>
-                <b><?php echo $caja[0]["usuario_nombre"]; ?><br>CAJERO(A)</b>
+                <br><br><br><br>
+                <b><?php echo $caja[0]["usuario_nombre"]; ?><br>ENTREGUE CONFORME</b></span>
+            </td>
+        </tr>
+        <tr style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 8pt; padding: 0;">
+            <td colspan="2" style="padding: 0; text-align: center;">
+                <!--<small>Declaro veracidad de la información de este documento.</small>-->
+                <br><br><br><br>
+                <b><?php //echo $caja[0]["usuario_nombre"]; ?>RECIBI CONFORME</b>
+                <br>Nombre:........................................................................
             </td>
         </tr>
     </table>

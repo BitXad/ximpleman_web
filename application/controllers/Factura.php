@@ -1073,7 +1073,7 @@ class Factura extends CI_Controller{
 //        } else { redirect('', 'refresh'); }
 
     function anular_factura($factura_id,$factura_numero){
-        if($this->acceso(154)){
+        //if($this->acceso(154)){
         //**************** inicio contenido ***************   
                 
 //        if($factura_id>0)
@@ -1257,7 +1257,7 @@ class Factura extends CI_Controller{
 //            show_error('The factura you are trying to delete does not exist.');
         		
         //**************** fin contenido ***************
-        }      
+        //}
         
     }
     /*

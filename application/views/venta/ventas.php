@@ -893,7 +893,12 @@ window.onkeydown = compruebaTecla;
                Asignar <br>
             </a>
             <?php } ?>
-                
+            <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
+                <a href="<?php echo site_url('reportes/reportecaja'); ?>" class="btn btn-sq-lg btn-facebook" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                    <i class="fa fa-list-alt fa-4x"></i><br>
+                   Resumen<br>Ventas <br>
+                </a>
+            <?php //} ?>
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
                 <a href="<?php echo site_url('admin/dashb'); ?>" class="btn btn-sq-lg btn-info" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-calculator fa-4x"></i><br><br>

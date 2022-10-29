@@ -39,7 +39,7 @@
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 
 <!--<div class="row" <?php echo ($tipousuario_id == 1)?"hidden":""; ?>>-->
-<div class="row" >
+<!--<div class="row" >
     
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
         <div class="col-md-3">
@@ -71,7 +71,7 @@
         <div class="col-md-2">
             Venta/Preventa:
             <select id="esventa_preventa" name="esventa_preventa" class="btn btn-primary btn-sm form-control"  >
-                <!--<option value="0">-TODOS-</option>-->
+                
                 <option value="1"> VENTA </option>
                 <option value="2"> PREVENTA </option>
              </select>
@@ -96,7 +96,7 @@
         </div>
     </div>
 
-</div>
+</div>-->
 
 
 
@@ -214,7 +214,7 @@ border-bottom : 1px solid #aaa;*/
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                    
 
-                    <font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>
+                    <!--<font size="1" face="Arial"><?php //echo $factura[0]['factura_sucursal'];?><br>-->
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>

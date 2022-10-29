@@ -96,7 +96,7 @@ class Reportes extends CI_Controller{
      */
     function reportecaja()
     {
-        if($this->acceso(156)){
+        //if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $usuario_id = $this->session_data['usuario_id']; 
             $this->load->model('Tipo_transaccion_model');
@@ -131,7 +131,7 @@ class Reportes extends CI_Controller{
             
             $data['_view'] = 'reportes/reportecaja';
             $this->load->view('layouts/main',$data);
-        }
+        //}
     }
 
     function graficas()
@@ -1143,16 +1143,16 @@ function torta3($anio,$mes)
             $usuario_id = $this->session_data['usuario_id'];
 
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-            $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+            //$data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
            // $data['venta'] = $this->Detalle_venta_model->get_venta_id($venta_id);
-            $data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
+            //$data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
             $data['empresa'] = $this->Empresa_model->get_empresa(1);        
             $data['page_title'] = "Factura";
-            $factura = $this->Factura_model->get_factura_venta($venta_id);
-            $data['factura'] = $factura;
+            //$factura = $this->Factura_model->get_factura_venta($venta_id);
+            //$data['factura'] = $factura;
             $data['parametro'] = $this->Parametro_model->get_parametros();
             $parametros = $data['parametro'][0];
-            $data['tipo'] = $tipo;
+            //$data['tipo'] = $tipo;
             
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $this->load->model('Tipo_transaccion_model');
