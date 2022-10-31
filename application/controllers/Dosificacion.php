@@ -751,7 +751,7 @@ class Dosificacion extends CI_Controller{
         }catch (Exception $e){
             
             
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo 'Ocurrio algo inesperado; revisar datos!'.$e;
         }
     }
     
