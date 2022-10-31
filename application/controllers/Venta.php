@@ -202,7 +202,8 @@ class Venta extends CI_Controller{
         $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
         $data['empresa_email'] = $this->empresa["empresa_email"];
         
-        $sql ="select * from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = 0) and cufd_puntodeventa = ".$punto_venta;
+        $sql ="select * from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
+        //echo $sql;
         $data['cufd'] = $this->Venta_model->consultar($sql);
 
         

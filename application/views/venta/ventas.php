@@ -938,7 +938,7 @@ window.onkeydown = compruebaTecla;
             if($parametro['parametro_tiposistema'] != 1){
             ?>
             <span class="btn btn-facebook btn-xs"> <b> DOC: <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?></b></span>
-            <span class="btn btn-warning btn-xs"> <b> CUFD VIGENCIA: <?php echo $cufd[0]["cufd_fechavigencia"]; ?></b></span>
+            <span class="btn btn-warning btn-xs"> <b> CUFD VIGENCIA: <?php if (isset($cufd[0])){echo $cufd[0]["cufd_fechavigencia"];}else{ echo " NO EXISTE CUFD";} ?></b></span>
             <?php
             }
             ?>
