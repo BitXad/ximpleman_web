@@ -52,6 +52,7 @@ class Verificar extends CI_Controller
                     'usuario_clave' => $result->usuario_clave,
                     'thumb' => $thumb,
                     'rol' => $rolusuario,
+                    'puntoventa_codigo' => $result->puntoventa_codigo,
                     'codigo' => $this->get_codigo_empresa(),
                     'pedido_titulo' => $parametro[0]["parametro_pedidotitulo"]
                 );
@@ -215,6 +216,7 @@ class Verificar extends CI_Controller
                         'usuario_imagen' => $result->usuario_imagen,
                         'usuario_email' => $result->usuario_email,
                         'usuario_clave' => $result->usuario_clave,
+                        'puntoventa_codigo' => $result->puntoventa_codigo,
                         'thumb' => $thumb,
                         'rol' => $rolusuario,
                         'codigo' => $this->get_codigo_empresa()

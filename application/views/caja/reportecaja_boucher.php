@@ -316,3 +316,12 @@ border-bottom : 1px solid #aaa;
 </td>
 </tr>
 </table>
+
+<div class="col-md-12 no-print">
+    <center>
+        <button type="button" class="btn btn-facebook btn-sm" data-toggle="modal" onclick="$(document).ready(function(){window.onload = window.print();});"><i class="fa fa-print"> </i> Imprimir</button>
+        <a href="<?php echo base_url('venta/ventas'); ?>" class="btn btn-info btn-sm"  ><i class="fa fa-cart-arrow-down"></i> Volver a ventas</a>        
+        <a href="<?php echo base_url('admin/dashb/logout'); ?>" class="btn btn-danger btn-sm"  ><i class="fa fa-close"></i> Cerrar Sesion</a>        
+    </center>
+</div>    
+    

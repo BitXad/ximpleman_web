@@ -43,6 +43,7 @@
 
 
 <input type="hidden" name="empresa_nombre" id="empresa_nombre" value="<?php if(isset($empresa)){ echo $empresa[0]['empresa_nombre'];} else {echo ""; }?>" />
+<input type="hidden" name="punto_venta" id="punto_venta" value="<?php echo $punto_venta; ?>" />
 
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapsed sidebar-collapse" onload="mueveReloj()">
 <div class="wrapper">

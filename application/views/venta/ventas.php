@@ -353,7 +353,7 @@ window.onkeydown = compruebaTecla;
             <label for="nit" class="control-label" style="margin-bottom: 0;">NUMERO DE DOCUMENTO</label>
             <div class="input-group"  <?php echo $estilo_div; ?>>
                 <input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?> />
-                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="buscarcliente()" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true"></span></div>
+                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="buscarcliente()" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
             
             </div>
         </div>
@@ -448,8 +448,8 @@ window.onkeydown = compruebaTecla;
                         
                     <?php }
                     ?>
-            <div hidden>                
-            <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($parametro["parametro_tipoemision"]>1)?"checked":"";?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+            <div >                
+                <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($cliente[0]['cliente_excepcion']==1)?"checked":"";  //($parametro["parametro_tipoemision"]>1)?"checked":"";?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
             </div>
             
                 <?php }else{ ?>
@@ -888,23 +888,32 @@ window.onkeydown = compruebaTecla;
             <?php } ?>
 
             <?php if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                
+<!--            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
+            </a>-->
+            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <i class="fa fa-money fa-4x"></i><br><br>
+               Cierre Caja <br>
             </a>
+
             <?php } ?>
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
-                <a href="<?php echo site_url('reportes/reportecaja'); ?>" class="btn btn-sq-lg btn-facebook" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <a href="<?php echo site_url('reportes/reportecaja'); ?>" class="btn btn-sq-lg btn-facebook" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                     <i class="fa fa-list-alt fa-4x"></i><br>
                    Resumen<br>Ventas <br>
                 </a>
             <?php //} ?>
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
-                <a href="<?php echo site_url('admin/dashb'); ?>" class="btn btn-sq-lg btn-info" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <a href="<?php echo site_url('admin/dashb'); ?>" class="btn btn-sq-lg btn-info" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-calculator fa-4x"></i><br><br>
                Cierre de Caja <br>
             </a>
             <?php //} ?>
+
+
+                
 
             <?php if($rolusuario[18-1]['rolusuario_asignado'] == 1){ ?>
             <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
@@ -928,7 +937,8 @@ window.onkeydown = compruebaTecla;
             <?php
             if($parametro['parametro_tiposistema'] != 1){
             ?>
-            <span class="btn btn-facebook btn-xs"> <b> DOC. <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?></b></span>
+            <span class="btn btn-facebook btn-xs"> <b> DOC: <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?></b></span>
+            <span class="btn btn-warning btn-xs"> <b> CUFD VIGENCIA: <?php echo $cufd[0]["cufd_fechavigencia"]; ?></b></span>
             <?php
             }
             ?>
@@ -1234,7 +1244,7 @@ window.onkeydown = compruebaTecla;
                 <tr style="padding: 0">                      
                         <td style="padding: 0">Efectivo <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
-                            <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
+                            <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)" autocomplete="off">
                         </td>
                 </tr>
                 
@@ -2099,6 +2109,15 @@ window.onkeydown = compruebaTecla;
         }
         setInterval("verificar_conexion()",3000);
       */  
+     
+    function imprimir(){
+        
+     var ComandoExe;
+        ComandoExe= new ActiveXObject("WScript.Shell");
+        ComandoExe.Run('c:\impresor\impresora.exe') 
+    }
+   
+//alert("No dispone del programa necesario para la acción")}
 </script>
 
 
@@ -2157,5 +2176,8 @@ window.onkeydown = compruebaTecla;
         </div>
     </div>
 </div>
-                
-<!--<button type="button" class="btn btn-success" onclick="finalizarventa_sin()"><fa class="fa fa-floppy-o"></fa> Envio de Paquetes</button>-->
+
+
+<script type="text/javascript">
+     $("#span_buscar_cliente").click();                    
+</script>

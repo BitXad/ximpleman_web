@@ -224,12 +224,12 @@
                         <div class="col-md-3">
                             <label for="caja_cierre" class="control-label"><span class="text-danger">*</span>Monto Bs</label>
                             <div class="form-group">
-                                <input type="number" step="any" min="0" name="caja_cierre" value="<?php echo ($this->input->post('caja_cierre') ? $this->input->post('caja_cierre') : $caja['caja_cierre']); ?>" class="form-control" id="caja_cierre" />
+                                <input type="number" step="any" min="0" name="caja_cierre" value="<?php echo ($this->input->post('caja_cierre') ? $this->input->post('caja_cierre') : $caja['caja_cierre']); ?>" class="form-control" id="caja_cierre" style="background-color: yellow; font-size:20px;"/>
                                 <button class="btn btn-primary btn-xs" type="button" onclick="verificar_caja()"><fa class="fa fa-spinner"> </fa>Verificar</button>
                             </div>
                         </div>
 
-                        <div class="col-md-2">
+                        <div class="col-md-6">
                             <label for="caja_estado" class="control-label"><span class="text-danger">*</span>Estado</label>
                             <div class="form-group">
      
@@ -238,7 +238,7 @@
                             </div>
                         </div>
                         
-                        <div class="col-md-3">
+                        <div class="col-md-3" hidden>
                             <label for="caja_fechacierre" class="control-label"><span class="text-danger">*</span>Fecha Cierre</label>
                             <div class="form-group">
                                 <input type="date" name="caja_fechacierre" value="<?php echo ($this->input->post('caja_fechacierre') ? $this->input->post('caja_fechacierre') : date('Y-m-d')); ?>" class="form-control" id="caja_fechacierre" required />
@@ -260,14 +260,26 @@
                     
                 </div>
             
-          	<div class="box-footer">
+            
+          	<div class="box-footer" style="display: none;" id="div_botones">
                     <button type="submit" class="btn btn-success">
-            		<i class="fa fa-check"></i> Guardar
+            		<i class="fa fa-floppy-o"></i> Cerrar Caja
                     </button>
-                    <a href="<?php echo site_url('caja'); ?>" class="btn btn-danger">
+                    <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-danger">
                     <i class="fa fa-times"></i> Cancelar</a>
           	</div>
+            
+            
             <?php echo form_close(); ?>
       	</div>
     </div>
 </div>
+
+
+<div class="col-md-12 no-print">
+    <center>
+        
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>        
+    </center>
+</div>    
+    

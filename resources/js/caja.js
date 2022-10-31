@@ -28,21 +28,123 @@ function modal_cajaabierta(){
     });
 }
 
+function almacenar_cufd(datos,punto_venta=0){
+    
+    var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'dosificacion/almacenarcufd';   
+    
+    var codigo = datos.codigo;
+    let codigoControl = datos.codigoControl;
+    let direccion = datos.direccion;
+    var fechavigencia = datos.fechaVigencia;
+    var transaccion = datos.transaccion;    
+
+//    alert(codigo+" * "+codigoControl+" * "+direccion+" * "+fechaVigencia+" * "+transaccion);
+    //alert("ña ña ña ña ña ña ña ña ña ñaaaaa, batman..!!")
+    
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{codigo:codigo, 
+                        codigoControl:codigoControl, 
+                        direccion:direccion,
+                        fechavigencia:fechavigencia, 
+                        transaccion:transaccion,
+                        punto_venta:punto_venta
+                    },
+                    success:function(respuesta){
+
+                        alert("C.U.F.D generado y almacenado correctamente...!");
+                        document.getElementById('loader_revocado').style.display = 'none';
+                        dibujar_tabla_puntos_venta();
+                       
+                    },
+                    error:function(respuesta){
+                        alert("Algo salio mal; por favor verificar sus datos!.");
+                    }                
+            }); 
+    
+}
+
+function solicitudCufd(punto_venta=0){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/cufd';
+//    var opcion = confirm("Esta a punto de generar el C.U.F.D. para el PUNTO DE VENTA "+punto_venta+", el cual reemplazará el existente...! \n ¿Desea Continuar?");
+    
+//    if (opcion == true) {
+        //alert("gegegegenerando cufd: "+punto_venta);
+        //document.getElementById('loader_revocado').style.display = 'block';  
+        
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{punto_venta:punto_venta},
+                success:function(respuesta){
+                    var datos = JSON.parse(respuesta);
+                    //var datos =  JSON.parse(registros);
+                let registros = datos['respuesta'];
+                let lafalla = datos['falla']
+                    
+                    /*console.log(registros);
+                    console.log(registros.RespuestaVerificarNit.mensajesList.codigo);
+                    console.log(registros.RespuestaVerificarNit.mensajesList.descripcion);
+                    console.log(registros.RespuestaVerificarNit.transaccion);*/
+                    //let elcodigo = registros.RespuestaVerificarNit.mensajesList.codigo;
+                    if(lafalla != ""){
+                        alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                       // document.getElementById('loader_revocado').style.display = 'none';
+                    }else{
+                    let codigo = registros.RespuestaCufd.codigo;
+                    let codigoControl = registros.RespuestaCufd.codigoControl;
+                    let direccion = registros.RespuestaCufd.direccion;
+                    let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
+                    let transaccion = registros.RespuestaCufd.transaccion;
+
+                    //alert(registros);
+                    if(transaccion == true){
+                       // $("#modal_mensajeadvertencia").modal("show");
+                        almacenar_cufd((registros['RespuestaCufd']),punto_venta);
+                    }
+                    else{
+                        alert("Algo fallo...!!");
+                    }
+                    // document.getElementById('loader_cufd').style.display = 'none';
+                    //alert("hola");
+                    /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
+
+                    }*/
+                    }
+
+                },
+                error:function(respuesta){
+                    let datos = JSON.parse(respuesta);
+                    let registros = datos['respuesta'];
+                    let lafalla = datos['falla']
+                   alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                }
+        }); 
+//    }
+}
+
 function abrir_lacaja()
 {
     var base_url   = document.getElementById('base_url').value; 
     var monto_caja = document.getElementById('monto_caja').value; 
     var caja_id    = document.getElementById('caja_id').value; 
     var controlador = base_url+"caja/abrir_lacaja";
+    var punto_venta = document.getElementById('punto_venta').value;
+    //alert(punto_venta);
+    
     $.ajax({url:controlador,
         type:"POST",
         data:{monto_caja:monto_caja, caja_id:caja_id},
         success: function(response){
             var registros =  JSON.parse(response);
             if(registros == "no"){
-                $("#elmensaje").html("El monto no debe ir vacio");
+                $("#elmensaje").html("El campo MONTO, no puede estar vacio..!");
             }else{
                 $("#myModal").modal('hide');
+                window.location.href = base_url+"venta/ventas";
+                solicitudCufd(punto_venta);
             }
         },
         error:function (response){
@@ -184,4 +286,5 @@ function formato_numerico(numero){
         });    
     
     
+    document.getElementById('div_botones').style.display = 'block'; 
  }

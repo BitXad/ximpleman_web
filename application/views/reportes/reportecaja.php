@@ -2,22 +2,18 @@
 <script src="<?php echo base_url('resources/js/reporte_ventapagrupado.js'); ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
-        /*$(document).ready(function () {
-            (function ($) {
-                $('#vender').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-        */
-        function imprimir()
-        {
-            // window.print(); 
-        }
+//        $(document).ready(function () {
+//            (function ($) {
+//                $('#vender').keyup(function () {
+//                    var rex = new RegExp($(this).val(), 'i');
+//                    $('.buscar tr').hide();
+//                    $('.buscar tr').filter(function () {
+//                        return rex.test($(this).text());
+//                    }).show();
+//                })
+//            }(jQuery));
+//        });
+
 </script>   
 
 <style type="text/css">
@@ -113,13 +109,13 @@
 <!------------------------------------------------------------------>
 <?php $factura = [0=>0]; ?>
 <?php $detalle_factura = [0=>0]; ?>
-<!--
+
 <script type="text/javascript">
     $(document).ready(function()
     {
         window.onload = window.print();
     });
-</script>-->
+</script>
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
@@ -373,3 +369,12 @@ border-bottom : 1px solid #aaa;*/
 </table>
 
 
+
+<div class="col-md-12 no-print">
+    <center>
+        <button type="button" class="btn btn-facebook btn-sm" data-toggle="modal" onclick="$(document).ready(function(){window.onload = window.print();});"><i class="fa fa-print"> </i> Imprimir</button>        
+        <a href="<?php echo base_url("admin/dashb"); ?>" class="btn btn-info btn-sm" data-toggle="modal" ><i class="fa fa-calculator"> </i> Cerra caja</a>        
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"> </i> Cerrar</button>        
+    </center>
+</div>    
+    

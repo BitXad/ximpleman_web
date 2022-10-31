@@ -12,6 +12,9 @@ function inicio(){
         
         document.getElementById('nit').focus();
         document.getElementById('nit').select();
+        
+
+        
 }
 
 function calculardesc(){
@@ -117,16 +120,17 @@ function validar(e,opcion) {
            //primero buscar en la base de datos
 
                 if (nit==''){
-
+                    
                         var cod = generar_codigo();
                         $("#nit").val(cod);
                         $("#razon_social").focus();
                         $("#razon_social").select();
                         $("#zona_id").val(0);                    
 
-                    }else{      
-
-                        buscarcliente();
+                }else{      
+                    
+                    document.getElementById('codigoexcepcion').checked = false;
+                    buscarcliente();
 
                 }
                  
@@ -250,8 +254,7 @@ function seleccionar(opcion) {
 function buscarcliente(){
 
     var base_url = document.getElementById('base_url').value;
-    var nit = document.getElementById('nit').value;
-    
+    var nit = document.getElementById('nit').value;    
     
     if (nit==''){ //Si el campo Nit esta vacio, genera NIT/Codigo automaticamente
         var cod = generar_codigo();
@@ -6331,6 +6334,102 @@ function cambiar_emision(emision)
     
 }*/
 
+function sleep(milliseconds) {
+ var start = new Date().getTime();
+ for (var i = 0; i < 1e7; i++) {
+  if ((new Date().getTime() - start) > milliseconds) {
+   break;
+  }
+ }
+}
+
+
+function simular_evento(){
+
+    var base_url = document.getElementById('base_url').value;    
+    var controlador = base_url+'venta/simular_evento';
+    var parametro_id = document.getElementById('elparametro_id').value;
+    
+        
+//    var punto_venta = emision;//document.getElementById('punto_venta').value;
+//    var parametro_tipoemision = document.getElementById('elparametro_tipoemision').value;
+//    var select_eventos = document.getElementById('select_eventos').value;
+//    var select = document.getElementById('select_eventos'), //El <select>
+//        //value = select.value, //El valor seleccionado
+//    select_texto = select.options[select.selectedIndex].innerText; //El texto de la opción seleccionada
+//    
+//    //alert(text);
+//    
+//    document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
+//
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){
+                
+                var registros =  JSON.parse(respuesta);
+                
+                //alert(JSON.stringify(registros));
+                var evento = registros[0]["simulacion_evento"];
+                var tipo_emision = registros[0]["simulacion_tipoemision"];
+                var mensaje_evento = "";
+                var mensaje_emision = "";
+                
+                if (tipo_emision == 1) mensaje_emision = " EN LINEA";
+                else mensaje_emision = " FUERA DE LINEA";
+
+                if (evento == 1) mensaje_evento = "ADVERTENCIA: Problema con el servicio de internet,\n el sistema pasara a modalidad "+mensaje_emision;
+                if (evento == 2) mensaje_evento = "ADVERTENCIA: Inaccesibilidad con el servicios de Impuetos Nacionales,\n el sistema pasara a modalidad "+mensaje_emision;
+                if (evento == 3) mensaje_evento = "ADVERTENCIA: Ingreso a zona sin internet por despliegue de punto de ventas,\n el sistema pasara a modalidad "+mensaje_emision;
+                   
+                //Cambiar los valores de los select
+                
+                $("#elparametro_tipoemision").val(tipo_emision);
+                $("#select_eventos").val(evento);
+              
+                alert(mensaje_evento);
+                $("#boton_tipoemision").click();
+                
+                
+                
+            },
+    });
+    
+//    modal_cambiartipoemision()
+    //document.getElementById('boton_tipoemision').click(); //muestra el bloque del loader
+    //document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
+    //sleep(2000);
+    //$("#modal_tipoemision").modal("hide");
+    
+}
+
+/** cuando el tipo de documento sector es prevalorada(23)
+ *  esta funcion verifica si hay en el auxiliar(parte derecha)
+ *  mas de un item (producto)
+ *  */
+function existen_bolsa(){
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/verificaritem_endetalle';
+    let res = 0;
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        async: false, 
+        success:function(respuesta){
+            let registro =  JSON.parse(respuesta);
+            if(registro == "ok"){
+                res = 1;
+            }else{
+                res = 0;
+            }
+        },
+        error:function(respuesta){
+            res = 0;
+        }
+    });     
+    return res;
+}
+
 function borrar_datos_cliente(){
     
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
@@ -6338,18 +6437,29 @@ function borrar_datos_cliente(){
     var parametro_factura = document.getElementById("parametro_factura").value; //0 no, 1 si
     let documento_sector = document.getElementById("docsec_codigoclasificador").value;
     
-    $("#razon_social").val("SIN NOMBRE");
-    $("#cliente_nombre").val("SIN NOMBRE");
-    $("#cliente_codigo").val("0");
+    
+    var nit = "1234";
+    var razon_social = "SIN NOMBRE";
+    var cliente_id = "1";
+    
+    $("#razon_social").val(razon_social);
+    $("#cliente_nombre").val(razon_social);
+    $("#cliente_codigo").val(nit);
+    
+    
     $("#email").val("");
+    
     if(documento_sector == 23){ // si es prevalorada
+        
         $("#razon_social").val("S/N");
         $("#cliente_nombre").val("S/N");
         $("#cliente_codigo").val("N/A");
+        
     }
-    $("#nit").val(0);
-    $("#cliente_id").val("0");
-    $("#cliente_ci").val("0");
+    
+    $("#nit").val(nit);
+    $("#cliente_id").val(cliente_id);
+    $("#cliente_ci").val(nit);
     $("#cliente_nombrenegocio").val("-");
     
     $("#pedido_id").val("0");
@@ -6445,100 +6555,7 @@ function borrar_datos_cliente(){
         document.getElementById('facturado').checked = true;
     }
     
-}
-
-function sleep(milliseconds) {
- var start = new Date().getTime();
- for (var i = 0; i < 1e7; i++) {
-  if ((new Date().getTime() - start) > milliseconds) {
-   break;
-  }
- }
-}
-
-
-function simular_evento(){
-
-    var base_url = document.getElementById('base_url').value;    
-    var controlador = base_url+'venta/simular_evento';
-    var parametro_id = document.getElementById('elparametro_id').value;
     
-        
-//    var punto_venta = emision;//document.getElementById('punto_venta').value;
-//    var parametro_tipoemision = document.getElementById('elparametro_tipoemision').value;
-//    var select_eventos = document.getElementById('select_eventos').value;
-//    var select = document.getElementById('select_eventos'), //El <select>
-//        //value = select.value, //El valor seleccionado
-//    select_texto = select.options[select.selectedIndex].innerText; //El texto de la opción seleccionada
-//    
-//    //alert(text);
-//    
-//    document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
-//
-    $.ajax({url: controlador,
-            type:"POST",
-            data:{},
-            success:function(respuesta){
-                
-                var registros =  JSON.parse(respuesta);
-                
-                //alert(JSON.stringify(registros));
-                var evento = registros[0]["simulacion_evento"];
-                var tipo_emision = registros[0]["simulacion_tipoemision"];
-                var mensaje_evento = "";
-                var mensaje_emision = "";
-                
-                if (tipo_emision == 1) mensaje_emision = " EN LINEA";
-                else mensaje_emision = " FUERA DE LINEA";
+     $("#span_buscar_cliente").click();   
 
-                if (evento == 1) mensaje_evento = "ADVERTENCIA: Problema con el servicio de internet,\n el sistema pasara a modalidad "+mensaje_emision;
-                if (evento == 2) mensaje_evento = "ADVERTENCIA: Inaccesibilidad con el servicios de Impuetos Nacionales,\n el sistema pasara a modalidad "+mensaje_emision;
-                if (evento == 3) mensaje_evento = "ADVERTENCIA: Ingreso a zona sin internet por despliegue de punto de ventas,\n el sistema pasara a modalidad "+mensaje_emision;
-                   
-                //Cambiar los valores de los select
-                
-                $("#elparametro_tipoemision").val(tipo_emision);
-                $("#select_eventos").val(evento);
-              
-                alert(mensaje_evento);
-                $("#boton_tipoemision").click();
-                
-                
-                
-            },
-    });
-    
-//    modal_cambiartipoemision()
-    //document.getElementById('boton_tipoemision').click(); //muestra el bloque del loader
-    //document.getElementById('loader_emision').style.display = 'block'; //muestra el bloque del loader
-    //sleep(2000);
-    //$("#modal_tipoemision").modal("hide");
-    
-}
-
-/** cuando el tipo de documento sector es prevalorada(23)
- *  esta funcion verifica si hay en el auxiliar(parte derecha)
- *  mas de un item (producto)
- *  */
-function existen_bolsa(){
-    let base_url = document.getElementById('base_url').value;
-    let controlador = base_url+'venta/verificaritem_endetalle';
-    let res = 0;
-    $.ajax({url: controlador,
-        type:"POST",
-        data:{},
-        async: false, 
-        success:function(respuesta){
-            let registro =  JSON.parse(respuesta);
-            if(registro == "ok"){
-                res = 1;
-            }else{
-                res = 0;
-            }
-        },
-        error:function(respuesta){
-            res = 0;
-        }
-    });     
-    return res;
 }

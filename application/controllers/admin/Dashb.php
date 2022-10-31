@@ -119,6 +119,7 @@ class Dashb extends CI_Controller
                 $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($zona_id);
                 $data['all_pedido'] = $this->Pedido_model->get_para_entregas($session_data['usuario_id'], $fecha_desde, $fecha_hasta);
                 $data['usuario'] = $session_data['usuario_id'];
+                $data['punto_venta'] = $session_data['puntoventa_codigo'];
                 //$this->load->model('Parametro_model');
                 $data['parametro'] = $this->Parametro_model->get_parametros();
                 //$this->load->model('Moneda_model');

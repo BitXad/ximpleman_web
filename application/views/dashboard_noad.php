@@ -394,6 +394,7 @@
         <div class="col-md-4">
             <!--<button class="btn btn-info btn-block" onclick="cerrar_caja()"><fa class="fa fa-money"></fa> Cierre de Caja</button>-->
             <a href="<?= base_url("caja/cierre_caja/".$caja[0]["caja_id"]) ?>" class="btn btn-info btn-block"><fa class="fa fa-money"></fa> Cierre de Caja</a>
+            <a href="<?= base_url("venta/ventas") ?>" class="btn btn-facebook btn-block"><fa class="fa fa-cart-plus"></fa> Vender</a>
             <button class="btn btn-danger btn-block" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
         </div>  
       

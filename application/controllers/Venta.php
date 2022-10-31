@@ -165,15 +165,18 @@ class Venta extends CI_Controller{
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];        
+        $punto_venta = $this->session_data['puntoventa_codigo'];        
 
         $data['page_title'] = "Ventas";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+        
         if($data['dosificacion'][0]['docsec_codigoclasificador'] == 23){
             $data['cliente'] = $this->Venta_model->get_cliente_inicialprevalorada();
         }else{
             $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         }
+        
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
@@ -198,6 +201,10 @@ class Venta extends CI_Controller{
         
         $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
         $data['empresa_email'] = $this->empresa["empresa_email"];
+        
+        $sql ="select * from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = 0) and cufd_puntodeventa = ".$punto_venta;
+        $data['cufd'] = $this->Venta_model->consultar($sql);
+
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
