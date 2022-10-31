@@ -864,7 +864,7 @@ class Dosificacion extends CI_Controller{
         }catch (Exception $e){
             
             
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo 'Ocurrio algo inesperado; revisar datos!.<br>'.$e;
         }
     }
     /* en servicio de obtención de códigos es la Funcion que solicita cuis masivo: cuisMasivo */
