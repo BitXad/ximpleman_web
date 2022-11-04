@@ -139,6 +139,143 @@ function tabla_reportesproducto(){
     });   
 
 }
+
+function tabla_reportesproducto_resumido(){
+    
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"detalle_venta/buscarprodagrupados";
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var desde    = document.getElementById('fecha_desde').value;
+    var hasta    = document.getElementById('fecha_hasta').value;
+    var tipo     = document.getElementById('tipo_transaccion').value;
+    var usuario_id = document.getElementById('usuario_id').value;
+    var esventa_preventa = document.getElementById('esventa_preventa').value;
+    document.getElementById('loader').style.display = 'block';
+    if (tipo==0) {
+      eltipo = "";
+    }else{
+      eltipo = " and vs.tipotrans_id = "+tipo+" ";
+      $("#tipotrans").html("<font size='2'>Tipo Trans.: <b>"+$('#tipo_transaccion option:selected').text()+"</b></font><br>");
+    }
+    if(esventa_preventa ==1){
+        if (usuario_id==0) {
+            elusuario = " and vs.usuario_id > 0 ";
+        }else{
+            elusuario = " and vs.usuario_id = "+usuario_id+" ";
+            $("#esteusuario").html("<font size='2'>Usuario: <b>"+$('#usuario_id option:selected').text()+"</b></font><br>");
+        }
+        $("#ventaprev").html("<font size='2'>Venta/Preventa: <b>"+$('#esventa_preventa option:selected').text()+"</b></font>");
+    }else{
+        if (usuario_id==0) {
+            elusuario = " and vs.usuarioprev_id > 0 ";
+        }else{
+            elusuario = " and vs.usuarioprev_id = "+usuario_id+" ";
+            $("#esteusuario").html("<font size='2'>Usuario: <b>"+$('#usuario_id option:selected').text()+"</b></font><br>");
+        }
+        $("#ventaprev").html("<font size='2'>Venta/Preventa: <b>"+$('#esventa_preventa option:selected').text()+"</b></font>");
+    }
+	//var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elcliente+" "+elproducto+" "+elprove+" ";
+	var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elusuario+" ";
+
+  //simplemente(filtro);
+     
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{filtro:filtro},
+            success:function(report){
+                $("#enco").val("- 0 -");
+                var registros =  JSON.parse(report);
+                
+                const myString = JSON.stringify(registros);
+                $("#resproducto").val(myString);
+                
+                if (registros != null){
+                    var lamoneda_id = document.getElementById('lamoneda_id').value;
+                    var total_otramoneda = Number(0);
+                    var total_otram = Number(0);
+                    var cantidades = Number(0);
+                    var total = Number(0);
+                    //var cuotas = Number(0);
+                    var costos = Number(0);
+                    var utilidades = Number(0);
+                    var descuentos = Number(0);
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    $("#pillados").val("- "+n+" -");
+                    html = "";
+                    for (var i = 0; i < n ; i++){
+                        
+                        total += Number(registros[i]["total_venta"]);
+                        cantidades += Number(registros[i]["total_cantidad"]);
+                        //cuotas += Number(registros[i]["credito_cuotainicial"]);
+                        descuentos += Number(registros[i]["total_descuento"]);
+                        costos += Number(registros[i]["total_costo"]);
+                        utilidades += Number(registros[i]["total_utilidad"]);
+                        html += "<tr>";
+                        html += "<td align='center'> "+registros[i]["total_cantidad"]+" </td>"; 
+                        html += "<td align='left'> "+registros[i]["producto_nombre"]+" </td>";  
+                        html += "<td align='center'> "+registros[i]["total_punitario"]+" </td>"; 
+                        html += "<td align='right'><b>"+numberFormat(Number(registros[i]["total_venta"]).toFixed(2))+"</b></td>";
+//                        html += "<td align='right'> "+numberFormat(Number(registros[i]["total_punitario"]).toFixed(2))+" </td>"; 
+//                        html += "<td> "+registros[i]["producto_nombre"]+" </td>";
+//                        html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                          
+//                        html += "<td align='right'> "+numberFormat(Number(registros[i]["total_descuento"]).toFixed(2))+" </td>";
+//                        html += "<td class='text-right'> ";
+//                        if(lamoneda_id == 1){
+//                            total_otram = Number(registros[i]["total_venta"])/Number(registros[i]["tipo_cambio"])
+//                            total_otramoneda += total_otram;
+//                        }else{
+//                            total_otram = Number(registros[i]["total_venta"])*Number(registros[i]["tipo_cambio"])
+//                            total_otramoneda += total_otram;
+//                        }
+//                        html += numberFormat(Number(total_otram).toFixed(2));
+//                        html += "</td>";
+//                        if(tipousuario_id == 1){
+//                            html += "<td align='right'> "+numberFormat(Number(registros[i]["total_costo"]).toFixed(2))+" </td>";
+//                            html += "<td align='right'> "+numberFormat(Number(registros[i]["total_utilidad"]).toFixed(2))+" </td>";
+//                            html += "<td align='right'> ";
+//                            if(Number(registros[i]["total_venta"]) !=0){
+//                                html += Number(Number(registros[i]["total_utilidad"])/Number(registros[i]["total_venta"])).toFixed(2);
+//                            }else{
+//                                html += "0.00";
+//                            }
+//                            html += " </td>";
+//                        }
+                        
+                        html += "</tr>";
+                       
+                   }
+                        html += "<tr>";
+                        html += "<th>"+numberFormat(Number(cantidades).toFixed(2))+"</td>";
+                        html += "<th></th>";
+                        html += "<th></th>";
+//                        html += "<th style='text-align:right'>"+numberFormat(Number(descuentos).toFixed(2))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(total).toFixed(2))+"</th>";
+//                        html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
+//                        if(tipousuario_id == 1){
+//                            html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(2))+"</th>";
+//                            html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(2))+"</th>";
+//                        }
+                        
+                        html += "</tr>";
+                   desde1 = "Desde: <b>"+moment(desde).format('DD/MM/YYYY')+"</b>";
+                   hasta1 = "Hasta: <b>"+moment(hasta).format('DD/MM/YYYY')+"</b>";
+                   $("#reportefechadeventa").html(html);
+                   $("#desde").html(desde1);
+                   $("#hasta").html(hasta1);
+                   document.getElementById('loader').style.display = 'none';
+            }
+                
+        },
+        error:function(result){
+          // alert("Algo salio mal...!!!");
+           html = "";
+           $("#reportefechadeventa").html(html);
+        }
+        
+    });   
+
+}
+
 function tabla_reporteagrupado(){
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"detalle_venta/buscarprodagrupados";

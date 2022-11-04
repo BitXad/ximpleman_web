@@ -1170,6 +1170,40 @@ function torta3($anio,$mes)
             $this->load->view('layouts/main',$data);
         }
     }
+    
+    function resumenventas()
+    {
+        if($this->acceso(156)){
+            $usuario_id = $this->session_data['usuario_id'];
+
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            //$data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+           // $data['venta'] = $this->Detalle_venta_model->get_venta_id($venta_id);
+            //$data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+            $data['page_title'] = "Factura";
+            //$factura = $this->Factura_model->get_factura_venta($venta_id);
+            //$data['factura'] = $factura;
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $parametros = $data['parametro'][0];
+            //$data['tipo'] = $tipo;
+            
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $this->load->model('Tipo_transaccion_model');
+            $data['page_title'] = "Reporte de ventas agrupado";
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+            $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['_view'] = 'reportes/resumenventas';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /* reporte de ventas por categoria */
     function ventacategoria()
     {

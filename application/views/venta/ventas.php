@@ -448,7 +448,7 @@ window.onkeydown = compruebaTecla;
                         
                     <?php }
                     ?>
-            <div >                
+            <div hidden>                
                 <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($cliente[0]['cliente_excepcion']==1)?"checked":"";  //($parametro["parametro_tipoemision"]>1)?"checked":"";?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
             </div>
             
