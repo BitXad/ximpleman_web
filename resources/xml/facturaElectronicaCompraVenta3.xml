@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaElectronicaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaCompraVenta.xsd">
+      <cabecera>
+          <nitEmisor>1022303025</nitEmisor>
+          <razonSocialEmisor>EMPRESA MUNICIPAL DE ÁREAS VERDES Y RECREACIÓN ALTERNATIVA EMAVRA</razonSocialEmisor>
+          <municipio>CERCADO - COCHABAMBA</municipio>
+          <telefono>68480875</telefono>
+          <numeroFactura>1</numeroFactura>
+          <cuf>45F2E54F4A6EF443F3A62110CC5229CCC9B19E06A35888C1AEFBF6D74</cuf>
+          <cufd>BQXlDRFhDQkE=Nzzc0OTIzNjFEMjc=QlVySGtPQ0xXVUFIzNURFQzJFNTdGQ</cufd>
+          <codigoSucursal>0</codigoSucursal>
+          <direccion>HEROINAS FINAL ESTE S/N</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <fechaEmision>2022-11-01T17:30:22.142</fechaEmision>
+          <nombreRazonSocial>SIN NOMBRE</nombreRazonSocial>
+          <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>1234</numeroDocumento>
+          <complemento/>
+          <codigoCliente>SI98887</codigoCliente>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta>0</numeroTarjeta>
+          <montoTotal>10</montoTotal>
+          <montoTotalSujetoIva>10</montoTotalSujetoIva>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1</tipoCambio>
+          <montoTotalMoneda>10</montoTotalMoneda>
+          <montoGiftCard>0</montoGiftCard>
+          <descuentoAdicional>0</descuentoAdicional>
+          <codigoExcepcion>1</codigoExcepcion>
+          <cafc xsi:nil="true"/>
+          <leyenda>Ley N° 453: Si se te ha vulnerado algún derecho puedes exigir la reposición o restauración.</leyenda>
+          <usuario>Super Usuario</usuario>
+          <codigoDocumentoSector>1</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>841302</actividadEconomica>
+           <codigoProductoSin>99100</codigoProductoSin>
+           <codigoProducto>7775701007841</codigoProducto>
+           <descripcion>PALMERA YUCA PORTE 1.5 A 2</descripcion>
+           <cantidad>1</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>10</precioUnitario>
+           <montoDescuento>0</montoDescuento>
+           <subTotal>10</subTotal>
+           <numeroSerie/>
+           <numeroImei/>
+      </detalle>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+  <Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>M4Jc6x5HtCXGgNn8Xn/SMJ80Hn05pDmr+suT61zp4is=</DigestValue></Reference></SignedInfo><SignatureValue>MnvVO1zKg/0nv4H6sNJEsflirN7UAiKIzVMU6Z7Ad5xJD6rYLhYW+RmUajXJZMAcnIzAbeWmRe4hwWuJtP4KowfwLoA71at9GNx2sS24ynLNFZiUU6okSlTRR8H3iupzR7KcOOYx/VCKlSBAOHUPhFr0izmCb4H3TvUWHTdwdPRZuMhPdR1yl8zx9VCA5ki+0W391IAlLsrbuS+XxdtV3D68Ild9w6LpXSlScqSm92ceU5YDG05USYq0de7EzQIbI3F7kSSeyDhqukiK7Nz4nZ3oWD8QRFdMjX+/Muwy644IGOC7l7Sej5TMOHOxL9RTbxYxa81HdXVLC12ciBoPEA==</SignatureValue>
+<KeyInfo><X509Data><X509Certificate>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</X509Certificate></X509Data></KeyInfo></Signature></facturaElectronicaCompraVenta>

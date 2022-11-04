@@ -399,85 +399,6 @@ $salto_linea='
                         }
 
                     }        
-/*
-
-                            $certificado = "-----BEGIN CERTIFICATE-----
-                    MIIE2zCCA8OgAwIBAgIIBomRNJy09AAwDQYJKoZIhvcNAQEFBQAwgbUxCzAJBgNV
-                    BAYTAkJPMQ8wDQYDVQQIDAZMQSBQQVoxDzANBgNVBAcMBkxBIFBBWjEeMBwGA1UE
-                    CgwVRW50aWRhZCBDZXJ0aWZpY2Fkb3JhMQwwCgYDVQQLDANVSUQxEzARBgNVBAMM
-                    CkFEU0lCIEZBS0UxJDAiBgkqhkiG9w0BCQEWFW5jb2FyaXRlQGFkc2liLmdvYi5i
-                    bzEbMBkGA1UEBRMSNzM1MjQyNDI0NDY0NjM0MjM0MB4XDTIyMDkwNzE5NTYwMloX
-                    DTIyMTAwNzE5NTYwMlowggEJMSMwIQYDVQQDExpST0JFUlRPIENBUkxPUyBTT1RP
-                    IFNJRVJSQTEjMCEGA1UEChMaUk9CRVJUTyBDQVJMT1MgU09UTyBTSUVSUkExIzAh
-                    BgNVBAsTGlJPQkVSVE8gQ0FSTE9TIFNPVE8gU0lFUlJBMRYwFAYDVQQMEw1ERVNB
-                    UlJPTExBRE9SMQswCQYDVQQGEwJCTzELMAkGA1UELhMCQ0kxFDASBgcrBgEBAQEA
-                    Ewc1MTUyMzc3MREwDwYKCZImiZPyLGQBARMBMDETMBEGA1UEBRMKNTE1MjM3NzAx
-                    OTEoMCYGCSqGSIb3DQEJARYZci5jYXJsb3Muc290b0Bob3RtYWlsLmNvbTCCASIw
-                    DQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPBqX4njWzCzUtBnl3NOFswgVXRs
-                    peJAgCQ7rc3vzID93ediJoSoGxcoNzxjCrSnzfH2JegPp+Bpc+cxEqa7ZJhQhCCN
-                    EgIAj30cvgL96xL3psYf5wSSjybKQEDLBhJkVrMaGnsbVkgpBfY0OdU1TIQEyEKx
-                    rRnzyCgHn/86UZB2jm15l8/7lzAzKN/SRQBvzfeZn9qsAImNzjOMYuvIE1KNMGBl
-                    sjuf3BUJeN4dYtbYxhzqnJadIee+5iUQNJqyPLWxPVKFaE0rCBU0rDaqvuFUoVfL
-                    3cXeLrG7QAZYjrHZ4rRLh5UJSOqsREesc9CtwwJlkuWNKtMjY22FLYtAPx0CAwEA
-                    AaOBlzCBlDAMBgNVHRMEBTADAQH/MAsGA1UdDwQEAwIE8DAkBgNVHREEHTAbhhly
-                    LmNhcmxvcy5zb3RvQGhvdG1haWwuY29tMFEGA1UdHwRKMEgwRqBEoEKGQGh0dHBz
-                    Oi8vZGVzYXJyb2xsby5hZHNpYi5nb2IuYm8vZGVzYV9hZ2VuY2lhL2xpc3RfcmV2
-                    b2NhY2lvbi5jcmwwDQYJKoZIhvcNAQEFBQADggEBAElQheREOV1xVZlZynZtYfic
-                    V8DSkVZ2pgvgPBavDhaKVEyrG4WGlcwf8CJf68WQv2kJO8FDOgCiwPYH2MxB0fv7
-                    /kwxGurZ9gvXoL3bg9FSneBbIw2liGXuAGcJ5UB+SdG6zltmwZ0m1tZrFvvwE8Af
-                    IzK2dsGlYvHvoLJmC5bzehN33tA874noGa8/LAAoJ/S1FICLOPiapBR51H53qnqV
-                    shsP6eYuv1o0oIwxK/sbIjU2d8y1swwfsETDpl+O/Jpu0/QPPJ4tkedMIu9Em770
-                    2F5tlWaAkfMsBk9H7MpGN5F+zUTR1jn7Q41ulkRM1rL2BL+Ha5ZhXv9qLcWyfCg=
-                    -----END CERTIFICATE-----
-                    ";
-
-                            $llave_publica = "-----BEGIN PUBLIC KEY-----
-                    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8GpfieNbMLNS0GeXc04W
-                    zCBVdGyl4kCAJDutze/MgP3d52ImhKgbFyg3PGMKtKfN8fYl6A+n4Glz5zESprtk
-                    mFCEII0SAgCPfRy+Av3rEvemxh/nBJKPJspAQMsGEmRWsxoaextWSCkF9jQ51TVM
-                    hATIQrGtGfPIKAef/zpRkHaObXmXz/uXMDMo39JFAG/N95mf2qwAiY3OM4xi68gT
-                    Uo0wYGWyO5/cFQl43h1i1tjGHOqclp0h577mJRA0mrI8tbE9UoVoTSsIFTSsNqq+
-                    4VShV8vdxd4usbtABliOsdnitEuHlQlI6qxER6xz0K3DAmWS5Y0q0yNjbYUti0A/
-                    HQIDAQAB
-                    -----END PUBLIC KEY-----
-                    ";
-
-                            $llave_privada = "-----BEGIN RSA PRIVATE KEY-----
-                    MIIEowIBAAKCAQEA8GpfieNbMLNS0GeXc04WzCBVdGyl4kCAJDutze/MgP3d52Im
-                    hKgbFyg3PGMKtKfN8fYl6A+n4Glz5zESprtkmFCEII0SAgCPfRy+Av3rEvemxh/n
-                    BJKPJspAQMsGEmRWsxoaextWSCkF9jQ51TVMhATIQrGtGfPIKAef/zpRkHaObXmX
-                    z/uXMDMo39JFAG/N95mf2qwAiY3OM4xi68gTUo0wYGWyO5/cFQl43h1i1tjGHOqc
-                    lp0h577mJRA0mrI8tbE9UoVoTSsIFTSsNqq+4VShV8vdxd4usbtABliOsdnitEuH
-                    lQlI6qxER6xz0K3DAmWS5Y0q0yNjbYUti0A/HQIDAQABAoIBAGtLDdg73zac0Rix
-                    IqYS85ml1H1g/6c5ofaJq8d8fYgTxDS/WPFbFLwA9qW8jcqSGRcjA0fNtN4yMce7
-                    3tcKSpqvVEgyrRa3qVHsweAT8hVE8Oj60972iWyGVqaT9OHAZfEIdUj7qkYKCN8X
-                    77d3Ue6ZM8aQBPDQG0PCI2WEYWJWqUnC0zXLvQDRMXn0cckC6pc9RVh57Um6wdOC
-                    NAdwkYRYWewoL5ZmD0qj0PhsWBaOJXwZi/658clHiPp0T5fI/jilw33dqHFvJzSh
-                    aBzq7BfwZ2MRJUQxk0GkafyZUu0rMZmZ4RQez/0NcKBaVF7MfuXv7BQU5cTcpO+8
-                    dQH5RwECgYEA+QosTIv64DWWyrPRuuTSyafKALzMKuYhhl0XFvhmPNlRBMfcoWqb
-                    dLc7K2sAdkPg1/0puKl5EQNaznZ4jdFudVYLJflCEWpfcMOrGjV8ZtF31KolJ7/k
-                    ysfpKiOW6j21WTx3YjjdktjHVro2sLAfQbZbWv054MWmsqK3PzSSW/8CgYEA9yJ+
-                    5WDcaz7T8fXktUN8EzUiRvqW9hi1j/m2xWyera2GaJ2O/Bo17fE+p/NqpNin3BvX
-                    OfsX4LBaaOPVLs2H7XOACHjnIqhUnkmemvtppMfpIRgmW6X7/GSSZ2HjHfRwc5RM
-                    EelV9+05rLtMaHBfwCfHZl30HQNh/xu8zdy3VOMCgYBb2H6h9HYfvmPQeiT9UmrS
-                    6Ei9oOODZsAyd56OYCoEgvk4VCVweoq+rtzplFrlQv9naPy8F/SIa75Pqq2nT/f2
-                    2jbeWGEfXyW3xtIRpmws10/kZKOzVzgf+T5qxhlgZkW9lWlKFkLRZ5WMzLxiyXGd
-                    oI1srztrRDnIY+5FJzRbLQKBgQDyKTEi3sjdpdDU9VfIbnoz8ArIdmBagVfX3p9D
-                    0O2jzbc457rmOWDC6XO16wWCxnGlcvpw7CQ3nVbaFPYeSHN7L4QzyRTjlwJjoEv0
-                    HYslVmaQcTOU9o52gK4c84QzJATUnGn12yjMKf4rzdRPOl340oHHQyUjEN+DtNBL
-                    AI38dQKBgHQeOQn4jcGY9Ag6A3epvaP/EJmdCM0vWax4W1dgbOTFWjz9gSydyhRg
-                    xsKQxw8dEEsy4VKp0ZPsfqzN8B6GO88I/qV00p6PLrzn3cdhGan/5ITC69Vyzl3N
-                    I2cRr7/RL5//3ERCtBAVWFhaPeHfeCXIFIkbiv9tEmjLUOTK0+jZ
-                    -----END RSA PRIVATE KEY-----
-                    ";
-
-*/
-                    
-                
-              /*  $factura_xml = $cabecera_facturaxml.$detalle_facturaxml.
-                               $signature_facturaxml.$signedinfo_facturaxml.$signaturevalue_facturaxml.
-                               $keyinfo_facturaxml.$pie_facturaxml;
-             */
                 
                 $factura_xml = $cabecera_facturaxml.$detalle_facturaxml.$pie_facturaxml;
              
@@ -1002,6 +923,12 @@ function firmarxmlprueba(){
         
         $publicKey = file_get_contents($directorio.'certificado.crt');
 
+        
+        var_dump($publicKey);
+        echo "<br><br>";
+        var_dump($publicKey);
+        
+        
         $domDocument = new DOMDocument();
         $domDocument->load($archivo);
         
