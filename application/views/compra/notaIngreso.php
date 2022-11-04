@@ -247,9 +247,13 @@ border-bottom:1px solid black;
                                     $utilidad = ($dc['detallecomp_precio'] - $dc['detallecomp_costo']) * $dc['detallecomp_cantidad'];
                                     $utilidad_total += $utilidad;
                                     echo number_format($utilidad,'2','.',',');?></td>
-                            <td><?php 
+                            <td><?php
+                                if($dc['detallecomp_costo'] > 0){
                                     $porcentaje_utilidad = ($dc['detallecomp_precio'] - $dc['detallecomp_costo']) / $dc['detallecomp_costo'] * 100;
-                                    echo number_format($porcentaje_utilidad,'2','.',',')."%";?></td>
+                                }else{
+                                    $porcentaje_utilidad = 0;
+                                }
+                                echo number_format($porcentaje_utilidad,'2','.',',')."%";?></td>
                             <td><?php echo number_format($dc['detallecomp_subtotal'],'2','.',',');?></td>
                             <td><?php echo number_format($dc['detallecomp_descuento'],'2','.',',');?></td>
                             <td><?php echo number_format($dc['detallecomp_descglobal'],'2','.',',');?></td>

@@ -117,7 +117,6 @@
     });
 </script>
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -340,7 +339,7 @@ border-bottom : 1px solid #aaa;*/
      <tr style="border-top-style: solid; border-top-width: 2px;">
         <td style="padding: 0;" colspan="4">
         RANGO NUMERACION VENTAS: <?php echo $resumen[0]["desde"]." - ".$resumen[0]["hasta"]; ?>
-        <br>CANTIDAD TOTAL VENTAS: <?php echo $resumen[0]["ventas"]; ?>
+        <br>CANTIDAD TOTAL VENTAS: <?php echo ($resumen[0]["ventas"]+1); ?>
         <br>VENTAS VALIDAS: <?php echo $resumen[0]["ventas"] - $anuladas[0]["anuladas"]; ?>
         <br>VENTAS ANULADAS: <?php echo $anuladas[0]["anuladas"]; ?>
             

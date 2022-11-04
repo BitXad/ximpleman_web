@@ -25,6 +25,7 @@ class Factura extends CI_Controller{
             'Usuario_model',
             'Preferencia_model',
             'Moneda_model',
+            'Caja_model',
         ]);
         
         $this->load->library('ControlCode');
@@ -1260,6 +1261,124 @@ class Factura extends CI_Controller{
         //}
         
     }
+    
+    /* anula la factura mal emitida, la que noo fue enviada a  impuestos!.  */
+    function anular_factura_malemitida($factura_id,$factura_numero){
+        
+        $configuracion = $this->configuracion[0];
+            
+        $sql = "select * from factura where factura_id = ".$factura_id;                
+        $factura = $this->Factura_model->consultar($sql);
+        
+        $venta_id = $factura[0]["venta_id"];
+         
+        //if($configuracion["parametro_tiposistema"]==1){
+        
+            //************** ANULACION FACTURA COMPUTARIZADA 
+            
+            $sql = "update factura set ".                
+                    "factura_subtotal = 0".
+                    ",factura_nit = 0".
+                    ",factura_razonsocial   = 'ANULADO'".
+                    ",factura_ice           = 0".
+                    ",factura_exento        = 0".
+                    ",factura_descuento     = 0".
+                    ",factura_total         = 0".
+                    ",factura_codigocontrol     = '0'".
+                    ",venta_id     = '0'".
+                    ",estado_id     = 3".
+                    " where factura_id = ".$factura_id;
+
+            $this->Factura_model->ejecutar($sql);
+
+            $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
+            $this->Factura_model->ejecutar($sql);
+            
+            $sql = "update detalle_factura set detallefact_cantidad = 0, detallefact_codigo = '',
+                        detallefact_unidad = '',
+                        detallefact_precio = 0, detallefact_subtotal = 0, detallefact_descuento = 0,
+                        detallefact_descuentoparcial = 0, detallefact_total = 0,
+                        detallefact_preferencia = '', detallefact_caracteristicas = '',
+                        detallefact_unidadfactor = '' where factura_id = $factura_id";
+            $this->Factura_model->ejecutar($sql);
+            /* una vez anulado la Factura ma emitida, se procede a anular la venta */
+            //**************** bitacora caja
+            $usuario_id = $this->session_data['usuario_id'];
+            $venta = $this->Detalle_venta_model->get_venta($venta_id);
+            $cliente = $this->Cliente_model->get_cliente($venta[0]['cliente_id']);
+            $sql =  "select count(*) as cantidad from detalle_venta where venta_id = ".$venta[0]['venta_id'];
+            $contx = $this->Venta_model->consultar($sql);
+            $cont = $contx[0]['cantidad'];
+
+            $prec_total = $venta[0]['venta_total'];
+            
+            $usuarioventa_id = $venta[0]['usuario_id'];
+            //*********** Administracion de caja *********
+            $caja_id = 0;
+            $caja = $this->Caja_model->get_caja_usuario($usuarioventa_id);
+            if (!sizeof($caja)>0){ // si la caja no esta iniciada
+                //iniciar caja y dejarla en pendiente
+                $caja_id = 0;
+            }else{
+                $caja_id = $caja[0]["caja_id"];
+            }
+            //*********** FIN Administracion de caja *********
+                    
+            $bitacoracaja_evento = "ANULAR VENTA Nº 00".$venta_id." CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+            $bitacoracaja_tipo = 2;
+
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                    ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$caja_id.")";
+
+            $this->Venta_model->ejecutar($sql);
+            //****************** fin bitacora caja
+            
+            
+            //**************** inicio contenido ***************   
+
+        $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_subtotal = 0, detalleven_total = 0 where venta_id = ".$venta_id;
+        $this->Venta_model->ejecutar($sql);
+
+        $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = ".$venta_id;
+        $this->Venta_model->ejecutar($sql);
+        
+        $sql =  "update cuota  set
+                cuota_numcuota = 0
+                ,cuota_capital = 0
+                ,cuota_interes = 0
+                ,cuota_moradias = 0
+                ,cuota_multa = 0
+                ,cuota_subtotal = 0
+                ,cuota_descuento = 0
+                ,cuota_total = 0
+                ,cuota_cancelado = 0
+                ,cuota_numercibo = 0
+                ,cuota_saldo = 0
+                ,estado_id = 27
+                ,cuota_saldocredito = 0
+                 where credito_id = (select credito_id from credito where venta_id = ".$venta_id." ) ";
+        $this->Venta_model->ejecutar($sql);
+
+        $sql =  "update credito set
+                estado_id = 27
+                ,credito_monto = 0
+                ,credito_cuotainicial = 0
+                ,credito_interesproc = 0
+                ,credito_interesmonto = 0
+                ,credito_numpagos = 0
+                ,credito_tipointeres = 0
+                where venta_id = ".$venta_id;
+        $this->Venta_model->ejecutar($sql);
+
+        $sql =  "update pedido set estado_id = 11 where pedido_id = (select v.pedido_id from venta v where v.venta_id = ".$venta_id.")";
+        $this->Venta_model->ejecutar($sql);
+
+        $this->Inventario_model->actualizar_inventario(); 
+        //**************** fin contenido ***************
+        echo json_encode("ok");
+    }
+    
     /*
      * Realizado por: Roberto Carlos Soto Sierra
      * Fecha: 05.03.2019

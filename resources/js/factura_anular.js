@@ -41,3 +41,54 @@ function anular_factura_electronica()
         }
 
 }
+
+/* carga las facturas no enviadas, mal emitidas */
+function cargar_modal_anular_malemitida(factura_id, venta_id, factura_numero, factura_razon, factura_total, factura_fecha)
+{
+    $("#facturamal_id").val(factura_id);
+    $("#ventamal_id").val(venta_id);
+    $("#facturamal_numero").val(factura_numero);
+    $("#facturamal_monto").val(factura_total);
+    $("#facturamal_fecha").val(moment(factura_fecha).format("DD/MM/YYYY"));
+    $("#facturamal_cliente").val(factura_razon)
+}
+
+function anular_factura_electronica_malemitida()
+{
+    var factura_id = document.getElementById("facturamal_id").value; 
+    var venta_id = document.getElementById("ventamal_id").value; 
+    var factura_numero = document.getElementById("facturamal_numero").value; 
+    var factura_razon = document.getElementById("facturamal_cliente").value; 
+    var factura_total = document.getElementById("facturamal_monto").value; 
+    var factura_fecha = document.getElementById("facturamal_fecha").value;
+    //var motivo_id = document.getElementById("motivo_anulacion").value;
+    //let factura_correo = document.getElementById("factura_correo").value;
+
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'factura/anular_factura_malemitida/'+factura_id+"/"+venta_id;
+    
+        var r = confirm("Esta a punto de anular una factura.\n"+"Factura Nº: "+factura_numero+"\n"+
+                                  "Monto Bs: "+factura_total+"\n"+
+                                  "Cliente: "+factura_razon+"\n"+
+                                  "Fecha: "+moment(factura_fecha).format("DD/MM/YYYY")+ "\n Esta operación es irreversible, ¿Desea Continuar?");
+        if(r == true){
+            document.getElementById('loadermal').style.display = 'block';
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        //mostrar_facturas();
+                        alert("Anulacion exitosa!.");
+                        
+                        document.getElementById('loadermal').style.display = 'none';
+                        location.reload();
+                        $('#boton_cerrarmal').click();
+                    },
+            });
+            document.getElementById('loadermal').style.display = 'none';
+        }else{
+            document.getElementById('loadermal').style.display = 'none';
+        }
+
+}

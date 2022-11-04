@@ -118,9 +118,9 @@ class Reportes extends CI_Controller{
                                                             c.usuario_id = ".$usuario_id." and
                                                             c.caja_fechaapertura = date(now())");
             
-            $sql = "select MIN(factura_numero) as desde, MAX(factura_numero) as hasta,
-                    MAX(factura_numero)-MIN(factura_numero) as ventas from factura
-                    where usuario_id = 1 and factura_fecha = date(now())";
+            $sql = "select MIN(factura_id) as desde, MAX(factura_id) as hasta,
+                    MAX(factura_id)-MIN(factura_id) as ventas from factura
+                    where usuario_id = $usuario_id and factura_fecha = date(now())";
             $data['resumen'] = $this->Venta_model->consultar($sql);
             
             $sql = "select count(*) as anuladas

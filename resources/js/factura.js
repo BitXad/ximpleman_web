@@ -101,7 +101,7 @@ function mostrar_facturas() {
                          
                         html += "<br>";
                         
-                        if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){                            
+                        if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
                             html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";                        
                         }else{
                             html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;' title='"+factura[i]["factura_mensajeslist"]+"'><small>FALLA</small></span>";
@@ -143,12 +143,15 @@ function mostrar_facturas() {
                                 if(factura[i]["estado_id"]==1){
                                     
                                     if (parametro_tiposisistema == 1){
-                                        html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button></td>";
+                                        html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button>";
                                     }
                                     else{
                                         html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
                                         html += "<fa class='fa fa-trash'> </fa> </button>";
-
+                                        if (factura[i]["factura_codigodescripcion"]!="VALIDADA"){
+                                            html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_noenviada' onclick='cargar_modal_anular_malemitida("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
+                                            html += "<fa class='fa fa-minus-circle'> </fa> </a>";
+                                        }
                                     }
                                 }
 
@@ -157,6 +160,7 @@ function mostrar_facturas() {
 
                                     totalfinal += Number(factura[i]["factura_subtotal"]);                
                         }
+                        html += "</td>";
                                     html += "</tr>";
                     }    
                         var debitofiscal =  totalfinal * 0.13;
@@ -662,7 +666,6 @@ function anular_factura_electronica()
 
 }
 
-
 function cargar_modal_anular(factura_id, venta_id, factura_numero, factura_razon, factura_total, factura_fecha)
 {
     $("#factura_id").val(factura_id);
@@ -686,3 +689,68 @@ function cargar_modal_anular(factura_id, venta_id, factura_numero, factura_razon
 
 }
 
+/* carga las facturas no enviadas, mal emitidas */
+function cargar_modal_anular_malemitida(factura_id, venta_id, factura_numero, factura_razon, factura_total, factura_fecha)
+{
+    $("#facturamal_id").val(factura_id);
+    $("#ventamal_id").val(venta_id);
+    $("#facturamal_numero").val(factura_numero);
+    $("#facturamal_monto").val(factura_total);
+    $("#facturamal_fecha").val(formato_fecha(factura_fecha));
+    $("#facturamal_cliente").val(factura_razon);
+    /*let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'factura/get_correo';
+    $.ajax({url:controlador,
+                    type:"POST",
+                    data:{venta_id: venta_id},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        if(res != null){
+                            //$("#facturamal_correo").val(res['cliente_email']);
+                        }
+                    },
+            });*/
+
+}
+
+
+function anular_factura_electronica_malemitida()
+{
+    var factura_id = document.getElementById("facturamal_id").value; 
+    var venta_id = document.getElementById("ventamal_id").value; 
+    var factura_numero = document.getElementById("facturamal_numero").value; 
+    var factura_razon = document.getElementById("facturamal_cliente").value; 
+    var factura_total = document.getElementById("facturamal_monto").value; 
+    var factura_fecha = document.getElementById("facturamal_fecha").value;
+    //var motivo_id = document.getElementById("motivo_anulacion").value;
+    //let factura_correo = document.getElementById("factura_correo").value;
+
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'factura/anular_factura_malemitida/'+factura_id+"/"+venta_id;
+    
+        var r = confirm("Esta a punto de anular una factura.\n"+"Factura Nº: "+factura_numero+"\n"+
+                                  "Monto Bs: "+factura_total+"\n"+
+                                  "Cliente: "+factura_razon+"\n"+
+                                  "Fecha: "+formato_fecha(factura_fecha)+ "\n Esta operación es irreversible, ¿Desea Continuar?");
+        if (r == true) {
+            
+            document.getElementById('loadermal').style.display = 'block';
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        mostrar_facturas();
+                        alert("Anulacion exitosa!.");
+                        
+                        document.getElementById('loadermal').style.display = 'none';
+                        $('#boton_cerrarmal').click();
+                    },
+            });
+            
+            document.getElementById('loadermal').style.display = 'none';
+        }else{
+            document.getElementById('loadermal').style.display = 'none';
+        }
+
+}
