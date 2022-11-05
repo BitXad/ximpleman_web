@@ -1,8 +1,9 @@
 
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/offline.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/funcionessin.js'); ?>"></script>
 <!--<script src="<?php //echo base_url('resources/js/tipo_emision.js'); ?>"></script>-->
 
 <script type="text/javascript">
@@ -863,7 +864,20 @@ window.onkeydown = compruebaTecla;
             <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-info btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
             <?php } ?>
             <button onclick='finalizarventa();' class='btn btn-info btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar venta</b></button> 
-            
+            <?php
+            $nomostrar = "";
+                if($tipousuario_id != 1){
+                    $nomostrar = "display: none";
+                }
+            if(sizeof($dosificacion)>0 && $parametro['parametro_factura'] != 3){
+            ?>
+                <a class="btn btn-sq-lg btn-warning btn-xs" href="<?php echo site_url('factura'); ?>" style="padding-left: 2px; <?php echo $nomostrar; ?>">
+                    Anular Factura
+                </a>
+            <?php   
+            }
+            ?>
+            <button class="btn btn-info btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa> Verificar Conexión</button>
             
             </div>
         </div>
@@ -926,7 +940,23 @@ window.onkeydown = compruebaTecla;
         </div>    
         <!----------------------------------- fin Botones ---------------------------------->
         <font face="Arial" size="1">
-             <?php
+            <div class="col-md-6">
+            <b>
+                <br>TECLAS DE ACCESO DIRECTO <br>
+            </b>
+            <p>
+                [F2] Busqueda por código de barras <br>
+                [F4] Busqueda por parámetros<br>
+                [F5] Actualizar página<br>        
+                [F7] Registrar NIT<br>
+                [F8] Finalizar venta<br>
+                <div hidden>            
+                    <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-warning btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
+                </div>
+            </p>
+            </div>
+            <div class="col-md-6">
+                <?php
             if($parametro['parametro_tiposistema'] != 1){
             ?>
             <span class="btn btn-info btn-xs"> <b> PUNTO DE VENTA <?php echo $puntoventa_codigo; ?></b></span>
@@ -942,32 +972,8 @@ window.onkeydown = compruebaTecla;
             <?php
             }
             ?>
-            <?php
-            $nomostrar = "";
-                if($tipousuario_id != 1){
-                    $nomostrar = "display: none";
-                }
-            if(sizeof($dosificacion)>0 && $parametro['parametro_factura'] != 3){
-            ?>
-                <a class="btn btn-sq-lg btn-warning btn-xs" href="<?php echo site_url('factura'); ?>" style="padding-left: 2px; <?php echo $nomostrar; ?>">
-                    Anular Factura
-                </a>
-            <?php   
-            }
-            ?>
-            <b>
-                <br>TECLAS DE ACCESO DIRECTO <br>
-            </b>
-            <p>
-                [F2] Busqueda por código de barras <br>
-                [F4] Busqueda por parámetros<br>
-                [F5] Actualizar página<br>        
-                [F7] Registrar NIT<br>
-                [F8] Finalizar venta<br>
-                <div hidden>            
-                    <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-warning btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
-                </div>
-            </p>
+            </div>
+            
         </font>
     </div>
 </div>

@@ -38,7 +38,8 @@
     <script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
     <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
     <script src="<?php echo base_url('resources/js/graficas.js');*/ ?>"></script>-->
-    <script src="https://kit.fontawesome.com/efffea19cb.js" crossorigin="anonymous"></script>    
+<!--    <script src="https://kit.fontawesome.com/efffea19cb.js" crossorigin="anonymous"></script>    -->
+    <script src="<?php echo site_url('resources/js/efffea19cb.js');?>"></script>
     <!-- jQuery 2.2.3 -->
         <script type="text/javascript"> 
         function mueveReloj(){
