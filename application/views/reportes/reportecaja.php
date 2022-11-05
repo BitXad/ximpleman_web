@@ -244,14 +244,22 @@ border-bottom : 1px solid #aaa;*/
                             <!--</center>-->                        
                         </td>
                         <td style="font-family: Arial; font-size: 9pt; padding: 0;" colspan="4">
-                            PUNTO DE VENTA:<?php echo "Caja 1"; ?>
-                            <br>FECHA INICIO: <?php echo $caja[0]["caja_fechaapertura"]." ".$caja[0]["caja_horaapertura"]; ?>
-                            <br>FECHA FIN: <?php echo $caja[0]["caja_fechacierre"]." ".$caja[0]["caja_horacierre"]; ?>
-                            
+                            PUNTO DE VENTA: <?php echo $punto_venta["puntoventa_nombre"]; ?>
+                            <br>FECHA INICIO: 
+                                <?php
+                                if(isset($caja)){
+                                    echo $caja["caja_fechaapertura"]." ".$caja["caja_horaapertura"];
+                                }
+                                  ?>
+                            <br>FECHA FIN: 
+                                <?php
+                                if(isset($caja)){
+                                    echo $caja["caja_fechacierre"]." ".$caja["caja_horacierre"];
+                                }
+                                ?>
                         </td>
                     </tr>
                 <!--</table>-->
-                
             </center>
         </td>
     </tr>
@@ -324,23 +332,43 @@ border-bottom : 1px solid #aaa;*/
         <td align="right" style="padding: 0; font-family: Arial; font-size: 10pt;" colspan="4">
             
             <b>VENTAS AL CONTADO Bs.: <?php echo number_format($total,2,".",","); ?></b>
-            <br><b>EFECTIVO INICIAL Bs: <?php echo $caja[0]["caja_apertura"]; ?></b>
+            <br><b>EFECTIVO INICIAL Bs: 
+                <?php
+                if(isset($caja)){
+                    echo $caja["caja_apertura"];
+                }else{
+                    echo "0.00";
+                }
+                ?>
+                </b>
             <br>INGRESOS Bs: <?php echo "0.00"; ?>
             <br>EGRESOS Bs:<?php echo "0.00"; ?>            
         </td>          
     </tr>
     <tr style="border-top-style: solid; border-top-width: 2px;">
         <td nowrap style="padding: 0; font-family: Arial; font-size: 10pt;" colspan="4">
-            <?php $efectivo_caja = $total + $caja[0]["caja_apertura"]; ?> 
+            <?php
+            $apertura_decaja = 0;
+            if(isset($caja)){
+                $apertura_decaja = $caja["caja_apertura"];
+            }
+            $efectivo_caja = $total + $apertura_decaja; ?> 
             <b>EFECTIVO EN CAJA Bs: <?php echo number_format($efectivo_caja,2,".",","); ?> </b>
-            <br><b>DIFERENCIA Bs: <?php echo number_format($caja[0]["caja_diferencia"],2,".",","); ?> </b>
+            <?php
+            $caja_diferencia = 0;
+            if(isset($caja)){
+                $caja_diferencia = $caja["caja_diferencia"];
+            }
+            ?>
+            <br><b>DIFERENCIA Bs: <?php echo number_format($caja_diferencia,2,".",","); ?> </b>
         </td>           
     </tr>
      <tr style="border-top-style: solid; border-top-width: 2px;">
         <td style="padding: 0;" colspan="4">
         RANGO NUMERACION VENTAS: <?php echo $resumen[0]["desde"]." - ".$resumen[0]["hasta"]; ?>
-        <br>CANTIDAD TOTAL VENTAS: <?php echo ($resumen[0]["ventas"]+1); ?>
-        <br>VENTAS VALIDAS: <?php echo $resumen[0]["ventas"] - $anuladas[0]["anuladas"]; ?>
+        <br>CANTIDAD TOTAL VENTAS: <?php echo $total_ventas[0]["total_ventas"]; ?>
+        <br>VENTAS VALIDAS: <?php echo $validas[0]["ventas_validas"]; ?>
+        <br>VENTAS MAL EMITIDAS: <?php echo $mal_emitidas[0]["mal_emitidas"]; ?>
         <br>VENTAS ANULADAS: <?php echo $anuladas[0]["anuladas"]; ?>
             
         </td>
@@ -352,7 +380,7 @@ border-bottom : 1px solid #aaa;*/
         <td colspan="5" style="padding: 0; text-align: center;">
             <small>Declaro veracidad de la información de este documento.</small>
             <br><br><br><br><br>
-            <b><?php echo $caja[0]["usuario_nombre"]; ?><br>CAJERO(A)</b>
+            <b><?php if(isset($caja)){ echo $caja["usuario_nombre"];} ?><br>CAJERO(A)</b>
         </td>
 
 <!--        <td style="padding: 0;  line-height: 12px;" colspan="4">

@@ -480,17 +480,20 @@
         
             
     <div class="col-md-12 no-print" style="max-width:<?php echo $ancho?>;">
-
-        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
-        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>
         <?php
-        if($factura[0]["factura_codigodescripcion"]!="VALIDADA"){
+        if($factura[0]["factura_codigodescripcion"]=="VALIDADA"){
+        ?>
+            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
+        <?php
+        }else{
         ?>
             <a class="btn btn-soundcloud btn-sm" data-toggle="modal" data-target="#modalanular_noenviada" onclick="cargar_modal_anular_malemitida(<?php echo $factura[0]["factura_id"].",".$factura[0]["venta_id"].",".$factura[0]["factura_numero"].",'".$factura[0]["factura_razonsocial"]."',".$factura[0]["factura_total"].",'".$factura[0]["factura_fecha"]."'"; ?> )">
-            <fa class='fa fa-minus-circle'> </fa> Anular Factura mal Emitida </a>
+            <fa class='fa fa-minus-circle'> </fa> Anular Factura </a>
         <?php
         }
         ?>
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>
+        
     </div>    
     
         
@@ -576,8 +579,8 @@
                 </div>-->
             </div>
             <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarmal"><fa class="fa fa-times"></fa> Cerrar</button>
                 <button type="button" class="btn btn-success" onclick="anular_factura_electronica_malemitida()"><fa class="fa fa-floppy-o"></fa> Anular Factura</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarmal"><fa class="fa fa-times"></fa> Cerrar</button>
             </div>
         </div>
     </div>

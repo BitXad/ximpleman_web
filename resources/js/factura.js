@@ -146,11 +146,12 @@ function mostrar_facturas() {
                                         html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button>";
                                     }
                                     else{
-                                        html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
+                                        if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
+                                            html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
                                         html += "<fa class='fa fa-trash'> </fa> </button>";
-                                        if (factura[i]["factura_codigodescripcion"]!="VALIDADA"){
+                                        }else{
                                             html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_noenviada' onclick='cargar_modal_anular_malemitida("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
-                                            html += "<fa class='fa fa-minus-circle'> </fa> </a>";
+                                            html += "<fa class='fa fa-trash'> </fa> </a>";
                                         }
                                     }
                                 }
@@ -643,11 +644,16 @@ function anular_factura_electronica()
                                   "Cliente: "+factura_razon+"\n"+
                                   "Fecha: "+formato_fecha(factura_fecha)+ "\n Esta operación es irreversible, ¿Desea Continuar?");
         if (r == true) {
-            
+            let borrar_venta = 0;
+            var re = confirm("Tambien quiere anular la venta asociada a la factura?\n"+"Venta Nº: "+venta_id+"\n"+
+                                  "Esta operación es irreversible, ¿Desea Continuar?");
+            if (re == true) {
+                borrar_venta = 1;
+            }
             document.getElementById('loader2').style.display = 'block';
             $.ajax({url:controlador,
                     type:"POST",
-                    data:{motivo_id: motivo_id, factura_correo:factura_correo},
+                    data:{motivo_id: motivo_id, factura_correo:factura_correo, borrar_venta:borrar_venta},
                     success:function(result){
                         res = JSON.parse(result);
                         

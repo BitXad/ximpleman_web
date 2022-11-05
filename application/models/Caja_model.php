@@ -135,17 +135,15 @@ class Caja_model extends CI_Model
     /*
      * Get caja by usuario_id
      */
-    /*function get_cajausuario($usuario_id)
+    function get_cajausuario_now($usuario_id)
     {
         $caja = $this->db->query("
-            SELECT
-                *
-            FROM
-                `caja`
-            WHERE
-                `usuario_id` = $usuario_id
-            order by caja_id desc
+            select c.*,u.* from caja c
+            left join usuario u on c.usuario_id = u.usuario_id
+            where 
+            c.usuario_id = ".$usuario_id." and
+            c.caja_fechaapertura = date(now())
         ")->row_array();
         return $caja;
-    }*/
+    }
 }

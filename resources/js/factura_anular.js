@@ -19,11 +19,16 @@ function anular_factura_electronica()
                                   "Cliente: "+factura_razon+"\n"+
                                   "Fecha: "+moment(factura_fecha).format("DD/MM/YYYY HH:mm:ss")+ "\n Esta operación es irreversible, ¿Desea Continuar?");
         if (r == true) {
-            
+            let borrar_venta = 0;
+            var re = confirm("Tambien quiere anular la venta asociada a la factura?\n"+"Venta Nº: "+venta_id+"\n"+
+                                  "Esta operación es irreversible, ¿Desea Continuar?");
+            if (re == true) {
+                borrar_venta = 1;
+            }
             document.getElementById('loader2').style.display = 'block';
             $.ajax({url:controlador,
                     type:"POST",
-                    data:{motivo_id: motivo_id, factura_correo:factura_correo},
+                    data:{motivo_id: motivo_id, factura_correo:factura_correo, borrar_venta:borrar_venta},
                     success:function(result){
                         res = JSON.parse(result);
                         alert(JSON.stringify(res));

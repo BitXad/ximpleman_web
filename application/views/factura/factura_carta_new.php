@@ -470,10 +470,100 @@ border-bottom : 1px solid #aaa;
     </table>
     <?php if ($tipousuario_id == 1){ ?>
         <div class="col-md-12 no-print" style="max-width: 7cm; font-family: Arial">
-            <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
+            <?php
+            if($factura[0]["factura_codigodescripcion"]=="VALIDADA"){
+            ?>
+                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
+            <?php
+            }else{
+            ?>
+                <a class="btn btn-soundcloud btn-sm" data-toggle="modal" data-target="#modalanular_noenviada" onclick="cargar_modal_anular_malemitida(<?php echo $factura[0]["factura_id"].",".$factura[0]["venta_id"].",".$factura[0]["factura_numero"].",'".$factura[0]["factura_razonsocial"]."',".$factura[0]["factura_total"].",'".$factura[0]["factura_fecha"]."'"; ?> )">
+                <fa class='fa fa-minus-circle'> </fa> Anular Factura </a>
+            <?php
+            }
+            ?>
             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>
         </div>
     <?php } ?>
 </td>
 </tr>
 </table><span class="no-print"><?php echo $cadenaqr; ?></span>
+
+<!------------------------ INICIO modal para confirmar anulacion de factura no enviada ------------------->
+<div class="modal fade" id="modalanular_noenviada" tabindex="-1" role="dialog" aria-labelledby="modalanularlabel" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center" style="background: #edb62b">
+                <b style="color: white;">ANULAR FACTURA NO ENVIADA</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <label for="factura_numero" class="control-label">ADVERTENCIA: Esta a punto de anular la factura no enviada!.</label>
+                </div>
+                <div class="col-md-12 text-center" id="loadermal" style="display:none;">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" />
+                </div>
+                  <input type="hidden" name="facturamal_id" value="00" class="form-control" id="facturamal_id" readonly="true" />
+                  <input type="hidden" name="ventamal_id" value="00" class="form-control" id="ventamal_id" readonly="true" />
+
+                <div class="col-md-4">
+                    <label for="facturamal_numero" class="control-label">Factura Nº</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_numero" value="00" class="form-control" id="facturamal_numero" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="facturamal_monto" class="control-label">Monto</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_monto" value="0.00" class="form-control" id="facturamal_monto" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="facturamal_fecha" class="control-label">Fecha</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_fecha" value="0.00" class="form-control" id="facturamal_fecha" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="facturamal_cliente" class="control-label">Cliente</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_cliente" value="-" class="form-control" id="facturamal_cliente" readonly="true"  />
+                    </div>
+                </div>
+                <!--<div class="col-md-12">
+                    <label for="facturamal_correo" class="control-label">Correo Electrónico</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_correo" value="-" class="form-control" id="facturamal_correo" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="dosificacion_nitemisor" class="control-label">Motivo Anulación</label>
+                    <div class="form-group">
+
+                        <select id="motivo_anulacion" class="form-control">
+
+                            <?php /* foreach ($motivos as $motivo) {?>
+
+                                <option value="<?= $motivo['cma_id']; ?>"><?= $motivo['cma_descripcion']; ?></option>
+
+                            <?php } */ ?>
+
+                        </select>
+
+                    </div>
+                </div>-->
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" onclick="anular_factura_electronica_malemitida()"><fa class="fa fa-floppy-o"></fa> Anular Factura</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarmal"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para confirmar anulacion de factura no enviada------------------->

@@ -64,4 +64,13 @@
                 where pv.puntoventa_codigo = $puntoventa_codigo
                 ")->row_array();
         }
+        /* obtiene informacion de un punto de venta de un usuario*/
+        function get_puntoventausuario($usuario_id){
+            return $this->db->query(
+                "select pv.puntoventa_codigo, pv.puntoventa_nombre from punto_venta pv
+                left join usuario u on pv.puntoventa_codigo = u.puntoventa_codigo
+                where
+                u.usuario_id = $usuario_id
+            ")->row_array();
+        }
     }  

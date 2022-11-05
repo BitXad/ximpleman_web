@@ -1150,7 +1150,11 @@ class Factura extends CI_Controller{
                 ]);
 
                 $usuario_id = $this->session_data['usuario_id'];
-                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                
+                $venta = $this->Detalle_venta_model->get_venta($venta_id);
+                $usuarioventa_id = $factura[0]['usuario_id'];
+                
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuarioventa_id);
                 $this->load->model('PuntoVenta_model');
                 $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 
@@ -1233,6 +1237,82 @@ class Factura extends CI_Controller{
 
                     $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
                     $this->Factura_model->ejecutar($sql);
+                    
+                    $borrar_venta = $this->input->post("borrar_venta");
+                    if($borrar_venta == 1){
+                        
+                        $cliente = $this->Cliente_model->get_cliente($venta[0]['cliente_id']);
+                        $sql =  "select count(*) as cantidad from detalle_venta where venta_id = ".$venta[0]['venta_id'];
+                        $contx = $this->Venta_model->consultar($sql);
+                        $cont = $contx[0]['cantidad'];
+                        
+                        $prec_total = $venta[0]['venta_total'];
+                        
+                        
+                        //*********** Administracion de caja *********
+                        $caja_id = 0;
+                        $caja = $this->Caja_model->get_caja_usuario($usuarioventa_id);
+                        if (!sizeof($caja)>0){ // si la caja no esta iniciada
+                            //iniciar caja y dejarla en pendiente
+                            $caja_id = 0;
+                        }else{
+                            $caja_id = $caja[0]["caja_id"];
+                        }
+                        //*********** FIN Administracion de caja *********
+
+                        $bitacoracaja_evento = "ANULAR VENTA Nº 00".$venta_id." CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+                        $bitacoracaja_tipo = 2;
+
+                        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$caja_id.")";
+
+                        $this->Venta_model->ejecutar($sql);
+                        //****************** fin bitacora caja
+
+
+                        //**************** inicio contenido ***************   
+
+                    $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_subtotal = 0, detalleven_total = 0 where venta_id = ".$venta_id;
+                    $this->Venta_model->ejecutar($sql);
+
+                    $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = ".$venta_id;
+                    $this->Venta_model->ejecutar($sql);
+
+                    $sql =  "update cuota  set
+                            cuota_numcuota = 0
+                            ,cuota_capital = 0
+                            ,cuota_interes = 0
+                            ,cuota_moradias = 0
+                            ,cuota_multa = 0
+                            ,cuota_subtotal = 0
+                            ,cuota_descuento = 0
+                            ,cuota_total = 0
+                            ,cuota_cancelado = 0
+                            ,cuota_numercibo = 0
+                            ,cuota_saldo = 0
+                            ,estado_id = 27
+                            ,cuota_saldocredito = 0
+                             where credito_id = (select credito_id from credito where venta_id = ".$venta_id." ) ";
+                    $this->Venta_model->ejecutar($sql);
+
+                    $sql =  "update credito set
+                            estado_id = 27
+                            ,credito_monto = 0
+                            ,credito_cuotainicial = 0
+                            ,credito_interesproc = 0
+                            ,credito_interesmonto = 0
+                            ,credito_numpagos = 0
+                            ,credito_tipointeres = 0
+                            where venta_id = ".$venta_id;
+                    $this->Venta_model->ejecutar($sql);
+
+                    $sql =  "update pedido set estado_id = 11 where pedido_id = (select v.pedido_id from venta v where v.venta_id = ".$venta_id.")";
+                    $this->Venta_model->ejecutar($sql);
+
+                    $this->Inventario_model->actualizar_inventario(); 
+                    //**************** fin contenido ***************
+                    }
                     
                     $correo = $this->input->post("factura_correo");
                     $res = $this->enviar_correoanulacion($venta_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf);
