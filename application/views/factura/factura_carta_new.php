@@ -152,8 +152,8 @@ border-bottom : 1px solid #aaa;
                 </div>
             </div>
             <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrar"><fa class="fa fa-times"></fa> Cerrar</button>
                 <button type="button" class="btn btn-success" onclick="anular_factura_electronica()"><fa class="fa fa-floppy-o"></fa> Anular Factura</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrar"><fa class="fa fa-times"></fa> Cerrar</button>
             </div>
         </div>
     </div>

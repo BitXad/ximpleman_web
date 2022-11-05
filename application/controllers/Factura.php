@@ -1118,7 +1118,7 @@ class Factura extends CI_Controller{
                 $codigo_motivo =  $this->input->post("motivo_id");
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
-                $modalidad = $dosificacion["dosificacion_modalidad"];
+                //$modalidad = $dosificacion["dosificacion_modalidad"];
                                
                 if ($dosificacion['docsec_codigoclasificador']==1)
                     $wsdl = $dosificacion['dosificacion_factura'];
