@@ -3,7 +3,6 @@
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/offline.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/funcionessin.js'); ?>"></script>
 <!--<script src="<?php //echo base_url('resources/js/tipo_emision.js'); ?>"></script>-->
 
 <script type="text/javascript">
@@ -193,6 +192,21 @@ elemento = document.getElementById('obj');
  
 window.onkeydown = compruebaTecla;
         
+    function verificarComunicacion(){
+        var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'dosificacion/verificarcomunicacion';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    let registros = JSON.parse(respuesta);
+                    alert(JSON.stringify(registros));
+                },
+                error:function(respuesta){
+                    alert("Error: Conexión fallida. Vuelva a intentar...!");
+                }
+        });
+    }
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
