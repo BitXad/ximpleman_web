@@ -1265,7 +1265,7 @@ class Factura extends CI_Controller{
 
                         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
                                 usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
-                                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$caja_id.")";
+                                ",'".$bitacoracaja_evento."',".$usuarioventa_id.",0,0,".$bitacoracaja_tipo.",".$caja_id.")";
 
                         $this->Venta_model->ejecutar($sql);
                         //****************** fin bitacora caja
@@ -1409,7 +1409,7 @@ class Factura extends CI_Controller{
 
             $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
                     usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
-                    ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$caja_id.")";
+                    ",'".$bitacoracaja_evento."',".$usuarioventa_id.",0,0,".$bitacoracaja_tipo.",".$caja_id.")";
 
             $this->Venta_model->ejecutar($sql);
             //****************** fin bitacora caja
