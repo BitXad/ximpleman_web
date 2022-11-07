@@ -341,9 +341,9 @@ $salto_linea='
                 $detalle_facturaxml .= $salto_linea.'           <descripcion>'.$detallefact_descripcion.'</descripcion>';
                 $detalle_facturaxml .= $salto_linea.'           <cantidad>'.$df['detallefact_cantidad'].'</cantidad>';
                 $detalle_facturaxml .= $salto_linea.'           <unidadMedida>'.$df['unidad_codigo'].'</unidadMedida>';
-                $detalle_facturaxml .= $salto_linea.'           <precioUnitario>'.number_format($df['detallefact_precio'],2,'.',',').'</precioUnitario>';
-                $detalle_facturaxml .= $salto_linea.'           <montoDescuento>'.number_format($descuentoparcial,2,'.',',').'</montoDescuento>';
-                $detalle_facturaxml .= $salto_linea.'           <subTotal>'.number_format($df['detallefact_total'],2,'.',',').'</subTotal>';
+                $detalle_facturaxml .= $salto_linea.'           <precioUnitario>'.number_format($df['detallefact_precio'],2,'.','').'</precioUnitario>';
+                $detalle_facturaxml .= $salto_linea.'           <montoDescuento>'.number_format($descuentoparcial,2,'.','').'</montoDescuento>';
+                $detalle_facturaxml .= $salto_linea.'           <subTotal>'.number_format($df['detallefact_total'],2,'.','').'</subTotal>';
                 
                 if ($documento_sector != 11 && $documento_sector != 13 && $documento_sector != 39 && $documento_sector != 23){
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
