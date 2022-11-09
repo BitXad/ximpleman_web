@@ -443,14 +443,14 @@ window.onkeydown = compruebaTecla;
                     if($parametro["parametro_tipoemision"] == 1){?>
                 
                         <a class="btn btn-danger btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" >
-                        <span id="eltipo_emision" style="color: white;">online</span>
+                        <span id="eltipo_emision" style="color: white;">en linea</span>
                         </a>        
                 
                     <?php
                     }elseif($parametro["parametro_tipoemision"] == 2){ ?>
                 
                         <a class="btn btn-facebook btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" style="background: grey">
-                        <span id="eltipo_emision" style="color: white;">offline</span>
+                        <span id="eltipo_emision" style="color: white;">fuera de linea</span>
                         </a>        
                 
                        
@@ -1960,8 +1960,8 @@ window.onkeydown = compruebaTecla;
                         <label for="elparametro_tipoemision" class="control-label">Tipo de Emisión</label>
                         <div class="form-group">
                             <select name="elparametro_tipoemision" class="form-control" id="elparametro_tipoemision" required>
-                                <option value="1" <?php if($parametro['parametro_tipoemision']=="1"){ ?> selected <?php } ?>>ONLINE</option>
-                                <option value="2" <?php if($parametro['parametro_tipoemision']=="2"){ ?> selected <?php } ?>>OFFLINE</option>
+                                <option value="1" <?php if($parametro['parametro_tipoemision']=="1"){ ?> selected <?php } ?>>EN LINEA</option>
+                                <option value="2" <?php if($parametro['parametro_tipoemision']=="2"){ ?> selected <?php } ?>>FUERA DE LINEA</option>
                                 <option value="3" <?php if($parametro['parametro_tipoemision']=="3"){ ?> selected <?php } ?>>MASIVA</option>
                             </select>
                         </div>

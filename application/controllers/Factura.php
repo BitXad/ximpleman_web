@@ -347,7 +347,8 @@ class Factura extends CI_Controller{
             $cuf       = $factura[0]['factura_cuf'];
             $tamanio   = $factura[0]['factura_tamanio'];
             // nuevo
-            $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+            //$cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+            $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
         }
             
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
@@ -448,7 +449,8 @@ class Factura extends CI_Controller{
             $cuf       = $factura[0]['factura_cuf'];
             $tamanio   = $factura[0]['factura_tamanio'];
             // nuevo
-            $cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+            //$cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+            $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
         }
          
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
