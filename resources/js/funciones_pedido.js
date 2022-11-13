@@ -258,10 +258,11 @@ function tablaproductos()
                         html += " </th>";
                         
                         if(esMobil()){
-                            html += "                            <th style='padding:0'>Precio<br>Cant.</th>";                            
+                            html += "                            <th style='padding:0'>Precio<br>Cant. Desc.</th>";                            
                         }else{
                             html += "                            <th style='padding:0'>Cant.</th>";                    
                             html += "                            <th style='padding:0'>Precio <br>"+parametro_moneda_descripcion+"</th>";
+                            html += "                            <th style='padding:0'>Desc <br>"+parametro_moneda_descripcion+"</th>";
                             html += "                            <th style='padding:0'>Precio<br>Total "+parametro_moneda_descripcion+"</th>";
                         } 
                         html += "                            <th style='padding:0'><button onclick='quitartodo()' class='btn btn-danger btn-xs' title='Vaciar el detalle de la venta'><span class='fa fa-trash'></span><b></b></button></th>";
@@ -273,6 +274,7 @@ function tablaproductos()
                     var total_detalle = 0;
                     var categoria = '';
                     var total_equivalente = 0;
+                    var total_descuentoparcial = 0;
                     var x = registros.length; //tamaño del arreglo de la consulta
                       
                     for (var i = 0; i < x ; i++){
@@ -283,7 +285,12 @@ function tablaproductos()
                            cont = cont+1;
                            cant_total+= parseFloat(registros[i]["detalleven_cantidad"]);
                            total_detalle+= parseFloat(registros[i]["detalleven_total"]);
-                           
+                        let descuento_parcial = registros[i]["detalleven_descuentoparcial"];
+                       if(descuento_parcial == null || descuento_parcial == "" ){
+                           descuento_parcial = 0;
+                       }
+                       total_descuentoparcial += parseFloat(descuento_parcial * registros[i]["detalleven_cantidad"]);
+
                             if(modificar_precioventa == 0){
                                 sololect = "readonly";
                             }else{ sololect = ""; }
@@ -452,6 +459,7 @@ function tablaproductos()
                         html += "                    </div>";
                         
                         html += "<input "+sololect+" size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
+                        html += "<input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
                         html += "<br><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font><br>"+total_equivalente;
                         html += "</td>";
                         html += "			<td "+color+">";
@@ -477,6 +485,7 @@ function tablaproductos()
 
                         html += "</td>";
                         html += "<td align='right' "+color+"><input "+sololect+" size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        html += "<td align='right' "+color+"><input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         
                         
                         html += "                       <td align='right' "+color+"><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font><br>"+total_equivalente;
@@ -513,6 +522,8 @@ function tablaproductos()
                         html += "                            <th style='padding:0'></th>";
                         html += "                            <th style='padding:0'></th>";
                         html += "                            <th style='padding:0'><font size='3'>"+cant_total.toFixed(2)+"</font></th>";
+                        html += "                            <th style='padding:0'></th>";
+                        html += "                            <th style='padding:0'><font size='3'>"+total_descuentoparcial.toFixed(2)+"</font></th>";
                         html += "                            <th style='padding:0'></th>"; 
                                                 
                         html += "                            <th style='padding:0' align='right'><font size='3'>"+parametro_moneda_descripcion+" "+formato_numerico(total_detalle.toFixed(2))+"</font><br>";
@@ -1026,7 +1037,7 @@ function actualizar_losprecios(detalleven_id)
     if(rol_modificardetalle == 1){
     var base_url =  document.getElementById('base_url').value;
     var precio = document.getElementById('precio'+detalleven_id).value;
-    var descuentoparcial = 0; //document.getElementById('descuento'+detalleven_id).value; 
+    var descuentoparcial = document.getElementById('descuento'+detalleven_id).value; 
     var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
     var controlador =  base_url+"venta/actualizarprecio";
         

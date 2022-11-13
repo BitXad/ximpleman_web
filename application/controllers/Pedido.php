@@ -387,6 +387,7 @@ class Pedido extends CI_Controller{
             detalleven_precio,
             detalleven_subtotal,
             detalleven_descuento,
+            detalleven_descuentoparcial,
             detalleven_total,
             detalleven_caracteristicas,
             detalleven_preferencia,
@@ -399,8 +400,7 @@ class Pedido extends CI_Controller{
             categoria_id,
             producto_codigobarra,
             existencia,
-            detalleven_tc,
-            detalleven_descuentoparcial
+            detalleven_tc
             )
             
             (select 
@@ -413,6 +413,7 @@ class Pedido extends CI_Controller{
             d.detalleped_precio,
             d.detalleped_subtotal,
             d.detalleped_descuento,
+            d.detalleped_descuentoparcial,
             d.detalleped_total,
             '' as caracteristicas,
             d.detalleped_preferencia,
@@ -425,8 +426,7 @@ class Pedido extends CI_Controller{
             p.categoria_id,
             p.producto_codigobarra,
             p.existencia,
-            d.detalleped_tc,
-            0
+            d.detalleped_tc
 
             from detalle_pedido d, pedido e,usuario u, consinventario p
             where p.producto_id = d.producto_id and e.pedido_id =".$pedido_id." and d.pedido_id = e.pedido_id and e.usuario_id = u.usuario_id)";
@@ -567,6 +567,7 @@ class Pedido extends CI_Controller{
             detalleped_cantidad,
             detalleped_precio,
             detalleped_descuento,
+            detalleped_descuentoparcial,
             detalleped_subtotal,
             detalleped_total,
             detalleped_preferencia,
@@ -584,6 +585,7 @@ class Pedido extends CI_Controller{
           detalleven_cantidad,
           detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
           (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+          detalleven_descuentoparcial,
           detalleven_subtotal,
           detalleven_total * (1 - ".$porcentaje."),
           detalleven_preferencia,
@@ -891,12 +893,14 @@ class Pedido extends CI_Controller{
                  
             $sql = "insert into detalle_venta
                     (producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, 
-                    detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, detalleven_descuento, 
+                    detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, detalleven_descuento,
+                    detalleven_descuentoparcial,
                     detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, 
                     detalleven_tipocambio, usuario_id, detalleven_tc)
                     (select
                     producto_id, ".$venta_id." as venta_id, 1 as moneda_id, detalleped_codigo, detalleped_cantidad,
                     detalleped_unidad, detalleped_costo, detalleped_precio, detalleped_subtotal, detalleped_descuento,
+                    detalleped_descuentoparcial,
                     detalleped_total,'' as detalleven_caracteristicas, detalleped_preferencia, detalleped_comision,
                     1 as detalleven_tipocambio, ".$usuario_id.", ".$moneda['moneda_tc']."
                     from detalle_pedido
