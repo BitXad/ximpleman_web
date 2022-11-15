@@ -562,6 +562,7 @@ class Parametro extends CI_Controller{
                         
                     $resultado = $cliente->cufd($parametros);
                     sleep(1);
+                    
                     if($resultado->RespuestaCufd->transaccion){ //Si genero el CUFD correctamente
 
                             $cufd_codigo = "'".$resultado->RespuestaCufd->codigo."'";
@@ -693,6 +694,7 @@ class Parametro extends CI_Controller{
                             //PASO 5: Si todo esta OK, actualizamos el codigo devuelto por el SIN
 
                             if ($res){
+                                
                                 $codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;
 
                                 $sql = "update registro_eventos set registroeventos_codigo = '".$codigo_recepcion."'"." where registroeventos_id = ".$evento['registroeventos_id'];
@@ -916,10 +918,10 @@ class Parametro extends CI_Controller{
                                 $res = $resultado->RespuestaServicioFacturacion;
                                 $resultado = $resultado->RespuestaServicioFacturacion->transaccion;
                                 sleep(1);
+                                
                                 //var_dump($res);
                                 if($resultado){
    
-
                                         $recepcion_paquete = $this->Emision_paquetes_model->getcod_recepcionpaquetes($res->codigoRecepcion);
 
                                         if($res->codigoDescripcion == "VALIDADA"){
@@ -971,6 +973,12 @@ class Parametro extends CI_Controller{
                                             }
                                         }
                                         
+                                        //************ actualizar lista de eventos**********************
+                                        $sql = "update registro_eventos set estado_id = 2 where registroeventos_puntodeventa = ".$puntoventa['puntoventa_codigo'];
+                                        $this->Venta_model->ejecutar($sql);
+                                        
+                                        //***************************************************************
+                                        
                                         echo json_encode($res);
                                         
                             //*************
@@ -1003,26 +1011,53 @@ class Parametro extends CI_Controller{
                 
                 //if(!sizeof($result)>0){
                 if(1>0){
-                
-                    $registroeventos_codigo = "''";
-                    $registroeventos_codigoevento = $evento_id;
-                    $registroeventos_detalle = "'".$evento_nombre."'";
-                    $registroeventos_fecha = "now()";
-                    $registroeventos_puntodeventa = $cufds["cufd_puntodeventa"];
-                    $registroeventos_inicio = "now()";
-                    $registroeventos_cufd = "'".$cufds["cufd_codigo"]."'";
-                    $registroeventos_codigocontrol = "'".$cufds["cufd_codigocontrol"]."'";
-                    $estado_id = 1;
+                        // filtramos todos los puntos de venta existentes
+                        $sql = "select * from punto_venta";
+                        $puntos = $this->Venta_model->consultar($sql);
+                        
+                        foreach($puntos as $puntoventa){ //Reccorremos todos los puntos de venta existentes
+                            
+                            //Selecccionamos en ultimo CUFD en uso del punto de venta seleccionado
+                            $sql = "select * from cufd where cufd_codigo = (select cufd_codigo FROM punto_venta where puntoventa_codigo = ".$puntoventa['puntoventa_codigo'].")";
+                            $resultado = $this->Venta_model->consultar($sql);
+                            
+                            if(sizeof($resultado)>0){
+                                
+                                    $cufds = $resultado[0];
+                                    
+                                //verificamos si ya tenemos un evento de este dia asociado y activo 
+                                    
+                                $sql = "select * from registro_eventos where date(registroeventos_inicio) = date(now()) and estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa['puntoventa_codigo'];
+                                $eventos = $this->Venta_model->consultar($sql);
+                                
+                                if (sizeof($eventos)<1){ //Si NO existe un evento asociado al dia de hoy para el punto de venta, lo debe generar
+                                    
+                                    
+                                    $registroeventos_codigo = "''";
+                                    $registroeventos_codigoevento = $evento_id;
+                                    $registroeventos_detalle = "'".$evento_nombre."'";
+                                    $registroeventos_fecha = "now()";
+                                    $registroeventos_puntodeventa = $cufds["cufd_puntodeventa"];
+                                    $registroeventos_inicio = "now()";
+                                    $registroeventos_cufd = "'".$cufds["cufd_codigo"]."'";
+                                    $registroeventos_codigocontrol = "'".$cufds["cufd_codigocontrol"]."'";
+                                    $estado_id = 1;
 
-                    //inactivamos los eventos anteriores
-                    $sql = "update registro_eventos set estado_id = 2 where registroeventos_puntodeventa = ".$puntoventa['puntoventa_codigo'];
-                    $this->Venta_model->ejecutar($sql);
+                                    //inactivamos los eventos anteriores del mismo punto de venta
+                                    $sql = "update registro_eventos set estado_id = 2 where registroeventos_puntodeventa = ".$puntoventa['puntoventa_codigo'];
+                                    $this->Venta_model->ejecutar($sql);
 
-                    //registramos el nuevo evento
-                    $sql = "insert into registro_eventos(registroeventos_codigo, registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha, registroeventos_puntodeventa, registroeventos_inicio, registroeventos_cufd, registroeventos_codigocontrol, estado_id) value(".
-                            $registroeventos_codigo.",".$registroeventos_codigoevento.",".$registroeventos_detalle.",".$registroeventos_fecha.",".$registroeventos_puntodeventa.",".$registroeventos_inicio.",".$registroeventos_cufd.",".$registroeventos_codigocontrol.",".$estado_id.")";
-                    $this->Venta_model->ejecutar($sql);
-                    echo json_encode("Evento registrado correctamente..!!");
+                                    //registramos el nuevo evento
+                                    $sql = "insert into registro_eventos(registroeventos_codigo, registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha, registroeventos_puntodeventa, registroeventos_inicio, registroeventos_cufd, registroeventos_codigocontrol, estado_id) value(".
+                                            $registroeventos_codigo.",".$registroeventos_codigoevento.",".$registroeventos_detalle.",".$registroeventos_fecha.",".$registroeventos_puntodeventa.",".$registroeventos_inicio.",".$registroeventos_cufd.",".$registroeventos_codigocontrol.",".$estado_id.")";
+                                    $this->Venta_model->ejecutar($sql);
+                                    
+                                } //fin if (! sizeof($eventos)>0)
+                            }
+
+                        } //fin foreach
+                        
+                        echo json_encode("Evento registrado correctamente..!!");
                     
                 }else{
                     echo json_encode("ADVENTENCIA: Ya existe un evento registrado...!");

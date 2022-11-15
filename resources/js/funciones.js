@@ -649,6 +649,7 @@ html += "  </div>";
                         html += "                    </div>";
 
                         html += "<input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
+                        html += "<input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
                         html += "<br><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font><br>"+total_equivalente;
                         html += "</td>";
                         html += "			<td "+color+">";
@@ -1826,6 +1827,7 @@ function cambiarcantidadjs(e,producto)
         var producto_id =  producto.producto_id; 
         
         var cantidad =  document.getElementById('cantidad'+producto.detalleven_id).value;
+        cantidad =  Number(cantidad).toFixed(2);
          
         var sql = ""
         
@@ -3078,22 +3080,29 @@ function registrarventa(cliente_id)
                     registrarpuntos(cliente_id, venta_total);
                 }
                 
-                eliminardetalleventa();
                 let parametro_tiposistema = document.getElementById('parametro_tiposistema').value;
+
                 if(parametro_tiposistema != 1){
+                    
                     if(res.mensajesList.codigoDescripcion == "VALIDADA"){
+                        alert("FACTURA ENVIADA");
+                    }else{
+                        
+                        
+                        if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){
+                            alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
 
-                    }else
-                    if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){                    
-                        alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
+                            if(res.mensajesList.codigo == 953){                    
+                                //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
+                                solicitudCufd(punto_venta);                    
+                            }
 
-                        if(res.mensajesList.codigo == 953){                    
-                            //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
-                            solicitudCufd(punto_venta);                    
                         }
-
+                        
                     }
                 }
+                
+                eliminardetalleventa();
                 //console.log(res.comunicacion);
                 //alert(JSON.stringify(res));
                 //if (pedido_id>0){ pedidos_pendientes(); }
@@ -3143,41 +3152,55 @@ function registrarventa(cliente_id)
 //                    solicitudCufd(punto_venta);                    
 //                }
 //                
+//                
 //                if((res.mensajesList.codigo >= 1037)||(res.mensajesList.codigo == 988)||(res.mensajesList.codigo == 993)||(res.mensajesList.codigo == 988) ){                    
                 let parametro_tiposistema = document.getElementById('parametro_tiposistema').value;
+                
+               
+                var motivo = "";
+                var html = "";
+                var mensaje = "";
+                
+                
+                
                 if(parametro_tiposistema != 1){
+                    
                     if(res.mensajesList.codigoDescripcion == "VALIDADA"){
-
-                    }else
-                    if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){                    
-                        alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
-
-                        if(res.mensajesList.codigo == 953){                    
-                            //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
-                            solicitudCufd(punto_venta);                    
-                        }
-
-                    }
-                }
-//
-//                if(res.mensajesList.codigo == 988){                    
-//                    alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
-//                }
-              
-                /*if (res.codigoDescripcion == 'RECHAZADA'){
-                    //alert(dosificacion_modalidad);
-                    if(parametro_tipoemision == 1){ //Si la modalidad es en linea
+                            //alert("FACTURA ENVIADA");    
+                        //html = "<span class='btn btn-info btn-block' style='font-family: Arial; line-height: 9pt;'><b style='font-family: Arial; font-size: 18pt;'>ENVIADA</b><br>"+mensaje+"</span>";
                         
-                            actualizar_numerofactura();
+                        document.getElementById('mensaje_enviado').style.display = 'block';
+                        document.getElementById('mensaje_no_enviado').style.display = 'none';
+                    
+                    }else{
+                        
+                          alert("FACTURA NO ENVIADA");
+
+                        if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){
+                            
+                            mensaje = "ERROR "+res.mensajesList.codigo+" * "+res.mensajesList.descripcion;
+                            alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
+
+                            if(res.mensajesList.codigo == 953){                    
+                                //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
+                                solicitudCufd(punto_venta);                    
+                            }
+                            
+                        }
+                        
+                        document.getElementById('mensaje_enviado').style.display = 'none';
+                        document.getElementById('mensaje_no_enviado').style.display = 'block';
+//                        html = "<span class='btn btn-danger btn-block' style='font-family: Arial; line-height: 9pt;'><b style='font-family: Arial; font-size: 18pt;'>NO ENVIADA</b><br>"+mensaje+"<br>Debe volver a emitir el documento...!</span>";
+                        
                     }
                     
-                }*/
-                
-                
-                
-                //if (pedido_id>0){ pedidos_pendientes(); }
+                }
+                //$("#div_mensaje").html(html);
+               
             },
             error: function(respuesta){
+                document.getElementById('mensaje_enviado').style.display = 'none';
+                document.getElementById('mensaje_no_enviado').style.display = 'block';
                 alert("Revise los datos de la venta por favor...!");   
             }
         });          
@@ -3867,35 +3890,6 @@ function montrar_ocultar_fila(parametro)
         document.getElementById('fila_producto').style.display = 'none';}
     
 }
-
-//function formato_numerico(numer){
-//    var partdecimal = "";
-//    var numero = "";
-//    var num = numer.toString();
-//    var signonegativo = "";
-//    var resultado = "";
-//    
-//    /*quitamos el signo al numero, si es que lo tubiera*/
-//    if(num[0]=="-"){
-//        signonegativo="-";
-//        numero = num.substring(1, num.length);
-//    }else{
-//        numero = num;
-//    }
-//    /*guardamos la parte decimal*/
-//    if(num.indexOf(".")>=0){
-//        partdecimal = num.substring(num.indexOf("."), num.length);
-//        numero = numero.substring(0,num.indexOf(".")-1);
-//    }else{
-//        numero = num;
-//    }
-//    for (var j, i = numero.length - 1, j = 0; i >= 0; i--, j++){
-//        resultado = numero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
-//    }
-// 
-//    resultado = signonegativo+resultado+partdecimal;
-//    return resultado;
-//}
 
 function formato_numerico(numero){
             nStr = Number(numero).toFixed(2);
@@ -6113,8 +6107,12 @@ function finalizarventa_sin(){
     var forma_id = document.getElementById('forma_pago').value;
     
     if(parametro_tiposistema == 1){ //facturacion computarizada SFV
+        
         finalizarventa();
-    }else{ // facturacioon computarizada o electronica en linea
+        
+    }else{ 
+        
+        // facturacioon computarizada o electronica en linea
     if (nit == 0 ) cliente_valido = 0;
 
 

@@ -402,6 +402,7 @@
                             <img src="<?php echo $codigoqr; ?>" width="100" height="100">
                             
                         </center>
+                        USUARIO: <?php echo $factura[0]['usuario_nombre']." /TRANS: ".$factura[0]['venta_id']; ?>
                     </td>
                 </tr>
                 <tr><td></td></tr>

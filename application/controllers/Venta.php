@@ -193,7 +193,8 @@ class Venta extends CI_Controller{
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
-        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
+//        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
+        $data['eventos'] = $this->Eventos_significativos_model->get_mis_eventos();
         $data['empresa_email'] = $this->empresa["empresa_email"];
         
         $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
@@ -1967,9 +1968,8 @@ function edit($venta_id)
                   detalleven_precio,
                   detalleven_subtotal,
                   detalleven_descuentoparcial,
-                  detalleven_descuento,
-                  /*detalleven_subtotal - ((detalleven_descuentoparcial + detalleven_subtotal)* detalleven_cantidad),*/
-                  detalleven_subtotal - (detalleven_descuentoparcial * detalleven_cantidad),
+                  detalleven_descuento,                  
+                  detalleven_total,
                   detalleven_caracteristicas,
                   detalleven_preferencia,
                   detalleven_comision,

@@ -18,10 +18,20 @@ class Eventos_significativos_model extends CI_Model{
      * Obtener todos los codigos de sincronizacion
      */
     function get_all_codigos(){
+        
         return $this->db->query(
             "SELECT * 
             from cod_eventos_significativos"
         )->result_array();
+        
+    }
+    /*
+     * Obtener todos los codigos de sincronizacion
+     */
+    function get_mis_eventos(){
+        $punto_venta = $this->session_data['puntoventa_codigo'];
+        return $this->db->query("SELECT * from registro_eventos where estado_id = 1 and registroeventos_puntodeventa = ".$punto_venta)->result_array();
+        
     }
     /*
      * Obtener todos los codigos de sincronizacion
