@@ -16,6 +16,7 @@ function cambiar_tipoemision()
     var controlador = base_url+'parametro/cambiar_tipoemision';
     
     document.getElementById('loader_documento').style.display = 'block'; //muestra el bloque del loader
+    
     $.ajax({url: controlador,
             type:"POST",
             data:{parametro_tipoemision:parametro_tipoemision, parametro_id:parametro_id},

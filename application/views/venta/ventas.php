@@ -902,6 +902,10 @@ window.onkeydown = compruebaTecla;
         $alto_boton = 120; 
         
         ?>
+        <div class="col-md-12" style="padding:0;" id="div_mensaje">
+            <span id="mensaje_enviado" class="btn btn-info btn-block" style="font-family: Arial; line-height: 10pt; display:none;"><b style="font-family: Arial; font-size: 18pt;" >ENVIADA</b></span>
+            <span id="mensaje_no_enviado" class="btn btn-danger btn-block" style="font-family: Arial; line-height: 10pt; display:none;"><b style="font-family: Arial; font-size: 18pt;" >NO ENVIADA</b><br><span id="mensaje_error">Numero de identificacion tributaria invalido</span></span>
+        <div>
         <div class="col-md-12" style="padding:0;">
 
             <center>

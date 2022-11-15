@@ -456,6 +456,7 @@ border-bottom : 1px solid #aaa;
                             <?php echo $factura[0]['factura_leyenda4'];?>
 
                         </center>
+                        USUARIO: <?php echo $factura[0]['usuario_nombre']." /TRANS: ".$factura[0]['venta_id']; ?>
                     </div>
                     <div style="float: right;width: 80px;">
                         <center>

@@ -9,7 +9,8 @@ class Venta_model extends CI_Model
     function __construct()
     {
         parent::__construct();
-  
+        
+
     }
     
     /*
@@ -405,8 +406,10 @@ class Venta_model extends CI_Model
      * buscar cliente por nit
      */
     function ultima_venta()
-    {        
-        $sql = 'select * from venta order by venta_id desc limit 1';
+    {
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $sql = 'select * from venta where usuario_id = '.$usuario_id.' order by venta_id desc limit 1';
 //        $sql = 'select max(venta_id) as ventaid from venta';
         $resultado = $this->db->query($sql)->result_array();
         
