@@ -1107,7 +1107,13 @@ class Factura extends CI_Controller{
                     " where factura_id = ".$factura_id;
 
             $this->Factura_model->ejecutar($sql);
+            
+            $sql = "update detalle_factura set ".
+                    "venta_id     = '0'".
+                    " where factura_id = ".$factura_id;
 
+            $this->Factura_model->ejecutar($sql);
+            
             $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
             $this->Factura_model->ejecutar($sql);
             
