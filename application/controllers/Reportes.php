@@ -150,7 +150,62 @@ class Reportes extends CI_Controller{
             $this->load->view('layouts/main',$data);
         //}
     }
-
+    
+    function reportecajadmin()
+    {
+        //if($this->acceso(156)){
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $usuario_id = $this->session_data['usuario_id']; 
+            $this->load->model('Tipo_transaccion_model');
+            $data['page_title'] = "Reporte de ventas agrupado";
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+            $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
+            $data['caja'] = $this->Caja_model->get_cajausuario_now($usuario_id);
+            $data['punto_venta'] = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
+            
+            $sql = "select MIN(factura_id) as desde, MAX(factura_id) as hasta,
+                    MAX(factura_id)-MIN(factura_id) as ventas from factura
+                    where usuario_id = $usuario_id and factura_fecha = date(now())";
+            $data['resumen'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select count(*) as total_ventas
+                    from factura
+                    where usuario_id = ".$usuario_id." and factura_fecha = date(now())";
+            $data['total_ventas'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select count(*) as ventas_validas
+                    from factura
+                    where usuario_id = ".$usuario_id." and factura_fecha = date(now()) 
+                    and estado_id=1 and factura_codigodescripcion = 'VALIDADA'";
+            $data['validas'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select count(*) as mal_emitidas
+                    from factura
+                    where usuario_id = ".$usuario_id." and factura_fecha = date(now()) 
+                    and factura_codigodescripcion != 'VALIDADA'";
+            $data['mal_emitidas'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select count(*) as anuladas
+                    from factura
+                    where usuario_id = ".$usuario_id." 
+                    and factura_fecha = date(now()) and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
+            $data['anuladas'] = $this->Venta_model->consultar($sql);
+            
+            
+            $data['_view'] = 'reportes/reportecajadmin';
+            $this->load->view('layouts/main',$data);
+        //}
+    }
+    
     function graficas()
     {
         if($this->acceso(157)){
@@ -1919,4 +1974,59 @@ function torta3($anio,$mes)
             show_404();
         }
     }
+    
+    /* obtiene los detalles de una venta */
+    function resumen_ventascaja()
+    {
+        if($this->input->is_ajax_request()){
+            $filtro = $this->input->post("filtro");
+            $fecha_reporte = $this->input->post("fecha_reporte");
+            $usuario_id = $this->input->post("usuario_id");
+            
+            $reporte = $this->Detalle_venta_model->get_resumenventasadmin($filtro);
+            $caja = $this->Caja_model->get_cajausuario_admin($fecha_reporte, $usuario_id);
+            if($usuario_id == 0){
+                $elusuario = "";
+                $punto_venta = "";
+            }else{
+                $elusuario = "usuario_id = $usuario_id and";
+                $punto_venta = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
+            }
+            
+            $sql = "select MIN(factura_id) as desde, MAX(factura_id) as hasta,
+                    MAX(factura_id)-MIN(factura_id) as ventas from factura
+                    where $elusuario date(factura_fecha) = date('$fecha_reporte')";
+            $resumen = $this->Venta_model->consultar($sql);
+            
+            $sql = "select count(*) as total_ventas
+                    from factura
+                    where $elusuario date(factura_fecha) = date('$fecha_reporte')";
+            $total_ventas = $this->Venta_model->consultar($sql);
+            
+            $sql = "select count(*) as ventas_validas
+                    from factura
+                    where $elusuario date(factura_fecha) = date('$fecha_reporte') 
+                    and estado_id=1 and factura_codigodescripcion = 'VALIDADA'";
+            $validas = $this->Venta_model->consultar($sql);
+            
+            $sql = "select count(*) as mal_emitidas
+                    from factura
+                    where $elusuario date(factura_fecha) = date('$fecha_reporte') 
+                    and factura_codigodescripcion != 'VALIDADA'";
+            $mal_emitidas = $this->Venta_model->consultar($sql);
+            
+            $sql = "select count(*) as anuladas
+                    from factura
+                    where $elusuario date(factura_fecha) = date('$fecha_reporte')
+                    and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
+            $anuladas = $this->Venta_model->consultar($sql);
+            
+            $data=array("reporte"=>$reporte, "caja" =>$caja, "punto_venta" =>$punto_venta, "resumen" =>$resumen, "total_ventas" =>$total_ventas, "validas" =>$validas, "mal_emitidas" =>$mal_emitidas, "anuladas" =>$anuladas);
+            echo json_encode($data);
+            
+        }else{
+            show_404();
+        }
+    }
+    
 }
