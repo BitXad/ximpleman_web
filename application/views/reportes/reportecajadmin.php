@@ -82,7 +82,7 @@
                 <a onclick="imprimir()" class="btn btn-success btn-sm form-control" ><i class="fa fa-print"> </i> Imprimir</a>
             </div>
         </div>
-        <div class="col-md-2 no-print">
+        <div class="col-md-2 no-print hidden">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
                 <a onclick="generarexcel_vagrupado()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
