@@ -38,7 +38,7 @@
                                 <h5 width="100%"><b><?php echo $parametro[0]['moneda_descripcion']." ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> / <?= number_format($objetivo['objetivo_diario'],2,'.',','); ?></b></h5>
                             </div>
                         <?php }else{ ?>
-                                <h5 width="100%"><b><?php echo $parametro[0]['moneda_descripcion']." ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> </b></h5>
+                                <h5 width="100%"><b><br><?php //echo $parametro[0]['moneda_descripcion']." ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> </b></h5>
                         <?php } ?>
                     </div>
                     <div class="icon">
