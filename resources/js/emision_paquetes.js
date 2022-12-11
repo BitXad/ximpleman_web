@@ -134,6 +134,35 @@ function emision_paquetes(){
                 data:{nombre_archivo:nombre_archivo, codigo_evento:codigo_evento, lafactura_id:lafactura_id},
                 success:function(respuesta){
                     var registros = JSON.parse(respuesta);
+                        console.log(registros);
+                        if(registros == "esta_validado"){
+                            alert("Esta Factura ya se encuentra validada!.");
+                        }else{
+                            //let transaccion = registros.RespuestaListaEventos.transaccion;
+                            //salert(registros);
+                            //registros.codigoDescripcion;
+                            let mensaje = "";
+                            if(registros.codigoDescripcion == "VALIDADA"){
+                                mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
+                                mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
+                                //mensaje += "Codigo recepcion: "+registros.codigoRecepcion+"\n";
+                                //mensaje += "Codigo transacción: "+registros.transaccion+"\n";
+                            }else if(registros.codigoDescripcion == "OBSERVADA"){
+                                mensaje += "Codigo descripción: "+registros.codigoDescripcion+"\n";
+                                mensaje += "Codigo estado: "+registros.codigoEstado+"\n";
+                                mensaje += "Lista de mensajes: \n";
+
+                                mensaje += JSON.stringify(registros.mensajesList);
+
+    //                            mensaje += " -"+registros.mensajesList.codigo+"\n";
+    //                            mensaje += " -"+registros.mensajesList.descripcion+"\n";
+    //                            mensaje += " -"+registros.mensajesList.numeroArchivo+"\n";
+
+                            }
+                            alert(mensaje);
+                        }
+                        document.getElementById('loader').style.display = 'none';
+                    /*var registros = JSON.parse(respuesta);
                         //console.log(registros);
                         
                         let mensaje = "";
@@ -155,7 +184,7 @@ function emision_paquetes(){
                         tablaresultados();
                         alert(mensaje);
                         
-                        document.getElementById('loader').style.display = 'none';
+                        document.getElementById('loader').style.display = 'none';*/
                 },
                 error:function(respuesta){
                     alert("Algo salio mal; por favor verificar sus datos!.");
