@@ -26,6 +26,7 @@ class Dashb extends CI_Controller
         $this->load->model('Moneda_model');
         $this->load->model('Rol_usuario_model');
         $this->load->model('Tipo_usuario_model');
+        $this->load->model('Sucursales_model');
         // $this->load->model('Dashb_model');
         
         $parametros = $this->Parametro_model->get_parametros();
@@ -58,8 +59,8 @@ class Dashb extends CI_Controller
                 $data['parametro'] = $this->parametros;
                 $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera                
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
-                
-                
+                $data['sucursales'] = $this->Sucursales_model->get_sucursales();
+ 
                 $usuario_id = $session_data['usuario_id'];
                 $data['usuario'] = $usuario_id;
                 

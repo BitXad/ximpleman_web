@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- XSD ver.11/03/2022 -->
-<xs:schema xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XSD ver.23/08/2021 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           attributeFormDefault="unqualified" elementFormDefault="qualified"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="facturaComputarizadaComercializacionGnGlp">
+           attributeFormDefault="unqualified" elementFormDefault="qualified">
+    <xs:element name="facturaComputarizadaHospitalClinica">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="cabecera">
@@ -130,6 +129,13 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
+                            <xs:element name="modalidadServicio" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="100"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
                             <xs:element name="codigoMetodoPago">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:integer">
@@ -190,6 +196,15 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
+                            <xs:element name="montoGiftCard" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:decimal">
+                                        <xs:totalDigits value="17"/>
+                                        <xs:fractionDigits value="2"/>
+                                        <xs:minInclusive value="0"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
                             <xs:element name="descuentoAdicional" nillable="true">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:decimal">
@@ -231,7 +246,7 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="codigoDocumentoSector" type="xs:integer" fixed="39"/>
+                            <xs:element name="codigoDocumentoSector" type="xs:integer" fixed="17"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -270,11 +285,71 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
+                            <xs:element name="especialidad" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="500"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="especialidadDetalle" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="500"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="nroQuirofanoSalaOperaciones">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:integer">
+                                        <xs:minInclusive value="1"/>
+                                        <xs:maxInclusive value="9999"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="especialidadMedico" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="500"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="nombreApellidoMedico">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="1"/>
+                                        <xs:maxLength value="500"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="nitDocumentoMedico">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:integer">
+                                        <xs:maxInclusive value="9999999999999"/>
+                                        <xs:minInclusive value="1"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="nroMatriculaMedico" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:maxLength value="50"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="nroFacturaMedico" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:integer">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="99999999"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
                             <xs:element name="cantidad">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:decimal">
-                                        <xs:totalDigits value="20"/>
-                                        <xs:fractionDigits value="5"/>
+                                        <xs:totalDigits value="17"/>
+                                        <xs:fractionDigits value="2"/>
                                         <xs:minExclusive value="0"/>
                                     </xs:restriction>
                                 </xs:simpleType>
@@ -314,7 +389,6 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                          
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

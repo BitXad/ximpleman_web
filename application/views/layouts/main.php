@@ -137,9 +137,12 @@
                     </li>
                 </ul>
             </div>
-<div style="float: none; width: 90%" face="Arial" class="text-center" >
-    <span class="text-bold" style="display: block; padding-top: 0px;padding-bottom: -8px; color: #FFF; font-size: 22px;">Ximpleman web</span>
-    <span name="reloj" id="reloj" style="color: #FFF; font-size: 12px;"></span>
+<div style="float: none; line-height: 13px; color:white; " face="Arial" class="text-center">
+    <br><b style="font-size: 16pt;">Ximpleman</b>
+    <br><?php if(isset($empresa[0]["empresa_nombresucursal"])){ echo $empresa[0]["empresa_nombresucursal"]; } ?>
+<!--    <span class="text-bold" style="display: block; padding:0px; color: #FFF; font-size: 22px;">Ximpleman web</span>
+    <span class="text" style="display: block; padding:0px; color: #FFF; font-size: 10px;"><?php echo "SUCURSAL PRINCIPAL"; ?></span>-->
+    <br><span name="reloj" id="reloj" style="color: #FFF; font-size: 12px; padding: 0px;"></span>
     
     <?php if (isset($parametro)&&isset($moneda)){ ?>
     <span name="moneda" id="moneda" style="color: #FFF; font-size: 12px; "> 
@@ -1074,13 +1077,42 @@
                 <?php
                 }
                 ?>
-            </ul>
-<!--            <center>
+                
+                <li>
+                        <a href="#" style="line-height: 12px;">
+                                
+                        <!--<i class="fa fa-sitemap"></i>--> 
+                        <span style="font-family: Arial; font-size: 8pt;">
+                            <center>
+                            <img src="<?php echo base_url("resources/web/images/logo.png") ?>" width="70%" height="70%">
+                            <br><?php if(isset($empresa[0]["empresa_nombresucursal"])){
+                                
+                                            echo "<b>".$empresa[0]["empresa_nombre"]."</b>";
+                                            echo "<br>".$empresa[0]["empresa_nombresucursal"]; 
+                                            echo "<br style='font-famyly: Arial narrow;'><small>".$empresa[0]["empresa_eslogan"]."</small>"; 
+                                            echo "<br>".$empresa[0]["empresa_telefono"];
+                                            echo "<br>".$empresa[0]["empresa_ubicacion"];
+                                            
+                                } ?>
+                        
+                            </center>
+                        </span>
+                        </a>
+                    <ul class="treeview-menu">
+                    </ul>
+                    
+                </li>
+<!--                
+            <center>
+
                 <span name="moneda" id="moneda" style="color: #FFF; font-size: 11px; background-color: #000">
-                    MON: <?php echo $parametro[0]["moneda_descripcion"]; ?> 
-                    TC: <?php echo $moneda["moneda_tc"]; ?>
+                    <img src="<?php echo base_url("resources/web/images/logo.png") ?>">
+                    Ximpleman
+                    Password SRL
+                    NIT: 141349024
                 </span>                
             </center>-->
+            </ul>
         </section>
         <!-- /.sidebar -->
     </aside>

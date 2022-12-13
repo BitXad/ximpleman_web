@@ -226,9 +226,26 @@ $salto_linea='
         $cabecera_facturaxml .= $salto_linea.'<'.$archivo.' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="'.$archivo.'.xsd">';
         $cabecera_facturaxml .= $salto_linea.'      <cabecera>';
         $cabecera_facturaxml .= $salto_linea.'          <nitEmisor>'.$factura['factura_nitemisor'].'</nitEmisor>';
-        $cabecera_facturaxml .= $salto_linea.'          <razonSocialEmisor>'.$empresa['empresa_nombre'].'</razonSocialEmisor>';
+        
+        
+        $razonsocial_emisor = "";
+        if(strlen($empresa['empresa_propietario'])>2){
+            $razonsocial_emisor = $empresa['empresa_propietario'];
+        }else{
+            $razonsocial_emisor = $empresa['empresa_nombre'];
+        }
+        
+        $cabecera_facturaxml .= $salto_linea.'          <razonSocialEmisor>'.$razonsocial_emisor.'</razonSocialEmisor>';
+        
+        
         $cabecera_facturaxml .= $salto_linea.'          <municipio>'.$empresa['empresa_ubicacion'].'</municipio>';
         $cabecera_facturaxml .= $salto_linea.'          <telefono>'.$empresa['empresa_telefono'].'</telefono>';
+        
+        
+        if($documento_sector==22){ //22 telecominicaciones
+            $cabecera_facturaxml .= $salto_linea.'         <nitConjunto xsi:nil="true"></nitConjunto>';
+        }
+            
         $cabecera_facturaxml .= $salto_linea.'          <numeroFactura>'.$factura['factura_numero'].'</numeroFactura>';
         $cabecera_facturaxml .= $salto_linea.'          <cuf>'.$factura['factura_cuf'].'</cuf>';
         $cabecera_facturaxml .= $salto_linea.'          <cufd>'.$factura['factura_cufd'].'</cufd>';
@@ -236,7 +253,7 @@ $salto_linea='
         $cabecera_facturaxml .= $salto_linea.'          <direccion>'.$empresa['empresa_direccion'].'</direccion>';
         $cabecera_facturaxml .= $salto_linea.'          <codigoPuntoVenta>'.$factura['factura_puntoventa'].'</codigoPuntoVenta>';
         
-        if($documento_sector==13){
+        if($documento_sector==13){ //13-Servicios Basicos
             
             $mes = "JUNIO";
             $cabecera_facturaxml .= $salto_linea.'          <mes>'.$mes.'</mes>';
@@ -258,15 +275,14 @@ $salto_linea='
         $cabecera_facturaxml .= $salto_linea.'          <fechaEmision>'.$factura['factura_fechahora'].'</fechaEmision>';
         $cabecera_facturaxml .= $salto_linea.'          <nombreRazonSocial>'.$razonSocial.'</nombreRazonSocial>';        
         
-        if($documento_sector==13){
+        if($documento_sector==13){ //13-Servicios Basicos
         
             $domicilioCliente = "CALLE JUAN MENDEZ N 23";
             $cabecera_facturaxml .= $salto_linea.'          <domicilioCliente>'.$domicilioCliente.'</domicilioCliente>';
         }
-        
         $cabecera_facturaxml .= $salto_linea.'          <codigoTipoDocumentoIdentidad>'.$factura['cdi_codigoclasificador'].'</codigoTipoDocumentoIdentidad>';
         
-        if ($documento_sector != 23){
+        if ($documento_sector != 23){ //23- factura prevalorada
             $cabecera_facturaxml .= $salto_linea.'          <numeroDocumento>'.$factura['factura_nit'].'</numeroDocumento>';
             $cabecera_facturaxml .= $salto_linea.'          <complemento>'.$complemento.'</complemento>';
         }else{
@@ -274,11 +290,36 @@ $salto_linea='
         }
         
         
-        if ($documento_sector != 23){
+        if ($documento_sector != 23){ //23- factura prevalorada
+            
             $cabecera_facturaxml .= $salto_linea.'          <codigoCliente>'.$factura['cliente_codigo'].'</codigoCliente>';
+            
+            if ($documento_sector == 17){ //17 Fatura Clinicas y hospitales
+                $cabecera_facturaxml .= $salto_linea.'          <modalidadServicio>Post Operatorio</modalidadServicio>';
+                
+            }
+            
+            
         }else{
             $cabecera_facturaxml .= $salto_linea.'          <codigoCliente>N/A</codigoCliente>';
         }
+            
+
+        if($documento_sector==16){ //16-Hoteles
+        
+            $cabecera_facturaxml .= $salto_linea.'          <cantidadHuespedes>5</cantidadHuespedes>';
+            $cabecera_facturaxml .= $salto_linea.'          <cantidadHabitaciones>3</cantidadHabitaciones>';
+            $cabecera_facturaxml .= $salto_linea.'          <cantidadMayores>4</cantidadMayores>';
+            $cabecera_facturaxml .= $salto_linea.'          <cantidadMenores>1</cantidadMenores>';
+            $cabecera_facturaxml .= $salto_linea.'          <fechaIngresoHospedaje>2021-10-06T16:03:48.885</fechaIngresoHospedaje>';
+        }
+        
+        
+        if ($documento_sector == 2){ //2-Alquiler Bienes Inmuebles
+            $periodo_facturado = "DE ENERO 2022 A FEBRERO 2022";
+            $cabecera_facturaxml .= $salto_linea.'          <periodoFacturado>'.$periodo_facturado.'</periodoFacturado>';
+        }
+        
             
         if ($documento_sector == 11){
             $cabecera_facturaxml .= $salto_linea.'          <nombreEstudiante>'.$razonSocial.'</nombreEstudiante>'; //cambiar por cliente_nombre
@@ -287,26 +328,46 @@ $salto_linea='
             
         }
         
-        if ($documento_sector == 13){
-            $periodoFacturado = "ENERO/2022"; //cambiar por factura_glosa
-            $cabecera_facturaxml .= $salto_linea.'          <periodoFacturado>'.$periodoFacturado.'</periodoFacturado>'; //cambiar por cliente_nombre
-
-        }
         
-        $cabecera_facturaxml .= $salto_linea.'          <codigoMetodoPago>'.$factura['forma_id'].'</codigoMetodoPago>';
+        if ($documento_sector != 23){  //23- factura prevalorada
+            $cabecera_facturaxml .= $salto_linea.'          <codigoMetodoPago>'.$factura['forma_id'].'</codigoMetodoPago>';
+        }
+
+        
         $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
+        
         $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.$factura['factura_total'].'</montoTotal>';
         $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';
+        
+        if ($documento_sector == 13){ //13 - factura servicios basicos
+            
+            $periodoFacturado = "20"; //cambiar por factura_glosa
+            
+            $cabecera_facturaxml .= $salto_linea.'          <consumoPeriodo>'.$periodoFacturado.'</consumoPeriodo>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <beneficiarioLey1886 xsi:nil="true"></beneficiarioLey1886>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoLey1886 xsi:nil="true"></montoDescuentoLey1886>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoTarifaDignidad xsi:nil="true"></montoDescuentoTarifaDignidad>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <tasaAseo>0</tasaAseo>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <tasaAlumbrado>0</tasaAlumbrado>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <ajusteNoSujetoIva>0</ajusteNoSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteNoSujetoIva>{"Ajuste por Reclamo":0}</detalleAjusteNoSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <ajusteSujetoIva>0</ajusteSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteSujetoIva>{"Cobropor Reconexión":0}</detalleAjusteSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <otrosPagosNoSujetoIva>0</otrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <detalleOtrosPagosNoSujetoIva>{"Pago Cuota Cooperativa":0}</detalleOtrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <otrasTasas>0</otrasTasas>'; //cambiar por cliente_nombre
+        }
+        
         $cabecera_facturaxml .= $salto_linea.'          <codigoMoneda>'.$factura['moneda_codigoclasificador'].'</codigoMoneda>';
         $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.$factura['moneda_tc'].'</tipoCambio>';
         $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.$factura['factura_total'].'</montoTotalMoneda>';
         
-        if ($documento_sector != 39 && $documento_sector != 23){
+        if ($documento_sector != 2 && $documento_sector != 13 && $documento_sector != 39 && $documento_sector != 23){
             $cabecera_facturaxml .= $salto_linea.'          <montoGiftCard>'.$factura['factura_giftcard'].'</montoGiftCard>';
         }
         
         
-        if ($documento_sector != 23){
+        if ($documento_sector != 23){  //23- factura prevalorada
             
             $cabecera_facturaxml .= $salto_linea.'          <descuentoAdicional>'.$factura['factura_descuento'].'</descuentoAdicional>';
             $cabecera_facturaxml .= $salto_linea.'          <codigoExcepcion>'.$factura_excepcion.'</codigoExcepcion>';
@@ -338,16 +399,43 @@ $salto_linea='
                 $detalle_facturaxml .= $salto_linea.'           <actividadEconomica>'.$factura['factura_actividad'].'</actividadEconomica>';
                 $detalle_facturaxml .= $salto_linea.'           <codigoProductoSin>'.$df['producto_codigosin'].'</codigoProductoSin>';
                 $detalle_facturaxml .= $salto_linea.'           <codigoProducto>'.$df['detallefact_codigo'].'</codigoProducto>';
+                
+                if($documento_sector == 16){ //16 Hoteles
+                    
+                    $tipohabitacion = 1; //$df['categoria_id'];
+                    $detalle_facturaxml .= $salto_linea.'           <codigoTipoHabitacion>'.$tipohabitacion.'</codigoTipoHabitacion>';
+                }
+                
                 $detalle_facturaxml .= $salto_linea.'           <descripcion>'.$detallefact_descripcion.'</descripcion>';
+                
+                
+                if($documento_sector == 17){ //17 Clinicas u Hospitales
+                    
+                    $detalle_facturaxml .= $salto_linea.'           <especialidad>Traumatologia</especialidad>';
+                    $detalle_facturaxml .= $salto_linea.'           <especialidadDetalle>Reduccion de fractura</especialidadDetalle>';
+                    $detalle_facturaxml .= $salto_linea.'           <nroQuirofanoSalaOperaciones>2</nroQuirofanoSalaOperaciones>';
+                    $detalle_facturaxml .= $salto_linea.'           <especialidadMedico>Traumatologia</especialidadMedico>';
+                    $detalle_facturaxml .= $salto_linea.'           <nombreApellidoMedico>Juan Perez</nombreApellidoMedico>';
+                    $detalle_facturaxml .= $salto_linea.'           <nitDocumentoMedico>1020703023</nitDocumentoMedico>';
+                    $detalle_facturaxml .= $salto_linea.'           <nroMatriculaMedico>312312ASDAS</nroMatriculaMedico>';
+                    $detalle_facturaxml .= $salto_linea.'           <nroFacturaMedico>32132132</nroFacturaMedico>';
+                }
+                
+                
                 $detalle_facturaxml .= $salto_linea.'           <cantidad>'.number_format($df['detallefact_cantidad'],2,'.','').'</cantidad>';
                 $detalle_facturaxml .= $salto_linea.'           <unidadMedida>'.$df['unidad_codigo'].'</unidadMedida>';
                 $detalle_facturaxml .= $salto_linea.'           <precioUnitario>'.number_format($df['detallefact_precio'],2,'.','').'</precioUnitario>';
                 $detalle_facturaxml .= $salto_linea.'           <montoDescuento>'.number_format($descuentoparcial,2,'.','').'</montoDescuento>';
                 $detalle_facturaxml .= $salto_linea.'           <subTotal>'.number_format($df['detallefact_total'],2,'.','').'</subTotal>';
                 
-                if ($documento_sector != 11 && $documento_sector != 13 && $documento_sector != 39 && $documento_sector != 23){
+                if ($documento_sector != 2 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23){
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
                     $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
+                }
+                
+                if($documento_sector == 16){ //16 Hoteles
+                    
+                    $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes xsi:nil="true"></detalleHuespedes>';
                 }
                 
                 $detalle_facturaxml .= $salto_linea.'      </detalle>';

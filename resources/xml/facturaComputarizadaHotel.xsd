@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- XSD ver.23/08/2021 -->
-<xs:schema xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified"
-           elementFormDefault="qualified">
-    <xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../SignatureSchema.xsd"/>
-    <xs:element name="facturaElectronicaSectorEducativo">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           attributeFormDefault="unqualified" elementFormDefault="qualified">
+    <xs:element name="facturaComputarizadaHotel">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="cabecera">
@@ -130,22 +129,39 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="nombreEstudiante">
+                            <xs:element name="cantidadHuespedes" nillable="true">
                                 <xs:simpleType>
-                                    <xs:restriction base="xs:string">
-                                        <xs:minLength value="1"/>
-                                        <xs:maxLength value="200"/>
+                                    <xs:restriction base="xs:integer">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="9999"/>
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="periodoFacturado">
+                            <xs:element name="cantidadHabitaciones" nillable="true">
                                 <xs:simpleType>
-                                    <xs:restriction base="xs:string">
-                                        <xs:minLength value="1"/>
-                                        <xs:maxLength value="50"/>
+                                    <xs:restriction base="xs:integer">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="9999"/>
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
+                            <xs:element name="cantidadMayores" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:integer">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="9999"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="cantidadMenores" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:integer">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="9999"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="fechaIngresoHospedaje" type="xs:dateTime"/>
                             <xs:element name="codigoMetodoPago">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:integer">
@@ -256,7 +272,8 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="codigoDocumentoSector" type="xs:integer" fixed="11"/>
+                            <xs:element name="codigoDocumentoSector"
+                                        type="xs:integer" fixed="16"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -287,6 +304,14 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
+                            <xs:element name="codigoTipoHabitacion" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:integer">
+                                        <xs:minInclusive value="0"/>
+                                        <xs:maxInclusive value="16"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
                             <xs:element name="descripcion">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:string">
@@ -308,7 +333,7 @@
                                 <xs:simpleType>
                                     <xs:restriction base="xs:integer">
                                         <xs:minInclusive value="1"/>
-                                        <xs:maxInclusive value="200"/>
+                                        <xs:maxInclusive value="69"/>
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
@@ -339,10 +364,17 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
+                            <xs:element name="detalleHuespedes" nillable="true">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:minLength value="1"/>
+                                        <xs:maxLength value="5000"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element ref="ds:Signature"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
