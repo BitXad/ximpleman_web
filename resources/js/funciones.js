@@ -3128,22 +3128,19 @@ function registrarventa(cliente_id)
                 let parametro_tiposistema = document.getElementById('parametro_tiposistema').value;
 
                 if(parametro_tiposistema != 1){
-                    
-                    if(res.mensajesList.codigoDescripcion == "VALIDADA"){
-                        alert("FACTURA ENVIADA");
-                    }else{
-                        
-                        
-                        if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){
-                            alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
+                    if(facturado == 1){
+                        if(res.mensajesList.codigoDescripcion == "VALIDADA"){
+                            alert("FACTURA ENVIADA");
+                        }else{
+                            if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){
+                                alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
 
-                            if(res.mensajesList.codigo == 953){                    
-                                //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
-                                solicitudCufd(punto_venta);                    
+                                if(res.mensajesList.codigo == 953){                    
+                                    //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
+                                    solicitudCufd(punto_venta);                    
+                                }
                             }
-
                         }
-                        
                     }
                 }
                 
