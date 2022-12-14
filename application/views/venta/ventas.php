@@ -292,8 +292,8 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
-<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador">
-<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector">
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" hidden>
+<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector" hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -444,23 +444,12 @@ window.onkeydown = compruebaTecla;
                     if($parametro["parametro_tipoemision"] == 1){?>
                 
                         <a class="btn btn-danger btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" >
-<<<<<<< HEAD
-                        <span id="eltipo_emision" style="color: white;">en linea</span>
-=======
                         <span id="eltipo_emision" style="color: white;">EN LINEA</span>
->>>>>>> master
-                        </a>        
-                
+                        </a>
                     <?php
                     }elseif($parametro["parametro_tipoemision"] == 2){ ?>
-                
-<<<<<<< HEAD
-                        <a class="btn btn-facebook btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" style="background: grey">
-                        <span id="eltipo_emision" style="color: white;">fuera de linea</span>
-=======
                         <a class="btn btn-default btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" style="background: grey">
                         <span id="eltipo_emision" style="color: white;">FUERA DE LINEA</span>
->>>>>>> master
                         </a>        
                 
                        
