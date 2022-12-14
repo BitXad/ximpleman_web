@@ -98,6 +98,15 @@
       
                             </div>
                         </div>
+                    
+                        <div class="col-md-2">
+                           <label for="desde" class="control-label"> Anulacion en Masa </label>
+                           <div class="form-group">
+              
+                               <button  type="submit" class="btn btn-info btn-xs form-control" onclick="anulacion_masiva()"><span class="fa fa-times"> </span> Anulación en Masa</button>
+      
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -271,3 +280,47 @@
     </div>
 </div>
 <!------------------------ F I N  modal para confirmar anulacion de factura no enviada------------------->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+
+<?php echo form_open('factura/anulacion_masiva'); ?>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><b>ANULACION EN MASA</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          
+            <div class="col-md-6">
+                    <div class="form-group">
+                        <b>ADVERTENCIA:</b> Se ANULARAN de forma definitiva las facturas generadas por el punto de venta en uso, en la fecha seleccionada.
+                    </div>
+            </div>
+            <div class="col-md-6">
+                    <label for="factura_fecha" class="control-label">Fecha</label>
+                    <div class="form-group">
+                        <input type="date" name="factura_fecha" value="<?php //echo ($this->input->post('factura_fecha') ? $this->input->post('factura_fecha') : $factura['factura_fecha']); ?>" class="form-control" id="factura_fecha" />
+                    </div>
+            </div>
+
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Anular las facturas</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php echo form_close(); ?>

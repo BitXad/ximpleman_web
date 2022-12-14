@@ -320,6 +320,38 @@ class Venta_model extends CI_Model
     }
     
     /*
+     * Ejecutar Consulta SQL
+     */
+    function ejecutar_base($sql, $basededatos){
+
+        
+        $this->db =  $this->load->database($basededatos, TRUE);        
+        
+        $this->db->query($sql);
+        $resultado =  $this->db->insert_id();
+        
+        $this->db =  $this->load->database("default", TRUE);        
+        
+        return $resultado;
+    }
+    
+    /*
+     * Ejecutar Consulta SQL
+     */
+    function ejecutar_base_parametros($parametros, $basededatos){
+
+        
+        $this->db =  $this->load->database($basededatos, TRUE);        
+        
+        $this->db->insert('detalle_compra',$parametros);
+        $resultado = $this->db->insert_id();
+        
+        $this->db =  $this->load->database("default", TRUE);        
+        
+        return $resultado;
+    }
+    
+    /*
      * Ejecutar eliminar detalle
      */
     function eliminar_detalle($sql){
@@ -755,4 +787,5 @@ function get_busqueda($condicion)
         $this->db->insert('detalle_venta_aux',$params);
         return $this->db->insert_id();
     }
+    
 }

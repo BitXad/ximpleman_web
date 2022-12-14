@@ -56,6 +56,68 @@ function solicitudCufd(punto_venta=0){
     }
 }
 
+function solicitudCufds(punto_venta=0, cantidad){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'dosificacion/cufd';
+    var opcion = confirm("Esta a punto de generar "+cantidad+" CUFD's para el PUNTO DE VENTA "+punto_venta+", NO reemplazará el existente...! \n ¿Desea Continuar?");
+    
+    if (opcion == true) {
+        
+        for(var i = 1; i <= cantidad; i++){
+        
+            document.getElementById('loader_revocado').style.display = 'block';
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{punto_venta:punto_venta},
+                    success:function(respuesta){
+                        var datos = JSON.parse(respuesta);
+                        //var datos =  JSON.parse(registros);
+                    let registros = datos['respuesta'];
+                    let lafalla = datos['falla']
+
+                        if(lafalla != ""){
+
+                            alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                            document.getElementById('loader_revocado').style.display = 'none';
+
+                        }else{
+
+                            let codigo = registros.RespuestaCufd.codigo;
+                            let codigoControl = registros.RespuestaCufd.codigoControl;
+                            let direccion = registros.RespuestaCufd.direccion;
+                            let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
+                            let transaccion = registros.RespuestaCufd.transaccion;
+
+                            //alert(registros);
+                            if(transaccion == true){
+                               // $("#modal_mensajeadvertencia").modal("show");
+                                //almacenar_cufd((registros['RespuestaCufd']),punto_venta);
+                            }
+                            else{
+                                alert("Algo fallo...!!");
+                            }
+                            // document.getElementById('loader_cufd').style.display = 'none';
+                            //alert("hola");
+                            /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
+
+                            }*/
+                        }
+
+                    },
+                    error:function(respuesta){
+                        let datos = JSON.parse(respuesta);
+                        let registros = datos['respuesta'];
+                        let lafalla = datos['falla']
+                       alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
+                    }
+            }); 
+        
+        }//Fin for(.....)
+        
+    }
+}
+
 function almacenar_cufd(datos,punto_venta=0){
     
     var base_url = document.getElementById('base_url').value;
@@ -1085,8 +1147,10 @@ function verificar_comunicacionRecCompras(){
 }
 
 function dibujar_tabla_puntos_venta(){
+    
     let base_url = document.getElementById('base_url').value;
     let controlador = `${base_url}punto_venta/get_puntos_venta`;
+    
     $.ajax({url:controlador,
             type:"POST",
             data:{},
@@ -1129,6 +1193,7 @@ function dibujar_tabla_puntos_venta(){
                                 <td>
                                 <button class="btn btn-xs btn-primary" title="Solicitar CUIS" onclick="solicitudCuis(${pv.puntoventa_codigo})">CUIS</button>
                                 <button class="btn btn-xs btn-success" title="Solicitar CUFD" onclick="solicitudCufd(${pv.puntoventa_codigo})">CUFD</button>
+                                <button class="btn btn-xs btn-info" title="Cantidad CUFD 50" onclick="solicitudCufds(${pv.puntoventa_codigo},50)">50 CUFDS</button>
                                 <button class="btn btn-xs btn-danger" title="Cierre punto de venta" onclick="cierre_PuntoVenta(${pv.puntoventa_codigo})"><span class='fa fa-trash'></span></button>
                                 </td>
                             </tr>`;

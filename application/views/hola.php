@@ -594,7 +594,8 @@
               </div>
               <!-- /. tools -->
             </div>
-              <div class="box-body">
+              
+            <div class="box-body">
                           
 <!--            <div class="box-header">
               <h3 class="box-title">Resumen de actividades del dia</h3>
@@ -736,6 +737,10 @@
           </div>
 
     </section>
+    
+    
+    
+    
     <section class="col-lg-5 connectedSortable">
         <div class="box box-info">
             <div class="box-header">
@@ -773,10 +778,68 @@
             </div>
         </div>
     </section>
+    
+    <section class="col-lg-7 connectedSortable">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-home"></i>
+                <h3 class="box-title">Sucursales/Depositos</h3>
+<!--                <a class="btn btn-success btn-xs" onclick="tabladetalle_venta()" data-toggle="tooltip" title="Actualizar lo que se esta vendiendo">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a class="btn btn-danger btn-xs" onclick="quitartodo()" data-toggle="tooltip" title="Anular todo lo que se esta vendiendo">
+                    <i class="fa fa-trash"></i>
+                </a>-->
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remover">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <!-- /. tools -->
+            </div>
+            <div class="box-body">
+                <div class="box-body no-padding">
+                    <table class="table table-condensed">
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Nombre</th>
+                            <th>BDD</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                        <!--<tbody id="tablaresultados"></tbody>-->
+                        <?php 
+                            foreach($sucursales as $sucursal){ ?>
+                        <tr>
+                            <td><?php echo $sucursal["almacen_id"]; ?></td>
+                            <td>
+                                <?php 
+                                
+                                    if (strlen($sucursal["almacen_url"])>3){ ?>
+                                        
+                                         <a href="<?php echo $sucursal["almacen_url"]; ?>" class="btn btn-xs btn-facebook" style="background-color: black;" title="Haga clic, para ingresar a la sucursal"> <fa class="fa fa-home"></fa> <?php echo $sucursal["almacen_nombre"]; ?> </a>
+                                    
+                                
+                                    <?php } ?>
+                            
+                            </td>
+                            <td><?php echo $sucursal["almacen_nombre"]; ?></td>
+                            <td><?php echo $sucursal["estado_descripcion"]; ?></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <?php } ?>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <section class="col-lg-5 connectedSortable">
         <div class="box box-info">
             <div class="box-header">
-                <i class="fa fa-file-text-o"></i>
+                <i class="fa fa-cube"></i>
                 <h3 class="box-title">Existencia Minima</h3>
                 <!--<a class="btn btn-success btn-xs" onclick="tabladetalle_venta()" data-toggle="tooltip" title="Actualizar lo que se esta vendiendo">
                     <i class="fa fa-refresh"></i>
@@ -807,9 +870,11 @@
             </div>
         </div>
     </section>
+    
+    
     <!------------------------- temporal -------------->
     <br>
-        <section>
+<!--        <section>
           <div class="container">
             <div class="row">
               <div class="col-md-12">
@@ -819,9 +884,9 @@
               </div>
             </div>
           </div>
-            <!-- <br> -->
+             <br> 
 
-        </section>   
+        </section>   -->
     <!------------------------- fin temporal -------------->
     
     

@@ -557,5 +557,16 @@ class Sucursales_model extends CI_Model
         
     }
     
+    function get_sucursales(){
+
+        $sql = "select a.*, e.estado_descripcion from almacenes a
+                left join estado e on e.estado_id = a.estado_id";
+        $this->db = $this->load->database('default',TRUE);
+        $sucursales = $this->db->query($sql)->result_array();
+        
+        return $sucursales;
+        
+    }
+    
     
 }

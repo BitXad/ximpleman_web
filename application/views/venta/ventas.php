@@ -47,17 +47,15 @@ function mostrar_ocultar(){
     if (x=='2'){ //si la transaccion es a credito
         
         document.getElementById('creditooculto').style.display = 'block';
-//        var hoy = new Date();
-//        var dd = hoy.getDate();
-//        var mm = hoy.getMonth()+1;
-//        var yyyy = hoy.getFullYear();
-//        
-//        dd = addZero(dd);
-//        mm = addZero(mm);
-
         }
     else{
         document.getElementById('creditooculto').style.display = 'none';}
+
+    if (x=='4'){ //si la transaccion es traspaso
+        document.getElementById('div_sucursales').style.display = 'block';
+        }
+    else{
+        document.getElementById('div_sucursales').style.display = 'none';}
 }
 
 function mostrar_formapago(){
@@ -294,8 +292,8 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
-<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador"  hidden>
-<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector"  hidden>
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador">
+<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector">
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -315,7 +313,7 @@ window.onkeydown = compruebaTecla;
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 
-<?php $atributos = " btn btn-warning btn-sm";  //atributos para los inputs del clientes?>
+<?php $atributos = " btn btn-default btn-sm";  //atributos para los inputs del clientes?>
 <?php $estilos_facturacion = " style='color: black; background: #1221; text-align: left; font-size: 18px; font-family: Arial;'"; //estilo para los inputs de facturacion?>
 <?php $estilos = " style='background: white; color: black; text-align: left;  font-family: Arial;'"; //estilo para los inputs del cliente?>
 <?php $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;' "; ?>
@@ -368,20 +366,23 @@ window.onkeydown = compruebaTecla;
             <label for="nit" class="control-label" style="margin-bottom: 0;">NUMERO DE DOCUMENTO</label>
             <div class="input-group"  <?php echo $estilo_div; ?>>
                 <input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?> />
-                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="buscarcliente()" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                <!--<div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="buscarcliente()" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>-->
+                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
             
             </div>
         </div>
         
-        <div class="col-md-3"  <?php echo $estilo_div; ?>>
+        <div class="col-md-3"  <?php echo $estilo_div; ?> >
+            
             <label for="razon social" class="control-label" style="margin-bottom: 0;">RAZON SOCIAL</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 
                 <!--<input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>-->
-                <input type="search" name="razon_social" list="listaclientes" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" <?php echo $sololectura?> />
+                <input type="search" name="razon_social" list="listaclientes" class="form-control <?php echo $atributos; ?>" <?php //echo $estilos_facturacion; ?> " style="color: black; background: gray; text-align: left; font-size: 18px; font-family: Arial;" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" readonly />
                 <datalist id="listaclientes"></datalist>
                 
             </div>
+            
         </div>
 <?php
     $es_movil = "0";
@@ -443,21 +444,30 @@ window.onkeydown = compruebaTecla;
                     if($parametro["parametro_tipoemision"] == 1){?>
                 
                         <a class="btn btn-danger btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" >
+<<<<<<< HEAD
                         <span id="eltipo_emision" style="color: white;">en linea</span>
+=======
+                        <span id="eltipo_emision" style="color: white;">EN LINEA</span>
+>>>>>>> master
                         </a>        
                 
                     <?php
                     }elseif($parametro["parametro_tipoemision"] == 2){ ?>
                 
+<<<<<<< HEAD
                         <a class="btn btn-facebook btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" style="background: grey">
                         <span id="eltipo_emision" style="color: white;">fuera de linea</span>
+=======
+                        <a class="btn btn-default btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión" style="background: grey">
+                        <span id="eltipo_emision" style="color: white;">FUERA DE LINEA</span>
+>>>>>>> master
                         </a>        
                 
                        
                     <?php
                     }if($parametro["parametro_tipoemision"] == 3){ ?>
                         
-                        <a class="btn btn-info btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión">
+                        <a class="btn btn-warning btn-xs" onclick="modal_cambiartipoemision()" title="Tipo de Emisión">
                         <span id="eltipo_emision" style="color: white;">masiva</span>
                         </a>        
                         
@@ -475,7 +485,7 @@ window.onkeydown = compruebaTecla;
             <?php if ($parametro["parametro_tiposistema"]!=1){
                 ?>
                 
-                <select class="btn btn-facebook btn-xs" id="evento_contingencia" onchange="cargar_contingencia()" >
+                <select class="btn btn-default btn-xs" id="evento_contingencia" onchange="cargar_contingencia()" >
                     <option value="0">- SIN CONTINGENCIA -</option>
                         <?php 
                                 foreach($eventos as $evento){ ?>
@@ -483,10 +493,10 @@ window.onkeydown = compruebaTecla;
                         <?php } ?>
 
                 </select>
-            <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-warning btn-xs" title="Registrar evento significativo"><fa class="fa fa-floppy-o"> </fa> </a>
+            <a href="<?php echo base_url("eventos_significativos"); ?>" class="btn btn-default btn-xs" title="Registrar evento significativo"><fa class="fa fa-floppy-o"> </fa> </a>
             
     
-            <button type="button" id="boton_modalpaquetes" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modalpaquetes" >
+            <button type="button" id="boton_modalpaquetes" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpaquetes" >
                 <fa class="fa fa-cubes"></fa>
             </button>
         
@@ -630,7 +640,7 @@ window.onkeydown = compruebaTecla;
                       <span class="input-group-addon"> 
                         <i class="fa fa-barcode"></i>
                       </span>           
-                      <input type="text" name="codigo" id="codigo" class="form-control" placeholder="Código, serie" onkeyup="validar(event,3)">
+                      <input type="text" name="codigo" id="codigo" class="form-control" placeholder="Código, serie" onkeyup="validar(event,3)" autocomplete="off">
                   </div>
             </div>      
            <!--------------------- fin buscador por codigo --------------------->
@@ -657,11 +667,11 @@ window.onkeydown = compruebaTecla;
 <div class="container" id="categoria" style="padding:0;">
 <!--    <center>-->
         
-    <!--<span class="badge btn-danger" style="width: 300px;">-->
+    <!--<span class="badge btn-default" style="width: 300px;">-->
     
     
     
-        <select class="bange btn-danger btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod">
+        <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod">
                 <option value="0" >- CATEGORIAS -</option>
         <?php 
             foreach($categoria_producto as $categ){ 
@@ -674,11 +684,11 @@ window.onkeydown = compruebaTecla;
         ?>
         </select>
         
-        <select class="bange btn-danger btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(3)" id="subcategoria_prod">
+        <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(3)" id="subcategoria_prod">
                 <option value="0" >- SUB CATEGORIAS -</option>
         
         </select>
-        <span class="badge btn-facebook">
+        <span class="badge btn-default">
             <input style="border-width: 0; color: black;" id="encontrados" type="text"  size="3" value="0" readonly="true"> 
         
         </span>
@@ -690,17 +700,17 @@ window.onkeydown = compruebaTecla;
 //                    { $agrupar = "checked='true'";}
 //              else {$agrupar = " ";}
 //        ?>
-       <!--<button class="btn btn-primary btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>--> 
+       <!--<button class="btn btn-default btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>--> 
         
 <!-------------------------- FIN BOTON AGRUPAR --------------------------------------->    
        
        <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
         <?php if($rolusuario[185-1]['rolusuario_asignado'] == 1){ ?>
-        <button type="button" id="boton_modal_promocion" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modalpromocion" >
+        <button type="button" id="boton_modal_promocion" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpromocion" >
             <fa class="fa fa-cube"></fa> Promociones
         </button>
         <?php } ?>
-<!--<span class="badge btn-primary">-->
+<!--<span class="badge btn-default">-->
         
         
         
@@ -709,9 +719,9 @@ window.onkeydown = compruebaTecla;
         
     <!--</span>-->
         <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
+    <!--<button type="button" class="btn btn-default"><span class="badge">7</span>Productos encontrados</button>-->
 
-                <!--<span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span></span>-->
+                <!--<span class="badge btn-default">Encontrados: <span class="badge btn-default"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span></span>-->
                 <span class="badge btn-default">
 
                     <!--------------------- inicio loader ------------------------->
@@ -747,7 +757,7 @@ window.onkeydown = compruebaTecla;
     
     <div class="col-md-6" id="divventas1" style="display:none;">
         <center>            
-            <button class="btn btn-warning" type="button" disabled style="background: grey">
+            <button class="btn btn-default" type="button" disabled style="background: grey">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Procesando las facturas; por favor espere!..
             </button>
@@ -770,23 +780,23 @@ window.onkeydown = compruebaTecla;
             <!--------------- botones ---------------------->
             <?php if($parametro["parametro_modulorestaurante"]==0){ //1 es normal ?>
                 <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
-            <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-facebook btn-xs" style="background-color: black" onclick="ordenes_pendientes()" title="Ordenes de Trabajo"><span class="fa fa-book"></span><b> OT's</b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-default btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-default btn-xs" onclick="ordenes_pendientes()" title="Ordenes de Trabajo"><span class="fa fa-book"></span><b> OT's</b></a> 
                 <?php }
                 } ?>
                     
             <?php if($parametro["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
-                    <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda" title="Comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
+                    <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_comanda" title="Comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
             <?php } ?>            
            
-<!--            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->
+<!--            <button onclick='quitartodo()' class='btn btn-default btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->
             
       
             
             
             <?php            
             if($rolusuario[21-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="<?php echo base_url('venta/ultimorecibo');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs"  style="background-color: #761c19" id="imprimir"><span class="fa fa-print" title="Imprimir nota de entrega"></span><b> Recibo</b></a> 
+            <a href="<?php echo base_url('venta/ultimorecibo');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs"  id="imprimir"><span class="fa fa-print" title="Imprimir nota de entrega"></span><b> Recibo</b></a> 
             
             <?php } 
             ?>
@@ -798,8 +808,8 @@ window.onkeydown = compruebaTecla;
                     $nomostrar = "style='display: none'";
                 }
                 ?>
-            <a href="<?php echo base_url('venta/ultimaventa/1');?>" <?php //echo $nomostrar; ?> data-toggle="modal" target="_blank" class="btn btn-warning btn-xs" id="imprimir_factura" title="Imprimir factura"><span class="fa fa-list-alt" ></span><b> Factura</b></a> 
-            <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-danger btn-xs" id="imprimir_factura" title="Imprimir factura en PDF"><span class="fa fa-file-pdf"></span></a>
+            <a href="<?php echo base_url('venta/ultimaventa/1');?>" <?php //echo $nomostrar; ?> data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura" title="Imprimir factura"><span class="fa fa-list-alt" ></span><b> Factura</b></a> 
+            <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura" title="Imprimir factura en PDF"><span class="fa fa-file-pdf"></span> <b>DPF</b></a>
             
             <?php } 
             ?>
@@ -810,7 +820,7 @@ window.onkeydown = compruebaTecla;
 
             </center>
             
-            <!--<a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Plan de Pagos</b></a>--> 
+            <!--<a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Plan de Pagos</b></a>--> 
             
             <!--------------- fin botones ---------------------->
             
@@ -841,24 +851,28 @@ window.onkeydown = compruebaTecla;
                     <!--------------- RESULTADO TABLA DE PRODUCTOS---------------------------->
                     
                 </div>
-          
+                
+                <!-------------------- BOTONES INFERIORES ------------------------------------------->
+                <div >
+                
+                    
                         <?php 
             if($rolusuario[15-1]['rolusuario_asignado'] == 1){ ?>
-            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0' title="Costo Cero"></span><b> - 0 -</b></button> 
+            <button onclick='costo_cero()' class='btn btn-default btn-xs'><span class='fa fa-battery-0' title="Costo Cero"></span><b> - 0 -</b></button> 
             <?php }
             if($rolusuario[16-1]['rolusuario_asignado'] == 1){ ?>
-            <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money' title="Precio de costo"></span><b> Costo</b></button> 
+            <button onclick='precio_costo()' class='btn btn-default btn-xs'><span class='fa fa-money' title="Precio de costo"></span><b> Costo</b></button> 
             
             <?php } ?>
             
             <?php
             if($rolusuario[184-1]['rolusuario_asignado'] == 1){ ?>
             
-            <a href="<?php echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs"  style="background-color: purple"  id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> Garantias</b></a>
+            <a href="<?php echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs"  id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> Garantias</b></a>
             
             <?php } ?>      
             
-            <!--<a href="<?php //echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs"  style="background-color: purple"  id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> Garantias</b></a>-->
+            <!--<a href="<?php //echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs"  style="background-color: purple"  id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> Garantias</b></a>-->
             <?php
             if($rolusuario[17-1]['rolusuario_asignado'] == 1){
                 $nomostrar = "";
@@ -866,7 +880,7 @@ window.onkeydown = compruebaTecla;
                     $nomostrar = "display: none";
                 }
                 ?>
-            <select   id="select_imprimir_factura" style="font-weight: bold; <?php echo $nomostrar?>" onclick="imprimir_factura()" class='btn btn-warning btn-xs' title="Imprimir factura">
+            <select   id="select_imprimir_factura" style="font-weight: bold; <?php echo $nomostrar?>" onclick="imprimir_factura()" class='btn btn-default btn-xs' title="Imprimir factura">
                 <option value="0">Imprimir</option>
                 <option value="1">Factura</option>
                 <option value="2">Copia</option>
@@ -875,9 +889,9 @@ window.onkeydown = compruebaTecla;
             }
             if($parametro['parametro_tiposistema'] != 1){
             ?>
-            <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-info btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
+            <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-default btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
             <?php } ?>
-            <button onclick='finalizarventa();' class='btn btn-info btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar venta</b></button> 
+            <button onclick='finalizarventa();' class='btn btn-default btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar venta</b></button> 
             <?php
             $nomostrar = "";
                 if($tipousuario_id != 1){
@@ -885,15 +899,18 @@ window.onkeydown = compruebaTecla;
                 }
             if(sizeof($dosificacion)>0 && $parametro['parametro_factura'] != 3){
             ?>
-                <a class="btn btn-sq-lg btn-warning btn-xs" href="<?php echo site_url('factura'); ?>" style="padding-left: 2px; <?php echo $nomostrar; ?>">
+                <a class="btn btn-sq-lg btn-default btn-xs" href="<?php echo site_url('factura'); ?>" style="padding-left: 2px; <?php echo $nomostrar; ?>">
                     Anular Factura
                 </a>
             <?php   
             }
             ?>
-            <button class="btn btn-info btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa> Verificar Conexión</button>
+            <button class="btn btn-default btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa> Verificar Conexión</button>
             
             </div>
+                <!-------------------- FIN BOTONES INFERIORES ------------------------------------------->
+            </div>
+          
         </div>
         
         <!----------------------------------- BOTONES ---------------------------------->
@@ -903,10 +920,13 @@ window.onkeydown = compruebaTecla;
         
         ?>
         <div class="col-md-12" style="padding:0;" id="div_mensaje">
-            <span id="mensaje_enviado" class="btn btn-info btn-block" style="font-family: Arial; line-height: 10pt; display:none;"><b style="font-family: Arial; font-size: 18pt;" >ENVIADA</b></span>
-            <span id="mensaje_no_enviado" class="btn btn-danger btn-block" style="font-family: Arial; line-height: 10pt; display:none;"><b style="font-family: Arial; font-size: 18pt;" >NO ENVIADA</b><br><span id="mensaje_error">Numero de identificacion tributaria invalido</span></span>
+            <?php $estilo_mensaje = "font-family: Arial; line-height: 10pt; display: none; border-color:black; background: white; color: Green;"; ?>
+            <span id="mensaje_enviado" class="btn btn-default btn-block" style="<?php echo $estilo_mensaje; ?>"><b style="font-family: Arial; font-size: 18pt;" ><img src="<?php echo base_url("resources/images/enviado.gif"); ?>" width="150px" height="100px"> FACTURA ENVIADA</b></span>
+            <?php $estilo_mensaje2 = "font-family: Arial; line-height: 10pt; display: none; border-color:black; background: white; color: Red;"; ?>
+            <span id="mensaje_no_enviado" class="btn btn-default btn-block" style="<?php echo $estilo_mensaje2; ?>"><b style="font-family: Arial; font-size: 18pt;" ><img src="<?php echo base_url("resources/images/noenviado.gif"); ?>" width="100px" height="100px"> FACTURA NO ENVIADA</b><br><span id="mensaje_error" style="font-family: Arial; font-size: 9px;">Numero de identificacion tributaria invalido</span></span>
+            <br>
         <div>
-        <div class="col-md-12" style="padding:0;">
+        <div class="col-md-12" style="padding:0; font-family: Arial;">
 
             <center>
             <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
@@ -915,32 +935,32 @@ window.onkeydown = compruebaTecla;
             </a>-->
 
             <button href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;" id="boton_finventa">
-                <i class="fa fa-money fa-4x"></i><br><br>Finalizar Venta <br>
+                <i class="fa fa-money fa-4x"></i><br>Finalizar<br>Venta <br>
             </button>
             <?php } ?>
 
             <?php if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
                 
-<!--            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+<!--            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
             </a>-->
-            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
-                <i class="fa fa-money fa-4x"></i><br><br>
-               Cierre Caja <br>
+            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <i class="fa fa-truck fa-4x"></i>
+                <br>Asigar<br>Inventario
             </a>
 
             <?php } ?>
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
-                <a href="<?php echo site_url('reportes/reportecaja'); ?>" class="btn btn-sq-lg btn-facebook" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <a href="<?php echo site_url('reportes/reportecaja'); ?>" class="btn btn-sq-lg btn-default" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                     <i class="fa fa-list-alt fa-4x"></i><br>
                    Resumen<br>Ventas <br>
                 </a>
             <?php //} ?>
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
-                <a href="<?php echo site_url('admin/dashb'); ?>" class="btn btn-sq-lg btn-info" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
-                <i class="fa fa-calculator fa-4x"></i><br><br>
-               Cierre de Caja <br>
+                <a href="<?php echo site_url('admin/dashb'); ?>" class="btn btn-sq-lg btn-default" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <i class="fa fa-calculator fa-4x"></i><br>
+               Cierre<br>de Caja <br>
             </a>
             <?php //} ?>
 
@@ -948,7 +968,7 @@ window.onkeydown = compruebaTecla;
                 
 
             <?php if($rolusuario[18-1]['rolusuario_asignado'] == 1){ ?>
-            <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+            <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Ventas <br>
             </a>    
@@ -969,27 +989,25 @@ window.onkeydown = compruebaTecla;
                 [F7] Registrar NIT<br>
                 [F8] Finalizar venta<br>
                 <div hidden>            
-                    <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-warning btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
+                    <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-default btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
                 </div>
             </p>
             </div>
             <div class="col-md-6">
-                <?php
-            if($parametro['parametro_tiposistema'] != 1){
-            ?>
-            <span class="btn btn-info btn-xs"> <b> PUNTO DE VENTA <?php echo $puntoventa_codigo; ?></b></span>
-            <?php
-            }
-            ?>
-            <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?></b></span>
-            <?php
-            if($parametro['parametro_tiposistema'] != 1){
-            ?>
-            <span class="btn btn-facebook btn-xs"> <b> DOC: <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?></b></span>
-            <span class="btn btn-warning btn-xs"> <b> CUFD VIGENCIA: <?php if (isset($cufd[0])){echo $cufd[0]["cufd_fechavigencia"];}else{ echo " NO EXISTE CUFD";} ?></b></span>
-            <?php
-            }
-            ?>
+            
+                
+            
+            <?php if( $parametro['parametro_tiposistema']!= 1){ ?>
+            
+
+                <button class="btn btn-info btn-xs" style="text-align: Left; " >
+                    <b>PUNTO DE VENTA:</b> <?php echo $puntoventa_codigo; ?>
+                    <br><b>MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?>
+                    <br><b>DOC:</b> <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?>
+                    <br><b>CUFD VIGENCIA:</b> <?php if (isset($cufd[0])){echo $cufd[0]["cufd_fechavigencia"];}else{ echo " NO EXISTE CUFD";} ?>
+                </button>
+            
+            <?php } ?>
             </div>
             
         </font>
@@ -1069,8 +1087,33 @@ window.onkeydown = compruebaTecla;
                                             <?php } ?>
  
                                          </select>
+                                        
                                         </center>
                                     </div>
+                                    
+                                    <div class="col-md-2" style="padding: 0; display: none;" id="div_sucursales">
+                                        <center>
+                                            
+                                        <h5 class="modal-title" id="myModalLabel"><b>SUCURSALES</b></h5>                                        
+                
+                                            <?php $mostrar_almacenes = true;
+                                                if($mostrar_almacenes){?>
+
+                                                 <select class="btn btn-default btn-xs" id="select_almacen">
+                                                    <?php   
+                                                        foreach($almacenes as $almacen){ ?>
+
+                                                                <option value="<?php echo $almacen["almacen_descripcion"]; ?>"><?php echo $almacen["almacen_nombre"] ?></option>
+
+                                                        <?php } ?>
+
+                                                    </select>
+
+
+                                            <?php } ?>
+                                        </center>
+                                    </div>
+                                        
                                     <div class="col-md-12" style="display: block;"></div>
                                     <div class="col-md-6" id="glosa_banco" style="display: none;">
                                         <div class="row">
@@ -1192,10 +1235,14 @@ window.onkeydown = compruebaTecla;
             <div class="box-body table-responsive table-condensed">
             <!--<form method="post" name="descuento">-->                
             
+            <!-- =====================================================-->
+            <!-- METODO PARA GENERAR VARIAS FACTURAS PREVALORADA EN LINEA/FACTURAS EN MASA PARA CERTIFICAR ->
+            <!-- =====================================================-->
+            
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if($dosificacion[0]["docsec_codigoclasificador"] == 23){
+                if($dosificacion[0]["docsec_codigoclasificador"] == 23){ //23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }
@@ -1206,7 +1253,7 @@ window.onkeydown = compruebaTecla;
                 <tr>
                         <td  style="padding: 0" >Total <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right">
-                            <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                            <input class="btn btn-default btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
                     
                     
@@ -1239,7 +1286,7 @@ window.onkeydown = compruebaTecla;
                 <tr style="padding: 0; display: <?php echo $prev_ocultar; ?>">                      
                         <td style="padding: 0">Descuento <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
-                            <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
+                            <input class="btn btn-default"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
                             <select id="tipo_descuento" onchange="calculardesc()">
                                 <option value="1"><?php echo $parametro['moneda_descripcion']; ?></option>
                                 <option value="2">%</option>
@@ -1275,13 +1322,13 @@ window.onkeydown = compruebaTecla;
                 <tr style="padding: 0">                      
                     <td style="padding: 0"><b>Cambio <?php echo $parametro['moneda_descripcion']; ?></b></td>
                         <td align="right" style="padding: 0;">
-                            <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
+                            <input class="btn btn-default  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>
                 </tr>
                 <tr style="padding: 0; display: <?php echo $prev_mostrar; ?>">                      
                     <td style="padding: 0"><b>Cantidad de Facturas</b></td>
                         <td align="right" style="padding: 0;">
-                            <input class="btn btn-warning  btn-foursquarexs" style="padding: 0; background-color: #e08e0b; font-size: 20px;"  id="cantidad_facturas" size="<?php echo $ancho_boton; ?>" name="cantidad_facturas" value="1" required min="0" onclick="this.select();">
+                            <input class="btn btn-default  btn-foursquarexs" style="padding: 0; background-color: #e08e0b; font-size: 20px;"  id="cantidad_facturas" size="<?php echo $ancho_boton; ?>" name="cantidad_facturas" value="1" required min="0" onclick="this.select();">
                         </td>
                 </tr>
                 
@@ -1373,22 +1420,22 @@ window.onkeydown = compruebaTecla;
            <!--************************************* fin datos credito ************************************************>           
                  
                 
-            <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->   
+            <!--<button class="btn btn-lg btn-default btn-block" type="submit">Login</button>-->   
             
-<!--            <button class="btn btn-lg btn-facebook btn-sm btn-block" onclick="finalizarventa()">
+<!--            <button class="btn btn-lg btn-default btn-sm btn-block" onclick="finalizarventa()">
                 <h4>
                 <span class="fa fa-money"></span>   Finalizar Venta  
                 </h4>
             </button>
             -->
-            <!--<button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">-->
-            <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa_sin()" style="display: block;">
+            <!--<button class="btn btn-lg btn-default btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">-->
+            <button class="btn btn-lg btn-default btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa_sin()" style="display: block;">
                 <h4>
                 <span class="fa fa-save"></span>   Finalizar Venta  
                 </h4>
             </button>
 
-            <button class="btn btn-lg btn-danger btn-sm btn-block" data-dismiss="modal" id="cancelar_venta">
+            <button class="btn btn-lg btn-default btn-sm btn-block" data-dismiss="modal" id="cancelar_venta">
                 <h4>
                 <span class="fa fa-close"></span>   Cancelar  
                 </h4>
@@ -1515,7 +1562,7 @@ window.onkeydown = compruebaTecla;
             
 <!---------------------- fin modal ordenes --------------------------------------------------->
 
-<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+<!-- <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
 <div id="modalespera">
     
@@ -1585,9 +1632,9 @@ window.onkeydown = compruebaTecla;
 						<div class="form-group">
                                                     <center>
                                                         
-                                                        <button class="btn btn-facebook" id="boton_asignar" onclick="asignar_inventario()"> <span class="fa fa-truck"></span> Asignar</button>
+                                                        <button class="btn btn-default" id="boton_asignar" onclick="asignar_inventario()"> <span class="fa fa-truck"></span> Asignar</button>
 
-                                                        <button class="btn btn-danger" id="cerrar_modalasignar" data-dismiss="modal">
+                                                        <button class="btn btn-default" id="cerrar_modalasignar" data-dismiss="modal">
 
                                                             <span class="fa fa-close"></span>   Cancelar  
 
@@ -1655,22 +1702,22 @@ window.onkeydown = compruebaTecla;
                                                 <?php 
                                                 //foreach($preferencia as $p)
                                                 //{?>
-                                                    <!--<button class="btn btn-xs btn-facebook" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>-->
+                                                    <!--<button class="btn btn-xs btn-default" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>-->
                                                     <!--<br>-->
                                                 <?php //} 
                                                 ?>
                                             </div>
-                                            <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning" onKeyUp="this.value = this.value.toUpperCase();">
+                                            <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-default" onKeyUp="this.value = this.value.toUpperCase();">
 					</div>
                                         <div class="col-md-6" id='botones'  style='display:block;'>
 						<label for="opciones" class="control-label">Opciones</label>
 						<div class="form-group">
                                                         
-                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="guardar_preferencia()" data-dismiss="modal" >
+                                                    <button class="btn btn-default" id="boton_asignar" onclick="guardar_preferencia()" data-dismiss="modal" >
                                                             <span class="fa fa-floppy-o"></span> Guadar
                                                     </button>
                                                     
-                                                    <button class="btn btn-danger" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
+                                                    <button class="btn btn-default" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
                                                         <span class="fa fa-close"></span>   Cancelar                                                          
                                                     </button>
 						</div>
@@ -1692,10 +1739,11 @@ window.onkeydown = compruebaTecla;
 		</div>
 	</div>
 </div>
+
 <!----------------- fin modal preferencias ---------------------------------------------->
 <div hidden>
     
-<button type="button" id="boton_modal_ingreso" class="btn btn-primary" data-toggle="modal" data-target="#modalingreso" >
+<button type="button" id="boton_modal_ingreso" class="btn btn-default" data-toggle="modal" data-target="#modalingreso" >
   Launch demo modal
 </button>
 </div>
@@ -1724,17 +1772,17 @@ window.onkeydown = compruebaTecla;
                                             <label for="usuario_idx" class="control-label">Cantidad:</label>
                                             
                                             <input type="text" id="ingresorapido_producto_id" value="0.00" hidden />
-                                            <input type="text" id="ingresorapido_cantidad" value="0.00" class="form-control btn btn-xs btn-warning" onkeyup="validar(event,11)" />
+                                            <input type="text" id="ingresorapido_cantidad" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)" />
 					</div>
                                         <div class="col-md-6" id='botones'  style='display:block;'>
 						<label for="opciones" class="control-label">Opciones</label>
 						<div class="form-group">
                                                         
-                                                    <button class="btn btn-facebook" id="boton_ingreso_rapido" onclick="guardar_ingreso_rapido()" data-dismiss="modal" >
+                                                    <button class="btn btn-default" id="boton_ingreso_rapido" onclick="guardar_ingreso_rapido()" data-dismiss="modal" >
                                                             <span class="fa fa-floppy-o"></span> Registrar
                                                     </button>
                                                     
-                                                    <button class="btn btn-danger" id="cancelar_preferencia" data-dismiss="modal" >
+                                                    <button class="btn btn-default" id="cancelar_preferencia" data-dismiss="modal" >
                                                         <span class="fa fa-close"></span>   Cancelar                                                          
                                                     </button>
 						</div>
@@ -1759,6 +1807,82 @@ window.onkeydown = compruebaTecla;
 
 
 <!----------------- fin modal preferencias ---------------------------------------------->
+
+<!----------------- Inicio registrar precio de venta ---------------------------------------------->
+<div>
+    
+<button type="button" id="boton_modal_actualizarprecio" class="btn btn-default" data-toggle="modal" data-target="#modal_actualizarprecio" >
+  Launch demo modal
+</button>
+</div>
+<!----------------- Actualizar precio de venta ---------------------------------------------->
+
+<div class="modal fade" id="modal_actualizarprecio" tabindex="-1" role="dialog" aria-labelledby="modalactualizaprecio" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>ACTUALIZAR PRECIOS</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+                            
+                                        <input type="text" id="modificarprecios_producto" value="nombre producto" class="form-control btn btn-xs btn-default" readonly>
+                                        
+                                        <div class="col-md-3">
+                                            <label for="usuario_idx" class="control-label">Precio Costo:</label>
+                                            
+                                            <input type="text" id="modificarprecios_producto_id" value="0.00" hidden />
+                                                <input type="text" id="modificarprecios_producto_costo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)" />
+					</div>
+                            
+                                        <div class="col-md-3">
+                                            <label for="usuario_idx" class="control-label">Precio Venta:</label>                                            
+                                            <input type="text" id="modificarprecios_producto_precio" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)" />
+					</div>
+                            
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-default" id="boton_actualizar_precio" onclick="actualizar_precio()" data-dismiss="modal" >
+                                                            <span class="fa fa-floppy-o"></span> Registrar
+                                                    </button>
+                                                    
+                                                    <button class="btn btn-default" id="boton_cancelar_precio" data-dismiss="modal" >
+                                                        <span class="fa fa-close"></span>   Cancelar                                                          
+                                                    </button>
+						</div>
+					</div>
+                            
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderinventario'  style='display: none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal precio de venta---------------------------------------------->
 
 
 <!----------------- modal promociones ---------------------------------------------->
@@ -1803,7 +1927,7 @@ window.onkeydown = compruebaTecla;
                                             </button>-->
 
 
-    <button data-toggle="modal" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_botonx; ?>px !important; height: <?php echo $alto_botonx; ?>px !important;" title=" <?php echo $prom["promocion_titulo"]; ?>" onclick="ingresar_promocion(<?php echo $prom["promocion_id"]; ?>)">
+    <button data-toggle="modal" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_botonx; ?>px !important; height: <?php echo $alto_botonx; ?>px !important;" title=" <?php echo $prom["promocion_titulo"]; ?>" onclick="ingresar_promocion(<?php echo $prom["promocion_id"]; ?>)">
                                                     <i class="fa fa-cubes fa-2x"></i><br><br>
                                                     <small>
                                                         <?php echo $prom["promocion_titulo"]; ?><br>
@@ -1886,7 +2010,7 @@ window.onkeydown = compruebaTecla;
                                                     </td>
 
                                                     <td>
-                                                        <button class="btn btn-info btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" data-dismiss="modal"> <fa class="fa fa-floppy-o"></fa> </button>
+                                                        <button class="btn btn-default btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" data-dismiss="modal"> <fa class="fa fa-floppy-o"></fa> </button>
                                                     </td>
 
                                                 
@@ -1897,7 +2021,7 @@ window.onkeydown = compruebaTecla;
                                         <div class="col-md-12">
                                             
 
-                                            <button class="btn btn-danger btn-xs" id="cancelar_preferencia" data-dismiss="modal" >
+                                            <button class="btn btn-default btn-xs" id="cancelar_preferencia" data-dismiss="modal" >
                                                 <span class="fa fa-close"></span>   Cerrar
                                             </button>
                                         </div> 
@@ -1924,15 +2048,15 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-8">
             <label for="monto_caja" class="control-label">
                 <h2 class="modal-title">
-                    <fa class="btn btn-warning fa fa-exclamation-triangle fa-2x"> </fa><b><span id="mensajeadvertencia"></span></b>
+                    <fa class="btn btn-default fa fa-exclamation-triangle fa-2x"> </fa><b><span id="mensajeadvertencia"></span></b>
                 </h2>
             </label>
         </div>  
           
         <div class="col-md-4">
-            <!--<button class="btn btn-warning btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>-->
-            <button class="btn btn-info btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia"><fa class="fa fa-save"></fa> Aceptar</button>
-            <button class="btn btn-danger btn-block" data-dismiss="modal" onclick="cancelar_excepcion_nit()"><fa class="fa fa-times"></fa> Cancelar</button>
+            <!--<button class="btn btn-default btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>-->
+            <button class="btn btn-default btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia"><fa class="fa fa-save"></fa> Aceptar</button>
+            <button class="btn btn-default btn-block" data-dismiss="modal" onclick="cancelar_excepcion_nit()"><fa class="fa fa-times"></fa> Cancelar</button>
         </div>  
       
       </div>
@@ -1992,7 +2116,7 @@ window.onkeydown = compruebaTecla;
             </div>
             <div class="modal-footer" style="text-align: center">
                 <button class="btn btn-success" onclick="cambiar_tipoemision()" id="boton_tipoemision"><span class="fa fa-check"></span> Cambiar</button>
-                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+                <a class="btn btn-default" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>
     </div>
@@ -2004,7 +2128,7 @@ window.onkeydown = compruebaTecla;
 
 <!------------------------ envio de paquete de facturas ------------------->
 <div hidden>
-    <button type="button" id="boton_modal_paquetes" class="btn btn-primary" data-toggle="modal" data-target="#modal_enviopaquetes" >
+    <button type="button" id="boton_modal_paquetes" class="btn btn-default" data-toggle="modal" data-target="#modal_enviopaquetes" >
       ENVIO PAQUETES
     </button>
     
@@ -2056,7 +2180,7 @@ window.onkeydown = compruebaTecla;
             </div>
             <div class="modal-footer" style="text-align: center">
                 <!--<a class="btn btn-success" onclick="cambiar_tipoemision()"><span class="fa fa-check"></span> Cambiar</a>-->
-                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+                <a class="btn btn-default" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
             </div>
         </div>
     </div>
@@ -2086,7 +2210,7 @@ window.onkeydown = compruebaTecla;
 
 <!--<p id="status" class="online">online</p>-->
 
-<!--<button class="btn btn-info btn-xs" onclick="verificar_conexion()"><fa class="fa fa-cloud"></fa> verificar conexion</button>-->
+<!--<button class="btn btn-default btn-xs" onclick="verificar_conexion()"><fa class="fa fa-cloud"></fa> verificar conexion</button>-->
 
 
 <script type="text/javascript"> 
@@ -2149,7 +2273,7 @@ window.onkeydown = compruebaTecla;
 <!----------------------- EMISION DE PAQUETES ----------------------------------->
 <!------------------------------------------------------------------------------->
 <div hidden>
-    <button type="button" id="boton_modalpaquetes" class="btn btn-primary" data-toggle="modal" data-target="#modalpaquetes" >
+    <button type="button" id="boton_modalpaquetes" class="btn btn-default" data-toggle="modal" data-target="#modalpaquetes" >
       ENVIO PAQUETES
     </button>
     
@@ -2194,7 +2318,7 @@ window.onkeydown = compruebaTecla;
             
             <div class="modal-footer" style="text-align: center">
                 <button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Enviar Paquete</button>
-                <button type="button" class="btn btn-danger" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
+                <button type="button" class="btn btn-default" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
             </div>
             
         </div>
@@ -2205,3 +2329,4 @@ window.onkeydown = compruebaTecla;
 <script type="text/javascript">
      $("#span_buscar_cliente").click();                    
 </script>
+

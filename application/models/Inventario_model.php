@@ -14,8 +14,29 @@ class Inventario_model extends CI_Model
     /*
      * Get inventario
      */
+    function get_inventario_almacen($basededatos)
+    {
+        //echo $basededatos;
+        $this->db = $this->load->database($basededatos, TRUE);
+
+        
+        $sql = "select  p.*,c.categoria_nombre FROM inventario p
+                left join categoria_producto c on c.categoria_id = p.categoria_id
+                where p.estado_id = 1
+                group by p.categoria_id, p.producto_id order by c.categoria_nombre, p.producto_nombre asc";
+
+          
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+        
+    }
+    
+    /*
+     * Get inventario
+     */
     function get_inventario()
     {
+        
         $sql = "select  p.*,c.categoria_nombre FROM inventario p
                 left join categoria_producto c on c.categoria_id = p.categoria_id
                 where p.estado_id = 1
@@ -25,6 +46,7 @@ class Inventario_model extends CI_Model
         
         //$producto = $this->db->query($sql,array('credito_id'))->row_array();
         return $producto;
+        
     }
     /*
      * Get inventario
@@ -636,6 +658,14 @@ class Inventario_model extends CI_Model
                   i.existencia > 0 or
                   i.existencia < 0
               ORDER By i.producto_nombre asc";
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+    }
+
+    /* lista los almacenes  */
+    function get_almacenes()
+    {
+        $sql = "select * from almacenes where estado_id = 1";
         $producto = $this->db->query($sql)->result_array();
         return $producto;
     }

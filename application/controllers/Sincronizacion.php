@@ -2,7 +2,10 @@
 class Sincronizacion extends CI_Controller{
 
     private $session_data = "";
+    private $dosificacion;
+    
     function __construct(){
+        
         parent::__construct();
         $this->load->model([
             'Sincronizacion_model',
@@ -33,6 +36,11 @@ class Sincronizacion extends CI_Controller{
             'ProductosServicios_model',
         ]);
         //$this->load->library('lib_nusoap/nusoap');    
+    
+        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+        $this->dosificacion = $dosificacion;
+        $this->nombre_archivo = $this->dosificacion["dosificacion_documentosector"];
+
         
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -54,9 +62,12 @@ class Sincronizacion extends CI_Controller{
 
     function index(){
         if($this->acceso(149)){
+            
+            $data['dosificacion'] = $this->dosificacion;
             $data['sincronizaciones'] = $this->Sincronizacion_model->get_all_codigos();
             $data['_view'] = 'sincronizacion/index';
             $this->load->view('layouts/main',$data);
+            
         }
     }
 

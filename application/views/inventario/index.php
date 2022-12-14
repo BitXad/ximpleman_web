@@ -88,6 +88,23 @@
             <h3 class="box-title"></h3>
             <div class="box-tools no-print">
                 
+                <?php $mostrar_almacenes = true;
+                    if($mostrar_almacenes){?>
+                            
+                <select class="btn btn-success btn-sm" id="select_almacen">
+                        <?php   
+                            foreach($almacenes as $almacen){ ?>
+                             
+                                    <option value="<?php echo $almacen["almacen_descripcion"]; ?>"><?php echo $almacen["almacen_nombre"] ?></option>
+
+                            <?php } ?>
+                            
+                        </select>
+                        
+                        
+                <?php } ?>
+                
+                
                 <button class="btn btn-success btn-sm" onclick="actualizar_inventario()" type="button"><span class="fa fa-cubes"></span> Actualizar</button>
                 <?php if($rolusuario[27-1]['rolusuario_asignado'] == 1){ ?>
                 <button class="btn btn-primary btn-sm" onclick="tabla_inventario()" type="button"><span class="fa fa-list"></span> Mostrar todo</button>

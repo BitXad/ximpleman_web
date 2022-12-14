@@ -105,9 +105,10 @@ function validar(e,opcion) {
 }
 
 function tabla_inventario(){
+
     var base_url = document.getElementById("base_url").value;
     var parametro = document.getElementById("filtrar").value;
-    var controlador = base_url+"inventario/mostrar_inventario";
+        var controlador = base_url+"inventario/mostrar_inventario";
     
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     var nombre_moneda = document.getElementById('nombre_moneda').value;
@@ -117,11 +118,16 @@ function tabla_inventario(){
     var total_otram = Number(0);
     var tipo_reporte = 2;
     
+    var select_almacenes = document.getElementById("select_almacen");
+    //select_almacen = select_almacenes.options[select_almacenes.selectedIndex].innerText;
+    select_almacen = select_almacenes.options[select_almacenes.selectedIndex].value;
+    alert(select_almacen);
+    
     if (tipo_reporte == 1){
         $.ajax({
         url: controlador,
         type:"POST",
-        data:{parametro:parametro},
+        data:{parametro:parametro, select_almacen:select_almacen},
         success: function(resultado){
             
             var inv = JSON.parse(resultado);
@@ -227,7 +233,7 @@ function tabla_inventario(){
     $.ajax({
         url: controlador,
         type:"POST",
-        data:{parametro:parametro},
+        data:{parametro:parametro, select_almacen:select_almacen},
         success: function(resultado){
             
             var inv = JSON.parse(resultado);
@@ -249,13 +255,25 @@ function tabla_inventario(){
 //                    html += "	<th>Pedidos</th>";
                     html += "	<th>Saldo</th>";
                     html += "	<th>Total ("+nombre_moneda+")</th>";
+                    
+                    try{
+                    
                     html += "	<th>Total (";
                                             if(lamoneda_id == 1){
                                                 html += lamoneda[1]['moneda_descripcion'];
                                             }else{
                                                 html += lamoneda[0]['moneda_descripcion'];
                                             }
+                                            
+                                            
                     html += ")</th>";
+                    
+                    } catch (error) {
+                    
+                        console.error(error);
+                        alert("ADVERTENCIA: No existen monedas registradas/activas...!");
+                    }
+                    
                     html += "	<th colspan='6'>Saldos/Presentaciones</th>";
                     html += "</tr>";
                     html += "<tbody class='buscar'>";

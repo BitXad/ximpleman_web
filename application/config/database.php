@@ -78,7 +78,11 @@ $db['default'] = array(
 	'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
+<<<<<<< HEAD
         'database' => 'ximpleman_passwordsin',
+=======
+        'database' => 'ximpleman_passwordsin3',
+>>>>>>> master
 //	'hostname' => '72.52.185.41',
 //        'username' => 'nazareno_carlos',
 //        'password' => '.A081052793.',
@@ -105,7 +109,7 @@ $db['sucursal1'] = array(
 	'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
-        'database' => 'ximpleman_sucursal1',
+        'database' => 'ximpleman_passwordsin2',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -127,7 +131,7 @@ $db['sucursal2'] = array(
 	'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
-        'database' => 'ximpleman_sucursal2',
+        'database' => 'ximpleman_passwordsin',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

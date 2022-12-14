@@ -196,6 +196,8 @@ class Venta extends CI_Controller{
 //        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
         $data['eventos'] = $this->Eventos_significativos_model->get_mis_eventos();
         $data['empresa_email'] = $this->empresa["empresa_email"];
+        $data['almacenes'] = $this->Inventario_model->get_almacenes();
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
         
         $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
         $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
@@ -294,7 +296,7 @@ class Venta extends CI_Controller{
                 ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
                 ", detalleven_descuentoparcial = ".$descuentoparcial.
                 ", detalleven_descuento = ".$descuento.
-                ", detalleven_total = (detalleven_precio - ".$descuentoparcial.")*(detalleven_cantidad)".
+                ", detalleven_total = round( (detalleven_precio - ".$descuentoparcial.")*(detalleven_cantidad) ,2)".
                 ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
                 //", detalleven_preferencia = concat(detalleven_preferencia,', $serie')".
                 "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
@@ -481,6 +483,7 @@ class Venta extends CI_Controller{
                 $venta_ice = $this->input->post('venta_ice');
                 $forma_id = $this->input->post('forma_id');
                 $factura_complementoci = $this->input->post('factura_complementoci');
+                $basededatos = $this->input->post('select_almacen'); //Selecciona la base de datos del almacen
                 
                 $fecha_cafc = $this->input->post('fecha_cafc');
                 $hora_cafc = $this->input->post('hora_cafc');
@@ -622,8 +625,8 @@ class Venta extends CI_Controller{
                 $this->Inventario_model->reducir_inventario_aux($usuario_id);
                 
           
-                if($tipo_transaccion == 2) //Si la transaccion es a credito
-                {
+                if($tipo_transaccion == 2){ //Si la transaccion es a credito
+                
                     //$credito_id =  
                     $estado_id =  8; //8 pendiente 9 cancelado
                     $compra_id =  0;
@@ -789,6 +792,54 @@ class Venta extends CI_Controller{
                     $sql = "update pedido set estado_id = 13  where pedido_id = ".$pedido_id;
                     $this->Venta_model->ejecutar($sql);
                 }
+                
+//************************************************************************************
+//          TRASPASOS
+//************************************************************************************
+
+                if($tipo_transaccion==4){
+                 
+                    $estado_id = 36; //estado pendiente
+                    $tipotrans_id = $tipo_transaccion;
+                    //$usuario_id = $usuario_id;
+                    $moneda_id = 1;
+                    $proveedor_id = 1; //Por defecto debe ser el 
+                    //$forma_id
+                    $compra_fecha = "date(now())";
+                    $compra_hora = "time(now())";
+                    $compra_subtotal = $venta_subtotal;
+                    $compra_descuento = $venta_descuentoparcial;
+                    $compra_descglobal = $venta_descuento;
+                    $compra_total = $venta_subtotal;
+                    $compra_totalfinal = $venta_total;
+                    $compra_efectivo = $venta_total;
+                    $compra_cambio = 0;
+                    $compra_glosa = "''";
+                    $compra_tipocambio = 1;
+                    $compra_numdoc = $venta_id;
+                    $documento_respaldo_id = "1";
+                    $compra_caja = 0;
+                    $compra_codcontrol = "''";
+                    $banco_id = 0;
+                    
+                    $sql = "insert into compra(estado_id, tipotrans_id, usuario_id, moneda_id, proveedor_id, forma_id, compra_fecha, compra_hora,"
+                            . " compra_subtotal, compra_descuento, compra_descglobal, compra_total, compra_totalfinal, compra_efectivo, "
+                            . "compra_cambio, compra_glosa, compra_tipocambio,compra_numdoc, documento_respaldo_id, compra_caja, compra_codcontrol, banco_id) value(".
+                           $estado_id.",".$tipotrans_id.",".$usuario_id.",".$moneda_id.",".$proveedor_id.",".$forma_id.",".
+                           $compra_fecha.",".$compra_hora.",".$compra_subtotal.",".$compra_descuento.",".$compra_descglobal.",".
+                           $compra_total.",".$compra_totalfinal.",".$compra_efectivo.",".$compra_cambio.",".$compra_glosa.",".
+                           $compra_tipocambio.",".$compra_numdoc.",".$documento_respaldo_id.",".$compra_caja.",".
+                           $compra_codcontrol.",".$banco_id.")";
+                    
+                    $compra_id =  $this->Venta_model->ejecutar_base($sql,$basededatos);
+                    //echo "compra_id: ".$compra_id;
+                    
+                    $this->traspaso($compra_id, $basededatos);
+                    
+                }
+                
+//************************************************************************************                
+                
                         
                 
                 if($facturado=="true"){//si la venta es facturada
@@ -1242,8 +1293,8 @@ class Venta extends CI_Controller{
                     // $this->ultimaventa(1);
                 }
                 
-                if($orden_id > 0)
-                {
+                if($orden_id > 0){
+                    
                     $sql = "update orden_trabajo set estado_id = 18  where orden_id = ".$orden_id;
                     $this->Venta_model->ejecutar($sql);
                     $proceso_fechaproceso = "now()";
@@ -1278,6 +1329,43 @@ class Venta extends CI_Controller{
         //**************** fin contenido ***************
         //}
                
+        
+    }
+   
+    
+    
+    function traspaso($compra_id,$basededatos){
+        
+        $usuario_id = $this->session_data['usuario_id'];
+        $sql = "select * from detalle_venta_aux where usuario_id = ".$usuario_id;
+        
+        $detalle_compra = $this->Venta_model->consultar($sql);
+        
+            
+        
+        foreach($detalle_compra as $detalle){
+            
+            $params = array(
+                
+                'compra_id' => $compra_id,
+                'producto_id' => $detalle['producto_id'],
+                'detallecomp_codigo' => $detalle['detalleven_codigo'],
+                'detallecomp_cantidad' => $detalle['detalleven_cantidad'],
+                'detallecomp_unidad' => $detalle['detalleven_unidad'],
+                'detallecomp_costo' => $detalle['detalleven_costo'],
+                'detallecomp_precio' => $detalle['detalleven_precio'],
+                'detallecomp_subtotal' => $detalle['detalleven_subtotal'],
+                'detallecomp_descuento' => $detalle['detalleven_descuentoparcial'],
+                'detallecomp_total' => $detalle['detalleven_total'],
+                'detallecomp_descglobal' => $detalle['detalleven_descuento'],
+                'detallecomp_fechavencimiento' => $detalle['detalleven_fechavenc'],
+                'detallecomp_tipocambio' => 1,
+                
+            );
+            
+            $detalle_compra_id = $this->Venta_model->ejecutar_base_parametros($params,$basededatos);
+            
+        }
         
     }
     
@@ -2520,7 +2608,7 @@ function edit($venta_id)
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
                     ", detalleven_descuentoparcial = ".$descuentoparcial.
                     ", detalleven_descuento = ".$descuento.
-                    ", detalleven_total = (detalleven_precio - ".$descuento." - ".$descuentoparcial." )*(detalleven_cantidad)".
+                    ", detalleven_total = round((detalleven_precio - ".$descuento." - ".$descuentoparcial." )*(detalleven_cantidad) , 2)".
                     "  where detalleven_id = ".$detalleven_id;
             
         $this->Venta_model->ejecutar($sql);
@@ -4355,6 +4443,34 @@ function anular_venta($venta_id){
         }              
     }
     
+    function modificar_precios()
+    {
+        if ($this->input->is_ajax_request()) {
+            
+            $producto_id = $this->input->post('producto_id');
+            $producto_costo = $this->input->post('producto_costo');
+            $producto_precio = $this->input->post('producto_precio');
+            
+
+//            $sql = "update producto set producto_costo = ".$producto_costo.", producto_precio = ".$producto_precio.
+//                    " where producto_id = ".$producto_id;
+//            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "update producto set producto_costo = ".$producto_costo.", producto_precio = ".$producto_precio.
+                    " where producto_id = ".$producto_id;
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "update inventario set producto_costo = ".$producto_costo.", producto_precio = ".$producto_precio.
+                    " where producto_id = ".$producto_id;
+            $this->Venta_model->ejecutar($sql);
+            
+            echo json_encode("true");
+            
+        }else{                 
+            show_404();
+        }              
+    }
+    
     function clasificador_producto(){
         
         $producto_id = $this->input->post('producto_id');
@@ -4455,17 +4571,31 @@ function anular_venta($venta_id){
         }else{
             $dosificacion = $array['dosificacion'];
         }
+
         
         if ($dosificacion['docsec_codigoclasificador']==1)
                $wsdl = $dosificacion['dosificacion_factura'];
         
         if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-            $wsdl = $dosificacion['dosificacion_glpelectronica'];
+            
+            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17)
+                $wsdl = $dosificacion['dosificacion_glpelectronica'];
+            
+            
+            if ($dosificacion['docsec_codigoclasificador']==13)
+                $wsdl = $dosificacion['dosificacion_facturaservicios'];
+            
+            
+            if ($dosificacion['docsec_codigoclasificador']==22)
+                $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+            
         }
+        
         if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+        
             if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
             $wsdl = $dosificacion['dosificacion_facturaglp'];
+            
         }
         
         
