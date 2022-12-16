@@ -174,29 +174,7 @@ class Emision_paquetes extends CI_Controller{
                         );
 
                         $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
-
-                    }else{
-
-                        $cad = $res->mensajesList;
-                                $mensajecadena = "";
-                                foreach ($cad as $c) {
-                                    $mensajecadena .= $c.";";
-                                }
-
-
-                        $params = array(
-                            'recpaquete_codigodescripcion' => $res->codigoDescripcion,
-                            'recpaquete_codigoestado' => $res->codigoEstado,
-                            //'recpaquete_codigorecepcion' => $res->codigoRecepcion,
-                            'recpaquete_mensajeslist' => $mensajecadena,
-                            'recpaquete_fechahora' => $fecha_hora1,
-                            'codigo_evento' => $codigo_evento,
-                            'factura_id' => $factura_id,
-                        );
-
-                        //$recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
-                    }
-                    /* ********************************** */
+                        /* ********************************** */
                     $token = $dosificacion['dosificacion_tokendelegado'];
                     $opts = array(
                           'http' => array(
@@ -264,6 +242,31 @@ class Emision_paquetes extends CI_Controller{
                     $this->Emision_paquetes_model->update_recepcionpaquetes($recepcion_paquete['recpaquete_id'],$params);
 
                     /* ********************************** */
+                        
+                        
+
+                    }else{
+
+                        $cad = $res->mensajesList;
+                                $mensajecadena = "";
+                                foreach ($cad as $c) {
+                                    $mensajecadena .= $c.";";
+                                }
+
+
+                        $params = array(
+                            'recpaquete_codigodescripcion' => $res->codigoDescripcion,
+                            'recpaquete_codigoestado' => $res->codigoEstado,
+                            //'recpaquete_codigorecepcion' => $res->codigoRecepcion,
+                            'recpaquete_mensajeslist' => $mensajecadena,
+                            'recpaquete_fechahora' => $fecha_hora1,
+                            'codigo_evento' => $codigo_evento,
+                            'factura_id' => $factura_id,
+                        );
+
+                        //$recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
+                    }
+                    
                     echo json_encode($res);
                 }
             }else{                 
