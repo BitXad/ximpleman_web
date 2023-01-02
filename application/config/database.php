@@ -78,11 +78,8 @@ $db['default'] = array(
 	'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
-<<<<<<< HEAD
-        'database' => 'ximpleman_passwordsin',
-=======
         'database' => 'ximpleman_passwordsin3',
->>>>>>> master
+
 //	'hostname' => '72.52.185.41',
 //        'username' => 'nazareno_carlos',
 //        'password' => '.A081052793.',

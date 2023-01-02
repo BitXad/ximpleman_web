@@ -265,7 +265,7 @@ border-bottom : 1px solid #aaa;
             
             <tr>
                 <td colspan="6">
-                    <div style="display: inline-block; float:left; width:70%">
+                    <div style="display: inline-block; float:left; width:65%">
                         <table style="word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;">
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px;"  class="autoColor"><b>Fecha:</b></td>
@@ -277,13 +277,13 @@ border-bottom : 1px solid #aaa;
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $fecha." ".$factura[0]['factura_hora'] ?></td>
                             </tr>
                             <tr>
-                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Nombre/Raz&oacute;n Social:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Nombre/Razón Social:</b></td>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_razonsocial'] ?></td>
                             </tr>
                         </table>
                     </div>
     
-                    <div style="display: inline-block; float:left; width:30%">
+                    <div style="display: inline-block; float:left; width:35%">
                         <table style="word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;">
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; "  class="autoColor"><b>NIT/CI/CEX:</b></td>
@@ -292,6 +292,10 @@ border-bottom : 1px solid #aaa;
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Cod. Cliente:</b></td>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_codigocliente'] ?></td>
+                            </tr>
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Periodo Facturado:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_glosa'] ?></td>
                             </tr>
                         </table>
                     </div>
@@ -308,10 +312,19 @@ border-bottom : 1px solid #aaa;
                 <td>
                     <table class="table-condensed"  style="width: 100%; margin: 0;" >
                         <tr  style=" font-family: Arial; border: 1px solid black ">
-                            <td align="center"><b>C&Oacute;DIGO<br> PRODUCTO</b></td>
+                            <?php if($factura[0]['docsec_codigoclasificador']==2){ ?>
+                            
+                                    <td align="center"><b>CÓDIGO<br> SERVICIO</b></td>
+                                    
+                            <?php }else{ ?>
+                                    
+                                    <td align="center"><b>CÓDIGO<br> PRODUCTO</b></td>
+                                    
+                            <?php } ?>
+                            
                             <td align="center"><b>CANTIDAD</b></td>
                             <td align="center"><b>UNIDAD <br>DE MEDIDA</b></td>
-                            <td align="center"><b>DESCRIPCI&Oacute;N</b></td>
+                            <td align="center"><b>DESCRIPCIÓN</b></td>
                             <td align="center"><b>PRECIO<br> UNITARIO</b></td>               
                             <td align="center"><b>DESCUENTO</b></td>
                             <?php if ($mostrarice==1){ ?>
@@ -407,14 +420,17 @@ border-bottom : 1px solid #aaa;
                     </tr>
                     
                     <!-------------- FACTURA GIFTA CARD ---------->
-                    <tr>
-                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO GIFT CARD Bs</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_giftcard'] ,2,'.',',') ?></b></td>
-                    </tr>
+                    <?php if($factura[0]['docsec_codigoclasificador']!=2){ ?>
+                        <tr>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO GIFT CARD Bs</b></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_giftcard'] ,2,'.',',') ?></b></td>
+                        </tr>
+                    <?php } ?>
+                    
                     <!-------------- ICE / ICE ESPECIFICO ---------->
                     <?php if($mostrarice==1){ ?>
                     <tr>
-                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) TOTAL ICE ESPECÍFICO Bs</td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($ice,2,'.',',') ?></td>
                     </tr>
                     <tr>
@@ -424,11 +440,13 @@ border-bottom : 1px solid #aaa;
                     <?php } ?>
                     
                     <!-------------- MONTO A PAGAR ---------->
+                    <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39){ ?>
                     <tr>           
                         
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO A PAGAR Bs</b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',')?></b></td>
                     </tr>
+                    <?php } ?>
                     
                     <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
                     <?php //if ($factura_total>0){ ?>

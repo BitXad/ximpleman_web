@@ -486,7 +486,7 @@ class Parametro extends CI_Controller{
                 $this->Parametro_model->update_parametro($parametro_id,$params);
             
                 
-            
+           
                 
                 $usuario_id = $this->session_data['usuario_id'];
                 $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
@@ -588,7 +588,7 @@ class Parametro extends CI_Controller{
                         
                     }
             
-                    //PASO 3: Actualizamos el registro del evento vigente                
+                    //PASO 2: Actualizamos el registro del evento vigente                
                     //Actualizamos la fecha del evento vigente
                     
                     $sql = "update registro_eventos set registroeventos_fin = now()
@@ -596,9 +596,11 @@ class Parametro extends CI_Controller{
                     $this->Venta_model->ejecutar($sql);
                 
 
-                    //PASO 4: Registramos el evento en el SIN
+                    //PASO 3: Registramos el evento en el SIN
 
+                    
                     $wsdl = $dosificacion['dosificacion_operaciones'];
+                    
                     $token = $dosificacion['dosificacion_tokendelegado'];
                     
                     $opts = array(
@@ -618,6 +620,7 @@ class Parametro extends CI_Controller{
 
                     
                     $sql = "select * from registro_eventos where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa_codigo;
+                    //echo $sql;
                     $eventos = $this->Venta_model->consultar($sql);
                     $evento = $eventos[0];
                     
@@ -627,13 +630,15 @@ class Parametro extends CI_Controller{
 //                    $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
 //                    $puntodeventa = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
 //                    
+
                     $fecha_inicio = $evento['registroeventos_inicio'];
                     $fecha_i = date("Y-m-d\TH:i:s", strtotime($fecha_inicio));
-                    $fecha_i = $fecha_i.".".rand(10,50);
+                    $fecha_i = $fecha_i.".".rand(10,60);
+                    
                     
                     $fecha_fin = $evento['registroeventos_fin'];
                     $fecha_f = date("Y-m-d\TH:i:s", strtotime($fecha_fin));
-                    $fecha_f = $fecha_f.".".rand(10,50);
+                    $fecha_f = $fecha_f.".".rand(10,60);
                     
                     //echo "<br>".$evento['registroeventos_cufd'];
                     //echo "<br>".$fecha_i." *** ".$fecha_f;
@@ -654,7 +659,21 @@ class Parametro extends CI_Controller{
                     
                     */
                     // Actualizamos punto de venta porque registramos un nuevo CUFD
+
                     $puntoventa = $this->PuntoVenta_model->get_puntoventa($puntoventa_codigo);
+                    echo
+                        "<br>codigoAmbiente: ".$dosificacion['dosificacion_ambiente'].
+                        "<br>codigoMotivoEvento: ".$evento['registroeventos_codigoevento']. //$dosificacion['dosificacion_codsistema'],
+                        "<br>codigoPuntoVenta: ".$puntoventa_codigo. //$dosificacion['dosificacion_puntoventa'],
+                        "<br>codigoSistema: ".$dosificacion['dosificacion_codsistema'].
+                        "<br>codigoSucursal: ".$dosificacion['dosificacion_codsucursal'].
+                        "<br>cufd: ".$puntoventa['cufd_codigo']. //$dosificacion['dosificacion_cufd'],
+                        "<br>cufdEvento: ".$evento['registroeventos_cufd']. //$dosificacion['dosificacion_cuis'],
+                        "<br>cuis: ".$puntoventa['cuis_codigo']. //$dosificacion['dosificacion_cuis'],
+                        "<br>descripcion: ".$evento['registroeventos_detalle']. //$dosificacion['dosificacion_cuis'],
+                        "<br>fechaHoraFinEvento: ".$fecha_f. //$dosificacion['dosificacion_cuis'],
+                        "<br>fechaHoraInicioEvento: ".$fecha_i. //$dosificacion['dosificacion_cuis'],
+                        "<br>nit: ".$dosificacion['dosificacion_nitemisor'];
                     
                     $parametros = ["SolicitudEventoSignificativo" => [
                         "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
@@ -670,7 +689,11 @@ class Parametro extends CI_Controller{
                         "fechaHoraInicioEvento"=>$fecha_i, //$dosificacion['dosificacion_cuis'],
                         "nit"               => $dosificacion['dosificacion_nitemisor']
                     ]];
-                    sleep(1);
+                    
+                    
+                    
+                    
+                    sleep(250);
                     //Agarramos el registro del evento significativo
                     //var_dump($parametros);
                     $resultado = $cliente->registroEventoSignificativo($parametros);
@@ -680,6 +703,7 @@ class Parametro extends CI_Controller{
 //                    var_dump($resultado);
 //                    var_dump($res);
                     
+
                     
                     if($res){
                     
@@ -691,7 +715,7 @@ class Parametro extends CI_Controller{
         //                        var_dump($res);
 
 
-                            //PASO 5: Si todo esta OK, actualizamos el codigo devuelto por el SIN
+                            //PASO 4: Si todo esta OK, actualizamos el codigo devuelto por el SIN
 
                             if ($res){
                                 
@@ -702,7 +726,7 @@ class Parametro extends CI_Controller{
 
                                // $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$evento['registroeventos_codigoevento'];
 
-                                //PASO 6: Contar los archivos que se deben subir
+                                //PASO 5: Contar los archivos que se deben subir
                                 // Solo contabamos las facturas, necesitamos el email del cliente
                                 // $sql = "select * from factura where registroeventos_id = ".$evento['registroeventos_id'];
                                 $sql = "select f.*, c.cliente_email  from factura f, venta v, cliente c
@@ -714,7 +738,7 @@ class Parametro extends CI_Controller{
                                 $facturas = $this->Venta_model->consultar($sql);
                                 $cantidad_facturas = sizeof($facturas);
 
-                                //PASO 7: Comprimir archivos generados en la contingencia
+                                //PASO 6: Comprimir archivos generados en la contingencia
                                 $base_url = explode('/', base_url());  //convierte un cadena en array
                                 $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
 
@@ -731,20 +755,22 @@ class Parametro extends CI_Controller{
 
                                 $p->compress(Phar::GZ);                        
 
-                                //PASO 8: Enviar los archivos generados en el .tar.gz
+                            echo "Paso 7";
+                                //PASO 7: Enviar los archivos generados en el .tar.gz
                                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                                 
                                 if ($dosificacion['docsec_codigoclasificador']==1)
                                     $wsdl = $dosificacion['dosificacion_factura'];
 
                                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-                                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
                                     $wsdl = $dosificacion['dosificacion_glpelectronica'];
                                 }
                                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-                                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+                                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
                                     $wsdl = $dosificacion['dosificacion_facturaglp'];
                                 }
+                                
                                 
                                 $token = $dosificacion['dosificacion_tokendelegado'];
                                 $opts = array(
@@ -846,7 +872,7 @@ class Parametro extends CI_Controller{
 
                                 $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
 
-                                //PASO 9: Envio de los archivos
+                                //PASO 8: Envio de los archivos
                                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                                 
                                 if ($dosificacion['docsec_codigoclasificador']==1)
@@ -953,7 +979,7 @@ class Parametro extends CI_Controller{
                                         $this->Emision_paquetes_model->update_recepcionpaquetes($recepcion_paquete['recpaquete_id'],$params);
 
                                         //echo json_encode($res);
-                                        //PASO 10: Actualizar datos de envio en las facturas
+                                        //PASO 9: Actualizar datos de envio en las facturas
                                         
                                         $sql = "update factura set 
                                                  factura_codigodescripcion = 'VALIDADA'
