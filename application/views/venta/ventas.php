@@ -288,6 +288,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_tiposistema" value="<?php echo $parametro['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
 <input type="text" id="parametro_tipoemision" value="<?php echo $parametro['parametro_tipoemision']; ?>" name="parametro_tipoemision"  hidden>
 <input type="text" id="elparametro_id" value="<?php echo $parametro['parametro_id']; ?>" name="elparametro_id"  hidden>
+<input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="elparametro_id"  hidden>
 <input type="text" id="parametro_puntos" value="<?php echo $parametro['parametro_puntos']; ?>" name="parametro_puntos"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
@@ -2390,7 +2391,7 @@ window.onkeydown = compruebaTecla;
 <!------------------------------------------------------------------------------->
 <!----------------------- EMISION DE PAQUETES ----------------------------------->
 <!------------------------------------------------------------------------------->
-<div hidden>
+<div>
     <button type="button" id="boton_modalpaquetes" class="btn btn-default" data-toggle="modal" data-target="#modalpaquetes" >
       ENVIO PAQUETES
     </button>
@@ -2443,6 +2444,56 @@ window.onkeydown = compruebaTecla;
     </div>
 </div>
 
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL CANTIDAD ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div>
+    <button type="button" id="boton_modalcantidad" class="btn btn-default" data-toggle="modal" data-target="#modalcantidad" >
+      CANTIDAD PRODUCTOS
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalcantidad" tabindex="-1" role="dialog" aria-labelledby="modalcantidad" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">CANTIDAD DE PRODUCTOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="loader3" style="display:none; text-align: center">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="col-md-12" style="line-height: 8px;">
+                    <label for="codigo_evento" class="control-label" id="producto_id">1</label><br>
+                    <label for="codigo_evento" class="control-label" id="producto_nombre">HUB/SWICH TP-LINK 8-PUERTOS & 10/100 MBPS TL-SF1008D</label><br>
+                    <label for="codigo_evento" class="control-label" id="producto_datos" style="font-size: 10px;">23434/TP-LINK/PIEZA/4654646546</label>  
+                    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>
+                    
+                </div>
+                <br>
+                <br>
+
+            </div>
+            
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Enviar Paquete</button>
+                <button type="button" class="btn btn-default" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL CANTIDAD ----------------------------------->
+<!------------------------------------------------------------------------------->
 
 <script type="text/javascript">
      $("#span_buscar_cliente").click();                    
