@@ -289,6 +289,7 @@ class Venta extends CI_Controller{
         $serie = $this->input->post('preferencias');
         $descuento = $this->input->post('descuento');
         $descuentoparcial = $this->input->post('descuentoparcial');
+        $precio_por_cantidad = 1;
         
         //consulta para registrar del detalle venta
         $sql1 = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ".
@@ -326,6 +327,7 @@ class Venta extends CI_Controller{
                     $detalleven_id = $this->Venta_model->ejecutar($sql);
                 }
                 else{
+                    // insertar cantidad
                     $sql = $sql1;
                     $existe = 0;
                     $this->Venta_model->ejecutar($sql);
@@ -351,24 +353,18 @@ class Venta extends CI_Controller{
                 }
             }
           
-            
-            
-            //Cuando se utiliza productos compuestos debe registrarse en la composicion de productos
-//            if ($existe==0){ // sino existe el producto en el detalle
-//                
-//                // Consulta para el subdetalle de producto en detalle venta
-//                $sql_subdet = "insert into detalle_composicion_aux(
-//                                composicionproducto_id,producto_id,detallecomp_cantidad,
-//                                detallecomp_precio,venta_id,usuario_id, detalleven_id)
-//
-//                                (select composicionproducto_id,
-//                                producto_id,composicion_cantidad * ".$cantidad.", composicion_precio * ".$cantidad.
-//                                ", 0 as venta_id,".$usuario_id.",".$detalleven_id."
-//                                from composicion_producto where composicionproducto_id = ".$producto_id.")";
-//                
-//                $this->Venta_model->ejecutar($sql_subdet);
-//            }           
-            // fin de funciones para manejar composicion de productos
+                                
+            if($this->parametros['parametro_rangoprecios'] == 1){ //si la venta es por cantidad
+                
+                $sql = "update detalle_venta_aux d, rango_precios r
+                        set 
+                        d.detalleven_precio = r.rango_precio,
+                        d.`detalleven_descuentoparcial` = r.rango_descuento
+                        where
+                        r.producto_id = 217 and d.detalleven_cantidad >= r.rango_desde and d.detalleven_cantidad <= r.rango_hasta";
+                $detalleven_id = $this->Venta_model->ejecutar($sql);
+                
+            }
             
             
             $result = 1;    
@@ -3706,6 +3702,34 @@ function anular_venta($venta_id){
             $sql = $this->input->post('sql');
             $this->Venta_model->ejecutar($sql);
             
+                        
+            echo json_encode(1);
+
+
+        //**************** fin contenido ***************        
+    }   
+    
+    function ejecutar_cambiarcantidad(){
+        //if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+
+//            $usuario_vendedor = $this->session_data['usuario_id'];
+//            $usuario_id = $this->input->post('usuario_id');
+
+            $sql = $this->input->post('sql');
+            $this->Venta_model->ejecutar($sql);
+            
+            if($this->parametros['parametro_rangoprecios'] == 1){ //si la venta es por cantidad
+                
+                $sql = "update detalle_venta_aux d, rango_precios r
+                        set 
+                        d.detalleven_precio = r.rango_precio,
+                        d.`detalleven_descuentoparcial` = r.rango_descuento
+                        where
+                        r.producto_id = 217 and d.detalleven_cantidad >= r.rango_desde and d.detalleven_cantidad <= r.rango_hasta";
+                $detalleven_id = $this->Venta_model->ejecutar($sql);
+                
+            }
                         
             echo json_encode(1);
 
