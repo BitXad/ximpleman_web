@@ -1118,4 +1118,74 @@ class Producto extends CI_Controller{
         $productos = $this->Producto_model->get_busqueda_producto_limite($categoria,$estado);
         echo json_encode($productos);
     }
+    /*
+    * buscar ranbo de precios de un producto
+    */
+    function buscar_rangoprecios()
+    {
+        if ($this->input->is_ajax_request()){
+            $producto_id = $this->input->post('producto_id');
+            $this->load->model('Rango_precios_model');
+            $datos = $this->Rango_precios_model->get_precioscantidad($producto_id);
+            echo json_encode($datos);
+        }else{
+            show_404();
+        }
+    }
+    /*
+    * registra el rango de precios de un producto
+    */
+    function registrar_rangoprecios()
+    {
+        if ($this->input->is_ajax_request()){
+            $params = array(
+                'producto_id' => $this->input->post('producto_id'),
+                'rango_desde' => $this->input->post('rango_desde'),
+                'rango_hasta' => $this->input->post('rango_hasta'),
+                'rango_precio' => $this->input->post('rango_precio'),
+                'rango_descuento' => $this->input->post('rango_descuento'),
+            );
+            $this->load->model('Rango_precios_model');
+            $rango_id = $this->Rango_precios_model->add_rango_precios($params);
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
+    
+    /*
+    * modifica el rango de precios de un rango!.
+    */
+    function modificar_rangoprecio()
+    {
+        if ($this->input->is_ajax_request()){
+            $rango_id = $this->input->post('rango_id');
+            $params = array(
+                'rango_desde' => $this->input->post('rango_desde'),
+                'rango_hasta' => $this->input->post('rango_hasta'),
+                'rango_precio' => $this->input->post('rango_precio'),
+                'rango_descuento' => $this->input->post('rango_descuento'),
+            );
+            $this->load->model('Rango_precios_model');
+            $rango_id = $this->Rango_precios_model->update_rango_precios($rango_id, $params);
+            echo json_encode("ok");
+        }else{
+            show_404();
+        }
+    }
+    /* eliminar rango de precios */
+    function eliminar_rangoprecios(){
+        try{
+            if($this->input->is_ajax_request()){
+                $rango_id = $this->input->post('rango_id');
+                $this->load->model('Rango_precios_model');
+                $rango_id = $this->Rango_precios_model->delete_rango_precios($rango_id);
+                echo json_encode("ok");
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!. '.$e;
+        }
+    }
 }
