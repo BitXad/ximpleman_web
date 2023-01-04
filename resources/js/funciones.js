@@ -1854,7 +1854,7 @@ function cambiarcantidadjs(e,producto)
     {
   
         var base_url = document.getElementById('base_url').value;   
-        var controlador = base_url+"venta/ejecutar_consulta";
+        var controlador = base_url+"venta/ejecutar_cambiarcantidad";
         var usuario_id = document.getElementById('usuario_id').value;
         var existencia =  parseFloat(producto.existencia);    
         var producto_id =  producto.producto_id; 
