@@ -212,6 +212,8 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FACTURA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CODIGO EN RECIBOS</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRESION DE TICKETES</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CANTIDAD DECIMALES</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">RANGO DE PRECIOS</th>
                     </tr>
                     <tr>
                         <td><?php
@@ -306,9 +308,25 @@ foreach($all_parametros as $p)
                         </td>
                         <td><?php
                             if($p['parametro_imprimirticket'] == 0){
-                                echo 'NO IMIPRIMIR TICKETS';
+                                echo 'NO IMPRIMIR TICKETS';
                             }else if($p['parametro_imprimirticket'] == 1){
                                 echo 'IMPRIMIR TICKETS';
+                            }
+                            ?>
+                        </td>
+                        <td><?php
+                            if($p['parametro_decimales'] > 0){
+                                echo $p['parametro_decimales'];
+                            }else{
+                                echo '0';
+                            }
+                            ?>
+                        </td>
+                        <td><?php
+                            if($p['parametro_rangoprecios'] == 1){
+                                echo 'USAR RANGO DE PRECIOS';
+                            }else if($p['parametro_rangoprecios'] == 2){
+                                echo 'INACTIVAR RANGO DE PRECIOS';
                             }
                             ?>
                         </td>

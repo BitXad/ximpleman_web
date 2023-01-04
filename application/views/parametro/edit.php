@@ -428,6 +428,21 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <label for="parametro_decimales" class="control-label" title="Cantidad de decimales"><span class="text-danger">*</span>CANTIDAD DECIMALES</label>
+                        <div class="form-group">
+                            <input type="number" min="0" name="parametro_decimales" value="<?php echo ($this->input->post('parametro_decimales') ? $this->input->post('parametro_decimales') : $parametro['parametro_decimales']); ?>" class="form-control" id="parametro_decimales" required />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="parametro_rangoprecios" class="control-label" title="Rango de precios 1 .- toma del rango; 2.- no toma del rango"><span class="text-danger">*</span>RANGO DE PRECIOS</label>
+                        <div class="form-group">
+                            <select name="parametro_rangoprecios" class="form-control" required id="parametro_rangoprecios">
+                                <option value="1" <?php if($parametro['parametro_rangoprecios']=='1') echo 'selected'; ?> >USAR RANGO DE PRECIOS</option>
+                                <option value="2" <?php if($parametro['parametro_rangoprecios']=='2') echo 'selected'; ?> >INACTIVAR RANGO DE PRECIOS</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(214, 114, 26, 0.3);"><u><b>CLIENTES</b></u><br>

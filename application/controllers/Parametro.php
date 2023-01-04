@@ -435,6 +435,8 @@ class Parametro extends CI_Controller{
                     'parametro_tiposistema' => $this->input->post('parametro_tiposistema'),
                     'parametro_tipoemision' => $this->input->post('parametro_tipoemision'),
                     'parametro_imprimirticket' => $this->input->post('parametro_imprimirticket'),
+                    'parametro_decimales' => $this->input->post('parametro_decimales'),
+                    'parametro_rangoprecios' => $this->input->post('parametro_rangoprecios'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            
