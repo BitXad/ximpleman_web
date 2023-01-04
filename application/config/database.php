@@ -78,6 +78,9 @@ $db['default'] = array(
 	'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
+<<<<<<< HEAD
+        'database' => 'ximpleman_passwordsin',
+=======
         'database' => 'ximpleman_passwordsin3_pruebas',
 
 //	'hostname' => '72.52.185.41',
@@ -85,6 +88,7 @@ $db['default'] = array(
 //        'password' => '.A081052793.',
 //        'database' => 'nazareno_ximpleman',
 
+>>>>>>> master
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

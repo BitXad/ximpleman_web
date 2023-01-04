@@ -1,5 +1,6 @@
 <script src="<?php echo base_url('resources/js/funciones_producto_newunidad.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="producto_id" id="producto_id" value="<?php echo $producto['producto_id']; ?>" />
 <script type="text/javascript">
     function cambiarcodproducto(){
         var estetime = new Date();
@@ -91,6 +92,7 @@
         $("#producto_precio").val(Number(estecosto*esteporcent)+Number(estecosto));
     }
 </script>
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
@@ -634,6 +636,17 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-6" style="font-size: 10px">
+                        <a class="btn btn-facebook btn-sm" data-toggle="modal" data-target="#modal_precioscantidad" onclick="mostrar_modalprecioscantidad()">
+                            <span class="fa fa-plus-circle"></span> PRECIOS POR CANTIDAD
+                        </a>
+                        <span class="row" id='loaderpreciocantidad' style='display:none; text-align: center'>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                        </span>
+                        <div class="box-body table-responsive no-padding">
+                            <span id="tablarangoprecios"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer">
@@ -728,3 +741,102 @@
     </div>
 </div>
 <!------------------------ FIN modal para Registrar nueva SUB Categoria ------------------->
+
+<!------------------------ INICIO modal para registrar precios por cantidad ------------------->
+<div class="modal fade" id="modal_precioscantidad" tabindex="-1" role="dialog" aria-labelledby="modal_precioscantidadlabel" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <b>REGISTRAR RANGO DE PRECIOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 text-center" id="loadernuevo_rprecios" style="display:none;">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" />
+                </div>
+                <div class="col-md-4">
+                    <label for="rango_desde" class="control-label">Desde</label>
+                    <div class="form-group">
+                        <input type="number" min="0" step="any" name="rango_desde" class="form-control" id="rango_desde" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="rango_hasta" class="control-label">Hasta</label>
+                    <div class="form-group">
+                        <input type="number" min="0" step="any" name="rango_hasta" class="form-control" id="rango_hasta" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="rango_precio" class="control-label">Precio</label>
+                    <div class="form-group">
+                        <input type="number" min="0" step="any" name="rango_precio" class="form-control" id="rango_precio" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="rango_descuento" class="control-label">Descuento</label>
+                    <div class="form-group">
+                        <input type="number" min="0" step="any" name="rango_descuento" class="form-control" id="rango_descuento" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-success" onclick="registrar_rangoprecios()"><fa class="fa fa-floppy-o"></fa> Registrar Rango Precios</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarmodal"><fa class="fa fa-times"></fa> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para registrar precios por cantidad ------------------->
+
+<!------------------------ INICIO modal para modificar precios por cantidad ------------------->
+<div class="modal fade" id="modal_modificarprecioscantidad" tabindex="-1" role="dialog" aria-labelledby="modal_modificarprecioscantidadlabel" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <b>MODIFICAR RANGO DE PRECIOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12 text-center" id="loadermodif_rprecios" style="display:none;">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" />
+                </div>
+                <div class="col-md-4">
+                    <label for="rango_desdemodif" class="control-label">Desde</label>
+                    <div class="form-group">
+                        <input type="number" min="0" step="any" name="rango_desdemodif" class="form-control" id="rango_desdemodif" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="rango_hastamodif" class="control-label">Hasta</label>
+                    <div class="form-group">
+                        <input type="number" min="0" step="any" name="rango_hastamodif" class="form-control" id="rango_hastamodif" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="rango_preciomodif" class="control-label">Precio</label>
+                    <div class="form-group">
+                        <input type="number" min="0" step="any" name="rango_preciomodif" class="form-control" id="rango_preciomodif" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="rango_descuentomodif" class="control-label">Descuento</label>
+                    <div class="form-group">
+                        <input type="number" min="0" step="any" name="rango_descuentomodif" class="form-control" id="rango_descuentomodif" />
+                        <input type="hidden" min="0" step="any" name="rango_idmodif" class="form-control" id="rango_idmodif" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-success" onclick="registrar_rangopreciosmodificado()"><fa class="fa fa-floppy-o"></fa> Modificar Rango Precios</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarmodalmodif"><fa class="fa fa-times"></fa> Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para modificar precios por cantidad ------------------->
