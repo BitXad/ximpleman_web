@@ -208,6 +208,14 @@ class Venta extends CI_Controller{
         $sql ="select * from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
         //echo $sql;
         $data['cufd'] = $this->Venta_model->consultar($sql);
+        
+        $sql = "SELECT  i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
+                FROM
+                  inventario i
+                WHERE
+                  i.producto_codigosin = 0 or  i.producto_codigosin is null or
+                  i.producto_codigounidadsin = 0 or i.producto_codigosin is null";
+        $data['productos_homologados'] = $this->Venta_model->consultar($sql);
 
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
@@ -492,6 +500,8 @@ class Venta extends CI_Controller{
                 $registroeventos_codigo = $this->input->post('registroeventos_codigo');
                 $modalidad    = $this->input->post('dosificacion_modalidad');
                 $parametro_tipoemision    = $this->input->post('parametro_tipoemision');
+                $venta_glosa    = $this->input->post('venta_glosa');
+                $factura_glosa    = $venta_glosa;
                 
                 $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
                 $nombre_archivo =  $dosificacion[0]["dosificacion_documentosector"];
@@ -989,7 +999,7 @@ class Venta extends CI_Controller{
                                 factura_nit, factura_razonsocial, factura_nitemisor,factura_sucursal,
                                 factura_sfc, factura_actividad, usuario_id, tipotrans_id, 
                                 factura_efectivo, factura_cambio,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion,
-                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci) value(".
+                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_glosa) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -998,7 +1008,7 @@ class Venta extends CI_Controller{
                                 $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
                                 $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
                                 $venta_efectivo.",".$venta_cambio.",".$factura_enviada.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".
-                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."')";
+                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_glosa."')";
                         
                                 
                         }else{
@@ -1032,7 +1042,7 @@ class Venta extends CI_Controller{
                                 factura_codsistema, factura_puntoventa, factura_sectoreconomico,
                                 factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
                                 docsec_codigoclasificador, factura_codigocliente,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion, factura_tipoemision,
-                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_cafc, registroeventos_id) value(".
+                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_cafc, registroeventos_id, factura_glosa) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -1045,7 +1055,7 @@ class Venta extends CI_Controller{
                                 $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
                                 $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
                                 $documentoSector,'$factura_codigocliente','$factura_enviada'".",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".$tipo_emision.",".
-                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_cafc."',".$registroeventos_id.")";
+                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_cafc."',".$registroeventos_id.",'".$factura_glosa."')";
                                     
                         }
                         $factura_id = $this->Venta_model->ejecutar($sql);
@@ -4576,6 +4586,7 @@ function anular_venta($venta_id){
         if ($dosificacion['docsec_codigoclasificador']==1)
                $wsdl = $dosificacion['dosificacion_factura'];
         
+        
         if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
             
             if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17)
@@ -4594,7 +4605,7 @@ function anular_venta($venta_id){
         if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
         
             if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-            $wsdl = $dosificacion['dosificacion_facturaglp'];
+                $wsdl = $dosificacion['dosificacion_facturaglp'];
             
         }
         
@@ -4607,6 +4618,9 @@ function anular_venta($venta_id){
         $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
         /*$comunicacion = $this->verificar_comunicacion($token,$wsdl);
         if($comunicacion){*/
+        
+
+                        
             $fecha_envio = date('Y-m-d\TH:i:s.v');
             $parametros = ["SolicitudServicioRecepcionFactura" => [
                 "codigoAmbiente"        => $dosificacion['dosificacion_ambiente'],   // Producción: 1 Pruebas y Piloto: 2
@@ -4624,7 +4638,24 @@ function anular_venta($venta_id){
                 "fechaEnvio"            => $fecha_envio,
                 "hashArchivo"           => $hash_archivo,
             ]];
-            
+        
+//                echo  
+//                "wsdl: ".$wsdl."<br>".
+//                "codigoAmbiente: "        .$dosificacion['dosificacion_ambiente']."<br>".   // Producción: 1 Pruebas y Piloto: 2
+//                "codigoDocumentoSector: " .$dosificacion['docsec_codigoclasificador']."<br>". //documento_sector: para compra y venta es 1
+//                "codigoEmision: "         .  "1"."<br>". //$dosificacion['dosificacion_ambiente']."<br>".   //Describe si la emisión se realizó en línea. El valor permitido es: Online: 1
+//                "codigoModalidad: "       . $dosificacion['dosificacion_modalidad']."<br>".  //Uno (1) Electrónica  y dos (2) Computarizada en línea
+//                "codigoPuntoVenta: "      . $punto_venta['puntoventa_codigo']."<br>". //$dosificacion['dosificacion_puntoventa']."<br>". //se realiza utilizando un punto de venta. Caso contrario enviar 0.
+//                "codigoSistema: "         . $dosificacion['dosificacion_codsistema']."<br>".
+//                "codigoSucursal: "        . $dosificacion['dosificacion_codsucursal']."<br>".
+//                "cufd: "                  . $punto_venta['cufd_codigo']."<br>". //$dosificacion['dosificacion_cufd']."<br>".
+//                "cuis: "                  . $punto_venta['cuis_codigo']."<br>". //$dosificacion['dosificacion_cuis']."<br>".
+//                "nit: "                   . $dosificacion['dosificacion_nitemisor']."<br>".
+//                "tipoFacturaDocumento: "  . $dosificacion['tipofac_codigo']."<br>".
+//                "archivo: "               . $el_archivo."<br>".
+//                "fechaEnvio: "            . $fecha_envio."<br>".
+//                "hashArchivo: "           . $hash_archivo;    
+//            
             //var_dump($parametros);
         //}
         
@@ -6213,6 +6244,10 @@ function anular_venta($venta_id){
     }
     
     function pdf_factura_carta($factura_id){
+        
+        //Facturas compra venta
+        //Facturas alquiler bienes inmueble
+        
         $factura = $this->Factura_model->get_factura_id($factura_id);
         $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
         $empresa = $this->Empresa_model->get_empresa(1);
@@ -6379,6 +6414,14 @@ function anular_venta($venta_id){
         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Cod. Cliente:</td>"; 
         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_codigocliente']."</td>"; 
         $micad .= "                            </tr>"; 
+
+        if($factura[0]['docsec_codigoclasificador']==2){
+                $micad .= "                            <tr>"; 
+                $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Periodo Facturado:</td>"; 
+                $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_glosa']."</td>"; 
+                $micad .= "                            </tr>";
+        }
+        
         $micad .= "                        </table>"; 
         //$micad .= "                    </div>"; 
         $micad .= "                </td>"; 
@@ -6395,7 +6438,13 @@ function anular_venta($venta_id){
 
         $micad .= "                    <table class='table-condensed'  style='width: 100%; margin: 0;' >"; 
         $micad .= "                        <tr  style=' font-family: arial; border: 1px solid black '>"; 
-        $micad .= "                            <td align='center' ".$colorCelda.">C&Oacute;DIGO<br> PRODUCTO</td>"; 
+        
+        if($factura[0]['docsec_codigoclasificador']==2){
+            $micad .= "                            <td align='center' ".$colorCelda.">C&Oacute;DIGO<br> SERVICIO</td>"; 
+        }else{
+            $micad .= "                            <td align='center' ".$colorCelda.">C&Oacute;DIGO<br> PRODUCTO</td>"; 
+        }
+        
         $micad .= "                            <td align='center' ".$colorCelda.">CANTIDAD</td>"; 
         $micad .= "                            <td align='center' ".$colorCelda.">UNIDAD <br>DE MEDIDA</td>"; 
         $micad .= "                            <td align='center' ".$colorCelda.">DESCRIPCI&Oacute;N</td>"; 
@@ -6458,7 +6507,7 @@ function anular_venta($venta_id){
         $micad .= "                    </tr>"; 
         $micad .= "                    <!-------------- DESCUENTO ---------->"; 
         $micad .= "                    <tr>"; 
-        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)DESCUENTO Bs</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>DESCUENTO Bs</td>"; 
         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],2,'.',',')."</td>"; 
         $micad .= "                    </tr>"; 
         $micad .= "                    <!-------------- DECUENTO GLOBAL ---------->"; 
@@ -6473,13 +6522,21 @@ function anular_venta($venta_id){
         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>TOTAL Bs</td>"; 
         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_total'] ,2,'.',',')."</td>"; 
         $micad .= "                    </tr>"; 
+        
+        if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39){ //Si es diferente de alquiler de bienes y venta gn/glp
+        
           $micad .= "                          <!-------------- FACTURA GIFTA CARD ---------->";
+          
           $micad .= "      <tr>";
           $micad .= "          <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO GIFT CARD Bs</td>";
           $micad .= "          <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_giftcard'] ,2,'.',',')."</td>";
           $micad .= "      </tr>";
+          
+        }  
+          
         $micad .= "                    <!-------------- ICE / ICE ESPECIFICO ---------->"; 
-                            if($mostrarice==1){
+        
+        if($mostrarice==1){
         $micad .= "                    <tr>"; 
         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>"; 
         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ice,2,'.',',')."</td>"; 
@@ -6489,11 +6546,16 @@ function anular_venta($venta_id){
         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ice,2,'.',',')."</td>"; 
         $micad .= "                    </tr>"; 
                              } 
+                             
         $micad .= "                                             <!-------------- MONTO A PAGAR ---------->";
+        
+        if($mostrarice==1){
         $micad .= "    <tr>           ";
         $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";
         $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total,2,'.',',')."</td>";
         $micad .= "    </tr>";
+        }
+        
         $micad .= "                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->"; 
         $micad .= "                    <tr>"; 
         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>IMPORTE BASE CR&Eacute;DITO FISCAL</td>"; 
@@ -6601,6 +6663,7 @@ function anular_venta($venta_id){
 
             }*/
     }
+    
     function pdf_factura_carta_prev($factura_id){
         $factura = $this->Factura_model->get_factura_id($factura_id);
         $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
@@ -7022,6 +7085,8 @@ function anular_venta($venta_id){
     
     /*************** funcion para mostrar la vista de la ultima factura en PDF******************/
     function ultimaventapdf(){
+        
+        
         if($this->acceso(12)||$this->acceso(30)){
             $venta = $this->Venta_model->ultima_venta();
             $venta_tipodoc = $venta[0]['venta_tipodoc'];
@@ -7040,9 +7105,11 @@ function anular_venta($venta_id){
                       }
             }
         }
+        
     }
     /*************** funcion para mostrar la vista de la factura en PDF******************/
     function facturaventapdf($factura_id){
+        
         if($this->acceso(12)||$this->acceso(30)){
                 $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
                 $base_url = explode('/', base_url());
