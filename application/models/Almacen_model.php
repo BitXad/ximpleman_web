@@ -52,7 +52,7 @@ class Almacen_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `almacen_id` DESC
+            ORDER BY `almacen_nombre`
 
         ")->result_array();
         return $almacen;
