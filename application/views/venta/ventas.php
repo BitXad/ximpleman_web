@@ -783,14 +783,17 @@ window.onkeydown = compruebaTecla;
                     <th <?php echo $estilo_tabla; ?>>ESTADO</th>                    
                 </tr>
                 <?php $i = 0;
+                    
                     foreach($productos_homologados as $ph){ ?>
                     <tr <?php echo $estilo_tabla; ?>>                    
                         <td <?php echo $estilo_tabla; ?>><?php echo ++$i; ?></td>
                         <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_nombre"]; ?></td>
                         <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_codigo"]; ?></td>
-                        <td <?php echo $estilo_tabla; ?>><?php echo number_format($ph["producto_precio"],2,",","."); ?></td>
+                        <td style="padding:0; text-align: right;"><?php echo number_format($ph["producto_precio"],2,",","."); ?></td>
                         <td <?php echo $estilo_tabla; ?>>
-                            <a href="<?php echo base_url("producto/edit/".$ph["producto_id"]); ?>" class="btn btn-info btn-xs" target="_BLANK"><fa class="fa fa-edit"> </fa> Modificars</a>                            
+                            <center>
+                                <a href="<?php echo base_url("producto/edit/".$ph["producto_id"]); ?>" class="btn btn-info btn-xs" target="_BLANK"><fa class="fa fa-pen"> </fa> Modificar</a>                            
+                            </center>
                         </td>
                         
                     </tr>
@@ -1331,7 +1334,7 @@ window.onkeydown = compruebaTecla;
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if($dosificacion[0]["docsec_codigoclasificador"] == 2 || $dosificacion[0]["docsec_codigoclasificador"] == 23 || $dosificacion[0]["docsec_codigoclasificador"] == 39){ //23 prevalorada (original)
+                if( $dosificacion[0]["docsec_codigoclasificador"] == 23 || $dosificacion[0]["docsec_codigoclasificador"] == 39){ //23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }

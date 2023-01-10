@@ -836,7 +836,10 @@ class Dosificacion extends CI_Controller{
 
                 $wsdl = $dosificacion['dosificacion_obtencioncodigos']; //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
                 $token = $dosificacion['dosificacion_tokendelegado'];
-                
+//                
+//                echo "<br>wsdl: ".$wsdl;
+//                echo "<br>token: ".$token;
+//                
                 $opts = array(
                       'http' => array(
                            'header' => "apiKey: TokenApi $token",

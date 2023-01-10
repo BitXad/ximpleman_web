@@ -139,13 +139,13 @@
             </div>
 <div style="float: none; line-height: 13px; color:white; " face="Arial" class="text-center">
     <br><b style="font-size: 16pt;">Ximpleman</b>
-    <br><?php if(isset($empresa[0]["empresa_nombresucursal"])){ echo $empresa[0]["empresa_nombresucursal"]; } ?>
+    <br><small style="font-size: 8pt;"><?php if(isset($empresa[0]["empresa_nombresucursal"])){ echo $empresa[0]["empresa_nombresucursal"]; } ?> </small>
 <!--    <span class="text-bold" style="display: block; padding:0px; color: #FFF; font-size: 22px;">Ximpleman web</span>
     <span class="text" style="display: block; padding:0px; color: #FFF; font-size: 10px;"><?php echo "SUCURSAL PRINCIPAL"; ?></span>-->
-    <br><span name="reloj" id="reloj" style="color: #FFF; font-size: 12px; padding: 0px;"></span>
+    <br><span name="reloj" id="reloj" style="color: #FFF; font-size: 8pt; padding: 0px;"></span>
     
     <?php if (isset($parametro)&&isset($moneda)){ ?>
-    <span name="moneda" id="moneda" style="color: #FFF; font-size: 12px; "> 
+    <span name="moneda" id="moneda" style="color: #FFF; font-size: 8pt; "> 
         | <b>MND:</b> <?php if(isset($parametro["moneda_descripcion"])){ echo $parametro["moneda_descripcion"];}else{ echo $parametro[0]["moneda_descripcion"];} ?> 
         <b>TC:</b> <?php echo $moneda["moneda_tc"]; ?>            
         </b>

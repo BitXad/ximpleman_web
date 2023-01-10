@@ -3216,18 +3216,21 @@ function registrarventa(cliente_id)
                     
                     }else{
                         
-                          alert("FACTURA NO ENVIADA");
+                          //alert("FACTURA NO ENVIADA");
+                          //alert("FACTURA NO ENVIADA CODIGO: "+JSON.stringify(res));
 
                         if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){
                             
                             mensaje = "ERROR "+res.mensajesList.codigo+" * "+res.mensajesList.descripcion;
-                            alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
+                            //alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
 
                             if(res.mensajesList.codigo == 953){                    
                                 //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
                                 solicitudCufd(punto_venta);                    
                             }
                             
+                        }else{
+                            mensaje = "ERROR: "+JSON.stringify(res);
                         }
                         
                         

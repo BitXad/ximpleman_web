@@ -37,169 +37,367 @@ function formato_fecha(string){
 }
 
 function mostrar_facturas() {
+    
     var base_url = document.getElementById('base_url').value;
     var rolusuario_asignado = document.getElementById('rolusuario_asignado').value;
     var opcion = document.getElementById('opcion').value;
     var controlador = base_url+'factura/mostrar_facturas';    
     var desde = document.getElementById('fecha_desde').value;
     var hasta = document.getElementById('fecha_hasta').value; 
-    var parametro_tiposisistema = document.getElementById("parametro_tiposistema").value;   
+    var formato = document.getElementById('select_formato').value; 
+    var tipo = document.getElementById('select_tipo').value; 
     
-    $.ajax({url:controlador,
-            type:"POST",
-            data:{desde:desde, hasta:hasta ,opcion:opcion},
-            success:function(result){
-                var factura = JSON.parse(result);
-                var tam = factura.length;
-              
-                var mensaje = "";
-                
-                html = "";
-                if (opcion==1){
-                    
-                    html += "<table class='table table-striped' id='mitabla' nowrap >";
-                    html += "<tr>";
-                    html += "<th>#</th>";
-                    html += "<th>ESPEC.</th>";
-                    html += "<th>N°</th>";
-                    html += "<th>FECHA DE LA FACTURA</th>";
-                    html += "<th>N° DE FACT.</th>";
-                    html += "<th>N° DE AUTORIZACION</th>";
-                    html += "<th>ESTADO</th>";
-                    html += "<th>NIT/CI CLIENTE</th>";
-                    html += "<th>NOMBRE O RAZON SOCIAL</th>";
-                    html += "<th>IMPORTE TOTAL DE LA VENTA</th>";
-                    html += "<th>IMPORTE ICE</th>";
-                    html += "<th>/IEHD/TASAS	EXPORTACIONES Y OPERACIONES EXENTAS</th>";	
-                    html += "<th>VENTAS GRAVADAS A TASA CERO</th>";	
-                    html += "<th>SUBTOTAL</th>";	
-                    html += "<th>DESC.</th>"; 
-                    html += "<th>BONIF. Y REBAJAS OTORGADAS</th>";	
-                    html += "<th>IMPORTE BASE PARA DEBITO FISCAL</th>";	
-                    html += "<th>DEBITO FISCAL</th>";	
-                    html += "<th>CODIGO DE CONTROL</th>";	
-                    html += "<th>TRANS</th>";
-                    html += "<th>OPERACIONES</th>";
-                    html += "</tr>";
-                    html += "<tbody class='buscar'>";
-                    
-                      var totalfinal = Number(0);
-                    
-                    for(var i = 0; i < tam; i++ ){                        
-                        if (factura[i]['estado_id']==3)
-                            color = "style = 'background-color:gray'";
-                        else
-                            color = "";
-                        
-                        html += "<tr  "+color+">";
-                        html += "   <td>"+i+"</td>";
-                        html += "   <td>0</td>";
-                        html += "   <td>1</td>";
-                        html += "   <td>"+formato_fecha(factura[i]["factura_fecha"])+"</td>";
-                        html += "   <td><center>"+factura[i]["factura_numero"];
-                         
-                         
-                        html += "<br>";
-                        
-                        if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
-                            html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";                        
-                        }else{
-                            html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;' title='"+factura[i]["factura_mensajeslist"]+"'><small>FALLA</small></span>";
-                        }
-                                
-                        html += "</center></td>";
-                        
-                        
-                        html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
-                        let enviada = factura[i]['factura_enviada'] == 1 ? "Enviada":"No enviada";
-                        if(factura[i]["estado_id"]==1){
-                                html += "   <td>V</td>";
-                        }
-                        else{
-                                html += "   <td>A</td>";
-                        }
-                            
-                        html += "   <td>"+factura[i]["factura_nit"]+"</td>";
-                        html += "   <td>"+factura[i]["factura_razonsocial"]+"</td>";
-                        html += "   <td>"+Number(factura[i]["factura_subtotal"]).toFixed(2)+"</td>";
-                        html += "   <td>"+Number(factura[i]["factura_ice"]).toFixed(2)+"</td>";
-                        html += "   <td>"+Number(factura[i]["factura_exento"]).toFixed(2)+"</td>";
-                        html += "   <td>0</td>";
-                        html += "   <td>"+Number(factura[i]["factura_subtotal"]).toFixed(2)+"</td>";
-                        html += "   <td>"+Number(factura[i]["factura_descuento"]).toFixed(2)+"</td>";
-                        html += "   <td>0</td>";
-                        html += "   <td>"+Number(factura[i]["factura_total"]).toFixed(2)+"</td>";
-                        html += "   <td>"+Number(factura[i]["factura_total"]*0.13).toFixed(2)+"</td>";
-                        html += "   <td>"+factura[i]["factura_codigocontrol"]+"</td>";
-                        html += "   <td>"+factura[i]["venta_id"]+"</td>";
-//                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
-                        html += "   <td><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/1' class='btn btn-warning btn-xs' ' target='_BLANK' title='Imprimir factura original'><i class='fa fa-list'></i> </a>";
-                        html += "   <a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/2' class='btn btn-default btn-xs' ' target='_BLANK' title='Imprimir factura copia'><i class='fa fa-list'></i> </a>";
-                        
-                        if(rolusuario_asignado == 1){
-                            
-                            if (factura["estado_id"]!=3){//si la factura esta anulada
-                            
-                                if(factura[i]["estado_id"]==1){
-                                    
-                                    if (parametro_tiposisistema == 1){
-                                        html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button>";
-                                    }
-                                    else{
-                                        if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
-                                            html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
-                                        html += "<fa class='fa fa-trash'> </fa> </button>";
-                                        }else{
-                                            html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_noenviada' onclick='cargar_modal_anular_malemitida("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
-                                            html += "<fa class='fa fa-trash'> </fa> </a>";
-                                        }
-                                    }
+    //alert("formato: "+formato+" * Tipo: "+tipo);
+    
+    var parametro_tiposisistema = document.getElementById("parametro_tiposistema").value;
+    
+    if (formato==1){
+    
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{desde:desde, hasta:hasta ,opcion:opcion, tipo:tipo},
+                    success:function(result){
+                        var factura = JSON.parse(result);
+                        var tam = factura.length;
+
+                        var mensaje = "";
+
+                        html = "";
+                        if (opcion==1){
+
+                            html += "<table class='table table-striped' id='mitabla' nowrap >";
+                            html += "<tr>";
+                            html += "<th>Nº</th>";
+                            html += "<th>ESPEC.</th>";
+                            html += "<th>FECHA DE LA FACTURA</th>";
+                            html += "<th>N° DE FACT.</th>";
+                            html += "<th>CODIGO DE AUTORIZACION</th>";
+                            html += "<th>NIT/CI CLIENTE</th>";
+                            html += "<th>COMPLEMENTO</th>";
+                            html += "<th>NOMBRE O RAZON SOCIAL</th>";
+                            html += "<th>IMPORTE TOTAL DE LA VENTA</th>";
+                            html += "<th>IMPORTE ICE</th>";
+                            html += "<th>IMPORTE IEHD</th>";	
+                            html += "<th>IMPORTE IPJ</th>";	
+                            html += "<th>TASAS</th>";
+                            html += "<th>OTROS NO SUJETOS AL IVA</th>";
+                            html += "<th>IMPORT. Y OP. EXENTAS</th>";
+                            html += "<th>VENTAS GRAVADAS A TASA CERO</th>";	
+                            html += "<th>SUBTOTAL</th>";	
+                            html += "<th>DESC. BONIF. Y REBAJAS SUJETAS AL IVA</th>"; 
+                            html += "<th>IMPORTE GIFT CARD</th>";
+                            html += "<th>IMPORTE BASE PARA DEBITO FISCAL</th>";	
+                            html += "<th>DEBITO FISCAL</th>";	
+                            html += "<th>ESTADO</th>";	
+                            html += "<th>CODIGO DE CONTROL</th>";	
+                            html += "<th>TIPO DE VENTA</th>";
+                            html += "<th>TRANS</th>";
+                            html += "<th class='no-print'>OPERACIONES</th>";
+                            html += "</tr>";
+                            html += "<tbody class='buscar'>";
+
+                              var totalfinal = Number(0);
+
+                            for(var i = 0; i < tam; i++ ){
+
+
+                                if (factura[i]['estado_id']==3)
+                                    color = "style = 'background-color:gray'";
+                                else
+                                    color = "";
+
+                                html += "<tr  "+color+">";
+                                html += "   <td>"+i+"</td>";
+                                html += "   <td>2</td>";
+                                html += "   <td>"+formato_fecha(factura[i]["factura_fecha"])+"</td>";
+                                html += "   <td><center>"+factura[i]["factura_numero"];
+
+
+                                html += "<br>";
+
+                                if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
+                                    html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";                        
+                                }else{
+                                    html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;' title='"+factura[i]["factura_mensajeslist"]+"'><small>FALLA</small></span>";
                                 }
 
-                            }
+                                html += "</center></td>";
 
 
-                                    totalfinal += Number(factura[i]["factura_subtotal"]);                
+                                html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
+                                let enviada = factura[i]['factura_enviada'] == 1 ? "Enviada":"No enviada";
+                                html += "   <td>"+factura[i]["factura_nit"]+"</td>";
+                                html += "   <td>"+factura[i]["factura_complementoci"]+"</td>";
+                                html += "   <td>"+factura[i]["factura_razonsocial"]+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_subtotal"]).toFixed(2)+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_ice"]).toFixed(2)+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_exento"]).toFixed(2)+"</td>";
+                                html += "   <td>0</td>";
+                                html += "   <td>0</td>";
+                                html += "   <td>0</td>";
+                                html += "   <td>0</td>";
+                                html += "   <td>0</td>";
+                                html += "   <td>"+Number(factura[i]["factura_subtotal"]).toFixed(2)+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_descuento"]).toFixed(2)+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_giftcard"]).toFixed(2)+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_total"]).toFixed(2)+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_total"]*0.13).toFixed(2)+"</td>";
+                                                     
+                                if(factura[i]["estado_id"]==1){
+                                        html += "   <td>V</td>";
+                                }
+                                else{
+                                        html += "   <td>A</td>";
+                                }
+
+
+                                html += "   <td>"+factura[i]["factura_codigocontrol"]+"</td>";
+                                html += "   <td>";
+                                    if (factura[i]["factura_giftcard"]>0) html += "1";
+                                    else html += "0";
+                                        
+                                html += "   </td>";
+                                
+                                html += "   <td>"+factura[i]["venta_id"]+"</td>";
+        //                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
+                                html += "   <td class='no-print'><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/1' class='btn btn-warning btn-xs' ' target='_BLANK' title='Imprimir factura original'><i class='fa fa-list'></i> </a>";
+                                html += "   <a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/2' class='btn btn-default btn-xs' ' target='_BLANK' title='Imprimir factura copia'><i class='fa fa-list'></i> </a>";
+
+                                if(rolusuario_asignado == 1){
+
+                                    if (factura["estado_id"]!=3){//si la factura esta anulada
+
+                                        if(factura[i]["estado_id"]==1){
+
+                                            if (parametro_tiposisistema == 1){
+                                                html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button>";
+                                            }
+                                            else{
+                                                if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
+                                                    html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
+                                                html += "<fa class='fa fa-trash'> </fa> </button>";
+                                                }else{
+                                                    html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_noenviada' onclick='cargar_modal_anular_malemitida("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
+                                                    html += "<fa class='fa fa-trash'> </fa> </a>";
+                                                }
+                                            }
+                                        }
+
+                                    }
+
+
+                                            totalfinal += Number(factura[i]["factura_subtotal"]);                
+                                }
+                                html += "</td>";
+                                            html += "</tr>";
+                            }    
+                                var debitofiscal =  totalfinal * 0.13;
+
+                                html += "<tr";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th>"+Number(totalfinal).toFixed(2)+"</th> ";
+                                html += "<th>"+Number(debitofiscal).toFixed(2)+"</th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th class='no-print'> </th> ";
+                                html += "</tr> ";
+                           html += "</tbody>";
+                            html += "</table>";
+                            
+//                            html = "<table><tr><td>aqui va las facturas en formato RCV</td></tr></table>";
+                            
+                            $("#tabla_factura").html(html);
                         }
-                        html += "</td>";
-                                    html += "</tr>";
-                    }    
-                        var debitofiscal =  totalfinal * 0.13;
-                        
-                        html += "<tr";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "<th>"+Number(totalfinal).toFixed(2)+"</th> ";
-                        html += "<th>"+Number(debitofiscal).toFixed(2)+"</th> ";
-                        html += "<th> </th> ";
-                        html += "<th> </th> ";
-                        html += "</tr> ";
-                   html += "</tbody>";
-                    html += "</table>";
-                    $("#tabla_factura").html(html);
-                }
-            },
-            error:function(result){alert("Ocurrio un error en la consulta. Revise los parametros por favor...!")},
-                   
-        
-            
-            })
+                    },
+                    error:function(result){alert("Ocurrio un error en la consulta. Revise los parametros por favor...!")},
 
+
+
+                    });
+    
+    }//fin if(formato == 1)
+    else{
+        
+    
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{desde:desde, hasta:hasta ,opcion:opcion, tipo:tipo},
+                    success:function(result){
+                        var factura = JSON.parse(result);
+                        var tam = factura.length;
+
+                        var mensaje = "";
+
+                        html = "";
+                        if (opcion==1){
+
+                            html += "<table class='table table-striped' id='mitabla' nowrap >";
+                            html += "<tr>";
+                            html += "<th>#</th>";
+                            html += "<th>ESPEC.</th>";
+                            html += "<th>N°</th>";
+                            html += "<th>FECHA DE LA FACTURA</th>";
+                            html += "<th>N° DE FACT.</th>";
+                            html += "<th>N° DE AUTORIZACION</th>";
+                            html += "<th>ESTADO</th>";
+                            html += "<th>NIT/CI CLIENTE</th>";
+                            html += "<th>NOMBRE O RAZON SOCIAL</th>";
+                            html += "<th>IMPORTE TOTAL DE LA VENTA</th>";
+                            html += "<th>IMPORTE ICE</th>";
+                            html += "<th>/IEHD/TASAS	EXPORTACIONES Y OPERACIONES EXENTAS</th>";	
+                            html += "<th>VENTAS GRAVADAS A TASA CERO</th>";	
+                            html += "<th>SUBTOTAL</th>";	
+                            html += "<th>DESC.</th>"; 
+                            html += "<th>BONIF. Y REBAJAS OTORGADAS</th>";	
+                            html += "<th>IMPORTE BASE PARA DEBITO FISCAL</th>";	
+                            html += "<th>DEBITO FISCAL</th>";	
+                            html += "<th>CODIGO DE CONTROL</th>";	
+                            html += "<th>TRANS</th>";
+                            html += "<th class='no-print'>OPERACIONES</th>";
+                            html += "</tr>";
+                            html += "<tbody class='buscar'>";
+
+                              var totalfinal = Number(0);
+
+                            for(var i = 0; i < tam; i++ ){
+
+
+                                if (factura[i]['estado_id']==3)
+                                    color = "style = 'background-color:gray'";
+                                else
+                                    color = "";
+
+                                html += "<tr  "+color+">";
+                                html += "   <td>"+i+"</td>";
+                                html += "   <td>0</td>";
+                                html += "   <td>1</td>";
+                                html += "   <td>"+formato_fecha(factura[i]["factura_fecha"])+"</td>";
+                                html += "   <td><center>"+factura[i]["factura_numero"];
+
+
+                                html += "<br>";
+
+                                if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
+                                    html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";                        
+                                }else{
+                                    html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;' title='"+factura[i]["factura_mensajeslist"]+"'><small>FALLA</small></span>";
+                                }
+
+                                html += "</center></td>";
+
+
+                                html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
+                                let enviada = factura[i]['factura_enviada'] == 1 ? "Enviada":"No enviada";
+                                if(factura[i]["estado_id"]==1){
+                                        html += "   <td>V</td>";
+                                }
+                                else{
+                                        html += "   <td>A</td>";
+                                }
+
+                                html += "   <td>"+factura[i]["factura_nit"]+"</td>";
+                                html += "   <td>"+factura[i]["factura_razonsocial"]+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_subtotal"]).toFixed(2)+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_ice"]).toFixed(2)+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_exento"]).toFixed(2)+"</td>";
+                                html += "   <td>0</td>";
+                                html += "   <td>"+Number(factura[i]["factura_subtotal"]).toFixed(2)+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_descuento"]).toFixed(2)+"</td>";
+                                html += "   <td>0</td>";
+                                html += "   <td>"+Number(factura[i]["factura_total"]).toFixed(2)+"</td>";
+                                html += "   <td>"+Number(factura[i]["factura_total"]*0.13).toFixed(2)+"</td>";
+                                html += "   <td>"+factura[i]["factura_codigocontrol"]+"</td>";
+                                html += "   <td>"+factura[i]["venta_id"]+"</td>";
+        //                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
+                                html += "   <td class='no-print'><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/1' class='btn btn-warning btn-xs' ' target='_BLANK' title='Imprimir factura original'><i class='fa fa-list'></i> </a>";
+                                html += "   <a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/2' class='btn btn-default btn-xs' ' target='_BLANK' title='Imprimir factura copia'><i class='fa fa-list'></i> </a>";
+
+                                if(rolusuario_asignado == 1){
+
+                                    if (factura["estado_id"]!=3){//si la factura esta anulada
+
+                                        if(factura[i]["estado_id"]==1){
+
+                                            if (parametro_tiposisistema == 1){
+                                                html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button>";
+                                            }
+                                            else{
+                                                if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
+                                                    html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
+                                                html += "<fa class='fa fa-trash'> </fa> </button>";
+                                                }else{
+                                                    html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_noenviada' onclick='cargar_modal_anular_malemitida("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
+                                                    html += "<fa class='fa fa-trash'> </fa> </a>";
+                                                }
+                                            }
+                                        }
+
+                                    }
+
+
+                                            totalfinal += Number(factura[i]["factura_subtotal"]);                
+                                }
+                                html += "</td>";
+                                            html += "</tr>";
+                            }    
+                                var debitofiscal =  totalfinal * 0.13;
+
+                                html += "<tr";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "<th>"+Number(totalfinal).toFixed(2)+"</th> ";
+                                html += "<th>"+Number(debitofiscal).toFixed(2)+"</th> ";
+                                html += "<th> </th> ";
+                                html += "<th> </th> ";
+                                html += "</tr> ";
+                           html += "</tbody>";
+                            html += "</table>";
+                            $("#tabla_factura").html(html);
+                        }
+                    },
+                    error:function(result){alert("Ocurrio un error en la consulta. Revise los parametros por favor...!")},
+
+
+
+                    });        
+        
+    }
     
 }
 

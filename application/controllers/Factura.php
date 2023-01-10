@@ -74,6 +74,7 @@ class Factura extends CI_Controller{
         $data['factura'] = $this->Factura_model->get_all_factura($params);
         $data['configuracion'] = $this->configuracion[0];
         $data['motivos'] = $this->Factura_model->get_all_motivos();
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
         
         $data['_view'] = 'factura/index';
         $this->load->view('layouts/main',$data);
@@ -990,9 +991,10 @@ class Factura extends CI_Controller{
             $desde = $this->input->post("desde");
             $hasta = $this->input->post("hasta");            
             $opcion = $this->input->post('opcion');   
+            $tipo = $this->input->post('tipo');   
             
             if ($opcion==1){
-                $datos = $this->Factura_model->get_factura_ventas($desde,$hasta);
+                $datos = $this->Factura_model->get_factura_ventas($desde,$hasta,$tipo);
             }
             else{
                 $datos = $this->Factura_model->get_factura_compras($desde,$hasta);

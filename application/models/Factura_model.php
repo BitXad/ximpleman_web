@@ -154,8 +154,15 @@ class Factura_model extends CI_Model
     }
     
 
-    function get_factura_ventas($inicio, $fin)
+    function get_factura_ventas($inicio, $fin, $tipo)
     {
+        $condicion = "";
+        if ($tipo == 1) $condicion="";
+        if ($tipo == 2) $condicion=" and factura_codigodescripcion = 'VALIDADA' ";
+        if ($tipo == 3) $condicion=" and factura_codigodescripcion = 'VALIDADA' and estado_id = 3 ";
+        if ($tipo == 4) $condicion=" and estado_id = 3";
+        if ($tipo == 5) $condicion=" and factura_codigodescripcion <> 'VALIDADA' ";
+            
         $sql = "
             SELECT
                 *
@@ -165,10 +172,8 @@ class Factura_model extends CI_Model
 
             WHERE
                 factura_fechaventa >= '".$inicio."'
-                and factura_fechaventa <= '".$fin."'
-                
-
-            ORDER BY `factura_id` DESC";
+                and factura_fechaventa <= '".$fin."'".$condicion."
+                ORDER BY `factura_id` DESC";
         
         $factura = $this->db->query($sql)->result_array();
        

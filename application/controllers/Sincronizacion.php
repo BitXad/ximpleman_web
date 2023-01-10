@@ -164,7 +164,9 @@ class Sincronizacion extends CI_Controller{
     }
 
     function sincronizar_datos(){
+        
         if($this->input->is_ajax_request()){
+            
             static $array;
             $sincronizacion_id = $this->input->post('codigo_sincronizar');
             if(!isset($array['dosificacion'])){
@@ -281,6 +283,17 @@ class Sincronizacion extends CI_Controller{
                 $data['transaccion'] = false;
                 echo json_encode($data['transaccion']);
             }
+            
+            // Habilitar las 2 primeras monedas por defecto
+            $sql = "update moneda set estado_id = 1 where moneda_id <= 2";
+            $this->Venta_model->ejecutar($sql);
+            
+            // Eliminar de la lista de documentos sector que no tengan GIFT
+            if (($this->dosificacion["docsec_codigoclasificador"]==2)||($this->dosificacion["docsec_codigoclasificador"]==39))
+            {
+                $sql="delete from forma_pago where forma_nombre like '%GIFT%'";
+                $this->Venta_model->ejecutar($sql);
+            }    
         }
     }
 

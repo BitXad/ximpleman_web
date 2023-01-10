@@ -60,6 +60,7 @@ class Dashb extends CI_Controller
                 $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera                
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
                 $data['sucursales'] = $this->Sucursales_model->get_sucursales();
+                $data['punto_venta'] = $session_data['puntoventa_codigo'];
  
                 $usuario_id = $session_data['usuario_id'];
                 $data['usuario'] = $usuario_id;

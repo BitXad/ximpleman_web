@@ -42,6 +42,7 @@
 <input type="hidden" name="tipousuario" id="tipousuario" value="<?= $tipousuario_id ?>" />
 <input type="hidden" name="tipouser" id="tipouser" value="<?= $tipousuario_id ?>" />
 <input type="hidden" name="user_id" id="user_id" value="<?= $usuario ?>" />
+<input type="hidden" name="punto_venta" id="punto_venta" value="<?php echo $punto_venta; ?>" />
 <!--
 <button onclick="mostrar_grafica()">
  graficos    

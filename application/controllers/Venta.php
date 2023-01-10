@@ -1207,30 +1207,55 @@ class Venta extends CI_Controller{
                                     
                                     $cad = $eniada->mensajesList;
                                     //var_dump($eniada);
+                                    //var_dump($cad);
                                     
                                     $mensajecadena = json_encode($eniada->mensajesList);
+                                    
+//                                echo "<br>tamaño: ".sizeof($cad);
+//                                echo "<br>codigo: ".($cad[0]->codigo);
+//                                echo "<br>transaccion: ".$eniada->transaccion;
+//                                $codigo = "";
+//                                
 
+                                        if (is_array($cad)){
+
+                                            for ($i=0; $i<sizeof($cad); $i++)
+                                                $codigo = $codigo." ".$cad[0]->codigo;
+
+                                        }else{
+                                            $codigo = $cad->codigo;
+                                        }    
+                                        
+                                        
+                                            $params = array(
+                                                'factura_codigodescripcion' => $codigo, //$cad->codigo,
+                                                'factura_codigoestado' => "NO ENVIADA",//$cod->codigoEstado,
+                                                'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
+                                                'factura_transaccion'  => $eniada->transaccion,
+                                                'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
+                                            );
+
+                                            $this->Factura_model->update_factura($factura_id, $params);
+
+                                           echo json_encode($eniada);
+
+                                
                                     
-//                                    $params = array(
-//                                        'factur a_codigodescripcion' => $eniada->codigoDescripcion,
-//                                        'factura_codigoestado' => $eniada->codigoEstado,
-//                                        'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
-//                                        'factura_transaccion'  => $eniada->transaccion,
-//                                        'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
-//                                    );
+//                                            $params = array(
+//                                                'factura_codigodescripcion' => $cad->codigo,
+//                                                'factura_codigoestado' => "NO ENVIADA",//$cod->codigoEstado,
+//                                                'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
+//                                                'factura_transaccion'  => $eniada->transaccion,
+//                                                'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
+//                                            );
+//
+//                                            $this->Factura_model->update_factura($factura_id, $params);
+//
+//                                           echo json_encode($eniada);
                                     
-                                    $params = array(
-                                        'factura_codigodescripcion' => $cad->codigo,
-                                        'factura_codigoestado' => "NO ENVIADA",//$cod->codigoEstado,
-                                        'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
-                                        'factura_transaccion'  => $eniada->transaccion,
-                                        'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
-                                    );
-                                    $this->Factura_model->update_factura($factura_id, $params);
-                                    
-                                   echo json_encode($eniada);
-                                    
-                                }
+                               
+                                
+                            }
                                 /*
                                 $sql = "update dosificacion set
                                         dosificacion_numfact = dosificacion_numfact - (select count(*) as cantidad from factura where factura_id = ".$factura_id." and factura_codigodescripcion <> 'VALIDADA')
@@ -6403,7 +6428,18 @@ function anular_venta($venta_id){
         $micad .= "            <tr style='padding: 0;'>"; 
         $micad .= "                <td colspan='3' style='padding: 0; font-family: Arial'>"; 
         $micad .= "                    <center style='margin-bottom:15px'>"; 
-        $micad .= "                        <font size='4' face='arial'>FACTURA</font> <br>"; 
+        
+        if ($this->dosificacion["docsec_codigoclasificador"]==2){            
+            
+            $micad .= "                        <font size='4' face='arial'>FACTURA DE ALQUILER</font> <br>"; 
+            
+        }
+        else{
+        
+            $micad .= "                        <font size='4' face='arial'>FACTURA</font> <br>"; 
+        
+        } 
+        
         $micad .= "                        <font size='1' face='arial'>(Con Derecho a Cr&eacute;dito Fiscal)</font> <br>"; 
         $micad .= "                    </center>"; 
         $micad .= "                </td>"; 

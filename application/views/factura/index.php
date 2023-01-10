@@ -28,10 +28,51 @@
                     <a href="<?php echo site_url('factura/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
                 </div>
 </div>-->
+
+<table class="table" style="width: 100%; padding: 0;" >
+    <tr>
+        <td style="width: 20%; padding: 0; line-height:10px;" >
+                
+            <center>
+                               
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                
+
+            </center>                      
+        </td>
+                   
+        <td style="width: 60%; padding: 0" > 
+            <center>
+            
+                <br><br>
+                <font size="3" face="arial"><b>LIBRO DE VENTAS</b></font> <br>
+                <!--<font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>-->
+                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+
+            </center>
+        </td>
+        <td style="width: 20%; padding: 0"> 
+        </td> 
+
+    </tr>
+     
+    
+    
+</table>
+
 <div class="row">
     <div class="col-md-12">
-                <h3 class="box-title">LIBRO DE VENTAS</h3>
-        <div class="box">
+<!--        <center>
+            <h3 class="box-title">LIBRO DE VENTAS</h3>            
+        </center>-->
+        <div class="box no-print">
 
             <div class="box-header">
 <!--                <div class="box-tools">
@@ -43,22 +84,53 @@
                 <div class="col-md-12">
                     <!--<form action="<?php //echo site_url('factura/generar_excel'); ?>" method="POST">-->
                         
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="desde" class="control-label">Desde:</label>
                             <div class="form-group">
-                                 <input type="date"class="btn btn-warning btn-xs form-control"  id="fecha_desde" name="fecha_desde" value="<?php echo date("Y-m-d");?>">
+                                 <input type="date"class="btn btn-default btn-xs form-control"  id="fecha_desde" name="fecha_desde" value="<?php echo date("Y-m-d");?>">
 
                             </div>
                         </div>
                         
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label for="hasta" class="control-label">Hasta:</label>
                             <div class="form-group">
-                                <input type="date" class="btn btn-warning btn-xs form-control"  id="fecha_hasta" name="fecha_hasta" value="<?php echo date("Y-m-d");?>">
+                                <input type="date" class="btn btn-default btn-xs form-control"  id="fecha_hasta" name="fecha_hasta" value="<?php echo date("Y-m-d");?>">
                         
                             </div>
                         </div>
-                        
+                    
+                        <div class="col-md-2">
+                           <label for="desde" class="control-label"> Formato: </label>
+                           <div class="form-group">
+              
+                               <!--<button  type="submit" class="btn btn-info btn-xs form-control" onclick="anulacion_masiva()"><span class="fa fa-times"> </span> Anulación en Masa</button>-->
+                               <select type="submit" class="btn btn-default btn-xs form-control"  id="select_formato">
+                                   <option value="1">R.C.V.</option>
+                                   <option value="2">L.C.V.</option>
+                                     
+                               </select>
+                               
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-2">
+                           <label for="desde" class="control-label"> Tipo: </label>
+                           <div class="form-group">
+              
+                               <!--<button  type="submit" class="btn btn-info btn-xs form-control" onclick="anulacion_masiva()"><span class="fa fa-times"> </span> Anulación en Masa</button>-->
+                               <select type="submit" class="btn btn-default btn-xs form-control" id="select_tipo">
+                                   <option value="1">TODAS</option>
+                                   <option value="2">VALIDAS</option>
+                                   <option value="3">VALIDAS ANULADAS</option>
+                                   <option value="4">SOLO ANULADAS</option>
+                                   <option value="5">FALLAS NO ENVIDADAS</option>
+                                     
+                               </select>
+                               
+                            </div>
+                        </div>
+                    
                         <div class="col-md-2" hidden>
                             <label for="tipo" class="control-label">Tipo:</label>
                             <div class="form-group">
@@ -99,14 +171,7 @@
                             </div>
                         </div>
                     
-                        <div class="col-md-2">
-                           <label for="desde" class="control-label"> Anulacion en Masa </label>
-                           <div class="form-group">
-              
-                               <button  type="submit" class="btn btn-info btn-xs form-control" onclick="anulacion_masiva()"><span class="fa fa-times"> </span> Anulación en Masa</button>
-      
-                            </div>
-                        </div>
+
                 </div>
             </div>
         </div>
@@ -282,9 +347,12 @@
 <!------------------------ F I N  modal para confirmar anulacion de factura no enviada------------------->
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
+<div hidden>
+    
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" >
+      Launch demo modal
+    </button>
+</div>
 
 <!-- Modal -->
 
