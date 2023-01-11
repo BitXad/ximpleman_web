@@ -310,6 +310,44 @@ class Sucursales extends CI_Controller{
         $sql = "delete from inventario_sucursales";
         $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);
         
+        //Paso 2 - Cargamos el inventario actual de la sucursal central        
+        $sql = "insert into inventario_sucursales(producto_id,suc1) (select producto_id,existencia from inventario)";
+        $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);
+        
+        //Paso 3 - Cargamos el inventario de las siguientes sucursales
+
+        
+        for($i=1 ; $i<sizeof($almacenes); $i++){
+        
+                //Paso 3.1 - Eliminar la tabla inventario_sucursales_aux de la sucursal 0 (principal)
+                $sql = "delete from inventario_sucursales_aux";
+                $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);
+
+                //Paso 3.2 - consultar el inventario de la siguiente sucursal
+                $sql = "select * from inventario";
+                $inventario = $this->Inventario_model->consultar_en_sucursal($almacenes[$i]["almacen_basedatos"],$sql);
+                //var_dump($inventario);
+
+                //Paso 3.3 - Cargamos los datos de la sucursal a la inventario_sucursales_aux;        
+                foreach ($inventario as $inv){
+
+                    $sql = "insert into inventario_sucursales_aux(producto_id, existencia) value(".$inv["producto_id"].",".$inv["existencia"].")";
+                    $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);
+
+                }
+
+                //Paso 3.4 - Cargamos el inventario de la tabla inventario_sucursales_aux a inventario_sucursales
+                $sql = "update inventario_sucursales s, inventario_sucursales_aux t set
+                        s.suc".($i+1)." = t.existencia
+                        where
+                        s.producto_id = t.producto_id";
+                $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);
+
+        }
+        
+        //Paso 4
+        echo json_encode(true);
+        
         
     }
 
