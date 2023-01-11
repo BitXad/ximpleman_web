@@ -34,6 +34,28 @@ class Inventario_model extends CI_Model
     /*
      * Get inventario
      */
+    function ejecutar_en_sucursal($basededatos, $sql)
+    {
+        //echo $basededatos;
+        $this->db = $this->load->database($basededatos, TRUE);    
+        $this->db->query($sql);
+        return true;
+        
+    }
+    /*
+     * Get inventario
+     */
+    function consultar_en_sucursal($basededatos, $sql)
+    {
+        //echo $basededatos;
+        $this->db = $this->load->database($basededatos, TRUE);    
+        return $this->db->query($sql)->result_array();
+        
+    }
+    
+    /*
+     * Get inventario
+     */
     function get_inventario()
     {
         

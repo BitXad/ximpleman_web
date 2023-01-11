@@ -293,12 +293,25 @@ class Sucursales extends CI_Controller{
 
     }
 
-    function generar_excel()
-    {
+    function generar_excel(){
             $llamadas = $this->Inventario_model->get_inventario();
             echo json_encode($llamadas); 
      
     }
     
+    function cargar_inventarios(){
+            
+        //Paso 0 - Obtener la lista de sucursales
+        $sql = "select * from almacenes";
+        $almacenes =  $this->Inventario_model->consultar_en_sucursal("default",$sql);
+        //echo "Almacenes: ".sizeof($almacenes);
+        
+        //Paso 1 - Eliminar la tabla inventario_sucursales
+        $sql = "delete from inventario_sucursales";
+        $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);
+        
+        
+    }
+
     
 }

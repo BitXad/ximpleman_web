@@ -1597,8 +1597,8 @@ function tabla_inventario_realizable(){
     
 }
 
-function actualizar_inventario()
-{
+function actualizar_inventario(){
+
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"inventario/actualizar_inventario/";
     
@@ -2158,4 +2158,28 @@ function ver_operacionproceso(producto_id){
 /* imprimir */
 function imprimir(){
     window.print();
+}
+
+function actualizar_inventarios(){
+ 
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"sucursales/cargar_inventarios/";
+    
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){     
+            alert('El inventario se actualizo exitosamente...! ');
+            //redirect('inventario/index');
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            //tabla_inventario();
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+    });      
+    
 }
