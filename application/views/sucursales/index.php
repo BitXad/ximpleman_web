@@ -60,7 +60,7 @@
             <center>
             
                 <br><br>
-                <font size="3" face="arial"><b>INVENTARIO POR SUCURSAL</b></font> <br>
+                <font size="3" face="arial"><b>INVENTARIO POR PRODUCTO</b></font> <br>
                 <!--<font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>-->
                 <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
 
@@ -110,7 +110,7 @@
 
             <?php } ?>
 
-            <button type="button" class="btn btn-facebook btn-sm" data-toggle="modal" onclick="actualizar_inventarios()"><span class="fa fa-cubes"></span> Actualizar Inventarios</button>
+            <button type="button" class="btn btn-facebook btn-sm" data-toggle="modal" onclick="actualizar_inventarios()"><span class="fa fa-cubes" title="Actualiza los inventarios de las SUCURSALES/ALMACENES"></span> Actualizar Inventarios</button>
 
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModalCenter"><span class="fa fa-binoculars"></span> Buscar Producto</button>
         </div>
@@ -143,12 +143,15 @@
                 
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-                        <th>Sucursal</th>
+                        <!--<th>Sucursal</th>-->
                         <th>Producto</th>
                         <th>Codigo</th>
                         <th>Costo</th>
                         <th>Precio</th>
-                        <th>Cantidad</th>
+                        <th>Suc 1</th>
+                        <th>Suc 2</th>
+                        <th>Suc 3</th>
+                        <th>Existencia</th>
                         <th>Total</th>
                         <th class="no-print"></th>
                     </tr>
@@ -171,7 +174,7 @@
                                 ?>
                                 <tr>
 
-                                    <td style="line-height: 8px;">
+<!--                                    <td style="line-height: 8px;">
                                         <font style="font-family: Arial; font-weight: bold; font-size: 12pt;">
                                             <b>
                                             <?php echo $suc0["empresa_nombre"]; ?><br>    
@@ -181,17 +184,31 @@
                                         <?php echo $suc0["empresa_direccion"]; ?>
                                         </small>
                                         
-                                    </td>
+                                    </td>-->
                                     <td><?php echo $suc0["producto_nombre"]; ?></td>
                                     <td><?php echo $suc0["producto_codigo"]; ?></td>
                                     <td style="text-align: right"><?php echo number_format($suc0["producto_costo"],2,".",","); ?></td>
                                     <td style="text-align: right"><?php echo number_format($suc0["producto_precio"],2,".",","); ?></td>
                                     <td style="text-align: center; font-family: Arial; font-weight: bold; font-size: 12pt;">
                                         <b>
-                                            <?php echo number_format($suc0["existencia"],2,".",","); ?>
+                                            <?php echo number_format($suc0["suc1"],2,".",","); ?>
                                         </b>
                                     </td>
-                                    <td style="text-align: center"><?php echo number_format($suc0["existencia"] * $suc0["producto_precio"],2,".",","); ?></td>
+                                    <td style="text-align: center; font-family: Arial; font-weight: bold; font-size: 12pt;">
+                                        <b>
+                                            <?php echo number_format($suc0["suc2"],2,".",","); ?>
+                                        </b>
+                                    </td>
+                                    <td style="text-align: center; font-family: Arial; font-weight: bold; font-size: 12pt;">
+                                        <b>
+                                            <?php echo number_format($suc0["suc3"],2,".",","); ?>
+                                        </b>
+                                    </td>
+                                    
+                                    <?php $existencia = $suc0["suc1"] + $suc0["suc3"] + $suc0["suc3"] + $suc0["suc4"] +$suc0["suc5"]; ?>
+                                    
+                                    <td style="text-align: center"><?php echo number_format($existencia,2,".",","); ?></td>
+                                    <td style="text-align: center"><?php echo number_format($existencia * $suc0["producto_precio"],2,".",","); ?></td>
                                     <td>
                                         <button class="btn btn-xs btn-info"><fa class="fa fa-arrow-right"> </fa></button>
                                     
