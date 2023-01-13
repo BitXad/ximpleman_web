@@ -215,13 +215,14 @@ class Eventos_significativos extends CI_Controller{
     
      /* en servicio Facturacion de Operaciones (Registro de Evento Significativo) es la Funcion: registroEventoSignificativo */
     function actualizarEventoSignificativo(){
-        
         try{
-            
             if ($this->input->is_ajax_request()) {
                 
-                $fecha_inicio = "2022-08-19T17:27:10:40.490"; // $this->input->post("fecha_inicio");
-                $fecha_fin = "2022-08-19T18:30:10:33.561"; // $this->input->post("fecha_fin");
+                //$fecha_inicio = "2023-01-13T10:57:26.909";
+                //$fecha_fin    = "2023-01-13T11:02:48.147";
+                $fecha_inicio =  $this->input->post("fecha_inicio");
+                $fecha_fin    =  $this->input->post("fecha_fin");
+                
                 $cufd_evento =  $this->input->post("cufd_evento");
                 $codigo_evento =  $this->input->post("codigo_evento");
                 $texto_evento = $this->input->post("texto_evento");
@@ -254,25 +255,14 @@ class Eventos_significativos extends CI_Controller{
                 $fechaHoraFinEvento = $fecha_fin; //date('Y-m-d\TH:i:s.v');
                 $fechaHoraInicioEvento = $fecha_inicio; //date('Y-m-d\TH:i:s.v');
                 /* ordenado segun SoapUI */
-                echo                     
-                    "<br>codigoAmbiente"    ." : ". $dosificacion['dosificacion_ambiente']."  ".
-                    "<br>codigoMotivoEvento"." : ". $codigo_evento." ". 
-                    "<br>codigoPuntoVenta"  ." : ". $dosificacion['dosificacion_puntoventa']."  ".
-                    "<br>codigoSistema"     ." : ". $dosificacion['dosificacion_codsistema']."  ".
-                    "<br>codigoSucursal"    ." : ". $dosificacion['dosificacion_codsucursal']."  ".
-                    "<br>cufd"              ." : ". $dosificacion['dosificacion_cufd']."  ".
-                    "<br>cufdEvento"        ." : ". $cufdEvento."  ". 
-                    "<br>cuis"              ." : ". $dosificacion['dosificacion_cuis']."  ".
-                    "<br>descripcion"       ." : ". $descripcion."  ". 
-                    "<br>fechaHoraFinEvento"." : ". $fechaHoraFinEvento."  ". 
-                    "<br>fechaHoraInicioEvento"." : ".$fechaHoraInicioEvento."  ". 
-                    "<br>nit"               ." : ". $dosificacion['dosificacion_nitemisor'];
                 
-                
-                $usuario_id = $this->session_data['usuario_id'];
+                $registroeventos_id =  $this->input->post("registroeventos_id");
+                $este_eventosignificativo = $this->Eventos_significativos_model->get_eventosignificativo($registroeventos_id);
+                /*$usuario_id = $this->session_data['usuario_id'];
                 $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                */
                 $this->load->model('PuntoVenta_model');
-                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($este_eventosignificativo['registroeventos_puntodeventa']);
                 $puntodeventa = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
                 
                 $parametros = ["SolicitudEventoSignificativo" => [
@@ -289,7 +279,22 @@ class Eventos_significativos extends CI_Controller{
                     "fechaHoraInicioEvento"=>$fechaHoraInicioEvento, //$dosificacion['dosificacion_cuis'],
                     "nit"               => $dosificacion['dosificacion_nitemisor']
                 ]];
-
+                /*
+                echo                     
+                    "<br>codigoAmbiente"    ." : ". $dosificacion['dosificacion_ambiente']."  ".
+                    "<br>codigoMotivoEvento"." : ". $codigo_evento." ". 
+                    "<br>codigoPuntoVenta"  ." : ". $punto_venta['puntoventa_codigo']."  ".
+                    "<br>codigoSistema"     ." : ". $dosificacion['dosificacion_codsistema']."  ".
+                    "<br>codigoSucursal"    ." : ". $dosificacion['dosificacion_codsucursal']."  ".
+                    "<br>cufd"              ." : ". $punto_venta['cufd_codigo']."  ".
+                    "<br>cufdEvento"        ." : ". $cufdEvento."  ". 
+                    "<br>cuis"              ." : ". $punto_venta['cuis_codigo']."  ".
+                    "<br>descripcion"       ." : ". $descripcion."  ". 
+                    "<br>fechaHoraFinEvento"." : ". $fechaHoraFinEvento."  ". 
+                    "<br>fechaHoraInicioEvento"." : ".$fechaHoraInicioEvento."  ". 
+                    "<br>nit"               ." : ". $dosificacion['dosificacion_nitemisor'];
+                */
+                
                 //var_dump($parametros);
                 $resultado = $cliente->registroEventoSignificativo($parametros);
                 $res = $resultado->RespuestaListaEventos->transaccion;
@@ -299,7 +304,6 @@ class Eventos_significativos extends CI_Controller{
                 $registroeventos_cufd = $cufdes[0]["cufd_codigo"];
                 $registroeventos_codigocontrol = $cufdes[0]["cufd_codigocontrol"];
                 
-                
                 if ($res){
 //                    
 //                    var_dump($resultado);
@@ -307,11 +311,22 @@ class Eventos_significativos extends CI_Controller{
 
                     $codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;
                     
-                    $sql = "insert into registro_eventos(registroeventos_codigo,registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha, registroeventos_puntodeventa, registroeventos_inicio,
-                            registroeventos_fin,registroeventos_cufd,registroeventos_codigocontrol,estado_id ) value('".
-                            $codigo_recepcion."',".$codigo_evento.",'".$descripcion."',now(),".$puntodeventa.",'".$fecha_inicio."','".$fecha_fin."','".$registroeventos_cufd."','".$registroeventos_codigocontrol."',1)";
+                    $params = array(
+                        'registroeventos_codigo' => $codigo_recepcion,
+                        //'registroeventos_codigoevento' => $codigo_evento,
+                        //'registroeventos_detalle' => $descripcion,
+                        //'registroeventos_fecha' => "now()",
+                        //'registroeventos_puntodeventa' => $puntodeventa,
+                        //'registroeventos_inicio' => $fecha_inicio,
+                        'registroeventos_fin' => $fecha_fin,
+                        //'registroeventos_cufd' => $registroeventos_cufd,
+                        //'registroeventos_codigocontrol' => $registroeventos_codigocontrol,
+                        //'estado_id' => 1,
+                        
+                    );
                     
-                    $this->Eventos_significativos_model->ejecutar($sql);
+                    $this->Eventos_significativos_model->update_registroevento($registroeventos_id,$params);
+                    
                     $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;
                     
                     
@@ -322,15 +337,15 @@ class Eventos_significativos extends CI_Controller{
                     
                 }
                 
-                //echo json_encode($resultado);
-                echo $mensaje;
+                echo json_encode($mensaje);
+                //echo $mensaje;
                 //print_r($resultado);
                 //$lresptransaccion = $resultado->RespuestaListaEventos->transaccion;
             }else{                 
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo 'Ocurrio algo inesperado; revisar datos!.'.$e;
         }
     }
     
@@ -1471,7 +1486,41 @@ class Eventos_significativos extends CI_Controller{
         
     }
       
+    function darde_baja(){
+        try{
+            if($this->input->is_ajax_request()){
+                $registroeventos_id = $this->input->post('registroeventos_id');
+                $estado_id = 2; // INACTIVO
+                $params = array(
+                    'estado_id' => $estado_id,
+                );
+                $this->Eventos_significativos_model->update_registroevento($registroeventos_id, $params);
+                echo json_encode("ok");
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!. '.$e;
+        }
+    }
     
+    function darde_alta(){
+        try{
+            if($this->input->is_ajax_request()){
+                $registroeventos_id = $this->input->post('registroeventos_id');
+                $estado_id = 1; // ACTIVO
+                $params = array(
+                    'estado_id' => $estado_id,
+                );
+                $this->Eventos_significativos_model->update_registroevento($registroeventos_id, $params);
+                echo json_encode("ok");
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!. '.$e;
+        }
+    }
     
 }
 ?>

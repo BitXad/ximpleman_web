@@ -63,6 +63,7 @@
                             <th>PUNTO<br>VENTA</th>
                             <th>FECHA<br>INICIO</th>
                             <th>FECHA<br>FIN</th>
+                            <th>ESTADO</th>
                             <th></th>
                             <!--<th width="100px" class="no-print"></th>-->
                         </tr>
@@ -212,7 +213,7 @@
 <!-- Fin Modal -->
 <!------------------------ INICIO modal para consultar evento significativo ------------------->
 <div class="modal fade" id="modal_cerrar_evento" tabindex="-1" role="dialog" aria-labelledby="modal_consultar_eventosigniflabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <br><br>
         <div class="modal-content">
             <div class="modal-header text-center">
@@ -224,14 +225,14 @@
                 <div class="col-md-4">
                     <label for="fecha_evento1" class="control-label"><span class="text-danger"></span>Fecha Evento</label>
                     <div class="form-group">
-                        <input type="text" name="fecha_evento1" value="" class="form-control" id="fecha_evento1" readonly/>
+                        <input type="datetime-local" name="fecha_evento1" value="" class="form-control" id="fecha_evento1" readonly/>
                     </div>
                 </div>
                 
                 <div class="col-md-4">
                     <label for="fecha_inicio1" class="control-label"><span class="text-danger"></span>Fecha Inicio</label>
                     <div class="form-group">
-                        <input type="text" name="fecha_inicio1" value="" class="form-control" id="fecha_inicio1"  readonly/>
+                        <input type="datetime-local" name="fecha_inicio1" value="" class="form-control" id="fecha_inicio1"  readonly/>
                     </div>
                 </div>
                 
@@ -273,9 +274,10 @@
                 </div>               
                 
                 <div class="col-md-4">
-                    <label for="buscar_fecha" class="control-label">Buscar</label>
+                    <label for="buscar_fecha1" class="control-label">Buscar</label>
                     <div class="form-group">
                         <input type="date" name="buscar_fecha1" value="<?= Date("d/m/y");  ?>" class="form-control" id="buscar_fecha1" onchange="buscar_cufd()"/>
+                        <input type="hidden" name="registroeventosterminar_id" value="" class="form-control" id="registroeventosterminar_id" />
                     </div>
                 </div>
                 
@@ -283,7 +285,7 @@
                     <label for="dosificacion_cufd1" class="control-label">CUFD del evento</label>
                     <div class="form-group">
 
-                        <select id="select_cufd1" class="form-control">
+                        <select id="select_cufd1" name="select_cufd1" class="form-control">
                             <option>- NO EXISTEN CUFD SELECCIONADOS -</option>
                         </select>
 

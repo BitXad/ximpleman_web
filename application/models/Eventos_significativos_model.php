@@ -87,12 +87,15 @@ class Eventos_significativos_model extends CI_Model{
      */
     function get_eventossignificativos(){
         return $this->db->query(
-            "select * from registro_eventos order by registroeventos_id desc
+            "select ev.*, e.estado_color, e.estado_descripcion
+             from registro_eventos ev
+             left join estado e on ev.estado_id = e.estado_id
+             order by registroeventos_id desc
         ")->result_array();
     }
     
     /**
-     * get Codigos Nis for activity and secondary activity
+     * get registro_eventos (lista) dado un registroeventos_id
      */
     function get_eventos_porid($registroevento_id){
         
@@ -120,6 +123,15 @@ class Eventos_significativos_model extends CI_Model{
     {
         $this->db->where('registroeventos_id',$registroeventos_id);
         return $this->db->update('registro_eventos',$params);
+    }
+    
+    /**
+     * get registro_eventos dado un registroeventos_id
+     */
+    function get_eventosignificativo($registroevento_id){
+        
+        $sql = "select * from registro_eventos where registroeventos_id = ".$registroevento_id;
+        return $this->db->query($sql)->row_array();
     }
 
 }
