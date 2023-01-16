@@ -675,5 +675,18 @@ class Emision_paquetes extends CI_Controller{
             echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
+    
+    function eliminar_emisionpaquete(){ 
+        try{ 
+            if($this->input->is_ajax_request()){ 
+                $recpaquete_id = $this->input->post('recpaquete_id'); 
+                $this->Emision_paquetes_model->delete_emisionpaquete($recpaquete_id); 
+                echo json_encode("ok"); 
+            }else{                  
+                show_404(); 
+            } 
+        }catch (Exception $e){ 
+            echo 'Ocurrio algo inesperado; revisar datos!. '.$e; 
+        } 
+    }
 }
-?>

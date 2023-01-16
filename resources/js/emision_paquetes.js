@@ -30,7 +30,7 @@ function tablaresultados()
                                                 
                         html += "<tr>";
                         html += "<td style='padding: 2px;' class='text-center'>"+(i+1)+"</td>";
-                            html += "<td style='padding: 2px;'>"+registros[i]['recpaquete_codigodescripcion']+"</td>";
+                        html += "<td style='padding: 2px;'>"+registros[i]['recpaquete_codigodescripcion']+"</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_codigoestado']+"</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_codigorecepcion']+"</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['recpaquete_transaccion']+"</td>";
@@ -45,10 +45,20 @@ function tablaresultados()
                         html += moment(registros[i]["recpaquete_fechahora"]).format("DD/MM/YYYY H:m:s");                        
                         html += "</td>";                        
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['codigo_evento']+"</td>";
-                        
+                        html += "<td style='padding: 2px;' class='text-center'>";
+                        if(registros[i]['factura_numero'] > 0){
+                            html +=registros[i]['factura_numero'];
+                        }
+                        html += "</td>";
+                        html += "<td style='padding: 2px;' class='text-center'>";
+                        if(registros[i]['venta_id'] > 0){
+                            html +=registros[i]['venta_id'];
+                        }
+                        html += "</td>";
                         html += "<td>";
                         if(registros[i]['recpaquete_codigodescripcion'] == "PENDIENTE"){
                             html += "<a class='btn btn-success btn-xs' onclick='ejecutar_emisionpaquetes_vacio("+JSON.stringify(registros[i]['recpaquete_codigorecepcion'])+")' title='Ejecutar validacion servicio Recepcion'><fa class='fa fa-bolt'></fa> Validar</a>&nbsp;";
+                            html += "<a class='btn btn-danger btn-xs' onclick='eliminar_emisionpaquete("+registros[i]['recpaquete_id']+")' title='Eliminar recepción paquete'><span class='fa fa-trash'></span></a>";
                         }/*else if(registros[i]['estado_id'] == 35){
                             html += "<a class='btn btn-warning btn-xs' onclick='modal_anularordencmpra("+registros[i]['ordencompra_id']+")' title='Anular orden compra'><fa class='fa fa-minus-circle'></fa></a>";
                         }*/
@@ -290,4 +300,25 @@ function emision_paquetesmas(){
                 }                
         }); 
     }
+}
+
+/* Eliminar un registro de recepcion paquete */ 
+function eliminar_emisionpaquete(recpaquete_id) 
+{
+    let confirmacion =  confirm('Esta seguro que quiere eliminar este registro?\nNota.- este registro de Recepción de Paquete ya no estara disponible y no habra forma de recuperarlo!.');
+    if(confirmacion == true){ 
+        var base_url = document.getElementById('base_url').value; 
+        var controlador = base_url+'emision_paquetes/eliminar_emisionpaquete'; 
+        document.getElementById('loader').style.display = 'block'; 
+        $.ajax({url:controlador, 
+                type:"POST", 
+                data:{recpaquete_id:recpaquete_id 
+                }, 
+                success:function(result){ 
+                    res = JSON.parse(result); 
+                    document.getElementById('loader').style.display = 'none'; 
+                    tablaresultados(); 
+                }, 
+        }); 
+    } 
 }
