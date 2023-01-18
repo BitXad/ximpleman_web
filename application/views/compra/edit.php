@@ -116,7 +116,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <!----------------------------- fin script buscador --------------------------------------->
 
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/tablacompras.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <!--------------------- CABCERA -------------------------->
 
@@ -148,9 +148,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     <div class="col-md-4">
     <div class="box-tools">
         <center>            
-            <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-success btn-foursquarexs" title="Registrar nuevo Proveedor"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Prov.</small></a>
-            <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" title="Buscar Proveedores"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Prov.</small></a>
-            <a href="#" data-toggle="modal" data-target="#modalproducto" class="btn btn-primary btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod</small></a> 
+            <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-default btn-foursquarexs" title="Registrar nuevo Proveedor"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Prov.</small></a>
+            <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-default btn-foursquarexs" title="Buscar Proveedores"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Prov.</small></a>
+            <a href="#" data-toggle="modal" data-target="#modalproducto" class="btn btn-default btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod</small></a> 
        
         </center>  
 
@@ -186,7 +186,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                 }     ?>  
               <div class="row">
            <div class="panel panel-primary col-md-12" id="detalleco" style="font-family: 'Arial', Arial, Arial, arial;">
-               <table>       
+               <table style="border-top: white">       
                 
                 <tr>
                         <td>Sub Total <?php echo $parametro[0]["moneda_descripcion"];; ?>:</td>
@@ -226,10 +226,10 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <!--------------------- FIN CABERECA -------------------------->
  <div class="box-tools" >
 
-         <!--<span class="btn btn-info" style="margin-right: 50%">Agrupar Detalle <input  type="checkbox"  id="agrupar" name="agrupar" value="1" checked></span>-->  
+         <!--<span class="btn btn-default" style="margin-right: 50%">Agrupar Detalle <input  type="checkbox"  id="agrupar" name="agrupar" value="1" checked></span>-->  
          
         <span style="margin-right: 40%">Buscar Productos</span>  
-         <label class="btn btn-info btn-xs" > <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" checked> Agrupar</label>  
+         <label class="btn btn-default btn-xs" > <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" checked> Agrupar</label>  
                 <?php if($bandera==1) { ?>
                
             <?php if($rolusuario[9-1]['rolusuario_asignado'] == 1){ ?> 
@@ -270,13 +270,13 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
           </div>
               <div class="modal-footer" align="right">
 
-            <button class="btn btn-xs btn-success" onclick="cambiarFecha()" type="submit" data-dismiss="modal">
+            <button class="btn btn-xs btn-default" onclick="cambiarFecha()" type="submit" data-dismiss="modal">
                 <h5>
                 <span class="fa fa-check"></span>   Guardar  
                 </h5>
             </button>
             
-            <button class="btn btn-xs btn-danger" data-dismiss="modal">
+            <button class="btn btn-xs btn-default" data-dismiss="modal">
                 <h5>
                 <span class="fa fa-close"></span>   Cancelar  
                 </h5>
@@ -289,7 +289,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         </div>
         <!---------------------------------FIN MODAL DE CAMBIAR FECHA------------------------->
 
-            <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-xs btn-success" >
+            <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-xs btn-default" >
                 <i class="fa fa-money "></i> Finalizar Cambios
             </a>
         
@@ -301,12 +301,12 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     if($provi==0) { ?>
         
         
-        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn btn-xs btn-success" ><i class="fa fa-money "></i>
+        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn btn-xs btn-default" ><i class="fa fa-money "></i>
                Finalizar compra 
             </a></label>
             
   <?php  } else { ?>          
-            <label id="provedorboton"><a   href="#"  data-toggle="modal" data-target="#modalcobrar" class="btn btn-xs btn-success" >
+            <label id="provedorboton"><a   href="#"  data-toggle="modal" data-target="#modalcobrar" class="btn btn-xs btn-default" >
                 <i class="fa fa-money"></i>
                Finalizar compra 
             </a></label>
@@ -314,7 +314,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
  <?php  } ?>
              
 
-             <a href="#" data-toggle="modal" data-target="#aviso" class="btn btn-xs btn-danger" >
+             <a href="#" data-toggle="modal" data-target="#aviso" class="btn btn-xs btn-default" >
                  <i class="fa fa-sign-out "></i>
                Salir  
             </a>
@@ -335,14 +335,14 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
               <div class="modal-footer" >
         
         
-                  <a  href="<?php echo site_url('compra'); ?>" class="btn btn-md btn-success" >
+                  <a  href="<?php echo site_url('compra'); ?>" class="btn btn-md btn-default" >
                 <i class="fa fa-sign-out "></i>
                Salir sin guardar
             </a>  
              
            
             
-            <button class="btn btn-md btn-danger" data-dismiss="modal">
+            <button class="btn btn-md btn-default" data-dismiss="modal">
        
                 <span class="fa fa-close"></span>   Cancelar  
                     </div>
@@ -359,16 +359,16 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         
       <div class="input-group"> <span class="input-group-addon" onclick="ocultar_busqueda();">Buscar</span>
         <input id="comprar" type="text" class="form-control"  placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="compravalidar(event)">
-        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaresultados(1)" title="Buscar"><span class="fa fa-search"></span></div>
+        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-default input-group-addon" onclick="tablaresultados(1)" title="Buscar"><span class="fa fa-search"></span></div>
       </div>
       <!-------------------- CATEGORIAS------------------------------------->
 <div class="container" id="categoria">
     
  
                 <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
+    <!--<button type="button" class="btn btn-default"><span class="badge">7</span>Productos encontrados</button>-->
 
-                <span class="badge btn-primary">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
+                <span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
 
 </div>
 <!-------------------- FIN CATEGORIAS--------------------------------->
@@ -440,19 +440,19 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <center>
 
             <?php  $provien = $compra[0]['proveedor_id'];  if($provien==0) { ?>  
-            <label id="provedorboton2"><a onclick="myFunction()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')"0>
+            <label id="provedorboton2"><a onclick="myFunction()" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')"0>
                 <i class="fa fa-money fa-4x"></i><br>
                Finalizar<br>Compra<br>
             </a></label>
           <?php }else{ ?>
-            <label id="provedorboton2"><a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')">
+            <label id="provedorboton2"><a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')">
                 <i class="fa fa-money fa-4x"></i><br>
                Finalizar<br>Compra<br>
             </a></label>
           <?php } ?>
 
             
-            <a  href="#" data-toggle="modal" data-target="#aviso" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+            <a  href="#" data-toggle="modal" data-target="#aviso" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Salir<br>
             </a>    
@@ -469,72 +469,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
 <!----------- tabla detalle compra ----------------------------------->
         
-      
-        
-    <!----------- fin tabla detalle cuenta ----------------------------------->
-         <!-- DATOS PARA INSERTAR A COMPRA
-<form action="<?php echo base_url('compra/editar/'); ?>"  method="POST" class="form">
-<div class="box">
-    <div class="box-body">
-              
-         
-
-            DATOS DESPEGABLES DE CHOFER COMPRA 
-<div class="box collapsed-box">
-            <div class="box-header with-border">
-              <h3 class="box-title">Mas</h3>
-              <div class="box-tools pull-right">
-                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-plus"></i></button>
-                
-              </div>
-            </div>
-            <div class="box-body" style="display: none;">
-                <div class="box"> <h3 class="box-title">Detalle Chofer</h3>
-                     <div class="box-body">
-                        <div class="row clearfix">
-                        <div class="col-md-6">
-                        <label for="compra_chofer" class="control-label">Chofer(C)</label>
-                        <div class="form-group">
-                            <input type="text" name="compra_chofer" value="<?php echo $this->input->post('compra_chofer'); ?>" class="form-control" id="compra_chofer" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="compra_placamovil" class="control-label">Placa movil(C)</label>
-                        <div class="form-group">
-                            <input type="text" name="compra_placamovil" value="<?php echo $this->input->post('compra_placamovil'); ?>" class="form-control" id="compra_placamovil" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="compra_fechallegada" class="control-label">Fecha llegada(C)</label>
-                        <div class="form-group">
-                            <input type="text" name="compra_fechallegada" value="<?php echo $this->input->post('compra_fechallegada'); ?>" class="has-datepicker form-control" id="compra_fechallegada" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="compra_horallegada" class="control-label">Hora llegada(C)</label>
-                        <div class="form-group">
-                            <input type="text" name="compra_horallegada" value="<?php echo $this->input->post('compra_horallegada'); ?>" class="form-control" id="compra_horallegada" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-               <button type="submit" class="btn btn-info" >
-                <i class="fa fa-plus "></i>
-               Agregar Datos<br>
-            </button>
-            
-        </div>
-  
  
-                </div> ---------/.box-body
-            
-          </div>
-    FIN DATOS DESPEGABLES DE CHOFER COMPRA             
-          
-</div></form>
- FIN DATOS PARA INSERTAR A COMPRA------------------------------------>   
-
-
 
     </div>
 
@@ -564,7 +499,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title" style="padding-right: 170px;">Añadir Producto</h3>
-                <button type="button" class="btn btn-success btn-xs" onclick="cambiarcodproducto();" title="genera codigo de barra y codigo">
+                <button type="button" class="btn btn-default btn-xs" onclick="cambiarcodproducto();" title="genera codigo de barra y codigo">
       <i class="fa fa-edit"></i> Generar Codigo Barra y Codigo
     </button>
             </div>
@@ -612,7 +547,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                             } 
                                             ?>
                                     </select>
-                                <a data-toggle="modal" data-target="#modalcategoria" class="btn btn-warning" title="Registrar Nueva Categoria">
+                                <a data-toggle="modal" data-target="#modalcategoria" class="btn btn-default" title="Registrar Nueva Categoria">
                                 <i class="fa fa-plus-circle"></i></a>
                             </div>
                     </div>
@@ -731,7 +666,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-4">
                       <label class="control-label">_</label>
                       <div class="form-group">
-                            <button type="button" class="form-control btn-sm btn-info" onclick="unidad_factor()"> Asignar Factor </button>
+                            <button type="button" class="form-control btn-sm btn-default" onclick="unidad_factor()"> Asignar Factor </button>
                         </div> 
                     </div>
                         <div class="col-md-4">
@@ -774,7 +709,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 
             </div>
            
-                <button type="submit" class="btn btn-success">
+                <button type="submit" class="btn btn-default">
                     <i class="fa fa-check"></i> Guardar
                 </button>
           
@@ -806,7 +741,6 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 <h3 class="box-title">Añadir Proveedor</h3>
             </div>
 
-           <!--<form action="<?php echo base_url('proveedor/rapido/'); ?>"  method="POST" class="form">-->
             <div class="box-body">
                 <div class="row clearfix">
                     
@@ -893,7 +827,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             </div></div>
             
 
-                <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')" >
+                <button type="button" class="btn btn-default" onclick="crearproveedor('<?php echo $compra_id; ?>')" >
 
                     <i class="fa fa-check"></i> Guardar
                 </button>           
@@ -936,8 +870,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <?php $i=1;
                             foreach($all_proveedor as $h){ ?>
                             <tr>
-                               <!--<form action="<?php echo base_url('proveedor/cambiarproveedor/'); ?>"  method="POST" class="form">-->
-                              
+
                                     <td><?php echo $i++; ?></td> 
 
                                     <td>
@@ -961,7 +894,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                           <b> <?php echo $h['proveedor_nombre']; ?></b><br>
                                          Telf.:<?php echo $h['proveedor_telefono']; ?> <br>
                                        
-                                         <button  class="btn btn-success btn-xs" onclick="modificarproveedores('<?php echo $compra_id; ?>','<?php echo $h['proveedor_id']; ?>')"   data-dismiss="modal">
+                                         <button  class="btn btn-default btn-xs" onclick="modificarproveedores('<?php echo $compra_id; ?>','<?php echo $h['proveedor_id']; ?>')"   data-dismiss="modal">
                                             <i class="fa fa-check"></i> Añadir
                                         </button>
 
@@ -1098,8 +1031,8 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <!--        <div class="box-header">
             <h3 class="box-title">CUENTA: ESTADIA</h3>
             <div class="box-tools">
-                <a href="<?php echo site_url('huesped/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
-                <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-sm"><span class="fa fa-search"></span>    Productos</a>
+                <a href="<?php echo site_url('huesped/add'); ?>" class="btn btn-default btn-sm">Añadir</a> 
+                <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-default btn-sm"><span class="fa fa-search"></span>    Productos</a>
             </div>
         </div>        -->
                 
@@ -1128,7 +1061,6 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
            
         <div class="row">
             <div class="col-md-12">
-            <!--<form action="<?php echo base_url('hotel/checkout/'.$compra_id."/".$habitacion_id); ?>"  method="POST" class="form">-->
                 <div class="box">
 
         <div class="box-body table-responsive table-condensed">
@@ -1156,7 +1088,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 <tr>                      
                         <td>Descuento Global <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
                         <td>
-                         <input class="btn btn-warning" id="compra_descglobal" name="compra_descglobal" size="8" value="<?php echo ($compra[0]['compra_descglobal'] ? $compra[0]['compra_descglobal'] : '0.00'); ?>" onclick="this.select();" onKeyUp="calcularDesc('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')"> 
+                         <input class="btn btn-default" id="compra_descglobal" name="compra_descglobal" size="8" value="<?php echo ($compra[0]['compra_descglobal'] ? $compra[0]['compra_descglobal'] : '0.00'); ?>" onclick="this.select();" onKeyUp="calcularDesc('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')"> 
                         </td>
                 </tr>
                 <tr>                      
@@ -1168,7 +1100,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 <tr>                      
                         <td>Efectivo <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
                         <td>
-                            <input class="btn btn-warning" id="compra_efectivo" size="8" name="compra_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularCambio('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')">
+                            <input class="btn btn-default" id="compra_efectivo" size="8" name="compra_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularCambio('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')">
                 
                         </td>
                 </tr>               
@@ -1276,11 +1208,11 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                      </div>             
         </div>
         </div>
-            <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->  
+            <!--<button class="btn btn-lg btn-default btn-block" type="submit">Login</button>-->  
             <?php if($tipo_usu==1){ ?>
-            <span class="btn btn-warning">Ajustar precios de costo <input  type="checkbox"  id="actualizarprecios" name="actualizarprecios" value="1" checked="true" checked></span>
+            <span class="btn btn-default">Ajustar precios de costo <input  type="checkbox"  id="actualizarprecios" name="actualizarprecios" value="1" checked="true" checked></span>
             <?php }else{ ?>
-            <span class="btn btn-warning">Ajustar precios de costo <i class="fa fa-check-square"></i><input  type="checkbox"  id="actualizarprecios" name="actualizarprecios" value="1" checked="true" checked hidden></span>  
+            <span class="btn btn-default">Ajustar precios de costo <i class="fa fa-check-square"></i><input  type="checkbox"  id="actualizarprecios" name="actualizarprecios" value="1" checked="true" checked hidden></span>  
             <?php }  ?>
             
             <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit" onclick="final()">
@@ -1289,7 +1221,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </h4>
             </button>
             
-            <button class="btn btn-lg btn-danger btn-sm btn-block" data-dismiss="modal">
+            <button class="btn btn-lg btn-default btn-sm btn-block" data-dismiss="modal">
                 <h4>
                 <span class="fa fa-close"></span>   Cancelar  
                 </h4>
@@ -1462,7 +1394,7 @@ $("#texto2").change(function(){
                         </div>
                         <center>
                             
-                            <button class="btn btn-danger" id="cerrar_modalasignar" data-dismiss="modal">
+                            <button class="btn btn-default" id="cerrar_modalasignar" data-dismiss="modal">
 
                                 <span class="fa fa-close"></span>   Cerrar  
 
@@ -1494,8 +1426,8 @@ $("#texto2").change(function(){
                <!------------------------------------------------------------------->
             </div>
             <div class="modal-footer aligncenter">
-                <a onclick="registrarnuevacategoria()" class="btn btn-success"><span class="fa fa-check"></span> Registrar </a>
-                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                <a onclick="registrarnuevacategoria()" class="btn btn-default"><span class="fa fa-check"></span> Registrar </a>
+                <a href="#" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
             </div>
         </div>
     </div>
@@ -1504,7 +1436,7 @@ $("#texto2").change(function(){
 
 <div hidden>
     
-<button type="button" id="boton_modal_promocion" class="btn btn-primary" data-toggle="modal" data-target="#modalclasificador" >
+<button type="button" id="boton_modal_promocion" class="btn btn-default" data-toggle="modal" data-target="#modalclasificador" >
   Launch demo modal
 </button>
 </div>
@@ -1561,7 +1493,7 @@ $("#texto2").change(function(){
                                                         <input type="hidden" size="3" id="input_productoid">
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-info btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" > <fa class="fa fa-floppy-o"></fa> </button>
+                                                        <button class="btn btn-default btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" > <fa class="fa fa-floppy-o"></fa> </button>
                                                     </td>
 
                                                 
@@ -1587,7 +1519,7 @@ $("#texto2").change(function(){
                                                 <input type='hidden' value='0' id='input_cantidadtotal'>
                                             </table>
                                                                                                 
-                                                    <button class="btn btn-danger btn-xs" id="cancelar_preferencia" data-dismiss="modal" >
+                                                    <button class="btn btn-default btn-xs" id="cancelar_preferencia" data-dismiss="modal" >
                                                         <span class="fa fa-close"></span>   Cerrar
                                                     </button>
                                         </div> 
@@ -1626,8 +1558,8 @@ $("#texto2").change(function(){
                 <input type="hidden" class="form-control" name="producto" id="producto">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-success" onclick="guardar_preferenciaCaracteristicas()">Guardar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-default" onclick="guardar_preferenciaCaracteristicas()">Guardar</button>
             </div>
 		</div>
 	</div>

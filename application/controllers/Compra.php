@@ -992,7 +992,8 @@ class Compra extends CI_Controller{
            detallecomp_tipocambio,
            cambio_id,
            detallecomp_tc,
-           detallecomp_series
+           detallecomp_series,
+           detallecomp_numerolote
            )
            (SELECT 
            ".$compra_id.",
@@ -1011,7 +1012,8 @@ class Compra extends CI_Controller{
            detallecomp_tipocambio,
            cambio_id,
            detallecomp_tc,
-           detallecomp_series
+           detallecomp_series,
+           detallecomp_numerolote
            FROM 
            detalle_compra_aux
            WHERE
@@ -1414,6 +1416,7 @@ function ingresarproducto()
         $factor = $this->input->post('producto_factor');
         $moneda_tc = $this->input->post('moneda_tc');
         $moneda_id = $this->input->post('moneda_id'); // moneda de producto
+        $numerolote = $this->input->post('numerolote'); 
         $nuevacan = $cantidad * $factor;
         
         /*if (parametro_moneda_id == producto.moneda_id){ // Si la moneda del sistema es igual al del producto
@@ -1460,7 +1463,8 @@ function ingresarproducto()
         detallecomp_descuento,
         detallecomp_subtotal,
         detallecomp_total,
-        detallecomp_tc
+        detallecomp_tc,
+        detallecomp_numerolote
         )
         (
         SELECT
@@ -1475,7 +1479,8 @@ function ingresarproducto()
         ".$descuento.",
         (".$producto_costo.") * ".$nuevacan.",
         (".$producto_costo." - ".$descuento.") * ".$nuevacan.",
-         ".$moneda_tc."
+         ".$moneda_tc.",
+         '".$numerolote."'
         
         from producto where producto_id = ".$producto_id."
     )";
