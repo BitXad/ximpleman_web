@@ -74,6 +74,7 @@ function actualizadetalle(e,detalle_id,producto_id,compra_id) {
 
 
 function tabladetallecompra(){
+    
     var controlador = "";
     //var limite = 1000;
     // var base_url = document.getElementById('base_url').value;
@@ -123,13 +124,16 @@ function tabladetallecompra(){
                    else x = limite;*/
                     
                     for (var i = 0; i < n ; i++){
+                        
                         eldescuento = Number(Number(registros[i]["detallecomp_descuento"])*Number(registros[i]["detallecomp_cantidad"]));
                         if(monedaparam_id == registros[i]["estamoneda_id"]){
+                            
                             total_estam = Number(registros[i]["detallecomp_total"]);
                             total_estamoneda += total_estam;
                             subtotal_estam = Number(registros[i]["detallecomp_subtotal"]);
                             subtotal_estamoneda += subtotal_estam;
                             totaldescuento_estamoneda += eldescuento;
+                            
                             if(registros[i]["estamoneda_id"] == 1){
                                 total_otram = Number(registros[i]["detallecomp_total"])/Number(registros[i]["detallecomp_tc"]);
                                 total_otramoneda += total_otram;
@@ -248,30 +252,40 @@ function tabladetallecompra(){
 
 
                      }else{
+                         
+                        var tamanio_fuente = '10px;';
+                        var ancho_input = '60px;';
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td style='font-size:10px; width:140px;'><a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Producto'><span class='fa fa-pencil'></span></a><b>"+registros[i]["producto_nombre"]+" / </b>";
+                        html += "<td style='font-size:"+tamanio_fuente+" width:300px;'><a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Producto'><span class='fa fa-pencil'></span></a><b>"+registros[i]["producto_nombre"]+"</b>";
                         
-                        html += "<b>"+registros[i]["detallecomp_unidad"]+"</td>";                                            
-                        html += "<td style='font-size:12px; text-align:center;'>"+registros[i]["detallecomp_codigo"]+"<br><font size='1'>";
-                        if (registros[i]["detallecomp_fechavencimiento"]!='0000-00-00'&&registros[i]["detallecomp_fechavencimiento"]!=null) {
-                        html += "Venc:"+moment(registros[i]["detallecomp_fechavencimiento"]).format('DD/MM/YYYY')+"</font>";
+                        html += "<br><b>UNID.:</b> "+registros[i]["detallecomp_unidad"];      
+                        
+                            if (registros[i]["detallecomp_numerolote"]!=""){
+                            html += "* <b>LOTE.:</b> "+registros[i]["detallecomp_numerolote"]+"</td>";      
                         }
+                        
+                        html += "<td style='font-size:"+tamanio_fuente+" text-align:center;'>"+registros[i]["detallecomp_codigo"]+"<br><font size='1'>";
+                        
+                        if (registros[i]["detallecomp_fechavencimiento"]!='0000-00-00'&&registros[i]["detallecomp_fechavencimiento"]!=null) {
+                            html += "<span class='btn btn-xs btn-facebook' style='padding:0px; margin:0px;'> Venc:"+moment(registros[i]["detallecomp_fechavencimiento"]).format('DD/MM/YYYY')+"</span></font>";
+                        }
+                        
                         html += "</td><td><input id='compra_identi'  name='compra_id' type='hidden' class='form-control' value='"+compra_id+"'>";
                         html += "<input id='producto_identi'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>" ;
                         
-                        html += "<input  class='input-sm' style='font-size:13px; width:100%;padding-left:0px; padding-right:0px;' id='detallecomp_precio"+registros[i]["detallecomp_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")'  class='form-control'  value='"+Number(registros[i]["detallecomp_precio"]).toFixed(2)+"'  ></td>"; 
-                        html += "<td><input  class='input-sm' style='font-size:13px; width:100%;padding-left:0px; padding-right:0px;' id='detallecomp_costo"+registros[i]["detallecomp_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' type='text' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' class='form-control' value='"+Number(registros[i]["detallecomp_costo"]).toFixed(2)+"' ></td>";
-                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-sm' style='font-size:13px;width:65px;' id='detallecomp_cantidad"+registros[i]["detallecomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detallecomp_cantidad"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' >";
+                        html += "<input  class='input-xs' style='font-size:"+tamanio_fuente+" width:"+ancho_input+";padding-left:0px; padding-right:0px;' id='detallecomp_precio"+registros[i]["detallecomp_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")'  class='form-control'  value='"+Number(registros[i]["detallecomp_precio"]).toFixed(2)+"'  ></td>"; 
+                        html += "<td><input  class='input-xm' style='font-size:"+tamanio_fuente+" width:"+ancho_input+";padding-left:0px; padding-right:0px;' id='detallecomp_costo"+registros[i]["detallecomp_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' class='form-control' value='"+Number(registros[i]["detallecomp_costo"]).toFixed(2)+"' ></td>";
+                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-xm' style='font-size:"+tamanio_fuente+" width:"+ancho_input+"' id='detallecomp_cantidad"+registros[i]["detallecomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detallecomp_cantidad"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' >";
                         html += "<input id='detallecomp_id'  name='detallecomp_id' type='hidden' class='form-control' value='"+registros[i]["detallecomp_id"]+"'>";
                        
                         //html += "<td style='font-size:13px; text-align:center;'>"+Number(registros[i]["detallecomp_subtotal"]).toFixed(2)+"</b></td>";
-                        html += "<td style='font-size:13px; text-align:center;'>";
+                        html += "<td style='font-size:"+tamanio_fuente+" text-align:center;'>";
                         html += Number(subtotal_estam).toFixed(2)+"</b>";
                         html += "<br><span style='white-space: nowrap; font-size: 9px' class='text-bold'>";
                         html += mon_secundaria+" "+Number(subtotal_otram).toFixed(2)+"</span></td>";
-                        html += "<td><input  class='input-sm' style='font-size:13px; width:55px;' id='detallecomp_descuento"+registros[i]["detallecomp_id"]+"'  name='descuento'  type='text' autocomplete='off' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' value='"+Number(registros[i]["detallecomp_descuento"]).toFixed(2)+"' >";
+                        html += "<td><input  class='input-xs' style='font-size:"+tamanio_fuente+" width:55px;' id='detallecomp_descuento"+registros[i]["detallecomp_id"]+"'  name='descuento'  type='text' autocomplete='off' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' value='"+Number(registros[i]["detallecomp_descuento"]).toFixed(2)+"' >";
                        
                         
                        
@@ -643,6 +657,7 @@ $('#compra_descuento').val(descuento.toFixed(2));
 
 
 function detallecompra(compra_id,producto_id){
+    
     var controlador = "";
     if(document.getElementById("agrupar").checked==true){
         var agrupar = 1;
@@ -656,6 +671,7 @@ function detallecompra(compra_id,producto_id){
     var producto_fechavenc = document.getElementById('detallecomp_fechavencimiento'+producto_id).value;
     var producto_factor = document.getElementById('select_factor'+producto_id).value;
     var moneda_id = document.getElementById('moneda_id'+producto_id).value;
+    var numerolote = document.getElementById('numerolote'+producto_id).value;
     var moneda_tc = document.getElementById('moneda_tc').value;
     
     // var base_url = document.getElementById('base_url').value;
@@ -666,11 +682,12 @@ function detallecompra(compra_id,producto_id){
             data:{compra_id:compra_id, producto_id:producto_id, cantidad:cantidad, descuento:descuento,
                   producto_costo:producto_costo, producto_precio:producto_precio, agrupar:agrupar,
                   producto_fechavenc:producto_fechavenc, producto_factor:producto_factor,
-                  moneda_id:moneda_id, moneda_tc:moneda_tc},
+                  moneda_id:moneda_id, moneda_tc:moneda_tc, numerolote:numerolote},
             success:function(respuesta){
                 tabladetallecompra();
             }
     });
+    
 }
  
 function quitardetalle(detallecomp_id){
@@ -1488,7 +1505,7 @@ function tablaresultados(opcion)
                     var cont = 0;
                     var cant_total = 0;
                     var total_detalle = 0;
-                    var n = registros.length; //tama«Ðo del arreglo de la consulta
+                    var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
                     var anchoinput = 50; // ancho de los campos en compras
@@ -1517,7 +1534,8 @@ function tablaresultados(opcion)
                             
                         html += "<div class='col-md-12' style='padding-left: 0px;'>";
 
-                        html += "<b><font size='2'>"+registros[i]["producto_nombre"]+"</font> ("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>"+Number(registros[i]["existencia"]).toFixed(2)+"</span>";
+                        html += "<b><font size='2'>"+registros[i]["producto_nombre"]+"</font> ("+registros[i]["producto_codigo"]+")</b>";
+                        html += "<br><span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>SALDO: "+Number(registros[i]["existencia"]).toFixed(2)+"</span>";
 //                        html += " <span class='btn btn-danger btn-xs' style='font-size:10px; face=arial narrow;' title='Historial de precios de compra'><i class='fa fa-book'></i> </span>";
 
                        
@@ -1526,7 +1544,7 @@ function tablaresultados(opcion)
                         html += "</span>";
                         
                         
-                        html += "   <select class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
+                        html += "   <select class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow; padding-top:2px; padding-buttom:3px;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1'>";
                         precio_unidad = registros[i]["producto_precio"];
                         html += "           "+registros[i]["producto_unidad"]+" "+registros[i]["moneda_descripcion"]+": "+precio_unidad.fixed(2)+"";
@@ -1598,73 +1616,50 @@ function tablaresultados(opcion)
                             
                         }
                         else{
-                            
-//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
-//                            html += "<label  class='control-label' style='margin-bottom :0px'>PREC. </label><input class='input-sm' style='padding-left: 1px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
-//                            html += "<div class='col-md-2' style='padding-left: 0px;'>";
-//                            html += "<label  class='control-label' style='margin-bottom :0px'>COSTO </label><input class='input-sm' style='padding-left: 1px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
-//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
-//                            html += "<label  class='control-label' style='margin-bottom :0px'>DESC. </label><input class='input-sm' style='padding-left: 1px;' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
-//                            html += "<div class='col-md-2'style='padding-left: 0px;'  >";
-//                            html += "<label  class='control-label' style='margin-bottom :0px'>CANT. </label><input class='input-sm ' style='padding-left: 1px; width:70px' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' onkeypress='pasardetalle(event,"+compra_id+","+registros[i]["producto_id"]+")' class='form-control' placeholder='cantidad' required value='1'> </div>";
-//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
-//                            html += "<label  class='control-label' style='margin-bottom :0px'>FEC.VENC. </label><input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'  class='form-control' ></div></td>";
-//                       
+                                              
                               html += "<table style='font-size: 10pt;' id='tablares' name='tablares'>";
                               html += "<tbody class='buscar33'>"
-                                html += "<tr style='font-size: 10px;'>";
-                                  html += "<td style='text-align: center;'><b>PRECIO</b></td>";
-                                  html += "<td style='text-align: center;'><b>COSTO</b></td>";
-                                  html += "<td style='text-align: center;'><b>DESC.</b></td>";
-                                  html += "<td style='text-align: center;'><b>CANT.</b></td>";
-                                  html += "<td style='text-align: center;'><b>FECHA VENC.</b></td>";
+                                html += "<tr style='font-size: 10px; border-width:0px;'>";
+                                  html += "<td style='text-align: center; border-width:0px;'><b>PRECIO</b></td>";
+                                  html += "<td style='text-align: center; border-width:0px;'><b>COSTO</b></td>";
+                                  html += "<td style='text-align: center; border-width:0px;'><b>DESC.</b></td>";
+                                  html += "<td style='text-align: center; border-width:0px;'><b>CANT.</b></td>";
+                                  html += "<td style='text-align: center; border-width:0px;'><b>FECHA VENC.</b></td>";
+                                  html += "<td style='text-align: center; border-width:0px;'><b>LOTE</b></td>";
 
+                                var estiloTD = "style='border-width:0px; font-size: 8px;'"
                                 html += "</tr>";
                               
                               html += "<tr>";
-                                html += "<td>";
+                                html += "<td "+estiloTD+">";
                                       html += "<input style='width:"+anchoinput+"px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01'  value='"+registros[i]["producto_precio"]+"' >";
                                 html += "</td>";
                                 
-                                html += "<td>";
+                                html += "<td "+estiloTD+">";
                                       html += "<input style='width:"+anchoinput+"px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01'  value='"+registros[i]["producto_ultimocosto"]+"' >";
                                 html += "</td>";
                                 
-                                html += "<td>";
+                                html += "<td "+estiloTD+">";
                                       html += "<input style='width:"+anchoinput+"px;' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number'  value='0.00' step='.01' required >";
                                 html += "</td>";
                                 
-                                html += "<td>";
+                                html += "<td "+estiloTD+">";
                                       html += "<input style='width:"+anchoinput+"px;' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' onkeypress='pasardetalle(event,"+compra_id+","+registros[i]["producto_id"]+")'  placeholder='cantidad' required value='1'>";
                                 html += "</td>";
                                 
-                                html += "<td>";
+                                html += "<td "+estiloTD+">";
                                       html += "<input style='width:"+(anchoinput+70)+"px; font-size: 12px;' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'   >";
                                 html += "</td>";
                                 
+                                html += "<td "+estiloTD+">";
+                                      html += "<input style='width:"+anchoinput+"px; font-size: 12px;' id='numerolote"+registros[i]["producto_id"]+"'   autocomplete='off' name='numerolote' type='text' step='0.01'  value='' >";
+                                html += "</td>";
+
                               html += "</tr>";
                               html += "</tbody>";
                               
                             html += "</table>";
-                            html += "<br>";
-
-                            
-
-//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
-//                            html += "<label   style='margin-bottom :0px'>PREC. </label><input class='input-sm' style='padding-left: 1px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01'  value='"+registros[i]["producto_precio"]+"' ></div>";
-//                            html += "<div class='col-md-2' style='padding-left: 0px;'>";
-//                            
-//                           html += "<label   style='margin-bottom :0px'>COSTO </label><input class='input-sm' style='padding-left: 1px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01'  value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
-//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
-//
-//                           html += "<label   style='margin-bottom :0px'>DESC. </label><input class='input-sm' style='padding-left: 1px;' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number'  value='0.00' step='.01' required ></div>";
-//                            html += "<div class='col-md-2'style='padding-left: 0px;'  >";
-//                            html += "<label   style='margin-bottom :0px'>CANT. </label><input class='input-sm ' style='padding-left: 1px; width:70px' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' onkeypress='pasardetalle(event,"+compra_id+","+registros[i]["producto_id"]+")'  placeholder='cantidad' required value='1'> </div>";
-//                            html += "<div class='col-md-2' style='padding-left: 0px;' >";
-//                            html += "<label   style='margin-bottom :0px'>FEC.VENC. </label><input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'   ></div></td>";
- 
-
-
+                            html += "<br>";                       
 
                        }
                         

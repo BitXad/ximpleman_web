@@ -259,6 +259,15 @@ class Producto extends CI_Controller{
         // check if the producto exists before trying to edit it
         $data['producto'] = $this->Producto_model->get_esteproducto($producto_id);
         
+        //bandera para actualizar la modifcacion de producto_colsur para mostrar si un producto fue editado
+            $paramsx = array(
+                  
+                    'producto_colsur' => 1,
+                );
+
+                $this->Producto_model->update_producto($producto_id,$paramsx);        
+        
+        
         if(isset($data['producto']['producto_id']))
         {
             $this->load->library('form_validation');

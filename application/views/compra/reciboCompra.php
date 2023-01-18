@@ -204,13 +204,13 @@ border-bottom:1px solid black;
 </table>       
 <div class="box-body table-responsive"> 
 
-        <table class="table table-striped " border-bottom="1" id="mitabla" style="width: 18cm; padding: 0;">                        
+        <table class="table table-striped " border-bottom="1" id="mitabla" style="width: 19cm; padding: 0;">                        
                         <tr>
 
                             
-                            <th>ITEM</th>
+                            <th>#</th>
                             <th>CODIGO</th>
-                            <th>CONCEPTO</th>
+                            <th>DETALLE</th>
                             <th>UNIDAD</th>
                             <th>CANT.</th>
                             <th>UNIT.</th>
@@ -218,6 +218,7 @@ border-bottom:1px solid black;
                             <th>DESC.</th>
                             <th>D.GLOB</th>
                             <th>TOTAL</th>
+                            <th>VENCIMIENTO</th>
                         
                        
                         </tr>
@@ -228,18 +229,24 @@ border-bottom:1px solid black;
                                  $cont = $cont+1; ?>
                             
              <tr>
-                            <td><?php echo $cont;?></td>
-                            <td style="text-align: center;"><?php echo $dc['detallecomp_codigo'];?></td>
-                            <td style="text-align: left;"><?php echo $dc['producto_nombre'];?></td>                            
-                            <td><?php echo $dc['detallecomp_unidad'];?></td>
-                            <td><?php echo $dc['detallecomp_cantidad'];?></td>
-                            <td><?php echo number_format($dc['detallecomp_costo'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_subtotal'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_descuento'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_descglobal'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_total'],'2','.',',');?></td>
+                 
+                    <td><?php echo $cont;?></td>
+                    <td style="text-align: center;"><?php echo $dc['detallecomp_codigo'];?></td>
+                    <td style="text-align: left;"><?php echo $dc['producto_nombre'];?></td>                            
+                    <td><?php echo $dc['detallecomp_unidad'];?></td>
+                    <td><?php echo number_format($dc['detallecomp_cantidad'],'2','.',',');?></td>
+                    <td><?php echo number_format($dc['detallecomp_costo'],'2','.',',');?></td>
+                    <td><?php echo number_format($dc['detallecomp_subtotal'],'2','.',',');?></td>
+                    <td><?php echo number_format($dc['detallecomp_descuento'],'2','.',',');?></td>
+                    <td><?php echo number_format($dc['detallecomp_descglobal'],'2','.',',');?></td>
+                    <td><?php echo number_format($dc['detallecomp_total'],'2','.',',');?></td>
+                    <td>
+                        <?php echo $dc['detallecomp_fechavencimiento']; ?>
+                        <?php if($dc['detallecomp_numerolote']!=""){ echo "<br>LOTE: ".$dc['detallecomp_numerolote']; } ?>
+                        
+                    </td>
                           
-        </tr> 
+            </tr> 
                     
                            <?php } ?>
 

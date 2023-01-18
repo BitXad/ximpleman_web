@@ -259,10 +259,15 @@
                         </div>
                     
                 </div>
-            
+                    <div>
+                        <button type="submit" class="btn btn-success" autofocus="true">
+                            <i class="fa fa-floppy-o"></i> prueba
+                        </button>
+
+                    </div>
             
           	<div class="box-footer" style="display: none;" id="div_botones">
-                    <button type="submit" class="btn btn-success">
+                    <button type="input" class="btn btn-success">
             		<i class="fa fa-floppy-o"></i> Cerrar Caja
                     </button>
                     <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-danger">
