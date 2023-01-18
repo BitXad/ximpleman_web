@@ -38,8 +38,9 @@ class Emision_paquetes_model extends CI_Model{
     function getall_recepcionpaquete()
     {
         $sql = "
-            select rp.*
+            select rp.*, f.venta_id, f.factura_numero
                 FROM recepcion_paquetes rp
+                left join factura f on rp.factura_id = f.factura_id
                 order by rp.`recpaquete_id` desc";
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -60,6 +61,14 @@ class Emision_paquetes_model extends CI_Model{
     function ejecutar($sql){
         
         return $this->db->query($sql);
+    }
+    
+    /*
+     * function to delete emision paquetes
+     */
+    function delete_emisionpaquete($recpaquete_id)
+    {
+        return $this->db->delete('recepcion_paquetes',array('recpaquete_id'=>$recpaquete_id));
     }
 
 }

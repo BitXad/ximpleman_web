@@ -55,6 +55,8 @@
                             <th>Mensajes</th>
                             <th>Fecha Hora</th>
                             <th>Evento</th>
+                            <th>Num. Fact.</th>
+                            <th>Num. Venta</th>
                             <th></th>
                             <!--<th width="100px" class="no-print"></th>-->
                         </tr>

@@ -53,7 +53,11 @@
                         <td><?php echo $a['almacen_nombre']; ?><sub> [<?php echo $a['almacen_id']; ?>]</sub></td>
                         <td><?php echo $a['almacen_descripcion']; ?></td>
                         <td><?php echo $a['almacen_basedatos']; ?></td>
-                        <td><?php echo $a['almacen_url']; ?></td>
+                        <td>
+                            <a href="<?php echo $a['almacen_url']; ?>" class="btn btn-info btn-xs" target="_blank">
+                                <?php echo $a['almacen_url']; ?>
+                            </a>
+                            </td>
 
                         <td class="text-center" style="background-color: #<?php echo $a['estado_color']; ?>"> <?php echo $a['estado_descripcion']; ?></td>
                         <td class="text-center no-print">

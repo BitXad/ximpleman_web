@@ -26,7 +26,7 @@ class Almacen extends CI_Controller{
      */
     function index()
     {
-        if($this->acceso(118)){
+        if($this->acceso(24)){
             $data['page_title'] = "Almacenes";
             
             $data['almacen'] = $this->Almacen_model->get_all_almacen();
@@ -41,7 +41,7 @@ class Almacen extends CI_Controller{
      */
     function add()
     {
-        if($this->acceso(118)){
+        if($this->acceso(24)){
             $data['page_title'] = "Almacen";
             $this->load->library('form_validation');
             $this->form_validation->set_rules('almacen_nombre','Almacen nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -74,7 +74,7 @@ class Almacen extends CI_Controller{
      */
     function edit($almacen_id)
     {
-        if($this->acceso(118)){
+        if($this->acceso(24)){
             $data['page_title'] = "Almacen";
             // check if the almacen exists before trying to edit it
             $data['almacen'] = $this->Almacen_model->get_almacen($almacen_id);
@@ -115,7 +115,7 @@ class Almacen extends CI_Controller{
      */
     function remove($almacen_id)
     {
-        if($this->acceso(118)){
+        if($this->acceso(24)){
         $almacen = $this->Almacen_model->get_almacen($almacen_id);
         // check if the almacen exists before trying to delete it
         if(isset($almacen['almacen_id']))

@@ -26,6 +26,7 @@ function cargar_modal(registroevento_id)
                     $("#evento_codigocontrol1").val(registros[0]["registroeventos_codigocontrol"]);
                     $("#evento_detalle1").val(registros[0]["registroeventos_detalle"]);
                     $("#evento_codigo1").val(registros[0]["registroeventos_codigoevento"]);
+                    $("#registroeventosterminar_id").val(registros[0]["registroeventos_id"]);
                 }
 //                    $("#tablaresultados").html(html);
                     document.getElementById('loader').style.display = 'none';
@@ -76,13 +77,19 @@ function tablaresultadoseventos()
                         html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_puntodeventa']+"</td>";
                         html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_inicio']+"</td>";
                         html += "<td style='padding: 2px;'>"+registros[i]['registroeventos_fin']+"</td>";
+                        html += "<td style='padding: 2px;'>"+registros[i]['estado_descripcion']+"</td>";
+                        html += "<td style='padding: 2px;'>";
                         if (! registros[i]['registroeventos_codigo']>0){
-//                            html += "<td style='padding: 2px;'><button  data-toggle='modal' data-target='#modal_cerrar_evento' class='btn btn-xs btn-facebook'><fa class='fa fa-floppy-o'> </fa> Cerrar Evento</button></td>";
-                            html += "<td style='padding: 2px;'><button  data-toggle='modal' data-target='#modal_cerrar_evento' class='btn btn-xs btn-facebook' onclick='cargar_modal("+registros[i]['registroeventos_id']+")'><fa class='fa fa-floppy-o'> </fa> Cerrar Evento</button></td>";
-                        }else{
-                            html += "<td style='padding: 2px;'></td>";
-                            
+                            //html += "<td style='padding: 2px;'><button  data-toggle='modal' data-target='#modal_cerrar_evento' class='btn btn-xs btn-facebook'><fa class='fa fa-floppy-o'> </fa> Cerrar Evento</button></td>";
+                            html += "<button  data-toggle='modal' data-target='#modal_cerrar_evento' class='btn btn-xs btn-facebook' onclick='cargar_modal("+registros[i]['registroeventos_id']+")'><fa class='fa fa-floppy-o'> </fa> Cerrar Evento</button>";
                         }
+                        
+                        if(registros[i]['estado_id'] == 1){
+                            html += "<a class='btn btn-danger btn-xs' onclick='darde_baja("+registros[i]['registroeventos_id']+")' title='Inactivar el evento significativo'><span class='fa fa-trash'></span></a>";
+                        }else{
+                            html += "<a class='btn btn-success btn-xs' onclick='darde_alta("+registros[i]['registroeventos_id']+")' title='Activar el evento significaivo'><span class='fa fa-check'></span></a>";
+                        }
+                        html += "</td>";
                             /*
                         html += "<td style='padding: 2px;' class='text-center'>";
                         html += moment(registros[i]["ordencompra_fecha"]).format("DD/MM/YYYY");
@@ -231,41 +238,83 @@ function registrar_evento(){
 
 
 function actualizar_registro_evento(){
-        
-        let base_url = $("#base_url").val();
-        let controlador = `${base_url}eventos_significativos/actualizarEventoSignificativo`;
-        let fecha_inicio =  document.getElementById('fecha_inicio1').value;
-        let fecha_fin =  document.getElementById('fecha_fin1').value;
-        let cufd_evento =  document.getElementById('evento_cufd1').value;
-        let codigo_evento =  document.getElementById('evento_codigo1').value;
-        let texto_evento = document.getElementById('evento_detalle1').value;
-        
-        //alert(fecha_inicio+" ** "+fecha_fin+" ** "+codigo_evento+" ** "+texto_evento);
-        fecha_inicio =  fecha_inicio+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-        fecha_fin =  fecha_fin+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
-        document.getElementById('loader2').style.display = 'block';
-        
-        $.ajax({
-            url: controlador,
-            type:"POST",
-            data:{
-                fecha_inicio: fecha_inicio, fecha_fin:fecha_fin, cufd_evento:cufd_evento,
-                codigo_evento:codigo_evento, texto_evento:texto_evento,
-            },
-            // async: false,
-            success: (respuesta)=>{
-                
-                alert(respuesta);
-                tablaresultadoseventos();
-                document.getElementById('loader2').style.display = 'none';
-                $("#modaleventos").modal("hide");
-                
-            },
-            error: ()=>{
-                alert("Ocurrio un error al realizar la verificación del evento, por favor intente en unos minutos")
-                document.getElementById('loader').style.display = 'none';
-            }
+    let base_url = $("#base_url").val();
+    let controlador = `${base_url}eventos_significativos/actualizarEventoSignificativo`;
+    let fecha_inicio =  document.getElementById('fecha_inicio1').value;
+    let fecha_fin =  document.getElementById('fecha_fin1').value;
+    let cufd_evento =  document.getElementById('evento_cufd1').value;
+    let codigo_evento =  document.getElementById('evento_codigo1').value;
+    let texto_evento = document.getElementById('evento_detalle1').value;
+    let registroeventos_id = document.getElementById('registroeventosterminar_id').value;
+
+    //alert(fecha_inicio+" ** "+fecha_fin+" ** "+codigo_evento+" ** "+texto_evento);
+    //fecha_inicio =  fecha_inicio+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
+    fecha_inicio =  fecha_inicio+"."+ Math.floor(Math.random() * 1000);
+    fecha_fin    =  fecha_fin   +":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
+    document.getElementById('loader2').style.display = 'block';
+    $.ajax({
+        url: controlador,
+        type:"POST",
+        data:{
+            fecha_inicio: fecha_inicio, fecha_fin:fecha_fin, cufd_evento:cufd_evento,
+            codigo_evento:codigo_evento, texto_evento:texto_evento, registroeventos_id:registroeventos_id,
+        },
+        // async: false,
+        success: (respuesta)=>{
+
+            alert(respuesta);
+            tablaresultadoseventos();
+            document.getElementById('loader2').style.display = 'none';
+            $("#modaleventos").modal("hide");
+
+        },
+        error: ()=>{
+            alert("Ocurrio un error al realizar la verificación del evento, por favor intente en unos minutos")
+            document.getElementById('loader').style.display = 'none';
+        }
+    });
+
+    document.getElementById('loader2').style.display = 'none';
+}
+
+/* dar de baja el evento significativo */
+function darde_baja(registroeventos_id)
+{
+    let confirmacion =  confirm('Esta seguro que quiere inactivar este Evento?\nNota.- este Evento ya no estara disponible para envio de paquetes!.')
+    if(confirmacion == true){
+        var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'Eventos_significativos/darde_baja';
+        document.getElementById('loader').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{registroeventos_id:registroeventos_id
+                },
+                success:function(result){
+                    res = JSON.parse(result);
+                    document.getElementById('loader').style.display = 'none';
+                    tablaresultadoseventos();
+                },
         });
-        
-        document.getElementById('loader2').style.display = 'none';
     }
+}
+
+/* dar de alta el evento significativo */
+function darde_alta(registroeventos_id)
+{
+    let confirmacion =  confirm('Esta seguro que quiere activar este Evento?\nNota.- este Evento estara disponible para envio de paquetes!.')
+    if(confirmacion == true){
+        var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'Eventos_significativos/darde_alta';
+        document.getElementById('loader').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{registroeventos_id:registroeventos_id
+                },
+                success:function(result){
+                    res = JSON.parse(result);
+                    document.getElementById('loader').style.display = 'none';
+                    tablaresultadoseventos();
+                },
+        });
+    }
+}

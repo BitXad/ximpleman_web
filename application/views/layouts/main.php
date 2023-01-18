@@ -358,6 +358,13 @@
                         </li>
                         <?php
                         }
+                        if($rolusuario[24-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('almacen');?>"><i class="fa fa-th"></i>Almacenes</a>
+                        </li>
+                        <?php
+                        }
                         ?>
                     </ul>
                 </li>
@@ -710,6 +717,9 @@
                         </li>
                         <li>
                             <a href="<?php echo site_url('venta/inventario_envases');?>"><i class="fa fa-glass"></i> Inventario de Envases</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('inventario/inventario_sucursal');?>"><i class="fa fa-navicon"></i> Inventario Sucursales</a>
                         </li>
                         <?php
                         } ?>
