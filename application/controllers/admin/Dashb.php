@@ -27,6 +27,7 @@ class Dashb extends CI_Controller
         $this->load->model('Rol_usuario_model');
         $this->load->model('Tipo_usuario_model');
         $this->load->model('Sucursales_model');
+        $this->load->model('Sistema_model');
         // $this->load->model('Dashb_model');
         
         $parametros = $this->Parametro_model->get_parametros();
@@ -61,6 +62,7 @@ class Dashb extends CI_Controller
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
                 $data['sucursales'] = $this->Sucursales_model->get_sucursales();
                 $data['punto_venta'] = $session_data['puntoventa_codigo'];
+                $data['sistema'] = $this->Sistema_model->get_sistema();
  
                 $usuario_id = $session_data['usuario_id'];
                 $data['usuario'] = $usuario_id;

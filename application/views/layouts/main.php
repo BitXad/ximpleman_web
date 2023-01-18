@@ -12,10 +12,11 @@
     <?php
         $session_data = $this->session->userdata('logged_in');
         $rolusuario = $session_data['rol'];
+        $nombre_sistema = "Ximpleman"; 
     ?>
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Ximpleman<?php if(isset($page_title)){ echo " - ".$page_title; }?> </title>
+    <title><?php echo $nombre_sistema; ?><?php if(isset($page_title)){ echo " - ".$page_title; }?> </title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -86,7 +87,7 @@
 <input type="hidden" name="empresa_nombre" id="empresa_nombre" value="<?php if(isset($empresa)){ echo $empresa[0]['empresa_nombre'];} else {echo ""; }?>" />
 <!--<input type="hidden" name="punto_venta" id="punto_venta" value="<?php echo $punto_venta; ?>" />-->
 
-<body class="hold-transition skin-blue sidebar-mini sidebar-collapsed sidebar-collapse" onload="mueveReloj()">
+<body class="hold-transition skin-<?php echo $sistema["sistema_color"]; ?> sidebar-mini sidebar-collapsed sidebar-collapse" onload="mueveReloj()">
 <div class="wrapper">
     <header class="main-header">
         <!-- Logo -->
@@ -138,7 +139,7 @@
                 </ul>
             </div>
 <div style="float: none; line-height: 13px; color:white; " face="Arial" class="text-center">
-    <br><b style="font-size: 16pt;">Ximpleman</b>
+    <br><b style="font-size: 16pt;"><?php echo $nombre_sistema = $sistema["sistema_nombre"]." ".$sistema["sistema_version"]; ?></b>
     <br><small style="font-size: 8pt;"><?php if(isset($empresa[0]["empresa_nombresucursal"])){ echo $empresa[0]["empresa_nombresucursal"]; } ?> </small>
 <!--    <span class="text-bold" style="display: block; padding:0px; color: #FFF; font-size: 22px;">Ximpleman web</span>
     <span class="text" style="display: block; padding:0px; color: #FFF; font-size: 10px;"><?php echo "SUCURSAL PRINCIPAL"; ?></span>-->

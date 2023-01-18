@@ -6,8 +6,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!DOCTYPE html>
 <html>
+    <?php $nombre_sistema =  $sistema['sistema_nombre']." ".$sistema['sistema_version']; ?>
 <head>
-<title><?php echo $pagina_web[0]['pagina_nombre']; ?></title>
+<title><?php echo $nombre_sistema; ?></title>
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

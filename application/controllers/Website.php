@@ -20,6 +20,7 @@ class Website extends CI_Controller{
         $this->load->model('Configuracion_email_model');
         $this->load->helper('cookie');
         $this->load->model('Red_social_model');
+        $this->load->model('Sistema_model');
     }            
 
     function index($idioma_id)
@@ -27,6 +28,7 @@ class Website extends CI_Controller{
         
         //$idioma_id = 1; //1 - español
         $data['idioma_id'] = $idioma_id;
+        $data['sistema'] = $this->Sistema_model->get_sistema();
         $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
         $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
         $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
