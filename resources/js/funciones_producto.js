@@ -125,11 +125,12 @@ function tablaresultadosproducto(limite){
                             caracteristica = "<div style='word-wrap: break-word !important; max-width: 400px !important; white-space: normal'>"+registros[i]["producto_caracteristicas"]+"</div>";
                         }
                         //html+= caracteristica+"</td>";
-                        pintar = "";
+                        /*pintar = "";
                         if(registros[i]["producto_colsur"] >0){
                             pintar = "style='background-color: #d16b34'"
                         }
-                        html += "<tr "+pintar+">";
+                        html += "<tr "+pintar+">";*/
+                       html+= "<tr>";
                         
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>";

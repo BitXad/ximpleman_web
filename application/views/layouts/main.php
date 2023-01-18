@@ -719,7 +719,7 @@
                             <a href="<?php echo site_url('venta/inventario_envases');?>"><i class="fa fa-glass"></i> Inventario de Envases</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('inventario/inventario_sucursal');?>"><i class="fa fa-navicon"></i> Inventario Sucursales</a>
+                            <a href="<?php echo site_url('inventario_sucursal');?>"><i class="fa fa-navicon"></i> Inventario Sucursales</a>
                         </li>
                         <?php
                         } ?>
