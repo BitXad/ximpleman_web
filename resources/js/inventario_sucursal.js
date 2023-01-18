@@ -108,11 +108,11 @@ function tabla_inventariosuc(){
                         html += "<tr><td colspan='"+paracolspan+"'><b>"+inv[i]["categoria_nombre"]+"<b></tr>";
                     }   
 
-                        html += `<tr style='padding:0;${inv[i]["existencia"] <= 0 ? "background-color: #FF8989":""}'>`;
+                        html += `<tr style='padding:0;'>`;
 
                                     total = inv[i]["producto_costo"]*inv[i]["existencia"]; 
                                     total_final += total;
-                                    existencia = parseFloat(inv[i]["existencia"]);                                                    
+                                    //existencia = parseFloat(inv[i]["existencia"]);                                                    
                         html += "             	<td "+margen+">"+(i+1)+"</td>";
                         html += "             	<td "+margen+"><font size='0.5'>"+ inv[i]["producto_nombre"]+"</font>";
                         html += "             	<td "+margen+" style='background: red'><center><font size='1'>"+inv[i]["producto_codigo"]+"</font> </center></td>";
@@ -120,43 +120,63 @@ function tabla_inventariosuc(){
                         html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_unidad"]+"</center></font> </td>";
                         html += "	<td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(2)+"</center></td>";
                         if(1 <= totalalmacen){
-                            html += "<td "+margen+" class='text-right'>"+inv[i]['suc1']+"</td>";
+                            //html += "<td "+margen+" class='text-right'>"+inv[i]['suc1']+"</td>";
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc1"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += inv[i]['suc1']+"</td>";
                             total_saldo += Number(inv[i]['suc1']);
                         }
                         if(2 <= totalalmacen){
-                            html += "<td "+margen+" class='text-right'>"+inv[i]['suc2']+"</td>";
+                            //html += "<td "+margen+" class='text-right'>"+inv[i]['suc2']+"</td>";
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc2"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += inv[i]['suc2']+"</td>";
                             total_saldo += Number(inv[i]['suc2']);
                         }
                         if(3 <= totalalmacen){
-                            html += "<td "+margen+" class='text-right'>"+inv[i]['suc3']+"</td>";
+                            //html += "<td "+margen+" class='text-right'>"+inv[i]['suc3']+"</td>";
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc3"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += inv[i]['suc3']+"</td>";
                             total_saldo += Number(inv[i]['suc3']);
                         }
                         if(4 <= totalalmacen){
-                            html += "<td "+margen+" class='text-right'>"+inv[i]['suc4']+"</td>";
+                            //html += "<td "+margen+" class='text-right'>"+inv[i]['suc4']+"</td>";
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc4"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += inv[i]['suc4']+"</td>";
                             total_saldo += Number(inv[i]['suc4']);
                         }
                         if(5 <= totalalmacen){
-                            html += "<td "+margen+" class='text-right'>"+inv[i]['suc5']+"</td>";
+                            //html += "<td "+margen+" class='text-right'>"+inv[i]['suc5']+"</td>";
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc5"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += inv[i]['suc5']+"</td>";
                             total_saldo += Number(inv[i]['suc5']);
                         }
                         if(6 <= totalalmacen){
-                            html += "<td "+margen+" class='text-right'>"+inv[i]['suc6']+"</td>";
+                            //html += "<td "+margen+" class='text-right'>"+inv[i]['suc6']+"</td>";
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc6"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += inv[i]['suc6']+"</td>";
                             total_saldo += Number(inv[i]['suc6']);
                         }
                         if(7 <= totalalmacen){
-                            html += "<td "+margen+" class='text-right'>"+inv[i]['suc7']+"</td>";
+                            //html += "<td "+margen+" class='text-right'>"+inv[i]['suc7']+"</td>";
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc7"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += inv[i]['suc7']+"</td>";
                             total_saldo += Number(inv[i]['suc7']);
                         }
                         if(8 <= totalalmacen){
-                            html += "<td "+margen+" class='text-right'>"+inv[i]['suc8']+"</td>";
+                            //html += "<td "+margen+" class='text-right'>"+inv[i]['suc8']+"</td>";
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc8"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += inv[i]['suc8']+"</td>";
                             total_saldo += Number(inv[i]['suc8']);
                         }
                         if(9 <= totalalmacen){
-                            html += "<td "+margen+" class='text-right'>"+inv[i]['suc9']+"</td>";
+                            //html += "<td "+margen+" class='text-right'>"+inv[i]['suc9']+"</td>";
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc9"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += inv[i]['suc9']+"</td>";
                             total_saldo += Number(inv[i]['suc9']);
                         }
                         if(10 <= totalalmacen){
-                            html += "<td "+margen+" class='text-right'>"+inv[i]['suc10']+"</td>";
+                            //html += "<td "+margen+" class='text-right'>"+inv[i]['suc10']+"</td>";
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc10"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += inv[i]['suc10']+"</td>";
                             total_saldo += Number(inv[i]['suc10']);
                         }
                         html += "<td "+margen+" class='text-right'>"+total_saldo+"</td>";

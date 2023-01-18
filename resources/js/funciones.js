@@ -6053,14 +6053,14 @@ function cambiar_tipoemision()
     var select = document.getElementById('select_eventos'); //El <select>
         select_texto = select.options[select.selectedIndex].innerText; //El texto de la opción seleccionada
     
-//    alert(
-//    "parametro_id: "+parametro_id+"\n\l"+
-//    "punto_venta: "+punto_venta+"\n\l"+
-//    "parametro_tipoemision: "+parametro_tipoemision+"\n\l"+    
-//    "select_eventos: "+select_eventos+"\n\l"+
-//    "select: "+select+"\n\l"+
-//    "select_texto: "+select_texto);
-//    
+    /*alert(
+    "parametro_id: "+parametro_id+"\n\l"+
+    "punto_venta: "+punto_venta+"\n\l"+
+    "parametro_tipoemision: "+parametro_tipoemision+"\n\l"+    
+    "select_eventos: "+select_eventos+"\n\l"+
+    "select: "+select+"\n\l"+
+    "select_texto: "+select_texto);
+    */
     if(parametro_tipoemision == 1){
         document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas
         document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader

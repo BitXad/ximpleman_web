@@ -637,8 +637,9 @@ class Parametro extends CI_Controller{
                     $fecha_i = date("Y-m-d\TH:i:s", strtotime($fecha_inicio));
                     $fecha_i = $fecha_i.".".rand(10,60);
                     
-                    
-                    $fecha_fin = $evento['registroeventos_fin'];
+                    //$fecha_fin = new DateTime(date('Y-m-d\TH:i:s'));
+                    $fecha_fin = date('Y-m-d\TH:i:s'); //new DateTime(date('Y-m-d\TH:i:s'));
+                    //$fecha_fin = $evento['registroeventos_fin'];
                     $fecha_f = date("Y-m-d\TH:i:s", strtotime($fecha_fin));
                     $fecha_f = $fecha_f.".".rand(10,60);
                     
@@ -663,7 +664,7 @@ class Parametro extends CI_Controller{
                     // Actualizamos punto de venta porque registramos un nuevo CUFD
 
                     $puntoventa = $this->PuntoVenta_model->get_puntoventa($puntoventa_codigo);
-                    echo
+                    /*echo
                         "<br>codigoAmbiente: ".$dosificacion['dosificacion_ambiente'].
                         "<br>codigoMotivoEvento: ".$evento['registroeventos_codigoevento']. //$dosificacion['dosificacion_codsistema'],
                         "<br>codigoPuntoVenta: ".$puntoventa_codigo. //$dosificacion['dosificacion_puntoventa'],
@@ -676,7 +677,7 @@ class Parametro extends CI_Controller{
                         "<br>fechaHoraFinEvento: ".$fecha_f. //$dosificacion['dosificacion_cuis'],
                         "<br>fechaHoraInicioEvento: ".$fecha_i. //$dosificacion['dosificacion_cuis'],
                         "<br>nit: ".$dosificacion['dosificacion_nitemisor'];
-                    
+                    */
                     $parametros = ["SolicitudEventoSignificativo" => [
                         "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
                         "codigoMotivoEvento"=> $evento['registroeventos_codigoevento'], //$dosificacion['dosificacion_codsistema'],
@@ -699,6 +700,7 @@ class Parametro extends CI_Controller{
                     //Agarramos el registro del evento significativo
                     //var_dump($parametros);
                     $resultado = $cliente->registroEventoSignificativo($parametros);
+                    //var_dump($resultado);
                     $res = $resultado->RespuestaListaEventos->transaccion;
                     $mensaje = "";
 
