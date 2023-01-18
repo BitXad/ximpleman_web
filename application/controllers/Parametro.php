@@ -696,10 +696,11 @@ class Parametro extends CI_Controller{
                     
                     
                     
-                    sleep(250);
+                    sleep(1);
                     //Agarramos el registro del evento significativo
                     //var_dump($parametros);
                     $resultado = $cliente->registroEventoSignificativo($parametros);
+                    sleep(1);
                     //var_dump($resultado);
                     $res = $resultado->RespuestaListaEventos->transaccion;
                     $mensaje = "";
@@ -759,7 +760,7 @@ class Parametro extends CI_Controller{
 
                                 $p->compress(Phar::GZ);                        
 
-                            echo "Paso 7";
+                            //echo "Paso 7";
                                 //PASO 7: Enviar los archivos generados en el .tar.gz
                                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                                 
