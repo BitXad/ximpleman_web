@@ -5,6 +5,8 @@
  */
  
 class Inventario_usuario extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -16,9 +18,13 @@ class Inventario_usuario extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -32,6 +38,7 @@ class Inventario_usuario extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(193)){
             $data['rolusuario'] = $this->session_data['rol'];
             $data['usuario_id'] = $this->session_data['usuario_id'];
@@ -50,6 +57,7 @@ class Inventario_usuario extends CI_Controller{
 
     function buscar()
     {
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $filtro = $this->input->post('filtro');
             $datos = $this->Inventario_usuario_model->buscar_inventario_usuario($filtro);
@@ -64,6 +72,7 @@ class Inventario_usuario extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -90,6 +99,7 @@ class Inventario_usuario extends CI_Controller{
 
     function asignar()
     {
+        $data['sistema'] = $this->sistema;
         $fecha   = $this->input->post('fecha');
         $hora    = $this->input->post('hora');
         $usuario = $this->input->post('usuario');
@@ -126,6 +136,7 @@ class Inventario_usuario extends CI_Controller{
      */
     function edit($inventario_id)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the inventario_usuario exists before trying to edit it
         $data['inventario_usuario'] = $this->Inventario_usuario_model->get_inventario_usuario($inventario_id);
         
@@ -165,6 +176,7 @@ class Inventario_usuario extends CI_Controller{
      */
     function remove($inventario_id)
     {
+        $data['sistema'] = $this->sistema;
         $inventario_usuario = $this->Inventario_usuario_model->get_inventario_usuario($inventario_id);
 
         // check if the inventario_usuario exists before trying to delete it
@@ -178,7 +190,8 @@ class Inventario_usuario extends CI_Controller{
     }
     
     function actualizar_inventario()
-    {    
+    {   
+        $data['sistema'] = $this->sistema; 
         $usuario_id = $this->input->post('usuario_id');
         $fecha = $this->input->post('fecha');
         $tipo = $this->input->post('tipo');
@@ -190,6 +203,7 @@ class Inventario_usuario extends CI_Controller{
     
     function eliminar_inventario()
     {    
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->input->post('usuario_id');
         $fecha = $this->input->post('fecha');
         

@@ -5,10 +5,14 @@
  */
  
 class Mesa extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Mesa_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Mesa extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['mesa'] = $this->Mesa_model->get_all_mesa();
         
         $data['_view'] = 'mesa/index';
@@ -26,7 +31,8 @@ class Mesa extends CI_Controller{
      * Adding a new mesa
      */
     function add()
-    {   
+    {  
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {
             $params = array(
@@ -51,6 +57,7 @@ class Mesa extends CI_Controller{
      */
     function edit($mesa_id)
     {
+        $data['sistema'] = $this->sistema;
         // check if the mesa exists before trying to edit it
         $data['mesa'] = $this->Mesa_model->get_mesa($mesa_id);
         if(isset($data['mesa']['mesa_id']))
@@ -80,6 +87,7 @@ class Mesa extends CI_Controller{
      */
     function remove($mesa_id)
     {
+        $data['sistema'] = $this->sistema;
         $mesa = $this->Mesa_model->get_mesa($mesa_id);
 
         // check if the mesa exists before trying to delete it

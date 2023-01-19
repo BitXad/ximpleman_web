@@ -5,7 +5,9 @@
  */
  
 class Detalle_venta extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -20,9 +22,13 @@ class Detalle_venta extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -37,6 +43,7 @@ class Detalle_venta extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -56,6 +63,7 @@ class Detalle_venta extends CI_Controller{
      */
     function nota_venta($venta_id)
     {
+        $data['sistema'] = $this->sistema;
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -67,6 +75,7 @@ class Detalle_venta extends CI_Controller{
 
     function recepcion()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(178)) {
             $data['page_title'] = "Recepcion de pedidos";        
             $data['_view'] = 'venta/recepcion';
@@ -78,6 +87,7 @@ class Detalle_venta extends CI_Controller{
 
     function reporte_generalventa()
     {
+        $data['sistema'] = $this->sistema;
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $this->load->model('Tipo_transaccion_model'); 
@@ -93,6 +103,7 @@ class Detalle_venta extends CI_Controller{
     }
     function recepcionhoy()
     {
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->session_data['usuario_id'];
         $estado = $this->input->post('estado');
         $destino = $this->input->post('destino');
@@ -116,7 +127,7 @@ class Detalle_venta extends CI_Controller{
     
     function mapa_distribucion()
     {
-        
+        $data['sistema'] = $this->sistema;
         $filtro = $this->input->post('filtro');
         $data = $this->Detalle_venta_model->mapa_distribucion($filtro);
         
@@ -142,6 +153,7 @@ class Detalle_venta extends CI_Controller{
     
     function reportes()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(156)){
         $data['page_title'] = "Reporte Ventas";        
         $data['_view'] = 'venta/reportes';
@@ -269,7 +281,7 @@ class Detalle_venta extends CI_Controller{
 
     function repocategoria()
     {
-       
+       $data['sistema'] = $this->sistema;
         $this->load->model('Categoria_producto_model');
         $data['categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
         $data['_view'] = 'detalle_venta/reportecategoria';
@@ -302,6 +314,7 @@ class Detalle_venta extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -346,6 +359,7 @@ class Detalle_venta extends CI_Controller{
      */
     function edit($detalleven_id)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the detalle_venta exists before trying to edit it
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($detalleven_id);
         
@@ -398,6 +412,7 @@ class Detalle_venta extends CI_Controller{
      */
     function remove($detalleven_id)
     {
+        $data['sistema'] = $this->sistema;
         $detalle_venta = $this->Detalle_venta_model->get_detalle_venta($detalleven_id);
 
         // check if the detalle_venta exists before trying to delete it
@@ -411,6 +426,7 @@ class Detalle_venta extends CI_Controller{
     }
     function venta_proceso()
     {
+        $data['sistema'] = $this->sistema;
         //**************** inicio contenido ***************
         $this->load->model('Producto_model');
         $usuario_id = $this->session_data['usuario_id'];
@@ -428,6 +444,7 @@ class Detalle_venta extends CI_Controller{
     
     function getdetalle_venta()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()){
             $usuario_id = $this->session_data['usuario_id'];
             $datos = $this->Venta_model->get_detalle_auxfoto($usuario_id);
@@ -441,6 +458,7 @@ class Detalle_venta extends CI_Controller{
      * y despues carga el detalle de la venta a detalle_factura_aux */
     function get_detalle_insertar()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
             $usuario_id = $this->session_data['usuario_id'];
             $venta_id = $this->input->post('venta_id');
@@ -637,6 +655,7 @@ class Detalle_venta extends CI_Controller{
     
     function reporte_generalventa1()
     {
+        $data['sistema'] = $this->sistema;
         $data['empresa'] = $this->Empresa_model->get_empresa(1);             
         $data['page_title'] = "Reporte Ventas";        
         $data['_view'] = 'venta/reporte_venta1';

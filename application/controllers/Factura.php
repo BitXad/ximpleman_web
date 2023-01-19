@@ -7,6 +7,7 @@
 class Factura extends CI_Controller{
     private $session_data = "";
     private $configuracion;
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -41,10 +42,14 @@ class Factura extends CI_Controller{
             redirect('', 'refresh');
         }
         $this->configuracion = $this->Parametro_model->get_parametros();
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
         
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -58,6 +63,7 @@ class Factura extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(152)){
         //**************** inicio contenido ***************            
         $rolusuario = $this->session_data['rol'];
@@ -100,6 +106,7 @@ class Factura extends CI_Controller{
 
     function factura_compra()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(153)){
         //**************** inicio contenido ***************            
         
@@ -122,6 +129,7 @@ class Factura extends CI_Controller{
 
     function factura_carta($venta_id,$tipo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(17)){
         //**************** inicio contenido ***************
             $parametros = $this->Parametro_model->get_parametros();
@@ -216,6 +224,7 @@ class Factura extends CI_Controller{
     
     function factura_boucher($venta_id,$tipo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(17)){
         //**************** inicio contenido ***************           
     
@@ -312,6 +321,7 @@ class Factura extends CI_Controller{
     
     function factura_boucher_id($factura_id,$tipo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(17)){
         //**************** inicio contenido ***************           
     
@@ -409,6 +419,7 @@ class Factura extends CI_Controller{
     
     function factura_carta_id($factura_id,$tipo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(17)){
         //**************** inicio contenido ***************           
             $parametros = $this->Parametro_model->get_parametros();
@@ -512,6 +523,7 @@ class Factura extends CI_Controller{
 
     function recibo_boucher($venta_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
         //**************** inicio contenido ***************           
     
@@ -538,6 +550,7 @@ class Factura extends CI_Controller{
 
     function comanda_boucher($venta_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
         //**************** inicio contenido ***************           
     
@@ -565,6 +578,7 @@ class Factura extends CI_Controller{
     
     function recibo_carta($venta_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
         //**************** inicio contenido ***************           
     
@@ -592,6 +606,7 @@ class Factura extends CI_Controller{
     
     function certificado_garantia($venta_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
         //**************** inicio contenido ***************           
     
@@ -646,6 +661,7 @@ class Factura extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(154)){
         //**************** inicio contenido ***************   
                 
@@ -694,6 +710,7 @@ class Factura extends CI_Controller{
      */
     function edit($factura_id)
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(154)){
         //**************** inicio contenido ***************   
         
@@ -749,6 +766,7 @@ class Factura extends CI_Controller{
      */
     function remove($factura_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(154)){
         //**************** inicio contenido ***************   
                 
@@ -770,6 +788,7 @@ class Factura extends CI_Controller{
 
     public function generar_excel(){
 
+    $data['sistema'] = $this->sistema;
     $fecha_desde = $this->input->post('fecha_desde');
     $fecha_hasta = $this->input->post('fecha_hasta');
     $opcion = $this->input->post('opcion');
@@ -984,6 +1003,7 @@ class Factura extends CI_Controller{
   
     function mostrar_facturas()
     {
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
@@ -1015,6 +1035,7 @@ class Factura extends CI_Controller{
      */
     function verificador()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(154)){
 //        if ($this->session->userdata('logged_in')) {
 //            $this->session_data = $this->session->userdata('logged_in');
@@ -1083,7 +1104,7 @@ class Factura extends CI_Controller{
                 
 //        if($factura_id>0)
 //        {
-//                  
+//      $data['sistema'] = $this->sistema;            
         $configuracion = $this->configuracion[0];
             
         $sql = "select * from factura where factura_id = ".$factura_id;                
@@ -1384,7 +1405,8 @@ class Factura extends CI_Controller{
                 
 //        if($factura_id>0)
 //        {
-//                  
+//                 
+        $data['sistema'] = $this->sistema;
         $codigo_motivo =  1; //$this->input->post("motivo_id");
         $dosificacion_id = 1;
         $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
@@ -1673,6 +1695,7 @@ class Factura extends CI_Controller{
     /* anula la factura mal emitida, la que noo fue enviada a  impuestos!.  */
     function anular_factura_malemitida($factura_id,$factura_numero){
         
+        $data['sistema'] = $this->sistema;
         $configuracion = $this->configuracion[0];
             
         $sql = "select * from factura where factura_id = ".$factura_id;                
@@ -1793,6 +1816,7 @@ class Factura extends CI_Controller{
      */
     function mensaje($factura_id,$factura_numero)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(17)){
         //**************** inicio contenido ***************            
         
@@ -1816,6 +1840,7 @@ class Factura extends CI_Controller{
      */
     function imprimir_factura($venta_id,$tipo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(17)){
         //**************** inicio contenido ***************            
                 
@@ -1840,6 +1865,7 @@ class Factura extends CI_Controller{
      */
     function imprimir_factura_id($factura_id,$tipo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(17)){
         //**************** inicio contenido ***************            
                 
@@ -1860,6 +1886,7 @@ class Factura extends CI_Controller{
 
     function imprimir_recibo($venta_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
         //**************** inicio contenido ***************            
             $parametros = $this->Parametro_model->get_parametros();
@@ -1907,7 +1934,7 @@ class Factura extends CI_Controller{
      */
     function emisor()
     {    
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
         $data['rolusuario'] = $this->session_data['rol'];
@@ -1955,6 +1982,7 @@ class Factura extends CI_Controller{
     /* nota de entrega con logo empresa y direccion de cliente.. */
     function notae_carta($venta_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
         $usuario_id = $this->session_data['usuario_id'];
         
@@ -1976,6 +2004,7 @@ class Factura extends CI_Controller{
     /* nota de entrega con logo empresa y direccion de cliente.. */
     function notae_boucher($venta_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
             $usuario_id = $this->session_data['usuario_id'];
 
@@ -1997,6 +2026,7 @@ class Factura extends CI_Controller{
     /* nota de entrega en hojas preimpresas.... */
     function notapreimpreso_carta($venta_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
         $usuario_id = $this->session_data['usuario_id'];
         
@@ -2019,6 +2049,7 @@ class Factura extends CI_Controller{
     
     function verificarcomunicacion(){
         try{
+            
             if ($this->input->is_ajax_request()) {
                 
                 $dosificacion_id = 1;
@@ -2074,6 +2105,7 @@ class Factura extends CI_Controller{
     //monto, codigo de recepcion
     function enviar_correoanulacion($venta_id, $correo,$factura_numero, $factura_fecha, $total, $cod_autorizacion)
     {
+        
         if($correo != null || $correo != ""){
         //if ($this->input->is_ajax_request()) {
             $this->load->library('email');
@@ -2173,6 +2205,7 @@ class Factura extends CI_Controller{
     
     function ticket($venta_id, $descripcion)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(17)){
         //**************** inicio contenido ***************           
     

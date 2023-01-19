@@ -5,7 +5,9 @@
  */
  
 class Imagen_producto extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -15,9 +17,13 @@ class Imagen_producto extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +37,7 @@ class Imagen_producto extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(109)){
             $data['page_title'] = "Imagen Producto";
         $params['limit'] = RECORDS_PER_PAGE; 
@@ -53,6 +60,7 @@ class Imagen_producto extends CI_Controller{
      */
      function add($producto_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             //$this->load->library('form_validation');
             /* *********************INICIO imagen***************************** */
@@ -130,6 +138,7 @@ class Imagen_producto extends CI_Controller{
      */
     function edit($producto_id, $imagenprod_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(109)){
             $data['page_title'] = "Imagen Producto";
         // check if the imagen_producto exists before trying to edit it
@@ -239,6 +248,7 @@ class Imagen_producto extends CI_Controller{
      */
     function remove($imagenprod_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(109)){
         $imagen_producto = $this->Imagen_producto_model->get_imagen_producto($imagenprod_id);
 
@@ -257,6 +267,7 @@ class Imagen_producto extends CI_Controller{
      */
     function catalogoprod($producto_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(109)){
             $data['page_title'] = "Imagenen Producto";
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -285,6 +296,7 @@ class Imagen_producto extends CI_Controller{
      */
     function galeriaproducto($producto_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(109)){
             $data['page_title'] = "Galeria Producto";
        
@@ -308,6 +320,7 @@ class Imagen_producto extends CI_Controller{
     /* ***** Funcion que muestra las imagenes de DETALLES DE SERVICIO ***** */
     function catalogodet($detalleserv_id, $b = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Imagenen Producto";
             $data['b'] = $b;
@@ -326,6 +339,7 @@ class Imagen_producto extends CI_Controller{
     }
     function addimg_det($detalleserv_id, $b = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             //$this->load->library('form_validation');
             $this->load->model('Parametro_model');
@@ -428,6 +442,7 @@ class Imagen_producto extends CI_Controller{
     
     function eliminar($imagenprod_id, $b = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
         $imagen_producto = $this->Imagen_producto_model->get_imagen_producto($imagenprod_id);
         $data['b'] = $b;
@@ -460,6 +475,7 @@ class Imagen_producto extends CI_Controller{
     
     function galeriadetalle($detalleserv_id, $b = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['b'] = $b;
         $this->load->model('Detalle_serv_model');

@@ -4,6 +4,8 @@
  * www.crudigniter.com
  */
 class Objetivo extends CI_Controller{
+    
+    private $sistema;
     function __construct(){
         parent::__construct();
         
@@ -13,9 +15,13 @@ class Objetivo extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -28,6 +34,8 @@ class Objetivo extends CI_Controller{
     * Index objetivo
     */
     function index($a = null){
+        
+        $data['sistema'] = $this->sistema;
         // if($this->acceso(30)) {
             $data['tipo_usuario_id'] = $this->session_data['tipousuario_id'];
             // $data['usuario'] = $this->Usuario_model->get_all_usuario();
@@ -40,6 +48,8 @@ class Objetivo extends CI_Controller{
     * Dar objetivo a un usuario
     */
     function add(){
+        
+        $data['sistema'] = $this->sistema;
         // if($this->acceso()){
             $this->load->library('form_validation');
     
@@ -78,6 +88,8 @@ class Objetivo extends CI_Controller{
     * Editar los objetivos de un usuario
     */
     function edit($objetivo_id){
+        
+        $data['sistema'] = $this->sistema;
         $data['usuarios_objetivo'] = $this->Objetivo_model->get_objetivo_usuario($objetivo_id);
 
         if(isset($data['usuarios_objetivo']['objetivo_id'])){
@@ -121,6 +133,8 @@ class Objetivo extends CI_Controller{
     * Todos los Objetivos
     */
     function objgrafica($usuario_id){
+        
+        $data['sistema'] = $this->sistema;
         // $data['objetivo'] = $this->grafico->get_objetivos();
         $data["usuario_id"] = $usuario_id;
         $data['_view'] = 'objetivo/';
@@ -137,6 +151,8 @@ class Objetivo extends CI_Controller{
     * Objetivos de un mes
     */
     function objetivos_mes(){
+        
+        $data['sistema'] = $this->sistema;
         
         $dia = $this->input->post("dia");                    
         $mes = $this->input->post("mes"); 
@@ -236,6 +252,8 @@ class Objetivo extends CI_Controller{
     }
     
     function mes_usuario_objetivo($anio,$mes,$usuario_id){
+        
+        $data['sistema'] = $this->sistema;
         $primer_dia=1;
         $ultimo_dia=$this->getUltimoDiaMes($anio,$mes);
         $fecha_inicial=date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$primer_dia) );

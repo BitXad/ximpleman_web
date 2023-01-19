@@ -5,6 +5,8 @@
  */
  
 class Modelo_contrato extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -18,8 +20,12 @@ class Modelo_contrato extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -34,6 +40,7 @@ class Modelo_contrato extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(11)) {
             $data['modelo_contrato'] = $this->Modelo_contrato_model->get_all_modelo_contrato();
 
@@ -47,6 +54,7 @@ class Modelo_contrato extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)) {
             $data['_view'] = 'modelo_contrato/add';
             $this->load->view('layouts/main',$data);
@@ -58,6 +66,7 @@ class Modelo_contrato extends CI_Controller{
      */
     function edit($modeloc_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(13)) {
             // check if the modelo_contrato exists before trying to edit it
             $data['modelo_contrato'] = $this->Modelo_contrato_model->get_modelo_contrato($modeloc_id);
@@ -72,6 +81,8 @@ class Modelo_contrato extends CI_Controller{
     }
     /* registrar nuevo modelo de contrato */
     function registrar_modelocontrato(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $empresa = $this->Empresa_model->get_this_empresa(1);
             $empresa_id = $empresa['empresa_id'];
@@ -92,6 +103,8 @@ class Modelo_contrato extends CI_Controller{
     }   
     /* modificar modelo de contrato */
     function modificar_modelocontrato(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $modeloc_id = $this->input->post('modcontrato_id');
             $params = array(
@@ -109,6 +122,8 @@ class Modelo_contrato extends CI_Controller{
      * Generá el contrato con los datos del primer contrato registrado en el sistema
      */
     function generar_contrato($venta_id, $modcontrato_id = 1, $cambiar_contrato = 0){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
             $data['modelo_contratos'] = $this->Modelo_contrato_model->get_all_modelo_contrato();
             // $usuario_id = $this->session_data['usuario_id'];
@@ -179,6 +194,8 @@ class Modelo_contrato extends CI_Controller{
     }
 
     function reemplazar_contrato($contrato, $comandos,$datos){
+        
+        $data['sistema'] = $this->sistema;
         for ($i=0; $i < sizeof($comandos); $i++) {
             $contrato = str_replace("{$comandos[$i]}", "{$datos[$i]}",$contrato);
         }
@@ -186,6 +203,8 @@ class Modelo_contrato extends CI_Controller{
     }
 
     function cambiar_contrato(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $contrato_id = $this->input->post('contrato');
             $venta_id = $this->input->post('venta_id');

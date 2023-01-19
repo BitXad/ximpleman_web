@@ -5,7 +5,9 @@
  */
  
 class Estado_pagina extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -15,9 +17,14 @@ class Estado_pagina extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        $data['sistema'] = $this->sistema;
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +38,7 @@ class Estado_pagina extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $data['page_title'] = "Estado Pagina";
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -53,6 +61,7 @@ class Estado_pagina extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $data['page_title'] = "Estado Pagina";
             $this->load->library('form_validation');
@@ -81,6 +90,7 @@ class Estado_pagina extends CI_Controller{
      */
     function edit($estadopag_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $data['page_title'] = "Estado Pagina";
             // check if the estado_pagina exists before trying to edit it
@@ -117,6 +127,7 @@ class Estado_pagina extends CI_Controller{
      */
     function remove($estadopag_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $estado_pagina = $this->Estado_pagina_model->get_estado_pagina($estadopag_id);
 

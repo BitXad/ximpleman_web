@@ -6,6 +6,7 @@
  
 class Egreso extends CI_Controller{
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -23,9 +24,13 @@ class Egreso extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -40,6 +45,7 @@ class Egreso extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(59)){
             $data['page_title'] = "Egreso";
             $data['rol'] = $this->session_data['rol'];
@@ -56,6 +62,8 @@ class Egreso extends CI_Controller{
     }
 
     function buscarfecha(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(59)){
             if ($this->input->is_ajax_request()){
                 $filtro = $this->input->post('filtro');
@@ -80,6 +88,7 @@ class Egreso extends CI_Controller{
     
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(60)){
             $data['page_title'] = "Egreso";
             $usuario_id = $this->session_data['usuario_id'];
@@ -152,6 +161,7 @@ class Egreso extends CI_Controller{
      */
     function edit($egreso_id)
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(61)){
             $data['page_title'] = "Egreso";
             $usuario_id = $this->session_data['usuario_id'];
@@ -239,6 +249,8 @@ class Egreso extends CI_Controller{
      */
 
     public function pdf($egreso_id){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(64)){
             $data['page_title'] = "Egreso";
             $data['parametro'] = $this->Parametro_model->get_parametros();
@@ -254,6 +266,7 @@ class Egreso extends CI_Controller{
 
     public function boucher($egreso_id){
         
+        $data['sistema'] = $this->sistema;
         if($this->acceso(64)){
             $data['page_title'] = "Egreso";
             $data['parametro'] = $this->Parametro_model->get_parametros();
@@ -269,6 +282,7 @@ class Egreso extends CI_Controller{
     /*************** funcion para mostrar la vista de la factura******************/
     function imprimir($egreso_id){
     
+        $data['sistema'] = $this->sistema;
         if($this->acceso(58)){
         //**************** inicio contenido ***************            
                 
@@ -291,6 +305,7 @@ class Egreso extends CI_Controller{
     
     function remove($egreso_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(62)){
             $egreso = $this->Egreso_model->get_egreso($egreso_id);
 
@@ -308,6 +323,7 @@ class Egreso extends CI_Controller{
 
     public function convertir()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(59)){
         $egreso_monto = trim($this->input->post('egreso_monto'));
 
@@ -338,6 +354,8 @@ class Egreso extends CI_Controller{
     }
 
     function add_egresos(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $usuario_id = $this->session_data['usuario_id'];
             $numrec = $this->Egreso_model->numero();
@@ -387,6 +405,8 @@ class Egreso extends CI_Controller{
     }
 
     function edit_egresos(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $egreso_nombre = $this->input->post('egreso_nombre');
             $forma_id = $this->input->post('select_forma_pago');

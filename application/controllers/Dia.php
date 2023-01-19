@@ -5,10 +5,14 @@
  */
  
 class Dia extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Dia_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Dia extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['dia'] = $this->Dia_model->get_all_dia();
         
         $data['_view'] = 'dia/index';
@@ -27,6 +32,7 @@ class Dia extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
                 $params = array(
@@ -50,6 +56,7 @@ class Dia extends CI_Controller{
      */
     function edit($cod_dia)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the dia exists before trying to edit it
         $data['dia'] = $this->Dia_model->get_dia($cod_dia);
         
@@ -81,6 +88,7 @@ class Dia extends CI_Controller{
      */
     function remove($cod_dia)
     {
+        $data['sistema'] = $this->sistema;
         $dia = $this->Dia_model->get_dia($cod_dia);
 
         // check if the dia exists before trying to delete it
@@ -98,6 +106,7 @@ class Dia extends CI_Controller{
     */
     function buscarcotizaciones()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(102)){
             if ($this->input->is_ajax_request()){
                 $datos = $this->Dia_model->get_all_dia();
@@ -112,6 +121,7 @@ class Dia extends CI_Controller{
     */
     function registrarcotizacion()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(102)){
             if ($this->input->is_ajax_request()){
                 $params = array(
@@ -131,6 +141,7 @@ class Dia extends CI_Controller{
     */
     function modificarcotizacion()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(102)){
             if ($this->input->is_ajax_request()){
                 $params = array(
@@ -151,6 +162,7 @@ class Dia extends CI_Controller{
     */
     function eliminarcotizacion()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(102)){
             if ($this->input->is_ajax_request()){
                 $cod_dia = $this->input->post('cod_dia');
@@ -166,6 +178,7 @@ class Dia extends CI_Controller{
     */
     function importararchivo()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(102)){
             if ($this->input->is_ajax_request()){
                 $tipo = $_FILES['archivo']['type'];

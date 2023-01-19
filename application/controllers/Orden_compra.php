@@ -1,6 +1,8 @@
 <?php
 class Orden_compra extends CI_Controller{
+    
     var $session_data;
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -25,9 +27,13 @@ class Orden_compra extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -42,6 +48,7 @@ class Orden_compra extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)) {
             /*$data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
@@ -59,6 +66,7 @@ class Orden_compra extends CI_Controller{
      */
     function existenciaminima()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)) {
             $usuario_id = $this->session_data['usuario_id'];
             $data['page_title'] = "Existencia Minima";
@@ -108,9 +116,12 @@ class Orden_compra extends CI_Controller{
     }
     
     function nota($compra_id){
+        
+        $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
+        
         if($this->acceso(1)){
             $data['page_title'] = "Ultima Compra";
             $usuario_id = $this->session_data['usuario_id'];
@@ -151,6 +162,7 @@ class Orden_compra extends CI_Controller{
     /** genera la orden compra directa */
     function generar_ordencompradirecta()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
             if ($this->input->is_ajax_request()){
                 $usuario_id = $this->session_data['usuario_id'];
@@ -207,6 +219,8 @@ class Orden_compra extends CI_Controller{
     }
     /* muestra la nota del pedido realizado */
     function nota_orden($ordencompra_id){
+        
+        $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
@@ -230,6 +244,8 @@ class Orden_compra extends CI_Controller{
     }
     /* muestra la nota para el proveedor del pedido realizado  */
     function nota_ordenp($ordencompra_id){
+        
+        $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
@@ -257,6 +273,7 @@ class Orden_compra extends CI_Controller{
      */
     function ultimo_pedido()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)) {
             $usuario_id = $this->session_data['usuario_id'];
             $data['page_title'] = "Existencia Minima";
@@ -347,6 +364,7 @@ class Orden_compra extends CI_Controller{
     /** ejecuta una orden de compra */
     function ejecutar_ordencompra()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
             if ($this->input->is_ajax_request()){
                 $usuario_id = $this->session_data['usuario_id'];
@@ -455,6 +473,7 @@ class Orden_compra extends CI_Controller{
     /** replica la compra y el detalle lo vacia a la tabla aux (detalle_ordencompra_aux) */
     function crear_ordencompra()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)) {
             if ($this->input->is_ajax_request()){
                 $usuario_id = $this->session_data['usuario_id'];
@@ -628,6 +647,7 @@ class Orden_compra extends CI_Controller{
      */
     function nueva_ordencompra()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
             $data['all_proveedores'] = $this->Proveedor_model->get_all_proveedor_activo();
             $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
@@ -646,6 +666,8 @@ class Orden_compra extends CI_Controller{
     }
     
     function nuevo_producto(){
+        
+        $data['sistema'] = $this->sistema;
         $this->load->library('form_validation');
             $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
             $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
@@ -837,6 +859,8 @@ class Orden_compra extends CI_Controller{
     }
     /* nuevo producto desde orden compra nueva */
     function nuevo_productonew(){
+        
+        $data['sistema'] = $this->sistema;
         $this->load->library('form_validation');
             $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
             $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
@@ -1030,6 +1054,8 @@ class Orden_compra extends CI_Controller{
     
     /* nuevo producto desde orden compra edit */
     function nuevo_productonewedit($ordencompra_id){
+        
+        $data['sistema'] = $this->sistema;
         $this->load->library('form_validation');
             $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
             $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
@@ -1225,6 +1251,7 @@ class Orden_compra extends CI_Controller{
      */
     function edit($ordencompra_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
             $orden_compra = $this->Orden_compra_model->get_ordencompra($ordencompra_id);
             $this->Orden_compra_model->delete_detalleoc_aux($ordencompra_id);
@@ -1261,6 +1288,7 @@ class Orden_compra extends CI_Controller{
      */
     function edit_ordencompra($ordencompra_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
             $data['orden_compra'] = $this->Orden_compra_model->get_ordencompra($ordencompra_id);
             //$data['all_ordencompra'] = $this->Orden_compra_model->get_detalleoc_aux($ordencompra_id);
@@ -1297,6 +1325,7 @@ class Orden_compra extends CI_Controller{
     /** agrega a detalle orden compra aux un producto */
     function agregarmodificar_adetalle()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)) {
             if ($this->input->is_ajax_request()){
                 //$usuario_id = $this->session_data['usuario_id'];
@@ -1337,6 +1366,7 @@ class Orden_compra extends CI_Controller{
     /** Registra una orden compra modificada desde aux. */
     function registrar_ordencompramodif()
     {
+        $data['sistema'] = $this->sistema;
         try {
             if($this->acceso(1)){
                 if ($this->input->is_ajax_request()){

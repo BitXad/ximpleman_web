@@ -5,10 +5,14 @@
  */
  
 class Librocv extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Librocv_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Librocv extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['librocv'] = $this->Librocv_model->get_all_librocv();
         
         $data['_view'] = 'librocv/index';
@@ -27,6 +32,7 @@ class Librocv extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -79,6 +85,7 @@ class Librocv extends CI_Controller{
      */
     function edit($cod_lcv)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the librocv exists before trying to edit it
         $data['librocv'] = $this->Librocv_model->get_librocv($cod_lcv);
         
@@ -139,6 +146,7 @@ class Librocv extends CI_Controller{
      */
     function remove($cod_lcv)
     {
+        $data['sistema'] = $this->sistema;
         $librocv = $this->Librocv_model->get_librocv($cod_lcv);
 
         // check if the librocv exists before trying to delete it

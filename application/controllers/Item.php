@@ -6,6 +6,7 @@
  
 class Item extends CI_Controller{
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -15,9 +16,13 @@ class Item extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +36,7 @@ class Item extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -52,6 +58,7 @@ class Item extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $this->load->library('form_validation');
 
@@ -94,6 +101,7 @@ class Item extends CI_Controller{
      */
     function edit($item_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             // check if the item exists before trying to edit it
             $data['item'] = $this->Item_model->get_item($item_id);
@@ -144,6 +152,7 @@ class Item extends CI_Controller{
      */
     function remove($item_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $item = $this->Item_model->get_item($item_id);
 
