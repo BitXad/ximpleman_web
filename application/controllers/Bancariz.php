@@ -5,10 +5,14 @@
  */
  
 class Bancariz extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Bancariz_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Bancariz extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['bancariz'] = $this->Bancariz_model->get_all_bancariz();
         
         $data['_view'] = 'bancariz/index';
@@ -26,7 +31,8 @@ class Bancariz extends CI_Controller{
      * Adding a new bancariz
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -70,7 +76,8 @@ class Bancariz extends CI_Controller{
      * Editing a bancariz
      */
     function edit($cod_banca)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         // check if the bancariz exists before trying to edit it
         $data['bancariz'] = $this->Bancariz_model->get_bancariz($cod_banca);
         
@@ -123,6 +130,7 @@ class Bancariz extends CI_Controller{
      */
     function remove($cod_banca)
     {
+        $data['sistema'] = $this->sistema;
         $bancariz = $this->Bancariz_model->get_bancariz($cod_banca);
 
         // check if the bancariz exists before trying to delete it

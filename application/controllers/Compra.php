@@ -26,15 +26,14 @@ class Compra extends CI_Controller{
         $this->load->model('Banco_model');
         $this->load->model('Sincronizacion_model');
         $this->load->model('Venta_model');
-        $this->load->model('Sistema_model');
-        
-        $this->sistema = $this->Sistema_model->get_sistema();
         
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){

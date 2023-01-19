@@ -6,6 +6,8 @@
  
 class Categoria_ingreso extends CI_Controller{
     private $session_data = "";
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -15,9 +17,12 @@ class Categoria_ingreso extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +36,7 @@ class Categoria_ingreso extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(117)){
             $data['page_title'] = "Categoria Ingreso";
             $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
@@ -45,6 +51,7 @@ class Categoria_ingreso extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(117)){
             $data['page_title'] = "Categoria Ingreso";
             if(isset($_POST) && count($_POST) > 0)     
@@ -70,6 +77,7 @@ class Categoria_ingreso extends CI_Controller{
      */
     function edit($id_cating)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(117)){
             $data['page_title'] = "Categoria Ingreso";
             // check if the categoria_ingreso exists before trying to edit it
@@ -103,6 +111,7 @@ class Categoria_ingreso extends CI_Controller{
      */
     function remove($id_cating)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(117)){
             $categoria_ingreso = $this->Categoria_ingreso_model->get_categoria_ingreso($id_cating);
 

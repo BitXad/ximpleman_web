@@ -1,5 +1,6 @@
 <?php
 class Control_inventario extends CI_Controller{
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -17,8 +18,11 @@ class Control_inventario extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -32,6 +36,7 @@ class Control_inventario extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $estado_tipo = 7;
             $data['control_inventarios'] = $this->Control_inventario_model->get_all_control_inventario();
@@ -46,6 +51,7 @@ class Control_inventario extends CI_Controller{
      * control ubicacion
      */
     function control_ubicacion(){
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $session_data = $this->session->userdata('logged_in');
             $estado_tipo = 7;
@@ -62,7 +68,8 @@ class Control_inventario extends CI_Controller{
     /*
      * Adding a new unidad
      */
-    function add(){   
+    function add(){
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             
             $this->load->library('form_validation');
@@ -87,7 +94,8 @@ class Control_inventario extends CI_Controller{
     /*
      * Editing a control_inventario
      */
-    function edit($control_inventario){   
+    function edit($control_inventario){
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $data['controli'] = $this->Control_inventario_model->get_control_inventario($control_inventario);
         
@@ -177,6 +185,7 @@ class Control_inventario extends CI_Controller{
     }
 
     function cuadrar_inventario(){
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $sobrante = [];
             $faltante = [];
@@ -216,6 +225,7 @@ class Control_inventario extends CI_Controller{
     }
 
     function cuadrar_inventario_compra($sobrante){
+        $data['sistema'] = $this->sistema;
         /*****************************COMPRA***************************** */
         $total = 0;
         foreach($sobrante as $sob){
@@ -265,6 +275,7 @@ class Control_inventario extends CI_Controller{
         /*****************************ADD DETALLE COMPRA AUX***************************** */
     }
     function cuadrar_inventario_venta($faltante){
+        $data['sistema'] = $this->sistema;
         /*****************************ADD DETALLE VENTA AUX***************************** */
         foreach ($faltante as $falt) {
             $total_producto = $falt['faltante']*$falt['producto_precio'];

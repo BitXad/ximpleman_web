@@ -6,6 +6,8 @@
  
 class Boton extends CI_Controller{
     private $session_data = "";
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -15,9 +17,12 @@ class Boton extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+    $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -32,6 +37,7 @@ class Boton extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $data['page_title'] = "Boton";
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -54,6 +60,7 @@ class Boton extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $data['page_title'] = "Boton";
             $this->load->library('form_validation');
@@ -88,6 +95,7 @@ class Boton extends CI_Controller{
      */
     function edit($boton_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $data['page_title'] = "Boton";
             // check if the boton exists before trying to edit it
@@ -130,6 +138,7 @@ class Boton extends CI_Controller{
      */
     function remove($boton_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $boton = $this->Boton_model->get_boton($boton_id);
 

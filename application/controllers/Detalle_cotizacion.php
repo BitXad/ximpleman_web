@@ -5,10 +5,14 @@
  */
  
 class Detalle_cotizacion extends CI_Controller{
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Detalle_cotizacion_model');
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
+        //$data['sistema'] = $this->sistema;
     } 
 
     /*

@@ -5,6 +5,8 @@
  */
  
 class Clasificador extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -14,8 +16,12 @@ class Clasificador extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
-     private function acceso($id_rol){
+    
+    private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -29,6 +35,7 @@ class Clasificador extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(191)){
         $data['clasificador'] = $this->Clasificador_model->get_all_clasificador();
         $data['page_title'] = "Clasificador";
@@ -43,6 +50,7 @@ class Clasificador extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(191)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('clasificador_nombre','Clasificador','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -68,6 +76,7 @@ class Clasificador extends CI_Controller{
      */
     function edit($clasificador_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(191)){
             // check if the clasificador exists before trying to edit it
             $data['clasificador'] = $this->Clasificador_model->get_clasificador($clasificador_id);
@@ -119,6 +128,7 @@ class Clasificador extends CI_Controller{
      */
     function inventario()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(192)){
             $data['rolusuario'] = $this->session_data['rol'];
             $empresa_id = 1;
@@ -137,6 +147,7 @@ class Clasificador extends CI_Controller{
      */
     function cargar_catalogo()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(191)){
             if ($this->input->is_ajax_request()) {
                 $data['rolusuario'] = $this->session_data['rol'];

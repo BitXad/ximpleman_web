@@ -5,10 +5,13 @@
  */
  
 class Composicion_producto extends CI_Controller{
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Composicion_producto_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +19,7 @@ class Composicion_producto extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['composicion_producto'] = $this->Composicion_producto_model->get_all_composicion_producto();
         
         $data['_view'] = 'composicion_producto/index';
@@ -26,7 +30,8 @@ class Composicion_producto extends CI_Controller{
      * Adding a new composicion_producto
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -54,7 +59,8 @@ class Composicion_producto extends CI_Controller{
      * Editing a composicion_producto
      */
     function edit($composicion_id)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         // check if the composicion_producto exists before trying to edit it
         $data['composicion_producto'] = $this->Composicion_producto_model->get_composicion_producto($composicion_id);
         
@@ -91,6 +97,7 @@ class Composicion_producto extends CI_Controller{
      */
     function remove($composicion_id)
     {
+        $data['sistema'] = $this->sistema;
         $composicion_producto = $this->Composicion_producto_model->get_composicion_producto($composicion_id);
 
         // check if the composicion_producto exists before trying to delete it

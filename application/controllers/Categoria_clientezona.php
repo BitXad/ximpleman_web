@@ -6,6 +6,8 @@
  
 class Categoria_clientezona extends CI_Controller{
     private $session_data = "";
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -15,9 +17,12 @@ class Categoria_clientezona extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +36,7 @@ class Categoria_clientezona extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(115)){
             $data['page_title'] = "Categoria Cliente Zona";
             $data['categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
@@ -44,7 +50,8 @@ class Categoria_clientezona extends CI_Controller{
      * Adding a new categoria_clientezona
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(115)){
             $data['page_title'] = "Categoria Cliente Zona";
             $this->load->library('form_validation');
@@ -74,6 +81,7 @@ class Categoria_clientezona extends CI_Controller{
      */
     function edit($categoriacliezona_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(115)){
             $data['page_title'] = "Categoria Cliente Zona";
             // check if the tipo_servicio exists before trying to edit it
@@ -112,6 +120,7 @@ class Categoria_clientezona extends CI_Controller{
      */
     function remove($categoriacliezona_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(115)){
             $categoria_clientezona = $this->Categoria_clientezona_model->get_categoria_clientezona($categoriacliezona_id);
 

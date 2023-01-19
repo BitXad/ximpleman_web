@@ -6,6 +6,7 @@
  
 class Categoria_egreso extends CI_Controller{
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -15,9 +16,12 @@ class Categoria_egreso extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +35,7 @@ class Categoria_egreso extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(116)){
             $data['page_title'] = "Categoria Egreso";
             $data['categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
@@ -45,6 +50,7 @@ class Categoria_egreso extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(116)){
             $data['page_title'] = "Categoria Egreso";
             if(isset($_POST) && count($_POST) > 0)     
@@ -70,6 +76,7 @@ class Categoria_egreso extends CI_Controller{
      */
     function edit($id_categr)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(116)){
             $data['page_title'] = "Categoria Egreso";
             // check if the categoria_egreso exists before trying to edit it
@@ -103,6 +110,7 @@ class Categoria_egreso extends CI_Controller{
      */
     function remove($id_categr)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(116)){
             $categoria_egreso = $this->Categoria_egreso_model->get_categoria_egreso($id_categr);
 

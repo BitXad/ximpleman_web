@@ -6,6 +6,7 @@
  
 class Cuotum extends CI_Controller{
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -29,9 +30,12 @@ class Cuotum extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -45,6 +49,7 @@ class Cuotum extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             $data['page_title'] = "Cuota";
             $usuario_id = $this->session_data['usuario_id'];
@@ -57,6 +62,7 @@ class Cuotum extends CI_Controller{
 
     function deudas($credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(42)){
             $data['page_title'] = "Cuota";
             $data['rol'] = $this->session_data['rol'];
@@ -71,6 +77,7 @@ class Cuotum extends CI_Controller{
 
     function planDeuda($credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(42)){
             $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
@@ -83,6 +90,7 @@ class Cuotum extends CI_Controller{
     
     function cuentas($credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(48)){
             $data['page_title'] = "Plan de pagos";
             $data['rol'] = $this->session_data['rol'];
@@ -115,6 +123,7 @@ class Cuotum extends CI_Controller{
     
     function cuenta_serv($credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(47)){
             $data['page_title'] = "Plan de pagos";
             $data['rol'] = $this->session_data['rol'];
@@ -144,6 +153,7 @@ class Cuotum extends CI_Controller{
     }
     function planCuenta($credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(48)){
             $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
@@ -172,6 +182,7 @@ class Cuotum extends CI_Controller{
     }
     function planCuentaServ($credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(47)){
             $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
@@ -197,7 +208,7 @@ class Cuotum extends CI_Controller{
     }
     function recibodeudas($cuota_id)
     {
-
+        $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
@@ -220,6 +231,7 @@ class Cuotum extends CI_Controller{
     
      function recibocuentas($cuota_id, $eldetalle = null)
     {
+         $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
@@ -258,6 +270,7 @@ class Cuotum extends CI_Controller{
 
    function recibocuentaserv($cuota_id)
     {
+       $data['sistema'] = $this->sistema;
        if($this->acceso(47)){
             $data['page_title'] = "Cuota";
             $data['parametro'] = $this->Parametro_model->get_parametros();
@@ -274,6 +287,7 @@ class Cuotum extends CI_Controller{
     }
     function comprobantedeudas($cuota_id,$credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
@@ -285,6 +299,7 @@ class Cuotum extends CI_Controller{
     }
     function comprobantecuentas($cuota_id,$credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(47)){
             $data['page_title'] = "Cuota";
             $data['parametro'] = $this->Parametro_model->get_parametros();
@@ -298,6 +313,7 @@ class Cuotum extends CI_Controller{
 
     function notacobro($cuota_id,$credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41) or $this->acceso(47)){
             $data['page_title'] = "Cuota";
             $parametros = $this->Parametro_model->get_parametro(1);
@@ -312,6 +328,7 @@ class Cuotum extends CI_Controller{
 
     function comprobantecuentaserv($cuota_id,$credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(47)){
             $data['page_title'] = "Cuota";
             $data['parametro'] = $this->Parametro_model->get_parametros();
@@ -324,6 +341,7 @@ class Cuotum extends CI_Controller{
     }
     function pagar($cuota_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             $data['page_title'] = "Cuota";
             $usuario_id = $this->session_data['usuario_id'];
@@ -526,6 +544,7 @@ class Cuotum extends CI_Controller{
     
     function cobrar($cuota_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(47)){
             $usuario_id = $this->session_data['usuario_id'];
         $data['cuota'] = $this->Cuotum_model->get_cuotum($cuota_id);
@@ -840,6 +859,7 @@ class Cuotum extends CI_Controller{
 
     function pendiente($cuota_id,$credito_id,$numcuota)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             $usuario_id = $this->session_data['usuario_id'];
             
@@ -866,6 +886,7 @@ class Cuotum extends CI_Controller{
 
     function pendiente1($cuota_id,$credito_id,$numcuota)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(47)){
             $usuario_id = $this->session_data['usuario_id'];
             
@@ -898,6 +919,7 @@ class Cuotum extends CI_Controller{
 
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41) or $this->acceso(47)){
             $data['page_title'] = "Cuota";
         if(isset($_POST) && count($_POST) > 0)     
@@ -951,6 +973,7 @@ class Cuotum extends CI_Controller{
      */
     function edit($cuota_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             $data['page_title'] = "Cuota";
             $usuario_id = $this->session_data['usuario_id'];
@@ -1007,6 +1030,7 @@ class Cuotum extends CI_Controller{
     
      function editar($cuota_id)
     {
+         $data['sistema'] = $this->sistema;
         if($this->acceso(47)){
              $data['page_title'] = "Cuota";
             $usuario_id = $this->session_data['usuario_id'];
@@ -1078,6 +1102,7 @@ class Cuotum extends CI_Controller{
      */
     function remove($cuota_id,$credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             $cuotum = $this->Cuotum_model->get_cuotum($cuota_id);
 

@@ -5,10 +5,14 @@
  */
  
 class Asiento_eliminado extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Asiento_eliminado_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Asiento_eliminado extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['asiento_eliminado'] = $this->Asiento_eliminado_model->get_all_asiento_eliminado();
         
         $data['_view'] = 'asiento_eliminado/index';
@@ -26,7 +31,8 @@ class Asiento_eliminado extends CI_Controller{
      * Adding a new asiento_eliminado
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -51,7 +57,8 @@ class Asiento_eliminado extends CI_Controller{
      * Editing a asiento_eliminado
      */
     function edit($cod_asiento_elim)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         // check if the asiento_eliminado exists before trying to edit it
         $data['asiento_eliminado'] = $this->Asiento_eliminado_model->get_asiento_eliminado($cod_asiento_elim);
         
@@ -85,6 +92,7 @@ class Asiento_eliminado extends CI_Controller{
      */
     function remove($cod_asiento_elim)
     {
+        $data['sistema'] = $this->sistema;
         $asiento_eliminado = $this->Asiento_eliminado_model->get_asiento_eliminado($cod_asiento_elim);
 
         // check if the asiento_eliminado exists before trying to delete it

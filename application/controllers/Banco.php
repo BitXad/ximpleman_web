@@ -5,6 +5,8 @@
  */
  
 class Banco extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -14,8 +16,11 @@ class Banco extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -30,6 +35,7 @@ class Banco extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(124)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -51,6 +57,7 @@ class Banco extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(124)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('banco_nombre','Banco Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -83,7 +90,8 @@ class Banco extends CI_Controller{
      * Editing a banco
      */
     function edit($banco_id)
-    {  
+    {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(124)){
             // check if the banco exists before trying to edit it
             $data['banco'] = $this->Banco_model->get_banco($banco_id);
@@ -125,6 +133,7 @@ class Banco extends CI_Controller{
      */
     function remove($banco_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(124)){
             $banco = $this->Banco_model->get_banco($banco_id);
             // check if the banco exists before trying to delete it

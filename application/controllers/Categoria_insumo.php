@@ -6,6 +6,8 @@
  
 class Categoria_insumo extends CI_Controller{
     private $session_data = "";
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -15,9 +17,12 @@ class Categoria_insumo extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +36,7 @@ class Categoria_insumo extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(81)){
             $data['page_title'] = "Categoria Insumo";
             $data['categoria_insumo'] = $this->Categoria_insumo_model->get_all_categoria_insumo();
@@ -44,6 +50,7 @@ class Categoria_insumo extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(81)){
             $data['page_title'] = "Categoria Insumo";
             if(isset($_POST) && count($_POST) > 0)     
@@ -72,6 +79,7 @@ class Categoria_insumo extends CI_Controller{
      */
     function edit($catinsumo_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(81)){
             $data['page_title'] = "Categoria Insumo";
             // check if the categoria_insumo exists before trying to edit it
@@ -107,6 +115,7 @@ class Categoria_insumo extends CI_Controller{
      */
     function remove($catinsumo_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(81)){
             $categoria_insumo = $this->Categoria_insumo_model->get_categoria_insumo($catinsumo_id);
 
@@ -124,6 +133,7 @@ class Categoria_insumo extends CI_Controller{
     
     function insumo($subcatserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(129)){
             $data['page_title'] = "Categoria Insumo";
             $data['subcatserv_id'] = $subcatserv_id;
@@ -140,6 +150,7 @@ class Categoria_insumo extends CI_Controller{
     
     function asignarinsumo($subcatserv_id)
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(81)){
             if ($this->input->is_ajax_request()){
                 $subcatserv_id = $this->input->post('subcatserv_id');
@@ -238,6 +249,7 @@ class Categoria_insumo extends CI_Controller{
     }
     function verinsumosasignar($servicio_id, $detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(81)){
             $data['page_title'] = "Categoria Insumo";
             $this->load->model('Detalle_serv_model');
@@ -257,6 +269,7 @@ class Categoria_insumo extends CI_Controller{
     
     function usarinsumo()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(81)){
         if ($this->input->is_ajax_request()){
             
@@ -346,6 +359,7 @@ class Categoria_insumo extends CI_Controller{
     }
     function usarinsumona($servicio_id, $detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(81)){
             $producto_id = $this->input->post('producto_id');
             $agrupar = $this->input->post('agrupar');
@@ -482,6 +496,7 @@ class Categoria_insumo extends CI_Controller{
     
     function registrareste_insumo()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(81)){
             $producto_id = $this->input->post('producto_id');
             $detalleserv_id = $this->input->post('detalleserv_id');

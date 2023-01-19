@@ -1,6 +1,8 @@
 <?php
 
 class Actividad extends CI_Controller{
+    
+    private $sistema;
     private $session_data = "";
     function __construct()
     {
@@ -11,9 +13,12 @@ class Actividad extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     function index(){
+        $data['sistema'] = $this->sistema;
         $data['actividades'] = $this->Actividad_model->get_all_actividades();
     }
 }

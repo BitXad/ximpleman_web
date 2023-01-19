@@ -6,6 +6,8 @@
  
 class Cambio_producto extends CI_Controller{
     private $session_data = "";
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -16,10 +18,13 @@ class Cambio_producto extends CI_Controller{
             $this->session_data = $this->session->userdata('logged_in');
         }else {
             redirect('', 'refresh');
-        }   
+        }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -32,7 +37,8 @@ class Cambio_producto extends CI_Controller{
      * Listing of cambio_producto
      */
     function index()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(65)){
             $data['page_title'] = "Cambios/Devoluciones";
             $this->load->model('Detalle_venta_model');
@@ -53,6 +59,7 @@ class Cambio_producto extends CI_Controller{
      */
     function devolverproducto()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(65)){
             $usuario_id = $this->session_data['usuario_id'];
             $cambio_producto_id = $this->input->post('cambio_producto_id');
@@ -118,6 +125,7 @@ class Cambio_producto extends CI_Controller{
     
     function entradas()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
             
             $parametro = $this->input->post('parametro');   
@@ -155,6 +163,7 @@ class Cambio_producto extends CI_Controller{
 }
     function addee()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(65)){
             $data['page_title'] = "Cambios/Devoluciones";
             if(isset($_POST) && count($_POST) > 0)     
@@ -180,6 +189,7 @@ class Cambio_producto extends CI_Controller{
 
     function add($cambio_producto_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(66)){
             $data['page_title'] = "Cambios/Devoluciones";
             $data['cambio_producto'] = $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);
@@ -199,6 +209,7 @@ class Cambio_producto extends CI_Controller{
     
     function anular($cambio_producto_id)
     {
+        $data['sistema'] = $this->sistema;
        if($this->acceso(68)){
            $data['page_title'] = "Cambios/Devoluciones";
             $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);
@@ -221,6 +232,7 @@ class Cambio_producto extends CI_Controller{
 
      function anulacion($cambio_producto_id)
     {
+         $data['sistema'] = $this->sistema;
         if($this->acceso(68)){
            //  $cambio_producto_id = $this->input->post('cambio_producto_id');
             $comp = "UPDATE detalle_compra
@@ -260,6 +272,7 @@ class Cambio_producto extends CI_Controller{
     }
     function entregarproducto()
     {
+        $data['sistema'] = $this->sistema;
        if($this->acceso(65)){
             $cambio_producto_id = $this->input->post('cambio_producto_id');
             $producto_id = $this->input->post('producto_id');
@@ -319,6 +332,7 @@ class Cambio_producto extends CI_Controller{
      */
     function edit($cambio_producto_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(67)){
             $data['page_title'] = "Cambios/Devoluciones";
             // check if the cambio_producto exists before trying to edit it
@@ -369,6 +383,7 @@ class Cambio_producto extends CI_Controller{
      */
     function remove($cambio_producto_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(65)){
             $cambio_producto = $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);
 

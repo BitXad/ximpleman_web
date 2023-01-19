@@ -5,10 +5,14 @@
  */
  
 class Detalle_pedido extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Detalle_pedido_model');
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Detalle_pedido extends CI_Controller{
      */
     function index()
     {
+       $data['sistema'] = $this->sistema;
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -34,7 +39,8 @@ class Detalle_pedido extends CI_Controller{
      * Adding a new detalle_pedido
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -70,7 +76,8 @@ class Detalle_pedido extends CI_Controller{
      * Editing a detalle_pedido
      */
     function edit($detalleped_id)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         // check if the detalle_pedido exists before trying to edit it
         $data['detalle_pedido'] = $this->Detalle_pedido_model->get_detalle_pedido($detalleped_id);
         
@@ -114,6 +121,7 @@ class Detalle_pedido extends CI_Controller{
      */
     function quitar($detalleped_id,$pedido_id)
     {
+        $data['sistema'] = $this->sistema;
         $detalle_pedido = $this->Detalle_pedido_model->get_detalle_pedido($detalleped_id);
 
         // check if the detalle_pedido exists before trying to delete it
@@ -130,6 +138,7 @@ class Detalle_pedido extends CI_Controller{
      */
     function remove($detalleped_id)
     {
+        $data['sistema'] = $this->sistema;
         $detalle_pedido = $this->Detalle_pedido_model->get_detalle_pedido($detalleped_id);
 
         // check if the detalle_pedido exists before trying to delete it

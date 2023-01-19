@@ -5,10 +5,14 @@
  */
  
 class Asiento extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Asiento_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Asiento extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['asiento'] = $this->Asiento_model->get_all_asiento();
         
         $data['_view'] = 'asiento/index';
@@ -26,7 +31,8 @@ class Asiento extends CI_Controller{
      * Adding a new asiento
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -63,7 +69,8 @@ class Asiento extends CI_Controller{
      * Editing a asiento
      */
     function edit($cod_asiento)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         // check if the asiento exists before trying to edit it
         $data['asiento'] = $this->Asiento_model->get_asiento($cod_asiento);
         
@@ -109,6 +116,7 @@ class Asiento extends CI_Controller{
      */
     function remove($cod_asiento)
     {
+        $data['sistema'] = $this->sistema;
         $asiento = $this->Asiento_model->get_asiento($cod_asiento);
 
         // check if the asiento exists before trying to delete it
