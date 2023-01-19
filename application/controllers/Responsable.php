@@ -5,10 +5,16 @@
  */
  
 class Responsable extends CI_Controller{
+    
+    private $sistema;
+
     function __construct()
     {
         parent::__construct();
         $this->load->model('Responsable_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+
     } 
 
     /*
@@ -16,6 +22,7 @@ class Responsable extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -35,6 +42,7 @@ class Responsable extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         $this->load->library('form_validation');
 
         $this->form_validation->set_rules('responsable_nombres','Responsable Nombres','required');
@@ -123,6 +131,7 @@ class Responsable extends CI_Controller{
      */
     function edit($responsable_id)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the responsable exists before trying to edit it
         $data['responsable'] = $this->Responsable_model->get_responsable($responsable_id);
         
@@ -232,6 +241,7 @@ class Responsable extends CI_Controller{
      */
     function remove($responsable_id)
     {
+        $data['sistema'] = $this->sistema;
         $responsable = $this->Responsable_model->get_responsable($responsable_id);
 
         // check if the responsable exists before trying to delete it

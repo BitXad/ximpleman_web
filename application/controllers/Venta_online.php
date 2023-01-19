@@ -5,10 +5,14 @@
  */
  
 class Venta_online extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
+        $this->load->model('Sistema_model');
         $this->load->model('Venta_online_model');
         $this->load->model('Usuario_model');
         $this->load->model('Empresa_model');
@@ -17,9 +21,12 @@ class Venta_online extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -34,6 +41,7 @@ class Venta_online extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(179)){
             //$data['venta'] = $this->Venta_online_model->get_all_articulo();
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
@@ -54,6 +62,7 @@ class Venta_online extends CI_Controller{
     }
 
     function detalle(){
+        
         $venta = $this->input->post('venta');
         $datos = $this->Venta_online_model->get_detalle($venta);
         if(isset($datos)){
@@ -64,7 +73,10 @@ class Venta_online extends CI_Controller{
     /* pasar pedido olnline a ventas */
     function pasar_aventas()
     {
+        $data['sistema'] = $this->sistema;
+        
         if ($this->input->is_ajax_request()) {
+            
         $usuario_id = $this->session_data['usuario_id'];
         $venta_id = $this->input->post('venta_id');
         

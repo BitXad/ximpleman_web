@@ -6,6 +6,7 @@
  
 class Proceso_orden extends CI_Controller{
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -16,9 +17,13 @@ class Proceso_orden extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -32,6 +37,7 @@ class Proceso_orden extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             
             $data['estados'] = $this->Estado_model->get_estado_tipo(6);
@@ -47,6 +53,7 @@ class Proceso_orden extends CI_Controller{
 
     function terminados()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             
             $data['estados'] = $this->Estado_model->get_estado_tipo(6);
@@ -57,6 +64,7 @@ class Proceso_orden extends CI_Controller{
 
     function  buscar()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             $estado = $this->input->post('estado');
             
@@ -69,6 +77,7 @@ class Proceso_orden extends CI_Controller{
     }
     function  buscarterminados()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             $estado = $this->input->post('estado');
             
@@ -84,6 +93,7 @@ class Proceso_orden extends CI_Controller{
 
     function  terminar()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             $usuario_id = $this->session_data['usuario_id'];
             $proceso = $this->input->post('proceso');
@@ -130,6 +140,7 @@ class Proceso_orden extends CI_Controller{
     function  recibir()
     {
         if($this->acceso(166)){
+            $data['sistema'] = $this->sistema;
             $usuario_id = $this->session_data['usuario_id'];
             $estado = $this->input->post('estado');
             $orden = $this->input->post('orden');
@@ -174,6 +185,7 @@ class Proceso_orden extends CI_Controller{
     function add()
     {
         if($this->acceso(166)){
+            $data['sistema'] = $this->sistema;
             $data['page_title'] = "Boton Articulo";
             if(isset($_POST) && count($_POST) > 0)     
             {   
@@ -205,6 +217,7 @@ class Proceso_orden extends CI_Controller{
     function edit($botonartic_id)
     {
         if($this->acceso(166)){
+            $data['sistema'] = $this->sistema;
             $data['page_title'] = "Boton Articulo";
             // check if the proceso_orden exists before trying to edit it
             $data['proceso_orden'] = $this->proceso_orden_model->get_proceso_orden($botonartic_id);
@@ -243,6 +256,7 @@ class Proceso_orden extends CI_Controller{
      */
     function remove($botonartic_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             $proceso_orden = $this->proceso_orden_model->get_proceso_orden($botonartic_id);
 

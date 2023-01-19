@@ -5,6 +5,7 @@
  */
  
 class Subcategoria_servicio extends CI_Controller{
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -14,8 +15,13 @@ class Subcategoria_servicio extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     }
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -30,6 +36,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(127)){
         $data['subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio();
         $data['page_title'] = "Subcategoria Servicio";
@@ -44,6 +51,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(128)){
         $this->load->library('form_validation');
         $this->form_validation->set_rules('subcatserv_descripcion','Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -80,6 +88,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function edit($subcatserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(130)){
         // check if the subcategoria_servicio exists before trying to edit it
         $data['subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
@@ -120,6 +129,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function remove($subcatserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(131)){
                $subcategoria_servicio = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
 
@@ -148,6 +158,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function buscarinsumosasignados()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(127)){
 //        if(isset($this->input->post('catserv_id')))
 //        {

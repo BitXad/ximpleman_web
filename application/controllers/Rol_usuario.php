@@ -5,7 +5,10 @@
  */
  
 class Rol_usuario extends CI_Controller{
+    
+    private $sistema;
     private $session_data = "";
+    
     function __construct()
     {
         parent::__construct();
@@ -17,9 +20,14 @@ class Rol_usuario extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -33,6 +41,7 @@ class Rol_usuario extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(146)){
             $this->load->model('Rol_model');
             $rol['all_rol'] = $this->Rol_model->get_all_rol();    
@@ -80,6 +89,7 @@ class Rol_usuario extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(146)){
             $this->load->model('Rol_model');
             $rol['all_rol'] = $this->Rol_model->get_all_rol();    
@@ -122,6 +132,8 @@ class Rol_usuario extends CI_Controller{
     }  
 
     function check_user() {
+        
+        $data['sistema'] = $this->sistema;
         $tipousuario_id = $this->input->post('tipousuario_id');// get tipo de usuario
         $rol_id = $this->input->post('rol_id');// get rol
         $this->db->select('id_rol_usuario');
@@ -143,6 +155,7 @@ class Rol_usuario extends CI_Controller{
      */
     function edit($id_rol_usuario)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(146)){
             // check if the rol_usuario exists before trying to edit it
             $data['rol_usuario'] = $this->Rol_usuario_model->get_rol_usuario($id_rol_usuario);

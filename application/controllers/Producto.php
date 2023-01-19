@@ -6,6 +6,8 @@
  
 class Producto extends CI_Controller{
     var $session_data;
+    private $sistema;
+
     function __construct()
 {
         parent::__construct();
@@ -31,9 +33,14 @@ class Producto extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     }
 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -41,6 +48,7 @@ class Producto extends CI_Controller{
             $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
         }
+        
     }
 
     /*
@@ -48,6 +56,7 @@ class Producto extends CI_Controller{
      */
     function index($a = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(102)) {
             $data['rol'] = $this->session_data['rol'];
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -79,6 +88,8 @@ class Producto extends CI_Controller{
      * 274812.04ing a new producto
      */
     function add(){   
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(103)) {
             $this->load->library('form_validation');
             $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
@@ -255,6 +266,7 @@ class Producto extends CI_Controller{
      */
     function edit($producto_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(107)) {
         // check if the producto exists before trying to edit it
         $data['producto'] = $this->Producto_model->get_esteproducto($producto_id);
@@ -452,6 +464,7 @@ class Producto extends CI_Controller{
      */
     function edit2($producto_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(107)) {
         // check if the producto exists before trying to edit it
         $data['producto'] = $this->Producto_model->get_esteproducto($producto_id);
@@ -573,6 +586,8 @@ class Producto extends CI_Controller{
     }
  
     function rapido(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(3)) {
             $estado_id = 1;        
             $compra_id = $this->input->post('compra_id');
@@ -738,6 +753,7 @@ class Producto extends CI_Controller{
      
     function remove($producto_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(108)) {
         $producto = $this->Producto_model->get_producto($producto_id);
 
@@ -767,6 +783,7 @@ class Producto extends CI_Controller{
     */
     function buscarproductos()
     {
+        $data['sistema'] = $this->sistema;
        if($this->acceso(102)) {
                 
                 $usuario_id = $this->session_data['usuario_id'];
@@ -797,6 +814,7 @@ class Producto extends CI_Controller{
     */
     function buscarproductoslimit()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(102)) {
                 
                 $usuario_id = $this->session_data['usuario_id'];
@@ -821,6 +839,7 @@ class Producto extends CI_Controller{
     */
     function buscarproductosall()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(104)) {
                 $usuario_id = $this->session_data['usuario_id'];
 
@@ -842,6 +861,7 @@ class Producto extends CI_Controller{
     /* buscar productos por Categoria */
     function buscarproductos_porcategoria()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(104)) {
                 
                 $usuario_id = $this->session_data['usuario_id'];
@@ -866,6 +886,7 @@ class Producto extends CI_Controller{
      */
     function existenciaminima()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(105)) {
             $usuario_id = $this->session_data['usuario_id'];  
             $data = array(
@@ -891,6 +912,7 @@ class Producto extends CI_Controller{
     */
     function buscarproductosexistmin()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(105)) {
             if ($this->input->is_ajax_request()) {
                 
@@ -912,6 +934,7 @@ class Producto extends CI_Controller{
     /* * añadir unidad en producto */
     function aniadirunidad()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(103)) {
             if ($this->input->is_ajax_request()) {
                 $this->load->model('Unidad_model');
@@ -937,6 +960,7 @@ class Producto extends CI_Controller{
     /* lista de subcategoriuas asigandos a un producto */
     function productoasignado($producto_id)
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(102)) {
         $nombre_producto = $this->Producto_model->get_esteproducto($producto_id);
         $data['producto_nombre'] = $nombre_producto['producto_nombre'];

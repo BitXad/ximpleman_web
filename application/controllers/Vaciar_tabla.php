@@ -5,15 +5,20 @@
  */
  
 class Vaciar_tabla extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Vaciar_tabla_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     
     /* * Listing of vaciar_tabla */
     function index($mensaje = null)
     {
+        $data['sistema'] = $this->sistema;
         if($mensaje == null){
             $data['mensaje'] = 6;
         }else{
@@ -30,6 +35,7 @@ class Vaciar_tabla extends CI_Controller{
     /* * Adding a new vaciar_tabla */
     function leerarchivo()
     {
+        $data['sistema'] = $this->sistema;
         $estecodigo = $this->input->post('codigo');
         $this->load->model('Tablapermiso_model');
         $codigo = $this->Tablapermiso_model->get_codigo();
@@ -150,10 +156,14 @@ class Vaciar_tabla extends CI_Controller{
         $estecodigo = $this->input->post('codigo');
         $this->load->model('Tablapermiso_model');
         $codigo = $this->Tablapermiso_model->get_codigo();
+        
         if($estecodigo === $codigo['para_vaciar']){
+            
             $estenombre = $this->input->post('nombre');
             $es_database = $this->Tablapermiso_model->get_es_estadb($estenombre);
+            
             if($es_database == true){
+                
                 $nombretabla = "tabla";
                 $this->Tablapermiso_model->truncar_db($nombretabla);
                 $all_tablas = $this->Tablapermiso_model->get_listartablasbd($estenombre);
@@ -166,19 +176,24 @@ class Vaciar_tabla extends CI_Controller{
                     $tabla_id = $this->Tablapermiso_model->add_tablapermiso($param);
                 }
                 redirect('vaciar_tabla');
+                
             }else{
+                
                 $mensaje = 4;
                 /*$data['estecodigo'] = $this->Tablapermiso_model->get_all_tablas();
                 $data['_view'] = 'vaciar_tabla/index';
                 $this->load->view('layouts/main',$data);*/
                 redirect('vaciar_tabla/index/'.$mensaje);
+                
             }
         }else{
+            
             $mensaje = 5;
             /*$data['estecodigo'] = $this->Tablapermiso_model->get_all_tablas();
             $data['_view'] = 'vaciar_tabla/index';
             $this->load->view('layouts/main',$data);*/
             redirect('vaciar_tabla/index/'.$mensaje);
+            
         }
     }
 }

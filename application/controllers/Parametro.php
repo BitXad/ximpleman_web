@@ -5,7 +5,9 @@
  */
  
 class Parametro extends CI_Controller{
+    
     private $nombre_archivo;
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -27,8 +29,12 @@ class Parametro extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -44,6 +50,7 @@ class Parametro extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(125)) {
         $this->load->model('Categoria_producto_model');
         $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
@@ -61,6 +68,7 @@ class Parametro extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(125)) {
             $this->load->model('Categoria_producto_model');
             $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
@@ -241,6 +249,7 @@ class Parametro extends CI_Controller{
      */
     function edit($parametro_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(125)) {
         // check if the parametro exists before trying to edit it
         $data['parametro'] = $this->Parametro_model->get_esteparametro($parametro_id);
@@ -460,6 +469,7 @@ class Parametro extends CI_Controller{
      */
     function remove($parametro_id)
     {
+        $data['sistema'] = $this->sistema;
         $parametro = $this->Parametro_model->get_parametro($parametro_id);
 
         // check if the parametro exists before trying to delete it
@@ -475,6 +485,7 @@ class Parametro extends CI_Controller{
     /* cambia el tipo de emision dela factura */
     function cambiar_tipoemision(){
         
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             
             $parametro_id = $this->input->post('parametro_id');
@@ -1103,6 +1114,7 @@ class Parametro extends CI_Controller{
      * con CAFC prepara y envia el paquete a impuestos para su recepcion y validacion! */
     function enviar_paquete(){
         
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             
             $codigo_evento = $this->input->post('codigo_evento');
@@ -1312,6 +1324,8 @@ class Parametro extends CI_Controller{
     
         /* envia correo  a cliente */
     function enviarcorreo($venta_id, $factura_id, $email_destino){
+        
+        $data['sistema'] = $this->sistema;
         $this->load->library('email');
         $this->email->set_newline("\r\n");
         $this->load->model('Configuracion_email_model');

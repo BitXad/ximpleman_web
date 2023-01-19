@@ -5,11 +5,16 @@
  */
  
 class Produccion extends CI_Controller{
+    private $sistema;
+
     function __construct()
     {
         parent::__construct();
         $this->load->model('Produccion_model');
         $this->session_data = $this->session->userdata('logged_in');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+
     } 
 
     /*
@@ -17,6 +22,7 @@ class Produccion extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['produccion'] = $this->Produccion_model->get_all_produccion();
         
         $data['_view'] = 'produccion/index';
@@ -28,6 +34,7 @@ class Produccion extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -65,6 +72,7 @@ class Produccion extends CI_Controller{
      */
     function edit($produccion_id)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the produccion exists before trying to edit it
         $data['produccion'] = $this->Produccion_model->get_produccion($produccion_id);
         
@@ -110,6 +118,7 @@ class Produccion extends CI_Controller{
      */
     function remove($produccion_id)
     {
+        $data['sistema'] = $this->sistema;
         $produccion = $this->Produccion_model->get_produccion($produccion_id);
 
         // check if the produccion exists before trying to delete it
@@ -124,6 +133,7 @@ class Produccion extends CI_Controller{
     
     function producir()
     {
+        $data['sistema'] = $this->sistema;
         $this->load->model('Formula_model');
         $data['all_formula'] = $this->Formula_model->get_all_formula();
         
@@ -158,6 +168,7 @@ class Produccion extends CI_Controller{
     /* busca insumos de una formula */
     function buscardetalleformula()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(118)){
             if ($this->input->is_ajax_request()) {
                 $usuario_id = $this->session_data['usuario_id'];
@@ -323,6 +334,7 @@ class Produccion extends CI_Controller{
     }
     function recibo_boucher($produccion_id)
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(21)){
         //$usuario_id = $this->session_data['usuario_id'];
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -347,6 +359,7 @@ class Produccion extends CI_Controller{
     }
     function recibo_carta($produccion_id)
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(21)){
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['produccion'] = $this->Produccion_model->get_produccion($produccion_id);
@@ -369,6 +382,7 @@ class Produccion extends CI_Controller{
     }
     function notae_boucher($produccion_id)
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(21)){
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['produccion'] = $this->Produccion_model->get_produccion($produccion_id);
@@ -391,6 +405,7 @@ class Produccion extends CI_Controller{
     }
     function notae_carta($produccion_id)
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(21)){
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['produccion'] = $this->Produccion_model->get_produccion($produccion_id);
@@ -414,6 +429,7 @@ class Produccion extends CI_Controller{
     /* nota de entrega en hojas preimpresas.... */
     function notapreimpreso_carta($produccion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
         $usuario_id = $this->session_data['usuario_id'];
         

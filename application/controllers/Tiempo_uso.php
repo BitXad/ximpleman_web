@@ -5,6 +5,8 @@
  */
  
 class Tiempo_uso extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -14,8 +16,12 @@ class Tiempo_uso extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 private function acceso($id_rol){
+    
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -29,6 +35,7 @@ private function acceso($id_rol){
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(135)){
         
         $data['tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso();
@@ -44,6 +51,7 @@ private function acceso($id_rol){
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(135)){
                 
                 $this->load->library('form_validation');
@@ -76,6 +84,7 @@ private function acceso($id_rol){
      */
     function edit($tiempouso_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(135)){
         // check if the tiempo_uso exists before trying to edit it
         $data['tiempo_uso'] = $this->Tiempo_uso_model->get_tiempo_uso($tiempouso_id);
@@ -115,6 +124,7 @@ private function acceso($id_rol){
      */
     function remove($tiempouso_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(135)){
 
         // check if the tiempo_uso exists before trying to delete it

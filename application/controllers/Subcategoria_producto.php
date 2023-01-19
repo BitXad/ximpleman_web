@@ -5,7 +5,9 @@
  */
  
 class Subcategoria_producto extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -16,9 +18,13 @@ class Subcategoria_producto extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -32,6 +38,7 @@ class Subcategoria_producto extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(118)){
             $data['page_title'] = "Subcategoria Producto";
             
@@ -47,6 +54,7 @@ class Subcategoria_producto extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(118)){
             $data['page_title'] = "Subcategoria Producto";
             $this->load->library('form_validation');
@@ -130,6 +138,7 @@ class Subcategoria_producto extends CI_Controller{
      */
     function edit($subcategoria_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(118)){
             $data['page_title'] = "Subcategoria Producto";
             // check if the subcategoria_producto exists before trying to edit it
@@ -232,6 +241,7 @@ class Subcategoria_producto extends CI_Controller{
      */
     function remove($subcategoria_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(118)){
         $subcategoria_producto = $this->Categoria_producto_model->get_subcategoria_producto($subcategoria_id);
         // check if the subcategoria_producto exists before trying to delete it

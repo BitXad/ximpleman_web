@@ -5,6 +5,8 @@
  */
  
 class Proveedor extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -15,8 +17,13 @@ class Proveedor extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     } 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -32,6 +39,7 @@ class Proveedor extends CI_Controller{
      
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(110)) {
                 $usuario_id = $this->session_data['usuario_id'];
                 $data['rol'] = $this->session_data['rol'];
@@ -54,6 +62,7 @@ class Proveedor extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
          if($this->acceso(111)){
                 $usuario_id = $this->session_data['usuario_id'];
         $this->load->library('form_validation');
@@ -149,6 +158,7 @@ class Proveedor extends CI_Controller{
 
     function rapido()
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(4)){
          $this->load->library('form_validation');
         $this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
@@ -201,7 +211,7 @@ class Proveedor extends CI_Controller{
 
     function cambiarproveedor()
     { 
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(4)){
 
          if ($this->input->is_ajax_request()) {
@@ -237,6 +247,7 @@ class Proveedor extends CI_Controller{
      */
     function edit($proveedor_id)
     {   
+        $data['sistema'] = $this->sistema;
          if($this->acceso(112)){
                 $usuario_id = $this->session_data['usuario_id'];
         // check if the proveedor exists before trying to edit it
@@ -355,6 +366,7 @@ class Proveedor extends CI_Controller{
      */
     function remove($proveedor_id)
     {
+        $data['sistema'] = $this->sistema;
         $proveedor = $this->Proveedor_model->get_proveedor($proveedor_id);
 
         // check if the proveedor exists before trying to delete it
@@ -369,6 +381,7 @@ class Proveedor extends CI_Controller{
     /* *********Busca proveedores*********** */
     function buscarproveedor($filtro)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(113)){
                 
                 $data['proveedor'] = $this->Proveedor_model->get_busqueda_proveedor($filtro);
@@ -381,6 +394,7 @@ class Proveedor extends CI_Controller{
     }
     function buscarreproveedor()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(113)){
                 $filtro = $this->input->post('parametro');
                 $data = $this->Proveedor_model->get_busqueda_proveedor($filtro);

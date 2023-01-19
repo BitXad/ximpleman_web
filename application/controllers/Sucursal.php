@@ -2,7 +2,7 @@
 
 class Sucursal extends CI_Controller
 {
-
+    private $sistema;
     public function __construct()
     {
         parent::__construct();
@@ -12,10 +12,13 @@ class Sucursal extends CI_Controller
         $this->load->model('sucursal_model');
         $this->load->model('proveedor_model');
         $this->load->library('pagination');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     public function index()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
@@ -65,6 +68,7 @@ class Sucursal extends CI_Controller
 
     public function create()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if ($session_data['tipousuario_id'] == 1) {
@@ -124,6 +128,7 @@ class Sucursal extends CI_Controller
 
     public function editar($idsuc)
     {
+        $data['sistema'] = $this->sistema;
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if ($session_data['tipousuario_id'] == 1) {
@@ -159,6 +164,7 @@ class Sucursal extends CI_Controller
 
     public function set()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if ($session_data['tipousuario_id'] == 1) {
@@ -216,6 +222,7 @@ class Sucursal extends CI_Controller
 
     public function info($limit, $start, $codi,$tipo)
     {
+        $data['sistema'] = $this->sistema;
         $res = $this->sucursal_model->get_inventario($limit,$start,$codi,$tipo); //lista de inventario de existentes
         /*            echo 'limit:'.$limit.'<br>';
                     echo 'start:'.$start.'<br>';*/
@@ -228,6 +235,7 @@ class Sucursal extends CI_Controller
 
     public function items($codi,$id,$tipo,$limit,$start){
 
+        $data['sistema'] = $this->sistema;
         $sucursal = $this->sucursal_model->get_sucursal2($id);
         //var_dump($sucursal);
         // set HTTP header
@@ -286,7 +294,7 @@ class Sucursal extends CI_Controller
     public function load(){
         //$rowno = $this->input->post('pagno');
         //$codi  = '';
-
+        $data['sistema'] = $this->sistema;
         $codi =  $this->uri->segment(3);
         $tipo =  $this->uri->segment(4);
         $rowno =  $this->uri->segment(5);

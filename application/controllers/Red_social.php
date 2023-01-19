@@ -6,6 +6,8 @@
  
 class Red_social extends CI_Controller{
     private $session_data = "";
+    private $sistema;
+
     function __construct()
     {
         parent::__construct();
@@ -15,9 +17,14 @@ class Red_social extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +38,7 @@ class Red_social extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(114)){
             $data['page_title'] = "Redes Sociales";
             
@@ -46,6 +54,7 @@ class Red_social extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(114)){
             $data['page_title'] = "Nueva red social";
             $this->load->library('form_validation');
@@ -129,6 +138,7 @@ class Red_social extends CI_Controller{
      */
     function edit($redsocial_id)
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(114)){
             $data['page_title'] = "Editar red social";
             // check if the red_social exists before trying to edit it

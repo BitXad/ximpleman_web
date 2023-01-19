@@ -7,19 +7,22 @@
 class Validacion_xsd extends CI_Controller{
     private $errors;
     private $doc;
+    private $sistema;
 
     function __construct() {
         parent::__construct();
         //$this->load->model('Articulo_model');
         //Representa un documento HTML o XML en su totalidad;
         $this->doc = new \DOMDocument('1.0', 'utf-8');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     
     function index()
     {
         //$valXSD = new ValidacionXSD();
         $el_error = "";
-        
+        $data['sistema'] = $this->sistema;
         $base_url = explode('/', base_url());
         //$directorio = FCPATH.'resources\images\productos\\';
         $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/application/views/validacion_xsd/';
@@ -40,6 +43,7 @@ class Validacion_xsd extends CI_Controller{
      *              FALSE El archivo XML no es valido
      */
     public function validar($filexml, $xsd){
+        
         if (!file_exists($filexml) || !file_exists($xsd)) {
             echo "Archivo <b>$filexml</b> o <b>$xsd</b> no existe.";
             return false;

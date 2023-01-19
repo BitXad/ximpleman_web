@@ -5,10 +5,14 @@
  */
  
 class Presentacion extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Presentacion_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Presentacion extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -35,6 +40,7 @@ class Presentacion extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('presentacion_nombre','Presentacion Nombre','required');
@@ -63,6 +69,7 @@ class Presentacion extends CI_Controller{
      */
     function edit($presentacion_id)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the presentacion exists before trying to edit it
         $data['presentacion'] = $this->Presentacion_model->get_presentacion($presentacion_id);
         
@@ -99,6 +106,7 @@ class Presentacion extends CI_Controller{
      */
     function remove($presentacion_id)
     {
+        $data['sistema'] = $this->sistema;
         $presentacion = $this->Presentacion_model->get_presentacion($presentacion_id);
 
         // check if the presentacion exists before trying to delete it

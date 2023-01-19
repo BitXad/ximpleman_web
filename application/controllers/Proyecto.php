@@ -5,10 +5,13 @@
  */
  
 class Proyecto extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Proyecto_model');
+        $this->load->model('Sistema_model');
     } 
 
     /*
@@ -20,6 +23,7 @@ class Proyecto extends CI_Controller{
         
         $data['_view'] = 'proyecto/index';
         $this->load->view('layouts/main',$data);
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     /*
@@ -27,6 +31,7 @@ class Proyecto extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -49,6 +54,7 @@ class Proyecto extends CI_Controller{
      */
     function edit($cod_proy)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the proyecto exists before trying to edit it
         $data['proyecto'] = $this->Proyecto_model->get_proyecto($cod_proy);
         
@@ -79,6 +85,7 @@ class Proyecto extends CI_Controller{
      */
     function remove($cod_proy)
     {
+        $data['sistema'] = $this->sistema;
         $proyecto = $this->Proyecto_model->get_proyecto($cod_proy);
 
         // check if the proyecto exists before trying to delete it

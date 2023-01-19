@@ -5,6 +5,7 @@
  */
  
 class Seccion extends CI_Controller{
+    private $sistema;
     private $session_data = "";
     function __construct()
     {
@@ -15,9 +16,14 @@ class Seccion extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +37,7 @@ class Seccion extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -52,6 +59,7 @@ class Seccion extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $this->load->library('form_validation');
 
@@ -90,6 +98,7 @@ class Seccion extends CI_Controller{
      */
     function edit($seccion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             // check if the seccion exists before trying to edit it
             $data['seccion'] = $this->Seccion_model->get_seccion($seccion_id);
@@ -136,6 +145,7 @@ class Seccion extends CI_Controller{
      */
     function remove($seccion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $seccion = $this->Seccion_model->get_seccion($seccion_id);
 

@@ -5,8 +5,11 @@
  */
  
 class Unidad extends CI_Controller{
-    function __construct()
-    {
+    
+    private $sistema;
+    
+    function __construct(){
+        
         parent::__construct();
         $this->load->model('Unidad_model');
         if ($this->session->userdata('logged_in')) {
@@ -14,8 +17,15 @@ class Unidad extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        $data['sistema'] = $this->sistema;
+        
     }
+    
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -29,6 +39,7 @@ class Unidad extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $data['unidad'] = $this->Unidad_model->get_all_unidad();
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -44,6 +55,7 @@ class Unidad extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
         $this->load->library('form_validation');
 
@@ -72,6 +84,7 @@ class Unidad extends CI_Controller{
      */
     function edit($unidad_id)
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
         // check if the tipo_servicio exists before trying to edit it
         $data['unidad'] = $this->Unidad_model->get_unidad($unidad_id);
@@ -107,6 +120,7 @@ class Unidad extends CI_Controller{
      */
     function remove($unidad_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $data['unidad'] = $this->Unidad_model->get_unidad($unidad_id);
             if(isset($data['unidad']['unidad_id'])){
@@ -122,6 +136,7 @@ class Unidad extends CI_Controller{
     */
     function verificar_uso()
     { 
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $nombre_unidad = $this->input->post('nombre_unidad');
             $datos = $this->Unidad_model->get_unidad_usada($nombre_unidad);

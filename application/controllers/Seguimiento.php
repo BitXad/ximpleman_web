@@ -3,13 +3,20 @@
 Class Seguimiento extends CI_Controller
 {
 
+    private $sistema;
+
     public function __construct()    {
         parent::__construct();
         $this->load->model('Proceso_orden_model');
         $this->load->model('Estado_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     }
     
     public function index(){
+        
+        $data['sistema'] = $this->sistema;
         $servicio_id   = $this->input->post('usuario');
         $cliente_id = $this->input->post('contrasen');
         if(is_numeric($servicio_id) && is_numeric($cliente_id)){
@@ -60,7 +67,7 @@ Class Seguimiento extends CI_Controller
     public function seguimiento($orden_id,$venta_id) //orden de trabajp
     {
         
-            
+            $data['sistema'] = $this->sistema;
             $data['estados'] = $this->Estado_model->get_estado_tipo(7);
             $detal = $this->Proceso_orden_model->get_detalle($orden_id);
             
@@ -78,6 +85,7 @@ Class Seguimiento extends CI_Controller
     
     public function consultar($cliente_id, $servicio_id){
         
+        $data['sistema'] = $this->sistema;
         $this->load->model('Servicio_model');
         $servicios = $this->Servicio_model->get_servicio_id($cliente_id,$servicio_id);
         $data['servicio'] =  $servicios;

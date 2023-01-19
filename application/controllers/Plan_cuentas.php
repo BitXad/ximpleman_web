@@ -1,7 +1,7 @@
 <?php
  
 class Plan_cuentas extends CI_Controller{
-    
+    private $sistema;
     function __construct(){
         parent::__construct();
         $this->load->model([
@@ -14,9 +14,13 @@ class Plan_cuentas extends CI_Controller{
             redirect('', 'refresh');
         }
         
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     
     function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -27,6 +31,8 @@ class Plan_cuentas extends CI_Controller{
     }
 
     function index(){
+        
+        $data['sistema'] = $this->sistema;
         // if($this->acceso(102)) {
             $data['rol'] = $this->session_data['rol'];
             $data['p_cuentas'] = $this->Plan_cuenta_model->get_cuentas();
@@ -37,6 +43,8 @@ class Plan_cuentas extends CI_Controller{
     }
 
     function get_cuenta_hijo(){
+        
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
             $id = $this->input->post('p_cuenta_id');
             $cuentas = $this->Plan_cuenta_model->get_cuenta_hijos($id);
@@ -45,6 +53,8 @@ class Plan_cuentas extends CI_Controller{
     }
 
     function add(){
+        
+        $data['sistema'] = $this->sistema;
         $this->load->library('form_validation');
         $this->form_validation->set_rules('nombre','Nombre de cuenta','required');
         if($this->form_validation->run()){
@@ -79,6 +89,8 @@ class Plan_cuentas extends CI_Controller{
     }
 
     function get_cuentas(){
+        
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()){
             $p_cuenta_tipo = $this->input->post('tipo');
             $p_cuenta_nivel = $this->input->post('nivel');
@@ -91,6 +103,8 @@ class Plan_cuentas extends CI_Controller{
      * obtener planes de cuentas por su tipo
      */
     function get_tipo_planes(){
+        
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()){
             $pc_tipo = $this->input->post('tipo');
             if ($pc_tipo != 0) {
@@ -101,6 +115,8 @@ class Plan_cuentas extends CI_Controller{
     }
 
     function get_p_cuenta(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $pc_id = $this->input->post("plan_escogido");
             $plan_cuenta = $this->Plan_cuenta_model->get_p_cuenta($pc_id);
@@ -112,6 +128,8 @@ class Plan_cuentas extends CI_Controller{
      * edit
      */
     function edit(){
+        
+        $data['sistema'] = $this->sistema;
         $this->load->library('form_validation');
         $this->form_validation->set_rules('new_nombre','Nombre de cuenta','required');
         if($this->form_validation->run()){
@@ -131,6 +149,8 @@ class Plan_cuentas extends CI_Controller{
      * borrar plan cuenta
      */
     function borrar_plan_cuenta(){
+        
+        $data['sistema'] = $this->sistema;
         $c_id = $this->input->post("cuenta_mayor_borrar");
         $this->Plan_cuenta_model->delete_plan_cuenta($c_id);
         redirect('plan_cuentas/index');

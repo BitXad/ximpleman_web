@@ -1,6 +1,9 @@
 <?php
 
 class Ubicacion extends CI_Controller{
+    
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -11,8 +14,13 @@ class Ubicacion extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
+        
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -25,6 +33,8 @@ class Ubicacion extends CI_Controller{
      * Listing of unidad
      */
     function index(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $data['ubicacion'] = $this->Ubicacion_model->get_all_ubicacion();
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -38,6 +48,7 @@ class Ubicacion extends CI_Controller{
      * Adding a new unidad
      */
     function add(){   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $this->load->library('form_validation');
 
@@ -63,7 +74,9 @@ class Ubicacion extends CI_Controller{
     /*
      * Editing a unidad
      */
-    function edit($ubicacion_id){   
+    function edit($ubicacion_id){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             // check if the tipo_servicio exists before trying to edit it
             $data['ubicacion'] = $this->Ubicacion_model->get_ubicacion($ubicacion_id);

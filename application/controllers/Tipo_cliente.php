@@ -5,6 +5,8 @@
  */
  
 class Tipo_cliente extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -14,8 +16,13 @@ class Tipo_cliente extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     } 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -23,6 +30,7 @@ class Tipo_cliente extends CI_Controller{
             $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
         }
+        
     }
 
     /*
@@ -30,20 +38,22 @@ class Tipo_cliente extends CI_Controller{
      */
     function index()
     {
-        if($this->acceso(132)){
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        $data['sistema'] = $this->sistema;
         
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('tipo_cliente/index?');
-        $config['total_rows'] = $this->Tipo_cliente_model->get_all_tipo_cliente_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(132)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente($params);
-        $data['page_title'] = "Tipo Cliente";
-        $data['_view'] = 'tipo_cliente/index';
-        $this->load->view('layouts/main',$data);
-    }
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('tipo_cliente/index?');
+            $config['total_rows'] = $this->Tipo_cliente_model->get_all_tipo_cliente_count();
+            $this->pagination->initialize($config);
+
+            $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente($params);
+            $data['page_title'] = "Tipo Cliente";
+            $data['_view'] = 'tipo_cliente/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
@@ -51,29 +61,30 @@ class Tipo_cliente extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(132)){
-        $this->load->library('form_validation');
+                $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('tipocliente_descripcion','Tipocliente Descripcion','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'tipocliente_descripcion' => $this->input->post('tipocliente_descripcion'),
-				'tipocliente_porcdesc' => $this->input->post('tipocliente_porcdesc'),
-				'tipocliente_montodesc' => $this->input->post('tipocliente_montodesc'),
-            );
-            
-            $tipo_cliente_id = $this->Tipo_cliente_model->add_tipo_cliente($params);
-            redirect('tipo_cliente/index');
-        }
-        else
-        {    
-            $data['page_title'] = "Tipo Cliente";        
-            $data['_view'] = 'tipo_cliente/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }
+                        $this->form_validation->set_rules('tipocliente_descripcion','Tipocliente Descripcion','required');
+
+                        if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                        'tipocliente_descripcion' => $this->input->post('tipocliente_descripcion'),
+                                        'tipocliente_porcdesc' => $this->input->post('tipocliente_porcdesc'),
+                                        'tipocliente_montodesc' => $this->input->post('tipocliente_montodesc'),
+                    );
+
+                    $tipo_cliente_id = $this->Tipo_cliente_model->add_tipo_cliente($params);
+                    redirect('tipo_cliente/index');
+                }
+                else
+                {    
+                    $data['page_title'] = "Tipo Cliente";        
+                    $data['_view'] = 'tipo_cliente/add';
+                    $this->load->view('layouts/main',$data);
+                }
+            }
     }  
 
     /*
@@ -81,37 +92,38 @@ class Tipo_cliente extends CI_Controller{
      */
     function edit($tipocliente_id)
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(132)){
-        // check if the tipo_cliente exists before trying to edit it
-        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_tipo_cliente($tipocliente_id);
-        
-        if(isset($data['tipo_cliente']['tipocliente_id']))
-        {
-            $this->load->library('form_validation');
+            // check if the tipo_cliente exists before trying to edit it
+            $data['tipo_cliente'] = $this->Tipo_cliente_model->get_tipo_cliente($tipocliente_id);
 
-			$this->form_validation->set_rules('tipocliente_descripcion','Tipocliente Descripcion','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'tipocliente_descripcion' => $this->input->post('tipocliente_descripcion'),
-					'tipocliente_porcdesc' => $this->input->post('tipocliente_porcdesc'),
-					'tipocliente_montodesc' => $this->input->post('tipocliente_montodesc'),
-                );
+            if(isset($data['tipo_cliente']['tipocliente_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Tipo_cliente_model->update_tipo_cliente($tipocliente_id,$params);            
-                redirect('tipo_cliente/index');
+                            $this->form_validation->set_rules('tipocliente_descripcion','Tipocliente Descripcion','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'tipocliente_descripcion' => $this->input->post('tipocliente_descripcion'),
+                                            'tipocliente_porcdesc' => $this->input->post('tipocliente_porcdesc'),
+                                            'tipocliente_montodesc' => $this->input->post('tipocliente_montodesc'),
+                    );
+
+                    $this->Tipo_cliente_model->update_tipo_cliente($tipocliente_id,$params);            
+                    redirect('tipo_cliente/index');
+                }
+                else
+                {
+                    $data['page_title'] = "Tipo Cliente";
+                    $data['_view'] = 'tipo_cliente/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['page_title'] = "Tipo Cliente";
-                $data['_view'] = 'tipo_cliente/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The tipo_cliente you are trying to edit does not exist.');
         }
-        else
-            show_error('The tipo_cliente you are trying to edit does not exist.');
-    }
     } 
 
     /*
@@ -119,6 +131,7 @@ class Tipo_cliente extends CI_Controller{
      */
     function remove($tipocliente_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(132)){
         $tipo_cliente = $this->Tipo_cliente_model->get_tipo_cliente($tipocliente_id);
 

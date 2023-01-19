@@ -3,6 +3,7 @@ class Sincronizacion extends CI_Controller{
 
     private $session_data = "";
     private $dosificacion;
+    private $sistema;
     
     function __construct(){
         
@@ -34,6 +35,7 @@ class Sincronizacion extends CI_Controller{
             'Unidad_model',
             'Usuario_model',
             'ProductosServicios_model',
+            'Sistema_model',
         ]);
         //$this->load->library('lib_nusoap/nusoap');    
     
@@ -48,9 +50,12 @@ class Sincronizacion extends CI_Controller{
             redirect('', 'refresh');
         }
         $usuario_id = $this->session_data['usuario_id'];
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -61,6 +66,8 @@ class Sincronizacion extends CI_Controller{
     }
 
     function index(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(149)){
             
             $data['dosificacion'] = $this->dosificacion;
@@ -72,6 +79,8 @@ class Sincronizacion extends CI_Controller{
     }
 
     function show_sincronizacion($sincronizacion_id){
+        
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->session_data['usuario_id'];
         $data['punto_venta'] = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
         //var_dump($data['punto_venta']);
@@ -165,6 +174,7 @@ class Sincronizacion extends CI_Controller{
 
     function sincronizar_datos(){
         
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             
             static $array;
@@ -299,6 +309,8 @@ class Sincronizacion extends CI_Controller{
 
     /**SINCRONIZAR ACTIVIDADES ECONOMICAS */
     function sincronizar_actividades(){
+        
+        $data['sistema'] = $this->sistema;
         try{
             $dosificacion_id = 1;
             $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
@@ -791,6 +803,7 @@ class Sincronizacion extends CI_Controller{
     }
     
     function tipoMetodoPago($wsdl,$token,$parametros){
+        
         try{
             $opts = array(
                 'http' => array(

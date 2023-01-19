@@ -5,7 +5,9 @@
  */
 
 class Reportes extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -29,9 +31,14 @@ class Reportes extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
 
     } 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -45,6 +52,7 @@ class Reportes extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(141)){
         $this->load->model('Empresa_model');
         $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
@@ -69,6 +77,7 @@ class Reportes extends CI_Controller{
      */
     function movimientodiario()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(141)){
         $this->load->model('Empresa_model');
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
@@ -98,6 +107,7 @@ class Reportes extends CI_Controller{
      */
     function reportecaja()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $usuario_id = $this->session_data['usuario_id']; 
@@ -153,6 +163,7 @@ class Reportes extends CI_Controller{
     
     function reportecajadmin()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $usuario_id = $this->session_data['usuario_id']; 
@@ -208,6 +219,7 @@ class Reportes extends CI_Controller{
     
     function graficas()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(157)){
             $data['user_id']  = $this->session_data['usuario_id'];
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
@@ -225,6 +237,7 @@ class Reportes extends CI_Controller{
 
     function graficas2()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(157)){
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
             $this->load->model('Parametro_model');
@@ -244,6 +257,7 @@ class Reportes extends CI_Controller{
 
 function mes($anio,$mes)
 {
+        $data['sistema'] = $this->sistema;
         $primer_dia=1;
         $ultimo_dia=$this->getUltimoDiaMes($anio,$mes);
         $fecha_inicial=date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$primer_dia) );
@@ -289,6 +303,7 @@ function mes($anio,$mes)
 // -------------------------------------------------------------------------------------------------
 function mes_usuario($anio,$mes,$usuario_id)
 {
+        $data['sistema'] = $this->sistema;
         $primer_dia=1;
         $ultimo_dia=$this->getUltimoDiaMes($anio,$mes);
         $fecha_inicial=date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$primer_dia) );
@@ -347,6 +362,7 @@ function mes_usuario($anio,$mes,$usuario_id)
 
 function proven($anio,$mes)
 {
+        $data['sistema'] = $this->sistema;
         $primer_dia=1;
         $ultimo_dia=$this->getUltimoDiaMes($anio,$mes);
         $numero=10;
@@ -383,7 +399,7 @@ function proven($anio,$mes)
 function torta($anio,$mes)
 {
                
-        
+        $data['sistema'] = $this->sistema;
         $ventausuario = "SELECT COUNT(DISTINCT usuario_id) as 'distusu' FROM venta where venta.venta_fecha >= '".$anio."-".$mes."-01' and  venta.venta_fecha <= '".$anio."-".$mes."-31' ";
         $usve = $this->db->query($ventausuario)->row_array();
         $numusu=$usve['distusu'];
@@ -416,7 +432,7 @@ function torta($anio,$mes)
 function torta2($anio,$mes)
 {
                
-        
+        $data['sistema'] = $this->sistema;
         $ventausuario = "SELECT COUNT(DISTINCT cliente_id) as 'distusu',SUM(venta_total) as 'totalventas' FROM venta where venta.venta_fecha >= '".$anio."-".$mes."-01' and  venta.venta_fecha <= '".$anio."-".$mes."-31' ORDER by totalventas limit 10";
         $usve = $this->db->query($ventausuario)->row_array();
         $numusu=10;
@@ -450,7 +466,7 @@ function torta2($anio,$mes)
 function torta3($anio,$mes)
 {
                
-        
+        $data['sistema'] = $this->sistema;
         $numusu2=10;
 
         $id_usuarios = "SELECT DISTINCT dv.producto_id, u.producto_nombre,SUM(dv.detalleven_cantidad) as 'totalventas' FROM detalle_venta dv, venta v, producto u where v.venta_fecha >= '".$anio."-".$mes."-01' and  v.venta_fecha <= '".$anio."-".$mes."-31' and dv.venta_id= v.venta_id and dv.producto_id=u.producto_id GROUP BY u.producto_id ORDER by totalventas desc limit 10";
@@ -479,6 +495,7 @@ function torta3($anio,$mes)
 
     function buscarlosreportes()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(141)){
         if ($this->input->is_ajax_request()) {
 
@@ -525,6 +542,8 @@ function torta3($anio,$mes)
     }
 
     function buscarporfecha(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(141)){
             if ($this->input->is_ajax_request()) {
                 $fecha1 = $this->input->post('fecha1');   
@@ -575,6 +594,7 @@ function torta3($anio,$mes)
     
     function buscardiario()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(141)){
             
         if ($this->input->is_ajax_request()) {
@@ -607,17 +627,14 @@ function torta3($anio,$mes)
 
      */
 
-    function comprareportes()
+    function comprareportes(){
 
-    {
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(137)){
 
-
-        $data['page_title'] = "Reportes";
-        $data['_view'] = 'reportes/comprareportes';
-
-        $this->load->view('layouts/main',$data);
+            $data['page_title'] = "Reportes";
+            $data['_view'] = 'reportes/comprareportes';
+            $this->load->view('layouts/main',$data);
 
         }
 
@@ -632,10 +649,9 @@ function torta3($anio,$mes)
 
      */
 
-    function ventareportes()
-
-    {
-
+    function ventareportes(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
         $data['page_title'] = "Reportes";
         $data['_view'] = 'reportes/ventareportes';
@@ -657,20 +673,21 @@ function torta3($anio,$mes)
 
     function servicioreportes()
     {
-
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(142)){
-        $data['page_title'] = "Reportes";
-        $data['_view'] = 'reportes/servicioreportes';
+            $data['page_title'] = "Reportes";
+            $data['_view'] = 'reportes/servicioreportes';
 
-        $this->load->view('layouts/main',$data);
+            $this->load->view('layouts/main',$data);
 
         }
 
 
     }
     
-    function planillacaja()
-    {
+    function planillacaja(){
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
                 $this->load->model('Empresa_model');
                 $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
@@ -699,8 +716,9 @@ function torta3($anio,$mes)
 
     }
     
-    function reptotaling_efectivo()
-    {
+    function reptotaling_efectivo(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
         if ($this->input->is_ajax_request()) {
 
@@ -744,8 +762,9 @@ function torta3($anio,$mes)
     }
 
     /* ************************Reporte total de ventas*******************************+ */
-    function reptotal_ventas()
-    {
+    function reptotal_ventas(){
+        
+        $data['sistema'] = $this->sistema;
        if($this->acceso(1)){
         if ($this->input->is_ajax_request()) {
 
@@ -788,8 +807,9 @@ function torta3($anio,$mes)
            
     }
     /* ************************Reporte total de cobros de Creditos*******************************+ */
-    function reptotal_cobroscredito()
-    {
+    function reptotal_cobroscredito(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
         if ($this->input->is_ajax_request()) {
 
@@ -832,8 +852,9 @@ function torta3($anio,$mes)
            
     }
     /* ************Reporte total de Egreso de efectivo******************************* */
-    function reptotal_egresoefectivo()
-    {
+    function reptotal_egresoefectivo(){
+
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
         if ($this->input->is_ajax_request()) {
 
@@ -877,8 +898,9 @@ function torta3($anio,$mes)
     }
     
     /* ************Reporte total de Egreso de Compras******************************* */
-    function reptotal_egresocompra()
-    {
+    function reptotal_egresocompra(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)){
         if ($this->input->is_ajax_request()) {
 
@@ -921,8 +943,9 @@ function torta3($anio,$mes)
             
     }
     
-    function reportesformapago()
-    {
+    function reportesformapago(){
+        
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
 
             $fecha1 = $this->input->post('fecha1');   
@@ -979,17 +1002,19 @@ function torta3($anio,$mes)
             
     }
     
-    function egresorep()
-    {
+    function egresorep(){
+        
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(138)){
-        $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
-        $data['usuario_id'] = $this->session_data['usuario_id'];
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['page_title'] = "Reportes";
-        $data['_view'] = 'reportes/egresorep';
+            $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
+            $data['usuario_id'] = $this->session_data['usuario_id'];
+            $this->load->model('Empresa_model');
+            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['page_title'] = "Reportes";
+            $data['_view'] = 'reportes/egresorep';
 
-        $this->load->view('layouts/main',$data);
+            $this->load->view('layouts/main',$data);
 
         }
 
@@ -998,6 +1023,7 @@ function torta3($anio,$mes)
     
     function reportegreso()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(138)){
         if ($this->input->is_ajax_request()) {
 
@@ -1041,6 +1067,7 @@ function torta3($anio,$mes)
     }
      function ingresorep()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(140)){
             $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
             $data['usuario_id'] = $this->session_data['usuario_id'];
@@ -1067,6 +1094,7 @@ function torta3($anio,$mes)
     }
     function reporteingreso()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(140)){
         if ($this->input->is_ajax_request()) {
 
@@ -1111,6 +1139,7 @@ function torta3($anio,$mes)
     /* reporte ingrso/egreso individual */
     function reportepersonal()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(139)){
         $this->load->model('Empresa_model');
         $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
@@ -1129,6 +1158,7 @@ function torta3($anio,$mes)
     }
     function buscarlosreportespersonal()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(139)){
         if ($this->input->is_ajax_request()) {
 
@@ -1172,6 +1202,8 @@ function torta3($anio,$mes)
     }
     function ventacliente()
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $this->load->model('Tipo_transaccion_model');
@@ -1189,8 +1221,10 @@ function torta3($anio,$mes)
             $this->load->view('layouts/main',$data);
         }
     }
+    
     function ventaproducto()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $this->load->model('Tipo_transaccion_model');
@@ -1245,6 +1279,7 @@ function torta3($anio,$mes)
     
     function resumenventas()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(156)){
             $usuario_id = $this->session_data['usuario_id'];
 
@@ -1279,6 +1314,7 @@ function torta3($anio,$mes)
     /* reporte de ventas por categoria */
     function ventacategoria()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(157)){
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -1298,6 +1334,7 @@ function torta3($anio,$mes)
     /* reporte de ventas por ruta(zonas) */
     function ventaruta()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(157)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
@@ -1317,27 +1354,30 @@ function torta3($anio,$mes)
     /* reporte de ventas por usuario */
     function ventausuario()
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(157)){
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $this->load->model('Moneda_model');
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
-        
-        $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        
-        $data['page_title'] = "Reporte de ventas por usuario";
-        $data['_view'] = 'reportes/ventausuario';
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
 
-        $this->load->view('layouts/main',$data);
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+
+            $data['page_title'] = "Reporte de ventas por usuario";
+            $data['_view'] = 'reportes/ventausuario';
+
+            $this->load->view('layouts/main',$data);
         }
     }
     
     function repventa_categoria()
     {
+        $data['sistema'] = $this->sistema;
         $fecha_desde = $this->input->post('fecha_desde');
         $fecha_hasta = $this->input->post('fecha_hasta');
         
@@ -1375,6 +1415,7 @@ function torta3($anio,$mes)
     /* reporte de ventas por zonas */
     function repventa_zonas()
     {
+        $data['sistema'] = $this->sistema;
         $fecha_desde = $this->input->post('fecha_desde');
         $fecha_hasta = $this->input->post('fecha_hasta');
         
@@ -1400,10 +1441,12 @@ function torta3($anio,$mes)
     /* reporte de ventas por usuario */
     function repventa_usuario()
     {
+        $data['sistema'] = $this->sistema;
         $fecha_desde = $this->input->post('fecha_desde');
         $fecha_hasta = $this->input->post('fecha_hasta');
         $usuario_id = $this->input->post('usuario_id');
         $elusuario = "";
+        
         if($usuario_id >0){
             $elusuario = "and vs.usuario_id = $usuario_id";
         }
@@ -1426,16 +1469,18 @@ function torta3($anio,$mes)
     
     function venta()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(141)){
         
-        $data['page_title'] = "Reporte de ventas";
-        $data['_view'] = 'reportes/indexventa';
+            $data['page_title'] = "Reporte de ventas";
+            $data['_view'] = 'reportes/indexventa';
 
-        $this->load->view('layouts/main',$data);
+            $this->load->view('layouts/main',$data);
         }
     }
     function reporte_generalventa()
     {
+        $data['sistema'] = $this->sistema;
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $this->load->model('Tipo_transaccion_model');
@@ -1454,6 +1499,7 @@ function torta3($anio,$mes)
     /* busca ventas por cliente en un rango de fachas */
     function busqueda_venta()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
             $fecha_desde = $this->input->post('fecha_desde');
             $fecha_hasta = $this->input->post('fecha_hasta');
@@ -1466,6 +1512,7 @@ function torta3($anio,$mes)
     }
     function ventacategoria_pagrupado()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['page_title'] = "Reporte de ventas de productos agrupados por categorias";
@@ -1483,6 +1530,7 @@ function torta3($anio,$mes)
     }
     function ventacategoriap()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['page_title'] = "Reporte de ventas de productos agrupados por categorias";
@@ -1513,6 +1561,7 @@ function torta3($anio,$mes)
     /* reporte de ventas agrupado por usuario en un rango de fechas(por dia) */
     function ventausuariofecha()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(157)){
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -1534,6 +1583,9 @@ function torta3($anio,$mes)
     
     /* obtiene los reportes de usuarios por fecha y usuario o usuarios */
     function repventa_usuariofecha(){
+        
+        $data['sistema'] = $this->sistema;
+        
             if ($this->input->is_ajax_request()){
                 $fecha_desde = $this->input->post('fecha_desde');
                 $fecha_hasta = $this->input->post('fecha_hasta');
@@ -1556,6 +1608,7 @@ function torta3($anio,$mes)
     }
     
     function getventatotalusuario(){
+        
         if ($this->input->is_ajax_request()){
             $usuario_id = $this->input->post('usuario_id');
             $lafecha = $this->input->post('lafecha');
@@ -1564,8 +1617,11 @@ function torta3($anio,$mes)
         }else{
             show_404();
         }
+        
     }
+    
     function getall_totalventasfechas(){
+        
         if ($this->input->is_ajax_request()){
             $fecha_desde = $this->input->post('fecha_desde');
             $fecha_hasta = $this->input->post('fecha_hasta');
@@ -1579,59 +1635,64 @@ function torta3($anio,$mes)
     /* reporte General */
     function reporte_general()
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(157)){
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $this->load->model('Moneda_model');
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
-        
-        $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        
-        $this->load->model('Tipo_transaccion_model');
-        $data['all_tipotransaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-        
-        $this->load->model('Forma_pago_model');
-        $data['all_formapago'] = $this->Forma_pago_model->get_all_forma();
-        
-        $this->load->model('Categoria_clientezona_model');
-        $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_id1();
-        
-        $this->load->model('Producto_preferencia_model');
-        $data['all_preferencia'] = $this->Producto_preferencia_model->get_allpreferencia_producto();
-        
-        $this->load->model('Clasificador_model');
-        $data['all_clasificador'] = $this->Clasificador_model->get_all_clasificador_asc();
-        
-        $this->load->model('Categoria_producto_model');
-        $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
-        /*
-        $this->load->model('Categoria_trabajo_model');
-        $data['all_categoriatrabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
-        
-        $this->load->model('Procedencia_model');
-        $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
-        
-        $this->load->model('Tiempo_uso_model');
-        $data['all_tiempouso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
-        
-        $this->load->model('Categoria_servicio_model');
-        $data['all_categoriaservicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
-        
-        $this->load->model('tipo_servicio_model');
-        $data['all_tiposervicio'] = $this->tipo_servicio_model->get_all_tipo_servicio_id1();
-        */
-        $data['page_title'] = "Reporte General";
-        $data['_view'] = 'reportes/reporte_general';
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
 
-        $this->load->view('layouts/main',$data);
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+
+            $this->load->model('Tipo_transaccion_model');
+            $data['all_tipotransaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+
+            $this->load->model('Forma_pago_model');
+            $data['all_formapago'] = $this->Forma_pago_model->get_all_forma();
+
+            $this->load->model('Categoria_clientezona_model');
+            $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_id1();
+
+            $this->load->model('Producto_preferencia_model');
+            $data['all_preferencia'] = $this->Producto_preferencia_model->get_allpreferencia_producto();
+
+            $this->load->model('Clasificador_model');
+            $data['all_clasificador'] = $this->Clasificador_model->get_all_clasificador_asc();
+
+            $this->load->model('Categoria_producto_model');
+            $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
+            /*
+            $this->load->model('Categoria_trabajo_model');
+            $data['all_categoriatrabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
+
+            $this->load->model('Procedencia_model');
+            $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
+
+            $this->load->model('Tiempo_uso_model');
+            $data['all_tiempouso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
+
+            $this->load->model('Categoria_servicio_model');
+            $data['all_categoriaservicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
+
+            $this->load->model('tipo_servicio_model');
+            $data['all_tiposervicio'] = $this->tipo_servicio_model->get_all_tipo_servicio_id1();
+            */
+            $data['page_title'] = "Reporte General";
+            $data['_view'] = 'reportes/reporte_general';
+
+            $this->load->view('layouts/main',$data);
         }
     }
     /* busca reportes de ventas; servicios; produccion */
     function reporte_buscarreporte(){
+        
+        $data['sistema'] = $this->sistema;
+        
         if ($this->input->is_ajax_request()){
             $filtrar = $this->input->post('filtrar');
             $fecha_desde = $this->input->post('fecha_desde');
@@ -1783,6 +1844,8 @@ function torta3($anio,$mes)
      */
     function reporte_usuariodia()
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(18)){
             //**************** inicio contenido ***************
             $data['rolusuario'] = $this->session_data['rol'];
@@ -1808,7 +1871,10 @@ function torta3($anio,$mes)
     /* obtiene la suma de las ventas por dia en un rango de fechas de un usuario*/
     function ventas_mes()
     {
+        $data['sistema'] = $this->sistema;
+        
         $usuario_id = $this->session_data['usuario_id'];
+        
             if ($this->input->is_ajax_request()){
                 $fecha_inicio = $this->input->post("fecha_inicio");
                 $fecha_fin    = $this->input->post("fecha_fin");
@@ -1831,6 +1897,8 @@ function torta3($anio,$mes)
      * Get reporte de mora de las ventas a credito
      */
     function reporte_mora(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(141)){
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
             
@@ -1849,6 +1917,9 @@ function torta3($anio,$mes)
     }
 
     function get_moras(){
+        
+        $data['sistema'] = $this->sistema;
+        
         if($this->input->is_ajax_request()){
             $usuario = $this->input->post('usuario');
             $categoria = $this->input->post('categoria');
@@ -1871,6 +1942,7 @@ function torta3($anio,$mes)
      */
     function productosvencidos()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(18)){
             $data['page_title'] = "Reporte de productos vencidos";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
@@ -1881,6 +1953,7 @@ function torta3($anio,$mes)
     /* obtiene los productos con fechas de vencimiento y los guarda en una tabla auxiliar */
     function productos_fechasvencimiento()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()){
             $productos = $this->Inventario_model->get_inventario();
             $this->load->model('Vencimiento_producto_model');
@@ -1929,6 +2002,7 @@ function torta3($anio,$mes)
     /* obtiene los productos con fechas de vencimiento de vencimiento_producto */
     function get_fechasvencimiento()
     {
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $fecha_vencimiento = $this->input->post("fecha_vencimiento");
             $filtrar = $this->input->post("filtrar");
@@ -1978,6 +2052,8 @@ function torta3($anio,$mes)
     /* obtiene los detalles de una venta */
     function resumen_ventascaja()
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->input->is_ajax_request()){
             $filtro = $this->input->post("filtro");
             $fecha_reporte = $this->input->post("fecha_reporte");

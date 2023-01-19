@@ -5,14 +5,18 @@
  */
  
 class Principal extends CI_Controller{
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $this->load->model('Principal_model');
         $id_pagina = 1;
         $data['menu_superior'] = $this->Principal_model->get_menu_principal($id_pagina);
@@ -39,6 +43,7 @@ class Principal extends CI_Controller{
  
     public function sendMailGmail()
     {
+        $data['sistema'] = $this->sistema;
 		//cargamos la libreria email de ci
 		$this->load->library("email");
  
@@ -68,6 +73,7 @@ class Principal extends CI_Controller{
  
     public function sendMailYahoo()
     {
+        $data['sistema'] = $this->sistema;
 		//cargamos la libreria email de ci
 		$this->load->library("email");
  

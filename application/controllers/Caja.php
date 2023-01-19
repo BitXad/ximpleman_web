@@ -18,6 +18,7 @@ class Caja extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('Parametro_model');
         $this->load->model('Caja_model');
+        $this->load->model('Sistema_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -41,6 +42,8 @@ class Caja extends CI_Controller{
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->Sistema_model->get_sistema();
+        
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -55,6 +58,7 @@ class Caja extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->Sistema_model->get_sistema();
         $data['caja'] = $this->Caja_model->get_all_caja();
         
         $data['_view'] = 'caja/index';
@@ -66,6 +70,7 @@ class Caja extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->Sistema_model->get_sistema();
         $this->load->library('form_validation');
         $this->form_validation->set_rules('caja_apertura','Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         $this->form_validation->set_rules('caja_fechaapertura','Fecha Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -147,6 +152,7 @@ class Caja extends CI_Controller{
     {   
         // check if the caja exists before trying to edit it
         $data['caja'] = $this->Caja_model->get_caja($caja_id);
+        $data['sistema'] = $this->Sistema_model->get_sistema();
         
         if(isset($data['caja']['caja_id']))
         {
@@ -207,6 +213,7 @@ class Caja extends CI_Controller{
      */
     function remove($caja_id)
     {
+        $data['sistema'] = $this->Sistema_model->get_sistema();
         $caja = $this->Caja_model->get_caja($caja_id);
 
         // check if the caja exists before trying to delete it
@@ -224,6 +231,7 @@ class Caja extends CI_Controller{
      */
     function abrir_caja()
     {
+        $data['sistema'] = $this->Sistema_model->get_sistema();
         $monto_caja = $this->input->post("monto_caja");
         $caja_id = $this->input->post("caja_id");
         
@@ -241,6 +249,7 @@ class Caja extends CI_Controller{
      */
     function abrir_lacaja()
     {
+        $data['sistema'] = $this->Sistema_model->get_sistema();
         $caja_apertura = $this->input->post("monto_caja");
         if(trim($caja_apertura) == ""){
             echo json_encode("no");
@@ -263,9 +272,7 @@ class Caja extends CI_Controller{
      */
     function cierre_caja($caja_id)
     {
-        
-        
-        
+        $data['sistema'] = $this->Sistema_model->get_sistema();
         $this->load->library('form_validation');
         $this->form_validation->set_rules('caja_cierre','Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         $this->form_validation->set_rules('caja_fechacierre','Fecha de Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -361,6 +368,7 @@ class Caja extends CI_Controller{
     
     function registrar_bitacora(){
         
+        $data['sistema'] = $this->Sistema_model->get_sistema();
         //$bitacoracaja_fecha = $this->input->post("bitacoracaja_fecha");
         //$bitacoracaja_hora = $this->input->post("");
         $bitacoracaja_evento = $this->input->post("bitacoracaja_evento");
@@ -386,7 +394,7 @@ class Caja extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         
         $data['caja'] = $this->Caja_model->get_caja_id($caja_id);
-        
+        $data['sistema'] = $this->Sistema_model->get_sistema();
         
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
         $data['page_title'] = "Cierre de Caja";

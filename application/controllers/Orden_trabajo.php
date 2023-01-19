@@ -6,6 +6,7 @@
  
 class Orden_trabajo extends CI_Controller{
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -18,9 +19,13 @@ class Orden_trabajo extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -34,6 +39,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             $data['page_title'] = "Orden de Trabajo";
             $data['rol'] = $this->session_data['rol'];
@@ -47,16 +53,19 @@ class Orden_trabajo extends CI_Controller{
 
     function buscar_ot()
     {
-       if ($this->input->is_ajax_request()) {  
-        $parametro = $this->input->post('parametro');
-        $datos = $this->Orden_trabajo_model->buscar_orden_trabajo($parametro);
-       if(isset($datos)){
-                        echo json_encode($datos);
-                    }else echo json_encode(null);
-    }
+        $data['sistema'] = $this->sistema;
+        if ($this->input->is_ajax_request()){
+            
+         $parametro = $this->input->post('parametro');
+         $datos = $this->Orden_trabajo_model->buscar_orden_trabajo($parametro);
+         
+            if(isset($datos)){
+                echo json_encode($datos);
+            }else echo json_encode(null);
+        }
         else
         {                 
-                    show_404();
+            show_404();
         }          
     }
 
@@ -66,6 +75,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function nuevo()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(167)){
             $data['page_title'] = "Orden de Trabajo";
             $data['usuario_id'] = $this->session_data['usuario_id'];
@@ -81,6 +91,7 @@ class Orden_trabajo extends CI_Controller{
 
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(167)){
             
         $usuario_id = $this->session_data['usuario_id'];
@@ -152,6 +163,7 @@ class Orden_trabajo extends CI_Controller{
 
     function edit($orden_trabajo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(167)){
             
         $usuario_id = $this->session_data['usuario_id'];
@@ -188,26 +200,28 @@ class Orden_trabajo extends CI_Controller{
 
     function seleccionar_cliente($cliente_id){
         
-               //**************** inicio contenido ***************       
+        $data['sistema'] = $this->sistema;
+        //**************** inicio contenido ***************       
 
-               $usuario_id = $this->session_data['usuario_id'];
-               
-               
-               $sql =  "select * from cliente where ".
-                       " cliente_id = ".$cliente_id;
-               
-               $resultado = $this->Venta_model->consultar($sql);
-               echo json_encode($resultado);
+        $usuario_id = $this->session_data['usuario_id'];
 
 
-               //**************** fin contenido ***************
-                                       
+        $sql =  "select * from cliente where ".
+                " cliente_id = ".$cliente_id;
+
+        $resultado = $this->Venta_model->consultar($sql);
+        echo json_encode($resultado);
+
+
+        //**************** fin contenido ***************
+
                                         
         
     }
 
     function editar($orden_trabajo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(167)){
             $data['page_title'] = "Orden de Trabajo";
             $data['usuario_id'] = $this->session_data['usuario_id'];
@@ -221,6 +235,7 @@ class Orden_trabajo extends CI_Controller{
 
     function ordenrecibo($orden_trabajo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             $data['page_title'] = "Orden de Trabajo";
             $this->load->model('Empresa_model');
@@ -235,6 +250,7 @@ class Orden_trabajo extends CI_Controller{
 
     function ordendoc($orden_trabajo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             $data['page_title'] = "Orden de Trabajo";
             $this->load->model('Empresa_model');
@@ -248,6 +264,7 @@ class Orden_trabajo extends CI_Controller{
     }
     function recibo($orden_trabajo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             $data['page_title'] = "Orden de Trabajo";
             $usuario_id = $this->session_data['usuario_id'];
@@ -266,6 +283,7 @@ class Orden_trabajo extends CI_Controller{
 
     function buscarcliente()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
         //**************** inicio contenido ***************
         
@@ -288,14 +306,15 @@ class Orden_trabajo extends CI_Controller{
     }
     function detalle_orden_trabajo()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {  
             $usuario_id = $this->session_data['usuario_id'];
         
         $datos = $this->Orden_trabajo_model->get_detalle_orden_trabajo($usuario_id);
-     if(isset($datos)){
-                        echo json_encode($datos);
-                    }else echo json_encode(null);
-    }
+        if(isset($datos)){
+                           echo json_encode($datos);
+                       }else echo json_encode(null);
+       }
         else
         {                 
                     show_404();
@@ -303,8 +322,10 @@ class Orden_trabajo extends CI_Controller{
      
     
     }
+    
     function edit_detalle_orden()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {  
             $orden_id = $this->input->post('orden_id');
         
@@ -320,8 +341,10 @@ class Orden_trabajo extends CI_Controller{
      
     
     }    
+    
     function insertarproducto()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
         $usuario_id = $this->input->post('usuario_id');
         
@@ -376,8 +399,11 @@ class Orden_trabajo extends CI_Controller{
                     show_404();
         }          
     }
-     function agregarproducto()
+    
+    function agregarproducto()
     {
+        $data['sistema'] = $this->sistema;
+        
         if ($this->input->is_ajax_request()) {
         $orden_id = $this->input->post('orden_id');
         $usuario_id = $this->session_data['usuario_id'];
@@ -437,6 +463,7 @@ class Orden_trabajo extends CI_Controller{
 
     function updateDetalleorden()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
         $usuario_id = $this->input->post('usuario_id');
         
@@ -473,6 +500,7 @@ class Orden_trabajo extends CI_Controller{
     }
     function actualizaDetalleorden()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
         $orden_id = $this->input->post('orden_id');
         
@@ -509,6 +537,7 @@ class Orden_trabajo extends CI_Controller{
 
     function quitar($detalleorden_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
         //**************** inicio contenido ***************        
         
@@ -525,6 +554,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function editaaa($orden_trabajo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(167)){
             $data['page_title'] = "Orden de Trabajo";
             $usuario_id = $this->session_data['usuario_id'];
@@ -568,6 +598,7 @@ class Orden_trabajo extends CI_Controller{
 
     function finalizar($orden_trabajo)
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             $data['page_title'] = "Orden de Trabajo";
             $usuario_id = $this->session_data['usuario_id'];
@@ -614,6 +645,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function remove($orden_trabajo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(170)){
             $Orden_trabajo = $this->Orden_trabajo_model->get_Orden_trabajo($orden_trabajo);
 
@@ -630,6 +662,7 @@ class Orden_trabajo extends CI_Controller{
 
     function anular($orden_trabajo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(170)){
           $orden= "UPDATE orden_trabajo set estado_id=27, orden_total=0, orden_acuenta=0, orden_saldo=0 WHERE orden_id=".$orden_trabajo." ";
           $this->Orden_trabajo_model->ejecutar($orden);
@@ -644,6 +677,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function ordenes_pendientes()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             
             $condicion = $this->input->post('filtro');
@@ -661,6 +695,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function pasaraventas($orden_id,$cliente_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(168)) {
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];

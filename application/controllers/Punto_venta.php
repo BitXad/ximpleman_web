@@ -1,6 +1,8 @@
 <?php
 class Punto_venta extends CI_Controller{
+    
     var $session_data;
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -18,9 +20,13 @@ class Punto_venta extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -35,6 +41,7 @@ class Punto_venta extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(1)) {
             $data['page_title'] = "Puntos de venta";
             $data['all_tipopuntoventa'] = $this->Tipo_puntoventa_model->get_all_tipopuntoventa();
@@ -45,6 +52,8 @@ class Punto_venta extends CI_Controller{
     }
 
     function get_puntos_venta(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             //$data['puntos_ventas'] = $this->PuntoVenta_model->get_all_puntoVenta_cuis_cudf();
             $data['puntos_ventas'] = $this->PuntoVenta_model->get_all_puntoVenta();
@@ -57,6 +66,7 @@ class Punto_venta extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(149)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('token_delegado','Token Delegado','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -86,6 +96,7 @@ class Punto_venta extends CI_Controller{
      */
     function edit($token_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(149)){
             $data['token'] = $this->Token_model->get_token($token_id);
             if(isset($data['token']['token_id']))

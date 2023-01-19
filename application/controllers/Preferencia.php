@@ -5,6 +5,8 @@
  */
  
 class Preferencia extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -14,8 +16,13 @@ class Preferencia extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     }
      private function acceso($id_rol){
+         
+         $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -30,6 +37,7 @@ class Preferencia extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(189)){
             $data['page_title'] = "Preferencia";
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -52,6 +60,7 @@ class Preferencia extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(189)){
             $data['page_title'] = "Preferencia";
             $this->load->library('form_validation');
@@ -132,6 +141,7 @@ class Preferencia extends CI_Controller{
      */
     function edit($preferencia_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(189)){
             $data['page_title'] = "Forma Pago";
             // check if the preferencia exists before trying to edit it
@@ -232,6 +242,7 @@ class Preferencia extends CI_Controller{
      */
     function remove($preferencia_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(189)){
             $preferencia = $this->Preferencia_model->get_preferencia($preferencia_id);
             // check if the preferencia exists before trying to delete it

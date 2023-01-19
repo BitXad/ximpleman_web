@@ -5,10 +5,16 @@
  */
  
 class Tabla_asiento extends CI_Controller{
+    
+    private $sistema;
+
     function __construct()
     {
         parent::__construct();
         $this->load->model('Tabla_asiento_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+
     } 
 
     /*
@@ -16,6 +22,7 @@ class Tabla_asiento extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['tabla_asiento'] = $this->Tabla_asiento_model->get_all_tabla_asiento();
         
         $data['_view'] = 'tabla_asiento/index';
@@ -27,6 +34,7 @@ class Tabla_asiento extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -79,6 +87,7 @@ class Tabla_asiento extends CI_Controller{
      */
     function edit($cod_tabla_asiento)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the tabla_asiento exists before trying to edit it
         $data['tabla_asiento'] = $this->Tabla_asiento_model->get_tabla_asiento($cod_tabla_asiento);
         
@@ -139,6 +148,7 @@ class Tabla_asiento extends CI_Controller{
      */
     function remove($cod_tabla_asiento)
     {
+        $data['sistema'] = $this->sistema;
         $tabla_asiento = $this->Tabla_asiento_model->get_tabla_asiento($cod_tabla_asiento);
 
         // check if the tabla_asiento exists before trying to delete it

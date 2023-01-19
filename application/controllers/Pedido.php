@@ -5,6 +5,8 @@
  */
  
 class Pedido extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -36,10 +38,15 @@ class Pedido extends CI_Controller{
             redirect('', 'refresh');
         }
         
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
+        
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
         }else{
@@ -53,7 +60,7 @@ class Pedido extends CI_Controller{
      */
     function index()
     {
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
                 
         //**************** inicio contenido ***************            
@@ -103,7 +110,7 @@ class Pedido extends CI_Controller{
      */
     function nota_pedido($pedido_id)
     {
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(32)) {
         //**************** inicio contenido ***************            
         $usuario_id = $this->session_data['usuario_id'];
@@ -130,7 +137,7 @@ class Pedido extends CI_Controller{
      */
     function nota_pedido_boucher($pedido_id)
     {
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(32)) {
         //**************** inicio contenido ***************            
             $usuario_id = $this->session_data['usuario_id'];
@@ -157,7 +164,7 @@ class Pedido extends CI_Controller{
      */
     function imprimir($pedido_id)
     {
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(32)) {
             //**************** inicio contenido ***************            
             
@@ -184,6 +191,7 @@ class Pedido extends CI_Controller{
      */
     function mostrar_pedidos()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
         //**************** inicio contenido ***************            
         
@@ -218,7 +226,7 @@ class Pedido extends CI_Controller{
      */
     function crearpedido()
     {
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(31)) {
         //**************** inicio contenido ***************            
         $usuario_id = $this->session_data['usuario_id'];
@@ -238,6 +246,8 @@ class Pedido extends CI_Controller{
      */
     function modificarpedido($pedido_id)
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(31)) {
         //**************** inicio contenido ***************            
         
@@ -284,7 +294,7 @@ class Pedido extends CI_Controller{
     
     function pedidoabierto($cliente_id)
     {
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(31)){
             //**************** inicio contenido ***************        
 
@@ -343,7 +353,7 @@ class Pedido extends CI_Controller{
      */
     function detalle_pedido()
     {
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
             //**************** inicio contenido ***************    
             if ($this->input->is_ajax_request()) {
@@ -369,6 +379,7 @@ class Pedido extends CI_Controller{
      */
     function pasaraventas($pedido_id,$cliente_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];
@@ -444,6 +455,7 @@ class Pedido extends CI_Controller{
      */
     function datoscliente()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
         //**************** inicio contenido ***************    
         if ($this->input->is_ajax_request()) {
@@ -467,7 +479,7 @@ class Pedido extends CI_Controller{
     
     function finalizarpedido()
     {
-        
+        $data['sistema'] = $this->sistema;
        if($this->acceso(30)) {
                 //**************** inicio contenido ***************    
                 $regusuario_id = $this->session_data['usuario_id'];     
@@ -526,6 +538,7 @@ class Pedido extends CI_Controller{
     
     function registrarpedido()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************        
         
@@ -697,6 +710,7 @@ class Pedido extends CI_Controller{
      */
     function ingresarproducto()
     {
+        $data['sistema'] = $this->sistema;
        if($this->acceso(30)) {
         //**************** inicio contenido ***************            $usuario_id = 1;    
         
@@ -753,7 +767,7 @@ class Pedido extends CI_Controller{
      */
     function add()
     {   
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(31)) {
         //**************** inicio contenido ***************  
                 
@@ -796,6 +810,7 @@ class Pedido extends CI_Controller{
      */
     function edit($pedido_id)
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(33)) {
         //**************** inicio contenido ***************    
         // check if the pedido exists before trying to edit it
@@ -845,6 +860,7 @@ class Pedido extends CI_Controller{
      */
     function remove($pedido_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(34)) {
         //**************** inicio contenido ***************    
         
@@ -864,6 +880,7 @@ class Pedido extends CI_Controller{
     
     function pedido_a_ventas(){
         
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];
@@ -1018,7 +1035,8 @@ class Pedido extends CI_Controller{
     
     function anular_pedido(){
         
-            if($this->acceso(34)) {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(34)) {
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];
         
@@ -1059,6 +1077,7 @@ class Pedido extends CI_Controller{
      */
     function eliminaritemx($detalleped_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
         //**************** inicio contenido ***************                            
 
@@ -1076,6 +1095,7 @@ class Pedido extends CI_Controller{
      */
     function eliminartodox($pedido_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
         //**************** inicio contenido ***************            
        
@@ -1092,6 +1112,7 @@ class Pedido extends CI_Controller{
      */
     function incrementar()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
         //**************** inicio contenido ***************            
          
@@ -1119,6 +1140,7 @@ class Pedido extends CI_Controller{
      */
     function reducir()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
         //**************** inicio contenido ***************    
         
@@ -1146,7 +1168,7 @@ class Pedido extends CI_Controller{
 
         //control de sesion
 //        if ($this->session->userdata('perfil')=='PREVENDEDOR'){
-            
+        $data['sistema'] = $this->sistema;    
         if($this->acceso(30)) {
         //**************** inicio contenido ***************  
         
@@ -1165,7 +1187,7 @@ class Pedido extends CI_Controller{
 
     function mapa_entregas()
     {
-
+        $data['sistema'] = $this->sistema;
        if($this->acceso(30)) {
         //**************** inicio contenido ***************  
         
@@ -1187,6 +1209,7 @@ class Pedido extends CI_Controller{
 
     function mapa_paraentregas()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
             //**************** inicio contenido ***************
             $data['page_title'] = "Mapa de Entregas";
@@ -1214,7 +1237,7 @@ class Pedido extends CI_Controller{
 
     function mapa_distribuidor()
     {
-
+        $data['sistema'] = $this->sistema;
        if($this->acceso(30)) {
         //**************** inicio contenido ***************  
         
@@ -1235,7 +1258,7 @@ class Pedido extends CI_Controller{
 
     function mapa_clientes($usuario_id,$dia_visita)
     {
-
+        $data['sistema'] = $this->sistema;
        if($this->acceso(30)) {
         //**************** inicio contenido ***************  
 //
@@ -1278,7 +1301,8 @@ class Pedido extends CI_Controller{
     
 
     function eliminardetalle()
-    {       
+    {      
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************       
         
@@ -1299,6 +1323,7 @@ class Pedido extends CI_Controller{
      */
     function eliminaritem($detalleven_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************        
 
@@ -1316,6 +1341,7 @@ class Pedido extends CI_Controller{
      */
     function eliminartodo()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************        
         $usuario_id = $this->session_data['usuario_id'];
@@ -1333,6 +1359,7 @@ class Pedido extends CI_Controller{
      */
     function registrar_recorrido()
     {
+        $data['sistema'] = $this->sistema;
 //        if($this->acregistrarpedidoceso(12)){
         //**************** inicio contenido ***************        
         $usuario_id = $this->session_data['usuario_id'];
@@ -1371,7 +1398,7 @@ class Pedido extends CI_Controller{
      */
     function misclientes()
     {
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
 
         //**************** inicio contenido ***************        
@@ -1394,7 +1421,7 @@ class Pedido extends CI_Controller{
      */
     function buscar_clientes()
     {
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
 
         //**************** inicio contenido ***************        
@@ -1439,7 +1466,7 @@ class Pedido extends CI_Controller{
      */
     function buscar_cliente_usuario()
     {
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
 
         //**************** inicio contenido ***************        
@@ -1461,7 +1488,7 @@ class Pedido extends CI_Controller{
      */
     function cambiar_orden()
     {
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
 
         //**************** inicio contenido ***************        
@@ -1484,6 +1511,7 @@ class Pedido extends CI_Controller{
     */
     function mapa_depedidos($zona_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
             //**************** inicio contenido ***************
             $data['page_title'] = "Mapa de pedidos";
@@ -1513,6 +1541,8 @@ class Pedido extends CI_Controller{
     }
     
     function mapa_seg_entregas($usuario_id, $fecha_desde, $fecha_hasta,$select_pedido){
+        
+            $data['sistema'] = $this->sistema;
         // if($this->acceso(30)) {
             //**************** inicio contenido ***************  
                 $data['page_title'] = "Mapa";
@@ -1548,6 +1578,7 @@ class Pedido extends CI_Controller{
     */
     function mapa_pedidos()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
             $data['page_title'] = "Mapa de pedidos";
             $data['parametros'] = $this->Parametro_model->get_parametro(1);
@@ -1560,6 +1591,8 @@ class Pedido extends CI_Controller{
         }
     }
     function pedidos_pendientes(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
             if ($this->input->is_ajax_request()) {
                 $usuario_id = $this->input->post('usuario_id');
@@ -1573,6 +1606,8 @@ class Pedido extends CI_Controller{
         }
     }
     function mapapedido_a_ventas(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)){ //12 ventas o 30 pedidos
             //**************** inicio contenido ***************    
             $usuario_id = $this->session_data['usuario_id'];
@@ -1619,6 +1654,8 @@ class Pedido extends CI_Controller{
     }
     /* entregar pedido desde mapa de pedidos */
     function entregarpedido(){
+        
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(30)) {
             if ($this->input->is_ajax_request()) {
                 $venta_id = $this->input->post('venta_id');

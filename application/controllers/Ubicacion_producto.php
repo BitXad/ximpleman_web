@@ -1,7 +1,11 @@
 <?php
 
 class Ubicacion_producto extends CI_Controller{
+    
+    
+    private $sistema;
     function __construct(){
+        
         parent::__construct();
         $this->load->model('Ubicacion_model');
         $this->load->model('Control_inventario_model');
@@ -9,14 +13,20 @@ class Ubicacion_producto extends CI_Controller{
         $this->load->model('Ubicacion_producto_model');
         $this->load->model('Estado_model');
         $this->load->model('Categoria_producto_model');
+        $this->load->model('Sistema_model');
         // $this->load->model('Control_inventario_aux_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
             redirect('', 'refresh');
         }
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     }
+    
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -29,6 +39,8 @@ class Ubicacion_producto extends CI_Controller{
      * Listing of unidad
      */
     function index($controlu_id, $controli_id ,$imprimir = 0){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $data['controli_id'] = $controli_id;
             $data['controlu_id'] = $controlu_id;
@@ -51,6 +63,7 @@ class Ubicacion_producto extends CI_Controller{
     function add(){   
         // if($this->acceso(136)){
             
+        $data['sistema'] = $this->sistema;
         $params = array(
             'ubicacion_id' => $this->input->post('ubicacion'),
             'producto_id' => $this->input->post('producto'),
@@ -63,7 +76,9 @@ class Ubicacion_producto extends CI_Controller{
     /*
      * Editing a unidad
      */
-    function edit($ubicacion_id){   
+    function edit($ubicacion_id){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             // check if the tipo_servicio exists before trying to edit it
             $data['ubicacion'] = $this->Ubicacion_model->get_ubicacion($ubicacion_id);
@@ -95,6 +110,8 @@ class Ubicacion_producto extends CI_Controller{
      * Revisa si existe algun producto ya registrado en otra ubicacion
     */
     function verificar_existencia(){
+        
+        $data['sistema'] = $this->sistema;
         $producto = $this->input->post("producto");
         $controli_id = $this->input->post("controli_id");
         $result = $this->Ubicacion_producto_model->buscar_existencia($producto, $controli_id);
@@ -103,6 +120,8 @@ class Ubicacion_producto extends CI_Controller{
 
 
     function delete(){
+        
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
             $ubi_producto = $this->input->post("ubi_producto");
             $this->Ubicacion_producto_model->delete_ubi_prod($ubi_producto);
@@ -113,6 +132,8 @@ class Ubicacion_producto extends CI_Controller{
     }
 
     function actualizar_inventario(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $ubi_productos = $this->input->post("ubi_productos");
             foreach ($ubi_productos as $ubi_producto){

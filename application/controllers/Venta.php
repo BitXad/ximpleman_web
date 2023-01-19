@@ -15,7 +15,7 @@ class Venta extends CI_Controller{
     private $registroeventos_id = 0;
     private $dosificacion;
     private $nombre_archivo;
-    
+    private $sistema;
     //private $puntodeventa = 0;
     
     function __construct()
@@ -50,6 +50,7 @@ class Venta extends CI_Controller{
             'Caja_model',
             'Eventos_significativos_model',
             'Emision_paquetes_model',
+            'Sistema_model',
         ]);
         
 
@@ -59,6 +60,9 @@ class Venta extends CI_Controller{
         $this->load->helper('numeros_helper');
         
         //Carga los parametros en una variable global
+        
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
         $parametro = $this->Parametro_model->get_parametros();
         $this->parametros = $parametro[0];
         
@@ -123,6 +127,7 @@ class Venta extends CI_Controller{
 
         if($this->acceso(18)){
         //**************** inicio contenido ***************
+        $data['sistema'] = $this->sistema;
         $data['rolusuario'] = $this->session_data['rol'];
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['dosificacion'] = $this->dosificacion;
@@ -161,7 +166,8 @@ class Venta extends CI_Controller{
     {    
         
         if($this->acceso(12)){
-        //**************** inicio contenido ***************        
+        //**************** inicio contenido ***************     
+        $data['sistema'] = $this->sistema;
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];        
@@ -232,7 +238,7 @@ class Venta extends CI_Controller{
         
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
-        
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];
         $data['rolusuario'] = $this->session_data['rol'];
@@ -279,7 +285,7 @@ class Venta extends CI_Controller{
         //**************** inicio contenido ***************        
   
         $usuario_id = $this->session_data['usuario_id'];
-        
+        $data['sistema'] = $this->sistema;
         $producto_id = $this->input->post('producto_id');
         $cantidad = $this->input->post('cantidad');
         $existencia = $this->input->post('existencia');
@@ -455,7 +461,7 @@ class Venta extends CI_Controller{
             //$factura_fecha_hora = '2022-07-03 13:17:10.000';//borrar
             //$factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
             //for($numero = 1;$numero <= 2;$numero++){ //borrar el for, mantener su contenido
-                
+                $data['sistema'] = $this->sistema;
                 $usuario_id = $this->session_data['usuario_id'];
                 
                 $porcentaje = 0;
@@ -1367,12 +1373,11 @@ class Venta extends CI_Controller{
     
     function traspaso($compra_id,$basededatos){
         
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->session_data['usuario_id'];
         $sql = "select * from detalle_venta_aux where usuario_id = ".$usuario_id;
         
         $detalle_compra = $this->Venta_model->consultar($sql);
-        
-            
         
         foreach($detalle_compra as $detalle){
             
@@ -1425,7 +1430,8 @@ class Venta extends CI_Controller{
 
     }
 
-    function buscar_serie() {  
+    function buscar_serie(){  
+        
         if($this->input->is_ajax_request()){
             $serie = $this->input->post('serie');
             $vendido = $this->Detalle_venta_model->get_venta_serie($serie);
@@ -1622,7 +1628,7 @@ class Venta extends CI_Controller{
         
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
-        
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -1677,11 +1683,12 @@ class Venta extends CI_Controller{
     /*
      * Editing a venta
      */
-function edit($venta_id)
-    {   
+function edit($venta_id){  
+    
         if($this->acceso(19)){
+            
         //**************** inicio contenido ***************      
-        
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->session_data['usuario_id'];
         // check if the venta exists before trying to edit it
         $venta = $this->Venta_model->get_venta($venta_id);
@@ -1876,6 +1883,7 @@ function edit($venta_id)
     
     function nota_venta($venta_id)
     {
+        $data['sistema'] = $this->sistema;
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -1897,7 +1905,7 @@ function edit($venta_id)
         if($this->acceso(20)){
         //**************** inicio contenido ***************      
 
-           
+        $data['sistema'] = $this->sistema;   
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];        
@@ -1992,7 +2000,7 @@ function edit($venta_id)
             //**************** inicio contenido ***************      
             
         $usuario_id = $this->session_data['usuario_id'];
-        
+        $data['sistema'] = $this->sistema;
         $venta_id = $this->input->post('venta_id');
         $cliente_id = $this->input->post('cliente_id');
         $forma_id = $this->input->post('forma_pago');
@@ -2342,7 +2350,7 @@ function edit($venta_id)
         
         if($this->acceso(12)){
         //**************** inicio contenido ***************     
-        
+        $data['sistema'] = $this->sistema;
         $venta = $this->Venta_model->get_venta($venta_id);
 
         // check if the venta exists before trying to delete it
@@ -2385,7 +2393,7 @@ function edit($venta_id)
         //**************** inicio contenido ***************  
             
         //************ inicio bitacora 
-            
+        $data['sistema'] = $this->sistema;   
         $usuario_id = $this->session_data['usuario_id'];        
         $bitacoracaja_fecha = "date(now())";
         $bitacoracaja_hora = "time(now())";
@@ -2934,7 +2942,7 @@ function modificarcliente()
 function ultimaventa($tipo){
     
     if($this->acceso(12)||$this->acceso(30)){
-
+        
             //**************** inicio contenido ***************    
         $venta = $this->Venta_model->ultima_venta();
         $venta_tipodoc = $venta[0]['venta_tipodoc'];
@@ -3017,7 +3025,7 @@ function eliminar_venta($venta_id){
 
         if($this->acceso(12)){
             
-            
+        $data['sistema'] = $this->sistema;    
         //**************** bitacora caja       
         $venta = $this->Detalle_venta_model->get_venta($venta_id);
         $cliente = $this->Cliente_model->get_cliente($venta[0]['cliente_id']);
@@ -3070,7 +3078,7 @@ function anular_venta($venta_id){
 
         if($this->acceso(22)){
             
-            
+        $data['sistema'] = $this->sistema;   
         //**************** bitacora caja
         $usuario_id = $this->session_data['usuario_id'];
         $venta = $this->Detalle_venta_model->get_venta($venta_id);
@@ -3157,7 +3165,8 @@ function anular_venta($venta_id){
 
         $usuario_id = $this->session_data['usuario_id'];
 
-        
+        $data['sistema'] = $this->sistema;   
+
         if ($this->input->is_ajax_request()) {
             
             if($this->parametros['parametro_tiposistema'] == 1){// Si es diferente a Sistema de facturacion computarizado(1)
@@ -3202,6 +3211,9 @@ function anular_venta($venta_id){
   function busquedacombi()
     {
         if($this->acceso(144)){
+            
+            $data['sistema'] = $this->sistema;   
+
             //**************** inicio contenido ***************   
             $config = $this->config->item('pagination');
             $config['total_rows'] = $this->Venta_model->get_all_venta_count();
@@ -3232,7 +3244,10 @@ function anular_venta($venta_id){
     function comision()
     {
         if($this->acceso(143)){
+            
             //**************** inicio contenido ***************
+            $data['sistema'] = $this->sistema;   
+
             $this->load->model('Usuario_model');
             //$this->load->model('Detalle_venta_model');
             $filtro = $this->input->post('filtro');
@@ -3767,31 +3782,33 @@ function anular_venta($venta_id){
     {
         
         if($this->acceso(30)) {
-                
-        //**************** inicio contenido ***************            
-        $usuario_id = $this->session_data['usuario_id'];
-        $usuario_nombre = $this->session_data['usuario_nombre'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];
-        
-        $rolusuario = $this->session_data['rol'];
+            
+            $data['sistema'] = $this->sistema;   
 
-        $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
-        $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
-        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
-        
-        $data['page_title'] = "Vencimientos"
-                . "";
-        $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
-        $data['usuario_id'] = $usuario_id; //el usuario logueado
-        
-        $data['tipousuario_id'] = $tipousuario_id; 
-        $data['usuario_nombre'] = $usuario_nombre;
-        
-        $data['estado'] = $this->Estado_model->get_tipo_estado(5);
-        
-        $data['_view'] = 'venta/vencimientos';
-        $this->load->view('layouts/main',$data);
-        //**************** fin contenido ***************
+            //**************** inicio contenido ***************            
+            $usuario_id = $this->session_data['usuario_id'];
+            $usuario_nombre = $this->session_data['usuario_nombre'];
+            $tipousuario_id = $this->session_data['tipousuario_id'];
+
+            $rolusuario = $this->session_data['rol'];
+
+            $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
+            $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
+            $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+
+            $data['page_title'] = "Vencimientos"
+                    . "";
+            $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+            $data['usuario_id'] = $usuario_id; //el usuario logueado
+
+            $data['tipousuario_id'] = $tipousuario_id; 
+            $data['usuario_nombre'] = $usuario_nombre;
+
+            $data['estado'] = $this->Estado_model->get_tipo_estado(5);
+
+            $data['_view'] = 'venta/vencimientos';
+            $this->load->view('layouts/main',$data);
+            //**************** fin contenido ***************
         }    
     }
     
@@ -3816,10 +3833,13 @@ function anular_venta($venta_id){
    }
 
     //Muestra la lista de vencimientos
-    function prestamos()
-    {
+    function prestamos(){
+        
         if($this->acceso(30)) {
-            //**************** inicio contenido ***************            
+            
+            //**************** inicio contenido ***************
+            $data['sistema'] = $this->sistema;   
+
             $usuario_id = $this->session_data['usuario_id'];
             $usuario_nombre = $this->session_data['usuario_nombre'];
             $tipousuario_id = $this->session_data['tipousuario_id'];
@@ -3849,6 +3869,7 @@ function anular_venta($venta_id){
             $data['_view'] = 'venta/prestamos';
             $this->load->view('layouts/main',$data);
             //**************** fin contenido ***************
+            
         }    
     }
 
@@ -3858,79 +3879,85 @@ function anular_venta($venta_id){
         
         if($this->acceso(30)) {
                 
-        //**************** inicio contenido ***************            
-        $usuario_id = $this->session_data['usuario_id'];
-        $usuario_nombre = $this->session_data['usuario_nombre'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];
-        
-        $rolusuario = $this->session_data['rol'];
+            //**************** inicio contenido ***************  
+            $data['sistema'] = $this->sistema;
+            $usuario_id = $this->session_data['usuario_id'];
+            $usuario_nombre = $this->session_data['usuario_nombre'];
+            $tipousuario_id = $this->session_data['tipousuario_id'];
 
-        $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
-        $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
-        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
-        
-        $data['page_title'] = "Envases y Prestamos";
-        //$data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
-        //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
-        
-        $data['prestamos'] = $this->Venta_model->get_envasesprestados($producto_id); // para el select
-        
-        $data['usuario_id'] = $usuario_id; //el usuario logueado        
-        $data['tipousuario_id'] = $tipousuario_id; 
-        $data['usuario_nombre'] = $usuario_nombre;
-        
+            $rolusuario = $this->session_data['rol'];
 
-        
-        //$data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
-        $data['estado'] = $this->Estado_model->get_tipo_estado(5);
-        
-        $data['_view'] = 'venta/envases_prestados';
-        $this->load->view('layouts/main',$data);
-        //**************** fin contenido ***************
+            $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
+            $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
+            $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+
+            $data['page_title'] = "Envases y Prestamos";
+            //$data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+            //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
+
+            $data['prestamos'] = $this->Venta_model->get_envasesprestados($producto_id); // para el select
+
+            $data['usuario_id'] = $usuario_id; //el usuario logueado        
+            $data['tipousuario_id'] = $tipousuario_id; 
+            $data['usuario_nombre'] = $usuario_nombre;
+
+
+
+            //$data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
+            $data['estado'] = $this->Estado_model->get_tipo_estado(5);
+
+            $data['_view'] = 'venta/envases_prestados';
+            $this->load->view('layouts/main',$data);
+            //**************** fin contenido ***************
         }    
     }
 
     //Muestra la lista de vencimientos
     function inventario_envases()
     {
-        if($this->acceso(30)) {
-        //**************** inicio contenido ***************            
-        $usuario_id = $this->session_data['usuario_id'];
-        $usuario_nombre = $this->session_data['usuario_nombre'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];
-        
-        $rolusuario = $this->session_data['rol'];
+            if($this->acceso(30)) {
+                
+            //**************** inicio contenido ***************
+            $data['sistema'] = $this->sistema;
+            $usuario_id = $this->session_data['usuario_id'];
+            $usuario_nombre = $this->session_data['usuario_nombre'];
+            $tipousuario_id = $this->session_data['tipousuario_id'];
 
-        $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
-        $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
-        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
-        
-        $rolusuario = $this->session_data['rol'];
+            $rolusuario = $this->session_data['rol'];
+
+            $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
+            $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
+            $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+
+            $rolusuario = $this->session_data['rol'];
 
 
-        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
-        
-        $data['page_title'] = "Inventario de Envases";
+            $data['empresa'] = $this->Empresa_model->get_empresa(1); 
 
-        $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
-        //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
-        
-        $data['usuario_id'] = $usuario_id; //el usuario logueado        
-        $data['tipousuario_id'] = $tipousuario_id; 
-        $data['usuario_nombre'] = $usuario_nombre;
-        //$this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        //$this->load->model('Moneda_model');
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
-        $data['_view'] = 'venta/inventario_envases';
-        $this->load->view('layouts/main',$data);
-        //**************** fin contenido ***************
+            $data['page_title'] = "Inventario de Envases";
+
+            $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+            //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
+
+            $data['usuario_id'] = $usuario_id; //el usuario logueado        
+            $data['tipousuario_id'] = $tipousuario_id; 
+            $data['usuario_nombre'] = $usuario_nombre;
+            //$this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            //$this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['_view'] = 'venta/inventario_envases';
+            $this->load->view('layouts/main',$data);
+            //**************** fin contenido ***************
+            
         }    
     }
 
     //Muestra la lista de vencimientos
     function buscar_inventarioenvases(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)){
         //**************** inicio contenido ***************
             $resultado = $this->Venta_model->buscar_inventarioenvases();
@@ -3941,11 +3968,13 @@ function anular_venta($venta_id){
             $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
         }
+        
     }
 
     //Muestra la lista de vencimientos
     function buscar_inventario(){
         
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)){
         //**************** inicio contenido ***************       
 
@@ -3963,9 +3992,10 @@ function anular_venta($venta_id){
     
     function lista_prestamos(){
         
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)){
         //**************** inicio contenido ***************       
-        
+            
             $fecha_desde = $this->input->post("fecha_desde");
             $fecha_hasta = $this->input->post("fecha_hasta");
             $usuario_id = $this->input->post("usuario_id");
@@ -3995,6 +4025,7 @@ function anular_venta($venta_id){
 
    function registrar_devolucion(){
         
+       $data['sistema'] = $this->sistema;
         if($this->acceso(12)){
         //**************** inicio contenido ***************       
             $usuario_id = $this->session_data['usuario_id'];
@@ -4740,6 +4771,7 @@ function anular_venta($venta_id){
     }
 
     function verificar_comunicacion($token,$wsdl){
+        
         try{
             $opts = array(
                 'http' => array(
@@ -4765,6 +4797,7 @@ function anular_venta($venta_id){
 
     /* envia correo  a cliente */
     function enviarcorreo($venta_id, $factura_id, $email_destino, $nombre_archivo){
+        
         $this->load->library('email');
         $this->email->set_newline("\r\n");
         $this->load->model('Configuracion_email_model');
@@ -4851,20 +4884,21 @@ function anular_venta($venta_id){
     
     function email(){
 
-            $to = $this->input->post('empresa_email');
-            $from = $this->input->post('froemail');
-            $subject = $this->input->post('nomemail');
-            $message = $this->input->post('mensaje12');
-            $headers = "From: ".$from."";
-             
-            mail($to, $subject, $message, $headers);
-                
-            redirect('website/index/1');
+        $to = $this->input->post('empresa_email');
+        $from = $this->input->post('froemail');
+        $subject = $this->input->post('nomemail');
+        $message = $this->input->post('mensaje12');
+        $headers = "From: ".$from."";
+
+        mail($to, $subject, $message, $headers);
+
+        redirect('website/index/1');
             
     }    
     
     
     function verificar_cufd(){
+        
         $usuario_id = $this->session_data['usuario_id'];
         $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
         $sql ="select * from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$puntoventa['puntoventa_codigo'];
@@ -4879,8 +4913,8 @@ function anular_venta($venta_id){
 
     }
     
-    function enviarfactura_porcorreo()
-    {
+    function enviarfactura_porcorreo(){
+        
         if ($this->input->is_ajax_request()) {
             $this->load->library('email');
             $this->email->set_newline("\r\n");
@@ -4977,6 +5011,7 @@ function anular_venta($venta_id){
     /** registra emision de paquetes (solicitud de recepcion de paquetes) fuera de linea con CAFC
      * esto para un solo archivo al momento de fianalizar la venta e indicar que es con CAFC */
     function registroEmisionPaquetes($factura_id,$codigo_evento){
+        
         try{
             if ($this->input->is_ajax_request()) {
 
@@ -5103,6 +5138,7 @@ function anular_venta($venta_id){
     /** Una vez echa la solicitud de recepcion ode paquetes, se manda aa validar el paquete.
      *  todo esto lo  hace al finalizar una venta con CAFC!. */
     function registroEmisionPaquetes_vacio($codigo_recepcion,$factura_id){
+        
         try{
   
                 
@@ -5277,10 +5313,6 @@ function anular_venta($venta_id){
 
                     }
 
-                
-                
-                
-                
                 foreach($facturas as $fact){
                     
                         $p = new PharData($directorio.$this->nombre_archivo.$factura[0]['factura_id'].'.tar');
@@ -5289,10 +5321,6 @@ function anular_venta($venta_id){
                                 
                     
                 }
-                
-                
-                
-                
                 
                 while($rescant >0){
                     
@@ -5379,8 +5407,6 @@ function anular_venta($venta_id){
                     }
                     $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
 
-                    
-                    
                     $datos[] = $res;
                     $rescant--;
                     $cont++;
@@ -5958,6 +5984,7 @@ function anular_venta($venta_id){
     }
     
     function pdf_factura_boucher_prev($factura_id){
+        
         $factura = $this->Factura_model->get_factura_id($factura_id);
         $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
         $empresa = $this->Empresa_model->get_empresa(1);

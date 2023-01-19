@@ -5,7 +5,9 @@
  */
  
 class Slide extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -15,9 +17,13 @@ class Slide extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +37,7 @@ class Slide extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -52,6 +59,7 @@ class Slide extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
@@ -156,6 +164,7 @@ class Slide extends CI_Controller{
      */
     function edit($slide_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             // check if the slide exists before trying to edit it
             $data['slide'] = $this->Slide_model->get_slide($slide_id);
@@ -280,6 +289,7 @@ class Slide extends CI_Controller{
      */
     function remove($slide_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $slide = $this->Slide_model->get_slide($slide_id);
 

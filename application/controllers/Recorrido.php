@@ -5,6 +5,7 @@
  */
 class Recorrido extends CI_Controller{
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -15,10 +16,14 @@ class Recorrido extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     function index(){
-    		$data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        
+            $data['sistema'] = $this->sistema;
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
             $data['usuario_id'] = $this->session_data['usuario_id'];
             $this->load->model('Empresa_model');

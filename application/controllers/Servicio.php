@@ -5,7 +5,10 @@
  */
  
 class Servicio extends CI_Controller{
+    
     var $session_data;
+    private $sistema;
+
     function __construct()
     {
         parent::__construct();
@@ -18,9 +21,14 @@ class Servicio extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     } 
 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -34,6 +42,7 @@ class Servicio extends CI_Controller{
      */
     function index($a = null, $b = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $usuario_id  = $this->session_data['usuario_id'];
             
@@ -75,6 +84,7 @@ class Servicio extends CI_Controller{
      */
     function remove($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $servicio = $this->Servicio_model->get_servicio($servicio_id);
             // check if the servicio exists before trying to delete it
@@ -93,6 +103,7 @@ class Servicio extends CI_Controller{
      */
     function nuevo_servicio_cliente($cliente_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
         
         // verifica si existe este cliente con el id ingresado antes de registrar un nuevo servicio
@@ -142,6 +153,7 @@ class Servicio extends CI_Controller{
     /* *************Al añadir nuevo servicio; se crea un nuevo servicio con estos parametros**************  */
     function crearservicio()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(70)){
         $estado_id = 5; // este valor (PENDIENTE) esta definido en la tabla Estado
         $usuario_id = $this->session_data['usuario_id'];
@@ -169,6 +181,7 @@ class Servicio extends CI_Controller{
      */
     function serviciocreado($servicio_id, $a = null, $b = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(70)){
         /*$data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -236,6 +249,7 @@ class Servicio extends CI_Controller{
      */
     function asignarcliente($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(70)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -278,6 +292,7 @@ class Servicio extends CI_Controller{
      */
     function asignartiposervicio($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             if ($this->input->is_ajax_request()){
                 $tiposerv_id = $this->input->post('tiposerv_id');
@@ -317,6 +332,7 @@ class Servicio extends CI_Controller{
     
     function buscardetalleservicio($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(74)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -347,6 +363,7 @@ class Servicio extends CI_Controller{
      */
     function anularserviciodet($servicio_id)
     {
+        
         if($this->acceso(77)){
         $usuario_id = $this->session_data['usuario_id'];  
         $estado_id = 4; // este valor esta definido en la tabla Estado
@@ -395,6 +412,7 @@ class Servicio extends CI_Controller{
     
     function serview($servicio_id, $a = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(71)){
         $data['a'] = $a;
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -439,6 +457,7 @@ class Servicio extends CI_Controller{
      */
     function anularserv($servicio_id)
     {
+        
         if($this->acceso(77)){
         $usuario_id = $this->session_data['usuario_id'];
         $estado_id = 4; // este valor esta definido en la tabla Estado
@@ -500,6 +519,7 @@ class Servicio extends CI_Controller{
      */
     function buscarporcod()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(73)){
         if(isset($_POST) && count($_POST) > 0)     
         {
@@ -586,6 +606,7 @@ class Servicio extends CI_Controller{
     */
     function buscarservicios()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
             
             $parametro = $this->input->post('filtro');   
@@ -623,6 +644,7 @@ class Servicio extends CI_Controller{
     
     function boletarecepcion_boucher($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
         
             $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -669,6 +691,7 @@ class Servicio extends CI_Controller{
     
     function boletarecepcion($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -722,6 +745,7 @@ class Servicio extends CI_Controller{
      */
     function verservdet($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -851,6 +875,7 @@ class Servicio extends CI_Controller{
      */
     function repserviciofechas($es = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(142)){  
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -903,6 +928,7 @@ class Servicio extends CI_Controller{
      */
     function repinftecservicio()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(142)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -921,6 +947,7 @@ class Servicio extends CI_Controller{
      */
     function boletainftecservicio($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(142)){
         
                $contitulo = $this->input->post('contitulo'.$servicio_id);
@@ -967,6 +994,7 @@ class Servicio extends CI_Controller{
 
     function repinftecdetalleserv($es = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(142)){
         
         $data['servicio'] = $this->Servicio_model->get_all_repservicios();
@@ -999,6 +1027,7 @@ class Servicio extends CI_Controller{
      */
     function boletainftecdetalleserv($detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(142)){
                 $contitulo = $this->input->post('contitulo'.$detalleserv_id);
                if(isset($contitulo)){
@@ -1029,6 +1058,7 @@ class Servicio extends CI_Controller{
      */
     function boletacomprobanteserv($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $contitulo = $this->input->post('contitulo'.$servicio_id);
             if(isset($contitulo)){
@@ -1108,6 +1138,7 @@ class Servicio extends CI_Controller{
      */
     function repserviciodiario()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(76)){
             $data['page_title'] = "Reporte Servicio Diario";
             $data['servicio'] = $this->Servicio_model->get_all_repservicios();
@@ -1294,6 +1325,7 @@ class Servicio extends CI_Controller{
     /* registrar servicio tgerminado */
     function registrar_servicioterminado()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(69)){
             if ($this->input->is_ajax_request()){
                 
@@ -1382,6 +1414,7 @@ class Servicio extends CI_Controller{
     /* registrar servicio entegado */
     function registrar_servicioentregado()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(69)){
             if ($this->input->is_ajax_request()){
                 
@@ -1643,6 +1676,7 @@ class Servicio extends CI_Controller{
     /* registrar servicio entegado */
     function registrar_detalleservicioentregado()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(69)){
             if ($this->input->is_ajax_request()){
                 
@@ -1715,6 +1749,7 @@ class Servicio extends CI_Controller{
      */
     function registrarcobrototalservicio()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(84)){
             if ($this->input->is_ajax_request()){
                 $this->load->library('form_validation');
@@ -1893,6 +1928,7 @@ class Servicio extends CI_Controller{
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta sin IMAGEN********** */
     function notaesi_carta($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Comprobante de Servicio";
             
@@ -1927,6 +1963,7 @@ class Servicio extends CI_Controller{
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta con IMAGEN********** */
     function notaeci_carta($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Comprobante de Servicio";
             
@@ -1961,6 +1998,7 @@ class Servicio extends CI_Controller{
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño boucher sin IMAGEN********** */
     function notaesi_boucher($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Comprobante de Servicio";
             
@@ -1995,7 +2033,10 @@ class Servicio extends CI_Controller{
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta con IMAGEN********** */
     function notaeci_boucher($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(69)){
+            
             $data['page_title'] = "Comprobante de Servicio";
             
             $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -2029,6 +2070,7 @@ class Servicio extends CI_Controller{
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño boucher********** */
     function servcompdetalle_pago_boucher($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Comprobante de Servicio";
             $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -2057,6 +2099,7 @@ class Servicio extends CI_Controller{
     
     function seguimiento($cliente_id,$servicio_id){
 
+        $data['sistema'] = $this->sistema;
 //        if($this->acceso(69)){
             $data['page_title'] = "Seguimiento de Servicios";
             
@@ -2140,6 +2183,7 @@ class Servicio extends CI_Controller{
     /* registrar servicio tgerminado */
     function registrarinformacion_detalleservicio()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(69)){
             if ($this->input->is_ajax_request()){
                 
@@ -2227,6 +2271,8 @@ class Servicio extends CI_Controller{
     }
     /* registrar pago a cuenta de un detalle de servicio */
     function registrar_pago_acuenta(){
+        
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()){
                 $servicio_id = $this->input->post('servicio_id');
                 $detalleserv_id = $this->input->post('detalleserv_id');
@@ -2301,6 +2347,7 @@ class Servicio extends CI_Controller{
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño boucher sin IMAGEN********** */
     function notaesi_boucherdet($detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Comprobante de Servicio";
             
@@ -2335,6 +2382,7 @@ class Servicio extends CI_Controller{
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta sin IMAGEN********** */
     function notaesi_cartadet($detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Comprobante de Servicio";
             
@@ -2371,6 +2419,7 @@ class Servicio extends CI_Controller{
      */
     function reproximovencer($es = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(142)){
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_empresa(1);

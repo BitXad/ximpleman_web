@@ -5,6 +5,8 @@
  */
  
 class Orden_pago extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -16,8 +18,13 @@ class Orden_pago extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
+    
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -32,6 +39,7 @@ class Orden_pago extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(89)) {
             $data['rol'] = $this->session_data['rol'];
         $data['page_title'] = "Orden de pago";
@@ -46,6 +54,7 @@ class Orden_pago extends CI_Controller{
     }
     function pendientes()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(89)) {
         $filtro = $this->input->post('filtro');
         $data = $this->Orden_pago_model->get_pago_pendiente($filtro);
@@ -55,6 +64,7 @@ class Orden_pago extends CI_Controller{
 
     function pagadas_hoy()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(89)) {
         $filtro = $this->input->post('filtro');
         $data = $this->Orden_pago_model->get_pagadas_hoy($filtro);
@@ -69,6 +79,7 @@ class Orden_pago extends CI_Controller{
 
     function pagadas_antes()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(89)) {
             $filtro = $this->input->post('filtro');
             $data = $this->Orden_pago_model->get_pagadas_antes($filtro);
@@ -78,6 +89,7 @@ class Orden_pago extends CI_Controller{
     /* muestra ordenes de pagos anuladas */
     function mostrar_anuladas()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(89)) {
             $filtro = $this->input->post('filtro');
             $data = $this->Orden_pago_model->get_anuladas($filtro);
@@ -90,6 +102,7 @@ class Orden_pago extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -140,6 +153,7 @@ class Orden_pago extends CI_Controller{
      */
     function nueva_orden()
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(90)) {
         
         //**************** inicio contenido ***************            
@@ -192,7 +206,7 @@ class Orden_pago extends CI_Controller{
 
     function generar_orden($orden_monto,$orden_motivo,$orden_destinatario,$compra_id,$cuota_id)
     {   
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(90)) {
         //**************** inicio contenido ***************            
         
@@ -245,6 +259,7 @@ class Orden_pago extends CI_Controller{
 
     function pagar_orden($orden_id){
         
+        $data['sistema'] = $this->sistema;
         if($this->acceso(89)) {
         
         //**************** inicio contenido ***************            
@@ -287,6 +302,7 @@ class Orden_pago extends CI_Controller{
      */
     function edit($orden_id)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the orden_pago exists before trying to edit it
         $data['orden_pago'] = $this->Orden_pago_model->get_orden_pago($orden_id);
         
@@ -345,6 +361,7 @@ class Orden_pago extends CI_Controller{
      */
     function remove($orden_id)
     {
+        $data['sistema'] = $this->sistema;
         $orden_pago = $this->Orden_pago_model->get_orden_pago($orden_id);
 
         // check if the orden_pago exists before trying to delete it
@@ -358,6 +375,8 @@ class Orden_pago extends CI_Controller{
     }
     /*************** funcion para mostrar la vista del recibo de orden pagado ******************/
     function imprimir($orden_id){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(89)){
         //**************** inicio contenido ***************
             $this->load->model('Parametro_model');
@@ -374,6 +393,8 @@ class Orden_pago extends CI_Controller{
     }
     /* Nota de impresion tamaño carta*/
     function recibo($orden_id){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(89)){
             //$this->load->model('Parametro_model');
             $this->load->model('Empresa_model');
@@ -387,6 +408,8 @@ class Orden_pago extends CI_Controller{
     }
     /* Nota de impresion formato Buecher */
     function reciboboucher($orden_id){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(89)){
             //$this->load->model('Parametro_model');
             $this->load->model('Empresa_model');
@@ -400,6 +423,8 @@ class Orden_pago extends CI_Controller{
     }
     
     function anular_orden(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(89)){
             $orden_id = $this->input->post('orden_id');
             $estado_id = 27;

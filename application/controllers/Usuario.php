@@ -6,6 +6,8 @@
 
 class Usuario extends CI_Controller
 {
+    private $sistema;
+
     function __construct()
     {
         parent::__construct();
@@ -15,16 +17,21 @@ class Usuario extends CI_Controller
             'Tipo_usuario_model',
             'user_model',
             'PuntoVenta_model',
+            'Sistema_model',
         ]);
         $this->load->library('form_validation');
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
             redirect('', 'refresh');
         }
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
-private function acceso($id_rol){
+    private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -38,6 +45,7 @@ private function acceso($id_rol){
      */
     function index($a = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(148)){
 
                 /*$data = array(
@@ -79,6 +87,7 @@ private function acceso($id_rol){
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(148)){
 
                /* $data = array(
@@ -192,6 +201,7 @@ private function acceso($id_rol){
 
     function editar($usuario_id){
 
+        $data['sistema'] = $this->sistema;
         if($this->acceso(148)){
 
 
@@ -227,9 +237,12 @@ private function acceso($id_rol){
     /*
      * Editing a usuario
      */
-    function edit($usuario_id)
-    {
+    function edit($usuario_id){
+        
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(148)){
+            
         $original_value = $this->db->query("SELECT usuario_login FROM usuario WHERE usuario_id = " . $usuario_id)->row()->usuario_login;
 
         if ($this->input->post('usuario_login') != $original_value) {
@@ -351,6 +364,8 @@ private function acceso($id_rol){
     function password($usuario_id)
     {
         // check if the usuario exists before trying to edit it
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(148)){
         $data['usuario'] = $this->Usuario_model->get_usuario($usuario_id);
 
@@ -411,6 +426,7 @@ private function acceso($id_rol){
      */
     function remove($usuario_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(148)){
         $usuario = $this->Usuario_model->get_usuario($usuario_id);
 
@@ -443,6 +459,7 @@ private function acceso($id_rol){
 
     function set()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(148)){
 
                 $this->form_validation->set_rules('usuario_nombre', 'Nombre', 'trim|required|min_length[3]|max_length[150]');
@@ -603,6 +620,7 @@ private function acceso($id_rol){
     
     function nueva_clave($usuario_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(148)){
         $data['usuario'] = $this->Usuario_model->get_usuario($usuario_id);
 

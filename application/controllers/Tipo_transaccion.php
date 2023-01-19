@@ -5,6 +5,8 @@
  */
  
 class Tipo_transaccion extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -14,8 +16,12 @@ class Tipo_transaccion extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
+    
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -30,6 +36,7 @@ class Tipo_transaccion extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(133)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -51,27 +58,28 @@ class Tipo_transaccion extends CI_Controller{
      */
     function add()
     { 
-    if($this->acceso(133)){  
-        $this->load->library('form_validation');
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(133)){  
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('tipotrans_nombre','Tipotrans Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'tipotrans_nombre' => $this->input->post('tipotrans_nombre'),
-            );
-            
-            $tipo_transaccion_id = $this->Tipo_transaccion_model->add_tipo_transaccion($params);
-            redirect('tipo_transaccion/index');
+                    $this->form_validation->set_rules('tipotrans_nombre','Tipotrans Nombre','required');
+
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'tipotrans_nombre' => $this->input->post('tipotrans_nombre'),
+                );
+
+                $tipo_transaccion_id = $this->Tipo_transaccion_model->add_tipo_transaccion($params);
+                redirect('tipo_transaccion/index');
+            }
+            else
+            {
+                $data['page_title'] = "Tipo Transaccion";            
+                $data['_view'] = 'tipo_transaccion/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
-        else
-        {
-            $data['page_title'] = "Tipo Transaccion";            
-            $data['_view'] = 'tipo_transaccion/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }
     }  
 
     /*
@@ -79,35 +87,36 @@ class Tipo_transaccion extends CI_Controller{
      */
     function edit($tipotrans_id)
     {
-    if($this->acceso(133)){   
-        // check if the tipo_transaccion exists before trying to edit it
-        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_tipo_transaccion($tipotrans_id);
-        
-        if(isset($data['tipo_transaccion']['tipotrans_id']))
-        {
-            $this->load->library('form_validation');
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(133)){   
+            // check if the tipo_transaccion exists before trying to edit it
+            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_tipo_transaccion($tipotrans_id);
 
-			$this->form_validation->set_rules('tipotrans_nombre','Tipotrans Nombre','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'tipotrans_nombre' => $this->input->post('tipotrans_nombre'),
-                );
+            if(isset($data['tipo_transaccion']['tipotrans_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Tipo_transaccion_model->update_tipo_transaccion($tipotrans_id,$params);            
-                redirect('tipo_transaccion/index');
+                            $this->form_validation->set_rules('tipotrans_nombre','Tipotrans Nombre','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'tipotrans_nombre' => $this->input->post('tipotrans_nombre'),
+                    );
+
+                    $this->Tipo_transaccion_model->update_tipo_transaccion($tipotrans_id,$params);            
+                    redirect('tipo_transaccion/index');
+                }
+                else
+                {
+                    $data['page_title'] = "Tipo Transaccion";
+                    $data['_view'] = 'tipo_transaccion/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['page_title'] = "Tipo Transaccion";
-                $data['_view'] = 'tipo_transaccion/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The tipo_transaccion you are trying to edit does not exist.');
         }
-        else
-            show_error('The tipo_transaccion you are trying to edit does not exist.');
-    }
     } 
 
     /*
@@ -115,6 +124,7 @@ class Tipo_transaccion extends CI_Controller{
      */
     function remove($tipotrans_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(133)){
         $tipo_transaccion = $this->Tipo_transaccion_model->get_tipo_transaccion($tipotrans_id);
 

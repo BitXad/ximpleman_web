@@ -5,7 +5,10 @@
  */
  
 class Tipo_respuesta extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
+
     function __construct()
     {
         parent::__construct();
@@ -15,9 +18,14 @@ class Tipo_respuesta extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +39,7 @@ class Tipo_respuesta extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(115)){
             $data['page_title'] = "Tipo Respuesta";
             $data['tipo_respuesta'] = $this->Tipo_respuesta_model->get_all_tipo_respuesta();
@@ -45,6 +54,7 @@ class Tipo_respuesta extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         //if($this->acceso(115)){
             $data['page_title'] = "Tipo Respuesta";
             $this->load->library('form_validation');
@@ -73,7 +83,8 @@ class Tipo_respuesta extends CI_Controller{
      * Editing a tipo_respuesta
      */
     function edit($tiporespuesta_id)
-    {
+    {   
+            $data['sistema'] = $this->sistema;
         //if($this->acceso(115)){
             $data['page_title'] = "Tipo Respuesta";
             // check if the tipo_servicio exists before trying to edit it
@@ -112,6 +123,7 @@ class Tipo_respuesta extends CI_Controller{
      */
     function remove($tiporespuesta_id)
     {
+            $data['sistema'] = $this->sistema;
         //if($this->acceso(115)){
             $tipo_respuesta = $this->Tipo_respuesta_model->get_tipo_respuesta($tiporespuesta_id);
 

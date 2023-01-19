@@ -5,6 +5,8 @@
  */
  
 class Pedido_diario extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -14,10 +16,14 @@ class Pedido_diario extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -33,7 +39,7 @@ class Pedido_diario extends CI_Controller{
      */
     function index()
     {
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(180)){
         //**************** inicio contenido ***************   
             $data['pedido_diario'] = $this->Pedido_diario_model->get_all_pedido_diario();
@@ -50,7 +56,7 @@ class Pedido_diario extends CI_Controller{
      */
     function add()
     {   
-                
+        $data['sistema'] = $this->sistema;        
         if($this->acceso(180)){
         //**************** inicio contenido ***************   
         $usuario_id = $this->session_data['usuario_id'];
@@ -87,7 +93,7 @@ class Pedido_diario extends CI_Controller{
      */
     function pedido_nuevo()
     {   
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(180)){
         //**************** inicio contenido ***************   
         $usuario_id = $this->session_data['usuario_id'];
@@ -125,7 +131,7 @@ class Pedido_diario extends CI_Controller{
      */
     function edit($pedido_id)
     {   
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(180)){
         //**************** inicio contenido ***************   
         
@@ -173,7 +179,7 @@ class Pedido_diario extends CI_Controller{
      */
     function modificar_pedido($pedido_id)
     {   
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(180)){
         //**************** inicio contenido ***************   
         
@@ -222,7 +228,7 @@ class Pedido_diario extends CI_Controller{
      */
     function remove($pedido_id)
     {
-        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(180)){
         //**************** inicio contenido ***************   
         
@@ -247,6 +253,7 @@ class Pedido_diario extends CI_Controller{
      */
     function buscar_pedidos()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(180)){
         //**************** inicio contenido ***************   
            

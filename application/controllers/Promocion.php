@@ -5,7 +5,10 @@
  */
  
 class Promocion extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
+
     function __construct()
     {
         parent::__construct();
@@ -15,9 +18,14 @@ class Promocion extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -25,12 +33,14 @@ class Promocion extends CI_Controller{
             $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
         }
+        
     }
     /*
      * Listing of promocion
      */  
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -49,6 +59,7 @@ class Promocion extends CI_Controller{
 
     function nomproducto($producto)
     {
+            $data['sistema'] = $this->sistema;
             $sql="SELECT producto_nombre, producto_precio FROM producto WHERE producto_id=".$producto." ";
             $nombre=$this->db->query($sql)->row_array();
             echo json_encode($nombre);
@@ -59,6 +70,7 @@ class Promocion extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             
             $this->load->library('form_validation');
@@ -113,6 +125,7 @@ class Promocion extends CI_Controller{
      */
     function edit($promocion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             // check if the promocion exists before trying to edit it
             $data['promocion'] = $this->Promocion_model->get_promocion($promocion_id);
@@ -169,6 +182,7 @@ class Promocion extends CI_Controller{
      */
     function remove($promocion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $promocion = $this->Promocion_model->get_promocion($promocion_id);
 
@@ -188,6 +202,7 @@ class Promocion extends CI_Controller{
      */
     function registrar_detalle()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $cantidad = $this->input->post("cantidad");
             $producto_id = $this->input->post("producto_id");
@@ -209,6 +224,7 @@ class Promocion extends CI_Controller{
      */
     function buscar_detallepromocion()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             
             $detallepromo_id = $this->input->post("detallepromo_id");
@@ -222,6 +238,7 @@ class Promocion extends CI_Controller{
      */
     function modificar_detallepromocion()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('detallepromo_cantidad','Cantidad','trim|numeric|required', array('required' => 'Este Campo no debe ser vacio'));

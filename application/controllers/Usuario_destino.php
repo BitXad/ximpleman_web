@@ -5,6 +5,9 @@
  */
  
 class Usuario_destino extends CI_Controller{
+    
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -14,9 +17,13 @@ class Usuario_destino extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -30,6 +37,7 @@ class Usuario_destino extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(176)){
             $data['usuario_destino'] = $this->Usuario_destino_model->get_destinos();
             $data['_view'] = 'usuario_destino/index';
@@ -42,6 +50,7 @@ class Usuario_destino extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(176)){
             if(isset($_POST) && count($_POST) > 0)     
             {   
@@ -72,6 +81,7 @@ class Usuario_destino extends CI_Controller{
      */
     function edit($usuariodestino_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(176)){
             // check if the usuario_destino exists before trying to edit it
             $data['usuario_destino'] = $this->Usuario_destino_model->get_usuario_destino($usuariodestino_id);
@@ -110,6 +120,7 @@ class Usuario_destino extends CI_Controller{
      */
     function remove($usuariodestino_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(177)){
             $usuario_destino = $this->Usuario_destino_model->get_usuario_destino($usuariodestino_id);
             // check if the usuario_destino exists before trying to delete it

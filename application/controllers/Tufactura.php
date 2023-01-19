@@ -3,6 +3,7 @@
 Class Tufactura extends CI_Controller
 {
 
+    private $sistema;
     public function __construct()    {
         parent::__construct();
         $this->load->model('Proceso_orden_model');
@@ -17,11 +18,14 @@ Class Tufactura extends CI_Controller
             'numeros_helper',// Helper para convertir numeros a letras
             'validacionxmlxsd_helper',
         ]);
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     
     public function verfactura($venta_id)
     {
         //$venta_id = 37282;
+        $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $parametros = $data['parametro'][0];
         $usuario_id = 100; //rand(); //$this->session_data['usuario_id'];
@@ -148,6 +152,8 @@ Class Tufactura extends CI_Controller
     
     
     public function index(){
+        
+        $data['sistema'] = $this->sistema;
         $servicio_id   = $this->input->post('usuario');
         $cliente_id = $this->input->post('contrasen');
         if(is_numeric($servicio_id) && is_numeric($cliente_id)){
@@ -198,7 +204,7 @@ Class Tufactura extends CI_Controller
     public function seguimiento($orden_id,$venta_id) //orden de trabajp
     {
         
-            
+            $data['sistema'] = $this->sistema;
             $data['estados'] = $this->Estado_model->get_estado_tipo(7);
             $detal = $this->Proceso_orden_model->get_detalle($orden_id);
             
@@ -216,6 +222,7 @@ Class Tufactura extends CI_Controller
     
     public function consultar($cliente_id, $servicio_id){
         
+        $data['sistema'] = $this->sistema;
         $this->load->model('Servicio_model');
         $servicios = $this->Servicio_model->get_servicio_id($cliente_id,$servicio_id);
         $data['servicio'] =  $servicios;

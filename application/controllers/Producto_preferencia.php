@@ -5,6 +5,9 @@
  */
  
 class Producto_preferencia extends CI_Controller{
+    
+    private $sistema;
+
     function __construct()
     {
         parent::__construct();
@@ -14,8 +17,14 @@ class Producto_preferencia extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+
     }
+    
      private function acceso($id_rol){
+         
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -30,6 +39,7 @@ class Producto_preferencia extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(190)){
             $data['page_title'] = "Producto - Preferencia";
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -52,6 +62,7 @@ class Producto_preferencia extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(190)){
             $data['page_title'] = "Añadir Producto - Preferencia";
             $estado_id = 1;
@@ -67,6 +78,7 @@ class Producto_preferencia extends CI_Controller{
      */
     function edit($productopref_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(190)){
             $data['page_title'] = "Forma Pago";
             // check if the producto_preferencia exists before trying to edit it
@@ -104,6 +116,7 @@ class Producto_preferencia extends CI_Controller{
      */
     function remove($productopref_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(190)){
             $producto_preferencia = $this->Producto_preferencia_model->get_producto_preferencia($productopref_id);
             // check if the producto_preferencia exists before trying to delete it
@@ -119,6 +132,7 @@ class Producto_preferencia extends CI_Controller{
     
     function buscarproducto()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(190)){
             if ($this->input->is_ajax_request()) {
                 $parametro   = $this->input->post('parametro');
@@ -132,6 +146,7 @@ class Producto_preferencia extends CI_Controller{
     }
     function seleccionar_prodpreferencia()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(190)){
             if ($this->input->is_ajax_request()) {
                 $resultado = $this->Producto_preferencia_model->get_allproductos_preferencia($this->input->post('producto_id'));
@@ -143,6 +158,7 @@ class Producto_preferencia extends CI_Controller{
     }
     function registrar_prodpreferencia()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(190)){
             if ($this->input->is_ajax_request()) {
                 $params = array(
@@ -160,6 +176,7 @@ class Producto_preferencia extends CI_Controller{
     
     function eliminar_prodpreferencia()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(190)){
             if ($this->input->is_ajax_request()) {
                 $productopref_id = $this->input->post('productopref_id');
