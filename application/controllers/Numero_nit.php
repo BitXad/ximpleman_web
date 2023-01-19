@@ -5,10 +5,14 @@
  */
  
 class Numero_nit extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Numero_nit_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Numero_nit extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['numero_nit'] = $this->Numero_nit_model->get_all_numero_nit();
         
         $data['_view'] = 'numero_nit/index';
@@ -27,6 +32,7 @@ class Numero_nit extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -49,6 +55,7 @@ class Numero_nit extends CI_Controller{
      */
     function edit($cod_num_nit)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the numero_nit exists before trying to edit it
         $data['numero_nit'] = $this->Numero_nit_model->get_numero_nit($cod_num_nit);
         
@@ -79,6 +86,7 @@ class Numero_nit extends CI_Controller{
      */
     function remove($cod_num_nit)
     {
+        $data['sistema'] = $this->sistema;
         $numero_nit = $this->Numero_nit_model->get_numero_nit($cod_num_nit);
 
         // check if the numero_nit exists before trying to delete it

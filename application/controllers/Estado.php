@@ -6,6 +6,7 @@
  
 class Estado extends CI_Controller{
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -15,9 +16,14 @@ class Estado extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +37,7 @@ class Estado extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(122)){
         $data['page_title'] = "Estado";
         $data['estado'] = $this->Estado_model->get_all_estado();
@@ -45,6 +52,7 @@ class Estado extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(122)){
             $data['page_title'] = "Estado";
         $this->load->library('form_validation');
@@ -75,6 +83,7 @@ class Estado extends CI_Controller{
      */
     function edit($estado_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(122)){
             $data['page_title'] = "Estado";
         // check if the estado exists before trying to edit it
@@ -113,6 +122,7 @@ class Estado extends CI_Controller{
      */
     function remove($estado_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(122)){
         $estado = $this->Estado_model->get_estado($estado_id);
 
@@ -132,6 +142,7 @@ class Estado extends CI_Controller{
      */
     function vaciartabla()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(122)){
         $all_tabla = $this->Estado_model->get_all_tabla();
 

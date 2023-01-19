@@ -5,6 +5,8 @@
  */
  
 class Ingreso extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -24,8 +26,12 @@ class Ingreso extends CI_Controller{
             redirect('', 'refresh');
         } 
         //*************** Control de sesiones *******************//           
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -34,14 +40,13 @@ class Ingreso extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
-
-
      
     /*
      * Listing of ingresos
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(53)){
             $usuario_id = $this->session_data['usuario_id'];
             $data['rol'] = $this->session_data['rol'];
@@ -63,6 +68,7 @@ class Ingreso extends CI_Controller{
 
     function buscarfecha()
     {
+        $data['sistema'] = $this->sistema;
         //$usuario_id = 1;
         if ($this->input->is_ajax_request()) {
             $filtro = $this->input->post('filtro');
@@ -83,6 +89,7 @@ class Ingreso extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(54)){
             $usuario_id = $this->session_data['usuario_id'];
             $this->load->library('form_validation');
@@ -282,6 +289,7 @@ class Ingreso extends CI_Controller{
      */
     function edit($ingreso_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(55)){
             $usuario_id = $this->session_data['usuario_id'];
             // check if the ingreso exists before trying to edit it
@@ -352,6 +360,8 @@ class Ingreso extends CI_Controller{
     
 
     public function pdf($ingreso_id){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(58)){
             $data['parametro'] =  $parametros = $this->Parametro_model->get_parametros();
             $data['ingresos'] = $this->Ingreso_model->get_ingresos($ingreso_id);
@@ -365,6 +375,8 @@ class Ingreso extends CI_Controller{
     }
 
     public function boucher($ingreso_id){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(58)){
             $data['parametro'] =  $parametros = $this->Parametro_model->get_parametros();
             $data['ingreso'] = $this->Ingreso_model->get_ingresos($ingreso_id);
@@ -379,6 +391,7 @@ class Ingreso extends CI_Controller{
     
     /*************** funcion para mostrar la vista de la factura******************/
     function imprimir($ingreso_id){
+        
         if($this->acceso(58)){
             //**************** inicio contenido ***************
             $parametros = $this->Parametro_model->get_parametros();
@@ -397,6 +410,7 @@ class Ingreso extends CI_Controller{
      */
     function remove($ingreso_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(56)){
         $ingreso = $this->Ingreso_model->get_ingreso($ingreso_id);
 
@@ -413,6 +427,7 @@ class Ingreso extends CI_Controller{
     
     public function convertir()
     {
+        $data['sistema'] = $this->sistema;
         $egreso_monto = trim($this->input->post('egreso_monto'));
 
         if (empty($egreso_monto)) {

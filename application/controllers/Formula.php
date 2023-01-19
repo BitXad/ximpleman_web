@@ -5,6 +5,8 @@
  */
  
 class Formula extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -38,10 +40,15 @@ class Formula extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     } 
     
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -57,6 +64,7 @@ class Formula extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['formula'] = $this->Formula_model->get_all_formula();
         
         $data['_view'] = 'formula/index';
@@ -68,7 +76,7 @@ class Formula extends CI_Controller{
      */
     function add()
     {   
-          
+        $data['sistema'] = $this->sistema;  
         if($this->acceso(12)){
             //**************** inicio contenido ***************               
 
@@ -126,6 +134,7 @@ class Formula extends CI_Controller{
      */
     function edit($formula_id)
     {   
+        $data['sistema'] = $this->sistema;
         if($this->acceso(12)){
             //**************** inicio contenido ***************        
             $data['rolusuario'] = $this->session_data['rol'];
@@ -168,6 +177,7 @@ class Formula extends CI_Controller{
      */
     function remove($formula_id)
     {
+        $data['sistema'] = $this->sistema;
         $formula = $this->Formula_model->get_formula($formula_id);
 
         // check if the formula exists before trying to delete it
@@ -182,6 +192,7 @@ class Formula extends CI_Controller{
     
     function registrar_formula(){
         
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];    
         
@@ -215,6 +226,7 @@ class Formula extends CI_Controller{
     
    function imprimir_formula($formula_id)
     {
+       $data['sistema'] = $this->sistema;
         if($this->acceso(21)){
             
         $usuario_id = $this->session_data['usuario_id'];

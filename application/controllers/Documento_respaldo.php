@@ -5,10 +5,14 @@
  */
  
 class Documento_respaldo extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Documento_respaldo_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Documento_respaldo extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo();
         
         $data['_view'] = 'documento_respaldo/index';
@@ -27,6 +32,7 @@ class Documento_respaldo extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -48,6 +54,7 @@ class Documento_respaldo extends CI_Controller{
      */
     function edit($documento_respaldo_id)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the documento_respaldo exists before trying to edit it
         $data['documento_respaldo'] = $this->Documento_respaldo_model->get_documento_respaldo($documento_respaldo_id);
         
@@ -77,6 +84,7 @@ class Documento_respaldo extends CI_Controller{
      */
     function remove($documento_respaldo_id)
     {
+        $data['sistema'] = $this->sistema;
         $documento_respaldo = $this->Documento_respaldo_model->get_documento_respaldo($documento_respaldo_id);
 
         // check if the documento_respaldo exists before trying to delete it

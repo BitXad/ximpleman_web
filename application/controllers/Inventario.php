@@ -5,7 +5,9 @@
  */
  
 class Inventario extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -17,8 +19,12 @@ class Inventario extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -34,7 +40,7 @@ class Inventario extends CI_Controller{
     function index()
     {
         
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(24)){
             //**************** inicio contenido ***************
             $data['rolusuario'] = $this->session_data['rol'];
@@ -63,6 +69,7 @@ class Inventario extends CI_Controller{
      */
     function realizable()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(24)){
             //**************** inicio contenido ***************
             $data['rolusuario'] = $this->session_data['rol'];
@@ -88,6 +95,7 @@ class Inventario extends CI_Controller{
      */
     function kardex($producto_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(29)){
             //**************** inicio contenido ***************           
             $empresa_id = 1;
@@ -110,6 +118,7 @@ class Inventario extends CI_Controller{
      */
     function buscar_kardex()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(29)){
             //**************** inicio contenido ***************           
             $empresa_id = 1;
@@ -127,7 +136,7 @@ class Inventario extends CI_Controller{
      */
     function actualizar_inventario()
     {   
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(26)){
         //**************** inicio contenido ***************
 		       
@@ -146,6 +155,7 @@ class Inventario extends CI_Controller{
      */
     function mostrar_inventario()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(25)){
             //**************** inicio contenido ***************
             $parametro = $this->input->post("parametro");
@@ -164,7 +174,7 @@ class Inventario extends CI_Controller{
     function mostrar_inventario_existencia()
     {      
        
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(25)){
         //**************** inicio contenido ***************
         
@@ -186,7 +196,7 @@ class Inventario extends CI_Controller{
      */
     function actualizar_cantidad_inventario()
     {   
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(26)){
         //**************** inicio contenido ***************
 		       
@@ -206,7 +216,7 @@ class Inventario extends CI_Controller{
     function mostrar_duplicados()
     {
      
-
+        $data['sistema'] = $this->sistema;
         if($this->acceso(28)){
         //**************** inicio contenido ***************
 		        
@@ -225,13 +235,15 @@ class Inventario extends CI_Controller{
 
     function generar_excel()
     {
-            $llamadas = $this->Inventario_model->get_inventario();
-            echo json_encode($llamadas); 
-     
+        $data['sistema'] = $this->sistema;
+        $llamadas = $this->Inventario_model->get_inventario();
+        echo json_encode($llamadas); 
+
     }
     /* muestra operaciones en proceso de venta!! */
     function operacion_enproceso()
     {
+        $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
             $producto_id = $this->input->post('producto_id');
             $res_venta_aux = $this->Inventario_model->mostrar_productoventa_aux($producto_id);

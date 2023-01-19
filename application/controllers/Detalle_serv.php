@@ -5,7 +5,9 @@
  */
  
 class Detalle_serv extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -16,9 +18,13 @@ class Detalle_serv extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -33,6 +39,7 @@ class Detalle_serv extends CI_Controller{
      */
     function remove($servicio_id, $detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(83)){
             $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
 
@@ -62,6 +69,7 @@ class Detalle_serv extends CI_Controller{
      */
     function removedet($servicio_id, $detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(83)){
             $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
 
@@ -90,6 +98,7 @@ class Detalle_serv extends CI_Controller{
     
     function detalle_nuevo($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Detalle de Servicio";
         $this->load->model('Servicio_model');
@@ -160,7 +169,10 @@ class Detalle_serv extends CI_Controller{
      */
     function nuevodetalle($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(70)){
+            
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -294,7 +306,10 @@ class Detalle_serv extends CI_Controller{
      */
     function nuevodetalle1($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(69)){
+            
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -396,6 +411,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscardetalleserv($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Detalle de Servicio";
         // check if the servicio exists before trying to edit it
@@ -430,7 +446,10 @@ class Detalle_serv extends CI_Controller{
     
     function kardex_detalle($servicio_id, $codigo)
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(74)){
+            
             $data['page_title'] = "Kardex Detalle de Servicio";
             $data['codigo'] = $codigo;
             //$rescodigo = str_replace("%20", " ", $codigo);
@@ -476,7 +495,10 @@ class Detalle_serv extends CI_Controller{
      */
     function anulardetalleserv($servicio_id, $detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(82)){
+            
         $estado_id = 4; // este valor esta definido en la tabla Estado
         $usuario_id = $this->session_data['usuario_id'];
         
@@ -544,7 +566,10 @@ class Detalle_serv extends CI_Controller{
      */
     function modificardetalle($servicio_id, $detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(86)){
+            
             $data['page_title'] = "Detalle de Servicio";
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -908,6 +933,8 @@ class Detalle_serv extends CI_Controller{
      */
     function modificarmidetalle($servicio_id, $detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(86)){
             $data['page_title'] = "Detalle de Servicio";
         $this->load->model('Servicio_model');
@@ -1278,6 +1305,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrartec($servicio_id, $detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(80)){
             $this->load->library('form_validation');
 
@@ -1328,6 +1356,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcobroTotalOK($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(84)){
         $cad = "";
         $servicio_total = $this->input->post('servicio_total');
@@ -1375,6 +1404,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcobrototal($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(84)){
             $usuario_id = $this->session_data['usuario_id'];
             $fecha_cobro =  $this->input->post('fecha_cobro');
@@ -1443,6 +1473,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcobrodetalle($servicio_id, $detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(87)){
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules('fecha_cobro','Detalle Servicio Fecha Cobro','required');
@@ -1499,6 +1530,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscarporestado()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Detalle de Servicio";
             $estado_id = $this->input->post('estado_id');
@@ -1529,6 +1561,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscarportrabajo()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Detalle de Servicio";
         $cattrab_id = $this->input->post('cattrab_id');
@@ -1559,6 +1592,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcreditodetalle()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(88)){
         //este estado es CREDITO
         $estado_id = 16;
@@ -1650,6 +1684,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcreditoTotal($servicio_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(85)){
                 $usuario_id = $this->session_data['usuario_id'];
                 $fecha_finalizacion = date("Y-m-d");
@@ -1743,6 +1778,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscarporcatserv()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Detalle de Servicio";
         $catserv_id = $this->input->post('catserv_id');
@@ -1771,6 +1807,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscarporsubcatserv()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Detalle de Servicio";
         $parametro = $this->input->post('buscarsubcat');
@@ -1800,6 +1837,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscarcliente()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(75)){
             $data['page_title'] = "Detalle de Servicio";
         $parametro = $this->input->post('buscarcliente');
@@ -1821,6 +1859,7 @@ class Detalle_serv extends CI_Controller{
      */
     function kardexserviciocliente($cliente_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(75)){
             $data['page_title'] = "Kardex Cliente";
         //$parametro = $this->input->post('buscarcliente');
@@ -1852,6 +1891,7 @@ class Detalle_serv extends CI_Controller{
     */
     function buscardetserviciosfecha()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){  
 
         if ($this->input->is_ajax_request()) {
@@ -1874,6 +1914,7 @@ class Detalle_serv extends CI_Controller{
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta********** */
     function compdetalle_pago($detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Comprobante de Servicio";
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
@@ -1901,6 +1942,7 @@ class Detalle_serv extends CI_Controller{
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño boucher********** */
     function compdetalle_pago_boucher($detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Comprobante de Servicio";
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
@@ -1931,6 +1973,7 @@ class Detalle_serv extends CI_Controller{
      */
     function get_kardexdetalle()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
             $codigo = $this->input->post('codigo');
             if ($codigo!=""){
@@ -1948,6 +1991,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscardetalleservk()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(74)){
             $data['page_title'] = "Detalle de Servicio";
 	    if(isset($_POST) && count($_POST) > 0)     
@@ -1972,6 +2016,7 @@ class Detalle_serv extends CI_Controller{
     
     function kardex_detallek($codigo)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $data['page_title'] = "Detalle de Servicio";
             $data['codigo'] = $codigo;
@@ -2014,7 +2059,10 @@ class Detalle_serv extends CI_Controller{
      */
     function nuevodetallek()
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(69)){
+            
             $this->load->model('Servicio_model');
             $this->load->library('form_validation');
 	    $this->form_validation->set_rules('detalleserv_descripcion','Detalle Servicio Descripcion','required');
@@ -2126,7 +2174,10 @@ class Detalle_serv extends CI_Controller{
      */
     function nuevodetallehistorialc($detalleserv_id)
     {
+        $data['sistema'] = $this->sistema;
+        
         if($this->acceso(69)){
+            
             $this->load->model('Servicio_model');
             $this->load->library('form_validation');
 	    $this->form_validation->set_rules('detalleserv_descripcion','Detalle Servicio Descripcion','required');
@@ -2265,6 +2316,7 @@ class Detalle_serv extends CI_Controller{
      */
     function get_historial_cliente()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
             $cliente_id = $this->input->post('cliente_id');
             if ($cliente_id!=""){
@@ -2279,6 +2331,7 @@ class Detalle_serv extends CI_Controller{
     /* *** Historial de cliente **** */
     function historial_cliente($cliente_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(75)){
             $data['page_title'] = "Historial Cliente";
             $data['cliente_id'] = $cliente_id;
@@ -2336,6 +2389,7 @@ class Detalle_serv extends CI_Controller{
      */
     function modificareldetalle($servicio_id, $detalleserv_id, $b = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(86)){
             $data['page_title'] = "Detalle de Servicio";
             $this->load->model('Servicio_model');
@@ -2705,6 +2759,7 @@ class Detalle_serv extends CI_Controller{
      */
     function get_detalle_serv()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
             $servicio_id = $this->input->post('servicio_id');
             if ($servicio_id!=""){

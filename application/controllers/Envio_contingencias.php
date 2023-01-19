@@ -2,6 +2,7 @@
 
 class Envio_contingencias extends CI_Controller{
     private $parametros;
+    private $sistema;
 
     function __construct()
     {
@@ -36,9 +37,13 @@ class Envio_contingencias extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -54,6 +59,7 @@ class Envio_contingencias extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(18)){
         //**************** inicio contenido ***************
             $data['rolusuario'] = $this->session_data['rol'];
@@ -84,6 +90,7 @@ class Envio_contingencias extends CI_Controller{
      */
     function mostrar_ventas()
     {
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->session_data['usuario_id'];   
         if ($this->input->is_ajax_request()) {
                 $usuario_id = $this->input->post('usuario_id');
@@ -118,6 +125,7 @@ class Envio_contingencias extends CI_Controller{
      */
     function registroEmision_allfPaquetes(){
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
@@ -241,6 +249,7 @@ class Envio_contingencias extends CI_Controller{
     }
     function registro_validacionpaquetes(){
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
@@ -345,6 +354,7 @@ class Envio_contingencias extends CI_Controller{
     /* para enviar paquetes */
     function paquete()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(18)){
         //**************** inicio contenido ***************
             $data['rolusuario'] = $this->session_data['rol'];
@@ -375,6 +385,7 @@ class Envio_contingencias extends CI_Controller{
      */
     function enviode_paquete(){
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 $usuario_id = $this->session_data['usuario_id'];
                 $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);

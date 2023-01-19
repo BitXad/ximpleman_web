@@ -5,7 +5,9 @@
  */
  
 class Factura_compra extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -16,9 +18,13 @@ class Factura_compra extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -32,6 +38,7 @@ class Factura_compra extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(152)){
             $data['_view'] = 'factura_compra/index';
             $this->load->view('layouts/main',$data);
@@ -43,6 +50,7 @@ class Factura_compra extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(154)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('factura_nit','Nit','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -97,6 +105,7 @@ class Factura_compra extends CI_Controller{
      */
     function edit($factura_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(154)){
             // check if the factura exists before trying to edit it
             $data['factura_compra'] = $this->Factura_compra_model->get_facturacompra($factura_id);
@@ -155,6 +164,7 @@ class Factura_compra extends CI_Controller{
     
     function mostrar_facturascompra()
     {
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->session_data['usuario_id'];
         if ($this->input->is_ajax_request()) {
             $desde = $this->input->post("desde");

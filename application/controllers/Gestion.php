@@ -5,10 +5,13 @@
  */
  
 class Gestion extends CI_Controller{
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Gestion_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +19,8 @@ class Gestion extends CI_Controller{
      */
     function index()
     {
+        
+        $data['sistema'] = $this->sistema;
         $data['gestion'] = $this->Gestion_model->get_all_gestion();
         
         $data['_view'] = 'gestion/index';
@@ -27,6 +32,7 @@ class Gestion extends CI_Controller{
      */
     function add()
     {   
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -59,6 +65,7 @@ class Gestion extends CI_Controller{
      */
     function edit($cod_ges)
     {   
+        $data['sistema'] = $this->sistema;
         // check if the gestion exists before trying to edit it
         $data['gestion'] = $this->Gestion_model->get_gestion($cod_ges);
         
@@ -99,6 +106,7 @@ class Gestion extends CI_Controller{
      */
     function remove($cod_ges)
     {
+        $data['sistema'] = $this->sistema;
         $gestion = $this->Gestion_model->get_gestion($cod_ges);
 
         // check if the gestion exists before trying to delete it

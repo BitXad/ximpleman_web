@@ -10,6 +10,7 @@ if (!defined('BASEPATH'))
 
 class Error404 extends CI_Controller { 
     
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -17,11 +18,14 @@ class Error404 extends CI_Controller {
         $this->load->model('Producto_model');
         $this->load->model('Categoria_producto_model');
         $this->load->helper('cookie');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }            
 
     function index()
     {
         
+        $data['sistema'] = $this->sistema;
         $idioma_id = 1; //1 - español
         $producto_id = 1;
         

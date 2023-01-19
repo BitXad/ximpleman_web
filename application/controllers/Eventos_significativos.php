@@ -2,6 +2,7 @@
 class Eventos_significativos extends CI_Controller{
 
     private $session_data = "";
+    private $sistema;
     
     function __construct(){
         parent::__construct();
@@ -38,9 +39,13 @@ class Eventos_significativos extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -51,6 +56,8 @@ class Eventos_significativos extends CI_Controller{
     }
 
     function index(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(149)){
             $data['eventos'] = $this->Eventos_significativos_model->get_all_codigos();
             //$sql = "select * from registro_eventos order by registroeventos_id desc";
@@ -62,6 +69,7 @@ class Eventos_significativos extends CI_Controller{
 
     function buscar_eventossignificativos(){
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 $datos = $this->Eventos_significativos_model->get_eventossignificativos();
                 
@@ -75,7 +83,9 @@ class Eventos_significativos extends CI_Controller{
     }
 
     function buscar_evento(){
+        
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 
                 $registroevento_id = $this->input->post("registroevento_id");
@@ -96,7 +106,9 @@ class Eventos_significativos extends CI_Controller{
     
      /* en servicio Facturacion de Operaciones (Registro de Evento Significativo) es la Funcion: registroEventoSignificativo */
     function registroEventoSignificativo(){
+        
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 
                 $fecha_inicio =  $this->input->post("fecha_inicio");
@@ -215,7 +227,9 @@ class Eventos_significativos extends CI_Controller{
     
      /* en servicio Facturacion de Operaciones (Registro de Evento Significativo) es la Funcion: registroEventoSignificativo */
     function actualizarEventoSignificativo(){
+        
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 
                 //$fecha_inicio = "2023-01-13T10:57:26.909";

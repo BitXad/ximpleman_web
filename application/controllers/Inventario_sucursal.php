@@ -5,7 +5,9 @@
  */
  
 class Inventario_sucursal extends CI_Controller{
+    
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -17,8 +19,12 @@ class Inventario_sucursal extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -33,6 +39,7 @@ class Inventario_sucursal extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(24)){
             //**************** inicio contenido ***************
             $data['rolusuario'] = $this->session_data['rol'];
@@ -61,6 +68,7 @@ class Inventario_sucursal extends CI_Controller{
      */
     function mostrar_inventarios()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(25)){
             $parametro = $this->input->post("parametro");
             //$select_almacen = $this->input->post("select_almacen");

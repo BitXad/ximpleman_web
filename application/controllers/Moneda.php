@@ -5,6 +5,8 @@
  */
  
 class Moneda extends CI_Controller{
+    
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -14,8 +16,12 @@ class Moneda extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -30,6 +36,7 @@ class Moneda extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(124)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -51,6 +58,7 @@ class Moneda extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(124)){
             $this->load->library('form_validation');
 
@@ -81,46 +89,48 @@ class Moneda extends CI_Controller{
      */
     function edit($moneda_id)
     {  
-    if($this->acceso(124)){ 
-        // check if the moneda exists before trying to edit it
-        $data['moneda'] = $this->Moneda_model->get_moneda($moneda_id);
-        
-        if(isset($data['moneda']['moneda_id']))
-        {
-            $this->load->library('form_validation');
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(124)){ 
+            // check if the moneda exists before trying to edit it
+            $data['moneda'] = $this->Moneda_model->get_moneda($moneda_id);
 
-			$this->form_validation->set_rules('moneda_descripcion','Moneda Descripcion','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-                        'estado_id' => $this->input->post('estado_id'),
-                        'moneda_descripcion' => $this->input->post('moneda_descripcion'),
-                        'moneda_tc' => $this->input->post('moneda_tc'),
-                );
+            if(isset($data['moneda']['moneda_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Moneda_model->update_moneda($moneda_id,$params);            
-                redirect('moneda/index');
+                            $this->form_validation->set_rules('moneda_descripcion','Moneda Descripcion','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                            'estado_id' => $this->input->post('estado_id'),
+                            'moneda_descripcion' => $this->input->post('moneda_descripcion'),
+                            'moneda_tc' => $this->input->post('moneda_tc'),
+                    );
+
+                    $this->Moneda_model->update_moneda($moneda_id,$params);            
+                    redirect('moneda/index');
+                }
+                else
+                {
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_tipo_estado(1);
+                    $data['page_title'] = "Moneda";
+                    $data['_view'] = 'moneda/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $this->load->model('Estado_model');
-                $data['all_estado'] = $this->Estado_model->get_tipo_estado(1);
-                $data['page_title'] = "Moneda";
-                $data['_view'] = 'moneda/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The moneda you are trying to edit does not exist.');
-    } 
-}
+                show_error('The moneda you are trying to edit does not exist.');
+        } 
+    }
 
     /*
      * Deleting moneda
      */
     function remove($moneda_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(124)){
         $moneda = $this->Moneda_model->get_moneda($moneda_id);
 

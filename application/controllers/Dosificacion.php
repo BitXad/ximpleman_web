@@ -7,6 +7,7 @@
 class Dosificacion extends CI_Controller{
 
     private $session_data = "";
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -40,9 +41,14 @@ class Dosificacion extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -56,6 +62,7 @@ class Dosificacion extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(149)){
            
             $config['total_rows'] = $this->Dosificacion_model->get_all_dosificacion_count();
@@ -77,6 +84,7 @@ class Dosificacion extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(150)){
             $data['page_title'] = "Dosificación";
         if(isset($_POST) && count($_POST) > 0)     
@@ -136,6 +144,7 @@ class Dosificacion extends CI_Controller{
      */
     function edit($dosificacion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(151)){
             $data['page_title'] = "Dosificación";
         // check if the dosificacion exists before trying to edit it
@@ -318,6 +327,7 @@ class Dosificacion extends CI_Controller{
      */
     function remove($dosificacion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(149)){
         $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
 

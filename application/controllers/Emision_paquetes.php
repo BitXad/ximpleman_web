@@ -2,6 +2,7 @@
 class Emision_paquetes extends CI_Controller{
 
     private $session_data = "";
+    private $sistema;
     
     function __construct(){
         parent::__construct();
@@ -41,10 +42,14 @@ class Emision_paquetes extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
 
     private function acceso($id_rol){
+        
         $rolusuario = $this->session_data['rol'];
+        $data['sistema'] = $this->sistema;
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
         }else{
@@ -54,6 +59,8 @@ class Emision_paquetes extends CI_Controller{
     }
 
     function index(){
+        
+        $data['sistema'] = $this->sistema;
         if($this->acceso(149)){
             //$data['eventos'] = $this->Eventos_significativos_model->get_all_codigos();
             $data['_view'] = 'emision_paquetes/index';
@@ -62,6 +69,7 @@ class Emision_paquetes extends CI_Controller{
     }
     function buscar_recepcion(){
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 $rec_paquetes = $this->Emision_paquetes_model->getall_recepcionpaquete();
                 echo json_encode($rec_paquetes);
@@ -77,6 +85,7 @@ class Emision_paquetes extends CI_Controller{
      */
     function registroEmisionPaquetes(){
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 
 //                //Verificar si existe el archivo
@@ -297,6 +306,7 @@ class Emision_paquetes extends CI_Controller{
     
     function registroEmisionPaquetes2($factura_id,$codigo_evento){
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
 
                 
@@ -417,6 +427,7 @@ class Emision_paquetes extends CI_Controller{
     
     function registroEmisionPaquetes_vacio(){
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 
                 $dosificacion_id = 1;
@@ -535,6 +546,7 @@ class Emision_paquetes extends CI_Controller{
     /* borrar borrar ojo */
     function registroEmisionPaquetesmas(){
         try{
+            $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
                 
 //                //Verificar si existe el archivo
