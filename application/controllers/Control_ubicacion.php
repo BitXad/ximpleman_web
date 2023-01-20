@@ -1,5 +1,7 @@
 <?php
 class Control_ubicacion extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -14,8 +16,11 @@ class Control_ubicacion extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -29,6 +34,7 @@ class Control_ubicacion extends CI_Controller{
      */
     function index($controli_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $estado_tipo = 7;
             $data['controli'] = $this->Control_inventario_model->get_control_inventario($controli_id);
@@ -46,7 +52,8 @@ class Control_ubicacion extends CI_Controller{
     /*
      * Adding a new unidad
      */
-    function add(){   
+    function add(){
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('ubicacion','ubicacion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -76,7 +83,8 @@ class Control_ubicacion extends CI_Controller{
     /*
      * Editing a control_inventario
      */
-    function edit($controlu){   
+    function edit($controlu){
+        $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
             $data['controlu'] = $this->Control_ubicacion_model->get_control_ubicacion($controlu);
         
@@ -111,6 +119,7 @@ class Control_ubicacion extends CI_Controller{
      * filtrar control inventario
      */
     function buscador(){
+        $data['sistema'] = $this->sistema;
         // $usuario_id = 1;
         if ($this->input->is_ajax_request()) {
             $fecha_inicio = $this->input->post('fecha_inicio');

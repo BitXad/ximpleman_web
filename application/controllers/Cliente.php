@@ -6,6 +6,8 @@
 
 class Cliente extends CI_Controller{
     private $session_data = "";
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -20,9 +22,12 @@ class Cliente extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -36,6 +41,7 @@ class Cliente extends CI_Controller{
      */
     function index($a = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(94)){
             $data['rol'] = $this->session_data['rol'];
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -82,6 +88,7 @@ class Cliente extends CI_Controller{
     */
     function index_user($a = null)
     {
+        $data['sistema'] = $this->sistema;
         // if($this->acceso(94)){
             $data['rol'] = $this->session_data['rol'];
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -127,6 +134,7 @@ class Cliente extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(95)){
             $data['page_title'] = "Cliente";
             $this->load->library('form_validation');
@@ -303,6 +311,7 @@ class Cliente extends CI_Controller{
      */
     function edit($cliente_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(98)){
             $data['page_title'] = "Cliente";
         // check if the cliente exists before trying to edit it
@@ -472,6 +481,7 @@ class Cliente extends CI_Controller{
     //modificar clientes en pedidos
     function modificar_cliente($cliente_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(31)){
             $data['page_title'] = "Modificar Cliente";
         // check if the cliente exists before trying to edit it
@@ -647,6 +657,7 @@ class Cliente extends CI_Controller{
      */
     function remove($cliente_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(99)){
         $cliente = $this->Cliente_model->get_cliente($cliente_id);
 
@@ -673,6 +684,7 @@ class Cliente extends CI_Controller{
      */
     function add_new()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
             $this->load->model('Servicio_model');
             $servicio_id = $this->input->post('servicio_id');
@@ -749,6 +761,7 @@ class Cliente extends CI_Controller{
     */
     function buscarclientes()
     {
+        $data['sistema'] = $this->sistema;
         $num = $this->Compra_model->numero();
         $permiso = $num[0]['parametro_permisocredito'];
         $usuario_id = $this->session_data['usuario_id'];
@@ -799,8 +812,7 @@ class Cliente extends CI_Controller{
                     $condicion = " "; //busqueda de todos los clientes
 
                 }
-
-
+                
                 if ($parametro!=""){
                 $datos = $this->Cliente_model->get_cliente_por_usuario($parametro,$condicion);
                 echo json_encode($datos);
@@ -842,6 +854,7 @@ class Cliente extends CI_Controller{
      */
     function clientenuevo($pedido_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)){ // rol 30 admnistrar pedidos
             $data['page_title'] = "Cliente";
             $data['tipousuario_id'] =  $this->session_data['tipousuario_id'];
@@ -1138,7 +1151,7 @@ class Cliente extends CI_Controller{
 
     function mapa_clientes()
     {
-
+        $data['sistema'] = $this->sistema;
         //control de sesion
 //        if ($this->session->userdata('perfil')=='PREVENDEDOR'){
             
@@ -1162,6 +1175,7 @@ class Cliente extends CI_Controller{
     /* * reporte de distribuidor * */
     function reporte_distribuidor()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(180)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
@@ -1200,6 +1214,7 @@ class Cliente extends CI_Controller{
     /*para impresion de cliente*/
     function clienteprint($a = null)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(94)){
             $data['rol'] = $this->session_data['rol'];
             $data['page_title'] = "Cliente";
@@ -1266,6 +1281,7 @@ class Cliente extends CI_Controller{
     */
     function mapavisitas()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
        
                 //**************** inicio contenido ***************  

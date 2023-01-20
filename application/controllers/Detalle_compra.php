@@ -5,10 +5,14 @@
  */
  
 class Detalle_compra extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Detalle_compra_model');
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -148,8 +152,9 @@ class Detalle_compra extends CI_Controller{
     /*
      * Deleting detalle_compra
      */
-function quitar($detallecomp_id,$compra_id)
+    function quitar($detallecomp_id,$compra_id)
     {
+        $data['sistema'] = $this->sistema;
          $bandera = $this->input->post('bandera');    
         $detalle_compra = $this->Detalle_compra_model->get_detalle_compra($detallecomp_id);
 
@@ -162,9 +167,9 @@ function quitar($detallecomp_id,$compra_id)
         else
             show_error('El item que quiere eliminar no existe..!!');
     }
-function sacar($detallecomp_id,$cambio_producto_id)
+    function sacar($detallecomp_id,$cambio_producto_id)
     {
-         
+         $data['sistema'] = $this->sistema;
         $detalle_compra = $this->Detalle_compra_model->get_detalle_compra($detallecomp_id);
 
         // check if the detalle_compra exists before trying to delete it
@@ -191,6 +196,7 @@ function sacar($detallecomp_id,$cambio_producto_id)
 
     function remove($detallecomp_id)
     {
+        $data['sistema'] = $this->sistema;
         $detalle_compra = $this->Detalle_compra_model->get_detalle_compra($detallecomp_id);
 
         // check if the detalle_compra exists before trying to delete it

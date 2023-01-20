@@ -5,10 +5,14 @@
  */
  
 class Cliente_usuario extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Cliente_usuario_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Cliente_usuario extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -34,7 +39,8 @@ class Cliente_usuario extends CI_Controller{
      * Adding a new cliente_usuario
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -54,7 +60,8 @@ class Cliente_usuario extends CI_Controller{
      * Editing a cliente_usuario
      */
     function edit($cliente_id)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         // check if the cliente_usuario exists before trying to edit it
         $data['cliente_usuario'] = $this->Cliente_usuario_model->get_cliente_usuario($cliente_id);
         
@@ -83,6 +90,7 @@ class Cliente_usuario extends CI_Controller{
      */
     function remove($cliente_id)
     {
+        $data['sistema'] = $this->sistema;
         $cliente_usuario = $this->Cliente_usuario_model->get_cliente_usuario($cliente_id);
 
         // check if the cliente_usuario exists before trying to delete it

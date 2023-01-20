@@ -5,6 +5,8 @@
  */
  
 class Configuracion_email extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -14,8 +16,11 @@ class Configuracion_email extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -30,6 +35,7 @@ class Configuracion_email extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(125)) {
             $data['configuracion_email'] = $this->Configuracion_email_model->get_all_configuracion_email();
             $data['page_title'] = "Parametro";
@@ -43,6 +49,7 @@ class Configuracion_email extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(125)) {
             if(isset($_POST) && count($_POST) > 0)     
             {
@@ -80,6 +87,7 @@ class Configuracion_email extends CI_Controller{
      */
     function edit($email_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(125)) {
             // check if the configuracion_email exists before trying to edit it
             $data['configuracion_email'] = $this->Configuracion_email_model->get_configuracion_email($email_id);

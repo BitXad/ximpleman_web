@@ -5,10 +5,14 @@
  */
  
 class Detalle_formula extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Detalle_formula_model');
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Detalle_formula extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['detalle_formula'] = $this->Detalle_formula_model->get_all_detalle_formula();
         
         $data['_view'] = 'detalle_formula/index';
@@ -26,7 +31,8 @@ class Detalle_formula extends CI_Controller{
      * Adding a new detalle_formula
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -56,7 +62,8 @@ class Detalle_formula extends CI_Controller{
      * Editing a detalle_formula
      */
     function edit($detalleformula_id)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         // check if the detalle_formula exists before trying to edit it
         $data['detalle_formula'] = $this->Detalle_formula_model->get_detalle_formula($detalleformula_id);
         
@@ -95,6 +102,7 @@ class Detalle_formula extends CI_Controller{
      */
     function remove($detalleformula_id)
     {
+        $data['sistema'] = $this->sistema;
         $detalle_formula = $this->Detalle_formula_model->get_detalle_formula($detalleformula_id);
 
         // check if the detalle_formula exists before trying to delete it

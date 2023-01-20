@@ -5,10 +5,13 @@
  */
  
 class Config extends CI_Controller{
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Config_model');
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +19,7 @@ class Config extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['config'] = $this->Config_model->get_all_config();
         
         $data['_view'] = 'config/index';
@@ -26,7 +30,8 @@ class Config extends CI_Controller{
      * Adding a new config
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -81,7 +86,8 @@ class Config extends CI_Controller{
      * Editing a config
      */
     function edit($cod_conf)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         // check if the config exists before trying to edit it
         $data['config'] = $this->Config_model->get_config($cod_conf);
         
@@ -145,6 +151,7 @@ class Config extends CI_Controller{
      */
     function remove($cod_conf)
     {
+        $data['sistema'] = $this->sistema;
         $config = $this->Config_model->get_config($cod_conf);
 
         // check if the config exists before trying to delete it

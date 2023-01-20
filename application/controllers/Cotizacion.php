@@ -6,6 +6,8 @@
  
 class Cotizacion extends CI_Controller{
     private $session_data = "";
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -18,9 +20,12 @@ class Cotizacion extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -34,6 +39,7 @@ class Cotizacion extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(36)){
             $data['page_title'] = "Cotización";
             $data['rol'] = $this->session_data['rol'];
@@ -47,6 +53,7 @@ class Cotizacion extends CI_Controller{
 
     function creacotizacion()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(37)){
             $usuario_id = $this->session_data['usuario_id'];
             $cotizacion_id = $this->Cotizacion_model->crear_cotizacion($usuario_id);        
@@ -58,6 +65,7 @@ class Cotizacion extends CI_Controller{
      */
     function add($cotizacion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(37)){
             $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
@@ -90,6 +98,7 @@ class Cotizacion extends CI_Controller{
 
     function actualizarcaracteristicas()
     {
+        $data['sistema'] = $this->sistema;
        if ($this->input->is_ajax_request()) {  
         $producto_id = $this->input->post('producto_id');
         $nuevo = $this->input->post('nuevo');
@@ -120,6 +129,7 @@ class Cotizacion extends CI_Controller{
 
     function cotizarecibo($cotizacion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(36)){
             $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
@@ -137,6 +147,7 @@ class Cotizacion extends CI_Controller{
     }
     function recibo($cotizacion_id)
     {
+        $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
@@ -167,6 +178,7 @@ class Cotizacion extends CI_Controller{
 
     function detallecotizacion()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {  
         $cotizacion_id = $this->input->post('cotizacion_id');
         $datos = $this->Cotizacion_model->get_detalle_cotizacion($cotizacion_id);
@@ -183,6 +195,7 @@ class Cotizacion extends CI_Controller{
     }    
     function insertarproducto()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
         $cotizacion_id = $this->input->post('cotizacion_id');
         $descripcion = $this->input->post('descripcion');
@@ -239,6 +252,7 @@ class Cotizacion extends CI_Controller{
 
     function updateDetallecot()
     {
+        $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
         $detallecot_id = $this->input->post('detallecot_id');
         
@@ -297,6 +311,7 @@ class Cotizacion extends CI_Controller{
      */
     function edit($cotizacion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(38)){
             $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
@@ -339,7 +354,8 @@ class Cotizacion extends CI_Controller{
     }
 
     function finalizar($cotizacion_id)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(36)){
             $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
@@ -388,6 +404,7 @@ class Cotizacion extends CI_Controller{
      */
     function remove($cotizacion_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(40)){
             $cotizacion = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
 
@@ -403,7 +420,7 @@ class Cotizacion extends CI_Controller{
     }
     
     function pasar_a_ventas($cotizacion_id){
-        
+        $data['sistema'] = $this->sistema;
         $usuario_id = $this->session_data['usuario_id'];   
         
         $sql = "insert into detalle_venta_aux(

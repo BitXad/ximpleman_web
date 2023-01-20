@@ -6,6 +6,8 @@
  
 class Boton_slide extends CI_Controller{
     private $session_data = "";
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -15,9 +17,12 @@ class Boton_slide extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+        $this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +36,7 @@ class Boton_slide extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $data['page_title'] = "Boton Slide";
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -53,6 +59,7 @@ class Boton_slide extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $data['page_title'] = "Boton Slide";
             if(isset($_POST) && count($_POST) > 0)     
@@ -84,6 +91,7 @@ class Boton_slide extends CI_Controller{
      */
     function edit($botonslide_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $data['page_title'] = "Boton Slide";
             // check if the boton_slide exists before trying to edit it
@@ -123,6 +131,7 @@ class Boton_slide extends CI_Controller{
      */
     function remove($botonslide_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(155)){
             $boton_slide = $this->Boton_slide_model->get_boton_slide($botonslide_id);
 

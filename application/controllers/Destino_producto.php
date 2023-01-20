@@ -5,6 +5,7 @@
  */
  
 class Destino_producto extends CI_Controller{
+    private $sistema;
     function __construct()
     {
         parent::__construct();
@@ -14,10 +15,13 @@ class Destino_producto extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
     }
     
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -31,6 +35,7 @@ class Destino_producto extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(175)){
             $data['destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
 
@@ -44,6 +49,7 @@ class Destino_producto extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(175)){
             if(isset($_POST) && count($_POST) > 0)     
             {   
@@ -67,6 +73,7 @@ class Destino_producto extends CI_Controller{
      */
     function edit($destino_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(175)){
             // check if the destino_producto exists before trying to edit it
             $data['destino_producto'] = $this->Destino_producto_model->get_destino_producto($destino_id);
@@ -98,6 +105,7 @@ class Destino_producto extends CI_Controller{
      */
     function remove($destino_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(175)){
             $destino_producto = $this->Destino_producto_model->get_destino_producto($destino_id);
 

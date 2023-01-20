@@ -5,10 +5,13 @@
  */
  
 class Detalle_promocion extends CI_Controller{
+    private $sistema;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Detalle_promocion_model');
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +19,7 @@ class Detalle_promocion extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['detalle_promocion'] = $this->Detalle_promocion_model->get_all_detalle_promocion();
         
         $data['_view'] = 'detalle_promocion/index';
@@ -26,7 +30,8 @@ class Detalle_promocion extends CI_Controller{
      * Adding a new detalle_promocion
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -53,7 +58,8 @@ class Detalle_promocion extends CI_Controller{
      * Editing a detalle_promocion
      */
     function edit($detallepromo_id,$promocion_id)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         // check if the detalle_promocion exists before trying to edit it
         $data['detalle_promocion'] = $this->Detalle_promocion_model->get_detalle_promocion($detallepromo_id);
         
@@ -89,6 +95,7 @@ class Detalle_promocion extends CI_Controller{
      */
     function remove($detallepromo_id,$promocion_id)
     {
+        $data['sistema'] = $this->sistema;
         $detalle_promocion = $this->Detalle_promocion_model->get_detalle_promocion($detallepromo_id);
 
         // check if the detalle_promocion exists before trying to delete it

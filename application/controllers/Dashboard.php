@@ -5,14 +5,17 @@
  */
  
 class Dashboard extends CI_Controller{
+    private $sistema;
     function __construct()
     {
         parent::__construct();
-        
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
     }
 
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['_view'] = 'dashboard';
 //        $this->load->view('layouts/login',$data);
         $this->load->view('web/index',$data);

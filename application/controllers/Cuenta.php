@@ -5,10 +5,14 @@
  */
  
 class Cuenta extends CI_Controller{
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Cuenta_model');
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
     } 
 
     /*
@@ -16,6 +20,7 @@ class Cuenta extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         $data['cuenta'] = $this->Cuenta_model->get_all_cuenta();
         
         $data['_view'] = 'cuenta/index';
@@ -26,7 +31,8 @@ class Cuenta extends CI_Controller{
      * Adding a new cuenta
      */
     function add()
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -78,7 +84,8 @@ class Cuenta extends CI_Controller{
      * Editing a cuenta
      */
     function edit($cod_cuenta)
-    {   
+    {
+        $data['sistema'] = $this->sistema;
         // check if the cuenta exists before trying to edit it
         $data['cuenta'] = $this->Cuenta_model->get_cuenta($cod_cuenta);
         
@@ -139,6 +146,7 @@ class Cuenta extends CI_Controller{
      */
     function remove($cod_cuenta)
     {
+        $data['sistema'] = $this->sistema;
         $cuenta = $this->Cuenta_model->get_cuenta($cod_cuenta);
 
         // check if the cuenta exists before trying to delete it

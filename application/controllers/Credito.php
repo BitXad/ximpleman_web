@@ -6,6 +6,8 @@
  
 class Credito extends CI_Controller{
     private $session_data = "";
+    private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -19,9 +21,12 @@ class Credito extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        $this->load->model('Sistema_model');
+	$this->sistema = $this->Sistema_model->get_sistema();
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -35,6 +40,7 @@ class Credito extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             
             $this->indexDeuda();
@@ -58,6 +64,8 @@ class Credito extends CI_Controller{
     
     function indexDeuda()
     {
+        
+        $data['sistema'] = $this->sistema;
         $num = $this->Compra_model->numero();
         $permiso = $num[0]['parametro_permisocredito'];
         $usuario_id = $this->session_data['usuario_id'];
@@ -87,6 +95,7 @@ class Credito extends CI_Controller{
     
     function repoDeudas()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             $data['page_title'] = "Deudas x Pagar";
             $estado_id = $this->input->post('esti');
@@ -124,6 +133,7 @@ class Credito extends CI_Controller{
     
      function indexCuenta()
     {
+         $data['sistema'] = $this->sistema;
         $num = $this->Compra_model->numero();
         $permiso = $num[0]['parametro_permisocredito'];
         $usuario_id = $this->session_data['usuario_id'];
@@ -153,6 +163,7 @@ class Credito extends CI_Controller{
 
     function repoCuentas()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(47)){
             $data['page_title'] = "Cuentas x Cobrar";
             $estado_id = $this->input->post('esti');
@@ -276,6 +287,7 @@ class Credito extends CI_Controller{
      */
     function add()
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             if(isset($_POST) && count($_POST) > 0)     
             {   
@@ -310,6 +322,7 @@ class Credito extends CI_Controller{
      */
     function edit($credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             // check if the credito exists before trying to edit it
             $data['credito'] = $this->Credito_model->get_credito($credito_id);
@@ -352,6 +365,7 @@ class Credito extends CI_Controller{
      */
     function remove($credito_id)
     {
+        $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             $credito = $this->Credito_model->get_credito($credito_id);
 
