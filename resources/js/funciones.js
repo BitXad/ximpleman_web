@@ -891,6 +891,7 @@ function buscarporcodigojs()
    var base_url = document.getElementById('base_url').value;
    var controlador = base_url+'venta/buscarcodigo';
    var codigo = document.getElementById('codigo').value;
+   var decimales = Number(document.getElementById('parametro_decimales').value);
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
