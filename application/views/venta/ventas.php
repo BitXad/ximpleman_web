@@ -1397,10 +1397,10 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
                 <?php 
-                    $ocultar = "";
-                    if($dosificacion[0]['docsec_codigoclasificador']!=2 && $dosificacion[0]['docsec_codigoclasificador']!=39){ $ocultar = "hidden"; }?>
+                    $ocultar = "none";
+                    if($dosificacion[0]['docsec_codigoclasificador']!=2 && $dosificacion[0]['docsec_codigoclasificador']!=39){ $ocultar = "block"; }?>
                 
-                <tr style="padding: 0; display: <?php echo $prev_ocultar; ?>">
+                <tr style="padding: 0; display: <?php echo $ocultar; ?>">
                         <td style="padding: 0"><b>Tarjeta Gift</b></td>
                         <td align="right" style="padding: 0">
                             <input class="btn" style="padding:0; background-color:orange; font-size:20px;" id="venta_giftcard" size="<?php echo $ancho_boton; ?>" name="venta_giftcard" value="<?php echo 0.00; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(6)">
