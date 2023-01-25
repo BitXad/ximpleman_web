@@ -310,10 +310,10 @@ class Pedido extends CI_Controller{
                 if (sizeof($cliente)>0)
                     $data['cliente'] = $cliente;
                 else
-                    $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+                    $data['cliente'] = $this->Venta_model->get_cliente_inicialpreventa();
             }        
             else
-            {    $data['cliente'] = $this->Venta_model->get_cliente_inicial();}
+            {    $data['cliente'] = $this->Venta_model->get_cliente_inicialpreventa();}
 
             $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
             $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();

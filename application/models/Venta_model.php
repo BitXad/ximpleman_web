@@ -188,6 +188,20 @@ class Venta_model extends CI_Model
         return $cliente;
     }
     /*
+     * Get cliente inicial para Pedido, Preventa, Reserva
+     */
+    function get_cliente_inicialpreventa()
+    {
+        $sql = "select 0 as cliente_id, 1234 as cliente_nit, 'SIN NOMBRE' as cliente_razon,'-' as cliente_telefono
+                ,'SIN NOMBRE' as cliente_nombre, 1234 as cliente_ci, '-' as cliente_nombrenegocio, 0 as tipocliente_id,'-' as cliente_codigo 
+                ,'' as cliente_direccion,  '' as cliente_celular, '' as cliente_departamento,'NO DEFINIDO' zona_nombre,'0' as zona_id
+                ,'' as cliente_foto, '' as cliente_email, 'NO DEFINIDO' as tipocliente_descripcion, 0 as cliente_excepcion 
+                ,'NO DEFINIDO' as categoriaclie_descripcion, 0 as zona_id, 5 as cdi_codigoclasificador, '' as cliente_complementoci";
+        
+        $cliente = $this->db->query($sql)->result_array();
+        return $cliente;
+    }
+    /*
      * Get cliente inicial para documento sesctor 23 (prevalorada)
      */
     function get_cliente_inicialprevalorada()
