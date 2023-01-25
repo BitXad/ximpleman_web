@@ -681,7 +681,7 @@ class Producto extends CI_Controller{
                 $params = array(
                     'estado_id' => $estado_id,
                     'categoria_id' => $this->input->post('categoria_id'),
-                    'presentacion_id' => $this->input->post('presentacion_id'),
+                    'presentacion_id' => 1, //$this->input->post('presentacion_id'),
                     'moneda_id' => $this->input->post('moneda_id'),
                     'producto_codigo' => $this->input->post('producto_codigo'),
                     'producto_codigobarra' => $this->input->post('producto_codigobarra'),
@@ -704,8 +704,10 @@ class Producto extends CI_Controller{
                 );
                 $producto_id = $this->Producto_model->add_producto($params);
                 
-                $this->Inventario_model->ingresar_producto_a_inventario($producto_id,0);
-
+                //$this->Inventario_model->ingresar_producto_a_inventario($producto_id,0);
+                $sql = "insert into inventario (select * from consinventario where producto_id = $producto_id)";
+                $this->Compra_model->ejecutar($sql);
+                
                 $sql = "INSERT into detalle_compra_aux(
                     compra_id,
                     producto_id,
