@@ -821,7 +821,7 @@ window.onkeydown = compruebaTecla;
     </div>
         
     <div class="col-md-6" id="divventas0" style="display:block;">
-        <font size="1"><b>DETALLE DE LA VENTA</b></font>
+        <font size="1"><b>DETALLE DE LA <?php echo $sistema["sistema_moduloventas"]; ?> </b></font>
         <div class="box" style="border-color:black;">
             <div class="box-body">
         <div class="row">
@@ -949,7 +949,7 @@ window.onkeydown = compruebaTecla;
                         ?>
                         <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-default btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
                         <?php } ?>
-                        <button onclick='finalizarventa();' class='btn btn-default btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar venta</b></button> 
+                        <button onclick='finalizarventa();' class='btn btn-default btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar <?php echo $sistema["sistema_moduloventas"]; ?></b></button> 
                         <?php
                         $nomostrar = "";
                             if($tipousuario_id != 1){
@@ -1001,7 +1001,7 @@ window.onkeydown = compruebaTecla;
             </a>-->
 
             <button href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;" id="boton_finventa">
-                <i class="fa fa-money fa-4x"></i><br><br>Finalizar<br>Venta <br>
+                <i class="fa fa-money fa-4x"></i><br><br>Finalizar<br><?php echo $sistema["sistema_moduloventas"]; ?> <br>
             </button>
             <?php } ?>
 
@@ -1020,7 +1020,7 @@ window.onkeydown = compruebaTecla;
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
                 <a href="<?php echo site_url('reportes/reportecaja'); ?>" class="btn btn-sq-lg btn-default" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                     <i class="fa fa-list-alt fa-4x"></i><br><br>
-                   Resumen<br>Ventas <br>
+                   Resumen<br><?php echo $sistema["sistema_moduloventas"]; ?> <br>
                 </a>
             <?php //} ?>
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
@@ -1036,7 +1036,7 @@ window.onkeydown = compruebaTecla;
             <?php if($rolusuario[18-1]['rolusuario_asignado'] == 1){ ?>
             <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-list-alt fa-4x"></i><br><br>
-                Ventas<br> del Dia <br>
+                <?php echo $sistema["sistema_moduloventas"]; ?> <br> del Dia <br>
             </a>    
             <?php } ?>    
             </center>
@@ -1069,7 +1069,7 @@ window.onkeydown = compruebaTecla;
                     <button class="btn btn-default btn-xs"><b>F4</b></button> Busqueda por parámetros<br>
                     <button class="btn btn-default btn-xs"><b>F5</b></button> Actualizar página<br>        
                     <button class="btn btn-default btn-xs"><b>F7</b></button> Registrar NIT<br>
-                    <button class="btn btn-default btn-xs"><b>F8</b></button> Finalizar venta<br>
+                    <button class="btn btn-default btn-xs"><b>F8</b></button> Finalizar <?php echo $sistema["sistema_moduloventas"]; ?> <br>
                 </p>
                     <div hidden>            
                         <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-default btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
@@ -1527,7 +1527,7 @@ window.onkeydown = compruebaTecla;
             <!--<button class="btn btn-lg btn-default btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">-->
             <button class="btn btn-lg btn-success btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa_sin()" style="display: block;">
                 <h4>
-                <span class="fa fa-save"></span>   Finalizar Venta  
+                <span class="fa fa-save"></span>   Finalizar <?php echo $sistema["sistema_moduloventas"]; ?>   
                 </h4>
             </button>
 
@@ -1942,7 +1942,7 @@ window.onkeydown = compruebaTecla;
 					</div>
                             
                                         <div class="col-md-3">
-                                            <label for="usuario_idx" class="control-label">Precio Venta:</label>                                            
+                                            <label for="usuario_idx" class="control-label">Precio <?php echo $sistema["sistema_moduloventas"]; ?> :</label>                                            
                                             <input type="text" id="modificarprecios_producto_precio" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)" />
 					</div>
                             

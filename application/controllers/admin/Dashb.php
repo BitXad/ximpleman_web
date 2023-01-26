@@ -3,6 +3,7 @@
 class Dashb extends CI_Controller
 {
     private $parametros;
+    private $sistema;
     public function __construct()
     {
         parent::__construct();
@@ -32,6 +33,7 @@ class Dashb extends CI_Controller
         
         $parametros = $this->Parametro_model->get_parametros();
         $this->parametros = $parametros[0];
+        $this->sistema = $this->Sistema_model->get_sistema();
         
         $this->session_data = $this->session->userdata('logged_in');
     }
@@ -39,6 +41,7 @@ class Dashb extends CI_Controller
     public function index()
     {
 
+        $data['sistema'] = $this->sistema;
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
@@ -97,6 +100,8 @@ class Dashb extends CI_Controller
     
     // ----------------------------------------------------------
     public function index_user(){
+        
+        $data['sistema'] = $this->sistema;
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id'] > 1){
@@ -154,6 +159,7 @@ class Dashb extends CI_Controller
 
     public function logout()
     {
+        $data['sistema'] = $this->sistema;
         $this->session->unset_userdata('logged_in');
         session_destroy();
         redirect('', 'refresh');
@@ -162,7 +168,7 @@ class Dashb extends CI_Controller
     public function cuenta()
     {
         $this->acceso();
-
+        $data['sistema'] = $this->sistema;
         $session_data = $this->session->userdata('logged_in');
         $rolusuario = $this->Rol_usuario_model->getall_rolusuario($session_data['tipousuario_id']);
             $data = array(
@@ -190,6 +196,8 @@ class Dashb extends CI_Controller
 
     public function setu()
     {
+        
+        $data['sistema'] = $this->sistema;
         $this->acceso();
 
         $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|min_length[3]|max_length[150]');
@@ -352,6 +360,7 @@ class Dashb extends CI_Controller
 
     public function getRol($tipousuario_idol)
     {
+        $data['sistema'] = $this->sistema;
         $rol = 'ADMIN';
         if ($tipousuario_idol == 1) {
             $rol = 'ADMINISTRADOR';
@@ -370,6 +379,7 @@ class Dashb extends CI_Controller
 
     public function haylogin()
     {
+        $data['sistema'] = $this->sistema;
         $this->acceso();
         $login = $this->input->post('login');
         $uid = $this->input->post('uid');
@@ -380,6 +390,7 @@ class Dashb extends CI_Controller
 
     public function haylogin2()
     {
+        $data['sistema'] = $this->sistema;
         $login = $this->input->post('login');
         $uid = $this->input->post('uid');
         $res = $this->user_model->hay_login($login,$uid);
@@ -449,6 +460,7 @@ class Dashb extends CI_Controller
 
     private function get_codigo_empresa()
     {
+        $data['sistema'] = $this->sistema;
         $this->load->model('empresa_model');
         $result = $this->empresa_model->get_empresa(1);
         return  $result[0]['empresa_codigo'];

@@ -79,7 +79,7 @@ $db['default'] = array(
         'username' => 'root',
         'password' => '',
 
-        'database' => 'ximpleman_passwordsin',
+        'database' => 'ximpleman_passwordsin3_pruebas',
 //        'database' => 'ximpleman_passwordsin2',
 
 //	'hostname' => '72.52.185.41',

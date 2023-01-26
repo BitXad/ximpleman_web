@@ -37,13 +37,15 @@ function cargar_grafica_barras(anio,mes){
 
     var empresa = document.getElementById('empresa_nombre').value;
     var nombre_moneda = document.getElementById('nombre_moneda').value;
+    var moduloventas = document.getElementById('sistema_moduloventas').value;
+    
     var options={ 
         chart: { 
                 renderTo: 'div_grafica_barras', 
                 type: 'column' 
             }, 
             title: { 
-                text: 'Compras/Ventas del Mes ('+nombre_moneda+')'
+                text: 'Compras/'+moduloventas+' del Mes ('+nombre_moneda+')'
             }, 
             subtitle: { 
                 text: empresa 
@@ -82,7 +84,7 @@ function cargar_grafica_barras(anio,mes){
  
             },{ 
             color: 'blue', 
-                name: 'Ventas', 
+                name: moduloventas, //Nombre ventas
                 data: []  
             }] 
     } 
@@ -117,15 +119,18 @@ function cargar_grafica_barras(anio,mes){
 
 
 function cargar_grafica_lineas(anio,mes){
+    
     var empresa = document.getElementById('empresa_nombre').value;
     var nombre_moneda = document.getElementById('nombre_moneda').value;
+    var moduloventas = document.getElementById('sistema_moduloventas').value;
+    
     var options={ 
         chart: { 
                 renderTo: 'div_grafica_lineas' 
              
             }, 
             title: { 
-                text: 'Ventas del Mes ('+nombre_moneda+')',
+                text: moduloventas+'del Mes ('+nombre_moneda+')',
                 x: -20 //center 
             }, 
             subtitle: { 
@@ -161,14 +166,16 @@ function cargar_grafica_lineas(anio,mes){
  
             },{ 
             color: 'blue', 
-                name: 'Ventas', 
+                name: moduloventas,  //ventas
                 data: []  
             }] 
     } 
  
-    $("#div_grafica_lineas").html( $("#cargador_empresa").html() ); 
+    $("#div_grafica_lineas").html( $("#cargador_empresa").html() );
+    
     var base_url    = document.getElementById('base_url').value; 
-    var controlador = base_url+"reportes/mes/"+anio+"/"+mes+""; 
+    var controlador = base_url+"reportes/mes/"+anio+"/"+mes+"";
+    
     $.ajax({url: controlador, 
             type:"POST", 
             data:{}, 
@@ -194,8 +201,11 @@ function cargar_grafica_lineas(anio,mes){
 
 
 function cargar_grafica_pie(anio,mes){
+    
     var nombre_moneda = document.getElementById('nombre_moneda').value;
-var options={
+    var moduloventas = document.getElementById('sistema_moduloventas').value;
+    
+    var options={
      // Build the chart
      
             chart: {
@@ -206,7 +216,7 @@ var options={
                 type: 'pie'
             },
             title: {
-                text: 'Ventas del mes ('+nombre_moneda+')'
+                text: moduloventas+' del mes ('+nombre_moneda+')'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.y}</b>'
@@ -222,7 +232,7 @@ var options={
                 }
             },
             series: [{
-                name: 'Ventas',
+                name: moduloventas,
                 colorByPoint: true,
                 data: []
             }]
@@ -232,36 +242,41 @@ var options={
     
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"reportes/torta/"+anio+"/"+mes+"";
+    
     $.ajax({url: controlador,
                type:"POST",
                data:{},
                success:function(respuesta){
-    var datos= JSON.parse(respuesta);
-    var tippos=datos.tipos;
-    var totattipos=datos.totaltipos;
-    var numeropublicaciones=datos.numerodepubli;
+                   
+        var datos= JSON.parse(respuesta);
+        var tippos=datos.tipos;
+        var totattipos=datos.totaltipos;
+        var numeropublicaciones=datos.numerodepubli;
 
-        for(i=0;i<=totattipos-1;i++){  
-        var idTP=tippos[i].usuario_id;
-        var objeto= {name: tippos[i].usuario_nombre, y:numeropublicaciones[idTP] };     
-        options.series[0].data.push( objeto );  
-        }
-     //options.title.text="aqui e podria cambiar el titulo dinamicamente";
-     chart = new Highcharts.Chart(options);
+            for(i=0;i<=totattipos-1;i++){  
+            var idTP=tippos[i].usuario_id;
+            var objeto= {name: tippos[i].usuario_nombre, y:numeropublicaciones[idTP] };     
+            options.series[0].data.push( objeto );  
+            }
+         //options.title.text="aqui e podria cambiar el titulo dinamicamente";
+         chart = new Highcharts.Chart(options);
     }
     })
 }
 
-function cargar_grafica_barras_noad(anio,mes,user_id){ 
+function cargar_grafica_barras_noad(anio,mes,user_id){
+    
     var empresa = document.getElementById('empresa_nombre').value;
     var nombre_moneda = document.getElementById('nombre_moneda').value;
+    var moduloventas = document.getElementById('sistema_moduloventas').value;
+    
     var options={ 
         chart: { 
                 renderTo: 'div_grafica_barras', 
                 type: 'column' 
             }, 
             title: { 
-                text: 'Pre-ventas/Ventas del Mes ('+nombre_moneda+')'
+                text: 'Pre-ventas/'+moduloventas+' del Mes ('+nombre_moneda+')'
             }, 
             subtitle: { 
                 text: empresa 
@@ -299,7 +314,7 @@ function cargar_grafica_barras_noad(anio,mes,user_id){
                 data: [] 
             },{ 
             color: 'blue', 
-                name: 'Ventas', 
+                name: moduloventas, 
                 data: []  
             }] 
     } 

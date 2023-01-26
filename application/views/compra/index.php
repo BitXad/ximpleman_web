@@ -25,7 +25,7 @@
 <!-------------------------------------------------------->
 
 <div class="box-header">
-                <h3 class="box-title">Compras</h3>
+                <h3 class="box-title"><?php echo $sistema["sistema_modulocompras"]; ?></h3>
                 <div class="box-tools">
                     <a href="<?php echo site_url('compra/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
                 </div>
@@ -122,7 +122,7 @@
  <!-- FIN DATOS DE LOS PRODUCTOS------------------------------------> 
 
  <!-- DATOS PARA INSERTAR A COMPRA------------------------------------> 
-<div class="box"> <h3 class="box-title">Detalle Compra</h3>
+<div class="box"> <h3 class="box-title">Detalle <?php echo $sistema["sistema_modulocompras"]; ?></h3>
     <div class="box-body">
                 <div class="row clearfix">
                     <div class="col-md-3">

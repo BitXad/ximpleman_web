@@ -1,7 +1,7 @@
 <body onload="mostrar_grafica()">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Ximpleman | Sistema Integral de Ventas</title>
+  <title><?php echo $sistema["sistema_nombre"]." ".$sistema["sistema_version"] ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -43,6 +43,7 @@
 <input type="hidden" name="tipouser" id="tipouser" value="<?= $tipousuario_id ?>" />
 <input type="hidden" name="user_id" id="user_id" value="<?= $usuario ?>" />
 <input type="hidden" name="punto_venta" id="punto_venta" value="<?php echo $punto_venta; ?>" />
+<input type="hidden" name="sistema_moduloventas" id="sistema_moduloventas" value="<?php echo $sistema["sistema_moduloventas"]; ?>" />
 <!--
 <button onclick="mostrar_grafica()">
  graficos    
@@ -108,14 +109,14 @@
                 <?php echo $interlineado; ?>
                 
               <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." Bs"; ?></b></h4>
-              <p><?php echo "En ".$ventas[0]['cantidad_ventas']." ventas"; ?></p>
+              <p><?php echo "En ".$ventas[0]['cantidad_ventas'].$sistema["sistema_moduloventas"]; ?></p>
               
             </div>
               
             <div class="icon">
               <i class="ion ion-bag"></i>              
             </div>
-            <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer">Realizar Ventas <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer">Realizar <?php echo $sistema["sistema_moduloventas"]; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
           
@@ -164,12 +165,12 @@
             <div class="inner">
                 <h4><b><?php echo number_format($compras[0]['total_compras'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?></b></h3>
 
-              <p><?php echo "En ".$compras[0]['cantidad_compras']." compras"; ?></p>
+              <p><?php echo "En ".$compras[0]['cantidad_compras']." ".$sistema["sistema_modulocompras"]; ?></p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="<?php echo base_url('compra'); ?>" class="small-box-footer">Realizar Compras <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo base_url('compra'); ?>" class="small-box-footer">Realizar <?php echo $sistema["sistema_modulocompras"]; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -187,7 +188,7 @@
             <div class="icon">
               <i class="fa fa-book"></i>
             </div>
-            <a href="<?php echo base_url('venta'); ?>" class="small-box-footer">Ventas del Dia <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo base_url('venta'); ?>" class="small-box-footer"><?php echo $sistema["sistema_moduloventas"]; ?> del Dia <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
          <!--./col--> 
@@ -262,7 +263,7 @@
             <div class="icon">
               <i class="fa fa-cart-plus"></i>              
             </div>
-            <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer"><?php echo "En ".$ventas[0]['cantidad_ventas']." ventas"; ?> <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer"><?php echo "En ".$ventas[0]['cantidad_ventas']." ".$sistema["sistema_moduloventas"]; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
           
@@ -279,7 +280,7 @@
             <div class="icon">
               <i class="fa fa-pie-chart"></i>              
             </div>
-                <a href="<?php echo base_url('compra'); ?>" class="small-box-footer"><?php echo "En ".$compras[0]['cantidad_compras']." compras"; ?> <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('compra'); ?>" class="small-box-footer"><?php echo "En ".$compras[0]['cantidad_compras']." ".$sistema["sistema_modulocompras"]; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         
@@ -297,7 +298,7 @@
             <div class="icon">
               <i class="fa fa-bar-chart"></i>              
             </div>
-                <a href="<?php echo base_url('pedido'); ?>" class="small-box-footer"><?php echo "En ".$pedidos[0]['cantidad_pedidos']." pedidos"; ?> <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('pedido'); ?>" class="small-box-footer"><?php echo "En ".$pedidos[0]['cantidad_pedidos']." ".$sistema["sistema_modulopedidos"]; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
 
@@ -332,7 +333,7 @@
             <div class="icon">
               <i class="fa fa-users"></i>              
             </div>
-                <a href="<?php echo base_url('cliente'); ?>" class="small-box-footer"><?php echo "En ventas/serv.."; //$clientes[0]['total_clientes']." Clientes"; ?> <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('cliente'); ?>" class="small-box-footer"><?php echo "En ".$sistema["sistema_moduloventas"]."/serv."; //$clientes[0]['total_clientes']." Clientes"; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
        
@@ -427,7 +428,7 @@
             <div class="box-header">
               <i class="fa fa-money"></i>
 
-              <h3 class="box-title">Ventas del mes</h3>
+              <h3 class="box-title"><?php echo $sistema["sistema_moduloventas"]; ?> del mes</h3>
               <!-- tools box -->
               <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
@@ -586,7 +587,7 @@
             <div class="box-header">
               <i class="fa fa-cart-plus"></i>
 
-              <h3 class="box-title">Ventas del dia</h3>
+              <h3 class="box-title"><?php echo $sistema["sistema_moduloventas"]; ?> del dia</h3>
               <!-- tools box -->
               <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
@@ -607,7 +608,7 @@
                 <tr>
                   <th style="width: 10px">#</th>
                   <th>Operación</th>
-                  <th>Ventas</th>
+                  <th><?php echo $sistema["sistema_moduloventas"]; ?></th>
                   <th style="width: 40px"><?php echo $parametro["moneda_descripcion"]; ?></th>
                 </tr>
                 <?php $cont = 0; $total_ventas = 0;
@@ -671,7 +672,7 @@
             <div class="box-header">
               <i class="fa fa-bar-chart"></i>
 
-              <h3 class="box-title">Ventas de la semana</h3>
+              <h3 class="box-title"><?php echo $sistema["sistema_moduloventas"]; ?> de la semana</h3>
               <!-- tools box -->
               <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
@@ -688,7 +689,7 @@
                 <tr>
                   <th style="width: 10px">#</th>
                   <th>Fecha</th>
-                  <th>Ventas</th>
+                  <th><?php echo $sistema["sistema_moduloventas"]; ?></th>
                   <th style="width: 40px"><?php echo $parametro["moneda_descripcion"]; ?></th>
                 </tr>
                  <?php $cont = 0; $total_dia = 0;
@@ -746,7 +747,7 @@
         <div class="box box-info">
             <div class="box-header">
                 <i class="fa fa-file-text-o"></i>
-                <h3 class="box-title">Ventas en proceso</h3>
+                <h3 class="box-title"><?php echo $sistema["sistema_moduloventas"]; ?> en proceso</h3>
                 <a class="btn btn-success btn-xs" onclick="tabladetalle_venta()" data-toggle="tooltip" title="Actualizar lo que se esta vendiendo">
                     <i class="fa fa-refresh"></i>
                 </a>
@@ -896,7 +897,9 @@
           <div class="container">
             <div class="row">
               <div class="col-md-12">
-                Ximpleman ver 2.0
+                  <b style="font-size: 16pt;">                      
+                        <?php echo $sistema["sistema_nombre"]." ".$sistema["sistema_version"]; ?>
+                  </b>
               </div>
             </div>
           </div>

@@ -47,7 +47,9 @@ class Ingreso extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(53)){
+            
             $usuario_id = $this->session_data['usuario_id'];
             $data['rol'] = $this->session_data['rol'];
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
@@ -62,6 +64,7 @@ class Ingreso extends CI_Controller{
             
             $data['_view'] = 'ingreso/index';
             $this->load->view('layouts/main',$data);
+            
         }
         
     } 

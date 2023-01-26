@@ -44,6 +44,7 @@
 
 <input type="hidden" name="empresa_nombre" id="empresa_nombre" value="<?php if(isset($empresa)){ echo $empresa[0]['empresa_nombre'];} else {echo ""; }?>" />
 <input type="hidden" name="punto_venta" id="punto_venta" value="<?php echo $punto_venta; ?>" />
+<input type="hidden" name="sistema_moduloventas" id="sistema_moduloventas" value="<?php echo $sistema["sistema_moduloventas"]; ?>" />
 
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapsed sidebar-collapse" onload="mueveReloj()">
 <div class="wrapper">
@@ -97,7 +98,7 @@
                 </ul>
             </div>
 <div style="float: none; width: 90%" face="Arial" class="text-center" >
-    <span class="text-bold" style="display: block; padding-top: 0px;padding-bottom: -8px; color: #FFF; font-size: 22px;">Ximpleman web</span>
+    <span class="text-bold" style="display: block; padding-top: 0px;padding-bottom: -8px; color: #FFF; font-size: 22px;"><?php echo $sistema["sistema_nombre"]." ".$sistema["sistema_version"]; ?></span>
     <span name="reloj" id="reloj" style="color: #FFF; font-size: 12px;"></span> 
     
 </div>
@@ -132,7 +133,7 @@
                         if($rolusuario[12-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i> Ventas</a>
+                            <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i> <?php echo $sistema["sistema_moduloventas"]; ?></a>
                         </li>
                         <?php } ?>
                         
@@ -140,7 +141,7 @@
                         if($rolusuario[179-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('venta_online');?>"><i class="fa fa-internet-explorer"></i> Ventas Online</a>
+                            <a href="<?php echo site_url('venta_online');?>"><i class="fa fa-internet-explorer"></i> <?php echo $sistema["sistema_moduloventas"]; ?> Online</a>
                         </li>
                         <?php } ?>
                         
@@ -148,7 +149,7 @@
                             if($rolusuario[1-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-shopping-basket"></i> Compras</a>
+                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-shopping-basket"></i> <?php echo $sistema["sistema_modulocompras"]; ?></a>
                         </li>
                         <?php
                         } ?>
@@ -157,7 +158,7 @@
                         if($rolusuario[30-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i> Pedidos</a>
+                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i> <?php echo $sistema["sistema_modulopedidos"]; ?></a>
                         </li>
                         <?php
                         }
@@ -199,7 +200,7 @@
                         if($rolusuario[158-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="javascript:window.open('<?php echo site_url('detalle_venta/venta_proceso');?>','','toolbar=yes');"><i class="fa fa-television"></i> Monitor de Venta</a>
+                            <a href="javascript:window.open('<?php echo site_url('detalle_venta/venta_proceso');?>','','toolbar=yes');"><i class="fa fa-television"></i> Monitor de <?php echo $sistema["sistema_moduloventas"]; ?></a>
                         </li>
                         <?php
                         }
@@ -227,7 +228,7 @@
                         if($rolusuario[181-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('pedido_diario/index');?>"><i class="fa fa-calendar"></i> Pedidos Diarios</a>
+                            <a href="<?php echo site_url('pedido_diario/index');?>"><i class="fa fa-calendar"></i> <?php echo $sistema["sistema_modulopedidos"]; ?> Diarios</a>
                         </li>
                         <?php
                         } ?>
@@ -527,14 +528,14 @@
                         if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('venta');?>"><i class="fa fa-paste"></i>Ventas del dia</a>
+                            <a href="<?php echo site_url('venta');?>"><i class="fa fa-paste"></i><?php echo $sistema["sistema_moduloventas"]; ?> del dia</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
+                            <a href="<?php echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i><?php echo $sistema["sistema_moduloventas"]; ?></a>
                         </li>
 
                         <li>
-                            <a href="<?php echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple Ventas</a>
+                            <a href="<?php echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple <?php echo $sistema["sistema_moduloventas"]; ?></a>
                         </li>
                         <?php
                         } ?>
@@ -559,7 +560,7 @@
                         if($rolusuario[137-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes/comprareportes');?>"><i class="fa fa-shopping-basket"></i>Compras</a>
+                            <a href="<?php echo site_url('reportes/comprareportes');?>"><i class="fa fa-shopping-basket"></i><?php echo $sistema["sistema_modulocompras"]; ?></a>
                         </li>
                         <?php
                         }
@@ -639,7 +640,7 @@
                         if($rolusuario[157-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('estadistica/ventas');?>"><i class="fa fa-cart-plus fa-bars"></i>Ventas mensuales</a>
+                            <a href="<?php echo site_url('estadistica/ventas');?>"><i class="fa fa-cart-plus fa-bars"></i><?php echo $sistema["sistema_moduloventas"]; ?> mensuales</a>
                         </li>
                         <?php
                         }
@@ -657,7 +658,7 @@
                         if($rolusuario[157-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes/graficas');?>"><i class="fa fa-bar-chart"></i>Compras y ventas</a>
+                            <a href="<?php echo site_url('reportes/graficas');?>"><i class="fa fa-bar-chart"></i><?php echo $sistema["sistema_modulocompras"]; ?> y <?php echo $sistema["sistema_moduloventas"]; ?></a>
                         </li>
                         <?php
                         }
@@ -681,15 +682,14 @@
                         if($rolusuario[152-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-shopping-cart"></i> <span>Libro de Ventas</span></a>
+                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-shopping-cart"></i> <span>Libro de <?php echo $sistema["sistema_moduloventas"]; ?></span></a>
                         </li>
                         <?php
                         }
                         if($rolusuario[153-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('factura/factura_compra');?>"><i class="fa fa-shopping-basket"></i> <span>Libro de Compras</span></a>
-                        </li>
+                            <a href="<?php echo site_url('factura/factura_compra');?>"><i class="fa fa-shopping-basket"></i> <span>Libro de <?php echo $sistema["sistema_modulocompras"]; ?>
                         <?php
                         }
                         if($rolusuario[154-1]['rolusuario_asignado'] == 1){

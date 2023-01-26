@@ -1,7 +1,7 @@
 <body onload="mostrar_grafica()">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Ximpleman | Sistema Integral de Ventas</title>
+    <title><?php echo $sistema["sistema_nombre"];?> <?php echo $sistema["sistema_version"]; ?></title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -52,7 +52,7 @@
                     <?php }else{ ?>
                         <div style="margin-bottom: 12px"></div>
                     <?php } ?>
-                    <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer"><?php echo "En ".$ventas[0]['cantidad_ventas']." ventas"; ?> <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer"><?php echo "En ".$ventas[0]['cantidad_ventas']; ?> <?php echo $sistema["sistema_moduloventas"]; ?> <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             
@@ -77,7 +77,7 @@
                         <div style="margin-bottom: 12px"></div>
                     <?php } ?>
                     <!-- <div style="height: 12px;"></div> -->
-                    <a href="<?php echo base_url('pedido'); ?>" class="small-box-footer"><?php echo "En ".$pedidos[0]['cantidad_pedidos']." pedidos"; ?> <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="<?php echo base_url('pedido'); ?>" class="small-box-footer"><?php echo "En ".$pedidos[0]['cantidad_pedidos']." ".$sistema["sistema_modulopedidos"]; ?> <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             
@@ -143,14 +143,14 @@
                     <div class="row">
                         <?php if(isset($objetivo['objetivo_mes'])){ ?>
                             <div>
-                                <h4 class="title" style="display: inline;" >Ventas</h4>
+                                <h4 class="title" style="display: inline;" ><?php echo $sistema["sistema_moduloventas"]; ?></h4>
                                 <h4 class="text-right mr-0" style="display: inline;">&nbsp;&nbsp;&nbsp; <?php echo $parametro[0]['moneda_descripcion']." ".$ventas_mes['total_mes'] ?> / <?= $objetivo['objetivo_mes'] ?></h4>
                             </div>
                             <div class="progress">
                                 <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" style="width: <?= intval(($ventas_mes['total_mes'] *100)/$objetivo['objetivo_mes']) ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         <?php }else{ ?>
-                                <h4 class="title" style="display: inline;">Usted no tiene objetivos de ventas</h4>
+                                <h4 class="title" style="display: inline;">Usted no tiene objetivos de <?php echo $sistema["sistema_moduloventas"]; ?></h4>
                                 <br>
                                 <br>
                         <?php } ?>
@@ -163,7 +163,7 @@
                                 <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" style="width: <?= intval(($entregas_mes['pedido_mes']*100)/$objetivo['objetivo_pedido_mes']); ?>%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         <?php }else{ ?>
-                            <h4 class="title" style="display: inline;">Usted no tiene objetivos de pedidos </h4>
+                            <h4 class="title" style="display: inline;">Usted no tiene objetivos de <?php echo $sistema["sistema_modulopedidos"]; ?> </h4>
                         <?php } ?>
 
                     </div>
@@ -328,7 +328,7 @@
         <div class="box box-info">
             <div class="box-header">
                 <i class="fa fa-money"></i>
-                <h3 class="box-title">Ventas del mes</h3>
+                <h3 class="box-title"><?php echo $sistema["sistema_moduloventas"]; ?> del mes</h3>
                 <!-- tools box -->
                 <div class="pull-right box-tools">
                     <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">

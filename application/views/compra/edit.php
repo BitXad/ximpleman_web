@@ -121,7 +121,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <!--------------------- CABCERA -------------------------->
 
 <div class="box-header">
-    <h1 class="box-title"><b>DETALLE COMPRA COD: <?php echo "000".$compra_id; ?></b></h1>
+    <h1 class="box-title"><b>DETALLE <?php echo $sistema["sistema_modulocompras"]; ?> COD: <?php echo "000".$compra_id; ?></b></h1>
 </div>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="compra_idie" id="compra_idie" value="<?php echo $compra_id; ?>">
@@ -302,13 +302,13 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         
         
         <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn btn-xs btn-default" ><i class="fa fa-money "></i>
-               Finalizar compra 
+               Finalizar <?php echo $sistema["sistema_modulocompras"]; ?> 
             </a></label>
             
   <?php  } else { ?>          
             <label id="provedorboton"><a   href="#"  data-toggle="modal" data-target="#modalcobrar" class="btn btn-xs btn-default" >
                 <i class="fa fa-money"></i>
-               Finalizar compra 
+               Finalizar <?php echo $sistema["sistema_modulocompras"]; ?> 
             </a></label>
  <?php  }  } ?>
  <?php  } ?>
@@ -329,7 +329,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </button>
               </div>
               <div class="form">   
-               <center><H4> Desea salir de esta Compra sin guardar cambios? 
+               <center><H4> Desea salir de esta <?php echo $sistema["sistema_modulocompras"]; ?> sin guardar cambios? 
               </H4></center>
           </div>
               <div class="modal-footer" >
@@ -392,7 +392,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
          <div class="col-md-8" style="padding-left:0px; padding-right:0px;">
     <!--------------------- parametro de buscador --------------------->
               <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la compra, producto, costo"> 
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la <?php echo $sistema["sistema_modulocompras"]; ?>, producto, costo"> 
               </div>
                 
         <!--------------------- fin parametro de buscador --------------------->
@@ -442,12 +442,12 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <?php  $provien = $compra[0]['proveedor_id'];  if($provien==0) { ?>  
             <label id="provedorboton2"><a onclick="myFunction()" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')"0>
                 <i class="fa fa-money fa-4x"></i><br>
-               Finalizar<br>Compra<br>
+               Finalizar<br><?php echo $sistema["sistema_modulocompras"]; ?><br>
             </a></label>
           <?php }else{ ?>
             <label id="provedorboton2"><a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')">
                 <i class="fa fa-money fa-4x"></i><br>
-               Finalizar<br>Compra<br>
+               Finalizar<br><?php echo $sistema["sistema_modulocompras"]; ?><br>
             </a></label>
           <?php } ?>
 
@@ -581,7 +581,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label for="cantidad" class="control-label">Cantidad Compra</label>
+                        <label for="cantidad" class="control-label">Cantidad Compra<?php echo $sistema["sistema_modulocompras"]; ?></label>
                         <div class="form-group">
                             <input type="number" min="0" step="any" name="cantidad" autocomplete="off" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
                              <input type="hidden" name="descuento" value="0" class="form-control" id="descuento" />
@@ -590,7 +590,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div>
                     </div>
                     <div class="col-md-4" id="select_unidad" hidden>
-                        <label for="unidad_compra" class="control-label">Unidad Compra</label>
+                        <label for="unidad_compra" class="control-label">Unidad <?php echo $sistema["sistema_modulocompras"]; ?></label>
                         <div class="form-group">
                             <select name="unidad_compra" class="form-control" id="unidad_compra" >
                                 <option value="1">--Unidad--</option>
@@ -1070,7 +1070,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 
 
                 <tr>
-                        <td>Compra <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
+                        <td><?php echo $sistema["sistema_modulocompras"]; ?> <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
                         <td><input class="btn btn-default" type="text" size="8" readonly id="compra_subtotal" name="compra_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>"></td>
                     
                 </tr>                
@@ -1217,7 +1217,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             
             <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit" onclick="final()">
                 <h4>
-                <span class="fa fa-money"></span>   Finalizar Compra  
+                <span class="fa fa-money"></span>   Finalizar <?php echo $sistema["sistema_modulocompras"]; ?>  
                 </h4>
             </button>
             

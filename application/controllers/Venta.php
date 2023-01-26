@@ -132,7 +132,7 @@ class Venta extends CI_Controller{
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['dosificacion'] = $this->dosificacion;
         //$data['venta'] = $this->Venta_model->get_all_venta($params);
-        $data['page_title'] = "Ventas del dia";
+        $data['page_title'] = $this->sistema["sistema_moduloventas"]." del dia";
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();  
 //        $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['parametro'] = $this->parametros;
@@ -173,7 +173,7 @@ class Venta extends CI_Controller{
         $tipousuario_id = $this->session_data['tipousuario_id'];        
         $punto_venta = $this->session_data['puntoventa_codigo'];        
 
-        $data['page_title'] = "Ventas";
+        $data['page_title'] = $this->sistema["sistema_moduloventas"];
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         
