@@ -148,7 +148,7 @@
                         <div class="col-md-2">
                             <label for="caja_transacciones" class="control-label">Transacciones</label>
                             <div class="form-group">
-                                <input type="number" min="0" name="caja_transacciones" value="<?php echo ($this->input->post('caja_transacciones') ? $this->input->post('caja_transacciones') : number_format($caja['caja_transacciones'], 0, '.', ',')); ?>" class="form-control" id="caja_transacciones" />
+                                <input type="number" min="0" step="any" name="caja_transacciones" value="<?php echo ($this->input->post('caja_transacciones') ? $this->input->post('caja_transacciones') : $caja['caja_transacciones']); ?>" class="form-control" id="caja_transacciones" />
                             </div>
                         </div>
                         <div class="col-md-2">
