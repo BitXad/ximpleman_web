@@ -49,7 +49,7 @@
         </div>
         <div id="cabcentro">
             <div id="titulo">
-                <u>COMPRAS</u><br><br>
+                <u><?php echo $sistema["sistema_modulocompras"]; ?></u><br><br>
                 <!--<span style="font-size: 9pt">INGRESOS DIARIOS</span><br>-->
                 <span class="lahora" id="fhimpresion"></span><br>
                 <span style="font-size: 8pt;" id="busquedaavanzada"></span>
@@ -76,7 +76,7 @@
 
         <!--este es INICIO del BREADCRUMB buscador-->
         <div class="box-header">
-                <font size='4' face='Arial'><b>Compras</b></font>
+                <font size='4' face='Arial'><b><?php echo $sistema["sistema_modulocompras"]; ?></b></font>
                 <br><font size='2' face='Arial' id="pillados">Registros Encontrados: <?php echo sizeof($compra); ?></font>
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
@@ -92,10 +92,10 @@
             <div class="col-md-4 no-print">
                 <?php if($rolusuario[11-1]['rolusuario_asignado'] == 1){ ?>
                 <select  class="btn btn-primary btn-sm"  id="select_compra" onchange="buscar_compras()">
-                    <option value="1">Compras de Hoy</option>
-                    <option value="2">Compras de Ayer</option>
-                    <option value="3">Compras de la semana</option>
-                    <option value="5">Compras por fecha</option>
+                    <option value="1"><?php echo $sistema["sistema_modulocompras"]; ?> de Hoy</option>
+                    <option value="2"><?php echo $sistema["sistema_modulocompras"]; ?> de Ayer</option>
+                    <option value="3"><?php echo $sistema["sistema_modulocompras"]; ?> de la semana</option>
+                    <option value="5"><?php echo $sistema["sistema_modulocompras"]; ?> por fecha</option>
                 </select>
                 <?php }?>
             </div>
@@ -115,17 +115,17 @@
     <div class="col-md-6 no-print">
         <div class="box-tools">
             <center> <?php if (sizeof($comprasn)>0){ ?>
-                <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="#" data-toggle="modal" data-target="#avisar" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Comprar</small></a>
+                <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="#" data-toggle="modal" data-target="#avisar" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small><?php echo $sistema["sistema_modulocompras"]; ?></small></a>
 
             <?php }else{ ?>    
-                <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Comprar</small></a>
+                <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small><?php echo $sistema["sistema_modulocompras"]; ?></small></a>
             <?php } ?>           
                 <button style="width: 78px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
                 <?php if($rolusuario[10-1]['rolusuario_asignado'] == 1){ ?>
                 <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="#" onclick="imprimir_compra()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
                 <?php } ?>
                 <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('compra/crearcompra_invcero'); ?>" class="btn btn-facebook btn-foursquarexs" title="Llevar inventario a 0"><font size="5"><span class="fa fa-dot-circle-o"></span></font><br><small>Inv. a cero</small></a>
-                <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('factura_compra'); ?>" class="btn btn-facebook btn-soundcloud" title="Registrar en libro de compras"><font size="5"><span class="fa fa-book"></span></font><br><small>Libro Comp.</small></a>
+                <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('factura_compra'); ?>" class="btn btn-facebook btn-soundcloud" title="Registrar en libro de compras"><font size="5"><span class="fa fa-book"></span></font><br><small>Libro <?php echo $sistema["sistema_modulocompras"]; ?></small></a>
             </center>            
         </div>
     </div>
@@ -176,7 +176,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title" id="exampleModalLabel">Tiene compras sin finalizar</h3>
+        <h3 class="modal-title" id="exampleModalLabel">Tiene <?php echo $sistema["sistema_modulocompras"]; ?> sin finalizar</h3>
       
       </div>
       <div class="modal-body">
@@ -184,7 +184,7 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
-                        <th>Compra</th>
+                        <th><?php echo $sistema["sistema_modulocompras"]; ?></th>
                         <th>Prov.</th>
                         <th>Fecha</th>
                         <th></th>
@@ -211,7 +211,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-        <a href="<?php echo site_url('compra/crearcompra'); ?>"  class="btn btn-success">Continuar Compra Nueva</a>
+        <a href="<?php echo site_url('compra/crearcompra'); ?>"  class="btn btn-success">Continuar <?php echo $sistema["sistema_modulocompras"]; ?> Nueva</a>
       </div>
     </div>
   </div>
@@ -228,7 +228,7 @@
     <tr>
       <th>#</th>
       <th>Proveedor</th>
-      <th>Compra</th>
+      <th><?php echo $sistema["sistema_modulocompras"]; ?></th>
 <!--                        <th>Sub <br>Total</th>
     <th>Desc.</th>-->
     <th>Total</th>
@@ -297,7 +297,7 @@
                                 </button>
                             </div>
                             <div class="form">   
-                             <center><h4> Desea continuar con esta compra? 
+                             <center><h4> Desea continuar con esta <?php echo $sistema["sistema_modulocompras"]; ?>? 
                              </h4></center>
                          </div>
                          <div class="modal-footer" >       
@@ -329,12 +329,12 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h4><b> <em class="fa fa-minus-circle"></em> Desea anular la compra No.: <?php echo $c['compra_id']; ?>? 
+                                    <h4><b> <em class="fa fa-minus-circle"></em> Desea anular la <?php echo $sistema["sistema_modulocompras"]; ?> No.: <?php echo $c['compra_id']; ?>? 
                                         </b>
                                     </h4>
                                 </div>
                                 <div class="modal-body" align="center">
-                                    <h4>Esta compra puede tener una orden de Pago, tomar en cuenta.</h4>
+                                    <h4>Esta <?php echo $sistema["sistema_modulocompras"]; ?> puede tener una orden de Pago, tomar en cuenta.</h4>
                                     <h4 class="text-bold">
                                         <?php echo $mensajecred; ?>
                                     </h4>
@@ -392,7 +392,7 @@
         <!--------------------- fin parametro de buscador --------------------->
         <font face="arial" size="2">
             <b>
-            Compras sin Proveedor asignado            
+            <?php echo $sistema["sistema_modulocompras"]; ?> sin Proveedor asignado            
             </b>
         </font>
         
@@ -428,7 +428,7 @@
                             
                             <td><?php echo $psn['estado_descripcion']; ?></td>
                             <td>
-                                <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>"  class="btn btn-facebook btn-xs"><span class="fa fa-check" ></span> Continuar Compra</a>
+                                <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>"  class="btn btn-facebook btn-xs"><span class="fa fa-check" ></span> Continuar <?php echo $sistema["sistema_modulocompras"]; ?></a>
                            <!--<a href="<?php echo site_url('compra/edito/'.$psn['compra_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-asterisk"></span></a>  
                             <a href="<?php echo site_url('compra/remove/'.$psn['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
