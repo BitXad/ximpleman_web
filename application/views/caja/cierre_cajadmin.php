@@ -75,7 +75,7 @@
 <div class="row"  style="font-family: Arial;" <?php echo $estilo_div; ?>>
     <div class="col-md-12">
       	<div class="box box-info">
-            <?php echo form_open('caja/cierre_caja/'.$caja['caja_id']); ?>
+            <?php echo form_open('caja/cierre_cajadmin/'.$caja['caja_id']); ?>
             
                
                  
