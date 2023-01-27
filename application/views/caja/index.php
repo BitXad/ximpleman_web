@@ -76,7 +76,7 @@
                         <td style="text-align: right; background:#00FF00; font-weight: bold; font-size: 10pt; "><?php echo number_format($c['caja_cierre'],2,'.',','); ?></td>
                         <td style="text-align: right; background:#ff0; font-weight: bold; font-size: 10pt; "><?php echo number_format($c['caja_diferencia'],2,'.',','); ?></td>
                         
-                        <td><?php echo ($c['caja_diferencia']>0)?"SOBRANTE":($c['caja_diferencia']==0)?" ":"FALTANTE"; ?></td>
+                        <td><?php echo ($c['caja_diferencia']>0) ? "SOBRANTE" : (($c['caja_diferencia']==0) ? " " : "FALTANTE"); ?></td>
                         <td><?php echo $c['caja_fechacierre']." ".$c["caja_horacierre"]; ?></td>
                         
 
@@ -97,7 +97,7 @@
                         <td><?php echo $c['estado_descripcion']; ?></td>
                         <td>
                             <a href="<?php echo site_url('caja/edit/'.$c['caja_id']); ?>" class="btn btn-info btn-xs" title="Modificar caja"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('caja/cierre_caja/'.$c['caja_id']); ?>" class="btn btn-facebook btn-xs" title="Cierre de caja"><span class="fa fa-suitcase"></span></a> 
+                            <a href="<?php echo site_url('caja/cierre_cajadmin/'.$c['caja_id']); ?>" class="btn btn-facebook btn-xs" title="Cierre de caja"><span class="fa fa-suitcase"></span></a> 
                             <a href="<?php echo site_url('caja/reporte_caja/'.$c['caja_id']); ?>" class="btn btn-success btn-xs" title="Reporte de caja"><span class="fa fa-print"></span></a> 
                             <!--<a href="<?php //echo site_url('caja/remove/'.$c['caja_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>

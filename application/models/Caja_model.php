@@ -165,4 +165,16 @@ class Caja_model extends CI_Model
         ")->row_array();
         return $caja;
     }
+    /*
+     * Get caja by caja_id
+     */
+    function get_caja_usuarioadmin($caja_id)
+    {
+        $sql = "select * from caja where caja_id = ".$caja_id.
+                " and (estado_id = 29  or estado_id = 30)";
+                     
+        $caja = $this->db->query($sql)->row_array();
+        return $caja;
+        
+    }
 }

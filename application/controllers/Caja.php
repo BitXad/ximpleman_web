@@ -17,7 +17,7 @@ class Caja extends CI_Controller{
         $this->load->model('Detalle_venta_model');
         $this->load->model('Empresa_model');
         $this->load->model('Parametro_model');
-        $this->load->model('Caja_model');
+        $this->load->model('Usuario_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -359,7 +359,7 @@ class Caja extends CI_Controller{
             if(isset($caja[0]["caja_id"]))    
                 redirect("caja/cierre_caja/".$caja[0]["caja_id"]);
             else 
-                redirect('admin/dash');
+                redirect('admin/dashb');
         }
     }
     
@@ -397,12 +397,91 @@ class Caja extends CI_Controller{
         $data['page_title'] = "Cierre de Caja";
 
         $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['moneda'] = $this->Moneda_model->get_moneda($data['parametro'][0]['moneda_id']);
    
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
 
         
                 $data['_view'] = 'caja/reportecaja_boucher';
                 $this->load->view('layouts/main',$data);
+    }
+    /*
+     * cierre de una caja
+     */
+    function cierre_cajadmin($caja_id)
+    {
+        $data['sistema'] = $this->sistema;
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('caja_cierre','Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('caja_fechacierre','Fecha de Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('caja_horacierre','Hora de Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $caja = $this->Caja_model->get_caja_usuarioadmin($caja_id);
+        
+        if($caja_id == $caja["caja_id"]){
+        
+            $this->load->model('Parametro_model');
+            $data['all_parametro'] = $this->Parametro_model->get_parametros();
+
+            $data['usuario_id'] = $caja['usuario_id'];
+            
+            $usuario_caja = $this->Usuario_model->get_usuario($data['usuario_id']);
+            $data['usuario_nombre'] = $usuario_caja['usuario_nombre'];
+            //$data['usuario_nombre'] = $this->session_data['usuario_nombre'];
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera        
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['caja'] = $caja; //$this->Caja_model->get_caja($caja_id);
+
+            if($this->form_validation->run())     
+            {
+                $estado = 31;
+                $params = array(
+                    'estado_id' => $estado,
+                    /*'moneda_id' => $data['all_parametro'][0]['moneda_id'],
+                    'usuario_id' => $usuario_id,
+                    'caja_apertura' => $this->input->post('caja_apertura'),
+                    'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
+                    'caja_horaapertura' => $this->input->post('caja_horaapertura'),*/
+                    'caja_transacciones' => $this->input->post('saldo_caja'),
+                    'caja_cierre' => $this->input->post('caja_cierre'),
+                    'caja_horacierre' => $this->input->post('caja_horacierre'),
+                    'caja_fechacierre' => $this->input->post('caja_fechacierre'),
+                    'caja_diferencia' => $this->input->post('caja_diferencia'),
+                    'caja_corte1000' => $this->input->post('caja_corte1000'),
+                    'caja_corte500' => $this->input->post('caja_corte500'),
+                    'caja_corte200' => $this->input->post('caja_corte200'),
+                    'caja_corte100' => $this->input->post('caja_corte100'),
+                    'caja_corte50' => $this->input->post('caja_corte50'),
+                    'caja_corte20' => $this->input->post('caja_corte20'),
+                    'caja_corte10' => $this->input->post('caja_corte10'),
+                    'caja_corte5' => $this->input->post('caja_corte5'),
+                    'caja_corte2' => $this->input->post('caja_corte2'),
+                    'caja_corte1' => $this->input->post('caja_corte1'),
+                    'caja_corte050' => $this->input->post('caja_corte050'),
+                    'caja_corte020' => $this->input->post('caja_corte020'),
+                    'caja_corte010' => $this->input->post('caja_corte010'),
+                    'caja_corte005' => $this->input->post('caja_corte005'),
+                    'caja_efectivo' => $this->input->post('caja_efectivo'),
+                    'caja_credito' => $this->input->post('caja_credito'),
+
+                    
+                );
+
+                $this->Caja_model->update_caja($caja_id, $params);
+                redirect('caja/reporte_caja/'.$caja_id);
+                
+            }else{
+                
+                $data['_view'] = 'caja/cierre_cajadmin';
+                $this->load->view('layouts/main',$data);
+            }
+        }
+        else{
+            if(isset($caja["caja_id"]))    
+                redirect("caja/cierre_cajadmin/".$caja["caja_id"]);
+            else 
+                redirect('admin/dashb');
+        }
     }
 }
