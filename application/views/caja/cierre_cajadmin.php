@@ -269,7 +269,7 @@
                     <button type="input" class="btn btn-success">
             		<i class="fa fa-floppy-o"></i> Cerrar Caja
                     </button>
-                    <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-danger">
+                    <a href="<?php echo site_url('caja'); ?>" class="btn btn-danger">
                     <i class="fa fa-times"></i> Cancelar</a>
           	</div>
             

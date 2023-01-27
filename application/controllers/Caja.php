@@ -397,7 +397,7 @@ class Caja extends CI_Controller{
         $data['page_title'] = "Cierre de Caja";
 
         $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['moneda'] = $this->Moneda_model->get_moneda($data['parametro'][0]['moneda_id']);
    
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
 
