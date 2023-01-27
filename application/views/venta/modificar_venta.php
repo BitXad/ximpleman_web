@@ -299,7 +299,15 @@ window.onkeydown = compruebaTecla;
 
 <input type="text" id="venta_id" value="<?php echo $venta[0]['venta_id']; ?>" hidden>
 <input type="text" id="credito_id" value="<?php if(isset($credito['credito_id'])){if($credito['credito_id']>0){ echo $credito['credito_id'];}else{ echo 0;} }else{ echo 0;}?>" hidden>
-
+<?php
+if(isset($credito)){
+    if($credito['credito_id']>0){
+    ?>
+<input type="text" value='<?php echo json_encode($credito); ?>' id="elcredito" name="elcredito" hidden>
+    <?php
+    }
+}else{}
+?>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 
@@ -452,7 +460,7 @@ window.onkeydown = compruebaTecla;
                     <?php }
                     ?>
             <div hidden>                
-            <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($parametro["parametro_tipoemision"]>1)?"checked":"";?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+            <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($cliente[0]['cliente_excepcion']==1)?"checked":""; ?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
             </div>
             
                 <?php }else{ ?>
@@ -766,7 +774,7 @@ window.onkeydown = compruebaTecla;
             
             
             <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
+            <a href="#" data-toggle="modal" onclick="focus_efectivo(), mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a>
             <?php } ?>
 
             </center>
@@ -834,6 +842,15 @@ window.onkeydown = compruebaTecla;
         $alto_boton = 120; 
         
         ?>
+        <div class="col-md-12" style="padding:0;" id="div_mensaje">
+            
+            <?php $estilo_mensaje = "font-family: Arial; line-height: 10pt; display: none; border-color:black; background: white; color: Green;"; ?>
+            <span id="mensaje_enviado" class="btn btn-default btn-block" style="<?php echo $estilo_mensaje; ?>"><b style="font-family: Arial; font-size: 18pt;" ><img src="<?php echo base_url("resources/images/enviado.gif"); ?>" width="150px" height="100px"> FACTURA ENVIADA</b></span>
+            <?php $estilo_mensaje2 = "font-family: Arial; line-height: 10pt; display: none; border-color:black; background: white; color: Red;"; ?>
+            <span id="mensaje_no_enviado" class="btn btn-default btn-block" style="<?php echo $estilo_mensaje2; ?>"><b style="font-family: Arial; font-size: 18pt;" ><img src="<?php echo base_url("resources/images/noenviado.gif"); ?>" width="100px" height="100px"> FACTURA NO ENVIADA</b><br><span id="mensaje_error" style="font-family: Arial; font-size: 9px;">Numero de identificacion tributaria invalido</span></span>
+            <br>
+            
+        </div>
         <div class="col-md-12" style="padding:0;">
 
             <center>
@@ -1189,7 +1206,7 @@ window.onkeydown = compruebaTecla;
                 
             <div class="row" id='creditooculto'  style='display:none;'>
                 <div class="col-md-12">
-                    <input type="checkbox" checked="true" value="1" id="modificar_credito" hidden="true"> Modificar credito
+                    <input type="checkbox" checked="true" value="1" id="modificar_credito" > Modificar credito
                 </div>
                 
                 <div class="col-md-12">
