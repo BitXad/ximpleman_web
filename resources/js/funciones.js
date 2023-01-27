@@ -106,36 +106,7 @@ function validar(e,opcion) {
         }
         
         if (opcion==1){   //si la pulsacion proviene del nit  
-            /*
-            document.getElementById('codigoexcepcion').checked = false;
-            let tipo_sistema = document.getElementById('parametro_tiposistema').value;
 
-                 //verificarnit();
-                nit = document.getElementById('nit').value;            
-                        
-            if (nit != 0){
-                
-                if (nit==''){
-                    
-                    var cod = generar_codigo();
-                    $("#nit").val(cod);
-                    $("#razon_social").focus();
-                    $("#razon_social").select();
-                    $("#zona_id").val(0);                    
-
-                }else{      
-                    
-                    buscarcliente();
-                 
-                }
-                
-            }else{
-                alert("ADVERTENCIA: El NIT No puede ser 0 en esta modalidad...!");
-            }
-            */
-           
-           //primero buscar en la base de datos
-//                $("#razon_social").style =" background-color: green";
                 
                 if (nit==''){
                     
@@ -153,10 +124,8 @@ function validar(e,opcion) {
                     
                     document.getElementById('codigoexcepcion').checked = false;
                     buscarcliente();
-
                 }
-                 
-            
+                
         }
 
         if (opcion==2){
@@ -276,7 +245,8 @@ function seleccionar(opcion) {
 function buscarcliente(){
 
     var base_url = document.getElementById('base_url').value;
-    var nit = document.getElementById('nit').value;    
+    var nit = document.getElementById('nit').value;
+    var parametro_factura = document.getElementById('parametro_factura').value;
     
     if (nit==''){ //Si el campo Nit esta vacio, genera NIT/Codigo automaticamente
         var cod = generar_codigo();
@@ -397,9 +367,13 @@ function buscarcliente(){
                                 
                                 let tipo_doc_identidad = base_url = document.getElementById('tipo_doc_identidad').value;
                                 
-                                if(tipo_doc_identidad == 5){
-                                    
-                                    verificarnit();
+                                    if(tipo_doc_identidad == 5){
+
+                                        if (parametro_factura != 3){ // (NO ES) 3 Sin Factura
+                                                verificarnit();
+                                    }else{
+                                            document.getElementById('loader_documento').style.display = 'none';
+                                    }
                                     
                                 }else{
                                     document.getElementById('loader_documento').style.display = 'none';
@@ -5752,41 +5726,47 @@ function cargar_codigovalidacion(codigo_recepcion,factura_id){
 
 function verificar_cufd(){
     
-    var base_url = document.getElementById('base_url').value;
-    var nit = document.getElementById('nit').value;
-    var punto_venta = document.getElementById('punto_venta').value;
-    var controlador = base_url+'venta/verificar_cufd';    
-    let resultado = "";
-    
-    //alert(punto_venta+" *** "+nit);
-    
-    $.ajax({url:controlador,
-            type:"POST",
-            data:{nit:nit},
-            async: false,
-            success:function(respuesta){
-                let registros = JSON.parse(respuesta);
-                //alert(registros);
-                resultado = registros;
-                if(!registros){
+    var parametro_factura = document.getElementById('parametro_factura').value;
+        
+    if (parametro_factura!=3){
+        
+        var base_url = document.getElementById('base_url').value;
+        var nit = document.getElementById('nit').value;
+        var punto_venta = document.getElementById('punto_venta').value;
+        var controlador = base_url+'venta/verificar_cufd';    
+        let resultado = "";
 
-                    var mensaje;
-                    var opcion = confirm("No existe un CUFD VIGENTE. \r\n ¿Desea registrar un nuevo CUFD?");
-                    
-                    if (opcion == true) {
-                        //alert("solicitanto cufd...!!"+punto_venta);
-                        solicitudCufd(punto_venta);
-                       // window.location.href = base_url+"punto_venta";
-                    }
-                }                
-            },
-            error:function(respuesta){
-                resultado = false;
-                //alert("Algo salio mal; por favor verificar sus datos!.");
-            }  
-    });
+        //alert(punto_venta+" *** "+nit);
+
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{nit:nit},
+                async: false,
+                success:function(respuesta){
+                    let registros = JSON.parse(respuesta);
+                    //alert(registros);
+                    resultado = registros;
+                    if(!registros){
+
+                        var mensaje;
+                        var opcion = confirm("No existe un CUFD VIGENTE. \r\n ¿Desea registrar un nuevo CUFD?");
+
+                        if (opcion == true) {
+                            //alert("solicitanto cufd...!!"+punto_venta);
+                            solicitudCufd(punto_venta);
+                           // window.location.href = base_url+"punto_venta";
+                        }
+                    }                
+                },
+                error:function(respuesta){
+                    resultado = false;
+                    //alert("Algo salio mal; por favor verificar sus datos!.");
+                }  
+        });
 
     
+    }
+        
 }
 
 function modal_enviocorreo(venta_id, factura_id, cliente_email){

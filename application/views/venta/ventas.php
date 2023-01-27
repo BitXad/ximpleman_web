@@ -373,7 +373,6 @@ window.onkeydown = compruebaTecla;
             <label for="nit" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">NUMERO DE DOCUMENTO</label>
             <div class="input-group"  <?php echo $estilo_div; ?>>
                 <input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?> />
-                <!--<div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="buscarcliente()" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>-->
                 <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
             
             </div>
@@ -382,11 +381,11 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-3"  <?php echo $estilo_div; ?> >
             
             <label for="razon social" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">RAZON SOCIAL</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
+            <div class="input-group" <?php echo $estilo_div; ?>>
                 
-                <!--<input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>-->
                 <input type="search" name="razon_social" list="listaclientes" class="form-control <?php echo $atributos; ?>" <?php //echo $estilos_facturacion; ?> " style="color: black; background: gray; text-align: left; font-size: 18px; font-family: Arial;" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" readonly />
                 <datalist id="listaclientes"></datalist>
+                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,9)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
                 
             </div>
             
@@ -420,13 +419,13 @@ window.onkeydown = compruebaTecla;
         <h4 class="panel-title">
             <?php
             if(sizeof($dosificacion)>0){
-                if($parametro['parametro_factura'] == 1){
+                if($parametro['parametro_factura'] == 1){ // todo facturado
                     $eschecked = "checked disabled";
-                }elseif($parametro['parametro_factura'] == 2){
+                }elseif($parametro['parametro_factura'] == 2){ // factura opcional tipo 1
                     $eschecked = "";
-                }elseif($parametro['parametro_factura'] == 3){
+                }elseif($parametro['parametro_factura'] == 3){ // sin factura
                     $eschecked = "hidden";
-                }elseif($parametro['parametro_factura'] == 4){
+                }elseif($parametro['parametro_factura'] == 4){ // factura opcional tipo 2
                     $eschecked = "checked";
                 }
             ?>
@@ -645,6 +644,7 @@ window.onkeydown = compruebaTecla;
                         <i class="fa fa-barcode"></i>
                       </span>           
                       <input type="text" name="codigo" id="codigo" class="form-control" placeholder="Código, serie" onkeyup="validar(event,3)" autocomplete="off">
+                      <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,3)" title="Buscar"><span class="fa fa-search" aria-hidden="true"></span></div>
                   </div>
             </div>      
            <!--------------------- fin buscador por codigo --------------------->
@@ -780,6 +780,8 @@ window.onkeydown = compruebaTecla;
                     <th <?php echo $estilo_tabla; ?>>DESCRIPCION</th>
                     <th <?php echo $estilo_tabla; ?>>CODIGO</th>
                     <th <?php echo $estilo_tabla; ?>>PRECIO</th>
+                    <th <?php echo $estilo_tabla; ?>>UNID.</th>
+                    <th <?php echo $estilo_tabla; ?>>COD.</th>
                     <th <?php echo $estilo_tabla; ?>>ESTADO</th>                    
                 </tr>
                 <?php $i = 0;
@@ -787,9 +789,26 @@ window.onkeydown = compruebaTecla;
                     foreach($productos_homologados as $ph){ ?>
                     <tr <?php echo $estilo_tabla; ?>>                    
                         <td <?php echo $estilo_tabla; ?>><?php echo ++$i; ?></td>
-                        <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_nombre"]; ?></td>
+                        <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_nombre"]."<sub>[".$ph["producto_id"]."]</sub>"; ?></td>
                         <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_codigo"]; ?></td>
                         <td style="padding:0; text-align: right;"><?php echo number_format($ph["producto_precio"],2,",","."); ?></td>
+                        <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigounidadsin"]; ?>
+                            
+                            <?php if(! $ph["producto_codigounidadsin"]>0){ ?>
+                            <span class="btn btn-xs btn-danger" title="La unidad/codigo unidad, no fueron correctamente asignados..!!" ><fa class="fa fa-chain-broken"></fa></span>
+                            <?php } ?>
+                                
+                           </center>
+                        </td>
+                        
+                        <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigosin"]; ?>
+                            
+                            <?php if(! $ph["producto_codigosin"]>0){ ?>
+                            <span class="btn btn-xs btn-danger" title="El codigo Producto SIN, no fue correctamente asignado..!!"><fa class="fa fa-chain-broken"></fa></span>
+                            <?php } ?>
+                           </center>
+                        </td>
+                        
                         <td <?php echo $estilo_tabla; ?>>
                             <center>
                                 <a href="<?php echo base_url("producto/edit/".$ph["producto_id"]); ?>" class="btn btn-info btn-xs" target="_BLANK"><fa class="fa fa-pen"> </fa> Modificar</a>                            
@@ -1093,7 +1112,15 @@ window.onkeydown = compruebaTecla;
                     <b>PUNTO DE VENTA:</b> <?php echo $puntoventa_codigo; ?>
                     <br><b>MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?>
                     <br><b>DOC:</b> <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?>
-                    <br><b>CUFD VIGENCIA:</b> <?php if (isset($cufd[0])){echo $cufd[0]["cufd_fechavigencia"];}else{ echo " NO EXISTE CUFD";} ?>
+                    <br><b>CUFD VIGENCIA:</b> <?php 
+                    
+                        if (isset($cufd[0])){
+                        
+                            $fecha = new DateTime($cufd[0]["cufd_fechavigencia"]); 
+                            $fecha_d_m_a = $fecha->format('d/m/Y H:i:s');                                        
+                            echo $fecha_d_m_a;
+                        
+                    }else{ echo " NO EXISTE CUFD";} ?>
                 <!--</button>-->
             
                 <?php } ?>
@@ -1905,7 +1932,7 @@ window.onkeydown = compruebaTecla;
 <!----------------- fin modal preferencias ---------------------------------------------->
 
 <!----------------- Inicio registrar precio de venta ---------------------------------------------->
-<div>
+<div hidden>
     
 <button type="button" id="boton_modal_actualizarprecio" class="btn btn-default" data-toggle="modal" data-target="#modal_actualizarprecio" >
   Launch demo modal
@@ -2394,7 +2421,7 @@ window.onkeydown = compruebaTecla;
 <!------------------------------------------------------------------------------->
 <!----------------------- EMISION DE PAQUETES ----------------------------------->
 <!------------------------------------------------------------------------------->
-<div>
+<div hidden>
     <button type="button" id="boton_modalpaquetes" class="btn btn-default" data-toggle="modal" data-target="#modalpaquetes" >
       ENVIO PAQUETES
     </button>
@@ -2453,7 +2480,7 @@ window.onkeydown = compruebaTecla;
 <!------------------------------------------------------------------------------->
 
 
-<div>
+<div hidden>
     <button type="button" id="boton_modalcantidad" class="btn btn-default" data-toggle="modal" data-target="#modalcantidad" >
       CANTIDAD PRODUCTOS
     </button>
