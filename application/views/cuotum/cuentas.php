@@ -33,7 +33,7 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="box-header">
     <center>
-        <h3 class="box-title" style="font-family: Arial"><b>PLAN DE PAGOS</b></h3>
+        <h3 class="box-title" style="font-family: Arial; font-size: 12pt;"><b>PLAN DE PAGOS</b></h3>
     </center>
 </div>
 

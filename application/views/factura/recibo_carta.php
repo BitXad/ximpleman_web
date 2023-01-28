@@ -94,25 +94,40 @@ border-bottom : 1px solid #aaa;
         <td style="width: 6cm; padding: 0; line-height: 9px;" >
                 
             <center>
-                    <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
-                    <small>
-                            <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                                    
-                    </small> 
+                    <?php if ($parametro[0]["parametro_mostrarlogo"] == 1){ ?>
+                
+                        <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="50"><br>
+                
+                    <?php } ?>
+                    
+                    <?php if ($parametro[0]["parametro_mostrarempresa"] == 1){ ?>
+                        
+                        <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                        
+                    <?php } ?>
+                        
+                        
+                    <?php if ($parametro[0]["parametro_mostrareslogan"] == 1){ ?>
+                        
+                        <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
+                        <small>
+                                <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                                    
+                        </small> 
+                        <?php } ?>
+                        
                     <?php } ?>
 
+                    <?php if ($parametro[0]["parametro_mostrardireccion"] == 1){ ?>
                     
+                        <font size="1" face="Arial narrow">
+                        <small>
+                            <?php echo $empresa[0]['empresa_direccion']; ?><br>
+                            <?php echo $empresa[0]['empresa_telefono']; ?><br>
+                            <?php echo $empresa[0]['empresa_ubicacion']; ?>
+                        </small>                                
+                        </font>                
 
-
-                    <font size="1" face="Arial narrow">
-                    <small>
-                        
-                        <?php echo $empresa[0]['empresa_direccion']; ?><br>
-                        <?php echo $empresa[0]['empresa_telefono']; ?><br>
-                        <?php echo $empresa[0]['empresa_ubicacion']; ?>
-                    </small>                                
-                    </font>                
-
+                    <?php } ?>
 
             </center>
             

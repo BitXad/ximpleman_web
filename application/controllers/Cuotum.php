@@ -7,6 +7,8 @@
 class Cuotum extends CI_Controller{
     private $session_data = "";
     private $sistema;
+    private $configuracion;
+    
     function __construct()
     {
         parent::__construct();
@@ -30,6 +32,9 @@ class Cuotum extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        
+        $this->configuracion = $this->Parametro_model->get_parametros();
+        
         $this->load->model('Sistema_model');
 	$this->sistema = $this->Sistema_model->get_sistema();
     }
@@ -54,6 +59,7 @@ class Cuotum extends CI_Controller{
             $data['page_title'] = "Cuota";
             $usuario_id = $this->session_data['usuario_id'];
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['parametro'] = $this->configuracion;
 
             $data['_view'] = 'cuotum/index';
             $this->load->view('layouts/main',$data);
@@ -154,9 +160,12 @@ class Cuotum extends CI_Controller{
     function planCuenta($credito_id)
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->configuracion;
+        
         if($this->acceso(48)){
             $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
             $parametros = $this->Parametro_model->get_parametros();

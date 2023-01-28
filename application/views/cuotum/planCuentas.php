@@ -72,19 +72,9 @@
 
 <div class="box-header">
     <div class="cuerpo">
-        <div class="columna_derecha">
-            <center> 
-            COD. CLIE.: <?php echo $cuota[0]['cliente_codigo']; ?><br>
-            <?php if ($cuota[0]['venta_id']>0) { ?>
-            VENTA: <?php echo $cuota[0]['venta_id']; ?><br> 
-            <?php } else { ?>
-            SERVICIO: <?php echo $cuota[0]['servicio_id']; ?><br> 
-            <?php } ?>
-            <!-- VENDEDOR: <?php //echo $cuota[0]['usuario_nombre']; ?>-->
-            </center>
-        </div>
-        <div class="columna_izquierda">
-            <center>
+
+        <div class="columna_izquierda" style="line-height: 10px;">
+<!--            <center>
                 <?php if($conimagen == 2){ ?>
                 <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
                 <?php } ?>
@@ -92,35 +82,107 @@
                 <?php echo $empresa[0]['empresa_zona']; ?><br>
                 <?php echo $empresa[0]['empresa_direccion']; ?><br>
                 <?php echo $empresa[0]['empresa_telefono']; ?>
+            </center>-->
+            
+            
+             <center>
+                    
+                    <?php if ($parametro[0]["parametro_mostrarlogo"] == 1){ ?>
+                
+                        <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="50"><br>
+                
+                    <?php } ?>
+                    
+                    <?php if ($parametro[0]["parametro_mostrarempresa"] == 1){ ?>
+                        
+                        <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                        
+                    <?php } ?>
+                        
+                        
+                    <?php if ($parametro[0]["parametro_mostrareslogan"] == 1){ ?>
+                        
+                        <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
+                        <small>
+                                <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                                    
+                        </small> 
+                        <?php } ?>
+                        
+                    <?php } ?>
+
+                    <?php if ($parametro[0]["parametro_mostrardireccion"] == 1){ ?>
+                    
+                        <font size="1" face="Arial narrow">
+                        <small>
+                            <?php echo $empresa[0]['empresa_direccion']; ?><br>
+                            <?php echo $empresa[0]['empresa_telefono']; ?><br>
+                            <?php echo $empresa[0]['empresa_ubicacion']; ?>
+                        </small>                                
+                        </font>                
+
+                    <?php } ?>
+
             </center>
+            
         </div>
+        
+        
         <div class="columna_central">
-            <center>
-                <h3 class="box-title"><u>PLAN DE PAGOS</u></h3><br>
-                CREDITO No.: 00<?php echo $cuota[0]['credito_id']; ?> <br>
+
+            <center style="line-height: 11px;">
+                <br>
+                <br>
+            
+                <font size="3"><b>PLAN DE PAGOS</b></font> <br>
+                <font size="2"><b>CREDITO No.: 00<?php echo $cuota[0]['credito_id']; ?> </b></font> <br>
+                <font size="1">Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?><br>
+                    <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
+                    T.C. <?php echo $moneda['moneda_tc']; ?></font> <br>
+                    <?php } ?>
                 <?php echo date('d/m/Y H:i:s'); ?> 
             </center>
         </div>
-    </div>
-    <hr style="border-color: black; margin: 3px; ">
-    <div class="cuerpo" >
+        
+
         <div class="columna_derecha">
-            TOTAL: <b><?php echo  number_format(isset($cuota[0]['venta_total']) ? $cuota[0]['venta_total']: $cuota[0]['servicio_total'], 2, ".", ",") ?></b><br>
-            CUOTA INICIAL: <b><?php echo  number_format($cuota[0]['credito_cuotainicial'], 2, ".", ",") ?></b><br>
-            INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?></b>
+            <center> 
+                <b>COD. CLIE.:</b> <?php echo $cuota[0]['cliente_codigo']; ?><br>
+            <?php if ($cuota[0]['venta_id']>0) { ?>
+            <b>VENTA:</b> <?php echo $cuota[0]['venta_id']; ?><br> 
+            <?php } else { ?>
+            <b>SERVICIO:</b> <?php echo $cuota[0]['servicio_id']; ?><br> 
+            <?php } ?>
+            <!-- VENDEDOR: <?php //echo $cuota[0]['usuario_nombre']; ?>-->
+            </center>
         </div>
+        
+
+    </div>
+    
+    <hr style="border-color: black; margin: 3px; ">
+    
+    <div class="cuerpo">
         <div class="columna_izquierda">
+            <b>TOTAL: </b><?php echo  number_format(isset($cuota[0]['venta_total']) ? $cuota[0]['venta_total']: $cuota[0]['servicio_total'], 2, ".", ",") ?><br>
+            <b>CUOTA INICIAL: </b><?php echo  number_format($cuota[0]['credito_cuotainicial'], 2, ".", ",") ?><br>
+            <b>INT.: </b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?><b> SALDO CRED.:</b><?php echo number_format($cuota[0]['cuota_saldo']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?>
+        </div>
+        
+        <div class="columna_derecha">
            FECHA: <b><?php $fecha_format = date('d/m/Y', strtotime($cuota[0]['credito_fecha'])); echo $fecha_format; ?>   <?php echo $cuota[0]['credito_hora']; ?></b><br>
            CLIENTE: <b><?php echo $cuota[0]['cliente_nombre']; ?></b>
         </div>
+        
         <div class="columna_central">
             <input type="checkbox" class="no-print" onclick="mostrarnomostrar()" name="okimprimir" id="okimprimir" checked title="Imprimir detalle" />
             <div style="display: block" id="eldetalle">
             <?php  echo $eldetalle; ?>
             </div>
         </div>
+        
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="box">
