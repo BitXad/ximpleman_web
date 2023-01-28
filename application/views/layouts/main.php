@@ -12,7 +12,7 @@
     <?php
         $session_data = $this->session->userdata('logged_in');
         $rolusuario = $session_data['rol'];
-        $nombre_sistema = "Ximpleman"; 
+        $nombre_sistema = $sistema["sistema_nombre"];
     ?>
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
