@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaElectronicaAlquilerBienInmueble xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaAlquilerBienInmueble.xsd">
+      <cabecera>
+          <nitEmisor>5152377019</nitEmisor>
+          <razonSocialEmisor>ROBERTO CARLOS SOTO SIERRA</razonSocialEmisor>
+          <municipio>CERCADO - COCHABAMBA</municipio>
+          <telefono>4511518 *(591)79999097</telefono>
+          <numeroFactura>4784</numeroFactura>
+          <cuf>1608A399D64B8713915E4AEC1916A3EBBFC44E6CE086452A743813FD74</cuf>
+          <cufd>BQXxCKlhQRkE=NzkVDM0MyNjFEMjc=QjlENzJKY0JYVUFI1RDZERTMzNjVFM</cufd>
+          <codigoSucursal>0</codigoSucursal>
+          <direccion>URUGUAY N? 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <fechaEmision>2023-01-27T12:46:14.224</fechaEmision>
+          <nombreRazonSocial>CARDOZO PERALES OSCAR MANUEL</nombreRazonSocial>
+          <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>523548019</numeroDocumento>
+          <complemento/>
+          <codigoCliente>CA82109</codigoCliente>
+          <periodoFacturado>DE ENERO 2022 A FEBRERO 2022</periodoFacturado>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta>0</numeroTarjeta>
+          <montoTotal>8070.390</montoTotal>
+          <montoTotalSujetoIva>8070.39</montoTotalSujetoIva>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1.000</tipoCambio>
+          <montoTotalMoneda>8070.390</montoTotalMoneda>
+          <descuentoAdicional>0.000</descuentoAdicional>
+          <codigoExcepcion>0</codigoExcepcion>
+          <cafc xsi:nil="true"/>
+          <leyenda>Ley N° 453: Está prohibido importar, distribuir o comercializar productos expirados o prontos a expirar.</leyenda>
+          <usuario>Administrador</usuario>
+          <codigoDocumentoSector>2</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220802172042</codigoProducto>
+           <descripcion>HUB/SWICH TP-LINK 8-PUERTOS &amp; 10/100 MBPS TL-SF1008D</descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>135.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>270.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>152502326</codigoProducto>
+           <descripcion>WIRELESS PCI-XPRESS 150MBPS TP-LINK TL-WN781ND</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>100.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>100.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>VT128M2N02663 VC08</codigoProducto>
+           <descripcion>DISCO SOLIDO M2 NVME VALUETECH 128GB</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>220.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>220.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>VT256M2N03621VC20</codigoProducto>
+           <descripcion>DISCO SOLIDO M2 NVME VALUETECH 256GB</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>350.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>350.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>VT512M2N01365</codigoProducto>
+           <descripcion>DISCO SOLIDO M2 NVME VALUETECH 512GB</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>475.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>475.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>vt128ss065421vc12</codigoProducto>
+           <descripcion>DISCO SOLIDO VALUETECH 128GB</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>190.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>190.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>sn?vt256ss107780vc10</codigoProducto>
+           <descripcion>DISCO SOLIDO VALUETECH 256GB</descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>350.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>700.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>1.0.01.01.10508?0005</codigoProducto>
+           <descripcion>	DVR DAHUA 8 CANALES DHI-IHCVR5108HE-F</descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>300.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>600.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>6939554953514</codigoProducto>
+           <descripcion>DVR DAHUA 4 CANALES DH-XVR1A04</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>325.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>325.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220403184051</codigoProducto>
+           <descripcion>CAMARA BALA VICOM VIR-118BL-CVI</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>76.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>76.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>6939554968549</codigoProducto>
+           <descripcion>CAMARA DE VIGILANCIA DOMO DAHUA DH-HAC-T1A11N</descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>85.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>170.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220406191832</codigoProducto>
+           <descripcion>ROLLO DE CABLE UTP DAHUA 100% COBRE CAT5E 305 METROS</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>790.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>790.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220503182116</codigoProducto>
+           <descripcion>BALUM DAHUA DH-PFM800-E</descripcion>
+           <cantidad>7.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>16.91</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>118.39</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220403164616</codigoProducto>
+           <descripcion>CABLE DE RED DIMAX CAT6 305 METROS</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>390.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>390.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220405130213</codigoProducto>
+           <descripcion>CABLE USB PARA IMPRESORA 1.5M</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>20.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>20.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220405130246</codigoProducto>
+           <descripcion>CABLE USB PARA IMPRESORA 3M</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>35.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>35.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220405155318</codigoProducto>
+           <descripcion>CABLE VGA LELONG LE-12-3M</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>45.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>45.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220502160106</codigoProducto>
+           <descripcion>CABLE HDMI LELONG 1.8MT LE-6613-1.8M</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>35.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>35.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220502153732</codigoProducto>
+           <descripcion>CABLE DE RED UTP CAT5 EXTERIOR STV</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>360.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>360.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220502160225</codigoProducto>
+           <descripcion>CABLE ALARGADOR DE AUDIO LELONG 1.5M LE-3095</descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>15.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>30.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220502161342</codigoProducto>
+           <descripcion>CABLE USB 3.0 PARA IMPRESORA 1.5M</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>30.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>30.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220502162209</codigoProducto>
+           <descripcion>CABLE DE AUDIO LELONG 1.5MT LE-804</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>20.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>20.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220502163031</codigoProducto>
+           <descripcion>CABLE DE ENERGIA PARA PC</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>20.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>20.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220503185158</codigoProducto>
+           <descripcion>CABLE USB PARA CELULAR TIPO V8</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>15.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>15.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220503185325</codigoProducto>
+           <descripcion>CABLE CONECTOR PLUG DC PARA CAMARAS VIGILACIA</descripcion>
+           <cantidad>3.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>7.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>21.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>22080116022</codigoProducto>
+           <descripcion>PENDRIVE 64GB HP X796W</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>95.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>95.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>73359200001</codigoProducto>
+           <descripcion>MINI IMPRESORA TERMICA INALAMBRICA ZKTECO ZKP5808</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>1300.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>1300.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>173681070009</codigoProducto>
+           <descripcion>IMPRESORA TERMICA ZKP5801</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>1100.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>1100.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220801155349</codigoProducto>
+           <descripcion>CABLE DE ENERGIA PARA IMPRESORA</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>20.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>20.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220805170701</codigoProducto>
+           <descripcion>TINTA ORIGINAL CANON 190 BLACK</descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>75.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>150.00</subTotal>
+      </detalle>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+  <Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>v/gX433G31CtWX2h9XLzUijTPSDjvZ57j1C7QizXrWY=</DigestValue></Reference></SignedInfo><SignatureValue>OBKlZgu6OZEMmX+asGGMOAKTrge9kRKPSPG9Lix1V1Xz/kj0ix5CwvZp7r8+yWdW0WmmF0IHK6eXd6MjkALCHGVMNFFCcPFwhHrePNS8tjwvpu4hn8nGc40N7AAcsQjPshu9gVCGhhM3s4tV0uSwafxtJj5l1itgoXS3X5ZWy2XjdeTAtHYOYZn9+fzswEKmxX8MzXfoIn+vjnDX7wotcbRRvMp6ryPQYDzXXnlj4Z5gx2EYygIsQkhDVNQBTRKmR7f2QIk1fIetTJ6utPxd7UcSIs0B25Sn5l3qWpRaVSna/aOB7HgAtAlUGp/otUbliVBOx0cGTh7NhLd1kpVnIQ==</SignatureValue>
+<KeyInfo><X509Data><X509Certificate>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</X509Certificate></X509Data></KeyInfo></Signature></facturaElectronicaAlquilerBienInmueble>
