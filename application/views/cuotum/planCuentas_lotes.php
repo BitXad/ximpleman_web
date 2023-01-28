@@ -43,19 +43,58 @@
             </center>
         </div>
         <div class="columna_izquierda">
-            <center>
-                <?php if($conimagen == 2){ ?>
+            <!--<center>
+                <?php /*if($conimagen == 2){ ?>
                 <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
                 <?php } ?>
                 <font size="3"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
                 <?php echo $empresa[0]['empresa_zona']; ?><br>
                 <?php echo $empresa[0]['empresa_direccion']; ?><br>
-                <?php echo $empresa[0]['empresa_telefono']; ?>
+                <?php echo $empresa[0]['empresa_telefono']; */ ?>
+            </center>-->
+            <center>
+                    
+                    <?php if ($parametro[0]["parametro_mostrarlogo"] == 1){ ?>
+                
+                        <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="50"><br>
+                
+                    <?php } ?>
+                    
+                    <?php if ($parametro[0]["parametro_mostrarempresa"] == 1){ ?>
+                        
+                        <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                        
+                    <?php } ?>
+                        
+                        
+                    <?php if ($parametro[0]["parametro_mostrareslogan"] == 1){ ?>
+                        
+                        <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
+                        <small>
+                                <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                                    
+                        </small> 
+                        <?php } ?>
+                        
+                    <?php } ?>
+
+                    <?php if ($parametro[0]["parametro_mostrardireccion"] == 1){ ?>
+                    
+                        <font size="1" face="Arial narrow">
+                        <small>
+                            <?php echo $empresa[0]['empresa_direccion']; ?><br>
+                            <?php echo $empresa[0]['empresa_telefono']; ?><br>
+                            <?php echo $empresa[0]['empresa_ubicacion']; ?>
+                        </small>                                
+                        </font>                
+
+                    <?php } ?>
+
             </center>
         </div>
         <div class="columna_central">
             <center>
-                <h3 class="box-title"><u>PLAN DE PAGOS</u></h3><br>
+                <font size="3" face="arial"><b><u>PLAN DE PAGOS</u></b></font>
+                <br>
                 CREDITO No.: 00<?php echo $cuota[0]['credito_id']; ?> <br>
                 <?php echo date('d/m/Y H:i:s'); ?> 
             </center>

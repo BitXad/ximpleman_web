@@ -78,14 +78,8 @@ $db['default'] = array(
 	'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
-<<<<<<< Updated upstream
-        'database' => 'ximpleman_passwordsin3_pruebas',
-
-=======
-
         //'database' => 'nazareno',
         'database' => 'ximpleman_passwordsin',
->>>>>>> Stashed changes
 //        'database' => 'ximpleman_passwordsin2',
 
 //	'hostname' => '72.52.185.41',
