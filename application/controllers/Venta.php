@@ -1997,57 +1997,55 @@ function edit($venta_id){
     function modificar_detalle()
     {
         if($this->acceso(12)){
-            //**************** inicio contenido ***************      
-            
-        $usuario_id = $this->session_data['usuario_id'];
-        $data['sistema'] = $this->sistema;
-        $venta_id = $this->input->post('venta_id');
-        $cliente_id = $this->input->post('cliente_id');
-        $forma_id = $this->input->post('forma_pago');
-        $tipotrans_id = $this->input->post('tipo_transaccion');
-        $elusuario_id = $this->input->post('usuario_id');
-        $venta_fecha = $this->input->post('venta_fecha');
-        $venta_subtotal = $this->input->post('venta_subtotal');
-        $venta_descuento = $this->input->post('venta_descuento');
-        //$venta_descuentoparcial = $this->input->post('venta_descuentoparcial'); // descuento de la venta
-        $venta_total = $this->input->post('venta_total');
-        //$venta_total = $venta_total - $venta_descuento;
-        $venta_efectivo = $this->input->post('venta_efectivo');
-        $venta_cambio = $this->input->post('venta_cambio');
-        
-        $modificar_credito = $this->input->post('modificar_credito');
-        $credito_id = $this->input->post('credito_id');
-        $cuotas = $this->input->post('cuotas');
-        $cuota_inicial = $this->input->post('cuota_inicial');
-        $credito_interes = $this->input->post('credito_interes');
-        $modalidad = $this->input->post('modalidad');
-        $dia_pago = $this->input->post('dia_pago');
-        $fecha_inicio = $this->input->post('fecha_inicio');
-        $metodo_frances = $this->input->post('metodo_frances');
-        $banco_id = $this->input->post('banco_id');
-        $venta_giftcard = $this->input->post('venta_giftcard');
-        $venta_ice = $this->input->post('venta_ice');
-        $venta_detalletransaccion = $this->input->post('venta_detalletransaccion');
-        $venta_glosa = $this->input->post('venta_glosa');
-        
-        $porcentaje = 0;
-        
-        $sql = "update detalle_venta_aux set
-                detalleven_descuento = ((detalleven_total - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad
-                where usuario_id = ".$usuario_id;                
-        $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
-        
-        
-        $sql = "delete from detalle_venta where venta_id = ".$venta_id;
-        $this->Venta_model->ejecutar($sql);
-        
-        if (($venta_total+$venta_descuento)>0)
-            $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
-        else
+            //**************** inicio contenido ***************
+            $usuario_id = $this->session_data['usuario_id'];
+            $data['sistema'] = $this->sistema;
+            $venta_id = $this->input->post('venta_id');
+            $cliente_id = $this->input->post('cliente_id');
+            $forma_id = $this->input->post('forma_pago');
+            $tipotrans_id = $this->input->post('tipo_transaccion');
+            $elusuario_id = $this->input->post('usuario_id');
+            $venta_fecha = $this->input->post('venta_fecha');
+            $venta_subtotal = $this->input->post('venta_subtotal');
+            $venta_descuento = $this->input->post('venta_descuento');
+            //$venta_descuentoparcial = $this->input->post('venta_descuentoparcial'); // descuento de la venta
+            $venta_total = $this->input->post('venta_total');
+            //$venta_total = $venta_total - $venta_descuento;
+            $venta_efectivo = $this->input->post('venta_efectivo');
+            $venta_cambio = $this->input->post('venta_cambio');
+
+            $modificar_credito = $this->input->post('modificar_credito');
+            $credito_id = $this->input->post('credito_id');
+            $cuotas = $this->input->post('cuotas');
+            $cuota_inicial = $this->input->post('cuota_inicial');
+            $credito_interes = $this->input->post('credito_interes');
+            $modalidad = $this->input->post('modalidad');
+            $dia_pago = $this->input->post('dia_pago');
+            $fecha_inicio = $this->input->post('fecha_inicio');
+            $metodo_frances = $this->input->post('metodo_frances');
+            $banco_id = $this->input->post('banco_id');
+            $venta_giftcard = $this->input->post('venta_giftcard');
+            $venta_ice = $this->input->post('venta_ice');
+            $venta_detalletransaccion = $this->input->post('venta_detalletransaccion');
+            $venta_glosa = $this->input->post('venta_glosa');
+
             $porcentaje = 0;
+
+            $sql = "update detalle_venta_aux set
+                    detalleven_descuento = ((detalleven_total - (detalleven_descuentoparcial * detalleven_cantidad))/".$venta_subtotal." * ".$venta_descuento.")/detalleven_cantidad
+                    where usuario_id = ".$usuario_id;                
+            $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+
+            $sql = "delete from detalle_venta where venta_id = ".$venta_id;
+            $this->Venta_model->ejecutar($sql);
+
+            if(($venta_total+$venta_descuento)>0)
+                $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
+            else
+                $porcentaje = 0;
          
             
-                $sql =  "insert into detalle_venta
+            $sql =  "insert into detalle_venta
                 (producto_id,
                   venta_id,
                   moneda_id,
@@ -2124,60 +2122,203 @@ function edit($venta_id){
                   detalle_venta_aux
                 WHERE 
                   usuario_id=".$usuario_id.")";
-        echo $sql;
-        $this->Venta_model->ejecutar($sql);        
+            //echo $sql;
+            $this->Venta_model->ejecutar($sql);
         
-        
-        $sql = "update venta set ".
-                "cliente_id = ".$cliente_id.
-                ",venta_fecha = '".$venta_fecha."'".
-                ",venta_subtotal = ".$venta_subtotal.
-                //",venta_descuentoparcial = ".$venta_descuentoparcial.
-                ",venta_descuento = ".$venta_descuento.
-                ",venta_total = ".($venta_total).
-                ",venta_efectivo = ".$venta_efectivo.
-                ",venta_glosa = ".$venta_glosa.
-                ",venta_cambio = ".$venta_cambio.
-                ",tipotrans_id = ".$tipotrans_id.                
-                ",forma_id = ".$forma_id.              
-                ",banco_id = '".$banco_id."'".
-                " where venta_id = ".$venta_id;
-        echo $sql;
-        $this->Venta_model->ejecutar($sql);        
+            $sql = "update venta set ".
+                    "cliente_id = ".$cliente_id.
+                    ",venta_fecha = '".$venta_fecha."'".
+                    ",venta_subtotal = ".$venta_subtotal.
+                    //",venta_descuentoparcial = ".$venta_descuentoparcial.
+                    ",venta_descuento = ".$venta_descuento.
+                    ",venta_total = ".($venta_total).
+                    ",venta_efectivo = ".$venta_efectivo.
+                    ",venta_glosa = ".$venta_glosa.
+                    ",venta_cambio = ".$venta_cambio.
+                    ",tipotrans_id = ".$tipotrans_id.                
+                    ",forma_id = ".$forma_id.              
+                    ",banco_id = '".$banco_id."'".
+                    " where venta_id = ".$venta_id;
+            //echo $sql;
+            $this->Venta_model->ejecutar($sql);        
 
-        
-        //**************** bitacora caja ********************
-        
-        $bitacoracaja_fecha = "date(now())";
-        $bitacoracaja_hora = "time(now())";
-        $bitacoracaja_evento = "(select concat('FINALIZAR MODIFICACION EN VENTA Nº: 00','".$venta_id."','| CLIENTE ID: ','".$cliente_id."', '| CANT: ',count(*),'| NUEVO TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
-        //$usuario_id = esta mas arriba;
-        $bitacoracaja_montoreg = 0;
-        $bitacoracaja_montocaja = 0;
-        $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
-        
-        
-        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
-                $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
-                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
-        $this->Venta_model->ejecutar($sql);
-        
-        //****************** fin bitacora caja *************** 
-        
-        
-        
-        $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
-        $this->Venta_model->ejecutar($sql);                
-        
-        if($tipotrans_id==2){ //si el tipo de transaccion es credito
+            //**************** bitacora caja ********************
 
-            if($credito_id>=0){ //si la transaccion era a credito verificar si se desea modificar los datos del credito
-                if($modificar_credito==1){ //verificamos si se da la orden de modificar los valores del credito
+            $bitacoracaja_fecha = "date(now())";
+            $bitacoracaja_hora = "time(now())";
+            $bitacoracaja_evento = "(select concat('FINALIZAR MODIFICACION EN VENTA Nº: 00','".$venta_id."','| CLIENTE ID: ','".$cliente_id."', '| CANT: ',count(*),'| NUEVO TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
+            //$usuario_id = esta mas arriba;
+            $bitacoracaja_montoreg = 0;
+            $bitacoracaja_montocaja = 0;
+            $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
+
+
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
+                    $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                    $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+            //echo $sql;
+            $this->Venta_model->ejecutar($sql);
+            //****************** fin bitacora caja *************** 
+
+            $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
+            $this->Venta_model->ejecutar($sql);                
+        
+            if($tipotrans_id==2){ //si el tipo de transaccion es credito
+
+                if($credito_id>0){ //si la venta a modificar es a credito!.
+                    //echo $modificar_credito."kKKK";
+                    if($modificar_credito == "true"){ //verificamos si se da la orden de modificar los valores del credito
+                        //eliminar los datos del credito
+                        $sql = "delete from cuota where credito_id=".$credito_id;
+                        $this->Venta_model->ejecutar($sql);
+
+                        //Generar credito
+                        $sql = "delete from credito where venta_id=".$venta_id;
+                        $this->Venta_model->ejecutar($sql);
+
+                        //Generar detalle del credito
+                        //$credito_id =  
+                        $estado_id =  8; //8 pendiente 9 cancelado
+                        $compra_id =  0;
+                        $venta_id =  $venta_id;
+                        $credito_monto =  $venta_total - $cuota_inicial;
+                        $credito_cuotainicial =  $cuota_inicial;
+                        $credito_interesproc =  $credito_interes;
+                        $credito_interesmonto =  $venta_total * $venta_interes; //revisar
+                        $credito_numpagos =  $cuotas;
+                        $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                        $credito_fecha = $venta_fecha;
+                        // $time = time();
+                        $credito_hora =  date("H:i:s");
+                        $credito_tipo = 1; // 1- ventas 2 - compras
+
+                        $cuotas       = $this->input->post('cuotas');
+                        $interes       = $this->input->post('interes');
+                        $modalidad    = $this->input->post('modalidad');
+                        $dia_pago     = $this->input->post('dia_pago');
+                        $fecha_inicio = $this->input->post('fecha_inicio');
+                        $numcuota = $cuotas; //numero de cuotas
+
+                        $intervalo = $modalidad == "MENSUAL" ? 'month': 'week'; 
+
+                            $cuota_numcuota = 1;
+
+                            $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$numcuota $intervalo"));
+
+                            $credito_fechalimite = $cuota_fechalimite;
+                        $metodo_frances = $this->input->post('metodo_frances');
+                        $metodo = "";
+                        if($metodo_frances == "true"){
+                            $metodo = "FRANCES";
+                        }
+                        $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo, credito_metodo) value(
+                                $estado_id,$compra_id,$venta_id,$credito_monto,$credito_cuotainicial,$credito_interesproc,$credito_interesmonto,$credito_numpagos,'$credito_fechalimite','$credito_fecha','$credito_hora',$credito_tipo, '$metodo')";
+                        echo $sql;
+                        $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+
+
+                        $estado_id =  8; //8 pendiente 9 cancelado
+                        $cuota_numcuota = 1;
+                        $cuota_capital = $venta_total - $cuota_inicial;
+                        $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
+                        $cuota_moradias = 0;
+                        $cuota_multa = 0;
+                        $cuota_subtotal =  $venta_total - $cuota_inicial;
+                        $cuota_descuento = 0;
+                        $cuota_total = $venta_total - $cuota_inicial+$cuota_interes;
+
+                        $cuota_cancelado = 0;
+                        $cuota_fecha = "'1900-01-01'";
+                        $cuota_hora = "'00:00'";
+                        $cuota_numercibo =  0;
+                        $cuota_saldo = $venta_total - $cuota_inicial;
+                        $cuota_glosa = "''";
+                        $cuota_saldocredito = $venta_total - $cuota_inicial;
+
+
+                        $dias_mora = 0;
+                        $multa = 0;
+                        $descuento = 0;
+                        $cancelado = 0;
+                        $credito_monto = $venta_total - $cuota_inicial;
+
+                        $patron = ($numcuota*0.5) + 0.5;
+                        $cuota_capital = ($credito_monto)/$numcuota;   // bien         
+                        $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
+                        $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
+                        $total = $cuota_subtotal - $descuento;
+                        $saldo_deudor = $credito_monto;
+
+                        $siguiente= 0;
+                        $cuota_fechalimite = $fecha_inicio;
+
+                       // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
+
+                        $cuota_fechalimite = $fecha_inicio;
+                        $cuota_fecha_i = $fecha_inicio;
+                        if($metodo_frances == "true"){
+                            $Co = $credito_monto;
+                            $i  = $credito_interes;
+                            $n  = $cuotas;
+                            $Ci = $Co;
+                            $Ii = 0;
+                            $Ai = 0;
+                            //$a = $Co*($i/(1-(1+$i) ** (-$n)));
+                            $a = $Co*($i/(1-(pow((1+$i),-$n))));
+                            for($k = 1; $k <= $cuotas; $k++){
+                                $cuota_numcuota = $k;
+
+                                $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$k $intervalo"));
+                                $cuota_fechalimite = $cuota_fechalimitex;
+
+                                $Ii = $Ci*$i;
+                                $Ai = $a-$Ii;
+                                $cuota_subtotal = $Ai + $Ii + $dias_mora + $multa;
+                                $total = $cuota_subtotal - $descuento;
+                                $params = array(
+                                    'credito_id' => $credito_id,
+                                    'usuario_id' => $usuario_id,
+                                    'estado_id' => $estado_id,
+                                    'cuota_numcuota' => $cuota_numcuota,
+                                    'cuota_capital' => $Ai,
+                                    'cuota_interes' => $Ii,
+                                    'cuota_moradias' => $dias_mora,
+                                    'cuota_multa' => $multa,
+                                    'cuota_subtotal' => $cuota_subtotal,
+                                    'cuota_descuento' => $descuento,
+                                    'cuota_total' => $total,
+                                    'cuota_fechalimite' => $cuota_fechalimite,
+                                    'cuota_cancelado' => $cancelado,
+                                    'cuota_saldo' => $Ci,
+                                );
+                                $this->load->model('Cuotum_model');
+                                $cuotum_id = $this->Cuotum_model->add_cuotum($params);
+                                $Ci = $Ci-$Ai;
+                            }
+                        }else{
+                            for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                                $cuota_numcuota = $i;
+                                $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$i $intervalo"));
+
+                                $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
+                                        $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
+                                        $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
+                                $this->Venta_model->ejecutar($cuota);
+
+            //                    $saldo_deudor = $cuota_total - $cuota_capital;
+            //                    $cuota_total = $saldo_deudor;
+                                $saldo_deudor = $saldo_deudor - $cuota_capital;
+                                //$cuota_total = $saldo_deudor;
+                            }
+                        }
+
+                    }
+                }else{ //si no tenia credito; y la modificación es a CREDITO, se genera un nuevo credito para esa venta!.
                     //eliminar los datos del credito
                     $sql = "delete from cuota where credito_id=".$credito_id;
                     $this->Venta_model->ejecutar($sql);
-                
+
                     //Generar credito
                     $sql = "delete from credito where venta_id=".$venta_id;
                     $this->Venta_model->ejecutar($sql);
@@ -2205,143 +2346,132 @@ function edit($venta_id){
                     $fecha_inicio = $this->input->post('fecha_inicio');
                     $numcuota = $cuotas; //numero de cuotas
 
-            $intervalo = $modalidad == "MENSUAL" ? 'month': 'week'; 
-            
-                $cuota_numcuota = 1;
+                    $intervalo = $modalidad == "MENSUAL" ? 'month': 'week'; 
 
-                $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$numcuota $intervalo"));
-                
-                $credito_fechalimite = $cuota_fechalimite;
-            $metodo_frances = $this->input->post('metodo_frances');
-            $metodo = "";
-            if($metodo_frances == "true"){
-                $metodo = "FRANCES";
-            }
-            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo, credito_metodo) value(
-                    $estado_id,$compra_id,$venta_id,$credito_monto,$credito_cuotainicial,$credito_interesproc,$credito_interesmonto,$credito_numpagos,'$credito_fechalimite','$credito_fecha','$credito_hora',$credito_tipo, '$metodo')";
-            echo $sql;
-            $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+                    $cuota_numcuota = 1;
 
-            
-            $estado_id =  8; //8 pendiente 9 cancelado
-            $cuota_numcuota = 1;
-            $cuota_capital = $venta_total - $cuota_inicial;
-            $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
-            $cuota_moradias = 0;
-            $cuota_multa = 0;
-            $cuota_subtotal =  $venta_total - $cuota_inicial;
-            $cuota_descuento = 0;
-            $cuota_total = $venta_total - $cuota_inicial+$cuota_interes;
-            
-            $cuota_cancelado = 0;
-            $cuota_fecha = "'1900-01-01'";
-            $cuota_hora = "'00:00'";
-            $cuota_numercibo =  0;
-            $cuota_saldo = $venta_total - $cuota_inicial;
-            $cuota_glosa = "''";
-            $cuota_saldocredito = $venta_total - $cuota_inicial;
-                 
-           
-            $dias_mora = 0;
-            $multa = 0;
-            $descuento = 0;
-            $cancelado = 0;
-            $credito_monto = $venta_total - $cuota_inicial;
-            
-            $patron = ($numcuota*0.5) + 0.5;
-            $cuota_capital = ($credito_monto)/$numcuota;   // bien         
-            $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
-            $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
-            $total = $cuota_subtotal - $descuento;
-            $saldo_deudor = $credito_monto;
-            
-            $siguiente= 0;
-            $cuota_fechalimite = $fecha_inicio;
-           
-           // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
-            
-            $cuota_fechalimite = $fecha_inicio;
-            $cuota_fecha_i = $fecha_inicio;
-            if($metodo_frances == "true"){
-                $Co = $credito_monto;
-                $i  = $credito_interes;
-                $n  = $cuotas;
-                $Ci = $Co;
-                $Ii = 0;
-                $Ai = 0;
-                //$a = $Co*($i/(1-(1+$i) ** (-$n)));
-                $a = $Co*($i/(1-(pow((1+$i),-$n))));
-                for($k = 1; $k <= $cuotas; $k++){
-                    $cuota_numcuota = $k;
-                    
-                    $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$k $intervalo"));
-                    $cuota_fechalimite = $cuota_fechalimitex;
-                    
-                    $Ii = $Ci*$i;
-                    $Ai = $a-$Ii;
-                    $cuota_subtotal = $Ai + $Ii + $dias_mora + $multa;
+                    $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$numcuota $intervalo"));
+
+                    $credito_fechalimite = $cuota_fechalimite;
+                    $metodo_frances = $this->input->post('metodo_frances');
+                    $metodo = "";
+                    if($metodo_frances == "true"){
+                        $metodo = "FRANCES";
+                    }
+                    $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo, credito_metodo) value(
+                            $estado_id,$compra_id,$venta_id,$credito_monto,$credito_cuotainicial,$credito_interesproc,$credito_interesmonto,$credito_numpagos,'$credito_fechalimite','$credito_fecha','$credito_hora',$credito_tipo, '$metodo')";
+                    echo $sql;
+                    $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+
+
+                    $estado_id =  8; //8 pendiente 9 cancelado
+                    $cuota_numcuota = 1;
+                    $cuota_capital = $venta_total - $cuota_inicial;
+                    $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
+                    $cuota_moradias = 0;
+                    $cuota_multa = 0;
+                    $cuota_subtotal =  $venta_total - $cuota_inicial;
+                    $cuota_descuento = 0;
+                    $cuota_total = $venta_total - $cuota_inicial+$cuota_interes;
+
+                    $cuota_cancelado = 0;
+                    $cuota_fecha = "'1900-01-01'";
+                    $cuota_hora = "'00:00'";
+                    $cuota_numercibo =  0;
+                    $cuota_saldo = $venta_total - $cuota_inicial;
+                    $cuota_glosa = "''";
+                    $cuota_saldocredito = $venta_total - $cuota_inicial;
+
+
+                    $dias_mora = 0;
+                    $multa = 0;
+                    $descuento = 0;
+                    $cancelado = 0;
+                    $credito_monto = $venta_total - $cuota_inicial;
+
+                    $patron = ($numcuota*0.5) + 0.5;
+                    $cuota_capital = ($credito_monto)/$numcuota;   // bien         
+                    $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
+                    $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
                     $total = $cuota_subtotal - $descuento;
-                    $params = array(
-                        'credito_id' => $credito_id,
-                        'usuario_id' => $usuario_id,
-                        'estado_id' => $estado_id,
-                        'cuota_numcuota' => $cuota_numcuota,
-                        'cuota_capital' => $Ai,
-                        'cuota_interes' => $Ii,
-                        'cuota_moradias' => $dias_mora,
-                        'cuota_multa' => $multa,
-                        'cuota_subtotal' => $cuota_subtotal,
-                        'cuota_descuento' => $descuento,
-                        'cuota_total' => $total,
-                        'cuota_fechalimite' => $cuota_fechalimite,
-                        'cuota_cancelado' => $cancelado,
-                        'cuota_saldo' => $Ci,
-                    );
-                    $this->load->model('Cuotum_model');
-                    $cuotum_id = $this->Cuotum_model->add_cuotum($params);
-                    $Ci = $Ci-$Ai;
+                    $saldo_deudor = $credito_monto;
+
+                    $siguiente= 0;
+                    $cuota_fechalimite = $fecha_inicio;
+
+                   // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
+
+                    $cuota_fechalimite = $fecha_inicio;
+                    $cuota_fecha_i = $fecha_inicio;
+                    if($metodo_frances == "true"){
+                        $Co = $credito_monto;
+                        $i  = $credito_interes;
+                        $n  = $cuotas;
+                        $Ci = $Co;
+                        $Ii = 0;
+                        $Ai = 0;
+                        //$a = $Co*($i/(1-(1+$i) ** (-$n)));
+                        $a = $Co*($i/(1-(pow((1+$i),-$n))));
+                        for($k = 1; $k <= $cuotas; $k++){
+                            $cuota_numcuota = $k;
+
+                            $cuota_fechalimitex = date('Y-m-d', strtotime("$cuota_fecha_i +$k $intervalo"));
+                            $cuota_fechalimite = $cuota_fechalimitex;
+
+                            $Ii = $Ci*$i;
+                            $Ai = $a-$Ii;
+                            $cuota_subtotal = $Ai + $Ii + $dias_mora + $multa;
+                            $total = $cuota_subtotal - $descuento;
+                            $params = array(
+                                'credito_id' => $credito_id,
+                                'usuario_id' => $usuario_id,
+                                'estado_id' => $estado_id,
+                                'cuota_numcuota' => $cuota_numcuota,
+                                'cuota_capital' => $Ai,
+                                'cuota_interes' => $Ii,
+                                'cuota_moradias' => $dias_mora,
+                                'cuota_multa' => $multa,
+                                'cuota_subtotal' => $cuota_subtotal,
+                                'cuota_descuento' => $descuento,
+                                'cuota_total' => $total,
+                                'cuota_fechalimite' => $cuota_fechalimite,
+                                'cuota_cancelado' => $cancelado,
+                                'cuota_saldo' => $Ci,
+                            );
+                            $this->load->model('Cuotum_model');
+                            $cuotum_id = $this->Cuotum_model->add_cuotum($params);
+                            $Ci = $Ci-$Ai;
+                        }
+                    }else{
+                        for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                            $cuota_numcuota = $i;
+                            $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$i $intervalo"));
+
+                            $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
+                                    $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
+                                    $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
+                            $this->Venta_model->ejecutar($cuota);
+
+        //                    $saldo_deudor = $cuota_total - $cuota_capital;
+        //                    $cuota_total = $saldo_deudor;
+                            $saldo_deudor = $saldo_deudor - $cuota_capital;
+                            //$cuota_total = $saldo_deudor;
+                        }
+                    }
                 }
+
             }else{
-                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
-                    $cuota_numcuota = $i;
-                    $cuota_fechalimite = date('Y-m-d', strtotime("$credito_fecha +$i $intervalo"));
+                if($credito_id>0){ //si la transaccion era a credito eliminar el credito
+                    $sql = "delete from cuota where credito_id=".$credito_id;
+                    $this->Venta_model->ejecutar($sql);
 
-                    $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
-                            $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
-                            $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
-                    $this->Venta_model->ejecutar($cuota);
-
-//                    $saldo_deudor = $cuota_total - $cuota_capital;
-//                    $cuota_total = $saldo_deudor;
-                    $saldo_deudor = $saldo_deudor - $cuota_capital;
-                    //$cuota_total = $saldo_deudor;
+                    $sql = "delete from credito where credito_id=".$credito_id;
+                    $this->Venta_model->ejecutar($sql);                
                 }
             }
-
-            }
-            }
-            else{
-                
-            }
             
-            
+            echo json_encode("");
         }
-        else{
-            if($credito_id>0){ //si la transaccion era a credito eliminar el credito
-                $sql = "delete from cuota where credito_id=".$credito_id;
-                $this->Venta_model->ejecutar($sql);
-                
-                $sql = "delete from credito where credito_id=".$credito_id;
-                $this->Venta_model->ejecutar($sql);                
-            }
-        }
-        
-        
-        //**************** inicio contenido ***************     
-                  
-        //**************** fin contenido ***************
-        }
-               
     }
     
     

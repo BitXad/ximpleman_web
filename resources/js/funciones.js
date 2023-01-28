@@ -4485,6 +4485,7 @@ function modificar_venta(cliente_id)
             success:function(respuesta){
                 //window.opener.location.reload();
                 window.close();
+                //eliminardetalleventa();
                 //alert("Cambios Guardados...!");
             },
             error: function(respuesta){
@@ -4746,7 +4747,7 @@ function focus_efectivo(){
     
     if (Number(porcdesc)>0){
         //alert("eee: "+porcdesc);
-        $("#tipo_descuento").val(2);        
+        $("#tipo_descuento").val(2);
         $("#venta_descuento").val(porcdesc);
         calculardesc();
     }
@@ -4755,11 +4756,22 @@ function focus_efectivo(){
         $("#venta_descuento").val(montodesc);
         calculardesc();
     }
-    
-        $('#modalfinalizar').on('shown.bs.modal', function() {
+    let es_acredito = document.getElementById('credito_id').value;
+    $('#modalfinalizar').on('shown.bs.modal', function() {
+        if(es_acredito >0){
+            $("#tipo_transaccion").prop("selectedIndex", 1);
+            mostrar_ocultar();
+            let credito = JSON.parse(document.getElementById('elcredito').value);
+            $("#cuota_inicial").val(credito['credito_cuotainicial']);
+            $("#credito_interes").val(credito['credito_interesproc']);
+            $("#cuotas").prop("selectedIndex", (credito['credito_numpagos']-1));
+            
+            $("#fecha_inicio").val(credito['credito_fechalimite']);
+            
+        }
         $('#venta_efectivo').focus();
         $('#venta_efectivo').select();
-        });
+    });
         
 }
 
