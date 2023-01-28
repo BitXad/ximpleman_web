@@ -7,7 +7,7 @@
     ?>
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Ximpleman<?php if(isset($page_title)){ echo " - ".$page_title; }?> </title>
+    <title><?php echo $sistema["sistema_nombre"]." ".$sistema["sistema_version"]; ?><?php if(isset($page_title)){ echo " - ".$page_title; }?> </title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -43,7 +43,7 @@
         <nav class="navbar navbar-static-top">
             
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span style="font-size: 24px; color: white;padding-left: 40%;">Ximpleman Web</span>
+            <span style="font-size: 24px; color: white;padding-left: 40%;"><?php echo $sistema["sistema_nombre"]." ".$sistema["sistema_version"]; ?></span>
             <!-- logo for regular state and mobile devices -->
         
             <!-- Sidebar toggle button-->
