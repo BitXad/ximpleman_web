@@ -486,6 +486,7 @@ class Parametro extends CI_Controller{
     function cambiar_tipoemision(){
         
         $data['sistema'] = $this->sistema;
+        
         if($this->input->is_ajax_request()){
             
             $parametro_id = $this->input->post('parametro_id');
@@ -528,10 +529,11 @@ class Parametro extends CI_Controller{
                     $fecha_fin_evento = (new DateTime())->format('Y-m-d\TH:i:s.v');
                 
                     $sql = "update registro_eventos set registroeventos_fin = '".$fecha_fin_evento."'
-                            where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa_codigo;
+                            where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa_codigo." and registroeventos_fin is NULL";
+                    //echo $sql;
                     $this->Venta_model->ejecutar($sql);
                 
-                    sleep(1);
+                    sleep(60);
                      
                     
                     //PASO 2: Generamos un nuevo CUFD
@@ -584,6 +586,7 @@ class Parametro extends CI_Controller{
                             "nit"=>             $dosificacion['dosificacion_nitemisor']
                                 ]];
                         
+                    //Generando CUFD Nuevo
                     $resultado = $cliente->cufd($parametros);
 
                     
@@ -666,8 +669,8 @@ class Parametro extends CI_Controller{
                     */
 //                    echo "<br>".$evento['registroeventos_cufd'];
 //                    echo "<br>".$fecha_i." *** ".$fecha_f;
-                    /*
-                    echo
+                    
+/*                    echo
                         "<br>codigoAmbiente: ".$dosificacion['dosificacion_ambiente'].
                         "<br>codigoMotivoEvento: ".$evento['registroeventos_codigoevento']. //$dosificacion['dosificacion_codsistema'],
                         "<br>codigoPuntoVenta: ".$puntoventa_codigo. //$dosificacion['dosificacion_puntoventa'],
@@ -679,26 +682,13 @@ class Parametro extends CI_Controller{
                         "<br>descripcion: ".$evento['registroeventos_detalle']. //$dosificacion['dosificacion_cuis'],
                         "<br>fechaHoraFinEvento: ".$fecha_f. //$dosificacion['dosificacion_cuis'],
                         "<br>fechaHoraInicioEvento: ".$fecha_i. //$dosificacion['dosificacion_cuis'],
-                        "<br>nit: ".$dosificacion['dosificacion_nitemisor'];
+                        "<br>nit: ".$dosificacion['dosificacion_nitemisor'];*/
                     
-                    */
+
                     // Actualizamos punto de venta porque registramos un nuevo CUFD
 
                     $puntoventa = $this->PuntoVenta_model->get_puntoventa($puntoventa_codigo);
-                    echo
-                        "<br>codigoAmbiente: ".$dosificacion['dosificacion_ambiente'].
-                        "<br>codigoMotivoEvento: ".$evento['registroeventos_codigoevento']. //$dosificacion['dosificacion_codsistema'],
-                        "<br>codigoPuntoVenta: ".$puntoventa_codigo. //$dosificacion['dosificacion_puntoventa'],
-                        "<br>codigoSistema: ".$dosificacion['dosificacion_codsistema'].
-                        "<br>codigoSucursal: ".$dosificacion['dosificacion_codsucursal'].
-                        "<br>cufd: ".$puntoventa['cufd_codigo']. //$dosificacion['dosificacion_cufd'],
-                        "<br>cufdEvento: ".$evento['registroeventos_cufd']. //$dosificacion['dosificacion_cuis'],
-                        "<br>cuis: ".$puntoventa['cuis_codigo']. //$dosificacion['dosificacion_cuis'],
-                        "<br>descripcion: ".$evento['registroeventos_detalle']. //$dosificacion['dosificacion_cuis'],
-                        "<br>fechaHoraFinEvento: ".$fecha_f. //$dosificacion['dosificacion_cuis'],
-                        "<br>fechaHoraInicioEvento: ".$fecha_i. //$dosificacion['dosificacion_cuis'],
-                        "<br>nit: ".$dosificacion['dosificacion_nitemisor'];
-                    
+
                     $parametros = ["SolicitudEventoSignificativo" => [
                         "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
                         "codigoMotivoEvento"=> $evento['registroeventos_codigoevento'], //$dosificacion['dosificacion_codsistema'],
