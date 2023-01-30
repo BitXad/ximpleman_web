@@ -522,8 +522,17 @@ class Parametro extends CI_Controller{
                 
             if ($parametro_tipoemision == 1){ //Si regresa a en linea
 
-                    //PASO 1: Generamos un nuevo CUFD
-
+                    //PASO 1: Actualizamos el registro del evento vigente                
+                    //Actualizamos la fecha de cierre del evento vigente
+                    
+                    $sql = "update registro_eventos set registroeventos_fin = now()
+                            where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa_codigo;
+                    $this->Venta_model->ejecutar($sql);
+                
+                    sleep(1);
+                     
+                    
+                    //PASO 2: Generamos un nuevo CUFD
                         $dosificacion_id = 1;
 
                         $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
@@ -574,9 +583,9 @@ class Parametro extends CI_Controller{
                                 ]];
                         
                     $resultado = $cliente->cufd($parametros);
-                    sleep(1);
+
                     
-                    if($resultado->RespuestaCufd->transaccion){ //Si genero el CUFD correctamente
+                    if($resultado->RespuestaCufd->transaccion){ //Si genero el CUFD correctamente lo registra en la tabla CUFD y actualiza la tabla PUNTO_VENTA
 
                             $cufd_codigo = "'".$resultado->RespuestaCufd->codigo."'";
                             $cufd_codigocontrol = "'".$resultado->RespuestaCufd->codigoControl."'";
@@ -601,12 +610,7 @@ class Parametro extends CI_Controller{
                         
                     }
             
-                    //PASO 2: Actualizamos el registro del evento vigente                
-                    //Actualizamos la fecha del evento vigente
-                    
-                    $sql = "update registro_eventos set registroeventos_fin = now()
-                            where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa_codigo;
-                    $this->Venta_model->ejecutar($sql);
+
                 
 
                     //PASO 3: Registramos el evento en el SIN
@@ -649,8 +653,8 @@ class Parametro extends CI_Controller{
                     $fecha_i = $fecha_i.".".rand(10,60);
                     
                     //$fecha_fin = new DateTime(date('Y-m-d\TH:i:s'));
-                    $fecha_fin = date('Y-m-d\TH:i:s'); //new DateTime(date('Y-m-d\TH:i:s'));
-                    //$fecha_fin = $evento['registroeventos_fin'];
+//                    $fecha_fin = date('Y-m-d\TH:i:s'); //new DateTime(date('Y-m-d\TH:i:s'));
+                    $fecha_fin = $evento['registroeventos_fin'];
                     $fecha_f = date("Y-m-d\TH:i:s", strtotime($fecha_fin));
                     $fecha_f = $fecha_f.".".rand(10,60);
                     
@@ -860,6 +864,7 @@ class Parametro extends CI_Controller{
 
 
                                 if($res->codigoDescripcion == "PENDIENTE"){
+                                    
                                     $params = array(
                                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
                                         'recpaquete_codigoestado' => $res->codigoEstado,
@@ -869,7 +874,9 @@ class Parametro extends CI_Controller{
                                         'codigo_evento' => $codigo_evento,
                                         'factura_id' => $factura_id,
                                     );
+                                    
                                 }else{
+                                    
                                     $cad = $res->mensajesList;
                                             $mensajecadena = "";
                                             foreach ($cad as $c) {
@@ -884,6 +891,7 @@ class Parametro extends CI_Controller{
                                         'codigo_evento' => $codigo_evento,
                                         'factura_id' => $factura_id,
                                     );
+                                    
                                 } 
 
                                 $recpaquete_id = $this->Emision_paquetes_model->add_recepcionpaquetes($params);
@@ -992,6 +1000,7 @@ class Parametro extends CI_Controller{
                                             );
 
                                         }
+                                        
                                         $this->Emision_paquetes_model->update_recepcionpaquetes($recepcion_paquete['recpaquete_id'],$params);
 
                                         //echo json_encode($res);

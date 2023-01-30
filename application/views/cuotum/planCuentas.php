@@ -133,7 +133,7 @@
                 <br>
                 <br>
             
-                <font size="3"><b>PLAN DE PAGOS</b></font> <br>
+                <font size="3" face="arial"><b>PLAN DE PAGOS</b></font> <br>
                 <font size="2"><b>CREDITO No.: 00<?php echo $cuota[0]['credito_id']; ?> </b></font> <br>
                 <font size="1">Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?><br>
                     <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
