@@ -17,7 +17,7 @@
                         <div class="col-md-6">
                             <label for="almacen_descripcion" class="control-label">Descripción</label>
                             <div class="form-group">
-                                <input type="text" name="almacen_descripcion" value="<?php echo ($this->input->post('almacen_descripcion') ? $this->input->post('almacen_descripcion') : $almacen['almacen_descripcion']); ?>" class="form-control" id="almacen_descripcion" autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <input type="text" name="almacen_descripcion" value="<?php echo ($this->input->post('almacen_descripcion') ? $this->input->post('almacen_descripcion') : $almacen['almacen_descripcion']); ?>" class="form-control" id="almacen_descripcion" autocomplete="off" />
                             </div>
                         </div>
                         <div class="col-md-6">
