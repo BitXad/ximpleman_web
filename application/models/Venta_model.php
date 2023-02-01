@@ -801,5 +801,15 @@ function get_busqueda($condicion)
         $this->db->insert('detalle_venta_aux',$params);
         return $this->db->insert_id();
     }
+
+    /**
+     * Obtener le producto en base al id
+     */
+    function get_producto_id($producto_id){
+        
+        $sql = "select * from inventario where producto_id = ".$producto_id;
+        return $this->db->query($sql)->row_array();
+        
+    }
     
 }

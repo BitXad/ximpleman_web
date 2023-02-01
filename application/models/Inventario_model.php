@@ -412,6 +412,11 @@ class Inventario_model extends CI_Model
     {
         $sql = "SELECT i.* FROM inventario i
               WHERE i.estado_id=1 and (i.producto_nombre like '%".$parametro."%' or i.producto_codigobarra like '%".$parametro."%'
+                  or i.producto_codigofactor = '".$parametro."'
+                  or i.producto_codigofactor1 = '".$parametro."'
+                  or i.producto_codigofactor2 = '".$parametro."'
+                  or i.producto_codigofactor3 = '".$parametro."'
+                  or i.producto_codigofactor4 = '".$parametro."'
                   or producto_codigo like '%".$parametro."%')
                   
               GROUP BY
