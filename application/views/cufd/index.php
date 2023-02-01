@@ -28,7 +28,7 @@
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
         <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese fecha de vigencia..">
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese fecha de vigencia, hora..">
         </div>
         <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
@@ -51,20 +51,13 @@
                     ?>
                     <tr>
                         <td class="text-center"><?php echo $i; ?></td>
-                        <td><?php echo $a['almacen_nombre']; ?><sub> [<?php echo $a['almacen_id']; ?>]</sub></td>
-                        <td><?php echo $a['almacen_descripcion']; ?></td>
-                        <td><?php echo $a['almacen_basedatos']; ?></td>
-                        <td>
-                            <a href="<?php echo $a['almacen_url']; ?>" class="btn btn-info btn-xs" target="_blank">
-                                <?php echo $a['almacen_url']; ?>
-                            </a>
-                            </td>
-
-                        <td class="text-center" style="background-color: #<?php echo $a['estado_color']; ?>"> <?php echo $a['estado_descripcion']; ?></td>
-                        <td class="text-center no-print">
-                            <a href="<?php echo site_url('almacen/edit/'.$a['almacen_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
-                        </td>
-						
+                        <td><?php echo $c['cufd_codigo']; ?><sub> [<?php echo $c['cufd_id']; ?>]</sub></td>
+                        <td><?php echo $c['cufd_codigocontrol']; ?></td>
+                        <td><?php echo $c['cufd_direccion']; ?></td>
+                        <td><?php echo $c['cufd_fechavigencia']; ?></td>
+                        <td><?php echo $c['cufd_transaccion']; ?></td>
+                        <td><?php echo $c['cufd_puntodeventa']; ?></td>
+                        <td><?php echo $c['cufd_fecharegistro']; ?></td>
                     </tr>
                               <?php $i++; } ?>
                 </table>
