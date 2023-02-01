@@ -355,41 +355,46 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <div class="row">
     <div class="col-md-12">
         
-        <div class="col-md-4" style="padding-left:0px;">
+        <div class="col-md-5" style="padding-left:0px;">
                         
-      <div class="input-group"> <span class="input-group-addon" onclick="ocultar_busqueda();">Buscar</span>
-        <input id="comprar" type="text" class="form-control"  placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="compravalidar(event)">
-        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-default input-group-addon" onclick="tablaresultados(1)" title="Buscar"><span class="fa fa-search"></span></div>
-      </div>
-      <!-------------------- CATEGORIAS------------------------------------->
-<div class="container" id="categoria">
-    
- 
-                <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-default"><span class="badge">7</span>Productos encontrados</button>-->
+                <div class="input-group"> <span class="input-group-addon" onclick="ocultar_busqueda();">Buscar</span>
+                  <input id="comprar" type="text" class="form-control"  placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="compravalidar(event)">
+                  <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-default input-group-addon" onclick="tablaresultados(1)" title="Buscar"><span class="fa fa-search"></span></div>
+                </div>
+                <!-------------------- CATEGORIAS------------------------------------->
+              <div class="container" id="categoria">
 
-                <span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
 
-</div>
-<!-------------------- FIN CATEGORIAS--------------------------------->
-                                
-            
+                              <!--------------------- indicador de resultados --------------------->
+                  <!--<button type="button" class="btn btn-default"><span class="badge">7</span>Productos encontrados</button>-->
+
+                              <span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
+
+              </div>
+          <!-------------------- FIN CATEGORIAS--------------------------------->
+
           
-                <table class="table table-striped" id="mitabla">
-                    
-                     <tr>
-                                                <th>#</th>
-                                                <th>Producto</th>
-                                                <th></th>
-                    </tr>
-                    <tbody class="buscar3" id="tablaresultados">
-                    
-                        <!------ aqui se vacia los resultados de la busqueda mediante JS --->
-                    
-                    </tbody>
-                </table>
+              
+              <div class="col-md-12 table-responsive" style="padding: 0; margin: 0;">
+                          <table class="table table-striped table-responsive" id="mitabla">
+
+                               <tr>
+                                                          <th>#</th>
+                                                          <th>Producto</th>
+                                                          <th></th>
+                              </tr>
+                              <tbody class="buscar3" id="tablaresultados">
+
+                                  <!------ aqui se vacia los resultados de la busqueda mediante JS --->
+
+                              </tbody>
+                          </table>
+              
+               
+                </div>
             </div>
-         <div class="col-md-8" style="padding-left:0px; padding-right:0px;">
+        
+            <div class="col-md-7" style="padding-left:0px; padding-right:0px;">
     <!--------------------- parametro de buscador --------------------->
               <div class="input-group"> <span class="input-group-addon">Buscar</span>
                 <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la <?php echo $sistema["sistema_modulocompras"]; ?>, producto, costo"> 

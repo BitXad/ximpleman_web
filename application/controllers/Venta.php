@@ -7339,4 +7339,29 @@ function anular_venta($venta_id){
         }
 
     }
+    
+
+    /*
+     * Obtener el producto pen base al id
+     */
+    function get_producto_id()
+    {
+        //**************** inicio contenido ***************   
+        
+        if ($this->input->is_ajax_request()) {
+            
+            $producto_id = $this->input->post('producto_id');            
+            $result = $this->Venta_model->get_producto_id($producto_id);
+            
+            echo json_encode($result);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }    
+       //**************** fin contenido ***************
+        			       
+    }       
+    
 }

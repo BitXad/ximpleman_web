@@ -410,6 +410,7 @@ function buscarcliente(){
 
 //muestra la tabla de productos del detalle de la venta
 function tablaproductos(){
+    
     var decimales = Number(document.getElementById('parametro_decimales').value);
     
     var base_url = document.getElementById('base_url').value;
@@ -648,7 +649,7 @@ html += "  </div>";
                         //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
                         html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
                        
-                        html += "                       <button onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
+                        html += "                       <button onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
                         html += "                    </div>";
 
                         html += "<input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
@@ -672,7 +673,7 @@ html += "  </div>";
                         html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' >";
                         //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
                         html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
-                        html += "                       <button onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
+                        html += "                       <button onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
                         html += "                    </div>";
 
                     
@@ -871,12 +872,13 @@ function buscarporcodigojs()
     
     //revisará si existe algun producto con el codigo especificado
     $.ajax({url: controlador,
+        
            type:"POST",
            data:{codigo:codigo},
            success:function(respuesta){
                
                var precio = 0;
-               var factor = 1;
+               var factor_cantidad = 1;
                var factor_nombre = "";
                res = JSON.parse(respuesta);
 
@@ -888,42 +890,43 @@ function buscarporcodigojs()
                              
                             //verificara si el codigo le pertenece a algun factor
                             if (res[0].producto_codigobarra == codigo){
-                                factor = 1;
+                                factor_cantidad = 1;
                                 precio = res[0].producto_precio;
-                                factor_nombre = "";
+                                factor_nombre = "precio_normal";
                             }
                             
                             if (res[0].producto_codigofactor == codigo){
-                                factor = res[0].producto_factor;
+                                factor_cantidad = res[0].producto_factor;
                                 precio = res[0].producto_preciofactor;
                                 factor_nombre = "producto_factor";
                             }
                             
                             if (res[0].producto_codigofactor1 == codigo){
-                                factor = res[0].producto_factor1;
+                                factor_cantidad = res[0].producto_factor1;
                                 precio = res[0].producto_preciofactor1;
                                 factor_nombre = "producto_factor1";
                             }
                             
                             if (res[0].producto_codigofactor2 == codigo){
-                                factor = res[0].producto_factor2;
+                                factor_cantidad = res[0].producto_factor2;
                                 precio = res[0].producto_preciofactor2;
                                 factor_nombre = "producto_factor2";
                             }
                             
                             if (res[0].producto_codigofactor3 == codigo){
-                                factor = res[0].producto_factor3;
+                                factor_cantidad = res[0].producto_factor3;
                                 precio = res[0].producto_preciofactor3;
                                 factor_nombre = "producto_factor3";
                             }
                             
                             if (res[0].producto_codigofactor4 == codigo){
-                                factor = res[0].producto_factor4;
+                                factor_cantidad = res[0].producto_factor4;
                                 precio = res[0].producto_preciofactor4;
                                 factor_nombre = "producto_factor4";
                             }
                             
                            
+                           //alert("factor: "+factor+" * precio: "+precio+" * factor_nombre: "+factor_nombre);
                             //html = "<input type='text' value='"+factor+"' id='select_factor"+res[0].producto_id+"' title='select_factor"+res[0].producto_id+"'>"
                             
                             precio_unidad = precio; //res[0]["producto_precio"];
@@ -938,8 +941,11 @@ function buscarporcodigojs()
                             $("#selector").html(html);
                             
                             // Como ya se tiene idetificado el factor se procede a ingresar el producto
-                            ingresorapidojs(factor, res[0]); 
-                            //ingresorapidojs(factor,res[0]);
+                            //factor es la cantidad de items que tiene la presentacion, res[0] son todos los datos del producto
+//                            ingresorapidojs(factor_cantidad, res[0]["producto_id"],factor_nombre); 
+                            ingresorapidojs(1, res[0]["producto_id"],factor_nombre); //la cantidad siempre sera 1 porque es proveniente del codigo de barras/cod producto
+
+
                          }
                          else{    
                              alert('No existe la cantidad requerida en inventario...!');
@@ -1106,26 +1112,28 @@ function existencia(producto_id){
 
 //se encarga de ingresar una cantidad determinada de productos al detalle de la venta en base de id de producto
 // la cantidad debe estar registrada en el modal asignada para esta operacion
-function ingresardetallejs(producto_id,producto)
+function ingresardetallejs(producto_id)
 {
+ 
+   //cuando viene la cantidad del modal cantidad 
    var decimales = Number(document.getElementById('parametro_decimales').value);
-   var base_url = document.getElementById('base_url').value;
-   var controlador = base_url+'venta/insertarProducto';
    var cantidad = parseFloat(document.getElementById('cantidad'+producto_id).value);
-   var existencia = document.getElementById('existencia'+producto_id).value;
    let tipo_sistema = document.getElementById('parametro_tiposistema').checked;
    let es_facturado = document.getElementById('facturado').checked;
+   
    
    /* ********************INICIO para redondeo a dos decimales ***************
     * Por norma de impuestos; controla si es electronico o computarizado en linea y si es facturado
     * si fuese el caso la cantidad lo redondea a 2 digitos decimales */
    if(tipo_sistema != 1){
        if(es_facturado){
+           
            cantidad = Number(cantidad).toFixed(decimales);
+           
        }
    }
    /* ********************F I N  para redondeo a dos decimales ****************/
-   ingresorapidojs(cantidad,producto)
+   ingresorapidojs(cantidad,producto_id,0);
  
 }
 
@@ -1406,6 +1414,7 @@ function ingresorapido(producto_id,cantidad)
     
 }
 
+
 function ingresorapidojs2(cantidad,producto,serie = ''){       
     //alert(producto.producto_nombre);
     var factor_nombre = ""; //cantidad del factor seleccionado
@@ -1424,7 +1433,6 @@ function ingresorapidojs2(cantidad,producto,serie = ''){
         
     }
     
-    //alert(factor_nombre);
     
     try {
         indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
@@ -1504,9 +1512,6 @@ function ingresorapidojs2(cantidad,producto,serie = ''){
         numerofactor = "0";
     }
 
-    //var cantidad = cantidad * factor;
-    //var cantidad = cantidad * factor;
-    
     
     if (numerofactor=="0")
     {    unidadfactor = "-"; }
@@ -1619,12 +1624,34 @@ function ingresorapidojs2(cantidad,producto,serie = ''){
     else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
     
 }
+//
 
+function get_producto(producto_id){
+    
+        var base_url = document.getElementById("base_url").value;
+        var controlador = base_url+"venta/get_producto_id";
+        
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{producto_id:producto_id}, 
+                async: false,
+                success:function(respuesta){
+                    
+                    var res = JSON.parse(respuesta);
+                    //alert(JSON.stringify(res));
+                    producto = res;
+                },
+                error:function(respuesta){
 
-function ingresorapidojs(cantidad,producto)
-{       
-    //alert(producto.producto_nombre);
-    var factor_nombre = ""; //cantidad del factor seleccionado
+                  producto = null;
+                }
+         }); 
+    return producto;     
+}
+
+function ingresorapidojs(cantidad,producto_id,nombre_factor){       
+    
+    var factor_nombre = (nombre_factor==0)?"":nombre_factor; //cantidad del factor seleccionado
     var indice = 0; //cantidad del factor seleccionado
     var detalleven_id = 0; //cantidad del factor seleccionado
     var tipo_cambio =  document.getElementById("moneda_tc").value;
@@ -1632,37 +1659,43 @@ function ingresorapidojs(cantidad,producto)
     
     document.getElementById('mensaje_enviado').style.display = 'none';
     document.getElementById('mensaje_no_enviado').style.display = 'none';
-
     
-    try {
-        factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
+    //***** Obtenemos el producto en base a su Id *******
+    
+    var producto = get_producto(producto_id);
+    var precio = Number(producto.producto_precio);
+    
+    //*****************************************
+    
+    // intentamos obtener el nombre_factor y el indice por si acaso proviene del select_factor
+    try {        
+        
+        if (factor_nombre ==""){ //Si ya tien
 
+            factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
+            indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
+            
+        }
+        
     } catch (error) {
-        //console.error(error);
-        factor_nombre = ""; //cantidad del factor seleccionado
+        
+        indice = 0; //cantidad del factor seleccionado        
         
     }
     
-    try {
-        indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
 
-    } catch (error) {
-        //console.error(error);
-        indice = 0; //cantidad del factor seleccionado        
-    }
-
+    //intentamos obtener el detalleven_id
     try{
         detalleven_id = producto.detalleven_id;
     }catch (error) {
-        detalleven_id = 0;
-        
+        detalleven_id = 0;   
     }
 
-
     var factor = 0;    
-    var precio = 0;
     var numerofactor = 0;
     var unidadfactor = "";
+    
+    //Para el modulo de comida rapida
     
     var inputcaract = document.getElementById("inputcaract").value;
     
@@ -1674,55 +1707,57 @@ function ingresorapidojs(cantidad,producto)
         preferencias = producto.producto_caracteristicas;
     }
     
-    if (Number(indice)>0){
-    
-        if (factor_nombre == "producto_factor"){
-            precio = producto.producto_preciofactor;
-            factor = producto.producto_factor;
-            numerofactor = "";
-        }    
-    
-    
-        if (factor_nombre == "producto_factor1"){
-            precio = producto.producto_preciofactor1;
-            factor = producto.producto_factor1;
-            numerofactor = "1";
-        }    
-    
-        if (factor_nombre == "producto_factor2"){
-            precio = producto.producto_preciofactor2;
-            factor = producto.producto_factor2;
-            numerofactor = "2";
-        }    
-    
-        if (factor_nombre == "producto_factor3"){
-            precio = producto.producto_preciofactor3;
-            factor = producto.producto_factor3;
-            numerofactor = "3";
-        }    
-    
-        if (factor_nombre == "producto_factor4"){
-            precio = producto.producto_preciofactor4;
-            factor = producto.producto_factor4;
-            numerofactor = "4";
-        }    
-    }
-    else 
-    {   factor = 1; 
-        precio = producto.producto_precio;
-        numerofactor = "0";
+    //******************************************
+    if ( Number(indice)>0){
+        factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
     }
 
-    var cantidad = cantidad * factor;
-    
-    
-    if (numerofactor=="0")
-    {    unidadfactor = "-"; }
-    else
-    {    unidadfactor = producto["producto_unidadfactor"+numerofactor];  }
-        
-    //alert(unidadfactor);
-    //alert(producto.producto_nombre+", cantidad: "+cantidad+", factor:"+factor+", indice:"+indice+", precio: "+precio);
+
+            if (factor_nombre == "precio_normal"){
+                precio = producto.producto_precio;
+                factor = 1;
+                unidadfactor = producto.producto_unidad;
+                numerofactor = "0";
+            }    
+
+            if (factor_nombre == "producto_factor"){
+                precio = producto.producto_preciofactor;
+                factor = producto.producto_factor;
+                unidadfactor = producto.producto_unidadfactor;
+                numerofactor = "";
+            }    
+
+            if (factor_nombre == "producto_factor1"){
+                precio = producto.producto_preciofactor1;
+                factor = producto.producto_factor1;
+                unidadfactor = producto.producto_unidadfactor1;
+                numerofactor = "1";
+            }    
+
+            if (factor_nombre == "producto_factor2"){
+                precio = producto.producto_preciofactor2;
+                factor = producto.producto_factor2;
+                unidadfactor = producto.producto_unidadfactor2;
+                numerofactor = "2";
+            }    
+
+            if (factor_nombre == "producto_factor3"){
+                precio = producto.producto_preciofactor3;
+                factor = producto.producto_factor3;
+                unidadfactor = producto.producto_unidadfactor3;
+                numerofactor = "3";
+            }    
+
+            if (factor_nombre == "producto_factor4"){
+                precio = producto.producto_preciofactor4;
+                factor = producto.producto_factor4;
+                unidadfactor = producto.producto_unidadfactor4;
+                numerofactor = "4";
+            }    
+
+
+    var cantidad = cantidad * factor; // * factor;
+
     
     var base_url = document.getElementById('base_url').value;   
     var controlador = base_url+"venta/ingresar_detalle";
@@ -1764,10 +1799,6 @@ function ingresorapidojs(cantidad,producto)
         preferencias = ""; //preferencias
         
     }
-    
-    
-        
-    // alert(clasificador_id);   
         
     if (check_agrupar){
         agrupado = 1;
@@ -1779,7 +1810,6 @@ function ingresorapidojs(cantidad,producto)
 
     if (cantidad_total <= producto.existencia){
         
-//        precio = precio * producto.moneda_tc;
         var costo = producto.producto_costo;
         
         if (parametro_moneda_id == producto.moneda_id){ // Si la moneda del sistema es igual al del producto
@@ -2184,8 +2214,8 @@ function tablaresultados(opcion)
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
                         
-                        html += "<button class='btn btn-danger btn-xs' type='text' style='padding:0;' title='Compra rápida' id='button"+registros[i]["producto_id"]+"' onclick='registrar_ingreso_rapido("+JSON.stringify(registros[i])+")'>- <fa class='fa fa-bolt'></fa> -</button>";
-                        html += "<button class='btn btn-facebook btn-xs' type='text' style='padding:0;' title='Registro rápido' id='button"+registros[i]["producto_id"]+"' onclick='modificar_precios("+JSON.stringify(registros[i])+")'>- <fa class='fa fa-money'></fa> -</button>";
+                        html += "<button class='btn btn-danger btn-xs' type='text' style='padding:0;' title='Compra rápida' id='button"+registros[i]["producto_id"]+"' onclick='registrar_ingreso_rapido("+registros[i]["producto_id"]+")'>- <fa class='fa fa-bolt'></fa> -</button>";
+                        html += "<button class='btn btn-facebook btn-xs' type='text' style='padding:0;' title='Registro rápido' id='button"+registros[i]["producto_id"]+"' onclick='modificar_precios("+registros[i]["producto_id"]+")'>- <fa class='fa fa-money'></fa> -</button>";
                         
                        if(! esMobil()){
                         html += "</td>";
@@ -2195,7 +2225,7 @@ function tablaresultados(opcion)
                         
                         html += "<center> ";                        
 //                        html += "   <select class='btn btn-facebook' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
-                        html += "   <select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+JSON.stringify(registros[i])+")' >";
+                        html += "   <select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["producto_id"]+")' >";
                         
                         if (rol_precioventa==1){
                             
@@ -2277,10 +2307,10 @@ function tablaresultados(opcion)
                                   html += "<br>";
                                   html += "<div class='btn-group'>";
 //                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",1)'><b>- 1 -</b></button>";
-                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")'><b>- 1 -</b></button>";                                  
-                                  html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojs(2,"+JSON.stringify(registros[i])+")'><b>- 2 -</b></button>";
-                                  html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapidojs(5,"+JSON.stringify(registros[i])+")'><b>- 5 -</b></button>";
-                                  html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojs(10,"+JSON.stringify(registros[i])+")'><b>- 10 -</b></button> ";
+                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'><b>- 1 -</b></button>";                                  
+                                  html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojs(2,"+registros[i]["producto_id"]+",0)'><b>- 2 -</b></button>";
+                                  html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapidojs(5,"+registros[i]["producto_id"]+",0)'><b>- 5 -</b></button>";
+                                  html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojs(10,"+registros[i]["producto_id"]+",0)'><b>- 10 -</b></button> ";
                                   html += "</div>";   
 
                             }            
@@ -2363,7 +2393,7 @@ function tablaresultados(opcion)
                         html += "  <div class='modal-footer aligncenter'>";
                         html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
-                        html += "     <button data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-facebook btn-foursquarexs' id='boton_cantidad_producto'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
+                        html += "     <button data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+")' class='btn btn-facebook btn-foursquarexs' id='boton_cantidad_producto'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
 
                         html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
                         html += "  </div>";                        
@@ -2488,7 +2518,7 @@ function tablaresultados(opcion)
 //                        html += "<td>";   
                         html += "<br>";   
                         
-                        html += "   <select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+JSON.stringify(registros[i])+")'>";
+                        html += "   <select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["producto_id"]+")'>";
 
                         if (rol_precioventa==1){
                             
@@ -2596,8 +2626,8 @@ function tablaresultados(opcion)
                         html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
 
-//                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
-                        html += "     <button data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs' id='boton_agregar"+registros[i]["producto_id"]+"'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
+//                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+                        html += "     <button data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs' id='boton_agregar"+registros[i]["producto_id"]+"'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
 //                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
 
 //                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
