@@ -1651,7 +1651,6 @@ function get_producto(producto_id){
 
 function ingresorapidojs(cantidad,producto_id,nombre_factor){       
     
-    alert("nombre factor recibido: "+nombre_factor);
     var factor_nombre = (nombre_factor==0)?"":nombre_factor; //cantidad del factor seleccionado
     var indice = 0; //cantidad del factor seleccionado
     var detalleven_id = 0; //cantidad del factor seleccionado
@@ -1672,8 +1671,7 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
     try {        
         
         if (factor_nombre ==""){ //Si ya tien
-            
-            alert("entra aqui: if (factor_nombre =='')");
+
             factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
             indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
             
@@ -1685,15 +1683,6 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
         
     }
     
-    
-//    try {
-//        
-//        indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
-//
-//    } catch (error) {
-//        //console.error(error);
-//        indice = 0; //cantidad del factor seleccionado        
-//    }
 
     //intentamos obtener el detalleven_id
     try{
@@ -1722,8 +1711,6 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
     if ( Number(indice)>0){
         factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
     }
-//    
-//        if ( Number(indice)>0 || factor_nombre!=""){
 
 
             if (factor_nombre == "precio_normal"){
@@ -1767,26 +1754,10 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
                 unidadfactor = producto.producto_unidadfactor4;
                 numerofactor = "4";
             }    
-//
-//        }
-//        else{
 
-//            factor = 1; 
-//            precio = producto.producto_precio;
-//            numerofactor = "0";
-
-//        }
 
     var cantidad = cantidad * factor; // * factor;
-//    
-//    
-//    if (numerofactor=="0")
-//    {    unidadfactor = producto["producto_unidad"]; }
-//    else
-//    {    unidadfactor = producto["producto_unidadfactor"+numerofactor];  }
-        
-    //alert(unidadfactor);
-    //alert(producto.producto_nombre+", cantidad: "+cantidad+", factor:"+factor+", indice:"+indice+", precio: "+precio);
+
     
     var base_url = document.getElementById('base_url').value;   
     var controlador = base_url+"venta/ingresar_detalle";
@@ -1828,10 +1799,6 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
         preferencias = ""; //preferencias
         
     }
-    
-    
-        
-    // alert(clasificador_id);   
         
     if (check_agrupar){
         agrupado = 1;
@@ -1843,7 +1810,6 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
 
     if (cantidad_total <= producto.existencia){
         
-//        precio = precio * producto.moneda_tc;
         var costo = producto.producto_costo;
         
         if (parametro_moneda_id == producto.moneda_id){ // Si la moneda del sistema es igual al del producto
@@ -1860,8 +1826,6 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
             }
         
         }
-        
-        alert(factor_nombre);
         
         datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
         datos1 += descuento+","+descuentoparcial+","+(precio-descuentoparcial)+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
