@@ -944,6 +944,9 @@
                         <li>
                             <a href="<?php echo site_url('token');?>"><i class="fa fa-align-justify"></i> Token</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('cufd');?>"><i class="fa fa-puzzle-piece"></i> Cufd</a>
+                        </li>
                         <?php
                         }
                         ?>

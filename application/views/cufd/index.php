@@ -54,12 +54,12 @@
                         <td><?php echo $c['cufd_codigo']; ?><sub> [<?php echo $c['cufd_id']; ?>]</sub></td>
                         <td><?php echo $c['cufd_codigocontrol']; ?></td>
                         <td><?php echo $c['cufd_direccion']; ?></td>
-                        <td><?php echo $c['cufd_fechavigencia']; ?></td>
+                        <td><?php echo date("d/m/Y H:i:s", strtotime($c['cufd_fechavigencia'])); ?></td>
                         <td><?php echo $c['cufd_transaccion']; ?></td>
                         <td><?php echo $c['cufd_puntodeventa']; ?></td>
-                        <td><?php echo $c['cufd_fecharegistro']; ?></td>
+                        <td><?php echo date("d/m/Y H:i:s", strtotime($c['cufd_fecharegistro'])); ?></td>
                     </tr>
-                              <?php $i++; } ?>
+                    <?php $i++; } ?>
                 </table>
                                 
             </div>
