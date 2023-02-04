@@ -9,7 +9,9 @@
 
 #mitabla td, #mitabla th {
     border: 1px solid #ddd;
-    padding: 8px;
+    /*padding: 8px;*/
+    padding-top: 0px;
+    padding-bottom: 0px;
     
 }
 
@@ -18,8 +20,8 @@
 #mitabla tr:hover {background-color: #ddd;}
 
 #mitabla th {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     text-align: center;
     background-color: #000000;
     color: white;

@@ -1627,7 +1627,7 @@ function tablaresultados(opcion)
                                   html += "<td style='text-align: center; border-width:0px;'><b>FECHA VENC.</b></td>";
                                   html += "<td style='text-align: center; border-width:0px;'><b>LOTE</b></td>";
 
-                                var estiloTD = "style='border-width:0px; font-size: 8px;'"
+                                var estiloTD = "style='border-width:0px; font-size: 8px;'";
                                 html += "</tr>";
                               
                               html += "<tr>";
@@ -1648,7 +1648,7 @@ function tablaresultados(opcion)
                                 html += "</td>";
                                 
                                 html += "<td "+estiloTD+">";
-                                      html += "<input style='width:"+(anchoinput+70)+"px; font-size: 12px;' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'   >";
+                                      html += "<input style='width:"+(anchoinput+70)+"px; font-size: 12px;' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'>";
                                 html += "</td>";
                                 
                                 html += "<td "+estiloTD+">";
@@ -1672,8 +1672,13 @@ function tablaresultados(opcion)
                             
                        }
                        else{
-                            html += "<td style='padding :0px'><div>";                      
-                            html += "<label  class='control-label' style='margin-bottom :0px'>AÑADIR</label><button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button></div>";
+                            html += "<td style='padding :0px'>";
+                            html += "<div>";
+                            html += "<center>";
+                            html += "<br>";
+                            html += "<label  class='control-label' style='margin-bottom :0px'></label><button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button>";
+                            html += "</center>";   
+                            html += "</div>";   
                             html += "</td>";
                         }
                        //html += "<a href=''  onclick='submit()' class='btn btn-danger'><span class='fa fa-cart-arrow-down'></span></a>";

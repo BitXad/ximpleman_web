@@ -2,8 +2,8 @@ $(document).on("ready",inicio);
 
 function inicio(){
     
-        detallecoti();
-         filtro = " and date(cotizacion_fecha) = date(now())";
+    detallecoti();
+    filtro = " and date(cotizacion_fecha) = date(now())";
     fechacotizacion(filtro);
 
 }
@@ -251,17 +251,9 @@ function cotivalidar(e,opcion) {
 
         } 
 
-        
-
     } 
 
-
-
-    
-
 }
-
-
 
 //Selecciona los datos del nit
 
@@ -657,14 +649,14 @@ function tablaresultados(opcion)
 
                         html += "<div class='container' hidden>";
 
-                        html += "<input id='cotizacion_id'  name='cotizacion_id' type='text' class='form-control' value='"+cotizacion_id+"'>";
+                            html += "<input id='cotizacion_id'  name='cotizacion_id' type='text' class='form-control' value='"+cotizacion_id+"'>";
 
-                        html += "<input id='producto_id'  name='producto_id' type='text' class='form-control' value='"+registros[i]["producto_id"]+"'>";
+                            html += "<input id='producto_id'  name='producto_id' type='text' class='form-control' value='"+registros[i]["producto_id"]+"'>";
 
-                        html += "<input id='descripcion"+registros[i]["producto_id"]+"'  name='descripcion' type='text' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
-                        html += "<input id='producto_caracteristicas"+registros[i]["producto_id"]+"'  name='caracteristicas' type='text' class='form-control' value='"+registros[i]["producto_caracteristicas"]+"'>";
+                            html += "<input id='descripcion"+registros[i]["producto_id"]+"'  name='descripcion' type='text' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
+                            html += "<input id='producto_caracteristicas"+registros[i]["producto_id"]+"'  name='caracteristicas' type='text' class='form-control' value='"+registros[i]["producto_caracteristicas"]+"'>";
 
-                        html += "<input id='detalle_costo'  name='detalle_costo' type='text' class='form-control' value='"+registros[i]["producto_costo"]+"'>";
+                            html += "<input id='detalle_costo'  name='detalle_costo' type='text' class='form-control' value='"+registros[i]["producto_costo"]+"'>";
 
                         html += "</div>";
 
@@ -729,22 +721,52 @@ function tablaresultados(opcion)
                         
                         html += "   </select><br>";
 
-                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
+//                        
+//                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
+//
+//                        html += "Precio <input class='input-sm' id='producto_precio"+registros[i]["producto_id"]+"' style='width:70px'  name='producto_precio' type='number' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+//
+//                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
+//
+//                        html += "Costo <input class='input-sm' id='producto_costo"+registros[i]["producto_id"]+"'   style='width:70px' name='producto_costo' type='number' class='form-control' value='"+registros[i]["producto_costo"]+"' readonly> </div>";
+//
+//                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
+//
+//                        html += "Desc. <input class='input-sm' id='descuento"+registros[i]["producto_id"]+"'   style='width:70px' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
+//
+//                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
+//
+//                        html += "Cant. <input class='input-sm ' id='cantidad"+registros[i]["producto_id"]+"' style='width:70px' name='cantidad' onkeypress='pasardetalle(event,"+cotizacion_id+","+registros[i]["producto_id"]+")' type='number' class='form-control' placeholder='cantidad' required value='1'> </div></td>";                        
+//                        
+                         
+                       
+                            let estilo_celda = "style='border-width:0px; font-size: 8px;'";
+                            let anchoinput = 50;
+                            html += "<center>";
+                            html += "<table table style='font-size: 10pt;' id='tablares' name='tablares'>";
+                            html += "<tbody class='buscar33'>";
 
-                        html += "Precio <input class='input-sm' id='producto_precio"+registros[i]["producto_id"]+"' style='width:70px'  name='producto_precio' type='number' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+                                    html += "<tr style='font-size: 12px; border-width: 0px; display: table-row;'>";
+                                        html += "<td "+estilo_celda+"><center><b>PRECIO</b></center></td>";
+                                        html += "<td "+estilo_celda+"><center><b>COSTO</b></center></td>";
+                                        html += "<td "+estilo_celda+"><center><b>DESC</b></center></td>";
+                                        html += "<td "+estilo_celda+"><center><b>CANT</b></center></td>";                        
+                                    html += "</tr>";
 
-                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
+                                    html += "<tr>";
+                                        html += "<td "+estilo_celda+"><input  style='width:"+anchoinput+"px;' id='producto_precio"+registros[i]["producto_id"]+"' style='width:70px; font-size: 10px;'  name='producto_precio' type='number' value='"+registros[i]["producto_precio"]+"' ></td>";
+                                        html += "<td "+estilo_celda+"><input  style='width:"+anchoinput+"px;' id='producto_costo"+registros[i]["producto_id"]+"'  style='width:70px; font-size: 10px; background-color: red;'  name='producto_costo' type='number'value='"+registros[i]["producto_costo"]+"' readonly></td>";
+                                        html += "<td "+estilo_celda+"><input  style='width:"+anchoinput+"px;' id='descuento"+registros[i]["producto_id"]+"'   style='width:70px; font-size: 10px;'  name='descuento' type='number' value='0.00' step='.01' required ></td>";
+                                        html += "<td "+estilo_celda+"><input  style='width:"+anchoinput+"px;' id='cantidad"+registros[i]["producto_id"]+"' style='width:70px; font-size: 10px; background-color: yellow;'  name='cantidad' onkeypress='pasardetalle(event,"+cotizacion_id+","+registros[i]["producto_id"]+")' type='number' placeholder='cantidad' required value='1'></td>";                        
+                                    html += "</tr>";
 
-                        html += "Costo <input class='input-sm' id='producto_costo"+registros[i]["producto_id"]+"'   style='width:70px' name='producto_costo' type='number' class='form-control' value='"+registros[i]["producto_costo"]+"' readonly> </div>";
-
-                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
-
-                        html += "Desc. <input class='input-sm' id='descuento"+registros[i]["producto_id"]+"'   style='width:70px' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
-
-                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
-
-                        html += "Cant. <input class='input-sm ' id='cantidad"+registros[i]["producto_id"]+"' style='width:70px' name='cantidad' onkeypress='pasardetalle(event,"+cotizacion_id+","+registros[i]["producto_id"]+")' type='number' class='form-control' placeholder='cantidad' required value='1'> </div></td>";
-                        html += "<td>Anadir";
+                            html += "</tbody>";
+                            html += "</table></center>";
+//                        
+                        html += "</td>";
+                        
+                        
+                        html += "<td><center><small style='align-text:center'>Añadir</center></small>";
 
 
                         html += "<button type='button' onclick='detallecota("+cotizacion_id+","+registros[i]["producto_id"]+")'  class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button>";
@@ -760,27 +782,12 @@ function tablaresultados(opcion)
                         html += "</td>";
 
                       //  "echo form_close()";
-
-                       
-
                         html += "</tr>";
-
-
-
                    }
-
-                 
-
-                   
 
                    $("#tablaresultados").html(html);
 
-                   
-
             }
-
-                
-
         },
 
         error:function(respuesta){
@@ -793,12 +800,7 @@ function tablaresultados(opcion)
 
         }
 
-        
-
-    });   
-
-
-
+    });
 } 
 
 function mostrar_saldo(s,producto_id)
