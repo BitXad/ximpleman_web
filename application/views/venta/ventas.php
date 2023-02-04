@@ -628,7 +628,7 @@ window.onkeydown = compruebaTecla;
 <div class="row">
     
     
-    <div class="col-md-6">
+    <div class="col-md-8">
         <font size="1"><b>BUSCADOR DE PRODUCTOS</b></font> 
         
         <div class="box" style="border-color:black;">
@@ -839,7 +839,7 @@ window.onkeydown = compruebaTecla;
         </center>
     </div>
         
-    <div class="col-md-6" id="divventas0" style="display:block;">
+    <div class="col-md-4" id="divventas0" style="display:block;">
         <font size="1"><b>DETALLE DE LA <?php echo $sistema["sistema_moduloventas"]; ?> </b></font>
         <div class="box" style="border-color:black;">
             <div class="box-body">

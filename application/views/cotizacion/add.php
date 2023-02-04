@@ -111,7 +111,7 @@ input[type=number] { -moz-appearance:textfield; }
           		<div class="row clearfix">
                             <div class="col-md-12">
                                 
-                                        <div class="col-md-6">
+                                        <!--<div class="col-md-6">-->
 						<label for="cotizacion_cliente" class="control-label">Cliente</label>
                                                 <div class="form-group">
                                                     <input type="text" name="cotizacion_cliente" value="<?php echo ($this->input->post('cotizacion_cliente') ? $this->input->post('cotizacion_cliente') : $cotizacion['cotizacion_cliente']); ?>"  class="form-control" id="cotizacion_cliente" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
