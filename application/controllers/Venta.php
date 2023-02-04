@@ -239,10 +239,12 @@ class Venta extends CI_Controller{
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
         $data['sistema'] = $this->sistema;
-        $usuario_id = $this->session_data['usuario_id'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];
         $data['rolusuario'] = $this->session_data['rol'];
-        $data['page_title'] = "Ventas";
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];        
+        $punto_venta = $this->session_data['puntoventa_codigo'];        
+
+        $data['page_title'] = $this->sistema["sistema_moduloventas"];
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         
@@ -262,13 +264,40 @@ class Venta extends CI_Controller{
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['usuario_id'] = $usuario_id;
-        $data['tipousuario_id'] = $tipousuario_id;
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
+        $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+        $data['promociones'] = $this->Promocion_model->get_promociones();
+        $data['mesas'] = $this->Mesa_model->get_all_mesa();
+        $data['usuario_id'] = $usuario_id;
+        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+        $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
+        $data['tipousuario_id'] = $tipousuario_id;
+//        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
+        $data['eventos'] = $this->Eventos_significativos_model->get_mis_eventos();
+        $data['empresa_email'] = $this->empresa["empresa_email"];
+        $data['almacenes'] = $this->Inventario_model->get_almacenes();
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
         
+        $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
+        $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
+        
+        $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
+        $data['empresa_email'] = $this->empresa["empresa_email"];
+        
+        $sql ="select * from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
+        //echo $sql;
+        $data['cufd'] = $this->Venta_model->consultar($sql);
+        
+        $sql = "SELECT  i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
+                FROM
+                  inventario i
+                WHERE
+                  i.producto_codigosin = 0 or  i.producto_codigosin is null or
+                  i.producto_codigounidadsin = 0 or i.producto_codigosin is null";
+        $data['productos_homologados'] = $this->Venta_model->consultar($sql);
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
         $data['_view'] = 'venta/ventas';
