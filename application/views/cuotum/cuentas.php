@@ -4,6 +4,58 @@
 
 <script src="http://code.jquery.com/jquery-1.0.4.js"></script>
 
+<script type="text/javascript">
+    function mostrar_formapago(cuota_id){
+
+        var forma_id = document.getElementById('select_forma_pago'+cuota_id).value;
+        var result = <?php echo json_encode($all_forma_pago); ?>;
+        var html = "";
+
+        var dato = result;
+        var tam = dato.length;
+        var mostrarimagen = "";
+        var encontrado = 0;
+
+        if(forma_id==2 || forma_id==10 || forma_id==16 || forma_id==17 || forma_id==18 || forma_id==19 || forma_id==20 || forma_id==39 || forma_id==40 || forma_id==41 || forma_id==42 || forma_id==43 || forma_id==82 || forma_id==83 || forma_id==84 || forma_id==85 || forma_id==86 || forma_id==87 || forma_id==88 || forma_id==89 || forma_id==134 || forma_id==135 || forma_id==136 || forma_id==137 || forma_id==138 || forma_id==139 || forma_id==140 || forma_id==141 || forma_id==142 || forma_id==143 || forma_id==144 || forma_id==145 || forma_id==146 || forma_id==147 || forma_id==148 || forma_id==149 || forma_id==150 || forma_id==151 || forma_id==152 || forma_id==153 || forma_id==154 || forma_id==155 || forma_id==156 || forma_id==157 || forma_id==158 || forma_id==159 || forma_id==160 || forma_id==161 || forma_id==162 || forma_id==163 || forma_id==164 || forma_id==165 || forma_id==166 || forma_id==167 || forma_id==168 || forma_id==169 || forma_id==170 || forma_id==171 || forma_id==172 || forma_id==173 || forma_id==174 || forma_id==175 || forma_id==176 || forma_id==177 || forma_id==297){
+            $("#cuota_forma_glosa").val("1234000000005678");
+        }
+        else{
+            $("#cuota_forma_glosa").val("0");        
+        }
+
+        for(var i=0; i<tam ;i++)
+        {
+            if(forma_id == dato[i]["forma_id"]){
+                imagen = dato[i]["forma_imagen"];
+
+                if (imagen != null){
+
+                    mostrarimagen = "<?php echo base_url('resources/images/formapago/'); ?>";
+                    mostrarimagen += imagen;
+                    //alert(mostrarimagen);
+                    html += "<center>";
+                    html += "<img src='"+mostrarimagen+"' >";
+    //                html += "</center>";
+                    $("#imagenqr").html(html);
+                    //$("#imagenqr").style = 'display:block';  
+
+                    document.getElementById('imagenqr').style.display = 'block';
+                    entontrado == 1;
+                }
+            }
+        }    
+
+        if (encontrado==0)
+            document.getElementById('imagenqr').style.display = 'none';
+
+        //alert(mostrarimagen);
+    ////                <div class="col-md-12" style="display:none" id="imagenqr">
+    //               
+    //    $("#imagenqr").html(html);
+
+    }
+</script>>
+
 <style type="text/css">
    
 .btn:focus, .btn:active:focus, .btn.active:focus {
@@ -252,7 +304,22 @@ $(document).ready(function(){
                                 <?php echo number_format($c['cuota_total'],2,".",","); ?></span>
                             </b>
                         </font><br>
-                        <input type="checkbox" name="factura" id="factura" onclick="facturar(<?php echo $c['cuota_id']; ?>)"> Emitir Factura
+                        <?php
+                        $deshabilitar = "";
+                        $mostrarblock = "block";
+                        $checkedfactura = "";
+                        if($parametro_factura == 1 ){
+                            $deshabilitar = "disabled";
+                            $checkedfactura = "checked";
+                        }else if($parametro_factura == 4 ){ // esta chequeado
+                            $checkedfactura = "checked";
+                        }else if($parametro_factura == 3){
+                            $mostrarblock = "none";
+                        }
+                        ?>
+                        <span style="display: <?php echo $mostrarblock; ?>">
+                        <input type="checkbox" name="factura" id="factura" <?php echo $checkedfactura; ?> onclick="facturar(<?php echo $c['cuota_id']; ?>)" <?php echo $deshabilitar; ?> > Emitir Factura
+                        </span>
 
                 </div>
                 <div class="col-md-12">
@@ -284,7 +351,7 @@ $(document).ready(function(){
                     <div class="col-md-6">
                         <label for="forma_pago" class="control-label">Forma de pago</label>
                         <div class="form-group">
-                            <select id="select_forma_pago<?= $c['cuota_id'] ?>" name="forma_pago" class="form-control" onchange="mostrar('select_forma_pago<?= $c['cuota_id'] ?>', 'cuota_forma_glosa<?= $c['cuota_id'] ?>')">
+                            <select id="select_forma_pago<?= $c['cuota_id'] ?>" name="forma_pago" class="form-control" onchange="mostrar_formapago(<?= $c['cuota_id'] ?>), mostrar('select_forma_pago<?= $c['cuota_id'] ?>', 'cuota_forma_glosa<?= $c['cuota_id'] ?>')">
                                 <?php foreach($all_forma_pago as $forma){
                                   $selected = ($forma['forma_nombre'] == $this->input->post('forma_pago')) ? ' selected="selected"' : "";
                                   echo '<option value="'.$forma['forma_id'].'" '.$selected.'>'.$forma['forma_nombre'].'</option>';
@@ -297,7 +364,7 @@ $(document).ready(function(){
                             <div class="col-md-7">
                                 <label for="cuota_forma_glosa" class="control-label">Glosa Forma de pago</label>
                                 <div class="form-group">
-                                    <input type="text" name="cuota_forma_glosa" value="<?php echo $this->input->post('cuota_forma_glosa'); ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                                    <input type="text" name="cuota_forma_glosa" id="cuota_forma_glosa" value="<?php echo $this->input->post('cuota_forma_glosa'); ?>" class="form-control" onkeyup="ofuscar_tarjeta()"/>
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -314,7 +381,9 @@ $(document).ready(function(){
                             </div>
                         </div>
                     </div>
-                    <hr class="col-md-12">
+                    <div class="col-md-12">
+                        <hr style="margin-top: 1px">
+                    </div>
                     <div class="col-md-6">
                         <label for="cuota_numercibo" class="control-label">Recibo Num.</label>
                         <div class="form-group">
@@ -342,6 +411,11 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="col-md-12" id="detallec<?php echo $c['cuota_id']; ?>"></div>
+                </div>
+                <div class="col-md-12" style="display:none" id="imagenqr">
+                    <center>
+                        <img src="<?php echo base_url("resources/images/formapago/miqr.jpg") ?>">                        
+                    </center>                    
                 </div>
                 <div class="modal-footer" align="right">
                     <button class="btn btn-lg btn-success"  type="button"  onclick="enviar_formulario(<?php echo $c['cuota_id']; ?>)">

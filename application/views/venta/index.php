@@ -2,6 +2,7 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/emision_paquetes.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones_ventaifactura.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     window.onload = function() {
         buscar_ventas()
@@ -76,6 +77,7 @@
 <input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 
+<input type="text" id="parametro_factura" value="<?php echo $parametro['parametro_factura']; ?>" name="parametro_factura"  hidden>
 
 <div class="box-header no-print">
 <h3 class="box-title">Ventas</h3>
@@ -306,8 +308,8 @@
                                 <div class="col">
                                     <div class="col-md-4">
                                         <b>DOC. IDENTIDAD:</b>
-                                        <select name="doc_identidad" id="doc_identidad" class="form-control btn btn-xs btn-warning" style="text-align: left;">
-                                            <option value="">--DOC. IDENTIDAD--</option>
+                                        <select name="doc_identidad" id="doc_identidad" class="form-control btn btn-xs btn-warning" style="text-align: left;" onchange="selecciono_eldocumento()">
+                                            <!--<option value="">--DOC. IDENTIDAD--</option>-->
                                             <?php
                                             foreach($docs_identidad as $doc_ident){?>
                                                 <option value="<?=$doc_ident['cdi_codigoclasificador']?>"><?=$doc_ident['cdi_descripcion']?></option>
@@ -316,14 +318,26 @@
                                             ?>
                                         </select>
                                     </div>
-                                    <div class="col-md-3">
-                                    <b>NUMERO DE DOC.:</b><input type="text" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;">
-
+                                    <div class="col-md-4">
+                                        <b>NUMERO DE DOC.:</b>
+                                        <div class="input-group">
+                                            <input type="text" name="generar_nit" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,1)" onclick="seleccionar_uncampo(1)">
+                                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentrada(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-5">
-                                    <b>RAZON SOCIAL:</b><input type="text" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">
-
+                                    <div class="col-md-4">
+                                        <b>RAZON SOCIAL:</b>
+                                        <div class="input-group">
+                                            <input type="text" name="generar_razon" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">
+                                            <datalist id="listaclientes"></datalist>
+                                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,9)" title="Buscar por Razon social"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                                        </div>
+                                        
                                     </div>
+                                    <div>                
+                                        <input type="checkbox" class="form-check-input" name="codigoexcepcion" id="codigoexcepcion"><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+                                    </div>
+                                    
                                 </div>
                             </div>
 
@@ -334,8 +348,14 @@
                         
                         <div class="box-body table-responsive" style="font-family: Arial;">
                             
-                            <b>DETALLE:</b><a onclick="mostrarocultarcampos()" class="btn btn-xs btn-info" title="Añadir item al detalle"><span class="fa fa-edit"></span> Añadir Item</a>
-                            
+                            <b>DETALLE:</b>
+                            <?php
+                            if($parametro["parametro_tiposistema"] == 1){
+                            ?>
+                            <a onclick="mostrarocultarcampos()" class="btn btn-xs btn-info" title="Añadir item al detalle"><span class="fa fa-edit"></span> Añadir Item</a>
+                            <?php
+                            }
+                            ?>
                             <div id="mostrarocultar" style="padding-left: 0px; visibility:hidden; width: 0px; height: 0px;  ">
                                 <div class="col-md-2" style="padding-left: 0px; padding-right: 0px">
                                     <label for="cantidad_id" class="control-label">CANT.</label>
