@@ -1,12 +1,15 @@
 function facturar(cuota){
-	 
-     var base_url = document.getElementById('base_url').value;
-     var controlador = base_url+'cuotum/detallecuota/';
+    
+    var precios = $('#factura').is(':checked');
+    if(precios){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'cuotum/detallecuota/';
 
-     $.ajax({url: controlador,
-           type:"POST",
-           data:{cuota:cuota},
-           success:function(respuesta){     
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{cuota:cuota},
+            success:function(respuesta){     
                               
                var registros =  JSON.parse(respuesta);
                 
@@ -19,18 +22,18 @@ function facturar(cuota){
                         html += "<input type='text' name='detalle' value='PAGO DE CUOTA No. "+registros["cuota_numcuota"]+"/credito "+registros["credito_id"]+" ' class='form-control' id='detalle' />";
                         html += "</div>";
                     	//alert(registros["cuota_id"]);
-                       $("#detallec"+registros["cuota_id"]+"").html(html);
-                       document.getElementById('clinit'+cuota).style.display = 'block';
-                       
-                       
-                       
-          }  
-        },
-        error:function(respuesta){
-          
-       
-   }
+                        $("#detallec"+registros["cuota_id"]+"").html(html);
+                        document.getElementById('clinit'+cuota).style.display = 'block';
+                }
+            },
+            error:function(respuesta){
+                
+            }
     });
+    }else{
+        $("#detallec"+cuota).html("");
+        document.getElementById('clinit'+cuota).style.display = 'none';
+    }
 }
 
 function enviar_formulario(cuota_id){
@@ -57,6 +60,38 @@ function mostrarcomprobante(){
     $("#modalconfirmar").modal("hide");
 }
 
+function ofuscar_tarjeta(){
+    
+    $cadena = document.getElementById("cuota_forma_glosa").value;
+    $tarjeta = "";
+    $tam = $cadena.length;
+    
+        if ($tam<16){
+            
+            for(var i = 0; i<$cadena.length; i++){
+
+                if(i>=4 && i <12){
+                    $tarjeta += "0";           
+                }else{
+                    $tarjeta += $cadena[i];            
+                }
+
+            }
+        }else{
+            
+            for(var i = 0; i<16; i++){
+                if(i>=4 && i <12){
+                    $tarjeta += "0";           
+                }else{
+                    $tarjeta += $cadena[i];            
+                }                
+            }            
+        }
+
+        $("#cuota_forma_glosa").val($tarjeta);
+        //alert($tarjeta);        
+    
+}
 /*
 
 function facturarcuota(cuota_id){

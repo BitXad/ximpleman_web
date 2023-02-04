@@ -1310,4 +1310,22 @@ class Cliente extends CI_Controller{
 
         }
     }
+    
+    /* selecciona a un cliente; para generar factura despues de la transación viene de eveventas/inndex */
+    function get_infcliente(){
+        if($this->acceso(12)){
+            if ($this->input->is_ajax_request()) {
+                $cliente_id = $this->input->post('cliente_id');
+                if ($cliente_id!=""){
+                    $cliente = $this->Cliente_model->get_cliente($cliente_id);
+                    echo json_encode($cliente);
+                }else{
+                    echo json_encode(null);
+                }
+            }else
+            {
+                show_404();
+            }
+        }
+    }
 }

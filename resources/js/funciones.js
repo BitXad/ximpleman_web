@@ -3428,6 +3428,8 @@ function cargar_factura(factura){
                 if (registros != null){
                     $("#boton_modal_factura").click();
                     cargar_factura2(venta_id);
+                    let cliente_id = factura.cliente_id;
+                    cargar_infcliente(cliente_id);
                     /*html = "";
                     html += "<table>";
                     html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
@@ -5142,6 +5144,30 @@ function cargar_factura2(venta_id){
         
         
     })
+    
+}
+
+function cargar_infcliente(cliente_id){
+    //var decimales = Number(document.getElementById('parametro_decimales').value);
+    
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"cliente/get_infcliente";
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{cliente_id:cliente_id},
+            success:function(resultado){
+                var registros =  JSON.parse(resultado);
+                if(registros.cliente_excepcion == 1){
+                    $("#codigoexcepcion").prop("checked", true);
+                }else{
+                    $("#codigoexcepcion").prop("checked", false);
+                }
+            },
+            error:function(){
+                alert("Ocurrio un problema al cargar la informacion del Cliente... Verifique los datos por favor");
+            },
+            
+    });
     
 }
 

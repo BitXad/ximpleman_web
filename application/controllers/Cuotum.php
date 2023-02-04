@@ -117,6 +117,7 @@ class Cuotum extends CI_Controller{
             }
             
             $parametros = $this->Parametro_model->get_parametro(1);
+            $data['parametro_factura'] = $parametros['parametro_factura'];
             $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
             $data['moneda'] = $this->Moneda_model->get_moneda($parametros['moneda_id']);
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
