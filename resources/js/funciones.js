@@ -2009,8 +2009,9 @@ function ingreso_rapido(producto_id){
     
 }
 
-function registrar_ingreso_rapido(producto){
+function registrar_ingreso_rapido(producto_id){
     
+    var producto = get_producto(producto_id);
     $("#ingresorapido_producto").val(producto.producto_nombre);
     $("#filtrar").val(producto.producto_nombre);
     $("#ingresorapido_producto_id").val(producto.producto_id);

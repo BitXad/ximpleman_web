@@ -118,7 +118,7 @@ border-bottom : 1px solid #aaa;*/
                    
                     
                 <font size="3" face="arial"><b>COTIZACIÓN</b></font> <br>
-                <font size="1" face="arial"><b>Nº 00<?php echo $cotizacion['cotizacion_id']; ?></b></font> <br>
+                <font size="2" face="arial"><b>Nº 00<?php echo $cotizacion['cotizacion_id']; ?></b></font> <br>
                 
                    
                 <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->

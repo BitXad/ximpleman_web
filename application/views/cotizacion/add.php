@@ -24,6 +24,7 @@ function imprime(cotizacion_id){
                 $('#cotizar').keyup(function () {
                     var rex = new RegExp($(this).val(), 'i');
                     $('.buscar tr').hide();
+                    $('.buscar33 tr').show();
                     $('.buscar tr').filter(function () {
                         return rex.test($(this).text());
                     }).show();
@@ -89,17 +90,20 @@ input[type=number] { -moz-appearance:textfield; }
 </style> 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
+<link href="<?php echo base_url('resources/css/tablacompras.css'); ?>" rel="stylesheet">
+
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
+            <!--<div class="box-header with-border">-->
+                <h5 class="box-title"><b>COTIZACION</b></h5>
+            <!--</div>-->
 
 <div class="row">
     <div class="col-md-12">
-      	<div class="box box-info" >
-            <div class="box-header with-border">
-              	<h3 class="box-title">Cotizacion</h3>
-            </div>
+      <font size="1"><b>DATOS DEL CLIENTE</b></font>
+        <div class="box" style="border-color:black;">
             <form action="<?php echo base_url('cotizacion/finalizar/'.$cotizacion_id); ?>" id="fincotiza" name="fincotiza" method="POST" class="form">
           
 
@@ -189,21 +193,31 @@ input[type=number] { -moz-appearance:textfield; }
                 </div>
          </div>
     
-</div>
+    </div>
+
+                
+                
             <div class="col-md-4" style="float: right;">
-            <button   onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-xs btn-success">
+            <button   onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-xs btn-default">
                 <i class="fa fa-check"></i>Finalizar Cotizacion
               </button></form>
-              <a href="<?php echo site_url('cotizacion/index'); ?>"><button type="button" class="btn btn-xs btn-danger">
+              <a href="<?php echo site_url('cotizacion/index'); ?>"><button type="button" class="btn btn-xs btn-default">
                 <i class="fa fa-times"></i> Cancelar
               </button></a>
             </div>
           	</form>
           			     
+</div>
+</div>
+</div>
   
 <!---------------------------------------TABLA DE DETALLE cotizacion------------------------------------>
 <div class="col-md-12">
    <div class="col-md-4" style="padding-left:0px;">
+          
+       <font size="1"><b>BUSCAR PRODUCTOS</b></font>
+        <div class="box" style="border-color:black;">
+    
                         
       <div class="input-group"> <span class="input-group-addon">Buscar</span>
         <input id="cotizar" type="text" class="form-control" autocomplete="off" placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="cotivalidar(event,4)">
@@ -235,15 +249,17 @@ input[type=number] { -moz-appearance:textfield; }
                     </tbody>
                 </table>
             </div>
+            </div>
 
                         <!----------------------FIN TABLA--------------------------------------------------->
             
       
 
 <div class="col-md-8"> 
+        <font size="1"><b>DETALLE DE PRODUCTOS</b></font>
+        <div class="box" style="border-color:black;">
 <div class="box">
-             <h4 class="modal-title" id="myModalLabel">Detalle Cotizacion</h4>
-            <div class="box-body table-responsive">
+            <!--<div class="box-body table-responsive">-->
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                             <th>#</th>
@@ -277,13 +293,13 @@ input[type=number] { -moz-appearance:textfield; }
     </div>
  <div class="col-md-12" align="right"> 
   <center>
-            <a type="button" onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+            <a type="button" onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br>
                Finalizar<br>Cotización<br>
             </a>
 
             
-            <a  href="<?php echo site_url('cotizacion/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+            <a  href="<?php echo site_url('cotizacion/index'); ?>" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Cancelar<br>
             </a>    
