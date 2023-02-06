@@ -402,6 +402,12 @@ $salto_linea='
                 $numero_serie = $df['detallefact_preferencia'];
                 $valor_imei = $df['detallefact_caracteristicas'];
                 
+                if($documento_sector == 8){ // unir el nombre del producto con las caracteristicas del producto
+                    
+                    $detallefact_descripcion .= $valor_imei;
+                    
+                }
+                
                 
                 $detalle_facturaxml .= $salto_linea.'      <detalle>';             
                 $detalle_facturaxml .= $salto_linea.'           <actividadEconomica>'.$factura['factura_actividad'].'</actividadEconomica>';
