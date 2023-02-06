@@ -305,8 +305,8 @@
                         
                             
                             <div class="row">
-                                <div class="col">
-                                    <div class="col-md-4">
+                                <!--<div class="">-->
+                                    <div class="col-md-6">
                                         <b>DOC. IDENTIDAD:</b>
                                         <select name="doc_identidad" id="doc_identidad" class="form-control btn btn-xs btn-warning" style="text-align: left;" onchange="selecciono_eldocumento()">
                                             <!--<option value="">--DOC. IDENTIDAD--</option>-->
@@ -318,14 +318,14 @@
                                             ?>
                                         </select>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <b>NUMERO DE DOC.:</b>
                                         <div class="input-group">
                                             <input type="text" name="generar_nit" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,1)" onclick="seleccionar_uncampo(1)">
                                             <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentrada(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <b>RAZON SOCIAL:</b>
                                         <div class="input-group">
                                             <input type="text" name="generar_razon" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">
@@ -334,11 +334,23 @@
                                         </div>
                                         
                                     </div>
-                                    <div>                
+                                    <div class="col-md-6">
+                                        <b>CORREO ELECTRONICO:</b>
+                                        <div class="">
+                                            <input type="email" name="elemail" class="form-control" id="elemail" onclick="this.select()" onkeypress="validar(event,13)"/>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-12" id='loader_generarfactura' style='display: none;'>
+                                        <center>
+                                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                        </center>
+                                    </div>
+                                    <div hidden>                
                                         <input type="checkbox" class="form-check-input" name="codigoexcepcion" id="codigoexcepcion"><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
                                     </div>
                                     
-                                </div>
+                                <!--</div>-->
                             </div>
 
                             
