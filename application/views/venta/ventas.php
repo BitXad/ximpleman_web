@@ -628,7 +628,7 @@ window.onkeydown = compruebaTecla;
 <div class="row">
     
     
-    <div class="col-md-8">
+    <div class="col-md-<?php echo $parametro['parametro_anchobuscador']; ?>">
         <font size="1"><b>BUSCADOR DE PRODUCTOS</b></font> 
         
         <div class="box" style="border-color:black;">
@@ -644,7 +644,7 @@ window.onkeydown = compruebaTecla;
                         <i class="fa fa-barcode"></i>
                       </span>           
                       <input type="text" name="codigo" id="codigo" class="form-control" placeholder="Código, serie" onkeyup="validar(event,3)" autocomplete="off">
-                      <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,3)" title="Buscar"><span class="fa fa-search" aria-hidden="true"></span></div>
+                      <div style="border-color: #008d4c; background: #008D4C !important; color: white;" class="btn btn-success input-group-addon" onclick="validar(13,3)" title="Buscar"><span class="fa fa-search" aria-hidden="true"></span></div>
                   </div>
             </div>      
            <!--------------------- fin buscador por codigo --------------------->
@@ -762,6 +762,8 @@ window.onkeydown = compruebaTecla;
             </div> <!-------- FIN BOX-BODY---------->
         </div> <!-------- FIN BOX---------->
         
+        <?php if ($parametro['parametro_factura']!=3){ ?>
+        
         <div class="box">
             <font size="1"><b>PRODUCTOS SIN HOMOLOGAR</b></font>
         <div class="box" style="border-color:black;">
@@ -824,7 +826,8 @@ window.onkeydown = compruebaTecla;
             
         </div>
         </div>
-        
+       
+        <?php } ?> 
         
     </div>
     
@@ -838,8 +841,8 @@ window.onkeydown = compruebaTecla;
             <img src="<?php echo base_url("resources/images/loader.gif"); ?>">
         </center>
     </div>
-        
-    <div class="col-md-4" id="divventas0" style="display:block;">
+    
+    <div class="col-md-<?php echo (12 - $parametro['parametro_anchobuscador']); ?>" id="divventas0" style="display:block;">
         <font size="1"><b>DETALLE DE LA <?php echo $sistema["sistema_moduloventas"]; ?> </b></font>
         <div class="box" style="border-color:black;">
             <div class="box-body">
@@ -1361,7 +1364,7 @@ window.onkeydown = compruebaTecla;
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if( $dosificacion[0]["docsec_codigoclasificador"] == 23 || $dosificacion[0]["docsec_codigoclasificador"] == 39){ //23 prevalorada (original)
+                if( $dosificacion[0]["docsec_codigoclasificador"] == 23){ //23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }
@@ -1463,7 +1466,14 @@ window.onkeydown = compruebaTecla;
           
             <div class="col-md-12">
                 <input type="checkbox" style="padding: 0;" id="mandar_enuno" value="1" name="mandar_enuno" checked disabled >
-                NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
+                
+               <?php if ($dosificacion[0]['docsec_codigoclasificador']==2){ ?>
+                    <b>PERIODO:</b>
+               <?php }else{ ?>
+                    <b>NOTA:</b>
+               <?php }?>
+                
+                <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
                 
                 <div class="col-md-12" style="display:none" id="imagenqr">
                     <center>

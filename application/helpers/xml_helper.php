@@ -316,7 +316,7 @@ $salto_linea='
         
         
         if ($documento_sector == 2){ //2-Alquiler Bienes Inmuebles
-            $periodo_facturado = "DE ENERO 2022 A FEBRERO 2022";
+            $periodo_facturado = $factura['factura_glosa'];
             $cabecera_facturaxml .= $salto_linea.'          <periodoFacturado>'.$periodo_facturado.'</periodoFacturado>';
         }
         
@@ -337,7 +337,15 @@ $salto_linea='
         $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
         
         $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.$factura['factura_total'].'</montoTotal>';
-        $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';
+        
+        if ($documento_sector != 8){  //8 - Factura tasa cero
+            
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';
+            
+        }else{
+            $total_creditofiscal = 0;
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';            
+        }
         
         if ($documento_sector == 13){ //13 - factura servicios basicos
             
@@ -428,7 +436,8 @@ $salto_linea='
                 $detalle_facturaxml .= $salto_linea.'           <montoDescuento>'.number_format($descuentoparcial,2,'.','').'</montoDescuento>';
                 $detalle_facturaxml .= $salto_linea.'           <subTotal>'.number_format($df['detallefact_total'],2,'.','').'</subTotal>';
                 
-                if ($documento_sector != 2 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23){
+                if ($documento_sector != 2 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
+                    && $documento_sector != 8){
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
                     $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
                 }

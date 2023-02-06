@@ -1,11 +1,30 @@
 <script src="<?php echo base_url('resources/js/caja.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/reporte_movimiento.js'); ?>"></script>
 
+<!-- CODIGO PARA EVITAR ENTER EN LOS INPUTS-->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[type=number]').forEach( node => node.addEventListener('keypress', e => {
+        if(e.keyCode == 13) {
+          e.preventDefault();
+        }
+      }))
+    });
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[type=text]').forEach( node => node.addEventListener('keypress', e => {
+        if(e.keyCode == 13) {
+          e.preventDefault();
+        }
+      }))
+    });
+  </script>
+  
 <style>
     input {color:blue; font-size:14px;}
 </style>
 
-<?php  $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'  "; ?>
+<?php  $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'"; ?>
 <!-------------------- inicio collapse ---------------------->
 <div hidden>
 

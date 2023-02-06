@@ -171,13 +171,13 @@
                     <div class="col-md-6">
                         <label for="tipofac_codigo" class="control-label">Tipo Factura / Documento Ajuste</label>
                         <div class="form-group">
-                            <select name="tipofac_codigo" class="form-control">
+                            <select name="tipofac_codigo" id="tipofac_codigo" class="form-control">
                                 <option value="">- Tipo Factura/Documento Ajuste -</option>
                                 <?php 
                                     foreach($all_tipoFact as $tipoFact)
                                     {
                                         $selected = ($tipoFact['tipofac_codigo'] == $dosificacion['tipofac_codigo']) ? ' selected="selected"' : "";
-                                        echo '<option value="'.$tipoFact['tipofac_codigo'].'" '.$selected.'>'.$tipoFact['tipofac_descripcion'].'</option>';
+                                        echo '<option value="'.$tipoFact['tipofac_codigo'].'" '.$selected.'>'.$tipoFact['tipofac_codigo'].' - '.$tipoFact['tipofac_descripcion'].'</option>';
                                     } 
                                 ?>
                             </select>
@@ -186,7 +186,7 @@
                     <div class="col-md-6">
                         <label for="docsec_codigoclasificador" class="control-label">Documento Sector</label>
                         <div class="form-group">
-                            <select name="docsec_codigoclasificador" class="form-control">
+                            <select name="docsec_codigoclasificador" id="docsec_codigoclasificador" class="form-control" onchange="mensaje_alerta()">
                                 <option value="">- Documento Sector -</option>
                                 <?php 
                                     foreach($all_documentosector as $docsector)
@@ -479,5 +479,26 @@
         let set_actividad = $(`#${select_actividad}`).val();
         $(`#${input_actividad}`).val(set_actividad);
     }
+    
+    function mensaje_alerta(){
+        
+        let documento_sector = document.getElementById("docsec_codigoclasificador").value;
+        //alert(documento_sector);
+        if (documento_sector==8){
+            alert("ADVERTENCIA: Este documento es SIN DERECHO A CREDITO FISCAL.\nDebe modificar el Tipo Factura/Documento Ajuste a TIPO 2");
+            document.getElementById("tipofac_codigo").style = "background: yellow;";
+            document.getElementById("tipofac_codigo").value = 2;
+            $("#tipofac_codigo").focus();
+        }else{
+            
+            alert("ADVERTENCIA: Este documento es CON DERECHO A CREDITO FISCAL.\nDebe modificar el Tipo Factura/Documento Ajuste a TIPO 1");
+            document.getElementById("tipofac_codigo").style = "background: yellow;";           
+            document.getElementById("tipofac_codigo").value = 1;
+            $("#tipofac_codigo").focus();
+            
+        }
+        
+    }
+    
 </script>
 

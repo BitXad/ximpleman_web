@@ -4822,15 +4822,20 @@ function anular_venta($venta_id){
         }
 
         
-        if ($dosificacion['docsec_codigoclasificador']==1)
+        if ($dosificacion['docsec_codigoclasificador']==1 )
                $wsdl = $dosificacion['dosificacion_factura'];
         
-        
+        //*************************************************************************
+        //       SERVICIOS FACTURACION ELECTRONICA
+        //*************************************************************************
         if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
             
-            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17)
+            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                || $dosificacion['docsec_codigoclasificador']==8)
+                
                 $wsdl = $dosificacion['dosificacion_glpelectronica'];
             
+
             
             if ($dosificacion['docsec_codigoclasificador']==13)
                 $wsdl = $dosificacion['dosificacion_facturaservicios'];
@@ -4841,9 +4846,14 @@ function anular_venta($venta_id){
             
         }
         
+        //*************************************************************************
+        //       SERVICIOS FACTURACION COMPUTARIZADA
+        //*************************************************************************        
         if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
         
-            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
+            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
+                || $dosificacion['docsec_codigoclasificador']==8)
+                
                 $wsdl = $dosificacion['dosificacion_facturaglp'];
             
         }
@@ -5808,6 +5818,7 @@ function anular_venta($venta_id){
     }
     
     function pdf_factura_boucher($factura_id){
+        
         $factura = $this->Factura_model->get_factura_id($factura_id);
         $detalle_factura = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
         $empresa = $this->Empresa_model->get_empresa(1);
@@ -5872,7 +5883,22 @@ function anular_venta($venta_id){
         $micad .= "                            <tr>";
         $micad .= "                                <td class='text-center' style='padding-bottom: 5px;'><center>";
         $micad .= "                                     ";
-                                                       $titulo1 = "FACTURA";
+                                                       
+                                                       
+        switch($opc){
+            
+            default: $titulo1 = "FACTURA";
+                    break;
+                    
+            case 2: $titulo1 = "FACTURA DE ALQUILER";
+                    break;
+                
+            case 8: $titulo1 = "FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL";
+                    break;
+                
+                
+        }
+                                                       
                                                        $tipo = 1;
                                                     if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
                                                     else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";";
@@ -6615,16 +6641,35 @@ function anular_venta($venta_id){
         $micad .= "                <td colspan='3' style='padding: 0; font-family: Arial'>"; 
         $micad .= "                    <center style='margin-bottom:15px'>"; 
         
-        if ($this->dosificacion["docsec_codigoclasificador"]==2){            
+        
+        $opc = $this->dosificacion["docsec_codigoclasificador"];
+        
+       // echo "opc: ".$opc;
+        switch($opc){
             
-            $micad .= "                        <font size='4' face='arial'>FACTURA DE ALQUILER</font> <br>"; 
-            
+                    
+            case 1: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
+                    break;                
+            case 2: $micad .= "<font size='4' face='arial'>FACTURA DE ALQUILER</font> <br>";
+                    break;
+            case 3: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
+                    break;
+            case 4: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
+                    break;                
+            case 5: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
+                    break;
+                
+            case 8: $micad .= "<font size='4' face='arial'>FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL</font> <br>";
+                    break;
+                
+            case 23: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
+                    break;
+                
+            default: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
+                    break;
+                
         }
-        else{
         
-            $micad .= "                        <font size='4' face='arial'>FACTURA</font> <br>"; 
-        
-        } 
         
         $micad .= "                        <font size='1' face='arial'>(Con Derecho a Cr&eacute;dito Fiscal)</font> <br>"; 
         $micad .= "                    </center>"; 

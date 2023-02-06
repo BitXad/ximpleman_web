@@ -291,7 +291,7 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_glpelectronica' => $this->input->post('dosificacion_glpelectronica'),
                 );
 
-                                        //Actualizamos el nombre del documento sector
+                        //Actualizamos el nombre del documento sector
                         $sql = "update dosificacion d, documentos_fiscales f
                                 set 
                                 d.`dosificacion_documentosector` = f.`documento_nombre`

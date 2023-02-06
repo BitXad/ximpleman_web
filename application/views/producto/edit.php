@@ -92,6 +92,18 @@
         $("#producto_precio").val(Number(estecosto*esteporcent)+Number(estecosto));
     }
 </script>
+
+<!-- CODIGO PARA EVITAR ENTER EN LOS INPUTS-->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[type=text]').forEach( node => node.addEventListener('keypress', e => {
+        if(e.keyCode == 13) {
+          e.preventDefault();
+        }
+      }))
+    });
+  </script>
+
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <div class="row">
     <div class="col-md-12">

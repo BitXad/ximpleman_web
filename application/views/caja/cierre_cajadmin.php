@@ -5,6 +5,17 @@
     input {color:blue; font-size:14px;}
 </style>
 
+<!-- CODIGO PARA EVITAR ENTER EN LOS INPUTS-->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input[type=text]').forEach( node => node.addEventListener('keypress', e => {
+        if(e.keyCode == 13) {
+          e.preventDefault();
+        }
+      }))
+    });
+  </script>
+
 <?php  $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'  "; ?>
 <!-------------------- inicio collapse ---------------------->
 <div hidden>
