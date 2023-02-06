@@ -6053,30 +6053,40 @@ function anular_venta($venta_id){
         $micad .= "                                <td></td>";
         $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura[0]['factura_giftcard'],2,'.',',')."</td>";
         $micad .= "                            </tr>";
-                                                if ($mostrarice==1){
-        $micad .= "                            <tr>";
-        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
-        $micad .= "                                <td></td>";
-        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($ice,2,'.',','); //number_format($factura[0]['factura_ice'],2,'.',',');
-        $micad .= "                                </td>";
-        $micad .= "                            </tr>";
-        $micad .= "                            <tr>";
-        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE PORCENTUAL Bs</td>";
-        $micad .= "                                <td></td>";
-        $micad .= "                                <td class='text-right' style='text-align: right'> ".number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',',');
-        $micad .= "                                </td>";
-        $micad .= "                            </tr>";
-                                                }
+        
+        if ($mostrarice==1 || $factura[0]['docsec_codigoclasificador']!=8){
+                                                    
+            $micad .= "                            <tr>";
+            $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
+            $micad .= "                                <td></td>";
+            $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($ice,2,'.',','); //number_format($factura[0]['factura_ice'],2,'.',',');
+            $micad .= "                                </td>";
+            $micad .= "                            </tr>";
+            $micad .= "                            <tr>";
+            $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE PORCENTUAL Bs</td>";
+            $micad .= "                                <td></td>";
+            $micad .= "                                <td class='text-right' style='text-align: right'> ".number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',',');
+            $micad .= "                                </td>";
+            $micad .= "                            </tr>";
+        
+        }
+                                                
         $micad .= "                            <tr>";
         $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO A PAGAR Bs</td>";
         $micad .= "                                <td></td>";
         $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
         $micad .= "                            </tr>";
-        $micad .= "                            <tr>";
-        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>IMPORTE BASE CR&Eacute;DITO FISCAL Bs</td>";
-        $micad .= "                                <td></td>";
-        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
-        $micad .= "                            </tr>";
+        
+        if($factura[0]['docsec_codigoclasificador']!=8){ //Mostrar si no es Factura tasa cero
+        
+            $micad .= "                            <tr>";
+            $micad .= "                                <td class='text-right text-bold' style='text-align: right'>IMPORTE BASE CR&Eacute;DITO FISCAL Bs</td>";
+            $micad .= "                                <td></td>";
+            $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
+            $micad .= "                            </tr>";
+            
+        }
+        
         $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
         $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px; font-size: 10px;'>";
         $micad .= "                                    <br>";
@@ -6840,18 +6850,23 @@ function anular_venta($venta_id){
                              
         $micad .= "                                             <!-------------- MONTO A PAGAR ---------->";
         
-        if($mostrarice==1){
+        if($mostrarice==1 || $factura[0]['docsec_codigoclasificador']==8){ // Mostrar si es factura con ICE o Tasa Cero
         $micad .= "    <tr>           ";
         $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";
         $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total,2,'.',',')."</td>";
         $micad .= "    </tr>";
         }
         
+        if($factura[0]['docsec_codigoclasificador']!=8){ //Mostrar si no es Factura tasa cero
+            
         $micad .= "                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->"; 
         $micad .= "                    <tr>"; 
         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>IMPORTE BASE CR&Eacute;DITO FISCAL</td>"; 
         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total ,2,'.',',')."</td>"; 
-        $micad .= "                    </tr>"; 
+        $micad .= "                    </tr>";
+        
+        }
+        
         $micad .= "                </table>"; 
         $micad .= "            </td>"; 
         $micad .= "        </tr>"; 
