@@ -1,10 +1,12 @@
-/* Funciones para que ayude a generar factura edsde el index de ventas!. */
+/* Funciones para que ayude a generar factura desde el index de ventas!. */
+
+/* al seleccionar el documento, el cursor salta al Nit. */
 function selecciono_eldocumento(){
     
     /*$("#razon_social").css("background-color", "gray");
     $("#razon_social").attr("readonly","readonly");
     */
-    $("#generar_razon").focus("");
+    //$("#generar_razon").focus("");
     $("#generar_nit").focus();
     $("#generar_nit").select();
 }
@@ -30,7 +32,7 @@ function validar_laentrada(e,opcion) {
                 $("#nit").val(cod);
                 $("#razon_social").focus();
                 $("#razon_social").select();
-                $("#zona_id").val(0);                    
+                //$("#zona_id").val(0);                    
 
             }else{
                 /*
@@ -129,10 +131,10 @@ function validar_laentrada(e,opcion) {
 //Selecciona un campo!..
 function seleccionar_uncampo(opcion) {
     
-        if (opcion==1){             
+        if (opcion==1){
             document.getElementById('generar_nit').select();
         }
-        
+        /*
         if (opcion==2){
             document.getElementById('razon_social').select();
         }
@@ -151,7 +153,7 @@ function seleccionar_uncampo(opcion) {
         
         if (opcion==6){
             document.getElementById('venta_giftcard').select();
-        }
+        }*/
 }
 
 function buscar_a_losclientes(){
@@ -170,7 +172,7 @@ function buscar_a_losclientes(){
         
     //Alistamos controlador para buscar al cliente
     var controlador = base_url+'venta/buscarcliente';
-    document.getElementById('loader_documento').style.display = 'block';
+    document.getElementById('loader_generarfactura').style.display = 'block';
     
     $.ajax({url:controlador,
             type:"POST",
@@ -182,8 +184,8 @@ function buscar_a_losclientes(){
                 //Si el cliente ya esta registrado  en el sistema carga los datos
                 if (registros[0]!=null){ 
                     
-                    $("#razon_social").val(registros[0]["cliente_razon"]);
-                    document.getElementById('telefono').focus();
+                    $("#generar_razon").val(registros[0]["cliente_razon"]);
+                    /*document.getElementById('telefono').focus();
                     $("#telefono").val(registros[0]["cliente_telefono"]);
                     $("#cliente_nombre").val(registros[0]["cliente_nombre"]);
                     $("#cliente_ci").val(registros[0]["cliente_ci"]);
@@ -194,16 +196,19 @@ function buscar_a_losclientes(){
                     $("#cliente_direccion").val(registros[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(registros[0]["cliente_departamento"]);
                     $("#cliente_celular").val(registros[0]["cliente_celular"]);
-                    $("#email").val(registros[0]["cliente_email"]);
-                    $("#tipocliente_id").val(1);
+                    */
+                    $("#elemail").val(registros[0]["cliente_email"]);
+                    /*$("#tipocliente_id").val(1);
                     $("#tipocliente_porcdesc").val(0);
                     $("#tipocliente_montodesc").val(0);
-                    $("#tipo_doc_identidad").val(registros[0]["cdi_codigoclasificador"]);
-                    $("#cliente_valido").val(1);
+                    */
+                    $("#doc_identidad").val(registros[0]["cdi_codigoclasificador"]);
+                    //$("#cliente_valido").val(1);
+                    
                                                         
                     document.getElementById("codigoexcepcion").checked = (registros[0]["cliente_excepcion"] == 1); 
                     
-                    if (registros[0]["tipocliente_id"] != null && registros[0]["tipocliente_id"] >=0)
+                    /*if (registros[0]["tipocliente_id"] != null && registros[0]["tipocliente_id"] >=0)
                     {   //si tiene definido un tipo de cliente 
                         
                         $("#tipocliente_id").val(registros[0]["tipocliente_id"]); 
@@ -229,8 +234,8 @@ function buscar_a_losclientes(){
                     
                         $("#razon_social").focus();
                     
-                    }
-                    else //si no tiene asignado ningun tipo, le asignara el tipo 1 por defecto
+                    }*/
+                    /*else //si no tiene asignado ningun tipo, le asignara el tipo 1 por defecto
                     {    $("#tipocliente_id").val(1); }
                         
                     if(registros[0]["zona_id"] != null && registros[0]["zona_id"] >=0){
@@ -238,16 +243,18 @@ function buscar_a_losclientes(){
                     }else{
                         $("#zona_id").val(0);
                     }
+                    */
+                    document.getElementById('loader_generarfactura').style.display = 'none';
                     
-                    document.getElementById('loader_documento').style.display = 'none';
+                   $("#generar_razon").focus();
                 }
                 else //Si el cliente es nuevo o no existe
                 {
                     
                     //$("#razon_social").val('SIN NOMBRECILLO');
-                    document.getElementById('razon_social').focus();
-                    $("#razon_social").val("");
-                    $("#cliente_id").val(0);
+                    document.getElementById('generar_razon').focus();
+                    $("#generar_razon").val("");
+                    /*$("#cliente_id").val(0);
                     $("#cliente_nombre").val("-");
                     $("#cliente_ci").val(nit);
                     $("#cliente_nombrenegocio").val("-");
@@ -258,13 +265,15 @@ function buscar_a_losclientes(){
                     $("#cliente_direccion").val("-");
                     $("#cliente_departamento").val("-");
                     $("#cliente_celular").val("");
+                    */
                     $("#email").val("");
-                    $("#zona_id").val(0);
+                    /*$("#zona_id").val(0);
                     $("#tipocliente_id").val(1);
                     $("#venta_descuento").val(0);
+                    */
                     let tipo_sistema = document.getElementById('parametro_tiposistema').value;
                     //let dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
-                    let parametro_tipoemision = document.getElementById('parametro_tipoemision').value;
+                    //let parametro_tipoemision = document.getElementById('parametro_tipoemision').value;
                     
                     if(tipo_sistema != 1){ //1 =SFV /2=elec en linea 3=comp. en linea
                             //alert(dosificacion_modalidad);
