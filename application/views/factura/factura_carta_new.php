@@ -257,7 +257,27 @@ border-bottom : 1px solid #aaa;
             <tr style="padding: 0;">
                 <td colspan="6" style="padding: 0;">
                     <center style="margin-bottom:15px">
-                        <font size="4" face="arial"><b>FACTURA</b></font> <br>
+<!--                        NOMBRE DE LA FACTURA-->
+                        <font size="4" face="arial"><b>
+                            <?php
+                                    $opc = $factura[0]['docsec_codigoclasificador'];
+                                        switch($opc){
+
+                                            default: echo "FACTURA";
+                                                    break;
+
+                                            case 2: echo "FACTURA DE ALQUILER";
+                                                    break;
+
+                                            case 8: echo "FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL";
+                                                    break;
+
+
+                                        }
+                            ?>
+                            
+                        </b></font> <br>
+                        
                         <font size="1" face="arial">(Con Derecho a Cr&eacute;dito Fiscal)</font> <br>
                     </center>
                 </td>  
@@ -293,10 +313,16 @@ border-bottom : 1px solid #aaa;
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Cod. Cliente:</b></td>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_codigocliente'] ?></td>
                             </tr>
+                            <?php
+                            
+                            if ($factura[0]["docsec_codigoclasificador"]==2){ ?>
+                            
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Periodo Facturado:</b></td>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_glosa'] ?></td>
                             </tr>
+                            
+                            <?php } ?>
                         </table>
                     </div>
                 </td>
@@ -449,13 +475,13 @@ border-bottom : 1px solid #aaa;
                     <?php } ?>
                     
                     <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
-                    <?php //if ($factura_total>0){ ?>
+                    <?php if ($factura[0]['docsec_codigoclasificador']!=8){ ?>
                     <tr>           
                         
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>IMPORTE BASE CR&Eacute;DITO FISCAL</b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',')?></b></td>
                     </tr>
-                    <?php //} ?>
+                    <?php } ?>
                 </table>
             </td>
         </tr>
