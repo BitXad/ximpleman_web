@@ -310,7 +310,7 @@
                                 <!--<div class="">-->
                                     <div class="col-md-6">
                                         <b>DOC. IDENTIDAD:</b>
-                                        <select name="tipo_doc_identidad" id="tipo_doc_identidad" class="form-control btn btn-xs btn-warning" style="text-align: left;" onchange="selecciono_eldocumento()">
+                                        <select name="doc_identidad" id="doc_identidad" class="form-control btn btn-xs btn-warning" style="text-align: left;" onchange="selecciono_eldocumento()">
                                             <!--<option value="">--DOC. IDENTIDAD--</option>-->
                                             <?php
                                             foreach($docs_identidad as $doc_ident){?>
@@ -323,25 +323,22 @@
                                     <div class="col-md-6">
                                         <b>NUMERO DE DOC.:</b>
                                         <div class="input-group">
-                                            <input type="text" name="nit" id="nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,1)" onclick="seleccionar_uncampo(1)">
+                                            <input type="text" name="generar_nit" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,1)" onclick="seleccionar_uncampo(1)">
                                             <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentrada(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <b>RAZON SOCIAL:</b>
                                         <div class="input-group">
-                                            <input type="text" name="razon_social" id="razon_social" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">
+                                            <input type="text" name="generar_razon" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,9)" onchange="seleccionar_alcliente()" onclick="seleccionar_uncampo(2)">
                                             <datalist id="listaclientes"></datalist>
-                                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,9)" title="Buscar por Razon social"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentrada(13,9)" title="Buscar por Razon social"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
                                         </div>
                                         
                                     </div>
                                     <div class="col-md-6">
                                         <b>CORREO ELECTRONICO:</b>
-                                        <div class="">
-                                            <input type="email" name="email" class="form-control" id="email" onclick="this.select()" onkeypress="validar(event,13)"/>
-                                        </div>
-                                        
+                                            <input type="email" name="elemail" class="form-control btn btn-xs btn-warning" id="elemail" onclick="this.select()" onkeypress="validar(event,13)"/>
                                     </div>
                                     <div class="col-md-12" id='loader_generarfactura' style='display: none;'>
                                         <center>

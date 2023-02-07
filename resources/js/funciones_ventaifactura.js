@@ -24,14 +24,15 @@ function validar_laentrada(e,opcion) {
     
     if (tecla==13){
         if (opcion==1){   //si la pulsacion proviene del nit  
+            nit = $("#generar_nit").val();
             if (nit==''){
                     
                 var cod = generar_codigo();
                 //Si el nit es diferente de vacio
 
-                $("#nit").val(cod);
-                $("#razon_social").focus();
-                $("#razon_social").select();
+                $("#generar_nit").val(cod);
+                $("#generar_razon").focus();
+                $("#generar_razon").select();
                 //$("#zona_id").val(0);                    
 
             }else{
@@ -43,7 +44,7 @@ function validar_laentrada(e,opcion) {
                 buscar_a_losclientes();
             }
         }
-
+        /*
         if (opcion==2){
             var codigo = document.getElementById('razon_social').value;
             
@@ -55,8 +56,9 @@ function validar_laentrada(e,opcion) {
             
             $("#cliente_codigo").val(codigo);
             document.getElementById('cliente_celular').focus();
-        } 
-        
+            
+        }*/
+        /*
         if (opcion==3){   //si la tecla proviene del input codigo de barras          
             
             $('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojs();
@@ -79,27 +81,30 @@ function validar_laentrada(e,opcion) {
            document.getElementById('filtrar').focus();
 
         }
-        
+        */
         if (opcion==9){   //si la tecla proviene del buscador de pedido abierto
             
-           var nit = document.getElementById('nit').value;
+           var nit = document.getElementById('generar_nit').value;
            if (nit=='0'){
                 buscar_a_losclientes();
            }
            else{
-            
-                var codigo = document.getElementById('razon_social').value;
+               /*
+                var codigo = document.getElementById('generar_razon').value;
 
                 codigo = codigo[0]+codigo[1] + Math.floor((Math.random()*100000)+50);
-
+                
                 $("#cliente_nombre").val(document.getElementById('razon_social').value);
                 $("#cliente_celular").val(''); //si la tecla proviene del input razon social
                 $("#telefono").val(''); //si la tecla proviene del input razon social
 
                 $("#cliente_codigo").val(codigo);
-                document.getElementById('cliente_celular').focus();               
+                document.getElementById('cliente_celular').focus();
+                */
            }
-        }  
+        }
+        
+        /*
         if (opcion==10){   //si la tecla proviene del buscador del reporte de  ventas
            ventas_por_parametro();
            
@@ -118,13 +123,14 @@ function validar_laentrada(e,opcion) {
 //            $("#codigo").focus();
 //            $("#codigo").select()();
 //        }
-                
+         */       
     }
-    
+    /*
     if (opcion==7){   //si la tecla proviene del buscador de pedido abierto
        //document.getElementById('filtrar').focus();
        seleccionar_tipocliente();
     }    
+    */
  
 }
 
@@ -134,11 +140,11 @@ function seleccionar_uncampo(opcion) {
         if (opcion==1){
             document.getElementById('generar_nit').select();
         }
-        /*
-        if (opcion==2){
-            document.getElementById('razon_social').select();
-        }
         
+        if (opcion==2){
+            document.getElementById('generar_razon').select();
+        }
+        /*
         if (opcion==3){
             document.getElementById('cliente_celular').select();
         }
@@ -202,7 +208,7 @@ function buscar_a_losclientes(){
                     $("#tipocliente_porcdesc").val(0);
                     $("#tipocliente_montodesc").val(0);
                     */
-                    $("#doc_identidad").val(registros[0]["cdi_codigoclasificador"]);
+                    //$("#doc_identidad").val(registros[0]["cdi_codigoclasificador"]);
                     //$("#cliente_valido").val(1);
                     
                                                         
@@ -266,7 +272,7 @@ function buscar_a_losclientes(){
                     $("#cliente_departamento").val("-");
                     $("#cliente_celular").val("");
                     */
-                    $("#email").val("");
+                    $("#elemail").val("");
                     /*$("#zona_id").val(0);
                     $("#tipocliente_id").val(1);
                     $("#venta_descuento").val(0);
@@ -286,48 +292,190 @@ function buscar_a_losclientes(){
                             //alert(res);
                             if(res){ //Si existe conexion
                                 
-                                let tipo_doc_identidad = base_url = document.getElementById('tipo_doc_identidad').value;
+                                let tipo_doc_identidad = base_url = document.getElementById('doc_identidad').value;
                                 
                                     if(tipo_doc_identidad == 5){
 
                                         if (parametro_factura != 3){ // (NO ES) 3 Sin Factura
-                                                verificarnit();
+                                                verificar_elnit();
                                     }else{
-                                            document.getElementById('loader_documento').style.display = 'none';
+                                            document.getElementById('loader_generarfactura').style.display = 'none';
                                     }
                                     
                                 }else{
-                                    document.getElementById('loader_documento').style.display = 'none';
+                                    document.getElementById('loader_generarfactura').style.display = 'none';
                                 }
                                 
                             }else{
                                 alert("No hay comunicación con Impuestos");
-                                document.getElementById('loader_documento').style.display = 'none';
+                                document.getElementById('loader_generarfactura').style.display = 'none';
                             }
                         
                         }else{ // Si es computarizado o electronica en linea
-                                document.getElementById('loader_documento').style.display = 'none';
+                                document.getElementById('loader_generarfactura').style.display = 'none';
                                 $('#razon_social').focus();
                                 //verificarnit();
                                 //$('#razon_social').select();
                         }                       
                     }else{
-                        document.getElementById('loader_documento').style.display = 'none';
+                        document.getElementById('loader_generarfactura').style.display = 'none';
                         $('#razon_social').focus();
                     }                    
                 }
-                //document.getElementById('loader_documento').style.display = 'none';
+                //document.getElementById('loader_generarfactura').style.display = 'none';
             },
             error:function(respuesta){			
                 $("#razon_social").val('SIN NOMBRE');
                 document.getElementById('telefono').focus();
                 
                 $("#cliente_id").val(0);
-                document.getElementById('loader_documento').style.display = 'none';   
+                document.getElementById('loader_generarfactura').style.display = 'none';   
             }                
     }); 
 
 }
+
+/* verifica si el nit/ci es correcto */
+function verificar_elnit(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var nit = document.getElementById('generar_nit').value;
+    var controlador = base_url+'dosificacion/verificarNit';
+
+    document.getElementById('loader_generarfactura').style.display = 'block';    
+    
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{nit:nit},
+            success:function(respuesta){
+                var registros = JSON.parse(respuesta);
+                /*console.log(registros);
+                console.log(registros.RespuestaVerificarNit.mensajesList.codigo);
+                console.log(registros.RespuestaVerificarNit.mensajesList.descripcion);
+                console.log(registros.RespuestaVerificarNit.transaccion);*/
+                let elcodigo = registros.RespuestaVerificarNit.mensajesList.codigo;
+                $("#mensajeadvertencia").html(registros.RespuestaVerificarNit.mensajesList.descripcion);
+                if(elcodigo != 986){
+                    $("#modal_mensajeadvertencia").modal("show");
+                        
+                    $('#modal_mensajeadvertencia').on('shown.bs.modal', function() {
+                    $('#boton_advertencia').focus();
+                    });
+
+                    
+                }
+                
+                //alert("hola");
+                /*if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema
+                    
+                }*/
+                document.getElementById('loader_generarfactura').style.display = 'none';
+            },
+            error:function(respuesta){
+                alert("Algo salio mal; por favor verificar sus datos!.");
+                document.getElementById('loader_generarfactura').style.display = 'none';
+            }                
+    }); 
+
+}
+
+function seleccionar_alcliente(){
+    
+    var cliente_id = document.getElementById('generar_razon').value;
+    var nit = document.getElementById('generar_nit').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/seleccionar_cliente/"+cliente_id;
+    //alert(controlador);
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){
+                
+                resultado = JSON.parse(respuesta);
+                tam = resultado.length;
+                
+                
+                if (tam>=1){
+                    //$("#cliente_id").val(resultado[0]["cliente_id"]);
+                    $("#generar_nit").val(resultado[0]["cliente_nit"]);
+                    $("#generar_razon").val(resultado[0]["cliente_razon"]);
+                    /*$("#telefono").val(resultado[0]["cliente_telefono"]);
+                    $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
+                    $("#cliente_ci").val(resultado[0]["cliente_ci"]);     
+                    $("#cliente_complementoci").val(resultado[0]["cliente_complementoci"]);
+                    $("#cliente_nombrenegocio").val(resultado[0]["cliente_nombrenegocio"]);
+                    $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);  
+                    $("#tipocliente_id").val(resultado[0]["tipocliente_id"]);  
+                    $("#cliente_direccion").val(resultado[0]["cliente_direccion"]);
+                    $("#cliente_departamento").val(resultado[0]["cliente_departamento"]);
+                    $("#cliente_celular").val(resultado[0]["cliente_celular"]);
+                    */
+                    $("#elemail").val(resultado[0]["cliente_email"]);
+                    /*$("#tipo_doc_identidad").val(resultado[0]["cdi_codigoclasificador"]);
+                    $("#tipocliente_porcdesc").val(resultado[0]["tipocliente_porcdesc"]);
+                    $("#tipocliente_montodesc").val(resultado[0]["tipocliente_montodesc"]);
+                    */
+                    //alert(resultado[0]["cdi_codigoclasificador"]);
+                    /*
+                    if (resultado[0]["tipocliente_id"] != null && resultado[0]["tipocliente_id"] >=0)
+                    {   //si tiene definido un tipo de cliente 
+                        
+                        $("#tipocliente_id").val(resultado[0]["tipocliente_id"]); 
+                        
+                        if(resultado[0]["tipocliente_montodesc"]>0){
+                            
+                            $("#tipo_descuento").val(1);
+                            $("#venta_descuento").val(resultado[0]["tipocliente_montodesc"]);                            
+                            calculardesc();
+                        } 
+                        else{
+                            
+                            if(resultado[0]["tipocliente_porcdesc"]>0){                                
+                                $("#tipo_descuento").val(2); 
+                                $("#venta_descuento").val(resultado[0]["tipocliente_porcdesc"]);
+                                calculardesc();
+                            }
+                            else{
+                                $("#tipo_descuento").val(1); 
+                                $("#venta_descuento").val(0);                                
+                            }
+                            
+                        }
+                    
+                    
+                    }
+                    else //si no tiene asignado ningun tipo, le asignara el tipo 1 por defecto
+                    {    $("#tipocliente_id").val(1); }
+                    */
+                    /*
+                    if(resultado[0]["zona_id"] != null && Number(resultado[0]["zona_id"]) >=0){
+                        $("#zona_id").val(resultado[0]["zona_id"]);
+                    }else{
+                        $("#zona_id").val(0);
+                    }
+                    
+                    $("#codigo").select();
+                    */
+                }
+       
+
+            },
+            error: function(respuesta){
+            }
+        });    
+    
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
