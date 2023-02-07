@@ -52,6 +52,8 @@
 <input type="text" id="parametro_datosboton" value="<?php echo $parametro['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
 <input type="text" id="parametro_moneda_id" value="<?php echo $parametro['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
 <input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
+<input type="text" id="parametro_tiposistema" value="<?php echo $parametro['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
+<input type="text" id="parametro_tipoemision" value="<?php echo $parametro['parametro_tipoemision']; ?>" name="parametro_tipoemision"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -308,7 +310,7 @@
                                 <!--<div class="">-->
                                     <div class="col-md-6">
                                         <b>DOC. IDENTIDAD:</b>
-                                        <select name="doc_identidad" id="doc_identidad" class="form-control btn btn-xs btn-warning" style="text-align: left;" onchange="selecciono_eldocumento()">
+                                        <select name="tipo_doc_identidad" id="tipo_doc_identidad" class="form-control btn btn-xs btn-warning" style="text-align: left;" onchange="selecciono_eldocumento()">
                                             <!--<option value="">--DOC. IDENTIDAD--</option>-->
                                             <?php
                                             foreach($docs_identidad as $doc_ident){?>
@@ -321,14 +323,14 @@
                                     <div class="col-md-6">
                                         <b>NUMERO DE DOC.:</b>
                                         <div class="input-group">
-                                            <input type="text" name="generar_nit" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,1)" onclick="seleccionar_uncampo(1)">
+                                            <input type="text" name="nit" id="nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,1)" onclick="seleccionar_uncampo(1)">
                                             <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentrada(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <b>RAZON SOCIAL:</b>
                                         <div class="input-group">
-                                            <input type="text" name="generar_razon" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">
+                                            <input type="text" name="razon_social" id="razon_social" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">
                                             <datalist id="listaclientes"></datalist>
                                             <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,9)" title="Buscar por Razon social"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
                                         </div>
@@ -337,7 +339,7 @@
                                     <div class="col-md-6">
                                         <b>CORREO ELECTRONICO:</b>
                                         <div class="">
-                                            <input type="email" name="elemail" class="form-control" id="elemail" onclick="this.select()" onkeypress="validar(event,13)"/>
+                                            <input type="email" name="email" class="form-control" id="email" onclick="this.select()" onkeypress="validar(event,13)"/>
                                         </div>
                                         
                                     </div>
@@ -632,3 +634,35 @@
     </div>
 </div>
 <!------------------------ F I N  modal para envio de facturas a correos ------------------->
+
+<!-- --------------- INICIO modal Advertencia ---------------------------------->
+<div id="modal_mensajeadvertencia" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="font-family: Arial">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="background: #CC660E">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h2 class="modal-title"><fa class="fa fa-frown-o"></fa><b> ADVERTENCIA</b></h2>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-8">
+            <label for="mensajeadvertencia" class="control-label">
+                <h2 class="modal-title">
+                    <fa class="btn btn-default fa fa-exclamation-triangle fa-2x"> </fa><b><span id="mensajeadvertencia"></span></b>
+                </h2>
+            </label>
+        </div>  
+          
+        <div class="col-md-4">
+            <!--<button class="btn btn-default btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>-->
+            <button class="btn btn-default btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia"><fa class="fa fa-save"></fa> Aceptar</button>
+            <button class="btn btn-default btn-block" data-dismiss="modal" onclick="cancelar_excepcion_nit()"><fa class="fa fa-times"></fa> Cancelar</button>
+        </div>  
+      
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- --------------- F I N  modal Advertencia ---------------------------------->
