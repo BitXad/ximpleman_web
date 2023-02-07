@@ -47,7 +47,82 @@ class Categoria_cliente extends CI_Controller{
             $config['total_rows'] = $this->Categoria_cliente_model->get_all_categoria_cliente_count();
             $this->pagination->initialize($config);
             
-            $data['categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente($params);
+            $categoria_cliente = $this->Categoria_cliente_model->get_all_categoria_cliente($params);
+            $data['categoria_cliente'] = $categoria_cliente;
+            
+            //********************************************
+            // SMART GRID
+            //********************************************
+            $this->load->library('SmartGrid/Smartgrid');
+            // MySQL Query to get data
+            $sql = "select * from categoria_cliente"; 
+
+            // Column settings
+            $columns = array("categoriaclie_id"=>array("header"=>"ID", "type"=>"label"),
+                            "categoriaclie_descripcion"=>array("header"=>"Descripcion", "type"=>"label"),
+                            "categoriaclie_porcdesc"=>array("header"=>"% Desc", "type"=>"label"),
+                            "categoriaclie_montodesc"=>array("header"=>"Descuento", "type"=>"label"),
+                            "<button class='btn btn-facebook'>cosas</button>"=>array("header"=>"Botones", "type"=>"label"),
+                    );        
+
+            // Config settings, optional
+            
+            // Set the grid 
+            $this->smartgrid->set_grid($sql, $columns,$config);
+
+            // Render the grid and assign to data array, so it can be print to on the view
+            $data['grid_html'] = $this->smartgrid->render_grid();    
+            
+            //********************************************
+           
+            
+           
+            //********************************************
+            // SMART GRID
+            //********************************************
+            // MySQL Query to get data
+            $sql = "select * from producto order by producto_nombre"; 
+            
+            $config = array("page_size"=> 50, 
+                        "toolbar_position"=> 'top',
+                        "paging_enabled"=> true
+                );
+            
+            $raiz = base_url("producto/edit/");
+            
+            $buttons_html = '<div class="btn-group" role="group" aria-label=""><a href="'.$raiz.'{producto_id}" class="btn btn-default btn-xs" value="{producto_id}" target="blank_"><fa class="fa fa-computer"></fa> View</a><button type="button" class="btn btn-success btn-xs" value="{field_name}">Edit</button> <button type="button" class="btn btn-danger btn-xs" value="{field_name}">Delete</button></div>';
+            // Column settings
+
+            $columns = array(
+                
+                            "producto_id"=>array("header"=>"ID", "type"=>"label"),
+                            "producto_nombre"=>array("header"=>"Descripcion", "type"=>"label"),
+                            "producto_unidad"=>array("header"=>"Unidad", "type"=>"label"),
+                            "producto_marca"=>array("header"=>"Marca", "type"=>"label"),
+                            "producto_costo"=>array("header"=>"Costo", "type"=>"label"),
+                            "producto_precio"=>array("header"=>"Precio", "type"=>"label"),
+                            "producto_codigo"=>array("header"=>"Codigo", "type"=>"label"),
+                            "producto_costo"=>array("header"=>"Niveles", "type"=>"progressbar", "align"=>"center", "width"=>"100px"),
+                            //"producto_codigobarra"=>array("type"=>"custom", "header"=>"Buttons", "field_data"=>$buttons_html, "align"=>"center", "width"=>"130px"),
+                            "producto_industria"=>array("header"=>"Industria", "type"=>"label"),
+                            "producto_foto"=>array("header"=>"Foto", "type"=>"image", "align"=>"center", "image_width"=>"50px", "image_height"=>"50px"),
+                            "producto_comision"=>array("header"=>"Comision", "type"=>"label"),
+                            "producto_factor1"=>array("header"=>"Factor1", "type"=>"label"),
+                            "producto_factor2"=>array("header"=>"Factor2", "type"=>"label"),
+                            "producto_factor3"=>array("header"=>"Factor3", "type"=>"label"),
+                            "producto_factor4"=>array("header"=>"Factor4", "type"=>"label"),
+                            "producto_caracteristicas"=>array("header"=>"Caracteristicas", "type"=>"label"),
+                            "producto_nombreenvase"=>array("header"=>"Envase", "type"=>"label"),
+                    );        
+
+            // Set the grid 
+            $this->smartgrid->set_grid($sql, $columns, $config);
+
+            // Render the grid and assign to data array, so it can be print to on the view
+            $data['grid2_html'] = $this->smartgrid->render_grid();    
+            
+            //********************************************
+            
 
             $data['_view'] = 'categoria_cliente/index';
             $this->load->view('layouts/main',$data);
