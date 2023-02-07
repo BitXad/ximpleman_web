@@ -533,7 +533,7 @@ class Parametro extends CI_Controller{
                     //echo $sql;
                     $this->Venta_model->ejecutar($sql);
                 
-                    sleep(60);
+                    sleep(30);
                      
                     
                     //PASO 2: Generamos un nuevo CUFD
