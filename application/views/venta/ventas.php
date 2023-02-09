@@ -310,6 +310,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 <input type="text" id="cliente_valido" value="1" hidden>
+<input type="text" id="credito_id" value="0" name="credito_id" hidden>
 
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
