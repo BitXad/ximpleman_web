@@ -44,7 +44,7 @@
                         <th rowspan="2">MND.</th>
                         <th colspan="12">CORTES</th>
                         <th rowpan="2">Estado</th>
-                        <th rowspan="2">Usuario</th>
+                        <th rowspan="1">Usuario</th>
 
                     </tr>
                     <tr>
@@ -62,6 +62,9 @@
                         <th>0.05</th>
                         
                         <th></th>
+                        <th>
+                            <a href="<?php echo site_url('reportes/reportecajadmin'); ?>" class="btn btn-soundcloud btn-xs" title="Resumen de Ventas"><span class="fa fa-file-archive-o"></span></a>
+                        </th>
                     </tr>
                     
                     <?php $i = 0; foreach($caja as $c){ ?>
@@ -98,7 +101,7 @@
                         <td>
                             <a href="<?php echo site_url('caja/edit/'.$c['caja_id']); ?>" class="btn btn-info btn-xs" title="Modificar caja"><span class="fa fa-pencil"></span></a> 
                             <a href="<?php echo site_url('caja/cierre_cajadmin/'.$c['caja_id']); ?>" class="btn btn-facebook btn-xs" title="Cierre de caja"><span class="fa fa-suitcase"></span></a> 
-                            <a href="<?php echo site_url('caja/reporte_caja/'.$c['caja_id']); ?>" class="btn btn-success btn-xs" title="Reporte de caja"><span class="fa fa-print"></span></a> 
+                            <a href="<?php echo site_url('caja/reporte_caja/'.$c['caja_id']); ?>" class="btn btn-success btn-xs" title="Reporte cierre de caja"><span class="fa fa-print"></span></a> 
                             <!--<a href="<?php //echo site_url('caja/remove/'.$c['caja_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>

@@ -111,7 +111,7 @@
 <script type="text/javascript">
     $(document).ready(function()
     {
-        window.onload = window.print();
+        //window.onload = window.print();
     });
 </script>
 <!----------------------------- script buscador --------------------------------------->
