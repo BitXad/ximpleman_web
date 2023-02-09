@@ -2022,7 +2022,10 @@ function registrar_ingreso_rapido(producto_id){
     
 }
 
-function modificar_precios(producto){
+function modificar_precios(producto_id){
+    
+    
+    var producto = get_producto(producto_id);
     
     $("#modificarprecios_producto").val(producto.producto_nombre);
     $("#filtrar").val(producto.producto_nombre);
