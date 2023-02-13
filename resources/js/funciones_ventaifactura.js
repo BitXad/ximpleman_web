@@ -31,6 +31,8 @@ function validar_laentrada(e,opcion) {
                 //Si el nit es diferente de vacio
 
                 $("#generar_nit").val(cod);
+                $("#generar_razon").val("");
+                $("#elemail").val("");
                 $("#generar_razon").focus();
                 $("#generar_razon").select();
                 //$("#zona_id").val(0);                    
@@ -285,7 +287,7 @@ function buscar_a_losclientes(){
                             //alert(dosificacion_modalidad);
                             
                         //if (dosificacion_modalidad == 1){ //modalidad 1= Elec.Enlinea 2=computarizada en linea
-                        if (parametro_tipoemision == 1){ //tipoemision 1 = En linea 2 = Fuera de linea
+                        //if (parametro_tipoemision == 1){ //tipoemision 1 = En linea 2 = Fuera de linea
                         
                             let result = verificar_conexion_enventas();
                             let res = result;
@@ -311,12 +313,12 @@ function buscar_a_losclientes(){
                                 document.getElementById('loader_generarfactura').style.display = 'none';
                             }
                         
-                        }else{ // Si es computarizado o electronica en linea
+                        /*}else{ // Si es computarizado o electronica en linea
                                 document.getElementById('loader_generarfactura').style.display = 'none';
                                 $('#razon_social').focus();
                                 //verificarnit();
                                 //$('#razon_social').select();
-                        }                       
+                        }*/
                     }else{
                         document.getElementById('loader_generarfactura').style.display = 'none';
                         $('#razon_social').focus();

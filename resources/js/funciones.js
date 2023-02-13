@@ -5161,6 +5161,7 @@ function cargar_infcliente(cliente_id){
             data:{cliente_id:cliente_id},
             success:function(resultado){
                 var registros =  JSON.parse(resultado);
+                $("#elemail").val(registros.cliente_email);
                 if(registros.cliente_excepcion == 1){
                     $("#codigoexcepcion").prop("checked", true);
                 }else{
