@@ -81,6 +81,7 @@ class Factura extends CI_Controller{
         $data['configuracion'] = $this->configuracion[0];
         $data['motivos'] = $this->Factura_model->get_all_motivos();
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        $data['all_documentosector'] = $this->Dosificacion_model->get_documento_sector();
         
         $data['_view'] = 'factura/index';
         $this->load->view('layouts/main',$data);
@@ -1147,6 +1148,11 @@ class Factura extends CI_Controller{
             //************** ANULACION FACTURA ELECTRONICA EN LINEA
     
                 $codigo_motivo =  $this->input->post("motivo_id");
+                
+                if($codigo_motivo==""){
+                    $codigo_motivo =  1;
+                }
+                
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
                 //$modalidad = $dosificacion["dosificacion_modalidad"];
@@ -1168,7 +1174,8 @@ class Factura extends CI_Controller{
 
                      if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
 
-                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17)
+                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                                 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
                              $wsdl = $dosificacion['dosificacion_glpelectronica'];
 
 
@@ -1183,8 +1190,9 @@ class Factura extends CI_Controller{
 
                      if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
 
-                         if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-                         $wsdl = $dosificacion['dosificacion_facturaglp'];
+                         if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
+                                 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                            $wsdl = $dosificacion['dosificacion_facturaglp'];
 
                      }                
   
@@ -1225,7 +1233,7 @@ class Factura extends CI_Controller{
                 $cufd = $punto_venta['cufd_codigo']; //$dosificacion['dosificacion_cufd'];
                 $cuis = $punto_venta['cuis_codigo']; //$dosificacion['dosificacion_cuis']; 
                 $nit =  $dosificacion['dosificacion_nitemisor'];
-                $tipoFacturaDocumento = 1; 
+                $tipoFacturaDocumento = 1; //1 para facturas comerciales * 2 para facturas tasas cero
                 $codigoMotivo = $codigo_motivo;
                 $cuf = $factura[0]['factura_cuf'];
                 
@@ -1313,6 +1321,10 @@ class Factura extends CI_Controller{
                     //*********** FIN Administracion de caja *********
                     
                     $borrar_venta = $this->input->post("borrar_venta");
+                    
+                    if ($borrar_venta != 1) $borrar_venta = 0;
+                    
+                    
                     $mensaje_anular = "";
                     if($borrar_venta == 1){
                         $mensaje_anular  = "VENTA Nº 00".$venta_id.", ";
@@ -1412,12 +1424,13 @@ class Factura extends CI_Controller{
         $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
         
         $fecha_facturas = $this->input->post('factura_fecha');
-        //$fecha_parametro = str_replace("/","-",strrev($fecha_facturas));
+        $documento_sector = $this->input->post('docsec_codigoclasificador');
+        
         $fecha_parametro = $fecha_facturas;
         
         
         $sql = "select * from factura where estado_id = 1 and factura_fecha = '".$fecha_parametro."' and factura_codigodescripcion = 'VALIDADA' and ".
-                " docsec_codigoclasificador = ".$dosificacion['docsec_codigoclasificador'];
+                " docsec_codigoclasificador = ".$documento_sector;
         $facturas =  $this->Venta_model->consultar($sql);
         //echo $sql;
        //var_dump($facturas);
@@ -1425,270 +1438,13 @@ class Factura extends CI_Controller{
         foreach ($facturas as $f){
 
             
-                $factura_id = $f["factura_id"];
-                $factura_numero = $f["factura_numero"];
+            $factura_id = $f["factura_id"];
+            $factura_numero = $f["factura_numero"];
+            $this->anular_factura($factura_id, $factura_numero);
                 
-                $configuracion = $this->configuracion[0];
-
-                $sql = "select * from factura where factura_id = ".$factura_id;                
-                $factura = $this->Factura_model->consultar($sql);
-
-                $venta_id = $factura[0]["venta_id"];
-
-
-
-                    //************** ANULACION FACTURA ELECTRONICA EN LINEA
-
-                        
-                        //$modalidad = $dosificacion["dosificacion_modalidad"];
-
-//                        if ($dosificacion['docsec_codigoclasificador']==1)
-//                            $wsdl = $dosificacion['dosificacion_factura'];
-//
-//                        if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-//                            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-//                            $wsdl = $dosificacion['dosificacion_glpelectronica'];
-//                        }
-//                        if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-//                            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-//                            $wsdl = $dosificacion['dosificacion_facturaglp'];
-//                        }
-                        
-                        
-                    if ($factura[0]["docsec_codigoclasificador"]==1)
-                            $wsdl = $dosificacion['dosificacion_factura'];
-
-                     if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-
-                         if ($factura[0]["docsec_codigoclasificador"]==2 || $factura[0]["docsec_codigoclasificador"]==16 || $factura[0]["docsec_codigoclasificador"]==23 || $factura[0]["docsec_codigoclasificador"]==39 || $factura[0]["docsec_codigoclasificador"]==11  || $factura[0]["docsec_codigoclasificador"]==17)
-                             $wsdl = $dosificacion['dosificacion_glpelectronica'];
-
-
-                         if ($factura[0]["docsec_codigoclasificador"]==13)
-                             $wsdl = $dosificacion['dosificacion_facturaservicios'];
-
-
-                         if ($factura[0]["docsec_codigoclasificador"]==22)
-                             $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
-
-                     }
-
-                     if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-
-                         if ($factura[0]["docsec_codigoclasificador"]==23 || $factura[0]["docsec_codigoclasificador"]==39 || $factura[0]["docsec_codigoclasificador"]==11)
-                         $wsdl = $dosificacion['dosificacion_facturaglp'];
-
-                     }                
-  
-
-                        $token = $dosificacion['dosificacion_tokendelegado'];
-
-                        $opts = array(
-                              'http' => array(
-                                   'header' => "apiKey: TokenApi $token",
-                              )
-                        );
-                        $context = stream_context_create($opts);
-
-                        $cliente = new \SoapClient($wsdl, [
-                              'stream_context' => $context,
-                              'cache_wsdl' => WSDL_CACHE_NONE,
-                              'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
-
-                              // other options
-                        ]);
-
-                        $usuario_id = $this->session_data['usuario_id'];
-
-                        $venta = $this->Detalle_venta_model->get_venta($venta_id);
-                        $usuarioventa_id = $factura[0]['usuario_id'];
-
-                        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuarioventa_id);
-                        $this->load->model('PuntoVenta_model');
-                        $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
-
-                        $codigoAmbiente = $dosificacion['dosificacion_ambiente'];
-                        $codigoDocumentoSector = $factura[0]["docsec_codigoclasificador"];
-                        $codigoEmision = 1;
-                        $codigoModalidad = $factura[0]['factura_modalidad'];
-                        $codigoPuntoVenta = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
-                        $codigoSistema = $dosificacion['dosificacion_codsistema'];
-                        $codigoSucursal = $dosificacion['dosificacion_codsucursal'];
-                        $cufd = $punto_venta['cufd_codigo']; //$dosificacion['dosificacion_cufd'];
-                        $cuis = $punto_venta['cuis_codigo']; //$dosificacion['dosificacion_cuis']; 
-                        $nit =  $dosificacion['dosificacion_nitemisor'];
-                        $tipoFacturaDocumento = 1; 
-                        $codigoMotivo = $codigo_motivo;
-                        $cuf = $factura[0]['factura_cuf'];
-
-
-        //                echo 
-        //                "<br>codigoAmbiente: ".$codigoAmbiente.
-        //                "<br>codigoDocumentoSector: ".$codigoDocumentoSector.
-        //                "<br>codigoEmision: ".$codigoEmision.
-        //                "<br>codigoModalidad: ".$codigoModalidad.
-        //                "<br>codigoPuntoVenta: ".$codigoPuntoVenta.
-        //                "<br>codigoSistema: ".$codigoSistema.
-        //                "<br>codigoSucursal: ".$codigoSucursal.
-        //                "<br>cufd: ".$cufd.
-        //                "<br>cuis: ".$cuis. 
-        //                "<br>nit: ".$nit.
-        //                "<br>tipoFacturaDocumento: ".$tipoFacturaDocumento. 
-        //                "<br>codigoMotivo: ".$codigoMotivo.
-        //                "<br>cuf: ".$cuf;
-
-
-                        /* ordenado segun SoapUI */
-
-                        $parametros = ["SolicitudServicioAnulacionFactura" => [
-                            "codigoAmbiente" => $codigoAmbiente,
-                            "codigoDocumentoSector" => $codigoDocumentoSector,
-                            "codigoEmision" => $codigoEmision,
-                            "codigoModalidad" => $codigoModalidad,
-                            "codigoPuntoVenta" => $codigoPuntoVenta,
-                            "codigoSistema" => $codigoSistema,
-                            "codigoSucursal" => $codigoSucursal,
-                            "cufd" => $cufd,
-                            "cuis" => $cuis, 
-                            "nit" =>  $nit,
-                            "tipoFacturaDocumento" => $tipoFacturaDocumento, //averiguar donde se almacena esto
-                            "codigoMotivo" => $codigoMotivo,
-                            "cuf" => $cuf
-                        ]];
-
-                        //var_dump($parametros);
-                        $resultado = $cliente->anulacionFactura($parametros);
-                        $res = $resultado->RespuestaServicioFacturacion->transaccion;
-                        $mensaje = "";
-
-                            var_dump($resultado);
-        //                    var_dump($res);
-                        if ($res){
-                            //$codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;                    
-                            //$mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;
-                            $factura_cuf = $factura[0]["factura_cuf"];
-                            $factura_total           = $factura[0]["factura_total"];
-
-                            $sql = "update factura set ".                
-                                    "factura_subtotal = 0".
-                                    ",factura_nit = 0".
-                                    ",factura_razonsocial   = 'ANULADO'".
-                                    ",factura_ice           = 0".
-                                    ",factura_exento        = 0".
-                                    ",factura_descuento     = 0".
-                                    ",factura_total         = 0".
-                                    ",factura_codigocontrol     = '0'".
-                                    ",venta_id     = '0'".
-                                    ",estado_id     = 3".
-                                    " where factura_id = ".$factura_id;
-
-                            $this->Factura_model->ejecutar($sql);
-
-                            $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
-                            $this->Factura_model->ejecutar($sql);
-
-//                            $cliente = $this->Cliente_model->get_cliente($venta[0]['cliente_id']);
-//                            $sql =  "select count(*) as cantidad from detalle_venta where venta_id = ".$venta[0]['venta_id'];
-//                            $contx = $this->Venta_model->consultar($sql);
-//                            $cont = $contx[0]['cantidad'];
-//
-//                            $prec_total = $venta[0]['venta_total'];
-                            //*********** Administracion de caja *********
-//                            $caja_id = 0;
-//                            $caja = $this->Caja_model->get_caja_usuario($usuarioventa_id);
-//                            
-//                            if (!sizeof($caja)>0){ // si la caja no esta iniciada
-//                                //iniciar caja y dejarla en pendiente
-//                                $caja_id = 0;
-//                            }else{
-//                                $caja_id = $caja[0]["caja_id"];
-//                            }
-                            //*********** FIN Administracion de caja *********
-
-//                            $borrar_venta = $this->input->post("borrar_venta");
-//                            $mensaje_anular = "";
-//                            if($borrar_venta == 1){
-//                                $mensaje_anular  = "VENTA Nº 00".$venta_id.", ";
-//                            }
-//                            $bitacoracaja_evento = "ANULAR ".$mensaje_anular."FACTURA N°".$factura[0]["factura_numero"].", CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
-//                            $bitacoracaja_tipo = 2;
-//
-//                            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-//                                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
-//                            ",'".$bitacoracaja_evento."',".$usuarioventa_id.",".$factura[0]["factura_total"].",0,".$bitacoracaja_tipo.",".$caja_id.")";
-//
-//                            $this->Venta_model->ejecutar($sql);
-                            //****************** fin bitacora caja
-//
-//                            if($borrar_venta == 1){
-//                                //**************** inicio contenido ***************
-//                                $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_subtotal = 0, detalleven_total = 0 where venta_id = ".$venta_id;
-//                                $this->Venta_model->ejecutar($sql);
-//
-//                                $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = ".$venta_id;
-//                                $this->Venta_model->ejecutar($sql);
-//
-//                                $sql =  "update cuota  set
-//                                        cuota_numcuota = 0
-//                                        ,cuota_capital = 0
-//                                        ,cuota_interes = 0
-//                                        ,cuota_moradias = 0
-//                                        ,cuota_multa = 0
-//                                        ,cuota_subtotal = 0
-//                                        ,cuota_descuento = 0
-//                                        ,cuota_total = 0
-//                                        ,cuota_cancelado = 0
-//                                        ,cuota_numercibo = 0
-//                                        ,cuota_saldo = 0
-//                                        ,estado_id = 27
-//                                        ,cuota_saldocredito = 0
-//                                         where credito_id = (select credito_id from credito where venta_id = ".$venta_id." ) ";
-//                                $this->Venta_model->ejecutar($sql);
-//
-//                                $sql =  "update credito set
-//                                        estado_id = 27
-//                                        ,credito_monto = 0
-//                                        ,credito_cuotainicial = 0
-//                                        ,credito_interesproc = 0
-//                                        ,credito_interesmonto = 0
-//                                        ,credito_numpagos = 0
-//                                        ,credito_tipointeres = 0
-//                                        where venta_id = ".$venta_id;
-//                                $this->Venta_model->ejecutar($sql);
-//
-//                                $sql =  "update pedido set estado_id = 11 where pedido_id = (select v.pedido_id from venta v where v.venta_id = ".$venta_id.")";
-//                                $this->Venta_model->ejecutar($sql);
-//
-//                                $this->Inventario_model->actualizar_inventario(); 
-//                                //**************** fin contenido ***************
-//                            }
-
-//                            $correo = $this->input->post("factura_correo");
-//                            $res = $this->enviar_correoanulacion($venta_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf);
-
-                        }else{
-
-                            //$mensajeresultado = $resultado->RespuestaServicioFacturacion;
-                            $mensaje = $resultado->RespuestaServicioFacturacion;
-
-        //                    $mensaje = "OCURRIO UN ERROR, CODIGO: ".$mensajeresultado->codigo.", ".$mensajeresultado->descripcion;
-
-                            
-                        }
-
-
-
-
 
         }
-
-        echo json_encode("Proceso de anulacion, finalizado..!");
-                        //echo $mensaje;
-                    //************** FIN ANULACION FACTURA ELECTRONICA EN LINEA
-
-
-                //**************** fin contenido ***************
-                //}
+                //$this->index();
 
     }
     

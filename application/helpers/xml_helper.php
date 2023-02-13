@@ -216,7 +216,7 @@
          
          }
 
-        $total_creditofiscal = $factura['factura_total'] - $factura['factura_giftcard'];
+        $total_creditofiscal = $factura['factura_total'] - $factura['factura_giftcard'] - 6;
         
 $salto_linea='
 ';
@@ -305,6 +305,23 @@ $salto_linea='
         }
             
 
+        
+        if ($documento_sector == 12){  //Si es 12 Comercializacion hidrocarburos debe mostrarse en este sector
+            
+
+            $codigopais = 1;
+            $cabecera_facturaxml .= $salto_linea.'          <codigoPais>'.$codigopais.'</codigoPais>';
+            
+            $placavehiculo = "1495IHG";
+            $cabecera_facturaxml .= $salto_linea.'          <placaVehiculo>'.$placavehiculo.'</placaVehiculo>';
+            
+            $tipoenvase = "Bidon";
+            $cabecera_facturaxml .= $salto_linea.'          <tipoEnvase>'.$tipoenvase.'</tipoEnvase>';
+            
+        }
+        
+        
+        
         if($documento_sector==16){ //16-Hoteles
         
             $cabecera_facturaxml .= $salto_linea.'          <cantidadHuespedes>5</cantidadHuespedes>';
@@ -329,12 +346,14 @@ $salto_linea='
         }
         
         
-        if ($documento_sector != 23){  //23- factura prevalorada
+        if ($documento_sector != 23 ){  //23- factura prevalorada 
             $cabecera_facturaxml .= $salto_linea.'          <codigoMetodoPago>'.$factura['forma_id'].'</codigoMetodoPago>';
         }
 
         
-        $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
+        if ($documento_sector != 23){  //23- factura prevalorada //12 Comercializacion hidrocarburos
+            $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
+        }
         
         $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.$factura['factura_total'].'</montoTotal>';
         
@@ -345,6 +364,17 @@ $salto_linea='
         }else{
             $total_creditofiscal = 0;
             $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';            
+        }
+        
+        
+        if ($documento_sector == 12){ //12 - factura venta hidrocarburos
+            
+            $codigoAutorizacionSC = "66545670";
+            $cabecera_facturaxml .= $salto_linea.'          <codigoAutorizacionSC>'.$codigoAutorizacionSC.'</codigoAutorizacionSC>';            
+            
+            $observacion = "";
+            $cabecera_facturaxml .= $salto_linea.'          <observacion xsi:nil="true">'.$observacion.'</observacion>';            
+
         }
         
         if ($documento_sector == 13){ //13 - factura servicios basicos
@@ -370,7 +400,7 @@ $salto_linea='
         $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.$factura['moneda_tc'].'</tipoCambio>';
         $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.$factura['factura_total'].'</montoTotalMoneda>';
         
-        if ($documento_sector != 2 && $documento_sector != 13 && $documento_sector != 39 && $documento_sector != 23){
+        if ($documento_sector != 2 && $documento_sector != 12 && $documento_sector != 13 && $documento_sector != 39 && $documento_sector != 23 && $documento_sector != 51){
             $cabecera_facturaxml .= $salto_linea.'          <montoGiftCard>'.$factura['factura_giftcard'].'</montoGiftCard>';
         }
         
@@ -402,12 +432,17 @@ $salto_linea='
                 $numero_serie = $df['detallefact_preferencia'];
                 $valor_imei = $df['detallefact_caracteristicas'];
                 
+                if(isset($df['detallefact_caracteristicas']) && $df['detallefact_caracteristicas']!='null' && $df['detallefact_caracteristicas']!='-' ) {
+                    $detallefact_descripcion .= " ".$valor_imei;
+                }    
+                  //  echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
+                /*
                 if($documento_sector == 8){ // unir el nombre del producto con las caracteristicas del producto
                     
                     $detallefact_descripcion .= $valor_imei;
                     
                 }
-                
+                */
                 
                 $detalle_facturaxml .= $salto_linea.'      <detalle>';             
                 $detalle_facturaxml .= $salto_linea.'           <actividadEconomica>'.$factura['factura_actividad'].'</actividadEconomica>';
@@ -443,7 +478,7 @@ $salto_linea='
                 $detalle_facturaxml .= $salto_linea.'           <subTotal>'.number_format($df['detallefact_total'],2,'.','').'</subTotal>';
                 
                 if ($documento_sector != 2 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
-                    && $documento_sector != 8){
+                    && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 51){
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
                     $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
                 }

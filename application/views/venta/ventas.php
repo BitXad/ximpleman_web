@@ -293,7 +293,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
-<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" hidden>
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador">
 <input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector" hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
@@ -324,7 +324,18 @@ window.onkeydown = compruebaTecla;
 
   <div class="panel-group" <?php echo $estilo_div; ?>>
     
-      <font size="1"><b>DATOS DEL CLIENTE</b></font>
+    <font size="1"><b>DATOS DEL CLIENTE</b> 
+    <div>
+        
+        * PLACA <input type="text" width="100px" class="btn btn-warning btn-xs" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"  >
+        
+        * EMBASE <input type="text" width="100px" class="btn btn-warning btn-xs" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"  >
+        * PAIS <input type="text" width="100px" class="btn btn-warning btn-xs" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"  >
+        * COD. AUTORZ. SC <input type="text" width="100px" class="btn btn-warning btn-xs" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"  >
+    </div>
+      
+    </font>
+      
         <div class="box" style="border-color:black;">
             <div class="box-body">
       
@@ -409,7 +420,7 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="email" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">CORREO ELECTRONICO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="email"  value="<?php echo ($cliente[0]['cliente_email']==null)? $empresa_email : $cliente[0]['cliente_email'];  ; ?>" onclick="this.select()" onkeypress="validar(event,13)"/>
+                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="email"  value="<?php echo ($cliente[0]['cliente_email']==null)? $empresa_email : $cliente[0]['cliente_email'];  ; ?>" onclick="this.select()" onkeypress="validar(event,13)"/>
             </div>
         </div>
         
@@ -1115,7 +1126,7 @@ window.onkeydown = compruebaTecla;
                 <!--<button class="btn btn-info btn-xs" style="text-align: Left; " >-->
                     <b>PUNTO DE VENTA:</b> <?php echo $puntoventa_codigo; ?>
                     <br><b>MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?>
-                    <br><b>DOC:</b> <?php echo $dosificacion[0]["dosificacion_documentosector"]; ?>
+                    <br><b>DOC:</b> <?php echo $dosificacion[0]['docsec_codigoclasificador']." - ".$dosificacion[0]["dosificacion_documentosector"]; ?>
                     <br><b>CUFD VIGENCIA:</b> <?php 
                     
                         if (isset($cufd[0])){
@@ -1365,7 +1376,7 @@ window.onkeydown = compruebaTecla;
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if( $dosificacion[0]["docsec_codigoclasificador"] == 23){ //23 prevalorada (original)
+                if( $dosificacion[0]["docsec_codigoclasificador"] == 12){ //23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }

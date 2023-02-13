@@ -104,7 +104,7 @@
                            <label for="desde" class="control-label"> Formato: </label>
                            <div class="form-group">
               
-                               <!--<button  type="submit" class="btn btn-info btn-xs form-control" onclick="anulacion_masiva()"><span class="fa fa-times"> </span> Anulación en Masa</button>-->
+                              
                                <select type="submit" class="btn btn-default btn-xs form-control"  id="select_formato">
                                    <option value="1">R.C.V.</option>
                                    <option value="2">L.C.V.</option>
@@ -170,6 +170,16 @@
       
                             </div>
                         </div>
+                    
+                        <div class="col-md-2">
+                           <label for="desde" class="control-label"> Buscar: </label>
+                           <div class="form-group">
+              
+                                     <button  type="submit" class="btn btn-info btn-xs form-control" onclick="anulacion_masiva()"><span class="fa fa-times"> </span> Anulación en Masa</button>
+      
+                            </div>
+                        </div>
+                    
                     
 
                 </div>
@@ -347,7 +357,7 @@
 <!------------------------ F I N  modal para confirmar anulacion de factura no enviada------------------->
 
 <!-- Button trigger modal -->
-<div hidden>
+<div >
     
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" >
       Launch demo modal
@@ -374,6 +384,23 @@
                         <b>ADVERTENCIA:</b> Se ANULARAN de forma definitiva las facturas generadas por el punto de venta en uso, en la fecha seleccionada.
                     </div>
             </div>
+
+            <div class="col-md-6">
+                <label for="docsec_codigoclasificador" class="control-label">Documento Sector</label>
+                <div class="form-group">
+                    <select name="docsec_codigoclasificador" id="docsec_codigoclasificador" class="form-control" onchange="mensaje_alerta()">
+                        <option value="">- Documento Sector -</option>
+                        <?php 
+                            foreach($all_documentosector as $docsector)
+                            {
+                                $selected = ($docsector['docsec_codigoclasificador'] == $dosificacion['docsec_codigoclasificador']) ? ' selected="selected"' : "";
+                                echo '<option value="'.$docsector['docsec_codigoclasificador'].'" '.$selected.'>'.$docsector['docsec_codigoclasificador']."-".$docsector['docsec_descripcion'].'</option>';
+                            } 
+                        ?>
+                    </select>
+                </div>
+            </div>          
+          
             <div class="col-md-6">
                     <label for="factura_fecha" class="control-label">Fecha</label>
                     <div class="form-group">

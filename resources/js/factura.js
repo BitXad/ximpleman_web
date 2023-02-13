@@ -870,6 +870,55 @@ function anular_factura_electronica()
 
 }
 
+function anular_facturas()
+{
+    var factura_id = document.getElementById("factura_id").value; 
+    var venta_id = document.getElementById("venta_id").value; 
+    var factura_numero = document.getElementById("factura_numero").value; 
+    var factura_razon = document.getElementById("factura_cliente").value; 
+    var factura_total = document.getElementById("factura_monto").value; 
+    var factura_fecha = document.getElementById("factura_fecha").value;
+    var motivo_id = document.getElementById("motivo_anulacion").value;
+    let factura_correo = document.getElementById("factura_correo").value;
+
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'factura/anular_factura/'+factura_id+"/"+venta_id;
+    
+
+        var txt;
+        var r = confirm("Esta a punto de anular una factura.\n"+"Factura Nº: "+factura_numero+"\n"+
+                                  "Monto Bs: "+factura_total+"\n"+
+                                  "Cliente: "+factura_razon+"\n"+
+                                  "Fecha: "+formato_fecha(factura_fecha)+ "\n Esta operación es irreversible, ¿Desea Continuar?");
+        if (r == true) {
+            let borrar_venta = 0;
+            var re = confirm("Tambien quiere anular la venta asociada a la factura?\n"+"Venta Nº: "+venta_id+"\n"+
+                                  "Esta operación es irreversible, ¿Desea Continuar?");
+            if (re == true) {
+                borrar_venta = 1;
+            }
+            document.getElementById('loader2').style.display = 'block';
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{motivo_id: motivo_id, factura_correo:factura_correo, borrar_venta:borrar_venta},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        
+                        mostrar_facturas();
+                        alert(JSON.stringify(res));
+                        
+                        document.getElementById('loader2').style.display = 'none';
+                        $('#boton_cerrar').click();
+                    },
+            });
+            
+            document.getElementById('loader2').style.display = 'none';
+        }else{
+            document.getElementById('loader2').style.display = 'none';
+        }
+
+}
+
 function cargar_modal_anular(factura_id, venta_id, factura_numero, factura_razon, factura_total, factura_fecha)
 {
     $("#factura_id").val(factura_id);
