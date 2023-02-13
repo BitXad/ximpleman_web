@@ -256,3 +256,31 @@
     </div>
 </div>
 <!------------------------ FIN modal para elegir zona de pedidos ------------------->
+
+<!------------------------ INICIO modal para Modificar fecha de un pedido ------------------->
+<div class="modal fade" id="modalmodificarhorapedido" tabindex="-1" role="dialog" aria-labelledby="modalmodificarhorapedidolabel" style="font-family: Arial">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold" style="font-size: 13pt">MODIFICAR FECHA DEL PEDIDO</span><br>
+                <span style="font-size: 11pt">Pedido Num.: <span class="text-bold" id="num_pedido"></span></span>
+                <input type="hidden" name="numpedido_id" class="form-control" id="numpedido_id" />
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px !important">
+                <div class="col-md-6">
+                    <label for="modif_fechapedido" class="control-label">Modificar Fecha</label>
+                    <div class="form-group">
+                        <input type="datetime" step="any" name="modif_fechapedido" class="form-control" id="modif_fechapedido" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center !important">
+                <a class="btn btn-success" data-dismiss="modal" onclick="guardar_fechahorapedido()"><span class="fa fa-check"></span> Guardar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para Modificar fecha de un pedido ------------------->

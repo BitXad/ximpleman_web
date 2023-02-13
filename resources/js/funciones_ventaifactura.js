@@ -289,7 +289,7 @@ function buscar_a_losclientes(){
                         //if (dosificacion_modalidad == 1){ //modalidad 1= Elec.Enlinea 2=computarizada en linea
                         //if (parametro_tipoemision == 1){ //tipoemision 1 = En linea 2 = Fuera de linea
                         
-                            let result = verificar_conexion_enventas();
+                            let result = verificar_laconexion_enindexventas();
                             let res = result;
                             //alert(res);
                             if(res){ //Si existe conexion
@@ -335,6 +335,29 @@ function buscar_a_losclientes(){
             }                
     }); 
 
+}
+
+/* verifica si el nit/ci es correcto */
+function verificar_laconexion_enindexventas(){
+    var base_url = document.getElementById('base_url').value;
+    var nit = document.getElementById('nit').value;
+    var controlador = base_url+'dosificacion/verificar_lacomunicacion';
+    let resultado = "";
+    $.ajax({url:controlador,
+            type:"POST",
+            data:{nit:nit},
+            async: false,
+            success:function(respuesta){
+                let registros = JSON.parse(respuesta);
+                //alert(registros);
+                resultado = registros;
+            },
+            error:function(respuesta){
+                resultado = false;
+                //alert("Algo salio mal; por favor verificar sus datos!.");
+            }  
+    });
+    return resultado;
 }
 
 /* verifica si el nit/ci es correcto */

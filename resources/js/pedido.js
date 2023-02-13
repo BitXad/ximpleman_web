@@ -153,6 +153,9 @@ function tabla_pedidos(filtro)
                         html += "        <a href='"+base_url+'pedido/imprimir/'+p[i]["pedido_id"]+"' target='_blank' class='btn btn-warning btn-sm' title='Imprimir comprobante de "+labelboton+"'><span class='fa fa-print'></span></a> ";
                         if(esrol == 1){
                             html += "        <a href='"+base_url+'pedido/modificarpedido/'+p[i]["pedido_id"]+"' class='btn btn-success btn-sm' title='Modificar datos de "+labelboton+"'><span class='fa fa-cubes'></span></a> ";
+                            html += "<a onclick='modificar_lahora("+p[i]['pedido_id']+", "+JSON.stringify(p[i]['pedido_fecha'])+")' class='btn btn-facebook btn-sm' title='Modificar fecha de pedido'>";
+                            html += "<fa class='fa fa-calendar'></fa>";
+                            html += "</a>";
                         }
                  // ****************************** anular pedido ***************************************
                         html += "      <button type='button' class='btn btn-danger btn-sm'  title='Anular "+labelboton+"' data-toggle='modal' data-target='#modalanular"+p[i]["pedido_id"]+"'> ";
@@ -1075,4 +1078,27 @@ function consolidar_allpedido()
     }
     buscar_pedidos();
     document.getElementById('loader').style.display = 'none';
+}
+
+function modificar_lahora(venta_id, lafecha){
+    $('#num_pedido').html(venta_id);
+    $('#numpedido_id').val(venta_id);
+    let esfecha = moment(lafecha).format("DD/MM/YYYY HH:mm:ss");
+    $('#modif_fechapedido').val(esfecha);
+    $('#modalmodificarhorapedido').modal('show');
+}
+
+function guardar_fechahorapedido(){
+    var base_url = document.getElementById('base_url').value;
+    var elpedido_id = $('#numpedido_id').val();
+    var elpedido_fecha = $('#modif_fechapedido').val();
+    var controlador = base_url+"pedido/modificar_fechapedido";
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{pedido_id:elpedido_id, pedido_fecha:elpedido_fecha},
+        success:function(report){
+            var registros =  JSON.parse(report);
+            location.reload();
+        }
+    });
 }
