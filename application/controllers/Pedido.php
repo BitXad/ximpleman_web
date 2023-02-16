@@ -1681,14 +1681,14 @@ class Pedido extends CI_Controller{
     {
         if ($this->input->is_ajax_request()) {
             $pedido_id = $this->input->post('pedido_id');
-            $elpedido_fecha = $this->input->post('pedido_fecha');
-            $pedido_fecha = date("Y-m-d H:i:s", strtotime($elpedido_fecha));
+            $pedido_fecha = $this->input->post('pedido_fecha');
+            $pedido_hora  = $this->input->post('pedido_hora');
+            
             $params = array(
-                'pedido_fecha' => $elpedido_fecha, //$this->input->post('pedido_fecha'),
+                'pedido_fecha' => $this->input->post('pedido_fecha')." ".$this->input->post('pedido_hora'),
             );
             $this->Pedido_model->update_pedido($pedido_id, $params);
-            echo $pedido_fecha;
-            //echo json_encode("ok");
+            echo json_encode("ok");
         }else{                 
             show_404();
         }              

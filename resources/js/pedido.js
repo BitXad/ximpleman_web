@@ -1083,19 +1083,22 @@ function consolidar_allpedido()
 function modificar_lahora(venta_id, lafecha){
     $('#num_pedido').html(venta_id);
     $('#numpedido_id').val(venta_id);
-    let esfecha = moment(lafecha).format("DD/MM/YYYY HH:mm:ss");
+    let esfecha = moment(lafecha).format("YYYY-MM-DD");
+    let eshora  = moment(lafecha).format("HH:mm:ss");
     $('#modif_fechapedido').val(esfecha);
+    $('#modif_horapedido').val(eshora);
     $('#modalmodificarhorapedido').modal('show');
 }
 
 function guardar_fechahorapedido(){
     var base_url = document.getElementById('base_url').value;
     var elpedido_id = $('#numpedido_id').val();
-    var elpedido_fecha = $('#modif_fechapedido').val();
+    var pedido_fecha = $('#modif_fechapedido').val();
+    var pedido_hora = $('#modif_horapedido').val();
     var controlador = base_url+"pedido/modificar_fechapedido";
     $.ajax({url: controlador,
         type:"POST",
-        data:{pedido_id:elpedido_id, pedido_fecha:elpedido_fecha},
+        data:{pedido_id:elpedido_id, pedido_fecha:pedido_fecha, pedido_hora:pedido_hora},
         success:function(report){
             var registros =  JSON.parse(report);
             location.reload();

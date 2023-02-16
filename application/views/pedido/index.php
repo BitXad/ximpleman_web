@@ -272,7 +272,13 @@
                 <div class="col-md-6">
                     <label for="modif_fechapedido" class="control-label">Modificar Fecha</label>
                     <div class="form-group">
-                        <input type="datetime" step="any" name="modif_fechapedido" class="form-control" id="modif_fechapedido" />
+                        <input type="date" name="modif_fechapedido" class="form-control" id="modif_fechapedido" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="modif_horapedido" class="control-label">Modificar hora</label>
+                    <div class="form-group">
+                        <input type="time" step="any" name="modif_horapedido" class="form-control" id="modif_horapedido" />
                     </div>
                 </div>
             </div>

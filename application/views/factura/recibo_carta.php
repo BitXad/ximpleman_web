@@ -207,13 +207,15 @@ border-bottom : 1px solid #aaa;
            <?php $cont = 0;
                  $cantidad = 0;
                  $total_descuento = 0;
+                 $total_descuentoparcial = 0;
                  $total_final = 0;
                  $total_final_me = 0;
 
                  foreach($detalle_venta as $d){;
                         $cont = $cont+1;
                         $cantidad += $d['detalleven_cantidad'];
-                        $total_descuento += $d['detalleven_descuento']; 
+                        $total_descuento += $d['detalleven_descuento'];
+                        $total_descuentoparcial += $d['detalleven_descuentoparcial']*$d['detalleven_cantidad'];
                         $total_final += $d['detalleven_total'];
  
             ?>
@@ -323,7 +325,18 @@ border-bottom : 1px solid #aaa;
         </td>
         <td align="right"  style="padding: 0;  line-height: 10px; background-color: #aaa !important; -webkit-print-color-adjust: exact;">
             
-                
+            <?php if ($total_descuentoparcial>0){ ?>
+            
+            <font size="1">
+                <b><?php echo "SUB TOTAL PARCIAL ".$parametro[0]["moneda_descripcion"].": ".number_format($venta[0]['venta_subtotal']+$total_descuentoparcial,2,'.',','); ?></b><br>
+            </font>
+            
+            <font size="1">
+                <?php echo "TOTAL DESCUENTO PARCIAL ".$parametro[0]["moneda_descripcion"].": ".number_format($total_descuentoparcial    ,2,'.',','); ?><br>
+            </font>
+            
+            <?php } ?>
+            
             <?php if ($venta[0]['venta_descuento']>0){ ?>
             
             <font size="1">
@@ -331,7 +344,7 @@ border-bottom : 1px solid #aaa;
             </font>
             
             <font size="1">
-                <?php echo "TOTAL DESCUENTO ".$parametro[0]["moneda_descripcion"].": ".number_format($venta[0]['venta_descuento'],2,'.',','); ?>
+                <?php echo "DESCUENTO GLOBAL ".$parametro[0]["moneda_descripcion"].": ".number_format($venta[0]['venta_descuento'],2,'.',','); ?>
             </font>
             
             <?php } ?>

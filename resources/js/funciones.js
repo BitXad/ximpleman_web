@@ -3869,9 +3869,14 @@ function tabla_ventas(filtro)
                     if ((v[i]['pedido_id'])>0){
                             html += "<b class='btn btn-warning'><b> ADVERTENCIA: Se restablecera el PEDIDO Nº: "+v[i]['pedido_id']+" a PENDIENTE</b> </b>" ;
                     }
-//                    html += "                                          -----------------------------<br>";
-//                    html += "                                          La venta tiene una FACTURA ASOCIADA<br>";
-//                    html += "                                          <input type='checkbox' name='anular_factura' value='1'> Anular factura<br>";
+                    if (v[i]['venta_tipodoc']==1){
+                        html += "                                          <br>-----------------------------<br>";
+                        //html += "                                          La venta tiene una FACTURA ASOCIADA<br>";
+                        html += "              <label><b class='btn btn-warning'><input type='checkbox' name='anular_factura"+v[i]['venta_id']+"' value='1' id='anular_factura"+v[i]['venta_id']+"' checked>";
+                        html += " Anular la factura asociada a esta venta? </b></label>" ;
+                    }else{
+                        html += "<input type='checkbox' name='anular_factura"+v[i]['venta_id']+"' value='0' id='anular_factura"+v[i]['venta_id']+"' hidden>";
+                    }
                     html += "                                      </h4>";
                     html += "                                      <!------------------------------------------------------------------->";
                     html += "                                             ";
@@ -3880,7 +3885,7 @@ function tabla_ventas(filtro)
                     html += "                                     </div>";
                     html += "                                     <div class='modal-footer'>";
                     html += "                                         <center>";
-                    html += "                                           <a href='"+base_url+"venta/anular_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-sm'><em class='fa fa-check'></em> Si </a>";
+                    html += "                                           <a class='btn btn-success btn-sm' onclick='anular_venta("+v[i]['venta_id']+", "+v[i]['factura_id']+", "+JSON.stringify(v[i]['factura_enviada'])+")'><em class='fa fa-check'></em> Si </a>";
 
                     html += "                                           <a href='#' class='btn btn-danger btn-sm' data-dismiss='modal'><em class='fa fa-times'></em> No </a>";
                     html += "                                         </center>";
@@ -6731,4 +6736,45 @@ function borrar_datos_cliente(){
     
      $("#span_buscar_cliente").click();   
 
+}
+
+function anular_venta(venta_id, factura_id = null, factura_enviada=null){
+    let base_url = document.getElementById('base_url').value;
+    let tiene_factura = document.getElementById("anular_factura"+venta_id).value; 
+    if(tiene_factura == 1){
+        let anular_factura = document.getElementById("anular_factura"+venta_id).checked;
+        if(anular_factura == true){
+            let controlador = "";
+            if(factura_enviada == 1){ // es factura valida y debe anularse desde impuestos. Esta funcion lo usa desde factura(anulacion)
+                controlador = base_url+'factura/anular_factura/'+factura_id+"/"+venta_id;
+                let motivo_id = 1;
+                let factura_correo = "";
+                let borrar_venta = 1;
+                $.ajax({url:controlador,
+                    type:"POST",
+                    data:{motivo_id: motivo_id, factura_correo:factura_correo, borrar_venta:borrar_venta},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        alert(JSON.stringify(res));
+                        location.reload();
+                    },
+                });
+            }else{ // es factura no valida y se debe anular en local. . Esta funcion lo usa desde factura(anulacion)
+                controlador = base_url+'factura/anular_factura_malemitida/'+factura_id+"/"+venta_id;
+                $.ajax({url:controlador,
+                    type:"POST",
+                    data:{},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        alert("Anulacion exitosa!.");
+                        location.reload();
+                    },
+                });
+            }
+        }else{
+            location.href = base_url+"venta/anular_venta/"+venta_id;
+        }
+    }else{
+        location.href = base_url+"venta/anular_venta/"+venta_id;
+    }
 }
