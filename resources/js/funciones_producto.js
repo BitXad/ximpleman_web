@@ -239,10 +239,17 @@ function tablaresultadosproducto(limite){
 		        html += "<td class='no-print'>";
                         html += "<a href='"+base_url+"producto/edit/"+registros[i]["miprod_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Información'><span class='fa fa-pencil'></span></a>";
                         html += "<a href='"+base_url+"imagen_producto/catalogoprod/"+registros[i]["miprod_id"]+"' class='btn btn-success btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
-                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
                         html += "<a class='btn btn-facebook btn-xs' onclick='buscarclasificador("+registros[i]["miprod_id"]+")' title='Ver Clasificador'><span class='fa fa-list-ol'></span></a>";
                         html += "<a href='"+base_url+"producto/productoasignado/"+registros[i]["miprod_id"]+"' class='btn btn-soundcloud btn-xs' title='Ver si esta asignado a subcategorias' target='_blank' ><span class='fa fa-list'></span></a>";
                         html += "<a class='btn btn-warning btn-xs' onclick='mostrarmodalcodigobarra("+registros[i]["miprod_id"]+", "+JSON.stringify(registros[i]["producto_nombre"])+", "+JSON.stringify(registros[i]["producto_codigobarra"])+")' title='Código de barras para impresión'><span class='fa fa-barcode'></span></a>";
+                        if(tipousuario_id == 1){
+                            if(registros[i]['estado_id'] == 1){
+                                html += "<a onclick='dardebaja_producto("+registros[i]['producto_id']+")' class='btn btn-xs' style='background-color: #8e8e91; color: white;' title='Dar de baja el producto'><span class='fa fa-toggle-on'></span></a>";
+                            }else{
+                                html += "<a onclick='dardealta_producto("+registros[i]['producto_id']+")' class='btn btn-xs' style='background-color: #8e8e91; color: black;' title='Dar de alta el producto'><span class='fa fa-toggle-off'></span></a>";
+                            }
+                        }
+                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
@@ -1952,4 +1959,40 @@ function codbarra_producto(num_imagenes) {
                 JsBarcode("#barcode"+i, codigo_barra);
             }
         }
+}
+
+function dardebaja_producto(producto_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto/dar_debajaproducto';
+    let confirmacion =  confirm('Esta seguro que quiere dar de baja a este Producto?')
+    if(confirmacion == true){
+        $.ajax({url:controlador,
+            type:"POST",
+            data:{producto_id:producto_id
+            },
+            success:function(result){
+                res = JSON.parse(result);
+                alert("producto dado de baja con exito!.");
+                tablaresultadosproducto(2);
+            },
+        });
+    }
+}
+
+function dardealta_producto(producto_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto/dar_dealtaproducto';
+    let confirmacion =  confirm('Esta seguro que quiere dar de alta a este Producto?')
+    if(confirmacion == true){
+        $.ajax({url:controlador,
+            type:"POST",
+            data:{producto_id:producto_id
+            },
+            success:function(result){
+                res = JSON.parse(result);
+                alert("producto dado de alta con exito!.");
+                tablaresultadosproducto(2);
+            },
+        });
+    }
 }

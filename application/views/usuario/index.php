@@ -98,10 +98,20 @@
                             if($tipo_usuario_id == 1){
                             ?>
                             <a class="btn btn-soundcloud btn-xs" data-toggle="modal" data-target="#modalcambiar<?php echo $i; ?>"  title="Cambiar contraseña"><em class="fa fa-gear"></em></a>
-                            <?php
+                                <?php
+                                if($u['estado_id'] == 1){
+                                ?>
+                                    <a onclick="return confirm('Esta seguro que quiere dar de baja a este Usuario del sistema?')" href="<?php echo site_url('usuario/dar_debajausuario/'.$u['usuario_id']); ?>" class="btn btn-xs" style='background-color: #8e8e91; color: white;' title="Dar de baja a este usuario del sistema"><span class="fa fa-toggle-on"></span></a>
+                                <?php
+                                }else{
+                                ?>
+                                    <a onclick="return confirm('Esta seguro que quiere dar de alta a este Usuario del sistema?')" href="<?php echo site_url('usuario/dar_dealtausuario/'.$u['usuario_id']); ?>" class="btn btn-xs" style='background-color: #8e8e91; color: black;' title="Dar de alta a este usuario del sistema"><span class="fa fa-toggle-off"></span></a>
+                                <?php
+                                }
                             }
                             ?>
-                            <a href="<?php echo site_url('usuario/password/'.$u['usuario_id']); ?>" class="btn btn-success btn-xs" title="Cambiar contraseña"><span class="fa fa-asterisk"></span></a>
+                            
+                            <!--<a href="<?php //echo site_url('usuario/password/'.$u['usuario_id']); ?>" class="btn btn-success btn-xs" title="Cambiar contraseña"><span class="fa fa-asterisk"></span></a>-->
                             <!------------------------ INICIO modal para cambiar PASSWORD ------------------->
                             <div class="modal fade" id="modalcambiar<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="modalcambiarlabel<?php echo $i; ?>">
                                 <div class="modal-dialog" role="document">
