@@ -293,7 +293,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
-<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador">
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" hidden>
 <input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector" hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
@@ -321,17 +321,22 @@ window.onkeydown = compruebaTecla;
 <?php $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:12px;' "; ?>
 <!-------------------- inicio collapse ---------------------->
 
-
   <div class="panel-group" <?php echo $estilo_div; ?>>
     
     <font size="1"><b>DATOS DEL CLIENTE</b> 
-    <div>
+    <div <?php echo ($dosificacion[0]['docsec_codigoclasificador'] != 12)? "hidden" : "";  ?>>
         
-        * PLACA <input type="text" width="100px" class="btn btn-warning btn-xs" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"  >
-        
-        * EMBASE <input type="text" width="100px" class="btn btn-warning btn-xs" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"  >
-        * PAIS <input type="text" width="100px" class="btn btn-warning btn-xs" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"  >
-        * COD. AUTORZ. SC <input type="text" width="100px" class="btn btn-warning btn-xs" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off"  >
+        * PLACA <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_placa" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" onkeypress="buscar_placa(event);" style="font-size: 12px;">    
+        * EMBASE <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_embase" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;">        
+        * PAIS <select type="text" width="100px" class="btn btn-warning btn-xs" id="datos_codigopais" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;">
+                    <option value="0">-NINGUNO-</option>
+                    <?php foreach ($paises as $p){ ?>
+                                <option value="<?php echo $p["pais_id"] ?>"><?php echo $p["pais_descripcion"]; ?></option>
+                            
+                    <?php } ?>
+                    
+               </select>
+        * COD. AUTORZ. SC <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_autorizacionsc" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;">
     </div>
       
     </font>
@@ -1376,7 +1381,7 @@ window.onkeydown = compruebaTecla;
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if( $dosificacion[0]["docsec_codigoclasificador"] == 12){ //23 prevalorada (original)
+                if( $dosificacion[0]["docsec_codigoclasificador"] == 23){ //23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }
@@ -1440,7 +1445,10 @@ window.onkeydown = compruebaTecla;
 
                 <?php 
                     $ocultar = "none";
-                    if($dosificacion[0]['docsec_codigoclasificador']!=2 && $dosificacion[0]['docsec_codigoclasificador']!=39){ $ocultar = "block"; }?>
+                    if($dosificacion[0]['docsec_codigoclasificador']!=2 && $dosificacion[0]['docsec_codigoclasificador']!=39 && 
+                       $dosificacion[0]['docsec_codigoclasificador']!=8 && $dosificacion[0]['docsec_codigoclasificador']!=12 && 
+                       $dosificacion[0]['docsec_codigoclasificador']!=51)
+                             { $ocultar = "block"; }?>
                 
                 <tr style="padding: 0; display: <?php echo $ocultar; ?>">
                         <td style="padding: 0"><b>Tarjeta Gift</b></td>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaTasaCero xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaTasaCero.xsd">
+      <cabecera>
+          <nitEmisor>5152377019</nitEmisor>
+          <razonSocialEmisor>ROBERTO CARLOS SOTO SIERRA</razonSocialEmisor>
+          <municipio>CERCADO - COCHABAMBA</municipio>
+          <telefono>4511518 *(591)79999097</telefono>
+          <numeroFactura>183</numeroFactura>
+          <cuf>1608A399D64B88383F8ECD9B69CB649693BEA933C66862CA42D674FD74</cuf>
+          <cufd>BQXxCKlhQRkE=NzEZBQzUxRTNEMjc=Q0E0d2dWV0NYVUFcwM0E5NjE4MjdEM</cufd>
+          <codigoSucursal>0</codigoSucursal>
+          <direccion>URUGUAY N? 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <fechaEmision>2023-02-22T10:48:43.309</fechaEmision>
+          <nombreRazonSocial>SIN NOMBRE</nombreRazonSocial>
+          <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>1234</numeroDocumento>
+          <complemento></complemento>
+          <codigoCliente>SN5215</codigoCliente>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta>0</numeroTarjeta>
+          <montoTotal>3480.0000000000000000</montoTotal>
+          <montoTotalSujetoIva>0</montoTotalSujetoIva>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1.0000000000000000</tipoCambio>
+          <montoTotalMoneda>3480.0000000000000000</montoTotalMoneda>
+          <montoGiftCard>0.0000000000000000</montoGiftCard>
+          <descuentoAdicional>0.0000000000000000</descuentoAdicional>
+          <codigoExcepcion>0</codigoExcepcion>
+          <cafc xsi:nil="true"></cafc>
+          <leyenda>Ley N° 453: Está prohibido importar, distribuir o comercializar productos expirados o prontos a expirar.</leyenda>
+          <usuario>Administrador</usuario>
+          <codigoDocumentoSector>8</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220802172042</codigoProducto>
+           <descripcion>HUB/SWICH TP-LINK 8-PUERTOS &amp; 10/100 MBPS TL-SF1008D </descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>3480.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>3480.00</subTotal>
+      </detalle>
+</facturaComputarizadaTasaCero>

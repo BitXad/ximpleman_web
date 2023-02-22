@@ -79,8 +79,13 @@ $db['default'] = array(
         'username' => 'root',
         'password' => '',
         //'database' => 'nazareno',
+<<<<<<< HEAD
         'database' => 'ximpleman_passwordsin',
 //        'database' => 'ximpleman_passwordsin4_tasacero',
+=======
+ //       'database' => 'ximpleman_passwordsin',
+        'database' => 'ximpleman_passwordsin4_engarrafadora',
+>>>>>>> master
 //        'database' => 'ximpleman_passwordsin3_pruebas',
 //        'database' => 'ximpleman_passwordsin2',
 
