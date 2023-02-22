@@ -26,6 +26,7 @@ class Producto extends CI_Controller{
             'Venta_model',
             'Sincronizacion_model',
             'Dosificacion_model',
+            'Bitacora_model',
         ]);
         
         if ($this->session->userdata('logged_in')) {
@@ -430,6 +431,27 @@ class Producto extends CI_Controller{
                 $this->Producto_model->update_producto($producto_id,$params);
                 
                 $this->Inventario_model->update_inventario($producto_id, $params);
+                
+                $bitacora_accion = "update";
+                $bitacora_objetivo = "Modificar inf. producto";
+                $bitacora_fecha = date("Y-m-d");
+                $bitacora_hora = date("H:i:s");
+                $bitacora_sql = json_encode($params)." where producto_id =".$producto_id;
+                $bitacora_valoranterior = json_encode($data['producto']);
+                $bitacora_valornuevo = json_encode($params);
+                $usuariomodif_id = $this->session_data['usuario_id'];
+                $params = array(
+                    'bitacora_accion' => $bitacora_accion,
+                    'bitacora_objetivo' => $bitacora_objetivo,
+                    'bitacora_fecha' => $bitacora_fecha,
+                    'bitacora_hora' => $bitacora_hora,
+                    'bitacora_sql' => $bitacora_sql,
+                    'bitacora_valoranterior' => $bitacora_valoranterior,
+                    'bitacora_valornuevo' => $bitacora_valornuevo,
+                    'usuario_id' => $usuariomodif_id,
+                );
+                $bitacora_id = $this->Bitacora_model->add_bitacora($params);
+                
                 redirect('producto/index');
             }else{   
                 $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
@@ -1221,6 +1243,92 @@ class Producto extends CI_Controller{
             }
         }catch (Exception $e){
             echo 'Ocurrio algo inesperado; revisar datos!. '.$e;
+        }
+    }
+    
+    /* dar de baja el Producto */
+    function dar_debajaproducto()
+    {
+        if($this->input->is_ajax_request()){
+            $producto_id = $this->input->post('producto_id');
+            $producto = $this->Producto_model->get_esteproducto($producto_id);
+            // check if the producto exists before trying to delete it
+            if(isset($producto['producto_id']))
+            {
+                $bitacora_accion = "update";
+                $bitacora_objetivo = "dar de baja el producto";
+                $bitacora_fecha = date("Y-m-d");
+                $bitacora_hora = date("H:i:s");
+                $bitacora_sql = "updade producto set estado_id = 2 where producto_id =".$producto['producto_id']."; Producto: ".$producto["producto_nombre"]."; Codigo: ".$producto["producto_codigo"];
+                $bitacora_valoranterior = "estado_id = 1";
+                $bitacora_valornuevo = "estado_id = 2";
+                $usuario_id = $this->session_data['usuario_id'];
+                $params = array(
+                    'bitacora_accion' => $bitacora_accion,
+                    'bitacora_objetivo' => $bitacora_objetivo,
+                    'bitacora_fecha' => $bitacora_fecha,
+                    'bitacora_hora' => $bitacora_hora,
+                    'bitacora_sql' => $bitacora_sql,
+                    'bitacora_valoranterior' => $bitacora_valoranterior,
+                    'bitacora_valornuevo' => $bitacora_valornuevo,
+                    'usuario_id' => $usuario_id,
+                );
+                $bitacora_id = $this->Bitacora_model->add_bitacora($params);
+                
+                $producto_id = $producto['producto_id'];
+                $params = array(
+                    'estado_id' => 2,
+                );
+                $this->Producto_model->update_producto($producto_id,$params);
+                echo json_encode("ok");
+            }else{
+                show_error('El Producto que intentas dar de baja no existe!....');
+            }
+        }else{                 
+            show_404();
+        }
+    }
+    
+    /* dar de alta el Producto */
+    function dar_dealtaproducto()
+    {
+        if($this->input->is_ajax_request()){
+            $producto_id = $this->input->post('producto_id');
+            $producto = $this->Producto_model->get_esteproducto($producto_id);
+            // check if the producto exists before trying to delete it
+            if(isset($producto['producto_id']))
+            {
+                $bitacora_accion = "update";
+                $bitacora_objetivo = "dar de alta el producto";
+                $bitacora_fecha = date("Y-m-d");
+                $bitacora_hora = date("H:i:s");
+                $bitacora_sql = "updade producto set estado_id = 1 where producto_id =".$producto['producto_id']." Producto: ".$producto["producto_nombre"]."; Codigo: ".$producto["producto_codigo"];
+                $bitacora_valoranterior = "estado_id = 2";
+                $bitacora_valornuevo = "estado_id = 1";
+                $usuario_id = $this->session_data['usuario_id'];
+                $params = array(
+                    'bitacora_accion' => $bitacora_accion,
+                    'bitacora_objetivo' => $bitacora_objetivo,
+                    'bitacora_fecha' => $bitacora_fecha,
+                    'bitacora_hora' => $bitacora_hora,
+                    'bitacora_sql' => $bitacora_sql,
+                    'bitacora_valoranterior' => $bitacora_valoranterior,
+                    'bitacora_valornuevo' => $bitacora_valornuevo,
+                    'usuario_id' => $usuario_id,
+                );
+                $bitacora_id = $this->Bitacora_model->add_bitacora($params);
+                
+                $producto_id = $producto['producto_id'];
+                $params = array(
+                    'estado_id' => 1,
+                );
+                $this->Producto_model->update_producto($producto_id,$params);
+                echo json_encode("ok");
+            }else{
+                show_error('El Producto que intentas dar de baja no existe!....');
+            }
+        }else{                 
+            show_404();
         }
     }
 }

@@ -1676,4 +1676,21 @@ class Pedido extends CI_Controller{
             }
         //}
     }
+    /* modifica la fecha y hora de un pedido!.. */
+    function modificar_fechapedido()
+    {
+        if ($this->input->is_ajax_request()) {
+            $pedido_id = $this->input->post('pedido_id');
+            $pedido_fecha = $this->input->post('pedido_fecha');
+            $pedido_hora  = $this->input->post('pedido_hora');
+            
+            $params = array(
+                'pedido_fecha' => $this->input->post('pedido_fecha')." ".$this->input->post('pedido_hora'),
+            );
+            $this->Pedido_model->update_pedido($pedido_id, $params);
+            echo json_encode("ok");
+        }else{                 
+            show_404();
+        }              
+    }
 }

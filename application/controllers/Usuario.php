@@ -18,6 +18,7 @@ class Usuario extends CI_Controller
             'user_model',
             'PuntoVenta_model',
             'Sistema_model',
+            'Bitacora_model',
         ]);
         $this->load->library('form_validation');
         
@@ -470,9 +471,9 @@ class Usuario extends CI_Controller
 
 
                 $usuario_id = $this->input->post('userid');
-
+                $data['usuario'] = $this->Usuario_model->get_usuario($usuario_id);
                 if ($this->form_validation->run() == FALSE) {
-                    $data1['user'] = $this->user_model->get_usuario( $usuario_id );
+                    //$data1['user'] = $this->user_model->get_usuario( $usuario_id );
 
 
                    /*$data = array(
@@ -486,7 +487,7 @@ class Usuario extends CI_Controller
                         'page_title' => 'Admin >> Nuevo Usuario',
                         'thumb' => $session_data['thumb']
                     );*/
-                    $data['usuario'] = $this->Usuario_model->get_usuario($usuario_id);
+                    
 
                     $this->load->model('Estado_model');
                     $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
@@ -568,7 +569,7 @@ class Usuario extends CI_Controller
                 }
             /* *********************FIN imagen***************************** */
 
-                    $data = array(
+                    $dataupdate = array(
                         'usuario_nombre' => $this->input->post('usuario_nombre'),
                         'usuario_ci' => $this->input->post('usuario_ci'),
                         'usuario_email' => $this->input->post('usuario_email'),
@@ -580,7 +581,27 @@ class Usuario extends CI_Controller
                         'puntoventa_codigo' => $this->input->post('punto_venta'),
                     );
 
-                    if (!$this->user_model->update_usuario($data, $usuario_id)) {
+                    if (!$this->user_model->update_usuario($dataupdate, $usuario_id)) {
+                        
+                        $bitacora_accion = "update";
+                        $bitacora_objetivo = "Modificar inf. usuario";
+                        $bitacora_fecha = date("Y-m-d");
+                        $bitacora_hora = date("H:i:s");
+                        $bitacora_sql = json_encode($dataupdate)." where usuario_id =".$usuario_id;
+                        $bitacora_valoranterior = json_encode($data['usuario']);
+                        $bitacora_valornuevo = json_encode($dataupdate);
+                        $usuariomodif_id = $this->session_data['usuario_id'];
+                        $params = array(
+                            'bitacora_accion' => $bitacora_accion,
+                            'bitacora_objetivo' => $bitacora_objetivo,
+                            'bitacora_fecha' => $bitacora_fecha,
+                            'bitacora_hora' => $bitacora_hora,
+                            'bitacora_sql' => $bitacora_sql,
+                            'bitacora_valoranterior' => $bitacora_valoranterior,
+                            'bitacora_valornuevo' => $bitacora_valornuevo,
+                            'usuario_id' => $usuariomodif_id,
+                        );
+                        $bitacora_id = $this->Bitacora_model->add_bitacora($params);
 
                         $this->session->set_flashdata('msg',
                             '<div class="alert alert-success text-center fade in" style="margin-top:18px;">
@@ -622,9 +643,9 @@ class Usuario extends CI_Controller
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(148)){
-        $data['usuario'] = $this->Usuario_model->get_usuario($usuario_id);
+        $usuario = $this->Usuario_model->get_usuario($usuario_id);
 
-        if(isset($data['usuario']['usuario_id'])){
+        if(isset($usuario['usuario_id'])){
             
             /*$this->load->library('form_validation');
             $this->form_validation->set_rules("nuevo_pass.$usuario_id", 'clave nueva'.'nuevo_pass'.$usuario_id, 'required');
@@ -635,6 +656,26 @@ class Usuario extends CI_Controller
                 $conf_password = md5($this->input->post('repita_pass'.$usuario_id));
 
                 if($new_password === $conf_password){
+                    $bitacora_accion = "update";
+                    $bitacora_objetivo = "cambiar contraseña";
+                    $bitacora_fecha = date("Y-m-d");
+                    $bitacora_hora = date("H:i:s");
+                    $bitacora_sql = "updade usuario set usuario_clave = $conf_password where usuario_id = ".$usuario['usuario_id']."; Usuario: ".$usuario["usuario_nombre"];
+                    $bitacora_valoranterior = "usuario_clave = ".$usuario['usuario_clave'];
+                    $bitacora_valornuevo = "usuario_clave = $conf_password";
+                    $usuario_id = $this->session_data['usuario_id'];
+                    $params = array(
+                        'bitacora_accion' => $bitacora_accion,
+                        'bitacora_objetivo' => $bitacora_objetivo,
+                        'bitacora_fecha' => $bitacora_fecha,
+                        'bitacora_hora' => $bitacora_hora,
+                        'bitacora_sql' => $bitacora_sql,
+                        'bitacora_valoranterior' => $bitacora_valoranterior,
+                        'bitacora_valornuevo' => $bitacora_valornuevo,
+                        'usuario_id' => $usuario_id,
+                    );
+                    $bitacora_id = $this->Bitacora_model->add_bitacora($params);
+                    
                     $params = array(
                         'usuario_clave' => $new_password,
                     );
@@ -668,6 +709,86 @@ class Usuario extends CI_Controller
             }*/
         }else
             show_error('The usuario you are trying to edit does not exist.');
+        }
+    }
+    
+    /* dar de baja a un Usuario */
+    function dar_debajausuario($elusuario_id)
+    {
+        //$elusuario_id = $this->input->post('usuario_id');
+        $usuario = $this->Usuario_model->get_usuario($elusuario_id);
+        // check if the usuario exists before trying to delete it
+        if(isset($usuario['usuario_id']))
+        {
+            $bitacora_accion = "update";
+            $bitacora_objetivo = "dar de baja a un usuario";
+            $bitacora_fecha = date("Y-m-d");
+            $bitacora_hora = date("H:i:s");
+            $bitacora_sql = "updade usuario set estado_id = 2 where usuario_id = ".$usuario['usuario_id']."; Usuario: ".$usuario["usuario_nombre"];
+            $bitacora_valoranterior = "estado_id = 1";
+            $bitacora_valornuevo = "estado_id = 2";
+            $usuario_id = $this->session_data['usuario_id'];
+            $params = array(
+                'bitacora_accion' => $bitacora_accion,
+                'bitacora_objetivo' => $bitacora_objetivo,
+                'bitacora_fecha' => $bitacora_fecha,
+                'bitacora_hora' => $bitacora_hora,
+                'bitacora_sql' => $bitacora_sql,
+                'bitacora_valoranterior' => $bitacora_valoranterior,
+                'bitacora_valornuevo' => $bitacora_valornuevo,
+                'usuario_id' => $usuario_id,
+            );
+            $bitacora_id = $this->Bitacora_model->add_bitacora($params);
+
+            $el_usuario_id = $usuario['usuario_id'];
+            $params = array(
+                'estado_id' => 2,
+            );
+            $this->Usuario_model->update_usuario($el_usuario_id,$params);
+            //echo json_encode("ok");
+            redirect('usuario');
+        }else{
+            show_error('El Usuario que intentas dar de Baja no existe!....');
+        }
+    }
+    
+    /* dar de alta al usuario */
+    function dar_dealtausuario($elusuario_id)
+    {
+        //$elusuario_id = $this->input->post('usuario_id');
+        $usuario = $this->Usuario_model->get_usuario($elusuario_id);
+        // check if the usuario exists before trying to delete it
+        if(isset($usuario['usuario_id']))
+        {
+            $bitacora_accion = "update";
+            $bitacora_objetivo = "dar de alta a un usuario";
+            $bitacora_fecha = date("Y-m-d");
+            $bitacora_hora = date("H:i:s");
+            $bitacora_sql = "updade usuario set estado_id = 1 where usuario_id = ".$usuario['usuario_id']."; Usuario: ".$usuario["usuario_nombre"];
+            $bitacora_valoranterior = "estado_id = 2";
+            $bitacora_valornuevo = "estado_id = 1";
+            $usuario_id = $this->session_data['usuario_id'];
+            $params = array(
+                'bitacora_accion' => $bitacora_accion,
+                'bitacora_objetivo' => $bitacora_objetivo,
+                'bitacora_fecha' => $bitacora_fecha,
+                'bitacora_hora' => $bitacora_hora,
+                'bitacora_sql' => $bitacora_sql,
+                'bitacora_valoranterior' => $bitacora_valoranterior,
+                'bitacora_valornuevo' => $bitacora_valornuevo,
+                'usuario_id' => $usuario_id,
+            );
+            $bitacora_id = $this->Bitacora_model->add_bitacora($params);
+
+            $el_usuario_id = $usuario['usuario_id'];
+            $params = array(
+                'estado_id' => 1,
+            );
+            $this->Usuario_model->update_usuario($el_usuario_id,$params);
+            //echo json_encode("ok");
+            redirect('usuario');
+        }else{
+            show_error('El Usuario que intentas dar de Alta no existe!....');
         }
     }
 }
