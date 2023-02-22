@@ -410,6 +410,13 @@
                         </li>
                         <?php
                         }
+                        if($rolusuario[89-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('caja');?>"><i class="fa fa-calculator"></i> Cajas</a>
+                        </li>
+                        <?php
+                        }
                         ?>
                     </ul>
                 </li>

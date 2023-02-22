@@ -1,27 +1,5 @@
 <script src="<?php echo base_url('resources/js/reporte_resumenventa.js'); ?>" type="text/javascript"></script>
 
-<script type="text/javascript">
-//        $(document).ready(function () {
-//            (function ($) {
-//                $('#vender').keyup(function () {
-//                    var rex = new RegExp($(this).val(), 'i');
-//                    $('.buscar tr').hide();
-//                    $('.buscar tr').filter(function () {
-//                        return rex.test($(this).text());
-//                    }).show();
-//                })
-//            }(jQuery));
-//        });
-
-</script>   
-
-<style type="text/css">
-/* @page { 
-        size: landscape;
-    }*/
-     
-</style>
-<!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
@@ -74,12 +52,6 @@
         <div class="col-md-2 no-print">&nbsp;
            <div class="form-group">
                 <a class="btn btn-facebook btn-sm form-control" onclick="resumen_ventascaja()" title="Buscar productos agrupados"><i class="fa fa-search"> </i> Buscar</a>
-            </div>
-        </div>
-        <div class="col-md-2 no-print">
-            <label for="expotar" class="control-label"> &nbsp; </label>
-           <div class="form-group">
-                <a onclick="imprimir()" class="btn btn-success btn-sm form-control" ><i class="fa fa-print"> </i> Imprimir</a>
             </div>
         </div>
         <div class="col-md-2 no-print hidden">
@@ -226,39 +198,27 @@ border-bottom : 1px solid #aaa;*/
                         <td style="font-family: Arial; font-size: 9pt; padding: 0;" colspan="4">
                             PUNTO DE VENTA: <?php echo $punto_venta["puntoventa_nombre"]; ?>
                             <br>FECHA INICIO: 
+                            <span id="lafechainicio">
                                 <?php
                                 if(isset($caja)){
                                     echo $caja["caja_fechaapertura"]." ".$caja["caja_horaapertura"];
                                 }
                                   ?>
+                            </span>
                             <br>FECHA FIN: 
+                            <span id="lafechafin">
                                 <?php
                                 if(isset($caja)){
                                     echo $caja["caja_fechacierre"]." ".$caja["caja_horacierre"];
                                 }
                                 ?>
+                            </span>
                         </td>
                     </tr>
             </center>
         </td>
     </tr>
 
-    
-<!--    <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
-        <td colspan="4" style="padding: 0;  font-size: 9pt;">
-            
-                <?php $fecha = new DateTime($factura[0]['factura_fechaventa']); 
-                        $fecha_d_m_a = $fecha->format('d/m/Y');
-                  ?>    
-                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$factura[0]['factura_hora']; ?> <br>
-                    <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
-                    <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>            
-        </td>
-    </tr>-->
-     
-<!--</table>
-
-       <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
            <tr  style="border-top-style: solid; border-bottom-style: solid; " >
                
                 <td align="center" style="padding: 0;"><b>CANT</b></td>

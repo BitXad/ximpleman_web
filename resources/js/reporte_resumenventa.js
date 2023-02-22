@@ -115,6 +115,8 @@ function resumen_ventascaja(){
                     $("#lasventasmalemitidas").html(mal_emitidas[0]["mal_emitidas"]);
                     $("#lasventasanuladas").html(anuladas[0]["anuladas"]);
                     $("#lacajera").html(nombre_cajera);
+                    $("#lafechainicio").html(caja["caja_fechaapertura"]+" "+caja["caja_horaapertura"]);
+                    $("#lafechafin").html(caja["caja_fechacierre"]+" "+caja["caja_horacierre"]);
                     
                     
                     //$("#desde").html(desde1);
