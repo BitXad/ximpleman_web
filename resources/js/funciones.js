@@ -6746,52 +6746,6 @@ function borrar_datos_cliente(){
 
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-function anular_venta(venta_id, factura_id = null, factura_enviada=null){
-    let base_url = document.getElementById('base_url').value;
-    let tiene_factura = document.getElementById("anular_factura"+venta_id).value; 
-    if(tiene_factura == 1){
-        let anular_factura = document.getElementById("anular_factura"+venta_id).checked;
-        if(anular_factura == true){
-            let controlador = "";
-            if(factura_enviada == 1){ // es factura valida y debe anularse desde impuestos. Esta funcion lo usa desde factura(anulacion)
-                controlador = base_url+'factura/anular_factura/'+factura_id+"/"+venta_id;
-                let motivo_id = 1;
-                let factura_correo = "";
-                let borrar_venta = 1;
-                $.ajax({url:controlador,
-                    type:"POST",
-                    data:{motivo_id: motivo_id, factura_correo:factura_correo, borrar_venta:borrar_venta},
-                    success:function(result){
-                        res = JSON.parse(result);
-                        alert(JSON.stringify(res));
-                        location.reload();
-                    },
-                });
-            }else{ // es factura no valida y se debe anular en local. . Esta funcion lo usa desde factura(anulacion)
-                controlador = base_url+'factura/anular_factura_malemitida/'+factura_id+"/"+venta_id;
-                $.ajax({url:controlador,
-                    type:"POST",
-                    data:{},
-                    success:function(result){
-                        res = JSON.parse(result);
-                        alert("Anulacion exitosa!.");
-                        location.reload();
-                    },
-                });
-            }
-        }else{
-            location.href = base_url+"venta/anular_venta/"+venta_id;
-        }
-    }else{
-        location.href = base_url+"venta/anular_venta/"+venta_id;
-    }
-}
-=======
-=======
-
->>>>>>> master
 function buscar_placa(e){    
     
     let base_url = document.getElementById('base_url').value;
@@ -6893,9 +6847,6 @@ function buscar_placa(e){
             
     }
 }
-<<<<<<< HEAD
->>>>>>> master
-=======
 
 function anular_venta(venta_id, factura_id = null, factura_enviada=null){
     let base_url = document.getElementById('base_url').value;
@@ -6937,4 +6888,4 @@ function anular_venta(venta_id, factura_id = null, factura_enviada=null){
         location.href = base_url+"venta/anular_venta/"+venta_id;
     }
 }
->>>>>>> master
+
