@@ -1223,6 +1223,12 @@ class Factura extends CI_Controller{
                 $this->load->model('PuntoVenta_model');
                 $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 
+                $tipoFacturaDoc = 1;
+                if ($factura[0]['docsec_codigoclasificador'] == 8){
+                    $tipoFacturaDoc = 2;
+                }
+                
+                
                 $codigoAmbiente = $dosificacion['dosificacion_ambiente'];
                 $codigoDocumentoSector = $factura[0]["docsec_codigoclasificador"];
                 $codigoEmision = 1;
@@ -1233,7 +1239,7 @@ class Factura extends CI_Controller{
                 $cufd = $punto_venta['cufd_codigo']; //$dosificacion['dosificacion_cufd'];
                 $cuis = $punto_venta['cuis_codigo']; //$dosificacion['dosificacion_cuis']; 
                 $nit =  $dosificacion['dosificacion_nitemisor'];
-                $tipoFacturaDocumento = 1; //1 para facturas comerciales * 2 para facturas tasas cero
+                $tipoFacturaDocumento = $tipoFacturaDoc; //1 con derecho a credito fiscal / 2 Sin derecho a credito fiscal //1 para facturas comerciales * 2 para facturas tasas cero
                 $codigoMotivo = $codigo_motivo;
                 $cuf = $factura[0]['factura_cuf'];
                 

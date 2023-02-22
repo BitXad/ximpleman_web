@@ -4946,7 +4946,7 @@ function anular_venta($venta_id){
                 "cufd"                  => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
                 "cuis"                  => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
                 "nit"                   => $dosificacion['dosificacion_nitemisor'],
-                "tipoFacturaDocumento"  => $dosificacion['tipofac_codigo'],
+                "tipoFacturaDocumento"  => $dosificacion['tipofac_codigo'], //1 con derecho a credito fiscal / 2 Sin derecho a credito fiscal
                 "archivo"               => $el_archivo,
                 "fechaEnvio"            => $fecha_envio,
                 "hashArchivo"           => $hash_archivo,
