@@ -1130,7 +1130,7 @@ window.onkeydown = compruebaTecla;
 
                 <!--<button class="btn btn-info btn-xs" style="text-align: Left; " >-->
                     <b>PUNTO DE VENTA:</b> <?php echo $puntoventa_codigo; ?>
-                    <br><b>MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro["moneda_tc"]; ?>
+                    <br><b>MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo number_format($parametro["moneda_tc"],2,".",","); ?>
                     <br><b>DOC:</b> <?php echo $dosificacion[0]['docsec_codigoclasificador']." - ".$dosificacion[0]["dosificacion_documentosector"]; ?>
                     <br><b>CUFD VIGENCIA:</b> <?php 
                     
