@@ -153,6 +153,8 @@
     //function generarfacturaCompra_ventaXML($modalidad_factura, $factura, $detalle_factura, $empresa, $dosificacion_documentosector,$documento_sector){
     function generarfacturaCompra_ventaXML($modalidad_factura, $factura, $detalle_factura, $empresa, $documento_sector,$nombre_documento_sector){
         
+        
+        $decimales = 2;
         $factura = $factura[0];
         $empresa = $empresa[0];
         $base_url = explode('/', base_url());
@@ -216,7 +218,7 @@
          
          }
 
-    $total_creditofiscal = $factura['factura_total'] - $factura['factura_giftcard'];
+    $total_creditofiscal = number_format($factura['factura_total'] - $factura['factura_giftcard'],$decimales,".","") ;
 
 $salto_linea='
 ';
@@ -355,14 +357,15 @@ $salto_linea='
             $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
         }
         
-        $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.$factura['factura_total'].'</montoTotal>';
+        $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_total'],$decimales,".","") .'</montoTotal>';
         
         // Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo de diésel y gasolina, 
         // el crédito fiscal del IVA será sólo del 70% del valor de la compra, mientras que el 30% restante pasará a apoyar 
         // al Tesoro General de la Nación
         
         if ($documento_sector == 12){//Ley 317 de hidrocarburos
-            $total_creditofiscal = $total_creditofiscal * 0.70 ;
+            $total_creditofiscal = number_format($total_creditofiscal * 0.70,$decimales,".","") ;
+            
         }
         
         
@@ -408,17 +411,17 @@ $salto_linea='
         }
         
         $cabecera_facturaxml .= $salto_linea.'          <codigoMoneda>'.$factura['moneda_codigoclasificador'].'</codigoMoneda>';
-        $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.$factura['moneda_tc'].'</tipoCambio>';
-        $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.$factura['factura_total'].'</montoTotalMoneda>';
+        $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.number_format($factura['moneda_tc'],$decimales,".","").'</tipoCambio>';
+        $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.number_format($factura['factura_total'],$decimales,".","").'</montoTotalMoneda>';
         
         if ($documento_sector != 2 && $documento_sector != 12 && $documento_sector != 13 && $documento_sector != 39 && $documento_sector != 23 && $documento_sector != 51){
-            $cabecera_facturaxml .= $salto_linea.'          <montoGiftCard>'.$factura['factura_giftcard'].'</montoGiftCard>';
+            $cabecera_facturaxml .= $salto_linea.'          <montoGiftCard>'.number_format($factura['factura_giftcard'],$decimales,".","").'</montoGiftCard>';
         }
         
         
         if ($documento_sector != 23){  //23- factura prevalorada
             
-            $cabecera_facturaxml .= $salto_linea.'          <descuentoAdicional>'.$factura['factura_descuento'].'</descuentoAdicional>';
+            $cabecera_facturaxml .= $salto_linea.'          <descuentoAdicional>'.number_format($factura['factura_descuento'],$decimales,".","").'</descuentoAdicional>';
             $cabecera_facturaxml .= $salto_linea.'          <codigoExcepcion>'.$factura_excepcion.'</codigoExcepcion>';
         
             if($factura['factura_cafc'] != 0 || $factura['factura_cafc'] != ""){            
@@ -482,11 +485,11 @@ $salto_linea='
                 }
                 
                 
-                $detalle_facturaxml .= $salto_linea.'           <cantidad>'.number_format($df['detallefact_cantidad'],2,'.','').'</cantidad>';
+                $detalle_facturaxml .= $salto_linea.'           <cantidad>'.number_format($df['detallefact_cantidad'],$decimales,'.','').'</cantidad>';
                 $detalle_facturaxml .= $salto_linea.'           <unidadMedida>'.$df['unidad_codigo'].'</unidadMedida>';
-                $detalle_facturaxml .= $salto_linea.'           <precioUnitario>'.number_format($df['detallefact_precio'],2,'.','').'</precioUnitario>';
-                $detalle_facturaxml .= $salto_linea.'           <montoDescuento>'.number_format($descuentoparcial,2,'.','').'</montoDescuento>';
-                $detalle_facturaxml .= $salto_linea.'           <subTotal>'.number_format($df['detallefact_total'],2,'.','').'</subTotal>';
+                $detalle_facturaxml .= $salto_linea.'           <precioUnitario>'.number_format($df['detallefact_precio'],$decimales,'.','').'</precioUnitario>';
+                $detalle_facturaxml .= $salto_linea.'           <montoDescuento>'.number_format($descuentoparcial,$decimales,'.','').'</montoDescuento>';
+                $detalle_facturaxml .= $salto_linea.'           <subTotal>'.number_format($df['detallefact_total'],$decimales,'.','').'</subTotal>';
                 
                 if ($documento_sector != 2 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
                     && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 51){

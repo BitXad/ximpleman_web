@@ -536,7 +536,8 @@ html += "           <div class='col-md-3' style='padding:1;'>";
 if (tipousuario_id == 1){
     html += "               <label for='producto_costo' class='control-label  text-uppercase'>Precio Costo</label>";
     html += "               <div class='form-group'>"
-    html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_costo']+"' class='btn btn-xs btn-default form-control' style='text-align:left;' id='detalleven_costo"+registros[i]["detalleven_id"]+"' />";
+    let precio_costo = Number(registros[i]['detalleven_costo']);
+    html += "               <input type='text' name='detalleven_preferencia' value='"+precio_costo.toFixed(decimales)+"' class='btn btn-xs btn-default form-control' style='text-align:left;' id='detalleven_costo"+registros[i]["detalleven_id"]+"' />";
     html += "               </div>";
 }
 
