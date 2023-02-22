@@ -19,6 +19,7 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+
 <!-------------------------------------------------------->
 <div class="box-header">
                 <h3 class="box-title"><?php echo "<b>".$producto_nombre."</b>"; ?> asignados a las siguentes subcategorias:</h3>

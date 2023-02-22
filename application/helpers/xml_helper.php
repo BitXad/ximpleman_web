@@ -216,8 +216,8 @@
          
          }
 
-        $total_creditofiscal = $factura['factura_total'] - $factura['factura_giftcard'] - 6;
-        
+    $total_creditofiscal = $factura['factura_total'] - $factura['factura_giftcard'];
+
 $salto_linea='
 ';
         
@@ -357,13 +357,24 @@ $salto_linea='
         
         $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.$factura['factura_total'].'</montoTotal>';
         
-        if ($documento_sector != 8){  //8 - Factura tasa cero
+        // Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo de diésel y gasolina, 
+        // el crédito fiscal del IVA será sólo del 70% del valor de la compra, mientras que el 30% restante pasará a apoyar 
+        // al Tesoro General de la Nación
+        
+        if ($documento_sector == 12){//Ley 317 de hidrocarburos
+            $total_creditofiscal = $total_creditofiscal * 0.70 ;
+        }
+        
+        
+        if ($documento_sector == 8){  //8 - Factura tasa cero
+            
+            $total_creditofiscal = 0;
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';            
+            
+        }else{
             
             $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';
             
-        }else{
-            $total_creditofiscal = 0;
-            $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';            
         }
         
         

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaElectronicaComercializacionHidrocarburo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaComercializacionHidrocarburo.xsd">
+      <cabecera>
+          <nitEmisor>5152377019</nitEmisor>
+          <razonSocialEmisor>ROBERTO CARLOS SOTO SIERRA</razonSocialEmisor>
+          <municipio>CERCADO - COCHABAMBA</municipio>
+          <telefono>4511518 *(591)79999097</telefono>
+          <numeroFactura>164</numeroFactura>
+          <cuf>1608A399D64B88325A21B3A2398594276242E1E3E839B56EF9F274FD74</cuf>
+          <cufd>QUFBfEIqWFBGQQ==MEZBQzUxRTNEMjc=QsKhw4lrTFNWQ1hVNzcwM0E5NjE4MjdE</cufd>
+          <codigoSucursal>0</codigoSucursal>
+          <direccion>URUGUAY N? 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <fechaEmision>2023-02-20T19:14:18.309</fechaEmision>
+          <nombreRazonSocial>PASSWORD SRL</nombreRazonSocial>
+          <codigoTipoDocumentoIdentidad>5</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>141349024</numeroDocumento>
+          <complemento/>
+          <codigoCliente>PA89885</codigoCliente>
+          <codigoPais>1</codigoPais>
+          <placaVehiculo>1495IHG</placaVehiculo>
+          <tipoEnvase>Bidon</tipoEnvase>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta>0</numeroTarjeta>
+          <montoTotal>210.000</montoTotal>
+          <montoTotalSujetoIva>210</montoTotalSujetoIva>
+          <codigoAutorizacionSC>66545670</codigoAutorizacionSC>
+          <observacion xsi:nil="true"/>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1.000</tipoCambio>
+          <montoTotalMoneda>210.000</montoTotalMoneda>
+          <descuentoAdicional>0.000</descuentoAdicional>
+          <codigoExcepcion>0</codigoExcepcion>
+          <cafc xsi:nil="true"/>
+          <leyenda>Ley N° 453: Está prohibido importar, distribuir o comercializar productos expirados o prontos a expirar.</leyenda>
+          <usuario>Administrador</usuario>
+          <codigoDocumentoSector>12</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220802172042</codigoProducto>
+           <descripcion>HUB/SWICH TP-LINK 8-PUERTOS &amp; 10/100 MBPS TL-SF1008D </descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>150.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>300.00</subTotal>
+      </detalle>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+  <Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>WDMY4GUgjpTsBVip4wN8T0jB3ovTUbnGzQoxOSlBo28=</DigestValue></Reference></SignedInfo><SignatureValue>B2+LQFDThQvvA29lrvL/nnWIiS9h4wSp3LVYvyzk6ixdN6ndyboaR9NSNzjVt2NGvUcDVZXkGoqRmfLShZG6SSTTmC/thaxsI0/gnrDmHzeqbmGcfRCFQJ2jvzPHm+sn5t8a7W9voGfmR+/BuV9YzLAU37mU3XTmiXfOxpxpcWSXMxIOPjT19iQycC8c/QUsudL1QR6nO9ONTMr6ueTIT4zT4Q4/V0d3LQ2jrySZ7+Fkt/7dECdvbqXyu1ZDbQ34LJ6qum1aIqOyBTJgc+l2rL73z+0nusqzzm6ZKQbku+XOPURs2U4NqNp5MRoh6XRauPmei8Wajc0LJVTnfJBRUw==</SignatureValue>
+<KeyInfo><X509Data><X509Certificate>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</X509Certificate></X509Data></KeyInfo></Signature></facturaElectronicaComercializacionHidrocarburo>

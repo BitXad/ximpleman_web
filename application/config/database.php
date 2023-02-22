@@ -80,7 +80,7 @@ $db['default'] = array(
         'password' => '',
         //'database' => 'nazareno',
  //       'database' => 'ximpleman_passwordsin',
-        'database' => 'ximpleman_passwordsin4_tasacero',
+        'database' => 'ximpleman_passwordsin4_engarrafadora',
 //        'database' => 'ximpleman_passwordsin3_pruebas',
 //        'database' => 'ximpleman_passwordsin2',
 

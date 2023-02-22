@@ -183,6 +183,11 @@ class Venta extends CI_Controller{
             $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         }
         
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 12){
+            $sql = "select * from pais order by pais_descripcion";
+            $data['paises'] = $this->Venta_model->consultar($sql);
+        }
+        
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
@@ -532,7 +537,22 @@ class Venta extends CI_Controller{
                 $modalidad    = $this->input->post('dosificacion_modalidad');
                 $parametro_tipoemision    = $this->input->post('parametro_tipoemision');
                 $venta_glosa    = $this->input->post('venta_glosa');
+                $cliente_id    = $this->input->post('cliente_id');
                 $factura_glosa    = $venta_glosa;
+                
+                //  DATOS  ADICIONALES FACTURA
+                //********************************************************
+                
+                $datos_placa    = $this->input->post('datos_placa');
+                $datos_embase    = $this->input->post('datos_embase');
+                $datos_codigopais    = $this->input->post('datos_codigopais');
+                $datos_autorizacionsc    = $this->input->post('datos_autorizacionsc');
+                
+                //********************************************************
+                
+                
+                
+                
                 
                 $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
                 $nombre_archivo =  $dosificacion[0]["dosificacion_documentosector"];
@@ -1059,6 +1079,7 @@ class Venta extends CI_Controller{
 
                                 }
                                 
+ 
                                 
                             // nuevo sistema de facturacion                                
                             $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
@@ -1132,6 +1153,21 @@ class Venta extends CI_Controller{
                             usuario_id=".$usuario_id.")";
                         
                         $this->Factura_model->ejecutar($sql);   
+                        
+                        
+                        //  REGISTRO DE DATO DE FACTURA
+                        //*******************************************
+                        $coma = ",";
+                        if(true){
+                            $sql = "insert into factura_datos(datos_placa,datos_embase,datos_codigopais,datos_autorizacionsc, cliente_id)
+                                    value('{$datos_placa}'{$coma}'{$datos_embase}'{$coma}'{$datos_codigopais}'{$coma}'{$datos_autorizacionsc}'{$coma}{$cliente_id})";
+                            $this->Factura_model->ejecutar($sql);   
+                                    
+                        }
+                        
+                        //*******************************************
+                        
+                        
                         
                         if($this->parametros['parametro_tiposistema'] != 1){// para cualquiera que no sea Sistema de facturacion computarizado SFV (computarizado en linea o electronico)
                         // el parametro uno es para computarizada en linea ojo
@@ -1454,6 +1490,33 @@ class Venta extends CI_Controller{
             
                 $producto = $this->Inventario_model->get_inventario_codigo_factor($codigo);                
                 echo json_encode($producto);
+                
+            }            
+
+    }
+    
+    
+ /* 
+ */
+    function buscar_placa()  
+    {   
+
+      
+            $numeroplaca = $this->input->post('numeroplaca');
+            $sql = "select * from cliente c, factura_datos f
+                    WHERE c.cliente_id = f.cliente_id and f.datos_placa =  '{$numeroplaca}'";
+            $placas = $this->Venta_model->consultar($sql);
+            
+            
+            if (sizeof($placas)>0){ //si encontro el producto por el codigo de producto
+                
+                echo json_encode($placas);
+           
+            }
+            else
+            {            
+                // = $this->Inventario_model->get_inventario_codigo_factor($codigo);                
+                echo json_encode(false);
                 
             }            
 
@@ -6030,6 +6093,19 @@ function anular_venta($venta_id){
         $micad .= "                </tr>";
                                 $total_final_factura = $factura[0]['factura_subtotal']; 
                                 $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
+                                
+                                if ($factura[0]['docsec_codigoclasificador']==12){ 
+                                    
+                                    $importe_base_iva = $factura_total * 0.70;
+                                    
+                                }else{
+                                    
+                                    $importe_base_iva = $factura_total;
+                                }
+                                 
+                                
+                                
+                                
         $micad .= "                <tr>";
         $micad .= "                    <td colspan='4' style='padding: 0'>";
         $micad .= "                        <table style='width: ".$ancho."; font-size: 8pt !important' >";
@@ -6048,13 +6124,17 @@ function anular_venta($venta_id){
         $micad .= "                                <td></td>";
         $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_total'],2,'.',',')."</td>";
         $micad .= "                            </tr>";
+        
+        if ($mostrarice==1 && $factura[0]['docsec_codigoclasificador']!=8 && $factura[0]['docsec_codigoclasificador']!=51){
+            
         $micad .= "                            <tr>";
         $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO GIFT CARD Bs</td>";
         $micad .= "                                <td></td>";
         $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura[0]['factura_giftcard'],2,'.',',')."</td>";
         $micad .= "                            </tr>";
+        }
         
-        if ($mostrarice==1 || $factura[0]['docsec_codigoclasificador']!=8){
+        if ($mostrarice==1 && $factura[0]['docsec_codigoclasificador']!=8 && $factura[0]['docsec_codigoclasificador']!=51){
                                                     
             $micad .= "                            <tr>";
             $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
@@ -6077,12 +6157,23 @@ function anular_venta($venta_id){
         $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
         $micad .= "                            </tr>";
         
+                
+        
         if($factura[0]['docsec_codigoclasificador']!=8){ //Mostrar si no es Factura tasa cero
         
+            //Un artículo de la Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo 
+            //de diésel y gasolina, el crédito fiscal del IVA será sólo del 70% del valor de la compra, 
+            //mientras que el 30% restante pasará a apoyar al Tesoro General de la Nación (TGN) 
+            if($factura[0]['docsec_codigoclasificador'] == 12){
+                $factura_total = $factura_total * 0.70;
+            }
+            //******************************************************
+            
+            
             $micad .= "                            <tr>";
             $micad .= "                                <td class='text-right text-bold' style='text-align: right'>IMPORTE BASE CR&Eacute;DITO FISCAL Bs</td>";
             $micad .= "                                <td></td>";
-            $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,2,'.',',')."</td>";
+            $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($importe_base_iva,2,'.',',')."</td>";
             $micad .= "                            </tr>";
             
         }
@@ -6090,7 +6181,7 @@ function anular_venta($venta_id){
         $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
         $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px; font-size: 10px;'>";
         $micad .= "                                    <br>";
-        $micad .= "                                    SON: ".num_to_letras($factura_total,' Bolivianos');
+        $micad .= "                                    SON: ".num_to_letras($importe_base_iva,' Bolivianos');
         $micad .= "                                </td>";
         $micad .= "                            </tr>";
         $micad .= "                        </table>";
@@ -6800,9 +6891,20 @@ function anular_venta($venta_id){
                                 $total_final_factura = $factura[0]['factura_subtotal']; 
                                 $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
                                 $span = ($mostrarice==1)? 3: 2; 
+                                
+                            if ($factura[0]['docsec_codigoclasificador']==12){ 
+                                    
+                                    $importe_base_iva = $factura_total * 0.70;
+                                    
+                                }else{
+                                    
+                                    $importe_base_iva = $factura_total;
+                                }
+                                 
+                                
         $micad .= "                    <!-------------- SUB TOTAL ---------->"; 
         $micad .= "                    <tr>"; 
-        $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
+        $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($importe_base_iva,' Bolivianos')."</td>"; 
         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>SUBTOTAL Bs</td>"; 
         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($total_final_factura,2,'.',',')."</td>"; 
         $micad .= "                    </tr>"; 
@@ -6824,7 +6926,7 @@ function anular_venta($venta_id){
         $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_total'] ,2,'.',',')."</td>"; 
         $micad .= "                    </tr>"; 
         
-        if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39){ //Si es diferente de alquiler de bienes y venta gn/glp
+        if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=51){ //Si es diferente de alquiler de bienes y venta gn/glp
         
           $micad .= "                          <!-------------- FACTURA GIFTA CARD ---------->";
           
@@ -6861,8 +6963,19 @@ function anular_venta($venta_id){
             
         $micad .= "                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->"; 
         $micad .= "                    <tr>"; 
+        
+        
+        //Un artículo de la Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo 
+        //de diésel y gasolina, el crédito fiscal del IVA será sólo del 70% del valor de la compra, 
+        //mientras que el 30% restante pasará a apoyar al Tesoro General de la Nación (TGN) 
+        if($factura[0]['docsec_codigoclasificador'] == 12){
+            $factura_total = $factura_total * 0.70;
+        }
+        //******************************************************
+        
+        
         $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>IMPORTE BASE CR&Eacute;DITO FISCAL</td>"; 
-        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total ,2,'.',',')."</td>"; 
+        $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($importe_base_iva ,2,'.',',')."</td>"; 
         $micad .= "                    </tr>";
         
         }

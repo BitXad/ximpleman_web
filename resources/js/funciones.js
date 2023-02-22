@@ -3040,6 +3040,12 @@ function registrarventa(cliente_id)
     var punto_venta = document.getElementById('punto_venta').value;
     let parametro_puntos = document.getElementById('parametro_puntos').value;
     
+    let datos_placa = document.getElementById('datos_placa').value;
+    let datos_embase = document.getElementById('datos_embase').value;
+    let datos_codigopais = document.getElementById('datos_codigopais').value;
+    let datos_autorizacionsc = document.getElementById('datos_autorizacionsc').value;
+    
+    
     if (registroeventos_codigo>0){
         
         var fecha_cafc = document.getElementById('fecha_cafc').value;
@@ -3122,7 +3128,8 @@ function registrarventa(cliente_id)
                 venta_giftcard:venta_giftcard, venta_detalletransaccion:venta_detalletransaccion, venta_ice: venta_ice,
                 factura_complementoci:factura_complementoci,fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, codigo_cafc: codigo_cafc, 
                 registroeventos_codigo: registroeventos_codigo, dosificacion_modalidad:dosificacion_modalidad,venta_glosa:venta_glosa,
-                parametro_tipoemision:parametro_tipoemision, mandar_enuno:mandar_enuno, select_almacen:select_almacen
+                parametro_tipoemision:parametro_tipoemision, mandar_enuno:mandar_enuno, select_almacen:select_almacen,cliente_id:cliente_id,
+                datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc
             },
             success:function(respuesta){
                 
@@ -3178,7 +3185,8 @@ function registrarventa(cliente_id)
                 factura_complementoci:factura_complementoci, fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, 
                 codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo, hora_cafc:hora_cafc,
                 dosificacion_modalidad:dosificacion_modalidad, parametro_tipoemision:parametro_tipoemision,
-                mandar_enuno:mandar_enuno, select_almacen:select_almacen, venta_glosa:venta_glosa
+                mandar_enuno:mandar_enuno, select_almacen:select_almacen, venta_glosa:venta_glosa,cliente_id:cliente_id,
+                datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -6731,4 +6739,106 @@ function borrar_datos_cliente(){
     
      $("#span_buscar_cliente").click();   
 
+}
+
+function buscar_placa(e){    
+    
+    let base_url = document.getElementById('base_url').value;
+    let numeroplaca = document.getElementById('datos_placa').value;
+    let controlador = base_url+'venta/buscar_placa';    
+    var tecla = (document.all) ? e.keyCode : e.which;
+    var res = 0;
+    
+    if (tecla==13){
+    
+    
+
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{numeroplaca:numeroplaca},
+                //async: false, 
+                success:function(respuesta){
+                    
+                    let registro =  JSON.parse(respuesta);
+                    if(registro.length>0){
+
+                        $("#datos_embase").val(registro[0]["datos_embase"]);
+                        $("#datos_codigopais").val(registro[0]["datos_codigopais"]);
+                        $("#datos_autorizacionsc").val(registro[0]["datos_autorizacionsc"]);
+                        $("#datos_placa").val(registro[0]["datos_placa"]);
+                        $("#nit").val(registro[0]["cliente_nit"]);
+                        validar(13,1);
+                        
+                    }else{
+
+                        $("#datos_embase").val("");
+                        $("#datos_codigopais").val("");
+                        $("#datos_autorizacionsc").val("");
+//                        $("#datos_placa").val("");
+
+                        //Eliminar datos del cliente
+                        $("#razon_social").val(razon_social);
+                        $("#cliente_nombre").val(razon_social);
+                        $("#cliente_codigo").val(nit);                            
+                        $("#email").val("");
+                        
+                        var nit = "1234";
+                        var razon_social = "SIN NOMBRE";
+                        var cliente_id = "1";                        
+                        
+                        $("#nit").val(nit);
+                        $("#cliente_id").val(cliente_id);
+                        $("#cliente_ci").val(nit);
+                        $("#cliente_nombrenegocio").val("-");
+
+                        $("#pedido_id").val("0");
+                        $("#usuarioprev_id").val("0");
+
+                        $("#cliente_direccion").val("-");
+                        $("#cliente_departamento").val("-");
+                        $("#cliente_celular").val("-");
+                        $("#tipocliente_id").val("1");
+                        $("#cliente_telefono").val("-");
+
+                        $("#tiposerv_id").val("1");
+                        $("#venta_numeromesa").val("0");
+                        $("#venta_glosa").val("");  
+
+                        $("#venta_efectivo").val("0");
+                        $("#venta_cambio").val("0");
+                        $("#zona_id").val("0");
+                        $("#venta_descuentoparc").val("0");
+                        $("#venta_descuento").val("0");
+                        $("#preferencia_id").val("0");
+                        $("#cliente_complementoci").val("");
+                        $("#venta_ice").val("0.00");
+                        $("#venta_detalletransaccion").val("0");
+                        $("#venta_giftcard").val("0.00");
+                        $("#tipo_doc_identidad").val("5");
+                        $("#cliente_valido").val("1");
+                        document.getElementById("codigoexcepcion").checked = false;
+
+
+
+                        $("#razon_social").css("background-color", "gray");
+                        $("#razon_social").attr("readonly","readonly");                        
+                        
+                        
+                    }
+                    
+//                    alert(registro.length);
+//                    if(registro == "ok"){
+//                        res = 1;
+//                    }else{
+//                        res = 0;
+//                    }
+                    
+                },
+                error:function(respuesta){
+                    res = 0;
+                }
+            });     
+            return res;
+            
+    }
 }

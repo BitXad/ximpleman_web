@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaEngarrafadoras xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaEngarrafadoras.xsd">
+      <cabecera>
+          <nitEmisor>5152377019</nitEmisor>
+          <razonSocialEmisor>ROBERTO CARLOS SOTO SIERRA</razonSocialEmisor>
+          <municipio>CERCADO - COCHABAMBA</municipio>
+          <telefono>4511518 *(591)79999097</telefono>
+          <numeroFactura>175</numeroFactura>
+          <cuf>1608A399D64B8838371B4ECD238E65C652564548763862CA42D674FD74</cuf>
+          <cufd>BQXxCKlhQRkE=NzEZBQzUxRTNEMjc=Q0E0d2dWV0NYVUFcwM0E5NjE4MjdEM</cufd>
+          <codigoSucursal>0</codigoSucursal>
+          <direccion>URUGUAY N? 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <fechaEmision>2023-02-22T09:41:30.199</fechaEmision>
+          <nombreRazonSocial>SIN NOMBRE</nombreRazonSocial>
+          <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>1234</numeroDocumento>
+          <complemento></complemento>
+          <codigoCliente>NaN</codigoCliente>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta>0</numeroTarjeta>
+          <montoTotal>400.000</montoTotal>
+          <montoTotalSujetoIva>400</montoTotalSujetoIva>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1.000</tipoCambio>
+          <montoTotalMoneda>400.000</montoTotalMoneda>
+          <descuentoAdicional>0.000</descuentoAdicional>
+          <codigoExcepcion>0</codigoExcepcion>
+          <cafc xsi:nil="true"></cafc>
+          <leyenda>Ley N° 453: Está prohibido importar, distribuir o comercializar productos expirados o prontos a expirar.</leyenda>
+          <usuario>Administrador</usuario>
+          <codigoDocumentoSector>51</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>220802172042</codigoProducto>
+           <descripcion>HUB/SWICH TP-LINK 8-PUERTOS &amp; 10/100 MBPS TL-SF1008D </descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>150.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>300.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>611849</codigoProductoSin>
+           <codigoProducto>152502326</codigoProducto>
+           <descripcion>WIRELESS PCI-XPRESS 150MBPS TP-LINK TL-WN781ND </descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>100.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>100.00</subTotal>
+      </detalle>
+</facturaComputarizadaEngarrafadoras>

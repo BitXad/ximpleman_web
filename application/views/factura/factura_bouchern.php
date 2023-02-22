@@ -307,10 +307,21 @@
                     </table>
                     </td>
                 </tr>    
+                            
                 <tr>
                     <?php
                     $total_final_factura = $factura[0]['factura_subtotal'];
                     $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
+                    
+                    if ($factura[0]['docsec_codigoclasificador']==12){ 
+
+                        $importe_base_iva = $factura_total * 0.70;
+
+                    }else{
+
+                        $importe_base_iva = $factura_total;
+                    }
+                    
                     ?>
                     <td colspan="4" style="padding: 0">
                         <table style="width:<?php echo $ancho?>; font-size: 8pt !important" >
@@ -359,12 +370,12 @@
                             <tr>
                                 <td class="text-right text-bold">IMPORTE BASE CR&Eacute;DITO FISCAL Bs</td>
                                 <td></td>
-                                <td class="text-right text-bold"><?php echo number_format($factura_total,2,'.',','); ?></td>
+                                <td class="text-right text-bold"><?php echo number_format($importe_base_iva,2,'.',','); ?></td>
                             </tr>
                             <tr style="border-bottom-style: dashed; border-bottom-width: 1px;">
                                 <td colspan="3" style="padding-left: 3px; padding-bottom: 5px; font-size: 10px; font-weight: bold">
                                     <br>
-                                    <?php echo "SON: ".num_to_letras($factura_total,' Bolivianos'); ?>
+                                    <?php echo "SON: ".num_to_letras($importe_base_iva,' Bolivianos'); ?>
                                 </td>
                             </tr>
                             

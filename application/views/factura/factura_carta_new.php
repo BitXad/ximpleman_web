@@ -420,7 +420,21 @@ border-bottom : 1px solid #aaa;
                     ?>
                     <!-------------- SUB TOTAL ---------->
                     <tr>
-                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($factura_total,' Bolivianos') ?></b></td>
+                        <?php
+                                if ($factura[0]['docsec_codigoclasificador']==12){ 
+                                    
+                                    $importe_base_iva = $factura_total * 0.70;
+                                    
+                                }else{
+                                    
+                                    $importe_base_iva = $factura_total;
+                                }
+                                 
+                                
+                                
+                        ?>
+                        
+                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($importe_base_iva,' Bolivianos') ?></b></td>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">SUBTOTAL Bs</td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_final_factura,2,'.',','); ?></td>
                     </tr>
@@ -446,7 +460,7 @@ border-bottom : 1px solid #aaa;
                     </tr>
                     
                     <!-------------- FACTURA GIFTA CARD ---------->
-                    <?php if($factura[0]['docsec_codigoclasificador']!=2){ ?>
+                    <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=8 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO GIFT CARD Bs</b></td>
                             <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_giftcard'] ,2,'.',',') ?></b></td>
@@ -466,7 +480,7 @@ border-bottom : 1px solid #aaa;
                     <?php } ?>
                     
                     <!-------------- MONTO A PAGAR ---------->
-                    <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39){ ?>
+                    <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
                     <tr>           
                         
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO A PAGAR Bs</b></td>
@@ -475,11 +489,12 @@ border-bottom : 1px solid #aaa;
                     <?php } ?>
                     
                     <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
-                    <?php if ($factura[0]['docsec_codigoclasificador']!=8){ ?>
+                    <?php
+                    if ($factura[0]['docsec_codigoclasificador'] != 8){ ?> 
+
                     <tr>           
-                        
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>IMPORTE BASE CR&Eacute;DITO FISCAL</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',')?></b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($importe_base_iva,2,'.',',')?></b></td>
                     </tr>
                     <?php } ?>
                 </table>
