@@ -260,25 +260,26 @@ border-bottom : 1px solid #aaa;
 <!--                        NOMBRE DE LA FACTURA-->
                         <font size="4" face="arial"><b>
                             <?php
-                                    $opc = $factura[0]['docsec_codigoclasificador'];
-                                        switch($opc){
+                            $subtitulo_factura = "Con Derecho a Cr&eacute;dito Fiscal";
+                            $opc = $factura[0]['docsec_codigoclasificador'];
+                            switch($opc){
 
-                                            default: echo "FACTURA";
-                                                    break;
+                                default: echo "FACTURA";
+                                        break;
 
-                                            case 2: echo "FACTURA DE ALQUILER";
-                                                    break;
+                                case 2: echo "FACTURA DE ALQUILER";
+                                        break;
 
-                                            case 8: echo "FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL";
-                                                    break;
+                                case 8: echo "FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL";
+                                        $subtitulo_factura = "Sin Derecho a Cr&eacute;dito Fiscal";
+                                        break;
 
-
-                                        }
+                            }
                             ?>
                             
                         </b></font> <br>
                         
-                        <font size="1" face="arial">(Con Derecho a Cr&eacute;dito Fiscal)</font> <br>
+                        <font size="1" face="arial">(<?php echo $subtitulo_factura; ?>)</font> <br>
                     </center>
                 </td>  
             </tr>
@@ -300,6 +301,16 @@ border-bottom : 1px solid #aaa;
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Nombre/Razón Social:</b></td>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_razonsocial'] ?></td>
                             </tr>
+                            <?php
+                            if($opc == 12){ //Comercializacion de hidrocarburos
+                            ?>
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Placa/B-Sisa/Vin:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['datos_placa']; ?></td>
+                            </tr>
+                            <?php
+                            }
+                            ?>
                         </table>
                     </div>
     
@@ -313,6 +324,16 @@ border-bottom : 1px solid #aaa;
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Cod. Cliente:</b></td>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_codigocliente'] ?></td>
                             </tr>
+                            <?php
+                            if($opc == 12){ //Comercializacion de hidrocarburos
+                            ?>
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Tipo Envase:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['datos_embase']; ?></td>
+                            </tr>
+                            <?php
+                            }
+                            ?>
                             <?php
                             
                             if ($factura[0]["docsec_codigoclasificador"]==2){ ?>
