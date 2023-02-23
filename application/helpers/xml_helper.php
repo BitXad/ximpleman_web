@@ -154,7 +154,7 @@
     function generarfacturaCompra_ventaXML($modalidad_factura, $factura, $detalle_factura, $empresa, $documento_sector,$nombre_documento_sector){
         
         
-        $decimales = 2;
+        //$decimales = 2;
         $factura = $factura[0];
         $empresa = $empresa[0];
         $base_url = explode('/', base_url());
@@ -162,8 +162,17 @@
         // $detalle_factura = $detalle_factura[0];
         // var_dump($empresa);
         $CI = & get_instance();
-        $CI->load->model('Dosificacion_model');
+        $CI->load->model('Parametro_model');
+        $parametros = $CI->Parametro_model->get_parametros();
+        //$dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+        $decimales = $parametros[0]["parametro_decimales"];
+        $dos_decimales = 2;
         
+        if($documento_sector == 12 ){ //12 Comercializacion de hidrocarburos
+            $CI2 = & get_instance();
+            $CI2->load->model('Factura_datos_model');
+            $factura_datos = $CI2->Factura_datos_model->get_factura_datos($factura['datos_id']);
+        }
         // var_dump($factura);
         //$archivo = $modalidad_factura == 1 ? "facturaElectronicaCompraVenta" : "facturaComputarizadaCompraVenta";
         $nombre_archivo = $nombre_documento_sector; //$directorio.$dosificacion_documentosector.$factura['factura_id'];
@@ -218,7 +227,7 @@
          
          }
 
-    $total_creditofiscal = number_format($factura['factura_total'] - $factura['factura_giftcard'],$decimales,".","") ;
+    $total_creditofiscal = number_format($factura['factura_total'] - $factura['factura_giftcard'],$dos_decimales,".","") ;
 
 $salto_linea='
 ';
@@ -309,15 +318,17 @@ $salto_linea='
 
         
         if ($documento_sector == 12){  //Si es 12 Comercializacion hidrocarburos debe mostrarse en este sector
-            
+            $codigopais = $factura_datos['datos_codigopais'];
 
-            $codigopais = 1;
+            //$codigopais = 1;
             $cabecera_facturaxml .= $salto_linea.'          <codigoPais>'.$codigopais.'</codigoPais>';
             
-            $placavehiculo = "1495IHG";
+            $placavehiculo = $factura_datos['datos_placa'];
+            //$placavehiculo = "1495IHG";
             $cabecera_facturaxml .= $salto_linea.'          <placaVehiculo>'.$placavehiculo.'</placaVehiculo>';
             
-            $tipoenvase = "Bidon";
+            $tipoenvase = $factura_datos['datos_embase'];
+            //$tipoenvase = "Bidon";
             $cabecera_facturaxml .= $salto_linea.'          <tipoEnvase>'.$tipoenvase.'</tipoEnvase>';
             
         }
@@ -357,14 +368,14 @@ $salto_linea='
             $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
         }
         
-        $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_total'],$decimales,".","") .'</montoTotal>';
+        $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_total'],$dos_decimales,".","") .'</montoTotal>';
         
         // Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo de diésel y gasolina, 
         // el crédito fiscal del IVA será sólo del 70% del valor de la compra, mientras que el 30% restante pasará a apoyar 
         // al Tesoro General de la Nación
         
         if ($documento_sector == 12){//Ley 317 de hidrocarburos
-            $total_creditofiscal = number_format($total_creditofiscal * 0.70,$decimales,".","") ;
+            $total_creditofiscal = number_format($total_creditofiscal * 0.70,$dos_decimales,".","") ;
             
         }
         
@@ -383,7 +394,8 @@ $salto_linea='
         
         if ($documento_sector == 12){ //12 - factura venta hidrocarburos
             
-            $codigoAutorizacionSC = "66545670";
+            //$codigoAutorizacionSC = "66545670";
+            $codigoAutorizacionSC = $factura_datos['datos_autorizacionsc'];
             $cabecera_facturaxml .= $salto_linea.'          <codigoAutorizacionSC>'.$codigoAutorizacionSC.'</codigoAutorizacionSC>';            
             
             $observacion = "";
@@ -411,17 +423,17 @@ $salto_linea='
         }
         
         $cabecera_facturaxml .= $salto_linea.'          <codigoMoneda>'.$factura['moneda_codigoclasificador'].'</codigoMoneda>';
-        $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.number_format($factura['moneda_tc'],$decimales,".","").'</tipoCambio>';
-        $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.number_format($factura['factura_total'],$decimales,".","").'</montoTotalMoneda>';
+        $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.number_format($factura['moneda_tc'],$dos_decimales,".","").'</tipoCambio>';
+        $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.number_format($factura['factura_total'],$dos_decimales,".","").'</montoTotalMoneda>';
         
         if ($documento_sector != 2 && $documento_sector != 12 && $documento_sector != 13 && $documento_sector != 39 && $documento_sector != 23 && $documento_sector != 51){
-            $cabecera_facturaxml .= $salto_linea.'          <montoGiftCard>'.number_format($factura['factura_giftcard'],$decimales,".","").'</montoGiftCard>';
+            $cabecera_facturaxml .= $salto_linea.'          <montoGiftCard>'.number_format($factura['factura_giftcard'],$dos_decimales,".","").'</montoGiftCard>';
         }
         
         
         if ($documento_sector != 23){  //23- factura prevalorada
             
-            $cabecera_facturaxml .= $salto_linea.'          <descuentoAdicional>'.number_format($factura['factura_descuento'],$decimales,".","").'</descuentoAdicional>';
+            $cabecera_facturaxml .= $salto_linea.'          <descuentoAdicional>'.number_format($factura['factura_descuento'],$dos_decimales,".","").'</descuentoAdicional>';
             $cabecera_facturaxml .= $salto_linea.'          <codigoExcepcion>'.$factura_excepcion.'</codigoExcepcion>';
         
             if($factura['factura_cafc'] != 0 || $factura['factura_cafc'] != ""){            
