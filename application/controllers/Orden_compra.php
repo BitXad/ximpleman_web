@@ -18,6 +18,7 @@ class Orden_compra extends CI_Controller{
         $this->load->model('Moneda_model');
         $this->load->model('Sincronizacion_model');
         $this->load->model('ProductosServicios_model');
+        $this->load->model('Forma_pago_model');
         //$this->load->model('Usuario_model');
         //$this->load->model('Estado_model');
         $this->load->helper('numeros_helper');
@@ -596,6 +597,8 @@ class Orden_compra extends CI_Controller{
                     'ordencompra_fecha' => $fecha_orden,
                     'ordencompra_hora' => $hora_orden,
                     'ordencompra_totalfinal' => $total,
+                    'forma_id' => $this->input->post('forma_id'),
+                    'ordencompra_fechaentrega' => $this->input->post('ordencompra_fechaentrega'),
                 );
                 $ordencompra_id = $this->Orden_compra_model->add_ordencompra($params);
                 
@@ -658,6 +661,7 @@ class Orden_compra extends CI_Controller{
             //$data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
             $data['parametro'] = $this->Parametro_model->get_parametro(1);
             $data['prod_servicios'] = $this->ProductosServicios_model->get_productosServicios_actividad();
+            $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
             $data['page_title'] = "Nueva Orden de Compra";
             
             $data['_view'] = 'orden_compra/nueva_ordencompra';
