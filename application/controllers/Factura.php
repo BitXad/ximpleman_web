@@ -27,6 +27,7 @@ class Factura extends CI_Controller{
             'Preferencia_model',
             'Moneda_model',
             'Caja_model',
+            'Factura_datos_model',
         ]);
         
         $this->load->library('ControlCode');
@@ -146,9 +147,12 @@ class Factura extends CI_Controller{
         $data['factura'] = $factura;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['tipo'] = $tipo;
-                
+             
+        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
         if(sizeof($factura)>=1){
-        
+            //if($dosificacion['docsec_codigoclasificador'] == 12){
+                $data['datos_factura'] = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
+            //}
         $nit_emisor    = $factura[0]['factura_nitemisor'];
         $num_fact      = $factura[0]['factura_numero'];
         $autorizacion  = $factura[0]['factura_autorizacion'];
@@ -189,7 +193,7 @@ class Factura extends CI_Controller{
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         $data['cadenaqr'] = $cadenaQR;
         
-        $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+        
         if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_carta';
         }else{

@@ -183,6 +183,7 @@
                             <th>Orden No.</th>
                             <th>Fecha</th>
                             <th>Hora</th>
+                            <th>Fecha Entrega</th>
                             <th>Proveedor</th>
                             <th>Total</th>
                             <th>Estado</th>

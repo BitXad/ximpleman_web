@@ -36,6 +36,9 @@ function tablaresultadosordencompra(limite)
                         html += moment(registros[i]["ordencompra_fecha"]).format("DD/MM/YYYY");
                         html += "</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['ordencompra_hora']+"</td>";
+                        html += "<td style='padding: 2px;' class='text-center'>";
+                        html += moment(registros[i]["ordencompra_fechaentrega"]).format("DD/MM/YYYY");
+                        html += "</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['proveedor_nombre']+"</td>";
                         html += "<td style='padding: 2px;' class='text-right'>"+registros[i]['ordencompra_totalfinal']+"</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['estado_descripcion']+"</td>";

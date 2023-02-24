@@ -248,6 +248,8 @@ function registrar_ordencompramodif(){
     var base_url = document.getElementById('base_url').value;
     var proveedor_id = document.getElementById('proveedor_id').value;
     var ordencompra_id = document.getElementById('ordencompra_id').value;
+    var forma_id = document.getElementById('forma_id').value;
+    var ordencompra_fechaentrega = document.getElementById('ordencompra_fechaentrega').value;
     if(proveedor_id == 0){
         alert("Debe elegir un proveedor");
         $("#proveedor_id").focus();
@@ -255,7 +257,7 @@ function registrar_ordencompramodif(){
         var controlador = base_url+'orden_compra/registrar_ordencompramodif/';
         $.ajax({url:controlador,
                 type:"POST",
-                data:{proveedor_id:proveedor_id, ordencompra_id:ordencompra_id},
+                data:{proveedor_id:proveedor_id, ordencompra_id:ordencompra_id, forma_id:forma_id, ordencompra_fechaentrega:ordencompra_fechaentrega},
                 success:function(resultado){
                     let registros = JSON.parse(resultado);
                     dir_url_nota = base_url+"orden_compra/nota_ordenp/"+registros;

@@ -33,6 +33,7 @@
 </div>
 <div class="row no-print">
     <div class="col-md-5">
+        <label for="buscar" class="control-label">&nbsp;</label>
         <div class="input-group">
             <span class="input-group-addon"> Buscar </span>           
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." autocomplete="off">
@@ -41,7 +42,8 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="box-tools">
+        <label for="proveedor_id" class="control-label">&nbsp;</label>
+        <div class="form-group">
             <select name="proveedor_id" class="form-control btn btn-facebook btn-sm btn-block" id="proveedor_id">
                 <option value="0" selected >-- ELEGIR PROVEEDOR --</option>
                 <?php 
@@ -54,7 +56,29 @@
             </select>
         </div>
     </div>
+    <div class="col-md-3">
+        <label for="forma_id" class="control-label">Forma de Pago</label>
+        <div class="form-group">
+            <select name="forma_id" class="form-control btn btn-facebook btn-sm" id="forma_id">
+                <!--<option value="0" selected >-- ELEGIR PROVEEDOR --</option>-->
+                <?php 
+                foreach($forma_pago as $forma)
+                {
+                    $selected = ($forma['forma_id'] == $orden_compra[0]['forma_id']) ? ' selected="selected"' : "";
+                    echo '<option value="'.$forma['forma_id'].'" '.$selected.'">'.$forma['forma_nombre'].'</option>';
+                } 
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <label for="ordencompra_fechaentrega" class="control-label">Fecha de Entrega</label>
+        <div class="form-group">
+            <input type="date" value="<?php echo date("Y-m-d", strtotime($orden_compra[0]['ordencompra_fechaentrega']))?>" class="form-control" id="ordencompra_fechaentrega" name="ordencompra_fechaentrega" required="true">
+        </div>
+    </div>
     <div class="col-md-4 text-right">
+        <label for="forma_id" class="control-label">&nbsp;</label>
         <div class="box-tools" style="display: flex">
             <a onclick="modal_buscarproducto()" class="btn btn-success btn-foursquarexs" title="Buscar y añadir Producto"><span class="fa fa-cart-plus"></span><small> Añadir Producto</small></a>
             &nbsp;<a onclick="modal_nuevoproducto()" class="btn btn-facebook btn-foursquarexs" title="Registrar nuevo producto"><span class="fa fa-plus-circle "></span><small> Registrar Nuevo Producto</small></a>

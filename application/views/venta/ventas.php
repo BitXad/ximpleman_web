@@ -336,7 +336,7 @@ window.onkeydown = compruebaTecla;
                     <?php } ?>
                     
                </select>
-        * COD. AUTORZ. SC <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_autorizacionsc" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;">
+        * COD. AUTORZ. SC <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_autorizacionsc" value="FGGR4577RT4G" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;">
     </div>
       
     </font>
@@ -1446,9 +1446,9 @@ window.onkeydown = compruebaTecla;
                 <?php 
                     $ocultar = "none";
                     if($dosificacion[0]['docsec_codigoclasificador']!=2 && $dosificacion[0]['docsec_codigoclasificador']!=39 && 
-                       $dosificacion[0]['docsec_codigoclasificador']!=8 && $dosificacion[0]['docsec_codigoclasificador']!=12 && 
+                       $dosificacion[0]['docsec_codigoclasificador']!=12 && 
                        $dosificacion[0]['docsec_codigoclasificador']!=51)
-                             { $ocultar = "block"; }?>
+                             { $ocultar = "contents"; }?>
                 
                 <tr style="padding: 0; display: <?php echo $ocultar; ?>">
                         <td style="padding: 0"><b>Tarjeta Gift</b></td>

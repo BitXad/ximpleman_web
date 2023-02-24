@@ -32,6 +32,7 @@
 </div>
 <div class="row no-print">
     <div class="col-md-5">
+        <label for="buscar" class="control-label">&nbsp;</label>
         <div class="input-group">
             <span class="input-group-addon"> Buscar </span>           
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." autocomplete="off">
@@ -40,7 +41,8 @@
         </div>
     </div>
     <div class="col-md-3">
-        <div class="box-tools">
+        <label for="proveedor_id" class="control-label">&nbsp;</label>
+        <div class="form-group">
             <select name="proveedor_id" class="form-control btn btn-facebook btn-sm btn-block" id="proveedor_id">
                 <option value="0" selected >-- ELEGIR PROVEEDOR --</option>
                 <?php 
@@ -52,7 +54,28 @@
             </select>
         </div>
     </div>
+    <div class="col-md-3">
+        <label for="forma_id" class="control-label">Forma de Pago</label>
+        <div class="form-group">
+            <select name="forma_id" class="form-control btn btn-facebook btn-sm" id="forma_id">
+                <!--<option value="0" selected >-- ELEGIR PROVEEDOR --</option>-->
+                <?php 
+                foreach($forma_pago as $forma)
+                {
+                    echo '<option value="'.$forma['forma_id'].'">'.$forma['forma_nombre'].'</option>';
+                } 
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <label for="ordencompra_fechaentrega" class="control-label">Fecha de Entrega</label>
+        <div class="form-group">
+            <input type="date" value="<?php echo date('Y-m-d')?>" class="form-control" id="ordencompra_fechaentrega" name="ordencompra_fechaentrega" required="true">
+        </div>
+    </div>
     <div class="col-md-4 text-right">
+        <label for="forma_id" class="control-label">&nbsp;</label>
         <div class="box-tools" style="display: flex">
             <a onclick="modal_buscarproducto()" class="btn btn-success btn-foursquarexs" title="Buscar y añadir Producto"><span class="fa fa-cart-plus"></span><small> Añadir Producto</small></a>
             &nbsp;<a onclick="modal_nuevoproducto()" class="btn btn-facebook btn-foursquarexs" title="Registrar nuevo producto"><span class="fa fa-plus-circle "></span><small> Registrar Nuevo Producto</small></a>
@@ -61,6 +84,7 @@
             <!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalprecio" class="btn btn-soundcloud btn-foursquarexs" title="Codigo de Barras" ><font size="5"><span class="fa fa-barcode"></span></font><br><small>Cod. Barras</small></a>-->
         </div>
     </div>
+    
     <div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
         <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
     </div>
