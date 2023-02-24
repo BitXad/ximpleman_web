@@ -1303,6 +1303,7 @@ class Orden_compra extends CI_Controller{
             $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
             $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
             $data['unidades'] = $this->Producto_model->get_all_unidad();
+            $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
             //$data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
             $data['parametro'] = $this->Parametro_model->get_parametro(1);
             $data['prod_servicios'] = $this->ProductosServicios_model->get_productosServicios_actividad();
@@ -1399,6 +1400,8 @@ class Orden_compra extends CI_Controller{
                         //'ordencompra_fecha' => $fecha_orden,
                         //'ordencompra_hora' => $hora_orden,
                         'ordencompra_totalfinal' => $total,
+                        'ordencompra_fechaentrega' => $this->input->post('ordencompra_fechaentrega'),
+                        'forma_id' => $this->input->post('forma_id'),
                     );
                     $this->Orden_compra_model->update_ordencompra($ordencompra_id,$params);
                     $this->Orden_compra_model->delete_detalleoc($ordencompra_id);

@@ -33,7 +33,6 @@
 <div class="row no-print">
     <div class="col-md-5">
         <label for="buscar" class="control-label">&nbsp;</label>
-        
         <div class="input-group">
             <span class="input-group-addon"> Buscar </span>           
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." autocomplete="off">
@@ -59,7 +58,7 @@
         <label for="forma_id" class="control-label">Forma de Pago</label>
         <div class="form-group">
             <select name="forma_id" class="form-control btn btn-facebook btn-sm" id="forma_id">
-<!--                <option value="0" selected >-- ELEGIR PROVEEDOR --</option>-->
+                <!--<option value="0" selected >-- ELEGIR PROVEEDOR --</option>-->
                 <?php 
                 foreach($forma_pago as $forma)
                 {
