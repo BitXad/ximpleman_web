@@ -498,7 +498,7 @@
                   <th>Proveedor/Detalle</th>
                   <th>
                         <?php echo $parametro["moneda_descripcion"]; ?>
-                        <a href="<?php echo base_url("pedido_diario/pedido_nuevo"); ?>" class="btn btn-default btn-xs" title="Registrar nuevo pedido"><fa class="fa fa-cube"></fa> </a>
+                      <a href="<?php echo base_url("/orden_compra/nueva_ordencompra"); ?>" class="btn btn-default btn-xs" target="_blank" title="Registrar nuevo pedido"><fa class="fa fa-cube"></fa> </a>
                   </th>
                 </tr>
                 <tbody id="tabla_pedidos_diarios">
