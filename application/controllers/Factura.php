@@ -150,9 +150,9 @@ class Factura extends CI_Controller{
              
         $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
         if(sizeof($factura)>=1){
-            //if($dosificacion['docsec_codigoclasificador'] == 12){
-                $data['datos_factura'] = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
-            //}
+            $data['datos_factura'] = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
+            $data['decimales'] = $parametros["parametro_decimales"];
+            $data['dos_decimales'] = 2;
         $nit_emisor    = $factura[0]['factura_nitemisor'];
         $num_fact      = $factura[0]['factura_numero'];
         $autorizacion  = $factura[0]['factura_autorizacion'];
@@ -248,6 +248,9 @@ class Factura extends CI_Controller{
         $data['tipo'] = $tipo;
         
         if(sizeof($factura)>=1){
+            $data['datos_factura'] = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
+            $data['decimales'] = $parametros["parametro_decimales"];
+            $data['dos_decimales'] = 2;
         
         $nit_emisor    = $factura[0]['factura_nitemisor'];
         $num_fact      = $factura[0]['factura_numero'];
@@ -288,6 +291,7 @@ class Factura extends CI_Controller{
          
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
+        $data['cadenaqr'] = $cadenaQR;
         if($data['parametro'][0]['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_boucher';
         }else{

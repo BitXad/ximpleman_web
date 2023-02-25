@@ -392,7 +392,7 @@ border-bottom : 1px solid #aaa;
                             $total_subtotal = 0;
                             $ice = 0.00;
     
-                            if ($factura[0]['estado_id']<>3){ 
+                            if ($factura[0]['estado_id']<>3){
                                 foreach($detalle_factura as $d){
                                     $cont = $cont+1;
                                     $cantidad += $d['detallefact_cantidad'];
@@ -404,7 +404,7 @@ border-bottom : 1px solid #aaa;
                         ?>
                         <tr style="border: 1px solid black">
                             <td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"> <?= $d['detallefact_codigo']; ?></font></td>
-                            <td align="right" style="padding: 0; padding-right:3px;"><font style="size:7px; font-family: arial"><?= number_format($d['detallefact_cantidad'],2,'.',','); ?></font></td>
+                            <td align="right" style="padding: 0; padding-right:3px;"><font style="size:7px; font-family: arial"><?= number_format($d['detallefact_cantidad'],$decimales,'.',','); ?></font></td>
                             <td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"><center>  <?= $d['producto_unidad'] ?></center></font></td>
                             <td colspan="1" style="padding: 0; line-height: 10px;">
                                 <font style="size:7px; font-family: arial; padding-left:3px"> 
@@ -419,20 +419,22 @@ border-bottom : 1px solid #aaa;
                             </td>
                             
                             <!-------------- PRECIO UNITARIO ---------->
-                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_precio'],2,'.',','); ?></font></td>
+                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_precio'],$decimales,'.',','); ?></font></td>
                             
                             <!-------------- DESCUENTO PARCIAL ---------->
-                            <td align="right" style="padding-right: 3px;"><?= number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',',') ?></td>
+                            <td align="right" style="padding-right: 3px;"><?= number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],$decimales,'.',',') ?></td>
                             
                             <!-------------- ICE/ICE ESPC ---------->
                             <?php if($mostrarice==1){ ?>
-                                <td align="right" style="padding-right: 3px;"><?= number_format($ice,2,'.',',') ?></td>
-                                <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?= number_format($ice,2,'.',',') ?></font></td>
+                                <td align="right" style="padding-right: 3px;"><?= number_format($ice,$decimales,'.',',') ?></td>
+                                <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?= number_format($ice,$decimales,'.',',') ?></font></td>
                             <?php } ?>
                             
-                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']) ,2,'.',','); ?></font></td>
+                            <td align="right" style="padding: 0; padding-right: 3px;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']) ,$decimales,'.',','); ?></font></td>
                         </tr>
-                    <?php }} 
+                    <?php
+                            }
+                        } 
                         $total_final_factura = $factura[0]['factura_subtotal'];
                         
                         $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
@@ -455,21 +457,21 @@ border-bottom : 1px solid #aaa;
                                 
                         ?>
                         
-                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($importe_base_iva,' Bolivianos') ?></b></td>
+                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($factura_total,' Bolivianos') ?></b></td>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">SUBTOTAL Bs</td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_final_factura,2,'.',','); ?></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_final_factura,$dos_decimales,'.',','); ?></td>
                     </tr>
                     <!-------------- DESCUENTO ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO Bs</td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],$dos_decimales,'.',','); ?></td>
                     </tr>
                     
                     <!-------------- DECUENTO GLOBAL ---------->
                     <?php //if($factura[0]['factura_descuento']>0){ ?>
 <!--                        <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO GLOBAL Bs</td>
-                            <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],$dos_decimales,'.',','); ?></td>
                         </tr>-->
                     <?php //} ?>
 
@@ -477,14 +479,14 @@ border-bottom : 1px solid #aaa;
                     <!-------------- FACTURA TOTAL ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>TOTAL Bs</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'],2,'.',',') ?></b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'],$dos_decimales,'.',',') ?></b></td>
                     </tr>
                     
                     <!-------------- FACTURA GIFTA CARD ---------->
-                    <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=8 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
+                    <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO GIFT CARD Bs</b></td>
-                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_giftcard'] ,2,'.',',') ?></b></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_giftcard'] ,$dos_decimales,'.',',') ?></b></td>
                         </tr>
                     <?php } ?>
                     
@@ -492,11 +494,11 @@ border-bottom : 1px solid #aaa;
                     <?php if($mostrarice==1){ ?>
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) TOTAL ICE ESPECÍFICO Bs</td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($ice,2,'.',',') ?></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($ice,$dos_decimales,'.',',') ?></td>
                     </tr>
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) TOTAL ICE PORCENTUAL Bs</td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($ice,2,'.',',') ?></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($ice,$dos_decimales,'.',',') ?></td>
                     </tr>
                     <?php } ?>
                     
@@ -505,17 +507,23 @@ border-bottom : 1px solid #aaa;
                     <tr>           
                         
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO A PAGAR Bs</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,2,'.',',')?></b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura_total,$dos_decimales,'.',',')?></b></td>
                     </tr>
                     <?php } ?>
                     
                     <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
                     <?php
-                    if ($factura[0]['docsec_codigoclasificador'] != 8){ ?> 
+                    if ($factura[0]['docsec_codigoclasificador'] != 8){
+                        $elimporte =  "IMPORTE BASE CR&Eacute;DITO FISCAL";
+                        if($opc == 12){ //Comercializacion de hidrocarburos
+                            $elimporte =  "IMPORTE BASE C/F MONTO LEY 317";
+                        } 
+                        
+                        ?> 
 
                     <tr>           
-                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>IMPORTE BASE CR&Eacute;DITO FISCAL</b></td>
-                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($importe_base_iva,2,'.',',')?></b></td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b><?php echo $elimporte; ?></b></td>
+                        <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($importe_base_iva,$dos_decimales,'.',',')?></b></td>
                     </tr>
                     <?php } ?>
                 </table>

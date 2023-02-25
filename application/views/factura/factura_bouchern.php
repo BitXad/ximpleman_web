@@ -147,34 +147,40 @@
                         <table style="width:<?php echo $ancho?>" >
                             <tr>
                                 <td class="text-center" style="padding-bottom: 5px">
+                                    <div class="col-md-12 no-print" style="padding:0;" >
+                                        <?php 
+                                        if ($factura[0]['factura_codigodescripcion']=="VALIDADA"){ ?>
+                                            <button class="btn btn-info btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"><b style="font-size: 20pt;"> ENVIADA </b></button>
+                                        <?php
+                                        }else{ ?>
+                                            <button class="btn btn-danger btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"> <b style="font-size: 20pt;"> NO ENVIADA</b> <br> Ocurrio un error en el envio, debe rehacer la operación
+                                                <br> <?= $factura[0]['factura_mensajeslist'] ?>
+                                            </button>
+
+                                        <?php } ?>
+                                    </div>
+                                    <?php
+                                    $titulo1 = "FACTURA";
+                                    $subtitulo_factura = "CON DERECHO A CR&Eacute;DITO FISCAL";
+                                    $opc = $factura[0]['docsec_codigoclasificador'];
+                                    switch($opc){
+                                        default: $titulo1 = "FACTURA";
+                                                break;
+                                        case 2: $titulo1 = "FACTURA DE ALQUILER";
+                                                break;
+                                        case 8: $titulo1 = "FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL";
+                                                $subtitulo_factura = "SIN DERECHO A CR&Eacute;DITO FISCAL";
+                                                break;
+                                    }
                                     
-                                    
-                                            <div class="col-md-12 no-print" style="padding:0;" >
-
-
-                                                    <?php 
-                                                        //echo $factura[0]['factura_codigodescripcion'];
-                                                        if ($factura[0]['factura_codigodescripcion']=="VALIDADA"){ ?>
-
-                                                            <button class="btn btn-info btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"><b style="font-size: 20pt;"> ENVIADA </b></button>
-
-                                                    <?php }else{ ?>
-                                                            
-                                                            <button class="btn btn-danger btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"> <b style="font-size: 20pt;"> NO ENVIADA</b> <br> Ocurrio un error en el envio, debe rehacer la operación
-                                                                <br> <?= $factura[0]['factura_mensajeslist'] ?>
-                                                            </button>
-                                                            
-                                                    <?php } ?>
-
-                                          </div>                                  
-                                    
-                                    
-                                    <?php $titulo1 = "FACTURA";  
+                                    /*
+                                    $titulo1 = "FACTURA";  
                                     if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
                                     else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";
+                                    */
                                     ?>
                                     <b><?php echo $titulo1; ?></b><br>
-                                    <b><?php echo $subtitulo; ?></b><br>
+                                    <b><?php echo $subtitulo_factura; ?></b><br>
                                     <?php echo $empresa[0]['empresa_nombre']; ?><br>
                                     <?php echo $empresa[0]['empresa_eslogan']; ?><br>
                                     <?php if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
@@ -186,7 +192,6 @@
                                         }else{
                                             echo "SUCURSAL ".$factura[0]['factura_sucursal'];
                                         }
-                                        
                                     ?>
                                     <?php //echo $factura[0]['factura_sucursal'];?><br>
                                     <?php echo "Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']; ?><br>
@@ -230,7 +235,7 @@
                                 <td class="text-right text-bold" style="padding: 0;">COD. CLIENTE:</td><!-- PONER CODIGO DE CLIENTE -->
                                 <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_codigocliente']; ?> <br></td>
                             </tr>
-                            <tr style="border-bottom-style: dashed; border-bottom-width: 1px;">
+                            <tr>
                                 <td class="text-right text-bold" style="padding: 0;">FECHA DE EMISI&Oacute;N:</td>
                                 <td style="padding: 0; padding-left: 3px">
                                     <?php $fecha = new DateTime($factura[0]['factura_fecha']); 
@@ -239,6 +244,20 @@
                                     ?>
                                 </td>
                             </tr>
+                            <?php
+                            if(true){
+                            ?>
+                            <tr>
+                                <td class="text-right text-bold" style="padding: 0;">PLACA/B-SISA/VIN:</td><!-- PONER CODIGO DE CLIENTE -->
+                                <td style="padding: 0; padding-left: 3px"><?php echo $datos_factura['datos_placa']; ?> <br></td>
+                            </tr>
+                            <tr style="border-bottom-style: dashed; border-bottom-width: 1px;">
+                                <td class="text-right text-bold" style="padding: 0;">TIPO ENVASE:</td><!-- PONER CODIGO DE CLIENTE -->
+                                <td style="padding: 0; padding-left: 3px"><?php echo $datos_factura['datos_embase']; ?> <br></td>
+                            </tr>
+                            <?php
+                            }
+                            ?>
                         </table>           
                     </td>
                 </tr>
@@ -265,7 +284,7 @@
                                     $total_final += $d['detallefact_total']; 
                             ?>
                             <tr>
-                                <td class="text-bold" colspan="0" style="font-size: <?= $tamanio_fuente; ?>; padding: 0;">
+                                <td class="text-bold" colspan="3" style="font-size: <?= $tamanio_fuente; ?>; padding: 0;">
                                     <?php echo $d['detallefact_codigo']." - ".$d['detallefact_descripcion']; ?>
                                     <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo " [".$d['detallefact_unidadfactor']."]";?>
 
@@ -280,22 +299,22 @@
 
                                     <?php //echo $d['detallefact_cantidad']; ?>
                                 </td>
-                                <td colspan="2"></td>
+                                <!--<td colspan="2"></td>-->
                             </tr>
                             <tr>
                                 <td style="font-size: <?= $tamanio_fuente; ?>; padding: 0;">
                                     <?php
-                                    echo number_format($d['detallefact_cantidad'],2,'.',',')." X ";
-                                    echo number_format($d['detallefact_precio'],2,'.',',')." - ";
-                                    echo number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],2,'.',','); //." + "; //."0.00 +  0.00";
+                                    echo number_format($d['detallefact_cantidad'],$decimales,'.',',')." X ";
+                                    echo number_format($d['detallefact_precio'],$decimales,'.',',')." - ";
+                                    echo number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],$decimales,'.',','); //." + "; //."0.00 +  0.00";
                                     if ($mostrarice==1){
-                                        echo " + ".number_format($d['detallefact_ice'],2,'.',',')." + ";
-                                        echo number_format($d['detallefact_iceesp'],2,'.',',');
+                                        echo " + ".number_format($d['detallefact_ice'],$decimales,'.',',')." + ";
+                                        echo number_format($d['detallefact_iceesp'],$decimales,'.',',');
                                     }
                                     ?>
                                 </td>
                                 <td style="width: 0.5cm !important;"></td>
-                                <td align="right" style="font-size: <?= $tamanio_fuente; ?>; padding: 0;"><?php echo number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),2,'.',','); ?></td>
+                                <td align="right" style="font-size: <?= $tamanio_fuente; ?>; padding: 0;"><?php echo number_format($d['detallefact_subtotal'] - ($d['detallefact_descuentoparcial']*$d['detallefact_cantidad']),$decimales,'.',','); ?></td>
                             </tr>
 
                             <!--<td align="right" style="padding: 0;"><?php //echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></td>-->
@@ -328,66 +347,82 @@
                             <tr style="border-top-style: dotted; border-top-width: 1px;">
                                 <td class="text-right">SUBTOTAL Bs</td>
                                 <td></td>
-                                <td class="text-right"><?php echo number_format($total_final_factura,2,'.',','); ?></td>
+                                <td class="text-right"><?php echo number_format($total_final_factura,$dos_decimales,'.',','); ?></td>
                             </tr>
                             <tr>
                                 <td class="text-right">(-) DESCUENTO Bs</td>
                                 <td style="width: 1cm !important;"></td>
-                                <td class="text-right"><?php echo number_format($factura[0]['factura_descuento'],2,'.',','); ?></td>
+                                <td class="text-right"><?php echo number_format($factura[0]['factura_descuento'],$dos_decimales,'.',','); ?></td>
                             </tr>
-                            <?php if ($factura[0]['factura_giftcard']>0){ ?>
+                            
+                            <!-------------- FACTURA TOTAL ---------->
                             <tr>
                                 <td class="text-right">TOTAL Bs</td>
                                 <td></td>
-                                <td class="text-right"><?php echo number_format($factura[0]['factura_total'],2,'.',','); ?></td>
+                                <td class="text-right"><?php echo number_format($factura[0]['factura_total'],$dos_decimales,'.',','); ?></td>
                             </tr>
-                            
+
+                            <!-------------- FACTURA GIFTA CARD ---------->
+                            <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
                             <tr>
                                 <td class="text-right text-bold">MONTO GIFT CARD Bs</td>
                                 <td></td>
-                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_giftcard'],2,'.',','); ?></td>
+                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_giftcard'],$dos_decimales,'.',','); ?></td>
                             </tr>
                             <?php } ?>
-                                    
                             
                             <?php if ($mostrarice==1){ ?>
                             <tr>
                                 <td class="text-right">(-) TOTAL ICE ESPEC&Iacute;FICO Bs</td>
                                 <td></td>
-                                <td class="text-right"><?php number_format($ice,2,'.',',');//number_format($factura[0]['factura_ice'],2,'.',','); ?></td>
+                                <td class="text-right"><?php number_format($ice,$dos_decimales,'.',',');//number_format($factura[0]['factura_ice'],2,'.',','); ?></td>
                             </tr>
                             <tr>
                                 <td class="text-right">(-) TOTAL ICE PORCENTUAL Bs</td>
                                 <td></td>
-                                <td class="text-right"><?php number_format($ice,2,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',','); ?></td>
+                                <td class="text-right"><?php number_format($ice,$dos_decimales,'.',','); //number_format($factura[0]['factura_iceesp'],2,'.',','); ?></td>
                             </tr>
                             <?php } ?>
+                            <!-------------- MONTO A PAGAR ---------->
+                            <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
                             <tr>
                                 <td class="text-right text-bold">MONTO A PAGAR Bs</td>
                                 <td></td>
-                                <td class="text-right text-bold"><?php echo number_format($factura_total,2,'.',','); ?></td>
+                                <td class="text-right text-bold"><?php echo number_format($factura_total,$dos_decimales,'.',','); ?></td>
                             </tr>
+                            <?php } ?>
+                            <?php
+                            if ($factura[0]['docsec_codigoclasificador'] != 8){
+                                $elimporte =  "IMPORTE BASE CR&Eacute;DITO FISCAL";
+                                if($opc == 12){ //Comercializacion de hidrocarburos
+                                    $elimporte =  "IMPORTE BASE C/F MONTO LEY 317";
+                                } 
+
+                                ?> 
                             <tr>
-                                <td class="text-right text-bold">IMPORTE BASE CR&Eacute;DITO FISCAL Bs</td>
+                                <td class="text-right text-bold"><?php echo $elimporte; ?></td>
                                 <td></td>
-                                <td class="text-right text-bold"><?php echo number_format($importe_base_iva,2,'.',','); ?></td>
+                                <td class="text-right text-bold"><?php echo number_format($importe_base_iva,$dos_decimales,'.',','); ?></td>
                             </tr>
+                            <?php } ?>
+                            
+                            
                             <tr style="border-bottom-style: dashed; border-bottom-width: 1px;">
                                 <td colspan="3" style="padding-left: 3px; padding-bottom: 5px; font-size: 10px; font-weight: bold">
                                     <br>
-                                    <?php echo "SON: ".num_to_letras($importe_base_iva,' Bolivianos'); ?>
+                                    <?php echo "SON: ".num_to_letras($factura_total,' Bolivianos'); ?>
                                 </td>
                             </tr>
                             
                             <tr>
                                 <td class="text-right text-bold">EFECTIVO Bs</td>
                                 <td></td>
-                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_efectivo'],2,'.',','); ?></td>
+                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_efectivo'],$dos_decimales,'.',','); ?></td>
                             </tr>
                             <tr>
                                 <td class="text-right text-bold">CAMBIO Bs</td>
                                 <td></td>
-                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_cambio'],2,'.',','); ?></td>
+                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_cambio'],$dos_decimales,'.',','); ?></td>
                             </tr>
                             
                         </table>
@@ -484,7 +519,7 @@
     </tr>
     
 </table>
-
+</table><span class="no-print"><?php echo $cadenaqr; ?></span>
 
 
   
