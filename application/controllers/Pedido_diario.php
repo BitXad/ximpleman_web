@@ -267,37 +267,112 @@ class Pedido_diario extends CI_Controller{
         if ($opcion==1){
                 
             if($select_pedido == 1){
-                    $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
-                    left join proveedor p on p.proveedor_id = d.proveedor_id
-                    left join usuario u on u.usuario_id = d.usuario_id
-                    where pedido_fecha = date(now())
-                    order by pedido_fecha asc";
+                
+//                    $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
+//                    left join proveedor p on p.proveedor_id = d.proveedor_id
+//                    left join usuario u on u.usuario_id = d.usuario_id
+//                    where pedido_fecha = date(now())
+//                    order by pedido_fecha asc";
+                $sql = "select 
+                        d.`ordencompra_id` as pedido_id,
+                        p.`proveedor_id`,
+                        d.`ordencompra_totalfinal` as pedido_montototal,
+                        d.`ordencompra_fechaentrega`  as pedido_fecha,
+                        'PRODUCTOS' as pedido_resumen,
+                        d.`estado_id`, 
+                        d.`ordencompra_fecha` as pedido_fecharegistro,
+                        u.`usuario_id`,
+                        p.`proveedor_nombre`,
+                        u.`usuario_nombre`
+
+                        from orden_compra d
+                        left join proveedor p on p.proveedor_id = d.proveedor_id
+                        left join usuario u on u.usuario_id = d.usuario_id
+                        where ordencompra_fechaentrega = date(now())
+                        order by ordencompra_fechaentrega asc";
             }
 
             if($select_pedido == 2){
-                    $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
-                    left join proveedor p on p.proveedor_id = d.proveedor_id
-                    left join usuario u on u.usuario_id = d.usuario_id
-                    where pedido_fecha = date( date_add(NOW(), INTERVAL +1 DAY))
-                    order by pedido_fecha asc";
+                
+//                    $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
+//                    left join proveedor p on p.proveedor_id = d.proveedor_id
+//                    left join usuario u on u.usuario_id = d.usuario_id
+//                    where pedido_fecha = date( date_add(NOW(), INTERVAL +1 DAY))
+//                    order by pedido_fecha asc";
+                $sql = "select 
+                        d.`ordencompra_id` as pedido_id,
+                        p.`proveedor_id`,
+                        d.`ordencompra_totalfinal` as pedido_montototal,
+                        d.`ordencompra_fechaentrega`  as pedido_fecha,
+                        'PRODUCTOS' as pedido_resumen,
+                        d.`estado_id`, 
+                        d.`ordencompra_fecha` as pedido_fecharegistro,
+                        u.`usuario_id`,
+                        p.`proveedor_nombre`,
+                        u.`usuario_nombre`
+
+                        from orden_compra d
+                        left join proveedor p on p.proveedor_id = d.proveedor_id
+                        left join usuario u on u.usuario_id = d.usuario_id
+                        where d.`ordencompra_fechaentrega` = date( date_add(NOW(), INTERVAL +1 DAY))
+                        order by ordencompra_fechaentrega asc";
+                    
             }
 
 
             if($select_pedido == 3){
-                    $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
-                    left join proveedor p on p.proveedor_id = d.proveedor_id
-                    left join usuario u on u.usuario_id = d.usuario_id
-                    where pedido_fecha = date( date_add(NOW(), INTERVAL -1 DAY))
-                    order by pedido_fecha asc";
+                
+//                    $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
+//                    left join proveedor p on p.proveedor_id = d.proveedor_id
+//                    left join usuario u on u.usuario_id = d.usuario_id
+//                    where pedido_fecha = date( date_add(NOW(), INTERVAL -1 DAY))
+//                    order by pedido_fecha asc";
+                
+                $sql = "select 
+                        d.`ordencompra_id` as pedido_id,
+                        p.`proveedor_id`,
+                        d.`ordencompra_totalfinal` as pedido_montototal,
+                        d.`ordencompra_fechaentrega`  as pedido_fecha,
+                        'PRODUCTOS' as pedido_resumen,
+                        d.`estado_id`, 
+                        d.`ordencompra_fecha` as pedido_fecharegistro,
+                        u.`usuario_id`,
+                        p.`proveedor_nombre`,
+                        u.`usuario_nombre`
+                        from orden_compra d
+                        left join proveedor p on p.proveedor_id = d.proveedor_id
+                        left join usuario u on u.usuario_id = d.usuario_id
+                        where d.`ordencompra_fechaentrega` = date( date_add(NOW(), INTERVAL -1 DAY)) 
+                        order by ordencompra_fechaentrega asc";
+                
             }
         }
         else{
             
-                $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
-                left join proveedor p on p.proveedor_id = d.proveedor_id
-                left join usuario u on u.usuario_id = d.usuario_id
-                where pedido_fecha = '".$calendario."'
-                order by pedido_fecha asc";
+//                $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
+//                left join proveedor p on p.proveedor_id = d.proveedor_id
+//                left join usuario u on u.usuario_id = d.usuario_id
+//                where pedido_fecha = '".$calendario."'
+//                order by pedido_fecha asc";
+            
+                  $sql = "select 
+                        d.`ordencompra_id` as pedido_id,
+                        p.`proveedor_id`,
+                        d.`ordencompra_totalfinal` as pedido_montototal,
+                        d.`ordencompra_fechaentrega`  as pedido_fecha,
+                        'PRODUCTOS' as pedido_resumen,
+                        d.`estado_id`, 
+                        d.`ordencompra_fecha` as pedido_fecharegistro,
+                        u.`usuario_id`,
+                        p.`proveedor_nombre`,
+                        u.`usuario_nombre`
+
+                        from orden_compra d
+                        left join proveedor p on p.proveedor_id = d.proveedor_id
+                        left join usuario u on u.usuario_id = d.usuario_id
+                        where d.`ordencompra_fechaentrega` = '".$calendario."'
+                        order by ordencompra_fechaentrega asc";
+                
         }
             
        $resultado = $this->Pedido_diario_model->consultar($sql);
