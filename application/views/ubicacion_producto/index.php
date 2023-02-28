@@ -55,12 +55,17 @@
                             <th width="100px">Existencia <br> fisica</th>
                             <th width="100px">Sobrante</th>
                             <th width="100px">Faltante</th>
+                            <th width="100px">Total<br>Sobrante</th>
+                            <th width="100px">Total<br>Faltante</th>
                             <th class="no-print" width="100px"></th>
                         </tr>
                     </thead>
                     <tbody class="buscar">
                         <?php
                             $i = 0;
+                            $total_sobrante = 0;
+                            $total_faltante = 0;
+                            
                             foreach($ubi_productos as $ubi_producto){
                         ?>
                         <tr>
@@ -88,11 +93,41 @@
                                     <input id="faltante<?= $ubi_producto['ubiprod_id'] ?>" type="number" class="form-control" value="<?= ($ubi_producto['ubiprod_faltante'] == 0 ? 0:$ubi_producto['ubiprod_faltante']); ?>" disabled>
                                 </div>
                             </td>
+                            <td >
+                                <!--<div class="input-group" style="text-align: left;">-->
+                                    <?php
+                                    
+                                        $total_sobrante += $ubi_producto['producto_costo'] * $ubi_producto['ubiprod_sobrante'];
+                                        $total_faltante += $ubi_producto['producto_costo'] * $ubi_producto['ubiprod_faltante'];
+                                        
+                                    
+                                    ?>
+                                
+                                    <input id="faltante<?= $ubi_producto['ubiprod_id'] ?>" type="number" class="form-control" value="<?= number_format($ubi_producto['producto_costo'] * $ubi_producto['ubiprod_sobrante'],2,".",","); ?>" disabled>
+                                <!--</div>-->
+                            </td>
+                            <td style="text-align: left;">
+                                <!--<div class="input-group" style="text-align: left;">-->
+                                    <input id="faltante<?= $ubi_producto['ubiprod_id'] ?>" type="number" class="form-control" value="<?= number_format($ubi_producto['producto_costo'] * $ubi_producto['ubiprod_faltante'],2,".",","); ?>" disabled>
+                                <!--</div>-->
+                            </td>
                             <td class="no-print">
                                 <button class="btn btn-danger btn-xs" title="Eliminar producto" onclick="eliminar_producto(<?= $ubi_producto['ubiprod_id'] ?>)" style="<?= ($tipousuario_id == 1) ? '' : (($control_ubicacion['estado_id'] == 26) ? 'display: none' : '') ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                         <?php $i++; } ?>
+                            <tr>
+                                <th></th>
+                                <th>TOTALES</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th><?php echo number_format($total_sobrante,2,".",",");?></th>
+                                <th><?php echo number_format($total_faltante,2,".",","); ?></th>
+                                <th></th>
+                            <tr>
                     </tbody>
                 </table>
             </div>

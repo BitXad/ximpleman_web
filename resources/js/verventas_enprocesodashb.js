@@ -35,7 +35,7 @@ function tabladetalle_venta(){
                         html += "</div>"
                         html += "</td>";
                         html += "<td style='padding: 0' align='right'>";
-                        html += registros[i]["detalleven_cantidad"];
+                        html += numberFormat(Number(registros[i]["detalleven_cantidad"]).toFixed(2));
                         html += "</td>";
                         html += "<td style='padding: 0' align='right'>";
                         html += numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(2));
@@ -46,7 +46,7 @@ function tabladetalle_venta(){
                         html += "</td>";
                         html += "<td style='padding: 0' align='center'>";
                         if((registros[i]["usuario_nombre"]).length >8){
-                            resu = (registros[i]["usuario_nombre"]).substr(0, 8)+"..";
+                            resu = (registros[i]["usuario_nombre"]).substr(0,8)+"..";
                             eltitulou = "title='"+registros[i]["usuario_nombre"]+"'";
                         }else{
                             resu = registros[i]["usuario_nombre"];
@@ -151,4 +151,46 @@ function numberFormat(numero){
     }else{
         return resultado;
     }
+}
+
+
+function modal_ejecutarordencompra(ordencompra_id){
+    
+    $("#laordencompra_id").html(ordencompra_id);
+    $("#modal_ejecutarordencompra").modal("show");
+    
+}
+
+
+/* Ejecuta la orden de compra */
+function ejecutarordencompra()
+{
+    var base_url = document.getElementById('base_url').value;
+    let ordencompra_id = $("#laordencompra_id").html();
+    var controlador = base_url+'orden_compra/ejecutar_ordencompra';
+    
+    //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{ordencompra_id:ordencompra_id},
+            success:function(respuesta){
+                var compra_id = JSON.parse(respuesta);
+                
+                $("#modal_ejecutarordencompra").modal("hide");
+                //tablaresultadosordencompra(1);
+                dir_url = base_url+"compra/borrarauxycopiar/"+compra_id;
+                window.open(dir_url, '_blank');
+                
+                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "";
+               $("#tablaresultados").html(html);
+            },
+            complete: function (jqXHR, textStatus) {
+                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+                //tabla_inventario();
+            }
+    });
 }
