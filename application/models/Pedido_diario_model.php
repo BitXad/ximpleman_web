@@ -85,6 +85,8 @@ class Pedido_diario_model extends CI_Model
 //                where pedido_fecha = date(now())
 //                order by pedido_fecha asc";
         $sql = "select 
+            d.`forma_id`,
+            f.`forma_nombre`,
             d.`ordencompra_id` as pedido_id,
             p.`proveedor_id`,
             d.`ordencompra_totalfinal` as pedido_montototal,
@@ -99,6 +101,7 @@ class Pedido_diario_model extends CI_Model
             from orden_compra d
             left join proveedor p on p.proveedor_id = d.proveedor_id
             left join usuario u on u.usuario_id = d.usuario_id
+            left join forma_pago f on f.`forma_id` = d.forma_id
             where ordencompra_fechaentrega = date(now())
             order by ordencompra_fechaentrega asc";
         

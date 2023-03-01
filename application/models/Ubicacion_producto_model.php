@@ -10,7 +10,7 @@ class Ubicacion_producto_model extends CI_Model
      */
     function get_all_producto_ubicacion($controlu_id){
         $ubicacion = $this->db->query(
-            "SELECT up.*, p.producto_nombre, p.producto_codigo 
+            "SELECT up.*, p.producto_nombre, p.producto_costo ,p.producto_codigo 
             from ubicacion_producto up 
             left join producto p on up.producto_id = p.producto_id 
             left join ubicacion u on up.ubicacion_id  = u.ubicacion_id 

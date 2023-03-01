@@ -496,6 +496,7 @@ class Servicio_model extends CI_Model
 
         return $servicio;
     }
+    
     /* Servicios proximos a vencer!.. pendientes y en proceso */
     function proximos_avencer()
     {

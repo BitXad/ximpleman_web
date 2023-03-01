@@ -496,6 +496,8 @@
                   
                   </th>
                   <th>Proveedor/Detalle</th>
+                  <th><center> </center></th>
+                  <th><center>Forma Pago</center></th>
                   <th>
                         <?php echo $parametro["moneda_descripcion"]; ?>
                       <a href="<?php echo base_url("/orden_compra/nueva_ordencompra"); ?>" class="btn btn-default btn-xs" target="_blank" title="Registrar nuevo pedido"><fa class="fa fa-cube"></fa> </a>
@@ -529,6 +531,7 @@
                             echo $fecha_d_m_y; // 01/02/2017
                             ?>
                           </small>
+                          
                        </td>
                         <?php 
                             $nombre_proveedor = $pedidos['proveedor_nombre'];
@@ -541,11 +544,19 @@
                        
                       <td style="line-height: 10px;" >
                         <b><?php echo $nombre_proveedor; ?></b>
-                        <a href='<?php echo base_url("pedido_diario/modificar_pedido/".$pedidos['pedido_id']); ?>'><fa class='fa fa-edit'></fa></a>
+                        <a href='<?php echo base_url("orden_compra/edit_ordencompra/".$pedidos['pedido_id']); ?>'><fa class='fa fa-edit'></fa></a>
                         <br>
                         <small>
                             <?php echo $pedidos['pedido_resumen']; ?>
                         </small>
+                      </td>
+                      <td style="text-align: center;">
+                            <a class="btn btn-danger btn-xs" onclick="modal_ejecutarordencompra(<?php echo $pedidos['pedido_id']; ?>)" title='Ejecutar orden compra'><fa class='fa fa-bolt'></fa></a>                              
+                      </td>
+                      <td style="text-align: center;">
+                          <!--<span class="badge bg-<?php echo $color; ?>">-->
+                              <?php echo $pedidos['forma_nombre']; ?>
+                          <!--</span>-->
                       </td>
                       <td style="text-align: right;">
                           <span class="badge bg-<?php echo $color; ?>">
@@ -1066,3 +1077,27 @@
 
 
 <!--------------------- fin modal apertura de caja ------------>
+
+<!------------------------ INICIO modal para confirmar ejecutar orden compra ------------------->
+<div class="modal fade" id="modal_ejecutarordencompra" tabindex="-1" role="dialog" aria-labelledby="modal_ejecutarordencompralabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">EJECUTAR ORDEN DE COMPRA</span><br>
+                <span class="text-bold">No. <span id="laordencompra_id"></span></span>
+            </div>
+            <div class="modal-body">
+                <span>
+                    Esta seguro de ejecutar esta orden de compra?
+                </span>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a class="btn btn-success" onclick="ejecutarordencompra()"><span class="fa fa-check"></span> Ejecutar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para confirmar ejecutar orden compra ------------------->
