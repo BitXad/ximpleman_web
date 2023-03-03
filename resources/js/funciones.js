@@ -6722,6 +6722,9 @@ function borrar_datos_cliente(){
     if (facturado == 1){
         var boton = document.getElementById("imprimir_factura");
         boton.click();                    
+    }else{
+        brecibo = document.getElementById("imprimir");
+                brecibo.click();
     }
     */
     document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader

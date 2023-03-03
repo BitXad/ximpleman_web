@@ -245,7 +245,8 @@
                                 </td>
                             </tr>
                             <?php
-                            if(true){
+                            
+                            if($opc == 12){
                             ?>
                             <tr>
                                 <td class="text-right text-bold" style="padding: 0;">PLACA/B-SISA/VIN:</td><!-- PONER CODIGO DE CLIENTE -->
