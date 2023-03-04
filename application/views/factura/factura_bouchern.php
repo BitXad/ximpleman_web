@@ -235,7 +235,13 @@
                                 <td class="text-right text-bold" style="padding: 0;">COD. CLIENTE:</td><!-- PONER CODIGO DE CLIENTE -->
                                 <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_codigocliente']; ?> <br></td>
                             </tr>
-                            <tr>
+                            <?php
+                            $linea_recortada = "style='border-bottom-style: dashed; border-bottom-width: 1px;'";
+                            if($opc == 12){
+                                $linea_recortada = "";
+                            }
+                            ?>
+                            <tr <?php echo $linea_recortada; ?>>
                                 <td class="text-right text-bold" style="padding: 0;">FECHA DE EMISI&Oacute;N:</td>
                                 <td style="padding: 0; padding-left: 3px">
                                     <?php $fecha = new DateTime($factura[0]['factura_fecha']); 
