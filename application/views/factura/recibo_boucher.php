@@ -155,7 +155,7 @@ border-bottom : 1px solid #aaa;
                         <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                                 $fecha_d_m_a = $fecha->format('d/m/Y');
                           ?>    
-                            <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
+                            <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$venta[0]['venta_hora']; ?> <br>
                             <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." ".$venta[0]['cliente_nit']; ?> <br>
                             <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
                         <br>
