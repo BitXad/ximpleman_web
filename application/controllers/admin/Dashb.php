@@ -120,6 +120,10 @@ class Dashb extends CI_Controller
                 $data['resumen_usuario'] = $this->Venta_model->get_resumen_usuarios();
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
                 
+                $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera                
+                $data['sucursales'] = $this->Sucursales_model->get_sucursales();
+                $data['sistema'] = $this->Sistema_model->get_sistema();
+                
                 $fecha_desde = date("Y-m-d",strtotime(date('Y-m-d')."- 1 day"));//ayer
                 $fecha_hasta = date('Y-m-d');//hoy
                 $zona_id = 0;
@@ -129,8 +133,7 @@ class Dashb extends CI_Controller
                 $data['all_pedido'] = $this->Pedido_model->get_para_entregas($session_data['usuario_id'], $fecha_desde, $fecha_hasta);
                 $data['usuario'] = $session_data['usuario_id'];
                 $data['punto_venta'] = $session_data['puntoventa_codigo'];
-                //$this->load->model('Parametro_model');
-                $data['parametro'] = $this->Parametro_model->get_parametros();
+                $data['parametro'] = $this->parametros;
                 //$this->load->model('Moneda_model');
                 //$data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
                 //$data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();

@@ -244,6 +244,9 @@
 
        <?php $cont = 0;
        $total = 0;
+       
+       //var_dump($compra);
+               
        foreach($compra as $c){;
           $cont = $cont+1;
 
@@ -258,6 +261,7 @@
               <td><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b></font><font size="1">[<?php echo $c['proveedor_id']; ?>]</font> <br>
                 <?php
                 if($c['tipotrans_nombre']=='CREDITO'){
+                    
                     $mensajecred = "Al Anular esta compra, se anulara el credito y sus cuotas!.";
                 ?>
                 <span class="btn-facebook btn-xs"><?php echo $c['tipotrans_nombre']; ?></span><br>
@@ -278,8 +282,31 @@
                 <td style="text-align:center;"><?= $c['banco_nombre'] ?></td>
                   <td align="center"><?php echo date('d/m/Y',strtotime($c['compra_fecha'])) ; ?><br>
                     <?php echo $c['compra_hora']; ?></td>
-                    <td align="center" style='background: #<?php echo $c['estado_color']; ?>'><?php echo $c['estado_descripcion']; ?> <br> <?php if($c['compra_placamovil']==1) { ?><span class="btn-danger btn-xs">NO FINALIZADO</span> <?php } ?></td>
+                  <!--------------------- ESTADO DE LA COMPRA  ---------------------->
+                    <td align="center" style='background: #<?php echo $c['estado_color']; ?>'>
+                        
+                        <?php 
+                        
+                            if ($c['elestado']==1){
+                                echo $c['estado_descripcion'];
+                            }   
+                            else{?>
+                                
+                            <button type="button" id="boton_activarcompra" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modalactivarcompra" onclick="cargar_datos_pedido(<?php echo $c['compra_id']; ?>);">
+                                        <fa class="fa fa-clock-o"> </fa>
+                                        <?php echo $c['estado_descripcion']; ?>
+                            </button>
+                        
+                            <?php }
+                                
+                        
+                        ?> <br> <?php if($c['compra_placamovil']==1) { ?><span class="btn-danger btn-xs">NO FINALIZADO</span> <?php } ?>
+                    
+                    </td>
+                    
+                  <!--------------------- USUARIO ---------------------->
                     <td align="center"> <?php echo $c['usuario_nombre']; ?></td>
+                    
                     <td class="no-print">
                         <?php if($c['compra_placamovil']==1) { ?>
                          <a href="#" data-toggle="modal" data-target="#cambi<?php echo $c['compra_id']; ?>" class="btn btn-info btn-xs" title='Modificar Compra'>
@@ -443,3 +470,55 @@
             </div>
         </div>
     </div>
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL CANTIDAD ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div hidden>
+    <button type="button" id="boton_activarcompra" class="btn btn-default" data-toggle="modal" data-target="#modalactivarcompra">
+      CANTIDAD PRODUCTOS
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalactivarcompra" tabindex="-1" role="dialog" aria-labelledby="modalactivarcompra" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">APROBAR PEDIDO PENDIENTE</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="loader3" style="display:none; text-align: center">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="col-md-12" style="line-height: 8px;">
+                    Esta a punto de confirmar el pedido  PEDIDO Nº: <input type='text' width="20px" id='compra_idx' name='compra_idx' value='0' readonly>
+                    <label for="codigo_evento" class="control-label" id="producto_id"></label> <br>
+<!--                    <label for="codigo_evento" class="control-label" id="producto_nombre"> </label><br>
+                    <label for="codigo_evento" class="control-label" id="producto_datos" style="font-size: 10px;"> </label>-->
+                    <input type='text' id='compra_idx' name='compra_idx' value='0' hidden="">
+                    
+                </div>
+                <br>
+                <br>
+
+            </div>
+            
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" onclick="confirmar_traspaso()"><fa class="fa fa-floppy-o"></fa> Confirmar Traspaso</button>
+                <button type="button" class="btn btn-default" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL CANTIDAD ----------------------------------->
+<!------------------------------------------------------------------------------->

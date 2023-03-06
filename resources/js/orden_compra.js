@@ -15,7 +15,7 @@ function tablaresultadosordencompra(limite)
     }else if(limite == 3){
         parametro = "";
     }
-    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
             type:"POST",
             data:{parametro:parametro},
@@ -57,9 +57,9 @@ function tablaresultadosordencompra(limite)
                         html += "</tr>";
                     }
                     $("#tablaresultados").html(html);
-                    document.getElementById('loader').style.display = 'none';
+                    //document.getElementById('loader').style.display = 'none';
                 }
-                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+                //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
             },
             error:function(respuesta){
                // alert("Algo salio mal...!!!");
@@ -67,7 +67,7 @@ function tablaresultadosordencompra(limite)
                $("#tablaresultados").html(html);
             },
             complete: function (jqXHR, textStatus) {
-                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+                //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
                 //tabla_inventario();
             }
     });
@@ -107,14 +107,14 @@ function ejecutarordencompra()
     let ordencompra_id = $("#laordencompra_id").html();
     var controlador = base_url+'orden_compra/ejecutar_ordencompra';
     
-    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
             type:"POST",
             data:{ordencompra_id:ordencompra_id},
             success:function(respuesta){
                 var compra_id = JSON.parse(respuesta);
                 
-                $("#modal_ejecutarordencompra").modal("hide");
+                //$("#modal_ejecutarordencompra").modal("hide");
                 tablaresultadosordencompra(1);
                 dir_url = base_url+"compra/borrarauxycopiar/"+compra_id;
                 window.open(dir_url, '_blank');

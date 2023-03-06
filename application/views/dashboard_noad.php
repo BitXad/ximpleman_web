@@ -8,15 +8,24 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
     <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-    <script src="<?php if($parametro[0]["parametro_manejocaja"] == "Si"){ echo base_url('resources/js/caja.js');} ?>"></script>
+    <script src="<?php if($parametro["parametro_manejocaja"] == "Si"){ echo base_url('resources/js/caja.js');} ?>"></script>
     <script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
     <script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
     <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
     <script src="<?= base_url('resources/js/objetivo.js')?>"></script>
+    <script src="<?= base_url('resources/js/orden_compra.js')?>"></script>
     
     <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />  
     <input type="hidden" name="caja_id" id="caja_id" value="<?php echo $caja[0]['caja_id']; ?>" />
     <input type="hidden" name="estado_id" id="estado_id" value="<?php echo $caja[0]['estado_id']; ?>" />
+    <input type="hidden" name="tipouser" id="tipouser" value="<?= $tipousuario_id ?>" />
+    <input type="hidden" name="user_id" id="user_id" value="<?= $usuario ?>" />
+    <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro['moneda_descripcion']; ?>" />
+    <input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
+    <input type="text" id="fecha" value="<?php echo date('y-m-d'); ?>" name="usuarioprev_id" hidden>
+    
+    <?php $decimales = $parametro['parametro_decimales']; ?>
+    
     <!-- Main content -->
     <style>
         #map{
@@ -35,10 +44,10 @@
                         <h3><b><fa class="fa fa-cart-plus"></fa></b></h3>
                         <?php if(isset($objetivo['objetivo_diario'])){ ?>
                             <div>
-                                <h5 width="100%"><b><?php echo $parametro[0]['moneda_descripcion']." ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> / <?= number_format($objetivo['objetivo_diario'],2,'.',','); ?></b></h5>
+                                <h5 width="100%"><b><?php echo $parametro['moneda_descripcion']." ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> / <?= number_format($objetivo['objetivo_diario'],2,'.',','); ?></b></h5>
                             </div>
                         <?php }else{ ?>
-                                <h5 width="100%"><b><br><?php //echo $parametro[0]['moneda_descripcion']." ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> </b></h5>
+                                <h5 width="100%"><b><br><?php //echo $parametro['moneda_descripcion']." ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> </b></h5>
                         <?php } ?>
                     </div>
                     <div class="icon">
@@ -62,7 +71,7 @@
                 <div class="small-box bg-red">
                     <div class="inner" >
                         <h3><b><i class="fa fa-pencil-square-o" aria-hidden="true"></i></b></h3>
-                        <h5><b><?php echo $parametro[0]['moneda_descripcion']." ".number_format($pedidos[0]['total_pedidos'],2,'.',','); ?><sup style="font-size: 20px"></sup></b></h5>                        
+                        <h5><b><?php echo $parametro['moneda_descripcion']." ".number_format($pedidos[0]['total_pedidos'],2,'.',','); ?><sup style="font-size: 20px"></sup></b></h5>                        
                     </div>
                     
                     <div class="icon">
@@ -87,7 +96,7 @@
                 <div class="small-box bg-green">
                     <div class="inner" >
                         <h3><b><i class="fa fa-credit-card-alt" aria-hidden="true"></i></b></h3>
-                        <h5><b><?= $parametro[0]['moneda_descripcion']." ".number_format($creditos[0]['total_ventas_credito'],2,'.',','); ?><sup style="font-size: 20px"></sup></b></h5>
+                        <h5><b><?= $parametro['moneda_descripcion']." ".number_format($creditos[0]['total_ventas_credito'],2,'.',','); ?><sup style="font-size: 20px"></sup></b></h5>
                     </div>
                     
                     <div class="icon">
@@ -122,8 +131,10 @@
         </div>
     </section>
 
+    
+    
     <!-- ---------------------------------Objetivos del mes------------------------------- -->
-    <section class="col-lg-12 connectedSortable">
+    <section class="col-lg-7 connectedSortable">
         <div class="box box-info">
             <div class="box-header">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -144,7 +155,7 @@
                         <?php if(isset($objetivo['objetivo_mes'])){ ?>
                             <div>
                                 <h4 class="title" style="display: inline;" ><?php echo $sistema["sistema_moduloventas"]; ?></h4>
-                                <h4 class="text-right mr-0" style="display: inline;">&nbsp;&nbsp;&nbsp; <?php echo $parametro[0]['moneda_descripcion']." ".$ventas_mes['total_mes'] ?> / <?= $objetivo['objetivo_mes'] ?></h4>
+                                <h4 class="text-right mr-0" style="display: inline;">&nbsp;&nbsp;&nbsp; <?php echo $parametro['moneda_descripcion']." ".number_format($ventas_mes['total_mes'],$decimales,".",","); ?> / <?= number_format($objetivo['objetivo_mes'],$decimales,".",","); ?></h4>
                             </div>
                             <div class="progress">
                                 <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" style="width: <?= intval(($ventas_mes['total_mes'] *100)/$objetivo['objetivo_mes']) ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
@@ -174,6 +185,147 @@
         </div>
     </section>
     <!-- ---------------------------------Objetivos del mes------------------------------- -->
+    
+    
+    <!-----------------------------------Pedido para Hoy------------------------------- -->
+    
+    <section class="col-lg-5 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          
+          <!-- /.box -->
+
+          <!-- quick email widget -->
+          <div class="box box-info">
+            <div class="box-header">
+              <i class="fa fa-cubes"></i>
+
+              <h3 class="box-title">Pedidos para hoy
+              </h3>
+              
+                      <div id="div_fecha" style="display: none; padding:0; ">
+                          
+                          <input type="date" id="calendario" value="<?php echo date("Y-m-d"); ?>" class="btn btn-default btn-xs" onchange="buscar_pedido_diario(2)" style="padding:0;" />
+                          
+                      </div>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
+                        title="Remove">
+                  <i class="fa fa-times"></i></button>
+                  
+              </div>
+              <!-- /. tools -->
+            </div>
+            <div class="box-body">
+
+
+              <table class="table table-condensed">
+                <tr>
+                  <th>#</th>
+                  <th>
+                      <div id="div_select" style="display: block; padding:0;">
+                      
+                      <select class="btn btn-default btn-xs" id="select_fecha" onchange="buscar_pedido_diario(1)" style="width:55px; padding: 0;">
+                          <option value="1">Hoy</option>
+                          <option value="2">Mañana</option>
+                          <option value="3">Ayer</option>
+                          <option value="4">Fecha</option>
+                      </select>
+                          
+                      </div>
+
+                  
+                  </th>
+                  <th>Proveedor/Detalle</th>
+                  <th><center> </center></th>
+                  <th><center>Forma Pago</center></th>
+                  <th>
+                        <?php echo $parametro["moneda_descripcion"]; ?>
+                      <a href="<?php echo base_url("/orden_compra/nueva_ordencompra"); ?>" class="btn btn-default btn-xs" target="_blank" title="Registrar nuevo pedido"><fa class="fa fa-cube"></fa> </a>
+                  </th>
+                </tr>
+                <tbody id="tabla_pedidos_diarios">
+                    
+                    
+                 <?php $cont = 0; $total_dia = 0;
+                  
+                 foreach($pedidos_diarios as $pedidos){
+                        $total_dia = $total_dia + $pedidos['pedido_montototal'];
+                        $cont++;
+                        if($cont%1 == 0){ $tipobar = "danger"; $color="red";}
+                        if($cont%2 == 0){ $tipobar = "info";  $color="light-blue";}
+                        if($cont%3 == 0){ $tipobar = "success"; $color="green";}
+                        if($cont%4 == 0){ $tipobar = "warning"; $color="yellow";}
+                        if($cont%5 == 0){ $tipobar = "facebook"; $color="blue";}
+                ?>
+
+                <tr>
+                    
+                      <td><?php echo $cont; ?></td>
+                      <td>
+                          <small>
+                          
+                          <?php 
+                          $fecha = new DateTime($pedidos['pedido_fecha']);
+                            $fecha_d_m_y = $fecha->format('d/m/Y');
+
+                            echo $fecha_d_m_y; // 01/02/2017
+                            ?>
+                          </small>
+                          
+                       </td>
+                        <?php 
+                            $nombre_proveedor = $pedidos['proveedor_nombre'];
+                            
+                            if (strlen($nombre_proveedor)>14){
+                                $nombre_proveedor = substr($nombre_proveedor, 0, 12).".."; 
+                            }
+                                
+                        ?>
+                       
+                      <td style="line-height: 10px;" >
+                        <b><?php echo $nombre_proveedor; ?></b>
+                        <a href='<?php echo base_url("orden_compra/edit_ordencompra/".$pedidos['pedido_id']); ?>'><fa class='fa fa-edit'></fa></a>
+                        <br>
+                        <small>
+                            <?php echo $pedidos['pedido_resumen']; ?>
+                        </small>
+                      </td>
+                      <td style="text-align: center;">
+                            <a class="btn btn-danger btn-xs" onclick="modal_ejecutarordencompra(<?php echo $pedidos['pedido_id']; ?>)" title='Ejecutar orden compra'><fa class='fa fa-bolt'></fa></a>                              
+                      </td>
+                      <td style="text-align: center;">
+                          <!--<span class="badge bg-<?php echo $color; ?>">-->
+                              <?php echo $pedidos['forma_nombre']; ?>
+                          <!--</span>-->
+                      </td>
+                      <td style="text-align: right;">
+                          <span class="badge bg-<?php echo $color; ?>">
+                              <?php echo number_format($pedidos['pedido_montototal'],2,'.',',');?>
+                          </span>
+                      </td>
+                </tr>
+                
+                <?php } ?>
+                <tr>
+                    <td colspan="3"><b>TOTAL PEDIDOS PARA HOY <?php echo $parametro["moneda_descripcion"]; ?></b></td>
+                    <td >
+                        <!--<span class="badge bg-purple">-->
+                        <b>
+                            <?php echo number_format($total_dia,2,'.',',');?>                        
+                        </b>
+                        <!--</span>-->
+                    </td>
+                </tr>
+                
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
     
     <!-- ---------------------------------MAPA---------------------------------------- -->
     <section class="col-lg-12 connectedSortable">
@@ -497,3 +649,27 @@
 
 
 <!--------------------- fin modal apertura de caja ------------>
+
+<!------------------------ INICIO modal para confirmar ejecutar orden compra ------------------->
+<div class="modal fade" id="modal_ejecutarordencompra" tabindex="-1" role="dialog" aria-labelledby="modal_ejecutarordencompralabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">EJECUTAR ORDEN DE COMPRA</span><br>
+                <span class="text-bold">No. <span id="laordencompra_id"></span></span>
+            </div>
+            <div class="modal-body">
+                <span>
+                    Esta seguro de ejecutar esta orden de compra?
+                </span>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a class="btn btn-success" onclick="ejecutarordencompra()"><span class="fa fa-check"></span> Ejecutar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para confirmar ejecutar orden compra ------------------->

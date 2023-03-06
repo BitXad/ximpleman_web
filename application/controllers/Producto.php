@@ -911,6 +911,7 @@ class Producto extends CI_Controller{
     function existenciaminima()
     {
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(105)) {
             $usuario_id = $this->session_data['usuario_id'];  
             $data = array(

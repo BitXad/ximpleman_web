@@ -2115,4 +2115,15 @@ function compra_rapida(){
             redirect('compra/edit/'.$compra_id.'/'.$bandera);
         }
     }
+
+    /* confirmar traspaso */
+    function confirmar_traspaso()
+    {
+        
+        $compra_id = $this->input->post('compra_id');
+        $sql = "update compra set estado_id = 1 where compra_id = ".$compra_id;
+        $this->Compra_model->ejecutar($sql);
+        echo json_encode(true);
+            
+    }
 }

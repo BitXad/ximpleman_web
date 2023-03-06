@@ -31,7 +31,8 @@ function mostrar_grafica(){
         cargar_grafica_lineas(anio_sel,mes_sel); 
         cargar_grafica_pie(anio_sel,mes_sel); 
     } 
-}   
+    
+}
 
 function cargar_grafica_barras(anio,mes){
 

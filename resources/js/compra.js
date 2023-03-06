@@ -747,6 +747,7 @@ function modificarproveedores(compra_id,proveedor_id){
     });
 
 } 
+
 function cambiarproveedores(compra_id,proveedor_id) {
      
     // var base_url    = document.getElementById('base_url').value;
@@ -2020,6 +2021,33 @@ function ocultar_busqueda(){
 }
 
 function mostrar(forma_id,glosa_banco){
+    
     let forma = $(`#${forma_id}`).val();
     $(`#${glosa_banco}`).css('display',forma != 1 ? 'block':'none');
+
 }
+
+function cargar_datos_pedido(compra_id){
+
+    //alert(compra_id);
+    $("#compra_idx").val(compra_id);
+    
+}
+
+function confirmar_traspaso(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'compra/confirmar_traspaso/';
+    var compra_id = document.getElementById('compra_idx').value;
+    
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{compra_id:compra_id},
+            success:function(respuesta){
+                
+                alert("Traspaso realizado con exito..!!");
+                //cambiarproveedores(compra_id,proveedor_id);
+            }        
+    });
+    
+} 
