@@ -14,7 +14,8 @@
                 })
             }(jQuery));
         });
-</script>   
+</script>
+
 <style type="text/css">
     #contieneimg{
         width: 100px;
@@ -22,19 +23,23 @@
         text-align: center;
     }
 </style>
+
+<input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
+
 <!-- --------------------------- fin script buscador ------------------------------------- -->
 <!-- ---------------- ESTILO DE LAS TABLAS --------------- -->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-- ---------------------------------------------------- -->
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
+
 <div class="box-header">
-<!--                <h3 class="box-title">Usuarios</h3>-->
+    
             	<div class="box-tools">
                     <a href="<?php echo site_url('objetivo/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
                 </div>
         
             <font size='4' face='Arial'><b>Objetivos</b></font>
-            <!-- <br><font size='2' face='Arial' id="encontrados">Registros Encontrados:<?php echo sizeof($usuario);  ?></font>  -->
+
         
 </div>
 
@@ -52,7 +57,7 @@
                 <input type="date" value="<?= date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha" name="fecha" >
             </div>
             <div class="col-md-1">
-                <a class="btn btn-facebook btn-sm form-control" title="Ver objetivos por fecha" onclick="tabla_objetivos()"><i class="fa fa-search"> Buscar</i></a>
+                <a class="btn btn-facebook btn-sm form-control" title="Ver objetivos por fecha" onclick="tabla_objetivos()"><i class="fa fa-search"> </i> Buscar</a>
             </div>
         </div>
             <!-- ------------------- fin parametro de buscador ------------------- -->
@@ -82,46 +87,10 @@
                         </tr>
                     </thead>
                     <tbody class="buscar" id="tabla_objetivos">
-
-                            <!-- <tr>
-                                <td><?= $i ?></td>
-                                <td><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/"."thumb_".$u['usuario_imagen']."' width='40' height='40' class='img-circle'"; ?></center></td>
-                                <td><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font>
-                                    <br>
-                                    <?= $u['tipousuario_descripcion']; ?></td>
-                                <td class="text-center"><?= $u['objetivo_minimo']; ?></td>
-                                <td class="text-center"><?= $u['objetivo_aceptable']; ?></td> 
-                                <td class="text-center"><?= $u['objetivo_diario']; ?></td> 
-                                <td class="text-center"><?= $u['objetivo_mes']; ?></td> 
-                                <td class="text-center"><?php echo $u['objetivo_pedido']; ?></td>
-                                <td class="text-center"><?php echo $u['objetivo_pedido_mes']; ?></td>
-                                <td class="text-center" style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['estado_descripcion']; ?></td>
-                                <td>
-                                    <a href="<?php echo site_url('objetivo/edit/'.$u['objetivo_id']); ?>" class="btn btn-info btn-xs" title="Modificar datos de usuario"><span class="fa fa-pencil"></span></a>
-                                </td>
-                            </tr> -->
                             
                     </tbody> 
                 </table>
-                
-                
-                <!-- <?php foreach($objetivos as $objetivo) {?>
-                    <div id="grafica_usuario<?= $objetivo["usuario_id"] ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title"><?= $objetivo["usuario_nombre"] ?></h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div id="grafica_usuario_objetivo<?= $objetivo["usuario_id"] ?>" class="col-md-8"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php } ?>  -->
+
             </div>
             <div class="pull-right">    
                     <?php echo $this->pagination->create_links(); ?>                    

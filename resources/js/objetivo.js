@@ -4,9 +4,13 @@ function inicio(){
 }
 
 function tabla_objetivos(){
+    
+    
+    var decimales = Number(document.getElementById('parametro_decimales').value);
     var base_url = document.getElementById('base_url').value;
     var controlador  = base_url+"objetivo/objetivos_mes";
     var fecha = document.getElementById('fecha').value;
+    
     var dia = fecha.substr(8,9);
     var mes  = fecha.substr(5,2);
     var anio  = fecha.substr(0,4);
@@ -14,14 +18,17 @@ function tabla_objetivos(){
     // console.log(dia);
     // console.log(mes);
     // console.log(anio);
+    
     $.ajax({url: controlador,
         type:"POST",
         data:{dia:dia, mes:mes, anio:anio},
         success:function(result){ 
             var resultado =  JSON.parse(result);
-            // alert("todo ok");
+            //alert(JSON.stringify(resultado));
             console.log(resultado);
+            
             if(resultado != null){
+                
                 console.log(resultado["objetivos"]["usuario_nombre"]);
                 html= "";
                 n = resultado["objetivos"].length;
@@ -30,9 +37,13 @@ function tabla_objetivos(){
                         html += "<td>";
                             html += i+1;
                         html += "</td>";
+                        
                         html += "<td>";
+                        html += "<center>";
                             html += "<img src='./resources/images/usuarios/"+"thumb_"+resultado["objetivos"][i]['usuario_imagen']+"' width='40' height='40' class='img-circle'";
+                        html += "</center>";
                         html += "</td>";
+                        
                         html += "<td>";
                             html += "<font face='Arial' size='3'><b>"+resultado["objetivos"][i]["usuario_nombre"]+"</b></font><br>";
                             html += resultado["objetivos"][i]["tipousuario_descripcion"];
@@ -45,13 +56,13 @@ function tabla_objetivos(){
                                 for(var j = 0; j < tamanio_v_dia_min; j++){
                                     if(resultado["ventas_dia"][j]){
                                         if(resultado["ventas_dia"][j]["usuario_id"] == resultado["objetivos"][i]["usuario_id"]){
-                                            html += resultado["ventas_dia"][j]["total_dia"]+" / ";
-                                            html += resultado["objetivos"][i]["objetivo_minimo"];
+                                            html += Number(resultado["ventas_dia"][j]["total_dia"]).toFixed(decimales)+" / ";
+                                            html += Number(resultado["objetivos"][i]["objetivo_minimo"]).toFixed(decimales);
                                             j = tamanio_v_dia_min;
                                         }
                                     }else{
                                         html += "0 / ";
-                                        html += resultado["objetivos"][i]["objetivo_minimo"];
+                                        html += Number(resultado["objetivos"][i]["objetivo_minimo"]).toFixed(decimales);
                                         j = tamanio_v_dia_min;
                                     }
                                 }
@@ -69,8 +80,8 @@ function tabla_objetivos(){
                                 for(var j = 0; j < tamanio_v_dia_a; j++){
                                     if(resultado["ventas_dia"][j]){
                                         if(resultado["ventas_dia"][j]["usuario_id"] == resultado["objetivos"][i]["usuario_id"]){
-                                            html += resultado["ventas_dia"][j]["total_dia"]+" / ";
-                                            html += resultado["objetivos"][i]["objetivo_aceptable"];
+                                            html += Number(resultado["ventas_dia"][j]["total_dia"]).toFixed(decimales)+" / ";
+                                            html += Number(resultado["objetivos"][i]["objetivo_aceptable"]).toFixed(decimales);
                                             j = tamanio_v_dia_a;
                                         }
                                     }else{
@@ -93,8 +104,8 @@ function tabla_objetivos(){
                                 for(var j = 0; j < tamanio_v_dia; j++){
                                     if(resultado["ventas_dia"][j]){
                                         if(resultado["ventas_dia"][j]["usuario_id"] == resultado["objetivos"][i]["usuario_id"]){
-                                            html += resultado["ventas_dia"][j]["total_dia"]+" / ";
-                                            html += resultado["objetivos"][i]["objetivo_diario"];
+                                            html += Number(resultado["ventas_dia"][j]["total_dia"]).toFixed(decimales)+" / ";
+                                            html += Number(resultado["objetivos"][i]["objetivo_diario"]).toFixed(decimales);
                                             j = tamanio_v_dia;
                                         }
                                     }else{
@@ -117,19 +128,19 @@ function tabla_objetivos(){
                                 for(var j = 0; j < tamanio_v_mes; j++){
                                     if(resultado["ventas_mes"][j]){
                                         if(resultado["ventas_mes"][j]["usuario_id"] == resultado["objetivos"][i]["usuario_id"]){
-                                            html += resultado["ventas_mes"][j]["total_mes"]+" / ";
-                                            html += resultado["objetivos"][i]["objetivo_mes"];
+                                            html += Number(resultado["ventas_mes"][j]["total_mes"]).toFixed(decimales)+" / ";
+                                            html += Number(resultado["objetivos"][i]["objetivo_mes"]).toFixed(decimales);
                                             j = tamanio_v_mes;
                                         }
                                     }else{
                                         html += "0 / ";
-                                        html += resultado["objetivos"][i]["objetivo_mes"];
+                                        html += Number(resultado["objetivos"][i]["objetivo_mes"]).toFixed(decimales);
                                         j = tamanio_v_mes;
                                     }
                                 }
                             }else{
                                 html += "0 / ";
-                                html += resultado["objetivos"][i]["objetivo_mes"];
+                                html += Number(resultado["objetivos"][i]["objetivo_mes"]).toFixed(decimales);
                                 alert(3);
                             }
                             html += "</span>";
@@ -141,19 +152,19 @@ function tabla_objetivos(){
                                 for(var j = 0; j < tamanio_p_dia; j++){
                                     if(resultado["pedidos_dia"][j]){
                                         if(resultado["pedidos_dia"][j]["usuario_id"] == resultado["objetivos"][i]["usuario_id"]){
-                                            html += resultado["pedidos_dia"][j]["pedido_dia"]+" / ";
-                                            html += resultado["objetivos"][i]["objetivo_pedido"];
+                                            html += Number(resultado["pedidos_dia"][j]["pedido_dia"]).toFixed(decimales)+" / ";
+                                            html += Number(resultado["objetivos"][i]["objetivo_pedido"]).toFixed(decimales);
                                             j = tamanio_p_dia;
                                         }
                                     }else{
                                         html += "0 / ";
-                                        html += resultado["objetivos"][i]["objetivo_pedido"];
+                                        html += Number(resultado["objetivos"][i]["objetivo_pedido"]).toFixed(decimales);
                                         j = tamanio_p_dia;
                                     }
                                 }
                             }else{
                                 html += "0 / ";
-                                html += resultado["objetivos"][i]["objetivo_pedido"];
+                                html += Number(resultado["objetivos"][i]["objetivo_pedido"]).toFixed(decimales);
                                 // alert(3);
                             }
                             html += "</span>";
@@ -165,26 +176,28 @@ function tabla_objetivos(){
                                 for(var j = 0; j < tamanio_p_mes; j++){
                                     if(resultado["pedidos_mes"][j]){
                                         if(resultado["pedidos_mes"][j]["usuario_id"] == resultado["objetivos"][i]["usuario_id"]){
-                                            html += resultado["pedidos_mes"][j]["pedido_mes"]+" / ";
-                                            html += resultado["objetivos"][i]["objetivo_pedido_mes"];
+                                            html += Number(resultado["pedidos_mes"][j]["pedido_mes"]).toFixed(decimales)+" / ";
+                                            html += Number(resultado["objetivos"][i]["objetivo_pedido_mes"]).toFixed(decimales);
                                             j = tamanio_p_mes;
                                         }
                                     }else{
                                         html += "0 / ";
-                                        html += resultado["objetivos"][i]["objetivo_pedido_mes"];
+                                        html += Number(resultado["objetivos"][i]["objetivo_pedido_mes"]).toFixed(decimales);;
                                         j = tamanio_p_mes;
                                     }
                                 }
                             }else{
                                 html += "0 / ";
-                                html += resultado["objetivos"][i]["objetivo_pedido_mes"];
+                                html += Number(resultado["objetivos"][i]["objetivo_pedido_mes"]).toFixed(decimales);
                                 // alert(3);
                             }
                             html += "</span>";
                         html += "</td>";
+                        
                         html += "<td class='text-center' style='font-size: 9pt; background: #"+resultado["objetivos"][i]["estado_color"]+"'>";
-                            html += "<span>"+resultado["objetivos"][i]["estado_descripcion"]+"</span>";
+                        html += "<span>"+resultado["objetivos"][i]["estado_descripcion"]+"</span>";
                         html += "</td>";
+                        
                         html += "<td class='text-center' style='font-size: 9pt'>";                            
                             html += "<a href='"+base_url+"objetivo/edit/"+resultado["objetivos"][i]["objetivo_id"]+"' class='btn btn-info btn-xs' title='Modificar datos de usuario'><span class='fa fa-pencil'></span></a>";
                             // html += "<a href='"+base_url+"objetivo/objgrafica/"+resultado["objetivos"][i]["usuario_id"]+"' class='btn btn-warning btn-xs' title='Ver Grafica mensual'><i class='fa fa-bar-chart' aria-hidden='true'></i></a>";
