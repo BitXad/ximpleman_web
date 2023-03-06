@@ -1331,4 +1331,34 @@ class Producto extends CI_Controller{
             show_404();
         }
     }
+    
+    function ver_elproducto()
+    {
+        $data['sistema'] = $this->sistema;
+        
+        //$usuario_id = $this->session_data['usuario_id'];
+        //$data['productos'] = $this->Producto_model->get_productos_imagen();
+        
+        $parametro_id = 1;
+        $parametros = $this->Parametro_model->get_parametro($parametro_id);
+        $data['logomonitor'] = $parametros['parametro_logomonitor'];
+        $data['fondomonitor'] = $parametros['parametro_fondomonitor'];
+        
+        $data['_view'] = 'producto/ver_elproducto';
+        $this->load->view('producto/ver_elproducto',$data);
+        
+    }
+    /* busca un Producto popr codiigo ded barras "price checker" */
+    function get_elproducto()
+    {
+        if($this->input->is_ajax_request()){
+            $producto_codigobarra = $this->input->post('producto_codigobarra');
+            $producto = $this->Producto_model->get_producto_codbarra($producto_codigobarra);
+            
+            echo json_encode($producto);
+            
+        }else{                 
+            show_404();
+        }
+    }
 }

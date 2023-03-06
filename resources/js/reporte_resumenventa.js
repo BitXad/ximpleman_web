@@ -72,7 +72,7 @@ function resumen_ventascaja(){
                         costos     += Number(reporte[i]["total_costo"]);
                         utilidades += Number(reporte[i]["total_utilidad"]);
                         html += "<tr>";
-                        html += "<td align='center'> "+reporte[i]["total_cantidad"]+" </td>";  
+                        html += "<td align='center'> "+Number(reporte[i]["total_cantidad"]).toFixed(2)+" </td>";  
                         html += "<td> "+reporte[i]["producto_nombre"]+" </td>";                                          
                         html += "<td align='right'> "+numberFormat(Number(reporte[i]["total_punitario"]).toFixed(2))+" </td>"; 
                         html += "<td align='right'><b>"+numberFormat(Number(reporte[i]["total_venta"]).toFixed(2))+"</b></td>";

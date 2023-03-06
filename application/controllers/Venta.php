@@ -5975,7 +5975,7 @@ function anular_venta($venta_id){
             case 2: $titulo1 = "FACTURA DE ALQUILER";
                     break;
                 
-            case 8: $titulo1 = "FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL";
+            case 8: $titulo1 = "FACTURA TASA CERO - VENTA DE LIBROS O TRANSPORTE DE CARGA INTERNACIONAL";
                     $subtitulo_factura = "Sin Derecho a Cr&eacute;dito Fiscal";
                     break;
                 
@@ -6805,7 +6805,7 @@ function anular_venta($venta_id){
             case 5: $micad .= "<font size='4' face='arial'>FACTURA</font> <br>";
                     break;
                 
-            case 8: $micad .= "<font size='4' face='arial'>FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL</font> <br>";
+            case 8: $micad .= "<font size='4' face='arial'>FACTURA TASA CERO - VENTA DE LIBROS O TRANSPORTE DE CARGA INTERNACIONAL</font> <br>";
                     $subtitulo_factura = "Sin Derecho a Cr&eacute;dito Fiscal";
                     break;
                 

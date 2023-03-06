@@ -604,4 +604,19 @@ class Producto_model extends CI_Model
         $sql="select * from producto";
         return $this->db->query($sql)->result_array();
     }
+    
+    /* obtener nombre, unidad, marca, industria, imagen y precio de un producto activo */
+    function get_producto_codbarra($codigobarra)
+    {
+        $sql = "
+            SELECT
+                  p.producto_id, p.producto_nombre, p.producto_unidad, producto_marca,
+                  producto_industria, p.producto_foto, p.producto_precio
+            FROM
+                inventario p
+            WHERE
+                p.producto_codigobarra = '".$codigobarra."'";
+        $producto = $this->db->query($sql)->row_array();
+        return $producto;
+    }
 }
