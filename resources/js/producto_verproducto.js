@@ -1,23 +1,42 @@
-$(document).on("ready",inicio);
-function inicio(){
-    tabladetalle_producto();
+$(document).ready(function(){
+    $(".este_no").click(function(){
+        $("#producto_codigobarra").focus();
+        $("#producto_codigobarra").select();
+    });
+});
+
+function validar_tecla(e) {
+    var tecla = (document.all) ? e.keyCode : e.which;
+    if (e==13){
+        var tecla = e;
+    }else{
+        var tecla = (document.all) ? e.keyCode : e.which;
+    }
+    
+    if (tecla==13){
+        tabladetalle_producto();
+    }
 }
 
 function tabladetalle_producto(){
-    var base_url      = document.getElementById('base_url').value;
-    var controlador   = base_url+"producto/get_elproducto/";
-    let producto_codigobarra = "7898594128926";
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"producto/get_elproducto/";
+    let producto_codigobarra = document.getElementById('producto_codigobarra').value;
+    
     $.ajax({url: controlador,
            type:"POST",
            data:{producto_codigobarra:producto_codigobarra},
             success:function(resul){
                 var registros =  JSON.parse(resul);
                 if (registros != null){
-                    
                     html = "";
-                    html2 = "";
                         html += "<div class='text-center'>"
-                        html += "<img src='"+base_url+"resources/images/productos/"+registros["producto_foto"]+"' width='400' height='300' class='img img-square'>";
+                        
+                        if(registros["producto_foto"] != "" && registros["producto_foto"] !=  null){
+                            html += "<img src='"+base_url+"resources/images/productos/"+registros["producto_foto"]+"' width='400' height='300' class='img img-square'>";
+                        }else{
+                            html += "<img src='"+base_url+"resources/images/productos/producto.jpg' width='400' height='300' class='img img-square'>";
+                        }
                         html += "</div>"
                         html += "<div style='color:white; text-align: center'>"
                         if((registros["producto_nombre"]).length >23){
@@ -27,15 +46,42 @@ function tabladetalle_producto(){
                         }
                         html += "<span style='font-weight: bold; font-size: 15pt'>"+res+"</span>";
                         html += "<br>";
-                        html += "<span style='font-weight: bold; font-size: 11pt'>"+res+"</span>";
+                        html += "<span style='font-weight: bold; font-size: 11pt'>";
+                        let detalle = "";
+                        if(registros["producto_unidad"] != ""  && registros["producto_unidad"] != null){
+                            detalle += registros["producto_unidad"];
+                        }
+                        if(registros["producto_marca"] != ""  && registros["producto_marca"] != null){
+                            detalle += "/"+registros["producto_marca"];
+                        }
+                        
+                        if(registros['producto_industria'] != ""  && registros['producto_industria'] != null){
+                            detalle += "/"+registros['producto_industria'];
+                        }
+                        html += detalle;
+                        html += "</span>";
+                        html += "</br>";
+                        html += "<span style='font-weight: bold; font-size: 17pt'>"+Number(registros['producto_precio']).toFixed(2)+"</span>";
                         
                         html += "</div>"
                         html += "</center>";
                         
                         //html2 += "<h4 style='color: white;'><font size='8'><b> Total Bs.&nbsp;&nbsp; "+numberFormat(Number(total_detalle).toFixed(2))+"</b></font></h4>          ";
                     $("#producto_detalle").html(html);
-                    //$("#estotal").html(html2);
+                    $("#producto_codigobarra").focus();
+                    $("#producto_codigobarra").select();
                     
+            }else{
+                html = "";
+                html += "<div class='text-center'><br>"
+                html += "<span class='fa fa-search-minus' style='color: #cc4e58; font-size: 50pt !important'></span>";
+                html += "<br>";
+                html += "<span style='color: #cc4e58; font-size: 25pt !important'><br>PRODUCTO<br>NO ENCONTRADO</span>";
+                //html += "<img src='"+base_url+"resources/images/productos/"+registros["producto_foto"]+"' width='400' height='300' class='img img-square'>";
+                html += "</div>"
+                $("#producto_detalle").html(html);
+                $("#producto_codigobarra").focus();
+                $("#producto_codigobarra").select();
             }
                 
         },
