@@ -6266,8 +6266,8 @@ function finalizarventa_sin(){
     var parametro_tiposistema = document.getElementById('parametro_tiposistema').value;
     var cliente_valido = document.getElementById('cliente_valido').value;
     var excepcion = document.getElementById('cliente_valido').value;    
-    var nit = document.getElementById('nit').value;
-    var razon_social = document.getElementById('razon_social').value;
+    var nit = $.trim(document.getElementById('nit').value);
+    var razon_social = $.trim(document.getElementById('razon_social').value);
     var facturado = document.getElementById('facturado').checked;
     var venta_glosa = document.getElementById('venta_glosa').value;
     var forma_pago = document.getElementById('forma_pago').value;

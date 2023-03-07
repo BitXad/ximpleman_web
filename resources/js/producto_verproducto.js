@@ -26,6 +26,9 @@ function tabladetalle_producto(){
                             res = registros["producto_nombre"];
                         }
                         html += "<span style='font-weight: bold; font-size: 15pt'>"+res+"</span>";
+                        html += "<br>";
+                        html += "<span style='font-weight: bold; font-size: 11pt'>"+res+"</span>";
+                        
                         html += "</div>"
                         html += "</center>";
                         

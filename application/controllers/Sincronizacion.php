@@ -299,7 +299,7 @@ class Sincronizacion extends CI_Controller{
             $this->Venta_model->ejecutar($sql);
             
             // Eliminar de la lista de documentos sector que no tengan GIFT
-            if (($this->dosificacion["docsec_codigoclasificador"]==2)||($this->dosificacion["docsec_codigoclasificador"]==39)||($this->dosificacion["docsec_codigoclasificador"]==12))
+            if (($this->dosificacion["docsec_codigoclasificador"]==2)||($this->dosificacion["docsec_codigoclasificador"]==39)||($this->dosificacion["docsec_codigoclasificador"]==12)||($this->dosificacion["docsec_codigoclasificador"]==51))
             {
                 $sql="delete from forma_pago where forma_nombre like '%GIFT%'";
                 $this->Venta_model->ejecutar($sql);

@@ -290,19 +290,35 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_clavep12' => $this->input->post('dosificacion_clavep12'),
                     'dosificacion_glpelectronica' => $this->input->post('dosificacion_glpelectronica'),
                 );
-
-                        //Actualizamos el nombre del documento sector
-                        $sql = "update dosificacion d, documentos_fiscales f
-                                set 
-                                d.`dosificacion_documentosector` = f.`documento_nombre`
-
-                                where
-                                f.`dosificacion_sectoreconomico` = d.`docsec_codigoclasificador` and
-                                f.`dosifcacion_modalidad` = d.dosificacion_modalidad";
-                        
-                        $this->Dosificacion_model->ejecutar($sql);
+                $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);
                 
-                $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);            
+                //Actualizamos el nombre del documento sector
+                $sql = "update dosificacion d, documentos_fiscales f
+                        set 
+                        d.`dosificacion_documentosector` = f.`documento_nombre`
+
+                        where
+                        f.`dosificacion_sectoreconomico` = d.`docsec_codigoclasificador` and
+                        f.`dosifcacion_modalidad` = d.dosificacion_modalidad";
+
+                $this->Dosificacion_model->ejecutar($sql);
+                $documento_sector = $this->input->post('docsec_codigoclasificador');
+                
+                $parametro_id = 1;
+                $parametro = $this->Parametro_model->get_parametro($parametro_id);
+                
+                $cantidad_decimales = $parametro['parametro_decimales'];
+                if($documento_sector == 51){
+                    $cantidad_decimales = 5;
+                }
+                
+                $paramsp = array(
+                    'parametro_decimales' => $cantidad_decimales,
+                );
+                
+                $parametro_id = $parametro['parametro_id'];
+                $this->Parametro_model->update_parametro($parametro_id,$paramsp);
+                
                 redirect('dosificacion/index');
             }
             else
