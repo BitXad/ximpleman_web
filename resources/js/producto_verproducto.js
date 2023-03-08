@@ -22,6 +22,7 @@ function tabladetalle_producto(){
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"producto/get_elproducto/";
     let producto_codigobarra = document.getElementById('producto_codigobarra').value;
+    let simbolo_moneda = document.getElementById('simbolo_moneda').value;
     
     $.ajax({url: controlador,
            type:"POST",
@@ -61,7 +62,7 @@ function tabladetalle_producto(){
                         html += detalle;
                         html += "</span>";
                         html += "</br>";
-                        html += "<span style='font-weight: bold; font-size: 17pt'>"+Number(registros['producto_precio']).toFixed(2)+"</span>";
+                        html += "<span style='font-weight: bold; font-size: 17pt'>"+simbolo_moneda+". "+Number(registros['producto_precio']).toFixed(2)+"</span>";
                         
                         html += "</div>"
                         html += "</center>";

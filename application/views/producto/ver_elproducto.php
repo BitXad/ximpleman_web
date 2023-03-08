@@ -22,13 +22,16 @@
     ?>
     <body style="width: 98%; background: url('<?php echo base_url("resources/images/monitor/".$fondomonitor); ?>');">
         <div class="box-header">
-            <div class="col-md-12">
+            <!--<div class="col-md-12">
                 <input type="text" name="producto_codigobarra" id="producto_codigobarra" autofocus onclick="this.select();" onkeyup="validar_tecla(event)">
-            </div>
+            </div>-->
             <center>
                 <!--<h3 class="box-title">PEDIDO</h3>-->        
                 <img src="<?php echo base_url("resources/images/logo/".$logomonitor); ?>" width="260" height="130" class="este_no">
+                <br>
+                <input type="text" name="producto_codigobarra" id="producto_codigobarra" autofocus onclick="this.select();" onkeyup="validar_tecla(event)">
                 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+                <input type="hidden" name="simbolo_moneda" id="simbolo_moneda" value="<?php echo $simbolo_moneda; ?>" />
             </center>
         </div>
         <div class="row este_no">

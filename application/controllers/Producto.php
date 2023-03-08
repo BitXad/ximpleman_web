@@ -1344,6 +1344,7 @@ class Producto extends CI_Controller{
         $parametros = $this->Parametro_model->get_parametro($parametro_id);
         $data['logomonitor'] = $parametros['parametro_logomonitor'];
         $data['fondomonitor'] = $parametros['parametro_fondomonitor'];
+        $data['simbolo_moneda'] = $parametros['moneda_descripcion'];
         
         $data['_view'] = 'producto/ver_elproducto';
         $this->load->view('producto/ver_elproducto',$data);
