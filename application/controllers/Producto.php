@@ -914,9 +914,9 @@ class Producto extends CI_Controller{
         
         if($this->acceso(105)) {
             $usuario_id = $this->session_data['usuario_id'];  
-            $data = array(
+            /*$data = array(
             'page_title' => 'Admin >> Mi Cuenta'
-        );
+        );*/
         
             $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
 
@@ -926,7 +926,7 @@ class Producto extends CI_Controller{
 
             $data['parametro'] = $this->Parametro_model->get_parametro(1);
 
-            $data['page_title'] = "Producto";
+            $data['page_title'] = "Productos con existencia minima";
             $data['_view'] = 'producto/existenciaminima';
             $this->load->view('layouts/main',$data);
         }
@@ -937,7 +937,7 @@ class Producto extends CI_Controller{
     */
     function buscarproductosexistmin()
     {
-        $data['sistema'] = $this->sistema;
+        //$data['sistema'] = $this->sistema;
         if($this->acceso(105)) {
             if ($this->input->is_ajax_request()) {
                 
