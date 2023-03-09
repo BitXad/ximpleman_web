@@ -23,7 +23,8 @@ function tabladetalle_producto(){
     var controlador = base_url+"producto/get_elproducto/";
     let producto_codigobarra = document.getElementById('producto_codigobarra').value;
     let simbolo_moneda = document.getElementById('simbolo_moneda').value;
-    
+    let decimales = document.getElementById('decimales').value;
+    document.getElementById('loader').style.display = 'block';
     $.ajax({url: controlador,
            type:"POST",
            data:{producto_codigobarra:producto_codigobarra},
@@ -62,7 +63,7 @@ function tabladetalle_producto(){
                         html += detalle;
                         html += "</span>";
                         html += "</br>";
-                        html += "<span style='font-weight: bold; font-size: 17pt'>"+simbolo_moneda+". "+Number(registros['producto_precio']).toFixed(2)+"</span>";
+                        html += "<span style='font-weight: bold; font-size: 17pt'>"+simbolo_moneda+". "+Number(registros['producto_precio']).toFixed(decimales)+"</span>";
                         
                         html += "</div>"
                         html += "</center>";
@@ -71,6 +72,7 @@ function tabladetalle_producto(){
                     $("#producto_detalle").html(html);
                     $("#producto_codigobarra").focus();
                     $("#producto_codigobarra").select();
+                    document.getElementById('loader').style.display = 'none';
                     
             }else{
                 html = "";
@@ -83,13 +85,14 @@ function tabladetalle_producto(){
                 $("#producto_detalle").html(html);
                 $("#producto_codigobarra").focus();
                 $("#producto_codigobarra").select();
+                document.getElementById('loader').style.display = 'none';
             }
-                
+            
         },
         error:function(resul){
            html = "";
-           $("#verventa_detalle").html(html);
-           $("#estotal").html(html);
+           $("#producto_detalle").html(html);
+           document.getElementById('loader').style.display = 'none';
         }
         
     });   

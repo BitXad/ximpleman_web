@@ -1296,7 +1296,7 @@ class Venta extends CI_Controller{
 //                                echo "<br>tamaño: ".sizeof($cad);
 //                                echo "<br>codigo: ".($cad[0]->codigo);
 //                                echo "<br>transaccion: ".$eniada->transaccion;
-//                                $codigo = "";
+                                $codigo = "";
 //                                
 
                                         if (is_array($cad)){
@@ -6098,7 +6098,7 @@ function anular_venta($venta_id){
         $micad .= "                                ";
         $micad .=                                     $d['detallefact_codigo']." - ".$d['detallefact_descripcion'];
                                                     if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != ""){
-        $micad .= "                                      [".$d['detallefact_unidadfactor']."]";
+        $micad .= "                                      Unidad de medida: [".$d['detallefact_unidadfactor']."]";
                                                     }
                                                     if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ){
         $micad .=                                       $d['detallefact_preferencia'];
@@ -6205,12 +6205,15 @@ function anular_venta($venta_id){
                 $factura_total = $factura_total * 0.70;
             }
             //******************************************************
-            
+            $elimporte =  "IMPORTE BASE CR&Eacute;DITO FISCAL";
+            if($opc == 12){ //Comercializacion de hidrocarburos
+                $elimporte =  "IMPORTE BASE C/F MONTO LEY 317";
+            } 
             
             $micad .= "                            <tr>";
-            $micad .= "                                <td class='text-right text-bold' style='text-align: right'>IMPORTE BASE CR&Eacute;DITO FISCAL Bs</td>";
+            $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".$elimporte."</td>";
             $micad .= "                                <td></td>";
-            $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($importe_base_iva,$dos_decimales,'.',',')."</td>";
+            $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,$dos_decimales,'.',',')."</td>";
             $micad .= "                            </tr>";
             
         }
@@ -6218,7 +6221,7 @@ function anular_venta($venta_id){
         $micad .= "                            <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
         $micad .= "                                <td colspan='3' style='padding-left: 3px; padding-bottom: 5px; font-size: 10px;'>";
         $micad .= "                                    <br>";
-        $micad .= "                                    SON: ".num_to_letras($importe_base_iva,' Bolivianos');
+        $micad .= "                                    SON: ".num_to_letras($factura_total,' Bolivianos');
         $micad .= "                                </td>";
         $micad .= "                            </tr>";
         $micad .= "                        </table>";

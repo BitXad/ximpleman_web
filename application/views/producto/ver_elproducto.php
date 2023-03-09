@@ -32,7 +32,13 @@
                 <input type="text" name="producto_codigobarra" id="producto_codigobarra" autofocus onclick="this.select();" onkeyup="validar_tecla(event)">
                 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
                 <input type="hidden" name="simbolo_moneda" id="simbolo_moneda" value="<?php echo $simbolo_moneda; ?>" />
+                <input type="hidden" name="decimales" id="decimales" value="<?php echo $decimales; ?>" />
             </center>
+            <div class="row" id='loader' style='display:none;'>
+                <center>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                </center>
+            </div> 
         </div>
         <div class="row este_no">
             <div class="col-md-12 este_no">
