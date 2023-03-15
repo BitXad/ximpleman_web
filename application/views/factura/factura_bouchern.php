@@ -168,7 +168,7 @@
                                                 break;
                                         case 2: $titulo1 = "FACTURA DE ALQUILER";
                                                 break;
-                                        case 8: $titulo1 = "FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL";
+                                        case 8: $titulo1 = "FACTURA TASA CERO - VENTA DE LIBROS O TRANSPORTE DE CARGA INTERNACIONAL";
                                                 $subtitulo_factura = "SIN DERECHO A CR&Eacute;DITO FISCAL";
                                                 break;
                                     }
@@ -293,18 +293,15 @@
                             <tr>
                                 <td class="text-bold" colspan="3" style="font-size: <?= $tamanio_fuente; ?>; padding: 0;">
                                     <?php echo $d['detallefact_codigo']." - ".$d['detallefact_descripcion']; ?>
-                                    <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo " [".$d['detallefact_unidadfactor']."]";?>
 
-                                    <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
+                                    <?php if($d['detallefact_preferencia']!='' && $d['detallefact_preferencia']!= null && $d['detallefact_preferencia']!='-' ) {
                                         echo  $d['detallefact_preferencia']; }
                                     ?>
-                                    <?php if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
+                                    <?php if($d['detallefact_caracteristicas']!='' && $d['detallefact_caracteristicas']!=null && $d['detallefact_caracteristicas']!='-' ) {
                                         echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
                                         //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
-
                                     ?>
-
-                                    <?php //echo $d['detallefact_cantidad']; ?>
+                                    <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo "<br><span style='font-size: 10px'>Unidad de Medida:  [".$d['detallefact_unidadfactor']."]</span>";?>
                                 </td>
                                 <!--<td colspan="2"></td>-->
                             </tr>
@@ -364,17 +361,23 @@
                             
                             <!-------------- FACTURA TOTAL ---------->
                             <tr>
-                                <td class="text-right">TOTAL Bs</td>
+                                <?php
+                                $elbold = "";
+                                if($factura[0]['docsec_codigoclasificador']==8){
+                                    $elbold = "text-bold";
+                                }
+                                ?>
+                                <td class="text-right <?=$elbold ?>">TOTAL Bs</td>
                                 <td></td>
-                                <td class="text-right"><?php echo number_format($factura[0]['factura_total'],$dos_decimales,'.',','); ?></td>
+                                <td class="text-right <?=$elbold ?>"><?php echo number_format($factura[0]['factura_total'],$dos_decimales,'.',','); ?></td>
                             </tr>
 
                             <!-------------- FACTURA GIFTA CARD ---------->
-                            <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
+                            <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=51 && $factura[0]['docsec_codigoclasificador']!=12){ //Si es diferente de alquiler de bienes y venta gn/glp, Hidrocarburos ?>
                             <tr>
-                                <td class="text-right text-bold">MONTO GIFT CARD Bs</td>
+                                <td class="text-right">MONTO GIFT CARD Bs</td>
                                 <td></td>
-                                <td class="text-right text-bold"><?php echo number_format($factura[0]['factura_giftcard'],$dos_decimales,'.',','); ?></td>
+                                <td class="text-right"><?php echo number_format($factura[0]['factura_giftcard'],$dos_decimales,'.',','); ?></td>
                             </tr>
                             <?php } ?>
                             
