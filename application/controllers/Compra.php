@@ -1963,6 +1963,7 @@ function compra_rapida(){
     $inventario = "update inventario set inventario.existencia=inventario.existencia+".$cantidad." where producto_id=".$producto_id."";
 
             $resulrado=$this->db->query($inventario);
+            $resultado = "ok";
         echo json_encode($resultado);  
         
     }

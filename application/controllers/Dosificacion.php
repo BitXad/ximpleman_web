@@ -310,14 +310,12 @@ class Dosificacion extends CI_Controller{
                 $cantidad_decimales = $parametro['parametro_decimales'];
                 if($documento_sector == 51){
                     $cantidad_decimales = 5;
+                    $paramsp = array(
+                        'parametro_decimales' => $cantidad_decimales,
+                    );
+                    $parametro_id = $parametro['parametro_id'];
+                    $this->Parametro_model->update_parametro($parametro_id,$paramsp);
                 }
-                
-                $paramsp = array(
-                    'parametro_decimales' => $cantidad_decimales,
-                );
-                
-                $parametro_id = $parametro['parametro_id'];
-                $this->Parametro_model->update_parametro($parametro_id,$paramsp);
                 
                 redirect('dosificacion/index');
             }

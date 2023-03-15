@@ -5966,7 +5966,7 @@ function anular_venta($venta_id){
             $datos_factura = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
         }
         //$opc = 1; // Valor solo declarado para actualzar emavra
-        $subtitulo_factura = "Con Derecho a Cr&eacute;dito Fiscal";
+        $subtitulo_factura = "CON DERECHO A CR&Eacute;DITO FISCAL";
         switch($opc){
             
             default: $titulo1 = "FACTURA";
@@ -5976,7 +5976,7 @@ function anular_venta($venta_id){
                     break;
                 
             case 8: $titulo1 = "FACTURA TASA CERO - VENTA DE LIBROS O TRANSPORTE DE CARGA INTERNACIONAL";
-                    $subtitulo_factura = "Sin Derecho a Cr&eacute;dito Fiscal";
+                    $subtitulo_factura = "SIN DERECHO A CR&Eacute;DITO FISCAL";
                     break;
                 
                 
@@ -5985,8 +5985,8 @@ function anular_venta($venta_id){
                                                     //   $tipo = 1;
                                                     //if ($tipo==1) $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "ORIGINAL";
                                                     //else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";";
-        $micad .= "                                    ".$titulo1."<br>";
-        $micad .= "                                    ".$subtitulo_factura."<br>";
+        $micad .= "                                    <span style='font-weight: bold !important'>".$titulo1."</span><br>";
+        $micad .= "                                    <span style='font-weight: bold !important'>".$subtitulo_factura."</span><br>";
         $micad .=                                       $empresa[0]['empresa_nombre']."<br>";
         $micad .=                                       $empresa[0]['empresa_eslogan']."<br>";
                                                     if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){
@@ -6007,19 +6007,19 @@ function anular_venta($venta_id){
         $micad .= "                        </table>";
         $micad .= "                        <table style='width:".$ancho."  font-family: Arial'>";
         $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
-        $micad .= "                                <td class='text-center'><center>NIT: ".$factura[0]['factura_nitemisor']."</center></td>";
+        $micad .= "                                <td><center><span style='font-weight: bold !important'>NIT:</span> ".$factura[0]['factura_nitemisor']."</center></td>";
         $micad .= "                            </tr>";
 //                                        $micad .= "                            <tr>";
 //                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_nitemisor']."</center></td>";
 //                                        $micad .= "                            </tr>";
         $micad .= "                            <tr>";
-        $micad .= "                                <td class='text-center'><center>FACTURA Nº: ".$factura[0]['factura_numero']."</center></td>";
+        $micad .= "                                <td><center><span style='font-weight: bold !important'>FACTURA Nº:</span> ".$factura[0]['factura_numero']."</center></td>";
         $micad .= "                            </tr>";
 //                                        $micad .= "                            <tr>";
 //                                        $micad .= "                                <td class='text-center'><center>".$factura[0]['factura_numero']."</center></td>";
 //                                        $micad .= "                            </tr>";
         $micad .= "                            <tr>";
-        $micad .= "                                <td class='text-center'><center>CÓD. AUTORIZACIÓN</center></td>";
+        $micad .= "                                <td><center><span style='font-weight: bold !important'>CÓD. AUTORIZACIÓN</span></center></td>";
         $micad .= "                            </tr>";
         $micad .= "                            <tr>";
         $micad .= "                                <td class='text-center'><div style='word-wrap: break-word; width: ".$ancho."' ><center>".$factura[0]['factura_cuf']."</center></div></td>";
@@ -6031,11 +6031,11 @@ function anular_venta($venta_id){
         $micad .= "                    <td colspan='4' style='padding: 0;'>";
         $micad .= "                        <table style='width: ".$ancho."' >";
         $micad .= "                            <tr style='border-top-style: dashed; border-top-width: 1px;'>";
-        $micad .= "                                <td class='text-right text-bold' style='padding: 0; white-space: nowrap; text-align: right'>NOMBRE/RAZ&Oacute;N SOCIAL: </td>";
+        $micad .= "                                <td style='padding: 0; white-space: nowrap; text-align: right; font-weight: bold !important'>NOMBRE/RAZ&Oacute;N SOCIAL: </td>";
         $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_razonsocial']."</td>";
         $micad .= "                            </tr>";
         $micad .= "                            <tr>";
-        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>NIT/CI/CEX: </td>";
+        $micad .= "                                <td style='padding: 0; text-align: right; font-weight: bold !important'>NIT/CI/CEX: </td>";
         $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_nit']."  ";
                                                if($factura[0]['cdi_codigoclasificador']!=5){
         $micad .=                                  $factura[0]["cliente_complementoci"];
@@ -6043,7 +6043,7 @@ function anular_venta($venta_id){
         $micad .= "                                </td>";
         $micad .= "                            </tr>";
         $micad .= "                            <tr>";
-        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>COD. CLIENTE: </td><!-- PONER CODIGO DE CLIENTE -->";
+        $micad .= "                                <td style='padding: 0; text-align: right; font-weight: bold !important'>COD. CLIENTE: </td><!-- PONER CODIGO DE CLIENTE -->";
         $micad .= "                                <td style='padding: 0; padding-left: 3px'>".$factura[0]['factura_codigocliente']."</b><br></td>";
         $micad .= "                            </tr>";
         
@@ -6053,7 +6053,7 @@ function anular_venta($venta_id){
         }
         
         $micad .= "                            <tr ".$linea_recortada.">";
-        $micad .= "                                <td class='text-right text-bold' style='padding: 0; text-align: right'>FECHA DE EMISI&Oacute;N: </td>";
+        $micad .= "                                <td style='padding: 0; text-align: right; font-weight: bold !important'>FECHA DE EMISI&Oacute;N: </td>";
         $micad .= "                                <td style='padding: 0; padding-left: 3px'>";
                                                     $fecha = new DateTime($factura[0]['factura_fecha']);
                                                     $fecha_d_m_a = $fecha->format('d/m/Y');
@@ -6063,11 +6063,11 @@ function anular_venta($venta_id){
                             
                             if($opc == 12){
         $micad .= "                   <tr>";
-        $micad .= "                       <td class='text-right text-bold' style='padding: 0;'>PLACA/B-SISA/VIN:</td>";
+        $micad .= "                       <td style='padding: 0; text-align: right; font-weight: bold'>PLACA/B-SISA/VIN:</td>";
         $micad .= "                       <td style='padding: 0; padding-left: 3px'>".$datos_factura['datos_placa']."<br></td>";
         $micad .= "                   </tr>";
         $micad .= "                   <tr style='border-bottom-style: dashed; border-bottom-width: 1px;'>";
-        $micad .= "                       <td class='text-right text-bold' style='padding: 0;'>TIPO ENVASE:</td>";
+        $micad .= "                       <td style='padding: 0; text-align: right; font-weight: bold !important'>TIPO ENVASE:</td>";
         $micad .= "                       <td style='padding: 0; padding-left: 3px'>".$datos_factura['datos_embase']."<br></td>";
         $micad .= "                   </tr>";
                             }
@@ -6075,7 +6075,7 @@ function anular_venta($venta_id){
         $micad .= "                    </td>";
         $micad .= "                </tr>";
         $micad .= "                <tr>";
-        $micad .= "                    <td colspan='4' align='center' style='padding: 0;'>DETALLE</td>";
+        $micad .= "                    <td colspan='4' align='center' style='padding: 0; font-weight: bold !important'>DETALLE</td>";
         $micad .= "                </tr>";
         $micad .= "                <tr>";
         $micad .= "                    <td colspan='4' style='padding: 0'>";
@@ -6094,21 +6094,22 @@ function anular_venta($venta_id){
                                                     $total_descuento += $d['detallefact_descuento']; 
                                                     $total_final += $d['detallefact_total']; 
         $micad .= "                            <tr>";
-        $micad .= "                                <td class=-text-bold' colspan='0' style='font-size: 8pt; padding: 0;'>";
-        $micad .= "                                ";
+        $micad .= "                                <td colspan='3' style='font-size: 8pt; padding: 0;'>";
+        $micad .= "                                <span style='font-weight: bold !important'>";
         $micad .=                                     $d['detallefact_codigo']." - ".$d['detallefact_descripcion'];
-                                                    if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != ""){
-        $micad .= "                                      Unidad de medida: [".$d['detallefact_unidadfactor']."]";
+                                                    if($d['detallefact_preferencia']!='' && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ){
+        $micad .=                                       " ".$d['detallefact_preferencia'];
                                                     }
-                                                    if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ){
-        $micad .=                                       $d['detallefact_preferencia'];
-                                                    }
-                                                    if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ){
+                                                    if($d['detallefact_caracteristicas']!= '' && $d['detallefact_caracteristicas']!= null && $d['detallefact_caracteristicas']!='-' ){
         $micad .= "                                        <br>".nl2br($d['detallefact_caracteristicas']);
+                                                    }
+        $micad .= "                                </span>";
+                                                    if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != ""){
+        $micad .= "                                      <br><span style='font-size: 10px'>Unidad de Medida: [".$d['detallefact_unidadfactor']."]</span>";
                                                     }
         $micad .= "                                ";
         $micad .= "                                </td>";
-        $micad .= "                                <td colspan='2'></td>";
+        //$micad .= "                                <td colspan='2'></td>";
         $micad .= "                            </tr>";
         $micad .= "                            <tr>";
         $micad .= "                                <td style='font-size: 8pt; padding: 0;'>";
@@ -6128,17 +6129,23 @@ function anular_venta($venta_id){
         $micad .= "                    </table>";
         $micad .= "                    </td>";
         $micad .= "                </tr>";
-                                $total_final_factura = $factura[0]['factura_subtotal']; 
-                                $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
-                                
-                                if ($factura[0]['docsec_codigoclasificador']==12){ 
-                                    
-                                    $importe_base_iva = $factura_total * 0.70;
-                                    
-                                }else{
-                                    
-                                    $importe_base_iva = $factura_total;
-                                }
+            $total_final_factura = $factura[0]['factura_subtotal']; 
+            $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
+            
+            //Un artículo de la Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo 
+            //de diésel y gasolina, el crédito fiscal del IVA será sólo del 70% del valor de la compra, 
+            //mientras que el 30% restante pasará a apoyar al Tesoro General de la Nación (TGN) 
+            /*if($factura[0]['docsec_codigoclasificador'] == 12){
+                $factura_total = $factura_total * 0.70;
+            }*/
+            if ($factura[0]['docsec_codigoclasificador']==12){ 
+
+                $importe_base_iva = $factura_total * 0.70;
+
+            }else{
+
+                $importe_base_iva = $factura_total;
+            }
                                  
                                 
                                 
@@ -6157,12 +6164,18 @@ function anular_venta($venta_id){
         $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_descuento'],$dos_decimales,'.',',')."</td>";
         $micad .= "                            </tr>";
         $micad .= "                            <tr>";
-        $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL Bs</td>";
+        
+        $elbold = "";
+        if($factura[0]['docsec_codigoclasificador']==8){
+            $elbold = "font-weight: bold !important";
+        }
+        
+        $micad .= "                                <td style='text-align: right; ".$elbold."'>TOTAL Bs</td>";
         $micad .= "                                <td></td>";
-        $micad .= "                                <td class='text-right' style='text-align: right'>".number_format($factura[0]['factura_total'],$dos_decimales,'.',',')."</td>";
+        $micad .= "                                <td style='text-align: right; ".$elbold."'>".number_format($factura[0]['factura_total'],$dos_decimales,'.',',')."</td>";
         $micad .= "                            </tr>";
         
-        if ($mostrarice==1 && $factura[0]['docsec_codigoclasificador']!=8 && $factura[0]['docsec_codigoclasificador']!=51){
+        if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=51 && $factura[0]['docsec_codigoclasificador']!=12){ //Si es diferente de alquiler de bienes y venta gn/glp, Hidrocarburos
             
         $micad .= "                            <tr>";
         $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO GIFT CARD Bs</td>";
@@ -6171,7 +6184,7 @@ function anular_venta($venta_id){
         $micad .= "                            </tr>";
         }
         
-        if ($mostrarice==1 && $factura[0]['docsec_codigoclasificador']!=8 && $factura[0]['docsec_codigoclasificador']!=51){
+        if ($mostrarice==1){
                                                     
             $micad .= "                            <tr>";
             $micad .= "                                <td class='text-right' style='text-align: right'>TOTAL ICE ESPEC&Iacute;FICO Bs</td>";
@@ -6187,23 +6200,16 @@ function anular_venta($venta_id){
             $micad .= "                            </tr>";
         
         }
-                                                
-        $micad .= "                            <tr>";
-        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>MONTO A PAGAR Bs</td>";
-        $micad .= "                                <td></td>";
-        $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,$dos_decimales,'.',',')."</td>";
-        $micad .= "                            </tr>";
-        
+        if($mostrarice==1 || $factura[0]['docsec_codigoclasificador']==8){                        
+            $micad .= "                            <tr>";
+            $micad .= "                                <td style='text-align: right; font-weight: bold !important'>MONTO A PAGAR Bs</td>";
+            $micad .= "                                <td></td>";
+            $micad .= "                                <td style='text-align: right; font-weight: bold !important'>".number_format($factura_total,$dos_decimales,'.',',')."</td>";
+            $micad .= "                            </tr>";
+        }
                 
         
         if($factura[0]['docsec_codigoclasificador']!=8){ //Mostrar si no es Factura tasa cero
-        
-            //Un artículo de la Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo 
-            //de diésel y gasolina, el crédito fiscal del IVA será sólo del 70% del valor de la compra, 
-            //mientras que el 30% restante pasará a apoyar al Tesoro General de la Nación (TGN) 
-            if($factura[0]['docsec_codigoclasificador'] == 12){
-                $factura_total = $factura_total * 0.70;
-            }
             //******************************************************
             $elimporte =  "IMPORTE BASE CR&Eacute;DITO FISCAL";
             if($opc == 12){ //Comercializacion de hidrocarburos
@@ -6211,9 +6217,9 @@ function anular_venta($venta_id){
             } 
             
             $micad .= "                            <tr>";
-            $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".$elimporte."</td>";
+            $micad .= "                                <td style='text-align: right; font-weight: bold !important'>".$elimporte."</td>";
             $micad .= "                                <td></td>";
-            $micad .= "                                <td class='text-right text-bold' style='text-align: right'>".number_format($factura_total,$dos_decimales,'.',',')."</td>";
+            $micad .= "                                <td style='text-align: right; font-weight: bold !important'>".number_format($importe_base_iva,$dos_decimales,'.',',')."</td>";
             $micad .= "                            </tr>";
             
         }
