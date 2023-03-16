@@ -72,9 +72,9 @@ foreach($all_parametros as $p)
                         <td><?php echo $p['parametro_numrecing']; ?></td>
                         <td><?php echo $p['parametro_copiasfact']; ?></td>
                         <td><?php if($p['parametro_tipoimpresora'] =="NORMAL"){ echo "CARTA/MEDIA CARTA"; }else{echo $p['parametro_tipoimpresora'];} ?></td>
-                        <td><?php echo $p['parametro_anchofactura']; ?></td>
-                        <td><?php echo $p['parametro_altofactura']; ?></td>
-                        <td><?php echo $p['parametro_margenfactura']; ?></td>
+                        <td><?php echo number_format($p['parametro_anchofactura'], $p['parametro_decimales'], '.', ',') ; ?></td>
+                        <td><?php echo number_format($p['parametro_altofactura'], $p['parametro_decimales'], '.', ',') ; ?></td>
+                        <td><?php echo number_format($p['parametro_margenfactura'], $p['parametro_decimales'], '.', ',') ; ?></td>
                         <td><?php  if ($p['parametro_permisocredito']==1){ echo 'TODOS'; }else{ echo'INDIVIDUAL'; } ?></td>
                         <td><?php echo substr($p['parametro_apikey'],0,8).".."; ?></td>
                     </tr>
@@ -114,7 +114,7 @@ foreach($all_parametros as $p)
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_numcuotas']; ?></td>
-                        <td><?php echo $p['parametro_montomax']; ?> Bs.</td>
+                        <td><?php echo number_format($p['parametro_montomax'], $p['parametro_decimales'], '.', ',') ; ?> Bs.</td>
                         <td><?php echo $p['parametro_diasgracia']; ?></td>
                         <td>[<?php echo $p['parametro_diapago']; ?>]
                             <?php
@@ -336,7 +336,7 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(214, 114, 26, 0.3);">PUNTOS (Bs/PUNTO)</th>
                     </tr>
                     <tr>
-                        <td><?php echo $p['parametro_puntos']; ?></td>
+                        <td><?php echo number_format($p['parametro_puntos'], $p['parametro_decimales'], '.', ','); ?></td>
                     </tr>
                 </table>
                            
