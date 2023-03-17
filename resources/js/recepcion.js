@@ -69,8 +69,8 @@ function recepcion(estado)
                var registros =  JSON.parse(resul);
                var ventas = registros.datos;
                var detalle = registros.detalle;
-                var n = ventas.length; //tamaÃ±o del arreglo de la consulta
-                    var d = detalle.length; //tamaÃ±o del arreglo de la consulta
+                var n = ventas.length; //tamaño del arreglo de la consulta
+                    var d = detalle.length; //tamaño del arreglo de la consulta
            if(d>0){ 
             document.getElementById('timbre').play();
                if (ventas != null){

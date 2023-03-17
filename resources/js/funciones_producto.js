@@ -110,6 +110,7 @@ function tablaresultadosproducto(limite){
                 
                if (registros != null){
                    var formaimagen = document.getElementById('formaimagen').value;
+                   var decimales = document.getElementById('parametro_decimales').value;
                    const myString = JSON.stringify(registros);
                    $("#resproducto").val(myString);
                     /*var cont = 0;
@@ -195,7 +196,7 @@ function tablaresultadosproducto(limite){
                         if(registros[i]["producto_cantidadminima"] != null || registros[i]["producto_cantidadminima"] ==""){
                             cantmin = registros[i]["producto_cantidadminima"];
                         }
-                        html += cantmin+"</td>";
+                        html += Number(cantmin).toFixed(decimales)+"</td>";
 
                         html += "<td>";
                         var sinconenvase = "";
@@ -225,16 +226,16 @@ function tablaresultadosproducto(limite){
                         html += "<td>"+Number(registros[i]["existencia"]).toFixed(2)+"</td>";
                         html += "<td>";
                         if(tipousuario_id == 1){
-                            html += "<b>COMPRA: </b>"+registros[i]["producto_costo"]+"<br>";
+                            html += "<b>COMPRA: </b>"+Number(registros[i]["producto_costo"]).toFixed(decimales)+"<br>";
                         }
-                            html += "<b>VENTA: </b>"+registros[i]["producto_precio"]+"<br>";
-                            html += "<b>COMISION (%): </b>"+registros[i]["producto_comision"];
+                            html += "<b>VENTA: </b>"+Number(registros[i]["producto_precio"]).toFixed(decimales)+"<br>";
+                            html += "<b>COMISION (%): </b>"+Number(registros[i]["producto_comision"]).toFixed(decimales);
                             html += "</td>";
                         html += "<td><b>MONEDA: </b>"+esmoneda+"<br>";
                         html += "<b>T.C.: </b>";
                         //var tipocambio= 0;
                         //if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
-                        html += esmoneda_tc+"</td>";
+                        html += Number(esmoneda_tc).toFixed(decimales)+"</td>";
                         html += "<td class='no-print' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
 		        html += "<td class='no-print'>";
                         html += "<a href='"+base_url+"producto/edit/"+registros[i]["miprod_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Información'><span class='fa fa-pencil'></span></a>";
