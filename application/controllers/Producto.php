@@ -1281,6 +1281,7 @@ class Producto extends CI_Controller{
                     'estado_id' => 2,
                 );
                 $this->Producto_model->update_producto($producto_id,$params);
+                $this->Inventario_model->update_inventario($producto_id, $params);
                 echo json_encode("ok");
             }else{
                 show_error('El Producto que intentas dar de baja no existe!....');
@@ -1324,6 +1325,7 @@ class Producto extends CI_Controller{
                     'estado_id' => 1,
                 );
                 $this->Producto_model->update_producto($producto_id,$params);
+                $this->Inventario_model->update_inventario($producto_id, $params);
                 echo json_encode("ok");
             }else{
                 show_error('El Producto que intentas dar de baja no existe!....');
