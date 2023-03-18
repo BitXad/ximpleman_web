@@ -64,6 +64,7 @@
 <!--<input type="hidden" name="lapresentacion" id="lapresentacion" value='<?php /*echo json_encode($all_presentacion); ?>' />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($all_moneda); */ ?>' /> -->
 <input type="hidden" name="conencabezado" id="conencabezado" value="1" />
+<input type="hidden" name="parametro_decimales" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" />
 
 <input type="text" value='<?php echo json_encode($empresa); ?>' id="datos_empresa" hidden>
 

@@ -105,6 +105,9 @@ function ventas_dia($estado)
 
         return $detalle_venta;
   }
+  /* muestra las ventas en destino(COCINA) es paraa el modulo restaurant,
+   * si se usa en otro modulo tener cuidado al aumentar parametros.... etc....
+   * para el caso sse aumento usuario.. y  eso aun hay que ver donde se usa!!  */
   function get_dventadia($estado,$destino,$usuario)
     {
         $result = $this->db->query(
@@ -122,7 +125,7 @@ function ventas_dia($estado)
         WHERE v.venta_fecha = date(now()) 
         and v.entrega_id=".$estado."
         and p.destino_id=".$destino."
-        and u.usuario_id=".$usuario."
+        /*and u.usuario_id=".$usuario."*/
         ORDER BY d.venta_id
         ")->result_array();
         return $result;        

@@ -914,9 +914,9 @@ class Producto extends CI_Controller{
         
         if($this->acceso(105)) {
             $usuario_id = $this->session_data['usuario_id'];  
-            $data = array(
+            /*$data = array(
             'page_title' => 'Admin >> Mi Cuenta'
-        );
+        );*/
         
             $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
 
@@ -926,7 +926,7 @@ class Producto extends CI_Controller{
 
             $data['parametro'] = $this->Parametro_model->get_parametro(1);
 
-            $data['page_title'] = "Producto";
+            $data['page_title'] = "Productos con existencia minima";
             $data['_view'] = 'producto/existenciaminima';
             $this->load->view('layouts/main',$data);
         }
@@ -937,7 +937,7 @@ class Producto extends CI_Controller{
     */
     function buscarproductosexistmin()
     {
-        $data['sistema'] = $this->sistema;
+        //$data['sistema'] = $this->sistema;
         if($this->acceso(105)) {
             if ($this->input->is_ajax_request()) {
                 
@@ -1281,6 +1281,7 @@ class Producto extends CI_Controller{
                     'estado_id' => 2,
                 );
                 $this->Producto_model->update_producto($producto_id,$params);
+                $this->Inventario_model->update_inventario($producto_id, $params);
                 echo json_encode("ok");
             }else{
                 show_error('El Producto que intentas dar de baja no existe!....');
@@ -1324,6 +1325,7 @@ class Producto extends CI_Controller{
                     'estado_id' => 1,
                 );
                 $this->Producto_model->update_producto($producto_id,$params);
+                $this->Inventario_model->update_inventario($producto_id, $params);
                 echo json_encode("ok");
             }else{
                 show_error('El Producto que intentas dar de baja no existe!....');
@@ -1344,6 +1346,8 @@ class Producto extends CI_Controller{
         $parametros = $this->Parametro_model->get_parametro($parametro_id);
         $data['logomonitor'] = $parametros['parametro_logomonitor'];
         $data['fondomonitor'] = $parametros['parametro_fondomonitor'];
+        $data['simbolo_moneda'] = $parametros['moneda_descripcion'];
+        $data['decimales'] = $parametros['parametro_decimales'];
         
         $data['_view'] = 'producto/ver_elproducto';
         $this->load->view('producto/ver_elproducto',$data);

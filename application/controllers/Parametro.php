@@ -52,15 +52,15 @@ class Parametro extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(125)) {
-        $this->load->model('Categoria_producto_model');
-        $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-        $data['all_parametros'] = $this->Parametro_model->get_all_parametros();
-        //$data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['page_title'] = "Parametro";
-        $data['_view'] = 'parametro/index';
-        $this->load->view('layouts/main',$data);
-    }
+            $this->load->model('Categoria_producto_model');
+            $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+            $data['all_parametros'] = $this->Parametro_model->get_all_parametros();
+            //$data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['page_title'] = "Parametro";
+            $data['_view'] = 'parametro/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*

@@ -1,4 +1,4 @@
-<div class="row">
+    <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
@@ -36,19 +36,19 @@
                 <div class="col-md-2">
                     <label for="parametro_anchofactura" class="control-label">ANCHO FACTURA (CM)</label>
                     <div class="form-group">
-                        <input type="number" step="any" name="parametro_anchofactura" value="<?php echo ($this->input->post('parametro_anchofactura') ? $this->input->post('parametro_anchofactura') : $parametro['parametro_anchofactura']); ?>" class="form-control" id="parametro_anchofactura" />
+                        <input type="number" step="any" name="parametro_anchofactura" value="<?php echo ($this->input->post('parametro_anchofactura') ? $this->input->post('parametro_anchofactura') : number_format($parametro['parametro_anchofactura'], $parametro['parametro_decimales'], '.', ',')); ?>" class="form-control" id="parametro_anchofactura" />
                     </div>
                 </div>
                 <div class="col-md-2">
                     <label for="parametro_altofactura" class="control-label">ALTO FACTURA (CM)</label>
                     <div class="form-group">
-                        <input type="number" name="parametro_altofactura" value="<?php echo ($this->input->post('parametro_altofactura') ? $this->input->post('parametro_altofactura') : $parametro['parametro_altofactura']); ?>" class="form-control" id="parametro_altofactura" />
+                        <input type="number" step="any" name="parametro_altofactura" value="<?php echo ($this->input->post('parametro_altofactura') ? $this->input->post('parametro_altofactura') : number_format($parametro['parametro_altofactura'], $parametro['parametro_decimales'], '.', ',')); ?>" class="form-control" id="parametro_altofactura" />
                     </div>
                 </div>
                 <div class="col-md-2">
                     <label for="parametro_margenfactura" class="control-label">MARGEN IZQ. FACT.(CM)</label>
                     <div class="form-group">
-                            <input type="parametro_margenfactura" name="parametro_margenfactura" value="<?php echo ($this->input->post('parametro_margenfactura') ? $this->input->post('parametro_margenfactura') : $parametro['parametro_margenfactura']); ?>" class="form-control" id="parametro_margenfactura" />
+                        <input type="parametro_margenfactura" step="any" name="parametro_margenfactura" value="<?php echo ($this->input->post('parametro_margenfactura') ? $this->input->post('parametro_margenfactura') : number_format($parametro['parametro_margenfactura'], $parametro['parametro_decimales'], '.', ',')); ?>" class="form-control" id="parametro_margenfactura" />
                         
 <!--                        <select  name="parametro_margenfactura" class="form-control" id="parametro_margenfactura" >
                             <option value="1">1</option>
@@ -450,7 +450,7 @@
                     <div class="col-md-2">
                         <label for="parametro_puntos" class="control-label">PUNTOS (Bs/PUNTO)</label>
                         <div class="form-group">
-                            <input type="number" min="0" step="any" name="parametro_puntos" value="<?php echo ($this->input->post('parametro_puntos') ? $this->input->post('parametro_puntos') : $parametro['parametro_puntos']); ?>" class="form-control" id="parametro_puntos"  />
+                            <input type="number" min="0" step="any" name="parametro_puntos" value="<?php echo ($this->input->post('parametro_puntos') ? $this->input->post('parametro_puntos') : number_format($parametro['parametro_puntos'], $parametro['parametro_decimales'], '.', ',')); ?>" class="form-control" id="parametro_puntos"  />
                         </div>
                     </div>
                 </div>

@@ -275,6 +275,9 @@
                         <li>
                             <a href="javascript:window.open('<?php echo site_url('detalle_venta/venta_proceso');?>','','toolbar=yes');"><i class="fa fa-television"></i> Monitor de <?php echo $sistema["sistema_moduloventas"]; ?></a>
                         </li>
+                        <li>
+                            <a href="javascript:window.open('<?php echo site_url('producto/ver_elproducto');?>','','toolbar=yes');"><i class="fa fa-window-maximize"></i> Verificador de precios</a>
+                        </li>
                         <?php
                         }
                         

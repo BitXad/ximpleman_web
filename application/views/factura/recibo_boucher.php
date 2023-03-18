@@ -115,6 +115,10 @@ border-bottom : 1px solid #aaa;
 <?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"]."cm";
       $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<<<<<<< HEAD
+=======
+      
+>>>>>>> master
       $decimales = $parametro[0]["parametro_decimales"];
 ?>
 <table class="table" >
@@ -193,8 +197,13 @@ border-bottom : 1px solid #aaa;
                         $total_final += $d['detalleven_total']; 
                         ?>
            <tr>
+<<<<<<< HEAD
                 <td align="center" style="padding: 0;"><?php echo number_format($d['detalleven_cantidad'],$decimales,'.',','); ?></td>
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;">
+=======
+               <td align="center" style="padding: 0;"><?php echo number_format($d['detalleven_cantidad'], $decimales, ".", ","); ?></td>
+                <td style="padding: 0; padding-left: 2px"><font style="size:5px; font-family: arial narrow;">
+>>>>>>> master
                     <?php
                     $codigo  =  "";
                     $categoria = "";
