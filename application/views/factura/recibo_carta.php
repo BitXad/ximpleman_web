@@ -81,6 +81,7 @@ border-bottom : 1px solid #aaa;
 <?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"];
       $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+      $decimales = $parametro[0]["parametro_decimales"];
 ?>
 <div class=" table-responsive" style="padding: 0;">
     
@@ -221,7 +222,7 @@ border-bottom : 1px solid #aaa;
             ?>
            <tr>
                <!-- CANTIDAD -->
-                <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
+                <td align="center" style="padding: 0"><?php echo number_format($d['detalleven_cantidad'],$decimales,'.',','); ?></td>
                <!-- DESCRIPCION -->
                 <td style="padding: 0"><font style="font-size:10px; font-family: arial;">
                     <?php
@@ -270,25 +271,25 @@ border-bottom : 1px solid #aaa;
                 </td>
                 
                <!-- PRECIO UNITARIO -->
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio'],$decimales,'.',','); ?></td>
                
                 <!-- SUB TOTAL -->
-                <!--<td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>-->
+                <!--<td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],$decimales,'.',','); ?></td>-->
                 
                 <!-- DESCUENTO PARCIAL -->
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_descuentoparcial']*$d['detalleven_cantidad'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_descuentoparcial']*$d['detalleven_cantidad'],$decimales,'.',','); ?></td>
                 <!-- TOTAL FINAL -->
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal']-($d['detalleven_descuentoparcial']*$d['detalleven_cantidad']),2,'.',','); ?></td>
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal']-($d['detalleven_descuentoparcial']*$d['detalleven_cantidad']),$decimales,'.',','); ?></td>
                 <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                 <td align="right" style="padding: 0">
                     <?php
                         if ($parametro[0]["moneda_id"]==1){
                             $total_final_me += $total_final / $d['detalleven_tc'];
-                            echo number_format($d['detalleven_total'] / $d['detalleven_tc'],2,'.',',');
+                            echo number_format($d['detalleven_total'] / $d['detalleven_tc'],$decimales,'.',',');
                             
                         }else{
                             $total_final_me += $total_final * $d['detalleven_tc'];
-                            echo number_format($d['detalleven_total'] * $d['detalleven_tc'],2,'.',',');
+                            echo number_format($d['detalleven_total'] * $d['detalleven_tc'],$decimales,'.',',');
                             
                         }
                     ?>    
@@ -315,8 +316,8 @@ border-bottom : 1px solid #aaa;
                 }
                 ?>
                 TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b><br>
-                CUOTA INIC. <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
-                SALDO <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>                
+                CUOTA INIC. <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['credito_cuotainicial'],$decimales,'.',','); ?></b><br>
+                SALDO <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],$decimales,'.',','); ?></b><br>                
         </td>
         <td align="right" style="background-color: #aaa !important; -webkit-print-color-adjust: exact;">
 
@@ -328,11 +329,11 @@ border-bottom : 1px solid #aaa;
             <?php if ($total_descuentoparcial>0){ ?>
             
             <font size="1">
-                <b><?php echo "SUB TOTAL PARCIAL ".$parametro[0]["moneda_descripcion"].": ".number_format($venta[0]['venta_subtotal']+$total_descuentoparcial,2,'.',','); ?></b><br>
+                <b><?php echo "SUB TOTAL PARCIAL ".$parametro[0]["moneda_descripcion"].": ".number_format($venta[0]['venta_subtotal']+$total_descuentoparcial,$decimales,'.',','); ?></b><br>
             </font>
             
             <font size="1">
-                <?php echo "TOTAL DESCUENTO PARCIAL ".$parametro[0]["moneda_descripcion"].": ".number_format($total_descuentoparcial    ,2,'.',','); ?><br>
+                <?php echo "TOTAL DESCUENTO PARCIAL ".$parametro[0]["moneda_descripcion"].": ".number_format($total_descuentoparcial    ,$decimales,'.',','); ?><br>
             </font>
             
             <?php } ?>
@@ -340,18 +341,18 @@ border-bottom : 1px solid #aaa;
             <?php if ($venta[0]['venta_descuento']>0){ ?>
             
             <font size="1">
-                <b><?php echo "SUB TOTAL ".$parametro[0]["moneda_descripcion"].": ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
+                <b><?php echo "SUB TOTAL ".$parametro[0]["moneda_descripcion"].": ".number_format($venta[0]['venta_subtotal'],$decimales,'.',','); ?></b><br>
             </font>
             
             <font size="1">
-                <?php echo "DESCUENTO GLOBAL ".$parametro[0]["moneda_descripcion"].": ".number_format($venta[0]['venta_descuento'],2,'.',','); ?>
+                <?php echo "DESCUENTO GLOBAL ".$parametro[0]["moneda_descripcion"].": ".number_format($venta[0]['venta_descuento'],$decimales,'.',','); ?>
             </font>
             
             <?php } ?>
             
             <font size="2">
             <b>
-                <br><?php echo "TOTAL FINAL ".  substr($parametro[0]["moneda_descripcion"],0,3).": ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
+                <br><?php echo "TOTAL FINAL ".  substr($parametro[0]["moneda_descripcion"],0,3).": ".number_format($venta[0]['venta_total'] ,$decimales,'.',','); ?><br>
             </b>
             </font>
             
@@ -389,17 +390,17 @@ border-bottom : 1px solid #aaa;
                                 $tfe = "Bs ";
                             }
                         
-                        echo $tfe." ".number_format($total_final_equivalente,2,'.',',');
+                        echo $tfe." ".number_format($total_final_equivalente,$decimales,'.',',');
                     ?>              
                    
                     <!------------------------------------------>
                 <?php                    
                 
                 /*if ($parametro[0]["moneda_id"]==1){
-                    echo $parametro[0]["moneda_descripcion"]." ".number_format($total_final_me,2,'.',',');
+                    echo $parametro[0]["moneda_descripcion"]." ".number_format($total_final_me,$decimales,'.',',');
 
                 }else{
-                    echo "Bs ".number_format($total_final_me,2,'.',',');
+                    echo "Bs ".number_format($total_final_me,$decimales,'.',',');
                }*/
                 
                 ?>
@@ -408,8 +409,8 @@ border-bottom : 1px solid #aaa;
             </font>
             <?php } ?>
             <font size="1">
-                <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
+                <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],$decimales,'.',','); ?><br>
+                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],$decimales,'.',','); ?>
             </font>
             
             

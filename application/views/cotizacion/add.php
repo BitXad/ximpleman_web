@@ -93,9 +93,12 @@ input[type=number] { -moz-appearance:textfield; }
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 <link href="<?php echo base_url('resources/css/tablacompras.css'); ?>" rel="stylesheet">
 
+<?php $decimales = $parametro["parametro_decimales"]; ?>
+
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
+ <input type="hidden" name="decimales" id="decimales" value="<?php echo $decimales; ?>">
             <!--<div class="box-header with-border">-->
                 <h5 class="box-title"><b>COTIZACION</b></h5>
             <!--</div>-->
@@ -109,9 +112,8 @@ input[type=number] { -moz-appearance:textfield; }
 
       		<div class="box-body">
           		<div class="row clearfix">
-                            <div class="col-md-12">
-                                
-                                        <!--<div class="col-md-6">-->
+                            
+                                        <div class="col-md-6">
 						<label for="cotizacion_cliente" class="control-label">Cliente</label>
                                                 <div class="form-group">
                                                     <input type="text" name="cotizacion_cliente" value="<?php echo ($this->input->post('cotizacion_cliente') ? $this->input->post('cotizacion_cliente') : $cotizacion['cotizacion_cliente']); ?>"  class="form-control" id="cotizacion_cliente" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -209,7 +211,7 @@ input[type=number] { -moz-appearance:textfield; }
           			     
 </div>
 </div>
-</div>
+
   
 <!---------------------------------------TABLA DE DETALLE cotizacion------------------------------------>
 <div class="col-md-12">
@@ -270,13 +272,7 @@ input[type=number] { -moz-appearance:textfield; }
                             <th>Total</th>
                     </tr>
                     <tbody class="buscar2" id="detallecotiza">
-                   
-                                            
-                      
-       
-                   
 
-                    
                 </table>
                 
             </div>
@@ -291,9 +287,10 @@ input[type=number] { -moz-appearance:textfield; }
 					
 
     </div>
+                        
  <div class="col-md-12" align="right"> 
   <center>
-            <a type="button" onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;">
+            <a type="button" onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br>
                Finalizar<br>Cotización<br>
             </a>
@@ -312,6 +309,6 @@ input[type=number] { -moz-appearance:textfield; }
 </div>
 <!---------------modal  producto--------------->
 </div>
-
+</div>
 <!---------------------- fin modal productos --------------------------------------------------->
 

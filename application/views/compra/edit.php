@@ -127,11 +127,13 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <input type="hidden" name="compra_idie" id="compra_idie" value="<?php echo $compra_id; ?>">
 <input type="hidden" name="bandera" id="bandera" value="<?php echo $bandera; ?>">
 <input type="hidden" name="moneda_tc" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>">
-<input type="hidden" name="moneda_descripcion" id="moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>">
-<input type="hidden" name="monedaparam_id" id="monedaparam_id" value="<?php echo $parametro[0]['moneda_id']; ?>"> <!-- moneda_id de parametro!.. -->
+<input type="hidden" name="moneda_descripcion" id="moneda_descripcion" value="<?php echo $parametro['moneda_descripcion']; ?>">
+<input type="hidden" name="monedaparam_id" id="monedaparam_id" value="<?php echo $parametro['moneda_id']; ?>"> <!-- moneda_id de parametro!.. -->
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <input type="hidden" name="modificar_detalle" id="modificar_detalle" value="<?php echo $rolusuario[6-1]['rolusuario_asignado']; ?>">
 <input type="hidden" name="eliminar_detalle" id="eliminar_detalle" value="<?php echo $rolusuario[7-1]['rolusuario_asignado']; ?>">
+<input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales"  hidden>
+<?php $decimales = $parametro['parametro_decimales']; ?>
 
 <div class="container" style="margin-left: 0;">
    
@@ -189,19 +191,19 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                <table style="border-top: white">       
                 
                 <tr>
-                        <td>Sub Total <?php echo $parametro[0]["moneda_descripcion"];; ?>:</td>
+                        <td>Sub Total <?php echo $parametro["moneda_descripcion"];; ?>:</td>
                         <td></td>
                         <td><?php echo number_format($subtotal,2,'.',','); ?></td>
 
                 </tr>             
                 <tr>
-                        <td>Descuento <?php echo $parametro[0]["moneda_descripcion"];; ?>:</td>
+                        <td>Descuento <?php echo $parametro["moneda_descripcion"];; ?>:</td>
                         <td></td>
                         <td><?php echo number_format($descuento,2,'.',',');?></td>
                     
                 </tr>
                 <tr>
-                        <td>Descuento Global <?php echo $parametro[0]["moneda_descripcion"];; ?>:</td>
+                        <td>Descuento Global <?php echo $parametro["moneda_descripcion"];; ?>:</td>
                         <td style="width: 30px;"></td>
                         <td><?php  $compra_descglobal= $compra[0]['compra_descglobal']; echo number_format($compra_descglobal,2,'.',',');?>
 
@@ -211,7 +213,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </tr>
                 
                 <tr>
-                        <th><b>TOTAL FINAL <?php echo $parametro[0]["moneda_descripcion"];; ?>:</b></th>
+                        <th><b>TOTAL FINAL <?php echo $parametro["moneda_descripcion"];; ?>:</b></th>
                         <td></td>
                         <th><font size="3"><b> <?php echo number_format($total_ultimo,2,'.',',');?></b></font></th>
                        
@@ -419,12 +421,12 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <th>Costo</th>
                             <th>Cant.</th>
                             <th>Subtotal<br>
-                                <?php echo $parametro[0]["moneda_descripcion"]; ?>
+                                <?php echo $parametro["moneda_descripcion"]; ?>
                             </th>
                             <th>Unit.</th>
                             <th>Global</th>
                             <th>Total<br>
-                                <?php echo $parametro[0]["moneda_descripcion"]; ?>
+                                <?php echo $parametro["moneda_descripcion"]; ?>
                             </th>
                             <?php if($rolusuario[7-1]['rolusuario_asignado'] == 1){ ?>
                             <th colspan="2"><a  onclick="borrartodo()" class="btn btn-xs btn-danger" ><i class="fa fa-trash "></i></a></th>
@@ -1075,42 +1077,42 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 
 
                 <tr>
-                        <td><?php echo $sistema["sistema_modulocompras"]; ?> <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
+                        <td><?php echo $sistema["sistema_modulocompras"]; ?> <?php echo $parametro["moneda_descripcion"];; ?></td>
                         <td><input class="btn btn-default" type="text" size="8" readonly id="compra_subtotal" name="compra_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>"></td>
                     
                 </tr>                
                 <tr>
-                        <td>Descuento <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
+                        <td>Descuento <?php echo $parametro["moneda_descripcion"];; ?></td>
                         <td><input class="btn btn-default" type="text" size="8" readonly id="compra_descuento" name="compra_descuento" value="<?php echo number_format($descuento,2,'.',','); ?>"></td>
                     
                 </tr>
                 <tr>                      
-                        <td><b>Subtotal <?php echo $parametro[0]["moneda_descripcion"];; ?></b></td>
+                        <td><b>Subtotal <?php echo $parametro["moneda_descripcion"];; ?></b></td>
                         <td>
                               <input class="btn btn-default" id="compra_total" size="8" name="compra_total" value="<?php echo $totalfinal; ?>" readonly="true">
                         </td>
                 </tr>
                 <tr>                      
-                        <td>Descuento Global <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
+                        <td>Descuento Global <?php echo $parametro["moneda_descripcion"];; ?></td>
                         <td>
                          <input class="btn btn-default" id="compra_descglobal" name="compra_descglobal" size="8" value="<?php echo ($compra[0]['compra_descglobal'] ? $compra[0]['compra_descglobal'] : '0.00'); ?>" onclick="this.select();" onKeyUp="calcularDesc('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')"> 
                         </td>
                 </tr>
                 <tr>                      
-                        <td><b>Total Final <?php echo $parametro[0]["moneda_descripcion"];; ?></b></td>
+                        <td><b>Total Final <?php echo $parametro["moneda_descripcion"];; ?></b></td>
                         <td>
                               <input class="btn btn-default" id="compra_totalfinal" size="8" name="compra_totalfinal" value="<?php echo $total_ultimo; ?>" readonly="true">
                         </td>
                 </tr>
                 <tr>                      
-                        <td>Efectivo <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
+                        <td>Efectivo <?php echo $parametro["moneda_descripcion"];; ?></td>
                         <td>
                             <input class="btn btn-default" id="compra_efectivo" size="8" name="compra_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularCambio('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')">
                 
                         </td>
                 </tr>               
                 <tr>                      
-                    <td><b>Cambio <?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>
+                    <td><b>Cambio <?php echo $parametro["moneda_descripcion"]; ?></b></td>
                         <td>
                             <input class="btn btn-default" id="compra_cambio" size="8" name="compra_cambio" value="<?php echo $cambio; ?>" readonly="true">
                         </td>

@@ -8,12 +8,15 @@ class Inventario_sucursal extends CI_Controller{
     
     private $session_data = "";
     private $sistema;
+    private $parametros;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Inventario_sucursal_model');
         $this->load->model('Empresa_model');
         $this->load->model('Producto_model');
+        $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -21,6 +24,8 @@ class Inventario_sucursal extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
     }
     private function acceso($id_rol){
         
@@ -54,6 +59,60 @@ class Inventario_sucursal extends CI_Controller{
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             
             $data['almacenes'] = $this->Inventario_model->get_almacenes();
+            
+           
+            //********************************************
+            // SMART GRID
+            //********************************************
+                        $this->load->library('SmartGrid/Smartgrid');
+            // MySQL Query to get data   
+            $decimales = $this->parametros['parametro_decimales'];
+            $decimales2 = 0;
+            $sql = "select 
+                    i.producto_id, i.producto_nombre, i.producto_codigobarra, round(i.producto_costo,{$decimales}) as producto_costo, round(i.producto_precio,{$decimales}) as producto_precio, round(i.existencia,{$decimales}) as existencia,
+                    round(s.suc1,{$decimales2}) as suc1, round(s.suc2,{$decimales2}) as suc2, round(s.suc3,{$decimales2}) as suc3, s.suc4, s.suc5, s.suc6, s.suc7, s.suc8, s.suc9, s.suc10
+                    
+                    from inventario i, inventario_sucursales s where i.producto_id = s.producto_id";
+//            $sql = "select * from producto order by producto_nombre"; 
+            
+            $config = array("page_size"=> 500000, //cantidad de registros a visualizar
+                        "toolbar_position"=> 'top',
+                        "paging_enabled"=> true
+                );
+            
+            $raiz = base_url("producto/edit/");
+            
+            $buttons_html = '<div class="btn-group" role="group" aria-label=""><a href="'.$raiz.'{producto_id}" class="btn btn-default btn-xs" value="{producto_id}" target="blank_"><fa class="fa fa-computer"></fa> View</a><button type="button" class="btn btn-success btn-xs" value="{field_name}">Edit</button> <button type="button" class="btn btn-danger btn-xs" value="{field_name}">Delete</button></div>';
+            // Column settings
+
+            $lamoneda = "Bs";
+            $columns = array(
+                
+                "producto_id"=>array("header"=>"#", "type"=>"label"),
+                "producto_codigobarra"=>array("header"=>"Código", "type"=>"label"),
+                "producto_nombre"=>array("header"=>"Descripción", "type"=>"label"),
+                //"categoria_nombre"=>array("header"=>"Categoria", "type"=>"label"),
+                //"producto_unidad"=>array("header"=>"Unidad", "type"=>"label"),
+                "producto_costo"=>array("header"=>"P. Compra ".$lamoneda, "type"=>"label"),
+                "producto_precio"=>array("header"=>"P. Venta ".$lamoneda, "type"=>"label"),
+                "suc1"=>array("header"=>"Suc 1".$lamoneda, "type"=>"label"),
+                "suc2"=>array("header"=>"Suc 2".$lamoneda, "type"=>"label"),
+                "suc3"=>array("header"=>"Suc 3".$lamoneda, "type"=>"label"),
+                "suc3"=>array("header"=>"Suc 3".$lamoneda, "type"=>"label"),
+                "suc4"=>array("header"=>"Suc 4".$lamoneda, "type"=>"label"),
+                "suc5"=>array("header"=>"Suc 5".$lamoneda, "type"=>"label"),
+                
+                
+            );     
+
+            // Set the grid 
+            $this->smartgrid->set_grid($sql, $columns, $config);
+
+            // Render the grid and assign to data array, so it can be print to on the view
+            $data['grid_html'] = $this->smartgrid->render_grid();    
+            
+            //*************** FIN SMARTGRID***************      
+            //********************************************      
             
             $data['_view'] = 'inventario_sucursal/index';
             $this->load->view('layouts/main',$data);

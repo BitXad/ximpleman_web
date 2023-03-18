@@ -38,6 +38,11 @@
 <link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+
+<input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales" >
+<?php $decimales = $parametro['parametro_decimales']; 
+?>
+
 <!-------------------------------------------------------->
 <div class="row micontenedorep" style="display: none" id="cabeceraprint">
     <div id="cabizquierda">
@@ -273,10 +278,10 @@
               <?php }  ?>
                 <?php if ($c['compra_caja']==1){  ?><span class="btn-warning btn-xs">  <?php echo "Pago con Caja"; } ?><?php if ($c['compra_caja']==2){  ?><span class="btn-warning btn-xs">  <?php echo "Orden de Pago"; } ?><?php if ($c['compra_caja']==0){  ?><span class="btn-warning btn-xs">  <?php echo "Ninguno"; } ?></span></td>
                 <td><center><font size="4"><b><?php echo $c['compra_id']; ?></b></font></center></td>
-                <td align="right" ><?php echo "Sub Total: ".number_format($c['compra_subtotal'],'2','.',','); ?><br>
-                  <?php echo "Desc.: ".number_format($c['compra_descuento'],'2','.',','); ?><br>
-                  <?php echo "Desc.Global: ".number_format($c['compra_descglobal'],'2','.',','); ?><br>  
-                  <font size="3"><b><?php echo number_format($c['compra_totalfinal'],'2','.',','); ?></b></font>
+                <td align="right" ><?php echo "Sub Total: ".number_format($c['compra_subtotal'],$decimales,'.',','); ?><br>
+                  <?php echo "Desc.: ".number_format($c['compra_descuento'],$decimales,'.',','); ?><br>
+                  <?php echo "Desc.Global: ".number_format($c['compra_descglobal'],$decimales,'.',','); ?><br>  
+                  <font size="3"><b><?php echo number_format($c['compra_totalfinal'],$decimales,'.',','); ?></b></font>
                 </td>
                 <td style="text-align:center;"><?= $c['forma_nombre'] ?></td>
                 <td style="text-align:center;"><?= $c['banco_nombre'] ?></td>
@@ -388,7 +393,7 @@
         <td></td>    
         <td></td>    
         <td align="right"><b>TOTAL</b></td> 
-        <td align="right"><font size="4"><b><?php echo number_format($total,'2','.',','); ?></b></font></td>
+        <td align="right"><font size="4"><b><?php echo number_format($total,$decimales,'.',','); ?></b></font></td>
         <td></td>    
         <td></td>
         <td></td>
@@ -419,7 +424,7 @@
         <!--------------------- fin parametro de buscador --------------------->
         <font face="arial" size="2">
             <b>
-            <?php echo $sistema["sistema_modulocompras"]; ?> sin Proveedor asignado            
+            <?php echo $sistema["sistema_modulocompras"]; ?> sin Proveedor asignado
             </b>
         </font>
         
@@ -449,9 +454,9 @@
                             <td><?php echo $psn['compra_id']; ?></td>
                             <td>NO DEFINIDO</td>
                             <td><?php echo date('d/m/Y',strtotime($psn['compra_fecha'])) ;  ?> <?php echo $psn['compra_hora']; ?></td>
-                            <td><?php echo $psn['compra_subtotal']; ?></td>
-                            <td><?php echo $psn['compra_descuento']; ?></td>  
-                            <td><?php echo $psn['compra_total']; ?></td>
+                            <td><?php echo number_format($psn['compra_subtotal'],$decimales,".",","); ?></td>
+                            <td><?php echo number_format($psn['compra_descuento'],$decimales,".",","); ?></td>  
+                            <td><?php echo number_format($psn['compra_total'],$decimales,".",","); ?></td>
                             
                             <td><?php echo $psn['estado_descripcion']; ?></td>
                             <td>

@@ -14,6 +14,7 @@ function detallecoti(){
      var base_url = document.getElementById('base_url').value;
      var cotizacion_id = document.getElementById('cotizacion_id').value;
      controlador = base_url+'cotizacion/detallecotizacion/';
+     var decimales = document.getElementById('decimales').value;
      
       $.ajax({url: controlador,
            type:"POST",
@@ -50,11 +51,11 @@ function detallecoti(){
                         html += "<td> <input id='cotizacion_id'  name='cotizacion_id' type='hidden' class='form-control' value='"+cotizacion_id+"'>";
                         html += "<input id='detallecot_descripcion'  name='descripcion' type='hidden' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
                         html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>";
-                        html += "<input id='detallecot_precio"+registros[i]["detallecot_id"]+"' name='producto_precio' type='text' size='3' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")'  value='"+Number(registros[i]["detallecot_precio"]).toFixed(2)+"' ></td> ";
+                        html += "<input id='detallecot_precio"+registros[i]["detallecot_id"]+"' name='producto_precio' type='text' size='3' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")'  value='"+Number(registros[i]["detallecot_precio"]).toFixed(decimales)+"' ></td> ";
                         html += "<td><input id='detallecot_cantidad"+registros[i]["detallecot_id"]+"'  name='cantidad' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+registros[i]["detallecot_cantidad"]+"' >";
                         html += "<input id='detallecot_id'  name='detallecot_id' type='hidden' class='form-control' value='"+registros[i]["detallecot_id"]+"'></td>";
-                        html += "<td><input id='detallecot_descuento"+registros[i]["detallecot_id"]+"' name='descuento' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+Number(registros[i]["detallecot_descuento"]).toFixed(2)+"' ></td>";
-                        html += "<td><center><font size='3'> <b>"+Number(registros[i]["detallecot_total"]).toFixed(2)+"</b></font> <br>";
+                        html += "<td><input id='detallecot_descuento"+registros[i]["detallecot_id"]+"' name='descuento' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+Number(registros[i]["detallecot_descuento"]).toFixed(decimales)+"' ></td>";
+                        html += "<td><center><font size='3'> <b>"+Number(registros[i]["detallecot_total"]).toFixed(decimales)+"</b></font> <br>";
                         html += "</center></td>";
                         html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' title='Guardar' class='btn btn-success btn-sm'><i class='fa fa-floppy-o'></i></button>";
                         html += "<button type='button' onclick='quitardetallec("+registros[i]["detallecot_id"]+")' title='Quitar' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button></td>";
@@ -68,10 +69,11 @@ function detallecoti(){
                        html += "<td></td>";
                        html += "<td></td>";
                        html += "<td><font size='3'>TOTAL</td>";
-                       html += "<td><font size='3'><b>"+Number(descuento).toFixed(2)+"</td>";
-                       html += "<td><font size='3'><b>"+Number(total_detalle).toFixed(2)+"</td>";
+                       html += "<td><font size='3'><b>"+Number(descuento).toFixed(decimales)+"</td>";
+                       html += "<td><font size='3'><b>"+Number(total_detalle).toFixed(decimales)+"</td>";
+                       html += "<td></td>";
                        html += "</tr>";
-                        //$('#cotizacion_total').value(total_detalle.toFixed(2));
+                        //$('#cotizacion_total').value(total_detalle.toFixed(decimales));
                        $("#detallecotiza").html(html);
                        totality(total_detalle);
                        
@@ -137,7 +139,7 @@ function actualizacaracteristicas(e,detalle_id,producto_id,cotizacion_id) {
 
 function totality(total_detalle){
   var totalfinal = Number(total_detalle);
-  $("#cotizacion_total").val(totalfinal.toFixed(2));
+  $("#cotizacion_total").val(totalfinal.toFixed(decimales));
 }
 
 function detallecota(cotizacion_id,producto_id){
@@ -168,10 +170,6 @@ function detallecota(cotizacion_id,producto_id){
         
     });
 }
-
-
-
-
 
 function actualizarDetalle(detallecot_id,producto_id,cotizacion_id){
 
@@ -392,7 +390,7 @@ function tabladetalle(subtotal,descuento,totalfinal)
 
     html += "    <td>Sub Total Bs</td>";
 
-    html += "    <td align='right'>"+subtotal.toFixed(2)+"</td>";
+    html += "    <td align='right'>"+subtotal.toFixed(decimales)+"</td>";
 
     html += "</tr> ";
 
@@ -400,7 +398,7 @@ function tabladetalle(subtotal,descuento,totalfinal)
 
     html += "    <td>Descuento</td>";
 
-    html += "    <td align='right'>"+descuento.toFixed(2)+"</td>  ";  
+    html += "    <td align='right'>"+descuento.toFixed(decimales)+"</td>  ";  
 
     html += "</tr>";
 
@@ -408,7 +406,7 @@ function tabladetalle(subtotal,descuento,totalfinal)
 
     html += "    <th><b>TOTAL FINAL</b></th>";
 
-    html += "    <th align='right'><font size='5'> "+totalfinal.toFixed(2)+"</font></th>";
+    html += "    <th align='right'><font size='5'> "+totalfinal.toFixed(decimales)+"</font></th>";
 
     html += "</tr>";
 
@@ -554,7 +552,6 @@ function quitartodo()
 //Tabla resultados de la busqueda
 
 function tablaresultados(opcion)
-
 {   
 
     var controlador = "";
@@ -562,10 +559,12 @@ function tablaresultados(opcion)
     var parametro = "";
 
     var cotizacion_id = document.getElementById('cotizacion_id').value;
+    
+    var decimales = document.getElementById('decimales').value;
 
     var base_url = document.getElementById('base_url').value;
 
-    
+    //alert(decimales);
 
     if (opcion == 1){
 
@@ -666,11 +665,11 @@ function tablaresultados(opcion)
 
 
 
-                        html += "<b>"+registros[i]["producto_nombre"]+"("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>"+Number(registros[i]["existencia"]).toFixed(2)+"</span>";
+                        html += "<b>"+registros[i]["producto_nombre"]+"("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>"+Number(registros[i]["existencia"]).toFixed(decimales)+"</span>";
                         html += "   <select class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo(this,"+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1' id='"+registros[i]["producto_precio"]+"' >";
                         precio_unidad = registros[i]["producto_precio"];
-                        html += "           "+registros[i]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";
+                        html += "           "+registros[i]["producto_unidad"]+" Bs : "+Number(precio_unidad).toFixed(decimales)+"";
                         html += "       </option>";
                         
                         if(registros[i]["producto_factor"]>0){
@@ -678,7 +677,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
 
                             html += "       <option value='"+registros[i]["producto_factor"]+"' id='"+registros[i]["producto_preciofactor"]+"' >";
-                            html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(decimales)+"/"+precio_factorcant.toFixed(decimales);
                             html += "       </option>";
                         }
                             if(registros[i]["producto_factor1"]>0){
@@ -686,7 +685,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor1"]) * parseFloat(registros[i]["producto_factor1"]);
 
                             html += "       <option value='"+registros[i]["producto_factor1"]+"' id='"+registros[i]["producto_preciofactor1"]+"'>";
-                            html += "           "+registros[i]["producto_unidadfactor1"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "           "+registros[i]["producto_unidadfactor1"]+" Bs: "+precio_factor.toFixed(decimales)+"/"+precio_factorcant.toFixed(decimales);
                             html += "       </option>";
                         }
 
@@ -695,7 +694,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor2"]) * parseFloat(registros[i]["producto_factor2"]);
 
                             html += "       <option value='"+registros[i]["producto_factor2"]+"' id='"+registros[i]["producto_preciofactor2"]+"' >";
-                            html += "           "+registros[i]["producto_unidadfactor2"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "           "+registros[i]["producto_unidadfactor2"]+" Bs: "+precio_factor.toFixed(decimales)+"/"+precio_factorcant.toFixed(decimales);
                             html += "       </option>";
                         }
 
@@ -704,7 +703,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor3"]) * parseFloat(registros[i]["producto_factor3"]);
 
                             html += "       <option value='"+registros[i]["producto_factor3"]+"' id='"+registros[i]["producto_preciofactor3"]+"' >";
-                            html += "           "+registros[i]["producto_unidadfactor3"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "           "+registros[i]["producto_unidadfactor3"]+" Bs: "+precio_factor.toFixed(decimales)+"/"+precio_factorcant.toFixed(decimales);
                             html += "       </option>";
                         }
 
@@ -713,7 +712,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor4"]) * parseFloat(registros[i]["producto_factor4"]);
 
                             html += "       <option value='"+registros[i]["producto_factor4"]+"' id='"+registros[i]["producto_preciofactor4"]+"' >";
-                            html += "           "+registros[i]["producto_unidadfactor4"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "           "+registros[i]["producto_unidadfactor4"]+" Bs: "+precio_factor.toFixed(decimales)+"/"+precio_factorcant.toFixed(decimales);
                             html += "       </option>";
                         }
                         
@@ -738,8 +737,8 @@ function tablaresultados(opcion)
 //
 //                        html += "Cant. <input class='input-sm ' id='cantidad"+registros[i]["producto_id"]+"' style='width:70px' name='cantidad' onkeypress='pasardetalle(event,"+cotizacion_id+","+registros[i]["producto_id"]+")' type='number' class='form-control' placeholder='cantidad' required value='1'> </div></td>";                        
 //                        
-                         
-                       
+   
+
                             let estilo_celda = "style='border-width:0px; font-size: 8px;'";
                             let anchoinput = 50;
                             html += "<center>";
@@ -754,8 +753,8 @@ function tablaresultados(opcion)
                                     html += "</tr>";
 
                                     html += "<tr>";
-                                        html += "<td "+estilo_celda+"><input  style='width:"+anchoinput+"px;' id='producto_precio"+registros[i]["producto_id"]+"' style='width:70px; font-size: 10px;'  name='producto_precio' type='number' value='"+registros[i]["producto_precio"]+"' ></td>";
-                                        html += "<td "+estilo_celda+"><input  style='width:"+anchoinput+"px;' id='producto_costo"+registros[i]["producto_id"]+"'  style='width:70px; font-size: 10px; background-color: red;'  name='producto_costo' type='number'value='"+registros[i]["producto_costo"]+"' readonly></td>";
+                                        html += "<td "+estilo_celda+"><input  style='width:"+anchoinput+"px;' id='producto_precio"+registros[i]["producto_id"]+"' style='width:70px; font-size: 10px;'  name='producto_precio' type='number' value='"+ Number(registros[i]["producto_precio"]).toFixed(decimales)+"' ></td>";
+                                        html += "<td "+estilo_celda+"><input  style='width:"+anchoinput+"px;' id='producto_costo"+registros[i]["producto_id"]+"'  style='width:70px; font-size: 10px; background-color: red;'  name='producto_costo' type='number'value='"+Number(registros[i]["producto_costo"]).toFixed(decimales)+"' readonly></td>";
                                         html += "<td "+estilo_celda+"><input  style='width:"+anchoinput+"px;' id='descuento"+registros[i]["producto_id"]+"'   style='width:70px; font-size: 10px;'  name='descuento' type='number' value='0.00' step='.01' required ></td>";
                                         html += "<td "+estilo_celda+"><input  style='width:"+anchoinput+"px;' id='cantidad"+registros[i]["producto_id"]+"' style='width:70px; font-size: 10px; background-color: yellow;'  name='cantidad' onkeypress='pasardetalle(event,"+cotizacion_id+","+registros[i]["producto_id"]+")' type='number' placeholder='cantidad' required value='1'></td>";                        
                                     html += "</tr>";
@@ -913,7 +912,7 @@ function fechacotizacion(parametro){
                         html += "<td>"+registros[i]["cotizacion_formapago"]+"</td>";
                         html += "<td>"+registros[i]["cotizacion_tiempoentrega"]+"</td>";
                         html += "<td>"+moment(registros[i]["cotizacion_fechahora"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
-                        html += "<td align='right'>"+Number(registros[i]["cotizacion_total"]).toFixed(2)+"</td>";
+                        html += "<td align='right'>"+Number(registros[i]["cotizacion_total"]).toFixed(decimales)+"</td>";
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
                         
                         html += "<td class='no-print'><a href='"+base_url+"cotizacion/add/"+registros[i]["cotizacion_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";

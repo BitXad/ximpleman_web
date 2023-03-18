@@ -505,7 +505,7 @@ class Smartgrid {
 	 */    
     private function get_debug_info()
     {
-        $debug_html = '<div class="panel panel-warning"><div class="panel-heading"><h3 class="panel-title">SmartGrid Debug Information</h3></div>';
+        $debug_html = '<div class="panel panel-warning"><div class="panel-heading"><h3 class="panel-title">SmartGrid - Informacion para depuración</h3></div>';
         $debug_html .= '<div class="panel-body">';
         $debug_html .= '</div>';
         

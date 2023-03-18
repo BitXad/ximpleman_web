@@ -22,7 +22,7 @@ function actualizar_inventarios(){
             alert('El inventario se actualizo exitosamente...! ');
             //redirect('inventario/index');
             document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-            tabla_inventariosuc();
+            //tabla_inventariosuc();
         },
         complete: function (jqXHR, textStatus) {
             document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 

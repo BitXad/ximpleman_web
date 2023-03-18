@@ -7,6 +7,7 @@ class Compra extends CI_Controller{
     
     private $session_data = "";
     private $sistema;
+    private $parametros;
     
     function __construct()
     {
@@ -34,6 +35,11 @@ class Compra extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        
+        
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -55,6 +61,7 @@ class Compra extends CI_Controller{
         
         if($this->acceso(1)){
             
+            $data['parametro'] = $this->parametros;
             $data['sistema'] = $this->sistema;
             $data['page_title'] = "Compra";
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -85,6 +92,7 @@ class Compra extends CI_Controller{
         
         if($this->acceso(137)){
             
+            $data['parametro'] = $this->parametros;
             $data['sistema'] = $this->sistema;
             $data['page_title'] = "Compra";
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -121,6 +129,7 @@ class Compra extends CI_Controller{
         
         if($this->acceso(137)){
             
+            $data['parametro'] = $this->parametros;
             $data['sistema'] = $this->sistema;
             $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
@@ -157,6 +166,7 @@ class Compra extends CI_Controller{
     {
         if($this->acceso(137)){
             
+            $data['parametro'] = $this->parametros;
             $data['sistema'] = $this->sistema;
             $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
@@ -297,6 +307,8 @@ class Compra extends CI_Controller{
     function anula()
     {
         if($this->acceso(1)){
+            
+            $data['parametro'] = $this->parametros;
             $data['sistema'] = $this->sistema;
             $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
@@ -358,6 +370,7 @@ class Compra extends CI_Controller{
     {
         if($this->acceso(1)){
             
+            $data['parametro'] = $this->parametros;
             $data['sistema'] = $this->sistema;
             $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
@@ -547,6 +560,8 @@ class Compra extends CI_Controller{
     function edit($compra_id,$bandera)
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        
         if($this->acceso(1)){
             
             $data['page_title'] = "Compra";
@@ -556,7 +571,7 @@ class Compra extends CI_Controller{
              $data['compra'] = $this->Compra_model->get_compra($compra_id);
              $compra = $this->Compra_model->get_proveedor_id($compra_id);
              $proveedor_id = $compra[0]['proveedor_id'];
-             $data['parametro'] = $this->Parametro_model->get_parametros();
+            
              $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
              $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc(); //0-->bs; 1-->USD
              $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
@@ -809,8 +824,10 @@ class Compra extends CI_Controller{
     }
 
     function finalizarcompra($compra_id){
+        
         if($this->acceso(1)){
-            
+           
+            $data['parametro'] = $this->parametros;
             $data['sistema'] = $this->sistema;
             $usuario_id = $this->session_data['usuario_id'];
             //$this->load->model('Compra_model');
@@ -1419,6 +1436,7 @@ function detallecompra()
         show_404();
     }
 }
+
 function ingresarproducto()
 {
     if ($this->input->is_ajax_request()) {
@@ -1555,6 +1573,7 @@ function ingresarproducto()
 function updateDetalle()
 {
     if($this->acceso(1)){
+        
     $detallecomp_id = $this->input->post('detallecomp_id');
     $cantidad = $this->input->post('cantidad'); 
     $descuento = $this->input->post('descuento'); 
@@ -1601,10 +1620,11 @@ function quitar($detallecomp_id)
     function edito($compra_id)
     {
         if($this->acceso(1)){
+            
             $data['page_title'] = "Compra";
             // check if the compra exists before trying to edit it
             $data['compra'] = $this->Compra_model->get_compra($compra_id);
-
+            $data['parametro'] = $this->parametros;
             if(isset($data['compra']['compra_id']))
             {
                 if(isset($_POST) && count($_POST) > 0)     
@@ -1669,7 +1689,7 @@ function quitar($detallecomp_id)
     function editar()
     {
         $data['sistema'] = $this->sistema;
-        
+        $data['parametro'] = $this->parametros;
         if($this->acceso(1)){
             $data['page_title'] = "Compra";
            $data['compra'] = $this->Compra_model->get_all_compra($params);
@@ -1832,6 +1852,7 @@ function modificarproveedor()
 }
 
 function ingreso_rapido($cantidad,$producto_id,$producto_costo){
+    
         if($this->acceso(1)){
             $usuario_id = $this->session_data['usuario_id'];
         $compra_fecha = "now()";

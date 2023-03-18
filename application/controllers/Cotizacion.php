@@ -7,6 +7,7 @@
 class Cotizacion extends CI_Controller{
     private $session_data = "";
     private $sistema;
+    private $parametros;
     
     function __construct()
     {
@@ -22,9 +23,15 @@ class Cotizacion extends CI_Controller{
         }
         $this->load->model('Sistema_model');
 	$this->sistema = $this->Sistema_model->get_sistema();
+        
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        
     } 
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
+        $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
@@ -38,7 +45,8 @@ class Cotizacion extends CI_Controller{
      * Listing of cotizacion
      */
     function index()
-    {
+    {   
+        $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(36)){
             $data['page_title'] = "Cotización";
@@ -53,6 +61,7 @@ class Cotizacion extends CI_Controller{
 
     function creacotizacion()
     {
+        $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(37)){
             $usuario_id = $this->session_data['usuario_id'];
@@ -65,6 +74,7 @@ class Cotizacion extends CI_Controller{
      */
     function add($cotizacion_id)
     {
+        $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(37)){
             $data['page_title'] = "Cotización";
@@ -83,6 +93,7 @@ class Cotizacion extends CI_Controller{
 
     function buscar_cotizacion()
     {
+        $data['parametro'] = $this->parametros;
        if ($this->input->is_ajax_request()) {  
         $parametro = $this->input->post('parametro');
         $datos = $this->Cotizacion_model->get_fechas_cotizacion($parametro);
@@ -98,6 +109,7 @@ class Cotizacion extends CI_Controller{
 
     function actualizarcaracteristicas()
     {
+        $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
        if ($this->input->is_ajax_request()) {  
         $producto_id = $this->input->post('producto_id');
@@ -129,6 +141,7 @@ class Cotizacion extends CI_Controller{
 
     function cotizarecibo($cotizacion_id)
     {
+        $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(36)){
             $data['page_title'] = "Cotización";
@@ -147,6 +160,7 @@ class Cotizacion extends CI_Controller{
     }
     function recibo($cotizacion_id)
     {
+        $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
@@ -178,6 +192,7 @@ class Cotizacion extends CI_Controller{
 
     function detallecotizacion()
     {
+        $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {  
         $cotizacion_id = $this->input->post('cotizacion_id');
@@ -195,6 +210,7 @@ class Cotizacion extends CI_Controller{
     }    
     function insertarproducto()
     {
+        $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
         $cotizacion_id = $this->input->post('cotizacion_id');
@@ -252,6 +268,7 @@ class Cotizacion extends CI_Controller{
 
     function updateDetallecot()
     {
+        $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
         if ($this->input->is_ajax_request()) {
         $detallecot_id = $this->input->post('detallecot_id');
