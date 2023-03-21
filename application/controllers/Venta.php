@@ -3691,7 +3691,7 @@ function anular_venta($venta_id){
         $producto_id = $this->input->post('producto_id');
         
         $sql =  "select if(sum(detalleven_cantidad)>0,sum(detalleven_cantidad),0) as cantidad from detalle_venta_aux "
-                . " where producto_id =".$producto_id;
+                . " where producto_id =".$producto_id." and usuario_id = ".$usuario_id;
         
         $resultado = $this->Venta_model->consultar($sql);
         echo json_encode($resultado);
@@ -4905,7 +4905,7 @@ function anular_venta($venta_id){
         //*************************************************************************
         if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
             
-            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==17
+            if ($dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==17
                 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==51)
                 
                 $wsdl = $dosificacion['dosificacion_glpelectronica'];
@@ -4915,9 +4915,9 @@ function anular_venta($venta_id){
             if ($dosificacion['docsec_codigoclasificador']==13)
                 $wsdl = $dosificacion['dosificacion_facturaservicios'];
             
-            
             if ($dosificacion['docsec_codigoclasificador']==22)
                 $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+            
             
         }
         
@@ -4925,8 +4925,14 @@ function anular_venta($venta_id){
         //       SERVICIOS FACTURACION COMPUTARIZADA
         //*************************************************************************        
         if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+            
+            if ($dosificacion['docsec_codigoclasificador']==13)
+                $wsdl = $dosificacion['dosificacion_facturaservicios'];
         
-            if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
+            if ($dosificacion['docsec_codigoclasificador']==22 )
+                $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+            
+            if ($dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
                 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==51)
                 
                 $wsdl = $dosificacion['dosificacion_facturaglp'];

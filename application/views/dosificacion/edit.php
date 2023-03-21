@@ -484,7 +484,7 @@
         
         let documento_sector = document.getElementById("docsec_codigoclasificador").value;
         //alert(documento_sector);
-        if (documento_sector==8){
+        if (documento_sector==8||documento_sector==6){
             alert("ADVERTENCIA: Este documento es SIN DERECHO A CREDITO FISCAL.\nDebe modificar el Tipo Factura/Documento Ajuste a TIPO 2");
             document.getElementById("tipofac_codigo").style = "background: yellow;";
             document.getElementById("tipofac_codigo").value = 2;

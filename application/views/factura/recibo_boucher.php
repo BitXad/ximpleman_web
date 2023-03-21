@@ -115,10 +115,7 @@ border-bottom : 1px solid #aaa;
 <?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"]."cm";
       $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
-<<<<<<< HEAD
-=======
-      
->>>>>>> master
+
       $decimales = $parametro[0]["parametro_decimales"];
 ?>
 <table class="table" >

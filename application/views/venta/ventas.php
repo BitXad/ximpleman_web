@@ -293,7 +293,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
-<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" hidden>
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" >
 <input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector" hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
@@ -312,6 +312,9 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="cliente_valido" value="1" hidden>
 <input type="text" id="credito_id" value="0" name="credito_id" hidden>
 
+<input type="text" id="parametro_anchobuscador" value="<?php echo $parametro['parametro_anchobuscador']; ?>" name="parametro_anchobuscador"  hidden>
+<input type="text" id="parametro_tamanioletrasboton" value="<?php echo $parametro['parametro_tamanioletrasboton']; ?>" name="parametro_tamanioletrasboton"  hidden>
+<input type="text" id="parametro_tamanioletras" value="<?php echo $parametro['parametro_tamanioletras']; ?>" name="parametro_tamanioletras"  hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 
@@ -810,7 +813,7 @@ window.onkeydown = compruebaTecla;
                         <td <?php echo $estilo_tabla; ?>><?php echo ++$i; ?></td>
                         <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_nombre"]."<sub>[".$ph["producto_id"]."]</sub>"; ?></td>
                         <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_codigo"]; ?></td>
-                        <td style="padding:0; text-align: right;"><?php echo number_format($ph["producto_precio"],2,",","."); ?></td>
+                        <td style="padding:0; text-align: right;"><?php echo number_format($ph["producto_precio"],2,".",","); ?></td>
                         <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigounidadsin"]; ?>
                             
                             <?php if(! $ph["producto_codigounidadsin"]>0){ ?>
@@ -1381,7 +1384,7 @@ window.onkeydown = compruebaTecla;
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if( $dosificacion[0]["docsec_codigoclasificador"] == 23){ //23 prevalorada (original)
+                if( $dosificacion[0]["docsec_codigoclasificador"] == 11){ //23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }
