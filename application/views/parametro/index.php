@@ -165,7 +165,7 @@ foreach($all_parametros as $p)
                         </td>
                     </tr>
                     <tr>
-                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="4" ><u>VENTAS</u></th>
+                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="6" ><u>VENTAS</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CATEGORIA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BUSCADOR EN VENTAS</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRIMIR COMANDA</th>
@@ -331,6 +331,19 @@ foreach($all_parametros as $p)
                             ?>
                         </td>
                     </tr>
+                    <tr>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ANCHO BUSCADOR</th>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">TAM. TEXTO BOTON</th>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">TAM. TEXTO DET. PRODUCTOS</th>
+                        
+                    </tr>
+                    <tr>
+                        <td><?php echo $p['parametro_anchobuscador']; ?> </td>
+                        <td><?php echo $p['parametro_tamanioletrasboton']; ?> </td>
+                        <td><?php echo $p['parametro_tamanioletras']; ?> </td>
+                        
+                    </tr>
+                    
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(214, 114, 26, 0.3);" rowspan="2" ><u>CLIENTES</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(214, 114, 26, 0.3);">PUNTOS (Bs/PUNTO)</th>

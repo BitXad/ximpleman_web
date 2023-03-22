@@ -443,6 +443,28 @@
                             </select>
                         </div>
                     </div>
+                    
+                    <div class="col-md-2">
+                        <label for="parametro_anchobuscador" class="control-label" title="ancho del buscador"><span class="text-danger">*</span>ANCHO BUSCADOR</label>
+                        <div class="form-group">
+                            <input type="number" min="0" name="parametro_anchobuscador" value="<?php echo ($this->input->post('parametro_anchobuscador') ? $this->input->post('parametro_anchobuscador') : $parametro['parametro_anchobuscador']); ?>" class="form-control" id="parametro_anchobuscador" required />
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label for="parametro_tamanioletrasboton" class="control-label" title="tamaño de letras del boton"><span class="text-danger">*</span>TAMAÑO LETRAS (BOTON)</label>
+                        <div class="form-group">
+                            <input type="number" min="0" name="parametro_tamanioletrasboton" value="<?php echo ($this->input->post('parametro_tamanioletrasboton') ? $this->input->post('parametro_tamanioletrasboton') : $parametro['parametro_tamanioletrasboton']); ?>" class="form-control" id="parametro_tamanioletrasboton" required />
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label for="parametro_tamanioletras" class="control-label" title="tamaño de letras del detalle"><span class="text-danger">*</span>TAMAÑO LETRAS</label>
+                        <div class="form-group">
+                            <input type="number" min="0" name="parametro_tamanioletras" value="<?php echo ($this->input->post('parametro_tamanioletras') ? $this->input->post('parametro_tamanioletras') : $parametro['parametro_tamanioletras']); ?>" class="form-control" id="parametro_tamanioletras" required />
+                        </div>
+                    </div>
+                    
                 </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(214, 114, 26, 0.3);"><u><b>CLIENTES</b></u><br>

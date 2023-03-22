@@ -426,6 +426,7 @@ function tablaproductos(){
     var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value; //1 bolivianos - 2 moneda extrangera
     var moneda_extrangera = document.getElementById('moneda_descripcion').value; //1 bolivianos - 2 moneda extrangera
     var total_final_equivalente = 0; //1 bolivianos - 2 moneda extrangera
+    let tamanio_fuente = document.getElementById('parametro_tamanioletras').value+"px";
     
     $.ajax({url: controlador,
            type:"POST",
@@ -499,7 +500,8 @@ function tablaproductos(){
                             
                         html += "                    <tr>";
                         html += "			<td "+color+">"+cont+"</td>";
-                        html += "<td "+color+"><b><font size='"+fuente+"'>"+registros[i]["producto_nombre"];
+//                        html += "<td "+color+"><b><font size='"+fuente+"'>"+registros[i]["producto_nombre"];
+                        html += "<td "+color+"><b style='font-size:"+tamanio_fuente+"'>"+registros[i]["producto_nombre"];
                         html += " <button id='boton_composicion"+registros[i]["detalleven_id"]+"' class='btn btn-xs' style='padding:0;' onclick='mostrar_composicion("+registros[i]["detalleven_id"]+")'>[+]</button>";
                         
                        html += " <div id='tabla_composicion"+registros[i]["detalleven_id"]+"' style='padding:0;'> </div>";
@@ -512,7 +514,7 @@ function tablaproductos(){
                         if (registros[i]["preferencia_descripcion"]!=null && registros[i]["preferencia_descripcion"]!="")
                             preferencia = registros[i]["preferencia_descripcion"]+" | ";
                         
-                        html += "</font></b>";
+                        html += "</b>";
                         html += " <small>"+registros[i]["detalleven_unidadfactor"]+" * "+clasificador+categoria+preferencia+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
 //************************ INICIO CARACTERISTICAS ***************************
@@ -668,22 +670,22 @@ html += "  </div>";
                         html += " <td align='center' width='120' "+color+"> ";
                      
                         html += "                    <div class='btn-group'>      ";                           
-                        html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";                       
+                        html += "			<button style='font-size:"+tamanio_fuente+" ' onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";                       
                         //html += "                              		<span class='btn btn-default  btn-xs'> "+registros[i]["detalleven_cantidad"]+"</span>";
                         
-                        html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' >";
+                        html += "                       <input size='1' style='font-size:"+tamanio_fuente+" '  name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+ Number(registros[i]["detalleven_cantidad"]).toFixed(decimales)+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' >";
                         //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
                         html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
-                        html += "                       <button onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
+                        html += "                       <button style='font-size:"+tamanio_fuente+" ' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
                         html += "                    </div>";
 
                     
 
                         html += "</td>";
-                        html += "<td align='right' "+color+"><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        html += "<td align='right' "+color+"><input size='5' style='font-size:"+tamanio_fuente+" ' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         
                         
-                        html += "<td align='right' "+color+"><input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        html += "<td align='right' "+color+"><input size='5' style='font-size:"+tamanio_fuente+" 'name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         
                         
                         html += "                       <td align='right' "+color+"><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(decimales)+"</b></font><br>"+total_equivalente;
@@ -1122,7 +1124,7 @@ function ingresardetallejs(producto_id)
    let tipo_sistema = document.getElementById('parametro_tiposistema').checked;
    let es_facturado = document.getElementById('facturado').checked;
    
-   
+   //alert("cantidad: "+cantidad+" producto_id: cantidad"+producto_id)
    /* ********************INICIO para redondeo a dos decimales ***************
     * Por norma de impuestos; controla si es electronico o computarizado en linea y si es facturado
     * si fuese el caso la cantidad lo redondea a 2 digitos decimales */
@@ -1709,6 +1711,9 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
     }
     
     //******************************************
+    
+    //alert("indice: "+indice+" factor_nombre: "+factor_nombre);
+    
     if ( Number(indice)>0){
         factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
     }
@@ -1775,7 +1780,11 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
     if(descuento == undefined){
         descuento = 0;
     }
+    //alert("cantidad_en_detalle: "+cantidad_en_detalle(producto.producto_id));
+    
     var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
+    //alert("cantidad_total: "+cantidad_total);
+    
     var check_agrupar = document.getElementById('check_agrupar').checked;
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
     var preferencia_id = document.getElementById('preferencia_id').value;
@@ -1808,7 +1817,7 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
         agrupado = 0;
     }
         
-
+        //alert(cantidad_total);
     if (cantidad_total <= producto.existencia){
         
         var costo = producto.producto_costo;
@@ -2112,6 +2121,11 @@ function tablaresultados(opcion)
     var rol_factor2 = document.getElementById('rol_factor2').value; //document.getElementById('parametro_altoimagen').value;
     var rol_factor3 = document.getElementById('rol_factor3').value; //document.getElementById('parametro_altoimagen').value;
     var rol_factor4 = document.getElementById('rol_factor4').value; //document.getElementById('parametro_altoimagen').value;
+    var parametro_cantidadproductos = document.getElementById("parametro_cantidadproductos").value;
+        
+    let tamanio_fuente = document.getElementById('parametro_tamanioletrasboton').value+"px";
+    
+    
     // var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
     
     // let busqueda_serie 
@@ -2449,10 +2463,11 @@ function tablaresultados(opcion)
                     
                     for (var i = 0; i < x ; i++){
                         
-                        imagen_boton = "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' class='img "+forma_imagen+"' width='"+ancho_imagen+"' height='"+alto_imagen+"' />";
-                 
-                        existencia = parseFloat(registros[i]["existencia"])+" "+registros[i]["producto_unidad"]+" | "+registros[i]["moneda_descripcion"]+" "+registros[i]["producto_precio"];
                         
+                        imagen_boton = "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' class='img "+forma_imagen+"' width='"+ancho_imagen+"' height='"+alto_imagen+"' />";
+
+                        existencia = parseFloat(registros[i]["existencia"])+" "+registros[i]["producto_unidad"]+" | "+registros[i]["moneda_descripcion"]+" "+registros[i]["producto_precio"];
+                        solo_precio = registros[i]["moneda_descripcion"]+" "+Number(registros[i]["producto_precio"]).toFixed(decimales);
                         
                         html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
 
@@ -2463,6 +2478,7 @@ function tablaresultados(opcion)
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
 
+                        //precio_cantidad = "<div class='padding:0;' id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='1'><b>"+existencia+"</b></font></center></div>";
                         precio_cantidad = "<div class='padding:0;' id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='1'><b>"+existencia+"</b></font></center></div>";
                     
                         nombre_producto = registros[i]['producto_nombre'];
@@ -2472,23 +2488,48 @@ function tablaresultados(opcion)
                         nombre_producto += " ("+Number(existenciaprod).toFixed(decimales)+" "+registros[i]['producto_unidad']+")";
                         // Este es el boton del producto
                         
-                        if (datosboton==1){ //nombre de producto y precio
-                            html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
-                        }                        
-                        
-                        if (datosboton==2){ // Solo Nombre de producto
 
-                            html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub></button>";
-                        }
                         
-                        if (datosboton==3){ //Solo precio
+                            if (datosboton==1){ //nombre de producto y precio
                             
-                            html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+precio_cantidad+"</button>";
-                        }
+                                if (parametro_cantidadproductos != 2){ //si pasara directo a detalle){
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub><b>"+prod+"<br>"+solo_precio+"</b></sub></span></button>";
+                                }else{                                    
+//                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;'  title='"+nombre_producto+" ' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub><b>"+prod+"</b></sub>"+precio_cantidad+"</span></button>";
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;'  title='"+nombre_producto+" ' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub><b>"+prod+"<br>"+solo_precio+"</b></sub></span></button>";
+                                }    
+
+                            }                        
+
+                            if (datosboton==2){ // Solo Nombre de producto
+                                
+                                if (parametro_cantidadproductos != 2){ //si pasara directo a detalle
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub>"+prod+"</sub></span></button>";
+                                }else{
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub>"+prod+"</sub></span></button>";                                    
+                                }
+                            }
+
+                            if (datosboton==3){ //Solo precio
+
+                                if (parametro_cantidadproductos != 2){ //si pasara directo a detalle
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br><span style='font-size:"+tamanio_fuente+"; line-height:8px;'>"+precio_cantidad+"</span></button>";
+                                }else{
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br><span style='font-size:"+tamanio_fuente+"; line-height:8px;'>"+precio_cantidad+"</span></button>";
+                                }                            
+                                
+                            }
+
+                            if (datosboton==4){
+
+                                if (parametro_cantidadproductos != 2){ //si pasara directo a detalle
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'><span style='font-size:"+tamanio_fuente+"; line-height:8px;'>"+imagen_boton+"</span></button>";
+                                }else{
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'><span style='font-size:"+tamanio_fuente+"; line-height:8px;'>"+imagen_boton+"</span></button>";
+                                }                            
+                            
+                            }
                         
-                        if (datosboton==4){
-                            html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"</button>";
-                        }
                         
                         // fin Este es el boton del producto
 
@@ -4876,13 +4917,14 @@ function focus_cantidad(producto_id){
     
 //    alert(producto_id);
         var campo = "cantidad"+producto_id;
-    
-    
+
         mostrar_clasificador_boton(producto_id);
     
         $('#myModal'+producto_id).on('shown.bs.modal', function() {
         $('#'+campo).focus();
         $('#'+campo).select();
+        
+        //alert(campo);
         
         try{
             $('#input_detalleven_preferencia'+producto_id).val("");
@@ -4891,14 +4933,14 @@ function focus_cantidad(producto_id){
         }
        
         
-        var parametro_cantidadproductos = document.getElementById("parametro_cantidadproductos").value;
-        
-        if (parametro_cantidadproductos==2){ //si pasara directo a detalle
-           
-            $("#boton_agregar"+producto_id).click();
-            $("#boton_salir_modal"+producto_id).click();
-            
-        }
+//        var parametro_cantidadproductos = document.getElementById("parametro_cantidadproductos").value;
+//        
+//        if (parametro_cantidadproductos == 2){ //si pasara directo a detalle
+//           
+//            $("#boton_agregar"+producto_id).click();
+//            $("#boton_salir_modal"+producto_id).click();
+//            
+//        }
     });
 }
 

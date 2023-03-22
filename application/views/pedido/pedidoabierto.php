@@ -142,6 +142,7 @@ function cerrar_ventana(){
 <input type="text" id="cliente_celular" name="cliente_celular" value="<?php echo $cliente[0]['cliente_celular']; ?>" hidden>
 <input type="text" id="zona_id" name="zona_id" value="<?php echo $cliente[0]['zona_id']; ?>" hidden>
 <input type="text" id="cliente_complementoci" name="cliente_complementoci" value="<?php echo $cliente[0]['cliente_complementoci']; ?>" hidden>
+<input type="text" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" name="decimales"  hidden>
 <?php
 if($cliente[0]['cliente_id'] >0){
 ?>
