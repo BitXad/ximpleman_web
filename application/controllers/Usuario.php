@@ -663,7 +663,7 @@ class Usuario extends CI_Controller
                     $bitacora_sql = "updade usuario set usuario_clave = $conf_password where usuario_id = ".$usuario['usuario_id']."; Usuario: ".$usuario["usuario_nombre"];
                     $bitacora_valoranterior = "usuario_clave = ".$usuario['usuario_clave'];
                     $bitacora_valornuevo = "usuario_clave = $conf_password";
-                    $usuario_id = $this->session_data['usuario_id'];
+                    $usuario_ses_id = $this->session_data['usuario_id'];
                     $params = array(
                         'bitacora_accion' => $bitacora_accion,
                         'bitacora_objetivo' => $bitacora_objetivo,
@@ -672,7 +672,7 @@ class Usuario extends CI_Controller
                         'bitacora_sql' => $bitacora_sql,
                         'bitacora_valoranterior' => $bitacora_valoranterior,
                         'bitacora_valornuevo' => $bitacora_valornuevo,
-                        'usuario_id' => $usuario_id,
+                        'usuario_id' => $usuario_ses_id,
                     );
                     $bitacora_id = $this->Bitacora_model->add_bitacora($params);
                     
