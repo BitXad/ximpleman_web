@@ -88,9 +88,12 @@
             <h3 class="box-title"></h3>
             <div class="box-tools no-print">
                 
-                <?php $mostrar_almacenes = true;
-                    if($mostrar_almacenes){?>
-                            
+                <?php //$mostrar_almacenes = true;
+                    $parasucursal = 0;
+                    if(sizeof($almacenes)> 0){
+                        $parasucursal = 1;
+                        ?>
+                        <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
                 <select class="btn btn-success btn-sm" id="select_almacen">
                         <?php   
                             foreach($almacenes as $almacen){ ?>
@@ -102,8 +105,12 @@
                         </select>
                         
                         
+                <?php }else{ ?>
+                <select class="btn btn-success btn-sm hidden" id="select_almacen">
+                    <option value="default">No tiene Almacenes</option>
+                </select>
                 <?php } ?>
-                
+                <input type="hidden" name="parasucursal" id="parasucursal" value='<?php echo $parasucursal ?>' />
                 
                 <button class="btn btn-success btn-sm" onclick="actualizar_inventario()" type="button"><span class="fa fa-cubes"></span> Actualizar</button>
                 <?php if($rolusuario[27-1]['rolusuario_asignado'] == 1){ ?>
