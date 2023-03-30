@@ -8,6 +8,7 @@ class Factura extends CI_Controller{
     private $session_data = "";
     private $configuracion;
     private $sistema;
+    
     function __construct()
     {
         parent::__construct();
@@ -1182,7 +1183,7 @@ class Factura extends CI_Controller{
 
                      if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
 
-                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
                                  || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
                              $wsdl = $dosificacion['dosificacion_glpelectronica'];
 
@@ -1191,6 +1192,9 @@ class Factura extends CI_Controller{
                              $wsdl = $dosificacion['dosificacion_facturaservicios'];
 
 
+                         if ($dosificacion['docsec_codigoclasificador']==15)
+                             $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
                          if ($dosificacion['docsec_codigoclasificador']==22)
                              $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
 
@@ -1198,9 +1202,13 @@ class Factura extends CI_Controller{
 
                      if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
 
-                         if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
+                         if ($dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
                                  || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
                             $wsdl = $dosificacion['dosificacion_facturaglp'];
+                         
+                         
+                         if ($dosificacion['docsec_codigoclasificador']==15)
+                             $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
 
                      }                
   
@@ -1232,7 +1240,7 @@ class Factura extends CI_Controller{
                 $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
                 
                 $tipoFacturaDoc = 1;
-                if ($factura[0]['docsec_codigoclasificador'] == 8){
+                if ($factura[0]['docsec_codigoclasificador'] == 8 ||$factura[0]['docsec_codigoclasificador'] == 6){
                     $tipoFacturaDoc = 2;
                 }
                 

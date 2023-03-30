@@ -393,6 +393,11 @@ $salto_linea='
             }    
         }
         
+        if ($documento_sector == 15 ){  //15- Entidad fiananciera 
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotalArrendamientoFinanciero xsi:nil="true"/>';
+        }
+        
+        
         $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_total'],$dos_decimales,".","") .'</montoTotal>';
         
         // Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo de diésel y gasolina, 
@@ -451,7 +456,7 @@ $salto_linea='
         $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.number_format($factura['moneda_tc'],$dos_decimales,".","").'</tipoCambio>';
         $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.number_format($factura['factura_total'],$dos_decimales,".","").'</montoTotalMoneda>';
         
-        if ($documento_sector != 2 && $documento_sector != 12 && $documento_sector != 13 && $documento_sector != 39 && $documento_sector != 23 && $documento_sector != 51){
+        if ($documento_sector != 2 && $documento_sector != 12 && $documento_sector != 13 && $documento_sector != 15 && $documento_sector != 39 && $documento_sector != 23 && $documento_sector != 51){
             $cabecera_facturaxml .= $salto_linea.'          <montoGiftCard>'.number_format($factura['factura_giftcard'],$dos_decimales,".","").'</montoGiftCard>';
         }
         
@@ -539,10 +544,12 @@ $salto_linea='
                 }
                 
                 
-                if ($documento_sector != 2 && $documento_sector != 6 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
+                if ($documento_sector != 15 && $documento_sector != 2 && $documento_sector != 6 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
                     && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 51){
+                    
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
                     $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
+                    
                 }
                 
                 if($documento_sector == 16){ //16 Hoteles
@@ -583,6 +590,7 @@ $salto_linea='
         
             $base_url = explode('/', base_url());
             $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+            $directorio_llaves = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/certificados/';
             $archivo = $directorio.$dosificacion_documentosector.$factura_id.".xml"; //"pruebaxml.xml";        
         
         
@@ -590,9 +598,9 @@ $salto_linea='
         $ReferenceNodeName = $dosificacion_documentosector;
         //$ReferenceNodeName = 'facturaElectronicaCompraVenta';
         
-        $privateKey = file_get_contents($directorio.'privatekey.pem');
+        $privateKey = file_get_contents($directorio_llaves.'privatekey.pem');
         
-        $publicKey = file_get_contents($directorio.'certificado.crt');
+        $publicKey = file_get_contents($directorio_llaves.'certificado.crt');
         
         $domDocument = new DOMDocument();
         $domDocument->load($archivo);

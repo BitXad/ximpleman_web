@@ -3,6 +3,8 @@ class Orden_compra extends CI_Controller{
     
     var $session_data;
     private $sistema;
+    private $parametros;
+    
     function __construct()
     {
         parent::__construct();
@@ -30,6 +32,9 @@ class Orden_compra extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
     }
 
     private function acceso($id_rol){
@@ -72,7 +77,7 @@ class Orden_compra extends CI_Controller{
             $usuario_id = $this->session_data['usuario_id'];
             $data['page_title'] = "Existencia Minima";
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
-            $data['parametro'] = $this->Parametro_model->get_parametro(1);
+            $data['parametro'] = $this->parametros;
             /*
             $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
 
@@ -119,7 +124,7 @@ class Orden_compra extends CI_Controller{
     function nota($compra_id){
         
         $data['sistema'] = $this->sistema;
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->parametros;
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
         
@@ -222,7 +227,7 @@ class Orden_compra extends CI_Controller{
     function nota_orden($ordencompra_id){
         
         $data['sistema'] = $this->sistema;
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->parametros;
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
         if($this->acceso(1)){
@@ -247,7 +252,7 @@ class Orden_compra extends CI_Controller{
     function nota_ordenp($ordencompra_id){
         
         $data['sistema'] = $this->sistema;
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->parametros;
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
         if($this->acceso(1)){
@@ -279,7 +284,7 @@ class Orden_compra extends CI_Controller{
             $usuario_id = $this->session_data['usuario_id'];
             $data['page_title'] = "Existencia Minima";
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
-            $data['parametro'] = $this->Parametro_model->get_parametro(1);
+            $data['parametro'] = $this->parametros;
             
             $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
             $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();

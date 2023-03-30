@@ -1384,7 +1384,7 @@ window.onkeydown = compruebaTecla;
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if( $dosificacion[0]["docsec_codigoclasificador"] == 11){ //23 prevalorada (original)
+                if( $dosificacion[0]["docsec_codigoclasificador"] == 15){ //23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }
