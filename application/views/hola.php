@@ -1053,7 +1053,7 @@
         <div class="col-md-6">
             <label for="monto_caja" class="control-label"><p>Monto inicial en caja Bs</p></label>
             <div class="form-group">
-                <input type="text" name="monto_caja" id="monto_caja" value="0.00" class="form-control" id="monto_caja" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                <input type="text" name="monto_caja" id="monto_caja" value="0.00" class="form-control" id="monto_caja" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus="true"/>
             </div>
         </div>  
 
