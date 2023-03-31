@@ -6019,7 +6019,9 @@ function anular_venta($venta_id){
         $micad .= "                                    <span style='font-weight: bold !important'>".$titulo1."</span><br>";
         $micad .= "                                    <span style='font-weight: bold !important'>".$subtitulo_factura."</span><br>";
         $micad .=                                       $empresa[0]['empresa_nombre']."<br>";
-        $micad .=                                       $empresa[0]['empresa_eslogan']."<br>";
+        if($empresa[0]['empresa_eslogan'] !="" && $empresa[0]['empresa_eslogan'] != null){
+            $micad .=                                       $empresa[0]['empresa_eslogan']."<br>";
+        }
                                                     if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){
         $micad .= "                                       DE: ".$empresa[0]['empresa_propietario']."<br>";
                                                     }
@@ -6778,7 +6780,7 @@ function anular_venta($venta_id){
         $micad .= "            <tr>"; 
         $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
         $micad .= "                    <center>"; 
-        $micad .= "                            <font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font><br>"; 
+        $micad .= "                            <div><font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font></div>"; 
                                                 if ($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
         $micad .= "                                 <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font><br>"; 
                                                 }

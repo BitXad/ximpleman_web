@@ -635,7 +635,7 @@ class Compra extends CI_Controller{
                 $data['bandera'] = $bandera;
                 /* $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);*/
 
-                $data['parametro'] = $this->Parametro_model->get_parametros();
+                //$data['parametro'] = $this->Parametro_model->get_parametros();
                 $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
 
                 $this->load->model('Tipo_transaccion_model');

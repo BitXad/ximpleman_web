@@ -6136,7 +6136,7 @@ function almacenar_cufd(datos,punto_venta=0){
                     success:function(respuesta){
 
                         alert("C.U.F.D generado y almacenado correctamente...!");
-                        document.getElementById('loader_revocado').style.display = 'none';
+                        //document.getElementById('loader_revocado').style.display = 'none';
                         dibujar_tabla_puntos_venta();
                        
                     },

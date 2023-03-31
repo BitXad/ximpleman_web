@@ -39,7 +39,7 @@
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 
-<input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales" >
+<input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales" hidden>
 <?php $decimales = $parametro['parametro_decimales']; 
 ?>
 

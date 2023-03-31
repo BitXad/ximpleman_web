@@ -182,7 +182,11 @@
                                     <b><?php echo $titulo1; ?></b><br>
                                     <b><?php echo $subtitulo_factura; ?></b><br>
                                     <?php echo $empresa[0]['empresa_nombre']; ?><br>
-                                    <?php echo $empresa[0]['empresa_eslogan']; ?><br>
+                                    <?php
+                                    if($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
+                                        echo $empresa[0]['empresa_eslogan']."<br>";
+                                    }
+                                    ?>
                                     <?php if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
                                         <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?><br>
                                     <?php } ?>

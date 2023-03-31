@@ -1,5 +1,7 @@
 <script src="<?php echo base_url('resources/js/funciones_producto_newunidad.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
+<?php $decimales = $parametro['parametro_decimales']; ?>
 <script type="text/javascript">
     function cambiarcodproducto(){
         var estetime = new Date();

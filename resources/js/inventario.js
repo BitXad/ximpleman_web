@@ -121,8 +121,11 @@ function tabla_inventario(){
     var select_almacenes = document.getElementById("select_almacen");
     //select_almacen = select_almacenes.options[select_almacenes.selectedIndex].innerText;
     select_almacen = select_almacenes.options[select_almacenes.selectedIndex].value;
-    alert(select_almacen);
-    
+    let parasucursal = document.getElementById('parasucursal').value;
+    if(parasucursal == 1){
+        alert(select_almacen);
+    }
+        
     if (tipo_reporte == 1){
         $.ajax({
         url: controlador,

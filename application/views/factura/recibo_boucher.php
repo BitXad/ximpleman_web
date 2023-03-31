@@ -194,13 +194,9 @@ border-bottom : 1px solid #aaa;
                         $total_final += $d['detalleven_total']; 
                         ?>
            <tr>
-<<<<<<< HEAD
                 <td align="center" style="padding: 0;"><?php echo number_format($d['detalleven_cantidad'],$decimales,'.',','); ?></td>
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;">
-=======
-               <td align="center" style="padding: 0;"><?php echo number_format($d['detalleven_cantidad'], $decimales, ".", ","); ?></td>
-                <td style="padding: 0; padding-left: 2px"><font style="size:5px; font-family: arial narrow;">
->>>>>>> master
+
                     <?php
                     $codigo  =  "";
                     $categoria = "";

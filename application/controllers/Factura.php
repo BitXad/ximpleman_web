@@ -351,7 +351,8 @@ class Factura extends CI_Controller{
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $parametros = $data['parametro'][0];
         if(sizeof($factura)>=1){
-        
+            $data['decimales'] = $parametros["parametro_decimales"];
+            $data['dos_decimales'] = 2;
         $nit_emisor    = $factura[0]['factura_nitemisor'];
         $num_fact      = $factura[0]['factura_numero'];
         $autorizacion  = $factura[0]['factura_autorizacion'];
@@ -452,7 +453,8 @@ class Factura extends CI_Controller{
         $data['parametro'] = $this->Parametro_model->get_parametros();
         
         if(sizeof($factura)>=1){
-        
+            $data['decimales'] = $parametros["parametro_decimales"];
+            $data['dos_decimales'] = 2;
         $nit_emisor    = $factura[0]['factura_nitemisor'];
         $num_fact      = $factura[0]['factura_numero'];
         $autorizacion  = $factura[0]['factura_autorizacion'];
