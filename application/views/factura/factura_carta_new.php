@@ -2,7 +2,7 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <script type="text/javascript">
     $(document).ready(()=>{
-        // window.onload = window.print();
+         window.onload = window.print();
     });
 </script>
 <!----------------------------- script buscador --------------------------------------->
