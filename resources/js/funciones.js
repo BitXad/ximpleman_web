@@ -2034,14 +2034,17 @@ function registrar_ingreso_rapido(producto_id){
 
 function modificar_precios(producto_id){
     
+    var decimales = document.getElementById('parametro_decimales').value; 
+    
+    //$("#modificarprecios_producto").val(producto.producto_nombre);
     
     var producto = get_producto(producto_id);
     
     $("#modificarprecios_producto").val(producto.producto_nombre);
     $("#filtrar").val(producto.producto_nombre);
     $("#modificarprecios_producto_id").val(producto.producto_id);
-    $("#modificarprecios_producto_costo").val(producto.producto_costo);
-    $("#modificarprecios_producto_precio").val(producto.producto_precio);
+    $("#modificarprecios_producto_costo").val(Number(producto.producto_costo).toFixed(decimales));
+    $("#modificarprecios_producto_precio").val(Number(producto.producto_precio).toFixed(decimales));
     $("#boton_modal_actualizarprecio").click();
     
     focus_cambio_rapido();
@@ -4751,7 +4754,7 @@ function asignar_inventario(){
     var usuario_id = document.getElementById('usuario_idx').value;
     var moneda_tc = document.getElementById('moneda_tc').value;
     var venta_totalfinal = document.getElementById('venta_totalfinal').value;
-
+//
     document.getElementById('botones').style.display = 'none'; //ocultar botones
     document.getElementById('loaderinventario').style.display = 'block'; //mostrar el bloque del loader 
 
@@ -4931,16 +4934,7 @@ function focus_cantidad(producto_id){
         }catch (error){
             
         }
-       
-        
-//        var parametro_cantidadproductos = document.getElementById("parametro_cantidadproductos").value;
-//        
-//        if (parametro_cantidadproductos == 2){ //si pasara directo a detalle
-//           
-//            $("#boton_agregar"+producto_id).click();
-//            $("#boton_salir_modal"+producto_id).click();
-//            
-//        }
+
     });
 }
 
@@ -5107,6 +5101,7 @@ function quitardetalle_aux(detallefact_id, venta_id){
 }
 
 function cargar_factura2(venta_id){
+    
     var decimales = Number(document.getElementById('parametro_decimales').value);
     
     var base_url = document.getElementById("base_url").value;
@@ -6760,7 +6755,7 @@ function borrar_datos_cliente(){
     }
     
     //Imprimir la factura
-    /*
+    
     if (facturado == 1){
         var boton = document.getElementById("imprimir_factura");
         boton.click();                    
@@ -6768,7 +6763,7 @@ function borrar_datos_cliente(){
         brecibo = document.getElementById("imprimir");
                 brecibo.click();
     }
-    */
+    
     document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
     tablaproductos();
     

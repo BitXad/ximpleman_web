@@ -2010,11 +2010,11 @@ window.onkeydown = compruebaTecla;
 						<label for="opciones" class="control-label">Opciones</label>
 						<div class="form-group">
                                                         
-                                                    <button class="btn btn-default" id="boton_actualizar_precio" onclick="actualizar_precio()" data-dismiss="modal" >
+                                                    <button class="btn btn-success" id="boton_actualizar_precio" onclick="actualizar_precio()" data-dismiss="modal" >
                                                             <span class="fa fa-floppy-o"></span> Registrar
                                                     </button>
                                                     
-                                                    <button class="btn btn-default" id="boton_cancelar_precio" data-dismiss="modal" >
+                                                    <button class="btn btn-danger" id="boton_cancelar_precio" data-dismiss="modal" >
                                                         <span class="fa fa-close"></span>   Cancelar                                                          
                                                     </button>
 						</div>
@@ -2211,8 +2211,8 @@ window.onkeydown = compruebaTecla;
           
         <div class="col-md-4">
             <!--<button class="btn btn-default btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>-->
-            <button class="btn btn-default btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia"><fa class="fa fa-save"></fa> Aceptar</button>
-            <button class="btn btn-default btn-block" data-dismiss="modal" onclick="cancelar_excepcion_nit()"><fa class="fa fa-times"></fa> Cancelar</button>
+            <button class="btn btn-success btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia"><fa class="fa fa-save"></fa> Aceptar</button>
+            <button class="btn btn-danger btn-block" data-dismiss="modal" onclick="cancelar_excepcion_nit()"><fa class="fa fa-times"></fa> Cancelar</button>
         </div>  
       
       </div>
