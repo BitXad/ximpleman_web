@@ -277,7 +277,7 @@
                 </tr>
                 <tr>
                     <td colspan="4" style="padding: 0">
-                        <?php $tamanio_fuente = "10pt"; ?>
+                        <?php $tamanio_fuente = "8pt"; ?>
                         <table style="width:<?php echo $ancho?>">
                             <?php
                             $cont = 0;

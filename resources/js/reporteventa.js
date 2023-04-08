@@ -120,6 +120,7 @@ function reporte1()
                         html += "<td align='center'> "+(i+1)+" </td>";     
                         html += "<td> "+registros[i]["cliente_nombre"]+" </td>";     
                         html += "<td align='center'> "+registros[i]["venta_id"]+" </td>";     
+                        html += "<td align='center'> "+registros[i]["factura_numero"]+" </td>";     
                         html += "<td align='right'> "+numberFormat(Number(registros[i]["venta_total"]).toFixed(2))+" </td>";
                         html += "<td class='text-right'> ";
                         if(lamoneda_id == 1){
@@ -133,6 +134,7 @@ function reporte1()
                         html += "</td>";
                         html += "<td align='center'> "+registros[i]["tipotrans_nombre"]+" </td>";     
                         html += "<td align='center'> "+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" </td>";
+                        html += "<td align='center'> "+registros[i]["usuario_nombre"]+" </td>";     
                         html += "<td class='no-print'><a href='"+base_url+"venta/modificar_venta/"+registros[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modifica el detalle/cliente de la venta'><span class='fa fa-edit'></span></a> <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a> </td>";
                         html += "</tr>";
                     }
@@ -140,8 +142,10 @@ function reporte1()
                     html += "<th></th>";
                     html += "<th></th>";
                     html += "<th></th>";
+                    html += "<th></th>";
                     html += "<th style='text-align:right'>"+numberFormat(Number(totales).toFixed(2))+"</th>";
                     html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
+                    html += "<th></th>";
                     html += "<th></th>";
                     html += "<th></th>";
                     html += "<th></th>";

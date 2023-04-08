@@ -1,5 +1,6 @@
     <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/servicio_facturasin.js'); ?>" type="text/javascript"></script>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" />
@@ -14,6 +15,7 @@
 <input type="hidden" name="all_empresa" id="all_empresa" value='<?php echo json_encode($all_empresa); ?>' />
 <input type="hidden" name="a" id="a" value='<?php echo $a; ?>' />
 <input type="hidden" name="b" id="b" value='<?php echo $b; ?>' />
+<input type="hidden" name="parametro_tiposistema" id="parametro_tiposistema" value="<?php echo $all_parametro[0]['parametro_tiposistema']; ?>" />
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -419,10 +421,61 @@ if(isset($a) && $a == "n"){ ?>
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <center>
-                <h4 class="modal-title" id="myModalLabel"><b>EMITIR FACTURA</b></h4>
+                    <h4 class="modal-title" id="myModalLabel"><b>EMITIR FACTURA</b></h4>
                 </center>
+                <?php
+                
+                if($all_parametro[0]['parametro_tiposistema'] == 1){
+                ?>
                 <br><b>NIT:</b><input type="text" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;">
-                <br><b>RAZON SOCIAL:</b><input type="text" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">                
+                <br><b>RAZON SOCIAL:</b><input type="text" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">
+                <?php
+                }else{
+                ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <b>DOC. IDENTIDAD:</b>
+                        <select name="doc_identidad" id="doc_identidad" class="form-control btn btn-xs btn-warning" style="text-align: left;" onchange="selecciono_el_documento()">
+                            <?php
+                            foreach($docs_identidad as $doc_ident){?>
+                                <option value="<?=$doc_ident['cdi_codigoclasificador']?>"><?=$doc_ident['cdi_descripcion']?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <b>NUMERO DE DOC.:</b>
+                        <div class="input-group">
+                            <input type="text" name="generar_nit" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,1)" onclick="seleccionar_uncampo(1)">
+                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentrada(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <b>RAZON SOCIAL:</b>
+                        <div class="input-group">
+                            <input type="text" name="generar_razon" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,9)" onchange="seleccionar_alcliente()" onclick="seleccionar_uncampo(2)">
+                            <datalist id="listaclientes"></datalist>
+                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentrada(13,9)" title="Buscar por Razon social"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <b>CORREO ELECTRONICO:</b>
+                            <input type="email" name="elemail" class="form-control btn btn-xs btn-warning" id="elemail" onclick="this.select()" onkeypress="validar(event,13)"/>
+                    </div>
+                    <div class="col-md-12" id='loader_generarfactura' style='display: none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                        </center>
+                    </div>
+                    <div hidden>                
+                        <input type="checkbox" class="form-check-input" name="codigoexcepcion" id="codigoexcepcion"><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+                    </div>
+                </div>
+                <?php
+                }
+                ?>
             </div>
             <div class="modal-body" style="padding-top: 0px">
                 <div class="box-body table-responsive">

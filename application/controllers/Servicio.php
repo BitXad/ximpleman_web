@@ -14,6 +14,7 @@ class Servicio extends CI_Controller{
         parent::__construct();
         $this->load->model('Servicio_model');
         $this->load->model('Banco_model');
+        $this->load->model('Sincronizacion_model');
         $this->load->helper('numeros');
         $this->load->library('ControlCode'); // para generar codigo
         if ($this->session->userdata('logged_in')) {
@@ -57,10 +58,7 @@ class Servicio extends CI_Controller{
 
             $this->load->model('Empresa_model');
             $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-
-
-            /*$this->load->model('Categoria_trabajo_model');
-            $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo();*/
+            
             $this->load->model('Tipo_transaccion_model');
             $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
             $this->load->model('Forma_pago_model');
@@ -74,6 +72,9 @@ class Servicio extends CI_Controller{
 
             $this->load->model('Parametro_model');
             $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
+            
+            $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
+            
             $data['page_title'] = "Servicio";
             $data['_view'] = 'servicio/index';
             $this->load->view('layouts/main',$data);
