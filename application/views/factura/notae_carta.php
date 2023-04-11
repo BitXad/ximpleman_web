@@ -270,8 +270,14 @@ border-bottom : 1px solid #aaa;
                 <br>
                 <?php } ?>
                 TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b><br>
+                <?php
+                if($venta[0]['tipotrans_id'] == 2){
+                ?>
                 CUOTA INIC. Bs: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
-                SALDO Bs: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>                
+                SALDO Bs: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
+                <?php
+                }
+                ?>
         </td>
         <td align="right">
 <!--            <center>

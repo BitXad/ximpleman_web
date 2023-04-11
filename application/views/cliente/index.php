@@ -1,7 +1,7 @@
+<script src="<?php echo base_url('resources/js/funciones_cliente.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/qrcode.js'); ?>" type="text/javascript"></script>
 
 <!----------------------------- script buscador --------------------------------------->
-
-<script src="<?php echo base_url('resources/js/funciones_cliente.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -58,6 +58,7 @@
 <input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php  echo $tipousuario_id; ?>" />
 <input type="hidden" name="parametro_puntos" id="parametro_puntos" value="<?php  echo $parametro['parametro_puntos']; ?>" />
+<input type="hidden" name="rescliente" id="rescliente" />
 <!--<input type="hidden" name="lacategoria_cliente" id="lacategoria_cliente" value='<?php /*echo json_encode($all_categoria_cliente); ?>' />
 <input type="hidden" name="lacategoria_clientezona" id="lacategoria_clientezona" value='<?php echo json_encode($all_categoria_clientezona);  ?>' />
 <input type="hidden" name="elusuario" id="elusuario" value='<?php echo json_encode($all_usuario); */ ?>' />-->
@@ -207,7 +208,7 @@
     <!---------------- BOTONES --------->
     <div class="col-md-4">
         
-            <div class="box-tools text-center">
+            <div class="box-tools text-center" style="display: flex">
                 <a href="<?php echo base_url('cliente/add/'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar nuevo Cliente"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
                 <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="mostrar_all_clientes()" title="Mostrar a todos los Clientes" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
                 <?php
@@ -216,7 +217,27 @@
                 <a href="<?php echo base_url('cliente/clienteprint'); ?>" target="_blank" class="btn btn-soundcloud btn-foursquarexs" title="Imprimir lista de Clientes con detalle resumido"><font size="5"><span class="fa fa-print"></span></font><br><small>Resumen</small></a>
                 <a class="btn btn-facebook btn-foursquarexs" data-toggle='modal' data-target='#modalmapa' title="Mostrar mapa de clientes"><font size="5"><span class="fa fa-map"></span></font><br><small>&nbsp;&nbsp;Mapa&nbsp;&nbsp;&nbsp;</small></a>
                 <?php } ?>
-            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
+                <?php
+                if($rol[94-1]['rolusuario_asignado'] == 1){ ?>
+                <table>
+                    <tr>
+                        <td style="padding-left: 1px">
+                            <label style="font: normal; font-size: 10px; margin: 0px">
+                                <input class="btn" type="checkbox" name="lista_gencodqr" id="lista_gencodqr" title="Generar QR" onclick="listacodqr()" >
+                                QR
+                            </label>
+                        </td>
+                    </tr>
+                    <!--<tr>
+                        <td>
+                            <label style="font: normal; font-size: 10px; margin: 0px">
+                                <input class="btn" type="checkbox" name="listcodigobarras" id="listcodigobarras" title="Lista de Codigos de Barras" onclick="listacodbarras()" >
+                                Cod. Barras
+                            </label>
+                        </td>
+                    </tr>-->
+                </table>
+                <?php } ?>
     </div>
     </div>
     <!---------------- FIN BOTONES --------->
@@ -237,26 +258,17 @@
             
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed display" id="mitabla">
-                <thead>
-                        
+                    <thead role="rowgroup" id="cabcliente">
                         <tr>
                             <th>#</th>
                             <th>Nombre</th>
                             <th>Negocio</th>
-                            <!--<th>Dirección</th>-->
                             <th class="no-print">Map</th>
-    <!--                        <th>Email</th>-->
-                            <!--<th>Aniversario</th>-->
-    <!--                        <th>Tipo</th>-->
-                            <!--<th>Categoria</th>-->
                             <th>Estado</th>
-                            <!--<th>Estado</th>-->
                             <th class="no-print"></th>
                         </tr>
-                        </thead>
-                        <tbody class="buscar" id="tablaresultados">
-                        
-                        </tbody>  
+                    </thead>
+                    <tbody class="buscar" id="tablaresultados"></tbody>  
                 </table>
                 <?php if($err==2){ ?>
                 <script>alert("La imagen es demasiado grande ");</script>

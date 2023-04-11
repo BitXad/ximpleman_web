@@ -316,8 +316,14 @@ border-bottom : 1px solid #aaa;
                 }
                 ?>
                 TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b><br>
+                <?php
+                if($venta[0]['tipotrans_id'] == 2){
+                ?>
                 CUOTA INIC. <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['credito_cuotainicial'],$decimales,'.',','); ?></b><br>
-                SALDO <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],$decimales,'.',','); ?></b><br>                
+                SALDO <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],$decimales,'.',','); ?></b><br>
+                <?php
+                }
+                ?>
         </td>
         <td align="right" style="background-color: #aaa !important; -webkit-print-color-adjust: exact;">
 
