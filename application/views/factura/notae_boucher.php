@@ -272,7 +272,18 @@ border-bottom : 1px solid #aaa;
     <tr style="border-top-style: solid; border-top-width: 2px; border-top-style: solid; border-top-width: 2px;" align="right">
         
         <td colspan="5" style="padding: 0;"  >
+            <?php if ($venta[0]['venta_descuentoparcial']>0){ ?>
             
+                <font size="1">
+                    <b><?php echo "SUB TOTAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_subtotal']+$venta[0]['venta_descuentoparcial'],2,'.',','); ?></b><br>
+                </font>
+
+
+                <font size="1">
+                    <?php echo "TOTAL DESCUENTO PARCIAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_descuentoparcial'],2,'.',','); ?><br>
+                </font>
+           
+            <?php } ?>
             <font size="1">
                 <b><?php echo "SUB TOTAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
             </font>

@@ -5,75 +5,6 @@ function ventacliente(e) {
     }
 }
 
-/*function tablarecliente(){
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'detalle_venta/buscarcliente';
-    var parametro = document.getElementById('cliente_id').value;
-    $.ajax({url: controlador,
-            type:"POST",
-            data:{parametro:parametro},
-            success:function(respuesta){
-                $("#encontrados").val("- 0 -");
-                var registros =  JSON.parse(respuesta);
-                if (registros != null){ 
-                    var n = registros.length; //tama«Ðo del arreglo de la consulta
-                    $("#encontrados").val("- "+n+" -");
-                    html = "";
-                    html += "<table class='table table-striped no-print' id='mitabla'>";
-                    html += "<tr>"
-                    html += "<th>#</th>";
-                    //html += "<th>ID</th>";
-                    html += "<th>Cliente</th>";
-                    html += "<th></th>";
-                    html += "</tr>";
-                    html += "<tbody class='buscar' id='tablarecliente'>";
-                    for (var i = 0; i < n ; i++){
-                        html += "<tr>";
-                        html += "<td class='text-center'>"+(i+1)+"</td>";
-                        html += "<td>";
-                        html += "<input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["cliente_id"]+"'>";
-                        html += "<div class='col-md-12'>";
-                        html += "<b>"+registros[i]["cliente_nombre"]+"</b>";
-                        html += "</div>";
-                        html += "</td>";
-                        html += "<td>";
-                        html += "<button type='button' onclick='repocliente("+registros[i]["cliente_id"]+")' class='btn btn-primary btn-xs'><i class='fa fa-search'></i></button>";
-                        html += "</td>";
-                        html += "</tr>";
-                   }
-                       html += "</tbody>"
-                   $("#tablarecliente").html(html);
-                   //document.getElementById('tablas').style.display = 'block';
-                }
-            },
-            error:function(respuesta){
-               // alert("Algo salio mal...!!!");
-               html = "";
-               $("#tablarecliente").html(html);
-            }
-    });
-}*/
-
-/*function repocliente(cliente){
-    $("#cliente").val(cliente);
-    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"detalle_venta/nomcliente/"+cliente;
-    $.ajax({url: controlador,
-        type:"POST",
-        data:{},
-        success:function(report){
-            var registros =  JSON.parse(report);
-            html = "";
-            html += "<font size='2'>Cliente: <b>"+registros["cliente_nombre"]+"</b></font>";
-            $("#labusqueda").html(html);
-            /*$("#producto").val('');
-            $("#proveedor").val('');*/
-    /*        document.getElementById('tablas').style.display = 'none';
-            reporte1();
-        }
-    });
-}*/
-
 function reporte1()
 {
     var base_url    = document.getElementById('base_url').value;
@@ -238,6 +169,7 @@ function generarexcel_vclientegeneral(){
                             row += 'Nro.' + ',';
                             row += 'CLIENTE' + ',';
                             row += 'NUM. VENTA' + ',';
+                            row += 'NUM. DOCUMENTO' + ',';
                             row += 'MONTO' + ',';
                             row += 'MONTO(';
                             if(lamoneda_id == 1){
@@ -248,10 +180,7 @@ function generarexcel_vclientegeneral(){
                             row += otramoneda_nombre+ '),';
                             row += 'TIPO' + ',';
                             row += 'FECHA' + ',';
-                            /*if(tipousuario_id == 1){
-                                row += 'COSTO' + ',';
-                                row += 'UTILIDAD' + ',';
-                            }*/
+                            row += 'USUARIO' + ',';
                             
                         row = row.slice(0, -1);
 
@@ -268,6 +197,7 @@ function generarexcel_vclientegeneral(){
                             row += (i+1)+',';
                             row += '"' +registros[i]["cliente_nombre"]+ '",';
                             row += '"' +registros[i]["venta_id"]+ '",';
+                            row += '"' +registros[i]["factura_numero"]+ '",';
                             //row += '"' +Number(registros[i]["factura_id"])+ '",';
                             row += '"' +numberFormat(Number(registros[i]["venta_total"]).toFixed(2))+ '",';
                             if(lamoneda_id == 1){
@@ -280,10 +210,7 @@ function generarexcel_vclientegeneral(){
                             row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
                             row += '"' +registros[i]["tipotrans_nombre"]+ '",';
                             row += '"' +moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["venta_hora"]+ '",';
-                            /*if(tipousuario_id == 1){
-                                row += '"' +Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2)+ '",';
-                                row += '"' +Number(utilidad).toFixed(2)+ '",';
-                            }*/
+                            row += '"' +registros[i]["usuario_nombre"]+ '",';
                             
                         row.slice(0, row.length - 1);
 
@@ -322,13 +249,6 @@ function generarexcel_vclientegeneral(){
                     link.click();
                     document.body.removeChild(link);
                     /* **************F I N  Generar Excel JavaScript************** */
-                   
-                   
-                   
-                   
-                   //document.getElementById('loader').style.display = 'none';
-            //}
-         //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-        //}  
+                    
         }
 }

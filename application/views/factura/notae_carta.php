@@ -168,12 +168,14 @@ border-bottom : 1px solid #aaa;
            <?php $cont = 0;
                  $cantidad = 0;
                  $total_descuento = 0;
+                 //$total_descuentoparcial = 0;
                  $total_final = 0;
 
                  foreach($detalle_venta as $d){;
                         $cont = $cont+1;
                         $cantidad += $d['detalleven_cantidad'];
                         $total_descuento += $d['detalleven_descuento']; 
+                        //$total_descuentoparcial += ($d['detalleven_cantidad']*$d['detalleven_descuentoparcial']);
                         $total_final += $d['detalleven_total']; 
                         ?>
            <tr>
@@ -291,7 +293,18 @@ border-bottom : 1px solid #aaa;
             </center>-->
         </td>
         <td align="right"  style="padding: 0">
+            <?php if ($venta[0]['venta_descuentoparcial']>0){ ?>
             
+                <font size="1">
+                    <b><?php echo "SUB TOTAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_subtotal']+$venta[0]['venta_descuentoparcial'],2,'.',','); ?></b><br>
+                </font>
+
+
+                <font size="1">
+                    <?php echo "TOTAL DESCUENTO PARCIAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_descuentoparcial'],2,'.',','); ?><br>
+                </font>
+           
+            <?php } ?>
             <?php if ($venta[0]['venta_descuento']>0){ ?>
             
                 <font size="1">
