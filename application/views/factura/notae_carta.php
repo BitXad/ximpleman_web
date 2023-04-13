@@ -179,7 +179,15 @@ border-bottom : 1px solid #aaa;
                         $total_final += $d['detalleven_total']; 
                         ?>
            <tr>
-                <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
+                <?php
+                $partes = explode(".",$d['detalleven_cantidad']);
+                if ($partes[1] == 0) {
+                    $lacantidad = $partes[0];
+                }else{
+                    $lacantidad = number_format($d['detalleven_cantidad'],2,'.',',');
+                }
+               ?>
+                <td align="center" style="padding: 0"><?php echo $lacantidad; ?></td>
                 <td style="padding: 0"><font style="size:5px; font-family: arial narrow;">
                     <?php
                     $codigo  =  "";

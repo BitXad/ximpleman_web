@@ -221,8 +221,16 @@ border-bottom : 1px solid #aaa;
  
             ?>
            <tr>
-               <!-- CANTIDAD -->
-                <td align="center" style="padding: 0"><?php echo number_format($d['detalleven_cantidad'],$decimales,'.',','); ?></td>
+                <!-- CANTIDAD -->
+                <?php
+                $partes = explode(".",$d['detalleven_cantidad']);
+                if ($partes[1] == 0) {
+                    $lacantidad = $partes[0];
+                }else{
+                    $lacantidad = number_format($d['detalleven_cantidad'],$decimales,'.',',');
+                }
+               ?>
+                <td align="center" style="padding: 0"><?php echo $lacantidad; ?></td>
                <!-- DESCRIPCION -->
                 <td style="padding: 0"><font style="font-size:10px; font-family: arial;">
                     <?php
