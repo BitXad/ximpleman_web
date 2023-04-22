@@ -8,7 +8,7 @@ function selecciono_el_documento(){
 }
 
 //esta funcion verifica 2 parametros: la tecla presionada y otro parametro que le indica que hacer
-function validar_laentrada(e,opcion) {
+function validar_laentradaserv(e,opcion) {
   
     var tecla = (document.all) ? e.keyCode : e.which;
     
@@ -23,7 +23,7 @@ function validar_laentrada(e,opcion) {
             nit = $("#generar_nit").val();
             if (nit==''){
                     
-                var cod = generar_codigo();
+                var cod = generar_codigoserv();
                 //Si el nit es diferente de vacio
 
                 $("#generar_nit").val(cod);
@@ -133,7 +133,7 @@ function validar_laentrada(e,opcion) {
 }
 
 //Selecciona un campo!..
-function seleccionar_uncampo(opcion) {
+function seleccionar_uncamposerv(opcion) {
     
         if (opcion==1){
             document.getElementById('generar_nit').select();
@@ -158,6 +158,26 @@ function seleccionar_uncampo(opcion) {
         if (opcion==6){
             document.getElementById('venta_giftcard').select();
         }*/
+}
+
+function generar_codigoserv(){
+    var hoy = new Date();       
+    var dd = hoy.getDate().toString();
+    var mm = hoy.getMonth()+1;
+    var yyyy = hoy.getYear().toString();
+    var hh = hoy.getHours().toString();
+    var nn = hoy.getMinutes().toString();
+    var ss = hoy.getSeconds().toString();
+    dd = addZero(dd);
+    mm = addZero(mm);
+    return yyyy+mm+dd+hh+nn+ss;
+}
+
+function addZero(i) {
+    if (i < 10) {
+        i = '0' + i;
+    }
+    return i;
 }
 
 function buscar_a_losclientes(){

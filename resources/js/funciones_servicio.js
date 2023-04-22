@@ -5030,7 +5030,7 @@ function mostrar(detalleserv_id){
 }
 
 /* carga los detalles de un servicio  para que se facture
- * con la Facturaciono electronica en Linea o compurarizada e Linea */
+ * con la Facturacion electronica en Linea o computarizada e Linea */
 function sin_cargar_parafactura_serv(servicio_id){
     var base_url = document.getElementById("base_url").value;
     var parametro_serviciofact = document.getElementById("parametro_serviciofact").value;

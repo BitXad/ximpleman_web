@@ -184,9 +184,6 @@ class Servicio extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(70)){
-        /*$data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );*/
         $data['a'] = $a;
         $data['b'] = $b;
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -252,9 +249,6 @@ class Servicio extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(70)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );  
                 if ($this->input->is_ajax_request()){
                     $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
                     if(isset($data['servicio']['servicio_id']))
@@ -335,9 +329,6 @@ class Servicio extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(74)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
             if(isset($_POST) && count($_POST) > 0)     
             {
                 $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -694,9 +685,6 @@ class Servicio extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
             $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
             
             $this->load->model('Cliente_model');
@@ -748,9 +736,6 @@ class Servicio extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(69)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
              $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
             
             $this->load->model('Cliente_model');
@@ -877,10 +862,7 @@ class Servicio extends CI_Controller{
     function repserviciofechas($es = null)
     {
         $data['sistema'] = $this->sistema;
-        if($this->acceso(142)){  
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
+        if($this->acceso(142)){
         $data['servicio'] = $this->Servicio_model->get_all_repservicios();
         $data['a']=$es;
         
@@ -931,9 +913,6 @@ class Servicio extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(142)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
         $data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
         
         $this->load->model('Estado_model');

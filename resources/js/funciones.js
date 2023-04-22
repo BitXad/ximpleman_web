@@ -1877,7 +1877,7 @@ function cambiarcantidadjs(e,producto)
         var cantidad =  document.getElementById('cantidad'+producto.detalleven_id).value;
         cantidad =  Number(cantidad).toFixed(decimales);
          
-        var sql = ""
+        var sql = "";
         
         var descuento = document.getElementById('descuento'+producto.detalleven_id).value;
         var cantidad_total = parseFloat(cantidad_en_detalle_otros(producto.producto_id)) + parseFloat(cantidad); 
@@ -1896,7 +1896,7 @@ function cambiarcantidadjs(e,producto)
                 $.ajax({url: controlador,
                     type:"POST",
                     data:{sql:sql},
-                    success:function(){
+                    success:function(respuesta){
                             //var r = JSON.parse(respuesta);                        
                     }
                 });      

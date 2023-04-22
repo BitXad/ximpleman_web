@@ -422,6 +422,9 @@ if(isset($a) && $a == "n"){ ?>
                 </button>
                 <center>
                     <h4 class="modal-title" id="myModalLabel"><b>EMITIR FACTURA</b></h4>
+                    <div class="row" id='loaderfactura'  style='display:none; text-align: center'>
+                        <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                    </div>
                 </center>
                 <?php
                 
@@ -447,16 +450,16 @@ if(isset($a) && $a == "n"){ ?>
                     <div class="col-md-6">
                         <b>NUMERO DE DOC.:</b>
                         <div class="input-group">
-                            <input type="text" name="generar_nit" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,1)" onclick="seleccionar_uncampo(1)">
-                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentrada(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                            <input type="text" name="generar_nit" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentradaserv(event,1)" onclick="seleccionar_uncamposerv(1)" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" >
+                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentradaserv(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <b>RAZON SOCIAL:</b>
                         <div class="input-group">
-                            <input type="text" name="generar_razon" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentrada(event,9)" onchange="seleccionar_alcliente()" onclick="seleccionar_uncampo(2)">
+                            <input type="text" name="generar_razon" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;" onkeypress="validar_laentradaserv(event,9)" onchange="seleccionar_alcliente()" onclick="seleccionar_uncamposerv(2)">
                             <datalist id="listaclientes"></datalist>
-                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentrada(13,9)" title="Buscar por Razon social"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar_laentradaserv(13,9)" title="Buscar por Razon social"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
                         </div>
 
                     </div>

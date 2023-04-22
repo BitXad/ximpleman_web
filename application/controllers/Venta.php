@@ -6784,7 +6784,7 @@ function anular_venta($venta_id){
                                                 if ($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
         $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font><div>"; 
                                                 }
-
+        $micad .= "                            <div>"; 
         $micad .= "                            <font size='1' face='Arial'>"; 
         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
         $micad .= "                                "; 
@@ -6799,6 +6799,7 @@ function anular_venta($venta_id){
         $micad .=                                 $empresa[0]['empresa_ubicacion']; 
         $micad .= "                            </small>"; 
         $micad .= "                            </font>"; 
+        $micad .= "                            </div>"; 
         $micad .= "                    </center>"; 
         $micad .= "                </td>"; 
         $micad .= "                <td style='width: ".round($ancho/3,2)."cm; padding:0;line-height: 9px;'>"; 
