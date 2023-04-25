@@ -24,6 +24,10 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
+
+<?php $decimales = $parametro['parametro_decimales']; ?>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+
 <!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
@@ -34,18 +38,8 @@
        <br><font size='2' face='Arial' id="pillados">Registros Econtrados: </font>
     </div>
     <div class="col-md-6 no-print">
-        <!--<form action="<?php /*echo site_url('credito/repoCuentas'); ?>"  target="_blank" method="POST">
-            <input type="hidden" name="usu" id="usu">
-            <input type="hidden" name="feini" id="feini">
-            <input type="hidden" name="fefin" id="fefin">
-            <input type="hidden" name="esti" id="esti" value="">
-             <input type="hidden" name="vendedor" id="vendedor" value="">
-          <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
-           <button class="btn btn-success btn-md" style="float: right;margin-left: 10px"><span class="fa fa-print"></span> Imprimir</button>
 
-          <?php }*/ ?>
-          <label class="btn btn-info btn-md" style="float: right;"> <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" > Agrupar</label>
-        </form>-->
+        
         <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
             <a class="btn btn-success btn-md" style="float: right;margin-left: 10px" onclick="imprimir()"><span class="fa fa-print"></span> Imprimir</a>
         <?php } ?>
@@ -147,25 +141,8 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <thead id="titulos">
-                    <!--<tr>
-						<th>#</th>                                             
-						<th>Cliente</th>
-                        <th>Crédito</th>
-                        <th>Transac.</th>
-						<th>Estado</th>
-						<th>Monto</th>
-						<th>Cuota<br>Inicial</th>
-                        <th>Interes<br>(%)</th>
-						<th># Pagos</th>
-						<th>Fecha</th>
-						<th>Hora</th>
-						<th>Usuario</th>
-						<th></th>
-                                                
-                                                
-                                                
-                                                
-                    </tr>-->
+
+                        
                     </thead>
                     <tbody class="buscar" id="tablacuentas"></tbody>
                   

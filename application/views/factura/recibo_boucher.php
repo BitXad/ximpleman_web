@@ -151,7 +151,7 @@ border-bottom : 1px solid #aaa;
                         <font size="1" face="arial"><b>Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?>
                             <br>
                             <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
-                            T.C. <?php echo $moneda['moneda_tc']; ?></b></font> <br>
+                            T.C. <?php echo number_format($moneda['moneda_tc'],$decimales,".",","); ?></b></font> <br>
                             <?php } ?>
                         <br> 
                         <?php $fecha = new DateTime($venta[0]['venta_fecha']); 

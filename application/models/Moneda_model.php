@@ -51,7 +51,7 @@ class Moneda_model extends CI_Model
         $sql = "SELECT * FROM moneda m, estado e
                 WHERE m.estado_id = e.estado_id
                 ORDER BY moneda_id ".$limit_condition;
-        
+       //echo $sql;
         $moneda = $this->db->query($sql)->result_array();
         return $moneda;
     }

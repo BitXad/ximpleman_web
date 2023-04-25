@@ -13,6 +13,9 @@
             }(jQuery));
         });
 </script>   
+
+        <?php $decimales = $parametro['parametro_decimales']; ?>
+        <input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -47,13 +50,13 @@
                     </thead>
                     <tbody class="buscar">
                         <?php $cont = 0;
-                            foreach($moneda as $m){;
+                            foreach($monedas as $m){;
                                     $cont = $cont+1; ?>
                         <tr>
                             <td><?php echo $cont ?></td>
                             <!--<td><?php //echo $m['moneda_id']; ?></td>-->
                             <td><?php echo $m['moneda_descripcion']; ?></td>
-                            <td><?php echo $m['moneda_tc']; ?></td>
+                            <td><?php echo number_format($m['moneda_tc'],$decimales,".",","); ?></td>
                             <td style="background-color: #<?php echo $m['estado_color'];?>"><?php echo $m['estado_descripcion']; ?></td>
                             <td class="no-print">
                                 <a href="<?php echo site_url('moneda/edit/'.$m['moneda_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 

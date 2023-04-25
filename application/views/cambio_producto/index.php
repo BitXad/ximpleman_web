@@ -13,6 +13,9 @@
         });
 </script>
 
+<?php $decimales = $parametro["parametro_decimales"]; ?>
+<input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales" hidden>
+
 <div class="input-group"> <span class="input-group-addon">Buscar</span>
                 <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el compra, producto, costo"> 
               </div>
@@ -65,7 +68,7 @@
                         <td><?php $totalfinventa = 0; foreach ($detalle_venta as $dv) {
                            if ($c['cambio_producto_id']==$dv['cambio_id']) {
                                 if ($dv['detalleven_total']>0) {
-                                echo $dv['producto_nombre'],': '.$dv['detalleven_total'].'<br>';}
+                                echo $dv['producto_nombre'],': '.number_format($dv['detalleven_total'],$decimales,".",".").'<br>';}
                               $totalfinventa += $dv['detalleven_total']; 
                                  }
                         } echo "<b>Total: </b>".$totalfinventa.'<br>' ;
@@ -73,7 +76,7 @@
                         <td>    <?php $totalfincompra = 0; foreach ($detalle_compra as $dc) {
                            if ($c['cambio_producto_id']==$dc['cambio_id']) {
                                  if ($dc['detallecomp_total']>0) {
-                                    echo $dc['producto_nombre'],': '.$dc['detallecomp_total'].'<br>';}
+                                    echo $dc['producto_nombre'],': '.number_format($dc['detallecomp_total'],$decimales,".",".").'<br>';}
                                 $totalfincompra += $dc['detallecomp_total'];
                                   }
                         } 

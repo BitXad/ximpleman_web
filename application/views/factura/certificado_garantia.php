@@ -75,8 +75,10 @@ border-bottom : 1px solid #aaa;
 
 <!-------------------------------------------------------->
 <?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
+      $decimales = $parametro[0]["parametro_decimales"];
       $ancho = $parametro[0]["parametro_anchofactura"];
-      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];
+
 ?>
 
 <div class="<?php echo $margen_izquierdo; ?>" style="padding: 0; max-width:5cm;">
@@ -174,7 +176,8 @@ border-bottom : 1px solid #aaa;
                  $total_descuento = 0;
                  $total_final = 0;
 
-                 foreach($detalle_venta as $d){;
+                 foreach($detalle_venta as $d){
+                     
                         $cont = $cont+1;
                         $cantidad += $d['detalleven_cantidad'];
                         $total_descuento += $d['detalleven_descuento']; 
@@ -193,7 +196,7 @@ border-bottom : 1px solid #aaa;
                         ?>
 
                 </td>
-                <td align="center" style="padding: 0;  border-left: #000; border-style: solid; border-width: thin;"><?php echo $d['detalleven_cantidad']; ?></td>
+                <td align="center" style="padding: 0;  border-left: #000; border-style: solid; border-width: thin;"><?php echo number_format($d['detalleven_cantidad'],$decimales,".",","); ?></td>
                 <td style="padding: 0;  border-left: #000; border-style: solid; border-width: thin;"><?php 
                         $preferencia = $d['detalleven_preferencia'];
                         if ($preferencia !="null" && $preferencia!='-')

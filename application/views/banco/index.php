@@ -13,6 +13,10 @@
         }(jQuery));
     });
 </script>   
+
+<?php $decimales = $parametro['parametro_decimales']; ?>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -55,7 +59,7 @@
                             <td><?php echo $b['banco_nombre']; ?></td>
                             <td><?php echo $b['banco_tipocuenta']; ?></td>
                             <td><?php echo $b['banco_numcuenta']; ?></td>
-                            <td class="text-right"><?php echo $b['banco_monto']; ?></td>
+                            <td class="text-right"><?php echo number_format($b['banco_monto'],$decimales,".",","); ?></td>
                             <td><?php echo $b['moneda_descripcion']; ?></td>
                             <td style="background-color: #<?php echo $b['estado_color'];?>"><?php echo $b['estado_descripcion']; ?></td>
                             <td class="no-print">

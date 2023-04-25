@@ -7,6 +7,8 @@
 class Credito extends CI_Controller{
     private $session_data = "";
     private $sistema;
+    private $parametros;
+
     
     function __construct()
     {
@@ -16,6 +18,7 @@ class Credito extends CI_Controller{
         $this->load->model('Cuotum_model');
         $this->load->model('Compra_model');
         $this->load->model('Usuario_model');
+        $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -23,6 +26,9 @@ class Credito extends CI_Controller{
         }
         $this->load->model('Sistema_model');
 	$this->sistema = $this->Sistema_model->get_sistema();
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];        
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -41,6 +47,8 @@ class Credito extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        
         if($this->acceso(41)){
             
             $this->indexDeuda();
@@ -64,7 +72,7 @@ class Credito extends CI_Controller{
     
     function indexDeuda()
     {
-        
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         $num = $this->Compra_model->numero();
         $permiso = $num[0]['parametro_permisocredito'];
@@ -95,6 +103,7 @@ class Credito extends CI_Controller{
     
     function repoDeudas()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             $data['page_title'] = "Deudas x Pagar";
@@ -133,7 +142,8 @@ class Credito extends CI_Controller{
     
      function indexCuenta()
     {
-         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
         $num = $this->Compra_model->numero();
         $permiso = $num[0]['parametro_permisocredito'];
         $usuario_id = $this->session_data['usuario_id'];
@@ -163,6 +173,7 @@ class Credito extends CI_Controller{
 
     function repoCuentas()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(47)){
             $data['page_title'] = "Cuentas x Cobrar";
@@ -201,10 +212,12 @@ class Credito extends CI_Controller{
 
     function buscarDeuda()
     {
+        $data['parametro'] =  $this->parametros;
         $num = $this->Compra_model->numero();
         $permiso = $num[0]['parametro_permisocredito'];
         $usuario_id = $this->session_data['usuario_id'];
         $tipo_usuario = $this->session_data['tipousuario_id'];
+        
         if ($tipo_usuario>1 && $permiso==2) {
            $condicion = " and co.usuario_id=".$usuario_id."";
         }else{
@@ -222,10 +235,12 @@ class Credito extends CI_Controller{
 
     function buscarDeudaAgrupado()
     {
+        $data['parametro'] =  $this->parametros;
         $num = $this->Compra_model->numero();
         $permiso = $num[0]['parametro_permisocredito'];
         $usuario_id = $this->session_data['usuario_id'];
         $tipo_usuario = $this->session_data['tipousuario_id'];
+        
         if ($tipo_usuario>1 && $permiso==2) {
            $condicion = " and co.usuario_id=".$usuario_id."";
         }else{
@@ -243,10 +258,12 @@ class Credito extends CI_Controller{
 
      function buscarCuenta()
     {
+        $data['parametro'] =  $this->parametros;
         $num = $this->Compra_model->numero();
         $permiso = $num[0]['parametro_permisocredito'];
         $usuario_id = $this->session_data['usuario_id'];
         $tipo_usuario = $this->session_data['tipousuario_id'];
+        
         if ($tipo_usuario>1 && $permiso==2) {
            $condicion = " and ve.usuario_id=".$usuario_id." or s.usuario_id=".$usuario_id." ";
         }else{
@@ -264,6 +281,7 @@ class Credito extends CI_Controller{
 
      function buscarCuentaAgrupado()
     {
+        $data['parametro'] =  $this->parametros;
         $num = $this->Compra_model->numero();
         $permiso = $num[0]['parametro_permisocredito'];
         $usuario_id = $this->session_data['usuario_id'];
@@ -287,6 +305,7 @@ class Credito extends CI_Controller{
      */
     function add()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             if(isset($_POST) && count($_POST) > 0)     
@@ -322,6 +341,7 @@ class Credito extends CI_Controller{
      */
     function edit($credito_id)
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(41)){
             // check if the credito exists before trying to edit it

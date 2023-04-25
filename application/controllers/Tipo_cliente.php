@@ -7,6 +7,8 @@
 class Tipo_cliente extends CI_Controller{
     
     private $sistema;
+    private $parametros;
+
     function __construct()
     {
         parent::__construct();
@@ -19,10 +21,14 @@ class Tipo_cliente extends CI_Controller{
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
         
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
     } 
+    
     private function acceso($id_rol){
         
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -39,6 +45,7 @@ class Tipo_cliente extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
         
         if($this->acceso(132)){
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -62,6 +69,8 @@ class Tipo_cliente extends CI_Controller{
     function add()
     {   
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        
         if($this->acceso(132)){
                 $this->load->library('form_validation');
 
@@ -93,6 +102,8 @@ class Tipo_cliente extends CI_Controller{
     function edit($tipocliente_id)
     {   
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        
         if($this->acceso(132)){
             // check if the tipo_cliente exists before trying to edit it
             $data['tipo_cliente'] = $this->Tipo_cliente_model->get_tipo_cliente($tipocliente_id);
@@ -132,6 +143,8 @@ class Tipo_cliente extends CI_Controller{
     function remove($tipocliente_id)
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        
         if($this->acceso(132)){
         $tipo_cliente = $this->Tipo_cliente_model->get_tipo_cliente($tipocliente_id);
 

@@ -110,19 +110,26 @@ class Emision_paquetes extends CI_Controller{
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
                     
-                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==23 
+                    if ($dosificacion['docsec_codigoclasificador']==2 ||  $dosificacion['docsec_codigoclasificador']==23 
                         || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
                         || $dosificacion['docsec_codigoclasificador']==8|| $dosificacion['docsec_codigoclasificador']==12
                         || $dosificacion['docsec_codigoclasificador']==51)
                         
                         $wsdl = $dosificacion['dosificacion_glpelectronica'];
+                    
+                    if ($dosificacion['docsec_codigoclasificador']==22)
+                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+                    
                 }
                 
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
                     
-                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
+                    if ($dosificacion['docsec_codigoclasificador']==2 ||$dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
                            || $dosificacion['docsec_codigoclasificador']==8|| $dosificacion['docsec_codigoclasificador']==12|| $dosificacion['docsec_codigoclasificador']==51)
                         $wsdl = $dosificacion['dosificacion_facturaglp'];
+                    
+                    if ($dosificacion['docsec_codigoclasificador']==22)
+                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
                 }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];

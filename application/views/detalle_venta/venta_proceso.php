@@ -11,6 +11,9 @@
         <!--<link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>-->
         <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
         <script src="<?php echo base_url('resources/js/verventa_proceso.js'); ?>"></script>
+        
+        <input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales"  hidden>
+        <?php $decimales = $parametro['parametro_decimales']; ?>
     </head>
     <?php
     if($fondomonitor == "" || $fondomonitor == null){
@@ -37,55 +40,14 @@
                 <div class="box-body table-responsive">
                     <table class='table table-condensed '>
                         <tr style='color: white;'>
-                            <th class="text-center">#</th>
-                            <th class="text-center">Producto</th>
-                            <th class="text-right">P/U</th>
-                            <th class="text-right">Total</th>
+                            <th class="text-center">CANT</th>
+                            <th class="text-center">PRODUCTO</th>
+                            <th class="text-right">PREC.</th>
+                            <th class="text-right">TOTAL</th>
                         </tr>
                         <tbody class="buscar" id="verventa_detalle">
-                        <?php
-                       /* $cant_total = 0;
-                        $total_detalle = 0;
-                                echo "<br>"; //sizeof($ventas);
-                        foreach($ventas as $v){
-
-                        $cant_total = $cant_total + $v["detalleven_cantidad"];
-                        $total_detalle = $total_detalle + $v["detalleven_total"];
-
-                        ?>
-                        <tr>    
-                                
-                            <td style="padding: 0">        
-                                <center>
-                            
-                                <font size="2"><br></font>
-                                <h4 style="color: white;"><font size="6"><b> <?php echo $v["detalleven_cantidad"]; ?></b></font></h4>
-                                </center>
-                            </td>
-                            <td style="padding: 0"> 
-                                <center>
-                                    <h4><img src="<?php echo base_url("resources/images/productos/".$v["producto_foto"]); ?>" width="65" height="65" class="img img-circle" ></h4>
-                                </center>                                
-                            </td>
-                            <td style="padding: 0" align="right"> 
-                                <font size="2"><br></font>
-                                <h4 style="color:white"><font size="6"><b> <?php echo number_format($v["detalleven_precio"],2,".",","); ?></b></font></h4>
-                            </td>
-                            <td style="padding: 0" align="right"> 
-                                <font size="2"><br></font>
-                                <h4 style="color: white;"><font size="6"><b> <?php echo number_format($v["detalleven_total"],2,".",","); ?></b></font></h4>
-                            </td>
-
-                        </tr>
-                            <?php  }*/ ?>
-                       <!-- <td style="padding: 0" colspan="3">                      
-                                <h4 style="color: white;"><font size="8"><b> Total Bs</b></font></h4>
-                            </td>
-                            <td style="padding: 0" align="right">                    
-                                <h4 style="color: white;"><font size="8"><b> <?php //echo number_format($total_detalle,2,".",","); ?></b></font></h4>
-                            </td>
-                            -->
-                            </tbody>
+                        
+                        </tbody>
                     </table>
 
                 </div>
@@ -126,7 +88,7 @@
                                                     ?>
                                                     <img src="<?php echo base_url("resources/images/productos/".$producto_imagen); ?>" width="250" height="187" style="display: flex">
                                                     <div class="carousel-inner" style="padding: 0">
-                                                        <h3 style="color: #FF6501;"><font size="6"><b><?php echo "Bs. ".number_format($producto['producto_precio'],2,".",","); ?></b></font></h3>
+                                                        <h3 style="color: #FF6501;"><font size="6"><b><?php echo "Bs. ".number_format($producto['producto_precio'],$decimales,".",",") ?></b></font></h3>
                                                         <p  style="color: #FF6501;"><font size="6"><b><?php echo $producto['producto_nombre']; ?></b></font></p>
                                                     </div>
                                                 </div>
@@ -144,7 +106,7 @@
                                                     ?>
                                                     <img src="<?php echo base_url("resources/images/productos/".$producto_imagen); ?>" width="250" height="187">
                                                     <div class="carousel-inner">
-                                                        <h3 style="color: #FF6501;"><font size="6"><b><?php echo "Bs. ".number_format($producto['producto_precio'],2,".",","); ?></b></font></h3>
+                                                        <h3 style="color: #FF6501;"><font size="6"><b><?php echo "Bs. ".number_format($producto['producto_precio'],$decimales,".",",") ?></b></font></h3>
                                                         <p  style="color: #FF6501;"><font size="6"><b><?php echo $producto['producto_nombre']; ?></b></font></p>
                                                     </div>
                                                     <!--</div>-->
