@@ -815,7 +815,8 @@ class Detalle_serv_model extends CI_Model
         $detalle_serv = $this->db->query("
             SELECT
                 ds.detalleserv_id, ds.detalleserv_descripcion, ds.detalleserv_solucion, detalleserv_total,
-                s.servicio_total, c.cliente_nit, cliente_razon
+                s.servicio_total, c.cliente_nit, cliente_razon, c.cliente_email,
+                ifnull(`c`.`cdi_codigoclasificador`, 5) AS `cdi_codigoclasificador`
             FROM
                 detalle_serv ds
             LEFT JOIN servicio s on ds.servicio_id = s.servicio_id

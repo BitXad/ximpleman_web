@@ -202,7 +202,15 @@ border-bottom : 1px solid #aaa;
                         $total_final += $d['detalleven_total']; 
                         ?>
            <tr>
-                <td align="center" style="padding: 0;"><?php echo $d['detalleven_cantidad']; ?></td>
+                <?php
+                $partes = explode(".",$d['detalleven_cantidad']);
+                if ($partes[1] == 0) {
+                    $lacantidad = $partes[0];
+                }else{
+                    $lacantidad = number_format($d['detalleven_cantidad'],2,'.',',');
+                }
+                ?>
+                <td align="center" style="padding: 0"><?php echo $lacantidad; ?></td>
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;">
                     <?php
                     $codigo  =  "";
@@ -272,7 +280,18 @@ border-bottom : 1px solid #aaa;
     <tr style="border-top-style: solid; border-top-width: 2px; border-top-style: solid; border-top-width: 2px;" align="right">
         
         <td colspan="5" style="padding: 0;"  >
+            <?php if ($venta[0]['venta_descuentoparcial']>0){ ?>
             
+                <font size="1">
+                    <b><?php echo "SUB TOTAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_subtotal']+$venta[0]['venta_descuentoparcial'],2,'.',','); ?></b><br>
+                </font>
+
+
+                <font size="1">
+                    <?php echo "TOTAL DESCUENTO PARCIAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_descuentoparcial'],2,'.',','); ?><br>
+                </font>
+           
+            <?php } ?>
             <font size="1">
                 <b><?php echo "SUB TOTAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
             </font>

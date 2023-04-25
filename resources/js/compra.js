@@ -1619,6 +1619,8 @@ function tablaresultados(opcion)
                             html += "Cantidad: <input class='input-sm ' id='cantidaddetalle"+registros[i]["producto_id"]+"' style='width: 100px;' name='cantidad' type='number' autocomplete='off' class='form-control' placeholder='cantidad' required value='1'> </div>";
                             html += "<div class='col-md-2' style='padding-left: 0px;' >";
                             html += "Fecha Venc.:<input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"' style='width: 100px;padding-left: 0px;' name='detallecomp_fechavencimiento'  class='form-control' ></div>";
+                            html += "<div class='col-md-2'style='padding-left: 0px;'  >";
+                            html += "Lote: <input class='input-sm ' id='numerolote"+registros[i]["producto_id"]+"' style='width: 100px;' name='numerolote' type='text' autocomplete='off' class='form-control' placeholder='numerolote' > </div>";
                             html += "</div>";
                             
                         }

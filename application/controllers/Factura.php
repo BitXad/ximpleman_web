@@ -1204,7 +1204,7 @@ class Factura extends CI_Controller{
 
                      if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
 
-                         if ($dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
+                         if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
                                  || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
                             $wsdl = $dosificacion['dosificacion_facturaglp'];
                          

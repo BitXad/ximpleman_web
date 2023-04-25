@@ -1458,7 +1458,7 @@ function listacodbarras() {
         var contcol = 1;
         chtml = "";
         chtml += "<tr role='row'  style='width: 19cm !important'>";
-        chtml += "<th colspan='"+numcolumna+"'  role='columnheader' >CODOGO DE BARRAS</th>";
+        chtml += "<th colspan='"+numcolumna+"'  role='columnheader' >CODIGO DE BARRAS</th>";
         chtml += "</tr>";
         html = "";
         for (var i = 0; i < n ; i++){

@@ -2021,8 +2021,8 @@ function edit($venta_id){
         $cliente_id = $venta["cliente_id"];       
         $data['page_title'] = "Modificar Venta";
         
-        $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
-        $data['cliente'] = $cliente;
+        //$cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+        //$data['cliente'] = $cliente;
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
 //        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
@@ -6127,7 +6127,7 @@ function anular_venta($venta_id){
                                                     $total_descuento += $d['detallefact_descuento']; 
                                                     $total_final += $d['detallefact_total']; 
         $micad .= "                            <tr>";
-        $micad .= "                                <td colspan='3' style='font-size: 8pt; padding: 0;'>";
+        $micad .= "                                <td colspan='3' style='font-size: 7pt; padding: 0;'>";
         $micad .= "                                <span style='font-weight: bold !important'>";
         $micad .=                                     $d['detallefact_codigo']." - ".$d['detallefact_descripcion'];
                                                     if($d['detallefact_preferencia']!='' && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ){
@@ -6782,16 +6782,16 @@ function anular_venta($venta_id){
         $micad .= "                    <center>"; 
         $micad .= "                            <div><font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font></div>"; 
                                                 if ($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
-        $micad .= "                                 <font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font><br>"; 
+        $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font><div>"; 
                                                 }
-
+        $micad .= "                            <div>"; 
         $micad .= "                            <font size='1' face='Arial'>"; 
         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 
         $micad .= "                                "; 
                                                 if($factura[0]['factura_sucursal']==0){ 
-        $micad .= "                                            CASA MATRIZ<br>"; 
+        $micad .= "                                            <div>CASA MATRIZ</div>"; 
                                                 }else{ 
-        $micad .= "                                            SUCURSAL ".$factura[0]['factura_sucursal']."<br>"; 
+        $micad .= "                                            <div>SUCURSAL ".$factura[0]['factura_sucursal']."</div>"; 
                                                 }
         $micad .= "                                Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']."<br>"; 
         $micad .=                                 $empresa[0]['empresa_direccion']."<br>"; 
@@ -6799,6 +6799,7 @@ function anular_venta($venta_id){
         $micad .=                                 $empresa[0]['empresa_ubicacion']; 
         $micad .= "                            </small>"; 
         $micad .= "                            </font>"; 
+        $micad .= "                            </div>"; 
         $micad .= "                    </center>"; 
         $micad .= "                </td>"; 
         $micad .= "                <td style='width: ".round($ancho/3,2)."cm; padding:0;line-height: 9px;'>"; 

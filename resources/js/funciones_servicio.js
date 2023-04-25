@@ -4838,95 +4838,99 @@ function registrarinsumo_aldetalle(detalleserv_id){
 }
 /* carga los detalles de un servicio */
 function cargar_parafactura_serv(servicio_id){
-    var base_url = document.getElementById("base_url").value;
-    var parametro_serviciofact = document.getElementById("parametro_serviciofact").value;
-    var controlador = base_url+"detalle_serv/get_detalle_serv";
-    $.ajax({url: controlador,
-            type: "POST",
-            data:{servicio_id:servicio_id}, 
-            success:function(resultado){
-                var registros =  JSON.parse(resultado);
-                if (registros != null){
-                    $("#modalfactura").modal("show");
-                    //cargar_factura2(venta_id);
-                    html = "";
-                    html += "<table>";
-                    html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial; font-size:12px; font-weight: bold;'>";
-                    //html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
-                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>CANT.&nbsp;&nbsp;</b></td>";
-                    html += "<td align='center' colspan='2' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>DESCRIPCIÓN</b></td>";
-                    /*html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>P.UNIT</b></td>";*/
-                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
-                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>TOTAL</b></td>";
-                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
-                    /*html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";*/
-                    html += "</tr>";
-                    var cont = 0;
-                    var cantidad = 0;
-                    var total_descuento = 0;
-                    var total_final = 0;
-                    for (var i=0; i< registros.length; i++){
-                        cont = cont+1;
-                        //cantidad += registros[i]['detallefact_cantidad'];
-                        cantidad += 1;
-                        //total_descuento += registros[i]['detallefact_descuento']; 
-                        total_descuento += 0;
-                        total_final += Number(registros[i]['detalleserv_total']);
-                        html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-family: Arial; font-size:10px; '>";
-                        //html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px;'>";
-                        html += "<td align='center' style='padding: 0;'>";
-                        html += "<font style='size:7px; font-family: arial'>";
-                        //html += registros[i]['detallefact_cantidad'];
-                        html += 1;
-                        html += "</font>";
-                        html += "</td>";
-                        html += "<td colspan='2' style='padding: 0; line-height: 10px;'>";
-                        html += "<font style='size:7px; font-family: arial;'> ";
-                        var eldetalle = "";
-                        if(parametro_serviciofact == 1){
-                            eldetalle = registros[i]['detalleserv_solucion'];
-                        }else if(parametro_serviciofact == 2){
-                            eldetalle = registros[i]['detalleserv_descripcion'];
-                        }else if(parametro_serviciofact == 3){
-                            eldetalle = registros[i]['detalleserv_solucion']+", "+registros[i]['detalleserv_descripcion'];
-                        }else if(parametro_serviciofact == 4){
-                            eldetalle = registros[i]['detalleserv_descripcion']+", "+registros[i]['detalleserv_solucion'];
-                        }
-                        html += eldetalle;
-                        html += "</font>";
-                        html += "</td>";
-                        /*html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
-                        html += Number(registros[i]["detallefact_precio"]).toFixed(2);
-                        html += "</font></td>";*/
-                        html += "<td></td>";
-                        html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
-                        html += Number(registros[i]["detalleserv_total"]).toFixed(2);
-                        html += "</font></td>";
-                        html += "<td></td>";
-                        /*html += "<td>&nbsp;";
-                        html += "<a onclick='quitardetalle_aux("+registros[i]["detallefact_id"]+", "+venta_id+")' class='btn btn-danger btn-xs' title='Quitar detalle'><span class='fa fa-times'></span> </a>";
-                        html += "</td>";*/
+    var parametro_tiposistema = document.getElementById("parametro_tiposistema").value;
+    if(parametro_tiposistema == 1){
+        var base_url = document.getElementById("base_url").value;
+        var parametro_serviciofact = document.getElementById("parametro_serviciofact").value;
+        var controlador = base_url+"detalle_serv/get_detalle_serv";
+        $.ajax({url: controlador,
+                type: "POST",
+                data:{servicio_id:servicio_id}, 
+                success:function(resultado){
+                    var registros =  JSON.parse(resultado);
+                    if (registros != null){
+                        $("#modalfactura").modal("show");
+                        //cargar_factura2(venta_id);
+                        html = "";
+                        html += "<table>";
+                        html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial; font-size:12px; font-weight: bold;'>";
+                        //html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
+                        html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>CANT.&nbsp;&nbsp;</b></td>";
+                        html += "<td align='center' colspan='2' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>DESCRIPCIÓN</b></td>";
+                        /*html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>P.UNIT</b></td>";*/
+                        html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                        html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>TOTAL</b></td>";
+                        html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                        /*html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";*/
                         html += "</tr>";
+                        var cont = 0;
+                        var cantidad = 0;
+                        var total_descuento = 0;
+                        var total_final = 0;
+                        for (var i=0; i< registros.length; i++){
+                            cont = cont+1;
+                            //cantidad += registros[i]['detallefact_cantidad'];
+                            cantidad += 1;
+                            //total_descuento += registros[i]['detallefact_descuento']; 
+                            total_descuento += 0;
+                            total_final += Number(registros[i]['detalleserv_total']);
+                            html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-family: Arial; font-size:10px; '>";
+                            //html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px;'>";
+                            html += "<td align='center' style='padding: 0;'>";
+                            html += "<font style='size:7px; font-family: arial'>";
+                            //html += registros[i]['detallefact_cantidad'];
+                            html += 1;
+                            html += "</font>";
+                            html += "</td>";
+                            html += "<td colspan='2' style='padding: 0; line-height: 10px;'>";
+                            html += "<font style='size:7px; font-family: arial;'> ";
+                            var eldetalle = "";
+                            if(parametro_serviciofact == 1){
+                                eldetalle = registros[i]['detalleserv_solucion'];
+                            }else if(parametro_serviciofact == 2){
+                                eldetalle = registros[i]['detalleserv_descripcion'];
+                            }else if(parametro_serviciofact == 3){
+                                eldetalle = registros[i]['detalleserv_solucion']+", "+registros[i]['detalleserv_descripcion'];
+                            }else if(parametro_serviciofact == 4){
+                                eldetalle = registros[i]['detalleserv_descripcion']+", "+registros[i]['detalleserv_solucion'];
+                            }
+                            html += eldetalle;
+                            html += "</font>";
+                            html += "</td>";
+                            /*html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                            html += Number(registros[i]["detallefact_precio"]).toFixed(2);
+                            html += "</font></td>";*/
+                            html += "<td></td>";
+                            html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                            html += Number(registros[i]["detalleserv_total"]).toFixed(2);
+                            html += "</font></td>";
+                            html += "<td></td>";
+                            /*html += "<td>&nbsp;";
+                            html += "<a onclick='quitardetalle_aux("+registros[i]["detallefact_id"]+", "+venta_id+")' class='btn btn-danger btn-xs' title='Quitar detalle'><span class='fa fa-times'></span> </a>";
+                            html += "</td>";*/
+                            html += "</tr>";
+                        }
+                        html += "</table>";
+
+                        $("#generar_nit").val(registros[0]['cliente_nit']);
+                        $("#generar_razon").val(registros[0]['cliente_razon']);
+                        $("#generar_detalle").html(html);
+                        $("#generar_venta_id").val(registros[0]['servicio_id']);
+                        $("#generar_monto").val(Number(total_final).toFixed(2));
+                        //$("#botonaniadir").html("<a onclick='aniadirdetalleaux("+servicio_id+")' class='btn btn-xs btn-success' class='form-control'><span class='fa fa-check-square-o'></span></a>");
+                        $("#registrar_factura").html("<button class='btn btn-facebook' id='boton_asignar' onclick='registrar_factura("+servicio_id+")' data-dismiss='modal' ><span class='fa fa-floppy-o'></span> Generar Factura</button>");
+
                     }
-                    html += "</table>";
-                           
-                    $("#generar_nit").val(registros[0]['cliente_nit']);
-                    $("#generar_razon").val(registros[0]['cliente_razon']);
-                    $("#generar_detalle").html(html);
-                    $("#generar_venta_id").val(registros[0]['servicio_id']);
-                    $("#generar_monto").val(Number(total_final).toFixed(2));
-                    //$("#botonaniadir").html("<a onclick='aniadirdetalleaux("+servicio_id+")' class='btn btn-xs btn-success' class='form-control'><span class='fa fa-check-square-o'></span></a>");
-                    $("#registrar_factura").html("<button class='btn btn-facebook' id='boton_asignar' onclick='registrar_factura("+servicio_id+")' data-dismiss='modal' ><span class='fa fa-floppy-o'></span> Generar Factura</button>");
-                    
-                }
-            },
-            error:function(resultado){
-                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
-            },
-        
-        
-    })
-    
+                },
+                error:function(resultado){
+                    alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+                },
+
+
+        })
+    }else{
+        sin_cargar_parafactura_serv(servicio_id);
+    }
 }
 /* registrar pagos acuenta*/
 // function registrarservicio_pagoacuenta(servicio_id, detalleserv_id){
@@ -5023,4 +5027,99 @@ function load_date_modal(servicio_id,detalleserv_id,detalleserv_descripcion,clie
 function mostrar(detalleserv_id){
     let forma = $(`#forma_pago${detalleserv_id}`).val();
     $(`#banco_glosa${detalleserv_id}`).css('display', forma != 1 ? 'block':'none');
+}
+
+/* carga los detalles de un servicio  para que se facture
+ * con la Facturacion electronica en Linea o computarizada e Linea */
+function sin_cargar_parafactura_serv(servicio_id){
+    var base_url = document.getElementById("base_url").value;
+    var parametro_serviciofact = document.getElementById("parametro_serviciofact").value;
+    var controlador = base_url+"detalle_serv/get_detalle_serv";
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{servicio_id:servicio_id}, 
+            success:function(resultado){
+                var registros =  JSON.parse(resultado);
+                if (registros != null){
+                    $("#modalfactura").modal("show");
+                    //cargar_factura2(venta_id);
+                    html = "";
+                    html += "<table>";
+                    html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial; font-size:12px; font-weight: bold;'>";
+                    //html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>CANT.&nbsp;&nbsp;</b></td>";
+                    html += "<td align='center' colspan='2' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>DESCRIPCIÓN</b></td>";
+                    /*html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>P.UNIT</b></td>";*/
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>TOTAL</b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                    /*html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";*/
+                    html += "</tr>";
+                    var cont = 0;
+                    var cantidad = 0;
+                    var total_descuento = 0;
+                    var total_final = 0;
+                    for (var i=0; i< registros.length; i++){
+                        cont = cont+1;
+                        //cantidad += registros[i]['detallefact_cantidad'];
+                        cantidad += 1;
+                        //total_descuento += registros[i]['detallefact_descuento']; 
+                        total_descuento += 0;
+                        total_final += Number(registros[i]['detalleserv_total']);
+                        html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-family: Arial; font-size:10px; '>";
+                        //html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px;'>";
+                        html += "<td align='center' style='padding: 0;'>";
+                        html += "<font style='size:7px; font-family: arial'>";
+                        //html += registros[i]['detallefact_cantidad'];
+                        html += 1;
+                        html += "</font>";
+                        html += "</td>";
+                        html += "<td colspan='2' style='padding: 0; line-height: 10px;'>";
+                        html += "<font style='size:7px; font-family: arial;'> ";
+                        var eldetalle = "";
+                        if(parametro_serviciofact == 1){
+                            eldetalle = registros[i]['detalleserv_solucion'];
+                        }else if(parametro_serviciofact == 2){
+                            eldetalle = registros[i]['detalleserv_descripcion'];
+                        }else if(parametro_serviciofact == 3){
+                            eldetalle = registros[i]['detalleserv_solucion']+", "+registros[i]['detalleserv_descripcion'];
+                        }else if(parametro_serviciofact == 4){
+                            eldetalle = registros[i]['detalleserv_descripcion']+", "+registros[i]['detalleserv_solucion'];
+                        }
+                        html += eldetalle;
+                        html += "</font>";
+                        html += "</td>";
+                        /*html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                        html += Number(registros[i]["detallefact_precio"]).toFixed(2);
+                        html += "</font></td>";*/
+                        html += "<td></td>";
+                        html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                        html += Number(registros[i]["detalleserv_total"]).toFixed(2);
+                        html += "</font></td>";
+                        html += "<td></td>";
+                        /*html += "<td>&nbsp;";
+                        html += "<a onclick='quitardetalle_aux("+registros[i]["detallefact_id"]+", "+venta_id+")' class='btn btn-danger btn-xs' title='Quitar detalle'><span class='fa fa-times'></span> </a>";
+                        html += "</td>";*/
+                        html += "</tr>";
+                    }
+                    html += "</table>";
+                    
+                    $("#doc_identidad").val(registros[0]['cdi_codigoclasificador']);
+                    $("#generar_nit").val(registros[0]['cliente_nit']);
+                    $("#generar_razon").val(registros[0]['cliente_razon']);
+                    $("#elemail").val(registros[0]['cliente_email']);
+                    $("#generar_detalle").html(html);
+                    $("#generar_venta_id").val(registros[0]['servicio_id']);
+                    $("#generar_monto").val(Number(total_final).toFixed(2));
+                    //$("#botonaniadir").html("<a onclick='aniadirdetalleaux("+servicio_id+")' class='btn btn-xs btn-success' class='form-control'><span class='fa fa-check-square-o'></span></a>");
+                    $("#registrar_factura").html("<button class='btn btn-facebook' id='boton_asignar' onclick='registrar_factura("+servicio_id+")' data-dismiss='modal' ><span class='fa fa-floppy-o'></span> Generar Factura</button>");
+
+                }
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+
+    })
+        
 }

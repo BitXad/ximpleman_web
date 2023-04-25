@@ -142,6 +142,7 @@
                 <th>#</th>
                 <th>CLIENTE</th>
                 <th>NUM. VENTA</th>
+                <th>NUM. DOCUMENTO</th>
                 <th>MONTO(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                 <th>MONTO(<?php
                             if($parametro[0]["moneda_id"] == 1){
@@ -157,6 +158,7 @@
                 <th>UTILID.</th>
                 <?php }*/ ?>
                 <th>FECHA</th>
+                <th>USUARIO</th>
                 <th></th>
             </tr>
             <tbody class="buscar" id="simple"></tbody>

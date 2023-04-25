@@ -143,11 +143,14 @@ function ventas_dia($estado)
     function reporte_simple($filtro)
     {
         $reporte = $this->db->query(
-        "SELECT vs.*, c.cliente_nombre, tt.tipotrans_nombre, avg(dv.detalleven_tc) as tipo_cambio
+        "SELECT vs.*, c.cliente_nombre, tt.tipotrans_nombre, avg(dv.detalleven_tc) as tipo_cambio,
+                ifnull(`f`.`factura_numero`, '-') AS `factura_numero`, u.usuario_nombre
           FROM venta vs
+          LEFT JOIN factura f on vs.venta_id = f.venta_id
           LEFT JOIN detalle_venta dv on vs.venta_id = dv.venta_id
           LEFT JOIN cliente c on vs.cliente_id = c.cliente_id
           LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id
+          LEFT JOIN usuario u on vs.usuario_id = u.usuario_id
           WHERE 
           	".$filtro."
           GROUP by `vs`.venta_id

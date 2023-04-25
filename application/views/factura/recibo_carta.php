@@ -221,8 +221,16 @@ border-bottom : 1px solid #aaa;
  
             ?>
            <tr>
-               <!-- CANTIDAD -->
-                <td align="center" style="padding: 0"><?php echo number_format($d['detalleven_cantidad'],$decimales,'.',','); ?></td>
+                <!-- CANTIDAD -->
+                <?php
+                $partes = explode(".",$d['detalleven_cantidad']);
+                if ($partes[1] == 0) {
+                    $lacantidad = $partes[0];
+                }else{
+                    $lacantidad = number_format($d['detalleven_cantidad'],$decimales,'.',',');
+                }
+               ?>
+                <td align="center" style="padding: 0"><?php echo $lacantidad; ?></td>
                <!-- DESCRIPCION -->
                 <td style="padding: 0"><font style="font-size:10px; font-family: arial;">
                     <?php
@@ -316,8 +324,14 @@ border-bottom : 1px solid #aaa;
                 }
                 ?>
                 TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b><br>
+                <?php
+                if($venta[0]['tipotrans_id'] == 2){
+                ?>
                 CUOTA INIC. <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['credito_cuotainicial'],$decimales,'.',','); ?></b><br>
-                SALDO <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],$decimales,'.',','); ?></b><br>                
+                SALDO <?php echo $parametro[0]["moneda_descripcion"].": "; ?> <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],$decimales,'.',','); ?></b><br>
+                <?php
+                }
+                ?>
         </td>
         <td align="right" style="background-color: #aaa !important; -webkit-print-color-adjust: exact;">
 

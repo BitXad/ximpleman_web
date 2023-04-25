@@ -125,6 +125,8 @@ function tablaresultadoscliente(limite)
                 var registros =  JSON.parse(respuesta);
                 
                 if (registros != null){
+                    const myString = JSON.stringify(registros);
+                    $("#rescliente").val(myString);
                 
                     var formaimagen = document.getElementById('formaimagen').value;
                     /*var categoriacli = JSON.parse(document.getElementById('lacategoria_cliente').value);
@@ -442,4 +444,86 @@ function cambiarcontrasenia(cliente_id, limit){
            alert("Ocurrio un error inesperado");
         } 
     });
+}
+
+function listacodqr() {
+    //$('#titcatalogo').text("CODIGO DE BARRAS DE ");
+    var codqr = $('#lista_gencodqr').is(':checked');
+    var respuesta = document.getElementById('rescliente').value;
+    var registros =  JSON.parse(respuesta);
+    var n = registros.length; //tamaño del arreglo de la consulta
+    if(codqr){
+        var numcolumna = 6;
+        var inifila = "";
+        var finfila = "";
+        var contcol = 1;
+        chtml = "";
+        chtml += "<tr role='row'  style='width: 19cm !important'>";
+        chtml += "<th colspan='"+numcolumna+"'  role='columnheader' >CODIGO QR</th>";
+        chtml += "</tr>";
+        html = "";
+        for (var i = 0; i < n ; i++){
+            if(contcol <= numcolumna){
+                if(contcol == 1){
+                    inifila ="<tr style='width: 19cm !important'>";
+                    finfila = "";
+                    contcol++;
+                    //bandfila = false;
+                }else if(i+1== n || contcol == 5){
+                    inifila = "";
+                    finfila ="</tr>";
+                    contcol = 1;
+                }else{
+                    inifila = "";
+                    finfila = "";
+                    contcol++;
+                }
+            }else{
+                contcol = 1;
+            }
+            
+            html += inifila;
+            html += "<td style='width: 310px; height: 142px'>";
+            html += "<div>";
+            if(registros[i]["cliente_nombre"] != null && registros[i]["cliente_nombre"] !=""){
+                //html += "<img id='barcode"+registros[i]["cliente_id"]+"' width='100%' height='100%' />";
+                html += "<div id='barcode"+registros[i]["cliente_id"]+"' style='width:120px; height:120px;'></div>";
+            }else{
+            }
+            html += "<div style='padding-left: 4px'>";
+            var tamaniofont = 2;
+            if(registros[i]["cliente_nombre"].length >50){
+                tamaniofont = 1;
+            }
+            html += "<font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["cliente_nombre"]+"</b></font><br>";
+            
+            html += "";
+            html += "</div>";
+            html += "</div>";
+            html += "</td>";
+            html += finfila;
+        }
+        $("#cabcliente").html(chtml);
+        $("#tablaresultados").html(html);
+        
+        let base_url = document.getElementById('base_url').value;
+        let ladireccion = base_url+'pedido/pedidoabierto/';
+        
+        for (var i = 0; i < n ; i++){
+            if(registros[i]["cliente_nombre"] != null && registros[i]["cliente_nombre"] !=""){
+                var qrcode = new QRCode(document.getElementById("barcode"+registros[i]["cliente_id"]), {
+                    text: ladireccion+registros[i]["cliente_id"],
+                    width: 120,
+                    height: 120,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            }
+        }
+    }else{
+        location.reload();
+        //busqueda_inicial();
+    }
+    //cabcatalogo
 }
