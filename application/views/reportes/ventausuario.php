@@ -6,8 +6,8 @@
 <input type="hidden" name="empresa_nombre" id="empresa_nombre" value="<?php echo $empresa[0]['empresa_nombre']; ?>" />
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" />
 <input type="hidden" name="resproducto" id="resproducto" />
-<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
-<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
@@ -95,9 +95,9 @@
             <tr>
                 <th>Nro.</th>
                 <th>USUARIO</th>
-                <th>VENTAS(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>VENTAS(<?php echo $parametro['moneda_descripcion']; ?>)</th>
                 <th>VENTAS(<?php
-                                if($parametro[0]["moneda_id"] == 1){
+                                if($parametro["moneda_id"] == 1){
                                     echo $lamoneda[1]['moneda_descripcion'];
                                 }else{
                                     echo $lamoneda[0]['moneda_descripcion'];
@@ -105,8 +105,8 @@
                             ?>)
                 </th>
                 <?php if($tipousuario_id == 1){ ?>
-                <th>COSTO(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                <th>UTILIDAD(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>COSTO(<?php echo $parametro['moneda_descripcion']; ?>)</th>
+                <th>UTILIDAD(<?php echo $parametro['moneda_descripcion']; ?>)</th>
                 <?php } ?>
             </tr>
             <tbody class="buscar" id="reportefechadeventa"></tbody>

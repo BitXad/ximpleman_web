@@ -1113,7 +1113,7 @@ window.onkeydown = compruebaTecla;
                     <button class="btn btn-default btn-xs"><b>F7</b></button> Registrar NIT<br>
                     <button class="btn btn-default btn-xs"><b>F8</b></button> Finalizar <?php echo $sistema["sistema_moduloventas"]; ?> <br>
                 </p>
-                    <div hidden>            
+                    <div >            
                         <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-default btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
                     </div>
                 </div>

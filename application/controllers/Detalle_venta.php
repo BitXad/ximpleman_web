@@ -8,6 +8,8 @@ class Detalle_venta extends CI_Controller{
     
     private $session_data = "";
     private $sistema;
+    private $parametros;
+    
     function __construct()
     {
         parent::__construct();
@@ -17,6 +19,9 @@ class Detalle_venta extends CI_Controller{
         $this->load->model('Tipo_transaccion_model');
         $this->load->model('Destino_producto_model');
         $this->load->model('Pedido_model');
+        $this->load->model('Parametro_model');
+        
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -24,6 +29,10 @@ class Detalle_venta extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -427,6 +436,7 @@ class Detalle_venta extends CI_Controller{
     function venta_proceso()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         //**************** inicio contenido ***************
         $this->load->model('Producto_model');
         $usuario_id = $this->session_data['usuario_id'];

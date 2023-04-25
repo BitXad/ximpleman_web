@@ -7,21 +7,32 @@
 class Moneda extends CI_Controller{
     
     private $sistema;
+    private $parametros;
+    
     function __construct()
     {
         parent::__construct();
+        
         $this->load->model('Moneda_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Sistema_model');
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
             redirect('', 'refresh');
         }
-        $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
-    }
-    private function acceso($id_rol){
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
         
+    }
+    
+    private function acceso($id_rol){
+    	
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -37,28 +48,33 @@ class Moneda extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
-        if($this->acceso(124)){
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        $data['parametro'] =  $this->parametros;
         
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('moneda/index?');
-        $config['total_rows'] = $this->Moneda_model->get_all_moneda_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(124)){
+            
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['moneda'] = $this->Moneda_model->get_all_moneda($params);
-        $data['page_title'] = "Moneda";
-        $data['_view'] = 'moneda/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('moneda/index?');
+            $config['total_rows'] = $this->Moneda_model->get_all_moneda_count();
+            $this->pagination->initialize($config);
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['monedas'] = $this->Moneda_model->get_all_moneda($params);
+            $data['page_title'] = "Moneda";
+            $data['_view'] = 'moneda/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
-}
 
     /*
      * Adding a new moneda
      */
     function add()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(124)){
             $this->load->library('form_validation');
 
@@ -89,7 +105,9 @@ class Moneda extends CI_Controller{
      */
     function edit($moneda_id)
     {  
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(124)){ 
             // check if the moneda exists before trying to edit it
             $data['moneda'] = $this->Moneda_model->get_moneda($moneda_id);
@@ -130,7 +148,9 @@ class Moneda extends CI_Controller{
      */
     function remove($moneda_id)
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(124)){
         $moneda = $this->Moneda_model->get_moneda($moneda_id);
 

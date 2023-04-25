@@ -73,6 +73,10 @@ input[type=number] { -moz-appearance:textfield; }
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <!--------------------- CABCERA -------------------------->
+<?php $decimales = $parametro["parametro_decimales"]; ?>
+
+<input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales" hidden>
+
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="cambio_producto_id" id="cambio_producto_id" value="<?php echo $cambio_producto_id; ?>">
 
@@ -138,7 +142,7 @@ input[type=number] { -moz-appearance:textfield; }
                                 <center>
                                     
                                     <span class="badge badge-success">
-                                        <font size="4"> <b><?php echo number_format($d['detallecomp_total'],2,".",","); ?></b></font> <br>                                        
+                                        <font size="4"> <b><?php echo number_format($d['detallecomp_total'],$decimales,".",","); ?></b></font> <br>                                        
                                     </span>
                                 </center>
                         
@@ -224,7 +228,7 @@ input[type=number] { -moz-appearance:textfield; }
                                 <center>
                                     
                                     <span class="badge badge-success">
-                                        <font size="4"> <b><?php echo number_format($d['detalleven_total'],2,".",","); ?></b></font> <br>                                        
+                                        <font size="4"> <b><?php echo number_format($d['detalleven_total'],$decimales,".",","); ?></b></font> <br>                                        
                                     </span>
                                 </center>
                         
@@ -367,44 +371,8 @@ input[type=number] { -moz-appearance:textfield; }
                             <tbody class="buscar3">
                             <?php $i=1;
                            foreach($inventario as $p){ ?>
-                            <tr>
-                                 <form action="<?php echo base_url('cambio_producto/devolverproducto/'.$cambio_producto_id."/".$p['producto_id']); ?>"  method="POST" class="form">
-                                    <td><?php echo $i++; ?></td>
-
-                                    <td>
-                                        
-                                        <div clas="row">                                            
-                                            <div class="container" hidden>
-                                                <input id="cambio_producto_id"  name="cambio_producto_id" type="text" class="form-control" value="<?php echo $cambio_producto_id; ?>">
-                                                <input id="producto_id"  name="producto_id" type="text" class="form-control" value="<?php echo $p['producto_id']; ?>">
-                                            
-                                                <input id="detalle_costo"  name="detalle_costo" type="text" class="form-control" value="<?php echo $p['producto_costo']; ?>">
-                                            </div>
-                                        
-                                            <div class="col-md-12">
-
-                                                <b> <?php echo $p['producto_nombre']; ?></b><br>    
-                                                <div class="col-md-2"  >
-                                                Precio_V: <input class="input-sm" id="producto_precio"  style="background-color: lightgrey" name="producto_precio" type="number" class="form-control" value="<?php echo $p['producto_precio']; ?>" required="true"></div>
-                                                <div class="col-md-2"  >
-                                                Costo: <input class="input-sm" id="producto_costo"  style="background-color: lightgrey" name="producto_costo" type="number" class="form-control" value="<?php echo $p['producto_costo']; ?>" required="true"> </div>
-                                                <div class="col-md-2"  >
-                                                Desc.: <input class="input-sm" id="descuento"  style="background-color: lightgrey" name="descuento" type="number" class="form-control" value="0.00" step=".01" required="true"></div>
-                                                <div class="col-md-2"  >
-                                                Cant.: <input class="input-sm " id="cantidad" name="cantidad" type="number" class="form-control" placeholder="cantidad" required="true" value="1"> </div>
-                                           
-                                            <div class="col-md-2">
-                                                    Añadir:
-                                                        <button type="submit" class="btn btn-success">
-                                                        <i class="fa fa-cart-arrow-down"></i>  Añadir </button>
-                                            </div>
-
-                                     </div>
-                                    
-                                </div> </td>
-                                 </form>
-                            
-                            </tr>
+         
+                       
                             <?php } ?>
                            
                         </table>
@@ -434,14 +402,14 @@ input[type=number] { -moz-appearance:textfield; }
         <input id="salida" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción" onkeypress="salivalidar(event,4)">
       </div>
       <!-------------------- CATEGORIAS------------------------------------->
-<div class="container" id="categoria">
-    
-                <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
+    <div class="container" id="categoria">
 
-                <span class="badge btn-danger">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+                    <!--------------------- indicador de resultados --------------------->
+        <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
-</div>
+                    <span class="badge btn-danger">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+
+    </div>
 <!-------------------- FIN CATEGORIAS--------------------------------->
                      
             </div>
@@ -461,62 +429,9 @@ input[type=number] { -moz-appearance:textfield; }
                 <div class="pull-right">
                     <?php echo $this->pagination->create_links(); ?>                    
                 </div>      
-                        <!--------------------- TABLA---------------------------------------------------->
-                        <!--<div class="box-body table-responsive">
-                        <table class="table table-striped" id="mitabla">
-                            <tr>
-                                                        <th>N</th>
-                                                        <th>Producto</th>
-                            </tr>
-                            <tbody class="buscar2">
-                            <?php $i=1;
-                            foreach($inventario as $p){ ?>
-                            <tr>
-                                 <form action="<?php echo base_url('cambio_producto/entregarproducto/'.$cambio_producto_id."/".$p['producto_id']); ?>"  method="POST" class="form">
-                                    <td><?php echo $i++; ?></td>
-
-                                    <td>
-                                        
-                                        <div clas="row">                                            
-                                            <div class="container" hidden>
-                                                <input id="cambio_producto_id"  name="cambio_producto_id" type="text" class="form-control" value="<?php echo $cambio_producto_id; ?>">
-                                                <input id="producto_id"  name="producto_id" type="text" class="form-control" value="<?php echo $p['producto_id']; ?>">
-                                            
-                                                <input id="detalle_costo"  name="detalle_costo" type="text" class="form-control" value="<?php echo $p['producto_costo']; ?>">
-                                            </div>
-                                        
-                                            <div class="col-md-12">
-
-                                                <b> <?php echo $p['producto_nombre']; ?></b><br>    
-                                                <div class="col-md-2"  >
-                                                Precio_V: <input class="input-sm" id="producto_precio"  style="background-color: lightgrey" name="producto_precio" type="number" class="form-control" value="<?php echo $p['producto_precio']; ?>" required="true"></div>
-                                                <div class="col-md-2"  >
-                                                Costo: <input class="input-sm" id="producto_costo"  style="background-color: lightgrey" name="producto_costo" type="number" class="form-control" value="<?php echo $p['producto_costo']; ?>" required="true"> </div>
-                                                <div class="col-md-2"  >
-                                                Desc.: <input class="input-sm" id="descuento"  style="background-color: lightgrey" name="descuento" type="number" class="form-control" value="0.00" step=".01" required="true"></div>
-                                                <div class="col-md-2"  >
-                                                Cant.: <input class="input-sm " id="cantidad" name="cantidad" type="number" class="form-control" placeholder="cantidad" required="true" value="1"> </div>
-                                                
-                                    
-                                            <div class="col-md-2">
-                                                    Añadir:
-                                                        <button type="submit" class="btn btn-success">
-                                                        <i class="fa fa-cart-arrow-down"></i>  Añadir </button>
-                                            </div>
-
-                                     </div>
-                                    
-                                </div> </td>
-                                 </form>
-                            
-                            </tr>
-                            <?php } ?>
-                           
-                        </table>
-                        <div class="pull-right">
-                            <?php echo $this->pagination->create_links(); ?>                    
-                        </div>        -->        
-                    </div>
+ 
+            
+            </div>
 
 
 

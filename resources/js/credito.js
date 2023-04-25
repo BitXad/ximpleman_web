@@ -84,6 +84,7 @@ function tabladeudas(filtro) //Deudas por pagar
 {
      var controlador = "";
      
+     var decimales = document.getElementById('decimales').value;
      var base_url = document.getElementById('base_url').value;
      
      controlador = base_url+'credito/buscarDeuda/';
@@ -162,9 +163,9 @@ function tabladeudas(filtro) //Deudas por pagar
                             html += "<br>DESC.: "+formato_numerico(Number(registros[i]['compra_descglobal']));
                         }
                         html += "</td>";
-                        html += "<td style='text-align: right'>"+Number(registros[i]['credito_cuotainicial']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['credito_cuotainicial']).toFixed(decimales)+"</td>";
                         html += "<td style='text-align: right; background:silver'><font size='3' face='Arial'><b>"+formato_numerico(Number(registros[i]['credito_monto']))+"</b></font></td>";
-                        html += "<td style='text-align: right'>"+Number(registros[i]['credito_interesmonto']).toFixed(2)+"("+registros[i]['credito_interesproc']+")</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['credito_interesmonto']).toFixed(decimales)+"("+Number(registros[i]['credito_interesproc']).toFixed(decimales)+")</td>";
                         html += "<td style='text-align: right; background:silver;'><font size='3'><b>";
                         html += formato_numerico(Number(registros[i]['cancelado']));
                         totalsaldopagado += Number(registros[i]["cancelado"]);
@@ -259,6 +260,7 @@ function buscar_fecha_cuenta()
 function tablacuentas(filtro) //Cuentas por cobrar
 {
     var controlador = "";
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById('base_url').value;
      
     controlador = base_url+'credito/buscarCuenta/';
@@ -308,9 +310,8 @@ function tablacuentas(filtro) //Cuentas por cobrar
                     var totalsaldoapagar = 0;
                     var totalsaldocobrado = 0;
                     inciales=0;
+                    
                     for (var i = 0; i < n ; i++){
-                       // var suma = Number(registros[i]["detallecomp_total"]);
-                        //descuento += Number(registros[i]["detallecomp_descuento"]);
                         
                         color = "";
                        if (registros[i]["estado_id"]==9){ 
@@ -345,7 +346,7 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         html += "<td style='text-align: right; '><b>"+formato_numerico(Number(registros[i]['venta_total']))+"</b></td>";
                         html += "<td style='text-align: right; "+color+"'>"+formato_numerico(Number(registros[i]['credito_cuotainicial']))+"</td>";
                         html += "<td style='text-align: right; background:silver;'><font size='3'><b>"+formato_numerico(Number(registros[i]['credito_monto']))+"</font></b></td>";
-                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['credito_interesmonto']))+"("+registros[i]['credito_interesproc']+")</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['credito_interesmonto']))+"("+Number(registros[i]['credito_interesproc']).toFixed(decimales)+")</td>";
                         html += "<td style='text-align: right; background:silver;'><font size='3'><b>";
                         html += formato_numerico(Number(registros[i]['cancelado']));
                         totalsaldocobrado += Number(registros[i]["cancelado"]);
@@ -361,7 +362,7 @@ function tablacuentas(filtro) //Cuentas por cobrar
                             html += formato_numerico(Number(registros[i]['credito_monto']));
                         }*/
                         html += "</font></b></td>";
-                        html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
+                        html += "<td style='text-align: center'>"+Number(registros[i]['credito_numpagos']).toFixed(0)+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center' class='no-print'>"+registros[i]['credito_hora']+"</td>";
                         if (registros[i]['servicio_id']>0) {
@@ -417,6 +418,7 @@ function tabladeudasagrupado(filtro)
 {
      var controlador = "";
      
+     var decimales = document.getElementById('decimales').value;
      var base_url = document.getElementById('base_url').value;
      
      controlador = base_url+'credito/buscarDeudaAgrupado/';
@@ -452,24 +454,28 @@ function tabladeudasagrupado(filtro)
                     var total     = 0;
                     var cancelado = 0;
                     var saldo     = 0;
+                    
                     for (var i = 0; i < n ; i++){
+                        
                         total     += Number(registros[i]["suma"]);
                         cancelado += Number(registros[i]["cancelado"]);
                         saldo     += Number(Number(registros[i]['suma'])-Number(registros[i]['cancelado']));
+                        
                         html += "<tr>"; 
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>"+registros[i]['proveedor_nombre']+"<small> ["+registros[i]['proveedor_id']+"]</small></td>";
                 
-                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['suma']).toFixed(2))+"</td>";
-                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['cancelado']).toFixed(2))+"</td>";
-                        html += "<td style='text-align: right'>"+formato_numerico(Number(Number(registros[i]['suma'])-Number(registros[i]['cancelado'])).toFixed(2))+"</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['suma']).toFixed(decimales))+"</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['cancelado']).toFixed(decimales))+"</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(Number(registros[i]['suma'])-Number(registros[i]['cancelado'])).toFixed(decimales))+"</td>";
                       
                     }
+                    
                    html += "<tr><td align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
                    html += "<td align=right></td>"; 
-                   html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(total).toFixed(2))+"</b></font></td>"; 
-                   html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(cancelado).toFixed(2))+"</b></font></td>"; 
-                   html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(saldo).toFixed(2))+"</b></font></td>";
+                   html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(total).toFixed(decimales))+"</b></font></td>"; 
+                   html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(cancelado).toFixed(decimales))+"</b></font></td>"; 
+                   html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(saldo).toFixed(decimales))+"</b></font></td>";
                    html += "</tr>"; 
                    
                    $("#tabladeudas").html(html);
@@ -493,6 +499,7 @@ function tablacuentasagrupado(filtro)
 {
      var controlador = "";
      
+     var decimales = document.getElementById('decimales').value;
      var base_url = document.getElementById('base_url').value;
      
      controlador = base_url+'credito/buscarCuentaAgrupado/';
@@ -553,7 +560,7 @@ function tablacuentasagrupado(filtro)
                         }
 
                         html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['suma']))+"</td>";
-                        //html += "<td style='text-align: right'>"+Number(registros[i]['total']).toFixed(2)+"</td>";
+                        //html += "<td style='text-align: right'>"+Number(registros[i]['total']).toFixed(decimales)+"</td>";
                         html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['cancelado']))+"</td>";
                         html += "<td style='text-align: right'>"+formato_numerico(Number(saldo))+"</td>";
                       
@@ -589,6 +596,7 @@ function tablacuentasagrupado(filtro)
 
 function cargar_factura(venta_id,credito_id){
     //alert(factura.cliente_nombre);
+    var decimales = document.getElementById("decimales").value;
     var base_url = document.getElementById("base_url").value;
     var controlador = base_url+"credito/cargar_factura";
     
@@ -602,7 +610,7 @@ function cargar_factura(venta_id,credito_id){
                 $("#generar_razon").val(registros["cliente_razon"]);
                 $("#generar_detalle").val("PRODUCTOS VARIOS");
                 $("#generar_venta_id").val(registros["venta_id"]);
-                $("#generar_monto").val(Number(registros["venta_total"]).toFixed(2));
+                $("#generar_monto").val(Number(registros["venta_total"]).toFixed(decimales));
                 $("#generar_credito").val(credito_id);
           
                 $("#boton_modal_factura").click();
@@ -660,9 +668,9 @@ function registrar_factura(){
 
 function formato_numerico(numero){
     
-        
+        var decimales = document.getElementById("decimales").value;
     
-        nStr = Number(numero).toFixed(2);
+        nStr = Number(numero).toFixed(decimales);
         nStr += '';
 	x = nStr.split('.');
 	x1 = x[0];

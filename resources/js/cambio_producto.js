@@ -130,6 +130,7 @@ function salivalidar(e,opcion) {
 //muestra la tabla de productos disponibles para la venta
 function tablaproductos()
 {   
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'venta/detalleventa';
     
@@ -186,8 +187,8 @@ function tablaproductos()
                         html += "			<td align='center'> <button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";
                         html += "        <input size='5' name='cantidad' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
                         html += "        <button onclick='incrementar(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button></td>";
-                        html += "			<td align='right'><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
-                        html += "                       <td align='right'><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font></td>";
+                        html += "			<td align='right'><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        html += "                       <td align='right'><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(decimales)+"</b></font></td>";
 //                        html += "			<td>"+registros[i]["producto_foto"]+"</td>";
 //                        html += "			<td>"+registros[i]["detalleven_comision"]+"</td>";
 //                        html += "			<td>"+registros[i]["detalleven_tipocambio"]+"</td>";
@@ -205,9 +206,9 @@ function tablaproductos()
                    html += "                            <th><button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a> Quitar Todo</button> </th>";
                    html += "                            <th></th>";
                    html += "                            <th></th>";
-                   html += "                            <th><font size='3'>"+cant_total.toFixed(2)+"</font></th>";
+                   html += "                            <th><font size='3'>"+cant_total.toFixed(decimales)+"</font></th>";
                    html += "                            <th></th>"; 
-                   html += "                            <th><font size='3'>"+total_detalle.toFixed(2)+"</font></th>";
+                   html += "                            <th><font size='3'>"+total_detalle.toFixed(decimales)+"</font></th>";
                    html += "                            <th></th> ";                                       
                    html += "                    </tr>   ";                 
                    html += "                </table>";
@@ -227,6 +228,8 @@ function tablaproductos()
 //muestra la tabla detalle de venta auxiliar
 function tabladetalle(subtotal,descuento,totalfinal)
 {
+    var decimales = document.getElementById('decimales').value;
+    
     $("#venta_subtotal").val(subtotal);
     $("#venta_descuento").val(descuento);
     $("#venta_totalfinal").val(totalfinal - descuento);
@@ -241,15 +244,15 @@ function tabladetalle(subtotal,descuento,totalfinal)
     html += "</tr>";
     html += "<tr>";
     html += "    <td>Sub Total Bs</td>";
-    html += "    <td align='right'>"+subtotal.toFixed(2)+"</td>";
+    html += "    <td align='right'>"+subtotal.toFixed(decimales)+"</td>";
     html += "</tr> ";
     html += "<tr>";
     html += "    <td>Descuento</td>";
-    html += "    <td align='right'>"+descuento.toFixed(2)+"</td>  ";  
+    html += "    <td align='right'>"+descuento.toFixed(decimales)+"</td>  ";  
     html += "</tr>";
     html += "<tr>";
     html += "    <th><b>TOTAL FINAL</b></th>";
-    html += "    <th align='right'><font size='5'> "+totalfinal.toFixed(2)+"</font></th>";
+    html += "    <th align='right'><font size='5'> "+totalfinal.toFixed(decimales)+"</font></th>";
     html += "</tr>";
     html += "           </table>";
     html += "   </div>";
@@ -263,6 +266,7 @@ function tabladetalle(subtotal,descuento,totalfinal)
 // y la ingresa a la tabla detalle de venta
 function buscarporcodigo()
 {
+   var decimales = document.getElementById('decimales').value;    
    var base_url = document.getElementById('base_url').value;
    var controlador = base_url+'venta/buscarcodigo';
    var codigo = document.getElementById('codigo').value;
@@ -288,7 +292,7 @@ function buscarporcodigo()
 // la cantidad debe estar registrada en el modal asignada para esta operacion
 function ingresarcoti(producto_id)
 {
-   
+   var decimales = document.getElementById('decimales').value;
    var base_url = document.getElementById('base_url').value;
    var controlador = base_url+'cotizacion/insertarproducto';
 
@@ -409,6 +413,7 @@ function actualizarprecios(e,detalleven_id)
 //Tabla resultados de la busqueda entrada
 function tablaresultados1(opcion)
 {   
+    var decimales = document.getElementById('decimales').value;
     var controlador = "";
     var parametro = "";
 
@@ -461,16 +466,16 @@ function tablaresultados1(opcion)
                         html += "<input id='cambio_producto_id'  name='cambio_producto_id' type='text' class='form-control' value='"+cambio_producto_id+"'>";
                         html += "<input id='producto_id'  name='producto_id' type='text' class='form-control' value='"+registros[i]["producto_id"]+"'>";
                        // html += "<input id='descripcion'  name='descripcion' type='text' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
-                        html += "<input id='detalle_costo'  name='detalle_costo' type='text' class='form-control' value='"+registros[i]["producto_costo"]+"'>";
+                        html += "<input id='detalle_costo'  name='detalle_costo' type='text' class='form-control' value='"+Number(registros[i]["producto_costo"]).toFixed(decimales)+"'>";
                         html += "</div>";
                             
                         html += "<div class='col-md-12'>";
 
                         html += "<b>"+registros[i]["producto_nombre"]+"</b><br>";
                         html += "<div class='col-md-2'  >";
-                        html += "Precio_V: <input class='input-sm' id='producto_precio'  style='background-color: lightgrey' name='producto_precio' type='number' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+                        html += "Precio_V: <input class='input-sm' id='producto_precio'  style='background-color: lightgrey' name='producto_precio' type='number' class='form-control' value='"+Number(registros[i]["producto_precio"]).toFixed(decimales)+"' ></div>";
                         html += "<div class='col-md-2'  >";
-                        html += "Costo: <input class='input-sm' id='producto_costo'  style='background-color: lightgrey' name='producto_costo' type='number' class='form-control' value='"+registros[i]["producto_costo"]+"' > </div>";
+                        html += "Costo: <input class='input-sm' id='producto_costo'  style='background-color: lightgrey' name='producto_costo' type='number' class='form-control' value='"+Number(registros[i]["producto_costo"]).toFixed(decimales)+"' > </div>";
                         html += "<div class='col-md-2'  >";
                         html += "Desc.: <input class='input-sm' id='descuento'  style='background-color: lightgrey' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
                         html += "<div class='col-md-2'  >";
@@ -510,6 +515,7 @@ function tablaresultados1(opcion)
 //Tabla resultados de la busqueda salida
 function tablaresultados2(opcion)
 {   
+    var decimales = document.getElementById('decimales').value;
     var controlador = "";
     var parametro = "";
     var cambio_producto_id = document.getElementById('cambio_producto_id').value;
@@ -561,16 +567,16 @@ function tablaresultados2(opcion)
                         html += "<input id='cambio_producto_id'  name='cambio_producto_id' type='text' class='form-control' value='"+cambio_producto_id+"'>";
                         html += "<input id='producto_id'  name='producto_id' type='text' class='form-control' value='"+registros[i]["producto_id"]+"'>";
                         //html += "<input id='descripcion'  name='descripcion' type='text' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
-                        html += "<input id='detalle_costo'  name='detalle_costo' type='text' class='form-control' value='"+registros[i]["producto_costo"]+"'>";
+                        html += "<input id='detalle_costo'  name='detalle_costo' type='text' class='form-control' value='"+Number(registros[i]["producto_costo"]).toFixed(decimales)+"'>";
                         html += "</div>";
                             
                         html += "<div class='col-md-12'>";
 
                         html += "<b>"+registros[i]["producto_nombre"]+"</b><br>";
                         html += "<div class='col-md-2'  >";
-                        html += "Precio_V: <input class='input-sm' id='producto_precio'  style='background-color: lightgrey' name='producto_precio' type='number' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+                        html += "Precio_V: <input class='input-sm' id='producto_precio'  style='background-color: lightgrey' name='producto_precio' type='number' class='form-control' value='"+Number(registros[i]["producto_precio"]).toFixed(decimales)+"' ></div>";
                         html += "<div class='col-md-2'  >";
-                        html += "Costo: <input class='input-sm' id='producto_costo'  style='background-color: lightgrey' name='producto_costo' type='number' class='form-control' value='"+registros[i]["producto_costo"]+"' > </div>";
+                        html += "Costo: <input class='input-sm' id='producto_costo'  style='background-color: lightgrey' name='producto_costo' type='number' class='form-control' value='"+Number(registros[i]["producto_costo"]).toFixed(decimales)+"' > </div>";
                         html += "<div class='col-md-2'  >";
                         html += "Desc.: <input class='input-sm' id='descuento'  style='background-color: lightgrey' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
                         html += "<div class='col-md-2'  >";

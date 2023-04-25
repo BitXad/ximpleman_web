@@ -139,8 +139,6 @@ border-bottom : 1px solid #aaa;
         
 </script>   
 
-
-
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -149,6 +147,7 @@ border-bottom : 1px solid #aaa;
 <?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"]."cm";
       $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+      $decimales = $parametro[0]["parametro_decimales"];
 
 ?>
 <?php
@@ -203,7 +202,7 @@ border-bottom : 1px solid #aaa;
                     <font size="1" face="Arial"><b><?php echo  "Expresado en ".$parametro[0]["moneda_descripcion"]; ?></b></font>
                     <br>
                     <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
-                    <font size="1" face="Arial"><b><?php echo  "T.C. Bs ".$moneda["moneda_tc"]; ?></b></font><br>
+                    <font size="1" face="Arial"><b><?php echo  "T.C. Bs ".number_format($moneda["moneda_tc"],$decimales,".",",");; ?></b></font><br>
                     <?php } ?>
                 </center>                
             </td>
@@ -253,7 +252,7 @@ border-bottom : 1px solid #aaa;
             <tr style="padding: 0;">
                 <td style="padding: 0">
                     <center>
-                        <?php echo $p['detalleped_cantidad']; ?>
+                        <?php echo number_format($p['detalleped_cantidad'],$decimales,".",","); ?>
                     </center>
                 </td>
                 <td style="padding: 0">
@@ -263,36 +262,36 @@ border-bottom : 1px solid #aaa;
                     <?php echo $p['producto_unidad']; ?>
                 </td>
                 <td align="right"  style="padding: 0">
-                    <?php echo number_format($p['detalleped_precio'],2,".",","); ?>
+                    <?php echo number_format($p['detalleped_precio'],$decimales,".",","); ?>
                 </td>
                 <td align="right"  style="padding: 0">
-                    <?php echo number_format($p['detalleped_total'],2,".",","); ?>
+                    <?php echo number_format($p['detalleped_total'],$decimales,".",","); ?>
                 </td>
                 <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                 <td align="right"  style="padding: 0">
                 
                     <?php 
 //                        if ($parametro[0]["moneda_id"]==1 && $p['moneda_id']==1){ //cuando la moneda principal es Bs y la del producto es Bs
-//                                   echo number_format($p['detalleped_total'] / $p['detalleped_tc'] ,2,".",","); 
+//                                   echo number_format($p['detalleped_total'] / $p['detalleped_tc'] ,$decimales,".",","); 
 //                        }
 //                        
 //                        if ($parametro[0]["moneda_id"]==1 && $p['moneda_id']!=1){ //cuando la moneda principal es Bs y la del producto moneda extrangera
-//                                   echo number_format($p['detalleped_total'] ,2,".",","); 
+//                                   echo number_format($p['detalleped_total'] ,$decimales,".",","); 
 //                        }
 //                        
 //                        if ($parametro[0]["moneda_id"]!=1 && $parametro[0]["moneda_id"]==1){ // cuando la moneda principal es Extrangera y el producto es Bs
-//                                   echo number_format($p['detalleped_total'] / $p['moneda_tc'],2,".",","); 
+//                                   echo number_format($p['detalleped_total'] / $p['moneda_tc'],$decimales,".",","); 
 //                        }
 //                          
 //                        
 //                        if ($parametro[0]["moneda_id"]!=1 && $p['moneda_id']!=$parametro[0]["moneda_id"]){ //Cuando la moneda principal es Extragera y el producto tambien
-//                                   echo number_format($p['detalleped_total'] * $p['moneda_tc'],2,".",","); 
+//                                   echo number_format($p['detalleped_total'] * $p['moneda_tc'],$decimales,".",","); 
 //                        }
                         if ($parametro[0]["moneda_id"]==1){ //cuando la moneda principal es Bs y la del producto es Bs
-                                   echo number_format($p['detalleped_total'] / $p['detalleped_tc'] ,2,".",","); 
+                                   echo number_format($p['detalleped_total'] / $p['detalleped_tc'] ,$decimales,".",","); 
                         }
                         else{
-                                   echo number_format($p['detalleped_total'] * $p['detalleped_tc'],2,".",","); 
+                                   echo number_format($p['detalleped_total'] * $p['detalleped_tc'],$decimales,".",","); 
                         }
                         
                     ?>
@@ -312,17 +311,17 @@ border-bottom : 1px solid #aaa;
             <th></th>-->
             <td align="right"  style="padding: 0" colspan="2"><font size="3">
                 <b> 
-                    <?php echo number_format($total_final,2,".",","); ?>
+                    <?php echo number_format($total_final,$decimales,".",","); ?>
                 </b></font>
                 <?php
                 if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                     <br>
                     <?php
                         if ($parametro[0]["moneda_id"]==1){ //cuando la moneda principal es Bs y la del producto es Bs
-                            echo $moneda["moneda_descripcion"]." ".number_format($total_final / $p['detalleped_tc'] ,2,".",","); 
+                            echo $moneda["moneda_descripcion"]." ".number_format($total_final / $p['detalleped_tc'] ,$decimales,".",","); 
                         }
                         else{
-                            echo "Bs ".number_format($total_final * $p['detalleped_tc'],2,".",","); 
+                            echo "Bs ".number_format($total_final * $p['detalleped_tc'],$decimales,".",","); 
                         }
                 }
                     ?>

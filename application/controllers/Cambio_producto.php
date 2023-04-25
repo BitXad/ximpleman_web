@@ -7,6 +7,7 @@
 class Cambio_producto extends CI_Controller{
     private $session_data = "";
     private $sistema;
+    private $parametro;
     
     function __construct()
     {
@@ -14,6 +15,7 @@ class Cambio_producto extends CI_Controller{
         $this->load->model('Cambio_producto_model');
         $this->load->model('Producto_model');
         $this->load->model('Inventario_model');
+        $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -21,9 +23,14 @@ class Cambio_producto extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
         $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
@@ -38,6 +45,9 @@ class Cambio_producto extends CI_Controller{
      */
     function index()
     {
+        $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        
         $data['sistema'] = $this->sistema;
         if($this->acceso(65)){
             $data['page_title'] = "Cambios/Devoluciones";
@@ -164,6 +174,8 @@ class Cambio_producto extends CI_Controller{
     function addee()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        $data['sistema'] = $this->sistema;
         if($this->acceso(65)){
             $data['page_title'] = "Cambios/Devoluciones";
             if(isset($_POST) && count($_POST) > 0)     
@@ -190,6 +202,8 @@ class Cambio_producto extends CI_Controller{
     function add($cambio_producto_id)
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        
         if($this->acceso(66)){
             $data['page_title'] = "Cambios/Devoluciones";
             $data['cambio_producto'] = $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);

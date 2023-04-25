@@ -26,6 +26,9 @@
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
 <!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 <!-------------------------------------------------------->
+<?php $decimales = $parametro['parametro_decimales']; ?>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="cd" id="cd" value="d">
 <div class="box-header">

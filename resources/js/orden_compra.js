@@ -7,6 +7,9 @@ function inicio(){
 //Tabla resultados de la busqueda en el index de producto
 function tablaresultadosordencompra(limite)
 {
+    
+    
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'orden_compra/buscar_ordenescompra';
     let parametro = "";
@@ -40,7 +43,7 @@ function tablaresultadosordencompra(limite)
                         html += moment(registros[i]["ordencompra_fechaentrega"]).format("DD/MM/YYYY");
                         html += "</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['proveedor_nombre']+"</td>";
-                        html += "<td style='padding: 2px;' class='text-right'>"+registros[i]['ordencompra_totalfinal']+"</td>";
+                        html += "<td style='padding: 2px;' class='text-right'>"+Number(registros[i]['ordencompra_totalfinal']).toFixed(decimales)+"</td>";
                         html += "<td style='padding: 2px;' class='text-center'>"+registros[i]['estado_descripcion']+"</td>";
                         html += "<td style='padding: 2px;' class='no-print'>";
                         html += "<a href='"+base_url+"orden_compra/edit/"+registros[i]["ordencompra_id"]+"' class='btn btn-info btn-xs' title='Modificar orden compra' ><span class='fa fa-pencil'></span></a>&nbsp;";
@@ -204,45 +207,7 @@ function numberFormat(numero){
             return resultado;
         }
     }
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   
 /*
  * Funcion que buscara productos en la tabla productos
  */
@@ -295,7 +260,9 @@ function formato_fecha(string){
 
 
 function formato_numerico(numero){
-            nStr = Number(numero).toFixed(2);
+    
+    
+        nStr = Number(numero).toFixed(2);
         nStr += '';
 	x = nStr.split('.');
 	x1 = x[0];

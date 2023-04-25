@@ -55,6 +55,7 @@ class Orden_compra extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         if($this->acceso(1)) {
             /*$data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();

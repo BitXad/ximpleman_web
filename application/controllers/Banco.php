@@ -6,11 +6,15 @@
  
 class Banco extends CI_Controller{
     private $sistema;
-    
+    private $parametros;
+                
     function __construct()
     {
         parent::__construct();
+        
         $this->load->model('Banco_model');
+        $this->load->model('Parametro_model');
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -18,8 +22,13 @@ class Banco extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
     }
+    
+    
     private function acceso($id_rol){
+        
         $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
@@ -35,6 +44,7 @@ class Banco extends CI_Controller{
      */
     function index()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(124)){
         $params['limit'] = RECORDS_PER_PAGE; 
@@ -57,7 +67,9 @@ class Banco extends CI_Controller{
      */
     function add()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(124)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('banco_nombre','Banco Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -91,7 +103,9 @@ class Banco extends CI_Controller{
      */
     function edit($banco_id)
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(124)){
             // check if the banco exists before trying to edit it
             $data['banco'] = $this->Banco_model->get_banco($banco_id);
@@ -134,6 +148,8 @@ class Banco extends CI_Controller{
     function remove($banco_id)
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        
         if($this->acceso(124)){
             $banco = $this->Banco_model->get_banco($banco_id);
             // check if the banco exists before trying to delete it

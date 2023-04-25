@@ -46,6 +46,7 @@ function numberFormat(numero){
     }
 }
 function tabladetalle_productos(){
+    var decimales      = document.getElementById('decimales').value;
     var base_url      = document.getElementById('base_url').value;
     var controlador   = base_url+"detalle_venta/getdetalle_venta/";
     $.ajax({url: controlador,
@@ -106,7 +107,7 @@ function tabladetalle_productos(){
                         html += "<td style='padding: 0'>";
                         html += "<center>";
                         html += "<font size='"+espacio+"'><br></font>";
-                        html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+registros[i]["detalleven_cantidad"]+"</b></font></h4>";
+                        html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+Number(registros[i]["detalleven_cantidad"]).toFixed(decimales)+"</b></font></h4>";
                         html += "</center>";
                         html += "</td>";
                         html += "<td style='padding: 0;'>";
@@ -127,16 +128,16 @@ function tabladetalle_productos(){
                         html += "</td>";
                         html += "<td style='padding: 0' align='right'>";
                         html += "<font size='"+espacio+"'><br></font>";
-                        html += "<h4 style='color:white'><font size='"+letra+"'><b>"+numberFormat(Number(registros[i]['detalleven_precio']).toFixed(2))+"</b></font></h4>";
+                        html += "<h4 style='color:white'><font size='"+letra+"'><b>"+numberFormat(Number(registros[i]['detalleven_precio']).toFixed(decimales))+"</b></font></h4>";
                         html += "</td>";
                         html += "<td style='padding: 0' align='right'>";
                         html += "<font size='"+espacio+"'><br></font>";
-                        html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+numberFormat(Number(registros[i]["detalleven_total"]).toFixed(2))+"</b></font></h4>";
+                        html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+numberFormat(Number(registros[i]["detalleven_total"]).toFixed(decimales))+"</b></font></h4>";
                         html += "</td>";
 
                         html += "</tr>";
                         }
-                        html2 += "<h4 style='color: white;'><font size='8'><b> Total Bs.&nbsp;&nbsp; "+numberFormat(Number(total_detalle).toFixed(2))+"</b></font></h4>          ";
+                        html2 += "<h4 style='color: white;'><font size='8'><b> Total Bs.&nbsp;&nbsp; "+numberFormat(Number(total_detalle).toFixed(decimales))+"</b></font></h4>          ";
                     $("#verventa_detalle").html(html);
                     $("#estotal").html(html2);
                     
