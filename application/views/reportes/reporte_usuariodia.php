@@ -8,6 +8,7 @@
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <input type="hidden" name="mostrarmoneda" id="mostrarmoneda" value="<?php echo $parametro[0]['parametro_mostrarmoneda']; ?>" />
+<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" />
 <!--<input type="hidden" name="select_tipo" id="select_tipo" value='line' />-->
 
 <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='display:block;'>

@@ -5,6 +5,7 @@ function reporte_general(){
     var desde    = document.getElementById('fecha_desde').value;
     var hasta    = document.getElementById('fecha_hasta').value;
     var tipo     = document.getElementById('tipo_transaccion').value;
+    let decimales = document.getElementById('decimales').value;
     if (tipo==0) {
       eltipo = "";
     }else{
@@ -42,7 +43,7 @@ function reporte_general(){
                         html += "<tr>";
                         html += "<td align='center' style='width:5px;'>"+(i+1)+"</td>";
                         html += "<td> "+registros[i]["cliente_nombre"]+" </td>";                                            
-                        html += "<td class='text-right'> "+numberFormat(Number(registros[i].totalventas).toFixed(2))+" </td>";
+                        html += "<td class='text-right'> "+numberFormat(Number(registros[i].totalventas).toFixed(decimales))+" </td>";
                         html += "<td class='text-right'> ";
                         if(lamoneda_id == 1){
                             total_otram = Number(registros[i]["totalventas"])/Number(registros[i]["tipo_cambio"])
@@ -51,25 +52,25 @@ function reporte_general(){
                             total_otram = Number(registros[i]["totalventas"])*Number(registros[i]["tipo_cambio"])
                             total_otramoneda += total_otram;
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</td>";
                         if(tipousuario_id == 1){
                             var utilidad = Number(registros[i].totalventas)-Number(registros[i].totalcosto);
                             totalcostos     += Number(registros[i].totalcosto);
                             totalutilidades += Number(utilidad);
-                            html += "<td class='text-right'> "+numberFormat(Number(registros[i].totalcosto).toFixed(2))+" </td>";
-                            html += "<td class='text-right'> "+numberFormat(Number(utilidad).toFixed(2))+" </td>";
+                            html += "<td class='text-right'> "+numberFormat(Number(registros[i].totalcosto).toFixed(decimales))+" </td>";
+                            html += "<td class='text-right'> "+numberFormat(Number(utilidad).toFixed(decimales))+" </td>";
                         }
                         html += "</tr>";
                     }
                     html += "<tr>";
                         html += "<td></td>";
                         html += "<th class='text-right'>TOTAL "+nombre_moneda+":</th>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(totalventas).toFixed(2))+"</th>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(totalventas).toFixed(decimales))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(decimales))+"</th>";
                         if(tipousuario_id == 1){
-                            html += "<th style='text-align:right'>"+numberFormat(Number(totalcostos).toFixed(2))+"</th>";
-                            html += "<th style='text-align:right'>"+numberFormat(Number(totalutilidades).toFixed(2))+"</th>";
+                            html += "<th style='text-align:right'>"+numberFormat(Number(totalcostos).toFixed(decimales))+"</th>";
+                            html += "<th style='text-align:right'>"+numberFormat(Number(totalutilidades).toFixed(decimales))+"</th>";
                         }
                     html += "</tr>";
                     $("#resultado_ventas").html(html);
@@ -123,6 +124,7 @@ function numberFormat(numero){
 function generarexcel_reportegeneral(){
     var tipousuario_id = document.getElementById('tipousuario_id').value;
     var respuesta = document.getElementById('resproducto').value;
+    let decimales = document.getElementById('decimales').value;
     if(respuesta == "" || respuesta == null){
         alert("Primero debe realizar una búsqueda");
     }else{
@@ -176,7 +178,7 @@ function generarexcel_reportegeneral(){
                         //utilidades += Number(utilidad);
                             row += (i+1)+',';
                             row += '"' +registros[i]["cliente_nombre"]+ '",';
-                            row += '"' +numberFormat(Number(registros[i]["totalventas"]).toFixed(2))+ '",';
+                            row += '"' +numberFormat(Number(registros[i]["totalventas"]).toFixed(decimales))+ '",';
                             if(lamoneda_id == 1){
                                 total_otram = Number(registros[i]["totalventas"])/Number(registros[i]["tipo_cambio"])
                                 //total_otramoneda += total_otram;
@@ -184,10 +186,10 @@ function generarexcel_reportegeneral(){
                                 total_otram = Number(registros[i]["totalventas"])*Number(registros[i]["tipo_cambio"])
                                 //total_otramoneda += total_otram;
                             }
-                            row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
+                            row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';
                             if(tipousuario_id == 1){
-                                row += '"' +numberFormat(Number(Number(registros[i]["totalcosto"])).toFixed(2))+ '",';
-                                row += '"' +numberFormat(Number(Number(registros[i].totalventas)-Number(registros[i].totalcosto)).toFixed(2))+ '",';
+                                row += '"' +numberFormat(Number(Number(registros[i]["totalcosto"])).toFixed(decimales))+ '",';
+                                row += '"' +numberFormat(Number(Number(registros[i].totalventas)-Number(registros[i].totalcosto)).toFixed(decimales))+ '",';
                         }
                             
                         row.slice(0, row.length - 1);

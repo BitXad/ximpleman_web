@@ -11,6 +11,7 @@ function buscar_ventas(){
     var fecha_fin    = document.getElementById("fecha_fin").value;    
     var usuario_id = document.getElementById('usuario_id').value;
     var zona_id    = document.getElementById('zona_id').value;
+    let decimales = document.getElementById('decimales').value;
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
            type:"POST",
@@ -24,14 +25,18 @@ function buscar_ventas(){
                     for(i=0; i < n; i++){
                         total_venta = total_venta +Number(registros[i]["venta_total"]);
                         html += "<tr style='padding:0'>";
-                        html += "<td class='text-center' style='padding:0'>"+moment(registros[i]["venta_fecha"]).format("DD-MM-YYYY")+"</td>";
-                        html += "<td class='text-right' style='padding:0'>"+numberFormat(Number(registros[i]["venta_total"]).toFixed(2))+"</td>";
-                        html += "<td class='text-center' style='padding:0'>"+registros[i]["zona_nombre"]+"</td>";
+                        html += "<td class='text-center' style='padding:0'>"+moment(registros[i]["venta_fecha"]).format("DD/MM/YYYY")+"</td>";
+                        html += "<td class='text-right' style='padding:0'>"+numberFormat(Number(registros[i]["venta_total"]).toFixed(decimales))+"</td>";
+                        html += "<td class='text-center' style='padding:0'>";
+                        if(registros[i]["zona_nombre"] != "" && registros[i]["zona_nombre"] != null){
+                            html += registros[i]["zona_nombre"];
+                        }
+                        html += "</td>";
                         html += "</tr>";
                     }
                     html += "<tr>";
                     html += "<th style='text-align: right'>TOTAL</th>";
-                    html += "<th style='text-align: right'>"+numberFormat(Number(total_venta).toFixed(2))+"</th>";
+                    html += "<th style='text-align: right'>"+numberFormat(Number(total_venta).toFixed(decimales))+"</th>";
                     html += "<th style='text-align: right'></th>";
                     html += "</tr>";
                     $("#tabla_ventas").html(html);
