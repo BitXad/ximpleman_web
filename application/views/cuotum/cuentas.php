@@ -78,6 +78,9 @@
 }
 </style>
 
+        <?php $decimales = $parametro['parametro_decimales']; ?>
+        <input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
@@ -104,8 +107,8 @@
         <font size="2" face="Arial">
           <b>FECHA CRÉDITO: </b><?php echo date('d/m/Y',strtotime($credito[0]['credito_fecha'])); ?>  <?php echo $credito[0]['credito_hora']; ?><br>
           <b>FECHA LIMITE: </b><?php echo date('d/m/Y',strtotime($credito[0]['credito_fechalimite'])); ?><br>
-          <b>MONTO CRED. <?= $moneda['moneda_descripcion'] ?>: </b><?php echo $credito[0]['credito_monto']; ?><br>
-          <b>CUOTAS: </b><?php echo $credito[0]['credito_numpagos']; ?> <b> INTERES: </b><?php echo $credito[0]['credito_interesproc']; ?> %
+          <b>MONTO CRED. <?= $moneda['moneda_descripcion'] ?>: </b><?php echo number_format($credito[0]['credito_monto'],$decimales,".",","); ?><br>
+          <b>CUOTAS: </b><?php echo number_format($credito[0]['credito_numpagos'],0,".",","); ?><b> INTERES: </b><?php echo number_format($credito[0]['credito_interesproc'],$decimales,".",","); ?> %
         </font>
         </td>
 </tr>

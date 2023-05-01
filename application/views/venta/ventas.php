@@ -1,6 +1,6 @@
 
 <!----------------------------- script buscador --------------------------------------->
-<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/offline.js'); ?>"></script>
 <!--<script src="<?php //echo base_url('resources/js/tipo_emision.js'); ?>"></script>-->
@@ -324,7 +324,7 @@ window.onkeydown = compruebaTecla;
 <?php $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:12px;' "; ?>
 <!-------------------- inicio collapse ---------------------->
 
-  <div class="panel-group" <?php echo $estilo_div; ?>>
+<div class="panel-group" <?php echo $estilo_div; ?>>
     
     <font size="1"><b>DATOS DEL CLIENTE</b> 
     <div <?php echo ($dosificacion[0]['docsec_codigoclasificador'] != 12)? "hidden" : "";  ?>>
@@ -348,7 +348,7 @@ window.onkeydown = compruebaTecla;
             <div class="box-body">
       
       
-    <div class="panel panel-default" <?php echo $estilo_div; ?>>
+    <div class="panel panel-default" <?php echo $estilo_div; ?> >
       <div class="panel-heading" <?php echo $estilo_div; ?>>
       
 
@@ -423,16 +423,50 @@ window.onkeydown = compruebaTecla;
         <div class="form-group" <?php echo $estilo_div; ?>>
             <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,12)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>" onKeyUp="this.value = this.value.toUpperCase();"/>
         </div>
+        
         </div>
 
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="email" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">CORREO ELECTRONICO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="email"  value="<?php echo ($cliente[0]['cliente_email']==null)? $empresa_email : $cliente[0]['cliente_email'];  ; ?>" onclick="this.select()" onkeypress="validar(event,13)"/>
+                <input type="email" name="email" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="email"  value="<?php echo ($cliente[0]['cliente_email']==null)? $empresa_email : $cliente[0]['cliente_email']; ?>" onclick="this.select()" onkeypress="validar(event,13)"/>
             </div>
         </div>
         
-      
+        <div class="col-md-6" <?php echo $estilo_div; ?>>
+            <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">PREFERENCIAS</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="glosay"  value="" onclick="this.select()" onkeypress="transcribir()"/>
+            </div>
+        </div>
+        <div class="col-md-2" <?php echo $estilo_div; ?>>
+            <label for="totaly" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">TOTAL</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <input type="text" name="totaly" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="totaly"  value="0.00" onclick="this.select()" onkeypress="transcribir()"/>
+            </div>
+        </div>
+        <div class="col-md-2" <?php echo $estilo_div; ?>>
+            <label for="cobradoy" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">COBRADO</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <input type="text" name="cobradoy" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cobradoy"  value="0.00" onclick="this.select()" onkeypress="transcribir()"/>
+            </div>
+        </div>
+        <div class="col-md-2" <?php echo $estilo_div; ?>>
+            <label for="cambioy" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">CAMBIO</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <input type="text" name="cambioy" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cambioy"  value="0.00" onclick="this.select()" onkeypress="transcribir()"/>
+            </div>
+        </div>
+        
+<!--            <div class="input-group"  <?php echo $estilo_div; ?>>
+                <div class="btn btn-success input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-floppy-o" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                <div class="btn btn-primary input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-battery-0" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                <div class="btn btn-danger input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-cubes" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                <div class="btn btn-warning input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-download" aria-hidden="true" id="span_buscar_cliente"></span></div>
+                <div class="btn btn-facebook input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
+            
+            </div>-->
+
 
 <!---------------------- collapse ----------------------------->
  
@@ -693,8 +727,26 @@ window.onkeydown = compruebaTecla;
         
     <!--<span class="badge btn-default" style="width: 300px;">-->
     
-    
-    
+<ul class="nav nav-tabs">
+<!--    <li class="#">
+      <a href="#">Camaras</a>
+    </li>-->
+    <li><a href="#">Accesorios</a></li>
+    <li><a href="#">Computacion</a></li>
+    <li><a href="#">Programacion</a></li>
+    <li><a href="#">Electronica</a></li>
+</ul>
+
+<!--<ul class="nav nav-pills">
+  <li class="">
+    <a href="#">Home</a>
+  </li>
+    <li class="btn btn-info btn-xs"><a href="#">PERFUMES</a></li>
+  <li class="btn btn-info btn-xs"><a href="#">DESODORANTES</a></li>
+  <li class="btn btn-info btn-xs"><a href="#">CREMAS</a></li>
+  <li class="btn btn-info btn-xs"><a href="#">SHAMPOOS</a></li>
+</ul>
+    -->
         <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod">
                 <option value="0" >- CATEGORIAS -</option>
         <?php 
@@ -782,72 +834,7 @@ window.onkeydown = compruebaTecla;
             </div> <!-------- FIN BOX-BODY---------->
         </div> <!-------- FIN BOX---------->
         
-        <?php if ($parametro['parametro_factura']!=3){ ?>
         
-        <div class="box">
-            <font size="1"><b>PRODUCTOS SIN HOMOLOGAR</b></font>
-        <div class="box" style="border-color:black;">
-            <div class="box-body">        
-        
-       
-        <div class="col-md-12" style="padding:0;" id="div_mensaje">
-                 
-        </div>
-            
-                <?php $estilo_tabla = "style='padding:0;'"; ?>
-        <div class="col-md-12" style="padding:0; font-family: Arial;">
-            <table id="mitabla">
-                <tr <?php echo $estilo_tabla; ?>>
-                    <th <?php echo $estilo_tabla; ?>>#</th>
-                    <th <?php echo $estilo_tabla; ?>>DESCRIPCION</th>
-                    <th <?php echo $estilo_tabla; ?>>CODIGO</th>
-                    <th <?php echo $estilo_tabla; ?>>PRECIO</th>
-                    <th <?php echo $estilo_tabla; ?>>UNID.</th>
-                    <th <?php echo $estilo_tabla; ?>>COD.</th>
-                    <th <?php echo $estilo_tabla; ?>>ESTADO</th>                    
-                </tr>
-                <?php $i = 0;
-                    
-                    foreach($productos_homologados as $ph){ ?>
-                    <tr <?php echo $estilo_tabla; ?>>                    
-                        <td <?php echo $estilo_tabla; ?>><?php echo ++$i; ?></td>
-                        <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_nombre"]."<sub>[".$ph["producto_id"]."]</sub>"; ?></td>
-                        <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_codigo"]; ?></td>
-                        <td style="padding:0; text-align: right;"><?php echo number_format($ph["producto_precio"],2,".",","); ?></td>
-                        <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigounidadsin"]; ?>
-                            
-                            <?php if(! $ph["producto_codigounidadsin"]>0){ ?>
-                            <span class="btn btn-xs btn-danger" title="La unidad/codigo unidad, no fueron correctamente asignados..!!" ><fa class="fa fa-chain-broken"></fa></span>
-                            <?php } ?>
-                                
-                           </center>
-                        </td>
-                        
-                        <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigosin"]; ?>
-                            
-                            <?php if(! $ph["producto_codigosin"]>0){ ?>
-                            <span class="btn btn-xs btn-danger" title="El codigo Producto SIN, no fue correctamente asignado..!!"><fa class="fa fa-chain-broken"></fa></span>
-                            <?php } ?>
-                           </center>
-                        </td>
-                        
-                        <td <?php echo $estilo_tabla; ?>>
-                            <center>
-                                <a href="<?php echo base_url("producto/edit/".$ph["producto_id"]); ?>" class="btn btn-info btn-xs" target="_BLANK"><fa class="fa fa-pen"> </fa> Modificar</a>                            
-                            </center>
-                        </td>
-                        
-                    </tr>
-                <?php } ?>
-            </table>
-            
-        </div>    
-        </div>
-            
-        </div>
-        </div>
-       
-        <?php } ?> 
         
     </div>
     
@@ -1096,7 +1083,77 @@ window.onkeydown = compruebaTecla;
         </div> <!-------- FIN BOX---------->
         
     </div>
-            <div class="col-md-6"></div>
+    
+    <div class="col-md-6">
+        
+    <?php if ($parametro['parametro_factura']!=3){ ?>
+        
+        <div class="box">
+            <font size="1"><b>PRODUCTOS SIN HOMOLOGAR</b></font>
+        <div class="box" style="border-color:black;">
+            <div class="box-body">        
+        
+       
+        <div class="col-md-12" style="padding:0;" id="div_mensaje">
+                 
+        </div>
+            
+                <?php $estilo_tabla = "style='padding:0;'"; ?>
+        <div class="col-md-12" style="padding:0; font-family: Arial;">
+            <table id="mitabla">
+                <tr <?php echo $estilo_tabla; ?>>
+                    <th <?php echo $estilo_tabla; ?>>#</th>
+                    <th <?php echo $estilo_tabla; ?>>DESCRIPCION</th>
+                    <th <?php echo $estilo_tabla; ?>>CODIGO</th>
+                    <th <?php echo $estilo_tabla; ?>>PRECIO</th>
+                    <th <?php echo $estilo_tabla; ?>>UNID.</th>
+                    <th <?php echo $estilo_tabla; ?>>COD.</th>
+                    <th <?php echo $estilo_tabla; ?>>ESTADO</th>                    
+                </tr>
+                <?php $i = 0;
+                    
+                    foreach($productos_homologados as $ph){ ?>
+                    <tr <?php echo $estilo_tabla; ?>>                    
+                        <td <?php echo $estilo_tabla; ?>><?php echo ++$i; ?></td>
+                        <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_nombre"]."<sub>[".$ph["producto_id"]."]</sub>"; ?></td>
+                        <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_codigo"]; ?></td>
+                        <td style="padding:0; text-align: right;"><?php echo number_format($ph["producto_precio"],2,".",","); ?></td>
+                        <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigounidadsin"]; ?>
+                            
+                            <?php if(! $ph["producto_codigounidadsin"]>0){ ?>
+                            <span class="btn btn-xs btn-danger" title="La unidad/codigo unidad, no fueron correctamente asignados..!!" ><fa class="fa fa-chain-broken"></fa></span>
+                            <?php } ?>
+                                
+                           </center>
+                        </td>
+                        
+                        <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigosin"]; ?>
+                            
+                            <?php if(! $ph["producto_codigosin"]>0){ ?>
+                            <span class="btn btn-xs btn-danger" title="El codigo Producto SIN, no fue correctamente asignado..!!"><fa class="fa fa-chain-broken"></fa></span>
+                            <?php } ?>
+                           </center>
+                        </td>
+                        
+                        <td <?php echo $estilo_tabla; ?>>
+                            <center>
+                                <a href="<?php echo base_url("producto/edit/".$ph["producto_id"]); ?>" class="btn btn-info btn-xs" target="_BLANK"><fa class="fa fa-pen"> </fa> Modificar</a>                            
+                            </center>
+                        </td>
+                        
+                    </tr>
+                <?php } ?>
+            </table>
+            
+        </div>    
+        </div>
+            
+        </div>
+        </div>
+       
+        <?php } ?>     
+        
+    </div>
             
             <font face="Arial" size="1">
             <div class="col-md-3">

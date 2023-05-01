@@ -181,7 +181,7 @@ function tabladeudas(filtro) //Deudas por pagar
                             html += formato_numerico(Number(registros[i]['credito_monto']));
                         }*/
                         html += "</font></b></td>";
-                        html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
+                        html += "<td style='text-align: center'>"+Number(registros[i]['credito_numpagos']).toFixed(0)+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['usuario_nombre']+"</td>";

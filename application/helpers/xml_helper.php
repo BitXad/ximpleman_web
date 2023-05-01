@@ -254,7 +254,7 @@ $salto_linea='
         
         
         if($documento_sector==22){ //22 telecominicaciones
-            $cabecera_facturaxml .= $salto_linea.'         <nitConjunto xsi:nil="true"></nitConjunto>';
+            $cabecera_facturaxml .= $salto_linea.'          <nitConjunto xsi:nil="true"></nitConjunto>';
         }
             
         $cabecera_facturaxml .= $salto_linea.'          <numeroFactura>'.$factura['factura_numero'].'</numeroFactura>';

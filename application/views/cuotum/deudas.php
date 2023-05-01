@@ -25,6 +25,9 @@
 }
 </style>
 
+
+<?php $decimales = $parametro['parametro_decimales']; ?>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
@@ -47,8 +50,8 @@
 <td style="width: 25%; padding: 0" > 
   <font size="2" face="Arial">
   Fecha y Hora: <b><?php echo date('d/m/Y',strtotime($credito[0]['compra_fecha'])); ?>  <?php echo $credito[0]['compra_hora']; ?></b><br>
-                Monto Credito: <b><?php echo $credito[0]['compra_totalfinal']; ?></b><br>
-                Numero de Pagos: <b><?php echo $credito[0]['credito_numpagos']; ?></b> </font>
+                Monto Credito: <b><?php echo number_format($credito[0]['compra_totalfinal'],$decimales,".",","); ?></b><br>
+                Numero de Pagos: <b><?php echo number_format($credito[0]['credito_numpagos'],0); ?></b> </font>
   </td></tr></table>
 <div class="row">
     <div class="col-md-12">
@@ -140,15 +143,15 @@ $(document).ready(function(){
                         <td><?php echo $cont ?></td>
                                             
                         <td>Cuota <?php echo $c['cuota_numcuota']; ?></td>
-                        <td align="right"><?php echo number_format($c['cuota_capital'], 2, ".", ","); ?></td>
-                        <td align="right"><?php echo number_format($c['cuota_interes'], 2, ".", ","); ?></td>
-                        <td align="right"><?php echo number_format($c['cuota_moradias'], 2, ".", ","); ?></td>
-                        <td align="right"><?php echo number_format($c['cuota_multa'], 2, ".", ","); ?></td>
-                        <td align="right"><?php echo number_format($c['cuota_subtotal'], 2, ".", ","); ?></td>
-                        <td align="right"><?php echo number_format($c['cuota_descuento'], 2, ".", ","); ?></td>
-                        <td align="right"><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
+                        <td align="right"><?php echo number_format($c['cuota_capital'], $decimales, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['cuota_interes'], $decimales, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['cuota_moradias'], $decimales, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['cuota_multa'], $decimales, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['cuota_subtotal'], $decimales, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['cuota_descuento'], $decimales, ".", ","); ?></td>
+                        <td align="right"><b><?php echo number_format($c['cuota_total'], $decimales, ".", ","); ?></b></td>
                         <td><?php echo date('d/m/Y',strtotime($c['cuota_fechalimite'])); ?></td>
-                        <td align="right"><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
+                        <td align="right"><b><?php echo number_format($c['cuota_cancelado'], $decimales, ".", ","); ?></b></td>
                         <td align="center"><?php echo(($c['forma_nombre'] == null) ? "": $c['forma_nombre']) ?></td>
                         <td align="center"><?php echo(($c['banco_nombre'] == null) ? "": $c['banco_nombre']) ?></td>
                         <?php if($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { ?>
@@ -159,7 +162,7 @@ $(document).ready(function(){
                         <td><?php echo $c['cuota_hora']; ?></td>
                         <?php } ?>
                         <td><?php echo $c['cuota_numercibo']; ?></td>
-                        <td align="right"><b><?php echo number_format($c['cuota_saldo'], 2, ".", ","); ?></b></td>
+                        <td align="right"><b><?php echo number_format($c['cuota_saldo'], $decimales, ".", ","); ?></b></td>
                         <td><?php echo $c['cuota_glosa']; ?></td>
                         <td><?php echo $c['estado_descripcion']; ?></td>
                         <td><?php echo $c['usuario_nombre']; ?></td>
@@ -249,7 +252,7 @@ $(document).ready(function(){
                         <label for="cuota_cancelado" class="control-label">Cancelado</label>
                         <div class="form-group">
                             <input type="number" step="any" name="cuota_cancelado" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" max="<?php echo $c['cuota_total']; ?>"/>
-                            <input type="hidden"  name="cuota_total" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_total<?php echo $c['cuota_id']; ?>" />
+                            <input type="hidden"  name="cuota_total" value="<?php echo number_format($c['cuota_total'],$decimales,".",","); ?>" class="form-control" id="cuota_total<?php echo $c['cuota_id']; ?>" />
                             <input type="hidden"  name="credito_id" value="<?php echo $c['credito_id']; ?>" class="form-control" id="credito_id" />
                         </div>
                     </div>
