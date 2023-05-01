@@ -6,68 +6,65 @@
     });
 </script>-->
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 
 <script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
+    $(document).ready(function () {
+        (function ($) {
+            $('#filtrar').keyup(function () {
+                var rex = new RegExp($(this).val(), 'i');
+                $('.buscar tr').hide();
+                $('.buscar tr').filter(function () {
+                    return rex.test($(this).text());
+                }).show();
+            })
+        }(jQuery));
+    });
 </script> 
 
 <style type="text/css">
+    p {
+        font-family: Arial;
+        font-size: 7pt;
+        line-height: 120%;   /*esta es la propiedad para el interlineado*/
+        color: #000;
+        padding: 10px;
+    }
 
-p {
-    font-family: Arial;
-    font-size: 7pt;
-    line-height: 120%;   /*esta es la propiedad para el interlineado*/
-    color: #000;
-    padding: 10px;
-}
+    div {
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        margin-left: 10px;
+        margin: 0px;
+    }
 
-div {
-margin-top: 0px;
-margin-right: 0px;
-margin-bottom: 0px;
-margin-left: 10px;
-margin: 0px;
-}
-
-
-table{
-width : 7cm;
-margin : 0 0 0px 0;
-padding : 0 0 0 0;
-border-spacing : 0 0;
-border-collapse : collapse;
-font-family: Arial;
-font-size: 8pt;  
-
-td {
-border:hidden;
-}
-}
-
-td#comentario {
-vertical-align : bottom;
-border-spacing : 0;
-}
-div#content {
-background : #ddd;
-font-size : 8px;
-margin : 0 0 0 0;
-padding : 0 5px 0 5px;
-border-left : 1px solid #aaa;
-border-right : 1px solid #aaa;
-border-bottom : 1px solid #aaa;
-}
+    table{
+        width : 7cm;
+        margin : 0 0 0px 0;
+        padding : 0 0 0 0;
+        border-spacing : 0 0;
+        border-collapse : collapse;
+        font-family: Arial;
+        font-size: 8pt;
+        td {
+            border:hidden;
+        }
+    }
+    
+    td#comentario {
+        vertical-align : bottom;
+        border-spacing : 0;
+    }
+    div#content {
+        background : #ddd;
+        font-size : 8px;
+        margin : 0 0 0 0;
+        padding : 0 5px 0 5px;
+        border-left : 1px solid #aaa;
+        border-right : 1px solid #aaa;
+        border-bottom : 1px solid #aaa;
+    }
 </style>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -196,7 +193,17 @@ border-bottom : 1px solid #aaa;
                         ?>
 
                 </td>
-                <td align="center" style="padding: 0;  border-left: #000; border-style: solid; border-width: thin;"><?php echo number_format($d['detalleven_cantidad'],$decimales,".",","); ?></td>
+                <td align="center" style="padding: 0;  border-left: #000; border-style: solid; border-width: thin;">
+                    <?php
+                    $partes = explode(".",$d['detalleven_cantidad']); 
+                    if ($partes[1] == 0) { 
+                        $lacantidad = $partes[0]; 
+                    }else{ 
+                        $lacantidad = number_format($d['detalleven_cantidad'],$decimales,'.',','); 
+                    } 
+                    echo $lacantidad;
+                    ?>
+                </td>
                 <td style="padding: 0;  border-left: #000; border-style: solid; border-width: thin;"><?php 
                         $preferencia = $d['detalleven_preferencia'];
                         if ($preferencia !="null" && $preferencia!='-')

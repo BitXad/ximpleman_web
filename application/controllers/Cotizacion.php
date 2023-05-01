@@ -496,7 +496,7 @@ class Cotizacion extends CI_Controller{
                 ,d.detallecot_descuento 
                 ,d.detallecot_total 
                 ,d.detallecot_caracteristica 
-                ,d.detallecot_descripcion 
+                ,''
                 ,0
                 ,1
                 ,".$usuario_id."

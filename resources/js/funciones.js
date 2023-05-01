@@ -4048,7 +4048,7 @@ function eliminar_producto_vendido(detalleven_id)
 function verificar_ventas()
 {
     var base_url = document.getElementById('base_url').value;    
-    var parametro = document.getElementById('parametro').value;
+    let decimales = document.getElementById('parametro_decimales').value;
     var controlador = base_url+'venta/verificar_ventas';
      
     $.ajax({url: controlador,
@@ -4067,17 +4067,26 @@ function verificar_ventas()
                 precio_nuevo = res[i]["venta"];
                 
                 if(precio_nuevo == precio_anterior)
-                    duplicado = "DUPLICADO";
+                        duplicado = "DUPLICADO";
                 else
                     duplicado = "";
                 
+                let partes = res[i]["items"];
+                let partes1 = partes.toString();
+                let partes2 = partes1.split('.');
+                if (partes2[1] == 0) { 
+                    lacantidad = partes2[0]; 
+                }else{ 
+                    lacantidad = numberFormat(Number(res[i]["items"]).toFixed(decimales))
+                    //lacantidad = number_format($d['detalleven_cantidad'],2,'.',','); 
+                }
                 if (res[i]["resultado"] == 1){
                     
                     botoncito = "#boton"+res[i]["venta_id"];                    
 //                    nombreboton = "boton"+res[i]["venta_id"];                    
                    //botoncito2 = "boton"+res[i]["venta_id"];
                     
-                    $(botoncito).val("CONFLICTO | Items: "+res[i]["items"]+"\n"+duplicado);
+                    $(botoncito).val("CONFLICTO | Items: "+lacantidad+"\n"+duplicado);
 //                    document.getElementById(nombreboton).style.display = 'block';                                        
                     
                 }
@@ -4086,7 +4095,7 @@ function verificar_ventas()
                     botoncito = "#boton"+res[i]["venta_id"];
                     
 //                    document.getElementById(botoncito).style.display = 'block'; 
-                    $(botoncito).val(" - OK - | Items: "+res[i]["items"]+"\n"+duplicado);
+                    $(botoncito).val(" - OK - | Items: "+lacantidad+"\n"+duplicado);
                    
                     
                 }

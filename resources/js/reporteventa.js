@@ -14,6 +14,7 @@ function reporte1()
     var nombre_moneda = document.getElementById('nombre_moneda').value;
     var cliente  = document.getElementById('cliente_id').value;
     var tipo     = document.getElementById('tipo_transaccion').value;
+    let decimales = document.getElementById('decimales').value;
     if (tipo==0) {
       eltipo = "";
     }else{
@@ -52,7 +53,7 @@ function reporte1()
                         html += "<td> "+registros[i]["cliente_nombre"]+" </td>";     
                         html += "<td align='center'> "+registros[i]["venta_id"]+" </td>";     
                         html += "<td align='center'> "+registros[i]["factura_numero"]+" </td>";     
-                        html += "<td align='right'> "+numberFormat(Number(registros[i]["venta_total"]).toFixed(2))+" </td>";
+                        html += "<td align='right'> "+numberFormat(Number(registros[i]["venta_total"]).toFixed(decimales))+" </td>";
                         html += "<td class='text-right'> ";
                         if(lamoneda_id == 1){
                             total_otram = Number(registros[i]["venta_total"])/Number(registros[i]["tipo_cambio"]);
@@ -61,7 +62,7 @@ function reporte1()
                             total_otram = Number(registros[i]["venta_total"])*Number(registros[i]["tipo_cambio"]);
                             total_otramoneda += total_otram;
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</td>";
                         html += "<td align='center'> "+registros[i]["tipotrans_nombre"]+" </td>";     
                         html += "<td align='center'> "+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" </td>";
@@ -74,8 +75,8 @@ function reporte1()
                     html += "<th></th>";
                     html += "<th></th>";
                     html += "<th></th>";
-                    html += "<th style='text-align:right'>"+numberFormat(Number(totales).toFixed(2))+"</th>";
-                    html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
+                    html += "<th style='text-align:right'>"+numberFormat(Number(totales).toFixed(decimales))+"</th>";
+                    html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(decimales))+"</th>";
                     html += "<th></th>";
                     html += "<th></th>";
                     html += "<th></th>";
@@ -148,6 +149,7 @@ function generarexcel_vclientegeneral(){
         var nombre_moneda = document.getElementById('nombre_moneda').value;
         var lamoneda_id = document.getElementById('lamoneda_id').value;
         var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+        let decimales = document.getElementById('decimales').value;
         var registros =  JSON.parse(respuesta);
         var showLabel = true;
         var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
@@ -199,7 +201,7 @@ function generarexcel_vclientegeneral(){
                             row += '"' +registros[i]["venta_id"]+ '",';
                             row += '"' +registros[i]["factura_numero"]+ '",';
                             //row += '"' +Number(registros[i]["factura_id"])+ '",';
-                            row += '"' +numberFormat(Number(registros[i]["venta_total"]).toFixed(2))+ '",';
+                            row += '"' +numberFormat(Number(registros[i]["venta_total"]).toFixed(decimales))+ '",';
                             if(lamoneda_id == 1){
                                 total_otram = Number(registros[i]["venta_total"])/Number(registros[i]["tipo_cambio"])
                                 //total_otramoneda += total_otram;
@@ -207,7 +209,7 @@ function generarexcel_vclientegeneral(){
                                 total_otram = Number(registros[i]["venta_total"])*Number(registros[i]["tipo_cambio"])
                                 //total_otramoneda += total_otram;
                             }
-                            row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
+                            row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';
                             row += '"' +registros[i]["tipotrans_nombre"]+ '",';
                             row += '"' +moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["venta_hora"]+ '",';
                             row += '"' +registros[i]["usuario_nombre"]+ '",';

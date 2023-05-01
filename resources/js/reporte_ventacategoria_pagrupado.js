@@ -10,6 +10,7 @@ function tabla_reportescatproducto(){
     var desde    = document.getElementById('fecha_desde').value;
     var hasta    = document.getElementById('fecha_hasta').value;
     var categoria_id = document.getElementById('categoria_id').value;
+    let decimales = document.getElementById('decimales').value;
     //var usuario_id = document.getElementById('usuario_id').value;
     //var esventa_preventa = document.getElementById('esventa_preventa').value;
     document.getElementById('loader').style.display = 'block';
@@ -59,10 +60,21 @@ function tabla_reportescatproducto(){
                         html += "<td> "+registros[i]["producto_nombre"]+" </td>";
                         //html += "<td align='center'> "+registros[i]["tipotrans_nombre"]+" </td>";  
                         html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                          
-                        html += "<td align='center'> "+registros[i]["total_cantidad"]+" </td>"; 
-                        html += "<td align='right'> "+numberFormat(Number(registros[i]["total_punitario"]).toFixed(2))+" </td>"; 
-                        html += "<td align='right'> "+numberFormat(Number(registros[i]["total_descuento"]).toFixed(2))+" </td>";
-                        html += "<td align='right'><b>"+numberFormat(Number(registros[i]["total_venta"]).toFixed(2))+"</b></td>";
+                        html += "<td align='center'> ";
+                        let partes = registros[i]["total_cantidad"];
+                        let partes1 = partes.toString();
+                        let partes2 = partes1.split('.');
+                        if (partes2[1] == 0) { 
+                            lacantidad = partes2[0]; 
+                        }else{ 
+                            lacantidad = numberFormat(Number(registros[i]["total_cantidad"]).toFixed(decimales))
+                            //lacantidad = number_format($d['detalleven_cantidad'],2,'.',','); 
+                        }
+                        html += lacantidad;
+                        html += "</td>"; 
+                        html += "<td align='right'> "+numberFormat(Number(registros[i]["total_punitario"]).toFixed(decimales))+" </td>"; 
+                        html += "<td align='right'> "+numberFormat(Number(registros[i]["total_descuento"]).toFixed(decimales))+" </td>";
+                        html += "<td align='right'><b>"+numberFormat(Number(registros[i]["total_venta"]).toFixed(decimales))+"</b></td>";
                         html += "<td class='text-right'> ";
                         
                         if(lamoneda_id == 1){
@@ -73,17 +85,17 @@ function tabla_reportescatproducto(){
                             total_otramoneda += total_otram;
                         }
                         
-                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</td>";
                         
                         if(tipousuario_id == 1){
                         
-                            html += "<td align='right'> "+numberFormat(Number(registros[i]["total_costo"]).toFixed(2))+" </td>";
-                            html += "<td align='right'> "+numberFormat(Number(registros[i]["total_utilidad"]).toFixed(2))+" </td>";
+                            html += "<td align='right'> "+numberFormat(Number(registros[i]["total_costo"]).toFixed(decimales))+" </td>";
+                            html += "<td align='right'> "+numberFormat(Number(registros[i]["total_utilidad"]).toFixed(decimales))+" </td>";
                             html += "<td align='right'> ";
                             
                             if(Number(registros[i]["total_venta"]) !=0){
-                                html += Number(Number(registros[i]["total_utilidad"])/Number(registros[i]["total_venta"])).toFixed(2);
+                                html += Number(Number(registros[i]["total_utilidad"])/Number(registros[i]["total_venta"])).toFixed(decimales);
                             }else{
                                 html += "0.00";
                             }
@@ -98,14 +110,14 @@ function tabla_reportescatproducto(){
                         //html += "<th></th>";
                         html += "<th></th>";
                         html += "<th></th>";
-                        html += "<th>"+numberFormat(Number(cantidades).toFixed(2))+"</th>";
+                        html += "<th>"+numberFormat(Number(cantidades).toFixed(decimales))+"</th>";
                         html += "<th></th>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(descuentos).toFixed(2))+"</th>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(total).toFixed(2))+"</th>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(descuentos).toFixed(decimales))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(total).toFixed(decimales))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(decimales))+"</th>";
                         if(tipousuario_id == 1){
-                            html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(2))+"</th>";
-                            html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(2))+"</th>";
+                            html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(decimales))+"</th>";
+                            html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(decimales))+"</th>";
                         }
                         html += "<th></th>";
                         
@@ -174,6 +186,7 @@ function generarexcel_vagrupado_porcategoria(){
         var nombre_moneda = document.getElementById('nombre_moneda').value;
         var lamoneda_id = document.getElementById('lamoneda_id').value;
         var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+        let decimales = document.getElementById('decimales').value;
         var registros =  JSON.parse(respuesta);
         var showLabel = true;
         var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
@@ -229,10 +242,10 @@ function generarexcel_vagrupado_porcategoria(){
                             row += '"' +registros[i]["producto_nombre"]+ '",';
                             //row += '"' +registros[i]["tipotrans_nombre"]+ '",';
                             row += '"' +registros[i]["producto_unidad"]+ '",';
-                            row += '"' +Number(registros[i]["total_cantidad"]).toFixed(2)+ '",';
-                            row += '"' +numberFormat(Number(registros[i]["total_punitario"]).toFixed(2))+ '",';
-                            row += '"' +numberFormat(Number(registros[i]["total_descuento"]).toFixed(2))+ '",';
-                            row += '"' +numberFormat(Number(registros[i]["total_venta"]).toFixed(2))+ '",';
+                            row += '"' +Number(registros[i]["total_cantidad"]).toFixed(decimales)+ '",';
+                            row += '"' +numberFormat(Number(registros[i]["total_punitario"]).toFixed(decimales))+ '",';
+                            row += '"' +numberFormat(Number(registros[i]["total_descuento"]).toFixed(decimales))+ '",';
+                            row += '"' +numberFormat(Number(registros[i]["total_venta"]).toFixed(decimales))+ '",';
                             if(lamoneda_id == 1){
                                 total_otram = Number(registros[i]["total_venta"])/Number(registros[i]["tipo_cambio"])
                                 //total_otramoneda += total_otram;
@@ -240,11 +253,11 @@ function generarexcel_vagrupado_porcategoria(){
                                 total_otram = Number(registros[i]["total_venta"])*Number(registros[i]["tipo_cambio"])
                                 //total_otramoneda += total_otram;
                             }
-                            row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
+                            row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';
                             if(tipousuario_id == 1){
-                                row += '"' +numberFormat(Number(registros[i]["total_costo"]).toFixed(2))+ '",';
-                                row += '"' +numberFormat(Number(registros[i]["total_utilidad"]).toFixed(2))+ '",';
-                                row += '"' +Number(Number(registros[i]["total_utilidad"])/Number(registros[i]["total_venta"])).toFixed(2)+ '",';
+                                row += '"' +numberFormat(Number(registros[i]["total_costo"]).toFixed(decimales))+ '",';
+                                row += '"' +numberFormat(Number(registros[i]["total_utilidad"]).toFixed(decimales))+ '",';
+                                row += '"' +Number(Number(registros[i]["total_utilidad"])/Number(registros[i]["total_venta"])).toFixed(decimales)+ '",';
                             }
                             
                         row.slice(0, row.length - 1);

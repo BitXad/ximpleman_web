@@ -21,6 +21,7 @@ function reporte_general(){
     var clasificador_id = document.getElementById('clasificador_id').value;
     var categoria_id = document.getElementById('categoria_id').value;
     var subcategoria_id = document.getElementById('subcategoria_id').value;
+    let decimales = document.getElementById('decimales').value;
     document.getElementById('loader').style.display = 'block';
     $.ajax({url: controlador,
             type:"POST",
@@ -90,14 +91,25 @@ function reporte_general(){
                         }
                         if(filtrar == 1 || filtrar == 2){
                             html += "<td align='right'>";
-                            html += numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(2)); // CUOTA INICIAL
+                            html += numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(decimales)); // CUOTA INICIAL
                             html += "</td>";
                         }
                         html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                          
-                        html += "<td align='center'> "+registros[i]["detalleven_cantidad"]+" </td>"; 
-                        html += "<td align='right'> "+numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(2))+" </td>"; 
-                        html += "<td align='right'> "+numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+" </td>";
-                        html += "<td align='right'><b>"+numberFormat(Number(registros[i]["detalleven_total"]).toFixed(2))+"</b></td>";
+                        html += "<td align='center'> ";
+                        let partes = registros[i]["detalleven_cantidad"];
+                        let partes1 = partes.toString();
+                        let partes2 = partes1.split('.');
+                        if (partes2[1] == 0) { 
+                            lacantidad = partes2[0]; 
+                        }else{ 
+                            lacantidad = numberFormat(Number(registros[i]["detalleven_cantidad"]).toFixed(decimales))
+                            //lacantidad = number_format($d['detalleven_cantidad'],2,'.',','); 
+                        }
+                        html += lacantidad;
+                        html += " </td>"; 
+                        html += "<td align='right'> "+numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(decimales))+" </td>"; 
+                        html += "<td align='right'> "+numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(decimales))+" </td>";
+                        html += "<td align='right'><b>"+numberFormat(Number(registros[i]["detalleven_total"]).toFixed(decimales))+"</b></td>";
                         html += "<td class='text-right'> ";
                         if(lamoneda_id == 1){
                             total_otram = Number(registros[i]["detalleven_total"])/Number(registros[i]["detalleven_tc"])
@@ -106,11 +118,11 @@ function reporte_general(){
                             total_otram = Number(registros[i]["detalleven_total"])*Number(registros[i]["detalleven_tc"])
                             total_otramoneda += total_otram;
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</td>";
                         if(tipousuario_id == 1){
-                            html += "<td align='right'> "+numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+" </td>";
-                            html += "<td align='right'> "+numberFormat(Number(utilidad).toFixed(2))+" </td>"; 
+                            html += "<td align='right'> "+numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(decimales))+" </td>";
+                            html += "<td align='right'> "+numberFormat(Number(utilidad).toFixed(decimales))+" </td>"; 
                         }
                         if(filtrar == 1 || filtrar == 2){
                             html += "<td align='center'>";
@@ -146,18 +158,18 @@ function reporte_general(){
                         }
                         if(filtrar == 1 || filtrar == 2){
                             html += "<th style='text-align:right'>";
-                            numberFormat(Number(cuotas).toFixed(2))
+                            numberFormat(Number(cuotas).toFixed(decimales))
                             html += "</th>";
                         }
                         html += "<th></th>";
-                        html += "<th>"+numberFormat(Number(cantidades).toFixed(2))+"</th>";
+                        html += "<th>"+numberFormat(Number(cantidades).toFixed(decimales))+"</th>";
                         html += "<th></th>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(descuentos).toFixed(2))+"</th>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(total).toFixed(2))+"</th>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(descuentos).toFixed(decimales))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(total).toFixed(decimales))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(decimales))+"</th>";
                         if(tipousuario_id == 1){
-                            html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(2))+"</th>";
-                            html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(2))+"</th>";
+                            html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(decimales))+"</th>";
+                            html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(decimales))+"</th>";
                         }
                         if(filtrar == 1 || filtrar == 2){
                             html += "<th></th>";
@@ -468,6 +480,7 @@ function generarexcel_reportegrl(){
         var nombre_moneda = document.getElementById('nombre_moneda').value;
         var lamoneda_id = document.getElementById('lamoneda_id').value;
         var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+        let decimales = JSON.parse(document.getElementById('decimales').value);
         var registros = JSON.parse(resproducto);
         var showLabel = true;
         var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
@@ -533,12 +546,12 @@ function generarexcel_reportegrl(){
                 row += '"' +registros[i]["venta_id"]+ '",';
                 row += '"' +Number(registros[i]["factura_id"])+ '",';
                 row += '"' +registros[i]["tipotrans_nombre"]+ '",';
-                row += '"' +numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(decimales))+ '",';
                 row += '"' +registros[i]["producto_unidad"]+ '",';
                 row += '"' +registros[i]["detalleven_cantidad"]+ '",';
-                row += '"' +numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(2))+ '",';
-                row += '"' +numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+ '",';
-                row += '"' +numberFormat(Number(registros[i]["detalleven_total"]).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(decimales))+ '",';
+                row += '"' +numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(decimales))+ '",';
+                row += '"' +numberFormat(Number(registros[i]["detalleven_total"]).toFixed(decimales))+ '",';
                 if(lamoneda_id == 1){
                     total_otram = Number(registros[i]["detalleven_total"])/Number(registros[i]["detalleven_tc"])
                     total_otramoneda += total_otram;
@@ -546,10 +559,10 @@ function generarexcel_reportegrl(){
                     total_otram = Number(registros[i]["detalleven_total"])*Number(registros[i]["detalleven_tc"])
                     total_otramoneda += total_otram;
                 }
-                row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';
                 if(tipousuario_id == 1){
-                    row += '"' +numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+ '",';
-                    row += '"' +numberFormat(Number(utilidad).toFixed(2))+ '",';
+                    row += '"' +numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(decimales))+ '",';
+                    row += '"' +numberFormat(Number(utilidad).toFixed(decimales))+ '",';
                 }
                 row += '"' +registros[i]["cliente_nombre"]+ '",';
                 row += '"' +registros[i]["usuario_nombre"]+ '",';
@@ -565,15 +578,15 @@ function generarexcel_reportegrl(){
             row += '"",';   
             row += '"",';   
             row += '"",';
-            row += '"'+numberFormat(Number(cuotas).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(cuotas).toFixed(decimales))+'",';
             row += '"",';
-            row += '"'+numberFormat(Number(cantidades).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(cantidades).toFixed(decimales))+'",';
             row += '"",';
-            row += '"'+numberFormat(Number(descuentos).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(total).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(total_otramoneda).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(costos).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(utilidades).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(descuentos).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(total).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(total_otramoneda).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(costos).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(utilidades).toFixed(decimales))+'",';
             row += '"",';
             row += '"",';
             row += '"",';
@@ -627,12 +640,12 @@ function generarexcel_reportegrl(){
                 row += '"' +registros[i]["servicio_id"]+ '",';
                 row += '"' +Number(registros[i]["factura_id"])+ '",';
                 row += '"' +registros[i]["tipotrans_nombre"]+ '",';
-                row += '"' +numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(decimales))+ '",';
                 row += '"' +registros[i]["producto_unidad"]+ '",';
                 row += '"' +registros[i]["detalleven_cantidad"]+ '",';
-                row += '"' +numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(2))+ '",';
-                row += '"' +numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+ '",';
-                row += '"' +numberFormat(Number(registros[i]["detalleven_total"]).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(decimales))+ '",';
+                row += '"' +numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(decimales))+ '",';
+                row += '"' +numberFormat(Number(registros[i]["detalleven_total"]).toFixed(decimales))+ '",';
                 if(lamoneda_id == 1){
                     total_otram = Number(registros[i]["detalleven_total"])/Number(registros[i]["detalleven_tc"])
                     total_otramoneda += total_otram;
@@ -640,10 +653,10 @@ function generarexcel_reportegrl(){
                     total_otram = Number(registros[i]["detalleven_total"])*Number(registros[i]["detalleven_tc"])
                     total_otramoneda += total_otram;
                 }
-                row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';
                 if(tipousuario_id == 1){
-                    row += '"' +numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+ '",';
-                    row += '"' +numberFormat(Number(utilidad).toFixed(2))+ '",';
+                    row += '"' +numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(decimales))+ '",';
+                    row += '"' +numberFormat(Number(utilidad).toFixed(decimales))+ '",';
                 }
                 row += '"' +registros[i]["cliente_nombre"]+ '",';
                 row += '"' +registros[i]["usuario_nombre"]+ '",';
@@ -659,15 +672,15 @@ function generarexcel_reportegrl(){
             row += '"",';   
             row += '"",';   
             row += '"",';
-            row += '"'+numberFormat(Number(cuotas).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(cuotas).toFixed(decimales))+'",';
             row += '"",';
-            row += '"'+numberFormat(Number(cantidades).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(cantidades).toFixed(decimales))+'",';
             row += '"",';
-            row += '"'+numberFormat(Number(descuentos).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(total).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(total_otramoneda).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(costos).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(utilidades).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(descuentos).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(total).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(total_otramoneda).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(costos).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(utilidades).toFixed(decimales))+'",';
             row += '"",';
             row += '"",';
             row += '"",';
@@ -717,12 +730,12 @@ function generarexcel_reportegrl(){
                 row += '"' +registros[i]["produccion_id"]+ '",';
                 //row += '"' +Number(registros[i]["factura_id"])+ '",';
                 //row += '"' +registros[i]["tipotrans_nombre"]+ '",';
-                //row += '"' +numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(2))+ '",';
+                //row += '"' +numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(decimales))+ '",';
                 row += '"' +registros[i]["producto_unidad"]+ '",';
                 row += '"' +registros[i]["detalleven_cantidad"]+ '",';
-                row += '"' +numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(2))+ '",';
-                row += '"' +numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+ '",';
-                row += '"' +numberFormat(Number(registros[i]["detalleven_total"]).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(decimales))+ '",';
+                row += '"' +numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(decimales))+ '",';
+                row += '"' +numberFormat(Number(registros[i]["detalleven_total"]).toFixed(decimales))+ '",';
                 if(lamoneda_id == 1){
                     total_otram = Number(registros[i]["detalleven_total"])/Number(registros[i]["detalleven_tc"])
                     total_otramoneda += total_otram;
@@ -730,10 +743,10 @@ function generarexcel_reportegrl(){
                     total_otram = Number(registros[i]["detalleven_total"])*Number(registros[i]["detalleven_tc"])
                     total_otramoneda += total_otram;
                 }
-                row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
+                row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';
                 if(tipousuario_id == 1){
-                    row += '"' +numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+ '",';
-                    row += '"' +numberFormat(Number(utilidad).toFixed(2))+ '",';
+                    row += '"' +numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(decimales))+ '",';
+                    row += '"' +numberFormat(Number(utilidad).toFixed(decimales))+ '",';
                 }
                 //row += '"' +registros[i]["cliente_nombre"]+ '",';
                 row += '"' +registros[i]["usuario_nombre"]+ '",';
@@ -749,15 +762,15 @@ function generarexcel_reportegrl(){
             row += '"",';   
             //row += '"",';   
             //row += '"",';
-            //row += '"'+numberFormat(Number(cuotas).toFixed(2))+'",';
+            //row += '"'+numberFormat(Number(cuotas).toFixed(decimales))+'",';
             row += '"",';
-            row += '"'+numberFormat(Number(cantidades).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(cantidades).toFixed(decimales))+'",';
             row += '"",';
-            row += '"'+numberFormat(Number(descuentos).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(total).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(total_otramoneda).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(costos).toFixed(2))+'",';
-            row += '"'+numberFormat(Number(utilidades).toFixed(2))+'",';
+            row += '"'+numberFormat(Number(descuentos).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(total).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(total_otramoneda).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(costos).toFixed(decimales))+'",';
+            row += '"'+numberFormat(Number(utilidades).toFixed(decimales))+'",';
             row += '"",';
             //row += '"",';
             row += '"",';
