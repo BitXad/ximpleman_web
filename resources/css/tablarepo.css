@@ -1,0 +1,62 @@
+#mitabla {
+    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+    font-family: "Arial", Arial, Arial, arial;
+    font-size: 10px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#mitabla td, #mitabla th {
+    border: 1px solid #ddd;
+    padding: 5px;
+    
+}
+
+#mitabla tr:nth-child(even){background-color: #f2f2f2;}
+
+#mitabla tr:hover {background-color: #ddd;}
+
+#mitabla th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    font-size: 11px;
+}
+#mitabla td {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    font-size: 10px;
+}
+#div1 {
+     overflow:scroll;
+     height:200px;
+     width:500px;
+}
+#div1 table {
+    width:500px;
+    background-color:lightgray;
+}    
+
+ #contieneimg{
+        width: 45px;
+        height: 45px;
+        text-align: center;
+    }
+    #contieneimg img{
+        width: 45px;
+        height: 45px;
+        text-align: center;
+    }
+    #horizontal{
+        display: flex;
+        white-space: nowrap;
+        border-style: none !important;
+    }
+    #masg{
+        font-size: 12px;
+    }
+    td div div{
+        
+    }

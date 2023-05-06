@@ -158,6 +158,10 @@ border-bottom:1px solid black;
 
 
          </style>
+         
+<?php $decimales = $parametro['parametro_decimales']; ?>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+         
 <table class="table table-striped" padding: 0;" >
     <tr>
         <td style="width: 25%; padding: 0; line-height:10px;" colspan="3">
@@ -237,16 +241,29 @@ border-bottom:1px solid black;
                             <td><?php echo $cont;?></td>
                             <td style="text-align: left; max-width: 10cm;"><?php echo $dc['producto_nombre'];?></td>                            
                             <td style="text-align: center;"><?php echo $dc['detallecomp_codigo'];?></td>
+
+                            <?php
+                            $cantidad = explode(".",$dc['detallecomp_cantidad']);
+
+                             if ($cantidad[1] == 0) {  
+                                 $lacantidad = $cantidad[0];  
+                             }else{  
+                                 $lacantidad = number_format($dc['detallecomp_cantidad'],$decimales,'.',',');  
+                             }  
+                             echo $lacantidad;                             
+                            
+                            ?>
+                            
                             <td><?php echo $dc['detallecomp_unidad'];?></td>
                             <td><?php 
                                     $total_productos += $dc['detallecomp_cantidad'];
-                                    echo $dc['detallecomp_cantidad'];?></td>
-                            <td><?php echo number_format($dc['detallecomp_costo'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_precio'],'2','.',',');?></td>
+                                    echo $lacantidad;?></td>
+                            <td><?php echo number_format($dc['detallecomp_costo'],$decimales,'.',',');?></td>
+                            <td><?php echo number_format($dc['detallecomp_precio'],$decimales,'.',',');?></td>
                             <td><?php 
                                     $utilidad = ($dc['detallecomp_precio'] - $dc['detallecomp_costo']) * $dc['detallecomp_cantidad'];
                                     $utilidad_total += $utilidad;
-                                    echo number_format($utilidad,'2','.',',');?></td>
+                                    echo number_format($utilidad,$decimales,'.',',');?></td>
                             <td><?php
                                 if($dc['detallecomp_costo'] > 0){
                                     $porcentaje_utilidad = ($dc['detallecomp_precio'] - $dc['detallecomp_costo']) / $dc['detallecomp_costo'] * 100;
@@ -254,10 +271,10 @@ border-bottom:1px solid black;
                                     $porcentaje_utilidad = 0;
                                 }
                                 echo number_format($porcentaje_utilidad,'2','.',',')."%";?></td>
-                            <td><?php echo number_format($dc['detallecomp_subtotal'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_descuento'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_descglobal'],'2','.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_total'],'2','.',',');?></td>
+                            <td><?php echo number_format($dc['detallecomp_subtotal'],$decimales,'.',',');?></td>
+                            <td><?php echo number_format($dc['detallecomp_descuento'],$decimales,'.',',');?></td>
+                            <td><?php echo number_format($dc['detallecomp_descglobal'],$decimales,'.',',');?></td>
+                            <td><?php echo number_format($dc['detallecomp_total'],$decimales,'.',',');?></td>
                           
         </tr> 
                     
@@ -267,7 +284,7 @@ border-bottom:1px solid black;
                             <th colspan="2">TOTALES</th>
                             <th></th>
                             <th></th>
-                            <th><?php echo number_format($total_productos,'2','.',',');?></th>
+                            <th><?php echo number_format($total_productos,$decimales,'.',',');?></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -275,7 +292,7 @@ border-bottom:1px solid black;
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th><?php echo number_format( $compra[0]['compra_subtotal'],'2','.',',');?></th>
+                            <th><?php echo number_format( $compra[0]['compra_subtotal'],$decimales,'.',',');?></th>
                         </tr>
 </table>
  
@@ -289,29 +306,29 @@ border-bottom:1px solid black;
 
        <table class="table table-striped" border-bottom="0" id="mitabla2" style="width: 18cm; padding: 0;"> 
                     <tr>
-                        <td>TOTAL COMPRA: </td><td><?php echo number_format( $compra[0]['compra_subtotal'],'2','.',',');?></td>
+                        <td>TOTAL COMPRA: </td><td><?php echo number_format( $compra[0]['compra_subtotal'],$decimales,'.',',');?></td>
                     </tr>                      
                     <tr>
-                       <td>TOTAL DESCUENTO: </td><td><?php echo number_format( $compra[0]['compra_descuento'],'2','.',',');?></td>
+                       <td>TOTAL DESCUENTO: </td><td><?php echo number_format( $compra[0]['compra_descuento'],$decimales,'.',',');?></td>
                     </tr>
                     <tr>
-                        <td>DESC. GLOBAL: </td><td><?php echo  number_format($compra[0]['compra_descglobal'],'2','.',',');?></td>
+                        <td>DESC. GLOBAL: </td><td><?php echo  number_format($compra[0]['compra_descglobal'],$decimales,'.',',');?></td>
                     </tr>
                     <tr>
-                        <td><b>TOTAL FINAL: </b></td> <td><b><?php echo  number_format($compra[0]['compra_totalfinal'],'2','.',',');?></b></td>
+                        <td><b>TOTAL FINAL: </b></td> <td><b><?php echo  number_format($compra[0]['compra_totalfinal'],$decimales,'.',',');?></b></td>
                     </tr>
                     <tr>
-                        <td><b>UTILIDAD TOTAL: </b></td> <td><b> <?php echo number_format($utilidad_total,'2','.',',');?></b></td>
+                        <td><b>UTILIDAD TOTAL: </b></td> <td><b> <?php echo number_format($utilidad_total,$decimales,'.',',');?></b></td>
                     </tr>
                     <tr>
                         <td><b>MARGEN UTILIDAD PROM.: </b></td> <td><b> <?php echo number_format($utilidad_total/$compra[0]['compra_totalfinal'] * 100,'2','.',',')." %";?></b></td>
                     </tr>
                     <?php if ($compra[0]['tipotrans_id']==2) { ?>
                     <tr>
-                        <td><b>A CUENTA: </b></td> <td><b><?php echo  number_format($credito['credito_cuotainicial'],'2','.',',');?></b></td>
+                        <td><b>A CUENTA: </b></td> <td><b><?php echo  number_format($credito['credito_cuotainicial'],$decimales,'.',',');?></b></td>
                     </tr>
                     <tr>
-                        <td><b>SALDO: </b></td> <td><b><?php echo  number_format($credito['credito_monto'],'2','.',',');?></b></td>
+                        <td><b>SALDO: </b></td> <td><b><?php echo  number_format($credito['credito_monto'],$decimales,'.',',');?></b></td>
                     </tr> 
                     <?php } ?>  
                                  

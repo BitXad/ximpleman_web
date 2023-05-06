@@ -534,6 +534,7 @@ class Inventario_model extends CI_Model
 
                   order by fecha, hora";
  
+        //echo $sql;
         $kardex = $this->db->query($sql)->result_array();
         return $kardex;
     }    

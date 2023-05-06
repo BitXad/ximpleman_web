@@ -74,12 +74,13 @@ border-bottom : 1px solid #aaa;*/
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <!-------------------------------------------------------->
-<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"]."cm";
+      $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
 
-
+<?php $decimales = $parametro['parametro_decimales']; ?>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
 
 <table class="table" >
 <tr>
@@ -168,13 +169,22 @@ border-bottom : 1px solid #aaa;*/
 
                  foreach($detalle_compra as $d){
                         $cont = $cont+1;
-                       
+                        
+                        $cantidad = explode(".",$d['detallecomp_cantidad']);
+                        
+                        if ($cantidad[1] == 0) {  
+                            $lacantidad = $cantidad[0];  
+                        }else{  
+                            $lacantidad = number_format($d['detallecomp_cantidad'],$decimales,'.',',');  
+                        }  
+                        echo $lacantidad; 
+                        
                         ?>
            <tr style="font-size: 8pt;">
-                <td align="center" style="padding: 0;"><?php echo $d['detallecomp_cantidad']; ?></td>
+                <td align="center" style="padding: 0;"><?php echo $lacantidad; ?></td>
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <b><?php echo $d['producto_nombre']; ?></b></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detallecomp_costo'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detallecomp_total'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0;"><?php echo number_format($d['detallecomp_costo'],$decimales,'.',','); ?></td>
+                <td align="right" style="padding: 0;"><?php echo number_format($d['detallecomp_total'],$decimales,'.',','); ?></td>
            </tr>
            <?php }?>
   
@@ -185,19 +195,19 @@ border-bottom : 1px solid #aaa;*/
         <td align="right" style="padding: 0;" colspan="4">
             
             <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($compra[0]['compra_subtotal'],2,'.',','); ?></b><br>
+                <b><?php echo "SUB TOTAL Bs ".number_format($compra[0]['compra_subtotal'],$decimales,'.',','); ?></b><br>
             </font>
             
 
             <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($compra[0]['compra_descuento'],2,'.',','); ?><br>
+                <?php echo "TOTAL DESCUENTO Bs ".number_format($compra[0]['compra_descuento'],$decimales,'.',','); ?><br>
             </font>
             <font size="1">
-                <?php echo "DESCUENTO GLOBAL Bs ".number_format($compra[0]['compra_descglobal'],2,'.',','); ?><br>
+                <?php echo "DESCUENTO GLOBAL Bs ".number_format($compra[0]['compra_descglobal'],$decimales,'.',','); ?><br>
             </font>
             <font size="2">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($compra[0]['compra_totalfinal'] ,2,'.',','); ?><br>
+                <?php echo "TOTAL FINAL Bs: ".number_format($compra[0]['compra_totalfinal'] ,$decimales,'.',','); ?><br>
             </b>
             </font>
             <font size="1" face="arial narrow">

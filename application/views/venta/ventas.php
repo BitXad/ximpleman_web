@@ -436,25 +436,27 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-6" <?php echo $estilo_div; ?>>
             <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">PREFERENCIAS</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="glosay"  value="" onclick="this.select()" onkeypress="transcribir()"/>
+                <input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="glosay"  value="" onclick="this.select()" onkeyup="transcribir(event); this.value = this.value.toUpperCase();"/>
             </div>
         </div>
+
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="totaly" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">TOTAL</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="totaly" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="totaly"  value="0.00" onclick="this.select()" onkeypress="transcribir()"/>
+                <input type="text" name="totaly" class="form-control <?php echo $atributos; ?>"  style="color: black; background: #be2626; text-align: left; font-size: 18px; font-family: Arial; color: white" id="totaly"  value="0.00" onclick="this.select()" readonly/>
             </div>
         </div>
+
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="cobradoy" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">COBRADO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cobradoy" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cobradoy"  value="0.00" onclick="this.select()" onkeypress="transcribir()"/>
+                <input type="text" name="cobradoy" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cobradoy"  value="0.00" onclick="this.select()" onkeyup="transcribir(event)"/>
             </div>
         </div>
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="cambioy" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">CAMBIO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cambioy" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cambioy"  value="0.00" onclick="this.select()" onkeypress="transcribir()"/>
+                <input type="text" name="cambioy" class="form-control <?php echo $atributos; ?>" style="color: black; background: #be2626; text-align: left; font-size: 18px; font-family: Arial; color: white" id="cambioy"  value="0.00" onclick="this.select()"/>
             </div>
         </div>
         
@@ -722,103 +724,101 @@ window.onkeydown = compruebaTecla;
             
         </div>
 <!-------------------- CATEGORIAS------------------------------------->
-<div class="container" id="categoria" style="padding:0;">
-<!--    <center>-->
-        
-    <!--<span class="badge btn-default" style="width: 300px;">-->
-    
-<ul class="nav nav-tabs">
-<!--    <li class="#">
-      <a href="#">Camaras</a>
-    </li>-->
-    <li><a href="#">Accesorios</a></li>
-    <li><a href="#">Computacion</a></li>
-    <li><a href="#">Programacion</a></li>
-    <li><a href="#">Electronica</a></li>
-</ul>
 
-<!--<ul class="nav nav-pills">
-  <li class="">
-    <a href="#">Home</a>
-  </li>
-    <li class="btn btn-info btn-xs"><a href="#">PERFUMES</a></li>
-  <li class="btn btn-info btn-xs"><a href="#">DESODORANTES</a></li>
-  <li class="btn btn-info btn-xs"><a href="#">CREMAS</a></li>
-  <li class="btn btn-info btn-xs"><a href="#">SHAMPOOS</a></li>
-</ul>
-    -->
-        <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod">
-                <option value="0" >- CATEGORIAS -</option>
+    <div class="container" id="categoria" style="padding:0;">
+    <!--    <center>-->
+
+        <!--<span class="badge btn-default" style="width: 300px;">-->
+
+        <!--<div class="col-md-12" >-->
+        
         <?php 
-            foreach($categoria_producto as $categ){ 
-                $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
-                ?>
+            $opciones = 1;
+            if ($opciones == 1){  ?>
+            
+            <input type="hidden" id="categoria_prod">
+            
+            <div class="col-md-6">
+            <div class="btn-group" role="group" aria-label="Menu">
+                <?php 
                 
-                <option value="<?php echo $categ['categoria_id']; ?>" <?php echo $selected; ?>><?php echo $categ['categoria_nombre']; ?></option>
-        <?php
-            }
-        ?>
-        </select>
-        
-        <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(3)" id="subcategoria_prod">
-                <option value="0" >- SUB CATEGORIAS -</option>
-        
-        </select>
-        <span class="badge btn-default">
-            <input style="border-width: 0; color: black;" id="encontrados" type="text"  size="3" value="0" readonly="true"> 
-        
-        </span>
-    <!--</span>-->
-       
-<!-------------------------- BOTON AGRUPAR --------------------------------------->    
-        <?php 
-//            if ($parametro["parametro_agruparitems"] == 1 )
-//                    { $agrupar = "checked='true'";}
-//              else {$agrupar = " ";}
-//        ?>
-       <!--<button class="btn btn-default btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>--> 
-        
-<!-------------------------- FIN BOTON AGRUPAR --------------------------------------->    
-       
-       <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
-        <?php if($rolusuario[185-1]['rolusuario_asignado'] == 1){ ?>
-        <button type="button" id="boton_modal_promocion" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpromocion" >
-            <fa class="fa fa-cube"></fa> Promociones
-        </button>
-        <?php } ?>
-<!--<span class="badge btn-default">-->
-        
-        
-        
-        
-        
-        
-    <!--</span>-->
-        <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-default"><span class="badge">7</span>Productos encontrados</button>-->
+                foreach($categoria_producto as $categ){ 
+                    $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+                    ?>
+                        
+                <button type="button" class="btn btn-info" style="padding-top:0; padding-bottom: 0; font-size: 10px;" onclick="seleccionar_categoria(<?php echo $categ['categoria_id']; ?>)"><?php echo $categ['categoria_nombre']; ?></button>
 
-                <!--<span class="badge btn-default">Encontrados: <span class="badge btn-default"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span></span>-->
-                <span class="badge btn-default">
+                <?php } ?>
+               
+            </div>
+            </div>
+            <br>
+            
+        <?php }  ?>
+            
+        <!--</div>-->
 
-                    <!--------------------- inicio loader ------------------------->
-                    <div class="row" id='oculto'  style='display:none;'>
-                        <center>
-                            <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
-                        </center>
-                    </div> 
-                    
-                    <div class="row" id='loader'  style='display:none;'>
-                        <center>
-                            <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
-                        </center>
-                    </div> 
-                    <!--------------------- fin inicio loader ------------------------->
-                    
-                </span>
+        <!--<div class="col-md-6" hidden>-->
 
-                
-    <!--</center>-->          
-</div>
+            <?php 
+            
+                if ($opciones != 1){  ?>
+        
+            <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod">
+                    <option value="0" >- CATEGORIAS -</option>
+            <?php 
+                foreach($categoria_producto as $categ){ 
+                    $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+                    ?>
+
+                    <option value="<?php echo $categ['categoria_id']; ?>" <?php echo $selected; ?>><?php echo $categ['categoria_nombre']; ?></option>
+            <?php
+                }
+            ?>
+            </select>
+
+            <?php } ?>
+        
+            <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(3)" id="subcategoria_prod">
+                    <option value="0" >- SUB CATEGORIAS -</option>
+
+            </select>
+            <span class="badge btn-default">
+                <input style="border-width: 0; color: black;" id="encontrados" type="text"  size="3" value="0" readonly="true"> 
+
+            </span>
+
+
+           <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
+            <?php if($rolusuario[185-1]['rolusuario_asignado'] == 1){ ?>
+            <button type="button" id="boton_modal_promocion" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpromocion" >
+                <fa class="fa fa-cube"></fa> Promociones
+            </button>
+            <?php } ?>
+
+            <span class="badge btn-default">
+
+                <!--------------------- inicio loader ------------------------->
+                <div class="row" id='oculto'  style='display:none;'>
+                    <center>
+                        <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
+                    </center>
+                </div> 
+
+                <div class="row" id='loader'  style='display:none;'>
+                    <center>
+                        <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
+                    </center>
+                </div> 
+                <!--------------------- fin inicio loader ------------------------->
+
+            </span>
+
+
+
+<!--        </div>-->
+    </div>
+
 <!-------------------- FIN CATEGORIAS--------------------------------->
         
         <div class="box"  style="border-color: black;">

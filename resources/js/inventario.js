@@ -41,7 +41,7 @@ function formato_numerico(numero){
     
         
     
-        nStr = Number(numero).toFixed(2);
+        nStr = Number(numero).toFixed(decimales);
         nStr += '';
 	x = nStr.split('.');
 	x1 = x[0];
@@ -106,6 +106,7 @@ function validar(e,opcion) {
 
 function tabla_inventario(){
 
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById("base_url").value;
     var parametro = document.getElementById("filtrar").value;
         var controlador = base_url+"inventario/mostrar_inventario";
@@ -190,8 +191,8 @@ function tabla_inventario(){
                     html += "	<td><center>"+ inv[i]["ventas"]+"</center></td>";
                     html += "	<td><center>"+ inv[i]["pedidos"]+"</center></td>";
                     
-                    html += "             	<td><center> <font size='3'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-                    html += "             	<td><center> <font size='2'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+                    html += "             	<td><center> <font size='3'><b>"+ existencia.toFixed(decimales)+"</b></font></center></td>";
+                    html += "             	<td><center> <font size='2'><b>"+ total.toFixed(decimales)+"</b></font></center></td>";
                     
 
                     html += "</tr>";
@@ -288,7 +289,7 @@ function tabla_inventario(){
                     var total = 0;
                     var total_final = 0;
                     var existencia = 0;
-                    var margen = " style='padding:0;'";
+                    var margen = " style='padding:0; text-align: right;'";
                     var categoria = "";
                     
                 for (var i = 0; i < tamanio ; i++){
@@ -303,16 +304,16 @@ function tabla_inventario(){
                                     total = inv[i]["producto_costo"]*inv[i]["existencia"]; 
                                     total_final += total;
                                     existencia = parseFloat(inv[i]["existencia"]);                                                    
-                        html += "             	<td "+margen+">"+(i+1)+"</td>";
-                        html += "             	<td "+margen+"><font size='0.5'>"+ inv[i]["producto_nombre"]+"</font>";
+                        html += "             	<td "+margen+"><a style='margin-right: 10px;'>"+(i+1)+"</a></td>";
+                        html += "             	<td  style='padding:0; text-align: left;'><font size='0.5'>"+ inv[i]["producto_nombre"]+"</font>";
                         html += "             	<td "+margen+" style='background: red'><center><font size='1'>"+inv[i]["producto_codigo"]+"</font> </center></td>";
                         html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["categoria_nombre"]+"</center></font> </td>";
                         html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_unidad"]+"</center></font> </td>";
 
-                        html += "	<td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(2)+"</center></td>";
-                        html += "             	<td "+margen+"><center> <font size='1'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-                        html += "             	<td "+margen+"><center> <font size='1'><b>"+ numberFormat(total.toFixed(2))+"</b></font></center></td>";
-                        html += "<td "+margen+" class='text-center'> ";
+                        html += "	<td "+margen+"><b style='margin-right: 10px;'>"+ Number(inv[i]["producto_costo"]).toFixed(decimales)+"</b></td>";
+                        html += "             	<td "+margen+"><font size='1'><b style='margin-right: 10px;'>"+ existencia.toFixed(decimales)+"</b></font></td>";
+                        html += "             	<td "+margen+"><font size='1'><b style='margin-right: 10px;'>"+ numberFormat(total.toFixed(decimales))+"</b></font></td>";
+                        html += "<td "+margen+"> <b style='margin-right: 10px;'>";
                         if(lamoneda_id == 1){
                             total_otram = total/Number(lamoneda[1]["moneda_tc"]);
                             total_otramoneda += total_otram;
@@ -320,8 +321,8 @@ function tabla_inventario(){
                             total_otram = total*Number(lamoneda[1]["moneda_tc"]);
                             total_otramoneda += total_otram;
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
-                        html += "</td>";
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
+                        html += "</d></td>";
 
                         factor = 0;
                         producto_factor = 0;
@@ -333,7 +334,7 @@ function tabla_inventario(){
                             factor =  Math.floor(existencia / inv[i]["producto_factor"]);
                             unidadfactor =  inv[i]["producto_unidadfactor"];
                             saldo =  Math.floor(existencia % inv[i]["producto_factor"]);
-                            html += "             	<td "+margen+" ><center style='line-height:80%'> <sub> "+ factor +" "+unidadfactor+" ["+producto_factor+"] ";
+                            html += "             	<td "+margen+" ><center style='line-height:80%'> <sub> "+ factor +" "+unidadfactor+" ["+Number(producto_factor).toFixed(decimales)+"] ";
                             html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+" </sub></center></td>";
 
                         }
@@ -348,7 +349,7 @@ function tabla_inventario(){
                             factor =  Math.floor(existencia / inv[i]["producto_factor1"]);
                             unidadfactor =  inv[i]["producto_unidadfactor1"];
                             saldo =  Math.floor(existencia % inv[i]["producto_factor1"]);
-                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+producto_factor+"] ";
+                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+Number(producto_factor).toFixed(decimales)+"] ";
                             html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
 
                         }
@@ -363,7 +364,7 @@ function tabla_inventario(){
                             factor =  Math.floor(existencia / inv[i]["producto_factor2"]);
                             unidadfactor =  inv[i]["producto_unidadfactor2"];
                             saldo =  Math.floor(existencia % inv[i]["producto_factor2"]);
-                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+producto_factor+"] ";
+                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+Number(producto_factor).toFixed(decimales)+"] ";
                             html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
 
                         }
@@ -378,7 +379,7 @@ function tabla_inventario(){
                             factor =  Math.floor(existencia / inv[i]["producto_factor3"]);
                             unidadfactor =  inv[i]["producto_unidadfactor3"];
                             saldo =  Math.floor(existencia % inv[i]["producto_factor3"]);
-                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+producto_factor+"] ";
+                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+Number(producto_factor).toFixed(decimales)+"] ";
                             html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
 
                         }
@@ -394,7 +395,7 @@ function tabla_inventario(){
                             factor =  Math.floor(existencia / inv[i]["producto_factor4"]);
                             unidadfactor =  inv[i]["producto_unidadfactor4"];
                             saldo =  Math.floor(existencia % inv[i]["producto_factor4"]);
-                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+producto_factor+"] ";
+                            html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+Number(producto_factor).toFixed(decimales)+"] ";
                             html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
 
                         }
@@ -460,6 +461,8 @@ function tabla_inventario(){
 }
 
 function tabla_inventario_sucursal(){
+    
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById("base_url").value;
     var parametro = document.getElementById("filtrar").value;
     var controlador = base_url+"inventario/mostrar_inventario";
@@ -525,9 +528,9 @@ function tabla_inventario_sucursal(){
 //                    html += "             	<td><center><font size='2'><b>"+inv[i]["producto_codigobarra"]+"</b><br> </font>";
 //                    html += "	"+ inv[i]["producto_codigo"]+"</center></td>";
                     costounit = inv[i]["producto_costo"];
-                    html += "	<td>COSTO: "+ Number(costounit).toFixed(2);
-                    html += "	<br>SALDO: <font size='3'><b>"+ existencia.toFixed(2)+"</b></font>";
-                    html += "	<br>TOTAL: <font size='1'><b>"+ existencia.toFixed(2)+"</b></font>";
+                    html += "	<td>COSTO: "+ Number(costounit).toFixed(decimales);
+                    html += "	<br>SALDO: <font size='3'><b>"+ existencia.toFixed(decimales)+"</b></font>";
+                    html += "	<br>TOTAL: <font size='1'><b>"+ existencia.toFixed(decimales)+"</b></font>";
                     html += "	</td>";
                     html += "	<td><button class='btn btn-info btn-sm' onclick='seleccionar_producto("+inv[i]["producto_codigobarra"]+")'><fa class='fa fa-list'></fa> <br>Seleccionar</button></td>";
 
@@ -535,8 +538,8 @@ function tabla_inventario_sucursal(){
 //                    html += "	<td><center>"+ inv[i]["ventas"]+"</center></td>";
 ////                    html += "	<td><center>"+ inv[i]["pedidos"]+"</center></td>";
 //                    
-//                    html += "             	<td><center> <font size='3'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-//                    html += "             	<td><center> <font size='1'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+//                    html += "             	<td><center> <font size='3'><b>"+ existencia.toFixed(decimales)+"</b></font></center></td>";
+//                    html += "             	<td><center> <font size='1'><b>"+ total.toFixed(decimales)+"</b></font></center></td>";
                     
 
                     html += "</tr>";
@@ -587,12 +590,15 @@ function seleccionar_producto(producto_codigo){
 
 
 function tabla_inventario_existencia(){
+    
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById("base_url").value;
     var parametro = document.getElementById("filtrar").value;
     var controlador = base_url+"inventario/mostrar_inventario_existencia";
     var nombre_moneda = document.getElementById('nombre_moneda').value;
     var lamoneda_id = document.getElementById('lamoneda_id').value;
     var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+    var decimales = document.getElementById('decimales').value;
     var total_otramoneda = Number(0);
     var total_otram = Number(0);
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
@@ -664,8 +670,8 @@ function tabla_inventario_existencia(){
                     html += "    <td><center>"+ inv[i]["ventas"]+"</center></td>";
                     html += "    <td><center>"+ inv[i]["pedidos"]+"</center></td>";
                     
-                    html += "                 <td><center> <font size='3'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-                    html += "                 <td><center> <font size='2'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+                    html += "                 <td><center> <font size='3'><b>"+ existencia.toFixed(decimales)+"</b></font></center></td>";
+                    html += "                 <td><center> <font size='2'><b>"+ total.toFixed(decimales)+"</b></font></center></td>";
                     
 
                     html += "</tr>";
@@ -771,9 +777,9 @@ function tabla_inventario_existencia(){
                         html += "                 <td "+margen+"><font size='0.5'><center>"+ inv[i]["categoria_nombre"]+"</center></font> </td>";
                         html += "                 <td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_unidad"]+"</center></font> </td>";
 
-                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(2)+"</center></td>";
-                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ numberFormat(total.toFixed(2))+"</b></font></center></td>";
+                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(decimales)+"</center></td>";
+                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ existencia.toFixed(decimales)+"</b></font></center></td>";
+                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ numberFormat(total.toFixed(decimales))+"</b></font></center></td>";
                         html += "<td "+margen+" class='text-center'> ";
                         if(lamoneda_id == 1){
                             total_otram = total/Number(lamoneda[1]["moneda_tc"]);
@@ -782,7 +788,7 @@ function tabla_inventario_existencia(){
                             total_otram = total*Number(lamoneda[1]["moneda_tc"]);
                             total_otramoneda += total_otram;
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</td>";
 
                         factor = 0;
@@ -922,6 +928,8 @@ function tabla_inventario_existencia(){
 }
 
 function tabla_existencia_realizable(){
+    
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById("base_url").value;
     var parametro = document.getElementById("filtrar").value;
     var controlador = base_url+"inventario/mostrar_inventario_existencia";
@@ -1002,8 +1010,8 @@ function tabla_existencia_realizable(){
                     html += "    <td><center>"+ inv[i]["ventas"]+"</center></td>";
                     html += "    <td><center>"+ inv[i]["pedidos"]+"</center></td>";
                     
-                    html += "                 <td><center> <font size='3'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-                    html += "                 <td><center> <font size='2'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+                    html += "                 <td><center> <font size='3'><b>"+ existencia.toFixed(decimales)+"</b></font></center></td>";
+                    html += "                 <td><center> <font size='2'><b>"+ total.toFixed(decimales)+"</b></font></center></td>";
                     
 
                     html += "</tr>";
@@ -1110,10 +1118,10 @@ function tabla_existencia_realizable(){
                         html += "                 <td "+margen+"><font size='0.5'><center>"+ inv[i]["categoria_nombre"]+"</center></font> </td>";
                         html += "                 <td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_unidad"]+"</center></font> </td>";
 
-                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(2)+"</center></td>";
-                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_precio"]).toFixed(2)+"</center></td>";
-                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(decimales)+"</center></td>";
+                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_precio"]).toFixed(decimales)+"</center></td>";
+                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ existencia.toFixed(decimales)+"</b></font></center></td>";
+                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ total.toFixed(decimales)+"</b></font></center></td>";
                         html += "<td class='text-center'> ";
                         if(lamoneda_id == 1){
                             total_otram = total/Number(lamoneda[1]["moneda_tc"]);
@@ -1122,7 +1130,7 @@ function tabla_existencia_realizable(){
                             total_otram = total*Number(lamoneda[1]["moneda_tc"]);
                             total_otramoneda += total_otram;
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</td>";
                         factor = 0;
                         producto_factor = 0;
@@ -1263,6 +1271,7 @@ function tabla_existencia_realizable(){
 
 function tabla_inventario_realizable(){
     
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById("base_url").value;
     var parametro = document.getElementById("filtrar").value;
     var controlador = base_url+"inventario/mostrar_inventario_existencia";
@@ -1342,8 +1351,8 @@ function tabla_inventario_realizable(){
                     html += "    <td><center>"+ inv[i]["ventas"]+"</center></td>";
                     html += "    <td><center>"+ inv[i]["pedidos"]+"</center></td>";
                     
-                    html += "                 <td><center> <font size='3'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-                    html += "                 <td><center> <font size='2'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+                    html += "                 <td><center> <font size='3'><b>"+ existencia.toFixed(decimales)+"</b></font></center></td>";
+                    html += "                 <td><center> <font size='2'><b>"+ total.toFixed(decimales)+"</b></font></center></td>";
                     
 
                     html += "</tr>";
@@ -1450,10 +1459,10 @@ function tabla_inventario_realizable(){
                         html += "                 <td "+margen+"><font size='0.5'><center>"+ inv[i]["categoria_nombre"]+"</center></font> </td>";
                         html += "                 <td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_unidad"]+"</center></font> </td>";
 
-                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(2)+"</center></td>";
-                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_precio"]).toFixed(2)+"</center></td>";
-                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(decimales)+"</center></td>";
+                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_precio"]).toFixed(decimales)+"</center></td>";
+                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ existencia.toFixed(decimales)+"</b></font></center></td>";
+                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ total.toFixed(decimales)+"</b></font></center></td>";
                         html += "<td "+margen+" class='text-center'> ";
                         if(lamoneda_id == 1){
                             total_otram = total/Number(lamoneda[1]["moneda_tc"]);
@@ -1462,7 +1471,7 @@ function tabla_inventario_realizable(){
                             total_otram = total*Number(lamoneda[1]["moneda_tc"]);
                             total_otramoneda += total_otram;
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</td>";
                         factor = 0;
                         producto_factor = 0;
@@ -1661,8 +1670,9 @@ function numberFormat(numero){
         }
     }
 
-function mostrar_duplicados()
-{
+function mostrar_duplicados(){
+    
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"inventario/mostrar_duplicados/";
     var nombre_moneda = document.getElementById('nombre_moneda').value;
@@ -1734,8 +1744,8 @@ function mostrar_duplicados()
                     html += "	<td><center>"+ inv[i]["ventas"]+"</center></td>";
                     html += "	<td><center>"+ inv[i]["pedidos"]+"</center></td>";
                     
-                    html += "             	<td><center> <font size='3'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-                    html += "             	<td><center> <font size='2'><b>"+total.toFixed(2)+"</b></font></center></td>";
+                    html += "             	<td><center> <font size='3'><b>"+ existencia.toFixed(decimales)+"</b></font></center></td>";
+                    html += "             	<td><center> <font size='2'><b>"+total.toFixed(decimales)+"</b></font></center></td>";
                     html += "<td class='text-center'> ";
                         if(lamoneda_id == 1){
                             total_otram = total/Number(lamoneda[1]["moneda_tc"]);
@@ -1744,7 +1754,7 @@ function mostrar_duplicados()
                             total_otram = total*Number(lamoneda[1]["moneda_tc"]);
                             total_otramoneda += total_otram;
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</td>";
                     html += "</tr>";
                 } // end for (i = 0 ....)
@@ -1780,6 +1790,8 @@ function mostrar_duplicados()
 }
 
 function mostrar_kardex(producto_id){
+    
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"inventario/buscar_kardex";
     var fecha_desde = document.getElementById('fecha_desde').value;
@@ -1819,7 +1831,159 @@ function mostrar_kardex(producto_id){
                         html += "<td style='padding:0'></td>";                    
                         html += "<td style='padding:0'></td>";
                         html += "<td style='padding:0'></td>";
-                        html += "<td style='padding:0'><center><b>"+Number(saldo).toFixed(2)+"</b></center></td>";                    
+                        html += "<td style='padding:0'><center><b>"+Number(saldo).toFixed(decimales)+"</b></center></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'><center><b>SALDO INICIAL<b></center></td>";                    
+                        html += "</tr>";
+                    }
+                    cont++;
+                    
+                }
+                else{
+                    ocultar = "style='display:none;'";
+                }
+            
+                    saldo += Number(k[i]['unidad_comp']) - Number(k[i]['unidad_vend']);
+                    total_compras += Number(k[i]['unidad_comp']);
+                    total_ventas += Number(k[i]['unidad_vend']);
+                    
+                    html += "    <tr align='center' "+ocultar+">";
+                    html += "            <td style='padding:0'>"+formato_fecha(k[i]['fecha'])+" - "+k[i]['hora']+"</td>";
+                    html += "            <td style='padding:0'>";
+                    
+                    if (k[i]['num_ingreso']!=0){ 
+                        html += k[i]['num_ingreso'];
+                        html += "<a href='"+base_url+"compra/nota/"+k[i]['num_ingreso']+"' target='_blank' class='btn btn-xs btn-info no-print'><fa class='fa fa-print'></fa> </a>";
+                    }
+                    html += "</td>";
+                    
+                    html += "<td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact; text-align:right; padding-right: 10px;'><b>";
+                        if (k[i]['unidad_comp']!=0) 
+                            html += Number(k[i]['unidad_comp']).toFixed(decimales);
+                    html += "</b></td>";
+                    
+                    html += "            <td style='padding:0; text-align: right; padding-right: 10px;'>";                    
+                        if (k[i]['costoc_unit']!=0) html += numberFormat(Number(k[i]['costoc_unit']).toFixed(decimales));
+                    html += "</td>";
+                    
+                    html += "            <td style='padding:0; text-align: right; padding-right: 10px;'>";
+                    
+                        if (k[i]['importe_ingreso']!=0) html += numberFormat(Number(k[i]['importe_ingreso']).toFixed(decimales));
+                    html += "</td>";
+                        
+                    html += "            <td style='padding:0'>";
+                        if (k[i]['num_salida']!=0){
+                            html += Number(k[i]['num_salida']);
+                            html += "<a href='"+base_url+"factura/imprimir_recibo/"+k[i]['num_salida']+"' target='_blank' class='btn btn-xs btn-success no-print'><fa class='fa fa-print'></fa> </a>";
+                        }  
+                    html += "</td>";
+                        
+                    html += "            <td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact; text-align: right; padding-right: 10px;'><b>";
+                            if (k[i]['unidad_vend']!=0) html += Number(k[i]['unidad_vend']).toFixed(decimales);
+                            
+                    html += "</b></td>";
+                            
+                    html += "            <td style='padding:0; text-align: right; padding-right: 10px;'>";
+                                if (k[i]['costov_unit'] != 0) html += Number(k[i]['costov_unit']).toFixed(decimales);
+                    html +="</td>";
+                    
+                    html +="            <td style='padding:0; text-align: right; padding-right: 10px;'>";
+                                if (k[i]['importe_salida'] != 0)  html += numberFormat(Number(k[i]['importe_salida']).toFixed(decimales));
+                    html +="</td>";
+                    
+                    if (Number(saldo)>=0){
+                        html +="            <td style='padding:0; text-align: right; padding-right: 10px;'><b>"+numberFormat(Number(saldo).toFixed(decimales))+"</b></td>";
+                    }else{
+                        html +="            <td style='padding:0; background:orange; text-align: right; padding-right: 10px;'><b>"+numberFormat(Number(saldo).toFixed(decimales))+"</b></td>";                        
+                    }
+                    html +="            <td style='padding:0; text-align: right; padding-right: 10px;'>";
+                    
+                        if(Number(saldo * k[i]['costoc_unit']).toFixed(decimales)>0){ saldox = saldo * k[i]['costoc_unit'];}
+                        else {  saldox = saldo * k[i]['costov_unit']; }
+                        
+                    html += numberFormat(saldox.toFixed(decimales))+"</td>";
+                    
+                    html += "<td style='padding:0; text-align: right; padding-right: 10px;' class='text-right'> ";
+                    if(lamoneda_id == 1){
+                        total_otram = Number(saldox)/Number(k[i]["tipo_cambio"])
+                        total_otramoneda += total_otram;
+                    }else{
+                        total_otram = Number(saldox)*Number(k[i]["tipo_cambio"])
+                        total_otramoneda += total_otram;
+                    }
+                    html += numberFormat(Number(total_otram).toFixed(decimales));
+                    html += "</td>";
+                    html +="            <td style='padding:0'>"+k[i]['detalleobs']+"</td>";
+                    html +="            ";
+                    html +="        </tr>";
+                
+            }
+
+                    html +="    <tr>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'><small>ENTRADAS</small><br><h5><b>"+numberFormat(total_compras.toFixed(decimales))+"</b></h5></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'><small>SALIDAS</small><br><h5><b>"+numberFormat(total_ventas.toFixed(decimales))+"</b></h5></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'><small>SALDOS</small><br><h5><b>"+numberFormat(saldo.toFixed(decimales))+"</b></h5></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="     <th style='padding:0'></th>";
+                    html +="    </tr>";
+                    
+                    $("#tabla_kardex").html(html);
+        }
+    });
+    
+}
+
+function mostrar_kardex_global(){
+    
+    var decimales = document.getElementById('decimales').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario/buscar_kardex_global";
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+    
+    $.ajax({
+        url:controlador,
+        type: "POST",
+        data:{desde:fecha_desde,hasta:fecha_hasta, producto_id:producto_id},
+        success:function(result){
+            var k = JSON.parse(result);
+            var lamoneda_id = document.getElementById('lamoneda_id').value;
+            var total_otramoneda = Number(0);
+            var total_otram = Number(0);
+            var html = "";
+            var tam = k.length;
+            var saldo = 0; 
+            var total_compras = 0; 
+            var total_ventas = 0;
+            var ocultar = "";
+            var saldox = 0;
+            var cont = 1;
+            for(var i=0; i<tam; i++){
+            
+                if( Date.parse(k[i]['fecha'])>=Date.parse(fecha_desde) && Date.parse(k[i]['fecha'])<=Date.parse(fecha_hasta)){
+                    ocultar = "";
+                   
+                    if (cont == 1){
+                        html += "<tr style='padding:0'>";
+                        html += "<td style='padding:0'><center>"+formato_fecha(fecha_desde)+"</center></td>";    
+                        html += "<td style='padding:0'></td>";                      
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";
+                        html += "<td style='padding:0'></td>";
+                        html += "<td style='padding:0'><center><b>"+Number(saldo).toFixed(decimales)+"</b></center></td>";                    
                         html += "<td style='padding:0'></td>";                    
                         html += "<td style='padding:0'><center><b>SALDO INICIAL<b></center></td>";                    
                         html += "</tr>";
@@ -1848,42 +2012,42 @@ function mostrar_kardex(producto_id){
                     html += "</b></td>";
                     
                     html += "            <td style='padding:0'>";                    
-                        if (k[i]['costoc_unit']!=0) html += Number(k[i]['costoc_unit']).toFixed(2);
+                        if (k[i]['costoc_unit']!=0) html += Number(k[i]['costoc_unit']).toFixed(decimales);
                     html += "</td>";
                     
                     html += "            <td style='padding:0'>";
                     
-                        if (k[i]['importe_ingreso']!=0) html += Number(k[i]['importe_ingreso']).toFixed(2);
+                        if (k[i]['importe_ingreso']!=0) html += Number(k[i]['importe_ingreso']).toFixed(decimales);
                     html += "</td>";
                         
                     html += "            <td style='padding:0'>";
-                        if (k[i]['num_salida']!=0)  html += Number(k[i]['num_salida']).toFixed(2);
+                        if (k[i]['num_salida']!=0)  html += Number(k[i]['num_salida']).toFixed(decimales);
                     html += "</td>";
                         
                     html += "            <td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact;'><b>";
-                            if (k[i]['unidad_vend']!=0) html += Number(k[i]['unidad_vend']).toFixed(2);
+                            if (k[i]['unidad_vend']!=0) html += Number(k[i]['unidad_vend']).toFixed(decimales);
                             
                     html += "</b></td>";
                             
                     html += "            <td style='padding:0'>";
-                                if (k[i]['costov_unit'] != 0) html += Number(k[i]['costov_unit']).toFixed(2);
+                                if (k[i]['costov_unit'] != 0) html += Number(k[i]['costov_unit']).toFixed(decimales);
                     html +="</td>";
                     
                     html +="            <td style='padding:0'>";
-                                if (k[i]['importe_salida'] != 0)  html += Number(k[i]['importe_salida']).toFixed(2);
+                                if (k[i]['importe_salida'] != 0)  html += Number(k[i]['importe_salida']).toFixed(decimales);
                     html +="</td>";
                     
                     if (Number(saldo)>=0){
-                        html +="            <td style='padding:0'><b>"+Number(saldo).toFixed(2)+"</b></td>";
+                        html +="            <td style='padding:0'><b>"+Number(saldo).toFixed(decimales)+"</b></td>";
                     }else{
-                        html +="            <td style='padding:0; background:orange;'><b>"+Number(saldo).toFixed(2)+"</b></td>";                        
+                        html +="            <td style='padding:0; background:orange;'><b>"+Number(saldo).toFixed(decimales)+"</b></td>";                        
                     }
                     html +="            <td style='padding:0'>";
                     
-                        if(Number(saldo * k[i]['costoc_unit']).toFixed(2)>0){ saldox = saldo * k[i]['costoc_unit'];}
+                        if(Number(saldo * k[i]['costoc_unit']).toFixed(decimales)>0){ saldox = saldo * k[i]['costoc_unit'];}
                         else {  saldox = saldo * k[i]['costov_unit']; }
                         
-                    html += saldox.toFixed(2)+"</td>";
+                    html += saldox.toFixed(decimales)+"</td>";
                     html += "<td style='padding:0' class='text-right'> ";
                     if(lamoneda_id == 1){
                         total_otram = Number(saldox)/Number(k[i]["tipo_cambio"])
@@ -1892,7 +2056,7 @@ function mostrar_kardex(producto_id){
                         total_otram = Number(saldox)*Number(k[i]["tipo_cambio"])
                         total_otramoneda += total_otram;
                     }
-                    html += numberFormat(Number(total_otram).toFixed(2));
+                    html += numberFormat(Number(total_otram).toFixed(decimales));
                     html += "</td>";
                     html +="            <td style='padding:0'>"+k[i]['detalleobs']+"</td>";
                     html +="            ";
@@ -1903,14 +2067,14 @@ function mostrar_kardex(producto_id){
                     html +="    <tr>";
                     html +="    <th style='padding:0'></th>";
                     html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'><small>ENTRADAS</small><br><h5><b>"+total_compras.toFixed(2)+"</b></h5></th>";
+                    html +="    <th style='padding:0'><small>ENTRADAS</small><br><h5><b>"+total_compras.toFixed(decimales)+"</b></h5></th>";
                     html +="    <th style='padding:0'></th>";
                     html +="    <th style='padding:0'></th>";
                     html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'><small>SALIDAS</small><br><h5><b>"+total_ventas.toFixed(2)+"</b></h5></th>";
+                    html +="    <th style='padding:0'><small>SALIDAS</small><br><h5><b>"+total_ventas.toFixed(decimales)+"</b></h5></th>";
                     html +="    <th style='padding:0'></th>";
                     html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'><small>SALDOS</small><br><h5><b>"+saldo.toFixed(2)+"</b></h5></th>";
+                    html +="    <th style='padding:0'><small>SALDOS</small><br><h5><b>"+saldo.toFixed(decimales)+"</b></h5></th>";
                     html +="    <th style='padding:0'></th>";
                     html +="    <th style='padding:0'></th>";
                     html +="     <th style='padding:0'></th>";
@@ -1923,6 +2087,8 @@ function mostrar_kardex(producto_id){
 }
 
 function generarexcel(){
+    
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'inventario/generar_excel';    
     
@@ -1990,9 +2156,9 @@ function generarexcel(){
                             row += '"' +factura[i]["producto_codigo"]+ '",';
                             row += '"' +factura[i]["categoria_nombre"]+ '",';
                             row += '"' +factura[i]["producto_unidad"]+ '",';
-                            row += '"' +Number(factura[i]["producto_costo"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["existencia"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["producto_costo"]*factura[i]["existencia"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["producto_costo"]).toFixed(decimales)+ '",';
+                            row += '"' +Number(factura[i]["existencia"]).toFixed(decimales)+ '",';
+                            row += '"' +Number(factura[i]["producto_costo"]*factura[i]["existencia"]).toFixed(decimales)+ '",';
                             if(lamoneda_id == 1){
                                 total_otram = Number(factura[i]["producto_costo"]*factura[i]["existencia"])/Number(lamoneda[1]["moneda_tc"]);
                                 //total_otramoneda += total_otram;
@@ -2000,7 +2166,7 @@ function generarexcel(){
                                 total_otram = Number(factura[i]["producto_costo"]*factura[i]["existencia"])*Number(lamoneda[1]["moneda_tc"]);
                                 //total_otramoneda += total_otram;
                             }
-                            row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
+                            row += '"' +numberFormat(Number(total_otram).toFixed(decimales))+ '",';
                            
 
                         
@@ -2062,7 +2228,11 @@ function generarexcel(){
     });   
 
 }
+
+
 function ver_operacionproceso(producto_id){
+    
+    var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"inventario/operacion_enproceso";
     
@@ -2093,7 +2263,7 @@ function ver_operacionproceso(producto_id){
                     totalventa_aux += Number(enventa[i]["detalleven_cantidad"]);
                     
                     html += "<td style='padding: 0' class='text-center'>"+enventa[i]["usuario_nombre"]+"</td>";
-                    html += "<td style='padding: 0' class='text-right'>"+enventa[i]["detalleven_cantidad"]+"</td>";
+                    html += "<td style='padding: 0' class='text-right'>"+Number(enventa[i]["detalleven_cantidad"]).toFixed(decimales)+"</td>";
                     html += "<td style='padding: 0' class='text-center'>"+enventa[i]["venta_id"]+"</td>";
                     html += "<td style='padding: 0'>"+enventa[i]["producto_nombre"]+"</td>";
                     html += "</tr>";
@@ -2128,7 +2298,7 @@ function ver_operacionproceso(producto_id){
                     totalpedido_nofin += Number(enpedido[i]["detalleped_cantidad"]);
                     
                     html += "<td style='padding: 0' class='text-center'>"+enpedido[i]["usuario_nombre"]+"</td>";
-                    html += "<td style='padding: 0' class='text-right'>"+enpedido[i]["detalleped_cantidad"]+"</td>";
+                    html += "<td style='padding: 0' class='text-right'>"+Number(enpedido[i]["detalleped_cantidad"]).toFixed(decimales)+"</td>";
                     html += "<td style='padding: 0' class='text-center'>"+enpedido[i]["pedido_id"]+"</td>";
                     html += "<td style='padding: 0'>"+enpedido[i]["detalleped_nombre"]+"</td>";
                     html += "</tr>";

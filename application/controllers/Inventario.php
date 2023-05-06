@@ -8,12 +8,15 @@ class Inventario extends CI_Controller{
     
     private $session_data = "";
     private $sistema;
+    private $parametros;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Inventario_model');
         $this->load->model('Empresa_model');
         $this->load->model('Producto_model');
+        $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -21,6 +24,10 @@ class Inventario extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        
+        
     }
     private function acceso($id_rol){
         
@@ -39,7 +46,7 @@ class Inventario extends CI_Controller{
      */
     function index()
     {
-        
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(24)){
             //**************** inicio contenido ***************
@@ -48,8 +55,6 @@ class Inventario extends CI_Controller{
             $data['page_title'] = "Inventario";
             $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
             
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -69,6 +74,7 @@ class Inventario extends CI_Controller{
      */
     function realizable()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(24)){
             //**************** inicio contenido ***************
@@ -95,7 +101,9 @@ class Inventario extends CI_Controller{
      */
     function kardex($producto_id)
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(29)){
             //**************** inicio contenido ***************           
             $empresa_id = 1;
@@ -103,8 +111,7 @@ class Inventario extends CI_Controller{
             $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
             $data['producto'] = $this->Producto_model->get_producto($producto_id);
             $data['producto_id'] = $producto_id;
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -118,7 +125,9 @@ class Inventario extends CI_Controller{
      */
     function buscar_kardex()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(29)){
             //**************** inicio contenido ***************           
             $empresa_id = 1;
@@ -132,11 +141,42 @@ class Inventario extends CI_Controller{
     }
 
     /*
+     * Kadex de producto
+     */
+    function buscar_kardex_global()
+    {
+        $empresa_id = 1;
+        $data['sistema'] = $this->sistema;
+        $hasta = $this->input->post('hasta');
+        $desde = $this->input->post('desde');
+        $data['parametro'] =  $this->parametros;
+        
+        if($this->acceso(29)){
+            //**************** inicio contenido ***************
+            
+            $productos = $this->Inventario_model->get_inventario();
+            
+            foreach($productos as $p){
+                
+                $producto_id = $p['producto_id'];
+                $kardex = $this->Inventario_model->mostrar_kardex($desde, $hasta, $producto_id);
+                
+               //kardex = ;
+            }
+            
+            echo json_encode($kardex);
+            //**************** fin contenido ***************
+        }
+    }
+
+    /*
      * Elimina el contenido de la tabla inventario y lo carga nuevamente
      */
     function actualizar_inventario()
     {   
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(26)){
         //**************** inicio contenido ***************
 		       
@@ -155,7 +195,9 @@ class Inventario extends CI_Controller{
      */
     function mostrar_inventario()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(25)){
             //**************** inicio contenido ***************
             $parametro = $this->input->post("parametro");
@@ -173,7 +215,7 @@ class Inventario extends CI_Controller{
 
     function mostrar_inventario_existencia()
     {      
-       
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         if($this->acceso(25)){
         //**************** inicio contenido ***************
@@ -196,7 +238,9 @@ class Inventario extends CI_Controller{
      */
     function actualizar_cantidad_inventario()
     {   
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(26)){
         //**************** inicio contenido ***************
 		       
@@ -215,8 +259,9 @@ class Inventario extends CI_Controller{
      */
     function mostrar_duplicados()
     {
-     
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(28)){
         //**************** inicio contenido ***************
 		        
@@ -235,7 +280,9 @@ class Inventario extends CI_Controller{
 
     function generar_excel()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         $llamadas = $this->Inventario_model->get_inventario();
         echo json_encode($llamadas); 
 
@@ -243,7 +290,9 @@ class Inventario extends CI_Controller{
     /* muestra operaciones en proceso de venta!! */
     function operacion_enproceso()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
+        
         if($this->input->is_ajax_request()){
             $producto_id = $this->input->post('producto_id');
             $res_venta_aux = $this->Inventario_model->mostrar_productoventa_aux($producto_id);
