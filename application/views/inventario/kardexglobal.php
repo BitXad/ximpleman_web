@@ -1,52 +1,66 @@
-<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
+
+<!--<script type="text/javascript">
+    $(document).ready(function()
+    {
+        window.onload = window.print();
+                                            /*function imprimir()
+                                            {
+                                                /*$('#paraboucher').css('max-width','7cm !important');*/
+                                                /* window.print(); 
+                                            }*/
+    });
+</script>-->
+<!----------------------------- script buscador --------------------------------------->
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/inventario.js'); ?>"></script> 
 
 <style type="text/css">
-    p {
-        font-family: Arial;
-        font-size: 7pt;
-        line-height: 120%;   /*esta es la propiedad para el interlineado*/
-        color: #000;
-        padding: 10px;
-    }
-    div {
-        margin-top: 1px;
-        margin-right: 1px;
-        margin-bottom: 1px;
-        margin-left: 10px;
-        margin: 1px;
-    }
-    table{
-        width : 17cm;
-        margin : 1 1 1px 1;
-        padding : 1 1 1 1;
-        border-spacing : 0 0;
-        border-collapse : collapse;
-        font-family: Arial narrow;
-        font-size: 7pt;
-        td{
-            border:hidden;
-        }
-    }
 
-    td#comentario {
-        vertical-align : bottom;
-        border-spacing : 1;
-    }
+
+p {
+    font-family: Arial;
+    font-size: 7pt;
+    line-height: 120%;   /*esta es la propiedad para el interlineado*/
+    color: #000;
+    padding: 10px;
+}
+
+div {
+margin-top: 1px;
+margin-right: 1px;
+margin-bottom: 1px;
+margin-left: 10px;
+margin: 1px;
+}
+
+
+table{
+width : 17cm;
+margin : 1 1 1px 1;
+padding : 1 1 1 1;
+border-spacing : 0 0;
+border-collapse : collapse;
+font-family: Arial narrow;
+font-size: 7pt;  
+
+td {
+    border:hidden;
+}
+}
+
+td#comentario {
+vertical-align : bottom;
+border-spacing : 1;
+}
+
 </style>
-<<<<<<< HEAD
-=======
 <!----------------------------- fin script buscador --------------------------------------->
-    <?php $decimales = $parametro['parametro_decimales']; ?>
-    <input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
->>>>>>> master
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
-<!--<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php //echo $parametro['moneda_descripcion']; ?>" />-->
-<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
+<!--<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php //echo $parametro[0]['moneda_descripcion']; ?>" />-->
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
 <!--<input type="hidden" name="lamoneda" id="lamoneda" value='<?php //echo json_encode($lamoneda); ?>' />-->
-<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" />
 <!-------------------------------------------------------->
 <table class="table" style="width: 20cm; padding: 0;" >
     <tr>
@@ -147,7 +161,7 @@
         </div>-->
         
         <br>
-        <div class="col-md-2">
+        <div class="col-md-3">
 
             <button class="btn btn-sm btn-facebook btn-sm btn-block"  onclick="mostrar_kardex(<?php echo $producto_id;?>)">
                 <h4>
@@ -156,26 +170,9 @@
           </button>
             <br>
         </div>
-        
         <div class="col-md-2">
-
-            <button class="btn btn-sm btn-info btn-sm btn-block"  onclick="mostrar_kardex_global()">
-                <h4>
-                <span class="fa fa-list"></span>   Inventario Global
-                </h4>
-          </button>
-            <br>
-        </div>
-        
-        <div class="col-md-2">
-<!--            &nbsp;
-            <a class="btn btn-sm btn-success btn-sm btn-block" onclick="imprimir()"><span class="fa fa-print"></span> Imprimir</a>-->
-            <button class="btn btn-sm btn-success btn-sm btn-block"  onclick="imprimir()">
-                <h4>
-                <span class="fa fa-print"></span>   Imprimir
-                </h4>
-          </button>
-            <br>
+            &nbsp;
+            <a class="btn btn-success" onclick="imprimir()"><span class="fa fa-print"></span> Imprimir</a>
         </div>
         
     </center>    
@@ -219,10 +216,10 @@
             UNIDAD<br>COMP.
         </th>
         <th>
-            COSTO<br>UNIT.(<?php echo $parametro['moneda_descripcion']; ?>)
+            COSTO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)
         </th>
         <th>
-            IMPORTE<br>(<?php echo $parametro['moneda_descripcion']; ?>)
+            IMPORTE<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)
         </th>
         <th>
             Nº DOC.<br>VENTA                            
@@ -231,19 +228,19 @@
             UNIDAD<br>VEND.                            
         </th>
         <th>
-            COSTO<br>UNIT.(<?php echo $parametro['moneda_descripcion']; ?>)
+            COSTO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)
         </th>
         <th>
-            IMPORTE<br>(<?php echo $parametro['moneda_descripcion']; ?>)
+            IMPORTE<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)
         </th>
         <th>
             UNIDs.                            
         </th>
         <th>
-            SALDO<br>(<?php echo $parametro['moneda_descripcion']; ?>)
+            SALDO<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)
         </th>
         <th>SALDO<br>(<?php
-                        if($parametro["moneda_id"] == 1){
+                        if($parametro[0]["moneda_id"] == 1){
                             echo $lamoneda[1]['moneda_descripcion'];
                         }else{
                             echo $lamoneda[0]['moneda_descripcion'];

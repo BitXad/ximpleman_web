@@ -1,18 +1,9 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-</script>   
+             
+<?php $decimales = $parametro['parametro_decimales']; ?>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -46,27 +37,29 @@
                         </tr>
                     </thead>
                     <tbody class="buscar">
+                        
                         <?php $cont = 0;
                             foreach($tipo_cliente as $t){;
                                     $cont = $cont+1; ?>
                         <tr>
                             <td><?php echo $cont ?></td>
                             <td><?php echo $t['tipocliente_descripcion']; ?></td>
-                            <td><?php echo $t['tipocliente_porcdesc']; ?></td>
-                            <td><?php echo $t['tipocliente_montodesc']; ?></td>
+                            <td><?php echo number_format($t['tipocliente_porcdesc'],$decimales,".",","); ?></td>
+                            <td><?php echo number_format($t['tipocliente_montodesc'],$decimales,".",","); ?></td>
                             <td class="no-print">
                                 <a href="<?php echo site_url('tipo_cliente/edit/'.$t['tipocliente_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                                 <!--<a href="<?php //echo site_url('tipo_cliente/remove/'.$t['tipocliente_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                             </td>
                         </tr>
                         <?php } ?>
+                        
                     </tbody>
                 </table>
                                 
             </div>
-            <div class="pull-right">
+<!--            <div class="pull-right">
                     <?php echo $this->pagination->create_links(); ?>                    
-                </div>
+                </div>-->
         </div>
     </div>
 </div>

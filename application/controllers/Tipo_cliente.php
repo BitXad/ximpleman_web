@@ -13,6 +13,7 @@ class Tipo_cliente extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Tipo_cliente_model');
+        $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {

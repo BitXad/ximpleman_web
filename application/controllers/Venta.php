@@ -110,6 +110,7 @@ class Venta extends CI_Controller{
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
+        
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;

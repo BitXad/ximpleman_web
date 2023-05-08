@@ -1770,11 +1770,13 @@ function remove($compra_id)
 function nota($compra_id){
 
     $data['sistema'] = $this->sistema;
-    $data['parametro'] = $this->Parametro_model->get_parametros();
+    $data['parametro'] =  $this->parametros;
+    
     $num = $this->Compra_model->numero();
     $este = $num[0]['parametro_tipoimpresora'];
 
   if($this->acceso(1)){
+      
         $data['page_title'] = "Compra";
         $usuario_id = $this->session_data['usuario_id'];
         $this->load->model('Empresa_model');
@@ -1799,11 +1801,12 @@ function nota($compra_id){
 function notaingreso($compra_id){
 
     $data['sistema'] = $this->sistema;
-    $data['parametro'] = $this->Parametro_model->get_parametros();
+    $data['parametro'] =  $this->parametros;
     $num = $this->Compra_model->numero();
     $este = $num[0]['parametro_tipoimpresora'];
 
   if($this->acceso(1)){
+      
         $data['page_title'] = "Compra";
         $usuario_id = $this->session_data['usuario_id'];
         $this->load->model('Empresa_model');
@@ -1815,9 +1818,12 @@ function notaingreso($compra_id){
         
     }
     if ($este == 'NORMAL') {
+        
         $data['_view'] = 'compra/notaIngreso';
         $this->load->view('layouts/main',$data);
+        
     }else{
+        
         $data['_view'] = 'compra/notaIngreso';
         $this->load->view('layouts/main',$data);
  

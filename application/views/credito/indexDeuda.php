@@ -128,21 +128,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <thead id="titulos">
-                    <!--<tr >
-                        <th>#</th>
-                        <th>Proveedor</th>
-                        <th>Credito</th>
-                        <th>Compra</th>
-                        <th>Estado</th>
-                        <th>Monto</th>
-                        <th>Cuota Inicial</th>
-                        <th>Interes (%)</th>
-                        <th># Pagos</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Usuario</th>
-                        <th></th>
-                    </tr>-->
+
                     </thead>
                     <tbody class="buscar" id="tabladeudas"></tbody>
                 </table>
