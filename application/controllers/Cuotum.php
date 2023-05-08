@@ -166,7 +166,7 @@ class Cuotum extends CI_Controller{
         if($this->acceso(48)){
             $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
-            $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
+            //$data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
             $parametros = $this->Parametro_model->get_parametros();
@@ -184,9 +184,9 @@ class Cuotum extends CI_Controller{
             }
             $data['eldetalle'] = $eldetalle;
             
-            $data['_view'] = 'cuotum/planCuentas';
+            //$data['_view'] = 'cuotum/planCuentas';
             /* para lotes:  */
-            //$data['_view'] = 'cuotum/planCuentas_lotes';
+            $data['_view'] = 'cuotum/planCuentas_lotes';
             $this->load->view('layouts/main',$data);
         }
     }

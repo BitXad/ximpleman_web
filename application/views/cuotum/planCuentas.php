@@ -69,7 +69,9 @@
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">     
 <!-------------------------------------------------------->
-
+<?php
+$decimales = $parametro[0]["parametro_decimales"];
+?>
 <div class="box-header">
     <div class="cuerpo">
 
@@ -188,7 +190,7 @@
         <div class="box">
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
-                      <tr>
+                    <tr>
                         <th>CTA.</th>                        
                         <th>PARC.</th>
                         <th>INT.</th>
@@ -197,29 +199,32 @@
                         <th>MULTA</th>
                         <th>TOTAL</th>
                         <th>EFECT.</th>
-                       
                         <th>FECHA<br>PAGO</th>
-                       
                     </tr>
                     <tbody class="buscar">
-                    <?php $i = 1; 
-                    $total = 0;
-                      $cancelados = 0;
-                    $cont = 0;
-                          foreach($cuota as $c){;
-                                 $cont = $cont+1;
-                                 $subtotal = $c['cuota_total'];
-                                 $subcancelados = $c['cuota_cancelado'];
-                                 $total = $subtotal + $total;
-                                 $cancelados = $subcancelados + $cancelados;
-                                 $saldito = $cuota[0]['credito_monto']-$cancelados;
-                                 ?>
-                  <tr>
-
-
-
+                        <?php
+                        $i = 1; 
+                        $total = 0;
+                        $totalcuotascapital = 0;
+                        $totalinteres = 0;
+                        $totalmulta = 0;
+                        $totalcuotas = 0;
+                        $cancelados = 0;
+                        $cont = 0;
+                        foreach($cuota as $c){;
+                            $cont = $cont+1;
+                            $subtotal = $c['cuota_total'];
+                            $subcancelados = $c['cuota_cancelado'];
+                            $total = $subtotal + $total;
+                            $cancelados = $subcancelados + $cancelados;
+                            $saldito = $cuota[0]['credito_monto']-$cancelados;
+                            $totalcuotascapital += $c['cuota_capital'];
+                            $totalinteres += $c['cuota_interes'];
+                            $totalmulta += $c['cuota_multa'];
+                            $totalcuotas += $c['cuota_total'];
+                        ?>
+                    <tr>
                         <td><?php echo $cont ?></td>
-                       
                         <td style="text-align: right;"><?php echo number_format($c['cuota_capital'], 2, ".", ","); ?></td>
                         <td style="text-align: right;"><?php echo number_format($c['cuota_interes'], 2, ".", ","); ?></td>
                         <td style="text-align: center;"><?php echo $fecha_format = date('d/m/Y', strtotime($c['cuota_fechalimite']));  ?></td>
@@ -229,23 +234,22 @@
                         <td style="text-align: right;"><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
                         
                         <td style="text-align: right;"><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
-                         <td style="text-align: center;"><?php if ($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { echo ("NO PAGADO");
+                        <td style="text-align: center;"><?php if ($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { echo ("NO PAGADO");
                          
                         } else{ echo $fecha_format = date('d/m/Y', strtotime($c['cuota_fecha'])); } ?> </td>
-                      
-                       
-                
-                    
                     </tr>
-                   <?php  $i++;  } ?>
+                        <?php
+                        $i++;
+                        }
+                        ?>
                    <tr>
                      <td><b>TOTAL</b></td>
+                     <td style="text-align: right;"><?php echo number_format($totalcuotascapital, $decimales, ".", ","); ?></td>
+                     <td style="text-align: right;"><?php echo number_format($totalinteres, $decimales, ".", ","); ?></td>
                      <td style="text-align: right;"></td>
                      <td style="text-align: right;"></td>
-                     <td style="text-align: right;"></td>
-                     <td style="text-align: right;"></td>
-                     <td style="text-align: right;"></td>
-                     <td style="text-align: right;"></td>
+                     <td style="text-align: right;"><?php echo number_format($totalmulta, $decimales, ".", ","); ?></td>
+                     <td style="text-align: right;"><?php echo number_format($totalcuotas, $decimales, ".", ","); ?></td>
                      <td style="text-align: right; font-size: 12px;"><b><?php echo  number_format($cancelados, 2, ".", ","); ?></b></td>
                      <td style="text-align: right;"></td>
                      

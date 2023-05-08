@@ -1,66 +1,46 @@
-
-<!--<script type="text/javascript">
-    $(document).ready(function()
-    {
-        window.onload = window.print();
-                                            /*function imprimir()
-                                            {
-                                                /*$('#paraboucher').css('max-width','7cm !important');*/
-                                                /* window.print(); 
-                                            }*/
-    });
-</script>-->
-<!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/inventario.js'); ?>"></script> 
 
 <style type="text/css">
+    p {
+        font-family: Arial;
+        font-size: 7pt;
+        line-height: 120%;   /*esta es la propiedad para el interlineado*/
+        color: #000;
+        padding: 10px;
+    }
+    div {
+        margin-top: 1px;
+        margin-right: 1px;
+        margin-bottom: 1px;
+        margin-left: 10px;
+        margin: 1px;
+    }
+    table{
+        width : 17cm;
+        margin : 1 1 1px 1;
+        padding : 1 1 1 1;
+        border-spacing : 0 0;
+        border-collapse : collapse;
+        font-family: Arial narrow;
+        font-size: 7pt;
+        td{
+            border:hidden;
+        }
+    }
 
-
-p {
-    font-family: Arial;
-    font-size: 7pt;
-    line-height: 120%;   /*esta es la propiedad para el interlineado*/
-    color: #000;
-    padding: 10px;
-}
-
-div {
-margin-top: 1px;
-margin-right: 1px;
-margin-bottom: 1px;
-margin-left: 10px;
-margin: 1px;
-}
-
-
-table{
-width : 17cm;
-margin : 1 1 1px 1;
-padding : 1 1 1 1;
-border-spacing : 0 0;
-border-collapse : collapse;
-font-family: Arial narrow;
-font-size: 7pt;  
-
-td {
-    border:hidden;
-}
-}
-
-td#comentario {
-vertical-align : bottom;
-border-spacing : 1;
-}
-
+    td#comentario {
+        vertical-align : bottom;
+        border-spacing : 1;
+    }
 </style>
-<!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <!--<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php //echo $parametro[0]['moneda_descripcion']; ?>" />-->
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
 <!--<input type="hidden" name="lamoneda" id="lamoneda" value='<?php //echo json_encode($lamoneda); ?>' />-->
+<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" />
 <!-------------------------------------------------------->
 <table class="table" style="width: 20cm; padding: 0;" >
     <tr>

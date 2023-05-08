@@ -156,7 +156,7 @@
                                     $total = $subtotal + $total;
                                     $cancelados = $subcancelados + $cancelados;
                                     $saldito = $cuota[0]['credito_monto']-$cancelados;
-                                    $deudaTotal = $deudaTotal - $c['cuota_total']; 
+                                    $deudaTotal = $deudaTotal - $c['cuota_capital']; 
                         ?>
                     <tr>
                         <td><?php echo $cont ?></td>

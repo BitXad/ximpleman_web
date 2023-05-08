@@ -124,7 +124,7 @@ function mostrar_facturas() {
                                 html += "</center></td>";
 
 
-                                html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
+                                html += "   <td>"+factura[i]["factura_cuf"]+"</td>";
                                 let enviada = factura[i]['factura_enviada'] == 1 ? "Enviada":"No enviada";
                                 html += "   <td>"+factura[i]["factura_nit"]+"</td>";
                                 html += "   <td>"+factura[i]["factura_complementoci"]+"</td>";
@@ -183,6 +183,12 @@ function mostrar_facturas() {
                                             }
                                         }
 
+                                    }
+                                    if(factura[i]["estado_id"]==3){
+                                        if (parametro_tiposisistema != 1){
+                                            html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_forzado' onclick='cargar_modal_anularforzado("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+(factura[i]["factura_efectivo"]-factura[i]["factura_cambio"])+","+'"'+factura[i]["factura_fecha"]+'"'+")' title='Forzar Anulación'>";
+                                            html += "<fa class='fa fa-minus-circle'> </fa> </a>";
+                                        }
                                     }
 
 
@@ -471,7 +477,7 @@ function generarexcel(){
                             row += '1,';
                             row += '"' +formato_fecha(factura[i]["factura_fecha"])+ '",';
                             row += '"' +factura[i]["factura_numero"]+ '",';
-                            row += '"' +factura[i]["factura_autorizacion"]+ '",';
+                            row += '"' +factura[i]["factura_cuf"]+ '",';
                             if(factura[i]["estado_id"]==1){
                                 row += 'V,';
                             }
@@ -1004,6 +1010,77 @@ function anular_factura_electronica_malemitida()
             document.getElementById('loadermal').style.display = 'none';
         }else{
             document.getElementById('loadermal').style.display = 'none';
+        }
+
+}
+
+function cargar_modal_anularforzado(factura_id, venta_id, factura_numero, factura_razon, factura_total, factura_fecha)
+{
+    $("#facturaforz_id").val(factura_id);
+    $("#ventaforz_id").val(venta_id);
+    $("#facturaforz_numero").val(factura_numero);
+    $("#facturaforz_monto").val(factura_total);
+    $("#facturaforz_fecha").val(formato_fecha(factura_fecha));
+    $("#facturaforz_cliente").val(factura_razon);
+}
+//Funcion para validar un correo
+function validar_correo(){
+    let factura_correo = document.getElementById("facturaforz_correo").value;
+    let caract = new RegExp(/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/);
+    if($.trim(factura_correo) == ""){
+        /* 0 para que NO mande al correo */
+        forzar_anular_facturasin(0);
+    }else{
+        if (caract.test(factura_correo) == false){
+            $('#mensaje_correo').html("Correo invalido, verique el correo");
+            $('#facturaforz_correo').focus();
+
+        }else{
+            $('#mensaje_correo').html("");
+            /* 1 para que mande al correo mas */
+            forzar_anular_facturasin(1);
+        }
+    }
+}
+
+function forzar_anular_facturasin(escorreo)
+{
+    var factura_id = document.getElementById("facturaforz_id").value; 
+    var venta_id = document.getElementById("ventaforz_id").value; 
+    var factura_numero = document.getElementById("facturaforz_numero").value; 
+    var factura_razon = document.getElementById("facturaforz_cliente").value; 
+    var factura_total = document.getElementById("facturaforz_monto").value; 
+    var factura_fecha = document.getElementById("facturaforz_fecha").value;
+    var motivo_id = document.getElementById("motivoforz_anulacion").value;
+    let factura_correo = document.getElementById("facturaforz_correo").value;
+    factura_correo = $.trim(factura_correo);
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'factura/anular_factura_forzadasin';
+    
+        var r = confirm("Esta a punto de anular una factura.\n"+"Factura Nº: "+factura_numero+"\n"+
+                                  "Monto Bs: "+factura_total+"\n"+
+                                  "Cliente: "+factura_razon+"\n"+
+                                  "Fecha: "+formato_fecha(factura_fecha)+ "\n Esta operación es irreversible, ¿Desea Continuar?");
+        if (r == true) {
+            
+            document.getElementById('loaderforz').style.display = 'block';
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{factura_id:factura_id, venta_id:venta_id, motivo_id:motivo_id,
+                          factura_correo:factura_correo, escorreo:escorreo},
+                    success:function(result){
+                        res = JSON.parse(result);
+                        mostrar_facturas();
+                        alert(JSON.stringify(res));
+                        
+                        document.getElementById('loaderforz').style.display = 'none';
+                        $('#boton_cerrarforz').click();
+                    },
+            });
+            
+            document.getElementById('loaderforz').style.display = 'none';
+        }else{
+            document.getElementById('loaderforz').style.display = 'none';
         }
 
 }

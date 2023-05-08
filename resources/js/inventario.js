@@ -1784,6 +1784,7 @@ function mostrar_kardex(producto_id){
     var controlador = base_url+"inventario/buscar_kardex";
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
+    let decimales = document.getElementById('decimales').value;
     
     $.ajax({
         url:controlador,
@@ -1819,7 +1820,7 @@ function mostrar_kardex(producto_id){
                         html += "<td style='padding:0'></td>";                    
                         html += "<td style='padding:0'></td>";
                         html += "<td style='padding:0'></td>";
-                        html += "<td style='padding:0'><center><b>"+Number(saldo).toFixed(2)+"</b></center></td>";                    
+                        html += "<td style='padding:0'><center><b>"+Number(saldo).toFixed(decimales)+"</b></center></td>";                    
                         html += "<td style='padding:0'></td>";                    
                         html += "<td style='padding:0'><center><b>SALDO INICIAL<b></center></td>";                    
                         html += "</tr>";
@@ -1843,47 +1844,96 @@ function mostrar_kardex(producto_id){
                     html += "</td>";
                     
                     html += "            <td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact;'><b>";
-                        if (k[i]['unidad_comp']!=0) 
-                            html += k[i]['unidad_comp'];
+                    if (k[i]['unidad_comp']!=0){
+                        let partes = k[i]['unidad_comp'];
+                        let partes1 = partes.toString();
+                        let partes2 = partes1.split('.');
+                        if (partes2[1] == 0) { 
+                            lacantidad = partes2[0]; 
+                        }else{ 
+                            lacantidad = numberFormat(Number(k[i]['unidad_comp']).toFixed(decimales))
+                        }
+                        html += lacantidad;
+                    }
                     html += "</b></td>";
                     
                     html += "            <td style='padding:0'>";                    
-                        if (k[i]['costoc_unit']!=0) html += Number(k[i]['costoc_unit']).toFixed(2);
+                        if (k[i]['costoc_unit']!=0) html += Number(k[i]['costoc_unit']).toFixed(decimales);
                     html += "</td>";
                     
                     html += "            <td style='padding:0'>";
                     
-                        if (k[i]['importe_ingreso']!=0) html += Number(k[i]['importe_ingreso']).toFixed(2);
+                        if (k[i]['importe_ingreso']!=0) html += Number(k[i]['importe_ingreso']).toFixed(decimales);
                     html += "</td>";
                         
                     html += "            <td style='padding:0'>";
-                        if (k[i]['num_salida']!=0)  html += Number(k[i]['num_salida']).toFixed(2);
+                    if (k[i]['num_salida']!=0){
+                        let partes = k[i]['num_salida'];
+                        let partes1 = partes.toString();
+                        let partes2 = partes1.split('.');
+                        if (partes2[1] == 0) { 
+                            lacantidad = partes2[0]; 
+                        }else{ 
+                            lacantidad = numberFormat(Number(k[i]['num_salida']).toFixed(0))
+                        }
+                        html += lacantidad;
+                    }
                     html += "</td>";
                         
                     html += "            <td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact;'><b>";
-                            if (k[i]['unidad_vend']!=0) html += Number(k[i]['unidad_vend']).toFixed(2);
+                    if (k[i]['unidad_vend']!=0){
+                        let partes = k[i]['unidad_vend'];
+                        let partes1 = partes.toString();
+                        let partes2 = partes1.split('.');
+                        if (partes2[1] == 0) { 
+                            lacantidad = partes2[0]; 
+                        }else{ 
+                            lacantidad = numberFormat(Number(k[i]['unidad_vend']).toFixed(decimales))
+                        }
+                        html += lacantidad;
+                    }
+                    //html += Number(k[i]['unidad_vend']).toFixed(decimales);
                             
                     html += "</b></td>";
                             
                     html += "            <td style='padding:0'>";
-                                if (k[i]['costov_unit'] != 0) html += Number(k[i]['costov_unit']).toFixed(2);
+                                if (k[i]['costov_unit'] != 0) html += Number(k[i]['costov_unit']).toFixed(decimales);
                     html +="</td>";
                     
                     html +="            <td style='padding:0'>";
-                                if (k[i]['importe_salida'] != 0)  html += Number(k[i]['importe_salida']).toFixed(2);
+                                if (k[i]['importe_salida'] != 0)  html += Number(k[i]['importe_salida']).toFixed(decimales);
                     html +="</td>";
                     
                     if (Number(saldo)>=0){
-                        html +="            <td style='padding:0'><b>"+Number(saldo).toFixed(2)+"</b></td>";
-                    }else{
-                        html +="            <td style='padding:0; background:orange;'><b>"+Number(saldo).toFixed(2)+"</b></td>";                        
+                        html +="            <td style='padding:0'><b>";
+                        let  partes2 = Number(saldo).toString().split('.');
+                        let lacantidad = "";
+                        if (partes2[1] == 0 || partes2[1] == undefined){
+                            lacantidad = partes2[0]; 
+                        }else{
+                            lacantidad = numberFormat(Number(saldo).toFixed(decimales))
+                        }
+                        
+                        html += lacantidad;
+                        html += "</b></td>";
+                    }else{ 
+                        html +="            <td style='padding:0; background:orange;'><b>";
+                        let  partes2 = Number(saldo).toString().split('.');
+                        let lacantidad = "";
+                        if (partes2[1] == 0 || partes2[1] == undefined){
+                            lacantidad = partes2[0]; 
+                        }else{ 
+                            lacantidad = numberFormat(Number(saldo).toFixed(decimales))
+                        }
+                        html += lacantidad;
+                        html += "</b></td>";                        
                     }
                     html +="            <td style='padding:0'>";
                     
-                        if(Number(saldo * k[i]['costoc_unit']).toFixed(2)>0){ saldox = saldo * k[i]['costoc_unit'];}
+                        if(Number(saldo * k[i]['costoc_unit']).toFixed(decimales)>0){ saldox = saldo * k[i]['costoc_unit'];}
                         else {  saldox = saldo * k[i]['costov_unit']; }
                         
-                    html += saldox.toFixed(2)+"</td>";
+                    html += saldox.toFixed(decimales)+"</td>";
                     html += "<td style='padding:0' class='text-right'> ";
                     if(lamoneda_id == 1){
                         total_otram = Number(saldox)/Number(k[i]["tipo_cambio"])
@@ -1892,7 +1942,7 @@ function mostrar_kardex(producto_id){
                         total_otram = Number(saldox)*Number(k[i]["tipo_cambio"])
                         total_otramoneda += total_otram;
                     }
-                    html += numberFormat(Number(total_otram).toFixed(2));
+                    html += numberFormat(Number(total_otram).toFixed(decimales));
                     html += "</td>";
                     html +="            <td style='padding:0'>"+k[i]['detalleobs']+"</td>";
                     html +="            ";
@@ -1900,23 +1950,32 @@ function mostrar_kardex(producto_id){
                 
             }
 
-                    html +="    <tr>";
-                    html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'><small>ENTRADAS</small><br><h5><b>"+total_compras.toFixed(2)+"</b></h5></th>";
-                    html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'></th>";
+            html +="    <tr>";
+            html +="    <th style='padding:0'></th>";
+            html +="    <th style='padding:0'></th>";
+            html +="    <th style='padding:0'><small>ENTRADAS</small><br><h5><b>";
+            let partes1 = total_compras.toString();
+            let partes2 = partes1.split('.');
+            if (partes2[1] == 0 || partes2[1] == undefined){
+                lacantidad = partes2[0]; 
+            }else{ 
+                lacantidad = numberFormat(Number(total_compras).toFixed(decimales))
+            }
+            html += lacantidad;
+            html += "</b></h5></th>";
+            html +="    <th style='padding:0'></th>";
+            html +="    <th style='padding:0'></th>";
+            html +="    <th style='padding:0'></th>";
                     html +="    <th style='padding:0'><small>SALIDAS</small><br><h5><b>"+total_ventas.toFixed(2)+"</b></h5></th>";
-                    html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'><small>SALDOS</small><br><h5><b>"+saldo.toFixed(2)+"</b></h5></th>";
-                    html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'></th>";
-                    html +="     <th style='padding:0'></th>";
-                    html +="    </tr>";
-                    
-                    $("#tabla_kardex").html(html);
+            html +="    <th style='padding:0'></th>";
+            html +="    <th style='padding:0'></th>";
+            html +="    <th style='padding:0'><small>SALDOS</small><br><h5><b>"+saldo.toFixed(decimales)+"</b></h5></th>";
+            html +="    <th style='padding:0'></th>";
+            html +="    <th style='padding:0'></th>";
+            html +="     <th style='padding:0'></th>";
+            html +="    </tr>";
+
+            $("#tabla_kardex").html(html);
         }
     });
     
