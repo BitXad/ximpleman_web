@@ -423,8 +423,8 @@ border-bottom : 1px solid #aaa;
             </font>
             <?php } ?>
             <font size="1">
-                <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],$decimales,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],$decimales,'.',','); ?>
+                <?php echo "EFECTIVO ".substr($parametro[0]["moneda_descripcion"],0,3)." ".number_format($venta[0]['venta_efectivo'],$decimales,'.',','); ?><br>
+                <?php echo "CAMBIO ".substr($parametro[0]["moneda_descripcion"],0,3)." ".number_format($venta[0]['venta_cambio'],$decimales,'.',','); ?>
             </font>
             
             
