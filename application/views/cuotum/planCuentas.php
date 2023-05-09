@@ -70,7 +70,7 @@
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">     
 <!-------------------------------------------------------->
 <?php
-$decimales = $parametro[0]["parametro_decimales"];
+$decimales = $parametro["parametro_decimales"];
 ?>
 <div class="box-header">
     <div class="cuerpo">
@@ -89,20 +89,20 @@ $decimales = $parametro[0]["parametro_decimales"];
             
              <center>
                     
-                    <?php if ($parametro[0]["parametro_mostrarlogo"] == 1){ ?>
+                    <?php if ($parametro["parametro_mostrarlogo"] == 1){ ?>
                 
                         <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="50"><br>
                 
                     <?php } ?>
                     
-                    <?php if ($parametro[0]["parametro_mostrarempresa"] == 1){ ?>
+                    <?php if ($parametro["parametro_mostrarempresa"] == 1){ ?>
                         
                         <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                         
                     <?php } ?>
                         
                         
-                    <?php if ($parametro[0]["parametro_mostrareslogan"] == 1){ ?>
+                    <?php if ($parametro["parametro_mostrareslogan"] == 1){ ?>
                         
                         <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
                         <small>
@@ -112,7 +112,7 @@ $decimales = $parametro[0]["parametro_decimales"];
                         
                     <?php } ?>
 
-                    <?php if ($parametro[0]["parametro_mostrardireccion"] == 1){ ?>
+                    <?php if ($parametro["parametro_mostrardireccion"] == 1){ ?>
                     
                         <font size="1" face="Arial narrow">
                         <small>
@@ -137,8 +137,8 @@ $decimales = $parametro[0]["parametro_decimales"];
             
                 <font size="3" face="arial"><b>PLAN DE PAGOS</b></font> <br>
                 <font size="2"><b>CREDITO No.: 00<?php echo $cuota[0]['credito_id']; ?> </b></font> <br>
-                <font size="1">Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?><br>
-                    <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
+                <font size="1">Expresado en <?php echo $parametro['moneda_descripcion']; ?><br>
+                    <?php if($parametro["parametro_mostrarmoneda"] == 1){ ?>
                     T.C. <?php echo $moneda['moneda_tc']; ?></font> <br>
                     <?php } ?>
                 <?php echo date('d/m/Y H:i:s'); ?> 
