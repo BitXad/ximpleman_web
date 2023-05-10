@@ -16,6 +16,7 @@
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
+<input type="hidden" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales">
 <!--<input type="text" value="" id="parametro" hidden>
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php /*echo $parametro[0]['moneda_descripcion']; ?>" />
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />

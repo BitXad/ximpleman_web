@@ -38,6 +38,7 @@ function tabla_fvencimiento(){
     var fecha_vencimiento = document.getElementById("fecha_vencimiento").value;
     var filtrar = document.getElementById("filtrar").value;
     var tipo_filtro = document.getElementById("tipo_filtro").value;
+    let decimales = document.getElementById('decimales').value;
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
            type:"POST",
@@ -53,7 +54,19 @@ function tabla_fvencimiento(){
                         html += "<tr style='padding:0'>";
                         html += "<td class='text-center' style='padding:0'>"+(i+1)+"</td>";
                         html += "<td class='text-lefth' style='padding:0'>"+registros[i]["producto_nombre"]+"</td>";
-                        html += "<td class='text-center' style='padding:0'>"+registros[i]["producto_cantidad"]+"</td>";
+                        html += "<td class='text-center' style='padding:0'>";
+                        
+			   
+                        let partes = registros[i]["producto_cantidad"];
+                        let partes1 = partes.toString();
+                        let partes2 = partes1.split('.');
+                        if (partes2[1] == 0) { 
+                                lacantidad = partes2[0]; 
+                        }else{ 
+                                lacantidad = numberFormat(Number(registros[i]["producto_cantidad"]).toFixed(decimales))
+                        }
+                        html += lacantidad;
+                        html += "</td>";
                         html += "<td class='text-center' style='padding:0'>";
                         if(registros[i]["detallecomp_fechavencimiento"] != null && registros[i]["detallecomp_fechavencimiento"] != "0000-00-00" ){
                             html += moment(registros[i]["detallecomp_fechavencimiento"]).format("DD-MM-YYYY");
