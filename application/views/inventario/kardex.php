@@ -34,19 +34,17 @@
         border-spacing : 1;
     }
 </style>
-<<<<<<< HEAD
-=======
+
 <!----------------------------- fin script buscador --------------------------------------->
     <?php $decimales = $parametro['parametro_decimales']; ?>
     <input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
->>>>>>> master
+
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <!--<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php //echo $parametro['moneda_descripcion']; ?>" />-->
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
 <!--<input type="hidden" name="lamoneda" id="lamoneda" value='<?php //echo json_encode($lamoneda); ?>' />-->
-<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" />
 <!-------------------------------------------------------->
 <table class="table" style="width: 20cm; padding: 0;" >
     <tr>

@@ -1796,7 +1796,6 @@ function mostrar_kardex(producto_id){
     var controlador = base_url+"inventario/buscar_kardex";
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
-    let decimales = document.getElementById('decimales').value;
     
     $.ajax({
         url:controlador,
@@ -1833,8 +1832,6 @@ function mostrar_kardex(producto_id){
                         html += "<td style='padding:0'></td>";
                         html += "<td style='padding:0'></td>";
                         html += "<td style='padding:0'><center><b>"+Number(saldo).toFixed(decimales)+"</b></center></td>";                    
-<<<<<<< HEAD
-=======
                         html += "<td style='padding:0'></td>";                    
                         html += "<td style='padding:0'><center><b>SALDO INICIAL<b></center></td>";                    
                         html += "</tr>";
@@ -1987,7 +1984,6 @@ function mostrar_kardex_global(){
                         html += "<td style='padding:0'></td>";
                         html += "<td style='padding:0'></td>";
                         html += "<td style='padding:0'><center><b>"+Number(saldo).toFixed(decimales)+"</b></center></td>";                    
->>>>>>> master
                         html += "<td style='padding:0'></td>";                    
                         html += "<td style='padding:0'><center><b>SALDO INICIAL<b></center></td>";                    
                         html += "</tr>";
@@ -2011,17 +2007,8 @@ function mostrar_kardex_global(){
                     html += "</td>";
                     
                     html += "            <td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact;'><b>";
-                    if (k[i]['unidad_comp']!=0){
-                        let partes = k[i]['unidad_comp'];
-                        let partes1 = partes.toString();
-                        let partes2 = partes1.split('.');
-                        if (partes2[1] == 0) { 
-                            lacantidad = partes2[0]; 
-                        }else{ 
-                            lacantidad = numberFormat(Number(k[i]['unidad_comp']).toFixed(decimales))
-                        }
-                        html += lacantidad;
-                    }
+                        if (k[i]['unidad_comp']!=0) 
+                            html += k[i]['unidad_comp'];
                     html += "</b></td>";
                     
                     html += "            <td style='padding:0'>";                    
@@ -2034,40 +2021,11 @@ function mostrar_kardex_global(){
                     html += "</td>";
                         
                     html += "            <td style='padding:0'>";
-<<<<<<< HEAD
-                    if (k[i]['num_salida']!=0){
-                        let partes = k[i]['num_salida'];
-                        let partes1 = partes.toString();
-                        let partes2 = partes1.split('.');
-                        if (partes2[1] == 0) { 
-                            lacantidad = partes2[0]; 
-                        }else{ 
-                            lacantidad = numberFormat(Number(k[i]['num_salida']).toFixed(0))
-                        }
-                        html += lacantidad;
-                    }
-                    html += "</td>";
-                        
-                    html += "            <td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact;'><b>";
-                    if (k[i]['unidad_vend']!=0){
-                        let partes = k[i]['unidad_vend'];
-                        let partes1 = partes.toString();
-                        let partes2 = partes1.split('.');
-                        if (partes2[1] == 0) { 
-                            lacantidad = partes2[0]; 
-                        }else{ 
-                            lacantidad = numberFormat(Number(k[i]['unidad_vend']).toFixed(decimales))
-                        }
-                        html += lacantidad;
-                    }
-                    //html += Number(k[i]['unidad_vend']).toFixed(decimales);
-=======
                         if (k[i]['num_salida']!=0)  html += Number(k[i]['num_salida']).toFixed(decimales);
                     html += "</td>";
                         
                     html += "            <td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact;'><b>";
                             if (k[i]['unidad_vend']!=0) html += Number(k[i]['unidad_vend']).toFixed(decimales);
->>>>>>> master
                             
                     html += "</b></td>";
                             
@@ -2080,34 +2038,9 @@ function mostrar_kardex_global(){
                     html +="</td>";
                     
                     if (Number(saldo)>=0){
-<<<<<<< HEAD
-                        html +="            <td style='padding:0'><b>";
-                        let  partes2 = Number(saldo).toString().split('.');
-                        let lacantidad = "";
-                        if (partes2[1] == 0 || partes2[1] == undefined){
-                            lacantidad = partes2[0]; 
-                        }else{
-                            lacantidad = numberFormat(Number(saldo).toFixed(decimales))
-                        }
-                        
-                        html += lacantidad;
-                        html += "</b></td>";
-                    }else{ 
-                        html +="            <td style='padding:0; background:orange;'><b>";
-                        let  partes2 = Number(saldo).toString().split('.');
-                        let lacantidad = "";
-                        if (partes2[1] == 0 || partes2[1] == undefined){
-                            lacantidad = partes2[0]; 
-                        }else{ 
-                            lacantidad = numberFormat(Number(saldo).toFixed(decimales))
-                        }
-                        html += lacantidad;
-                        html += "</b></td>";                        
-=======
                         html +="            <td style='padding:0'><b>"+Number(saldo).toFixed(decimales)+"</b></td>";
                     }else{
                         html +="            <td style='padding:0; background:orange;'><b>"+Number(saldo).toFixed(decimales)+"</b></td>";                        
->>>>>>> master
                     }
                     html +="            <td style='padding:0'>";
                     
@@ -2131,34 +2064,6 @@ function mostrar_kardex_global(){
                 
             }
 
-<<<<<<< HEAD
-            html +="    <tr>";
-            html +="    <th style='padding:0'></th>";
-            html +="    <th style='padding:0'></th>";
-            html +="    <th style='padding:0'><small>ENTRADAS</small><br><h5><b>";
-            let partes1 = total_compras.toString();
-            let partes2 = partes1.split('.');
-            if (partes2[1] == 0 || partes2[1] == undefined){
-                lacantidad = partes2[0]; 
-            }else{ 
-                lacantidad = numberFormat(Number(total_compras).toFixed(decimales))
-            }
-            html += lacantidad;
-            html += "</b></h5></th>";
-            html +="    <th style='padding:0'></th>";
-            html +="    <th style='padding:0'></th>";
-            html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'><small>SALIDAS</small><br><h5><b>"+total_ventas.toFixed(2)+"</b></h5></th>";
-            html +="    <th style='padding:0'></th>";
-            html +="    <th style='padding:0'></th>";
-            html +="    <th style='padding:0'><small>SALDOS</small><br><h5><b>"+saldo.toFixed(decimales)+"</b></h5></th>";
-            html +="    <th style='padding:0'></th>";
-            html +="    <th style='padding:0'></th>";
-            html +="     <th style='padding:0'></th>";
-            html +="    </tr>";
-
-            $("#tabla_kardex").html(html);
-=======
                     html +="    <tr>";
                     html +="    <th style='padding:0'></th>";
                     html +="    <th style='padding:0'></th>";
@@ -2176,7 +2081,6 @@ function mostrar_kardex_global(){
                     html +="    </tr>";
                     
                     $("#tabla_kardex").html(html);
->>>>>>> master
         }
     });
     
