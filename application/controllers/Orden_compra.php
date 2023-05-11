@@ -258,7 +258,7 @@ class Orden_compra extends CI_Controller{
         $este = $num[0]['parametro_tipoimpresora'];
         if($this->acceso(1)){
             $data['page_title'] = "Orden de Compra";
-            $usuario_id = $this->session_data['usuario_id'];
+            //$usuario_id = $this->session_data['usuario_id'];
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['ordencompra'] = $this->Orden_compra_model->get_ordencompra($ordencompra_id);
