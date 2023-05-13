@@ -93,17 +93,17 @@ class Cotizacion extends CI_Controller{
 
     function buscar_cotizacion()
     {
-        $data['parametro'] = $this->parametros;
-       if ($this->input->is_ajax_request()) {  
-        $parametro = $this->input->post('parametro');
-        $datos = $this->Cotizacion_model->get_fechas_cotizacion($parametro);
-       if(isset($datos)){
-                        echo json_encode($datos);
-                    }else echo json_encode(null);
-    }
-        else
-        {                 
-                    show_404();
+        //$data['parametro'] = $this->parametros;
+        if ($this->input->is_ajax_request()) {
+            $parametro = $this->input->post('parametro');
+            $datos = $this->Cotizacion_model->get_fechas_cotizacion($parametro);
+            if(isset($datos)){
+                echo json_encode($datos);
+            }else{
+                echo json_encode(null);
+            }
+        }else{                 
+            show_404();
         }          
     }
 
@@ -162,7 +162,7 @@ class Cotizacion extends CI_Controller{
     {
         $data['parametro'] = $this->parametros;
         $data['sistema'] = $this->sistema;
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        //$data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
         

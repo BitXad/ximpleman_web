@@ -138,8 +138,9 @@ function actualizacaracteristicas(e,detalle_id,producto_id,cotizacion_id) {
 }
 
 function totality(total_detalle){
-  var totalfinal = Number(total_detalle);
-  $("#cotizacion_total").val(totalfinal.toFixed(decimales));
+    var decimales = document.getElementById(decimales).value; 
+    var totalfinal = Number(total_detalle).toFixed(decimales);
+    $("#cotizacion_total").val(totalfinal.toFixed(decimales));
 }
 
 function detallecota(cotizacion_id,producto_id){
@@ -868,6 +869,7 @@ function mostrar_ocultar_buscador(parametro){
 
 function fechacotizacion(parametro){
   var base_url    = document.getElementById('base_url').value;
+  let decimales   = document.getElementById('decimales').value;
   var controlador = base_url+"cotizacion/buscar_cotizacion";
    
 

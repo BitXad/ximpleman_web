@@ -1,9 +1,15 @@
-<!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/cotizacion.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/cotizacion_fecha.js'); ?>" type="text/javascript"></script>
-
-<!----------------------------- fin script buscador --------------------------------------->
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        window.onload = window.print();
+    });
+    function imprimir(){
+        window.print(); 
+    }  
+</script>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/cotizacion.css'); ?>" rel="stylesheet">
 <style type="text/css">
@@ -14,35 +20,30 @@
         -webkit-print-color-adjust: exact;
     }
 }
-
 </style>
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="fecha_cotizacion" id="fecha_cotizacion" value="<?php echo $cotizacion['cotizacion_fecha']; ?>">
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
- 
+ <?php $decimales = $parametro['parametro_decimales']; ?>
  <table class="table" style="width: 20cm; padding: 0;" >
     <tr>
         <td style="width: 6cm; padding: 0; line-height:10px;" >
-                
             <center>
-                               
                     <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="80" height="60"><br>
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                   
-                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <!--<font size="1" face="Arial"><?php //echo $factura[0]['factura_sucursal'];?><br>-->
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
-                
-
-            </center>                      
+            </center>
         </td>
-                   
-        <td style="width: 6cm; padding: 0" > 
-            
-        </td>
+        <td style="width: 6cm; padding: 0" ></td>
         <td style="width: 4cm; padding: 0" >
+            <div class="no-print">
+                <a id="imprimir" class="btn btn-sq-lg btn-success" onclick="imprimir()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>
+            </div>
 <!--                ______________________________                
                    
                                 
@@ -110,14 +111,32 @@
                     $totalfinal += $d['detallecot_total'];
                 ?>
             <tr>    
-                <td  style="text-align: center;"> <?php echo $d['detallecot_cantidad']; ?></font>
+                <td style="text-align: center;">
+                    <?php
+                    $partes = explode(".",$d['detallecot_cantidad']); 
+                    if(isset($partes[1])){
+                        if ($partes[1] == 0) { 
+                            $lacantidad = $partes[0];
+                        }else{ 
+                            $lacantidad = number_format($d['detallecot_cantidad'],$decimales,'.',','); 
+                        }
+                    }else{
+                        $lacantidad = $partes[0];
+                    }
+                    echo $lacantidad;
+                    //echo $d['detallecot_cantidad'];
+                    ?>
                     <input id="detallecot_id"  name="detallecot_id" type="hidden" class="form-control" value="<?php echo $d['detallecot_id']; ?>">
                 </td>
                 <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?> </td>
                 <td style="text-align: left;"><b><?php echo $d['producto_nombre']; ?></b> /
                     Marca: <b><?php echo $d['producto_marca']; ?></b>
                     <!--Industria: <b><?php //echo $d['producto_industria']; ?></b>-->
-                    <?php if($d['detallecot_caracteristica'] == "null"){ echo " "; }else{ echo nl2br($d['detallecot_caracteristica']);} ?>
+                    <?php
+                    if ($d['detallecot_caracteristica']!="" && $d['detallecot_caracteristica']!= null && $d['detallecot_caracteristica']!= "null"){
+                        echo nl2br($d['detallecot_caracteristica']);
+                    }
+                    ?>
                 </td>
                 <td class="text-center">
                     <?php echo $d['producto_industria']; ?>
@@ -125,16 +144,16 @@
 
                 <td  style="text-align: right;">
                    
-                    <?php echo number_format($d['detallecot_precio'],2,".",","); ?>
+                    <?php echo number_format($d['detallecot_precio'],$decimales,".",","); ?>
                 </td>  
 
                 <td  style="text-align: right;">
-                    <?php echo number_format($d['detallecot_descuento'], 2, ".", ","); ?>
+                    <?php echo number_format($d['detallecot_descuento'],$decimales, ".", ","); ?>
                 </td>
 
                 <td  style="text-align: right;">
                     <span class="badge badge-success">
-                         <b><?php echo number_format($d['detallecot_total'],2,".",","); ?></b></font> <br>                                        
+                         <b><?php echo number_format($d['detallecot_total'],$decimales,".",","); ?></b></font> <br>                                        
                     </span>
                     <!--<button type="submit" class="btn btn-success hidden">
                         <i class="fa fa-check"></i>Finalizar<br>Cotizacion
@@ -154,7 +173,7 @@
                 <th rowspan="2" colspan="3" class="text-center" style="font-size: 13pt; padding: 3px">TOTAL</th>
                 <th colspan="3" class="text-center" style="font-size: 11px; padding: 3px">NUMERAL(Bs.)</th>
                 <th class="text-right" style=" padding: 3px">
-                    <span class="badge badge-success"><font size="3"><b><?php echo number_format($totalfinal,2,".",","); ?></b></font></span>
+                    <span class="badge badge-success"><font size="3"><b><?php echo number_format($totalfinal,$decimales,".",","); ?></b></font></span>
                 </th>
             </tr>
             <tr>
