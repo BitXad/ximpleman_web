@@ -79,7 +79,7 @@ class Cotizacion_model extends CI_Model
 
  function crear_cotizacion($usuario_id)
     {
-        $usuario_id = 1;
+        //$usuario_id = 1;
         $cotizacion_fechahora = "'".date("Y-m-d   H:i:s")."'";
         
         $sql = "insert into cotizacion(cotizacion_fecha) ".

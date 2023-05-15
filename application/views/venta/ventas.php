@@ -1588,7 +1588,7 @@ window.onkeydown = compruebaTecla;
                     <h5 class="modal-title" id="myModalLabel"><b>Nº CUOTAS</b></h5>
 
                     <select name="cuotas"  class="form-control input-sm" id="cuotas">
-                        <?php for($i=1;$i<=36;$i++){ ?>
+                        <?php for($i=1;$i<=120;$i++){ ?>
                             <option value="<?php echo $i; ?>"><?php echo $i; ?> CUOTA (S)</option>
                         <?php } ?>
                     </select>                                      

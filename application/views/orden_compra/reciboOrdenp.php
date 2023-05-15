@@ -128,9 +128,9 @@
  </style>
  
  <?php
-    //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-    $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-    $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+    //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+    $ancho = $parametro["parametro_anchofactura"]."cm";
+    $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
  <div class=" table-responsive" style="padding: 0;">
     <table class="table">
@@ -197,7 +197,18 @@
                         <td style="text-align: center;"><?php echo $dc['detalleordencomp_codigo'];?></td>
                         <td style="text-align: left;"><?php echo $dc['producto_nombre'];?></td>                            
                         <td class="text-center"><?php echo $dc['detalleordencomp_unidad'];?></td>
-                        <td><?php echo $dc['detalleordencomp_cantidad'];?></td>
+                        <td>
+                            <?php
+                            $partes = explode(".",$dc['detalleordencomp_cantidad']); 
+                            if ($partes[1] == 0) { 
+                                $lacantidad = $partes[0]; 
+                            }else{ 
+                                $lacantidad = number_format($dc['detalleordencomp_cantidad'],$parametro['parametro_decimales'],'.',','); 
+                            }
+                            echo $lacantidad;
+                            //echo $dc['detalleordencomp_cantidad'];
+                            ?>
+                        </td>
                         <!--<td><?php echo number_format($dc['detalleordencomp_costo'],'2','.',',');?></td>
                         <td><?php /*echo number_format($dc['detalleordencomp_subtotal'],'2','.',',');?></td>
                         <td><?php echo number_format($dc['detalleordencomp_descuento'],'2','.',',');?></td>
@@ -207,7 +218,23 @@
                     <?php } ?>
                     <tr style="border-top:2px solid black; margin: 0;padding: 0; font-size: 10pt">
                         <td colspan="4"><b>TOTAL: </b></td>
-                        <td><b><?php echo  number_format($total,'2','.',',');?></b></td>
+                        <td><b>
+                            <?php
+                            $partes = explode(".",$total); 
+                            if(isset($partes[1])){
+                                if ($partes[1] == 0) { 
+                                    $lacantidad = $partes[0];
+                                }else{ 
+                                    $lacantidad = number_format($total,$parametro['parametro_decimales'],'.',','); 
+                                }
+                            }else{
+                                $lacantidad = $partes[0];
+                            }
+                            echo $lacantidad;
+                            //echo  number_format($total,'2','.',',');
+                            ?>
+                            </b>
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-left" colspan="5">

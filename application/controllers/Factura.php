@@ -2007,4 +2007,141 @@ class Factura extends CI_Controller{
         }
     }
     
+    /* anula una factura; en el sistema esta como no enviada;
+     * pero en impuestos esta registrado como valida!. */
+    function anular_factura_forzadasin(){
+        $usuario_idanulador = $this->session_data['usuario_id'];
+        $factura_id =  $this->input->post("factura_id");            
+        
+        $sql = "select * from factura where factura_id = ".$factura_id;                
+        $factura = $this->Factura_model->consultar($sql);
+        
+        //$venta_id = $factura[0]["venta_id"];
+        $codigo_motivo =  $this->input->post("motivo_id");
+        if($codigo_motivo==""){
+            $codigo_motivo =  1;
+        }
+        
+        $dosificacion_id = 1;
+        $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+        
+        if ($dosificacion['docsec_codigoclasificador']==1)
+                $wsdl = $dosificacion['dosificacion_factura'];
+
+        if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+            if ($dosificacion['docsec_codigoclasificador']==13)
+                $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+            if ($dosificacion['docsec_codigoclasificador']==15)
+                $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+            if ($dosificacion['docsec_codigoclasificador']==22)
+                $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+        }
+        
+        if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                $wsdl = $dosificacion['dosificacion_facturaglp'];
+
+            if ($dosificacion['docsec_codigoclasificador']==15)
+                $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+        }
+        
+        $token = $dosificacion['dosificacion_tokendelegado'];
+
+        $opts = array(
+              'http' => array(
+                   'header' => "apiKey: TokenApi $token",
+              )
+        );
+        $context = stream_context_create($opts);
+
+        $cliente = new \SoapClient($wsdl, [
+              'stream_context' => $context,
+              'cache_wsdl' => WSDL_CACHE_NONE,
+              'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+              // other options
+        ]);
+        
+        //$venta = $this->Detalle_venta_model->get_venta($venta_id);
+        $usuarioventa_id = $factura[0]['usuario_id'];
+
+        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuarioventa_id);
+        $this->load->model('PuntoVenta_model');
+        $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+
+        $tipoFacturaDoc = 1;
+        if ($factura[0]['docsec_codigoclasificador'] == 8 ||$factura[0]['docsec_codigoclasificador'] == 6){
+            $tipoFacturaDoc = 2;
+        }
+                
+                
+        $codigoAmbiente = $dosificacion['dosificacion_ambiente'];
+        $codigoDocumentoSector = $factura[0]["docsec_codigoclasificador"];
+        $codigoEmision = 1;
+        $codigoModalidad = $factura[0]['factura_modalidad'];
+        $codigoPuntoVenta = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
+        $codigoSistema = $dosificacion['dosificacion_codsistema'];
+        $codigoSucursal = $dosificacion['dosificacion_codsucursal'];
+        $cufd = $punto_venta['cufd_codigo']; //$dosificacion['dosificacion_cufd'];
+        $cuis = $punto_venta['cuis_codigo']; //$dosificacion['dosificacion_cuis']; 
+        $nit =  $dosificacion['dosificacion_nitemisor'];
+        $tipoFacturaDocumento = $tipoFacturaDoc; //1 con derecho a credito fiscal / 2 Sin derecho a credito fiscal //1 para facturas comerciales * 2 para facturas tasas cero
+        $codigoMotivo = $codigo_motivo;
+        $cuf = $factura[0]['factura_cuf'];
+                
+        /* ordenado segun SoapUI */
+
+        $parametros = ["SolicitudServicioAnulacionFactura" => [
+            "codigoAmbiente" => $codigoAmbiente,
+            "codigoDocumentoSector" => $codigoDocumentoSector,
+            "codigoEmision" => $codigoEmision,
+            "codigoModalidad" => $codigoModalidad,
+            "codigoPuntoVenta" => $codigoPuntoVenta,
+            "codigoSistema" => $codigoSistema,
+            "codigoSucursal" => $codigoSucursal,
+            "cufd" => $cufd,
+            "cuis" => $cuis, 
+            "nit" =>  $nit,
+            "tipoFacturaDocumento" => $tipoFacturaDocumento, //averiguar donde se almacena esto
+            "codigoMotivo" => $codigoMotivo,
+            "cuf" => $cuf
+        ]];
+        
+        $resultado = $cliente->anulacionFactura($parametros);
+        $res = $resultado->RespuestaServicioFacturacion->transaccion;
+        $mensaje = "";
+        
+        if ($res){
+            $factura_cuf = $factura[0]["factura_cuf"];
+            $factura_total           = $factura[0]["factura_total"];
+            
+            $mensaje_anular = "";
+            //****************** inicio bitacora caja
+            $bitacoracaja_evento = "ANULAR FACTURA N°".$factura[0]["factura_numero"];
+            $bitacoracaja_tipo = 2;
+            
+            $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+            ",'".$bitacoracaja_evento."',".$usuario_idanulador.",".$factura[0]["factura_total"].",0,".$bitacoracaja_tipo.",".$caja_id.")";
+
+            $this->Venta_model->ejecutar($sql);
+            //****************** fin bitacora caja
+            
+            $escorreo = $this->input->post("escorreo");
+            if($escorreo == 1){
+                $correo = $this->input->post("factura_correo");
+            $resu = $this->enviar_correoanulacion($venta_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf);
+            }
+        }
+        echo json_encode($resultado->RespuestaServicioFacturacion);
+    }
 }

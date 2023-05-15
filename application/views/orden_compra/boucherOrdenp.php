@@ -1,3 +1,4 @@
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script type="text/javascript">
     $(document).ready(function()
     {
@@ -5,7 +6,6 @@
     });
 </script>
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -71,12 +71,12 @@ border-bottom : 1px solid #aaa;*/
 </style>
 <!--------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
+<!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <!-------------------------------------------------------->
-<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"]."cm";
+      $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
 
 
@@ -171,7 +171,17 @@ border-bottom : 1px solid #aaa;*/
                         ?>
            <tr style="font-size: 8pt;">
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <b><?php echo $d['producto_nombre']; ?></b></td>
-                <td align="center" style="padding: 0;"><?php echo $d['detalleordencomp_cantidad']; ?></td>
+                <td align="center" style="padding: 0;">
+                    <?php
+                    $partes = explode(".",$d['detalleordencomp_cantidad']); 
+                    if ($partes[1] == 0) { 
+                        $lacantidad = $partes[0]; 
+                    }else{ 
+                        $lacantidad = number_format($d['detalleordencomp_cantidad'],$parametro['parametro_decimales'],'.',','); 
+                    }
+                    echo $lacantidad;
+                    ?>
+                </td>
                 <!--<td align="right" style="padding: 0;"><?php //echo number_format($d['detalleordencomp_costo'],2,'.',','); ?></td>-->
                 <!--<td align="right" style="padding: 0;"><?php //echo number_format($d['detalleordencomp_total'],2,'.',','); ?></td>-->
            </tr>
@@ -186,7 +196,19 @@ border-bottom : 1px solid #aaa;*/
             
             <font size="2">
             <b>
-                <?php echo "TOTAL: ".number_format($total_cant ,2,'.',','); ?><br>
+                <?php
+                $partes = explode(".",$total_cant); 
+                if(isset($partes[1])){
+                    if ($partes[1] == 0) { 
+                        $lacantidad = $partes[0];
+                    }else{ 
+                        $lacantidad = number_format($total_cant,$parametro['parametro_decimales'],'.',','); 
+                    }
+                }else{
+                    $lacantidad = $partes[0];
+                }
+                echo "TOTAL: ".$lacantidad;
+                ?><br>
             </b>
             </font>
             

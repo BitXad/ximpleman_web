@@ -1,5 +1,5 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/factura.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
@@ -355,6 +355,86 @@
     </div>
 </div>
 <!------------------------ F I N  modal para confirmar anulacion de factura no enviada------------------->
+
+<!------------------------ INICIO modal para forzar anulacion de factura en siat ------------------->
+<div class="modal fade" id="modalanular_forzado" tabindex="-1" role="dialog" aria-labelledby="modalanularforzadolabel" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center" style="background: #f05b32">
+                <b style="color: white;">ANULAR FACTURA</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <label for="factura_numeroforz" class="control-label">ADVERTENCIA: Esta a punto de anular la factura en impuestos!.</label>
+                </div>
+                <div class="col-md-12 text-center" id="loaderforz" style="display:none;">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" />
+                </div>
+                  <input type="hidden" name="facturafoorz_id" value="00" class="form-control" id="facturaforz_id" readonly="true" />
+                  <input type="hidden" name="ventaforz_id" value="00" class="form-control" id="ventaforz_id" readonly="true" />
+
+                <div class="col-md-4">
+                    <label for="facturaforz_numero" class="control-label">Factura Nº</label>
+                    <div class="form-group">
+                        <input type="input" name="facturaforz_numero" value="00" class="form-control" id="facturaforz_numero" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="facturaforz_monto" class="control-label">Monto</label>
+                    <div class="form-group">
+                        <input type="input" name="facturaforz_monto" value="0.00" class="form-control" id="facturaforz_monto" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="facturaforz_fecha" class="control-label">Fecha</label>
+                    <div class="form-group">
+                        <input type="input" name="facturaforz_fecha" value="0.00" class="form-control" id="facturaforz_fecha" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="facturaforz_cliente" class="control-label">Cliente</label>
+                    <div class="form-group">
+                        <input type="input" name="facturaforz_cliente" value="-" class="form-control" id="facturaforz_cliente" readonly="true"  />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="facturaforz_correo" class="control-label">Correo Electrónico</label>
+                    <div class="form-group">
+                        <span class="text-red" id="mensaje_correo"></span>
+                        <input type="email" name="facturaforz_correo" class="form-control" id="facturaforz_correo" />
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="motivoforz_anulacion" class="control-label">Motivo Anulación</label>
+                    <div class="form-group">
+
+                        <select id="motivoforz_anulacion" class="form-control">
+
+                            <?php  foreach ($motivos as $motivo) {?>
+
+                                <option value="<?= $motivo['cma_id']; ?>"><?= $motivo['cma_descripcion']; ?></option>
+
+                            <?php }  ?>
+
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" onclick="validar_correo()"><fa class="fa fa-floppy-o"></fa> Anular Factura</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarforz"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para forzar anulacion de factura en siat ------------------->
 
 <!-- Button trigger modal -->
 <div >

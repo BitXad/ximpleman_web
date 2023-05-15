@@ -1922,6 +1922,7 @@ function torta3($anio,$mes)
         if($this->acceso(18)){
             $data['page_title'] = "Reporte de productos vencidos";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['parametro'] = $this->parametros;
             $data['_view'] = 'reportes/productosvencidos';
             $this->load->view('layouts/main',$data);
         }

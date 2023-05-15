@@ -244,7 +244,8 @@ border-bottom : 1px solid #aaa;
                         ?>
                     <!--<textarea onload="autosize()"></textarea>-->
                 </td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],$decimales,'.',','); ?></td>
+                <!--<td align="right" style="padding: 0;"><?php //echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],$decimales,'.',','); ?></td>-->
+                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_precio'],$decimales,'.',','); ?></td>
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_subtotal'],$decimales,'.',','); ?></td>
                 <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
                 <td align="right" style="padding: 0">

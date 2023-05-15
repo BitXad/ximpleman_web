@@ -54,20 +54,20 @@
             </center>-->
             <center>
                     
-                    <?php if ($parametro[0]["parametro_mostrarlogo"] == 1){ ?>
+                    <?php if ($parametro["parametro_mostrarlogo"] == 1){ ?>
                 
                         <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="50"><br>
                 
                     <?php } ?>
                     
-                    <?php if ($parametro[0]["parametro_mostrarempresa"] == 1){ ?>
+                    <?php if ($parametro["parametro_mostrarempresa"] == 1){ ?>
                         
                         <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                         
                     <?php } ?>
                         
                         
-                    <?php if ($parametro[0]["parametro_mostrareslogan"] == 1){ ?>
+                    <?php if ($parametro["parametro_mostrareslogan"] == 1){ ?>
                         
                         <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
                         <small>
@@ -77,7 +77,7 @@
                         
                     <?php } ?>
 
-                    <?php if ($parametro[0]["parametro_mostrardireccion"] == 1){ ?>
+                    <?php if ($parametro["parametro_mostrardireccion"] == 1){ ?>
                     
                         <font size="1" face="Arial narrow">
                         <small>
@@ -156,7 +156,7 @@
                                     $total = $subtotal + $total;
                                     $cancelados = $subcancelados + $cancelados;
                                     $saldito = $cuota[0]['credito_monto']-$cancelados;
-                                    $deudaTotal = $deudaTotal - $c['cuota_total']; 
+                                    $deudaTotal = $deudaTotal - $c['cuota_capital']; 
                         ?>
                     <tr>
                         <td><?php echo $cont ?></td>

@@ -1,14 +1,14 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/cotizacion.js'); ?>" type="text/javascript"></script>
 <script>
-function enviar_formulario(cotizacion_id){
-  var base_url    = document.getElementById('base_url').value;
-   document.fincotiza.submit(cotizacion_id);
-   
-  //setTimeout( window.open(base_url+'cotizacion/recibo/'+cotizacion_id),'_blank'); , 1000);
-  // setInterval(alert("dsfdsafasd"),5000);
-}
+    function enviar_formulario(cotizacion_id){
+      var base_url    = document.getElementById('base_url').value;
+       document.fincotiza.submit(cotizacion_id);
+
+      //setTimeout( window.open(base_url+'cotizacion/recibo/'+cotizacion_id),'_blank'); , 1000);
+      // setInterval(alert("dsfdsafasd"),5000);
+    }
 </script>
 
 
@@ -176,10 +176,10 @@ input[type=number] { -moz-appearance:textfield; }
                                         
                         
                           <?php } ?> 
-                  <div class="col-md-6" hidden >
+                  <div class="col-md-6"  >
                     <label for="cotizacion_total" class="control-label">Cotizacion Total</label>
                     <div class="form-group">
-                      <input type="text" id="cotizacion_total" name="cotizacion_total" value="<?php echo $totalfinal; ?>" class="form-control"  />
+                        <input type="text" id="cotizacion_total" name="cotizacion_total" value="<?php echo number_format($totalfinal,$decimales,".",","); ?>" class="form-control"  />
 
                     </div>
                   </div>

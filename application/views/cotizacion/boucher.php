@@ -1,11 +1,15 @@
+<script src="<?php echo base_url('resources/js/cotizacion.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function()
     {
         window.onload = window.print();
     });
+    function imprimir(){
+        window.print(); 
+    }
 </script>
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -70,36 +74,33 @@ border-bottom : 1px solid #aaa;*/
 }
 </style>
 <!----------------------------- fin script buscador --------------------------------------->
-<!------------------ ESTILO DE LAS TABLAS ----------------->
-<!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
-<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+ <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
+ <?php $decimales = $parametro['parametro_decimales']; ?>
+
+<?php //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+    $ancho = $parametro["parametro_anchofactura"]."cm";
+    $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
-
-
-
 <table class="table" >
-<tr>
-<td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
-    
-</td>
-
-<td style="padding: 0;">
-    
-    
-<table class="table" style="width: <?php echo $ancho?>" >
     <tr>
-<!--        <td style="padding: 0; width: 0cm">-->
-        <td style="padding: 0;" colspan="4">
-                
-            <center>
-                               
-                    
-                    <!--<img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
+        <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" ></td>
+        <td style="padding: 0;">
+        <table class="table" style="width: <?php echo $ancho?>" >
+            <tr>
+                <td style="padding: 0;" colspan="4">
+                    <center>
+                        <div class="no-print">
+                            <a id="imprimir" class="btn btn-sq-lg btn-success" onclick="imprimir()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>
+                        </div>
+                    <!--<img src="<?php //echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                    
-                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    
+                        <?php if($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){ ?>
+                        <font size="1" face="Arial narrow"><b>
+                            <?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>
+                        <?php } ?>
+                    <!--<font size="1" face="Arial"><b><?php //echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
                     <?php if (isset($empresa[0]['empresa_propietario'])){ ?>
                     <font size="1" face="Arial"></b>
 
@@ -185,17 +186,33 @@ border-bottom : 1px solid #aaa;*/
                         $subtotal += $d['detallecot_subtotal'];
                         ?>
            <tr style="font-size: 8pt;">
-                <td align="center" style="padding: 0;"><?php echo $d['detallecot_cantidad']; ?></td>
+                <td align="center" style="padding: 0;">
+                    <?php
+                    $partes = explode(".",$d['detallecot_cantidad']); 
+                    if(isset($partes[1])){
+                        if ($partes[1] == 0) { 
+                            $lacantidad = $partes[0];
+                        }else{ 
+                            $lacantidad = number_format($d['detallecot_cantidad'],$decimales,'.',','); 
+                        }
+                    }else{
+                        $lacantidad = $partes[0];
+                    }
+                    echo $lacantidad;
+                    //echo $d['detallecot_cantidad'];
+                    ?>
+                </td>
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <b><?php echo $d['producto_nombre']; ?></b>
                       <?php if ($d['producto_marca']!=''){ ?>
                         <br>Marca: <b><?php echo $d['producto_marca']; } ?></b>      
                       <?php if ($d['producto_industria']!=''){ ?>                            
                         - Industria: <b><?php echo $d['producto_industria']; }?></b><br>
-                      <?php if ($d['detallecot_caracteristica']=="" || $d['detallecot_caracteristica']=="null"){ ?>  
-                         <?php }else{ ?>
-                        <?php echo  $d['detallecot_caracteristica']; } ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detallecot_precio'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detallecot_total'],2,'.',','); ?></td>
+                      <?php if ($d['detallecot_caracteristica']!="" && $d['detallecot_caracteristica']!= null && $d['detallecot_caracteristica']!= "null"){ ?> 
+                         <?php //}else{ ?>
+                        <?php echo  $d['detallecot_caracteristica']; } ?>
+                    </td>
+                <td align="right" style="padding: 0; padding-right: 3px"><?php echo number_format($d['detallecot_precio'],$decimales,'.',','); ?></td>
+                <td align="right" style="padding: 0;"><?php echo number_format($d['detallecot_total'],$decimales,'.',','); ?></td>
            </tr>
            <?php }?>
 <!--       </table>
@@ -209,16 +226,16 @@ border-bottom : 1px solid #aaa;*/
         <td align="right" style="padding: 0;" colspan="4">
             
             <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($subtotal,2,'.',','); ?></b><br>
+                <b><?php echo "SUB TOTAL Bs ".number_format($subtotal,$decimales,'.',','); ?></b><br>
             </font>
             
 
             <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($total_descuento,2,'.',','); ?><br>
+                <?php echo "TOTAL DESCUENTO Bs ".number_format($total_descuento,$decimales,'.',','); ?><br>
             </font>
             <font size="2">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($total_final ,2,'.',','); ?><br>
+                <?php echo "TOTAL FINAL Bs: ".number_format($total_final ,$decimales,'.',','); ?><br>
             </b>
             </font>
             <font size="1" face="arial narrow">
