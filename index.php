@@ -1,4 +1,6 @@
 <?php
+
+require_once 'application/libraries/vendor/autoload.php';
 /**
  * CodeIgniter
  *

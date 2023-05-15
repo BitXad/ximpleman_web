@@ -1256,6 +1256,81 @@ class Sincronizacion extends CI_Controller{
         
     }
     
+    function generar_llaves(){
+        
+            $dosificacion = $this->dosificacion;
+        
+            $base_url = explode('/', base_url());
+
+            $p12File = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/certificados/'.$dosificacion["dosificacion_contenedorp12"];
+            $p12Passphrase = $dosificacion['dosificacion_clavep12'];
+            $outputPath = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/certificados/';
+
+
+            // Cargar el archivo .p12
+            $pkcs12 = file_get_contents($p12File);
+
+            // Extraer la clave privada y el certificado
+            if (openssl_pkcs12_read($pkcs12, $certs, $p12Passphrase)) {
+
+                // Obtener el certificado
+                $certData = openssl_x509_read($certs['cert']);
+                $publicKey = openssl_pkey_get_public($certData);
+                // Obtener la clave privada
+                $privateKey = $certs['pkey'];
+
+                // Obtener el certificado en formato .crt CORRE OK
+                //$certificateCrt = openssl_x509_export($certs['cert'], $certificateCrt);
+                $certificateCrt = $certs['cert'];
+                file_put_contents($outputPath . 'certificado.crt', $certificateCrt);
+                
+                // Obtener la clave pública en formato .pem
+                $publicKeyPem = $certs['cert'];
+
+                $publicKey = openssl_pkey_get_public($certData);
+
+                //$publicKeyPem = openssl_pkey_get_details($certData);
+                // Obtener los detalles de la clave pública
+                $publicKeyDetails = openssl_pkey_get_details($publicKey);
+                file_put_contents($outputPath . 'publickey.pem', $publicKeyDetails['key']);
+
+                // Obtener la clave privada en formato .pem
+                $privateKeyPem = '';
+                openssl_pkey_export($certs['pkey'], $privateKeyPem);
+                file_put_contents($outputPath . 'privatekey.pem', $privateKey);
+
+                // Extraer la clave pública del certificado
+                $publicKey = openssl_pkey_get_public($certData); // REVISAR
+
+                // Obtener los detalles de la clave pública
+                $publicKeyDetails = openssl_pkey_get_details($publicKey);
+
+                /*
+                    // Mostrar la clave pública y privada
+                    echo "</br>";
+                    echo "</br>Clave pública RSA:";
+                    echo "</br>".$publicKeyDetails['key'] . "\n";
+
+                    echo "</br>";
+                    echo "</br>Clave privada RSA:\n";
+                    echo "</br>".$privateKeyPem. "\n";
+
+                    echo "</br>";
+                    echo "</br>Certificado RSA:\n";
+                    echo "</br>".$certs['cert']. "\n";
+                */
+
+                echo json_encode(true);
+                
+            }else{
+                
+                echo json_encode(false);
+                
+            }
+                
+        
+    }
+    
     //function 
 }
 ?>

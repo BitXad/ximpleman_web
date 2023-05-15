@@ -6952,9 +6952,13 @@ function seleccionar_categoria(categoria_id){
        
 }
 function transcribir(event){
+    
     var glosay = document.getElementById("glosay").value;
     var cobrado = document.getElementById("cobradoy").value;
    // alert(glosay+" : "+cobrado);
+   
+   
+   
    $("#venta_glosa").val(glosay);
    $("#venta_efectivo").val(cobrado);
    
