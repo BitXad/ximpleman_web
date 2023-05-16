@@ -165,7 +165,7 @@ foreach($all_parametros as $p)
                         </td>
                     </tr>
                     <tr>
-                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="6" ><u>VENTAS</u></th>
+                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="8" ><u>VENTAS</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CATEGORIA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BUSCADOR EN VENTAS</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRIMIR COMANDA</th>
@@ -335,13 +335,55 @@ foreach($all_parametros as $p)
                          <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ANCHO BUSCADOR</th>
                          <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">TAM. TEXTO BOTON</th>
                          <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">TAM. TEXTO DET. PRODUCTOS</th>
-                        
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BUSCADOR POR CODIGO</th>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BUSCADOR DE TEXTO</th>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CATEGORIA</th>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">SUBCATEGORIA</th>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BOTON INVENTARIO</th>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">PROMOCIONES</th>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CATEGORIA BOTONES</th>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BUSCADOR DETALLE</th>
+                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">HERRAM. SUPERIOR</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_anchobuscador']; ?> </td>
                         <td><?php echo $p['parametro_tamanioletrasboton']; ?> </td>
                         <td><?php echo $p['parametro_tamanioletras']; ?> </td>
-                        
+                        <td><?php  if ($p['parametro_buscadorcodigo']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_buscadortexto']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_categoria']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_subcategoria']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_botoninventario']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_promociones']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_categoriabotones']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_buscadordetalle']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_herramientassuperior']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">HERRAMIENTA INFERIOR</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">PRECIO TOTAL</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ASIGNAR INVENTARIO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FINALIZAR VENTAS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">RESUMEN VENTAS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CIERRE DE CAJA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">VENTAS DIARIAS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">P. SIN HOMOLOGA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">TECLAS DE ACCESO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">INFORMACION BASICA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">PANEL VENTAS</th>
+                    </tr>
+                    <tr>
+                        <td><?php  if ($p['parametro_herramientasinferior']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_preciototal']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_asignarinventario']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_finalizarventas']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_resumenventas']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_cierrecaja']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_ventasdiarias']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_productossinhomologar']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_teclasaccceso']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_informacionbasica']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_panelventas']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                     </tr>
                     
                     <tr>
