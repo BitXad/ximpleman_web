@@ -67,6 +67,7 @@ function mostrar_facturas() {
 
                             html += "<table class='table table-striped' id='mitabla' nowrap >";
                             html += "<tr>";
+                            html += "<th class='no-print'>OPERACIONES</th>";
                             html += "<th>Nº</th>";
                             html += "<th>ESPEC.</th>";
                             html += "<th>FECHA DE LA FACTURA</th>";
@@ -92,7 +93,6 @@ function mostrar_facturas() {
                             html += "<th>CODIGO DE CONTROL</th>";	
                             html += "<th>TIPO DE VENTA</th>";
                             html += "<th>TRANS</th>";
-                            html += "<th class='no-print'>OPERACIONES</th>";
                             html += "</tr>";
                             html += "<tbody class='buscar'>";
 
@@ -107,6 +107,41 @@ function mostrar_facturas() {
                                     color = "";
 
                                 html += "<tr  "+color+">";
+                                html += "   <td class='no-print'><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/1' class='btn btn-warning btn-xs' ' target='_BLANK' title='Imprimir factura original'><i class='fa fa-list'></i> </a>";
+                                html += "   <a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/2' class='btn btn-default btn-xs' ' target='_BLANK' title='Imprimir factura copia'><i class='fa fa-list'></i> </a>";
+
+                                if(rolusuario_asignado == 1){
+
+                                    if (factura["estado_id"]!=3){//si la factura esta anulada
+
+                                        if(factura[i]["estado_id"]==1){
+
+                                            if (parametro_tiposisistema == 1){
+                                                html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button>";
+                                            }
+                                            else{
+                                                if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
+                                                    html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
+                                                html += "<fa class='fa fa-trash'> </fa> </button>";
+                                                }else{
+                                                    html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_noenviada' onclick='cargar_modal_anular_malemitida("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
+                                                    html += "<fa class='fa fa-trash'> </fa> </a>";
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                    if(factura[i]["estado_id"]==3){
+                                        if (parametro_tiposisistema != 1){
+                                            html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_forzado' onclick='cargar_modal_anularforzado("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+(factura[i]["factura_efectivo"]-factura[i]["factura_cambio"])+","+'"'+factura[i]["factura_fecha"]+'"'+")' title='Forzar Anulación'>";
+                                            html += "<fa class='fa fa-minus-circle'> </fa> </a>";
+                                        }
+                                    }
+
+
+                                            totalfinal += Number(factura[i]["factura_subtotal"]);                
+                                }
+                                html += "</td>";
                                 html += "   <td>"+i+"</td>";
                                 html += "   <td>2</td>";
                                 html += "   <td>"+formato_fecha(factura[i]["factura_fecha"])+"</td>";
@@ -160,46 +195,12 @@ function mostrar_facturas() {
                                 
                                 html += "   <td>"+factura[i]["venta_id"]+"</td>";
         //                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
-                                html += "   <td class='no-print'><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/1' class='btn btn-warning btn-xs' ' target='_BLANK' title='Imprimir factura original'><i class='fa fa-list'></i> </a>";
-                                html += "   <a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/2' class='btn btn-default btn-xs' ' target='_BLANK' title='Imprimir factura copia'><i class='fa fa-list'></i> </a>";
-
-                                if(rolusuario_asignado == 1){
-
-                                    if (factura["estado_id"]!=3){//si la factura esta anulada
-
-                                        if(factura[i]["estado_id"]==1){
-
-                                            if (parametro_tiposisistema == 1){
-                                                html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button>";
-                                            }
-                                            else{
-                                                if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
-                                                    html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
-                                                html += "<fa class='fa fa-trash'> </fa> </button>";
-                                                }else{
-                                                    html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_noenviada' onclick='cargar_modal_anular_malemitida("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
-                                                    html += "<fa class='fa fa-trash'> </fa> </a>";
-                                                }
-                                            }
-                                        }
-
-                                    }
-                                    if(factura[i]["estado_id"]==3){
-                                        if (parametro_tiposisistema != 1){
-                                            html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_forzado' onclick='cargar_modal_anularforzado("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+(factura[i]["factura_efectivo"]-factura[i]["factura_cambio"])+","+'"'+factura[i]["factura_fecha"]+'"'+")' title='Forzar Anulación'>";
-                                            html += "<fa class='fa fa-minus-circle'> </fa> </a>";
-                                        }
-                                    }
-
-
-                                            totalfinal += Number(factura[i]["factura_subtotal"]);                
-                                }
-                                html += "</td>";
                                             html += "</tr>";
                             }    
                                 var debitofiscal =  totalfinal * 0.13;
 
                                 html += "<tr";
+                                html += "<th class='no-print'> </th> ";
                                 html += "<th> </th> ";
                                 html += "<th> </th> ";
                                 html += "<th> </th> ";
@@ -226,7 +227,6 @@ function mostrar_facturas() {
                                 html += "<th> </th> ";
                                 html += "<th> </th> ";
                                 html += "<th> </th> ";
-                                html += "<th class='no-print'> </th> ";
                                 html += "</tr> ";
                            html += "</tbody>";
                             html += "</table>";
@@ -260,6 +260,7 @@ function mostrar_facturas() {
 
                             html += "<table class='table table-striped' id='mitabla' nowrap >";
                             html += "<tr>";
+                            html += "<th>/IEHD/TASAS	EXPORTACIONES Y OPERACIONES EXENTAS</th>";	
                             html += "<th>#</th>";
                             html += "<th>ESPEC.</th>";
                             html += "<th>N°</th>";
@@ -271,7 +272,6 @@ function mostrar_facturas() {
                             html += "<th>NOMBRE O RAZON SOCIAL</th>";
                             html += "<th>IMPORTE TOTAL DE LA VENTA</th>";
                             html += "<th>IMPORTE ICE</th>";
-                            html += "<th>/IEHD/TASAS	EXPORTACIONES Y OPERACIONES EXENTAS</th>";	
                             html += "<th>VENTAS GRAVADAS A TASA CERO</th>";	
                             html += "<th>SUBTOTAL</th>";	
                             html += "<th>DESC.</th>"; 
@@ -295,6 +295,35 @@ function mostrar_facturas() {
                                     color = "";
 
                                 html += "<tr  "+color+">";
+                                html += "   <td class='no-print'><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/1' class='btn btn-warning btn-xs' ' target='_BLANK' title='Imprimir factura original'><i class='fa fa-list'></i> </a>";
+                                html += "   <a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/2' class='btn btn-default btn-xs' ' target='_BLANK' title='Imprimir factura copia'><i class='fa fa-list'></i> </a>";
+
+                                if(rolusuario_asignado == 1){
+
+                                    if (factura["estado_id"]!=3){//si la factura esta anulada
+
+                                        if(factura[i]["estado_id"]==1){
+
+                                            if (parametro_tiposisistema == 1){
+                                                html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button>";
+                                            }
+                                            else{
+                                                if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
+                                                    html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
+                                                html += "<fa class='fa fa-trash'> </fa> </button>";
+                                                }else{
+                                                    html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_noenviada' onclick='cargar_modal_anular_malemitida("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
+                                                    html += "<fa class='fa fa-trash'> </fa> </a>";
+                                                }
+                                            }
+                                        }
+
+                                    }
+
+
+                                            totalfinal += Number(factura[i]["factura_subtotal"]);                
+                                }
+                                html += "</td>";
                                 html += "   <td>"+i+"</td>";
                                 html += "   <td>0</td>";
                                 html += "   <td>1</td>";
@@ -336,35 +365,6 @@ function mostrar_facturas() {
                                 html += "   <td>"+factura[i]["factura_codigocontrol"]+"</td>";
                                 html += "   <td>"+factura[i]["venta_id"]+"</td>";
         //                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
-                                html += "   <td class='no-print'><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/1' class='btn btn-warning btn-xs' ' target='_BLANK' title='Imprimir factura original'><i class='fa fa-list'></i> </a>";
-                                html += "   <a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/2' class='btn btn-default btn-xs' ' target='_BLANK' title='Imprimir factura copia'><i class='fa fa-list'></i> </a>";
-
-                                if(rolusuario_asignado == 1){
-
-                                    if (factura["estado_id"]!=3){//si la factura esta anulada
-
-                                        if(factura[i]["estado_id"]==1){
-
-                                            if (parametro_tiposisistema == 1){
-                                                html += "<button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button>";
-                                            }
-                                            else{
-                                                if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
-                                                    html += "<button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalanular' onclick='cargar_modal_anular("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
-                                                html += "<fa class='fa fa-trash'> </fa> </button>";
-                                                }else{
-                                                    html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalanular_noenviada' onclick='cargar_modal_anular_malemitida("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'>";
-                                                    html += "<fa class='fa fa-trash'> </fa> </a>";
-                                                }
-                                            }
-                                        }
-
-                                    }
-
-
-                                            totalfinal += Number(factura[i]["factura_subtotal"]);                
-                                }
-                                html += "</td>";
                                             html += "</tr>";
                             }    
                                 var debitofiscal =  totalfinal * 0.13;
@@ -387,9 +387,9 @@ function mostrar_facturas() {
                                 html += "<th> </th> ";
                                 html += "<th> </th> ";
                                 html += "<th> </th> ";
+                                html += "<th> </th> ";
                                 html += "<th>"+Number(totalfinal).toFixed(2)+"</th> ";
                                 html += "<th>"+Number(debitofiscal).toFixed(2)+"</th> ";
-                                html += "<th> </th> ";
                                 html += "<th> </th> ";
                                 html += "</tr> ";
                            html += "</tbody>";

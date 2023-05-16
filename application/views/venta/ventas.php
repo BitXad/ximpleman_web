@@ -150,7 +150,8 @@ var keyCode = document.all ? e.which : e.keyCode;
 
   if (keyCode == 120) //f9
   {   
-      alert("holaaaa");
+    $('#glosay').click();
+      
       
     //$('#imprimir').click();
   }
@@ -315,6 +316,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_anchobuscador" value="<?php echo $parametro['parametro_anchobuscador']; ?>" name="parametro_anchobuscador"  hidden>
 <input type="text" id="parametro_tamanioletrasboton" value="<?php echo $parametro['parametro_tamanioletrasboton']; ?>" name="parametro_tamanioletrasboton"  hidden>
 <input type="text" id="parametro_tamanioletras" value="<?php echo $parametro['parametro_tamanioletras']; ?>" name="parametro_tamanioletras"  hidden>
+<input type="text" id="boton_presionado" value="0" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 
@@ -438,7 +440,7 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-6" <?php echo $estilo_div; ?>>
             <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">PREFERENCIAS</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" style="color: black; background:white; text-align: left; font-size: 18px; font-family: Arial; " id="glosay"  value="" onclick="this.select()" onkeyup="transcribir(event); this.value = this.value.toUpperCase();"/>
+                <input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" style="color: black; background:white; text-align: left; font-size: 18px; font-family: Arial; " id="glosay"  value="" onclick="this.select()" onkeyup="transcribir_glosa(event); this.value = this.value.toUpperCase();"/>
             </div>
         </div>
 
@@ -452,9 +454,10 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="cobradoy" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">COBRADO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cobradoy" class="form-control <?php echo $atributos; ?>" style="color: black; background:white ; text-align: left; font-size: 18px; font-family: Arial; " id="cobradoy"  value="0.00" onclick="this.select()" onkeyup="transcribir(event)"/>
+                <input type="text" name="cobradoy" class="form-control <?php echo $atributos; ?>" style="color: black; background:white ; text-align: left; font-size: 18px; font-family: Arial; " id="cobradoy"  value="0.00" onclick="this.select()" onkeyup="transcribir()"/>
             </div>
         </div>
+
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="cambioy" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">CAMBIO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
@@ -691,6 +694,14 @@ window.onkeydown = compruebaTecla;
     <div class="col-md-<?php echo $parametro['parametro_anchobuscador']; ?>">
         <font size="1"><b>BUSCADOR DE PRODUCTOS</b></font> 
         
+        <button class="btn btn-success btn-xs" onclick="actualizar_inventario()" style="<?php echo ($parametro["parametro_inventariobuscador"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span> Inventario</button>
+           
+        <?php if($rolusuario[185-1]['rolusuario_asignado'] == 1){ ?>
+        <button type="button" id="boton_modal_promocion" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpromocion" style="<?php echo ($parametro["parametro_promocionesbuscador"]!=1)?"display:none":"" ?>" >
+            <fa class="fa fa-cube"></fa> Promociones
+        </button>
+        <?php } ?>
+        
         <div class="box" style="border-color:black;">
             <div class="box-body">
 
@@ -743,11 +754,9 @@ window.onkeydown = compruebaTecla;
 
         <!--<div class="col-md-6" hidden>-->
 
-            <?php 
-            
-                if ($opciones != 1){  ?>
+     
         
-            <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod">
+            <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod"  <?php echo ($parametro["parametro_categoria"]!=1)?"hidden":"" ?>>
                     <option value="0" >- CATEGORIAS -</option>
             <?php 
                 foreach($categoria_producto as $categ){ 
@@ -760,48 +769,53 @@ window.onkeydown = compruebaTecla;
             ?>
             </select>
 
-            <?php } ?>
         
-            <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(3)" id="subcategoria_prod">
+            <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(3)" id="subcategoria_prod"  <?php echo ($parametro["parametro_subcategoria"]!=1)?"hidden":"" ?>>
                     <option value="0" >- SUB CATEGORIAS -</option>
 
             </select>
-            <span class="badge btn-default">
-                <input style="border-width: 0; color: black;" id="encontrados" type="text"  size="3" value="0" readonly="true"> 
+        
+         
+                <span class="badge btn-default" style="<?php echo ($parametro["parametro_categoria"]!=1)?"display:none":"" ?>">
+                    <input style="border-width: 0; color: black;" id="encontrados" type="text"  size="3" value="0" readonly="true"> 
 
-            </span>
+                </span>
 
 
-           <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
+
+
+           <button class="btn btn-success btn-xs" onclick="actualizar_inventario()" style="<?php echo ($parametro["parametro_botoninventario"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span> Inventario</button>
+           
             <?php if($rolusuario[185-1]['rolusuario_asignado'] == 1){ ?>
-            <button type="button" id="boton_modal_promocion" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpromocion" >
+            <button type="button" id="boton_modal_promocion" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpromocion" style="<?php echo ($parametro["parametro_promociones"]!=1)?"display:none":"" ?>" >
                 <fa class="fa fa-cube"></fa> Promociones
             </button>
             <?php } ?>
            
-           <?php 
-            
-            if ($opciones == 1){  ?>
-            
-           <input type="hidden" id="categoria_prod" value="<?php echo  $parametro['parametro_mostrarcategoria']; ?>">
-            
-            <!--<div class="col-md-6">-->
-            <div class="btn-group" role="group" aria-label="Menu">
-                <?php 
-                
-                foreach($categoria_producto as $categ){ 
-                    $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
-                    ?>
-                        
-                <button type="button" class="btn btn-info btn-lg" style="padding-top:5px; padding-bottom: 5px; font-size: 10px;" onclick="seleccionar_categoria(<?php echo $categ['categoria_id']; ?>)"><?php echo $categ['categoria_nombre']; ?></button>
 
-                <?php } ?>
-               
-            </div>
+           
+            <?php if($parametro["parametro_categoriabotones"]==1){ ?>
+           
+                <input type="hidden" id="categoria_prod" value="<?php echo  $parametro['parametro_mostrarcategoria']; ?>">
+
+                 <!--<div class="col-md-6">-->
+                 <div class="btn-group" role="group" aria-label="Menu">
+                     <?php 
+
+                     foreach($categoria_producto as $categ){ 
+                         $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+                         ?>
+
+                     <button type="button" class="btn btn-info btn-lg" style="padding-top:5px; padding-bottom: 5px; font-size: 10px;" onclick="seleccionar_categoria(<?php echo $categ['categoria_id']; ?>)"><?php echo $categ['categoria_nombre']; ?></button>
+
+                     <?php } ?>
+
+                 </div>
+                 
+            <?php } ?>
             <!--</div>-->
+      
             
-            
-        <?php }  ?>
 
             <span class="badge btn-default">
 
@@ -864,23 +878,26 @@ window.onkeydown = compruebaTecla;
             
             <div class="col-md-8" style="padding:5;">
             <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group"> <span class="input-group-addon"  style="background-color: lightgray;">Buscar</span>
-                    <input id="filtrar2" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código">
-                  </div>
-            
+                <?php  if ($parametro["parametro_buscadordetalle"]==1){ ?>
+
+                            <div class="input-group">
+                              <span class="input-group-addon"  style="background-color: lightgray;">Buscar</span>
+                              <input id="filtrar2" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código">
+                            </div>
+                <?php } //fin ($parametro["parametro_buscadordetalle"]==1) ?>
             <center>
                 
                 
             <!--------------- botones ---------------------->
             <?php if($parametro["parametro_modulorestaurante"]==0){ //1 es normal ?>
                 <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-default btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
-            <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-default btn-xs" onclick="ordenes_pendientes()" title="Ordenes de Trabajo"><span class="fa fa-book"></span><b> OT's</b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-default btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-default btn-xs" onclick="ordenes_pendientes()" title="Ordenes de Trabajo" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-book"></span><b> OT's</b></a> 
                 <?php }
                 } ?>
                     
             <?php if($parametro["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
-                    <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_comanda" title="Comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
+                    <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_comanda" title="Comanda" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-print"></span><b> Comanda</b></a> 
             <?php } ?>            
            
 <!--            <button onclick='quitartodo()' class='btn btn-default btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->
@@ -890,7 +907,7 @@ window.onkeydown = compruebaTecla;
             
             <?php            
             if($rolusuario[21-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="<?php echo base_url('venta/ultimorecibo');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs"  id="imprimir"><span class="fa fa-print" title="Imprimir nota de entrega"></span><b> Recibo</b></a> 
+            <a href="<?php echo base_url('venta/ultimorecibo');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs"  id="imprimir"  style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-print" title="Imprimir nota de entrega"></span><b> Recibo</b></a> 
             
             <?php } 
             ?>
@@ -902,14 +919,14 @@ window.onkeydown = compruebaTecla;
                     $nomostrar = "style='display: none'";
                 }
                 ?>
-            <a href="<?php echo base_url('venta/ultimaventa/1');?>" <?php //echo $nomostrar; ?> data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura" title="Imprimir factura"><span class="fa fa-list-alt" ></span><b> Factura</b></a> 
-            <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura" title="Imprimir factura en PDF"><span class="fa fa-file-pdf"></span> <b>DPF</b></a>
+            <a href="<?php echo base_url('venta/ultimaventa/1');?>" <?php //echo $nomostrar; ?> data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura" title="Imprimir factura"  style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-list-alt"></span><b> Factura</b></a> 
+            <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura" title="Imprimir factura en PDF"  style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-file-pdf"></span> <b>DPF</b></a>
             
             <?php } 
             ?>
 
             <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"  style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
             <?php } ?>
 
             </center>
@@ -921,7 +938,8 @@ window.onkeydown = compruebaTecla;
             <!--------------------- fin parametro de buscador ---------------------> 
         
             </div>
-            <div class="col-md-4" style="background-color: black; line-height: 15px;">
+            
+            <div class="col-md-4" style="background-color: black; line-height: 15px;" <?php echo ($parametro["parametro_preciototal"]!=1)?"hidden":"" ?>>
                 <center>
                     
                 <font size="3" style="color:white;" face="Arial"><b>Total Final <?php echo $parametro['moneda_descripcion']; ?></b></font>
@@ -947,7 +965,7 @@ window.onkeydown = compruebaTecla;
                 </div>
                 
                 <!-------------------- BOTONES INFERIORES ------------------------------------------->
-                <div>
+                <div <?php echo ($parametro["parametro_herramientasinferior"]!=1)?"hidden":"" ?>>
                 
 
                                     <?php 
@@ -1036,7 +1054,7 @@ window.onkeydown = compruebaTecla;
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar Venta <br>
             </a>-->
 
-            <button href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;" id="boton_finventa">
+            <button href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_finalizarventas"]!=1)?'display:none':'' ?>" id="boton_finventa">
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar<br><?php echo $sistema["sistema_moduloventas"]; ?> <br>
             </button>
             <?php } ?>
@@ -1047,20 +1065,20 @@ window.onkeydown = compruebaTecla;
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
             </a>-->
-            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_asignarinventario"]!=1)?"display:none":"" ?>">
                 <i class="fa fa-truck fa-4x"></i>
                 <br><br>Asigar<br>Inventario
             </a>
 
             <?php } ?>
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
-                <a href="<?php echo site_url('reportes/reportecaja'); ?>" class="btn btn-sq-lg btn-default" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <a href="<?php echo site_url('reportes/reportecaja'); ?>" class="btn btn-sq-lg btn-default" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;<?php echo ($parametro["parametro_resumenventas"]!=1)?"display:none":"" ?>">
                     <i class="fa fa-list-alt fa-4x"></i><br><br>
                    Resumen<br><?php echo $sistema["sistema_moduloventas"]; ?> <br>
                 </a>
             <?php //} ?>
             <?php //if(isset($rolusuario[196-1]['rolusuario_asignado']) && $rolusuario[196-1]['rolusuario_asignado'] == 1){ ?>
-                <a href="<?php echo site_url('admin/dashb'); ?>" class="btn btn-sq-lg btn-default" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <a href="<?php echo site_url('admin/dashb'); ?>" class="btn btn-sq-lg btn-default" target="_blank" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;<?php echo ($parametro["parametro_cierrecaja"]!=1)?"display:none":"" ?>">
                 <i class="fa fa-calculator fa-4x"></i><br><br>
                Cierre<br>de Caja <br>
             </a>
@@ -1070,7 +1088,7 @@ window.onkeydown = compruebaTecla;
                 
 
             <?php if($rolusuario[18-1]['rolusuario_asignado'] == 1){ ?>
-            <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+            <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;<?php echo ($parametro["parametro_ventasdiarias"]!=1)?"display:none":"" ?>">
                 <i class="fa fa-list-alt fa-4x"></i><br><br>
                 <?php echo $sistema["sistema_moduloventas"]; ?> <br> del Dia <br>
             </a>    
@@ -1095,7 +1113,7 @@ window.onkeydown = compruebaTecla;
         
     <?php if ($parametro['parametro_factura']!=3){ ?>
         
-        <div class="box">
+        <div class="box" <?php echo ($parametro["parametro_productossinhomologar"]!=1)?"hidden":"" ?>>
             <font size="1"><b>PRODUCTOS SIN HOMOLOGAR</b></font>
         <div class="box" style="border-color:black;">
             <div class="box-body">        
@@ -1163,56 +1181,57 @@ window.onkeydown = compruebaTecla;
     </div>
             
             <font face="Arial" size="1">
-            <div class="col-md-3">
-           
-            <b>TECLAS DE ACCESO DIRECTO</b>
-            <div class="box" style="border-color:black;">
-                <div class="box-body">
-                <b>
-                </b>
-                <p>
-                    <button class="btn btn-default btn-xs"><b>F2</b></button> Busqueda por código de barras <br>
-                    <button class="btn btn-default btn-xs"><b>F4</b></button> Busqueda por parámetros<br>
-                    <button class="btn btn-default btn-xs"><b>F5</b></button> Actualizar página<br>        
-                    <button class="btn btn-default btn-xs"><b>F7</b></button> Registrar NIT<br>
-                    <button class="btn btn-default btn-xs"><b>F8</b></button> Finalizar <?php echo $sistema["sistema_moduloventas"]; ?> <br>
-                </p>
-                    <div >            
-                        <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-default btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
+            <div class="col-md-3" <?php echo ($parametro["parametro_teclasacceso"]!=1)?"hidden":"" ?>>
+
+                <b>TECLAS DE ACCESO DIRECTO</b>
+                <div class="box" style="border-color:black;">
+                    <div class="box-body">
+                    <b>
+                    </b>
+                    <p>
+                        <button class="btn btn-default btn-xs"><b>F2</b></button> Busqueda por código de barras <br>
+                        <button class="btn btn-default btn-xs"><b>F4</b></button> Busqueda por parámetros<br>
+                        <button class="btn btn-default btn-xs"><b>F5</b></button> Actualizar página<br>        
+                        <button class="btn btn-default btn-xs"><b>F7</b></button> Registrar NIT<br>
+                        <button class="btn btn-default btn-xs"><b>F8</b></button> Finalizar <?php echo $sistema["sistema_moduloventas"]; ?> <br>
+                        <button class="btn btn-default btn-xs"><b>F9</b></button> Registrar Glosa <br>
+                    </p>
+                        <div >            
+                            <button  onclick='simular_evento()' id="boton_simulador" class='btn btn-default btn-xs'><span class='fa fa-money' title="simular evento" ></span><b> Simulacion</b></button> 
+                        </div>
                     </div>
                 </div>
             </div>
-            </div>
         
-            <div class="col-md-3">
+            <div class="col-md-3" <?php echo ($parametro["parametro_informacionbasica"]!=1)?"hidden":"" ?>>
                 
-            <b>INFORMACIÓN BASICA</b>
-            <div class="box" style="border-color:black;">
-                <div class="box-body">
-            
-                
-            
-                <?php if( $parametro['parametro_tiposistema']!= 1){ ?>
-            
+                <b>INFORMACIÓN BASICA</b>
+                <div class="box" style="border-color:black;">
+                    <div class="box-body">
 
-                <!--<button class="btn btn-info btn-xs" style="text-align: Left; " >-->
-                    <b>PUNTO DE VENTA:</b> <?php echo $puntoventa_codigo; ?>
-                    <br><b>MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo number_format($parametro["moneda_tc"],2,".",","); ?>
-                    <br><b>DOC:</b> <?php echo $dosificacion[0]['docsec_codigoclasificador']." - ".$dosificacion[0]["dosificacion_documentosector"]; ?>
-                    <br><b>CUFD VIGENCIA:</b> <?php 
-                    
-                        if (isset($cufd[0])){
-                        
-                            $fecha = new DateTime($cufd[0]["cufd_fechavigencia"]); 
-                            $fecha_d_m_a = $fecha->format('d/m/Y H:i:s');                                        
-                            echo $fecha_d_m_a;
-                        
-                    }else{ echo " NO EXISTE CUFD";} ?>
-                <!--</button>-->
-            
-                <?php } ?>
+
+
+                    <?php if( $parametro['parametro_tiposistema']!= 1){ ?>
+
+
+                    <!--<button class="btn btn-info btn-xs" style="text-align: Left; " >-->
+                        <b>PUNTO DE VENTA:</b> <?php echo $puntoventa_codigo; ?>
+                        <br><b>MONEDA:</b> <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo number_format($parametro["moneda_tc"],2,".",","); ?>
+                        <br><b>DOC:</b> <?php echo $dosificacion[0]['docsec_codigoclasificador']." - ".$dosificacion[0]["dosificacion_documentosector"]; ?>
+                        <br><b>CUFD VIGENCIA:</b> <?php 
+
+                            if (isset($cufd[0])){
+
+                                $fecha = new DateTime($cufd[0]["cufd_fechavigencia"]); 
+                                $fecha_d_m_a = $fecha->format('d/m/Y H:i:s');                                        
+                                echo $fecha_d_m_a;
+
+                        }else{ echo " NO EXISTE CUFD";} ?>
+                    <!--</button>-->
+
+                    <?php } ?>
+                    </div>
                 </div>
-            </div>
             </div>
             
         </font>

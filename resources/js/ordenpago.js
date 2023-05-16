@@ -20,6 +20,8 @@ function buscarorden(num){
     buscar(control);
 }
 function buscar(control){
+    
+ var decimales    = document.getElementById('decimales').value;
  var base_url    = document.getElementById('base_url').value;
  var filtro    = document.getElementById('filtro').value;
  var controlador = base_url+control;
@@ -55,7 +57,7 @@ function buscar(control){
                         html += "<td><font size='3'><b>"+registros[i]["orden_destinatario"]+"</b></font><br>"+registros[i]["orden_motivo"]+"</td>";
                         html += "<td><img src='"+base_url+"('resources/images/usuarios/thumb_"+registros["usuario_imagen1"]+")' class='img-circle' width='40' height='40'>";
                         html += "<br><sub>"+registros[i]["usuario_nombre1"]+"</sub></td>";
-                        html += "<td align='right'><font size='3'><b>"+Number(registros[i]["orden_monto"]).toFixed(2)+"</b></font>"; 
+                        html += "<td align='right'><font size='3'><b>"+Number(registros[i]["orden_monto"]).toFixed(decimales)+"</b></font>"; 
                         if (registros[i]["orden_fechapagar"]!=null) { 
                         html += "<br>"+moment(registros[i]["orden_fechapagar"]).format('DD/MM/YYYY')+"";
                         }
@@ -66,7 +68,7 @@ function buscar(control){
                         }else{
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'></td>";    
                         }
-                        html += "<td align='right' style='background-color: #"+registros[i]["estado_color"]+"'><font size='3'><b>"+Number(registros[i]["orden_cancelado"]).toFixed(2)+"</b></font>";
+                        html += "<td align='right' style='background-color: #"+registros[i]["estado_color"]+"'><font size='3'><b>"+Number(registros[i]["orden_cancelado"]).toFixed(decimales)+"</b></font>";
                         if (registros[i]["orden_fechapago"]!=null) { 
                         html += "<br>"+moment(registros[i]["orden_fechapago"]).format('DD/MM/YYYY')+"";
                         }
@@ -93,10 +95,10 @@ function buscar(control){
                         html += "<div class='row clearfix'><div class='col-md-3'>";                        
                         html += "<label for='orden_monto' class='control-label'>Monto Bs</label>";                        
                         html += "<div class='form-group'>";                        
-                        html += "<input type='text' name='orden_monto' value='"+registros[i]["orden_monto"]+"' class='form-control' id='orden_monto' readonly/>";                        
+                        html += "<input type='text' name='orden_monto' value='"+Number(registros[i]["orden_monto"]).toFixed(decimales)+"' class='form-control' id='orden_monto' readonly/>";                        
                         html += "</div></div><div class='col-md-3'>";                        
                         html += "<label for='orden_cancelado' class='control-label'>Pagar Bs</label><div class='form-group'>";                        
-                        html += "<input type='number' min='"+registros[i]["orden_monto"]+"' step='any' name='orden_cancelado"+registros[i]["orden_id"]+"' value='"+registros[i]["orden_monto"]+"' class='form-control' id='orden_cancelado"+registros[i]['orden_id']+"' required/>";                        
+                        html += "<input type='number' min='"+registros[i]["orden_monto"]+"' step='any' name='orden_cancelado"+registros[i]["orden_id"]+"' value='"+Number(registros[i]["orden_monto"]).toFixed(decimales)+"' class='form-control' id='orden_cancelado"+registros[i]['orden_id']+"' required/>";                        
                         html += "</div></div><div class='col-md-3'>";                        
                         html += "<label for='orden_cobradopor' class='control-label'>Cobrado por:</label><div class='form-group'>";                        
                         html += "<input type='text' name='orden_cobradapor"+registros[i]["orden_id"]+"' value='' class='form-control' id='orden_cobradapor"+registros[i]["orden_id"]+"'  onKeyUp='this.value = this.value.toUpperCase();' required/>";                        
@@ -156,9 +158,9 @@ function buscar(control){
                         html += "<th></th>";
                         html += "<th></th>";
                         html += "<th></th>";
-                        html += "<th>"+Number(total).toFixed(2)+"</th>";
+                        html += "<th>"+Number(total).toFixed(decimales)+"</th>";
                         html += "<th></th>";
-                        html += "<th>"+Number(pagados).toFixed(2)+"</th>";
+                        html += "<th>"+Number(pagados).toFixed(decimales)+"</th>";
                         html += "<th></th></tr>";
                         
                    

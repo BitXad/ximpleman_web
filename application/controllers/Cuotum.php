@@ -176,16 +176,17 @@ class Cuotum extends CI_Controller{
         $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->parametros;
         
-        if($this->acceso(48)){
+        if($this->acceso(48)){            
+            
             $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['moneda'] = $this->Moneda_model->get_moneda($this->parametros['moneda_id']);
             //$data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-            $parametros = $this->Parametro_model->get_parametros();
-            if ($parametros[0]['parametro_notaentrega']==1){
+            if ($this->parametros['parametro_notaentrega']==1){
                 $data['conimagen'] = 1;
-            }elseif($parametros[0]['parametro_notaentrega']==2){
+            }elseif($this->parametros['parametro_notaentrega']==2){
                 $data['conimagen'] = 2;
             }
             $eldetalle = "";
@@ -212,11 +213,10 @@ class Cuotum extends CI_Controller{
             $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
-           // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-            $parametros = $this->Parametro_model->get_parametros();
-            if ($parametros[0]['parametro_notaentrega']==1){
+            
+            if ($this->parametros['parametro_notaentrega']==1){
                 $data['conimagen'] = 1;
-            }elseif($parametros[0]['parametro_notaentrega']==2){
+            }elseif($this->parametros['parametro_notaentrega']==2){
                 $data['conimagen'] = 2;
             }
             $eldetalle = "";
@@ -234,7 +234,8 @@ class Cuotum extends CI_Controller{
     function recibodeudas($cuota_id)
     {
         $data['sistema'] = $this->sistema;
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->parametros;
+        
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
         if($this->acceso(41)){
@@ -264,7 +265,6 @@ class Cuotum extends CI_Controller{
         $data['moneda'] = $this->Moneda_model->get_moneda($data['parametro'][0]['moneda_id']);
          if($this->acceso(47)){
             $data['page_title'] = "Comprobante";
-            $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             
@@ -301,7 +301,6 @@ class Cuotum extends CI_Controller{
        
        if($this->acceso(47)){
             $data['page_title'] = "Cuota";
-            $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['moneda'] = $this->Moneda_model->get_moneda($data['parametro'][0]['moneda_id']);
@@ -334,7 +333,6 @@ class Cuotum extends CI_Controller{
         
         if($this->acceso(47)){
             $data['page_title'] = "Cuota";
-            $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
@@ -367,7 +365,6 @@ class Cuotum extends CI_Controller{
         
         if($this->acceso(47)){
             $data['page_title'] = "Cuota";
-            $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);

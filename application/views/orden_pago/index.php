@@ -2,6 +2,9 @@
 <script src="<?php echo base_url('resources/js/ordenpago.js'); ?>" type="text/javascript"></script>
 <!--<script src="<?php // echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+
+<?php $decimales = $parametro['parametro_decimales']; ?>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <div class="box-header">
                 <h3 class="box-title">Ordenes de Pago</h3>
@@ -30,30 +33,17 @@
             <div class="box-body">
                 <table class="table table-striped" id="mitabla">
                     <tr>
-						<th>#</th>
-						<th>Pagar a la orden</th>
-                                                <th colspan="2">Pagar Bs</th>
-						
-                                                <th colspan="2">Cancelado Bs</th>
-						
-						<th></th>
-<!--						<th>Estado Id</th>
-						<th>Cuota Id</th>
-						<th>Compra Id</th>
-						<th>Fecha</th>
-						<th>Hora</th>
-						<th>Monto</th>
-						<th>Motivo</th>
-						<th>Fechapago</th>
-						<th>Horapago</th>
-						<th>Cobradapor</th>
-						<th>Ci</th>
-						<th>Actions</th>-->
+                        
+                        <th>#</th>
+                        <th>Pagar a la orden</th>
+                        <th colspan="2">Pagar Bs</th>						
+                        <th colspan="2">Cancelado Bs</th>						
+                        <th></th>
+
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
-                    
                    
-                        </tbody>                   
+                    </tbody>                   
                     
                 </table>
                                 

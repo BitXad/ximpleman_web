@@ -58,7 +58,11 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
-<link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">     
+<link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
+
+<?php $decimales = $parametro['parametro_decimales']; ?>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+
 <!-------------------------------------------------------->
 
 <div class="box-header">
@@ -90,10 +94,10 @@
            <hr style="border-color: black; margin: 3px; ">
   <div class="cuerpo" >
                     <div class="columna_derecha">
-                      TOTAL: <b><?php echo  number_format($cuota[0]['compra_totalfinal'], 2, ".", ",") ?></b><br>
-                      CUOTA INICIAL: <b><?php echo  number_format($cuota[0]['credito_cuotainicial'], 2, ".", ",") ?></b><br>
-                      <!-- INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?></b><br> -->
-                      INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?></b><br>
+                      TOTAL: <b><?php echo  number_format($cuota[0]['compra_totalfinal'], $decimales, ".", ",") ?></b><br>
+                      CUOTA INICIAL: <b><?php echo  number_format($cuota[0]['credito_cuotainicial'], $decimales, ".", ",") ?></b><br>
+                      <!-- INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], $decimales, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], $decimales, ".", ",");   ?></b><br> -->
+                      INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], $decimales, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']+$cuota[0]['cuota_interes'], $decimales, ".", ",");   ?></b><br>
                     </div>
                     <div class="columna_izquierda">
                     
@@ -146,15 +150,15 @@
                         <td><?php echo $cont ?></td>
                                             
                        
-                        <td style="text-align: right;"><?php echo number_format($c['cuota_capital'], 2, ".", ","); ?></td>
-                        <td style="text-align: right;"><?php echo number_format($c['cuota_interes'], 2, ".", ","); ?></td>
+                        <td style="text-align: right;"><?php echo number_format($c['cuota_capital'], $decimales, ".", ","); ?></td>
+                        <td style="text-align: right;"><?php echo number_format($c['cuota_interes'], $decimales, ".", ","); ?></td>
                         <td style="text-align: center;"><?php echo $fecha_format = date('d/m/Y', strtotime($c['cuota_fechalimite'])); ?></td>
-                        <td style="text-align: right;"><?php echo number_format($c['cuota_moradias'], 2, ".", ","); ?></td>
-                        <td style="text-align: right;"><?php echo number_format($c['cuota_multa'], 2, ".", ","); ?></td>
+                        <td style="text-align: right;"><?php echo number_format($c['cuota_moradias'], $decimales, ".", ","); ?></td>
+                        <td style="text-align: right;"><?php echo number_format($c['cuota_multa'], $decimales, ".", ","); ?></td>
                       
-                        <td style="text-align: right;"><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
+                        <td style="text-align: right;"><b><?php echo number_format($c['cuota_total'], $decimales, ".", ","); ?></b></td>
                         
-                        <td style="text-align: right;"><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
+                        <td style="text-align: right;"><b><?php echo number_format($c['cuota_cancelado'], $decimales, ".", ","); ?></b></td>
                         <td style="text-align: center;"><?php if ($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { echo ("NO PAGADO");
                          
                         } else{ echo $fecha_format = date('d/m/Y', strtotime($c['cuota_fecha'])); } ?> </td>
@@ -172,13 +176,13 @@
                      <td style="text-align: right;"></td>
                      <td style="text-align: right;"></td>
                      <td style="text-align: right;"></td>
-                     <td style="text-align: right; font-size: 12px;"><b><?php echo  number_format($cancelados, 2, ".", ","); ?></td>
+                     <td style="text-align: right; font-size: 12px;"><b><?php echo  number_format($cancelados, $decimales, ".", ","); ?></td>
                      <td style="text-align: right;"></td>
                      
                    </tr>
                    <tr>
                     <th colspan="2"></th>
-                    <th colspan="5" style="text-align: right;"> SALDO A CANCELAR: <?php echo number_format($saldito, 2, ".", ",") ?></th>
+                    <th colspan="5" style="text-align: right;"> SALDO A CANCELAR: <?php echo number_format($saldito, $decimales, ".", ",") ?></th>
                     <th colspan="2"></th>
                       
                     </tr>

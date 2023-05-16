@@ -7,11 +7,14 @@
 class Orden_pago extends CI_Controller{
     
     private $sistema;
+    private $parametros;    
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Orden_pago_model');
         $this->load->model('Usuario_model');
+        $this->load->model('Parametro_model');
         $this->load->helper('numeros');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -20,11 +23,16 @@ class Orden_pago extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+	
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+	
     }
     
     private function acceso($id_rol){
         
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -40,6 +48,7 @@ class Orden_pago extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         if($this->acceso(89)) {
             $data['rol'] = $this->session_data['rol'];
         $data['page_title'] = "Orden de pago";
@@ -55,6 +64,7 @@ class Orden_pago extends CI_Controller{
     function pendientes()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         if($this->acceso(89)) {
         $filtro = $this->input->post('filtro');
         $data = $this->Orden_pago_model->get_pago_pendiente($filtro);
@@ -65,6 +75,7 @@ class Orden_pago extends CI_Controller{
     function pagadas_hoy()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         if($this->acceso(89)) {
         $filtro = $this->input->post('filtro');
         $data = $this->Orden_pago_model->get_pagadas_hoy($filtro);
@@ -80,6 +91,7 @@ class Orden_pago extends CI_Controller{
     function pagadas_antes()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         if($this->acceso(89)) {
             $filtro = $this->input->post('filtro');
             $data = $this->Orden_pago_model->get_pagadas_antes($filtro);
@@ -103,6 +115,8 @@ class Orden_pago extends CI_Controller{
     function add()
     {   
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -154,6 +168,8 @@ class Orden_pago extends CI_Controller{
     function nueva_orden()
     {   
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        
         if($this->acceso(90)) {
         
         //**************** inicio contenido ***************            
@@ -207,6 +223,7 @@ class Orden_pago extends CI_Controller{
     function generar_orden($orden_monto,$orden_motivo,$orden_destinatario,$compra_id,$cuota_id)
     {   
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         if($this->acceso(90)) {
         //**************** inicio contenido ***************            
         
@@ -260,6 +277,8 @@ class Orden_pago extends CI_Controller{
     function pagar_orden($orden_id){
         
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        
         if($this->acceso(89)) {
         
         //**************** inicio contenido ***************            
@@ -303,6 +322,7 @@ class Orden_pago extends CI_Controller{
     function edit($orden_id)
     {   
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
         // check if the orden_pago exists before trying to edit it
         $data['orden_pago'] = $this->Orden_pago_model->get_orden_pago($orden_id);
         
@@ -395,6 +415,8 @@ class Orden_pago extends CI_Controller{
     function recibo($orden_id){
         
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        
         if($this->acceso(89)){
             //$this->load->model('Parametro_model');
             $this->load->model('Empresa_model');
@@ -410,6 +432,8 @@ class Orden_pago extends CI_Controller{
     function reciboboucher($orden_id){
         
         $data['sistema'] = $this->sistema;
+        $data['parametro'] = $this->parametros;
+        
         if($this->acceso(89)){
             //$this->load->model('Parametro_model');
             $this->load->model('Empresa_model');

@@ -211,15 +211,15 @@ $(document).ready(function(){
                         <td <?php echo $color; ?>><?php echo $cont ?></td>
                                             
                       <td <?php echo $color; ?>>Cuota <?php echo $c['cuota_numcuota']; ?></td>
-                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_capital'], 2, ".", ","); ?></td>
-                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_interes'], 2, ".", ","); ?></td>
-                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_moradias'], 2, ".", ","); ?></td>
-                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_multa'], 2, ".", ","); ?></td>
-                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_subtotal'], 2, ".", ","); ?></td>
-                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_descuento'], 2, ".", ","); ?></td>
-                      <td align="right" <?php echo $color; ?> style="background:silver"><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
+                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_capital'], $decimales, ".", ","); ?></td>
+                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_interes'], $decimales, ".", ","); ?></td>
+                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_moradias'], $decimales, ".", ","); ?></td>
+                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_multa'], $decimales, ".", ","); ?></td>
+                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_subtotal'], $decimales, ".", ","); ?></td>
+                      <td align="right" <?php echo $color; ?>><?php echo number_format($c['cuota_descuento'], $decimales, ".", ","); ?></td>
+                      <td align="right" <?php echo $color; ?> style="background:silver"><b><?php echo number_format($c['cuota_total'], $decimales, ".", ","); ?></b></td>
                       <td <?php echo $color; ?>><?php echo date('d/m/Y',strtotime($c['cuota_fechalimite'])); ?></td>
-                      <td align="right" <?php echo $color; ?>><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
+                      <td align="right" <?php echo $color; ?>><b><?php echo number_format($c['cuota_cancelado'], $decimales, ".", ","); ?></b></td>
                       <td align="center" <?php echo $color; ?>><?php echo(($c['forma_nombre'] == null) ? "": "{$c['forma_nombre']}") ?></td>
                       <td align="center"<?= $color ?>><?= $c['banco_nombre'] ?></td>
                       <?php if($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { ?>
@@ -230,7 +230,7 @@ $(document).ready(function(){
                       <td <?php echo $color; ?>><?php echo $c['cuota_hora']; ?></td>
                        <?php } ?>
                       <td <?php echo $color; ?>><?php echo $c['cuota_numercibo']; ?></td>
-                      <td align="right" <?php echo $color; ?>><b><?php echo number_format($c['cuota_saldo'], 2, ".", ","); ?></b></td>
+                      <td align="right" <?php echo $color; ?>><b><?php echo number_format($c['cuota_saldo'], $decimales, ".", ","); ?></b></td>
                       <td <?php echo $color; ?>><?php echo $c['cuota_glosa']; ?></td>
                       <td <?php echo $color; ?>><?php echo $c['estado_descripcion']; ?></td>
                       <td <?php echo $color; ?>><?php echo $c['usuario_nombre']; ?></td>
@@ -243,7 +243,7 @@ $(document).ready(function(){
                         if ($bandera==0) {
                                   if($rol[49-1]['rolusuario_asignado'] == 1){
                                 ?>
-                            <a href="#" data-toggle="modal" title="COBRAR" data-target="#pagar<?php echo $i; ?>" class="btn btn-success btn-xs"><span class="fa fa-dollar"></span></a>
+                            <a href="#" data-toggle="modal" title="COBRAR" data-target="#pagar<?php echo $i; ?>" class="btn btn-success btn-xs"><span class="fa fa-money"></span></a>
                             <?php }
                                   $bandera = 1;} ?>
                             <a href="<?php echo site_url("cuotum/notacobro/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" title="NOTA DE COBRO" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
@@ -304,7 +304,7 @@ $(document).ready(function(){
                     <form action="<?php echo base_url('cuotum/cobrar/'.$c['cuota_id']); ?>"  method="POST" class="form" name="finpagar<?php echo $c['cuota_id']; ?>" id="finpagar<?php echo $c['cuota_id']; ?>">
                         <font face="Arial" size="5">
                             <b> <span class="" >Monto <?= $moneda['moneda_descripcion'] ?>: 
-                                <?php echo number_format($c['cuota_total'],2,".",","); ?></span>
+                                <?php echo number_format($c['cuota_total'],$decimales, ".", ","); ?></span>
                             </b>
                         </font><br>
                         <?php
@@ -329,9 +329,9 @@ $(document).ready(function(){
                     <input type="hidden" name="cuota_id" value="<?php echo $c['cuota_id']; ?>" class="form-control" id="cuota_id" />
                     <input type="hidden" name="estado_id" value="9" class="form-control" id="estado_id" />
                     <div class="col-md-3">
-                        <label for="cuota_cancelado" class="control-label">Cobrar <?= $moneda['moneda_descripcion'] ?></label>
+                        <!--<label for="cuota_cancelado" class="control-label">Cobrar <?= $moneda['moneda_descripcion'] ?></label>-->
                         <div class="form-group">
-                            <input type="number" step="any" name="cuota_cancelado" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" max="<?php echo $c['cuota_total']; ?>" />
+                            <input type="number" step="any" name="cuota_cancelado" value="<?php echo number_format($c['cuota_total'],$decimales,".",""); ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" max="<?php echo $c['cuota_total']; ?>" />
                             <input type="hidden"  name="cuota_total" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_total<?php echo $c['cuota_id']; ?>" />
                             <input type="hidden"  name="credito_id" value="<?php echo $c['credito_id']; ?>" class="form-control" id="credito_id" />
                             <input type="hidden"  name="ventita" value="<?php echo $c['venta_id']; ?>" class="form-control" id="ventita" />
