@@ -541,13 +541,16 @@ html += "      <div class='card card-body'>";
 html += "        <div class='row clearfix'> ";
 html += "           <div class='col-md-3' style='padding:1;'>";
 
+let ocultar = 'hidden';
 if (tipousuario_id == 1){
-    html += "               <label for='producto_costo' class='control-label  text-uppercase'>Precio Costo</label>";
+    ocultar = 'text';
+}
+
+html += "               <label for='producto_costo' class='control-label  text-uppercase'>Precio Costo</label>";
     html += "               <div class='form-group'>"
     let precio_costo = Number(registros[i]['detalleven_costo']);
-    html += "               <input type='text' name='detalleven_preferencia' value='"+precio_costo.toFixed(decimales)+"' class='btn btn-xs btn-default form-control' style='text-align:left;' id='detalleven_costo"+registros[i]["detalleven_id"]+"' />";
+    html += "               <input type='"+ocultar+"' name='detalleven_preferencia' value='"+precio_costo.toFixed(decimales)+"' class='btn btn-xs btn-default form-control' style='text-align:left;' id='detalleven_costo"+registros[i]["detalleven_id"]+"' />";
     html += "               </div>";
-}
 
 html += "           </div>";
 html += "           <div class='col-md-9' style='padding:1px;'>";
