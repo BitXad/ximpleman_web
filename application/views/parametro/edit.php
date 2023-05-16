@@ -265,7 +265,7 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="parametro_agruparitems" class="control-label">AGRUPAR ITEMS (DETALLE)</label>
+                        <label for="parametro_agruparitems" class="control-label">AGRUPAR ITEMS (DET.)</label>
                         <div class="form-group">
                             <select  name="parametro_agruparitems" class="form-control" id="parametro_agruparitems">
                                 <option value="0" <?php if($parametro['parametro_agruparitems']==0) echo 'selected'; ?> >NO</option>
@@ -451,7 +451,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="parametro_tamanioletrasboton" class="control-label" title="tamaño de letras del boton"><span class="text-danger">*</span>TAMAÑO LETRAS (BOTON)</label>
                         <div class="form-group">
                             <input type="number" min="0" name="parametro_tamanioletrasboton" value="<?php echo ($this->input->post('parametro_tamanioletrasboton') ? $this->input->post('parametro_tamanioletrasboton') : $parametro['parametro_tamanioletrasboton']); ?>" class="form-control" id="parametro_tamanioletrasboton" required />
@@ -462,6 +462,186 @@
                         <label for="parametro_tamanioletras" class="control-label" title="tamaño de letras del detalle"><span class="text-danger">*</span>TAMAÑO LETRAS</label>
                         <div class="form-group">
                             <input type="number" min="0" name="parametro_tamanioletras" value="<?php echo ($this->input->post('parametro_tamanioletras') ? $this->input->post('parametro_tamanioletras') : $parametro['parametro_tamanioletras']); ?>" class="form-control" id="parametro_tamanioletras" required />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_buscadorcodigo" class="control-label">BUSCADOR DE CODIGO</label>
+                        <div class="form-group">
+                            <select name="parametro_buscadorcodigo" class="form-control" id="parametro_buscadorcodigo">
+                                <option value="1" <?php if($parametro['parametro_buscadorcodigo']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_buscadorcodigo']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_buscadortexto" class="control-label">BUSCADOR DE TEXTO</label>
+                        <div class="form-group">
+                            <select name="parametro_buscadortexto" class="form-control" id="parametro_buscadortexto">
+                                <option value="1" <?php if($parametro['parametro_buscadortexto']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_buscadortexto']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_categoria" class="control-label">CATEGORIA</label>
+                        <div class="form-group">
+                            <select name="parametro_categoria" class="form-control" id="parametro_categoria">
+                                <option value="1" <?php if($parametro['parametro_categoria']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_categoria']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_subcategoria" class="control-label">SUBCATEGORIA</label>
+                        <div class="form-group">
+                            <select name="parametro_subcategoria" class="form-control" id="parametro_subcategoria">
+                                <option value="1" <?php if($parametro['parametro_subcategoria']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_subcategoria']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_botoninventario" class="control-label">BOTON INVENTARIO</label>
+                        <div class="form-group">
+                            <select name="parametro_botoninventario" class="form-control" id="parametro_botoninventario">
+                                <option value="1" <?php if($parametro['parametro_botoninventario']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_botoninventario']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_promociones" class="control-label">PROMOCIONES</label>
+                        <div class="form-group">
+                            <select name="parametro_promociones" class="form-control" id="parametro_promociones">
+                                <option value="1" <?php if($parametro['parametro_promociones']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_promociones']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_categoriabotones" class="control-label">CATEGORIA BOTONES</label>
+                        <div class="form-group">
+                            <select name="parametro_categoriabotones" class="form-control" id="parametro_categoriabotones">
+                                <option value="1" <?php if($parametro['parametro_categoriabotones']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_categoriabotones']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_buscadordetalle" class="control-label">BUSCADOR DETALLE</label>
+                        <div class="form-group">
+                            <select name="parametro_buscadordetalle" class="form-control" id="parametro_buscadordetalle">
+                                <option value="1" <?php if($parametro['parametro_buscadordetalle']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_buscadordetalle']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_herramientassuperior" class="control-label">HERRAM. SUPERIOR</label>
+                        <div class="form-group">
+                            <select name="parametro_herramientassuperior" class="form-control" id="parametro_herramientassuperior">
+                                <option value="1" <?php if($parametro['parametro_herramientassuperior']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_herramientassuperior']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_herramientasinferior" class="control-label">HERRAMIENTAS INFERIOR</label>
+                        <div class="form-group">
+                            <select name="parametro_herramientasinferior" class="form-control" id="parametro_herramientasinferior">
+                                <option value="1" <?php if($parametro['parametro_herramientasinferior']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_herramientasinferior']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_preciototal" class="control-label">PRECIO TOTAL</label>
+                        <div class="form-group">
+                            <select name="parametro_preciototal" class="form-control" id="parametro_preciototal">
+                                <option value="1" <?php if($parametro['parametro_preciototal']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_preciototal']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_asignarinventario" class="control-label">ASIGNAR INVENTARIO</label>
+                        <div class="form-group">
+                            <select name="parametro_asignarinventario" class="form-control" id="parametro_asignarinventario">
+                                <option value="1" <?php if($parametro['parametro_asignarinventario']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_asignarinventario']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_finalizarventas" class="control-label">FINALIZAR VENTAS</label>
+                        <div class="form-group">
+                            <select name="parametro_finalizarventas" class="form-control" id="parametro_finalizarventas">
+                                <option value="1" <?php if($parametro['parametro_finalizarventas']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_finalizarventas']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_resumenventas" class="control-label">RESUMEN VENTAS</label>
+                        <div class="form-group">
+                            <select name="parametro_resumenventas" class="form-control" id="parametro_resumenventas">
+                                <option value="1" <?php if($parametro['parametro_resumenventas']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_resumenventas']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_cierrecaja" class="control-label">CIERRE DE CAJA</label>
+                        <div class="form-group">
+                            <select name="parametro_cierrecaja" class="form-control" id="parametro_cierrecaja">
+                                <option value="1" <?php if($parametro['parametro_cierrecaja']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_cierrecaja']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_ventasdiarias" class="control-label">VENTAS DIARIAS</label>
+                        <div class="form-group">
+                            <select name="parametro_ventasdiarias" class="form-control" id="parametro_ventasdiarias">
+                                <option value="1" <?php if($parametro['parametro_ventasdiarias']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_ventasdiarias']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_productossinhomologar" class="control-label">P. SIN HOMOLOGAR</label>
+                        <div class="form-group">
+                            <select name="parametro_productossinhomologar" class="form-control" id="parametro_productossinhomologar">
+                                <option value="1" <?php if($parametro['parametro_productossinhomologar']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_productossinhomologar']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_teclasaccceso" class="control-label">TECLAS DE ACCESO</label>
+                        <div class="form-group">
+                            <select name="parametro_teclasaccceso" class="form-control" id="parametro_teclasaccceso">
+                                <option value="1" <?php if($parametro['parametro_teclasaccceso']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_teclasaccceso']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_informacionbasica" class="control-label">INFORMACION BASICA</label>
+                        <div class="form-group">
+                            <select name="parametro_informacionbasica" class="form-control" id="parametro_informacionbasica">
+                                <option value="1" <?php if($parametro['parametro_informacionbasica']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_informacionbasica']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_panelventas" class="control-label">PANEL VENTAS</label>
+                        <div class="form-group">
+                            <select name="parametro_panelventas" class="form-control" id="parametro_panelventas">
+                                <option value="1" <?php if($parametro['parametro_panelventas']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_panelventas']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
                         </div>
                     </div>
                     
