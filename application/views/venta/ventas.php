@@ -433,24 +433,26 @@ window.onkeydown = compruebaTecla;
             </div>
         </div>
         
+        <?php if($parametro["parametro_panelventas"]==1){ ?>
+
         <div class="col-md-6" <?php echo $estilo_div; ?>>
             <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">PREFERENCIAS</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="glosay"  value="" onclick="this.select()" onkeyup="transcribir(event); this.value = this.value.toUpperCase();"/>
+                <input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" style="color: black; background:white; text-align: left; font-size: 18px; font-family: Arial; " id="glosay"  value="" onclick="this.select()" onkeyup="transcribir(event); this.value = this.value.toUpperCase();"/>
             </div>
         </div>
 
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="totaly" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">TOTAL</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="totaly" class="form-control <?php echo $atributos; ?>"  style="color: black; background: #be2626; text-align: left; font-size: 18px; font-family: Arial; color: white" id="totaly"  value="0.00" onclick="this.select()" readonly/>
+                <input type="text" name="totaly" class="form-control <?php echo $atributos; ?>"  style="color: black; background: #000000; text-align: left; font-size: 18px; font-family: Arial; color: white" id="totaly"  value="0.00" onclick="this.select()" readonly/>
             </div>
         </div>
 
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="cobradoy" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">COBRADO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cobradoy" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cobradoy"  value="0.00" onclick="this.select()" onkeyup="transcribir(event)"/>
+                <input type="text" name="cobradoy" class="form-control <?php echo $atributos; ?>" style="color: black; background:white ; text-align: left; font-size: 18px; font-family: Arial; " id="cobradoy"  value="0.00" onclick="this.select()" onkeyup="transcribir(event)"/>
             </div>
         </div>
         <div class="col-md-2" <?php echo $estilo_div; ?>>
@@ -459,6 +461,8 @@ window.onkeydown = compruebaTecla;
                 <input type="text" name="cambioy" class="form-control <?php echo $atributos; ?>" style="color: black; background: #be2626; text-align: left; font-size: 18px; font-family: Arial; color: white" id="cambioy"  value="0.00" onclick="this.select()"/>
             </div>
         </div>
+        
+        <?php } // fin $parametro["parametro_tiposistema"]==1 ?>
         
 <!--            <div class="input-group"  <?php echo $estilo_div; ?>>
                 <div class="btn btn-success input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-floppy-o" aria-hidden="true" id="span_buscar_cliente"></span></div>
@@ -694,7 +698,7 @@ window.onkeydown = compruebaTecla;
             
             <!--------------------- parametro de buscador por codigo --------------------->
 
-            <div class="col-md-4">
+            <div class="col-md-4" <?php echo ($parametro["parametro_buscadorcodigo"]!=1)?"hidden":"" ?>>
                   <div class="input-group">
                       <span class="input-group-addon" style="background-color: lightgray;"> 
                         <i class="fa fa-barcode"></i>
@@ -703,10 +707,11 @@ window.onkeydown = compruebaTecla;
                       <div style="border-color: #008d4c; background: #008D4C !important; color: white;" class="btn btn-success input-group-addon" onclick="validar(13,3)" title="Buscar"><span class="fa fa-search" aria-hidden="true"></span></div>
                   </div>
             </div>      
+            
            <!--------------------- fin buscador por codigo --------------------->
            
 
-            <div class="col-md-8">
+            <div class="col-md-8" <?php echo ($parametro["parametro_buscadortexto"]!=1)?"hidden":"" ?>>
                 
 <!--            ------------------- parametro de buscador --------------------->
                        
@@ -724,7 +729,7 @@ window.onkeydown = compruebaTecla;
             
         </div>
 <!-------------------- CATEGORIAS------------------------------------->
-
+    <?php $opciones = 0; ?>
     <div class="container" id="categoria" style="padding:0;">
     <!--    <center>-->
 
@@ -732,29 +737,7 @@ window.onkeydown = compruebaTecla;
 
         <!--<div class="col-md-12" >-->
         
-        <?php 
-            $opciones = 1;
-            if ($opciones == 1){  ?>
-            
-            <input type="hidden" id="categoria_prod">
-            
-            <div class="col-md-6">
-            <div class="btn-group" role="group" aria-label="Menu">
-                <?php 
-                
-                foreach($categoria_producto as $categ){ 
-                    $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
-                    ?>
-                        
-                <button type="button" class="btn btn-info" style="padding-top:0; padding-bottom: 0; font-size: 10px;" onclick="seleccionar_categoria(<?php echo $categ['categoria_id']; ?>)"><?php echo $categ['categoria_nombre']; ?></button>
-
-                <?php } ?>
-               
-            </div>
-            </div>
-            <br>
-            
-        <?php }  ?>
+        
             
         <!--</div>-->
 
@@ -795,6 +778,30 @@ window.onkeydown = compruebaTecla;
                 <fa class="fa fa-cube"></fa> Promociones
             </button>
             <?php } ?>
+           
+           <?php 
+            
+            if ($opciones == 1){  ?>
+            
+           <input type="hidden" id="categoria_prod" value="<?php echo  $parametro['parametro_mostrarcategoria']; ?>">
+            
+            <!--<div class="col-md-6">-->
+            <div class="btn-group" role="group" aria-label="Menu">
+                <?php 
+                
+                foreach($categoria_producto as $categ){ 
+                    $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+                    ?>
+                        
+                <button type="button" class="btn btn-info btn-lg" style="padding-top:5px; padding-bottom: 5px; font-size: 10px;" onclick="seleccionar_categoria(<?php echo $categ['categoria_id']; ?>)"><?php echo $categ['categoria_nombre']; ?></button>
+
+                <?php } ?>
+               
+            </div>
+            <!--</div>-->
+            
+            
+        <?php }  ?>
 
             <span class="badge btn-default">
 

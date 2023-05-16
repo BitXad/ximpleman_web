@@ -1340,3 +1340,35 @@ function homologar_categoriaunidad(){
         }); 
     }
 }
+
+function generar_llaves(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'sincronizacion/generar_llaves';
+    var opcion = confirm("Esta operación reemplazara las llaves actuales. \n ¿Desea Continuar?");
+    
+    if (opcion == true){
+        //document.getElementById('loader_revocado').style.display = 'block';
+        $.ajax({url:controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    var registros = JSON.parse(respuesta);
+                        console.log(registros);                        
+                        //alert(registros);
+                        if(registros == true){
+                            
+                            alert("Llaves generadas con éxito...!");
+                            
+                        }else{
+                            alert("Algo fallo...!!");
+                        }
+                        //document.getElementById('loader_revocado').style.display = 'none';
+                },
+                error:function(respuesta){
+                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    //document.getElementById('loader_revocado').style.display = 'none';
+                }
+        }); 
+    }
+}
