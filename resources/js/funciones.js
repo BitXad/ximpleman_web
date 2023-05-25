@@ -6763,17 +6763,24 @@ function borrar_datos_cliente(){
         if (parametro_imprimircomanda==1){
             boton = document.getElementById("imprimir_comanda");
             boton.click();
-            boton.click();
+            //boton.click();
             if (facturado != 1){
                 brecibo = document.getElementById("imprimir");
                 brecibo.click();
+            }else{
+                var boton = document.getElementById("imprimir_factura");
+                boton.click();
+            }
+        }else{
+            if (facturado != 1){
+                brecibo = document.getElementById("imprimir");
+                brecibo.click();
+            }else{
+                var boton = document.getElementById("imprimir_factura");
+                boton.click();
             }
         }
-    }
-    
-    //Imprimir la factura
-    
-    if (facturado == 1){
+    }else if (facturado == 1){
         var boton = document.getElementById("imprimir_factura");
         boton.click();                    
     }else{
