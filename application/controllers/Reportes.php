@@ -226,6 +226,7 @@ class Reportes extends CI_Controller{
         $data['sistema'] = $this->sistema;
         if($this->acceso(157)){
             $data['user_id']  = $this->session_data['usuario_id'];
+            $data['tipousuario_id']  = $this->session_data['tipousuario_id'];
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
             $this->load->model('Parametro_model');
             $data['parametro'] = $this->Parametro_model->get_parametros();
