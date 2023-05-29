@@ -5086,7 +5086,7 @@ function anular_venta($venta_id){
 //            $this->email->bcc($attributes['cc']);
         $this->email->subject("Factura Digital, gracias por comprar, vuelva pronto");
         $base_url = explode('/', base_url());
-        $directorio_factura = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/archivos/';
+        $directorio_factura = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
         $this->email->attach($directorio_factura.$nombre_archivo.$factura_id.".xml");
         $this->email->attach($directorio_factura.$nombre_archivo.$factura_id.".pdf");
         $html = "<html>";
@@ -5105,22 +5105,22 @@ function anular_venta($venta_id){
         $html .= "<h4>Estimado Usuario</h4>";
         $html .= "<br>";
         //$html .= $configuracion['email_cabecera'];
-        $html .= "Le informamos que su factura electrónica se encuentra disponible para verlo en el siguiente enlace: <br>";
-        $direccion = base_url("tufactura/verfactura/".md5($venta_id));
-        $html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
-        $html .= "<br>Tambien le enviamos los archivos en formato PDF y XML adjuntos";
+        $html .= "Le informamos que su factura electronica se encuentra disponible en formato digital adjunto en este correo <br>";
+            //$direccion = base_url("tufactura/verfactura/".md5($venta_id));
+            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
+            $html .= "<br>en formato PDF y XML.";
         $html .= "<br>";
         //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
 //            $html .= "<form method='get' action='/".$direccion."'>";
 //            $html .= "<button type='submit'>Activar mi Cuenta</button>";
 //            $html .= "</form>";
 
-        $html .= "<br>";
-        $html .= "<br>";
+        //$html .= "<br>";
+        //$html .= "<br>";
 
         //$html .= $configuracion['email_pie'];
-        $html .= "<br>";
-        $html .= "<br>";
+        //$html .= "<br>";
+        //$html .= "<br>";
         //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm'>".$direccion."</a>";
 
         $html .= "</center>";
@@ -5227,22 +5227,22 @@ function anular_venta($venta_id){
             $html .= "<h4>Estimado Usuario</h4>";
             $html .= "<br>";
             //$html .= $configuracion['email_cabecera'];
-            $html .= "Le informamos que su factura electrónica se encuentra disponible para verlo en el siguiente enlace: <br>";
-            $direccion = base_url("tufactura/verfactura/".md5($venta_id));
-            $html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
-            $html .= "<br>Tambien le enviamos los archivos en formato PDF y XML adjuntos";
+            $html .= "Le informamos que su factura electronica se encuentra disponible en formato digital adjunto en este correo <br>";
+            //$direccion = base_url("tufactura/verfactura/".md5($venta_id));
+            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
+            $html .= "<br>en formato PDF y XML.";
             $html .= "<br>";
             //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
     //            $html .= "<form method='get' action='/".$direccion."'>";
     //            $html .= "<button type='submit'>Activar mi Cuenta</button>";
     //            $html .= "</form>";
 
-            $html .= "<br>";
-            $html .= "<br>";
+            //$html .= "<br>";
+            //$html .= "<br>";
 
             //$html .= $configuracion['email_pie'];
-            $html .= "<br>";
-            $html .= "<br>";
+            //$html .= "<br>";
+            //$html .= "<br>";
             //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm'>".$direccion."</a>";
 
             $html .= "</center>";
