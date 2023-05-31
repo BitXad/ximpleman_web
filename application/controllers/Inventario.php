@@ -83,8 +83,8 @@ class Inventario extends CI_Controller{
             $data['page_title'] = "Inventario";
             $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
             
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            //$this->load->model('Parametro_model');
+            //$data['parametro'] = $this->Parametro_model->get_parametros();
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
