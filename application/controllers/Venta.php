@@ -6821,7 +6821,7 @@ function anular_venta($venta_id){
         $micad .= "                    <center>"; 
         $micad .= "                            <div><font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font></div>"; 
                                                 if ($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
-        $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font><div>"; 
+        $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font></div>"; 
                                                 }
         $micad .= "                            <div>"; 
         $micad .= "                            <font size='1' face='Arial'>"; 
