@@ -1,6 +1,6 @@
 <?php
 
-require_once 'application/libraries/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 /**
  * CodeIgniter
  *

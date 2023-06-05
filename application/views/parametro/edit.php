@@ -618,11 +618,11 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="parametro_teclasaccceso" class="control-label">TECLAS DE ACCESO</label>
+                        <label for="parametro_teclasacceso" class="control-label">TECLAS DE ACCESO</label>
                         <div class="form-group">
-                            <select name="parametro_teclasaccceso" class="form-control" id="parametro_teclasaccceso">
-                                <option value="1" <?php if($parametro['parametro_teclasaccceso']=="1"){ ?> selected <?php } ?>>Si</option>
-                                <option value="0" <?php if($parametro['parametro_teclasaccceso']=="0"){ ?> selected <?php } ?>>No</option>
+                            <select name="parametro_teclasacceso" class="form-control" id="parametro_teclasacceso">
+                                <option value="1" <?php if($parametro['parametro_teclasacceso']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_teclasacceso']=="0"){ ?> selected <?php } ?>>No</option>
                             </select>
                         </div>
                     </div>

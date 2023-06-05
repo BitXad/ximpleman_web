@@ -27,7 +27,7 @@
 <div class="box-header">
 <!--                <h3 class="box-title">Usuarios</h3>-->
             	<div class="box-tools">
-                    <a href="<?php echo site_url('usuario/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
+                    <a href="<?php echo site_url('usuario/add'); ?>" class="btn btn-success btn-sm"><fa class="fa fa-user-plus"> </fa> Nuevo Usuario</a> 
                 </div>
         
             <font size='4' face='Arial'><b>Usuarios</b></font>
@@ -81,17 +81,18 @@
                   ?>
 
                     <tr>
-                        <td><?php echo $cont ?></td>
-                        <td><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/".$thumb_default."' width='40' height='40' class='img-circle'"; ?></center></td>
-                        <td><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font>
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $cont ?></td>
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/".$thumb_default."' width='40' height='40' class='img-circle'"; ?></center></td>
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font>
                             <br>
                             <?php echo $u['tipousuario_descripcion']; ?></td>
-                      	<td><?php echo $u['usuario_email']; ?></td>
-                        <td><?php echo $u['usuario_login']; ?></td>
-                        <td class="text-center"><?php echo $u['parametro_id']; ?></td>
-                        <td class="text-center"><?php echo $u['puntoventa_codigo']; ?></td>
+                      	<td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['usuario_email']; ?></td>
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['usuario_login']; ?></td>
+                        <td class="text-center" style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['parametro_id']; ?></td>
+                        <td class="text-center" style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['puntoventa_codigo']; ?></td>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['estado_descripcion']; ?></td>
-                        <td>
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>">
+                            
                             <a href="<?php echo site_url('usuario/editar/'. $u['usuario_id']); ?>" class="btn btn-info btn-xs" title="Modificar datos de usuario"><span class="fa fa-pencil"></span></a>
                             <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><em class="fa fa-trash"></em></a>-->
                             <?php
@@ -101,7 +102,7 @@
                                 <?php
                                 if($u['estado_id'] == 1){
                                 ?>
-                                    <a onclick="return confirm('Esta seguro que quiere dar de baja a este Usuario del sistema?')" href="<?php echo site_url('usuario/dar_debajausuario/'.$u['usuario_id']); ?>" class="btn btn-xs" style='background-color: #8e8e91; color: white;' title="Dar de baja a este usuario del sistema"><span class="fa fa-toggle-on"></span></a>
+                                    <a onclick="return confirm('Esta seguro que quiere dar de baja a este Usuario del sistema?')" href="<?php echo site_url('usuario/dar_debajausuario/'.$u['usuario_id']); ?>" class="btn btn-xs" style='background-color: #00e765; color: white;' title="Dar de baja a este usuario del sistema"><span class="fa fa-toggle-on"></span></a>
                                 <?php
                                 }else{
                                 ?>

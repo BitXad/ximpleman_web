@@ -519,3 +519,8 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+$config['twilio_account_sid'] = 'ACb451e107abe737e4706066e79bfa9c54';
+$config['twilio_auth_token'] = '65744f424d8606a3d11f0e0e999a4e49';
+//$config['twilio_phone_number'] = '+12545275389';
+$config['twilio_phone_number'] = '+14155238886';

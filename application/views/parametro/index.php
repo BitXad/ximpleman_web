@@ -381,7 +381,7 @@ foreach($all_parametros as $p)
                         <td><?php  if ($p['parametro_cierrecaja']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php  if ($p['parametro_ventasdiarias']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php  if ($p['parametro_productossinhomologar']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
-                        <td><?php  if ($p['parametro_teclasaccceso']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_teclasacceso']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php  if ($p['parametro_informacionbasica']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php  if ($p['parametro_panelventas']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                     </tr>

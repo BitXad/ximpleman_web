@@ -64,10 +64,14 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
-<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"]."cm";
+      $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
+
+<?php $decimales = $parametro['parametro_decimales']; ?>
+<input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales"  hidden>
+
 <!------------------------ INICIO modal para confirmar anulacion de factura ------------------->
 
 <div class="modal fade" id="myModalAnular" tabindex="-1" role="dialog" aria-labelledby="myModalAnularlabel" style="font-family: Arial; font-size: 10pt;">
@@ -96,7 +100,7 @@
                 <div class="col-md-4">
                     <label for="factura_monto" class="control-label">Monto</label>
                     <div class="form-group">
-                        <input type="text" name="factura_monto" value="<?php echo $factura[0]['factura_total']; ?>" class="form-control" id="factura_monto" readonly="true"/>
+                        <input type="text" name="factura_monto" value="<?php echo number_format($factura[0]['factura_total'],$decimales,".",","); ?>" class="form-control" id="factura_monto" readonly="true"/>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -159,6 +163,14 @@
 
                                         <?php } ?>
                                     </div>
+                                                                      
+                                        <?php if($parametro["parametro_logoenfactura"]==1){ ?>
+                                        <center>                                
+                                            <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="150" height="90"><br>
+                                        </center>
+                                        <?php } ?>
+                                    
+                                    
                                     <?php
                                     $titulo1 = "FACTURA";
                                     $subtitulo_factura = "CON DERECHO A CR&Eacute;DITO FISCAL";
@@ -301,18 +313,30 @@
                                     <?php if($d['detallefact_preferencia']!='' && $d['detallefact_preferencia']!= null && $d['detallefact_preferencia']!='-' ) {
                                         echo  $d['detallefact_preferencia']; }
                                     ?>
-                                    <?php if($d['detallefact_caracteristicas']!='' && $d['detallefact_caracteristicas']!=null && $d['detallefact_caracteristicas']!='-' ) {
+                                    <?php if($d['detallefact_caracteristicas']!='' && $d['detallefact_caracteristicas']!=null && $d['detallefact_caracteristicas']!='-') {
                                         echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
                                         //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
                                     ?>
-                                    <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo "<br><span style='font-size: 10px'>Unidad de Medida:  [".$d['detallefact_unidadfactor']."]</span>";?>
+                                    <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo "<br><span style='font-size: 10px'>Unidad Medida: ".$d['detallefact_unidadfactor']."</span>";?>
                                 </td>
                                 <!--<td colspan="2"></td>-->
                             </tr>
                             <tr>
                                 <td style="font-size: <?= $tamanio_fuente; ?>; padding: 0;">
                                     <?php
-                                    echo number_format($d['detallefact_cantidad'],$decimales,'.',',')." X ";
+                                            $partes = explode(".",$d['detallefact_cantidad']);  
+                                            if ($partes[1] == 0) {  
+                                                $lacantidad = $partes[0];  
+                                            }else{  
+                                                $lacantidad = number_format($d['detallefact_cantidad'],$decimales,'.',',');  
+                                            }  
+                                            echo $lacantidad; 
+
+                                    
+                                    
+                                    
+//                                    echo number_format($d['detallefact_cantidad'],$decimales,'.',',')." X ";
+                                    echo $lacantidad." X ";
                                     echo number_format($d['detallefact_precio'],$decimales,'.',',')." - ";
                                     echo number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],$decimales,'.',','); //." + "; //."0.00 +  0.00";
                                     if ($mostrarice==1){
@@ -473,7 +497,7 @@
                         
                     <?php
                     if($factura[0]['estado_id']<>3){
-                        if($parametro[0]['parametro_imprimirticket'] == 1){
+                        if($parametro['parametro_imprimirticket'] == 1){
                             foreach($detalle_factura as $d){
                                 $cantidad = $d['detallefact_cantidad'];
                                 
@@ -563,7 +587,7 @@
         
           
         
-<?php //if($parametro[0]['parametro_imprimircomanda']==1){  ?>
+<?php //if($parametro['parametro_imprimircomanda']==1){  ?>
 
 <!--        //aqui va la comanda-->
 <?php //} ?>

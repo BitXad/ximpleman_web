@@ -34,10 +34,10 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
 <input type="hidden" name="resproducto" id="resproducto" />
-<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
-<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
-<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" />
+<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" />
 <div class="cuerpo">
     <div class="columna_derecha">
         <center> 
@@ -116,11 +116,11 @@
                 <th>PRODUCTO</th>
                 <th>UNIDAD</th>
                 <th>CANT.</th>
-                <th>PRECIO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                <th>DESC(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                <th>PRECIO<br>TOTAL(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>PRECIO<br>UNIT.(<?php echo $parametro['moneda_descripcion']; ?>)</th>
+                <th>DESC(<?php echo $parametro['moneda_descripcion']; ?>)</th>
+                <th>PRECIO<br>TOTAL(<?php echo $parametro['moneda_descripcion']; ?>)</th>
                 <th>PRECIO<br>TOTAL(<?php
-                                        if($parametro[0]["moneda_id"] == 1){
+                                        if($parametro["moneda_id"] == 1){
                                             echo $lamoneda[1]['moneda_descripcion'];
                                         }else{
                                             echo $lamoneda[0]['moneda_descripcion'];
@@ -128,8 +128,8 @@
                                     ?>)
                 </th>
                 <?php if($tipousuario_id == 1){ ?>
-                    <th>COSTO<br>TOTAL(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
-                    <th>UTILID.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                    <th>COSTO<br>TOTAL(<?php echo $parametro['moneda_descripcion']; ?>)</th>
+                    <th>UTILID.(<?php echo $parametro['moneda_descripcion']; ?>)</th>
                     <th>%</th>
                 <?php } ?>
             </tr>

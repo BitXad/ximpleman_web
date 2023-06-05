@@ -66,8 +66,7 @@ class Reportes extends CI_Controller{
         $data['usuario_nombre']  = $this->session_data['usuario_nombre'];
         $this->load->model('Usuario_model');
         
-        $this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->parametros;
 
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['page_title'] = "Reportes";
@@ -94,8 +93,7 @@ class Reportes extends CI_Controller{
         $rolusuario = $this->session_data['rol'];
         $data['tienepermiso'] = $rolusuario[171-1]['rolusuario_asignado'];        
         
-        $this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->parametros;
         $this->load->model('Moneda_model');
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -121,8 +119,7 @@ class Reportes extends CI_Controller{
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -177,8 +174,7 @@ class Reportes extends CI_Controller{
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;$data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -227,8 +223,7 @@ class Reportes extends CI_Controller{
         if($this->acceso(157)){
             $data['user_id']  = $this->session_data['usuario_id'];
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -244,8 +239,7 @@ class Reportes extends CI_Controller{
         $data['sistema'] = $this->sistema;
         if($this->acceso(157)){
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1216,8 +1210,7 @@ function torta3($anio,$mes)
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1237,8 +1230,7 @@ function torta3($anio,$mes)
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1258,7 +1250,7 @@ function torta3($anio,$mes)
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1272,7 +1264,7 @@ function torta3($anio,$mes)
         $data['sistema'] = $this->sistema;
         if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Tipo_transaccion_model');
             $data['page_title'] = "Reporte de ventas agrupado";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
@@ -1293,8 +1285,7 @@ function torta3($anio,$mes)
         if($this->acceso(157)){
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->parametros;
         $this->load->model('Moneda_model');
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1315,8 +1306,7 @@ function torta3($anio,$mes)
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
             $this->load->model('Categoria_clientezona_model');
             $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1463,7 +1453,7 @@ function torta3($anio,$mes)
         $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
         //$this->load->model('Parametro_model');
         //$elparametro = $this->Parametro_model->get_parametros();
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->parametros;
         $this->load->model('Moneda_model');
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1495,8 +1485,7 @@ function torta3($anio,$mes)
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
             $this->load->model('Categoria_producto_model');
             $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
-            //$this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1513,8 +1502,7 @@ function torta3($anio,$mes)
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
             //$this->load->model('Categoria_producto_model');
             //$data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             //$this->load->model('Moneda_model');
             //$data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             //$data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1541,8 +1529,7 @@ function torta3($anio,$mes)
         if($this->acceso(157)){
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->parametros;
         $this->load->model('Moneda_model');
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1616,8 +1603,7 @@ function torta3($anio,$mes)
         if($this->acceso(157)){
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-            //$this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -1826,8 +1812,7 @@ function torta3($anio,$mes)
             //**************** inicio contenido ***************
             $data['rolusuario'] = $this->session_data['rol'];
             $data['page_title'] = "Reporte por dia de usuarios";
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             //$this->load->model('Estado_model');
             //$data['estado'] = $this->Estado_model->get_tipo_estado(1);
             $this->load->model('Venta_model');
@@ -1882,7 +1867,7 @@ function torta3($anio,$mes)
             $data['usuario_id']  = $this->session_data['usuario_id'];
             $data['usuario_nombre']  = $this->session_data['usuario_nombre'];
             $data['categorias'] = $this->Categoria_producto_model->get_all_categoria_producto();      
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
     
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
             $data['page_title'] = "Reporte de mora";

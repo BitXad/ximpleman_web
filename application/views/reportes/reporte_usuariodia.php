@@ -4,11 +4,11 @@
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
 <input type="text" value="" id="parametro" hidden>
-<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
-<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
-<input type="hidden" name="mostrarmoneda" id="mostrarmoneda" value="<?php echo $parametro[0]['parametro_mostrarmoneda']; ?>" />
-<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" />
+<input type="hidden" name="mostrarmoneda" id="mostrarmoneda" value="<?php echo $parametro['parametro_mostrarmoneda']; ?>" />
+<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" />
 <!--<input type="hidden" name="select_tipo" id="select_tipo" value='line' />-->
 
 <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='display:block;'>
@@ -116,16 +116,16 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th style="padding:0;">Fecha</th>
-                        <th style="padding:0;">Ventas (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th style="padding:0;">Ventas (<?php echo $parametro['moneda_descripcion']; ?>)</th>
                         <th style="padding:0; display: none" id="mostrar_columna1">Ventas (<?php
-                            if($parametro[0]["moneda_id"] == 1){
+                            if($parametro["moneda_id"] == 1){
                                 echo $lamoneda[1]['moneda_descripcion'];
                             }else{
                                 echo $lamoneda[0]['moneda_descripcion'];
                             }
                         ?>)
                         </th>
-                        <th style="padding:0; display: none" id="mostrar_columna">Utilidades (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th style="padding:0; display: none" id="mostrar_columna">Utilidades (<?php echo $parametro['moneda_descripcion']; ?>)</th>
                         <th style="padding:0;">Zona</th>
                     </tr>
                     <tbody class="buscar" id="tabla_ventas"></tbody>

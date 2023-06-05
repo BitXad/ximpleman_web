@@ -28,6 +28,7 @@
             background-color: #f2dede !important;
         }
     }
+    
 </style>
 
 
@@ -62,6 +63,19 @@ font-size: 7pt;
 
 }
 
+
+.table-fondito{
+  
+    /* Estilo para la tabla */
+      background-image: url('<?php echo base_url('resources/images/empresas/logo_fondo.jpg'); ?>') !important;
+      background-repeat: no-repeat !important;
+      background-size: contain !important; /* Ajusta la imagen al tamaño de la tabla */
+      /*background-attachment: fixed; /* Hace que la imagen sea persistente al desplazarse */
+
+}
+
+
+
 .table-condensed tr td{
     border:1px solid black;
 }
@@ -85,13 +99,14 @@ border-bottom : 1px solid #aaa;
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <!---------------------- Modal ---------------------------->
-<?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-        $ancho = $parametro[0]["parametro_anchofactura"];
-      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
-        $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php $tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+        $ancho = $parametro["parametro_anchofactura"];
+      //$margen_izquierdo = "col-xs-".$parametro["parametro_margenfactura"];;
+        $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
+        $decimales = $parametro['parametro_decimales'];
 ?>
 
-
+<input type="hidden" name="decimales" id="decimales" value="<?php echo $decimales; ?>" />
 <!------------------------ INICIO modal para confirmar anulacion de factura ------------------->
 <div class="modal fade" id="myModalAnular" tabindex="-1" role="dialog" aria-labelledby="myModalAnularlabel" style="font-family: Arial; font-size: 10pt;">
     <div class="modal-dialog" role="document">
@@ -119,7 +134,7 @@ border-bottom : 1px solid #aaa;
                 <div class="col-md-4">
                     <label for="factura_monto" class="control-label">Monto</label>
                     <div class="form-group">
-                        <input type="text" name="factura_monto" value="<?php echo $factura[0]['factura_total']; ?>" class="form-control" id="factura_monto" readonly="true"/>
+                        <input type="text" name="factura_monto" value="<?php echo number_format($factura[0]['factura_total'],$decimales,".",","); ?>" class="form-control" id="factura_monto" readonly="true"/>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -196,6 +211,10 @@ border-bottom : 1px solid #aaa;
                 <!--<td rowspan="3" style="width: 5cm;"></td>-->
                 <td  style="width: <?php echo round($ancho/3,2);?>cm;  padding: 0; line-height: 9px;">
                     <center>
+                            <?php if($parametro["parametro_logoenfactura"]==1){ ?>
+                                <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                            <?php } ?>
+                        
                             <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                             <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
                                 <small>
@@ -357,8 +376,8 @@ border-bottom : 1px solid #aaa;
         <!--<table class="table"  style="width: <?php echo $ancho;?>cm; height: <?php echo $tipo_factura."cm"; ?>; margin: 0; padding: 0; border-collapse: collapse;" >-->
             <tr>
                 <td>
-                    <table class="table-condensed"  style="width: 100%; margin: 0;" >
-                        <tr  style=" font-family: Arial; border: 1px solid black ">
+                    <table class="table-condensed table-fondito"  style="width: 100%; margin: 0; ">
+                        <tr  style=" font-family: Arial; border: 1px solid black;">
                             <?php if($factura[0]['docsec_codigoclasificador']==2){ ?>
                             
                                     <td align="center"><b>CÓDIGO<br> SERVICIO</b></td>

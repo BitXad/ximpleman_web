@@ -16,6 +16,7 @@ class Inventario extends CI_Controller{
         $this->load->model('Inventario_model');
         $this->load->model('Empresa_model');
         $this->load->model('Producto_model');
+        $this->load->model('Venta_model');
         $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -183,6 +184,14 @@ class Inventario extends CI_Controller{
         $usuario_id = 1;
         
         $this->Inventario_model->actualizar_inventario();
+        
+        if ($this->parametros["parametro_sininventario"]==1){
+            
+            $sql = "update inventario set existencia = 10000";
+            $this->Venta_model->ejecutar($sql);   
+            
+        }
+        
         redirect('inventario/index');
 		
         //**************** fin contenido ***************

@@ -69,7 +69,7 @@ function autosize(){
 
 p {
     font-family: Arial;
-    font-size: 7pt;
+    font-size: 8pt;
     line-height: 120%;   /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 10px;
@@ -90,11 +90,12 @@ margin : 0 0 0px 0;
 padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
-font-family: Arial narrow;
+font-family: Arial;
 font-size: 7pt;  
 
 td {
 border:hidden;
+font-size: 18px;
 }
 }
 
@@ -198,17 +199,27 @@ border-bottom : 1px solid #aaa;
                         $cantidad += $d['detalleven_cantidad'];
                         $total_descuento += $d['detalleven_descuento']; 
                         $total_final += $d['detalleven_total']; 
+                        
+                        $partes = explode(".",$d['detalleven_cantidad']);  
+                        if ($partes[1] == 0) {  
+                            $lacantidad = $partes[0];  
+                        }else{  
+                            $lacantidad = number_format($d['detalleven_cantidad'],$decimales,'.',',');  
+                        }  
+                        
                         ?>
            <tr style="padding: 0">
-                <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td style="padding: 0"><font style="size:7px; font-family: arial;"><?php echo $d['producto_nombre'];?> 
+                <td align="center" style="padding: 0"><?php echo $lacantidad; ?></td>
+                <td style="padding: 0"><?php echo $d['producto_nombre'];?> 
                     <?php 
+                        
                         if ($d['detalleven_unidadfactor'] != "-") echo "[".$d['detalleven_unidadfactor']."]"; 
                         
-                        if ($d['clasificador_nombre'] != "-" && $d['clasificador_nombre'] != 'null' ) 
+                        
+                        if ($d['clasificador_nombre'] != "-" && $d['clasificador_nombre'] != 'null' && $d['clasificador_nombre'] != '' ) 
                             echo "[".$d['clasificador_nombre']."]";
                         
-                        if ($d['preferencia_descripcion'] != "-" && $d['preferencia_descripcion'] != 'null') 
+                        if ($d['preferencia_descripcion'] != "-" && $d['preferencia_descripcion'] != 'null' && $d['preferencia_descripcion'] != '') 
                             echo "[".$d['preferencia_descripcion']."]";?>
                         <small> 
                         <?php

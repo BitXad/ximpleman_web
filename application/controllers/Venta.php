@@ -54,7 +54,7 @@ class Venta extends CI_Controller{
             'Factura_datos_model',
         ]);
         
-
+      
         $this->load->library('ControlCode');        
         $this->load->helper('xml');
         $this->load->helper('validacionxmlxsd_helper');
@@ -146,15 +146,21 @@ class Venta extends CI_Controller{
         $sql = "select * from usuario where usuario_id = ".$this->session_data['usuario_id'];
         $x = $this->Venta_model->consultar($sql);
         
-        $puntoventa = $x[0]["puntoventa_codigo"]; //$this->session_data['tipopuntoventa_codigo'];
+
+            $puntoventa = $x[0]["puntoventa_codigo"]; //$this->session_data['tipopuntoventa_codigo'];
+
+            $data['eventos'] = $this->Eventos_significativos_model->consultar("select * from registro_eventos where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa);
+            $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+            
+            
         
-        $data['eventos'] = $this->Eventos_significativos_model->consultar("select * from registro_eventos where estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa);
-        $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
         if(sizeof($dosificacion)>0){
             $data['dosificado'] = 1;
         }else{
             $data['dosificado'] = 0;
         }
+        
+        
         
         $data['_view'] = 'venta/index';
         $this->load->view('layouts/main',$data);
@@ -166,6 +172,7 @@ class Venta extends CI_Controller{
 
     function ventas()
     {    
+        require_once(APPPATH.'controllers/Dosificacion.php');
         
         if($this->acceso(12)){
         //**************** inicio contenido ***************     
@@ -212,24 +219,64 @@ class Venta extends CI_Controller{
         $data['almacenes'] = $this->Inventario_model->get_almacenes();
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         
+        //Obtener punto de venta
         $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
         $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
-        
         $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
         $data['empresa_email'] = $this->empresa["empresa_email"];
         
-        $sql ="select * from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
-        //echo $sql;
-        $data['cufd'] = $this->Venta_model->consultar($sql);
         
-        $sql = "SELECT  i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
-                FROM
-                  inventario i
-                WHERE
-                  i.producto_codigosin = 0 or  i.producto_codigosin is null or
-                  i.producto_codigounidadsin = 0 or i.producto_codigosin is null";
-        $data['productos_homologados'] = $this->Venta_model->consultar($sql);
+        if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
+            
+            if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
+       
 
+
+
+                    $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NOW()) * -1) AS horas_vigencia from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
+                    //echo $sql;
+                    $data['cufd'] = $this->Venta_model->consultar($sql);
+
+                    $sql = "SELECT  i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
+                            FROM
+                              inventario i
+                            WHERE
+                              i.producto_codigosin = 0 or  i.producto_codigosin is null or
+                              i.producto_codigounidadsin = 0 or i.producto_codigosin is null";
+                    $data['productos_homologados'] = $this->Venta_model->consultar($sql);
+                    
+                    //Si la vigencia es menor o igual a 3 horas,atualizar el CUFD
+//                    $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NOW()) * -1) AS horas_vigencia from cufd
+//                            where cufd_puntodeventa = 0 and
+//                            cufd_id in (select max(cufd_id) from cufd)";
+//                    $vigencia_cufd = $this->Venta_model->consultar($sql);
+//
+//                    if ($vigencia_cufd<=3){ //si la vigen(cia del CUFD es menor a 3 horas
+//                        $dosificacion = new $Dosificacion();
+//                        $dosificacion->cufd();
+//                    
+//                    }
+                    
+            }
+        }
+        
+        /*
+                
+        if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
+            
+            $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NOW()) * -1) AS horas_vigencia from cufd
+                    where cufd_puntodeventa = 0 and
+                    cufd_id in (select max(cufd_id) from cufd)";
+            $vigencia_cufd = $this->Venta_model->consultar($sql);
+        
+            if ($vigencia_cufd>=3){
+                
+                
+         
+            }
+            
+        }
+        */
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
@@ -906,8 +953,8 @@ class Venta extends CI_Controller{
                         
                 
                 if($facturado=="true"){//si la venta es facturada
-                //
-                    // $parametro = $this->Parametro_model->get_parametro(1);
+   
+                    
                     $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
                     // PARA NUEVO SISTEMA DE FACTURACION
                     //$parametro = $this->Parametro_model->get_parametros(); replazado por $parametros, variable global
@@ -917,8 +964,6 @@ class Venta extends CI_Controller{
                         $tamanio_hoja = 1;
                     }
                     // PARA NUEVO SISTEMA DE FACTURACION
-        
-          //          if (sizeof($dosificacion)>0){ //si existe una dosificacion activa
                         
                         $estado_id = 1; 
                         
@@ -953,7 +998,7 @@ class Venta extends CI_Controller{
                         $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
                         $factura_actividad     = $dosificacion[0]['dosificacion_actividad'];
                         $factura_enviada = 0;// 0 = falso
-                        // $tipo_doc_identidad    = $tipo_doc_identidad;
+                        
                         if($this->parametros['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
                             // facturacion nueva
                             $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
@@ -975,7 +1020,6 @@ class Venta extends CI_Controller{
                             $documentoSector = $dosificacion[0]['docsec_codigoclasificador'];
                             
                             $factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
-                            //$factura_fecha_hora = $this->sumar_2segundos($factura_fecha_hora);
                             
                             $facturaCufdCodControl = $this->Factura_model->get_cudf_activo($punto_venta['cufd_codigo']); //$dosificacion[0]['dosificacion_cufd']);
                             $factura_codigocliente = $cliente_codigo;
@@ -988,9 +1032,7 @@ class Venta extends CI_Controller{
                                 $factura_numero = $numfact_cafc;
                                 $factura_cafc = $codigo_cafc;                                    
                                 
-                                //$factura_fecha_hora = (new DateTime())->format('H:i:s.v');
                                 $factura_fecha_hora = $fecha_cafc."T".$hora_cafc.":00.000";
-                                //$factura_fecha_hora = $fecha_cafc."T".$hora_cafc.".000";
                                 
                                 $tipo_emision = 2;   
                                 $eventos = $this->Venta_model->consultar("select * from registro_eventos where registroeventos_codigo=".$registroeventos_codigo);
@@ -1066,6 +1108,7 @@ class Venta extends CI_Controller{
                                 
                         }else{
                             
+                                //Sistema de facturacion nuevo
                                 $leyendas = $this->Venta_model->consultar("select * from leyenda order by leyenda_codigoactividad");
                                 $valor = rand(0,7);
                                 $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
@@ -1113,7 +1156,6 @@ class Venta extends CI_Controller{
                                     
                         }
                         $factura_id = $this->Venta_model->ejecutar($sql);
-                        //$factura_id= $this->Factura_model->ejecutar2($sql2);
                     
                         $sql =  "insert into detalle_factura(
                         producto_id,
@@ -1240,23 +1282,12 @@ class Venta extends CI_Controller{
                             }
                             //fin para borrar
                             
-                            //$xmlString = file_get_contents($directorio_factura.'compra_venta1.xml');
-                            //$byteArr = file_get_contents($directorio_factura.$this->nombre_archivo.$factura[0]['factura_id'].".xml.zip");
-
-                            
                             $handle = fopen($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml.zip", "rb");
                             $contents = fread($handle, filesize($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml.zip"));
                             fclose($handle);
                             $content = base64_encode($contents);
                             $b= unpack("C*",$contents);
         
-                            //var_dump($contents);
-        
-        
-                            /*//var_dump($byteArr);
-                            // $gzip = new PharData("{$directorio_factura}compra_venta{$factura[0]['factura_id']}.xml*");*/
-        
-                            // HASH (SHA 256)
                             $xml_comprimido = hash_file('sha256',$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml.zip");
                             $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                             //$wsdl = $dosificacion['dosificacion_factura'];
@@ -1268,15 +1299,15 @@ class Venta extends CI_Controller{
                             if( $this->parametros["parametro_tipoemision"] == 1) //Si la emision de la factura es de tipo 1 ONLINE
                             {
   
-                                $eniada = $this->mandarFactura($contents, $xml_comprimido);
-                                //var_dump($eniada);
-                                if($eniada->transaccion){ // Si la factura fue enviada                                    
+                                $enviada = $this->mandarFactura($contents, $xml_comprimido);
+                                //var_dump($enviada);
+                                if($enviada->transaccion){ // Si la factura fue enviada                                    
                                     
                                     $params = array(
-                                        'factura_codigodescripcion' => $eniada->codigoDescripcion,
-                                        'factura_codigoestado'    => $eniada->codigoEstado,
-                                        'factura_codigorecepcion' => $eniada->codigoRecepcion,
-                                        'factura_transaccion'    => $eniada->transaccion,
+                                        'factura_codigodescripcion' => $enviada->codigoDescripcion,
+                                        'factura_codigoestado'    => $enviada->codigoEstado,
+                                        'factura_codigorecepcion' => $enviada->codigoRecepcion,
+                                        'factura_transaccion'    => $enviada->transaccion,
                                         'factura_enviada' => true,//Factura enviada a impuestos, por defecto en false(No fue enviada)
                                     );
                                     $this->Factura_model->update_factura($factura_id, $params);
@@ -1284,20 +1315,17 @@ class Venta extends CI_Controller{
                                     //SI TODO SALE BIEN HASTA AQUI ACTUALIZA EN NUMERO DE FACTURA
                                     $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
                                     $this->Venta_model->ejecutar($sql);
-                                    $res  = array("mensajesList" => $eniada);
+                                    $res  = array("mensajesList" => $enviada);
                                     echo json_encode($res);
                                     
                                 }else{
                                     
-                                    $cad = $eniada->mensajesList;
-                                    //var_dump($eniada);
+                                    $cad = $enviada->mensajesList;
+                                    //var_dump($enviada);
                                     //var_dump($cad);
                                     
-                                    $mensajecadena = json_encode($eniada->mensajesList);
+                                    $mensajecadena = json_encode($enviada->mensajesList);
                                     
-//                                echo "<br>tamaño: ".sizeof($cad);
-//                                echo "<br>codigo: ".($cad[0]->codigo);
-//                                echo "<br>transaccion: ".$eniada->transaccion;
                                 $codigo = "";
 //                                
 
@@ -1314,28 +1342,28 @@ class Venta extends CI_Controller{
                                             $params = array(
                                                 'factura_codigodescripcion' => $codigo, //$cad->codigo,
                                                 'factura_codigoestado' => "NO ENVIADA",//$cod->codigoEstado,
-                                                'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
-                                                'factura_transaccion'  => $eniada->transaccion,
+                                                'factura_mensajeslist' => $mensajecadena, //$enviada->mensajesList,
+                                                'factura_transaccion'  => $enviada->transaccion,
                                                 'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
                                             );
 
                                             $this->Factura_model->update_factura($factura_id, $params);
 
-                                           echo json_encode($eniada);
+                                           echo json_encode($enviada);
 
                                 
                                     
 //                                            $params = array(
 //                                                'factura_codigodescripcion' => $cad->codigo,
 //                                                'factura_codigoestado' => "NO ENVIADA",//$cod->codigoEstado,
-//                                                'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
-//                                                'factura_transaccion'  => $eniada->transaccion,
+//                                                'factura_mensajeslist' => $mensajecadena, //$enviada->mensajesList,
+//                                                'factura_transaccion'  => $enviada->transaccion,
 //                                                'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
 //                                            );
 //
 //                                            $this->Factura_model->update_factura($factura_id, $params);
 //
-//                                           echo json_encode($eniada);
+//                                           echo json_encode($enviada);
                                     
                                
                                 
@@ -4567,19 +4595,19 @@ function anular_venta($venta_id){
                     $comunicacion = $this->verificar_comunicacion($token,$wsdl);
                     
                     if($comunicacion){
-                        $eniada = $this->mandarFactura($contents, $xml_comprimido);
-                        //var_dump($eniada->transaccion);
-                        //var_dump($eniada);
-                        if($eniada->transaccion){
+                        $enviada = $this->mandarFactura($contents, $xml_comprimido);
+                        //var_dump($enviada->transaccion);
+                        //var_dump($enviada);
+                        if($enviada->transaccion){
                             $params = array(
-                                'factura_codigodescripcion' => $eniada->codigoDescripcion,
-                                'factura_codigoestado'    => $eniada->codigoEstado,
-                                'factura_codigorecepcion' => $eniada->codigoRecepcion,
-                                'factura_transaccion'    => $eniada->transaccion,
+                                'factura_codigodescripcion' => $enviada->codigoDescripcion,
+                                'factura_codigoestado'    => $enviada->codigoEstado,
+                                'factura_codigorecepcion' => $enviada->codigoRecepcion,
+                                'factura_transaccion'    => $enviada->transaccion,
                             );
                             $this->Factura_model->update_factura($factura_id, $params);
                         }else{
-                            $cad = $eniada->mensajesList;
+                            $cad = $enviada->mensajesList;
                             //var_dump($cad);
 //                            $mensajecadena = "";
 //                            foreach ($cad as $c) {
@@ -4591,10 +4619,10 @@ function anular_venta($venta_id){
                                 $mensajecadena .= $c->codigo.", ".$c->descripcion." | ";
                             }
                             $params = array(
-                                'factura_codigodescripcion' => $eniada->codigoDescripcion,
-                                'factura_codigoestado' => $eniada->codigoEstado,
-                                'factura_mensajeslist' => $mensajecadena, //$eniada->mensajesList,
-                                'factura_transaccion'  => $eniada->transaccion,
+                                'factura_codigodescripcion' => $enviada->codigoDescripcion,
+                                'factura_codigoestado' => $enviada->codigoEstado,
+                                'factura_mensajeslist' => $mensajecadena, //$enviada->mensajesList,
+                                'factura_transaccion'  => $enviada->transaccion,
                             );
                             $this->Factura_model->update_factura($factura_id, $params);
                         }
@@ -5162,15 +5190,25 @@ function anular_venta($venta_id){
         
         $usuario_id = $this->session_data['usuario_id'];
         $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
-        $sql ="select * from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$puntoventa['puntoventa_codigo'];
+        $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NOW()) * -1) AS horas_vigencia from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$puntoventa['puntoventa_codigo'];
         $cufd = $this->Venta_model->consultar($sql);
         
-        if(sizeof($cufd)>0){
-            echo json_encode(true);
-        }
-        else{
-            echo json_encode(false);
-        }
+//        if(sizeof($cufd)>0){
+//            echo json_encode(true);
+//        }
+//        else{
+//            echo json_encode(false);
+//        }
+        
+        if(sizeof($cufd)>0){ // Si retorna algun cufd
+            
+            if($cufd["horas_vigencia"]>3){ //verifica si la vigencia es mayo a 3 horas
+                
+                echo json_encode(true); //Si hay CUFD vigente
+                
+            } else { echo json_encode(false); } //significa que no hay cufd vigente
+            
+        } else { echo json_encode(false); } //significa que no hay cufd vigente
 
     }
     

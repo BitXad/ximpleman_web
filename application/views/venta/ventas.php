@@ -5,6 +5,8 @@
 <script src="<?php echo base_url('resources/js/offline.js'); ?>"></script>
 <!--<script src="<?php //echo base_url('resources/js/tipo_emision.js'); ?>"></script>-->
 
+
+
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -218,6 +220,15 @@ window.onkeydown = compruebaTecla;
     
 </div>
 
+<style type="text/css">
+.scrollable-div {
+   height: 500px; /* Ajusta la altura según tus necesidades */
+   overflow-y: auto; /* Habilita el scroll vertical */
+   /* Agrega otros estilos según sea necesario */
+} 
+    
+    
+</style>
 <!------------------------------------------------------------->
 
                 <script type="text/javascript">
@@ -316,6 +327,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_anchobuscador" value="<?php echo $parametro['parametro_anchobuscador']; ?>" name="parametro_anchobuscador"  hidden>
 <input type="text" id="parametro_tamanioletrasboton" value="<?php echo $parametro['parametro_tamanioletrasboton']; ?>" name="parametro_tamanioletrasboton"  hidden>
 <input type="text" id="parametro_tamanioletras" value="<?php echo $parametro['parametro_tamanioletras']; ?>" name="parametro_tamanioletras"  hidden>
+<input type="text" id="parametro_sininventario" value="<?php echo $parametro['parametro_sininventario']; ?>" name="parametro_sininventario"  hidden>
 <input type="text" id="boton_presionado" value="0" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
@@ -843,7 +855,7 @@ window.onkeydown = compruebaTecla;
 <!-------------------- FIN CATEGORIAS--------------------------------->
         
         <div class="box"  style="border-color: black;">
-            <div class="box-body  table-responsive" id="tablaresultados">
+            <div class="box-body  table-responsive scrollable-div" id="tablaresultados" >
 
                 <!------------------ aqui van los resultados de la busqueda --------------->
                 
@@ -871,7 +883,7 @@ window.onkeydown = compruebaTecla;
     </div>
     
     <div class="col-md-<?php echo (12 - $parametro['parametro_anchobuscador']); ?>" id="divventas0" style="display:block;">
-        <font size="1"><b>DETALLE DE LA <?php echo $sistema["sistema_moduloventas"]; ?> </b></font>
+        <font size="1"><b>DETALLE DE <?php echo strtoupper($sistema["sistema_moduloventas"]); ?> </b></font>
         <div class="box" style="border-color:black;">
             <div class="box-body">
         <div class="row">
@@ -1032,7 +1044,7 @@ window.onkeydown = compruebaTecla;
             <div class="box-body">        
         
         <?php 
-        $ancho_boton = 100; 
+        $ancho_boton = 80; 
         $alto_boton = 120; 
         
         ?>
@@ -1082,17 +1094,21 @@ window.onkeydown = compruebaTecla;
                 <i class="fa fa-calculator fa-4x"></i><br><br>
                Cierre<br>de Caja <br>
             </a>
-            <?php //} ?>
+            <?php //} ?>                
 
-
-                
+            <a  href="<?php echo site_url('reportes/movimientodiario');?>" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;<?php echo ($parametro["parametro_movimientodiario"]!=1)?"display:none":"" ?>">
+                <i class="fa fa-file-text-o fa-4x"></i><br><br>
+                Movimiento <br> Diario <br>
+            </a>    
 
             <?php if($rolusuario[18-1]['rolusuario_asignado'] == 1){ ?>
             <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-default" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;<?php echo ($parametro["parametro_ventasdiarias"]!=1)?"display:none":"" ?>">
-                <i class="fa fa-list-alt fa-4x"></i><br><br>
+                <i class="fa fa-list-ul fa-4x"></i><br><br>
                 <?php echo $sistema["sistema_moduloventas"]; ?> <br> del Dia <br>
             </a>    
             <?php } ?>    
+                
+
             </center>
            
         </div>
@@ -2294,8 +2310,8 @@ window.onkeydown = compruebaTecla;
           
         <div class="col-md-4">
             <!--<button class="btn btn-default btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>-->
-            <button class="btn btn-success btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia"><fa class="fa fa-save"></fa> Aceptar</button>
-            <button class="btn btn-danger btn-block" data-dismiss="modal" onclick="cancelar_excepcion_nit()"><fa class="fa fa-times"></fa> Cancelar</button>
+            <button class="btn btn-success btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia" style="line-height: 10px;"><fa class="fa fa-save"></fa> <b>FORZAR FACTURA</b><br><small>CON COD. DE EXCEPCIÓN</small></button>
+            <button class="btn btn-danger btn-block" data-dismiss="modal" onclick="cancelar_excepcion_nit()"  style="line-height: 10px;"><fa class="fa fa-times"></fa> <b>CORREGIR NIT</b><br><small>CAMBIAR TIPO DOC.</small></button>
         </div>  
       
       </div>

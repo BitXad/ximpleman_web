@@ -14,7 +14,9 @@
 		"php": ">=5.2.4",
 		"robrichards/xmlseclibs": "^3.1",
 		"marcelxyz/php-xml-digital-signature": "^1.0",
-		"phpseclib/phpseclib": "~2.0"
+		"phpseclib/phpseclib": "~2.0",
+		"twilio/sdk": "^7.3",
+		"mike42/escpos-php": "^2.2"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

@@ -72,6 +72,25 @@ function actualizadetalle(e,detalle_id,producto_id,compra_id) {
         }
 }
 
+function formato_cantidad(cantidad){
+    
+    var decimales = document.getElementById('decimales').value;
+    let partes = cantidad; 
+    let partes1 = partes.toString(); 
+    let partes2 = partes1.split('.'); 
+    
+        if (partes2[1] == 0){ 
+            
+            lacantidad = partes2[0];  
+            
+        }else{  
+            
+            lacantidad = numberFormat(Number(cantidad).toFixed(decimales)) 
+            //lacantidad = number_format($d['detalleven_cantidad'],2,'.',',');  
+        }
+
+    return lacantidad;
+}
 
 function tabladetallecompra(){
     
@@ -209,9 +228,12 @@ function tabladetallecompra(){
 
                         html += "<tr>";
                       
+                        //#
                         html += "<td>"+(i+1)+"</td>";
+                        //Producto/Unidad
                         html += "<td colspan='2' style='font-size:9px;'><a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Producto'><span class='fa fa-pencil'></span></a><b>"+registros[i]["producto_nombre"]+" / </b>";
                         
+                        //Producto/Unidad
                         html += "<b>"+registros[i]["detallecomp_unidad"]+"</b>";                                            
                         html += "<br>"+registros[i]["detallecomp_codigo"]+"<br>";
                         if (registros[i]["detallecomp_fechavencimiento"]!='0000-00-00'&&registros[i]["detallecomp_fechavencimiento"]!=null) {
@@ -262,7 +284,9 @@ function tabladetallecompra(){
                         var ancho_input = '60px;';
                         html += "<tr>";
                       
+                        //#
                         html += "<td>"+(i+1)+"</td>";
+                        //Producto/Unidad
                         html += "<td style='font-size:"+tamanio_fuente+" width:300px;'><a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Producto'><span class='fa fa-pencil'></span></a><b>"+registros[i]["producto_nombre"]+"</b>";
                         
                         html += "<br><b>UNID.:</b> "+registros[i]["detallecomp_unidad"];      
@@ -271,23 +295,30 @@ function tabladetallecompra(){
                             html += "* <b>LOTE.:</b> "+registros[i]["detallecomp_numerolote"]+"</td>";      
                         }
                         
+                        //Codigo
                         html += "<td style='font-size:"+tamanio_fuente+" text-align:center;'>"+registros[i]["detallecomp_codigo"]+"<br><font size='1'>";
                         
                         if (registros[i]["detallecomp_fechavencimiento"]!='0000-00-00'&&registros[i]["detallecomp_fechavencimiento"]!=null) {
                             html += "<span class='btn btn-xs btn-facebook' style='padding:0px; margin:0px;'> Venc:"+moment(registros[i]["detallecomp_fechavencimiento"]).format('DD/MM/YYYY')+"</span></font>";
                         }
                         
+                        //Precio
                         html += "</td><td><input id='compra_identi'  name='compra_id' type='hidden' class='form-control' value='"+compra_id+"'>";
                         html += "<input id='producto_identi'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>" ;
                         
                         html += "<input  class='input-xs' style='font-size:"+tamanio_fuente+" width:"+ancho_input+";padding-left:0px; padding-right:0px;' id='detallecomp_precio"+registros[i]["detallecomp_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")'  class='form-control'  value='"+Number(registros[i]["detallecomp_precio"]).toFixed(decimales)+"'  ></td>"; 
+                        //Costo
                         html += "<td><input  class='input-xm' style='font-size:"+tamanio_fuente+" width:"+ancho_input+";padding-left:0px; padding-right:0px;' id='detallecomp_costo"+registros[i]["detallecomp_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' class='form-control' value='"+Number(registros[i]["detallecomp_costo"]).toFixed(decimales)+"' ></td>";
-                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-xm' style='font-size:"+tamanio_fuente+" width:"+ancho_input+"' id='detallecomp_cantidad"+registros[i]["detallecomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detallecomp_cantidad"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' >";
+                        //Cant.
+                        
+                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-xm' style='font-size:"+tamanio_fuente+" width:"+ancho_input+"' id='detallecomp_cantidad"+registros[i]["detallecomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+formato_cantidad(registros[i]["detallecomp_cantidad"])+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' >";
                         html += "<input id='detallecomp_id'  name='detallecomp_id' type='hidden' class='form-control' value='"+registros[i]["detallecomp_id"]+"'>";
                        
                         //html += "<td style='font-size:13px; text-align:center;'>"+Number(registros[i]["detallecomp_subtotal"]).toFixed(decimales)+"</b></td>";
+                        //Subtotal Bs
                         html += "<td style='font-size:"+tamanio_fuente+" text-align:center;'>";
                         html += Number(subtotal_estam).toFixed(decimales)+"</b>";
+                        //Unit.
                         html += "<br><span style='white-space: nowrap; font-size: 9px' class='text-bold'>";
                         html += mon_secundaria+" "+Number(subtotal_otram).toFixed(decimales)+"</span></td>";
                         html += "<td><input  class='input-xs' style='font-size:"+tamanio_fuente+" width:55px;' id='detallecomp_descuento"+registros[i]["detallecomp_id"]+"'  name='descuento'  type='text' autocomplete='off' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' value='"+Number(registros[i]["detallecomp_descuento"]).toFixed(decimales)+"' >";
@@ -297,6 +328,7 @@ function tabladetallecompra(){
                   
                         html += "</td>";
 
+                        //Global
                         html += "<td>"+Number(registros[i]["detallecomp_descglobal"]).toFixed(decimales)+"</td>";
                         html += "<td><center>";
                         /*html += "<span class='badge badge-success'>";
@@ -1144,6 +1176,7 @@ function buscar_reporte_producto(producto_id)
 function compraproveedor(opcion)
 {   
      
+    var decimales = document.getElementById('decimales').value;
     var controlador = "";
     var parametro = "";
    
@@ -1478,6 +1511,7 @@ function cambiarFecha()
 //Tabla resultados de la busqueda
 function tablaresultados(opcion)
 {   
+    var decimales = document.getElementById('decimales').value;
     var controlador = "";
     var parametro = "";
     var compra_id = document.getElementById('compra_id').value;
@@ -1554,7 +1588,7 @@ function tablaresultados(opcion)
                         html += "   <select class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow; padding-top:2px; padding-buttom:3px;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1'>";
                         precio_unidad = registros[i]["producto_precio"];
-                        html += "           "+registros[i]["producto_unidad"]+" "+registros[i]["moneda_descripcion"]+": "+precio_unidad.fixed(2)+"";
+                        html += "           "+registros[i]["producto_unidad"]+" "+registros[i]["moneda_descripcion"]+": "+Number(precio_unidad).toFixed(decimales)+"";
                         html += "       </option>";
                         
                         if(registros[i]["producto_factor"]>0){

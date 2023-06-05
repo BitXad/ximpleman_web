@@ -30,10 +30,10 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
 <input type="hidden" name="resproducto" id="resproducto" />
-<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
-<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
-<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" />
+<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" />
 
 <!--<div class="row" <?php echo ($tipousuario_id == 1)?"hidden":""; ?>>-->
 <!--<div class="row" >
@@ -184,9 +184,9 @@ border-bottom : 1px solid #aaa;*/
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
-<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"]."cm";
+      $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
 
 <table class="table" >
@@ -304,9 +304,19 @@ border-bottom : 1px solid #aaa;*/
                         $cantidades += $registros["total_cantidad"];
                         $descuentos += $registros["total_descuento"];
                         $costos += $registros["total_costo"];
-                        $utilidades += $registros["total_utilidad"]; ?>
+                        $utilidades += $registros["total_utilidad"]; 
+                        
+                        $partes = explode(".",$registros["total_cantidad"]);  
+                            if ($partes[1] == 0) {  
+                                $lacantidad = $partes[0];  
+                            }else{  
+                                $lacantidad = number_format($registros["total_cantidad"],$decimales,'.',',');  
+                            }  
+                            //echo $lacantidad; 
+                        
+                        ?>
 
-                        <td align='center'><?php echo $registros["total_cantidad"] ?></td>
+                        <td align='center'><?php echo $lacantidad; ?></td>
                         <td><?php echo $registros["producto_nombre"] ?> </td>
                         <td align='right'><?php  echo number_format($registros["total_punitario"],2,".",","); ?> </td>
                         <td align='right'><b><?php echo number_format($registros["total_venta"],2,".",","); ?> </b></td>

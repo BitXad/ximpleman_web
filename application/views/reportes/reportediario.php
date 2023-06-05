@@ -45,14 +45,14 @@
     }
 </style>
 
-<?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"];
-      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php $tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"];
+      //$margen_izquierdo = "col-xs-".$parametro["parametro_margenfactura"];;
+      $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
 
 <input type="hidden" value="<?php echo $tipousuario_id; ?>" id="tipousuario_id" name="tipousuario_id" />
-<input type="hidden" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" id="nombre_moneda" name="nombre_moneda" />
+<input type="hidden" value="<?php echo $parametro['moneda_descripcion']; ?>" id="nombre_moneda" name="nombre_moneda" />
 
 <table class="table" >
 <tr>
@@ -212,10 +212,10 @@
                     </td>
                     <td style="text-align: right;" colspan="4">
                         
-                              <p class="subtitulo">EFECTIVO EN CAJA <?php echo $parametro[0]['moneda_descripcion']; ?> :.......................</p>
-                              <P class="subtitulo">UTILIDAD BRUTA <?php echo $parametro[0]['moneda_descripcion']; ?> :.......................</P>
-                              <P class="subtitulo">GASTOS OPERAT. <?php echo $parametro[0]['moneda_descripcion']; ?> :.......................</P>
-                              <p class="subtitulo">UTILIDAD NETA <?php echo $parametro[0]['moneda_descripcion']; ?> :.......................</P>
+                              <p class="subtitulo">EFECTIVO EN CAJA <?php echo $parametro['moneda_descripcion']; ?> :.......................</p>
+                              <P class="subtitulo">UTILIDAD BRUTA <?php echo $parametro['moneda_descripcion']; ?> :.......................</P>
+                              <P class="subtitulo">GASTOS OPERAT. <?php echo $parametro['moneda_descripcion']; ?> :.......................</P>
+                              <p class="subtitulo">UTILIDAD NETA <?php echo $parametro['moneda_descripcion']; ?> :.......................</P>
                 
                         
                     </td>

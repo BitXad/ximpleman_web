@@ -50,6 +50,7 @@ function anular_factura_electronica()
 /* carga las facturas no enviadas, mal emitidas */
 function cargar_modal_anular_malemitida(factura_id, venta_id, factura_numero, factura_razon, factura_total, factura_fecha)
 {
+
     $("#facturamal_id").val(factura_id);
     $("#ventamal_id").val(venta_id);
     $("#facturamal_numero").val(factura_numero);

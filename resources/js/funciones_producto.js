@@ -133,8 +133,8 @@ function tablaresultadosproducto(limite){
                         html += "<tr "+pintar+">";*/
                        html+= "<tr>";
                         
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td>";
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+(i+1)+"</td>";
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>";
                         html += "<div id='horizontal'>";
                         html += "<div id='contieneimg'>";
                         var mimagen = "";
@@ -189,7 +189,7 @@ function tablaresultadosproducto(limite){
                             esmoneda = registros[i]["moneda_descripcion"];
                             esmoneda_tc = registros[i]["moneda_tc"];
                         }
-                        html += "<td><b>CATEGORIA: </b>"+escategoria+"<br><b>SUB CATEGORIA: </b>"+essubcategoria+"<br>";
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'><b>CATEGORIA: </b>"+escategoria+"<br><b>SUB CATEGORIA: </b>"+essubcategoria+"<br>";
                         html += "<b>UNIDAD: </b>"+registros[i]["producto_unidad"]+"<br>";
                         html += "<b>CANT. MIN.: </b>";
                         var cantmin= 0;
@@ -198,7 +198,7 @@ function tablaresultadosproducto(limite){
                         }
                         html += Number(cantmin).toFixed(decimales)+"</td>";
 
-                        html += "<td>";
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>";
                         var sinconenvase = "";
                         var nombreenvase = "";
                         var costoenvase  = "";
@@ -222,22 +222,22 @@ function tablaresultadosproducto(limite){
                         if(!(registros[i]["producto_codigobarra"] == null)){
                             codbarras = registros[i]["producto_codigobarra"];
                         }
-                        html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
-                        html += "<td>"+Number(registros[i]["existencia"]).toFixed(2)+"</td>";
-                        html += "<td>";
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+Number(registros[i]["existencia"]).toFixed(2)+"</td>";
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>";
                         if(tipousuario_id == 1){
                             html += "<b>COMPRA: </b>"+Number(registros[i]["producto_costo"]).toFixed(decimales)+"<br>";
                         }
                             html += "<b>VENTA: </b>"+Number(registros[i]["producto_precio"]).toFixed(decimales)+"<br>";
                             html += "<b>COMISION (%): </b>"+Number(registros[i]["producto_comision"]).toFixed(decimales);
                             html += "</td>";
-                        html += "<td><b>MONEDA: </b>"+esmoneda+"<br>";
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'><b>MONEDA: </b>"+esmoneda+"<br>";
                         html += "<b>T.C.: </b>";
                         //var tipocambio= 0;
                         //if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
                         html += Number(esmoneda_tc).toFixed(decimales)+"</td>";
                         html += "<td class='no-print' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
-		        html += "<td class='no-print'>";
+		        html += "<td class='no-print'style='background-color: #"+registros[i]["estado_color"]+"'>";
                         html += "<a href='"+base_url+"producto/edit/"+registros[i]["miprod_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Información'><span class='fa fa-pencil'></span></a>";
                         html += "<a href='"+base_url+"imagen_producto/catalogoprod/"+registros[i]["miprod_id"]+"' class='btn btn-success btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
                         html += "<a class='btn btn-facebook btn-xs' onclick='buscarclasificador("+registros[i]["miprod_id"]+")' title='Ver Clasificador'><span class='fa fa-list-ol'></span></a>";
@@ -245,9 +245,9 @@ function tablaresultadosproducto(limite){
                         html += "<a class='btn btn-warning btn-xs' onclick='mostrarmodalcodigobarra("+registros[i]["miprod_id"]+", "+JSON.stringify(registros[i]["producto_nombre"])+", "+JSON.stringify(registros[i]["producto_codigobarra"])+")' title='Código de barras para impresión'><span class='fa fa-barcode'></span></a>";
                         if(tipousuario_id == 1){
                             if(registros[i]['estado_id'] == 1){
-                                html += "<a onclick='dardebaja_producto("+registros[i]['producto_id']+")' class='btn btn-xs' style='background-color: #8e8e91; color: white;' title='Dar de baja el producto'><span class='fa fa-toggle-on'></span></a>";
+                                html += "<a onclick='dardebaja_producto("+registros[i]['producto_id']+")' class='btn btn-xs' style='background-color: #00e765; color: white;' title='Inactivar el producto'><span class='fa fa-toggle-on'></span></a>";
                             }else{
-                                html += "<a onclick='dardealta_producto("+registros[i]['producto_id']+")' class='btn btn-xs' style='background-color: #8e8e91; color: black;' title='Dar de alta el producto'><span class='fa fa-toggle-off'></span></a>";
+                                html += "<a onclick='dardealta_producto("+registros[i]['producto_id']+")' class='btn btn-xs' style='background-color: #8e8e91; color: black;' title='Activar/habilitar el producto'><span class='fa fa-toggle-off'></span></a>";
                             }
                         }
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";

@@ -342,21 +342,22 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
 
     }
     
-      function get_reportemovimiento($fecha1, $fecha2, $usuario_id){
-            if($usuario_id == 0){
-                  $cadusuario1 = "";
-            }else{
-                  $cadusuario1 = " and usuario_id = ".$usuario_id." ";
-            }
-            $sql = "SELECT c.*
-                  from consreporte c
-                  where c.fecha >='$fecha1' 
-                  and c.fecha<='$fecha2'  
-                  $cadusuario1";
+    function get_reportemovimiento($fecha1, $fecha2, $usuario_id){
 
-            $ingresos = $this->db->query($sql)->result_array();
-            return $ingresos;
-      }
+          if($usuario_id == 0){
+                $cadusuario1 = "";
+          }else{
+                $cadusuario1 = " and usuario_id = ".$usuario_id." ";
+          }
+          $sql = "SELECT c.*
+                from consreporte c
+                where c.fecha >='$fecha1' 
+                and c.fecha<='$fecha2'  
+                $cadusuario1";
+
+          $ingresos = $this->db->query($sql)->result_array();
+          return $ingresos;
+    }
       
     function get_reportemovimientodia()
     {

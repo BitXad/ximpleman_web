@@ -466,7 +466,7 @@ class Parametro extends CI_Controller{
                     'parametro_cierrecaja' => $this->input->post('parametro_cierrecaja'),
                     'parametro_ventasdiarias' => $this->input->post('parametro_ventasdiarias'),
                     'parametro_productossinhomologar' => $this->input->post('parametro_productossinhomologar'),
-                    'parametro_teclasaccceso' => $this->input->post('parametro_teclasaccceso'),
+                    'parametro_teclasacceso' => $this->input->post('parametro_teclasacceso'),
                     'parametro_informacionbasica' => $this->input->post('parametro_informacionbasica'),
                     'parametro_panelventas' => $this->input->post('parametro_panelventas'),
                 );

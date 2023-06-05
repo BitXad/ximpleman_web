@@ -475,7 +475,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 
                                     break;
 
-                                case '3'://TRANSACCION BANCARIA
+                                case '3'://TRANSACCION BANCARIA (registro["forma_id"] >= 3 && registro["forma_id"] <= 10)
                                     total_transaccion += Number(registro["ingresos"]);
                                     banco_id = registro["banco_id"];
                                     bancos.map(banco=>{

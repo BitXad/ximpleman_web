@@ -697,7 +697,7 @@
                             <a href="<?php echo site_url('reportes/ventacategoria_pagrupado');?>"><i class="fa fa-certificate"></i>P. Agrupado/Categoria</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('reportes/ventapagrupado');?>"><i class="fa fa-certificate"></i>Producto Agrupado</a>
+                            <a href="<?php echo site_url('reportes/ventapagrupado');?>"><i class="fa fa-certificate"></i>Agrupado por Producto</a>
                         </li>
                         <!--<li>
                             <a href="<?php //echo site_url('reportes/ventaruta');?>"><i class="fa fa-truck"></i>Venta por Ruta</a>

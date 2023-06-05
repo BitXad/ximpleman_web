@@ -882,6 +882,7 @@ function buscarporcodigojs()
    var controlador = base_url+'venta/buscarcodigo';
    var codigo = document.getElementById('codigo').value;
    var decimales = Number(document.getElementById('parametro_decimales').value);
+   //var parametro_sininventario = document.getElementById('parametro_sininventario').value;
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
@@ -901,7 +902,19 @@ function buscarporcodigojs()
                 
                     if (res.length>0){ //verifica si el producto existe
                         
-                         if (res[0].existencia > 0){ //verifica si el producto tiene existencia > 0
+                        // Venta sin inventario
+                        
+//                        let condicion = false;
+//                        
+//                        if (parametro_sininventario == 1){
+//                            condicion = true;
+//                            
+//                        }else{
+//                            condicion = (res[0].existencia > 0);        
+//                        }
+//                        
+                        
+                         if (res[0].existencia){ //verifica si el producto tiene existencia > 0
                              
                             //verificara si el codigo le pertenece a algun factor
                             if (res[0].producto_codigobarra == codigo){
@@ -1184,7 +1197,7 @@ function ingresardetalle(producto_id)
         });
 
    }
-   else alert("ADVERTENCIA: La cantidad excede la existencia del inventario...!!");
+   else alert("xxxADVERTENCIA: La cantidad excede la existencia del inventario...!!");
 
 }
 
@@ -1229,8 +1242,14 @@ function incrementar(cantidad,detalleven_id)
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/incrementar/";
     var producto_id = document.getElementById('productodet_'+detalleven_id).value;
+    var decimales = Number(document.getElementById('parametro_decimales').value);
     var cantidad_detalle = cantidad_en_detalle(producto_id)+1;
+    cantidad_detalle = cantidad_detalle.toFixed(decimales);
+    
+    alert("Cantida decimales: "+decimales);
+    
     var cantidad_disponible =  existencia(producto_id);
+    cantidad_disponible =cantidad_disponible.toFixed(decimales);
     
    if (cantidad_detalle <= cantidad_disponible){
        
@@ -1247,7 +1266,7 @@ function incrementar(cantidad,detalleven_id)
 
         });
    }
-   else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+cantidad_disponible);}
+   else { alert('aaaADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+cantidad_disponible);}
        
     
 }
@@ -1421,6 +1440,7 @@ function ingresorapidojs2(cantidad,producto,serie = ''){
     var indice = 0; //cantidad del factor seleccionado
     var detalleven_id = 0; //cantidad del factor seleccionado
     var tipo_cambio =  document.getElementById("moneda_tc").value;
+    var decimales =  document.getElementById("parametro_decimales").value;
     
     try {
         
@@ -1621,7 +1641,7 @@ function ingresorapidojs2(cantidad,producto,serie = ''){
         });
     
     }
-    else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
+    else { alert('bbbADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+Number(producto.existencia).toFixed(decimales));}
     
 }
 //
@@ -1656,6 +1676,8 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
     var detalleven_id = 0; //cantidad del factor seleccionado
     var tipo_cambio =  document.getElementById("moneda_tc").value;
     var parametro_moneda_id = document.getElementById('parametro_moneda_id').value; //1 bolivianos - 2 moneda extrangera
+    var decimales = document.getElementById('parametro_decimales').value; //1 bolivianos - 2 moneda extrangera
+    //var parametro_sininventario = document.getElementById('parametro_sininventario').value; //1 bolivianos - 2 moneda extrangera
     
     document.getElementById('mensaje_enviado').style.display = 'none';
     document.getElementById('mensaje_no_enviado').style.display = 'none';
@@ -1813,8 +1835,18 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
     else{
         agrupado = 0;
     }
-        
-        //alert(cantidad_total);
+     
+//    let condicion = false;
+//        //alert(cantidad_total);
+//        //alert(parametro_sininventario);
+//    if (parametro_sininventario == 1){
+//        condicion = true;
+//        producto.existencia = 100000;
+//    }else{
+//        condicion = (cantidad_total <= producto.existencia);        
+//    }
+
+     
     if (cantidad_total <= producto.existencia){
         
         var costo = producto.producto_costo;
@@ -1852,7 +1884,7 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
             }
         });
     }
-    else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
+    else { alert('cccADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+Number(producto.existencia).toFixed(decimales));}
     
 }
 
@@ -1901,7 +1933,7 @@ function cambiarcantidadjs(e,producto)
             }
             else { 
 
-                alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
+                alert('eeeADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
         }
         
         
@@ -2121,6 +2153,8 @@ function tablaresultados(opcion)
     var rol_factor2 = document.getElementById('rol_factor2').value; //document.getElementById('parametro_altoimagen').value;
     var rol_factor3 = document.getElementById('rol_factor3').value; //document.getElementById('parametro_altoimagen').value;
     var rol_factor4 = document.getElementById('rol_factor4').value; //document.getElementById('parametro_altoimagen').value;
+    var parametro_sininventario = document.getElementById('parametro_sininventario').value; //document.getElementById('parametro_altoimagen').value;
+    
     var parametro_cantidadproductos = document.getElementById("parametro_cantidadproductos").value;
         
     let tamanio_fuente = document.getElementById('parametro_tamanioletrasboton').value+"px";
@@ -2205,16 +2239,20 @@ function tablaresultados(opcion)
                       
                     for (var i = 0; i < x ; i++){
                         
-//                        alert(x +" >> "+ registros[i]["producto_nombre"]);
-                        
                         var mimagen = "";
+                        
                         if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
+                            
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
                             mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='20' height='20' />";
                             mimagen += "</a>";
-                            //mimagen = nomfoto.split(".").join("_thumb.");77
-                        }else{
+                            
+                            
+                        }else{                        
+                            
                             mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='30' height='30' />";
+                            
+                            
                         }
                         
                         html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
@@ -2347,12 +2385,26 @@ function tablaresultados(opcion)
                         html += "<td style='padding:0;'>";
                         }
 
-                        if (parseFloat(registros[i]["existencia"])>0){
+                        
+                        if(parametro_sininventario==1){
+                            
                              html += "<button type='button' class='btn btn-facebook btn-xl btn-block' style='padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' onclick='focus_cantidad("+registros[i]["producto_id"]+")' >"+mensajeboton+ 
-                                    "<center style='line-height:10px;'><font size='2'><span class='btn btn-xs btn-danger' style='padding:0;'> <b>"+formato_numerico(existencia)+"</font><br><font size='1'><sub>"+registros[i]["producto_unidad"]+"</sub></font></b></span></center>"+
+                                    "<center style='line-height:10px;'><font size='1'><span class='btn btn-xs btn-danger' style='padding:0;'>- <em style='font-size:10px;' class='fa fa-battery-full'></em> -</font><br><font size='1'><sub>"+registros[i]["producto_unidad"]+"</sub></font></span></center>"+
                                        "<em style='font-size:20px;' class='fa fa-cart-arrow-down'></em></button>";                             
+                        }else{
+                            
+                            if (parseFloat(registros[i]["existencia"])>0){
+                                 html += "<button type='button' class='btn btn-facebook btn-xl btn-block' style='padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' onclick='focus_cantidad("+registros[i]["producto_id"]+")' >"+mensajeboton+ 
+                                        "<center style='line-height:10px;'><font size='2'><span class='btn btn-xs btn-danger' style='padding:0;'> <b>"+formato_numerico(existencia)+"</font><br><font size='1'><sub>"+registros[i]["producto_unidad"]+"</sub></font></b></span></center>"+
+                                           "<em style='font-size:20px;' class='fa fa-cart-arrow-down'></em></button>";                             
+                            }else{
+
+                                 html += "<center><small style='font-size:8px;'>SIN<br>EXISTENCIA</small></center>";
+                            
+                            }
                         }
 
+                       
                         
                         html += "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->";
                         html += "<div class='modal fade' id='mostrarimagen"+i+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+i+"'>";
@@ -3662,7 +3714,7 @@ function tabla_ventas(filtro)
                     total_final += parseFloat(v[i]['venta_total']);
 
                     html += "                       <tr>";
-                    html += "                       <td "+margenes+">"+cont+"</td>";
+                    html += "                       <td "+margenes+" bgcolor='"+v[i]['estado_color']+"'>"+cont+"</td>";
                     
                     if (esMobil()){
                         if ((v[i]['cliente_nombre']).length>15){
@@ -3679,14 +3731,14 @@ function tabla_ventas(filtro)
                         
                         
                 
-                    html += "                       <td style='max-width: 5cm; padding:0;'><font size='3'><b> "+nombre_cliente+"</b></font><sub>  ["+v[i]['cliente_id']+"]</sub>";
+                    html += "                       <td style='max-width: 5cm; padding:0;' bgcolor='"+v[i]['estado_color']+"'><font size='3'><b> "+nombre_cliente+"</b></font><sub>  ["+v[i]['cliente_id']+"]</sub>";
                     html += "                           <br>Razón Soc.: "+v[i]['cliente_razon'];
                     html += "                           <br>NIT: "+v[i]['cliente_nit'];
                     html += "                           <br>Telefono(s): "+v[i]['cliente_telefono'];
                     html += "                           <br>Nota: "+v[i]['venta_glosa'];
                     html += "                       </td>";
 
-                    html += "                       <td style='withe-space:nowrap; padding:0;' align='right'>";
+                    html += "                       <td style='withe-space:nowrap; padding:0;' align='right' bgcolor='"+v[i]['estado_color']+"'>";
                     html += "                           Sub Total "+parametro_moneda_descripcion+': '+Number(v[i]['venta_subtotal']).toFixed(decimales)+"<br>";
                     html += "                           Desc. "+parametro_moneda_descripcion+': '+Number(v[i]['venta_descuento']).toFixed(decimales)+"<br>";
                     html += "                           <!--<span class='btn btn-facebook'>-->";
@@ -3696,7 +3748,7 @@ function tabla_ventas(filtro)
                     html += "                               Cambio "+parametro_moneda_descripcion+": "+Number(v[i]['venta_cambio']).toFixed(decimales);
                     html += "                       </td>";
 
-                    html += "                       <td align='center' style='padding:0;'><font size='3'><b> 00"+v[i]['venta_id']+"</b></font>";
+                    html += "                       <td align='center' style='padding:0;' bgcolor='"+v[i]['estado_color']+"'><font size='3'><b> 00"+v[i]['venta_id']+"</b></font>";
                     html += "                           <br><img src='"+base_url+"resources/images/usuarios/thumb_"+v[i]['usuario_imagen']+"' class='img-circle' width='35' height='35'>";
                     html += "                           <br>Vend.: "+v[i]['usuario_nombre'];
                    
@@ -3778,32 +3830,32 @@ function tabla_ventas(filtro)
                     html += "                           <br><span class='btn btn-facebook btn-xs' ><b>"+v[i]['estado_descripcion']+"</b></span> ";
                     html += "                       </td>";
 
-                    html += "                       <td style='padding:0;'><center>";
+                    html += "                       <td style='padding:0;'  bgcolor='"+v[i]['estado_color']+"'><center>";
                     
-                    html += "<table style='padding:0; border: hidden;' >";
-                    html += "<tr style='padding:0;'>";
-                    html += "<td style='padding:0;'>";
-                    
-                    if(modif_fhora == 1){
-//                        html += "<a onclick='modificarhora("+v[i]['venta_id']+", "+JSON.stringify(v[i]['venta_fecha'])+", "+JSON.stringify(v[i]['venta_hora'])+")' class='btn btn-facebook btn-xs' title='Modificar fecha y hora'>";
-//                        html += formato_fecha(v[i]['venta_fecha']);;
-//                        html += "<br> "+v[i]['venta_hora'];
-//                        html += "</a>";
-                       // html += "<br>";
-                        html += "<a onclick='modificarhora("+v[i]['venta_id']+", "+JSON.stringify(v[i]['venta_fecha'])+", "+JSON.stringify(v[i]['venta_hora'])+")' class='btn btn-facebook btn-xs' title='Modificar fecha y hora'>";
-                        html += "<fa class='fa fa-calendar'></fa>";
-                        html += "</a>";
-                        
-                    }
-                    html += "</td>";
-                    
-                    html += "<td style='padding:0;'>";
-                    html +=                             formato_fecha(v[i]['venta_fecha']);
-                    html += "                            <br>"+v[i]['venta_hora'];
-                    html += "</td>";
-                    
-                    html += "</tr>";
-                    html += "</table>";
+                            html += "<table style='padding:0; border: hidden;' >";
+                            html += "<tr style='padding:0;'>";
+                            html += "<td style='padding:0;'>";
+
+                            if(modif_fhora == 1){
+        //                        html += "<a onclick='modificarhora("+v[i]['venta_id']+", "+JSON.stringify(v[i]['venta_fecha'])+", "+JSON.stringify(v[i]['venta_hora'])+")' class='btn btn-facebook btn-xs' title='Modificar fecha y hora'>";
+        //                        html += formato_fecha(v[i]['venta_fecha']);;
+        //                        html += "<br> "+v[i]['venta_hora'];
+        //                        html += "</a>";
+                               // html += "<br>";
+                                html += "<a onclick='modificarhora("+v[i]['venta_id']+", "+JSON.stringify(v[i]['venta_fecha'])+", "+JSON.stringify(v[i]['venta_hora'])+")' class='btn btn-facebook btn-xs' title='Modificar fecha y hora'>";
+                                html += "<fa class='fa fa-calendar'></fa>";
+                                html += "</a>";
+
+                            }
+                            html += "</td>";
+
+                            html += "<td style='padding:0;'>";
+                            html +=                             formato_fecha(v[i]['venta_fecha']);
+                            html += "                            <br>"+v[i]['venta_hora'];
+                            html += "</td>";
+
+                            html += "</tr>";
+                            html += "</table>";
                     
                     html += "<input type='button' class='btn btn-warning btn-xs' id='boton"+v[i]['venta_id']+"' value='--' style='display:block'>";
                     
@@ -3815,7 +3867,7 @@ function tabla_ventas(filtro)
 //                    html += "                           <br>"+v[i]['usuario_nombre'];
 //                    html += "                       </td>";
 
-                    html += "                       <td class='no-print' style='padding:0;'>";
+                    html += "                       <td class='no-print' style='padding:0;' bgcolor='"+v[i]['estado_color']+"'>";
 //                    html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print' target='_blank' title='Modifica los datos generales de la venta'><span class='fa fa-pencil'></span></a>";
                     //html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modificar el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
                     html += "                           <a onclick='verificarmodificar("+v[i]['venta_id']+", "+v[i]['estado_id']+")' class='btn btn-facebook btn-xs no-print' title='Modificar el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
@@ -5879,6 +5931,7 @@ function verificar_cufd(){
                     let registros = JSON.parse(respuesta);
                     //alert(registros);
                     resultado = registros;
+                    
                     if(!registros){
 
                         var mensaje;
@@ -6382,8 +6435,8 @@ function finalizarventa_sin(){
 
                                 }
 
-                document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
-                document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
+                                document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
+                                document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
 
 
                             let detallebolsa = 0;
@@ -6464,6 +6517,7 @@ function finalizarventa_sin(){
 
                                                         document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
                                                         document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+                                                        $("#boton_presionado").val(0); // 1 - Boton presionado
                                                         alert("ADVERTENCIA: Los datos del cliente NO SON VALIDOS.!");
 
                                                         $("nit").focus();
@@ -6839,6 +6893,7 @@ function buscar_placa(e){
                 success:function(respuesta){
                     
                     let registro =  JSON.parse(respuesta);
+                    
                     if(registro.length>0){
 
                         $("#datos_embase").val(registro[0]["datos_embase"]);
