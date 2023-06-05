@@ -9,6 +9,8 @@
 <input type="hidden" name="empresa_nombre" id="empresa_nombre" value="<?php echo $empresa[0]['empresa_nombre']; ?>" />
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
 <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id; ?>" />
+<input type="hidden" name="tipouser" id="tipouser" value="<?php echo $tipousuario_id; ?>" />
+<input type="hidden" name="sistema_moduloventas" id="sistema_moduloventas" value="<?php echo $sistema["sistema_moduloventas"]; ?>" />
 <div  class="row" >
     <div class="col-md-6">
         <label>Año</label>

@@ -513,7 +513,8 @@
                     <ul class="treeview-menu">
                       
                         <?php
-                        if($rolusuario[141-1]['rolusuario_asignado'] == 1){
+                        //if($rolusuario[141-1]['rolusuario_asignado'] == 1){
+                        if($session_data['tipousuario_id'] == 1){
                         ?>
                         <li>
                             <!--<a href="<?php echo site_url('reportes');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>-->
