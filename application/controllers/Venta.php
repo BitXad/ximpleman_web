@@ -2126,6 +2126,166 @@ function edit($venta_id){
                
         
     }
+
+    function rehacer_venta($venta_id)
+    {
+        
+        
+        if($this->acceso(20)){
+        //**************** inicio contenido ***************      
+
+        $data['sistema'] = $this->sistema;   
+        $data['rolusuario'] = $this->session_data['rol'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];        
+     /*   
+        // check if the venta exists before trying to edit it
+        $venta = $this->Venta_model->get_venta($venta_id);
+        
+        $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
+        $cliente_id = $venta["cliente_id"];       
+        $data['page_title'] = "Modificar Venta";
+        
+        //$cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+        //$data['cliente'] = $cliente;
+        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+//        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+        $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+        $data['cliente'] = $cliente;
+        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+        $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+        $data['promociones'] = $this->Promocion_model->get_promociones();
+        $data['mesas'] = $this->Mesa_model->get_all_mesa();
+        $data['usuario_id'] = $usuario_id;
+        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+        $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
+        $data['tipousuario_id'] = $tipousuario_id;
+        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
+        $data['empresa_email'] = $this->empresa["empresa_email"];
+        
+        $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
+        $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
+        
+        $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
+        
+        */    
+        //**************** inicio contenido ***************     
+                
+       
+        $data['venta_id'] = $venta_id;
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        
+        $detalle_venta = $this->Detalle_venta_model->cargar_detalle_venta($venta_id, $usuario_id);        
+        $data['detalle_venta'] = $detalle_venta;        
+        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+
+        
+
+        //**************** bitacora caja
+        $cont = sizeof($detalle_venta);
+        $prec_total = 0;
+        
+        foreach($detalle_venta as $d){
+            $prec_total += $d['detalleven_precio'] * $d['detalleven_cantidad'];
+        }
+                
+        $bitacoracaja_evento = "REHACER FACTURA FALLIDA, VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+        $bitacoracaja_tipo = 2;
+        
+        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
+        
+        $this->Venta_model->ejecutar($sql);
+        //****************** fin bitacora caja
+
+        
+        if($venta['tipotrans_id'] == 2){
+            $data['credito'] = $this->Credito_model->get_credito_id($venta_id);
+        }
+    
+        
+//        $data['_view'] = 'venta/ventas';
+//        $this->load->view('layouts/main',$data);    
+        
+        redirect('/venta/ventas');
+        
+        //**************** fin contenido ***************
+        }
+               
+        
+    }
+
+    function rehacer_ultima_venta()
+    {
+        
+        
+        if($this->acceso(20)){
+        //**************** inicio contenido ***************      
+
+        $data['sistema'] = $this->sistema;   
+        $data['rolusuario'] = $this->session_data['rol'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];        
+        
+        $sql = "select max(venta_id) as venta_id from venta";
+        
+        $ventaid = $this->Venta_model->consultar($sql);
+        $venta_id = $ventaid[0]["venta_id"];
+       
+        $data['venta_id'] = $venta_id;
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        
+        $detalle_venta = $this->Detalle_venta_model->cargar_detalle_venta($venta_id, $usuario_id);        
+        $data['detalle_venta'] = $detalle_venta;        
+        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+
+        
+
+        //**************** bitacora caja
+        $cont = sizeof($detalle_venta);
+        $prec_total = 0;
+        
+        foreach($detalle_venta as $d){
+            $prec_total += $d['detalleven_precio'] * $d['detalleven_cantidad'];
+        }
+                
+        $bitacoracaja_evento = "REHACER FACTURA FALLIDA, VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+        $bitacoracaja_tipo = 2;
+        
+        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
+        
+        $this->Venta_model->ejecutar($sql);
+        //****************** fin bitacora caja
+
+        
+        if($venta['tipotrans_id'] == 2){
+            $data['credito'] = $this->Credito_model->get_credito_id($venta_id);
+        }
+    
+        
+//        $data['_view'] = 'venta/ventas';
+//        $this->load->view('layouts/main',$data);    
+        
+        redirect('/venta/ventas');
+        
+        //**************** fin contenido ***************
+        }
+               
+        
+    }
     
     function modificar_detalle()
     {

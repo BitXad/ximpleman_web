@@ -6831,7 +6831,7 @@ function borrar_datos_cliente(){
     
     var facturado = document.getElementById('facturado').checked;  
     
-    alert("holaaaaaaaaaa");
+    //alert("holaaaaaaaaaa");
     //Si esta actuvo el modulo para restaurante
     if (modulo_restaurante == 1){
         
