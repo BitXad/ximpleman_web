@@ -577,7 +577,7 @@ border-bottom : 1px solid #aaa;
         </tr>
     </table>
     <?php if ($tipousuario_id == 1){ ?>
-        <div class="col-md-12 no-print" style="max-width: 7cm; font-family: Arial">
+        <div class="col-md-12 no-print" style="max-width: 12cm; font-family: Arial">
             <?php
             if($factura[0]["factura_codigodescripcion"]=="VALIDADA"){
             ?>
@@ -587,6 +587,9 @@ border-bottom : 1px solid #aaa;
             ?>
                 <a class="btn btn-soundcloud btn-sm" data-toggle="modal" data-target="#modalanular_noenviada" onclick="cargar_modal_anular_malemitida(<?php echo $factura[0]["factura_id"].",".$factura[0]["venta_id"].",".$factura[0]["factura_numero"].",'".$factura[0]["factura_razonsocial"]."',".$factura[0]["factura_total"].",'".$factura[0]["factura_fecha"]."'"; ?> )">
                 <fa class='fa fa-minus-circle'> </fa> Anular Factura </a>
+                
+                <a class="btn btn-facebook btn-sm" data-toggle="modal" data-target="#modal_rehacerventa" style='background-color:  black;'>
+                <fa class='fa fa-recycle'> </fa> Rehacer Venta</a>
             <?php
             }
             ?>
@@ -669,6 +672,71 @@ border-bottom : 1px solid #aaa;
             </div>
             <div class="modal-footer" style="text-align: center">
                 <button type="button" class="btn btn-success" onclick="anular_factura_electronica_malemitida()"><fa class="fa fa-floppy-o"></fa> Anular Factura</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarmal"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  modal para confirmar anulacion de factura no enviada------------------->
+
+
+<!------------------------ INICIO modal para rehacer factura ------------------->
+<div class="modal fade" id="modal_rehacerventa" tabindex="-1" role="dialog" aria-labelledby="modal_rehacerventa" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center" style="background: #edb62b">
+                <b style="color: white;">REHACER FACTURA NO ENVIADA</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <label for="factura_numero" class="control-label" style='color: Red;'>ADVERTENCIA: Esta a punto de rehacer una venta con factura NO ENVIADA.<br> No olvide que debe ANULAR LA VENTA FALLIDA</label>
+                </div>
+                <div class="col-md-12 text-center" id="loadermal" style="display:none;">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" />
+                </div>
+                  <input type="hidden" name="facturamal_id" value="00" class="form-control" id="facturamal_id" readonly="true" />
+                  <input type="hidden" name="ventamal_id" value="00" class="form-control" id="ventamal_id" readonly="true" />
+
+                <div class="col-md-4">
+                    <label for="facturamal_numero" class="control-label">Factura Nº</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_numero" value="<?php echo $factura[0]['factura_numero']; ?>" class="form-control" id="facturamal_numero1" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="facturamal_monto" class="control-label">Monto</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_monto" value="<?= number_format($factura_total,$dos_decimales,'.',','); ?>" class="form-control" id="facturamal_monto1" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="facturamal_fecha" class="control-label">Fecha</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_fecha" value="<?php echo date("d/m/Y", strtotime($factura[0]['factura_fecha'])); ?>" class="form-control" id="facturamal_fecha1" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="facturamal_cliente" class="control-label">N.I.T.</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_cliente" value="<?php echo $factura[0]['factura_nit']; ?>" class="form-control" id="facturamal_cliente1" readonly="true"  />
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <label for="facturamal_cliente" class="control-label">Cliente</label>
+                    <div class="form-group">
+                        <input type="input" name="facturamal_cliente" value="<?php echo $factura[0]['factura_razonsocial']; ?>" class="form-control" id="facturamal_cliente1" readonly="true"  />
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a href="<?php echo base_url("venta/rehacer_venta/".$factura[0]['venta_id']); ?>" type="button" class="btn btn-facebook" style='background-color: black;'><fa class="fa fa-recycle"></fa> Rehacer Factura</a>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarmal"><fa class="fa fa-times"></fa> Cerrar</button>
             </div>
         </div>

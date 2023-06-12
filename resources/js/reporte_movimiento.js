@@ -162,46 +162,6 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     var totalefectivo = 0;
                     var subtotal = 0;
                     
-//                    var ingreso_caja = 0;
-//                    var ingreso_ventas = 0;
-//                    var ingreso_servicios = 0;
-//                    var ingreso_creditos = 0;
-//                    var ingreso_envases = 0;
-//
-//                    var ingreso_caja_debito = 0;
-//                    var ingreso_ventas_debito = 0;
-//                    var ingreso_servicios_debito = 0;
-//                    var ingreso_creditos_debito = 0;
-//                    var ingreso_envases_debito = 0;
-//
-//                    var ingreso_caja_transacciones = 0;
-//                    var ingreso_ventas_transacciones = 0;
-//                    var ingreso_servicios_transacciones = 0;
-//                    var ingreso_creditos_transacciones = 0;
-//                    var ingreso_envases_transacciones = 0;
-//                    
-//                    var ingreso_caja_tarjetascredito = 0;
-//                    var ingreso_ventas_tarjetascredito = 0;
-//                    var ingreso_servicios_tarjetascredito = 0;
-//                    var ingreso_creditos_tarjetascredito = 0;
-//                    var ingreso_envases_tarjetascredito = 0;
-//                    
-//                    var ingreso_caja_cheque = 0;
-//                    var ingreso_ventas_cheque = 0;
-//                    var ingreso_servicios_cheque = 0;
-//                    var ingreso_creditos_cheque = 0;
-//                    var ingreso_envases_cheque = 0;
-//                    
-//                    var egreso_caja = 0;
-//                    var egreso_ordenes = 0;
-//                    var egreso_compras = 0;
-//                    var egreso_pagos = 0;
-//                    
-//                    var totalegreso_efectivo = 0;
-                    
-                // var n = registros.length; //tamaño del arreglo de la consulta
-//              $("#resingegr").val("- "+n+" -");
-                
                     var html  = "";
                     // htmle = "";      
                     var estilo = "style='padding:0; '";
@@ -293,7 +253,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                     //PIE DE LA TABLA
                     html += "<input type='hidden' value='"+filas+"' id='filas_detalle'/>";
-                    html += "<tr style='background-color: #aaaaaa !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>";
+                    html += "<tr>";
                         html += "<td colspan='4'><b>TOTALES </b></td>";
                         html += "<td> </td>";
                         html += "<td> </td>";
