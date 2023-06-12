@@ -168,7 +168,7 @@ class Dosificacion extends CI_Controller{
                         
                         $borrar = str_replace(" ", "_", $borrar1);
                         $base_url = explode('/', base_url());
-                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/firmaDigital/';
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/certificados/';
                         if(isset($borrar) && !empty($borrar)){
                             if(file_exists($directorio.$borrar)){
                                 unlink($directorio.$borrar);
@@ -176,7 +176,7 @@ class Dosificacion extends CI_Controller{
                         }
                       
                         $this->load->library('image_lib');
-                        $config['upload_path'] = './resources/firmaDigital/';
+                        $config['upload_path'] = './resources/xml/certificados/';
                         //$config['allowed_types'] = 'gif|jpeg|jpg|png';
                         $config['allowed_types'] = '*';
                         $config['max_size'] = 0;
@@ -197,7 +197,7 @@ class Dosificacion extends CI_Controller{
                         if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                             $conf['image_library'] = 'gd2';
                             $conf['source_image'] = $img_data['full_path'];
-                            $conf['new_image'] = './resources/firmaDigital/';
+                            $conf['new_image'] = './resources/xml/certificados/';
                             $conf['maintain_ratio'] = TRUE;
                             $conf['create_thumb'] = FALSE;
                             $conf['width'] = 800;
@@ -209,8 +209,8 @@ class Dosificacion extends CI_Controller{
                             }
 
                             $confi['image_library'] = 'gd2';
-                            $confi['source_image'] = './resources/firmaDigital/'.$new_name.$extension;
-                            $confi['new_image'] = './resources/firmaDigital/'."thumb_".$new_name.$extension;
+                            $confi['source_image'] = './resources/xml/certificados/'.$new_name.$extension;
+                            $confi['new_image'] = './resources/xml/certificados/'."thumb_".$new_name.$extension;
                             $confi['create_thumb'] = FALSE;
                             $confi['maintain_ratio'] = TRUE;
                             $confi['width'] = 100;
