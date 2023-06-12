@@ -184,6 +184,7 @@
                     <th id='fondoprint' style='width: 10%' class='text-center'>BANCO</th>
                     <th id='fondoprint' style='width: 10%' class='text-center'>INGRESO</th>
                     <th id='fondoprint' style='width: 10%' class='text-center'>EGRESO</th>
+                    <th id='fondoprint' style='width: 10%' class='text-center'>TRANS.</th>
                     <th id='fondoprint' style='width: 10%' class='text-center'>UTILD</th>
                 </tr>
                 <tbody id='tablatotalresultados'></tbody>

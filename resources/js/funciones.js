@@ -3736,7 +3736,8 @@ function tabla_ventas(filtro)
                 
                     html += "                       <td style='max-width: 5cm; padding:0;' bgcolor='"+v[i]['estado_color']+"'><font size='3'><b> "+nombre_cliente+"</b></font><sub>  ["+v[i]['cliente_id']+"]</sub>";
                     html += "                           <br>Razón Soc.: "+v[i]['cliente_razon'];
-                    html += "                           <br>NIT: "+v[i]['cliente_nit'];
+                    html += "                           <br>NIT/CI: "+v[i]['cliente_nit']+", TIPO DOC.: ";
+                    if(v[i]['cdi_codigoclasificador']!=null){ html += v[i]['cdi_codigoclasificador'];} else{ html += "NO ASIGNADO"; };
                     html += "                           <br>Telefono(s): "+v[i]['cliente_telefono'];
                     html += "                           <br>Nota: "+v[i]['venta_glosa'];
                     html += "                       </td>";
@@ -6830,8 +6831,10 @@ function borrar_datos_cliente(){
     
     var facturado = document.getElementById('facturado').checked;  
     
+    alert("holaaaaaaaaaa");
     //Si esta actuvo el modulo para restaurante
     if (modulo_restaurante == 1){
+        
         if (parametro_imprimircomanda==1){
             boton = document.getElementById("imprimir_comanda");
             boton.click();
@@ -6852,12 +6855,20 @@ function borrar_datos_cliente(){
                 boton.click();
             }
         }
-    }else if (facturado == 1){
-        var boton = document.getElementById("imprimir_factura");
-        boton.click();                    
+        
     }else{
-        brecibo = document.getElementById("imprimir");
-                brecibo.click();
+        
+        //alert("No es restaurante");
+        
+        if (facturado == 1){
+            var boton = document.getElementById("imprimir_factura");
+            boton.click();                    
+        }else{
+
+            //alert("por aqui recibos");
+            location.href = base_url+"factura/abrir_caja";
+
+        }       
     }
     
     document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader

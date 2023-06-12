@@ -358,6 +358,42 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
           $ingresos = $this->db->query($sql)->result_array();
           return $ingresos;
     }
+    
+    function get_totalesmovimiento($fecha1, $fecha2, $usuario_id){
+
+          if($usuario_id == 0){
+                $cadusuario1 = "";
+          }else{
+                $cadusuario1 = " and usuario_id = ".$usuario_id." ";
+          }
+          
+          $sql = "select * from
+                    ((select c.forma,c.transaccion, c.banco, sum(c.`ingresos`) as ingresos, 0 as egresos,c.forma_id,c.tipotrans_id, 1 as tipo
+
+                    from consreporte c
+                    where c.fecha >='$fecha1' and c.fecha<='$fecha2' and c.ingresos>0 $cadusuario1
+
+                    group by c.tipotrans_id, c.forma_id, c.banco_id
+                    order by forma_id)
+
+                    UNION
+
+                    (select c.forma,c.transaccion, c.banco, 0 as ingresos, sum(c.`egresos`) as egresos,c.forma_id,c.tipotrans_id, 2 as tipo
+                    from consreporte c
+                    where c.fecha >='$fecha1' and c.fecha<='$fecha2' and c.egresos>0 $cadusuario1
+
+                    group by c.tipotrans_id, c.forma_id, c.banco_id
+                    order by c.forma_id)) as t1
+
+                    order by tipo,forma_id, tipotrans_id asc";        
+
+          //echo $sql;
+          
+          $totales = $this->db->query($sql)->result_array();
+          
+          
+          return $totales;
+    }
       
     function get_reportemovimientodia()
     {

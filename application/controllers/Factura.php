@@ -2172,5 +2172,35 @@ class Factura extends CI_Controller{
         
     }
 
+    function abrir_caja(){
+          
+        $data['sistema'] = $this->sistema;
+        
+        //**************** inicio contenido ***************            
+        $rolusuario = $this->session_data['rol'];
+        $data['rolusuario_asignado'] = $rolusuario[154-1]['rolusuario_asignado'];
+//        $params['limit'] = RECORDS_PER_PAGE; 
+//        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        
+//        $config = $this->config->item('pagination');
+//        $config['base_url'] = site_url('factura/index?');
+//        $config['total_rows'] = $this->Factura_model->get_all_factura_count();
+//        $this->pagination->initialize($config);
+
+        $data['page_title'] = "Apertura de Caja";
+        //$data['factura'] = $this->Factura_model->get_all_factura($params);
+        $data['configuracion'] = $this->configuracion;
+        $data['motivos'] = $this->Factura_model->get_all_motivos();
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
+
+        
+        $data['_view'] = 'factura/abrir_caja';
+        $this->load->view('layouts/main',$data);
+        		
+        //**************** fin contenido ***************
+     
+        
+    }
+
     
 }

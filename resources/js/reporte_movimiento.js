@@ -102,21 +102,23 @@ function mostrar_filas(bancos_filas){
     var numfilas = $('#numerofilas').val();
     var boton = $('#boton_mostrar').val();
     
-    bancos_filas.map(banco => {
+//    bancos_filas.map(banco => {
+//
+//        if (boton == "[+]"){
+//            for(i=1; i<=Number(numfilas);i++)
+//                $(`#detalle_oculto${i}_${banco}`).css('display','');
+//        
+//            $("#boton_mostrar").val("[-]");
+//        }
+//        else{
+//            for(i=1; i<=Number(numfilas);i++)
+//                $(`#detalle_oculto${i}_${banco}`).css('display','none');
+//        
+//            $("#boton_mostrar").val("[+]");
+//        }
+//    });
 
-        if (boton == "[+]"){
-            for(i=1; i<=Number(numfilas);i++)
-                $(`#detalle_oculto${i}_${banco}`).css('display','');
-        
-            $("#boton_mostrar").val("[-]");
-        }
-        else{
-            for(i=1; i<=Number(numfilas);i++)
-                $(`#detalle_oculto${i}_${banco}`).css('display','none');
-        
-            $("#boton_mostrar").val("[+]");
-        }
-    });
+    
 }
 
 function buscarporfecha(fecha_desde, fecha_hasta, usuario){
@@ -125,10 +127,13 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
     var tipousuario_id = document.getElementById('tipousuario_id').value;
     var nombre_moneda  = document.getElementById('nombre_moneda').value;
     var controlador = base_url+"reportes/buscarporfecha";
+    //var decimales = document.getElementById('decimales').value;;
+    var decimales = 2;
     
     
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
+    //Mostramos las transacciones
     $.ajax({
         url: controlador,
         type:"POST",
@@ -138,163 +143,10 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
             // alert(registros.length);
             var data =  JSON.parse(resul);
             let registros = data['registros'];
+            let totales = data['totales'];
             let bancos = data['bancos'];
             
-            // let caja = new Tipo_transaccion();
-            // let ventas = new Tipo_transaccion();
-            // let servicios = new Tipo_transaccion();
-            // let creditos = new Tipo_transaccion();
-            // let envases = new Tipo_transaccion();
-            // bancos = bancos.map(banco => new Banco(banco.banco_id,banco.banco_nombre));
-            bancos = bancos.map((banco) => {
-                this.banco = {
-                    "banco_id": banco.banco_id,
-                    "banco_nombre": banco.banco_nombre,
 
-                    "ingreso_caja": 0,
-                    "ingreso_ventas": 0,
-                    "ingreso_servicios": 0,
-                    "ingreso_creditos": 0,
-                    "ingreso_envases": 0,
-
-                    "ingreso_caja_debito":0,
-                    "ingreso_ventas_debito":0,
-                    "ingreso_servicios_debito":0,
-                    "ingreso_creditos_debito":0,
-                    "ingreso_envases_debito":0,
-
-                    "ingreso_caja_transacciones":0,
-                    "ingreso_ventas_transacciones":0,
-                    "ingreso_servicios_transacciones":0,
-                    "ingreso_creditos_transacciones":0,
-                    "ingreso_envases_transacciones":0,
-
-                    "ingreso_caja_tarjetascredito":0,
-                    "ingreso_ventas_tarjetascredito":0,
-                    "ingreso_servicios_tarjetascredito":0,
-                    "ingreso_creditos_tarjetascredito":0,
-                    "ingreso_envases_tarjetascredito":0,
-
-                    "ingreso_caja_cheque": 0,
-                    "ingreso_ventas_cheque": 0,
-                    "ingreso_servicios_cheque": 0,
-                    "ingreso_creditos_cheque": 0,
-                    "ingreso_envases_cheque": 0,
-
-                    "ingreso_total_efectivo": 0,
-                    "ingreso_total_debito": 0,
-                    "ingreso_total_transaccion": 0,
-                    "ingreso_total_credito": 0,
-                    "ingreso_total_cheque": 0,
-                    
-
-                    "egreso_caja": 0,
-                    "egreso_compras": 0,
-                    "egreso_ordenes": 0,
-                    "egreso_pagos": 0,                    
-                    
-                    "egreso_caja_debito": 0,
-                    "egreso_compras_debito": 0,
-                    "egreso_ordenes_debito": 0,
-                    "egreso_pagos_debito": 0,                    
-
-                    "egreso_caja_transacciones": 0,
-                    "egreso_compras_transacciones": 0,
-                    "egreso_ordenes_transacciones": 0,
-                    "egreso_pagos_transacciones": 0,  
-                    
-                    "egreso_caja_tarjetascredito": 0,
-                    "egreso_compras_tarjetascredito": 0,
-                    "egreso_ordenes_tarjetascredito": 0,
-                    "egreso_pagos_tarjetascredito": 0,  
-                    
-                    "egreso_caja_cheque": 0,
-                    "egreso_compras_cheque": 0,
-                    "egreso_ordenes_cheque": 0,
-                    "egreso_pagos_cheque": 0,
-                    
-                    "egreso_total_efectivo": 0,
-                    "egreso_total_debito": 0,
-                    "egreso_total_transaccion": 0,
-                    "egreso_total_credito": 0,
-                    "egreso_total_cheque": 0
-                };
-                return this.banco;
-            });
-
-            efectivo = {
-                "banco_id": 0,//efectivo no tiene id de banco
-                "banco_nombre": "EFECTIVO",// nombre 
-
-                "ingreso_caja": 0,
-                "ingreso_ventas": 0,
-                "ingreso_servicios": 0,
-                "ingreso_creditos": 0,
-                "ingreso_envases": 0,
-
-                "ingreso_caja_debito":0,
-                "ingreso_ventas_debito":0,
-                "ingreso_servicios_debito":0,
-                "ingreso_creditos_debito":0,
-                "ingreso_envases_debito":0,
-
-                "ingreso_caja_transacciones":0,
-                "ingreso_ventas_transacciones":0,
-                "ingreso_servicios_transacciones":0,
-                "ingreso_creditos_transacciones":0,
-                "ingreso_envases_transacciones":0,
-
-                "ingreso_caja_tarjetascredito":0,
-                "ingreso_ventas_tarjetascredito":0,
-                "ingreso_servicios_tarjetascredito":0,
-                "ingreso_creditos_tarjetascredito":0,
-                "ingreso_envases_tarjetascredito":0,
-
-                "ingreso_caja_cheque": 0,
-                "ingreso_ventas_cheque": 0,
-                "ingreso_servicios_cheque": 0,
-                "ingreso_creditos_cheque": 0,
-                "ingreso_envases_cheque": 0,
-                
-                "ingreso_total_efectivo": 0,
-                "ingreso_total_debito": 0,
-                "ingreso_total_transaccion": 0,
-                "ingreso_total_credito": 0,
-                "ingreso_total_cheque": 0,
-
-
-                "egreso_caja": 0,
-                "egreso_compras": 0,
-                "egreso_ordenes": 0,
-                "egreso_pagos": 0,                    
-                
-                "egreso_caja_debito": 0,
-                "egreso_compras_debito": 0,
-                "egreso_ordenes_debito": 0,
-                "egreso_pagos_debito": 0,                    
-
-                "egreso_caja_transacciones": 0,
-                "egreso_compras_transacciones": 0,
-                "egreso_ordenes_transacciones": 0,
-                "egreso_pagos_transacciones": 0,  
-                
-                "egreso_caja_tarjetascredito": 0,
-                "egreso_compras_tarjetascredito": 0,
-                "egreso_ordenes_tarjetascredito": 0,
-                "egreso_pagos_tarjetascredito": 0,  
-                
-                "egreso_caja_cheque": 0,
-                "egreso_compras_cheque": 0,
-                "egreso_ordenes_cheque": 0,
-                "egreso_pagos_cheque": 0,
-
-                "egreso_total_efectivo": 0,
-                "egreso_total_debito": 0,
-                "egreso_total_transaccion": 0,
-                "egreso_total_credito": 0,
-                "egreso_total_cheque": 0
-            }
-            bancos.unshift(efectivo);// coloca efectivo al inicio del array de bancos            
 
             if (registros != null){
                     // var fecha1 = fecha_desde;
@@ -305,46 +157,47 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                     var totalingresos = 0;
                     var totalegresos = 0;
+                    var totalprecios = 0;
                     var totalutilidad = 0;
                     var totalefectivo = 0;
                     var subtotal = 0;
                     
-                    var ingreso_caja = 0;
-                    var ingreso_ventas = 0;
-                    var ingreso_servicios = 0;
-                    var ingreso_creditos = 0;
-                    var ingreso_envases = 0;
-
-                    var ingreso_caja_debito = 0;
-                    var ingreso_ventas_debito = 0;
-                    var ingreso_servicios_debito = 0;
-                    var ingreso_creditos_debito = 0;
-                    var ingreso_envases_debito = 0;
-
-                    var ingreso_caja_transacciones = 0;
-                    var ingreso_ventas_transacciones = 0;
-                    var ingreso_servicios_transacciones = 0;
-                    var ingreso_creditos_transacciones = 0;
-                    var ingreso_envases_transacciones = 0;
-                    
-                    var ingreso_caja_tarjetascredito = 0;
-                    var ingreso_ventas_tarjetascredito = 0;
-                    var ingreso_servicios_tarjetascredito = 0;
-                    var ingreso_creditos_tarjetascredito = 0;
-                    var ingreso_envases_tarjetascredito = 0;
-                    
-                    var ingreso_caja_cheque = 0;
-                    var ingreso_ventas_cheque = 0;
-                    var ingreso_servicios_cheque = 0;
-                    var ingreso_creditos_cheque = 0;
-                    var ingreso_envases_cheque = 0;
-                    
-                    var egreso_caja = 0;
-                    var egreso_ordenes = 0;
-                    var egreso_compras = 0;
-                    var egreso_pagos = 0;
-                    
-                    var totalegreso_efectivo = 0;
+//                    var ingreso_caja = 0;
+//                    var ingreso_ventas = 0;
+//                    var ingreso_servicios = 0;
+//                    var ingreso_creditos = 0;
+//                    var ingreso_envases = 0;
+//
+//                    var ingreso_caja_debito = 0;
+//                    var ingreso_ventas_debito = 0;
+//                    var ingreso_servicios_debito = 0;
+//                    var ingreso_creditos_debito = 0;
+//                    var ingreso_envases_debito = 0;
+//
+//                    var ingreso_caja_transacciones = 0;
+//                    var ingreso_ventas_transacciones = 0;
+//                    var ingreso_servicios_transacciones = 0;
+//                    var ingreso_creditos_transacciones = 0;
+//                    var ingreso_envases_transacciones = 0;
+//                    
+//                    var ingreso_caja_tarjetascredito = 0;
+//                    var ingreso_ventas_tarjetascredito = 0;
+//                    var ingreso_servicios_tarjetascredito = 0;
+//                    var ingreso_creditos_tarjetascredito = 0;
+//                    var ingreso_envases_tarjetascredito = 0;
+//                    
+//                    var ingreso_caja_cheque = 0;
+//                    var ingreso_ventas_cheque = 0;
+//                    var ingreso_servicios_cheque = 0;
+//                    var ingreso_creditos_cheque = 0;
+//                    var ingreso_envases_cheque = 0;
+//                    
+//                    var egreso_caja = 0;
+//                    var egreso_ordenes = 0;
+//                    var egreso_compras = 0;
+//                    var egreso_pagos = 0;
+//                    
+//                    var totalegreso_efectivo = 0;
                     
                 // var n = registros.length; //tamaño del arreglo de la consulta
 //              $("#resingegr").val("- "+n+" -");
@@ -362,20 +215,29 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     var filas = 0;
                     
                     var i = 0;
+                    
                     for(let registro of registros){
                         
                         totalingresos += Number(registro["ingresos"]);
                         totalegresos += Number(registro["egresos"]);
+                        
+                        if (registro["egresos"]==0){
+                            totalprecios += Number(registro["precio"]);                            
+                        }
+                        
                         totalutilidad += Number(registro["utilidad"]);
                         
                         if(registro["tipotrans_id"]<=2 && registro["forma_id"]==1) totalefectivo += Number(registro["ingresos"]);                       
                         filas++;
-                        html += "<tr style='padding:0; ' id='ocultar_fila"+filas+"' >";
                         
+                        html += "<tr style='padding:0; ' id='ocultar_fila"+filas+"' >";
+                            //  Nº
                             html += "<td "+estilo+">"+(++i)+"</td>";
+                            //  FECHA
                             html += "<td "+estilo+">"+moment(registro["fecha"]).format("DD/MM/YYYY");+"</td>";
+                            //  REC.
                             html += "<td style='text-align: right; padding:0;'>"+registro["recibo"];
-                            
+                            //  FACT.
                             var enlace = `${base_url}`;
                             
                             if(registro["recibo"]>0){
@@ -392,209 +254,33 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 if (registro["orden"]==13) enlace += `orden_pago/imprimir/${registro["recibo"]}`;
                                 if (registro["orden"]==14) enlace += `cuotum/recibodeudas/${registro["recibo"]}`;
                             }
-                            let banco_id;
-                            //INGRESOS
-                            switch (registro["forma_id"]) {
-                                case '1'://EFECTIVO
-                                    // total_efectivo += Number(registro["ingresos"]);
-                                    banco_id = registro["banco_id"];
-                                    bancos.map(banco=>{
-                                        if(banco.banco_id == banco_id){
-                                            if(registro["orden"] <= 6){
-                                                banco.ingreso_total_efectivo = parseFloat(banco.ingreso_total_efectivo) + parseFloat(registro["ingresos"]);
-
-                                                if(registro["orden"] == 1) banco.ingreso_caja = parseFloat(banco.ingreso_caja) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 2) banco.ingreso_ventas =  parseFloat(banco.ingreso_ventas) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 3) banco.ingreso_servicios =  parseFloat(banco.ingreso_servicios) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 4) banco.ingreso_servicios =  parseFloat(banco.ingreso_servicios) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 5) banco.ingreso_creditos =  parseFloat(banco.ingreso_creditos) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 6) banco.ingreso_envases =  parseFloat(banco.ingreso_envases) + parseFloat(registro["ingresos"]);
-
-                                            }else if(registro["orden"] > 6){
-                                                banco.egreso_total_efectivo = parseFloat(banco.egreso_total_efectivo) + parseFloat(registro["egresos"]);
-
-                                                if(registro["orden"] == 11) banco.egreso_caja = parseFloat(banco.egreso_caja) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 12) banco.egreso_compras = parseFloat(banco.egreso_compras) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 13) banco.egreso_ordenes = parseFloat(banco.egreso_ordenes) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 14) banco.egreso_pagos = parseFloat(banco.egreso_pagos) + parseFloat(registro["egresos"]);
-                                            }
-                                        }
-                                    });
-                                    // var banco_id = registros[i]["banco_id"];
-                                    // bancos.map(banco=>{
-                                        // if(banco.banco_id == banco_id){
-                                            // banco.ingreso_caja = parseFloat(banco.ingreso_caja) + parseFloat(Number(registros[i]["egresos"])); 
-
-                                        // }
-                                    // })
-                                    
-
-                                    // bancos.map(banco=>{
-                                    //     if(banco.banco_id == banco_id){
-                                    //         banco.ingreso_caja = parseFloat(banco.ingreso_caja) + parseFloat(Number(registros[i]["egresos"])); 
-                                    //     }
-                                    // })
-
-                                    // if(registros[i]["orden"] == 1) ingreso_caja += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 2) ingreso_ventas += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 3) ingreso_servicios += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 4) ingreso_servicios += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 5) ingreso_creditos += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 6) ingreso_envases += Number(registros[i]["ingresos"]);
-                                    
-                                    // if(registros[i]["orden"] == 11) egreso_caja += Number(registros[i]["egresos"]);
-                                    // if(registros[i]["orden"] == 12) egreso_compras += Number(registros[i]["egresos"]);
-                                    // if(registros[i]["orden"] == 13) egreso_ordenes += Number(registros[i]["egresos"]);
-                                    // if(registros[i]["orden"] == 14) egreso_pagos += Number(registros[i]["egresos"]);
-
-                                    break;
-
-                                case '2'://TARJETA DE DEBITO
-                                    total_debito += Number(registro["ingresos"]);
-                                    banco_id = registro["banco_id"];
-                                    bancos.map(banco=>{
-                                        if(banco.banco_id == banco_id){
-                                            if(registro["orden"] <= 6){
-                                                banco.ingreso_total_debito = parseFloat(banco.ingreso_total_debito) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 1) banco.ingreso_caja_debito = parseFloat(banco.ingreso_caja_debito) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 2) banco.ingreso_ventas_debito = parseFloat(banco.ingreso_ventas_debito) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 3) banco.ingreso_servicios_debito = parseFloat(banco.ingreso_servicios_debito) + parseFloat(registro["ingresos"]); //Pagos a cuenta por servicios
-                                                if(registro["orden"] == 4) banco.ingreso_servicios_debito = parseFloat(banco.ingreso_servicios_debito) + parseFloat(registro["ingresos"]); //pagos saldo por servicios
-                                                if(registro["orden"] == 5) banco.ingreso_creditos_debito = parseFloat(banco.ingreso_creditos_debito) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 6) banco.ingreso_envases_debito = parseFloat(banco.ingreso_envases_debito) + parseFloat(registro["ingresos"]);
-                                            }else if(registro["orden"] > 6){
-                                                banco.egreso_total_debito = parseFloat(banco.egreso_total_debito) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 11) banco.egreso_caja_debito = parseFloat(banco.egreso_caja_debito) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 12) banco.egreso_compras_debito = parseFloat(banco.egreso_compras_debito) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 13) banco.egreso_ordenes_debito = parseFloat(banco.egreso_ordenes_debito) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 14) banco.egreso_pagos_debito = parseFloat(banco.egreso_pagos_debito) + parseFloat(registro["egresos"]);
-                                            }
-                                            // console.log(banco.egreso_caja_debito)
-                                        }
-                                    })
-
-                                    break;
-
-                                case '3'://TRANSACCION BANCARIA (registro["forma_id"] >= 3 && registro["forma_id"] <= 10)
-                                    total_transaccion += Number(registro["ingresos"]);
-                                    banco_id = registro["banco_id"];
-                                    bancos.map(banco=>{
-                                        if(banco.banco_id == banco_id){
-                                            // banco.ingreso_caja = parseFloat(banco.ingreso_caja) + parseFloat(Number(registro["egresos"])); 
-                                            if(registro["orden"] <= 6){
-                                                banco.ingreso_total_transaccion = parseFloat(banco.ingreso_total_transaccion) + parseFloat(registro["ingresos"])
-                                                if(registro["orden"] == 1) banco.ingreso_caja_transacciones = parseFloat(banco.ingreso_caja_transacciones) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 2) banco.ingreso_ventas_transacciones = parseFloat(banco.ingreso_ventas_transacciones) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 3) banco.ingreso_servicios_transacciones = parseFloat(banco.ingreso_servicios_transacciones) + parseFloat(registro["ingresos"]); //Pagos a cuenta por servicios
-                                                if(registro["orden"] == 4) banco.ingreso_servicios_transacciones = parseFloat(banco.ingreso_servicios_transacciones) + parseFloat(registro["ingresos"]); //pagos saldo por servicios
-                                                if(registro["orden"] == 5) banco.ingreso_creditos_transacciones = parseFloat(banco.ingreso_creditos_transacciones) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 6) banco.ingreso_envases_transacciones = parseFloat(banco.ingreso_envases_transacciones) + parseFloat(registro["ingresos"]);
-                                            }else if(registro["orden"] > 6){
-                                                banco.egreso_total_transaccion = parseFloat(banco.egreso_total_transaccion) + parseFloat(registro["egresos"])
-                                                if(registro["orden"] == 11) banco.egreso_caja_transacciones = parseFloat(banco.egreso_caja_transacciones) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 12) banco.egreso_compras_transacciones = parseFloat(banco.egreso_compras_transacciones) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 13) banco.egreso_ordenes_transacciones = parseFloat(banco.egreso_ordenes_transacciones) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 14) banco.egreso_pagos_transacciones = parseFloat(banco.egreso_pagos_transacciones) + parseFloat(registro["egresos"]);
-                                            }
-                                        }
-                                    })
-
-                                    // if(registros[i]["orden"] == 1) ingreso_caja_transacciones += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 2) ingreso_ventas_transacciones += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 3) ingreso_servicios_transacciones += Number(registros[i]["ingresos"]); //Pagos a cuenta por servicios
-                                    // if(registros[i]["orden"] == 4) ingreso_servicios_transacciones += Number(registros[i]["ingresos"]); //pagos saldo por servicios
-                                    // if(registros[i]["orden"] == 5) ingreso_creditos_transacciones += Number(registros[i]["ingresos"]);                              
-                                    // if(registros[i]["orden"] == 6) ingreso_envases_transacciones += Number(registros[i]["ingresos"]); 
-
-                                    break;
-
-                                case '4'://TARJETAS DE CREDITO
-                                    total_credito += Number(registro["ingresos"]);
-                                    banco_id = registro["banco_id"];
-                                    bancos.map(banco=>{
-                                        if(banco.banco_id == banco_id){
-                                            // banco.ingreso_caja = parseFloat(banco.ingreso_caja) + parseFloat(Number(registro["egresos"])); 
-                                            if(registro["orden"] <= 6){
-                                                banco.ingreso_total_credito = parseFloat(banco.ingreso_total_credito) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 1) banco.ingreso_caja_tarjetascredito = parseFloat(banco.ingreso_caja_tarjetascredito) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 2) banco.ingreso_ventas_tarjetascredito = parseFloat(banco.ingreso_ventas_tarjetascredito) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 3) banco.ingreso_servicios_tarjetascredito = parseFloat(banco.ingreso_servicios_tarjetascredito) + parseFloat(registro["ingresos"]); //Pagos a cuenta por servicios
-                                                if(registro["orden"] == 4) banco.ingreso_servicios_tarjetascredito = parseFloat(banco.ingreso_servicios_tarjetascredito) + parseFloat(registro["ingresos"]); //pagos saldo por servicios
-                                                if(registro["orden"] == 5) banco.ingreso_creditos_tarjetascredito = parseFloat(banco.ingreso_creditos_tarjetascredito) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 6) banco.ingreso_envases_tarjetascredito = parseFloat(banco.ingreso_envases_tarjetascredito) + parseFloat(registro["ingresos"]);
-                                            }else if(registro["orden"] > 6){
-                                                banco.egreso_total_credito = parseFloat(banco.egreso_total_credito) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 11) banco.egreso_caja_tarjetascredito = parseFloat(banco.egreso_caja_tarjetascredito) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 12) banco.egreso_compras_tarjetascredito = parseFloat(banco.egreso_compras_tarjetascredito) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 13) banco.egreso_ordenes_tarjetascredito = parseFloat(banco.egreso_ordenes_tarjetascredito) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 14) banco.egreso_pagos_tarjetascredito = parseFloat(banco.egreso_pagos_tarjetascredito) + parseFloat(registro["egresos"]);
-                                            }
-                                        }
-                                    })
-                                    // if(registros[i]["orden"] == 1) ingreso_caja_tarjetascredito += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 2) ingreso_ventas_tarjetascredito += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 3) ingreso_servicios_tarjetascredito += Number(registros[i]["ingresos"]); //Pagos a cuenta por servicios
-                                    // if(registros[i]["orden"] == 4) ingreso_servicios_tarjetascredito += Number(registros[i]["ingresos"]); //pagos saldo por servicios
-                                    // if(registros[i]["orden"] == 5) ingreso_creditos_tarjetascredito += Number(registros[i]["ingresos"]);                                    
-                                    // if(registros[i]["orden"] == 6) ingreso_envases_tarjetascredito += Number(registros[i]["ingresos"]); 
-
-                                    break;
-
-                                case '5'://CHEQUES
-                                    total_cheque += Number(registro["ingresos"]);
-                                    
-                                    banco_id = registro["banco_id"];
-                                    bancos.map(banco=>{
-                                        if(banco.banco_id == banco_id){
-                                            // banco.ingreso_caja = parseFloat(banco.ingreso_caja) + parseFloat(Number(registro["egresos"])); 
-                                            if(registro["orden"] <= 6){
-                                                banco.ingreso_total_cheque = parseFloat(banco.ingreso_total_cheque) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 1) banco.ingreso_caja_cheque = parseFloat(banco.ingreso_caja_cheque) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 2) banco.ingreso_ventas_cheque = parseFloat(banco.ingreso_ventas_cheque) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 3) banco.ingreso_servicios_cheque = parseFloat(banco.ingreso_servicios_cheque) + parseFloat(registro["ingresos"]); //Pagos a cuenta por servicios
-                                                if(registro["orden"] == 4) banco.ingreso_servicios_cheque = parseFloat(banco.ingreso_servicios_cheque) + parseFloat(registro["ingresos"]); //pagos saldo por servicios
-                                                if(registro["orden"] == 5) banco.ingreso_creditos_cheque = parseFloat(banco.ingreso_creditos_cheque) + parseFloat(registro["ingresos"]);
-                                                if(registro["orden"] == 6) banco.ingreso_envases_cheque = parseFloat(banco.ingreso_envases_cheque) + parseFloat(registro["ingresos"]);
-                                            }else if(registro["orden"] > 6){
-                                                banco.egreso_total_cheque = parseFloat(banco.egreso_total_cheque) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 11) banco.egreso_caja_cheque = parseFloat(banco.egreso_caja_cheque) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 12) banco.egreso_compras_cheque = parseFloat(banco.egreso_compras_cheque) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 13) banco.egreso_ordenes_cheque = parseFloat(banco.egreso_ordenes_cheque) + parseFloat(registro["egresos"]);
-                                                if(registro["orden"] == 14) banco.egreso_pagos_cheque = parseFloat(banco.egreso_pagos_cheque) + parseFloat(registro["egresos"]);
-                                            }
-                                        }
-                                    })
-                                    // if(registros[i]["orden"] == 1) ingreso_caja_cheque += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 2) ingreso_ventas_cheque += Number(registros[i]["ingresos"]);
-                                    // if(registros[i]["orden"] == 3) ingreso_servicios_cheque += Number(registros[i]["ingresos"]); //Pagos a cuenta por servicios
-                                    // if(registros[i]["orden"] == 4) ingreso_servicios_cheque += Number(registros[i]["ingresos"]); //pagos saldo por servicios
-                                    // if(registros[i]["orden"] == 5) ingreso_creditos_cheque += Number(registros[i]["ingresos"]);                                 
-                                    // if(registros[i]["orden"] == 6) ingreso_envases_cheque += Number(registros[i]["ingresos"]);    
-
-                                    break;  
-                            
-                                default:
-                                    // console.log(registros[i]["forma_id"])
-                                    break;
-                            }
-                            
-                            //EGRESOS
-                            
                             
                         html += " <a href="+enlace+" target='_BLANK' class='no-print'><fa class='fa fa-print'></fa></a>";
 
                         html += "</td>";
+                        
+                        //  FACT.
                         html += "<td style='text-align: center; padding:0;'>"+registro["factura"]+"</td>";
+                        
+                        //  DETALLE
                         html += "<td "+estilo+">"+registro["detalle"]+"</td>";
+                        //  BANCO
                         html += `<td style='text-align: center; padding:0;'>${registro["banco"]}</td>`;
+                        //INGRESO
                         html += "<td style='text-align: right; padding:0;'>";
                             if (Number(registro["ingresos"])>0) html += formato_numerico(registro["ingresos"]);
                         html += "</td>";
-                        
+                        //  EGRESO
                         html += "<td style='text-align: right; padding:0;'>";
                             if (Number(registro["egresos"]>0)) html += formato_numerico(registro["egresos"]);
                         html += "</td>";
-                        
+                        //  TRANS.
+                        html += "<td style='text-align: right; padding:0;'>";
+                            if (registro["egresos"]==0){
+                                html += formato_numerico(registro["precio"]);
+                            }
+                        html += "</td>";
+                        //  UTILD
                         if(tipousuario_id == 1){
                             html += "<td style='text-align: right; padding:0;'>";
                                 if (Number(registro["utilidad"])>0) html += formato_numerico(registro["utilidad"]);
@@ -603,843 +289,142 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             
                         html += "</tr>";
                     
-                    }
+                    } //FIN FOR(....)
                     
+                    //PIE DE LA TABLA
                     html += "<input type='hidden' value='"+filas+"' id='filas_detalle'/>";
-//                    html += "<tr style='background-color: #aaaaaa !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>";
-//                        html += "<td colspan='4'><b>TOTALES </b></td>";
-//                        html += "<td> </td>";
-//                        html += "<td style='text-align: right'><b>"+formato_numerico(totalingresos)+"</b></td>";
-//                        html += "<td style='text-align: right'><b>"+formato_numerico(totalegresos)+"</b></td>";
-//                        html += "<td style='text-align: right'><b>"+formato_numerico(totalutilidad)+"</b></td>";                    
-//                    html += "</tr>";
+                    html += "<tr style='background-color: #aaaaaa !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>";
+                        html += "<td colspan='4'><b>TOTALES </b></td>";
+                        html += "<td> </td>";
+                        html += "<td> </td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalingresos)+"</b></td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalegresos)+"</b></td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalprecios)+"</b></td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalutilidad)+"</b></td>";                    
+                    html += "</tr>";
 
                     var estilo = "style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-size:14; padding:0; '";
+                    var estilo1 = "style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-size:14; padding:0;text-align:right; '";
                     var estilo2 = "style='padding:0; text-align:right;'";
                     var estilox = "style='padding:0;'";
-                    var bancos_filas = bancos.map(banco => banco.banco_id); // regresa un array con solo los id de los bancos
-                    html += "<tr>";
-                        html += "<td "+estilo+" colspan='5'><b>TOTAL INGRESOS "+nombre_moneda+" <input type='button' value='[+]' onclick='mostrar_filas(["+bancos_filas+"])' id='boton_mostrar' class='btn btn-xs'/> </b></td>";
-                        html += "<td "+estilo+" ></td>";
-                        html += "<td "+estilo+" ><b>"+formato_numerico(totalingresos)+"</b></td>";
-                        html += "<td "+estilo+" ></td>";
-                        html += "<td "+estilo+" ></td>";
-                    html += "</tr>";
+                    
+                    var total_ingresos = 0;
+                    var total_ingresos_efectivo = 0;
+                    var total_egresos_efectivo = 0;
+                    var total_egresos = 0;
+                    
+                    //INGRESOS
+                    html += "<tr style='background-color: lightgray !important; -webkit-print-color-adjust: exact; color-adjust: exact;'><td></td><td colspan='9'><b>INGRESOS</b></td></tr>"; 
+                    
+                    for(let total of totales){
+                        
+                        if(total["tipo"]==1){//INGRESOS
+                            
+                            total_ingresos += total["ingresos"];
+
+                                html += "<tr>"; 
+                                        html += "<td "+estilox+"></td>"; 
+                                        html += "<td "+estilox+"></td>"; 
+                                        html += "<td "+estilox+"></td>"; 
+                                        html += "<td "+estilox+"></td>"; 
+                                        html += "<td "+estilox+">"+total["forma"]+" "+total["transaccion"]+"</td>"; 
+                                        html += "<td colspan='1' "+estilox+"><small>"+total["banco"]+"</small></td>"; 
+
+
+                                        html += "<td "+estilo2+">";
+                                            html += (total["ingresos"]>0)? Number(total["ingresos"]).toFixed(decimales) : "";
+                                        html += "</td>";
+
+                                        html += "<td "+estilox+">";
+                                            html += (total["egresos"]>0)? Number(total["egresos"]).toFixed(decimales) : "";
+                                        html += "</td>";
+                                        html += "<td "+estilox+"> </td>"; 
+                                        html += "<td "+estilox+"> </td>"; 
+                                html += "</tr>"; 
+                                
+                            if(total["forma_id"]==1){
+                                total_ingresos_efectivo += Number(total["ingresos"]);
+                            }
+
+                        }
+                    }
+                            html += "<tr style='background-color: white; !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>"; 
+                                    html += "<td></td>";  
+                                    html += "<td></td>";  
+                                    html += "<td></td>";  
+                                    html += "<td "+estilo+"></td>"; 
+                                    html += "<td "+estilo+" colspan='2'><b> TOTAL INGRESOS EFECTIVO</b></td>"; 
+                                    html += "<td "+estilo1+"><b>"+formato_numerico(total_ingresos_efectivo)+"</b></td>"; 
+                                    html += "<td "+estilo+"></td>"; 
+                                    html += "<td ></td>"; 
+                                    html += "<td ></td>";         
+              
+                            html += "</tr>"; 
+                            
+                    //EGRESOS
+                    html += "<tr style='background-color: lightgray !important; -webkit-print-color-adjust: exact; color-adjust: exact;'><td></td><td colspan='9'><b>EGRESOS</b></td></tr>"; 
+                    
+                    for(let total of totales){
+                        
+                        if(total["tipo"]==2){//EGRESOS
+                            
+                            total_ingresos += total["egresos"];
+
+                                html += "<tr>"; 
+                                        html += "<td "+estilox+"></td>"; 
+                                        html += "<td "+estilox+"></td>"; 
+                                        html += "<td "+estilox+"></td>"; 
+                                        html += "<td "+estilox+"></td>"; 
+                                        html += "<td "+estilox+">"+total["forma"]+" "+total["transaccion"]+"</td>"; 
+                                        html += "<td colspan='1' "+estilox+"><small>"+total["banco"]+"</small></td>"; 
+
+
+                                        html += "<td "+estilo2+">";
+                                            html += (total["ingresos"]>0)? Number(total["ingresos"]).toFixed(decimales) : "";
+                                        html += "</td>";
+
+                                        html += "<td "+estilox+">";
+                                            html += (total["egresos"]>0)? Number(total["egresos"]).toFixed(decimales) : "";
+                                        html += "</td>";
+                                        html += "<td "+estilox+"> </td>"; 
+                                        html += "<td "+estilox+"> </td>"; 
+                                html += "</tr>"; 
+                                
+                            if(total["tipo"]==2){
+                                total_egresos_efectivo += Number(total["egresos"]);
+                            }
+
+                        }
+                    }
+                            html += "<tr style='background-color: white; !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>"; 
+                                    html += "<td></td>";  
+                                    html += "<td></td>";  
+                                    html += "<td></td>";  
+                                    html += "<td "+estilo+"></td>"; 
+                                    html += "<td "+estilo+" colspan='2'><b> TOTAL EGRESOS EFECTIVO</b></td>";
+                                    html += "<td "+estilo1+"><b>"+formato_numerico(total_egresos_efectivo)+"</b></td>"; 
+                                    html += "<td "+estilo+"></td>"; 
+                                    html += "<td ></td>"; 
+                                    html += "<td ></td>";         
+              
+                            html += "</tr>"; 
+                    
                     var numerofilas = 0;
 
-                    for(let j = 0; j < bancos.length; j++){
-                        let no_ingresos = () => {
-                            let aux;
-                            aux = bancos[j].ingreso_total_efectivo + bancos[j].ingreso_total_debito + bancos[j].ingreso_total_transaccion + bancos[j].ingreso_total_credito + bancos[j].ingreso_total_cheque; 
-                            return (aux == 0);
-                        };
 
-                        if(no_ingresos()) break;
-                        let sumatoria_ingresos =    parseFloat(bancos[j].ingreso_total_efectivo) +
-                                                    parseFloat(bancos[j].ingreso_total_debito) +
-                                                    parseFloat(bancos[j].ingreso_total_transaccion) +
-                                                    parseFloat(bancos[j].ingreso_total_credito) +
-                                                    parseFloat(bancos[j].ingreso_total_cheque);
-                        html += "<tr>";
-                            html += `<td ${estilo} colspan='6'><b>${bancos[j].banco_nombre}</b></td>`;
-                            html += `<td ${estilo} colspan='3'><b>${sumatoria_ingresos.toFixed(2)}</b></td>`;
-                        html += "</tr>";
 
-                        
-                        total_efectivo = bancos[j].ingreso_total_efectivo;
-                        console.log(total_efectivo)
-                        if(total_efectivo>0){
-                            html += "<tr>";
-                                html += "<td></td>";
-                                html += "<td "+estilox+" colspan='4'><b>OPERACIONES EN EFECTIVO "+nombre_moneda+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ><b>"+formato_numerico(total_efectivo)+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ></td>";
-                            html += "</tr>";
-                        
-                            
-                            ingreso_caja = bancos[j].ingreso_caja + bancos[j].ingreso_caja_debito + bancos[j].ingreso_caja_transacciones + bancos[j].ingreso_caja_tarjetascredito + bancos[j].ingreso_caja_cheque;
-                            console.log(ingreso_caja)
-                            if (ingreso_caja>0){
-                                // console.log(ingreso_caja);
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            
-                            }
-                            ingreso_ventas = bancos[j].ingreso_ventas + bancos[j].ingreso_ventas_debito + bancos[j].ingreso_ventas_transacciones + bancos[j].ingreso_ventas_tarjetascredito + bancos[j].ingreso_ventas_cheque;
-                            console.log(ingreso_ventas)
-                            if (ingreso_ventas>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-    
-                            ingreso_servicios = bancos[j].ingreso_servicios + bancos[j].ingreso_servicios_debito + bancos[j].ingreso_servicios_transacciones + bancos[j].ingreso_servicios_tarjetascredito + bancos[j].ingreso_servicios_cheque;
-                            console.log(ingreso_servicios   )
-                            if (ingreso_servicios>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-    
-                            ingreso_creditos = bancos[j].ingreso_creditos + bancos[j].ingreso_creditos_debito + bancos[j].ingreso_creditos_transacciones + bancos[j].ingreso_creditos_tarjetascredito + ingreso_creditos_cheque;
-                            console.log(ingreso_creditos)
-                            if (ingreso_creditos>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-    
-                            ingreso_envases = bancos[j].ingreso_envases + bancos[j].ingreso_envases_debito + bancos[j].ingreso_envases_transacciones + bancos[j].ingreso_envases_tarjetascredito + bancos[j].ingreso_envases_cheque;
-                            console.log(ingreso_envases)
-                            if (ingreso_envases>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMO DE ENVASES "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                        }     
-                        
-                        
-                        total_debito = bancos[j].ingreso_total_debito;
-                        // console.log(total_debito)
-                        // console.log(total_debito)
-                        if(total_debito > 0){
-                        html += "<tr>";
-                            html += "<td></td>";
-                            html += "<td "+estilox+" colspan='4'><b>TARJETAS DE DEBITO "+nombre_moneda+"</b></td>";
-                            html += "<td "+estilo2+" ></td>";
-                            html += "<td "+estilo2+" ><b>"+formato_numerico(total_debito)+"</b></td>";
-                            html += "<td "+estilo2+" ></td>";
-                            html += "<td "+estilo2+" ></td>";
-                        html += "</tr>";
-                        
-                                ingreso_caja_debito = bancos[j].ingreso_caja_debito ;
-                                if (ingreso_caja_debito > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_debito)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_ventas_debito = bancos[j].ingreso_ventas_debito;
-                                if (ingreso_ventas_debito > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_debito)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }   
-                                ingreso_servicios_debito = bancos[j].ingreso_servicios_debito;
-                                if (ingreso_servicios_debito > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_debito_debito)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_creditos_debito = bancos[j].ingreso_creditos_debito;
-                                if (ingreso_creditos_debito > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_debito)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }                    
-                                ingreso_envases_debito = bancos[j].ingreso_envases_debito
-                                if (ingreso_envases_debito > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_debito)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }                    
-                        
-                        
-                        }
-
-                        total_transaccion = bancos[j].ingreso_total_transaccion
-                        console.log(total_transaccion)
-                        if(total_transaccion >0){
-                        html += "<tr>";
-                            html += "<td></td>";
-                            html += "<td "+estilox+" colspan='4'><b>TRANSACCIONES BANCARIAS "+nombre_moneda+"</b></td>";
-                            html += "<td "+estilo2+" ></td>";
-                            html += "<td "+estilo2+" ><b>"+formato_numerico(total_transaccion)+"</b></td>";
-                            html += "<td "+estilo2+" ></td>";
-                            html += "<td "+estilo2+" ></td>";
-                        html += "</tr>";
-                            ingreso_caja_transacciones = bancos[j].ingreso_caja_transacciones
-                                if (ingreso_caja_transacciones > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_transacciones)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_ventas_transacciones = bancos[j].ingreso_ventas_transacciones;
-                                if (ingreso_ventas_transacciones > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_transacciones)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_servicios_transacciones = bancos[j].ingreso_servicios_transacciones;
-                                if (ingreso_servicios_transacciones > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_transacciones)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_creditos_transacciones = bancos[j].ingreso_creditos_transacciones;
-                                if (ingreso_creditos_transacciones > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_transacciones)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }               
-                                ingreso_envases_transacciones = bancos[j].ingreso_envases_transacciones;
-                                if (ingreso_envases_transacciones > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_transacciones)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }               
-                        
-                        }
-
-                        total_credito = bancos[j].ingreso_total_credito;
-                        if(total_credito>0){
-                        html += "<tr>";
-                            html += "<td></td>";
-                            html += "<td "+estilox+" colspan='4'><b>TARJETAS DE CREDITO "+nombre_moneda+"</b></td>";
-                            html += "<td "+estilo2+" ></td>";
-                            html += "<td "+estilo2+" ><b>"+formato_numerico(total_credito)+"</b></td>";
-                            html += "<td "+estilo2+" ></td>";
-                            html += "<td "+estilo2+" ></td>";
-                        html += "</tr>";
-                            ingreso_caja_tarjetascredito = bancos[j].ingreso_caja_tarjetascredito
-                                if (ingreso_caja_tarjetascredito > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_tarjetascredito)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_ventas_tarjetascredito = bancos[j].ingreso_ventas_tarjetascredito
-                                if (ingreso_ventas_tarjetascredito > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_tarjetascredito)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_servicios_tarjetascredito = bancos[j].ingreso_servicios_tarjetascredito
-                                if (ingreso_servicios_tarjetascredito > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_tarjetascredito)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_creditos_tarjetascredito = bancos[j].ingreso_creditos_tarjetascredito
-                                if (ingreso_creditos_tarjetascredito > 0){
-                                    numerofilas++;
-                                    html += "<tr  style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_tarjetascredito)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }                                      
-                                ingreso_envases_tarjetascredito = bancos[j].ingreso_envases_tarjetascredito
-                                if (ingreso_envases_tarjetascredito > 0){
-                                    numerofilas++;
-                                    html += "<tr  style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_tarjetascredito)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }                                      
-                        
-                        }
-
-                        total_cheque = bancos[j].ingreso_total_cheque
-                        if(total_cheque>0){
-                        html += "<tr>";
-                            html += "<td></td>";
-                            html += "<td "+estilox+" colspan='4'><b>OPERACIONE EN CHEQUE "+nombre_moneda+"</b></td>";
-                            html += "<td "+estilo2+" ></td>";
-                            html += "<td "+estilo2+" ><b>"+formato_numerico(total_cheque)+"</b></td>";
-                            html += "<td "+estilo2+" ></td>";
-                            html += "<td "+estilo2+" ></td>";
-                        html += "</tr>";
-                        ingreso_caja_cheque = bancos[j].ingreso_caja_cheque
-                                if (ingreso_caja_cheque > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_cheque)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_ventas_cheque = bancos[j].ingreso_ventas_cheque
-                                if (ingreso_ventas_cheque > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_cheque)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_servicios_cheque = bancos[j].ingreso_servicios_cheque
-                                if (ingreso_servicios_cheque > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_cheque)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }
-                                ingreso_creditos_cheque = bancos[j].ingreso_creditos_cheque
-                                if (ingreso_creditos_cheque > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_cheque)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }                                            
-                                ingreso_envases_cheque = bancos[j].ingreso_envases_cheque
-                                if (ingreso_envases_cheque > 0){
-                                    numerofilas++;
-                                    html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                        html += "<td colspan='2'></td>";
-                                        html += "<td "+estilox+" colspan='3'>INGRESOS PRESTAMOS DE ENVASES "+nombre_moneda+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_cheque)+"</td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                        html += "<td "+estilo2+" ></td>";
-                                    html += "</tr>";
-                                }                        
-                        
-                        }
-                    }
-                    
-
-                    html += "<tr>";
-                        //html += "<td colspan='2'></td>";
-                        html += "<td "+estilo+" colspan='5'><b>TOTAL EGRESOS "+nombre_moneda+"</b></td>";
-                        html += "<td "+estilo+" colspan='2'></td>";
-                        html += "<td "+estilo+"><b>"+formato_numerico(totalegresos)+"</b></td>";
-                        html += "<td "+estilo+" colspan='1'></td>";
-                    html += "</tr>";
-                    for(let j = 0; j < bancos.length; j++){
-                        
-                        let no_egresos = () => {
-                            let aux = false;
-                            aux = bancos[j].egreso_total_efectivo + bancos[j].egreso_total_debito + bancos[j].egreso_total_transaccion + bancos[j].egreso_total_credito + bancos[j].egreso_total_cheque 
-                            return (aux == 0);
-                        };
-
-                        if(no_egresos()) break;
-
-                        let sumatoriaEgresos = parseFloat(bancos[j].egreso_total_efectivo)+
-                                                parseFloat(bancos[j].egreso_total_transaccion)+
-                                                parseFloat(bancos[j].egreso_total_credito)+
-                                                parseFloat(bancos[j].egreso_total_debito)+
-                                                parseFloat(bancos[j].egreso_total_cheque);
-
-                        html += `<tr>
-                                    <td ${estilo} colspan='7'><b>${bancos[j].banco_nombre}</b></td>
-                                    <td ${estilo} colspan='2'><b>${sumatoriaEgresos.toFixed(2)}</b></td>
-                                </tr>`;
-                        let egreso_total_efectivo = bancos[j].egreso_total_efectivo;
-
-                        // console.log(egreso_total_banco)
-                        if(egreso_total_efectivo > 0){
-                            html += "<tr>";
-                                html += "<td></td>";
-                                html += "<td "+estilox+" colspan='5'><b>OPERACIONES EN EFECTIVO "+nombre_moneda+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ><b>"+formato_numerico(egreso_total_efectivo)+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ></td>";
-                            html += "</tr>";
-                        
-                            let egreso_caja = bancos[j].egreso_caja;
-                            if (egreso_caja>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS DE CAJA "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_caja)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            
-
-                            egreso_compras = bancos[j].egreso_compras;
-                            if (egreso_compras>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR COMPRAS "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_compras)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                            egreso_ordenes = bancos[j].egreso_ordenes;
-
-                            if (egreso_ordenes>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR ORDENES DE PAGO "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_ordenes)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                            egreso_pagos = bancos[j].egreso_pagos;
-                            if (egreso_pagos>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR PAGOS DE CREDITO "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_pagos)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                        }
-                    }
-                        // let total_egreso_transacciones = bancos[j].egreso_caja_transacciones+
-                        //                                 bancos[j].egreso_compras_transacciones+
-                        //                                 bancos[j].egreso_ordenes_transacciones+
-                        //                                 bancos[j].egreso_pagos_transacciones;
-                        let total_egreso_transacciones = bancos[j].egreso_total_transaccion;
-
-                        console.log(total_egreso_transacciones)
-                        if(total_egreso_transacciones > 0){
-                            html += "<tr>";
-                                html += "<td></td>";
-                                html += "<td "+estilox+" colspan='5'><b>TRANSACCIONES "+nombre_moneda+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ><b>"+formato_numerico(total_egreso_transacciones)+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ></td>";
-                            html += "</tr>";
-                        
-                            let egreso_caja = bancos[j].egreso_caja_transacciones;
-                            if (egreso_caja>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS DE CAJA "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_caja)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-
-                            egreso_compras = bancos[j].egreso_compras_transacciones;
-                            if (egreso_compras>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR COMPRAS "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_compras)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                            egreso_ordenes = bancos[j].egreso_ordenes_transacciones;
-
-                            if (egreso_ordenes>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR ORDENES DE PAGO "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_ordenes)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                            egreso_pagos = bancos[j].egreso_pagos_transacciones;
-                            if (egreso_pagos>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR PAGOS DE CREDITO "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_pagos)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                        }
-                        
-                        // let egreso_total_tarjetascredito = bancos[j].egreso_caja_tarjetascredito+
-                        //                         bancos[j].egreso_compras_tarjetascredito+
-                        //                         bancos[j].egreso_ordenes_tarjetascredito+
-                        //                         bancos[j].egreso_pagos_tarjetascredito;
-                        let egreso_total_tarjetascredito = bancos[j].egreso_total_credito;
-                        // console.log(egreso_total_tarjetascredito)
-                        if(egreso_total_tarjetascredito > 0){
-                            html += "<tr>";
-                                html += "<td></td>";
-                                html += "<td "+estilox+" colspan='5'><b>TARJETA DE CREDITO "+nombre_moneda+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ><b>"+formato_numerico(egreso_total_tarjetascredito)+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ></td>";
-                            html += "</tr>";
-                        
-                            let egreso_caja = bancos[j].egreso_caja_tarjetascredito;
-                            if (egreso_caja>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS DE CAJA "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_caja)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-
-                            egreso_compras = bancos[j].egreso_compras_tarjetascredito;
-                            if (egreso_compras>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR COMPRAS "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_compras)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                            egreso_ordenes = bancos[j].egreso_ordenes_tarjetascredito;
-
-                            if (egreso_ordenes>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR ORDENES DE PAGO "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_ordenes)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                            egreso_pagos = bancos[j].egreso_pagos_tarjetascredito;
-                            if (egreso_pagos>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR PAGOS DE CREDITO "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_pagos)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                        }
-                        
-                        let egreso_total_debito = bancos[j].egreso_total_debito;
-                        // console.log(egreso_total_caja)
-                        if(egreso_total_debito > 0){
-                            html += "<tr>";
-                                html += "<td></td>";
-                                html += "<td "+estilox+" colspan='5'><b>TARJETAS DE DEBITO "+nombre_moneda+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ><b>"+formato_numerico(egreso_total_debito)+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ></td>";
-                            html += "</tr>";
-                        
-                            let egreso_caja = bancos[j].egreso_caja_debito;
-                            if (egreso_caja>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS DE CAJA "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_caja)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-
-                            egreso_compras = bancos[j].egreso_compras_debito;
-                            if (egreso_compras>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR COMPRAS "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_compras)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                            egreso_ordenes = bancos[j].egreso_ordenes_debito;
-
-                            if (egreso_ordenes>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR ORDENES DE PAGO "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_ordenes)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                            egreso_pagos = bancos[j].egreso_pagos_debito;
-                            if (egreso_pagos>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR PAGOS DE CREDITO "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_pagos)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                        }
-                        
-                        let egreso_total_cheque = bancos[j].egreso_total_cheque;
-                        // console.log(egreso_total_caja)
-                        if(egreso_total_cheque > 0){
-                            html += "<tr>";
-                                html += "<td></td>";
-                                html += "<td "+estilox+" colspan='5'><b>CHEQUES "+nombre_moneda+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ><b>"+formato_numerico(egreso_total_cheque)+"</b></td>";
-                                html += "<td "+estilo2+" ></td>";
-                                html += "<td "+estilo2+" ></td>";
-                            html += "</tr>";
-                        
-                            let egreso_caja = bancos[j].egreso_caja_cheque;
-                            if (egreso_caja>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS DE CAJA "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_caja)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-
-                            egreso_compras = bancos[j].egreso_compras_cheque;
-                            if (egreso_compras>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR COMPRAS "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_compras)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                            egreso_ordenes = bancos[j].egreso_ordenes_cheque;
-
-                            if (egreso_ordenes>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR ORDENES DE PAGO "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_ordenes)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                            egreso_pagos = bancos[j].egreso_pagos_cheque;
-                            if (egreso_pagos>0){
-                                numerofilas++;
-                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"_"+j+"'>";
-                                    html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR PAGOS DE CREDITO "+nombre_moneda+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_pagos)+"</td>";
-                                    html += "<td "+estilo2+" ></td>";
-                                html += "</tr>";
-                            }
-                        }
-                        
-
-                    }
-                    console.log(bancos)
-
-                    subtotal = totalingresos - totalegresos;
-                    
-                    html += "<tr style='font-size:12px;'>";
-                       html += "<td "+estilo+"></td>";
-                        html += "<td "+estilo+" colspan='5'><b>SUB TOTAL EN CAJA "+nombre_moneda+"</b></td>";
-                        html += "<td "+estilo+"></td>";
-                        html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(subtotal)+"</b></td>";
-                        html += "<td "+estilo+"></td>";
-                    html += "</tr>";
-                    
-                    var totalbanco = 0;
-                    let banco_registrados = bancos.splice(1,bancos.length);//elimina a efectivo de bancos
-                    // console.log(banco_registrados)
-                    for(let banco_dif of banco_registrados){
-                        
-                        let ingresos_bancos = 0;
-                        let egresos_bancos = 0;
-                        ingresos_bancos = parseFloat(banco_dif.ingreso_total_efectivo)+parseFloat(banco_dif.ingreso_total_debito)+parseFloat(banco_dif.ingreso_total_transaccion)+parseFloat(banco_dif.ingreso_total_credito)+parseFloat(banco_dif.ingreso_total_cheque)
-                        // console.log(ingresos_bancos)
-                        egresos_bancos = parseFloat(banco_dif.egreso_total_efectivo)+parseFloat(banco_dif.egreso_total_debito)+parseFloat(banco_dif.egreso_total_transaccion)+parseFloat(banco_dif.egreso_total_credito)+parseFloat(banco_dif.egreso_total_cheque)
-                        // console.log(egresos_bancos)
-                        
-                        totalbanco = ingresos_bancos - egresos_bancos;  //lo que queda son las transaciones por banco/debito/credito
-                    
-                        html += `<tr style='font-size:12px;'>
-                                    <td ${estilox}></td>
-                                    <td ${estilox} colspan='8'><b>${banco_dif.banco_nombre}</b></td>
-                                </tr>`
-                        html += "<tr style='font-size:12px;'>";
-                            html += "<td "+estilox+"></td>";
-                            html += "<td "+estilox+"></td>";
-                            html += "<td "+estilox+" colspan='5'><b>TOTAL TRANSACCIONES BANCO/TARJ. CREDITO/DEBITO "+nombre_moneda+"</b></td>";
-                            html += "<td "+estilox+" style='text-align: right'><b>"+formato_numerico(totalbanco != 0 ? totalbanco : 0)+"</b></td>";
-                            html += "<td "+estilox+"></td>";
-                        html += "</tr>";
-                    }
-                    
                     var efectivo_caja = 0;
+                    efectivo_caja = parseFloat(total_ingresos_efectivo) - parseFloat(total_egresos_efectivo);
                     // efectivo_caja = subtotal - totalbanco;
                     let efectivo_caja_diferencia = bancos.shift();
                     efectivo_caja_diferencia = parseFloat(efectivo_caja_diferencia.ingreso_total_efectivo) - parseFloat(efectivo_caja_diferencia.egreso_total_efectivo)
                     // efectivo_caja_diferencia = subtotal - totalbanco;
                     
-                    html += "<tr style='font-size:12px;'>";
+                    html += "<tr>";
     //                    html += "<td "+estilo+"></td>";
-                        html += "<td "+estilo+" colspan='5'><b>TOTAL EFECTIVO EN CAJA "+nombre_moneda+"</b></td>";
+                        html += "<td "+estilo+" colspan='5'><b style='font-size:14px;'>TOTAL EFECTIVO EN CAJA "+nombre_moneda+"</b></td>";
                         html += "<td "+estilo+"></td>";
-                        html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(efectivo_caja_diferencia)+"</b></td>";
+                        html += "<td "+estilo+" colspan='2'><b style='font-size:14px;'>"+formato_numerico(efectivo_caja)+"</b></td>";
                         html += "<td "+estilo+"></td>";
                         
                     html += "</tr>";
@@ -1457,16 +442,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     $('#elusuario').html("<span class='text-bold'>Usuario: </span>"+esusuario);
                     $('#fecha1impresion').html(fecha1);
                     $('#fecha2impresion').html(fecha2);
-//                   
-//                    $("#tablaingresos").html(html);
-//                    $("#tablaegresos").html(htmle);
-//                    $("#totalingresos").html(numberFormat(Number(totalingreso).toFixed(2)));
-//                    $("#totalegresos").html(numberFormat(Number(totalegreso).toFixed(2)));
-//                    if(tipousuario_id == 1){
-//                        $("#totalutilidad").html(numberFormat(Number(totalutilidad).toFixed(2)));
-//                    }
-//                    $("#totalingresotarj").html(numberFormat(Number(totalingresotarj).toFixed(2)));
-//                    $("#saldoencaja").html(numberFormat(Number(totalingresoefec-totalegreso).toFixed(2)));
+                    
                     
                 document.getElementById('loader').style.display = 'none';
                 
@@ -1491,6 +467,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
         }
         
     });   
+    
+
 
 }
 
