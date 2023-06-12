@@ -1648,7 +1648,7 @@ window.onkeydown = compruebaTecla;
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <h5 class="modal-title" id="myModalLabel"><b>INTERES</b></h5>
+                    <h5 class="modal-title" id="myModalLabel"><b>INTERES (%)</b></h5>
                     <input type="text"  class="form-control  input-sm" value="<?php echo 0.00; ?>" name="credito_interes" id="credito_interes">
                 </div>
 

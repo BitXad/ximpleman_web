@@ -834,7 +834,7 @@ class Venta extends CI_Controller{
                     if($metodo_frances == "true"){
                         
                         $Co = $credito_monto;
-                        $i  = $credito_interes;
+                        $i  = ($credito_interes/100);
                         $n  = $cuotas;
                         $Ci = $Co;
                         $Ii = 0;
@@ -6821,7 +6821,7 @@ function anular_venta($venta_id){
         $micad .= "                    <center>"; 
         $micad .= "                            <div><font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font></div>"; 
                                                 if ($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
-        $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font></div>"; 
+        $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font></div><br>"; 
                                                 }
         $micad .= "                            <div>"; 
         $micad .= "                            <font size='1' face='Arial'>"; 
