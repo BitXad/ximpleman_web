@@ -55,6 +55,8 @@ class Factura extends CI_Controller{
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
         
+        $this->configuracion = $parametro[0];
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -402,6 +404,7 @@ class Factura extends CI_Controller{
          
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
+        $data['cadenaqr'] = $cadenaQR;
         
         if($data['parametro']['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_boucher';
@@ -2139,7 +2142,7 @@ class Factura extends CI_Controller{
             //****************** inicio bitacora caja
             $bitacoracaja_evento = "ANULAR FACTURA N°".$factura[0]["factura_numero"];
             $bitacoracaja_tipo = 2;
-            
+            $caja_id = 0;
             $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
                     usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
             ",'".$bitacoracaja_evento."',".$usuario_idanulador.",".$factura[0]["factura_total"].",0,".$bitacoracaja_tipo.",".$caja_id.")";
