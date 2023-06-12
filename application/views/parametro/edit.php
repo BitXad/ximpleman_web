@@ -644,6 +644,51 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <label for="parametro_inventariobuscador" class="control-label">INVENTARIO BUSCADOR</label>
+                        <div class="form-group">
+                            <select name="parametro_inventariobuscador" class="form-control" id="parametro_inventariobuscador">
+                                <option value="1" <?php if($parametro['parametro_inventariobuscador']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_inventariobuscador']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_promocionesbuscador" class="control-label">PROMO. BUSCADOR</label>
+                        <div class="form-group">
+                            <select name="parametro_promocionesbuscador" class="form-control" id="parametro_promocionesbuscador">
+                                <option value="1" <?php if($parametro['parametro_promocionesbuscador']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_promocionesbuscador']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_logoenfactura" class="control-label">LOGO EN FACTURA</label>
+                        <div class="form-group">
+                            <select name="parametro_logoenfactura" class="form-control" id="parametro_logoenfactura">
+                                <option value="1" <?php if($parametro['parametro_logoenfactura']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_logoenfactura']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_sininventario" class="control-label">SIN INVENTARIO</label>
+                        <div class="form-group">
+                            <select name="parametro_sininventario" class="form-control" id="parametro_sininventario">
+                                <option value="1" <?php if($parametro['parametro_sininventario']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_sininventario']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_movimientodiario" class="control-label">MOVIMIENTO DIARIO</label>
+                        <div class="form-group">
+                            <select name="parametro_movimientodiario" class="form-control" id="parametro_movimientodiario">
+                                <option value="1" <?php if($parametro['parametro_movimientodiario']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_movimientodiario']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
                     
                 </div>
             </div><hr>

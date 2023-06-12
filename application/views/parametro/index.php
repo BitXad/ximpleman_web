@@ -165,7 +165,7 @@ foreach($all_parametros as $p)
                         </td>
                     </tr>
                     <tr>
-                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="8" ><u>VENTAS</u></th>
+                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="10" ><u>VENTAS</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CATEGORIA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BUSCADOR EN VENTAS</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRIMIR COMANDA</th>
@@ -371,6 +371,7 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">TECLAS DE ACCESO</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">INFORMACION BASICA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">PANEL VENTAS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">INVENTARIO BUSCADOR</th>
                     </tr>
                     <tr>
                         <td><?php  if ($p['parametro_herramientasinferior']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
@@ -384,6 +385,19 @@ foreach($all_parametros as $p)
                         <td><?php  if ($p['parametro_teclasacceso']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php  if ($p['parametro_informacionbasica']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php  if ($p['parametro_panelventas']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_inventariobuscador']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">PROM. BUSCADOR</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">LOGO EN FACTURA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">SIN INVENTARIO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOVIMIENTO DIARIO</th>
+                    </tr>
+                    <tr>
+                        <td><?php  if ($p['parametro_promocionesbuscador']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_logoenfactura']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_sininventario']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_movimientodiario']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                     </tr>
                     
                     <tr>

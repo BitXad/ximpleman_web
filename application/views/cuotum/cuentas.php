@@ -308,6 +308,7 @@ $(document).ready(function(){
                             </b>
                         </font><br>
                         <?php
+                        $parametro_factura = 3; //para que no haya opcion a facturar, hasta completar este modulo, despues quitar o comentar esta linea......
                         $deshabilitar = "";
                         $mostrarblock = "block";
                         $checkedfactura = "";

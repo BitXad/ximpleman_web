@@ -1679,7 +1679,7 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
     var detalleven_id = 0; //cantidad del factor seleccionado
     var tipo_cambio =  document.getElementById("moneda_tc").value;
     var parametro_moneda_id = document.getElementById('parametro_moneda_id').value; //1 bolivianos - 2 moneda extrangera
-    var decimales = document.getElementById('parametro_decimales').value; //1 bolivianos - 2 moneda extrangera
+    var decimales = document.getElementById('parametro_decimales').value;
     //var parametro_sininventario = document.getElementById('parametro_sininventario').value; //1 bolivianos - 2 moneda extrangera
     
     document.getElementById('mensaje_enviado').style.display = 'none';
@@ -1688,7 +1688,7 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
     //***** Obtenemos el producto en base a su Id *******
     
     var producto = get_producto(producto_id);
-    var precio = Number(producto.producto_precio);
+    var precio = Number(producto.producto_precio).toFixed(decimales);
     
     //*****************************************
     
@@ -1742,42 +1742,42 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
 
 
             if (factor_nombre == "precio_normal"){
-                precio = producto.producto_precio;
+                precio = Number(producto.producto_precio).toFixed(decimales);
                 factor = 1;
                 unidadfactor = producto.producto_unidad;
                 numerofactor = "0";
             }    
 
             if (factor_nombre == "producto_factor"){
-                precio = producto.producto_preciofactor;
+                precio = Number(producto.producto_preciofactor).toFixed(decimales);
                 factor = producto.producto_factor;
                 unidadfactor = producto.producto_unidadfactor;
                 numerofactor = "";
             }    
 
             if (factor_nombre == "producto_factor1"){
-                precio = producto.producto_preciofactor1;
+                precio = Number(producto.producto_preciofactor1).toFixed(decimales);
                 factor = producto.producto_factor1;
                 unidadfactor = producto.producto_unidadfactor1;
                 numerofactor = "1";
             }    
 
             if (factor_nombre == "producto_factor2"){
-                precio = producto.producto_preciofactor2;
+                precio = Number(producto.producto_preciofactor2).toFixed(decimales);
                 factor = producto.producto_factor2;
                 unidadfactor = producto.producto_unidadfactor2;
                 numerofactor = "2";
             }    
 
             if (factor_nombre == "producto_factor3"){
-                precio = producto.producto_preciofactor3;
+                precio = Number(producto.producto_preciofactor3).toFixed(decimales);
                 factor = producto.producto_factor3;
                 unidadfactor = producto.producto_unidadfactor3;
                 numerofactor = "3";
             }    
 
             if (factor_nombre == "producto_factor4"){
-                precio = producto.producto_preciofactor4;
+                precio = Number(producto.producto_preciofactor4).toFixed(decimales);
                 factor = producto.producto_factor4;
                 unidadfactor = producto.producto_unidadfactor4;
                 numerofactor = "4";
