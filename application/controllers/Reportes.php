@@ -574,7 +574,7 @@ function torta3($anio,$mes)
                 
                 $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
                 $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $usuario_id);
-                $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+                //$data['bancos'] = $this->Banco_model->getall_bancosact_asc();
                 
                 /*if ($fecha1 == 0){
                     
