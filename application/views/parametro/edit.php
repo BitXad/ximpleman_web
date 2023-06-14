@@ -689,6 +689,18 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <label for="parametro_imprimirfactura" class="control-label">IMPRIMIR FACTURA/RECIBO</label>
+                        <div class="form-group">
+                            <select name="parametro_imprimirfactura" class="form-control" id="parametro_imprimirfactura">
+                                <option value="0" <?php if($parametro['parametro_imprimirfactura']=="0"){ ?> selected <?php } ?>>NINGUNO</option>
+                                <option value="1" <?php if($parametro['parametro_imprimirfactura']=="1"){ ?> selected <?php } ?>>IMPRIMIR SOLO FACTURAS</option>
+                                <option value="2" <?php if($parametro['parametro_imprimirfactura']=="2"){ ?> selected <?php } ?>>IMPRIMIR SOLO RECIBOS</option>
+                                <option value="3" <?php if($parametro['parametro_imprimirfactura']=="3"){ ?> selected <?php } ?>>IMPRIMIR FACTURA Y RECIBO</option>
+                                <option value="4" <?php if($parametro['parametro_imprimirfactura']=="4"){ ?> selected <?php } ?>>IMPRIMIR FACTURA O RECIBO</option>
+                            </select>
+                        </div>
+                    </div>
                     
                 </div>
             </div><hr>
