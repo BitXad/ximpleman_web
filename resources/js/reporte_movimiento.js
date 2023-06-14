@@ -144,7 +144,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
             var data =  JSON.parse(resul);
             let registros = data['registros'];
             let totales = data['totales'];
-            let bancos = data['bancos'];
+            //let bancos = data['bancos'];
             
 
 
@@ -376,8 +376,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     var efectivo_caja = 0;
                     efectivo_caja = parseFloat(total_ingresos_efectivo) - parseFloat(total_egresos_efectivo);
                     // efectivo_caja = subtotal - totalbanco;
-                    let efectivo_caja_diferencia = bancos.shift();
-                    efectivo_caja_diferencia = parseFloat(efectivo_caja_diferencia.ingreso_total_efectivo) - parseFloat(efectivo_caja_diferencia.egreso_total_efectivo)
+                    //let efectivo_caja_diferencia = bancos.shift();
+                    //efectivo_caja_diferencia = parseFloat(efectivo_caja_diferencia.ingreso_total_efectivo) - parseFloat(efectivo_caja_diferencia.egreso_total_efectivo)
                     // efectivo_caja_diferencia = subtotal - totalbanco;
                     
                     html += "<tr>";
