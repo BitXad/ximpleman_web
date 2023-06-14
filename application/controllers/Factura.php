@@ -1363,7 +1363,7 @@ class Factura extends CI_Controller{
                     if($borrar_venta == 1){
                         $mensaje_anular  = "VENTA Nº 00".$venta_id.", ";
                     }
-                    $bitacoracaja_evento = "ANULAR ".$mensaje_anular."FACTURA N°".$factura[0]["factura_numero"].", CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+                    $bitacoracaja_evento = "ANULAR ".$mensaje_anular."FACTURA N°".$factura[0]["factura_numero"].", CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,".",",");
                     $bitacoracaja_tipo = 2;
 
                     $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
@@ -1545,7 +1545,7 @@ class Factura extends CI_Controller{
             }
             //*********** FIN Administracion de caja *********
                     
-            $bitacoracaja_evento = "ANULAR VENTA Nº 00".$venta_id." CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+            $bitacoracaja_evento = "ANULAR VENTA Nº 00".$venta_id." CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,".",",");
             $bitacoracaja_tipo = 2;
 
             $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 

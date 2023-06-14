@@ -112,10 +112,13 @@ border-bottom : 1px solid #aaa;
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <!-------------------------------------------------------->
-<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"]."cm";
+      $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
+      $decimales = $parametro["parametro_decimales"];
 ?>
+
+
 <table class="table" >
 <tr>
 <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
@@ -147,10 +150,10 @@ border-bottom : 1px solid #aaa;
 
                         <font size="3" face="arial"><b>CIERRE DE CAJA</b></font> <br>
                         <font size="1" face="arial"><b>Nº 00<?php echo $caja[0]['caja_id']; ?></b></font> <br>
-                        <font size="1" face="arial"><b>Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?>
+                        <font size="1" face="arial"><b>Expresado en <?php echo $parametro['moneda_descripcion']; ?>
                             <!--<br>-->
-                            <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
-                            T.C. <?php echo $moneda['moneda_tc']; ?></b></font> <br>
+                            <?php if($parametro["parametro_mostrarmoneda"] == 1){ ?>
+                            T.C. <?php echo number_format($moneda['moneda_tc'],$decimales,".",","); ?></b></font> <br>
                             <?php } ?>
                         <br> 
                         <?php $fecha = new DateTime($caja[0]['caja_fechacierre']); 
@@ -173,7 +176,7 @@ border-bottom : 1px solid #aaa;
         </tr>        
         
         <tr style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
-            <td style="max-width: <?php echo $parametro[0]["parametro_anchofactura"]/2; ?>cm" > 
+            <td style="max-width: <?php echo $parametro["parametro_anchofactura"]/2; ?>cm" > 
             <!---------------------------------------------->
             <table class="table table-striped table-condensed">
 <!--                        <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
@@ -232,7 +235,7 @@ border-bottom : 1px solid #aaa;
             
             <!---------------------------------------------->
             </td>
-            <td style="max-width: <?php echo $parametro[0]["parametro_anchofactura"]/2; ?>cm" >
+            <td style="max-width: <?php echo $parametro["parametro_anchofactura"]/2; ?>cm" >
             <!---------------------------------------------->
             
             
