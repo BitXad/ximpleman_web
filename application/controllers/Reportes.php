@@ -174,7 +174,7 @@ class Reportes extends CI_Controller{
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-            $data['parametro'] = $this->parametros;$data['parametro'] = $this->parametros;
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
