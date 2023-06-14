@@ -269,18 +269,15 @@ class Producto extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(107)) {
-        // check if the producto exists before trying to edit it
-        $data['producto'] = $this->Producto_model->get_esteproducto($producto_id);
-        
-        //bandera para actualizar la modifcacion de producto_colsur para mostrar si un producto fue editado
-            $paramsx = array(
-                  
-                    'producto_colsur' => 1,
-                );
+            // check if the producto exists before trying to edit it
+            $data['producto'] = $this->Producto_model->get_esteproducto($producto_id);
 
-                $this->Producto_model->update_producto($producto_id,$paramsx);        
-        
-        
+            //bandera para actualizar la modificacion de producto_colsur para mostrar si un producto fue editado
+            /*$paramsx = array(
+                'producto_colsur' => 1,
+            );
+            $this->Producto_model->update_producto($producto_id,$paramsx);
+            */
         if(isset($data['producto']['producto_id']))
         {
             $this->load->library('form_validation');
@@ -453,7 +450,7 @@ class Producto extends CI_Controller{
                 $bitacora_id = $this->Bitacora_model->add_bitacora($params);
                 
                 redirect('producto/index');
-            }else{   
+            }else{
                 $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
 
                 $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis();
