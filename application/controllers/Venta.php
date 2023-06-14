@@ -175,7 +175,9 @@ class Venta extends CI_Controller{
         require_once(APPPATH.'controllers/Dosificacion.php');
         
         if($this->acceso(12)){
-        //**************** inicio contenido ***************     
+            
+        //**************** inicio contenido ***************   
+            
         $data['sistema'] = $this->sistema;
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];

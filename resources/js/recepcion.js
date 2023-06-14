@@ -196,7 +196,7 @@ function recepcion(estado)
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
-                        html += "<button type='button' onclick='restablecer("+ventas[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal'><span class='fa fa-check'></span> Si </button>";
+                        html += "<button type='button'  data-dismiss='modal' onclick='restablecer("+ventas[i]["venta_id"]+")' class='btn btn-success'><span class='fa fa-check'></span> Si </button>";
                         html += " <a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
@@ -241,7 +241,7 @@ function despachar(venta)
           
            success:function(resul){                
                 
-    recepcion(1);
+            recepcion(1);
       
 
       }
@@ -252,8 +252,9 @@ function despachar(venta)
 function restablecer(venta)
 {
     
- var base_url    = document.getElementById('base_url').value;
+    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+'detalle_venta/restablecer/'+venta;
+    
     $.ajax({url: controlador,
            type:"POST",
            data:{},

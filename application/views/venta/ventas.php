@@ -379,10 +379,14 @@ window.onkeydown = compruebaTecla;
             <div class="form-group" <?= $estilo_div ?>>
                 <select class="form-control <?php echo $atributos; ?>" name="tipo_doc_identidad" id="tipo_doc_identidad" <?= $estilos_facturacion ?> onchange="seleccion_documento()">
                     <?php 
-                        $select = 5;
+                        $select = $cliente[0]['cdi_codigoclasificador'];
+                        
                         if(isset($cliente[0]['cliente_codidentidad'])) $select = $cliente[0]['cliente_codidentidad'];
+                        
                         foreach ($docs_identidad as $di){
+                            
                             if($dosificacion[0]['docsec_codigoclasificador'] == 23){
+                                
                                 if($di['cdi_codigoclasificador'] == 5){
                                     ?>
                                     <option value="<?= $di['cdi_codigoclasificador'] ?>" selected><?= $di['cdi_descripcion'] ?></option>
@@ -391,7 +395,8 @@ window.onkeydown = compruebaTecla;
                                 }
                                 
                             }else{
-                            $selected = $di['cdi_codigoclasificador'] == $select ? "selected" : "" ;// por defecto que esté seleccionado NIT
+                                
+                                $selected = $di['cdi_codigoclasificador'] == $select ? "selected" : "" ;// por defecto que esté seleccionado NIT
                         ?>                    
                         <option value="<?= $di['cdi_codigoclasificador'] ?>" <?= $selected ?>><?= $di['cdi_descripcion'] ?></option>
                     <?php
@@ -2702,3 +2707,18 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
+<?php
+//$archivoExe = 'C:\siaac\siaac.exe';
+//$output = '';
+//$returnValue = '';
+//
+//exec($archivoExe, $output, $returnValue);
+//
+//if ($returnValue === 0) {
+//    echo "El archivo se ejecutó correctamente.";
+//} else {
+//    echo "Se produjo un error al ejecutar el archivo.";
+//}
+?>
