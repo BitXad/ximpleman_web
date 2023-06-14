@@ -92,7 +92,7 @@ function tabladetalle_productos(){
                         }else if(n>= 11){
                             ancho = "20";
                             alto = "20";
-                            letra = "1";
+                            letra = "2";
                             espacio = "0";
                           //  altoletra = "18px;";
                         }
@@ -101,13 +101,24 @@ function tabladetalle_productos(){
                     html2 = "";
                     //html += "<br>";
                     for (var i = 0; i < n ; i++){
+                        
+                        let partes = registros[i]['detalleven_cantidad']; 
+                        let partes1 = partes.toString(); 
+                        let partes2 = partes1.split('.'); 
+                        if (partes2[1] == 0) {  
+                            lacantidad = partes2[0];  
+                        }else{  
+                            lacantidad = numberFormat(registros[i]['detalleven_cantidad']).toFixed(decimales);
+                            
+                        }
+
                         cant_total   = Number(cant_total)  + Number(registros[i]['detalleven_cantidad']);
                         total_detalle = Number(total_detalle)   + Number(registros[i]['detalleven_total']);
                         html += "<tr>";
                         html += "<td style='padding: 0'>";
                         html += "<center>";
                         html += "<font size='"+espacio+"'><br></font>";
-                        html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+Number(registros[i]["detalleven_cantidad"]).toFixed(decimales)+"</b></font></h4>";
+                        html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+lacantidad+"</b></font></h4>";
                         html += "</center>";
                         html += "</td>";
                         html += "<td style='padding: 0;'>";

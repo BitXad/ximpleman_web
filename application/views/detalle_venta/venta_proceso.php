@@ -38,8 +38,9 @@
         <div class="col-md-4">
             <div class="box">
                 <div class="box-body table-responsive">
+                        
                     <table class='table table-condensed '>
-                        <tr style='color: white;'>
+                        <tr style='color: white; background: gray;'>
                             <th class="text-center">CANT</th>
                             <th class="text-center">PRODUCTO</th>
                             <th class="text-right">PREC.</th>
@@ -62,7 +63,7 @@
                         <tr>    
                             <td style="padding: 0; border-top: 0px; border-bottom: 0px">        
                                 <center>
-                                <h4 style="color: white;"><font size="4"><b> <?php echo "Ofertas"; ?></b></font></h4>
+                                <h4 style="color: white;"><font size="4"><b> <?php echo "- OFERTAS -"; ?></b></font></h4>
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                   <!-- Indicators -->
                                   <!--<ol class="carousel-indicators">
@@ -97,6 +98,7 @@
                                             }else{
                                             ?>
                                                 <div class="item">
+   
                                                     <?php
                                                     $producto_imagen = $producto['producto_foto'];
                                                     if($producto['producto_foto'] == "null" || $producto['producto_foto'] == "")
@@ -130,16 +132,28 @@
                                 </center>
                             </td>
                         </tr>
+                        
                         <tr>
+                            
                             <td style="border-top: 0px; border-bottom: 0px">
-                   
+                                
                             </td>
                         </tr>
                     </table>
                     
                 </div>
             </div>
-            <div class="col-md-12" id="estotal" style="text-align: left">
+            <div class="col-md-12" style="color: white; font-size:24px;">
+                <center>
+                    <div class="col-md-12"><b>NIT: </b>141349024</div>
+                    <div class="col-md-12"><b>RAZON SOC.: </b>CONSTRUNCIORA FULANITO MENDEZ SRL</div>
+
+                </center>         
+
+            </div>
+            
+            <div class="col-md-12" id="estotal" style="text-align: center">
+                
             </div>
         </div>
     </div>
@@ -149,3 +163,4 @@
         <marquee>Desarrollado por <b>PASSWORD SRL</b> Ingenieria Hardware & Software. Contactos: <b>4511518</b> - <b>77417605</b></marquee>
     </footer>
 </html>
+<input type="text" id="input2" name="input2" value="<?= $this->session->userdata('codigo_usuario') ?>">

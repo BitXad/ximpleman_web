@@ -406,7 +406,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                 document.getElementById('loader').style.display = 'none';
                 
-                $("#saldo_caja").val(Number(efectivo_caja_diferencia).toFixed(2));
+                $("#saldo_caja").val(Number(efectivo_caja).toFixed(2));
                 
             }
                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader

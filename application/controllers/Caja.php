@@ -5,8 +5,10 @@
  */
  
 class Caja extends CI_Controller{
+    
     private $caja_id = 0;
     private $sistema;
+    private $parametros;
     
     function __construct()
     {
@@ -38,6 +40,9 @@ class Caja extends CI_Controller{
         //*********** FIN Administracion de caja *********
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        
     }
     /* *****Funcion que verifica el acceso al sistema**** */
     private function acceso($id_rol){
@@ -57,6 +62,7 @@ class Caja extends CI_Controller{
      */
     function index()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         $data['caja'] = $this->Caja_model->get_all_caja();
         
@@ -69,6 +75,7 @@ class Caja extends CI_Controller{
      */
     function add()
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         $this->load->library('form_validation');
         $this->form_validation->set_rules('caja_apertura','Apertura','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -152,6 +159,7 @@ class Caja extends CI_Controller{
         $data['sistema'] = $this->sistema;
         // check if the caja exists before trying to edit it
         $data['caja'] = $this->Caja_model->get_caja($caja_id);
+        $data['parametro'] =  $this->parametros;
         
         if(isset($data['caja']['caja_id']))
         {
@@ -270,6 +278,8 @@ class Caja extends CI_Controller{
     function cierre_caja($caja_id)
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        
         $this->load->library('form_validation');
         $this->form_validation->set_rules('caja_cierre','Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         $this->form_validation->set_rules('caja_fechacierre','Fecha de Cierre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -280,8 +290,8 @@ class Caja extends CI_Controller{
         
         if($caja_id == $caja[0]["caja_id"]){
         
-            $this->load->model('Parametro_model');
-            $data['all_parametro'] = $this->Parametro_model->get_parametros();
+            //$this->load->model('Parametro_model');
+            $data['all_parametro'] = $this->parametros;
 
             $data['usuario_id'] = $usuario_id;
             $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
@@ -396,8 +406,9 @@ class Caja extends CI_Controller{
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
         $data['page_title'] = "Cierre de Caja";
 
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda($data['parametro'][0]['moneda_id']);
+        //$data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['parametro'] =  $this->parametros;
+        $data['moneda'] = $this->Moneda_model->get_moneda($data['parametro']['moneda_id']);
    
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
 
@@ -421,8 +432,9 @@ class Caja extends CI_Controller{
         
         if($caja_id == $caja["caja_id"]){
         
-            $this->load->model('Parametro_model');
-            $data['all_parametro'] = $this->Parametro_model->get_parametros();
+//            $this->load->model('Parametro_model');
+//            $data['all_parametro'] = $this->Parametro_model->get_parametros();
+            $data['all_parametro'] =  $this->parametros;
 
             $data['usuario_id'] = $caja['usuario_id'];
             

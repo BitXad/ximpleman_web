@@ -2820,7 +2820,7 @@ function edit($venta_id){
         $usuario_id = $this->session_data['usuario_id'];        
         $bitacoracaja_fecha = "date(now())";
         $bitacoracaja_hora = "time(now())";
-        $bitacoracaja_evento = "(select concat('QUITAR TODOS LOS PRODUCTOS EN VENTAS CANT: ',count(*),'| TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
+        $bitacoracaja_evento = "(select concat('QUITAR TODOS LOS PRODUCTOS EN VENTAS CANT: ',count(*),'| TOTAL: ', round(sum(detalleven_cantidad * detalleven_precio),2)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
         $bitacoracaja_montoreg = 0;
         $bitacoracaja_montocaja = 0;
         $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
@@ -3459,7 +3459,7 @@ function eliminar_venta($venta_id){
         $prec_total = $venta[0]['venta_total'];
         
         
-        $bitacoracaja_evento = "ELIMINAR VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+        $bitacoracaja_evento = "ELIMINAR VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,",",".");
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
@@ -3514,7 +3514,7 @@ function anular_venta($venta_id){
         $prec_total = $venta[0]['venta_total'];
         
         
-        $bitacoracaja_evento = "ANULAR VENTA Nº 00".$venta_id." CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+        $bitacoracaja_evento = "ANULAR VENTA Nº 00".$venta_id." CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,",",".");
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
@@ -7869,5 +7869,11 @@ function anular_venta($venta_id){
        //**************** fin contenido ***************
         			       
     }       
+    
+    function guardarDatoCliente()
+    {
+        $dato_cliente = $this->input->post('dato_cliente');
+        $this->session->set_userdata('dato_cliente', $dato_cliente);
+    }
     
 }

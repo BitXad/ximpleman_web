@@ -38,6 +38,8 @@ class Detalle_venta extends CI_Controller{
     private function acceso($id_rol){
         
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
+        
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
@@ -53,6 +55,7 @@ class Detalle_venta extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -72,6 +75,7 @@ class Detalle_venta extends CI_Controller{
      */
     function nota_venta($venta_id)
     {
+        $data['parametro'] =  $this->parametros;
         $data['sistema'] = $this->sistema;
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
@@ -85,6 +89,7 @@ class Detalle_venta extends CI_Controller{
     function recepcion()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
         if($this->acceso(178)) {
             $data['page_title'] = "Recepcion de pedidos";        
             $data['_view'] = 'venta/recepcion';
@@ -98,11 +103,12 @@ class Detalle_venta extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['parametro'] =  $this->parametros;
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $this->load->model('Tipo_transaccion_model'); 
         $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
         //$this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametros();
+        //$data['parametro'] = $this->Parametro_model->get_parametros();
         $this->load->model('Moneda_model');
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
@@ -113,6 +119,7 @@ class Detalle_venta extends CI_Controller{
     function recepcionhoy()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
         $usuario_id = $this->session_data['usuario_id'];
         $estado = $this->input->post('estado');
         $destino = $this->input->post('destino');
@@ -137,6 +144,7 @@ class Detalle_venta extends CI_Controller{
     function mapa_distribucion()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
         $filtro = $this->input->post('filtro');
         $data = $this->Detalle_venta_model->mapa_distribucion($filtro);
         
@@ -163,6 +171,7 @@ class Detalle_venta extends CI_Controller{
     function reportes()
     {
         $data['sistema'] = $this->sistema;
+        $data['parametro'] =  $this->parametros;
         if($this->acceso(156)){
         $data['page_title'] = "Reporte Ventas";        
         $data['_view'] = 'venta/reportes';

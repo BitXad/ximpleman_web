@@ -302,6 +302,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="elparametro_id" value="<?php echo $parametro['parametro_id']; ?>" name="elparametro_id"  hidden>
 <input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
 <input type="text" id="parametro_puntos" value="<?php echo $parametro['parametro_puntos']; ?>" name="parametro_puntos"  hidden>
+<input type="text" id="parametro_imprimirfactura" value="<?php echo $parametro['parametro_imprimirfactura']; ?>" name="parametro_imprimirfactura"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
@@ -2658,6 +2659,46 @@ window.onkeydown = compruebaTecla;
 <!----------------------- FIN MODAL CANTIDAD ----------------------------------->
 <!------------------------------------------------------------------------------->
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
      $("#span_buscar_cliente").click();                    
+</script>
+
+<input type='text' id='input1'>
+<script>
+    // Espera a que el documento esté completamente cargado
+    document.addEventListener("DOMContentLoaded", function() {
+        // Obtén el primer input y el segundo input por su identificador
+        var input1 = document.getElementById("input1");
+        var input2 = document.getElementById("input2");
+
+        // Agrega un evento de escucha al primer input para capturar cambios
+        input1.addEventListener("input", function() {
+            // Copia el valor del primer input al segundo input
+            input2.value = input1.value;
+            
+        });
+    });
+</script>-->
+<!--
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+
+<script>
+$(document).ready(function() {
+    
+    $('#razon_social').on('input', function() {
+        var dato = $(this).val(); // 'NIT: '+$('#nit').val()+', RAZON SOC.: '+$(this).val();
+
+        $.ajax({
+            url: '<?= base_url("venta/guardarDatoCliente"); ?>',
+            type: 'POST',
+            data: { dato: dato },
+            success: function() {
+                console.log('Dato guardado en sesión');
+            },
+            error: function() {
+                console.log('Error al guardar el dato en sesión');
+            }
+        });
+    });
+});
 </script>

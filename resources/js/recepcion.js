@@ -51,7 +51,7 @@ function buscar_por_entrega()
 
 function recepcion(estado)
 {   
-      
+    var decimales    = document.getElementById('decimales').value;
     var base_url    = document.getElementById('base_url').value;
     var destino    = document.getElementById('destino_id').value;
     var controlador = base_url+"detalle_venta/recepcionhoy";
@@ -81,17 +81,21 @@ function recepcion(estado)
                	for (var i = 0; i < n ; i++){
                         
                         html += "<tr style='border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;'>";
-                      
+                        //#
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td align='center'  style='line-height:5px;'><br><b style='font-size: 40px;'><fa class='fa fa-user'></fa> </b></br>";
+                        //CLIENTE
+                        html += "<td align='center'  style='line-height:8px;'><br><b style='font-size: 40px;'><fa class='fa fa-user'></fa> </b></br>";
                         html += "<br><b style='font-size: 14px;'>"+ventas[i]["cliente_razon"]+"</b>";
-                        
+                        html += "<br><br><b style='font-size: 8px;'> ATENDIDO POR:<br><fa class='fa fa-users'></fa>"+ventas[i]["usuario_nombre"]+"</b>";                        
+
                         if (ventas[i]["mesa_nombre"]!=null){
                             html += "<br><br><b>Mesa:  "+ventas[i]["mesa_nombre"]+"</b>";
                     	}
                         
                         html += "<br><br>";
                         html += "</td>";
+                        
+                        //PEDIDO
                         html += "<td>";
                 for (var e = 0; e < d; e++) {
                     
@@ -102,7 +106,17 @@ function recepcion(estado)
                                 clasificador = detalle[e]["clasificador_nombre"];
                             }
                             
-                            html += "<b style='font-size: 16px;'>"+detalle[e]["detalleven_cantidad"]+" "+detalle[e]["producto_nombre"]+"</b>";
+                            	let partes = detalle[e]["detalleven_cantidad"]; 
+                                let partes1 = partes.toString(); 
+                                let partes2 = partes1.split('.'); 
+                                if (partes2[1] == 0) {  
+                                    lacantidad = partes2[0];  
+                                }else{  
+                                    lacantidad = numberFormat(Number(detalle[e]["detalleven_cantidad"]).toFixed(decimales)) 
+                                    //lacantidad = number_format($d['detalleven_cantidad'],2,'.',',');  
+                                }
+
+                            html += "<b style='font-size: 16px;'>"+lacantidad+" "+detalle[e]["producto_nombre"]+"</b>";
                             html += "<br>";
                             
                             if (detalle[e]["clasificador_nombre"]!=null){

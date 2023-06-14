@@ -6742,6 +6742,7 @@ function existen_bolsa(){
 function borrar_datos_cliente(){
     
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
+    var parametro_imprimirfactura = document.getElementById("parametro_imprimirfactura").value;
     var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
     var parametro_factura = document.getElementById("parametro_factura").value; //0 no, 1 si
     let documento_sector = document.getElementById("docsec_codigoclasificador").value;
@@ -6838,38 +6839,49 @@ function borrar_datos_cliente(){
         if (parametro_imprimircomanda==1){
             boton = document.getElementById("imprimir_comanda");
             boton.click();
-            //boton.click();
-            if (facturado != 1){
-                brecibo = document.getElementById("imprimir");
-                brecibo.click();
-            }else{
-                var boton = document.getElementById("imprimir_factura");
-                boton.click();
-            }
-        }else{
-            if (facturado != 1){
-                brecibo = document.getElementById("imprimir");
-                brecibo.click();
-            }else{
-                var boton = document.getElementById("imprimir_factura");
-                boton.click();
-            }
         }
         
-    }else{
+    }
+    
+    if(parametro_imprimirfactura!=0){
+
+        if(parametro_imprimirfactura==1){ // Imprimir solo factura
+            let boton = document.getElementById("imprimir_factura");
+            if (facturado == 1){ boton.click(); }                    
+        }
+
+        if(parametro_imprimirfactura==2){ // Imprimir solo recibo
+            let boton = document.getElementById("imprimir");
+            boton.click();                    
+        }
+
+        if(parametro_imprimirfactura==3){ // Imprimir factura y recibo
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton2 = document.getElementById("imprimir");
+            if (facturado == 1){ boton1.click(); }
+            boton2.click();
+        }
+
+        if(parametro_imprimirfactura==4){ // Imprimir factura o recibo
+
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton2 = document.getElementById("imprimir");
+
+            if (facturado == 1){ boton1.click(); }
+            else { boton2.click(); }
+        }
+
+    }
+
+        
         
         //alert("No es restaurante");
         
-        if (facturado == 1){
-            var boton = document.getElementById("imprimir_factura");
-            boton.click();                    
-        }else{
-
-            //alert("por aqui recibos");
-            location.href = base_url+"factura/abrir_caja";
-
-        }       
-    }
+//        if (facturado == 1){
+//            var boton = document.getElementById("imprimir_factura");
+//            boton.click();                    
+//        }       
+   
     
     document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
     tablaproductos();
@@ -6999,6 +7011,7 @@ function buscar_placa(e){
 }
 
 function anular_venta(venta_id, factura_id = null, factura_enviada=null){
+    
     let base_url = document.getElementById('base_url').value;
     let tiene_factura = document.getElementById("anular_factura"+venta_id).value; 
     if(tiene_factura == 1){
