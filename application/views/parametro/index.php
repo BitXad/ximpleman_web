@@ -392,12 +392,27 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">LOGO EN FACTURA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">SIN INVENTARIO</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOVIMIENTO DIARIO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRIMIR FACTURA/RECIBO </th>
                     </tr>
                     <tr>
                         <td><?php  if ($p['parametro_promocionesbuscador']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php  if ($p['parametro_logoenfactura']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php  if ($p['parametro_sininventario']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php  if ($p['parametro_movimientodiario']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php
+                            if ($p['parametro_imprimirfactura']==0){
+                                echo 'NINGUNO';
+                            }else if ($p['parametro_imprimirfactura']==1){
+                                echo 'IMPRIMIR SOLO FACTURAS';
+                            }else if ($p['parametro_imprimirfactura']==2){
+                                echo 'IMPRIMIR SOLO RECIBOS';
+                            }else if ($p['parametro_imprimirfactura']==3){
+                                echo 'IMPRIMIR FACTURA Y RECIBO';
+                            }else if ($p['parametro_imprimirfactura']==4){
+                                echo 'IMPRIMIR FACTURA O RECIBO';
+                            }
+                            ?>
+                        </td>
                     </tr>
                     
                     <tr>
