@@ -45,15 +45,15 @@ class Inventario_sucursal extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        $this->parametros;
+        
         if($this->acceso(24)){
             //**************** inicio contenido ***************
             $data['rolusuario'] = $this->session_data['rol'];
             $empresa_id = 1;
             $data['page_title'] = "Inventario";
             $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-            
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros;
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();

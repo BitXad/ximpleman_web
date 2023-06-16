@@ -793,7 +793,8 @@ window.onkeydown = compruebaTecla;
 
             </select>
         
-            <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(4)" id="marca_producto"  >
+        
+        <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(4)" id="marca_producto"  > 
                     <option value="0" >- MARCAS -</option>
                     <?php
                         foreach($marcas as $marca){ ?>
