@@ -188,6 +188,16 @@ class Inventario_model extends CI_Model
 
     }
 
+    function get_inventario_marcas($parametro)
+    {
+        $sql = " select i.* from inventario i where i.estado_id = 1 and i.producto_marca = '".$parametro."'
+                group by i.producto_id order by i.producto_nombre";
+  
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
+
     /*
      * Get presentacion
      */

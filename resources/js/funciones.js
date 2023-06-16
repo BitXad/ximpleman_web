@@ -2189,6 +2189,11 @@ function tablaresultados(opcion)
         parametro = document.getElementById('subcategoria_prod').value;        
     }
     
+    if (opcion == 4){
+        controlador = base_url+'venta/buscarmarcas/';
+        parametro = document.getElementById('marca_producto').value;        
+    }
+    
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
     $.ajax({

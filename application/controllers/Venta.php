@@ -226,6 +226,7 @@ class Venta extends CI_Controller{
         $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
         $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
         $data['empresa_email'] = $this->empresa["empresa_email"];
+        $data['marcas'] = $this->Venta_model->consultar("select * from marca_producto order by marca_nombre");
         
         
         if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
@@ -3157,6 +3158,34 @@ function buscarsubcategorias()
             
             if ($parametro!=""){
             $datos = $this->Inventario_model->get_inventario_subcategoria($parametro);            
+            //$datos = $this->Inventario_model->get_inventario_bloque();
+            echo json_encode($datos);
+            }
+            else echo json_encode(null);
+        }
+        else
+        {                 
+            show_404();
+        }      
+        		
+        //**************** fin contenido ***************
+              
+}
+/*
+* buscar productos por categoria de productos
+*/
+function buscarmarcas()
+{
+        //**************** inicio contenido ***************   
+   
+        $usuario_id = $this->session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            
+            if ($parametro!=""){
+            $datos = $this->Inventario_model->get_inventario_marcas($parametro);            
             //$datos = $this->Inventario_model->get_inventario_bloque();
             echo json_encode($datos);
             }
