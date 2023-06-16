@@ -1489,7 +1489,7 @@ class Factura extends CI_Controller{
     function anular_factura_malemitida($factura_id,$factura_numero){
         
         $data['sistema'] = $this->sistema;
-        $configuracion = $this->configuracion[0];
+        //$configuracion = $this->configuracion[0];
             
         $sql = "select * from factura where factura_id = ".$factura_id;                
         $factura = $this->Factura_model->consultar($sql);

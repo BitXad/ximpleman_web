@@ -21,6 +21,7 @@
 <input type="text" id="base_url" value="<?php echo base_url();?>" hidden>
 <input type="hidden" id="rolusuario_asignado" name="rolusuario_asignado" value="<?php echo $rolusuario_asignado;?>">
 <input type="hidden" id="parametro_tiposistema" name="parametro_tiposistema" value="<?php echo $configuracion["parametro_tiposistema"];?>">
+<input type="hidden" id="decimales" name="decimales" value="<?php echo $configuracion["parametro_decimales"];?>">
 
 <!--<div class="box-header">
                 <h3 class="box-title">Factura</h3>
