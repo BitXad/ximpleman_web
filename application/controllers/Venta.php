@@ -6363,7 +6363,8 @@ function anular_venta($venta_id){
                                                     if($d['detallefact_preferencia']!='' && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ){
         $micad .=                                       " ".$d['detallefact_preferencia'];
                                                     }
-                                                    if($d['detallefact_caracteristicas']!= '' && $d['detallefact_caracteristicas']!= null && $d['detallefact_caracteristicas']!='-' ){
+                                                    $caracteristicas = trim($d['detallefact_caracteristicas']);
+                                                    if($caracteristicas!='' && $caracteristicas!=null && $caracteristicas!='-' && $caracteristicas!='null') {
         $micad .= "                                        <br>".nl2br($d['detallefact_caracteristicas']);
                                                     }
         $micad .= "                                </span>";
