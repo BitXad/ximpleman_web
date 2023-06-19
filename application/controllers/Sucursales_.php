@@ -352,7 +352,7 @@ class Sucursales extends CI_Controller{
 
                     //Paso 3.4 - Cargamos el inventario de la tabla inventario_sucursales_aux a inventario_sucursales
                     $sql = "update inventario_sucursales s, inventario_sucursales_aux t set
-                        s.suc".($i+1)." = t.existencia
+                            s.suc".($i+1)." = t.existencia
                             where
                             s.producto_id = t.producto_id";
                     $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);

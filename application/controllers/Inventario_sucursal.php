@@ -52,19 +52,19 @@ class Inventario_sucursal extends CI_Controller{
             $data['page_title'] = "Inventario";
             $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
             
-            $this->load->model('Parametro_model');
-            $data['parametro'] = $this->Parametro_model->get_parametros();
+            //$this->load->model('Parametro_model');
+            //$data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['parametro'] = $this->parametros; //_model->get_parametros();
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             
             $data['almacenes'] = $this->Inventario_model->get_almacenes();
             
-           
             //********************************************
             // SMART GRID
             //********************************************
-                        $this->load->library('SmartGrid/Smartgrid');
+            /*$this->load->library('SmartGrid/Smartgrid');
             // MySQL Query to get data   
             $decimales = $this->parametros['parametro_decimales'];
             $decimales2 = 0;
@@ -110,7 +110,7 @@ class Inventario_sucursal extends CI_Controller{
 
             // Render the grid and assign to data array, so it can be print to on the view
             $data['grid_html'] = $this->smartgrid->render_grid();    
-            
+            */
             //*************** FIN SMARTGRID***************      
             //********************************************      
             
@@ -127,7 +127,7 @@ class Inventario_sucursal extends CI_Controller{
      */
     function mostrar_inventarios()
     {
-        $data['sistema'] = $this->sistema;
+        //$data['sistema'] = $this->sistema;
         if($this->acceso(25)){
             $parametro = $this->input->post("parametro");
             //$select_almacen = $this->input->post("select_almacen");

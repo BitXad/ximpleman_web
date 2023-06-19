@@ -5,9 +5,17 @@
 //esta funcion verifica 2 parametros: la tecla presionada y otro parametro que le indica que hacer
 $(document).on("ready",inicio);
 function inicio(){
-      //  tabla_inventario();
+        //tabla_inventariosuc();
 }
 
+function buscar_productos(e) {
+  tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){
+        actualizar_inventarios();
+    }
+}
+
+/* Actualiza inventario_sucursales.... de inventario_sucursal */
 function actualizar_inventarios(){
  
     var base_url = document.getElementById('base_url').value;
@@ -18,11 +26,16 @@ function actualizar_inventarios(){
     $.ajax({url: controlador,
         type:"POST",
         data:{},
-        success:function(respuesta){     
-            alert('El inventario se actualizo exitosamente...! ');
-            //redirect('inventario/index');
-            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-            //tabla_inventariosuc();
+        success:function(respuesta){
+            var registros =  JSON.parse(respuesta);
+            if (registros == "no"){
+                alert("El Sistema no tiene Sucursales; por favor consulte con su proveedor!.");
+            }else{
+                alert('El inventario se actualizo exitosamente...! ');
+                //redirect('inventario/index');
+                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+                tabla_inventariosuc();
+            }
         },
         complete: function (jqXHR, textStatus) {
             document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
@@ -32,9 +45,11 @@ function actualizar_inventarios(){
     
 }
 
+/* muestra la tabla inventario sucursal de inventario_sucursal */
 function tabla_inventariosuc(){
     var base_url = document.getElementById("base_url").value;
     var parametro = document.getElementById("filtrar").value;
+    var decimales = document.getElementById("decimales").value;
     var controlador = base_url+"inventario_sucursal/mostrar_inventarios";
     
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
@@ -49,6 +64,7 @@ function tabla_inventariosuc(){
     $.ajax({
         url: controlador,
         type:"POST",
+        async: false,
         data:{parametro:parametro},
         success: function(resultado){
             var inv = JSON.parse(resultado);
@@ -122,61 +138,190 @@ function tabla_inventariosuc(){
                         if(1 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc1']+"</td>";
                             html += `<td class='text-right' style='padding:0;${inv[i]["suc1"] <= 0 ? "background-color: #FF8989":""}'>`;
-                            html += inv[i]['suc1']+"</td>";
+                            
+                            let partes = inv[i]['suc1'];
+                            let partes1 = partes.toString();
+                            let partes2 = partes1.split('.');
+                            if (partes2[1] == 0) { 
+                                lacantidad = partes2[0]; 
+                            }else{ 
+                                lacantidad = Number(inv[i]['suc1']).toFixed(decimales);
+                            }
+                            html += lacantidad;
+                        
+                            html += "</td>";
+                            
                             total_saldo += Number(inv[i]['suc1']);
                         }
                         if(2 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc2']+"</td>";
                             html += `<td class='text-right' style='padding:0;${inv[i]["suc2"] <= 0 ? "background-color: #FF8989":""}'>`;
-                            html += inv[i]['suc2']+"</td>";
+                            if(inv[i]['suc2'] != null){
+                                let partes = inv[i]['suc2'];
+                                let partes1 = partes.toString();
+                                let partes2 = partes1.split('.');
+                                if (partes2[1] == 0) { 
+                                    lacantidad = partes2[0]; 
+                                }else{ 
+                                    lacantidad = Number(inv[i]['suc2']).toFixed(decimales);
+                                }
+                                html += lacantidad;
+                            }else{
+                                html += "0";
+                            }
+                            html += "</td>";
                             total_saldo += Number(inv[i]['suc2']);
                         }
                         if(3 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc3']+"</td>";
                             html += `<td class='text-right' style='padding:0;${inv[i]["suc3"] <= 0 ? "background-color: #FF8989":""}'>`;
-                            html += inv[i]['suc3']+"</td>";
+                            if(inv[i]['suc3'] != null){
+                                let partes = inv[i]['suc3'];
+                                let partes1 = partes.toString();
+                                let partes2 = partes1.split('.');
+                                if (partes2[1] == 0) { 
+                                    lacantidad = partes2[0]; 
+                                }else{ 
+                                    lacantidad = Number(inv[i]['suc3']).toFixed(decimales);
+                                }
+                                html += lacantidad;
+                            }else{
+                                html += "0";
+                            }
+                            html += "</td>";
                             total_saldo += Number(inv[i]['suc3']);
                         }
                         if(4 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc4']+"</td>";
                             html += `<td class='text-right' style='padding:0;${inv[i]["suc4"] <= 0 ? "background-color: #FF8989":""}'>`;
-                            html += inv[i]['suc4']+"</td>";
+                            if(inv[i]['suc4'] != null){
+                                let partes = inv[i]['suc4'];
+                                let partes1 = partes.toString();
+                                let partes2 = partes1.split('.');
+                                if (partes2[1] == 0) { 
+                                    lacantidad = partes2[0]; 
+                                }else{ 
+                                    lacantidad = Number(inv[i]['suc4']).toFixed(decimales);
+                                }
+                                html += lacantidad;
+                            }else{
+                                html += "0";
+                            }
+                            html += "</td>";
                             total_saldo += Number(inv[i]['suc4']);
                         }
                         if(5 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc5']+"</td>";
                             html += `<td class='text-right' style='padding:0;${inv[i]["suc5"] <= 0 ? "background-color: #FF8989":""}'>`;
-                            html += inv[i]['suc5']+"</td>";
+                            if(inv[i]['suc5'] != null){
+                                let partes = inv[i]['suc5'];
+                                let partes1 = partes.toString();
+                                let partes2 = partes1.split('.');
+                                if (partes2[1] == 0) { 
+                                    lacantidad = partes2[0]; 
+                                }else{ 
+                                    lacantidad = Number(inv[i]['suc5']).toFixed(decimales);
+                                }
+                                html += lacantidad;
+                            }else{
+                                html += "0";
+                            }
+                            html += "</td>";
                             total_saldo += Number(inv[i]['suc5']);
                         }
                         if(6 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc6']+"</td>";
                             html += `<td class='text-right' style='padding:0;${inv[i]["suc6"] <= 0 ? "background-color: #FF8989":""}'>`;
-                            html += inv[i]['suc6']+"</td>";
+                            if(inv[i]['suc6'] != null){
+                                let partes = inv[i]['suc6'];
+                                let partes1 = partes.toString();
+                                let partes2 = partes1.split('.');
+                                if (partes2[1] == 0) { 
+                                    lacantidad = partes2[0]; 
+                                }else{ 
+                                    lacantidad = Number(inv[i]['suc6']).toFixed(decimales);
+                                }
+                                html += lacantidad;
+                            }else{
+                                html += "0";
+                            }
+                            html += "</td>";
                             total_saldo += Number(inv[i]['suc6']);
                         }
                         if(7 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc7']+"</td>";
                             html += `<td class='text-right' style='padding:0;${inv[i]["suc7"] <= 0 ? "background-color: #FF8989":""}'>`;
-                            html += inv[i]['suc7']+"</td>";
+                            if(inv[i]['suc7'] != null){
+                                let partes = inv[i]['suc7'];
+                                let partes1 = partes.toString();
+                                let partes2 = partes1.split('.');
+                                if (partes2[1] == 0) { 
+                                    lacantidad = partes2[0]; 
+                                }else{ 
+                                    lacantidad = Number(inv[i]['suc7']).toFixed(decimales);
+                                }
+                                html += lacantidad;
+                            }else{
+                                html += "0";
+                            }
+                            html += "</td>";
                             total_saldo += Number(inv[i]['suc7']);
                         }
                         if(8 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc8']+"</td>";
                             html += `<td class='text-right' style='padding:0;${inv[i]["suc8"] <= 0 ? "background-color: #FF8989":""}'>`;
-                            html += inv[i]['suc8']+"</td>";
+                            if(inv[i]['suc8'] != null){
+                                let partes = inv[i]['suc8'];
+                                let partes1 = partes.toString();
+                                let partes2 = partes1.split('.');
+                                if (partes2[1] == 0) { 
+                                    lacantidad = partes2[0]; 
+                                }else{ 
+                                    lacantidad = Number(inv[i]['suc8']).toFixed(decimales);
+                                }
+                                html += lacantidad;
+                            }else{
+                                html += "0";
+                            }
+                            html += "</td>";
                             total_saldo += Number(inv[i]['suc8']);
                         }
                         if(9 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc9']+"</td>";
                             html += `<td class='text-right' style='padding:0;${inv[i]["suc9"] <= 0 ? "background-color: #FF8989":""}'>`;
-                            html += inv[i]['suc9']+"</td>";
+                            if(inv[i]['suc9'] != null){
+                                let partes = inv[i]['suc9'];
+                                let partes1 = partes.toString();
+                                let partes2 = partes1.split('.');
+                                if (partes2[1] == 0) { 
+                                    lacantidad = partes2[0]; 
+                                }else{ 
+                                    lacantidad = Number(inv[i]['suc9']).toFixed(decimales);
+                                }
+                                html += lacantidad;
+                            }else{
+                                html += "0";
+                            }
+                            html += "</td>";
                             total_saldo += Number(inv[i]['suc9']);
                         }
                         if(10 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc10']+"</td>";
                             html += `<td class='text-right' style='padding:0;${inv[i]["suc10"] <= 0 ? "background-color: #FF8989":""}'>`;
-                            html += inv[i]['suc10']+"</td>";
+                            if(inv[i]['suc10'] != null){
+                                let partes = inv[i]['suc10'];
+                                let partes1 = partes.toString();
+                                let partes2 = partes1.split('.');
+                                if (partes2[1] == 0) { 
+                                    lacantidad = partes2[0]; 
+                                }else{ 
+                                    lacantidad = Number(inv[i]['suc10']).toFixed(decimales);
+                                }
+                                html += lacantidad;
+                            }else{
+                                html += "0";
+                            }
+                            html += "</td>";
                             total_saldo += Number(inv[i]['suc10']);
                         }
                         html += "<td "+margen+" class='text-right'>"+total_saldo+"</td>";
@@ -189,7 +334,7 @@ function tabla_inventariosuc(){
                         html += "             	<td "+margen+"><center> <font size='1'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
                         html += "             	<td "+margen+"><center> <font size='1'><b>"+ numberFormat(total.toFixed(2))+"</b></font></center></td>";
                         */
-                       html += "<td "+margen+"><center> <font size='1'><b>"+ numberFormat(total_saldobs.toFixed(2))+"</b></font></center></td>";
+                       html += "<td "+margen+"><center> <font size='1'><b>"+ numberFormat(total_saldobs.toFixed(decimales))+"</b></font></center></td>";
                         html += "<td "+margen+" class='text-center'> ";
                         if(lamoneda_id == 1){
                             total_otram = total_saldobs/Number(lamoneda[1]["moneda_tc"]);
@@ -198,7 +343,7 @@ function tabla_inventariosuc(){
                             total_otram = total_saldobs*Number(lamoneda[1]["moneda_tc"]);
                             total_otramoneda += total_otram;
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</td>";
                         /*
                         factor = 0;
@@ -317,10 +462,11 @@ function tabla_inventariosuc(){
                 html += "</table>";            
                 $("#tabla_inventario").html(html);   
                              
-                
+                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
             }, // end succes: function(resultados){
             error:function(resultado){
                 //alert('ocurrio un error..!!');
+                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
             },
             complete: function (jqXHR, textStatus) {
                 document.getElementById('loader').style.display = 'none'; //muestra el bloque del loader 

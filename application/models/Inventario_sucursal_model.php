@@ -26,8 +26,8 @@ class Inventario_sucursal_model extends CI_Model
     /* obtiene inventario de productos de las sucursales de una busqueda */
     function get_inventario_sucursalesparametro($parametro)
     {
-        $sql = "SELECT ii.*, i.*
-                FROM inventario_sucursales ii, c.categoria_nombre
+        $sql = "SELECT ii.*, i.*, c.categoria_nombre
+                FROM inventario_sucursales ii
                 left join inventario i on ii.producto_id = i.producto_id
                 left join categoria_producto c on i.categoria_id = c.categoria_id
                 WHERE

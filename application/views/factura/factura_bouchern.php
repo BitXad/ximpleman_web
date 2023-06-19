@@ -320,7 +320,7 @@
                                         echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
                                         //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
                                     ?>
-                                    <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo "<br><span style='font-size: 10px'>Unidad Medida: ".$d['detallefact_unidadfactor']."</span>";?>
+                                    <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo "<br><span style='font-size: 10px'>Unidad de Medida: ".$d['detallefact_unidadfactor']."</span>";?>
                                 </td>
                                 <!--<td colspan="2"></td>-->
                             </tr>
