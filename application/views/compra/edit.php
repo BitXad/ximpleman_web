@@ -303,7 +303,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     if($provi==0) { ?>
         
         
-        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn btn-xs btn-default" ><i class="fa fa-money "></i>
+        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn btn-xs btn-success" ><i class="fa fa-money "></i>
                Finalizar <?php echo $sistema["sistema_modulocompras"]; ?> 
             </a></label>
             
@@ -316,7 +316,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
  <?php  } ?>
              
 
-             <a href="#" data-toggle="modal" data-target="#aviso" class="btn btn-xs btn-default" >
+             <a href="#" data-toggle="modal" data-target="#aviso" class="btn btn-xs btn-danger" >
                  <i class="fa fa-sign-out "></i>
                Salir  
             </a>
@@ -334,17 +334,16 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                <center><H4> Desea salir de esta <?php echo $sistema["sistema_modulocompras"]; ?> sin guardar cambios? 
               </H4></center>
           </div>
+                
               <div class="modal-footer" >
-        
-        
-                  <a  href="<?php echo site_url('compra'); ?>" class="btn btn-md btn-default" >
+                  <a  href="<?php echo site_url('compra'); ?>" class="btn btn-md btn-success" >
                 <i class="fa fa-sign-out "></i>
                Salir sin guardar
             </a>  
              
            
             
-            <button class="btn btn-md btn-default" data-dismiss="modal">
+            <button class="btn btn-md btn-danger" data-dismiss="modal">
        
                 <span class="fa fa-close"></span>   Cancelar  
                     </div>
@@ -447,19 +446,19 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <center>
 
             <?php  $provien = $compra[0]['proveedor_id'];  if($provien==0) { ?>  
-            <label id="provedorboton2"><a onclick="myFunction()" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')"0>
+            <label id="provedorboton2"><a onclick="myFunction()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')"0>
                 <i class="fa fa-money fa-4x"></i><br>
                Finalizar<br><?php echo $sistema["sistema_modulocompras"]; ?><br>
             </a></label>
           <?php }else{ ?>
-            <label id="provedorboton2"><a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')">
+            <label id="provedorboton2"><a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="mostrar('forma_id','glosa_banco')">
                 <i class="fa fa-money fa-4x"></i><br>
                Finalizar<br><?php echo $sistema["sistema_modulocompras"]; ?><br>
             </a></label>
           <?php } ?>
 
             
-            <a  href="#" data-toggle="modal" data-target="#aviso" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;">
+            <a  href="#" data-toggle="modal" data-target="#aviso" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Salir<br>
             </a>    
@@ -506,7 +505,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title" style="padding-right: 170px;">Añadir Producto</h3>
-                <button type="button" class="btn btn-default btn-xs" onclick="cambiarcodproducto();" title="genera codigo de barra y codigo">
+                <button type="button" class="btn btn-info btn-xs" onclick="cambiarcodproducto();" title="genera codigo de barra y codigo">
       <i class="fa fa-edit"></i> Generar Codigo Barra y Codigo
     </button>
             </div>
@@ -588,7 +587,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label for="cantidad" class="control-label">Cantidad Compra<?php echo $sistema["sistema_modulocompras"]; ?></label>
+                        <label for="cantidad" class="control-label">Cantidad <?php echo $sistema["sistema_modulocompras"]; ?></label>
                         <div class="form-group">
                             <input type="number" min="0" step="any" name="cantidad" autocomplete="off" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
                              <input type="hidden" name="descuento" value="0" class="form-control" id="descuento" />
@@ -716,7 +715,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 
             </div>
            
-                <button type="submit" class="btn btn-default">
+                <button type="submit" class="btn btn-success">
                     <i class="fa fa-check"></i> Guardar
                 </button>
           
@@ -834,7 +833,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             </div></div>
             
 
-                <button type="button" class="btn btn-default" onclick="crearproveedor('<?php echo $compra_id; ?>')" >
+                <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')" >
 
                     <i class="fa fa-check"></i> Guardar
                 </button>           
@@ -901,7 +900,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                           <b> <?php echo $h['proveedor_nombre']; ?></b><br>
                                          Telf.:<?php echo $h['proveedor_telefono']; ?> <br>
                                        
-                                         <button  class="btn btn-default btn-xs" onclick="modificarproveedores('<?php echo $compra_id; ?>','<?php echo $h['proveedor_id']; ?>')"   data-dismiss="modal">
+                                         <button  class="btn btn-info btn-xs" onclick="modificarproveedores('<?php echo $compra_id; ?>','<?php echo $h['proveedor_id']; ?>')"   data-dismiss="modal">
                                             <i class="fa fa-check"></i> Añadir
                                         </button>
 
@@ -975,7 +974,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         <label for="forma_id" class="control-label">Forma Pago</label>
                         <div class="form-group">
                             <select name="forma_id" id="forma_id" class="form-control"  required onchange="mostrar('forma_id','glosa_banco')">
-                                <option value="1">EFECTIVO</option>
+                                <!--<option value="1">EFECTIVO</option>-->
                                 <?php 
                                 foreach($all_forma_pago as $forma_pago){
                                     extract($forma_pago);
@@ -1228,7 +1227,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </h4>
             </button>
             
-            <button class="btn btn-lg btn-default btn-sm btn-block" data-dismiss="modal">
+            <button class="btn btn-lg btn-danger btn-sm btn-block" data-dismiss="modal">
                 <h4>
                 <span class="fa fa-close"></span>   Cancelar  
                 </h4>

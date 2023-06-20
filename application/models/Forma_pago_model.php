@@ -74,7 +74,7 @@ class Forma_pago_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `forma_id` DESC
+            ORDER BY `forma_id` ASC
 
             " . $limit_condition . "
         ")->result_array();

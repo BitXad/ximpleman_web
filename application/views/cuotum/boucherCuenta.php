@@ -71,9 +71,10 @@ border-bottom : 1px solid #aaa;*/
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
-<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"]."cm";
+      $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
+      $decimales = $parametro["parametro_decimales"]."cm";
 ?>
 
 
@@ -189,7 +190,7 @@ border-bottom : 1px solid #aaa;*/
             </tr>
             <tr  style="font-size: 8pt;" >
             <td align="left" style="padding: 0;"> CUOTA Nº:</td> 
-            <td align="right" style="padding: 0;"><?php echo $cuota[0]['cuota_numcuota']; ?> / <?php echo $cuota[0]['credito_numpagos']; ?></td>
+            <td align="right" style="padding: 0;"><?php echo $cuota[0]['cuota_numcuota']; ?> / <?php echo number_format($cuota[0]['credito_numpagos']); ?></td>
            </tr>
            <tr  style="font-size: 8pt;" >
             <td align="left" style="padding: 0;"> LIMITE DE PAGO:</td> 

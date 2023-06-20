@@ -2117,12 +2117,12 @@ window.onkeydown = compruebaTecla;
                                             <label for="usuario_idx" class="control-label">Precio Costo:</label>
                                             
                                             <input type="text" id="modificarprecios_producto_id" value="0.00" hidden />
-                                                <input type="text" id="modificarprecios_producto_costo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)" />
+                                                <input type="text" id="modificarprecios_producto_costo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
 					</div>
                             
                                         <div class="col-md-3">
                                             <label for="usuario_idx" class="control-label">Precio <?php echo $sistema["sistema_moduloventas"]; ?> :</label>                                            
-                                            <input type="text" id="modificarprecios_producto_precio" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)" />
+                                            <input type="text" id="modificarprecios_producto_precio" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
 					</div>
                             
                                         <div class="col-md-6" id='botones'  style='display:block;'>

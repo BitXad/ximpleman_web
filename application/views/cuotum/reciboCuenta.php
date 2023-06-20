@@ -8,10 +8,10 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-<?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
-      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+<?php $tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"]."cm";
+      //$margen_izquierdo = "col-xs-".$parametro["parametro_margenfactura"];;
+      $margen_izquierdo = "col-xs-".$parametro["parametro_margenfactura"];;
 ?>
 
     <table class="table table-striped" style="width: <?php echo $ancho;?>; padding: 0;;margin: 0" >

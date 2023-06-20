@@ -2450,8 +2450,8 @@ function tablaresultados(opcion)
                         html += "  <!----------------------------------------------------------------->";                    
                         html += "       <table>"; // style='space-white: nowrap;'
                         html += "       <tr style='border:0px;'>"; // style='space-white: nowrap;'
-                        html += "       <td><b>Ancho:</b><input type='text' id='producto_ancho"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
-                        html += "       <td><b>Alto:</b><input type='text'id='producto_alto"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
+//                        html += "       <td><b>Ancho:</b><input type='text' id='producto_ancho"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
+//                        html += "       <td><b>Alto:</b><input type='text'id='producto_alto"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
                         html += "       </tr>"; // style='space-white: nowrap;'
                         html += "           <tr>";
                        
