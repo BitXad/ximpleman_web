@@ -130,9 +130,9 @@
 <div class="row">
     <div class="col-md-12">
             <!--------------------- parametro de buscador --------------------->
-<!--                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código"   onkeypress="validar(event,1)" >
-                  </div>-->
+                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código barras"   onkeypress="buscar_productos(event)" >
+                  </div>
             <!--------------------- fin parametro de buscador ---------------------> 
             <div class="box">
            
@@ -152,7 +152,7 @@
                     
                     </div>
                 </div>
-        <?php echo isset($grid_html) ? $grid_html : ''; ?>
+        <?php //echo isset($grid_html) ? $grid_html : ''; ?>
             </div>
     </div>
 </div>
@@ -168,18 +168,4 @@
         <br />
     </div>
     
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">    
-    <!-- Styles for datatables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
-    <!-- JQuery include -->
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.js"></script>
-    <!-- Javascrips for datatables -->
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>    
-    <!-- Now make the SmartGrid work with datatables 
-         'sg-table' is the id of the main table in SmartGrid -->
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#sg-table').DataTable();
-        });
-    </script> 
+
