@@ -92,7 +92,7 @@ function validar(e,opcion) {
   
     var tecla = (document.all) ? e.keyCode : e.which;
     
-    if (e==13){
+  if (e==13){
         
         var tecla = e;
     
@@ -2142,6 +2142,7 @@ function tablaresultados(opcion)
     var usuario_id = document.getElementById('usuario_id').value;
 
     var modo_visualizacion = document.getElementById('parametro_modoventas').value; // modo de visualizacion 1 = modo texto , 2 = modo grafico
+    var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value; // modo de visualizacion 1 = modo texto , 2 = modo grafico
     var ancho_boton = document.getElementById('parametro_anchoboton').value; //base 115
     var alto_boton = document.getElementById('parametro_altoboton').value;
     var color_boton = document.getElementById('parametro_colorboton').value;
@@ -2149,6 +2150,7 @@ function tablaresultados(opcion)
     var alto_imagen = document.getElementById('parametro_altoimagen').value; //document.getElementById('parametro_altoimagen').value;
     var forma_imagen = document.getElementById('parametro_formaimagen').value; //document.getElementById('parametro_altoimagen').value;
     var datosboton = document.getElementById('parametro_datosboton').value; //document.getElementById('parametro_altoimagen').value;
+    var select_buscador = document.getElementById('select_buscador').value; //document.getElementById('parametro_altoimagen').value;
     
     var rol_precioventa = document.getElementById('rol_precioventa').value; //document.getElementById('parametro_altoimagen').value;
     var rol_factor = document.getElementById('rol_factor').value; //document.getElementById('parametro_altoimagen').value;
@@ -2173,8 +2175,26 @@ function tablaresultados(opcion)
     
     
     if (opcion == 1){
-        controlador = base_url+'venta/buscarproductos/';
-        parametro = document.getElementById('filtrar').value        
+        //alert(select_buscador);
+        if(select_buscador>0){
+            
+            if (select_buscador==1){
+                controlador = base_url+'venta/buscarprincipioactivo/';
+                parametro = document.getElementById('filtrar').value
+            }
+            if (select_buscador==2){
+                controlador = base_url+'venta/buscarprincipioactivo/';
+                parametro = document.getElementById('filtrar').value
+            }
+            if (select_buscador==3){
+                controlador = base_url+'venta/buscarmarcas/';
+                parametro = document.getElementById('filtrar').value;
+            }
+            
+        }else{
+            controlador = base_url+'venta/buscarproductos/';
+            parametro = document.getElementById('filtrar').value
+        }
     }
     
     if (opcion == 2){
@@ -2193,6 +2213,7 @@ function tablaresultados(opcion)
         controlador = base_url+'venta/buscarmarcas/';
         parametro = document.getElementById('marca_producto').value;        
     }
+
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
@@ -2276,14 +2297,24 @@ function tablaresultados(opcion)
                         html += "<td  style='padding:0; line-height:10pt;'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ nombreprod+"</b></font>";
                         
                         html += mimagen;   
-                        html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
+                        html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];                        
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
-                        html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
-                        
+                        html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";                        
                         html += "<button class='btn btn-danger btn-xs' type='text' style='padding:0;' title='Compra rápida' id='button"+registros[i]["producto_id"]+"' onclick='registrar_ingreso_rapido("+registros[i]["producto_id"]+")'>- <fa class='fa fa-bolt'></fa> -</button>";
                         html += "<button class='btn btn-facebook btn-xs' type='text' style='padding:0;' title='Registro rápido' id='button"+registros[i]["producto_id"]+"' onclick='modificar_precios("+registros[i]["producto_id"]+")'>- <fa class='fa fa-money'></fa> -</button>";
                         
-                       if(! esMobil()){
+                        if (parametro_modulorestaurante==2){ //si es farmacia
+                            
+                                html += "<br><b>PRINCIPIO ACT.:</b> ";
+                                if (registros[i]["producto_principioact"]!=null)
+                                    html += registros[i]["producto_principioact"];
+
+                                html += "<br><b>ACCION TERAP.:</b> ";
+                                if (registros[i]["producto_accionterap"]!=null)
+                                    html += registros[i]["producto_accionterap"];
+                        }
+
+                        if(! esMobil()){
                         html += "</td>";
                         
                         html += "<td  style='padding:0px;'>"; // style='space-white:nowarp'
@@ -2450,8 +2481,8 @@ function tablaresultados(opcion)
                         html += "  <!----------------------------------------------------------------->";                    
                         html += "       <table>"; // style='space-white: nowrap;'
                         html += "       <tr style='border:0px;'>"; // style='space-white: nowrap;'
-                        html += "       <td><b>Ancho:</b><input type='text' id='producto_ancho"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
-                        html += "       <td><b>Alto:</b><input type='text'id='producto_alto"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
+//                        html += "       <td><b>Ancho:</b><input type='text' id='producto_ancho"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
+//                        html += "       <td><b>Alto:</b><input type='text'id='producto_alto"+registros[i]["producto_id"]+"' onkeyup='calcular_cantidad("+registros[i]["producto_id"]+")'> </td>"; // style='space-white: nowrap;'
                         html += "       </tr>"; // style='space-white: nowrap;'
                         html += "           <tr>";
                        
@@ -4799,9 +4830,35 @@ function actualizar_inventario()
         type:"POST",
         data:{},
         success:function(respuesta){     
-            alert('El inventario se actualizo exitosamente...! ');
+            alert('El inventario se actualizó exitosamente...! ');
             //redirect('inventario/index');
             document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            //tabla_inventario();
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+    });   
+      
+}
+
+function actualizar_marcas()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario/actualizar_marcas/";
+    
+    document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){     
+            alert('El lista de marcas se actualizó exitosamente...! ');
+            //redirect('inventario/index');
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            location.reload();
+            
             //tabla_inventario();
         },
         complete: function (jqXHR, textStatus) {

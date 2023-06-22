@@ -749,6 +749,13 @@ div {
                         </div>
                     </div>
                     
+                    <div class="col-md-2"> 
+                        <label for="parametro_decimales" class="control-label" title="Cantidad de decimales"><span class="text-danger">*</span>CANTIDAD DECIMALES</label> 
+                        <div class="form-group"> 
+                            <input type="number" min="0" name="parametro_decimales" value="<?php echo ($this->input->post('parametro_decimales') ? $this->input->post('parametro_decimales') : $parametro['parametro_decimales']); ?>" class="form-control" id="parametro_decimales" required /> 
+                        </div> 
+                    </div> 
+                    
                 </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(214, 114, 26, 0.3);"><u><b>CLIENTES</b></u><br>

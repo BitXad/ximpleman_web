@@ -1298,6 +1298,7 @@ class Compra extends CI_Controller{
                 } 
             }
         } else {
+            
             if ($credito_monto > $maximo){
                 $numcuota = 2;
                 $credito_numpagos = $numcuota;

@@ -231,7 +231,7 @@ class Venta extends CI_Controller{
         
         if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
             
-            if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
+           // if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
        
 
 
@@ -260,7 +260,7 @@ class Venta extends CI_Controller{
 //                    
 //                    }
                     
-            }
+            //}
         }
         
         /*
@@ -3106,6 +3106,25 @@ function buscarproductos(){
                 $datos = $this->Inventario_model->get_inventario_for_serie($parametro);
             }
             echo json_encode($datos);
+        }else{
+            echo json_encode(null);
+        }
+    }else{                 
+        show_404();
+    }   
+}
+
+function buscarprincipioactivo(){
+    
+    if ($this->input->is_ajax_request()) {
+        
+        $parametro = $this->input->post('parametro');
+        
+        if ($parametro!=""){
+            
+            $datos = $this->Inventario_model->get_inventario_principioactivo($parametro); 
+            echo json_encode($datos);
+            
         }else{
             echo json_encode(null);
         }
