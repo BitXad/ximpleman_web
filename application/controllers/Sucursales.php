@@ -49,9 +49,10 @@ class Sucursales extends CI_Controller{
             
         //**************** inicio contenido ***************
         $producto_codigo = $this->input->post('producto_codigo');
-        $parametro = $this->Parametro_model->get_parametros();
+        $parametros = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $parametros[0];
         
-        
+        $data['almacenes'] = $this->Inventario_model->get_almacenes();
         
         
         if ($producto_codigo==0){
@@ -75,65 +76,6 @@ class Sucursales extends CI_Controller{
             $sql = "select * from inventario i, inventario_sucursales s where i.producto_codigobarra = '".$producto_codigo."' and i.producto_id = s.producto_id";
             $inventario = $this->Venta_model->consultar($sql);
             
-//            if($parametro[0]["parametro_sucursales"]<=1){
-//                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
-//                $suc1 = null;
-//                $suc2 = null;
-//                $suc3 = null;
-//                $suc4 = null;
-//                $suc5 = null;
-//            }
-//            
-//
-//            if($parametro[0]["parametro_sucursales"]==2){
-//                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
-//                $suc1 = $this->Sucursales_model->consulta_sucursal1($sql);
-//                $suc2 = null;
-//                $suc3 = null;
-//                $suc4 = null;
-//                $suc5 = null;
-//            }
-//            
-//
-//            if($parametro[0]["parametro_sucursales"]==3){
-//                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
-//                $suc1 = $this->Sucursales_model->consulta_sucursal1($sql);
-//                $suc2 = $this->Sucursales_model->consulta_sucursal2($sql);
-//                $suc3 = null;
-//                $suc4 = null;
-//                $suc5 = null;
-//            }
-//
-//            if($parametro[0]["parametro_sucursales"]==4){
-//                
-//                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
-//                $suc1 = $this->Sucursales_model->consulta_sucursal1($sql);
-//                $suc2 = $this->Sucursales_model->consulta_sucursal2($sql);
-//                $suc3 = $this->Sucursales_model->consulta_sucursal3($sql);
-//                $suc4 = null;
-//                $suc5 = null;
-//            }
-//            
-//
-//            if($parametro[0]["parametro_sucursales"]==5){
-//                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
-//                $suc1 = $this->Sucursales_model->consulta_sucursal1($sql);
-//                $suc2 = $this->Sucursales_model->consulta_sucursal2($sql);
-//                $suc3 = $this->Sucursales_model->consulta_sucursal3($sql);
-//                $suc4 = $this->Sucursales_model->consulta_sucursal4($sql);
-//                $suc5 = null;
-//            }
-//
-//            if($parametro[0]["parametro_sucursales"]==6){
-//                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
-//                $suc1 = $this->Sucursales_model->consulta_sucursal1($sql);
-//                $suc2 = $this->Sucursales_model->consulta_sucursal2($sql);
-//                $suc3 = $this->Sucursales_model->consulta_sucursal3($sql);
-//                $suc4 = $this->Sucursales_model->consulta_sucursal4($sql);
-//                $suc5 = $this->Sucursales_model->consulta_sucursal5($sql);
-//            }
-//            
-            //$suc =  array($suc0,$suc1,$suc2,$suc3,$suc4,$suc5);
             $data['inventario'] = $inventario;
             
             $data['_view'] = 'sucursales/index';
