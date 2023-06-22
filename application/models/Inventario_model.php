@@ -154,6 +154,23 @@ class Inventario_model extends CI_Model
         $producto = $this->db->query($sql)->result_array();
         return $producto;
     }
+        
+    function get_inventario_principioactivo($parametro)
+    {
+
+        
+        $sql = "SELECT p.*,c.categoria_nombre FROM inventario p
+        left join categoria_producto c on c.categoria_id = p.categoria_id
+        /*left join detalle_compra dc on dc.producto_id = p.producto_id*/ 
+        WHERE p.estado_id=1 
+        and p.producto_principioact like '%$parametro%' 
+        or p.producto_accionterap like '%$parametro%'    
+        GROUP BY p.categoria_id, p.producto_id
+        ORDER By c.categoria_nombre, p.producto_nombre asc";
+        
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+    }
 
     function get_inventario_for_serie($parametro){
         return $this->db->query(

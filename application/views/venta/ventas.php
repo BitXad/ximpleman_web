@@ -712,13 +712,19 @@ window.onkeydown = compruebaTecla;
     <div class="col-md-<?php echo $parametro['parametro_anchobuscador']; ?>">
         <font size="1"><b>BUSCADOR DE PRODUCTOS</b></font> 
         
-        <button class="btn btn-success btn-xs" onclick="actualizar_inventario()" style="<?php echo ($parametro["parametro_inventariobuscador"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span> Inventario</button>
+            
+           <button class="btn btn-success btn-xs" onclick="actualizar_inventario()" style="<?php echo ($parametro["parametro_botoninventario"]!=1)?"":"display:none" ?>"><span class="fa fa-cubes"></span> Inventario</button>
            
-        <?php if($rolusuario[185-1]['rolusuario_asignado'] == 1){ ?>
-        <button type="button" id="boton_modal_promocion" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpromocion" style="<?php echo ($parametro["parametro_promocionesbuscador"]!=1)?"display:none":"" ?>" >
-            <fa class="fa fa-cube"></fa> Promociones
-        </button>
-        <?php } ?>
+            <button type="button" id="boton_modal_promocion" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpromocion" style="<?php echo ($parametro["parametro_promociones"]!=1)?"":"display:none" ?>" >
+                <fa class="fa fa-cube"></fa> Promociones
+            </button>
+
+           <select class="btn btn-xs btn-warning" title="Buscar productos de acuerdo al parametro" id="select_buscador" onchange="$('#filtrar').focus();" <?php echo ($parametro["parametro_modulorestaurante"]==2)?"":"style='display:none' "; ?>">
+               <option value="0">- DESCRIPCION -</option>
+               <option value="1">PRINCIPIO ACTIVO</option>
+               <option value="2">ACCION TERAPEUTICA</option>
+               <option value="3">LINEA</option>
+           </select>
         
         <div class="box" style="border-color:black;">
             <div class="box-body">
@@ -806,15 +812,14 @@ window.onkeydown = compruebaTecla;
 
             </select>
         
-         
-                <span class="badge btn-default" style="<?php echo ($parametro["parametro_categoria"]!=1)?"display:none":"" ?>">
-                    <input style="border-width: 0; color: black;" id="encontrados" type="text"  size="3" value="0" readonly="true"> 
 
-                </span>
+        
+            <span class="badge btn-default" style="<?php echo ($parametro["parametro_categoria"]!=1)?"display:none":"" ?>">
+                <input style="border-width: 0; color: black;" id="encontrados" type="text"  size="3" value="0" readonly="true"> 
 
+            </span>
 
-
-
+           <button class="btn btn-warning btn-xs" onclick="actualizar_marcas()" style="<?php echo ($parametro["parametro_botoninventario"]!=1)?"display:none":"" ?>"><span class="fa fa-recycle"></span> Marcas</button>
            <button class="btn btn-success btn-xs" onclick="actualizar_inventario()" style="<?php echo ($parametro["parametro_botoninventario"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span> Inventario</button>
            
             <?php if($rolusuario[185-1]['rolusuario_asignado'] == 1){ ?>

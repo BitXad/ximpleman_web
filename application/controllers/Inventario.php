@@ -198,6 +198,28 @@ class Inventario extends CI_Controller{
 			}
 			
     }  
+    
+    /*
+     * Elimina el contenido de la tabla marca_producto y lo carga nuevamente
+     */
+    function actualizar_marcas()
+    {   
+
+        $sql = "truncate marca_producto";
+        $this->Venta_model->ejecutar($sql);  
+        
+
+        $sql = "insert into marca_producto(marca_nombre)
+                (
+                select distinct(producto_marca) 
+                from inventario
+                order by producto_marca
+                )";
+        $this->Venta_model->ejecutar($sql);  
+        
+        echo json_encode(true);
+			
+    }  
 
     /*
      * muestra inventario por parametro
