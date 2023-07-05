@@ -1,5 +1,5 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/inventario.js'); ?>"></script>
 
 <script type="text/javascript">
@@ -28,7 +28,11 @@
 
 </script>   
 
-<input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
+<input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden />
+<input type="hidden" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales" />
+<?php
+$decimales = $parametro['parametro_decimales'];
+?>
 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -119,7 +123,11 @@
     </div>
 </div>
 
-
+<div class="row" id='loaderindex'  style='display:none;'>
+                    <center>
+                        <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                    </center>
+                </div>
 
 <div class="row">
     <div class="col-md-12">
@@ -129,7 +137,6 @@
                   </div>-->
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
-            
             <div class="box-body table-responsive">
                 <?php if(isset($inventario)){ ?>
                 <font style="font-family: Arial; font-size: 10pt; ">
@@ -140,7 +147,6 @@
                 
                 <?php   } ?>
                 
-                
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <!--<th>Sucursal</th>-->
@@ -148,9 +154,12 @@
                         <th>Codigo</th>
                         <th>Costo</th>
                         <th>Precio</th>
-                        <th>Suc 1</th>
-                        <th>Suc 2</th>
-                        <th>Suc 3</th>
+                        <?php
+                        $totalalmacen = sizeof($almacenes);
+                        for($i=0 ; $i<sizeof($almacenes); $i++){
+                            echo "<th>".$almacenes[$i]['almacen_nombre']."</th>";
+                        }
+                        ?>
                         <th>Existencia</th>
                         <th>Total</th>
                         <th class="no-print"></th>
@@ -163,72 +172,344 @@
                                     
                                     
                                 $total = 0;    
-                                $cantidad = 0;    
+                                $cantidad = 0;
+                                $existencia = 0;
                                 foreach($inventario as $suc0){
                                     if($suc0!=null){
                                     
                                     
                                     $total += $suc0["existencia"] * $suc0["producto_precio"];
-                                    $cantidad += $suc0["existencia"]; 
+                                    //$cantidad += $suc0["existencia"]; 
                                     
                                 ?>
                                 <tr>
-
-<!--                                    <td style="line-height: 8px;">
-                                        <font style="font-family: Arial; font-weight: bold; font-size: 12pt;">
-                                            <b>
-                                            <?php echo $suc0["empresa_nombre"]; ?><br>    
-                                            </b>
-                                        </font>
-                                        <small>
-                                        <?php echo $suc0["empresa_direccion"]; ?>
-                                        </small>
-                                        
-                                    </td>-->
                                     <td><?php echo $suc0["producto_nombre"]; ?></td>
                                     <td><?php echo $suc0["producto_codigo"]; ?></td>
                                     <td style="text-align: right"><?php echo number_format($suc0["producto_costo"],2,".",","); ?></td>
                                     <td style="text-align: right"><?php echo number_format($suc0["producto_precio"],2,".",","); ?></td>
-                                    <td style="text-align: center; font-family: Arial; font-weight: bold; font-size: 12pt;">
-                                        <b>
-                                            <?php echo number_format($suc0["suc1"],2,".",","); ?>
-                                        </b>
+                                    <?php
+                                    if(1 <= $totalalmacen){
+                                        $fondocolor = '';
+                                        if($suc0["suc1"] <= 0){
+                                            $fondocolor = 'background-color: #FF8989;';
+                                        }
+                                    ?>
+                                    <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
+                                    <?php
+                                        $partes = explode(".",$suc0["suc1"]);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = $partes[0];
+                                            }else{ 
+                                                $lacantidad = number_format($suc0["suc1"],$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = $partes[0];
+                                        }
+                                            echo $lacantidad;
+                                        ?>
                                     </td>
-                                    <td style="text-align: center; font-family: Arial; font-weight: bold; font-size: 12pt;">
-                                        <b>
-                                            <?php echo number_format($suc0["suc2"],2,".",","); ?>
-                                        </b>
+                                        <?php
+                                        $cantidad += $lacantidad;
+                                        $existencia += $lacantidad;
+                                    }
+                                    ?>
+                                    <?php
+                                    if(2 <= $totalalmacen){
+                                        $fondocolor = '';
+                                        if($suc0["suc2"] <= 0){
+                                            $fondocolor = 'background-color: #FF8989;';
+                                        }
+                                    ?>
+                                    <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
+                                    <?php
+                                        $partes = explode(".",$suc0["suc2"]);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = $partes[0];
+                                            }else{ 
+                                                $lacantidad = number_format($suc0["suc2"],$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = $partes[0];
+                                        }
+                                            echo $lacantidad;
+                                        ?>
                                     </td>
-                                    <td style="text-align: center; font-family: Arial; font-weight: bold; font-size: 12pt;">
-                                        <b>
-                                            <?php echo number_format($suc0["suc3"],2,".",","); ?>
-                                        </b>
+                                        <?php
+                                        $cantidad += $lacantidad;
+                                        $existencia += $lacantidad;
+                                    }
+                                    ?>
+                                    <?php
+                                    if(3 <= $totalalmacen){
+                                        $fondocolor = '';
+                                        if($suc0["suc3"] <= 0){
+                                            $fondocolor = 'background-color: #FF8989;';
+                                        }
+                                    ?>
+                                    <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
+                                    <?php
+                                        $partes = explode(".",$suc0["suc3"]);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = $partes[0];
+                                            }else{ 
+                                                $lacantidad = number_format($suc0["suc3"],$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = $partes[0];
+                                        }
+                                            echo $lacantidad;
+                                        ?>
                                     </td>
+                                        <?php
+                                        $cantidad += $lacantidad;
+                                        $existencia += $lacantidad;
+                                    }
+                                    ?>
+                                    <?php
+                                    if(4 <= $totalalmacen){
+                                        $fondocolor = '';
+                                        if($suc0["suc4"] <= 0){
+                                            $fondocolor = 'background-color: #FF8989;';
+                                        }
+                                    ?>
+                                    <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
+                                    <?php
+                                        $partes = explode(".",$suc0["suc4"]);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = $partes[0];
+                                            }else{ 
+                                                $lacantidad = number_format($suc0["suc4"],$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = $partes[0];
+                                        }
+                                            echo $lacantidad;
+                                        ?>
+                                    </td>
+                                        <?php
+                                        $cantidad += $lacantidad;
+                                        $existencia += $lacantidad;
+                                    }
+                                    ?>
+                                    <?php
+                                    if(5 <= $totalalmacen){
+                                        $fondocolor = '';
+                                        if($suc0["suc5"] <= 0){
+                                            $fondocolor = 'background-color: #FF8989;';
+                                        }
+                                    ?>
+                                    <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
+                                    <?php
+                                        $partes = explode(".",$suc0["suc5"]);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = $partes[0];
+                                            }else{ 
+                                                $lacantidad = number_format($suc0["suc5"],$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = $partes[0];
+                                        }
+                                            echo $lacantidad;
+                                        ?>
+                                    </td>
+                                        <?php
+                                        $cantidad += $lacantidad;
+                                        $existencia += $lacantidad;
+                                    }
+                                    ?>
+                                    <?php
+                                    if(6 <= $totalalmacen){
+                                        $fondocolor = '';
+                                        if($suc0["suc6"] <= 0){
+                                            $fondocolor = 'background-color: #FF8989;';
+                                        }
+                                    ?>
+                                    <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
+                                    <?php
+                                        $partes = explode(".",$suc0["suc6"]);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = $partes[0];
+                                            }else{ 
+                                                $lacantidad = number_format($suc0["suc6"],$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = $partes[0];
+                                        }
+                                            echo $lacantidad;
+                                        ?>
+                                    </td>
+                                        <?php
+                                        $cantidad += $lacantidad;
+                                        $existencia += $lacantidad;
+                                    }
+                                    ?>
+                                    <?php
+                                    if(7 <= $totalalmacen){
+                                        $fondocolor = '';
+                                        if($suc0["suc7"] <= 0){
+                                            $fondocolor = 'background-color: #FF8989;';
+                                        }
+                                    ?>
+                                    <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
+                                    <?php
+                                        $partes = explode(".",$suc0["suc7"]);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = $partes[0];
+                                            }else{ 
+                                                $lacantidad = number_format($suc0["suc7"],$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = $partes[0];
+                                        }
+                                            echo $lacantidad;
+                                        ?>
+                                    </td>
+                                        <?php
+                                        $cantidad += $lacantidad;
+                                        $existencia += $lacantidad;
+                                    }
+                                    ?>
+                                    <?php
+                                    if(8 <= $totalalmacen){
+                                        $fondocolor = '';
+                                        if($suc0["suc8"] <= 0){
+                                            $fondocolor = 'background-color: #FF8989;';
+                                        }
+                                    ?>
+                                    <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
+                                    <?php
+                                        $partes = explode(".",$suc0["suc8"]);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = $partes[0];
+                                            }else{ 
+                                                $lacantidad = number_format($suc0["suc8"],$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = $partes[0];
+                                        }
+                                            echo $lacantidad;
+                                        ?>
+                                    </td>
+                                        <?php
+                                        $cantidad += $lacantidad;
+                                        $existencia += $lacantidad;
+                                    }
+                                    ?>
+                                    <?php
+                                    if(9 <= $totalalmacen){
+                                        $fondocolor = '';
+                                        if($suc0["suc9"] <= 0){
+                                            $fondocolor = 'background-color: #FF8989;';
+                                        }
+                                    ?>
+                                    <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
+                                    <?php
+                                        $partes = explode(".",$suc0["suc9"]);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = $partes[0];
+                                            }else{ 
+                                                $lacantidad = number_format($suc0["suc9"],$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = $partes[0];
+                                        }
+                                            echo $lacantidad;
+                                        ?>
+                                    </td>
+                                        <?php
+                                        $cantidad += $lacantidad;
+                                        $existencia += $lacantidad;
+                                    }
+                                    ?>
+                                    <?php
+                                    if(10 <= $totalalmacen){
+                                        $fondocolor = '';
+                                        if($suc0["suc10"] <= 0){
+                                            $fondocolor = 'background-color: #FF8989;';
+                                        }
+                                    ?>
+                                    <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
+                                    <?php
+                                        $partes = explode(".",$suc0["suc10"]);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = $partes[0];
+                                            }else{ 
+                                                $lacantidad = number_format($suc0["suc10"],$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = $partes[0];
+                                        }
+                                            echo $lacantidad;
+                                        ?>
+                                    </td>
+                                        <?php
+                                        $cantidad += $lacantidad;
+                                        $existencia += $lacantidad;
+                                    }
                                     
-                                    <?php $existencia = $suc0["suc1"] + $suc0["suc3"] + $suc0["suc3"] + $suc0["suc4"] +$suc0["suc5"]; ?>
+                                    /* **** inico para mostrar total parcial! **** */
+                                    $partes = explode(".",$existencia);
+                                    if(isset($partes[1])){
+                                        if ($partes[1] == 0) { 
+                                            $laexistencia = number_format($partes[0],0,'.',',');
+                                        }else{ 
+                                            $laexistencia = number_format($existencia,$decimales,'.',','); 
+                                        }
+                                    }else{
+                                        $laexistencia = number_format($existencia,0,'.',','); 
+                                    }
                                     
-                                    <td style="text-align: center"><?php echo number_format($existencia,2,".",","); ?></td>
-                                    <td style="text-align: center"><?php echo number_format($existencia * $suc0["producto_precio"],2,".",","); ?></td>
+                                    ?>
+                                    <td style="text-align: center; font-family: Arial; font-weight: bold; font-size: 12pt;"><?php echo $laexistencia; ?></td>
+                                    <td style="text-align: center; font-family: Arial; font-weight: bold; font-size: 12pt;"><?php echo number_format($existencia * $suc0["producto_costo"],2,".",","); ?></td>
                                     <td>
                                         <button class="btn btn-xs btn-info"><fa class="fa fa-arrow-right"> </fa></button>
-                                    
                                     </td>
                                 </tr> 
-
-                                    <?php } } ?>
+                                <?php
+                                    }
+                                }
+                                ?>
                                 <tr>
                                     <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
+                                    <?php
+                                    for($i=0 ; $i<sizeof($almacenes); $i++){
+                                        echo "<th></th>";
+                                    }
+                                    ?>
                                     <th style="text-align: center; font-family: Arial; font-weight: bold; font-size: 12pt;">
-                                        <b>
-                                            <?php echo number_format($cantidad,2,".",","); ?>
-                                        </b>
+                                        <?php
+                                        $partes = explode(".",$cantidad);
+                                        if(isset($partes[1])){
+                                            if ($partes[1] == 0) { 
+                                                $lacantidad = number_format($partes[0],0,'.',',');
+                                            }else{ 
+                                                $lacantidad = number_format($cantidad,$decimales,'.',','); 
+                                            }
+                                        }else{
+                                            $lacantidad = number_format($cantidad,0,'.',','); 
+                                        }
+                                        
+                                        echo $lacantidad;
+                                        ?>
                                     </th>
                                     
-                                    <th><?php echo number_format($total,2,".",",");; ?></th>
+                                    <th style="text-align: center; font-family: Arial; font-weight: bold; font-size: 12pt;">
+                                        <?php echo number_format($cantidad*$suc0["producto_costo"],2,".",","); ?>
+                                    </th>
                                     <th></th>
                                 </tr>
                                 
@@ -244,41 +525,18 @@
 </div>
     
 
-
-
-
-
-
-<!-- Button trigger modal -->
-<!--<div class="row">
-<div class="panel panel-info">
-    
-
-    <div class="col-md-8">
-        Producto <input type="text" class="form-control" id="codigo" value="7751851005999">
-        Producto <input type="hidden" class="form-control" id="producto" value="PRODUCTO X">
-    </div>
-</div>
-</div>-->
-
-<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Buscar Productos
-</button>-->
-
-
-
 <!-- Modal -->
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle"><b>BUSCAR PRODUCTO</b></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-                          <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código"   onkeypress="validar(event,2)" >
-                          </div>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h5 class="modal-title" id="exampleModalLongTitle"><b>BUSCAR PRODUCTO</b></h5>
+            <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código"   onkeypress="validar(event,2)" >
+            </div>
       </div>
       <div class="modal-body">
        
