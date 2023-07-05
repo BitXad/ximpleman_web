@@ -211,8 +211,9 @@ window.onkeydown = compruebaTecla;
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-<link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
+<!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
+<link href="<?php echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
+
  <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
 <!-------------------------------------------------------->
 <div id="selector" hidden>
@@ -329,6 +330,11 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_tamanioletrasboton" value="<?php echo $parametro['parametro_tamanioletrasboton']; ?>" name="parametro_tamanioletrasboton"  hidden>
 <input type="text" id="parametro_tamanioletras" value="<?php echo $parametro['parametro_tamanioletras']; ?>" name="parametro_tamanioletras"  hidden>
 <input type="text" id="parametro_sininventario" value="<?php echo $parametro['parametro_sininventario']; ?>" name="parametro_sininventario"  hidden>
+<input type="text" id="parametro_datosproducto" value="<?php echo $parametro['parametro_datosproducto']; ?>" name="parametro_datosproducto"  hidden>
+<input type="text" id="parametro_cantidadsimple" value="<?php echo $parametro['parametro_cantidadsimple']; ?>" name="parametro_cantidadsimple"  hidden>
+<input type="text" id="parametro_botonesproducto" value="<?php echo $parametro['parametro_botonesproducto']; ?>" name="parametro_botonesproducto"  hidden>
+<input type="text" id="parametro_mostrarmoneda" value="<?php echo $parametro['parametro_mostrarmoneda']; ?>" name="parametro_mostrarmoneda"  hidden>
+<input type="text" id="parametro_tablasencilla" value="<?php echo $parametro['parametro_tablasencilla']; ?>" name="parametro_tablasencilla"  hidden>
 <input type="text" id="boton_presionado" value="0" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
@@ -374,7 +380,21 @@ window.onkeydown = compruebaTecla;
 
 <!--------------------- fin cliente_id --------------------->
 
-        <div class="col-md-3" <?= $estilo_div ?>>
+        <div class="col-md-3" <?= $estilo_div ?> <?= ($parametro['parametro_documentoslista']!=1)?"":"hidden" ?>>
+            <label for="tipo_doc_identidad" class="control-label" style="margin-bottom: 0; font-size: 12px; color: gray; font-weight: normal">TIPO DOCUMENTO IDENTIDAD</label>
+            <br>
+            <?php
+               foreach ($docs_identidad as $di){ ?>
+                <button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)"><fa class="fa fa-cube"> </fa> <?php echo $di['cdi_descripcion']; ?></button>                   
+            <?php
+               }
+            ?>
+            
+            
+            
+            
+        </div>
+        <div class="col-md-3" <?= $estilo_div ?> <?= ($parametro['parametro_documentoslista']==1)?"":"hidden" ?>>
             <label for="tipo_doc_identidad" class="control-label" style="margin-bottom: 0; font-size: 12px; color: gray; font-weight: normal">TIPO DOCUMENTO IDENTIDAD</label>
             <div class="form-group" <?= $estilo_div ?>>
                 <select class="form-control <?php echo $atributos; ?>" name="tipo_doc_identidad" id="tipo_doc_identidad" <?= $estilos_facturacion ?> onchange="seleccion_documento()">
@@ -455,7 +475,24 @@ window.onkeydown = compruebaTecla;
         
         <?php if($parametro["parametro_panelventas"]==1){ ?>
 
-        <div class="col-md-6" <?php echo $estilo_div; ?>>
+
+
+        <div class="col-md-2" <?php echo $estilo_div; ?>>
+            <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">PREFERENCIAS</label>
+            <div class="form-group" <?php echo $estilo_div; ?>>
+                <!--<input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" style="color: black; background:white; text-align: left; font-size: 18px; font-family: Arial; " id="glosay"  value="" onclick="this.select()" onkeyup="transcribir_glosa(event); this.value = this.value.toUpperCase();"/>-->
+                <select id="tiposerv_id" name="tiposerv_id" class="form-control btn btn-info btn-xs">
+
+                    <?php
+                        foreach($tipo_servicio as $ts){ ?>
+                            <option value="<?php echo $ts['tiposerv_id']; ?>"><?php echo $ts['tiposerv_descripcion']; ?></option>
+                    <?php } ?>
+
+                 </select>
+            </div>
+        </div>
+
+        <div class="col-md-4" <?php echo $estilo_div; ?>>
             <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">PREFERENCIAS</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" style="color: black; background:white; text-align: left; font-size: 18px; font-family: Arial; " id="glosay"  value="" onclick="this.select()" onkeyup="transcribir_glosa(event); this.value = this.value.toUpperCase();"/>
@@ -800,7 +837,7 @@ window.onkeydown = compruebaTecla;
             </select>
         
         
-        <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(4)" id="marca_producto"  > 
+            <select class="bange btn-default btn-xs" style="border-width: 0; width:110px;"  onchange="tablaresultados(4)" id="marca_producto"  <?php echo ($parametro["parametro_categoria"]!=1)?"hidden":"" ?>> 
                     <option value="0" >- MARCAS -</option>
                     <?php
                         foreach($marcas as $marca){ ?>
@@ -842,7 +879,7 @@ window.onkeydown = compruebaTecla;
                          $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
                          ?>
 
-                     <button type="button" class="btn btn-info btn-lg" style="padding-top:5px; padding-bottom: 5px; font-size: 10px;" onclick="seleccionar_categoria(<?php echo $categ['categoria_id']; ?>)"><?php echo $categ['categoria_nombre']; ?></button>
+                     <button type="button" class="btn btn-<?= $parametro['parametro_colorbotoncategoria']; ?> btn-lg" style="padding-top:5px; padding-bottom: 5px; font-size: <?= $parametro['parametro_tamaniotextocategoria']."px"; ?>;" onclick="seleccionar_categoria(<?php echo $categ['categoria_id']; ?>)"><?php echo $categ['categoria_nombre']; ?></button>
 
                      <?php } ?>
 
@@ -896,7 +933,7 @@ window.onkeydown = compruebaTecla;
     </div>
     
     
-    <div class="col-md-6" id="divventas1" style="display:none;">
+    <div class="col-md-<?php echo (12 - $parametro['parametro_anchobuscador']); ?>" id="divventas1" style="display:none;">
         <center>            
             <button class="btn btn-default" type="button" disabled style="background: grey; color: white;">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

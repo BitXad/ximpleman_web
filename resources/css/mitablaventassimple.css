@@ -1,4 +1,4 @@
-#mitablaventas {
+#mitablaventassimple {
     /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
     font-family: "Arial", Arial, Arial, arial;
     font-size: 10px;
@@ -6,24 +6,29 @@
     width: 100%;
 }
 
-#mitablaventas td, #mitablaventas th {
+#mitablaventassimple td, #mitablaventassimple th {
     /*border: 1px solid black;*/
     padding: 7px;
     border-bottom: 1px solid black;
     border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
 }
 
-#mitablaventas tr:nth-child(even){background-color: white;}
+#mitablaventassimple tr:nth-child(even){background-color: white;}
 
-#mitablaventas tr:hover {background-color: white;}
+#mitablaventassimple tr:hover {background-color: white;}
 
-#mitablaventas th {
+#mitablaventassimple th {
+    
     padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;
-    background-color: gray;
-    color: white;
-    font-size: 11px;
+    background-color: lightgray;
+    color: black;
+    font-size: 10px;
+   
+    
 }
 #div1 {
      overflow:scroll;
@@ -36,10 +41,12 @@
 }    
 
 
+
+
 /*
 estilo anterior
 
-#mitablaventas {
+#mitablaventassimple {
 
     font-family: "Arial", Arial, Arial, arial;
     font-size: 10px;
@@ -47,17 +54,17 @@ estilo anterior
     width: 100%;
 }
 
-#mitablaventas td, #mitablaventas th {
+#mitablaventassimple td, #mitablaventassimple th {
     border: 1px solid #ddd;
     padding: 8px;
     
 }
 
-#mitablaventas tr:nth-child(even){background-color: #f2f2f2;}
+#mitablaventassimple tr:nth-child(even){background-color: #f2f2f2;}
 
-#mitablaventas tr:hover {background-color: #ddd;}
+#mitablaventassimple tr:hover {background-color: #ddd;}
 
-#mitablaventas th {
+#mitablaventassimple th {
     padding-top: 10px;
     padding-bottom: 10px;
     text-align: left;

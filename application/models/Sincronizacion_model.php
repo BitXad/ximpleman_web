@@ -43,7 +43,7 @@ class Sincronizacion_model extends CI_Model{
     function getall_docs_ident(){
         return $this->db->query(
             "SELECT cdi.* 
-            FROM cod_doc_identidad cdi"
+            FROM cod_doc_identidad cdi where estado_id = 1"
         )->result_array();
     }
 }

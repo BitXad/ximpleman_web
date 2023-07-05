@@ -148,7 +148,7 @@ class Venta_model extends CI_Model
     /*
      * Get all detalle_aux
      */
-    function get_detalle_aux($usuario_id)
+    function get_detalle_aux($usuario_id, $orden)
     {
 
 //  vigente hasta el 26.03.2021
@@ -166,7 +166,7 @@ class Venta_model extends CI_Model
                 left join clasificador c on c.clasificador_id = d.clasificador_id
                 left join inventario t on t.producto_id = d.preferencia_id
                 where d.usuario_id = ".$usuario_id."
-                order by d.detalleven_id desc";
+                order by d.detalleven_id ".$orden;
 
         
         $detalle = $this->db->query($sql)->result_array();
