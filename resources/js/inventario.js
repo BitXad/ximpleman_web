@@ -532,7 +532,7 @@ function tabla_inventario_sucursal(){
                     html += "	<br>SALDO: <font size='3'><b>"+ existencia.toFixed(decimales)+"</b></font>";
                     html += "	<br>TOTAL: <font size='1'><b>"+ existencia.toFixed(decimales)+"</b></font>";
                     html += "	</td>";
-                    html += "	<td><button class='btn btn-info btn-sm' onclick='seleccionar_producto("+inv[i]["producto_codigobarra"]+")'><fa class='fa fa-list'></fa> <br>Seleccionar</button></td>";
+                    html += "	<td><button class='btn btn-info btn-sm' onclick='seleccionar_producto("+JSON.stringify(inv[i]["producto_codigobarra"])+")'><fa class='fa fa-list'></fa> <br>Seleccionar</button></td>";
 
 //                    html += "             	<td><center>"+ inv[i]["compras"]+"</center></td>";
 //                    html += "	<td><center>"+ inv[i]["ventas"]+"</center></td>";

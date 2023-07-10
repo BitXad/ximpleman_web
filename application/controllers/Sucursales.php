@@ -55,7 +55,7 @@ class Sucursales extends CI_Controller{
         $data['almacenes'] = $this->Inventario_model->get_almacenes();
         
         
-        if ($producto_codigo==0){
+        if ($producto_codigo==''){
             
             $data['rolusuario'] = $this->session_data['rol'];
             $empresa_id = 1;
