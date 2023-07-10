@@ -470,10 +470,15 @@ function tablaproductos(){
                        var subtotal = 0;
                        var descuento = 0;
                        var descgral = 0;
-                       var totalfinal = 0;
+                       var totalfinal = 0;                       
+                       var tablacss = '';
                        
-                       var tablacss = 'mitablaventassimple';
-                       
+                       if (parametro_tablasencilla==1)
+                            tablacss = 'mitablaventassimple';
+                       else
+                            tablacss = 'mitablaventas';
+                           
+                           
                         html = "";
                         html += "<table class='table table-striped table-condensed' id='"+tablacss+"'>";
                         html += "                    <tr>";

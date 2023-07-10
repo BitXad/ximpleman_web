@@ -211,7 +211,7 @@ window.onkeydown = compruebaTecla;
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
 
  <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
