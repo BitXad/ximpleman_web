@@ -138,14 +138,20 @@ $decimales = $parametro['parametro_decimales'];
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
             <div class="box-body table-responsive">
-                <?php if(isset($inventario)){ ?>
-                <font style="font-family: Arial; font-size: 10pt; ">
-                    
-                    <b>PRODUCTO:</b> <?php echo $inventario[0]["producto_nombre"]; ?>
-                    <b>CÓDIGO BARRA:</b> <?php echo $inventario[0]["producto_codigobarra"]; ?>
-                </font>
-                
-                <?php   } ?>
+                <?php
+                if(isset($inventario)){ ?>
+                    <?php
+                    if(sizeof($inventario) >0 ){ ?>
+                    <font style="font-family: Arial; font-size: 10pt; ">
+
+                        <b>PRODUCTO:</b> <?php echo $inventario[0]["producto_nombre"]; ?>
+                        <b>CÓDIGO BARRA:</b> <?php echo $inventario[0]["producto_codigobarra"]; ?>
+                    </font>
+                    <?php
+                    }else{
+                        echo "<span class='text-bold text-red'>Producto Inexistente!!</span>";
+                    }
+                } ?>
                 
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
@@ -165,11 +171,9 @@ $decimales = $parametro['parametro_decimales'];
                         <th class="no-print"></th>
                     </tr>
                     <tbody class="buscarj">
-                    
-                                <?php
-                                
-                                if(isset($inventario)){
-                                    
+                        <?php
+                        if(isset($inventario)){
+                            if(sizeof($inventario) >0 ){
                                     
                                 $total = 0;    
                                 $cantidad = 0;
@@ -196,6 +200,10 @@ $decimales = $parametro['parametro_decimales'];
                                     ?>
                                     <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
                                     <?php
+                                    $lacantidad = 0;
+                                    if ($suc0["suc1"] == "" && $suc0["suc1"] == null){
+                                            echo $lacantidad;
+                                    }else{
                                         $partes = explode(".",$suc0["suc1"]);
                                         if(isset($partes[1])){
                                             if ($partes[1] == 0) { 
@@ -207,6 +215,7 @@ $decimales = $parametro['parametro_decimales'];
                                             $lacantidad = $partes[0];
                                         }
                                             echo $lacantidad;
+                                    }
                                         ?>
                                     </td>
                                         <?php
@@ -223,6 +232,10 @@ $decimales = $parametro['parametro_decimales'];
                                     ?>
                                     <td class='text-right' style="padding:0; <?php echo $fondocolor; ?>">
                                     <?php
+                                    $lacantidad = 0;
+                                    if ($suc0["suc2"] == "" && $suc0["suc2"] == null){
+                                            echo $lacantidad;
+                                    }else{
                                         $partes = explode(".",$suc0["suc2"]);
                                         if(isset($partes[1])){
                                             if ($partes[1] == 0) { 
@@ -234,6 +247,8 @@ $decimales = $parametro['parametro_decimales'];
                                             $lacantidad = $partes[0];
                                         }
                                             echo $lacantidad;
+                                            
+                                    }
                                         ?>
                                     </td>
                                         <?php
@@ -516,7 +531,12 @@ $decimales = $parametro['parametro_decimales'];
                                 
                                 
                                 
-                                <?php } ?>
+                                <?php
+                                }
+                                
+                                        }
+                                
+                                ?>
                     </tbody>
                 </table>
             </div>
