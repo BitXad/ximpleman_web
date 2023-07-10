@@ -3036,8 +3036,13 @@ function edit($venta_id){
 
             //$sql = "select * from detalle_venta_aux where usuario_id=".$usuario_id;
             //$datos = $this->Venta_model->consultar($sql);
-            $datos = $this->Venta_model->get_detalle_aux($usuario_id);
-            
+            if($this->parametros["parametro_ordendetalle"]==1){ //ascendente
+                $orden = "asc";
+            }else{ //descendente
+                $orden = "desc";
+            }
+                
+            $datos = $this->Venta_model->get_detalle_aux($usuario_id,$orden);
             echo json_encode($datos);
             
         }

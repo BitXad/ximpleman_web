@@ -414,6 +414,24 @@ function buscarcliente(){
 
 }
 
+function formato_cantidad(cantidad){
+    
+    var decimales = Number(document.getElementById('parametro_decimales').value);
+    
+    let partes = cantidad; 
+                let partes1 = partes.toString(); 
+                let partes2 = partes1.split('.');
+                
+                if (partes2[1] == 0) {  
+                    lacantidad = partes2[0];  
+                }else{  
+                    lacantidad = numberFormat(Number(cantidad).toFixed(decimales)) 
+                    //lacantidad = number_format($d['detalleven_cantidad'],2,'.',',');  
+                }
+  
+    return lacantidad;
+}
+
 //muestra la tabla de productos del detalle de la venta
 function tablaproductos(){
     
@@ -425,14 +443,20 @@ function tablaproductos(){
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
     var venta_descuento = Number(document.getElementById('venta_descuento').value);
     var tipousuario_id = Number(document.getElementById('tipousuario_id').value);
+    var parametro_moneda_id = document.getElementById('parametro_moneda_id').value; //1 bolivianos - 2 moneda extrangera
+    var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value; //1 bolivianos - 2 moneda extrangera
+    var parametro_datosproducto = Number(document.getElementById('parametro_datosproducto').value);
+    var parametro_cantidadsimple = Number(document.getElementById('parametro_cantidadsimple').value);
+    var parametro_botonesproducto = Number(document.getElementById('parametro_botonesproducto').value);
+    var parametro_mostrarmoneda = Number(document.getElementById('parametro_mostrarmoneda').value);
+    var parametro_tablasencilla = Number(document.getElementById('parametro_tablasencilla').value);
     var clasificador = "";
     var preferencia = "";
     var caracteristicas = "";
-    var parametro_moneda_id = document.getElementById('parametro_moneda_id').value; //1 bolivianos - 2 moneda extrangera
-    var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value; //1 bolivianos - 2 moneda extrangera
     var moneda_extrangera = document.getElementById('moneda_descripcion').value; //1 bolivianos - 2 moneda extrangera
     var total_final_equivalente = 0; //1 bolivianos - 2 moneda extrangera
     let tamanio_fuente = document.getElementById('parametro_tamanioletras').value+"px";
+    let tamanio_fuente2 = (Number(document.getElementById('parametro_tamanioletras').value)+3)+"px";
     
     $.ajax({url: controlador,
            type:"POST",
@@ -447,10 +471,13 @@ function tablaproductos(){
                        var descuento = 0;
                        var descgral = 0;
                        var totalfinal = 0;
+                       
+                       var tablacss = 'mitablaventassimple';
+                       
                         html = "";
-                        html += "<table class='table table-striped table-condensed' id='mitablaventas'>";
+                        html += "<table class='table table-striped table-condensed' id='"+tablacss+"'>";
                         html += "                    <tr>";
-                        html += "                            <th style='padding:0'>#</th>";
+                        html += "                            <th style='padding:5;'> # </th>";
                         html += "                            <th style='padding:0'>Descripción<br>";
 //                        html += "<input type='checkbox' id='check_agrupar' class='btn btn-success btn-xs'  value='1'> Agrupar";
                         html += " </th>";
@@ -494,7 +521,8 @@ function tablaproductos(){
                            
                            total_descuentoparcial += parseFloat(descuento_parcial * registros[i]["detalleven_cantidad"]);
 
-
+                        if(parametro_tablasencilla != 1){
+                            
                             if (i == 0){
                                 color = "style='background-color: lightgray; padding:0; color: black;'"
                                 fuente = "2";
@@ -504,11 +532,24 @@ function tablaproductos(){
                                 fuente = '1';
                             }
                             
+                        }else{
+                            
+                                color = "style='padding:0'";
+                                fuente = '1';
+                        }
+                        
+                        
+                            
                         html += "                    <tr>";
-                        html += "			<td "+color+">"+cont+"</td>";
+                        
+/////////////////// #
+                        html += "			<td "+color+"><center>"+cont+"</center></td>";
 //                        html += "<td "+color+"><b><font size='"+fuente+"'>"+registros[i]["producto_nombre"];
+
+/////////////////// Descripcion
                         html += "<td "+color+"><b style='font-size:"+tamanio_fuente+"'>"+registros[i]["producto_nombre"];
-                        html += " <button id='boton_composicion"+registros[i]["detalleven_id"]+"' class='btn btn-xs' style='padding:0;' onclick='mostrar_composicion("+registros[i]["detalleven_id"]+")'>[+]</button>";
+                       
+                       //html += " <button id='boton_composicion"+registros[i]["detalleven_id"]+"' class='btn btn-xs' style='padding:0;' onclick='mostrar_composicion("+registros[i]["detalleven_id"]+")'>[+]</button>";
                         
                        html += " <div id='tabla_composicion"+registros[i]["detalleven_id"]+"' style='padding:0;'> </div>";
 //                       html += " <table style='padding:0;'> </table>";
@@ -521,16 +562,21 @@ function tablaproductos(){
                             preferencia = registros[i]["preferencia_descripcion"]+" | ";
                         
                         html += "</b>";
-                        html += " <small>"+registros[i]["detalleven_unidadfactor"]+" * "+clasificador+categoria+preferencia+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
-
+                        
+                        if (parametro_datosproducto==1){
+                            html += " <small>"+registros[i]["detalleven_unidadfactor"]+" * "+clasificador+categoria+preferencia+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
+                        }
 //************************ INICIO CARACTERISTICAS ***************************
 
-html += "  <button class='btn btn-primary btn-xs' title='Registrar/modificar preferencias y características' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-edit'></i></button>";
+        if (parametro_botonesproducto!=0){
+            
+            html += "  <button class='btn btn-primary btn-xs' title='Registrar/modificar preferencias y características' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-edit'></i></button>";
 
-html += "  <a href='#' data-toggle='modal' onclick='iniciar_preferencia("+registros[i]["detalleven_id"]+")' data-target='#modalpreferencia' class='btn btn-xs btn-success' style=''><i class='fa fa-tasks'></i></a>";
+            html += "  <a href='#' data-toggle='modal' onclick='iniciar_preferencia("+registros[i]["detalleven_id"]+")' data-target='#modalpreferencia' class='btn btn-xs btn-success' style=''><i class='fa fa-tasks'></i></a>";
 
-// Clasificador
-html += "  <button class='btn btn-facebook btn-xs' title='Clasificador de productos' type='button' data-toggle='modal' data-target='#modalclasificador' aria-expanded='false' aria-controls='modalclasificador' onclick='mostrar_clasificador("+registros[i]["producto_id"]+","+registros[i]["detalleven_id"]+")'><i class='fa fa-list'></i></button>";
+            // Clasificador
+            html += "  <button class='btn btn-facebook btn-xs' title='Clasificador de productos' type='button' data-toggle='modal' data-target='#modalclasificador' aria-expanded='false' aria-controls='modalclasificador' onclick='mostrar_clasificador("+registros[i]["producto_id"]+","+registros[i]["detalleven_id"]+")'><i class='fa fa-list'></i></button>";
+        }
 
 
 html += "<div class='row'>";
@@ -595,6 +641,7 @@ if (registros[i]["detalleven_envase"] == 1){
 
         html += "<td style='padding: 0;' bgcolor='gray'><b>"+registros[i]["detalleven_nombreenvase"]+": "+registros[i]["detalleven_precioenvase"]+" "+registros[i]["moneda_descripcion"]+"</b></td>";
         html += "<td style='padding: 0;'><center><input type='checkbox' id='check"+registros[i]["detalleven_id"]+"' value='1' "+valorcheck+" ></center></td>";
+        
         html += "<td style='padding: 0;'><center><input type='text' style='width:30px' id='cantidadenvase"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidadenvase"]+"' ></center></td>";
 //        html += "<td style='padding: 0;'><center><input type='text' style='width:40px' value='"+registros[i]["detalleven_precioenvase"]+"' ></center></td>";
         html += "<td style='padding: 0;'><center><input type='text' style='width:30px'  id='garantia"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_garantiaenvase"]+"' ></center></td>";
@@ -649,22 +696,40 @@ html += "  </div>";
                        
                        html += "                       </td>";
 
+                    let detalle_cantidad = formato_cantidad(registros[i]["detalleven_cantidad"]);
+                            
                     if (esMobil()){    
                         
                         html += " <td align='center'"+color+"> ";
                      
-                        html += "                    <div class='btn-group'>      ";                           
-                        html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";                       
-                        //html += "                              		<span class='btn btn-default  btn-xs'> "+registros[i]["detalleven_cantidad"]+"</span>";
-                        
-                        html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' >";
-                        //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
-                        html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
+/////////////////// Cantidad                        
+                        if(parametro_cantidadsimple==0){ //0 cantidad con botones 1 -cantidad simple        
                        
-                        html += "                       <button onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
-                        html += "                    </div>";
+                            html += "                    <div class='btn-group'>      ";   
+                            html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";
+                            html += "                              		<span class='btn btn-default  btn-xs'> "+detalle_cantidad+"</span>";
 
+                            html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+detalle_cantidad+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' autocomplete='off'>";
+                            //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
+                            html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
+
+                            html += "                       <button onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
+                            html += "                    </div>";
+                            
+                           }else{
+                               
+                       
+//
+                            html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='ssss"+detalle_cantidad+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' autocomplete='off'>";
+                            //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
+                            html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
+                               
+                           }
+
+/////////////////// Precio
                         html += "<input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
+                        
+/////////////////// Desc                        
                         html += "<input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
                         html += "<br><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(decimales)+"</b></font><br>"+total_equivalente;
                         html += "</td>";
@@ -676,28 +741,46 @@ html += "  </div>";
                     }
                     else{
                         
-                        html += " <td align='center' width='120' "+color+"> ";
                      
-                        html += "                    <div class='btn-group'>      ";                           
-                        html += "			<button style='font-size:"+tamanio_fuente+" ' onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";                       
-                        //html += "                              		<span class='btn btn-default  btn-xs'> "+registros[i]["detalleven_cantidad"]+"</span>";
                         
-                        html += "                       <input size='1' style='font-size:"+tamanio_fuente+" '  name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+ Number(registros[i]["detalleven_cantidad"]).toFixed(decimales)+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' >";
-                        //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
-                        html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
-                        html += "                       <button style='font-size:"+tamanio_fuente+" ' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
-                        html += "                    </div>";
+                        if(parametro_cantidadsimple==0){ //0 cantidad con botones 1 -cantidad simple
+                            
+                            html += " <td align='center' width='100' "+color+"> ";
+                            html += "                    <div class='btn-group'>      ";     
+                            html += "			<button style='font-size:"+tamanio_fuente+" ' onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";                       
+                        
+                            html += "                       <input size='1' style='font-size:"+tamanio_fuente+" '  name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+ formato_cantidad(registros[i]["detalleven_cantidad"])+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' autocomplete='off'>";
+                            //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
+                            html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
 
+                            html += "                       <button style='font-size:"+tamanio_fuente+" ' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
+
+                            html += "                    </div>";
+                            
+                        }else{
+                        
+                            html += " <td align='center' width='30' "+color+"> ";
+                            html += "                       <input size='1' style='font-size:"+tamanio_fuente+" '  name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+ formato_cantidad(registros[i]["detalleven_cantidad"])+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")'  autocomplete='off'>";
+                            //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
+                            html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";                            
+                        }
                     
 
                         html += "</td>";
-                        html += "<td align='right' "+color+"><input size='5' style='font-size:"+tamanio_fuente+" ' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+
+/////////////////// Precio
+                        html += "<td align='right' "+color+"><input size='5' class='btn btn-default btn-xs' style='font-size:"+tamanio_fuente+" ' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")' autocomplete='off'></td>";
                         
+/////////////////// Descuento
+                        html += "<td align='right' "+color+"><input size='5' class='btn btn-default btn-xs' style='font-size:"+tamanio_fuente+"' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")' autocomplete='off'></td>";
                         
-                        html += "<td align='right' "+color+"><input size='5' style='font-size:"+tamanio_fuente+" 'name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
-                        
-                        
-                        html += "                       <td align='right' "+color+"><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(decimales)+"</b></font><br>"+total_equivalente;
+/////////////////// Precio Total
+
+                        html += "                       <td align='right'  "+color+"><b style='font-size:"+tamanio_fuente2+"' >"+parseFloat(registros[i]["detalleven_total"]).toFixed(decimales)+"</b>";
+                       
+                        if (parametro_mostrarmoneda == 1)
+                           html += "<br>"+total_equivalente;
+                       
                         html += "</td>";
 
                         html += "			<td "+color+">";
@@ -727,17 +810,21 @@ html += "  </div>";
                         html += "                            <th style='padding:0'><font size='3'>"+cant_total.toFixed(decimales)+"</font></th>";
                         html += "                            <th style='padding:0'></th>"; 
                         html += "                            <th style='padding:0'><font size='3'>"+total_descuentoparcial.toFixed(decimales)+"</font></th>";
-                        html += "                            <th style='padding:0'></th>"; 
+//                        html += "                            <th style='padding:0'></th>"; 
                         
                         html += "<input type='hidden' id='venta_descuentoparcial' value="+total_descuentoparcial.toFixed(decimales)+" />";
                        
-                        html += "                            <th style='padding:0' align='right'><font size='3'>"+parametro_moneda_descripcion+" "+formato_numerico(total_detalle.toFixed(decimales))+"</font><br>";
+                        html += "                            <th style='padding:0' align='right' colspan='2'><font size='3'>"+parametro_moneda_descripcion+" "+formato_numerico(total_detalle.toFixed(decimales))+"</font><br>";
                         
-                       if (parametro_moneda_id == 1){
-                           html +=  moneda_extrangera+" "+ formato_numerico(total_final_equivalente.toFixed(decimales))+"</th>";
-                       }else{
-                           html +=  "Bs "+formato_numerico(total_final_equivalente.toFixed(decimales))+"</th>";
-                       }
+                        
+                        if (parametro_mostrarmoneda == 1){
+                            
+                            if (parametro_moneda_id == 1){
+                                html +=  moneda_extrangera+" "+ formato_numerico(total_final_equivalente.toFixed(decimales))+"</th>";
+                            }else{
+                                html +=  "Bs "+formato_numerico(total_final_equivalente.toFixed(decimales))+"</th>";
+                            }
+                        }
                         
                        html += "                            <th style='padding:0'></th> ";                                                          
                    }
@@ -1936,7 +2023,7 @@ function cambiarcantidadjs(e,producto)
             }
             else { 
 
-                alert('eeeADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
+                alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
         }
         
         
@@ -2295,6 +2382,12 @@ function tablaresultados(opcion)
                         
                         //html += "<td  style='padding:0'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ registros[i]["producto_nombre"]+"</b></font>";
                         html += "<td  style='padding:0; line-height:10pt;'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ nombreprod+"</b></font>";
+
+                        //productos no homologados
+                        if( !(Number(registros[i]["producto_codigosin"])>0 && Number(registros[i]["producto_codigounidadsin"])>0 ))
+                                html += " <a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-warning btn-xs' style='padding:0px;' title='Este producto no ha sido homologado, por lo tanto no puede incluirla en una factura...!'> Sin homologar </a>";
+//                                html += " <span class='btn btn-warning btn-xs' style='padding:0px;' title='Este producto no ha sido homologado, por lo tanto no puede incluirla en una factura...!'> Sin homologar </span>";
+//                                html += " <button class='btn btn-success btn-xs'>o</button>";
                         
                         html += mimagen;   
                         html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];                        
@@ -6801,174 +6894,6 @@ function existen_bolsa(){
     return res;
 }
 
-function borrar_datos_cliente(){
-    
-    var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
-    var parametro_imprimirfactura = document.getElementById("parametro_imprimirfactura").value;
-    var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
-    var parametro_factura = document.getElementById("parametro_factura").value; //0 no, 1 si
-    let documento_sector = document.getElementById("docsec_codigoclasificador").value;
-    
-    
-    var nit = "1234";
-    var razon_social = "SIN NOMBRE";
-    var cliente_id = "1";
-    
-    $("#razon_social").val(razon_social);
-    $("#cliente_nombre").val(razon_social);
-    $("#cliente_codigo").val(nit);
-    
-    
-    $("#email").val("");
-    
-    if(documento_sector == 23){ // si es prevalorada
-        
-        $("#razon_social").val("S/N");
-        $("#cliente_nombre").val("S/N");
-        $("#cliente_codigo").val("N/A");
-        
-    }
-    
-    $("#nit").val(nit);
-    $("#cliente_id").val(cliente_id);
-    $("#cliente_ci").val(nit);
-    $("#cliente_nombrenegocio").val("-");
-    
-    $("#pedido_id").val("0");
-    $("#usuarioprev_id").val("0");
-    
-    $("#cliente_direccion").val("-");
-    $("#cliente_departamento").val("-");
-    $("#cliente_celular").val("-");
-    $("#tipocliente_id").val("1");
-    $("#cliente_telefono").val("-");
-    
-    $("#tiposerv_id").val("1");
-    $("#venta_numeromesa").val("0");
-    $("#venta_glosa").val("");  
-    
-    $("#venta_efectivo").val("0");
-    $("#venta_cambio").val("0");
-    $("#zona_id").val("0");
-    $("#venta_descuentoparc").val("0");
-    $("#venta_descuento").val("0");
-    $("#preferencia_id").val("0");
-    $("#cliente_complementoci").val("");
-    $("#venta_ice").val("0.00");
-    $("#venta_detalletransaccion").val("0");
-    $("#venta_giftcard").val("0.00");
-    $("#tipo_doc_identidad").val("5");
-    $("#cliente_valido").val("1");
-    document.getElementById("codigoexcepcion").checked = false;
-    
-    
-    
-    $("#razon_social").css("background-color", "gray");
-    $("#razon_social").attr("readonly","readonly");
-    
-    
-    
-//    var codigo = document.getElementById("evento_contingencia").value; //0 no, 1 si
-//    var num = document.getElementById("numfact_cafc").value; //0 no, 1 si
-//    
-//    if (codig>0){
-//        $("#numfact_cafc").val(Num(num+1))
-//    }
-     
-    //document.getElementById("codigoexcepcion").checked = false;
-    document.getElementById("forma_pago").selectedIndex = 0
-    document.getElementById("tipo_transaccion").selectedIndex = 0
-    document.getElementById('creditooculto').style.display = 'none';
-    
-    try{
-        
-        document.getElementById('imagenqr').style.display = 'none';
-    
-    }
-    catch (error){}
-    
-            
-    //document.getElementById('creditooculto').style.display = 'none';
-    
-    $("#filtrar").focus();
-    
-    var facturado = document.getElementById('facturado').checked;  
-    
-    //alert("holaaaaaaaaaa");
-    //Si esta activo el modulo para restaurante
-    if (modulo_restaurante == 1){
-        
-        if (parametro_imprimircomanda==1){
-            boton = document.getElementById("imprimir_comanda");
-            boton.click();
-        }
-        
-    }
-    
-    if(parametro_imprimirfactura!=0){
-
-        if(parametro_imprimirfactura==1){ // Imprimir solo factura
-            let boton = document.getElementById("imprimir_factura");
-            if (facturado == 1){ boton.click(); }                    
-        }
-
-        if(parametro_imprimirfactura==2){ // Imprimir solo recibo
-            let boton = document.getElementById("imprimir");
-            boton.click();                    
-        }
-
-        if(parametro_imprimirfactura==3){ // Imprimir factura y recibo
-            let boton1 = document.getElementById("imprimir_factura");
-            let boton2 = document.getElementById("imprimir");
-            if (facturado == 1){ boton1.click(); }
-            boton2.click();
-        }
-
-        if(parametro_imprimirfactura==4){ // Imprimir factura o recibo
-
-            let boton1 = document.getElementById("imprimir_factura");
-            let boton2 = document.getElementById("imprimir");
-
-            if (facturado == 1){ boton1.click(); }
-            else { boton2.click(); }
-        }
-
-    }
-
-        
-        
-        //alert("No es restaurante");
-        
-//        if (facturado == 1){
-//            var boton = document.getElementById("imprimir_factura");
-//            boton.click();                    
-//        }       
-   
-    
-    document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
-    tablaproductos();
-    
-    tablaresultados(1); //redibuja la tabla de busqueda de productos      
-    // var parametro_factura = document.getElementById('parametro_factura').value;
-    // if(parametro_factura == 2){
-    //     $("#facturado").prop("checked", false);
-    // }
-    document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
-    document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-    
-    if(parametro_factura==2){
-        document.getElementById('facturado').checked = false;
-    }
-    if(parametro_factura==4){
-        document.getElementById('facturado').checked = true;
-    }
-    
-    
-     $("#span_buscar_cliente").click();   
-      $("#boton_presionado").val(0);
-
-}
-
 function buscar_placa(e){    
     
     let base_url = document.getElementById('base_url').value;
@@ -7150,4 +7075,223 @@ function transcribir(){
         $("#venta_efectivo").val(cobrado);
        calcularcambio(event);
    
+}
+
+
+function seleccionar_documento(id){
+    
+    var boton = document.getElementById("documento"+id);
+    boton.style = "color: white";
+    boton.style.backgroundColor = "#ffc107";
+   
+    
+    for(i = 1; i<=5; i++){
+        
+        if (i != id){
+            try{
+                let boton2 = document.getElementById("documento"+i);
+                boton2.style = "color: black";
+                boton2.style.backgroundColor = "#f8f9fa";    
+            }catch(error){
+                
+            }
+        }
+        
+    }
+    
+    $("#tipo_doc_identidad").val(id);
+    $("#nit").select();
+    $("#nit").focus();
+ 
+}
+//
+//function seleccionar_documento(id){
+//    
+//    var boton = document.getElementById("documento"+id);
+//    boton.style.backgroundColor = "#ffc107";
+//    
+//    for(i = 1; i<=5; i++){
+//        
+//        if (i != id){
+//            try{
+//                let boton2 = document.getElementById("documento"+i);
+//                boton2.style.backgroundColor = "#f8f9fa";    
+//            }catch(error){
+//                
+//            }
+//        }
+//        
+//    }
+//    
+//}
+
+
+function borrar_datos_cliente(){
+    
+    var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
+    var parametro_imprimirfactura = document.getElementById("parametro_imprimirfactura").value;
+    var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
+    var parametro_factura = document.getElementById("parametro_factura").value; //0 no, 1 si
+    let documento_sector = document.getElementById("docsec_codigoclasificador").value;
+    
+    
+    var nit = "1234";
+    var razon_social = "SIN NOMBRE";
+    var cliente_id = "1";
+    
+    seleccionar_documento(1); // CI
+    
+    $("#razon_social").val(razon_social);
+    $("#cliente_nombre").val(razon_social);
+    $("#cliente_codigo").val(nit);
+    
+    
+    $("#email").val("");
+    
+    if(documento_sector == 23){ // si es prevalorada
+        
+        $("#razon_social").val("S/N");
+        $("#cliente_nombre").val("S/N");
+        $("#cliente_codigo").val("N/A");
+        
+    }
+    
+    $("#nit").val(nit);
+    $("#cliente_id").val(cliente_id);
+    $("#cliente_ci").val(nit);
+    $("#cliente_nombrenegocio").val("-");
+    
+    $("#pedido_id").val("0");
+    $("#usuarioprev_id").val("0");
+    
+    $("#cliente_direccion").val("-");
+    $("#cliente_departamento").val("-");
+    $("#cliente_celular").val("-");
+    $("#tipocliente_id").val("1");
+    $("#cliente_telefono").val("-");
+    
+    $("#tiposerv_id").val("1");
+    $("#venta_numeromesa").val("0");
+    $("#venta_glosa").val("");  
+    
+    $("#venta_efectivo").val("0");
+    $("#venta_cambio").val("0");
+    $("#zona_id").val("0");
+    $("#venta_descuentoparc").val("0");
+    $("#venta_descuento").val("0");
+    $("#preferencia_id").val("0");
+    $("#cliente_complementoci").val("");
+    $("#venta_ice").val("0.00");
+    $("#venta_detalletransaccion").val("0");
+    $("#venta_giftcard").val("0.00");
+    $("#tipo_doc_identidad").val("5");
+    $("#cliente_valido").val("1");
+    document.getElementById("codigoexcepcion").checked = false;
+    
+    
+    
+    $("#razon_social").css("background-color", "gray");
+    $("#razon_social").attr("readonly","readonly");
+    
+    
+    
+//    var codigo = document.getElementById("evento_contingencia").value; //0 no, 1 si
+//    var num = document.getElementById("numfact_cafc").value; //0 no, 1 si
+//    
+//    if (codig>0){
+//        $("#numfact_cafc").val(Num(num+1))
+//    }
+     
+    //document.getElementById("codigoexcepcion").checked = false;
+    document.getElementById("forma_pago").selectedIndex = 0
+    document.getElementById("tipo_transaccion").selectedIndex = 0
+    document.getElementById('creditooculto').style.display = 'none';
+    
+    try{
+        
+        document.getElementById('imagenqr').style.display = 'none';
+    
+    }
+    catch (error){}
+    
+            
+    //document.getElementById('creditooculto').style.display = 'none';
+    
+    $("#filtrar").focus();
+    
+    var facturado = document.getElementById('facturado').checked;  
+    
+    //alert("holaaaaaaaaaa");
+    //Si esta activo el modulo para restaurante
+    if (modulo_restaurante == 1){
+        
+        if (parametro_imprimircomanda==1){
+            boton = document.getElementById("imprimir_comanda");
+            boton.click();
+        }
+        
+    }
+    
+    if(parametro_imprimirfactura!=0){
+
+        if(parametro_imprimirfactura==1){ // Imprimir solo factura
+            let boton = document.getElementById("imprimir_factura");
+            if (facturado == 1){ boton.click(); }                    
+        }
+
+        if(parametro_imprimirfactura==2){ // Imprimir solo recibo
+            let boton = document.getElementById("imprimir");
+            boton.click();                    
+        }
+
+        if(parametro_imprimirfactura==3){ // Imprimir factura y recibo
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton2 = document.getElementById("imprimir");
+            if (facturado == 1){ boton1.click(); }
+            boton2.click();
+        }
+
+        if(parametro_imprimirfactura==4){ // Imprimir factura o recibo
+
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton2 = document.getElementById("imprimir");
+
+            if (facturado == 1){ boton1.click(); }
+            else { boton2.click(); }
+        }
+
+    }
+
+        
+        
+        //alert("No es restaurante");
+        
+//        if (facturado == 1){
+//            var boton = document.getElementById("imprimir_factura");
+//            boton.click();                    
+//        }       
+   
+    
+    document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
+    tablaproductos();
+    
+    tablaresultados(1); //redibuja la tabla de busqueda de productos      
+    // var parametro_factura = document.getElementById('parametro_factura').value;
+    // if(parametro_factura == 2){
+    //     $("#facturado").prop("checked", false);
+    // }
+    document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+    document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+    
+    if(parametro_factura==2){
+        document.getElementById('facturado').checked = false;
+    }
+    if(parametro_factura==4){
+        document.getElementById('facturado').checked = true;
+    }
+    
+    
+     $("#span_buscar_cliente").click();   
+      $("#boton_presionado").val(0);
+
 }

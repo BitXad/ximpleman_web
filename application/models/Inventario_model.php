@@ -6,9 +6,23 @@
  
 class Inventario_model extends CI_Model
 {
+    private $parametros;
+    private $orden;
+    
     function __construct()
     {
         parent::__construct();
+        
+//        $this->load->model('Parametro_model');
+//        $parametro = $this->Parametro_model->get_parametros();
+//        $this->parametros = $parametro[0];
+        
+//        if($this->parametros["parametro_orden"]==1)
+//           $this->orden = " ORDER By c.categoria_nombre, p.producto_nombre asc";
+//            
+//        if($this->parametros["parametro_orden"]==2)
+           $this->orden = " ORDER By c.categoria_nombre, p.producto_orden asc";
+        
     }
     
     /*
@@ -97,6 +111,7 @@ class Inventario_model extends CI_Model
     }
 
     function get_inventario_serie($serie){
+        
         return $this->db->query(
             "SELECT 1 as tipo,'$serie' as detallecomp_series, i.*
             from inventario i 
@@ -106,6 +121,7 @@ class Inventario_model extends CI_Model
             group by i.producto_id
             order by i.producto_nombre"
         )->result_array();
+        
     }
 
 
@@ -141,6 +157,7 @@ class Inventario_model extends CI_Model
 //        GROUP BY p.categoria_id, p.producto_id
 //        ORDER By c.categoria_nombre, p.producto_nombre asc";
         
+        
         $sql = "SELECT p.*,c.categoria_nombre FROM inventario p
         left join categoria_producto c on c.categoria_id = p.categoria_id
         /*left join detalle_compra dc on dc.producto_id = p.producto_id*/ 
@@ -148,16 +165,14 @@ class Inventario_model extends CI_Model
         and p.producto_nombre like '%$parametro%' 
         or p.producto_codigobarra like '%$parametro%' 
         or p.producto_codigo like '%$parametro%'         
-        GROUP BY p.categoria_id, p.producto_id
-        ORDER By c.categoria_nombre, p.producto_nombre asc";
+        GROUP BY p.categoria_id, p.producto_id ".$this->orden;
         
         $producto = $this->db->query($sql)->result_array();
         return $producto;
     }
         
     function get_inventario_principioactivo($parametro)
-    {
-
+    {    
         
         $sql = "SELECT p.*,c.categoria_nombre FROM inventario p
         left join categoria_producto c on c.categoria_id = p.categoria_id
@@ -165,30 +180,37 @@ class Inventario_model extends CI_Model
         WHERE p.estado_id=1 
         and p.producto_principioact like '%$parametro%' 
         or p.producto_accionterap like '%$parametro%'    
-        GROUP BY p.categoria_id, p.producto_id
-        ORDER By c.categoria_nombre, p.producto_nombre asc";
+        GROUP BY p.categoria_id, p.producto_id ".$this->orden;
         
         $producto = $this->db->query($sql)->result_array();
         return $producto;
     }
 
     function get_inventario_for_serie($parametro){
-        return $this->db->query(
-            "SELECT p.*,c.categoria_nombre 
+        
+        $sql = "SELECT p.*,c.categoria_nombre 
             FROM inventario p
             left join categoria_producto c on c.categoria_id = p.categoria_id
             left join detalle_compra dc on dc.producto_id = p.producto_id 
             WHERE p.estado_id=1 
             and dc.detallecomp_series like '%$parametro%'
-            GROUP BY p.categoria_id, p.producto_id
-            ORDER By c.categoria_nombre, p.producto_nombre asc"
-        )->result_array();
+            GROUP BY p.categoria_id, p.producto_id ".$this->orden;
+        
+        return $this->db->query($sql)->result_array();
     }
 
     function get_inventario_categoria($parametro)
     {
+               
+//        if($this->parametros["parametro_orden"]==1)
+//           $orden = " order by i.producto_id";
+//            
+//        if($this->parametros["parametro_orden"]==2)
+           $orden = " order by i.producto_orden";
+        
+        
         $sql = " select i.* from inventario i where i.estado_id = 1 and i.categoria_id = ".$parametro.
-               " group by i.producto_id order by i.producto_id";
+               " group by i.producto_id ".$orden;
   
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -197,6 +219,7 @@ class Inventario_model extends CI_Model
 
     function get_inventario_subcategoria($parametro)
     {
+        
         $sql = " select i.* from inventario i where i.estado_id = 1 and i.subcategoria_id = ".$parametro.
                " group by i.producto_id order by i.producto_nombre";
   
