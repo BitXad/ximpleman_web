@@ -165,7 +165,7 @@ foreach($all_parametros as $p)
                         </td>
                     </tr>
                     <tr>
-                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="10" ><u>VENTAS</u></th>
+                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="12" ><u>VENTAS</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CATEGORIA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BUSCADOR EN VENTAS</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRIMIR COMANDA</th>
@@ -393,6 +393,13 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">SIN INVENTARIO</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOVIMIENTO DIARIO</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRIMIR FACTURA/RECIBO </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ORDEN </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">DOCUMENTO LISTA </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">TAM. TEXTO CATEGORIA </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">COLOR BOTON </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">DATOS PRODUCTO </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CANTIDAD SIMPLE </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BOTONES CONTROL </th>
                     </tr>
                     <tr>
                         <td><?php  if ($p['parametro_promocionesbuscador']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
@@ -413,8 +420,24 @@ foreach($all_parametros as $p)
                             }
                             ?>
                         </td>
+                        <td><?php  if ($p['parametro_orden']==1){ echo 'ASCENDENTE'; }else{ echo'DESCENDENTE'; } ?></td>
+                        <td><?php  if ($p['parametro_documentoslista']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
+                        <td><?php  echo $p['parametro_tamaniotextocategoria']; ?></td>
+                        <td><?php  echo $p['parametro_colorbotoncategoria']; ?></td>
+                        <td><?php  if ($p['parametro_datosproducto']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_cantidadsimple']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_botonescontrol']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
                     </tr>
-                    
+                    <tr>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BOTONES PRODUCTO </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ORDEN DETALLE </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">TABLA SENCILLA </th>
+                    </tr>
+                    <tr>
+                        <td><?php  if ($p['parametro_botonesproducto']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_ordendetalle']==1){ echo 'ASCENDENTE'; }else{ echo 'DESCENDENTE'; } ?></td>
+                        <td><?php  if ($p['parametro_tablasencilla']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
+                    </tr>
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(214, 114, 26, 0.3);" rowspan="2" ><u>CLIENTES</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(214, 114, 26, 0.3);">PUNTOS (Bs/PUNTO)</th>

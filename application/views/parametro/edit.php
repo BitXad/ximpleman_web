@@ -199,9 +199,6 @@ div {
                 </div>
             </div><hr>
             
-            
-            
-            
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(255, 0, 0, 0.3);"><u><b>SERVICIOS</b></u><br>
                 <div class="col-md-2">
                     <label for="parametro_diagnostico" class="control-label">TEXTO DIAGNOSTICO</label>
@@ -231,7 +228,7 @@ div {
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <label for="parametro_segservicio" class="control-label"> DOMULO DE SEGUIMIENTO</label>
+                    <label for="parametro_segservicio" class="control-label"> MODULO DE SEGUIMIENTO</label>
                     <div class="form-group">
                         <select  name="parametro_segservicio" class="form-control" id="parametro_segservicio" >
                              <option value="1">ACTIVAR SEGUIMIENTO</option>
@@ -748,13 +745,103 @@ div {
                             </select>
                         </div>
                     </div>
-                    
                     <div class="col-md-2"> 
                         <label for="parametro_decimales" class="control-label" title="Cantidad de decimales"><span class="text-danger">*</span>CANTIDAD DECIMALES</label> 
                         <div class="form-group"> 
                             <input type="number" min="0" name="parametro_decimales" value="<?php echo ($this->input->post('parametro_decimales') ? $this->input->post('parametro_decimales') : $parametro['parametro_decimales']); ?>" class="form-control" id="parametro_decimales" required /> 
                         </div> 
-                    </div> 
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_orden" class="control-label" title="Mostrar en orden">ORDEN</label>
+                        <div class="form-group">
+                            <select name="parametro_orden" class="form-control" id="parametro_orden">
+                                <option value="1" <?php if($parametro['parametro_orden']=="1"){ ?> selected <?php } ?>>ASCENDENTE</option>
+                                <option value="2" <?php if($parametro['parametro_orden']=="2"){ ?> selected <?php } ?>>DESCENDENTE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="parametro_documentoslista" class="control-label" title="Mostrar en lista el Tipo de documento de Identidad">DOCUMENTO LISTA</label>
+                        <div class="form-group">
+                            <select name="parametro_documentoslista" class="form-control" id="parametro_documentoslista">
+                                <option value="1" <?php if($parametro['parametro_documentoslista']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_documentoslista']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1"> 
+                        <label for="parametro_tamaniotextocategoria" class="control-label" title="Tamaño del texto de la Categoria"><span class="text-danger">*</span>TAMAÑO LETRAS CATEGORIA</label> 
+                        <div class="form-group"> 
+                            <input type="number" min="0" name="parametro_tamaniotextocategoria" value="<?php echo ($this->input->post('parametro_tamaniotextocategoria') ? $this->input->post('parametro_tamaniotextocategoria') : $parametro['parametro_tamaniotextocategoria']); ?>" class="form-control" id="parametro_tamaniotextocategoria" required /> 
+                        </div> 
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_colorbotoncategoria" class="control-label" title="Color de eboton en Categoria">COLOR BOTON</label>
+                        <div class="form-group btn-">
+                            <select name="parametro_colorbotoncategoria" class="form-control" id="parametro_colorbotoncategoria">
+                                <option value="danger" <?php if($parametro['parametro_colorbotoncategoria']=="danger"){ ?> selected <?php } ?>>danger</option>
+                                <option value="default" <?php if($parametro['parametro_colorbotoncategoria']=="default"){ ?> selected <?php } ?>>default</option>
+                                <option value="facebook" <?php if($parametro['parametro_colorbotoncategoria']=="facebook"){ ?> selected <?php } ?>>facebook</option>
+                                <option value="info" <?php if($parametro['parametro_colorbotoncategoria']=="info"){ ?> selected <?php } ?>>info</option>
+                                <option value="success" <?php if($parametro['parametro_colorbotoncategoria']=="success"){ ?> selected <?php } ?>>success</option>
+                                <option value="warning" <?php if($parametro['parametro_colorbotoncategoria']=="warning"){ ?> selected <?php } ?>>warning</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="parametro_datosproducto" class="control-label" title="Información detallada del producto">DATOS PRODUCTO</label>
+                        <div class="form-group">
+                            <select name="parametro_datosproducto" class="form-control" id="parametro_datosproducto">
+                                <option value="1" <?php if($parametro['parametro_datosproducto']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_datosproducto']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="parametro_cantidadsimple" class="control-label" title="Cantidad simple en ventas">CANTIDAD SIMPLE</label>
+                        <div class="form-group">
+                            <select name="parametro_cantidadsimple" class="form-control" id="parametro_cantidadsimple">
+                                <option value="1" <?php if($parametro['parametro_cantidadsimple']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_cantidadsimple']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="parametro_botonescontrol" class="control-label" title="Mostrar botones">BOTONES CONTROL</label>
+                        <div class="form-group">
+                            <select name="parametro_botonescontrol" class="form-control" id="parametro_botonescontrol">
+                                <option value="1" <?php if($parametro['parametro_botonescontrol']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_botonescontrol']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="parametro_botonesproducto" class="control-label" title="Mostrar botones">BOTONES PRODUCTO</label>
+                        <div class="form-group">
+                            <select name="parametro_botonesproducto" class="form-control" id="parametro_botonesproducto">
+                                <option value="1" <?php if($parametro['parametro_botonesproducto']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_botonesproducto']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_ordendetalle" class="control-label" title="Mostrar en orden">ORDEN DETALLE</label>
+                        <div class="form-group">
+                            <select name="parametro_ordendetalle" class="form-control" id="parametro_ordendetalle">
+                                <option value="1" <?php if($parametro['parametro_ordendetalle']=="1"){ ?> selected <?php } ?>>ASCENDENTE</option>
+                                <option value="2" <?php if($parametro['parametro_ordendetalle']=="2"){ ?> selected <?php } ?>>DESCENDENTE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="parametro_tablasencilla" class="control-label" title="Tabla sencilla en la parte derecha de ventas">TABLA SENCILLA</label>
+                        <div class="form-group">
+                            <select name="parametro_tablasencilla" class="form-control" id="parametro_tablasencilla">
+                                <option value="1" <?php if($parametro['parametro_tablasencilla']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_tablasencilla']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
                     
                 </div>
             </div><hr>

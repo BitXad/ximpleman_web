@@ -475,6 +475,16 @@ class Parametro extends CI_Controller{
                     'parametro_sininventario' => $this->input->post('parametro_sininventario'),
                     'parametro_movimientodiario' => $this->input->post('parametro_movimientodiario'),
                     'parametro_imprimirfactura' => $this->input->post('parametro_imprimirfactura'),
+                    'parametro_orden' => $this->input->post('parametro_orden'),
+                    'parametro_documentoslista' => $this->input->post('parametro_documentoslista'),
+                    'parametro_tamaniotextocategoria' => $this->input->post('parametro_tamaniotextocategoria'),
+                    'parametro_colorbotoncategoria' => $this->input->post('parametro_colorbotoncategoria'),
+                    'parametro_datosproducto' => $this->input->post('parametro_datosproducto'),
+                    'parametro_cantidadsimple' => $this->input->post('parametro_cantidadsimple'),
+                    'parametro_botonescontrol' => $this->input->post('parametro_botonescontrol'),
+                    'parametro_botonesproducto' => $this->input->post('parametro_botonesproducto'),
+                    'parametro_ordendetalle' => $this->input->post('parametro_ordendetalle'),
+                    'parametro_tablasencilla' => $this->input->post('parametro_tablasencilla'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            
