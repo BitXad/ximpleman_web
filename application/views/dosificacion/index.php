@@ -247,7 +247,7 @@
                 </tr>
                 
                 <tr>
-                    <td <?= $estilo; ?> >Notas Credito/Debito:</td>
+                    <td <?= $estilo; ?> >Nota de Conciliacion/Credito-Debito:</td>
                     <td colspan="3">
                         <?php echo $dosificacion['dosificacion_notacredito']; ?>
                     </td>
@@ -263,14 +263,23 @@
                         <?php echo $dosificacion['dosificacion_facturaservicios']; ?>
                     </td>
 
-                    <td <?= $estilo; ?> >Facturas dosificacion_facturaglp:</td>
+                    <td <?= $estilo; ?> >Facturas Computarizadas glp/prev/hosp-clin/hot/educ:</td>
                     <td colspan="4">    <?php echo $dosificacion['dosificacion_facturaglp']; ?>                      
                     </td>                    
                 </tr>
                 <tr>
-                    <td <?= $estilo; ?> >Facturas Electronicas glp/prev:</td>
+                    <td <?= $estilo; ?> >Facturas Electronicas glp/prev/hosp-clin/hot/educ:</td>
                     <td colspan="3">
                         <?php echo $dosificacion['dosificacion_glpelectronica']; ?>
+                    </td>
+                    <td <?= $estilo; ?> >Facturas Telecomunicaciones:</td>
+                    <td colspan="4">    <?php echo $dosificacion['dosificacion_telecomunicaciones']; ?>                      
+                    </td>
+                </tr>
+                <tr>
+                    <td <?= $estilo; ?> >Facturas Entidades Financieras:</td>
+                    <td colspan="3">
+                        <?php echo $dosificacion['dosificacion_entidadesfinancieras']; ?>
                     </td>
 
                     <!--<td <?php /*echo $estilo; ?> >Facturas dosificacion_facturaglp:</td>

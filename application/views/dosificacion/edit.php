@@ -304,7 +304,7 @@
                     </div>                    
                     
                     <div class="col-md-6">
-                        <label for="dosificacion_notacredito" class="control-label">Notas de Credito</label>
+                        <label for="dosificacion_notacredito" class="control-label">Nota de Conciliacion/Credito-Debito</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_notacredito" value="<?php echo ($this->input->post('dosificacion_notacredito') ? $this->input->post('dosificacion_notacredito') : $dosificacion['dosificacion_notacredito']); ?>" class="form-control" id="dosificacion_notacredito" />
                         </div>
@@ -329,18 +329,29 @@
                     
                     
                     <div class="col-md-6">
-                        <label for="dosificacion_facturaglp" class="control-label">Factura Comercializacion GN/GLP/PREV</label>
+                        <label for="dosificacion_facturaglp" class="control-label">Factura Comercializacion GN/GLP/PREV/HOSP-CLIN/HOT/EDUC</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_facturaglp" value="<?php echo ($this->input->post('dosificacion_facturaglp') ? $this->input->post('dosificacion_facturaglp') : $dosificacion['dosificacion_facturaglp']); ?>" class="form-control" id="dosificacion_facturaglp" />
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="dosificacion_glpelectronica" class="control-label">Factura Comercializacion Electronica GN/GLP/PREV</label>
+                        <label for="dosificacion_glpelectronica" class="control-label">Factura Comercializacion Electronica GN/GLP/PREV/HOSP-CLIN/HOT/EDUC</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_glpelectronica" value="<?php echo ($this->input->post('dosificacion_glpelectronica') ? $this->input->post('dosificacion_glpelectronica') : $dosificacion['dosificacion_glpelectronica']); ?>" class="form-control" id="dosificacion_glpelectronica" />
                         </div>
                     </div>
-                    
+                    <div class="col-md-6">
+                        <label for="dosificacion_telecomunicaciones" class="control-label">Factura Telecomunicaciones</label>
+                        <div class="form-group">
+                            <input type="text" name="dosificacion_telecomunicaciones" value="<?php echo ($this->input->post('dosificacion_telecomunicaciones') ? $this->input->post('dosificacion_telecomunicaciones') : $dosificacion['dosificacion_telecomunicaciones']); ?>" class="form-control" id="dosificacion_telecomunicaciones" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="dosificacion_entidadesfinancieras" class="control-label">Factura Entidades Financieras</label>
+                        <div class="form-group">
+                            <input type="text" name="dosificacion_entidadesfinancieras" value="<?php echo ($this->input->post('dosificacion_entidadesfinancieras') ? $this->input->post('dosificacion_entidadesfinancieras') : $dosificacion['dosificacion_entidadesfinancieras']); ?>" class="form-control" id="dosificacion_entidadesfinancieras" />
+                        </div>
+                    </div>
                     
                     <div class="col-md-6">
                         <label for="dosificacion_ruta" class="control-label">Ruta QR</label>
