@@ -65,7 +65,7 @@ div {
                 <div class="col-md-1">
                     <label for="parametro_anchofactura" class="control-label">ANCHO FACT.(CM)</label>
                     <div class="form-group">
-                        <input type="number" step="any" name="parametro_anchofactura" value="<?php echo ($this->input->post('parametro_anchofactura') ? $this->input->post('parametro_anchofactura') : number_format($parametro['parametro_anchofactura'], $parametro['parametro_decimales'], '.', ',')); ?>" class="form-control" id="parametro_anchofactura" />
+                        <input type="number" step="any" name="parametro_anchofactura" value="<?php echo ($this->input->post('parametro_anchofactura') ? $this->input->post('parametro_anchofactura') : number_format($parametro['parametro_anchofactura'], $parametro['parametro_decimales'], '.', '')); ?>" class="form-control" id="parametro_anchofactura" />
                     </div>
                 </div>
                 <div class="col-md-1">

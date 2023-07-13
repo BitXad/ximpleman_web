@@ -7187,7 +7187,7 @@ function anular_venta($venta_id){
         $micad .= "                    <table class='table-condensed'  style='width: 100%; margin: 0;' >"; 
         $micad .= "                        <tr  style=' font-family: arial; border: 1px solid black '>"; 
         
-        if($factura[0]['docsec_codigoclasificador']==2){
+        if($factura[0]['docsec_codigoclasificador']==2 || $factura[0]['docsec_codigoclasificador']==22){
             $micad .= "                            <td align='center' ".$colorCelda.">C&Oacute;DIGO<br> SERVICIO</td>"; 
         }else{
             $micad .= "                            <td align='center' ".$colorCelda.">C&Oacute;DIGO<br> PRODUCTO</td>"; 
@@ -7308,7 +7308,7 @@ function anular_venta($venta_id){
                              
         $micad .= "                                             <!-------------- MONTO A PAGAR ---------->";
         
-        if($mostrarice==1 || $factura[0]['docsec_codigoclasificador']==8){ // Mostrar si es factura con ICE o Tasa Cero
+        if($mostrarice==1 || $factura[0]['docsec_codigoclasificador']==8 || $factura[0]['docsec_codigoclasificador']==22){ // Mostrar si es factura con ICE o Tasa Cero
         $micad .= "    <tr>           ";
         $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";
         $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_total,$dos_decimales,'.',',')."</td>";

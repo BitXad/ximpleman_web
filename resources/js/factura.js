@@ -112,7 +112,7 @@ function mostrar_facturas() {
 
                                 if(rolusuario_asignado == 1){
 
-                                    if (factura["estado_id"]!=3){//si la factura esta anulada
+                                    if (factura["estado_id"]!=3){//si la factura NO esta anulada
 
                                         if(factura[i]["estado_id"]==1){
 

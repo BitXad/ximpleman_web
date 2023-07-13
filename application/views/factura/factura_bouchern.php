@@ -333,7 +333,7 @@
                                             }else{  
                                                 $lacantidad = number_format($d['detallefact_cantidad'],$decimales,'.',',');  
                                             }  
-                                            echo $lacantidad; 
+                                            //echo $lacantidad; 
 
                                     
                                     

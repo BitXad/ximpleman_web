@@ -915,6 +915,7 @@ class Sincronizacion extends CI_Controller{
                 
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'moneda_id'                 => $codigo->codigoClasificador,
                         'estado_id'                 => 2,//2 INACTIVO
                         'moneda_codigoclasificador' => $codigo->codigoClasificador,
                         'moneda_descripcion'        => substr($codigo->descripcion,0,3),
