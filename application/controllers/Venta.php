@@ -7925,6 +7925,29 @@ function anular_venta($venta_id){
        //**************** fin contenido ***************
         			       
     }       
+
+    /*
+     * Obtener el producto pen base al id
+     */
+    function get_producto_detalle_id()
+    {
+        //**************** inicio contenido ***************   
+        
+        if ($this->input->is_ajax_request()) {
+            
+            $producto_id = $this->input->post('producto_id');            
+            $result = $this->Venta_model->get_producto_detalle_id($producto_id);
+            
+            echo json_encode($result);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }    
+       //**************** fin contenido ***************
+        			       
+    }       
     
     function guardarDatoCliente()
     {

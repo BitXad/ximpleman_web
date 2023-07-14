@@ -333,7 +333,10 @@ function buscarcliente(){
                         $("#zona_id").val(0);
                     }
                     
-                    document.getElementById('loader_documento').style.display = 'none';
+                    seleccionar_documento(registros[0]["cdi_codigoclasificador"]);
+                    
+                    document.getElementById('loader_documento').style.display = 'none';                    
+                    
                 }
                 else //Si el cliente es nuevo o no existe
                 {
@@ -714,7 +717,7 @@ html += "  </div>";
                             html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";
                             html += "                              		<span class='btn btn-default  btn-xs'> "+detalle_cantidad+"</span>";
 
-                            html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+detalle_cantidad+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' autocomplete='off'>";
+                            html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+detalle_cantidad+"'   onKeyUp ='cambiarcantidadjs(event,"+registros[i]["producto_id"]+")' autocomplete='off'>";
                             //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
                             html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
 
@@ -725,7 +728,7 @@ html += "  </div>";
                                
                        
 //
-                            html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='ssss"+detalle_cantidad+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' autocomplete='off'>";
+                            html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='ssss"+detalle_cantidad+"'   onKeyUp ='cambiarcantidadjs(event,"+registros[i]["producto_id"]+")' autocomplete='off'>";
                             //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
                             html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
                                
@@ -754,18 +757,18 @@ html += "  </div>";
                             html += "                    <div class='btn-group'>      ";     
                             html += "			<button style='font-size:"+tamanio_fuente+" ' onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";                       
                         
-                            html += "                       <input size='1' style='font-size:"+tamanio_fuente+" '  name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+ formato_cantidad(registros[i]["detalleven_cantidad"])+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' autocomplete='off'>";
+                            html += "                       <input size='1' style='font-size:"+tamanio_fuente+" '  name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+ formato_cantidad(registros[i]["detalleven_cantidad"])+"'   onKeyUp ='cambiarcantidadjs(event,"+registros[i]["producto_id"]+")' autocomplete='off'>";
                             //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
                             html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
 
-                            html += "                       <button style='font-size:"+tamanio_fuente+" ' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
+                            html += "                       <button style='font-size:"+tamanio_fuente+" ' onclick='incrementar(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></button>";
 
                             html += "                    </div>";
                             
                         }else{
                         
                             html += " <td align='center' width='30' "+color+"> ";
-                            html += "                       <input size='1' style='font-size:"+tamanio_fuente+" '  name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+ formato_cantidad(registros[i]["detalleven_cantidad"])+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")'  autocomplete='off'>";
+                            html += "                       <input size='1' style='font-size:"+tamanio_fuente+" '  name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+ formato_cantidad(registros[i]["detalleven_cantidad"])+"'   onKeyUp ='cambiarcantidadjs(event,"+registros[i]["producto_id"]+")'  autocomplete='off'>";
                             //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
                             html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";                            
                         }
@@ -1339,12 +1342,12 @@ function incrementar(cantidad,detalleven_id)
     var producto_id = document.getElementById('productodet_'+detalleven_id).value;
     var decimales = Number(document.getElementById('parametro_decimales').value);
     var cantidad_detalle = cantidad_en_detalle(producto_id)+1;
-    cantidad_detalle = cantidad_detalle.toFixed(decimales);
+    cantidad_detalle = Number(cantidad_detalle).toFixed(decimales);
     
-    alert("Cantida decimales: "+decimales);
+    //alert("Cantida decimales: "+decimales);
     
     var cantidad_disponible =  existencia(producto_id);
-    cantidad_disponible =cantidad_disponible.toFixed(decimales);
+    cantidad_disponible = Number(cantidad_disponible).toFixed(decimales);
     
    if (cantidad_detalle <= cantidad_disponible){
        
@@ -1361,7 +1364,7 @@ function incrementar(cantidad,detalleven_id)
 
         });
    }
-   else { alert('aaaADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+cantidad_disponible);}
+   else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+cantidad_disponible);}
        
     
 }
@@ -1764,6 +1767,29 @@ function get_producto(producto_id){
     return producto;     
 }
 
+function get_producto_detalle(producto_id){
+    
+        var base_url = document.getElementById("base_url").value;
+        var controlador = base_url+"venta/get_producto_detalle_id";
+        
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{producto_id:producto_id}, 
+                async: false,
+                success:function(respuesta){
+                    
+                    var res = JSON.parse(respuesta);
+                    //alert(JSON.stringify(res));
+                    producto = res;
+                },
+                error:function(respuesta){
+
+                  producto = null;
+                }
+         }); 
+    return producto;     
+}
+
 function ingresorapidojs(cantidad,producto_id,nombre_factor){       
     
     var factor_nombre = (nombre_factor==0)?"":nombre_factor; //cantidad del factor seleccionado
@@ -1984,21 +2010,26 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
 }
 
 
-function cambiarcantidadjs(e,producto)
+function cambiarcantidadjs(e,prod_id)
 {   
+    var producto = get_producto_detalle(prod_id);
     var decimales = Number(document.getElementById('parametro_decimales').value);
-    tecla = (document.all) ? e.keyCode : e.which;
     
+    let tecla = (document.all) ? e.keyCode : e.which;
+    
+    
+    //alert(JSON.stringify(producto));
     if (tecla==13)
     {
-  
+        //alert("Fue enter <-|");
         var base_url = document.getElementById('base_url').value;   
         var controlador = base_url+"venta/ejecutar_cambiarcantidad";
-        var usuario_id = document.getElementById('usuario_id').value;
+        //var usuario_id = document.getElementById('usuario_id').value;
         var existencia =  parseFloat(producto.existencia);    
         var producto_id =  producto.producto_id; 
-        
+        //alert("cantidad: "+producto.detalleven_id);
         var cantidad =  document.getElementById('cantidad'+producto.detalleven_id).value;
+        
         cantidad =  Number(cantidad).toFixed(decimales);
          
         var sql = "";
@@ -2007,32 +2038,39 @@ function cambiarcantidadjs(e,producto)
         var cantidad_total = parseFloat(cantidad_en_detalle_otros(producto.producto_id)) + parseFloat(cantidad); 
 
         if (Number(cantidad)>0){
-        
+            
+            
             if (parseFloat(cantidad_total) <= parseFloat(existencia)){
-
+                
+                
                 sql = "update detalle_venta_aux set detalleven_cantidad =  "+cantidad+
                         ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
                         ", detalleven_descuento = "+descuento+
                         ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
                         "  where producto_id = "+producto_id+" and  detalleven_id = "+producto.detalleven_id ; //usuario_id = "+usuario_id;
+                alert("cantidad: "+cantidad);
                // alert(sql);
 
                 $.ajax({url: controlador,
                     type:"POST",
                     data:{sql:sql},
                     success:function(respuesta){
-                            //var r = JSON.parse(respuesta);                        
+                        //var r = JSON.parse(respuesta);
+                        //alert("llego hasta aqui");
+                        tablaproductos();
                     }
-                });      
+                }); 
+                
+                
 
             }
             else { 
 
                 alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
+                tablaproductos();
         }
         
         
-        tablaproductos();
     }
 }
 
@@ -7087,7 +7125,8 @@ function seleccionar_documento(id){
     
     var boton = document.getElementById("documento"+id);
     boton.style = "color: white";
-    boton.style.backgroundColor = "#ffc107";
+    boton.style.backgroundColor = "#f39c12"; //
+    //boton.style.borderColor = "#f8f9fa"; //
    
     
     for(i = 1; i<=5; i++){

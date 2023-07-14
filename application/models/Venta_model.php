@@ -811,5 +811,14 @@ function get_busqueda($condicion)
         return $this->db->query($sql)->row_array();
         
     }
+    /**
+     * Obtener le producto en base al id
+     */
+    function get_producto_detalle_id($producto_id){
+        
+        $sql = "select * from detalle_venta_aux where producto_id = ".$producto_id;
+        return $this->db->query($sql)->row_array();
+        
+    }
     
 }
