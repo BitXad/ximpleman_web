@@ -109,27 +109,35 @@ class Emision_paquetes extends CI_Controller{
                     $wsdl = $dosificacion['dosificacion_factura'];
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-                    
-                    if ($dosificacion['docsec_codigoclasificador']==2 ||  $dosificacion['docsec_codigoclasificador']==23 
-                        || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
-                        || $dosificacion['docsec_codigoclasificador']==8|| $dosificacion['docsec_codigoclasificador']==12
-                        || $dosificacion['docsec_codigoclasificador']==51)
-                        
-                        $wsdl = $dosificacion['dosificacion_glpelectronica'];
-                    
-                    if ($dosificacion['docsec_codigoclasificador']==22)
-                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                             $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+
+                         if ($dosificacion['docsec_codigoclasificador']==13)
+                             $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+
+                         if ($dosificacion['docsec_codigoclasificador']==15)
+                             $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+                         if ($dosificacion['docsec_codigoclasificador']==22)
+                             $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
                     
                 }
-                
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-                    
-                    if ($dosificacion['docsec_codigoclasificador']==2 ||$dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11
-                           || $dosificacion['docsec_codigoclasificador']==8|| $dosificacion['docsec_codigoclasificador']==12|| $dosificacion['docsec_codigoclasificador']==51)
-                        $wsdl = $dosificacion['dosificacion_facturaglp'];
-                    
-                    if ($dosificacion['docsec_codigoclasificador']==22)
-                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                            $wsdl = $dosificacion['dosificacion_facturaglp'];
+                        
+                        if ($dosificacion['docsec_codigoclasificador']==13)
+                            $wsdl = $dosificacion['dosificacion_facturaservicios'];
+                         
+                         if ($dosificacion['docsec_codigoclasificador']==15)
+                             $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+                         
+                        if ($dosificacion['docsec_codigoclasificador']==22)
+                            $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
                 }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
@@ -332,12 +340,35 @@ class Emision_paquetes extends CI_Controller{
                     $wsdl = $dosificacion['dosificacion_factura'];
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
+                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                             $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+
+                         if ($dosificacion['docsec_codigoclasificador']==13)
+                             $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+
+                         if ($dosificacion['docsec_codigoclasificador']==15)
+                             $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+                         if ($dosificacion['docsec_codigoclasificador']==22)
+                             $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+                    
                 }
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                            $wsdl = $dosificacion['dosificacion_facturaglp'];
+                        
+                        if ($dosificacion['docsec_codigoclasificador']==13)
+                            $wsdl = $dosificacion['dosificacion_facturaservicios'];
+                         
+                         if ($dosificacion['docsec_codigoclasificador']==15)
+                             $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+                         
+                        if ($dosificacion['docsec_codigoclasificador']==22)
+                            $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
                 }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
@@ -452,16 +483,35 @@ class Emision_paquetes extends CI_Controller{
                     $wsdl = $dosificacion['dosificacion_factura'];
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 
-                        || $dosificacion['docsec_codigoclasificador']==11 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12
-                            || $dosificacion['docsec_codigoclasificador']==51)
-                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
+                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                             $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+
+                         if ($dosificacion['docsec_codigoclasificador']==13)
+                             $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+
+                         if ($dosificacion['docsec_codigoclasificador']==15)
+                             $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+                         if ($dosificacion['docsec_codigoclasificador']==22)
+                             $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+                    
                 }
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 
-                            || $dosificacion['docsec_codigoclasificador']==11 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12
-                            || $dosificacion['docsec_codigoclasificador']==51)
-                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                            $wsdl = $dosificacion['dosificacion_facturaglp'];
+                        
+                        if ($dosificacion['docsec_codigoclasificador']==13)
+                            $wsdl = $dosificacion['dosificacion_facturaservicios'];
+                         
+                         if ($dosificacion['docsec_codigoclasificador']==15)
+                             $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+                         
+                        if ($dosificacion['docsec_codigoclasificador']==22)
+                            $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
                 }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
@@ -589,14 +639,35 @@ class Emision_paquetes extends CI_Controller{
                     $wsdl = $dosificacion['dosificacion_factura'];
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39
-                        || $dosificacion['docsec_codigoclasificador']==11|| $dosificacion['docsec_codigoclasificador']==12|| $dosificacion['docsec_codigoclasificador']==8|| $dosificacion['docsec_codigoclasificador']==51)
-                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
+                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                             $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+
+                         if ($dosificacion['docsec_codigoclasificador']==13)
+                             $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+
+                         if ($dosificacion['docsec_codigoclasificador']==15)
+                             $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+                         if ($dosificacion['docsec_codigoclasificador']==22)
+                             $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+                    
                 }
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 
-                            || $dosificacion['docsec_codigoclasificador']==11|| $dosificacion['docsec_codigoclasificador']==12|| $dosificacion['docsec_codigoclasificador']==8|| $dosificacion['docsec_codigoclasificador']==51)
-                    $wsdl = $dosificacion['dosificacion_facturaglp'];
+                    if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==16
+                                || $dosificacion['docsec_codigoclasificador']==17 || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                            $wsdl = $dosificacion['dosificacion_facturaglp'];
+                        
+                        if ($dosificacion['docsec_codigoclasificador']==13)
+                            $wsdl = $dosificacion['dosificacion_facturaservicios'];
+                         
+                         if ($dosificacion['docsec_codigoclasificador']==15)
+                             $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+                         
+                        if ($dosificacion['docsec_codigoclasificador']==22)
+                            $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
                 }
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
