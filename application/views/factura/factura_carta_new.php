@@ -378,7 +378,7 @@ border-bottom : 1px solid #aaa;
                 <td>
                     <table class="table-condensed table-fondito"  style="width: 100%; margin: 0; ">
                         <tr  style=" font-family: Arial; border: 1px solid black;">
-                            <?php if($factura[0]['docsec_codigoclasificador']==2 || $factura[0]['docsec_codigoclasificador']==22){ ?>
+                            <?php if($factura[0]['docsec_codigoclasificador']==2 || $factura[0]['docsec_codigoclasificador']==17 || $factura[0]['docsec_codigoclasificador']==22){ ?>
                             
                                     <td align="center"><b>CÓDIGO<br> SERVICIO</b></td>
                                     
