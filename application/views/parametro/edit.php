@@ -716,6 +716,24 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1">
+                        <label for="parametro_mostrarlogo" class="control-label">MOSTRAR LOGO</label>
+                        <div class="form-group">
+                            <select name="parametro_mostrarlogo" class="form-control" id="parametro_mostrarlogo">
+                                <option value="1" <?php if($parametro['parametro_mostrarlogo']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_mostrarlogo']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <label for="parametro_mostrareslogan" class="control-label">MOSTRAR ESLOGAN</label>
+                        <div class="form-group">
+                            <select name="parametro_mostrareslogan" class="form-control" id="parametro_mostrareslogan">
+                                <option value="1" <?php if($parametro['parametro_mostrareslogan']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_mostrareslogan']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
                         <label for="parametro_sininventario" class="control-label">VENTAS SIN INVENTARIO</label>
                         <div class="form-group">
                             <select name="parametro_sininventario" class="form-control" id="parametro_sininventario">

@@ -472,6 +472,8 @@ class Parametro extends CI_Controller{
                     'parametro_inventariobuscador' => $this->input->post('parametro_inventariobuscador'),
                     'parametro_promocionesbuscador' => $this->input->post('parametro_promocionesbuscador'),
                     'parametro_logoenfactura' => $this->input->post('parametro_logoenfactura'),
+                    'parametro_mostrareslogan' => $this->input->post('parametro_mostrareslogan'),
+                    'parametro_mostrarlogo' => $this->input->post('parametro_mostrarlogo'),
                     'parametro_sininventario' => $this->input->post('parametro_sininventario'),
                     'parametro_movimientodiario' => $this->input->post('parametro_movimientodiario'),
                     'parametro_imprimirfactura' => $this->input->post('parametro_imprimirfactura'),
