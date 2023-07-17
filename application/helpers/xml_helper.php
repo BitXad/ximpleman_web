@@ -256,8 +256,19 @@ $salto_linea='
         if($documento_sector==22){ //22 telecominicaciones
             $cabecera_facturaxml .= $salto_linea.'          <nitConjunto xsi:nil="true"></nitConjunto>';
         }
+        
+        
+        if($documento_sector!=24){ //24 Nota de debito-credito
             
-        $cabecera_facturaxml .= $salto_linea.'          <numeroFactura>'.$factura['factura_numero'].'</numeroFactura>';
+            $cabecera_facturaxml .= $salto_linea.'          <numeroFactura>'.$factura['factura_numero'].'</numeroFactura>';    
+            
+        }else{
+            
+            $cabecera_facturaxml .= $salto_linea.'          <numeroNotaCreditoDebito>1</numeroNotaCreditoDebito>';
+            
+        }
+
+        
         $cabecera_facturaxml .= $salto_linea.'          <cuf>'.$factura['factura_cuf'].'</cuf>';
         $cabecera_facturaxml .= $salto_linea.'          <cufd>'.$factura['factura_cufd'].'</cufd>';
         $cabecera_facturaxml .= $salto_linea.'          <codigoSucursal>'.$factura['factura_sucursal'].'</codigoSucursal>';
@@ -371,12 +382,12 @@ $salto_linea='
         }
         
         
-        if ($documento_sector != 23 ){  //23- factura prevalorada 
+        if ($documento_sector != 23 && $documento_sector != 24){  //23- factura prevalorada 
             $cabecera_facturaxml .= $salto_linea.'          <codigoMetodoPago>'.$factura['forma_id'].'</codigoMetodoPago>';
         }
 
         
-        if ($documento_sector != 23){  //23- factura prevalorada //12 Comercializacion hidrocarburos
+        if ($documento_sector != 23 && $documento_sector != 24){  //23- factura prevalorada //12 Comercializacion hidrocarburos
            
             if ($documento_sector == 6){ //6-AServicio Turismo Hospedaje
                 
@@ -397,6 +408,10 @@ $salto_linea='
             $cabecera_facturaxml .= $salto_linea.'          <montoTotalArrendamientoFinanciero xsi:nil="true"/>';
         }
         
+
+        if ($documento_sector != 24){ //Si no es Nota de debito-credito
+        
+//****************************************************************************************
         
         $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_total'],$dos_decimales,".","") .'</montoTotal>';
         
@@ -472,6 +487,24 @@ $salto_linea='
                 $cabecera_facturaxml .= $salto_linea.'          <cafc xsi:nil="true">'.$valor_vacio.'</cafc>';
              }
         }
+//*************************************************************************
+        }else{ // Si es doc sector 24 nota de debito credito
+
+            $cabecera_facturaxml .= $salto_linea.'          <numeroFactura>'.$factura['factura_numero'].'</numeroFactura>';            
+            $cabecera_facturaxml .= $salto_linea.'          <numeroAutorizacionCuf>'.$factura['factura_cufd'].'</numeroAutorizacionCuf>';            
+            $cabecera_facturaxml .= $salto_linea.'          <fechaEmisionFactura>'.$factura['factura_fecha'].'</fechaEmisionFactura>';            
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotalOriginal>'.number_format($factura['factura_total'],$dos_decimales,".","").'</montoTotalOriginal>';
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotalDevuelto>'.number_format($factura['factura_total'],$dos_decimales,".","").'</montoTotalDevuelto>';
+            $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoCreditoDebito xsi:nil="true"></montoDescuentoCreditoDebito>';
+            $cabecera_facturaxml .= $salto_linea.'          <montoEfectivoCreditoDebito>'.number_format($factura['factura_total']*0.13,$dos_decimales,".","").'</montoEfectivoCreditoDebito>';
+            $cabecera_facturaxml .= $salto_linea.'          <codigoExcepcion>'.$factura_excepcion.'</codigoExcepcion>';
+            
+        }
+        
+        
+        
+        
+
         
         $cabecera_facturaxml .= $salto_linea.'          <leyenda>'.$factura['factura_leyenda2'].'</leyenda>';
         $cabecera_facturaxml .= $salto_linea.'          <usuario>'.$factura['usuario_nombre'].'</usuario>';

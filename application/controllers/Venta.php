@@ -546,7 +546,7 @@ class Venta extends CI_Controller{
         //**************** inicio contenido ***************   
             //$factura_fecha_hora = '2022-07-03 13:17:10.000';//borrar
             //$factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
-            for($numero = 1;$numero <= 1;$numero++){ //borrar el for, mantener su contenido
+            //for($numero = 1;$numero <= 2;$numero++){ //borrar el for, mantener su contenido
                 $data['sistema'] = $this->sistema;
                 $usuario_id = $this->session_data['usuario_id'];
                 
@@ -1473,7 +1473,7 @@ class Venta extends CI_Controller{
         }
 
         //**************** fin contenido ***************
-        }
+        //}
                
         
     }
@@ -2045,7 +2045,8 @@ function edit($venta_id){
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];        
-        
+        $punto_venta = $this->session_data['puntoventa_codigo'];    
+                
         // check if the venta exists before trying to edit it
         $venta = $this->Venta_model->get_venta($venta_id);
         
@@ -2084,6 +2085,11 @@ function edit($venta_id){
         $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
         
             
+        $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
+        $data['marcas'] = $this->Venta_model->consultar("select * from marca_producto order by marca_nombre");
+        
+        
+        
         //**************** inicio contenido ***************     
                 
        
@@ -2095,6 +2101,41 @@ function edit($venta_id){
         
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
 
+        
+                if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
+            
+           // if($this->parametros["parametro_tipoemision"] == 1){ // Si esta en tipo emision EN LINEA
+       
+
+
+
+                    $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NOW()) * -1) AS horas_vigencia from cufd where cufd_id = (select MAX(cufd_id) from cufd where cufd_puntodeventa = ".$punto_venta.") and cufd_puntodeventa = ".$punto_venta;        
+                    //echo $sql;
+                    $data['cufd'] = $this->Venta_model->consultar($sql);
+
+                    $sql = "SELECT  i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
+                            FROM
+                              inventario i
+                            WHERE
+                              i.producto_codigosin = 0 or  i.producto_codigosin is null or
+                              i.producto_codigounidadsin = 0 or i.producto_codigosin is null";
+                    $data['productos_homologados'] = $this->Venta_model->consultar($sql);
+                    
+                    //Si la vigencia es menor o igual a 3 horas,atualizar el CUFD
+//                    $sql = "select (TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NOW()) * -1) AS horas_vigencia from cufd
+//                            where cufd_puntodeventa = 0 and
+//                            cufd_id in (select max(cufd_id) from cufd)";
+//                    $vigencia_cufd = $this->Venta_model->consultar($sql);
+//
+//                    if ($vigencia_cufd<=3){ //si la vigen(cia del CUFD es menor a 3 horas
+//                        $dosificacion = new $Dosificacion();
+//                        $dosificacion->cufd();
+//                    
+//                    }
+                    
+            //}
+        }
+        
         
 
         //**************** bitacora caja
