@@ -192,29 +192,49 @@
                                     else $subtitulo = "CON DERECHO A CRÉDITO FISCAL"; //$subtitulo = "COPIA";
                                     */
                                     ?>
-                                    <b><?php echo $titulo1; ?></b><br>
-                                    <b><?php echo $subtitulo_factura; ?></b><br>
-                                    <?php echo $empresa[0]['empresa_nombre']; ?><br>
+                                    <b><?php echo $titulo1; ?></b>
+                                    <b><?php echo "<br>".$subtitulo_factura; ?></b>
+
+                                    <?php 
+                                    
+                                        if($parametro["parametro_mostrarempresa"]==1){ 
+                                            echo "<br>".$empresa[0]['empresa_nombre']; 
+                                        
+                                        }?>
+                                    
+
                                     <?php
-                                    if($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
-                                        echo $empresa[0]['empresa_eslogan']."<br>";
-                                    }
+                                        if($parametro["parametro_mostrareslogan"]==1){ 
+                                            if($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
+                                                echo "<br>".$empresa[0]['empresa_eslogan'];
+                                            }
+                                        }   
                                     ?>
+                                    
                                     <?php if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
-                                        <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?><br>
+                                        <?php  echo "<br><b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
                                     <?php } ?>
+                                        
                                     <?php 
                                         if($factura[0]['factura_sucursal']==0){
-                                            echo "CASA MATRIZ";
+                                            echo "<br>CASA MATRIZ";
                                         }else{
-                                            echo "SUCURSAL ".$factura[0]['factura_sucursal'];
+                                            echo "<br>SUCURSAL ".$factura[0]['factura_sucursal'];
                                         }
                                     ?>
-                                    <?php //echo $factura[0]['factura_sucursal'];?><br>
-                                    <?php echo "Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']; ?><br>
-                                    <?php echo $empresa[0]['empresa_direccion']; ?><br>
-                                    <?php echo "Telf. ".$empresa[0]['empresa_telefono']; ?><br>
-                                    <?php echo $empresa[0]['empresa_ubicacion']; ?><br>
+                                    
+                                    <?php echo "<br>Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']; ?>
+                                    
+                                    <?php 
+                                        if($parametro["parametro_mostrardireccion"]==1){
+                                            echo "<br>".$empresa[0]['empresa_direccion'];
+                                        }
+                                    ?>
+                                    
+                                    <?php echo "<br>"."Telf. ".$empresa[0]['empresa_telefono']; ?>
+                                    
+                                    <?php echo "<br>".$empresa[0]['empresa_ubicacion']; ?><br>
+                                    
                                 </td>
                             </tr>
                         </table>

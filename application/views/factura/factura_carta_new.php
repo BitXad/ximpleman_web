@@ -215,12 +215,20 @@ border-bottom : 1px solid #aaa;
                                 <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
                             <?php } ?>
                         
-                            <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                            <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
-                                <small>
-                                    <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font>
-                                </small>
+                            <?php if($parametro["parametro_mostrarempresa"]==1){ ?>
+                                
+                                <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                                
                             <?php } ?>
+                            
+                            <?php 
+                                if($parametro["parametro_mostrareslogan"]==1){
+                                    
+                                    if (isset($empresa[0]['empresa_eslogan'])){ ?>
+                                    <small>
+                                        <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font>
+                                    </small>
+                            <?php }} ?>
                                     
                             <font size="1" face="Arial narrow">
                             <small style="display:inline-block;margin-top: 0px;">
@@ -236,7 +244,12 @@ border-bottom : 1px solid #aaa;
                                 
                                 </b><br>
                                 <?php echo "Nº PUNTO DE VENTA ".$factura[0]['factura_puntoventa']; ?><br>
-                                <?php echo $empresa[0]['empresa_direccion']; ?><br>
+                                
+                                <?php 
+                                    if($parametro["parametro_mostrardireccion"]==1){ 
+                                        echo $empresa[0]['empresa_direccion']."<br>"; 
+                                    }?>
+                                
                                 Teléfono:<?php echo $empresa[0]['empresa_telefono']; ?><br>
                                 <?php echo $empresa[0]['empresa_ubicacion']; ?>
                             </small>                                
