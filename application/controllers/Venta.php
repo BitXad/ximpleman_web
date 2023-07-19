@@ -5198,7 +5198,6 @@ function anular_venta($venta_id){
             if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
                 $wsdl = $dosificacion['dosificacion_glpelectronica'];
             
-
             
             if ($dosificacion['docsec_codigoclasificador']==13)
                 $wsdl = $dosificacion['dosificacion_facturaservicios'];
@@ -5209,6 +5208,9 @@ function anular_venta($venta_id){
             
             if ($dosificacion['docsec_codigoclasificador']==22)
                 $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+            
+            if ($dosificacion['docsec_codigoclasificador']==24)
+                $wsdl = $dosificacion['dosificacion_notacredito'];
             
             
         }
@@ -5230,7 +5232,8 @@ function anular_venta($venta_id){
             if ($dosificacion['docsec_codigoclasificador']==22 )
                 $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
             
-            
+            if ($dosificacion['docsec_codigoclasificador']==24 )
+                $wsdl = $dosificacion['dosificacion_notacredito'];
             
         }
         
@@ -5280,8 +5283,8 @@ function anular_venta($venta_id){
 //                "archivo: "               . $el_archivo."<br>".
 //                "fechaEnvio: "            . $fecha_envio."<br>".
 //                "hashArchivo: "           . $hash_archivo;    
-//            
-            //var_dump($parametros);
+            
+//            var_dump($parametros);
         //}
         
         try{
