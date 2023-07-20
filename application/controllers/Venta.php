@@ -7998,5 +7998,65 @@ function anular_venta($venta_id){
         $dato_cliente = $this->input->post('dato_cliente');
         $this->session->set_userdata('dato_cliente', $dato_cliente);
     }
+ 
+
+    /*
+     * Buscar datos de la factura
+     */
+    function buscar_factura()
+    {
+        //**************** inicio contenido ***************   
+        
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro_factura = $this->input->post('parametro_factura');
+            $sql = "select * from factura
+                    where 
+                    factura_codigodescripcion = 'VALIDADA' and
+                    (factura_numero = '{$parametro_factura}' or factura_razonsocial like '%{$parametro_factura}%' or factura_nit = '{$parametro_factura}')";
+            
+            //        echo $sql;
+            $result = $this->Venta_model->consultar($sql);
+            
+            echo json_encode($result);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }    
+       //**************** fin contenido ***************
+        			       
+    }         
+
+    /*
+     * Buscar datos de la factura
+     */
+    function get_factura()
+    {
+        //**************** inicio contenido ***************   
+        
+        if ($this->input->is_ajax_request()) {
+            
+            $factura_id = $this->input->post('factura_id');
+            $sql = "select * from factura f, detalle_factura d, producto p
+                    where 
+                    f.factura_id = {$factura_id} and 
+                    f.factura_id = d.factura_id and 
+                    d.producto_id = p.producto_id
+                    " ;
+            
+            $result = $this->Venta_model->consultar($sql);
+            
+            echo json_encode($result);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }    
+       //**************** fin contenido ***************
+        			       
+    }         
     
 }

@@ -747,10 +747,19 @@ window.onkeydown = compruebaTecla;
     
     
     <div class="col-md-<?php echo $parametro['parametro_anchobuscador']; ?>">
-        <font size="1"><b>BUSCADOR DE PRODUCTOS</b></font> 
         
-            
-           <button class="btn btn-success btn-xs" onclick="actualizar_inventario()" style="<?php echo ($parametro["parametro_botoninventario"]!=1)?"":"display:none" ?>"><span class="fa fa-cubes"></span> Inventario</button>
+        
+        <!------------------------- PARA NOTAS DE DEBITO CREDITO --------------->
+        <font size="1"><b><?php if ($dosificacion[0]['docsec_codigoclasificador']!=24){ echo  "BUSCADOR DE PRODUCTOS"; }else{ echo "BUSCAR FACTURA"; } ?></b></font> 
+        
+            <?php if($dosificacion[0]['docsec_codigoclasificador']==24){ ?>
+        
+                <button type="button" id="boton_buscarfactura" class="btn btn-facebook btn-xs" data-toggle="modal" data-target="#modalbuscarfactura"><span class="fa fa-binoculars"></span> Buscar Factura</button>
+             
+            <?php } ?>
+        <!------------------------- FIN PARA NOTAS DE DEBITO CREDITO --------------->
+        
+            <button class="btn btn-success btn-xs" onclick="actualizar_inventario()" style="<?php echo ($parametro["parametro_botoninventario"]!=1)?"":"display:none" ?>"><span class="fa fa-cubes"></span> Inventario</button>
            
             <button type="button" id="boton_modal_promocion" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpromocion" style="<?php echo ($parametro["parametro_promociones"]!=1)?"":"display:none" ?>" >
                 <fa class="fa fa-cube"></fa> Promociones
@@ -764,7 +773,7 @@ window.onkeydown = compruebaTecla;
            </select>
         
         <div class="box" style="border-color:black;">
-            <div class="box-body">
+            <div class="box-body"  <?= ($dosificacion[0]['docsec_codigoclasificador']==24)?"hidden":""; ?>>
 
         <div class="row">
             
@@ -926,6 +935,25 @@ window.onkeydown = compruebaTecla;
 
 
             </div> <!-------- FIN BOX-BODY---------->
+            
+        
+        
+        
+            <!-------- INICIO BOX-BODY DOC SECTOR 24---------->
+            <div class="box-body"  <?= ($dosificacion[0]['docsec_codigoclasificador']!=24)?"hidden":""; ?>>
+                <div id="tabla_factura">
+                    
+                </div>
+                
+            </div> <!-------- FIN BOX-BODY---------->
+            <!-------- FIN BOX-BODY DOC SECTOR 24---------->
+            
+            
+            
+            
+            
+            
+            
         </div> <!-------- FIN BOX---------->
         
         
@@ -2717,6 +2745,106 @@ window.onkeydown = compruebaTecla;
 
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL CANTIDAD ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL BUSCAR FACTURA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div >
+    <button type="button" id="boton_buscarfactura" class="btn btn-default" data-toggle="modal" data-target="#modalbuscarfactura" >
+      CANTIDAD PRODUCTOS
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalbuscarfactura" tabindex="-1" role="dialog" aria-labelledby="modalbuscarfactura" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">BUSCAR FACTURA</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-content">
+			<div class="modal-header">
+                            
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+                            <!--<h4 class="modal-title" id="myModalLabel"><b>PEDIDOS/PREVENTAS</b></h4>-->
+                                
+                            <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                                <input id="parametro_facturabuscar" type="text" class="form-control" placeholder="Ingresa la razón social o número de factura" onkeypress="buscar_factura(event)" onKeyUp="this.value = this.value.toUpperCase();">
+                            </div>
+                                
+			</div>
+			<div class="modal-body table-responsive">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        <div class="box-body table-responsive">
+                            <table class="table table-striped table-condensed" id="mitabla">
+                                <tr>
+                                    <th>#</th>
+                                    <th>NIT</th>
+                                    <th>RAZON SOC.</th>
+                                    <th align="center">FECHA FAC.</th>
+                                    <th>NRO FACT.</th>
+                                    <th>TOTAL</th>
+                                    <th>CUF</th>
+                                    <th></th>
+                                </tr>
+
+                                <tbody class="buscar3" id="facturas_encontradas">
+
+
+
+
+                                </tbody>
+                            </table>
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+			</div>
+		</div>
+        
+        
+<!--        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">BUSCAR FACTURA</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="loader3" style="display:none; text-align: center">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="col-md-12" style="line-height: 8px;">
+                    <label for="codigo_evento" class="control-label" id="producto_id">1</label><br>
+                    <label for="codigo_evento" class="control-label" id="producto_nombre">HUB/SWICH TP-LINK 8-PUERTOS & 10/100 MBPS TL-SF1008D</label><br>
+                    <label for="codigo_evento" class="control-label" id="producto_datos" style="font-size: 10px;">23434/TP-LINK/PIEZA/4654646546</label>  
+                    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>
+                    
+                </div>
+                <br>
+                <br>
+
+            </div>
+            
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Enviar Paquete</button>
+                <button type="button" class="btn btn-default" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+            
+        </div>-->
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL BUSCAR FACTURA ----------------------------------->
 <!------------------------------------------------------------------------------->
 
 <!--<script type="text/javascript">
