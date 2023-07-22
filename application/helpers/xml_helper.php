@@ -234,7 +234,17 @@ $salto_linea='
         
         $cabecera_facturaxml = "";
         $cabecera_facturaxml .= '<?xml version="1.0" encoding="utf-8"?>';
-        $cabecera_facturaxml .= $salto_linea.'<'.$archivo.' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="'.$archivo.'.xsd">';
+        
+        if ($documento_sector != 24){    
+           
+            $cabecera_facturaxml .= $salto_linea.'<'.$archivo.' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="'.$archivo.'.xsd">';
+           
+        }else{
+            
+            $cabecera_facturaxml .= $salto_linea.'<notaFiscalComputarizadaCreditoDebito xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="'.$archivo.'.xsd">';
+            
+        }
+        
         $cabecera_facturaxml .= $salto_linea.'      <cabecera>';
         $cabecera_facturaxml .= $salto_linea.'          <nitEmisor>'.$factura['factura_nitemisor'].'</nitEmisor>';
         
@@ -492,7 +502,7 @@ $salto_linea='
 
             $cabecera_facturaxml .= $salto_linea.'          <numeroFactura>'.$factura['factura_numero'].'</numeroFactura>';            
             $cabecera_facturaxml .= $salto_linea.'          <numeroAutorizacionCuf>'.$factura['factura_cufd'].'</numeroAutorizacionCuf>';            
-            $cabecera_facturaxml .= $salto_linea.'          <fechaEmisionFactura>'.$factura['factura_fecha'].'</fechaEmisionFactura>';            
+            $cabecera_facturaxml .= $salto_linea.'          <fechaEmisionFactura>'.$factura['factura_fechahora'].'</fechaEmisionFactura>';            
             $cabecera_facturaxml .= $salto_linea.'          <montoTotalOriginal>'.number_format($factura['factura_total'],$dos_decimales,".","").'</montoTotalOriginal>';
             $cabecera_facturaxml .= $salto_linea.'          <montoTotalDevuelto>'.number_format($factura['factura_total'],$dos_decimales,".","").'</montoTotalDevuelto>';
             $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoCreditoDebito xsi:nil="true"></montoDescuentoCreditoDebito>';
@@ -514,7 +524,7 @@ $salto_linea='
        // var_dump($factura_xml);
             $detalle_facturaxml = "";
 
-            foreach ($detalle_factura as $df){
+            foreach ($detalle_factura as $df){ //INICIO FOREACH DETALLE DE FACTURA
                 
                 $detallefact_descripcion = str_replace("&","&amp;",$df['detallefact_descripcion']);
                 $descuentoparcial = $df['detallefact_descuentoparcial'] * $df['detallefact_cantidad'];
@@ -578,7 +588,7 @@ $salto_linea='
                 
                 
                 if ($documento_sector != 15 && $documento_sector != 2 && $documento_sector != 6 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
-                    && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 51){
+                    && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 51 && $documento_sector != 24){
                     
                     $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
                     $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
@@ -590,10 +600,114 @@ $salto_linea='
                     $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes xsi:nil="true"></detalleHuespedes>';
                 }
                 
-                $detalle_facturaxml .= $salto_linea.'      </detalle>';
-            }  
+                if($documento_sector == 24){ //24 Nota debito credito
 
-            $pie_facturaxml = $salto_linea.'</'.$archivo.'>';
+                    $detalle_facturaxml .= $salto_linea.'           <codigoDetalleTransaccion>1</codigoDetalleTransaccion>';
+                }
+                
+                $detalle_facturaxml .= $salto_linea.'      </detalle>';
+
+                
+            }   //FIN FOREACH DETALLE DE FACTURA
+            
+            
+// INICIO SOLO PARA DOCUMENTO SECTOR 24
+            
+        if($documento_sector == 24){ //24 nota de debito credito 
+            foreach ($detalle_factura as $df){ //INICIO FOREACH DETALLE DE FACTURA
+                
+                $detallefact_descripcion = str_replace("&","&amp;",$df['detallefact_descripcion']);
+                $descuentoparcial = $df['detallefact_descuentoparcial'] * $df['detallefact_cantidad'];
+                $numero_serie = $df['detallefact_preferencia'];
+                $valor_imei = $df['detallefact_caracteristicas'];
+                
+                if(isset($df['detallefact_caracteristicas']) && $df['detallefact_caracteristicas']!='null' && $df['detallefact_caracteristicas']!='-' ) {
+                    $detallefact_descripcion .= " ".$valor_imei;
+                }    
+                  //  echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
+                /*
+                if($documento_sector == 8){ // unir el nombre del producto con las caracteristicas del producto
+                    
+                    $detallefact_descripcion .= $valor_imei;
+                    
+                }
+                */
+                
+                $detalle_facturaxml .= $salto_linea.'      <detalle>';             
+                $detalle_facturaxml .= $salto_linea.'           <actividadEconomica>'.$factura['factura_actividad'].'</actividadEconomica>';
+                $detalle_facturaxml .= $salto_linea.'           <codigoProductoSin>'.$df['producto_codigosin'].'</codigoProductoSin>';
+                $detalle_facturaxml .= $salto_linea.'           <codigoProducto>'.$df['detallefact_codigo'].'</codigoProducto>';
+                
+                if($documento_sector == 16){ //16 Hoteles
+                    
+                    $tipohabitacion = 1; //$df['categoria_id'];
+                    $detalle_facturaxml .= $salto_linea.'           <codigoTipoHabitacion>'.$tipohabitacion.'</codigoTipoHabitacion>';
+                }
+                
+                $detalle_facturaxml .= $salto_linea.'           <descripcion>'.$detallefact_descripcion.'</descripcion>';
+                
+                
+                if($documento_sector == 17){ //17 Clinicas u Hospitales
+                    
+                    $detalle_facturaxml .= $salto_linea.'           <especialidad>Traumatologia</especialidad>';
+                    $detalle_facturaxml .= $salto_linea.'           <especialidadDetalle>Reduccion de fractura</especialidadDetalle>';
+                    $detalle_facturaxml .= $salto_linea.'           <nroQuirofanoSalaOperaciones>2</nroQuirofanoSalaOperaciones>';
+                    $detalle_facturaxml .= $salto_linea.'           <especialidadMedico>Traumatologia</especialidadMedico>';
+                    $detalle_facturaxml .= $salto_linea.'           <nombreApellidoMedico>Juan Perez</nombreApellidoMedico>';
+                    $detalle_facturaxml .= $salto_linea.'           <nitDocumentoMedico>1020703023</nitDocumentoMedico>';
+                    $detalle_facturaxml .= $salto_linea.'           <nroMatriculaMedico>312312ASDAS</nroMatriculaMedico>';
+                    $detalle_facturaxml .= $salto_linea.'           <nroFacturaMedico>32132132</nroFacturaMedico>';
+                }
+                
+                if($documento_sector == 6){ //6 Servicio Turistico Hospedaje
+                    $detalle_facturaxml .= $salto_linea.'           <codigoTipoHabitacion>'.number_format($df['detallefact_cantidad'],0,'.','').'</codigoTipoHabitacion>';
+                }
+                
+                $detalle_facturaxml .= $salto_linea.'           <cantidad>'.number_format($df['detallefact_cantidad'],$decimales,'.','').'</cantidad>';
+                
+                
+                $detalle_facturaxml .= $salto_linea.'           <unidadMedida>'.$df['unidad_codigo'].'</unidadMedida>';
+                $detalle_facturaxml .= $salto_linea.'           <precioUnitario>'.number_format($df['detallefact_precio'],$decimales,'.','').'</precioUnitario>';
+                $detalle_facturaxml .= $salto_linea.'           <montoDescuento>'.number_format($descuentoparcial,$decimales,'.','').'</montoDescuento>';
+                $detalle_facturaxml .= $salto_linea.'           <subTotal>'.number_format($df['detallefact_total'],$decimales,'.','').'</subTotal>';
+                
+                
+                if($documento_sector == 6){ //6 Servicio Turistico Hospedaje
+                    $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes>[{"nombreHuesped":"Juan Perez","documentoIdentificacion":"44864646","codigoPais":"1"}]</detalleHuespedes>';
+                }
+                
+                
+                if ($documento_sector != 15 && $documento_sector != 2 && $documento_sector != 6 && $documento_sector != 11 && $documento_sector != 13 && $documento_sector != 16 && $documento_sector != 17 && $documento_sector != 39 && $documento_sector != 23
+                    && $documento_sector != 8 && $documento_sector != 12 && $documento_sector != 51 && $documento_sector != 24){
+                    
+                    $detalle_facturaxml .= $salto_linea.'           <numeroSerie>'.$valor_vacio.$numero_serie.'</numeroSerie>';
+                    $detalle_facturaxml .= $salto_linea.'           <numeroImei>'.$valor_vacio.$df['detallefact_caracteristicas'].'</numeroImei>';
+                    
+                if($documento_sector == 16){ //16 Hoteles
+                    
+                    $detalle_facturaxml .= $salto_linea.'           <detalleHuespedes xsi:nil="true"></detalleHuespedes>';
+                }
+                
+
+                
+                }
+                
+                if($documento_sector == 24){ //24 Nota debito credito
+
+                    $detalle_facturaxml .= $salto_linea.'           <codigoDetalleTransaccion>2</codigoDetalleTransaccion>';
+                }
+                $detalle_facturaxml .= $salto_linea.'      </detalle>';
+                
+                
+            }   //FIN FOREACH DETALLE DE FACTURA
+
+        }    
+// FIN SOLO PARA DOCUMENTO SECTOR 24
+            if ($documento_sector!=24){
+                    $pie_facturaxml = $salto_linea.'</'.$archivo.'>';
+            }else{
+                    $pie_facturaxml = $salto_linea.'</notaFiscalComputarizadaCreditoDebito>';
+            }
             
             
             $factura_xml = $cabecera_facturaxml.$detalle_facturaxml.$pie_facturaxml;

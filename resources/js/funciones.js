@@ -429,7 +429,7 @@ function formato_cantidad(cantidad){
                     lacantidad = partes2[0];  
                 }else{  
                     lacantidad = numberFormat(Number(cantidad).toFixed(decimales)) 
-                    //lacantidad = number_format($d['detalleven_cantidad'],2,'.',',');  
+                    //lacantidad = number_format(d['detalleven_cantidad'],2,'.',',');  
                 }
   
     return lacantidad;
@@ -3781,6 +3781,418 @@ function cargar_factura(factura){
     })
     
 }
+//************* inicio  funciones  para emitir factura **************
+
+function seleccionar_factura(factura_id){
+    
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"venta/get_factura";
+    var decimales = Number(document.getElementById('parametro_decimales').value);  
+
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{factura_id:factura_id}, 
+            success:function(resultado){
+                
+                var registros =  JSON.parse(resultado);
+                
+                //alert(JSON.stringify(registros));
+                
+                if (registros != null){
+                    
+                    //$("#boton_modal_factura").click();
+                    //cargar_factura2(venta_id);
+                    //let cliente_id = factura.cliente_id;
+                    //cargar_infcliente(cliente_id);
+                    
+                    let i = 0;
+                    
+                    html = "";
+
+                    html += "                <table style='width: 100%; margin: 0;' >";
+
+                    html += "                <tr>";
+
+                    html += "                    <td  style='padding: 0; line-height: 9px;'>";
+
+                    //html += "                                    <img src='<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>' width='100' height='60'><br>";
+
+//                    html += "                                    <font size='2' face='Arial black'><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>";
+//
+//                    html += "                                        <small>";
+//                    html += "                                            <font size='1' face='Arial narrow'><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font>";
+//                    html += "                                        </small>";
+
+//                    html += "                                <font size='1' face='Arial narrow'>";
+//                    html += "                                <small style='display:inline-block;margin-top: 0px;'>";
+//                    html += "                                    <b>";
+//
+//                    html += "                                            if(registros[i]['factura_sucursal']==0){";
+//                    html += "                                                echo 'CASA MATRIZ';";
+//                    html += "                                            }else{";
+//                    html += "                                                echo 'SUCURSAL '+registros[i]['factura_sucursal'];";
+//                    html += "                                            }";
+//       
+//       
+//                    html += "                                    </b><br>'Nº PUNTO DE VENTA '+registros[i]['factura_puntoventa'];<br>";
+//
+//
+//                    html += "                                            $empresa[0]['empresa_direccion'].'<br>'; ";
+//         
+//         
+//                    html += "                                    Teléfono:$empresa[0]['empresa_telefono']; <br>";
+//                    html += "                                    <?php echo $empresa[0]['empresa_ubicacion']; ?>";
+//                    html += "                                </small>";                                
+//                    html += "                                </font>";
+//                    html += "                        </center>   ";                   
+                    html += "                    </td>";
+                    html += "                    <td style='padding:0;line-height: 9px;'>";
+                    html += "                    </td>";
+   
+                    html += "                    <td style='word-wrap: break-word;  padding: 0; line-height: 10px;'>";
+                    html += "                        <table style='word-wrap: break-word;  padding:0; border-bottom: #0000eb'>";
+                    html += "                            <tr>";
+                    html += "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'><b>NIT: </b></td>";
+                    html += "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;'>"+registros[i]['factura_nitemisor']+"</td>";
+                    html += "                            </tr>";
+                    html += "                            <tr>";
+                    html += "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'><b>FACTURA Nº: </b></td>";
+                    html += "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;'>"+registros[i]['factura_numero']+"</td>";
+                    html += "                            </tr>";
+                    html += "                            <tr>";
+                    html += "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;'  class='autoColor'><b>CÓD AUTORIZACIÓN: </b></td>";
+                    html += "                                <td style='font-family: arial; font-size: 8pt; padding-left: 5px; white-space: intial; max-width: 3cm'><span class='width:100%'>"+registros[i]['factura_cuf']+"</span></td>";
+                    html += "                            </tr>";
+                    html += "                        </table>  ";   
+                    html += "                    </td>";
+                    html += "                </tr>";
+
+                    let fecha = registros[i]['factura_fechaventa'];
+                    let fecha_d_m_a = formato_fecha(fecha);
+                    
+                    html += "                <tr style='padding: 0;'>";
+                    html += "                    <td colspan='6' style='padding: 0;'>";
+                    html += "                        <center style='margin-bottom:15px'>";
+                    html += "    <!--                        NOMBRE DE LA FACTURA-->";
+                    html += "                            <font size='4' face='arial'><b>";
+                        
+                    let subtitulo_factura= "";
+                    
+                        if (registros[i]['docsec_codigoclasificador']>=1){
+                            html += "FACTURA";
+                            subtitulo_factura = "(Con Derecho a Crédito Fiscal)";
+                        }
+                        
+                        if (registros[i]['docsec_codigoclasificador']==2){
+                            html += "FACTURA DE ALQUILER";
+                            subtitulo_factura = "(Con Derecho a Crédito Fiscal)";
+                            
+                        }
+                        
+                        if (registros[i]['docsec_codigoclasificador']==8){
+                            html += "FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL";
+                            subtitulo_factura = "(Sin Derecho a Crédito Fiscal)";
+                            
+                        }
+
+                    html += "                            </b></font> <br>";
+
+                    html += "                            <font size='1' face='arial'>"+subtitulo_factura+"</font> <br>";
+                    html += "                        </center>";
+                    html += "                    </td>  ";
+                    html += "                </tr>";
+
+                    html += "                <tr>";
+                    html += "                    <td colspan='6'>";
+                    html += "                        <div style='display: inline-block; float:left; width:65%'>";
+                    html += "                            <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>";
+                    html += "                                <tr>";
+                    html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px;'  class='autoColor'><b>Fecha:</b></td>";
+
+                    fecha_factura = registros[i]['factura_fecha'];
+                    fecha = formato_fecha(fecha_factura);
+                                                            
+                    html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>"+fecha+" "+registros[i]['factura_hora']+"</td>";
+                    html += "                                </tr>";
+                    html += "                                <tr>";
+                    html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'><b>Nombre/Razón Social:</b></td>";
+                    html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>"+registros[i]['factura_razonsocial']+"</td>";
+                    html += "                                </tr>";
+                    
+    
+                    if(registros[i]['docsec_codigoclasificador'] == 12){ //Comercializacion de hidrocarburos";
+                        
+                    html += "                                <tr>";
+                    html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'><b>Placa/B-Sisa/Vin:</b></td>";
+                    html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>"+registros[i]['datos_placa']+"</td>";
+                    html += "                                </tr>";
+
+                    }
+
+                    html += "                            </table>";
+                    html += "                        </div>";
+
+                    html += "                        <div style='display: inline-block; float:left; width:35%'>";
+                    html += "                            <table style='word-wrap: break-word; width: 100%; padding:0; border-bottom: #0000eb;'>";
+                    html += "                                <tr>";
+                    html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;width:20px; '  class='autoColor'><b>NIT/CI/CEX:</b></td>";
+                    html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>"+registros[i]['factura_nit']+" ";
+                    
+                    if (registros[i]['cliente_complementoci']!=null){
+                        html += registros[i]['cliente_complementoci'];
+                    }
+                    
+                    html += "</td>";
+                    html += "                                </tr>";
+                    html += "                                <tr>";
+                    html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'><b>Cod. Cliente:</b></td>";
+                    html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>"+registros[i]['factura_codigocliente']+"</td>";
+                    html += "                                </tr>";
+
+                    if(registros[i]['docsec_codigoclasificador'] == 12){ //Comercializacion de hidrocarburos";
+
+                        html += "                                <tr>";
+                        html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'><b>Tipo Envase:</b></td>";
+                        html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>"+registros[i]['datos_embase']+"</td>";
+                        html += "                                </tr>";
+                        
+                    }
+
+
+                   if (registros[i]['docsec_codigoclasificador']==2){
+                       
+                       
+                        html += "                                <tr>";
+                        html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'><b>Periodo Facturado:</b></td>";
+                        html += "                                    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>"+registros[i]['factura_glosa']+"</td>";
+                        html += "                                </tr>";
+
+                    }
+                    
+                    html += "                            </table>";
+                    html += "                        </div>";
+                    html += "                    </td>";
+                    html += "                </tr>";
+                    html += "            <!--</table>-->";
+                    html += "                </table>";
+                    html += "                </td>";
+                    html += "                </tr>";
+                    
+                    let mostrarice = 0; //sin ice ?>";
+
+                    html += "                <tr>";
+                    html += "                    <td>";
+                    html += "                        <table class='table-condensed table-fondito'  style='width: 100%; margin: 0; '>";
+                    html += "                            <tr  style=' font-family: Arial; border: 1px solid black; font-size: 8px;'>";
+                    
+                    if(registros[i]['docsec_codigoclasificador']==2 || registros[i]['docsec_codigoclasificador']==17 || registros[i]['docsec_codigoclasificador']==22){ 
+
+                        html += "<td align='center' style='border: 1px solid black; '><b>CÓDIGO<br> SERVICIO</b></td>";
+
+                    }else{
+
+                        html += "<td align='center' style='border: 1px solid black; '><b>CÓDIGO<br> PRODUCTO</b></td>";
+
+                    }
+
+                    html += "                                <td align='center' style='border: 1px solid black; '><b>CANTIDAD</b></td>";
+                    html += "                                <td align='center' style='border: 1px solid black; '><b>UNIDAD <br>DE MEDIDA</b></td>";
+                    html += "                                <td align='center' style='border: 1px solid black; '><b>DESCRIPCIÓN</b></td>";
+                    html += "                                <td align='center' style='border: 1px solid black; '><b>PRECIO<br> UNITARIO</b></td>    ";           
+                    html += "                                <td align='center' style='border: 1px solid black; '><b>DESCUENTO</b></td>";
+                    if (mostrarice==1){ 
+
+                        html += "                                <td align='center' style='border: 1px solid black; '><b>ICE %</b></td>";
+                        html += "                                <td align='center' style='border: 1px solid black; '><b>ICE ESP.</b></td>";
+
+                    }
+                    html += "                                <td align='center' style='border: 1px solid black; '><b>SUBTOTAL</b></td>";
+                    html += "                            </tr>";
+                       let cont = 0;
+                       let cantidad = 0;
+                       let total_descuentoparcial = 0;
+                       let total_descuento = 0;
+                       let total_final = 0;
+
+                       let total_subtotal = 0;
+                       let ice = 0.00;
+
+                       if (registros[i]['estado_id']!=3){
+                           
+                           for (var j = 0; j< registros.length; j++ ){
+                               
+                                let d = registros[j];
+                           
+                               cont = cont+1;
+                               cantidad += d['detallefact_cantidad'];
+                               sub_total = d['detallefact_subtotal'];
+                               total_subtotal += sub_total;
+                               total_descuentoparcial += d['detallefact_descuentoparcial'] * d['detallefact_cantidad']; 
+                               total_descuento += d['detallefact_descuento']; 
+                               total_final += d['detallefact_total']; 
+
+                                html += "                            <tr style='border: 1px solid black; font-size: 10px;'>";
+                                html += "                                <td align='left' style='padding: 0; padding-left:3px; border: 1px solid black; '><font style='size:7px; font-family: arial'>"+d['detallefact_codigo']+"</font></td>";
+                                html += "                                <td align='right' style='padding: 0; padding-right:3px; border: 1px solid black; '><font style='size:7px; font-family: arial'>"+formato_cantidad(d['detallefact_cantidad'])+"</font></td>";
+                                html += "                                <td align='left' style='padding: 0; padding-left:3px; border: 1px solid black; '><font style='size:7px; font-family: arial'><center>"+d['producto_unidad']+"</center></font></td>";
+                                html += "                                <td colspan='1' style='padding: 0; line-height: 10px; border: 1px solid black; '>";
+                                html += "                                    <font style='size:7px; font-family: arial; padding-left:3px'> ";
+                                html +=                                         d['detallefact_descripcion'];
+                                
+                                if(d['detallefact_preferencia']!='null' && d['detallefact_preferencia']!='-' ) {
+                                            html += d['detallefact_preferencia'];
+                                }
+                                
+                                if(d['detallefact_caracteristicas']!='null' && d['detallefact_caracteristicas']!='-' ) {
+                                            html += '<br>'+d['detallefact_caracteristicas'];
+                                }
+
+                                html += "                                    </font>";
+                                html += "                                </td>";
+
+                                html += "                                <!-------------- PRECIO UNITARIO ---------->";
+                                html += "                                <td align='right' style='padding: 0; padding-right: 3px; border: 1px solid black; '><font style='size:7px; font-family: arial'>"+Number(d['detallefact_precio']).toFixed(decimales)+"</font></td>";
+
+                                html += "                                <!-------------- DESCUENTO PARCIAL ---------->";
+                                html += "                                <td align='right' style='padding-right: 3px; border: 1px solid black; '>"+Number(d['detallefact_descuentoparcial']*d['detallefact_cantidad']).toFixed(decimales)+"</td>";
+
+                                html += "                                <!-------------- ICE/ICE ESPC ---------->";
+//                                html += "                                <?php if($mostrarice==1){ ?>";
+//                                html += "                                    <td align='right' style='padding-right: 3px;'><?= number_format($ice,$decimales,'+',',') ?></td>";
+//                                html += "                                    <td align='right' style='padding: 0; padding-right: 3px;'><font style='size:7px; font-family: arial'> <?= number_format($ice,$decimales,'+',',') ?></font></td>";
+//                                html += "                                <?php } ?>";
+
+                                html += "                                <td align='right' style='padding: 0; padding-right: 3px; border: 1px solid black; '><font style='size:7px; font-family: arial'>"+ Number(d['detallefact_subtotal'] - (d['detallefact_descuentoparcial']*d['detallefact_cantidad'])).toFixed(decimales)+"</font></td>";
+                                html += "                            </tr>";
+                               
+                               }
+                            }
+                                let total_final_factura = registros[i]['factura_subtotal'];
+                                let factura_total = registros[i]['factura_total'] - registros[i]['factura_giftcard'];
+
+                                let span = 2
+                                                                
+                    html += "                        <!-------------- SUB TOTAL ---------->";
+                    html += "                        <tr style='font-size: 10px; border: 1px solid black; '>";
+
+                                                        if (registros[i]['docsec_codigoclasificador']==12){ 
+
+                                                            importe_base_iva = factura_total * 0.70;
+
+                                                        }else{
+
+                                                            importe_base_iva = factura_total;
+                                                        }
+
+                    html += "                            <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'><b style='font-family: Arial; size:9px;'>SON: </b></td>";
+                    html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black; ' colspan='"+span+"' align='right'>SUBTOTAL Bs</td>";
+                    html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black; ' align='right'>"+Number(total_final_factura).toFixed(decimales)+"</td>";
+                    html += "                        </tr>";
+                    html += "                        <!-------------- DESCUENTO ---------->";
+                    html += "                        <tr style='font-size: 10px;'>";
+                    html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black; ' colspan=2 align='right'>(-)DESCUENTO Bs</td>";
+                    html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black; ' align='right'>"+Number(registros[i]['factura_descuento']).toFixed(decimales)+"</td>";
+                    html += "                        </tr>";
+                    html += "                        <!-------------- DECUENTO GLOBAL ---------->";
+     
+                    html += "                        <!-------------- FACTURA TOTAL ---------->";
+                    html += "                        <tr style='font-size: 10px;'>";
+                    html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black; ' colspan=2 align='right'><b>TOTAL Bs</b></td>";
+                    html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black; ' align='right'><b>"+Number(registros[i]['factura_total']).toFixed(decimales)+"</b></td>";
+                    html += "                        </tr>";
+
+                    html += "                        <!-------------- FACTURA GIFTA CARD ---------->";
+                    
+                    if(registros[i]['docsec_codigoclasificador']!=2 && registros[i]['docsec_codigoclasificador']!=12 && registros[i]['docsec_codigoclasificador']!=51){
+                        html += "                            <tr style='font-size: 10px;'>";
+                        html += "                                <td style='padding:0; padding-right: 3px; border: 1px solid black;' colspan=2 align='right'><b>MONTO GIFT CARD Bs</b></td>";
+                        html += "                                <td style='padding:0; padding-right: 3px; border: 1px solid black;' align='right'><b>"+Number(registros[i]['factura_giftcard']).toFixed(decimales)+"</b></td>";
+                        html += "                            </tr>";
+                    }
+
+                    html += "                        <!-------------- ICE / ICE ESPECIFICO ---------->";
+                    if(mostrarice==1){ 
+                        html += "                        <tr style='font-size: 10px;'>";
+                        html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black;' colspan=2 align='right'>(-) TOTAL ICE ESPECÍFICO Bs</td>";
+                        html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black;' align='right'>"+Number($ice).toFixed(decimales)+"</td>";
+                        html += "                        </tr>";
+                        html += "                        <tr>";
+                        html += "                            <td style='padding:0; padding-right: 3px;' colspan=2 align='right'>(-) TOTAL ICE PORCENTUAL Bs</td>";
+                        html += "                            <td style='padding:0; padding-right: 3px;' align='right'>"+Number($ice).toFixed(decimales)+"</td>";
+                        html += "                        </tr>";
+                    }
+
+                    html += "                        <!-------------- MONTO A PAGAR ---------->";
+                    if(registros[i]['docsec_codigoclasificador']!=2 && registros[i]['docsec_codigoclasificador']!=39 && registros[i]['docsec_codigoclasificador']!=12 && registros[i]['docsec_codigoclasificador']!=51){ 
+                        html += "                        <tr style='font-size: 10px;'> ";          
+
+                        html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black;' colspan=2 align='right'><b>MONTO A PAGAR Bs</b></td>";
+                        html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black;' align='right'><b>"+Number(factura_total).toFixed(decimales)+"</b></td>";
+                        html += "                        </tr>";
+                    }
+
+                    html += "                        <!-------------- IMPORTE BASE CREDITO FISCAL ---------->";
+                    if (registros[i]['docsec_codigoclasificador'] != 8){
+//                        html += "                            $elimporte =  'IMPORTE BASE CR&Eacute;DITO FISCAL';";
+//                        html += "                            if($opc == 12){ //Comercializacion de hidrocarburos";
+//                        html += "                                $elimporte =  'IMPORTE BASE C/F MONTO LEY 317';";
+//                        //}
+
+
+                        html += "                        <tr style='font-size: 10px;'>   ";        
+                        html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black;' colspan=2 align='right'><b><?php echo $elimporte; ?></b></td>";
+                        html += "                            <td style='padding:0; padding-right: 3px; border: 1px solid black;' align='right'><b><?= number_format($importe_base_iva,$dos_decimales,'+',',')?></b></td>";
+                        html += "                        </tr>";
+                    }
+                    
+                    html += "                    </table>";
+                    html += "                </td>";
+                    html += "            </tr>";
+                    html += "            <tr style='font-size: 10px;'>";
+                    html += "                <td style='padding-top: 0px; padding-bottom: 0px;'>";
+                    html += "                    <div style='width: 100%; margin-top: 25px;'>";
+                    html += "                        <div style='float: left;width: 78%; font-size: 10px;'>";
+                    html += "                           <center style='width:100%;'>";
+                                                    html += registros[i]['factura_leyenda1']+"<br>";
+
+                                                    html += registros[i]['factura_leyenda2'];
+                                                    html += "                                </font><br>";
+
+                                                    html += registros[i]['factura_leyenda3']+"<br>   "; 
+
+                                                    html += registros[i]['factura_leyenda4'];
+
+                    html += "                            </center>";
+//                    html += "                            USUARIO: <?php echo registros[i]['usuario_nombre'].' /TRANS: '+registros[i]['venta_id']; ?>";
+                    html += "                        </div>";
+
+                    html += "                    </div>";
+                    html += "                </td>";
+                    html += "            </tr>";
+                    html += "        </table>";
+
+
+
+                           
+                $("#tabla_factura").html(html);
+//                           
+//                $("#generar_nit").val(factura.cliente_nit);
+//                $("#generar_razon").val(factura.cliente_razon);
+//                $("#generar_detalle").html(html);
+//                $("#generar_venta_id").val(factura.venta_id);
+//                $("#generar_monto").val(Number(factura.venta_total).toFixed(decimales));
+//                $("#boton_modal_factura").click();
+                
+                }
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+        
+        
+    })
+    
+}
 
 function registrar_factura(venta_id){
     var base_url = document.getElementById("base_url").value;
@@ -4306,7 +4718,7 @@ function verificar_ventas()
                     lacantidad = partes2[0]; 
                 }else{ 
                     lacantidad = numberFormat(Number(res[i]["items"]).toFixed(decimales))
-                    //lacantidad = number_format($d['detalleven_cantidad'],2,'.',','); 
+                    //lacantidad = number_format(d['detalleven_cantidad'],2,'.',','); 
                 }
                 if (res[i]["resultado"] == 1){
                     
@@ -7376,3 +7788,54 @@ function numberFormat(numero){
             return resultado;
         }
     }
+    
+    
+function buscar_factura(e) {
+  
+    var tecla = (document.all) ? e.keyCode : e.which;
+    var decimales = Number(document.getElementById('parametro_decimales').value);    
+       
+    if (tecla == 13){
+       
+        let base_url = document.getElementById('base_url').value;
+        let parametro_factura = document.getElementById('parametro_facturabuscar').value;
+        let controlador = base_url+'venta/buscar_factura';
+        let res = 0;
+        //alert(parametro_factura)
+        
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{parametro_factura:parametro_factura},
+            success:function(respuesta){
+                
+                let registro =  JSON.parse(respuesta);
+                let tam =  registro.length;
+                let html =  "";
+                    
+                for(let i=0; i<tam; i++){
+                    
+                     html += "<tr>";
+                     html += "<td>"+(i+1)+"</td>";
+                     html += "<td>"+registro[i]["factura_nit"]+"</td>";
+                     html += "<td>"+registro[i]["factura_razonsocial"]+"</td>";
+                     html += "<td>"+registro[i]["factura_fecha"]+"</td>";
+                     html += "<td>"+registro[i]["factura_numero"]+"</td>";
+                     html += "<td>"+Number(registro[i]["factura_total"]).toFixed(decimales)+"</td>";                     
+                     html += "<td>"+registro[i]["factura_codigodescripcion"]+"</td>";
+                     html += "<td><button class='btn btn-xs btn-info' onclick='seleccionar_factura("+registro[i]["factura_id"]+")'><fa class='fa fa-floppy-o' ></fa> Seleccionar</td>";
+                     html += "</tr>";
+                     html += "<tr><td colspan=8><b>CUF: </b>"+registro[i]["factura_cuf"]+"</td></tr>";
+                }
+                
+                $("#facturas_encontradas").html(html);
+
+                //alert( registro.length );
+                
+            },
+            error:function(respuesta){
+                res = 0;
+            }
+        });     
+        return res;
+    }
+}
