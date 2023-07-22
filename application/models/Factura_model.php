@@ -278,4 +278,24 @@ class Factura_model extends CI_Model
         
     }
     
+    /*
+     * Get factura by factura_id
+     */
+    function get_factura_detalle($factura_id)
+    {
+        $sql = "select f.*,u.*, v.moneda_id, m.moneda_codigoclasificador, m.moneda_tc, moneda_descripcion, c.cliente_codigo,
+                c.cliente_complementoci, c.cliente_email, d.*
+                from factura f
+                left join detalle_factura d on d.factura_id = f.factura_id
+                left join venta v on v.venta_id = f.venta_id
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join moneda m on m.moneda_id = v.moneda_id
+                left join usuario u on u.usuario_id = f.usuario_id
+                where f.factura_id = ".$factura_id;
+        $factura = $this->db->query($sql)->result_array();
+        return $factura;
+        
+    }    
+    
+    
 }

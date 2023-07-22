@@ -580,6 +580,7 @@ class Venta extends CI_Controller{
                 $forma_id = $this->input->post('forma_id');
                 $factura_complementoci = $this->input->post('factura_complementoci');
                 $basededatos = $this->input->post('select_almacen'); //Selecciona la base de datos del almacen
+                $factura_idcreditodebito = $this->input->post('factura_idcreditodebito'); //para factura de credito debito
                 
                 $fecha_cafc = $this->input->post('fecha_cafc');
                 $hora_cafc = $this->input->post('hora_cafc');
@@ -1097,7 +1098,7 @@ class Venta extends CI_Controller{
                                 factura_nit, factura_razonsocial, factura_nitemisor,factura_sucursal,
                                 factura_sfc, factura_actividad, usuario_id, tipotrans_id, 
                                 factura_efectivo, factura_cambio,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion,
-                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_glosa) value(".
+                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_glosa, factura_idcreditodebito) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -1106,7 +1107,7 @@ class Venta extends CI_Controller{
                                 $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
                                 $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
                                 $venta_efectivo.",".$venta_cambio.",".$factura_enviada.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".
-                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_glosa."')";
+                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_glosa."',".$factura_idcreditodebito.")";
                         
                                 
                         }else{
@@ -1142,7 +1143,7 @@ class Venta extends CI_Controller{
                                 factura_codsistema, factura_puntoventa, factura_sectoreconomico,
                                 factura_ruta, factura_tamanio,factura_cuf,factura_fechahora,cdi_codigoclasificador,
                                 docsec_codigoclasificador, factura_codigocliente,factura_enviada, factura_leyenda3, factura_leyenda4,factura_excepcion, factura_tipoemision,
-                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_cafc, registroeventos_id, factura_glosa) value(".
+                                factura_ice, factura_giftcard, factura_detalletransaccion, forma_id, factura_complementoci, factura_cafc, registroeventos_id, factura_glosa, factura_idcreditodebito) value(".
                                 $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                                 $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                                 $factura_exento.",".$factura_descuentoparcial.",".$factura_descuento.",".$factura_total.",".
@@ -1155,7 +1156,7 @@ class Venta extends CI_Controller{
                                 $factura_codsistema."','".$factura_puntoventa."','".$factura_sectoreconomico."','".
                                 $factura_ruta."','".$factura_tamanio."','$factura_cuf','$fecha_hora',$tipoDocumentoIdentidad,
                                 $documentoSector,'$factura_codigocliente','$factura_enviada'".",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".$tipo_emision.",".
-                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_cafc."',".$registroeventos_id.",'".$factura_glosa."')";
+                                $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_cafc."',".$registroeventos_id.",'".$factura_glosa."',".$factura_idcreditodebito.")";
                                     
                         }
                         $factura_id = $this->Venta_model->ejecutar($sql);
@@ -2181,46 +2182,8 @@ function edit($venta_id){
         $data['sistema'] = $this->sistema;   
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];        
-     /*   
-        // check if the venta exists before trying to edit it
-        $venta = $this->Venta_model->get_venta($venta_id);
+        $tipousuario_id = $this->session_data['tipousuario_id'];
         
-        $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
-        $cliente_id = $venta["cliente_id"];       
-        $data['page_title'] = "Modificar Venta";
-        
-        //$cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
-        //$data['cliente'] = $cliente;
-        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
-//        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
-        $data['cliente'] = $cliente;
-        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
-        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
-        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-        $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
-        $data['promociones'] = $this->Promocion_model->get_promociones();
-        $data['mesas'] = $this->Mesa_model->get_all_mesa();
-        $data['usuario_id'] = $usuario_id;
-        $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
-        $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
-        $data['tipousuario_id'] = $tipousuario_id;
-        $data['eventos'] = $this->Venta_model->consultar("select * from registro_eventos where estado_id=1");
-        $data['empresa_email'] = $this->empresa["empresa_email"];
-        
-        $user = $this->Venta_model->consultar("select * from usuario where usuario_id = ".$usuario_id);
-        $data['puntoventa_codigo'] = $user[0]["puntoventa_codigo"];
-        
-        $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
-        
-        */    
         //**************** inicio contenido ***************     
                 
        
@@ -8035,7 +7998,8 @@ function anular_venta($venta_id){
     function get_factura()
     {
         //**************** inicio contenido ***************   
-        
+         $usuario_id = $this->session_data['usuario_id'];
+         
         if ($this->input->is_ajax_request()) {
             
             $factura_id = $this->input->post('factura_id');
@@ -8047,6 +8011,10 @@ function anular_venta($venta_id){
                     " ;
             
             $result = $this->Venta_model->consultar($sql);
+        
+            $venta_id = $result[0]["venta_id"];
+            
+            $detalle_venta = $this->Detalle_venta_model->cargar_detalle_venta($venta_id, $usuario_id);
             
             echo json_encode($result);
             

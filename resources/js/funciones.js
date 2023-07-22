@@ -3304,6 +3304,7 @@ function registrarventa(cliente_id)
     var venta_giftcard = document.getElementById('venta_giftcard').value;
     var venta_detalletransaccion = document.getElementById('venta_detalletransaccion').value;
     var dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
+    var factura_idcreditodebito = document.getElementById('factura_idcreditodebito').value;
 
     var registroeventos_codigo = document.getElementById('evento_contingencia').value;
     var parametro_tipoemision = document.getElementById('parametro_tipoemision').value;
@@ -3399,7 +3400,8 @@ function registrarventa(cliente_id)
                 factura_complementoci:factura_complementoci,fecha_cafc: fecha_cafc, numfact_cafc: numfact_cafc, codigo_cafc: codigo_cafc, 
                 registroeventos_codigo: registroeventos_codigo, dosificacion_modalidad:dosificacion_modalidad,venta_glosa:venta_glosa,
                 parametro_tipoemision:parametro_tipoemision, mandar_enuno:mandar_enuno, select_almacen:select_almacen,cliente_id:cliente_id,
-                datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc
+                datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc,
+                factura_idcreditodebito: factura_idcreditodebito
             },
             success:function(respuesta){
                 
@@ -3456,7 +3458,8 @@ function registrarventa(cliente_id)
                 codigo_cafc: codigo_cafc, registroeventos_codigo: registroeventos_codigo, hora_cafc:hora_cafc,
                 dosificacion_modalidad:dosificacion_modalidad, parametro_tipoemision:parametro_tipoemision,
                 mandar_enuno:mandar_enuno, select_almacen:select_almacen, venta_glosa:venta_glosa,cliente_id:cliente_id,
-                datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc
+                datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc,
+                factura_idcreditodebito: factura_idcreditodebito
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -4182,6 +4185,11 @@ function seleccionar_factura(factura_id){
 //                $("#generar_venta_id").val(factura.venta_id);
 //                $("#generar_monto").val(Number(factura.venta_total).toFixed(decimales));
 //                $("#boton_modal_factura").click();
+                $("#factura_idcreditodebito").val(registros[0]['factura_id']);
+                $("#nit").val(registros[0]['factura_nit']);
+                $("#span_buscar_cliente").click();
+                
+                tablaproductos();
                 
                 }
             },

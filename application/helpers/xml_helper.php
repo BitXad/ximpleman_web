@@ -173,6 +173,12 @@
             $CI2->load->model('Factura_datos_model');
             $factura_datos = $CI2->Factura_datos_model->get_factura_datos($factura['datos_id']);
         }
+        
+        if($documento_sector == 24 ){ //24 Documento de debito credito
+            $CI2 = & get_instance();
+            $CI2->load->model('Factura_datos_model');
+            $factura_original = $CI2->Factura_model->get_factura_detalle($factura['factura_iddebitocredito']);
+        }
         // var_dump($factura);
         //$archivo = $modalidad_factura == 1 ? "facturaElectronicaCompraVenta" : "facturaComputarizadaCompraVenta";
         $nombre_archivo = $nombre_documento_sector; //$directorio.$dosificacion_documentosector.$factura['factura_id'];
@@ -500,12 +506,12 @@ $salto_linea='
 //*************************************************************************
         }else{ // Si es doc sector 24 nota de debito credito
 
-            $cabecera_facturaxml .= $salto_linea.'          <numeroFactura>'.$factura['factura_numero'].'</numeroFactura>';            
-            $cabecera_facturaxml .= $salto_linea.'          <numeroAutorizacionCuf>'.$factura['factura_cufd'].'</numeroAutorizacionCuf>';            
-            $cabecera_facturaxml .= $salto_linea.'          <fechaEmisionFactura>'.$factura['factura_fechahora'].'</fechaEmisionFactura>';            
-            $cabecera_facturaxml .= $salto_linea.'          <montoTotalOriginal>'.number_format($factura['factura_total'],$dos_decimales,".","").'</montoTotalOriginal>';
-            $cabecera_facturaxml .= $salto_linea.'          <montoTotalDevuelto>'.number_format($factura['factura_total'],$dos_decimales,".","").'</montoTotalDevuelto>';
-            $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoCreditoDebito xsi:nil="true"></montoDescuentoCreditoDebito>';
+            $cabecera_facturaxml .= $salto_linea.'          <numeroFactura>'.$factura_original['factura_numero'].'</numeroFactura>';            
+            $cabecera_facturaxml .= $salto_linea.'          <numeroAutorizacionCuf>'.$factura_orignal['factura_cufd'].'</numeroAutorizacionCuf>';            
+            $cabecera_facturaxml .= $salto_linea.'          <fechaEmisionFactura>'.$factura_original['factura_fechahora'].'</fechaEmisionFactura>';            
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotalOriginal>'.number_format($factura_original['factura_total'],$dos_decimales,".","").'</montoTotalOriginal>';
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotalDevuelto>'.number_format($factura_original['factura_total'],$dos_decimales,".","").'</montoTotalDevuelto>';
+            $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoCreditoDebito xsi:nil="true">'.number_format($factura_original['factura_descuento'],$dos_decimales,".","").'</montoDescuentoCreditoDebito>';
             $cabecera_facturaxml .= $salto_linea.'          <montoEfectivoCreditoDebito>'.number_format($factura['factura_total']*0.13,$dos_decimales,".","").'</montoEfectivoCreditoDebito>';
             $cabecera_facturaxml .= $salto_linea.'          <codigoExcepcion>'.$factura_excepcion.'</codigoExcepcion>';
             

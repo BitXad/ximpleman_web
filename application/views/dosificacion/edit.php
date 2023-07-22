@@ -500,7 +500,15 @@
             document.getElementById("tipofac_codigo").style = "background: yellow;";
             document.getElementById("tipofac_codigo").value = 2;
             $("#tipofac_codigo").focus();
-        }else{
+        }
+        if (documento_sector==24){
+            alert("ADVERTENCIA: Este documento es DE AJUSTE.\nDebe modificar el Tipo Factura/Documento Ajuste a TIPO 3");
+            document.getElementById("tipofac_codigo").style = "background: yellow;";
+            document.getElementById("tipofac_codigo").value = 3;
+            $("#tipofac_codigo").focus();
+        }        
+            
+        if (documento_sector!=6 && documento_sector!=8 && documento_sector!=24){
             
             alert("ADVERTENCIA: Este documento es CON DERECHO A CREDITO FISCAL.\nDebe modificar el Tipo Factura/Documento Ajuste a TIPO 1");
             document.getElementById("tipofac_codigo").style = "background: yellow;";           
