@@ -149,7 +149,7 @@
                 <div class="col-md-8">
                     <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Nombre Archivo</label>
                     <div class="form-group">
-                        <input type="text" name="nombre_archivo" value="compra_venta00.tar.gz" class="form-control" id="nombre_archivo" />
+                        <input type="text" name="nombre_archivo" value="contingencia.tar.gz" class="form-control" id="nombre_archivo" />
                     </div>
                 </div>
                 <div class="col-md-4">
