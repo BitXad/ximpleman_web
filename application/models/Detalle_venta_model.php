@@ -275,7 +275,7 @@ function ventas_dia($estado)
 
     function get_detalle_factura_id($factura_id)
     {
-        $sql = "SELECT d.* ,p.producto_unidad,p.producto_codigosin, p.producto_codigounidadsin as unidad_codigo
+        $sql = "SELECT d.* ,p.producto_unidad,p.producto_codigosin, p.producto_codigounidadsin, p.producto_codigounidadsin as unidad_codigo
                 from detalle_factura d 
                 left join producto p on p.producto_id = d.producto_id
                 where d.factura_id = $factura_id";
