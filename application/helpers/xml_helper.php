@@ -176,8 +176,9 @@
         
         if($documento_sector == 24 ){ //24 Documento de debito credito
             $CI2 = & get_instance();
-            $CI2->load->model('Factura_datos_model');
-            $factura_original = $CI2->Factura_model->get_factura_detalle($factura['factura_iddebitocredito']);
+            $CI2->load->model('Factura_model');
+            $resultado = $CI2->Factura_model->get_factura_detalle($factura['factura_idcreditodebito']);
+            $factura_original = $resultado[0]; 
         }
         // var_dump($factura);
         //$archivo = $modalidad_factura == 1 ? "facturaElectronicaCompraVenta" : "facturaComputarizadaCompraVenta";
@@ -507,13 +508,13 @@ $salto_linea='
         }else{ // Si es doc sector 24 nota de debito credito
 
             $cabecera_facturaxml .= $salto_linea.'          <numeroFactura>'.$factura_original['factura_numero'].'</numeroFactura>';            
-            $cabecera_facturaxml .= $salto_linea.'          <numeroAutorizacionCuf>'.$factura_orignal['factura_cufd'].'</numeroAutorizacionCuf>';            
+            $cabecera_facturaxml .= $salto_linea.'          <numeroAutorizacionCuf>'.$factura_original['factura_cuf'].'</numeroAutorizacionCuf>';            
             $cabecera_facturaxml .= $salto_linea.'          <fechaEmisionFactura>'.$factura_original['factura_fechahora'].'</fechaEmisionFactura>';            
             $cabecera_facturaxml .= $salto_linea.'          <montoTotalOriginal>'.number_format($factura_original['factura_total'],$dos_decimales,".","").'</montoTotalOriginal>';
             $cabecera_facturaxml .= $salto_linea.'          <montoTotalDevuelto>'.number_format($factura_original['factura_total'],$dos_decimales,".","").'</montoTotalDevuelto>';
-            $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoCreditoDebito xsi:nil="true">'.number_format($factura_original['factura_descuento'],$dos_decimales,".","").'</montoDescuentoCreditoDebito>';
-            $cabecera_facturaxml .= $salto_linea.'          <montoEfectivoCreditoDebito>'.number_format($factura['factura_total']*0.13,$dos_decimales,".","").'</montoEfectivoCreditoDebito>';
-            $cabecera_facturaxml .= $salto_linea.'          <codigoExcepcion>'.$factura_excepcion.'</codigoExcepcion>';
+            $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoCreditoDebito>'.number_format($factura_original['factura_descuento'],$dos_decimales,".","").'</montoDescuentoCreditoDebito>';
+            $cabecera_facturaxml .= $salto_linea.'          <montoEfectivoCreditoDebito>'.number_format($factura_original['factura_total']*0.13,$dos_decimales,".","").'</montoEfectivoCreditoDebito>';
+            $cabecera_facturaxml .= $salto_linea.'          <codigoExcepcion>'.$factura_original['factura_excepcion'].'</codigoExcepcion>';
             
         }
         
@@ -530,7 +531,15 @@ $salto_linea='
        // var_dump($factura_xml);
             $detalle_facturaxml = "";
 
-            foreach ($detalle_factura as $df){ //INICIO FOREACH DETALLE DE FACTURA
+            $detallefactura = $detalle_factura;
+            
+            if($documento_sector == 24){ //24 Nota debito credito
+               
+                $detallefactura = $resultado; //factura_original
+               
+            }
+                    
+            foreach ($detallefactura as $df){ //INICIO FOREACH DETALLE DE FACTURA
                 
                 $detallefact_descripcion = str_replace("&","&amp;",$df['detallefact_descripcion']);
                 $descuentoparcial = $df['detallefact_descuentoparcial'] * $df['detallefact_cantidad'];
@@ -582,7 +591,7 @@ $salto_linea='
                 $detalle_facturaxml .= $salto_linea.'           <cantidad>'.number_format($df['detallefact_cantidad'],$decimales,'.','').'</cantidad>';
                 
                 
-                $detalle_facturaxml .= $salto_linea.'           <unidadMedida>'.$df['unidad_codigo'].'</unidadMedida>';
+                $detalle_facturaxml .= $salto_linea.'           <unidadMedida>'.$df['producto_codigounidadsin'].'</unidadMedida>';
                 $detalle_facturaxml .= $salto_linea.'           <precioUnitario>'.number_format($df['detallefact_precio'],$decimales,'.','').'</precioUnitario>';
                 $detalle_facturaxml .= $salto_linea.'           <montoDescuento>'.number_format($descuentoparcial,$decimales,'.','').'</montoDescuento>';
                 $detalle_facturaxml .= $salto_linea.'           <subTotal>'.number_format($df['detallefact_total'],$decimales,'.','').'</subTotal>';
@@ -619,7 +628,9 @@ $salto_linea='
             
 // INICIO SOLO PARA DOCUMENTO SECTOR 24
             
-        if($documento_sector == 24){ //24 nota de debito credito 
+        if($documento_sector == 24){ //24 nota de debito credito
+            
+            
             foreach ($detalle_factura as $df){ //INICIO FOREACH DETALLE DE FACTURA
                 
                 $detallefact_descripcion = str_replace("&","&amp;",$df['detallefact_descripcion']);
