@@ -834,7 +834,7 @@ html += "  </div>";
                             }
                         }
                         
-                       html += "                            <th style='padding:0'></th> ";                                                          
+                       //html += "                            <th style='padding:0'></th> ";                                                          
                    }
                    html += "                    </tr>   ";                 
                    html += "                </table>";
@@ -7590,6 +7590,96 @@ function seleccionar_documento(id){
 //}
 
 
+function numberFormat(numero){
+        // Variable que contendra el resultado final
+        var resultado = "";
+ 
+        // Si el numero empieza por el valor "-" (numero negativo)
+        if(numero[0]=="-")
+        {
+            // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+            // el signo negativo
+            nuevoNumero=numero.replace(/\,/g,'').substring(1);
+        }else{
+            // Cogemos el numero eliminando los posibles puntos que tenga
+            nuevoNumero=numero.replace(/\,/g,'');
+        }
+ 
+        // Si tiene decimales, se los quitamos al numero
+        if(numero.indexOf(".")>=0)
+            nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+ 
+        // Ponemos un punto cada 3 caracteres
+        for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+ 
+        // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+        // los separadores de miles
+        if(numero.indexOf(".")>=0)
+            resultado+=numero.substring(numero.indexOf("."));
+ 
+        if(numero[0]=="-")
+        {
+            // Devolvemos el valor añadiendo al inicio el signo negativo
+            return "-"+resultado;
+        }else{
+            return resultado;
+        }
+    }
+    
+    
+function buscar_factura(e) {
+  
+    var tecla = (document.all) ? e.keyCode : e.which;
+    var decimales = Number(document.getElementById('parametro_decimales').value);    
+       
+    if (tecla == 13){
+       
+        let base_url = document.getElementById('base_url').value;
+        let parametro_factura = document.getElementById('parametro_facturabuscar').value;
+        let controlador = base_url+'venta/buscar_factura';
+        let res = 0;
+        //alert(parametro_factura)
+        
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{parametro_factura:parametro_factura},
+            success:function(respuesta){
+                
+                let registro =  JSON.parse(respuesta);
+                let tam =  registro.length;
+                let html =  "";
+                    
+                for(let i=0; i<tam; i++){
+                    
+                     html += "<tr>";
+                     html += "<td>"+(i+1)+"</td>";
+                     html += "<td>"+registro[i]["factura_nit"]+"</td>";
+                     html += "<td>"+registro[i]["factura_razonsocial"]+"</td>";
+                     html += "<td>"+registro[i]["factura_fecha"]+"</td>";
+                     html += "<td>"+registro[i]["factura_numero"]+"</td>";
+                     html += "<td>"+Number(registro[i]["factura_total"]).toFixed(decimales)+"</td>";                     
+                     html += "<td>"+registro[i]["factura_codigodescripcion"]+"</td>";
+                     html += "<td><button class='btn btn-xs btn-info' onclick='seleccionar_factura("+registro[i]["factura_id"]+")'><fa class='fa fa-floppy-o' ></fa> Seleccionar</td>";
+                     html += "</tr>";
+                     html += "<tr><td colspan=8><b>CUF: </b>"+registro[i]["factura_cuf"]+"</td></tr>";
+                }
+                
+                $("#facturas_encontradas").html(html);
+
+                //alert( registro.length );
+                
+            },
+            error:function(respuesta){
+                res = 0;
+            }
+        });     
+        return res;
+    }
+}
+
+
+
 function borrar_datos_cliente(){
     
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
@@ -7724,6 +7814,20 @@ function borrar_datos_cliente(){
             else { boton2.click(); }
         }
 
+        if(parametro_imprimirfactura==5){ // Imprimir solo comanda
+
+            boton = document.getElementById("imprimir_comanda");
+            boton.click();
+            
+        }
+        
+        if(parametro_imprimirfactura==6){ // Imprimir factura y recibo
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton2 = document.getElementById("imprimir_comanda");
+            if (facturado == 1){ boton1.click(); }
+            boton2.click();
+        }
+
     }
 
         
@@ -7758,92 +7862,4 @@ function borrar_datos_cliente(){
      $("#span_buscar_cliente").click();   
       $("#boton_presionado").val(0);
 
-}
-
-function numberFormat(numero){
-        // Variable que contendra el resultado final
-        var resultado = "";
- 
-        // Si el numero empieza por el valor "-" (numero negativo)
-        if(numero[0]=="-")
-        {
-            // Cogemos el numero eliminando los posibles puntos que tenga, y sin
-            // el signo negativo
-            nuevoNumero=numero.replace(/\,/g,'').substring(1);
-        }else{
-            // Cogemos el numero eliminando los posibles puntos que tenga
-            nuevoNumero=numero.replace(/\,/g,'');
-        }
- 
-        // Si tiene decimales, se los quitamos al numero
-        if(numero.indexOf(".")>=0)
-            nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
- 
-        // Ponemos un punto cada 3 caracteres
-        for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
-            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
- 
-        // Si tiene decimales, se lo añadimos al numero una vez forateado con 
-        // los separadores de miles
-        if(numero.indexOf(".")>=0)
-            resultado+=numero.substring(numero.indexOf("."));
- 
-        if(numero[0]=="-")
-        {
-            // Devolvemos el valor añadiendo al inicio el signo negativo
-            return "-"+resultado;
-        }else{
-            return resultado;
-        }
-    }
-    
-    
-function buscar_factura(e) {
-  
-    var tecla = (document.all) ? e.keyCode : e.which;
-    var decimales = Number(document.getElementById('parametro_decimales').value);    
-       
-    if (tecla == 13){
-       
-        let base_url = document.getElementById('base_url').value;
-        let parametro_factura = document.getElementById('parametro_facturabuscar').value;
-        let controlador = base_url+'venta/buscar_factura';
-        let res = 0;
-        //alert(parametro_factura)
-        
-        $.ajax({url: controlador,
-            type:"POST",
-            data:{parametro_factura:parametro_factura},
-            success:function(respuesta){
-                
-                let registro =  JSON.parse(respuesta);
-                let tam =  registro.length;
-                let html =  "";
-                    
-                for(let i=0; i<tam; i++){
-                    
-                     html += "<tr>";
-                     html += "<td>"+(i+1)+"</td>";
-                     html += "<td>"+registro[i]["factura_nit"]+"</td>";
-                     html += "<td>"+registro[i]["factura_razonsocial"]+"</td>";
-                     html += "<td>"+registro[i]["factura_fecha"]+"</td>";
-                     html += "<td>"+registro[i]["factura_numero"]+"</td>";
-                     html += "<td>"+Number(registro[i]["factura_total"]).toFixed(decimales)+"</td>";                     
-                     html += "<td>"+registro[i]["factura_codigodescripcion"]+"</td>";
-                     html += "<td><button class='btn btn-xs btn-info' onclick='seleccionar_factura("+registro[i]["factura_id"]+")'><fa class='fa fa-floppy-o' ></fa> Seleccionar</td>";
-                     html += "</tr>";
-                     html += "<tr><td colspan=8><b>CUF: </b>"+registro[i]["factura_cuf"]+"</td></tr>";
-                }
-                
-                $("#facturas_encontradas").html(html);
-
-                //alert( registro.length );
-                
-            },
-            error:function(respuesta){
-                res = 0;
-            }
-        });     
-        return res;
-    }
 }

@@ -211,6 +211,8 @@ border-bottom : 1px solid #aaa;
                 <!--<td rowspan="3" style="width: 5cm;"></td>-->
                 <td  style="width: <?php echo round($ancho/3,2);?>cm;  padding: 0; line-height: 9px;">
                     <center>
+                        
+                        
                             <?php if($parametro["parametro_logoenfactura"]==1){ ?>
                                 <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
                             <?php } ?>
