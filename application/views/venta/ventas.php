@@ -385,11 +385,19 @@ window.onkeydown = compruebaTecla;
             <label for="tipo_doc_identidad" class="control-label" style="margin-bottom: 0; font-size: 12px; color: gray; font-weight: normal">TIPO DOCUMENTO IDENTIDAD</label>
             <br>
             <?php
-               foreach ($docs_identidad as $di){ ?>
-                <button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)"><fa class="fa fa-cube"> </fa> <?php echo $di['cdi_descripcion']; ?></button>                   
-            <?php
-               }
-            ?>
+                
+                $tam = sizeof($docs_identidad);
+               foreach ($docs_identidad as $di){ 
+                    if($tam<=2){ ?>
+            
+                        <button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)"><fa class="fa fa-cube"> </fa> <?php echo $di['cdi_descripcion']; ?></button>                   
+
+                    <?php }else{?>
+                        
+                        <button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)" title="<?php echo $di['cdi_descripcion']; ?>"><fa class="fa fa-cube"> </fa> <?php echo substr($di['cdi_descripcion'],0,5); ?></button>
+
+                    <?php       }
+               }?>
             
             
             

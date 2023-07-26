@@ -209,58 +209,58 @@ class Sincronizacion extends CI_Controller{
                 // SINCRONIZAR
                 switch(intval($sincronizacion_id)){
                     case 1: // CODIGOS DE ACTIVIDADES
-                        $data['transaccion'] = $this->sincronizar_actividades();
+                        $data['transaccion'] = $this->sincronizar_actividades(); //No necesitaba corregir
                         break;
                     case 2: // FECHA Y HORA
-                        $data['transaccion'] = $this->fechaHora($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->fechaHora($wsdl,$token,$parametros); //No necesitaba corregir
                         break;
                     case 3: // CODIGOS DE ACTIVIDADES DOCUMENTO SECTOR
-                        $data['transaccion'] = $this->codigos_actividades_doc_sector($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigos_actividades_doc_sector($wsdl,$token,$parametros); //No necesitaba
                         break;
                     case 4: // CODIGOS DE LEYENDAS FACTURAS
-                        $data['transaccion'] = $this->sincronizacion_codigos_leyenda($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->sincronizacion_codigos_leyenda($wsdl,$token,$parametros); //No necesitaba, revisar
                         break;
                     case 5: // CODIGOS DE MENSAJES SERVICIOS
-                        $data['transaccion'] = $this->codigosMensajesServicios($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosMensajesServicios($wsdl,$token,$parametros); //No necesitaba
                         break;
                     case 6: // CODIGOS DE PRODUCTOS Y SERVICIOS
-                        $data['transaccion'] = $this->codigosProductosServicios($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosProductosServicios($wsdl,$token,$parametros); //No necesitaba, revisar
                         break;
                     case 7: // CODIGOS DE EVENTOS SIGNIFICATIVOS
-                        $data['transaccion'] = $this->codigosEventosSignificativos($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosEventosSignificativos($wsdl,$token,$parametros); //Corregido
                         break;
                     case 8: // CODIGOS DE MOTIVOS DE ANULACION
-                        $data['transaccion'] = $this->codigosMotivosAnulacion($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosMotivosAnulacion($wsdl,$token,$parametros);//Corregido
                         break;
                     case 9: // CODIGOS DE PAIS DE ORIGEN
-                        $data['transaccion'] = $this->codigoPaisOrigen($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigoPaisOrigen($wsdl,$token,$parametros);//Corregido
                         break;
                     case 10: // CODIGOS DE TIPO DOCUMENTO DE IDENTIDAD
-                        $data['transaccion'] = $this->codigoTipoDocumentoIdentidad($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigoTipoDocumentoIdentidad($wsdl,$token,$parametros); //Corregido
                         break;
                     case 11: // CODIGOS DE TIPO DOCUMENTO SECTOR
-                        $data['transaccion'] = $this->codigosTipoDocumentoSector($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosTipoDocumentoSector($wsdl,$token,$parametros); //Corregido
                         break;
                     case 12: // CODIGOS DE TIPO EMISION
-                        $data['transaccion'] = $this->codigosTipoEmision($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosTipoEmision($wsdl,$token,$parametros); //Corregido
                         break;
                     case 13: // CODIGOS DE TIPO HABITACION
-                        $data['transaccion'] = $this->tipoHabitacion($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->tipoHabitacion($wsdl,$token,$parametros); //corregido
                         break;
                     case 14: // CODIGOS DE TIPO METODO DE PAGO
-                        $data['transaccion'] = $this->tipoMetodoPago($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->tipoMetodoPago($wsdl,$token,$parametros); //Corregido de antes
                         break;
                     case 15: // CODIGOS DE TIPO MONEDA
-                        $data['transaccion'] = $this->tipo_moneda($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->tipo_moneda($wsdl,$token,$parametros); //corregido
                         break;
                     case 16: // CODIGOS DE TIPO PUNTO DE VENTA
-                        $data['transaccion'] = $this->tipoPuntoVenta($wsdl,$token,$parametros); 
+                        $data['transaccion'] = $this->tipoPuntoVenta($wsdl,$token,$parametros); //Corregido
                         break;
                     case 17: // CODIGOS DE TIPO FACTURA
-                        $data['transaccion'] = $this->codigosTipoFactura($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->codigosTipoFactura($wsdl,$token,$parametros); //corregido
                         break;
                     case 18: // CODIGOS DE UNIDAD DE MEDIDA
-                        $data['transaccion'] = $this->unidadMedida($wsdl,$token,$parametros);
+                        $data['transaccion'] = $this->unidadMedida($wsdl,$token,$parametros); //corregido
                         break;
                     default://SINCRONIZAR TODOS LOS CODIGOS
                         if($this->sincronizar_actividades() &&
@@ -565,6 +565,7 @@ class Sincronizacion extends CI_Controller{
                 $this->CodEventosSignificativos_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'ces_id' => $codigo->codigoClasificador,
                         'ces_codigoclasificador' => $codigo->codigoClasificador,
                         'ces_descripcion'          => $codigo->descripcion
                     );
@@ -609,6 +610,7 @@ class Sincronizacion extends CI_Controller{
                 $this->CodMotivosAnulacion_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'cma_id' => $codigo->codigoClasificador,
                         'cma_codigoclasificador' => $codigo->codigoClasificador,
                         'cma_descripcion'        => $codigo->descripcion
                     );
@@ -653,6 +655,7 @@ class Sincronizacion extends CI_Controller{
                 $this->Pais_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'pais_id' => $codigo->codigoClasificador,
                         'pais_codigoclasificador' => $codigo->codigoClasificador,
                         'pais_descripcion'        => $codigo->descripcion
                     );
@@ -696,8 +699,10 @@ class Sincronizacion extends CI_Controller{
                 $this->CodTipoDocumentoIdentidad_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'cdi_id' => $codigo->codigoClasificador,
                         'cdi_codigoclasificador' => $codigo->codigoClasificador,
-                        'cdi_descripcion'        => $codigo->descripcion
+                        'cdi_descripcion'        => $codigo->descripcion,
+                        'estado_id'        => 1
                     );
 
                     $this->CodTipoDocumentoIdentidad_model->add_cod_doc_identidad($params);
@@ -740,6 +745,7 @@ class Sincronizacion extends CI_Controller{
                 $this->CodTipoDocumentoSector_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'docsec_id' => $codigo->codigoClasificador,
                         'docsec_codigoclasificador' => $codigo->codigoClasificador,
                         'docsec_descripcion'        => $codigo->descripcion
                     );
@@ -783,6 +789,7 @@ class Sincronizacion extends CI_Controller{
                 $this->TipoEmision_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'tipoemi_id' => $codigo->codigoClasificador,
                         'tipoemi_codigoclasificador' => $codigo->codigoClasificador,
                         'tipoemi_descripcion'        => $codigo->descripcion
                     );
@@ -871,6 +878,7 @@ class Sincronizacion extends CI_Controller{
                 $this->TipoHabitacion_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'tipohab_id' => $codigo->codigoClasificador,
                         'tipohab_codigoclasificador' => $codigo->codigoClasificador,
                         'tipohab_descripcion'        => $codigo->descripcion
                     );
@@ -968,6 +976,7 @@ class Sincronizacion extends CI_Controller{
                 $this->Tipo_puntoventa_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'tipopuntoventa_id'         => $codigo->codigoClasificador,
                         'tipopuntoventa_codigo'         => $codigo->codigoClasificador,
                         'tipopuntoventa_descripcion'    => $codigo->descripcion
                     );
@@ -1009,6 +1018,7 @@ class Sincronizacion extends CI_Controller{
                 $this->TipoFactura_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'tipofac_id'         => $codigo->codigoClasificador,
                         'tipofac_codigo'         => $codigo->codigoClasificador,
                         'tipofac_descripcion'    => $codigo->descripcion
                     );
@@ -1050,6 +1060,7 @@ class Sincronizacion extends CI_Controller{
                 $this->Unidad_model->truncate_table();
                 foreach ($listaCodigos as $codigo) {
                     $params = array(
+                        'unidad_id'    => $codigo->codigoClasificador,
                         'unidad_codigo'    => $codigo->codigoClasificador,
                         'unidad_nombre'    => $codigo->descripcion
                     );
