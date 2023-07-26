@@ -546,7 +546,7 @@ class Venta extends CI_Controller{
         //**************** inicio contenido ***************   
             //$factura_fecha_hora = '2022-07-03 13:17:10.000';//borrar
             //$factura_fecha_hora = (new DateTime())->format('Y-m-d\TH:i:s.v');
-            //for($numero = 1;$numero <= 2;$numero++){ //borrar el for, mantener su contenido
+            //for($numero = 1;$numero <= 1;$numero++){ //borrar el for, mantener su contenido
                 $data['sistema'] = $this->sistema;
                 $usuario_id = $this->session_data['usuario_id'];
                 
@@ -1471,10 +1471,11 @@ class Venta extends CI_Controller{
                 if($facturado=="false" && $tipo_transaccion == 2){
                     echo json_encode("");
                 }
+                
+            //} //Fin del for de N facturas
         }
 
         //**************** fin contenido ***************
-        //}
                
         
     }
