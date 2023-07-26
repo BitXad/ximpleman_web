@@ -498,7 +498,7 @@ function tablaproductos(){
                             html += "                            <th style='padding:0'>Desc <br>"+parametro_moneda_descripcion+"</th>";
                             html += "                            <th style='padding:0'>Precio<br>Total "+parametro_moneda_descripcion+"</th>";
                         } 
-                        html += "                            <th style='padding:0'><button onclick='quitartodo()' class='btn btn-danger btn-xs' title='Vaciar el detalle de la venta'><span class='fa fa-trash'></span><b></b></button></th>";
+                        html += "                            <th style='padding:0'><button onclick='quitartodo()' class='btn btn-danger btn-sm' title='Vaciar el detalle de la venta'><span class='fa fa-trash'></span><b></b></button></th>";
                         html += "                    </tr>";                
                         html += "                    <tbody class='buscar2'>";
 
@@ -7566,6 +7566,34 @@ function seleccionar_documento(id){
     $("#tipo_doc_identidad").val(id);
     $("#nit").select();
     $("#nit").focus();
+ 
+}
+
+function seleccionar_servicio(id){
+    
+    var boton = document.getElementById("servicio"+id);
+    boton.style = "color: white";
+    boton.style.backgroundColor = "#f39c12"; //
+    //boton.style.borderColor = "#f8f9fa"; //
+   
+    
+    for(i = 1; i<=5; i++){
+        
+        if (i != id){
+            try{
+                let boton2 = document.getElementById("servicio"+i);
+                boton2.style = "color: black";
+                boton2.style.backgroundColor = "#f8f9fa";    
+            }catch(error){
+                
+            }
+        }
+        
+    }
+    
+    $("#tiposerv_id").val(id);
+    $("#glosay").select();
+    $("#glosay").focus();
  
 }
 //

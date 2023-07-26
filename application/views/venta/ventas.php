@@ -487,17 +487,14 @@ window.onkeydown = compruebaTecla;
 
 
         <div class="col-md-2" <?php echo $estilo_div; ?>>
-            <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">PREFERENCIAS</label>
+            <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">SERVICIO</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <!--<input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" style="color: black; background:white; text-align: left; font-size: 18px; font-family: Arial; " id="glosay"  value="" onclick="this.select()" onkeyup="transcribir_glosa(event); this.value = this.value.toUpperCase();"/>-->
-                <select id="tiposerv_id" name="tiposerv_id" class="form-control btn btn-info btn-xs">
-
                     <?php
                         foreach($tipo_servicio as $ts){ ?>
-                            <option value="<?php echo $ts['tiposerv_id']; ?>"><?php echo $ts['tiposerv_descripcion']; ?></option>
+                            <button class="btn btn-group <?= ($ts['tiposerv_id']==1)?"btn-warning":"btn-default"; ?>  btn-xs" id="servicio<?php echo $ts['tiposerv_id']; ?>" onclick="seleccionar_servicio(<?php echo $ts['tiposerv_id']; ?>)"><fa class="fa fa-cube"> </fa> <?php echo $ts['tiposerv_descripcion']; ?></button>
+                    
                     <?php } ?>
 
-                 </select>
             </div>
         </div>
 

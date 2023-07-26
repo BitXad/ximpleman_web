@@ -214,7 +214,16 @@ border-bottom : 1px solid #aaa;
                         
                         
                             <?php if($parametro["parametro_logoenfactura"]==1){ ?>
-                                <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                                <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60">
+                            <?php } ?>
+                                
+                            <?php 
+                                if (isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
+                                    <font size="1" face="Arial"><b>
+
+                                <?php  echo "<br> DE: ".$empresa[0]['empresa_propietario'] ; ?>
+
+                            </b></font><br>
                             <?php } ?>
                         
                             <?php if($parametro["parametro_mostrarempresa"]==1){ ?>
