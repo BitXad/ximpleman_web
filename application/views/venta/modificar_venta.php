@@ -305,6 +305,12 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_tamanioletrasboton" value="<?php echo $parametro['parametro_tamanioletrasboton']; ?>" name="parametro_tamanioletrasboton"  hidden>
 <input type="text" id="parametro_tamanioletras" value="<?php echo $parametro['parametro_tamanioletras']; ?>" name="parametro_tamanioletras"  hidden>
 <input type="text" id="parametro_sininventario" value="<?php echo $parametro['parametro_sininventario']; ?>" name="parametro_sininventario"  hidden>
+<input type="text" id="parametro_datosproducto" value="<?php echo $parametro['parametro_datosproducto']; ?>" name="parametro_datosproducto"  hidden>
+<input type="text" id="parametro_cantidadsimple" value="<?php echo $parametro['parametro_cantidadsimple']; ?>" name="parametro_cantidadsimple"  hidden>
+<input type="text" id="parametro_botonesproducto" value="<?php echo $parametro['parametro_botonesproducto']; ?>" name="parametro_botonesproducto"  hidden>
+<input type="text" id="parametro_mostrarmoneda" value="<?php echo $parametro['parametro_mostrarmoneda']; ?>" name="parametro_mostrarmoneda"  hidden>
+<input type="text" id="parametro_tablasencilla" value="<?php echo $parametro['parametro_tablasencilla']; ?>" name="parametro_tablasencilla"  hidden>
+<input type="text" id="factura_idcreditodebito" value="0" name="factura_idcreditodebito"  hidden>
 <input type="text" id="boton_presionado" value="0" hidden>
 
 <?php
@@ -695,6 +701,12 @@ if(isset($credito)){
             <fa class="fa fa-cube"></fa> Promociones
         </button>
         <?php } ?>
+        <select class="btn btn-xs btn-warning" title="Buscar productos de acuerdo al parametro" id="select_buscador" onchange="$('#filtrar').focus();" <?php echo ($parametro["parametro_modulorestaurante"]==2)?"":"style='display:none' "; ?>">
+               <option value="0">- DESCRIPCION -</option>
+               <option value="1">PRINCIPIO ACTIVO</option>
+               <option value="2">ACCION TERAPEUTICA</option>
+               <option value="3">LINEA</option>
+           </select>
        <?php 
             /*if ($parametro["parametro_agruparitems"] == 1 )
                     { $agrupar = "checked='true'";}
