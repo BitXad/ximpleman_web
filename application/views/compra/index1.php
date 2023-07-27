@@ -30,6 +30,15 @@
         {
              window.print(); 
         }
+        
+    function llevar_invacero(){
+        var r = confirm("ADVERTENCIA, ESTA OPERACION ES IRREVERSIBLE\nTodo el Invetario(cantidades) sera llevado a 0 (cero).\n \n¿Desea Continuar?");
+        if (r == true) {
+            let labase_url = document.getElementById('base_url').value;
+            dir_url = labase_url+"compra/crearcompra_invcero";
+            location.href =dir_url;
+        }
+    }
 </script>   
 
 <!----------------------------- fin script buscador --------------------------------------->
@@ -129,7 +138,7 @@
                 <?php if($rolusuario[10-1]['rolusuario_asignado'] == 1){ ?>
                 <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="#" onclick="imprimir_compra()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
                 <?php } ?>
-                <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('compra/crearcompra_invcero'); ?>" class="btn btn-facebook btn-foursquarexs" title="Llevar inventario a 0"><font size="5"><span class="fa fa-dot-circle-o"></span></font><br><small>Inv. a cero</small></a>
+                <a style="width: 78px; margin-right: 1px; margin-top: 1px" class="btn btn-facebook btn-foursquarexs" title="Llevar inventario a 0" onclick="llevar_invacero()"><font size="5"><span class="fa fa-dot-circle-o"></span></font><br><small>Inv. a cero</small></a>
                 <a style="width: 78px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('factura_compra'); ?>" class="btn btn-facebook btn-soundcloud" title="Registrar en libro de compras"><font size="5"><span class="fa fa-book"></span></font><br><small>Libro <?php echo $sistema["sistema_modulocompras"]; ?></small></a>
             </center>            
         </div>
