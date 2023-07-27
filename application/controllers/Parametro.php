@@ -488,9 +488,13 @@ class Parametro extends CI_Controller{
                     'parametro_ordendetalle' => $this->input->post('parametro_ordendetalle'),
                     'parametro_mostrarempresa' => $this->input->post('parametro_mostrarempresa'),
                     'parametro_mostrardireccion' => $this->input->post('parametro_mostrardireccion'),
+                    'parametro_tablasencilla' => $this->input->post('parametro_tablasencilla'),
                 );
+                
+                
 
-                $this->Parametro_model->update_parametro($parametro_id,$params);            
+                $this->Parametro_model->update_parametro($parametro_id,$params);
+                //var_dump($params);
                 redirect('parametro/index');
             }
             else

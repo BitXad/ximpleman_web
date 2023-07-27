@@ -486,17 +486,17 @@ function tablaproductos(){
                         html += "<table class='table table-striped table-condensed' id='"+tablacss+"'>";
                         html += "                    <tr>";
                         html += "                            <th style='padding:5;'> # </th>";
-                        html += "                            <th style='padding:0'>Descripción<br>";
+                        html += "                            <th style='padding:5'>DESCRIPCIÓN<br>";
 //                        html += "<input type='checkbox' id='check_agrupar' class='btn btn-success btn-xs'  value='1'> Agrupar";
                         html += " </th>";
                         
                         if(esMobil()){
-                            html += "                            <th style='padding:0'>Precio<br>Cant.</th>";                            
+                            html += "                            <th style='padding:0'>PRECIO<br>CANT</th>";                            
                         }else{
-                            html += "                            <th style='padding:0'>Cant.</th>";                    
-                            html += "                            <th style='padding:0'>Precio <br>"+parametro_moneda_descripcion+"</th>";
-                            html += "                            <th style='padding:0'>Desc <br>"+parametro_moneda_descripcion+"</th>";
-                            html += "                            <th style='padding:0'>Precio<br>Total "+parametro_moneda_descripcion+"</th>";
+                            html += "                            <th style='padding:5'>CANT.</th>";                    
+                            html += "                            <th style='padding:0'>PRECIO<br>"+parametro_moneda_descripcion+"</th>";
+                            html += "                            <th style='padding:0'>DESC.<br>"+parametro_moneda_descripcion+"</th>";
+                            html += "                            <th style='padding:0'>PRECIO<br>TOTAL "+parametro_moneda_descripcion+"</th>";
                         } 
                         html += "                            <th style='padding:0'><button onclick='quitartodo()' class='btn btn-danger btn-sm' title='Vaciar el detalle de la venta'><span class='fa fa-trash'></span><b></b></button></th>";
                         html += "                    </tr>";                
@@ -822,7 +822,7 @@ html += "  </div>";
                         
                         html += "<input type='hidden' id='venta_descuentoparcial' value="+total_descuentoparcial.toFixed(decimales)+" />";
                        
-                        html += "                            <th style='padding:0' align='right' colspan='2'><font size='3'>"+parametro_moneda_descripcion+" "+formato_numerico(total_detalle.toFixed(decimales))+"</font><br>";
+                        html += "                            <th style='padding-bottom:0; padding-top:0; background: black; color:white;' align='right' colspan='2'><font size='3'>"+parametro_moneda_descripcion+" "+formato_numerico(total_detalle.toFixed(decimales))+"</font><br>";
                         
                         
                         if (parametro_mostrarmoneda == 1){
@@ -2048,7 +2048,7 @@ function cambiarcantidadjs(e,prod_id)
                         ", detalleven_descuento = "+descuento+
                         ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
                         "  where producto_id = "+producto_id+" and  detalleven_id = "+producto.detalleven_id ; //usuario_id = "+usuario_id;
-                alert("cantidad: "+cantidad);
+                //alert("cantidad: "+cantidad);
                // alert(sql);
 
                 $.ajax({url: controlador,
@@ -2372,11 +2372,11 @@ function tablaresultados(opcion)
                    html += "                <table class='table  table-condensed table-striped' id='mitabla'>";
                    html += "                <tr>";
                    html += "                <th>#</th> ";
-                   html += "                <th>Descripción</th>";
+                   html += "                <th>DESCRIPCIÓN</th>";
                    
                     if(! esMobil()) { //si no es dispositivo mobil
                         mensajeboton = "";
-                        html += "                <th>Precio</th>";
+                        html += "                <th>PRECIO</th>";
                         html += "                <th> </th>";
                     }
                     else{
@@ -7722,6 +7722,7 @@ function borrar_datos_cliente(){
     var cliente_id = "1";
     
     seleccionar_documento(1); // CI
+    seleccionar_servicio(1); // CI
     
     $("#razon_social").val(razon_social);
     $("#cliente_nombre").val(razon_social);
@@ -7768,6 +7769,9 @@ function borrar_datos_cliente(){
     $("#venta_giftcard").val("0.00");
     $("#tipo_doc_identidad").val("5");
     $("#cliente_valido").val("1");
+    $("#glosay").val("");
+    
+    
     document.getElementById("codigoexcepcion").checked = false;
     
     
@@ -7805,14 +7809,14 @@ function borrar_datos_cliente(){
     
     //alert("holaaaaaaaaaa");
     //Si esta activo el modulo para restaurante
-    if (modulo_restaurante == 1){
-        
-        if (parametro_imprimircomanda==1){
-            boton = document.getElementById("imprimir_comanda");
-            boton.click();
-        }
-        
-    }
+//    if (modulo_restaurante == 1){
+//        
+//        if (parametro_imprimircomanda==1){
+//            boton = document.getElementById("imprimir_comanda");
+//            boton.click();
+//        }
+//        
+//    }
     
     if(parametro_imprimirfactura!=0){
 
@@ -7849,7 +7853,7 @@ function borrar_datos_cliente(){
             
         }
         
-        if(parametro_imprimirfactura==6){ // Imprimir factura y recibo
+        if(parametro_imprimirfactura==6){ // Imprimir factura y comanda
             let boton1 = document.getElementById("imprimir_factura");
             let boton2 = document.getElementById("imprimir_comanda");
             if (facturado == 1){ boton1.click(); }
@@ -7858,15 +7862,7 @@ function borrar_datos_cliente(){
 
     }
 
-        
-        
-        //alert("No es restaurante");
-        
-//        if (facturado == 1){
-//            var boton = document.getElementById("imprimir_factura");
-//            boton.click();                    
-//        }       
-   
+
     
     document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
     tablaproductos();

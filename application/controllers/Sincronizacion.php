@@ -295,7 +295,7 @@ class Sincronizacion extends CI_Controller{
             }
             
             // Habilitar las 2 primeras monedas por defecto
-            $sql = "update moneda set estado_id = 1 where moneda_id <= 2";
+            $sql = "update moneda set estado_id = 1, moneda_descripcion = if(moneda_id=1,'Bs','USD') where moneda_id <= 2";
             $this->Venta_model->ejecutar($sql);
             
             // Eliminar de la lista de documentos sector que no tengan GIFT
@@ -922,6 +922,7 @@ class Sincronizacion extends CI_Controller{
                 $this->Moneda_model->truncate_table();
                 
                 foreach ($listaCodigos as $codigo) {
+                    
                     $params = array(
                         'moneda_id'                 => $codigo->codigoClasificador,
                         'estado_id'                 => 2,//2 INACTIVO
@@ -932,6 +933,7 @@ class Sincronizacion extends CI_Controller{
                     );
                     
                     $moneda_id = $this->Moneda_model->buscar_codigo_clasificador($codigo->codigoClasificador);
+                    
                     if($moneda_id['moneda_id'] == 0){
                         $this->Moneda_model->add_moneda($params);
                     }else{
