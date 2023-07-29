@@ -252,9 +252,9 @@ var totattipos=datos.totaltipos;
 var numeropublicaciones=datos.numerodepubli;
 
     for(i=0;i<=totattipos-1;i++){  
-    var idTP=tippos[i].cliente_id;
-    var objeto= {name: tippos[i].cliente_nombre, y:numeropublicaciones[idTP] };     
-    options.series[0].data.push( objeto );  
+        var idTP=tippos[i].cliente_id;
+        var objeto= {name: tippos[i].cliente_nombre, y:numeropublicaciones[idTP] };     
+        options.series[0].data.push( objeto );  
     }
  //options.title.text="aqui e podria cambiar el titulo dinamicamente";
  chart = new Highcharts.Chart(options);

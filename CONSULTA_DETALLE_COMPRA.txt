@@ -1,0 +1,37 @@
+insert into detalle_compra(
+compra_id
+,moneda_id
+,producto_id
+,detallecomp_codigo
+,detallecomp_cantidad
+,detallecomp_unidad
+,detallecomp_costo
+,detallecomp_precio
+,detallecomp_subtotal
+,detallecomp_descuento
+,detallecomp_total
+,detallecomp_descglobal
+,detallecomp_tipocambio
+,cambio_id
+,detallecomp_tc
+) 
+(
+select 
+1,
+1,
+p.producto_id,
+p.producto_codigobarra,
+p.producto_orden,
+p.`producto_unidad`,
+p.`producto_costo`,
+p.`producto_precio`,
+p.`producto_costo` * p.producto_orden,
+0,
+p.`producto_costo` * p.producto_orden,
+0,
+1,
+1,
+6.96
+
+
+from producto p)

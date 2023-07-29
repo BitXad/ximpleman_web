@@ -437,6 +437,7 @@ function torta2($anio,$mes)
         $numusu=10;
 
         $id_usuarios = "SELECT DISTINCT v.cliente_id, u.cliente_nombre,SUM(venta_total) as 'totalventas' FROM venta v, cliente u where v.venta_fecha >= '".$anio."-".$mes."-01' and  v.venta_fecha <= '".$anio."-".$mes."-31' and v.cliente_id=u.cliente_id GROUP BY cliente_id ORDER by totalventas desc limit 10";
+        //echo $id_usuarios;
         $usuarios= $this->db->query($id_usuarios)->result_array();
 
 
@@ -447,17 +448,15 @@ function torta2($anio,$mes)
         
 
         foreach($usuarios as $tve){
-        $ususel=intval($tve['cliente_id']);
-        
-        $suma=round($tve['totalventas'],2);
-        
-        $registros[$ususel]=$suma;    
+            
+            $ususel=intval($tve['cliente_id']);
+
+            $suma=round($tve['totalventas'],2);
+
+            $registros[$ususel]=$suma;    
         }
        
-       
-       
-        
-        $data=array("totaltipos"=>$numusu, "tipos" =>$usuarios, "numerodepubli" =>$registros);
+        $data = array("totaltipos"=>$numusu, "tipos" =>$usuarios, "numerodepubli" =>$registros);
         echo   json_encode($data);
         
         
@@ -466,22 +465,23 @@ function torta3($anio,$mes)
 {
                
         $data['sistema'] = $this->sistema;
-        $numusu2=10;
+        $numusu2 = 10;
 
         $id_usuarios = "SELECT DISTINCT dv.producto_id, u.producto_nombre,SUM(dv.detalleven_cantidad) as 'totalventas' FROM detalle_venta dv, venta v, producto u where v.venta_fecha >= '".$anio."-".$mes."-01' and  v.venta_fecha <= '".$anio."-".$mes."-31' and dv.venta_id= v.venta_id and dv.producto_id=u.producto_id GROUP BY u.producto_id ORDER by totalventas desc limit 10";
-        $usuarios2= $this->db->query($id_usuarios)->result_array();
+        //echo $id_usuarios; 
+        $usuarios2 = $this->db->query($id_usuarios)->result_array();
 
 
         foreach($usuarios2 as $tve){
-        $ususel=intval($tve['producto_id']);
-        
-        $suma=round($tve['totalventas'],2);
-        
-        $registros[$ususel]=$suma;    
+            $ususel=intval($tve['producto_id']);
+
+            $suma=round($tve['totalventas'],2);
+
+            $registros[$ususel]=$suma;    
         }
        
           
-        $data=array("totaltipos"=>$numusu2, "tipos" =>$usuarios2, "numerodepubli" =>$registros);
+        $data = array("totaltipos"=>$numusu2, "tipos" =>$usuarios2, "numerodepubli" =>$registros);
         echo   json_encode($data);
         
         

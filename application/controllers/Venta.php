@@ -2251,8 +2251,9 @@ function edit($venta_id){
         $venta_id = $ventaid[0]["venta_id"];
        
         $data['venta_id'] = $venta_id;
-        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
-        
+        $get_venta = $this->Detalle_venta_model->get_venta($venta_id);
+        $venta = $get_venta[0];
+        $data['venta'] = $get_venta;
         $detalle_venta = $this->Detalle_venta_model->cargar_detalle_venta($venta_id, $usuario_id);        
         $data['detalle_venta'] = $detalle_venta;        
         
@@ -2268,7 +2269,7 @@ function edit($venta_id){
             $prec_total += $d['detalleven_precio'] * $d['detalleven_cantidad'];
         }
                 
-        $bitacoracaja_evento = "REHACER FACTURA FALLIDA, VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+        $bitacoracaja_evento = "REHACER FACTURA FALLIDA, VENTA Nº 00".$venta_id." CLIENTE:".$venta['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 

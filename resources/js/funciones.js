@@ -7571,30 +7571,36 @@ function seleccionar_documento(id){
 
 function seleccionar_servicio(id){
     
-    var boton = document.getElementById("servicio"+id);
-    boton.style = "color: white";
-    boton.style.backgroundColor = "#f39c12"; //
-    //boton.style.borderColor = "#f8f9fa"; //
-   
-    
-    for(i = 1; i<=5; i++){
-        
-        if (i != id){
-            try{
-                let boton2 = document.getElementById("servicio"+i);
-                boton2.style = "color: black";
-                boton2.style.backgroundColor = "#f8f9fa";    
-            }catch(error){
-                
+    try{
+
+        var boton = document.getElementById("servicio"+id);
+        boton.style = "color: white";
+        boton.style.backgroundColor = "#f39c12"; //
+        //boton.style.borderColor = "#f8f9fa"; //
+
+
+        for(i = 1; i<=5; i++){
+
+            if (i != id){
+                try{
+                    let boton2 = document.getElementById("servicio"+i);
+                    boton2.style = "color: black";
+                    boton2.style.backgroundColor = "#f8f9fa";    
+                }catch(error){
+
+                }
             }
+
         }
+
+        $("#tiposerv_id").val(id);
+        $("#glosay").select();
+        $("#glosay").focus();
+
+        
+    }catch (error) {
         
     }
-    
-    $("#tiposerv_id").val(id);
-    $("#glosay").select();
-    $("#glosay").focus();
- 
 }
 //
 //function seleccionar_documento(id){
@@ -7720,6 +7726,7 @@ function borrar_datos_cliente(){
     var nit = "1234";
     var razon_social = "SIN NOMBRE";
     var cliente_id = "1";
+
     
     seleccionar_documento(1); // CI
     seleccionar_servicio(1); // CI
@@ -7773,8 +7780,7 @@ function borrar_datos_cliente(){
     
     
     document.getElementById("codigoexcepcion").checked = false;
-    
-    
+
     
     $("#razon_social").css("background-color", "gray");
     $("#razon_social").attr("readonly","readonly");
