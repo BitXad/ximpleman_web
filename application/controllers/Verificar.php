@@ -66,10 +66,19 @@ class Verificar extends CI_Controller
                     if ($session_data['tipousuario_id'] == 1) {// admin page
                         if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
                             redirect('alerta/dosificacion'); 
-                        } 
-                        redirect('admin/dashb'); 
+                        }
+                        if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
+                            redirect($parametro[0]["parametro_redireccionusuario"]);
+                        }else{
+                            redirect('admin/dashb');
+                        }
+                        
                     }elseif($session_data['tipousuario_id'] == 7){ // usuario tipo Cocina
-                        redirect('detalle_venta/recepcion');
+                        if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
+                            redirect($parametro[0]["parametro_redireccionusuario"]);
+                        }else{
+                            redirect('detalle_venta/recepcion');
+                        }
                         //redirect('reportes/ventacategoriap');
                     }else{  // En caso de otro usuario no administrador 
                         if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
@@ -77,7 +86,11 @@ class Verificar extends CI_Controller
                         } 
                        // $this->load->model('Cliente_model'); 
                         //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']); 
-                        redirect('admin/dashb/index_user'); 
+                        if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
+                            redirect($parametro[0]["parametro_redireccionusuario"]);
+                        }else{
+                            redirect('admin/dashb/index_user');
+                        }
                     }
                 }else{
                     $tok="SELECT DATEDIFF(token_fechahasta, CURDATE()) as dias FROM token WHERE estado_id = 1 order by token_id desc limit 1";
@@ -85,15 +98,30 @@ class Verificar extends CI_Controller
                     if ($session_data['tipousuario_id'] == 1) {// admin page
                         if ($token['dias']<=10 && $token['dias']!=null) {
                             redirect('alerta/token'); 
-                        } 
-                        redirect('admin/dashb'); 
+                        }
+                        if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
+                            redirect($parametro[0]["parametro_redireccionusuario"]);
+                        }else{
+                            redirect('admin/dashb');
+                        }
                     }elseif($session_data['tipousuario_id'] == 7){ // usuario tipo Cocina
-                        redirect('detalle_venta/recepcion');
+                        if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
+                            redirect($parametro[0]["parametro_redireccionusuario"]);
+                        }else{
+                            redirect('detalle_venta/recepcion');
+                        }
+                        
                     }else{  // En caso de otro usuario no administrador 
                         if ($token['dias']<=10 && $token['dias']!=null) { 
                             redirect('alerta/token'); 
                         }
-                        redirect('admin/dashb/index_user'); 
+                        
+                        if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
+                            redirect($parametro[0]["parametro_redireccionusuario"]);
+                        }else{
+                            redirect('admin/dashb/index_user'); 
+                        }
+                        
                     }
                     
                 }

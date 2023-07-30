@@ -148,6 +148,12 @@ div {
                         </select>
                     </div>
                 </div>
+                <div class="col-md-2">
+                    <label for="parametro_redireccionusuario" class="control-label"> REDIRECCIONAR USUARIO</label>
+                    <div class="form-group">
+                        <input type="text" name="parametro_redireccionusuario" value="<?php echo ($this->input->post('parametro_redireccionusuario') ? $this->input->post('parametro_redireccionusuario') : $parametro['parametro_redireccionusuario']); ?>" class="form-control" id="parametro_redireccionusuario" />
+                    </div>
+                </div>
             </div><hr>
             
             

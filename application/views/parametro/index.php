@@ -85,6 +85,7 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">APERTURA/CIERRA<br>DE CAJA</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TIPO DE SISTEMA</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TIPO DE EMISION</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">REDIRECCIONAR USUARIO</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_tituldoc']; ?></td>
@@ -102,6 +103,7 @@ foreach($all_parametros as $p)
                             }
                             ?>
                         </td>
+                        <td><?php echo substr($p['parametro_redireccionusuario'],0,30).".."; ?></td>
                     </tr>
                     <tr>
                         <th style="font-size: 12px;color:black; background: rgba(0, 255, 0, 0.3);" rowspan="2" ><u>CREDITOS</u></th>
