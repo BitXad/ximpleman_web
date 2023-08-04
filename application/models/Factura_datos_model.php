@@ -16,14 +16,9 @@ class Factura_datos_model extends CI_Model
      */
     function get_factura_datos($datos_id)
     {
-        $factura_datos = $this->db->query("
-            SELECT
-                *
-            FROM
-                `factura_datos`
-            WHERE
-                `datos_id` = ?
-        ",array($datos_id))->row_array();
+        $sql ="select * from factura_datos d, cliente c where d.datos_id = {$datos_id}  and c.cliente_id = d.cliente_id";
+        
+        $factura_datos = $this->db->query($sql)->row_array();
 
         return $factura_datos;
     }

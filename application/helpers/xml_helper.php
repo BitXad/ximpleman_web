@@ -171,7 +171,9 @@
         if($documento_sector == 12 || $documento_sector == 13  ){ //12 Comercializacion de hidrocarburos 13 Servicios basicos
             $CI2 = & get_instance();
             $CI2->load->model('Factura_datos_model');
+            
             $factura_datos = $CI2->Factura_datos_model->get_factura_datos($factura['datos_id']);
+            
         }
         
         
@@ -295,19 +297,19 @@ $salto_linea='
         
         if($documento_sector==13){ //13-Servicios Basicos
             
-            $mes = "JUNIO";
+            $mes = $factura_datos['datos_mes'];
             $cabecera_facturaxml .= $salto_linea.'          <mes>'.$mes.'</mes>';
             
-            $gestion = "2022";
+            $gestion =  $factura_datos['datos_anio'];
             $cabecera_facturaxml .= $salto_linea.'          <gestion>'.$gestion.'</gestion>'; 
             
-            $ciudad = "COCHABAMBA";
+            $ciudad =  $factura_datos['datos_ciudad'];
             $cabecera_facturaxml .= $salto_linea.'          <ciudad>'.$ciudad.'</ciudad>';
             
-            $zona = "ESTE";
+            $zona =  $factura_datos['datos_zona'];
             $cabecera_facturaxml .= $salto_linea.'          <zona>'.$zona.'</zona>';            
             
-            $numero_medidor = "A34556";
+            $numero_medidor =  $factura_datos['datos_medidor'];;
             $cabecera_facturaxml .= $salto_linea.'          <numeroMedidor>'.$numero_medidor.'</numeroMedidor>';
             
         }
@@ -317,9 +319,15 @@ $salto_linea='
         
         if($documento_sector==13){ //13-Servicios Basicos
         
-            $domicilioCliente = "CALLE JUAN MENDEZ N 23";
+            if ($factura_datos['cliente_direccion']!='' && $factura_datos['cliente_direccion']!='null'){
+                $domicilioCliente = $factura_datos['cliente_direccion'];
+            }else{
+                $domicilioCliente = '-';
+                    
+            }
             $cabecera_facturaxml .= $salto_linea.'          <domicilioCliente>'.$domicilioCliente.'</domicilioCliente>';
         }
+        
         $cabecera_facturaxml .= $salto_linea.'          <codigoTipoDocumentoIdentidad>'.$factura['cdi_codigoclasificador'].'</codigoTipoDocumentoIdentidad>';
         
         if ($documento_sector != 23){ //23- factura prevalorada
@@ -471,8 +479,21 @@ $salto_linea='
             $periodoFacturado = "20"; //cambiar por factura_glosa
             
             $cabecera_facturaxml .= $salto_linea.'          <consumoPeriodo>'.$periodoFacturado.'</consumoPeriodo>'; //cambiar por cliente_nombre
-            $cabecera_facturaxml .= $salto_linea.'          <beneficiarioLey1886 xsi:nil="true"></beneficiarioLey1886>'; //cambiar por cliente_nombre
-            $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoLey1886 xsi:nil="true"></montoDescuentoLey1886>'; //cambiar por cliente_nombre
+            
+            if ($factura_datos['datos_beneficiario1886']!='' && $factura_datos['datos_beneficiario1886']!='null' ){
+                
+                $cabecera_facturaxml .= $salto_linea.'          <beneficiarioLey1886>'.$factura_datos['datos_beneficiario1886'].'</beneficiarioLey1886>'; //cambiar por cliente_nombre
+                $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoLey1886>'.$factura_datos['datos_beneficiario1886'].'</montoDescuentoLey1886>'; //cambiar por cliente_nombre
+                
+            }else{
+                
+                $cabecera_facturaxml .= $salto_linea.'          <beneficiarioLey1886 xsi:nil="true"></beneficiarioLey1886>'; //cambiar por cliente_nombre                
+                $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoLey1886 xsi:nil="true"></montoDescuentoLey1886>'; //cambiar por cliente_nombre
+                
+            }
+                
+            
+            
             $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoTarifaDignidad xsi:nil="true"></montoDescuentoTarifaDignidad>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <tasaAseo>0</tasaAseo>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <tasaAlumbrado>0</tasaAlumbrado>'; //cambiar por cliente_nombre
