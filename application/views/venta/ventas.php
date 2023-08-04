@@ -352,7 +352,7 @@ window.onkeydown = compruebaTecla;
     <div <?php echo ($dosificacion[0]['docsec_codigoclasificador'] != 12)? "hidden" : "";  ?>>
         
         * PLACA <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_placa" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" onkeypress="buscar_placa(event);" style="font-size: 12px;">    
-        * EMBASE <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_embase" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;">        
+        * EMBASE <input type="text" width="100px" class="btn btn-warning btn-xs" id="datos_embase" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;" value="-">        
         * PAIS <select type="text" width="100px" class="btn btn-warning btn-xs" id="datos_codigopais" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" style="font-size: 12px;">
                     <option value="0">-NINGUNO-</option>
                     <?php foreach ($paises as $p){ ?>
@@ -635,6 +635,10 @@ window.onkeydown = compruebaTecla;
     
             <button type="button" id="boton_modalpaquetes" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalpaquetes" >
                 <fa class="fa fa-cubes"></fa>
+            </button>
+        
+            <button type="button" id="boton_modaldatosservicio" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modaldatosservicios" >
+                <fa class="fa fa-database"></fa>
             </button>
         
             <?php 
@@ -1709,7 +1713,7 @@ window.onkeydown = compruebaTecla;
                     <b>NOTA:</b>
                <?php }?>
                 
-                <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
+                <input type="text" style="padding: 0; font-size: 10pt;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm" onKeyUp="this.value = this.value.toUpperCase();">           
                 
                 <div class="col-md-12" style="display:none" id="imagenqr">
                     <center>
@@ -2769,6 +2773,89 @@ window.onkeydown = compruebaTecla;
 
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL CANTIDAD ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL DATOS FACTURA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div hidden>
+    <button type="button" id="boton_modalcantidad" class="btn btn-default" data-toggle="modal" data-target="#modaldatosservicios" >
+      CANTIDAD PRODUCTOS
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modaldatosservicios" tabindex="-1" role="dialog" aria-labelledby="modaldatosservicios" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">DATOS SERVICIOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="loader3" style="display:none; text-align: center">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                
+                <div class="col-md-12" style="line-height: 8px;">
+                    
+					<div class="col-md-6">
+						<label for="datos_consumoperiodo" class="control-label">Consumo</label>
+						<div class="form-group">
+							<input type="text" name="datos_consumoperiodo" value="<?php echo ""; ?>" class="form-control" id="datos_consumoperiodo" />
+						</div>
+					</div>
+                    
+					<div class="col-md-6">
+						<label for="datos_beneficiario1886" class="control-label">Beneficiario1886</label>
+						<div class="form-group">
+							<input type="text" name="datosbeneficiario1886" value="<?php echo ""; ?>" class="form-control" id="datos_beneficiario1886" />
+						</div>
+					</div>        
+                    
+					<div class="col-md-3">
+						<label for="datos_periodofacturado" class="control-label">Periodo</label>
+						<div class="form-group">
+							<input type="text" name="datos_mes" value="<?php echo ""; ?>" class="form-control" id="datos_mes" />
+						</div>
+					</div>
+                    
+					<div class="col-md-3">
+						<label for="datos_periodofacturado" class="control-label">Año</label>
+						<div class="form-group">
+							<input type="text" name="datos_anio" value="<?php echo ""; ?>" class="form-control" id="datos_anio" />
+						</div>
+					</div>
+                    
+					<div class="col-md-6">
+						<label for="datos_medidor" class="control-label">Datos Medidor</label>
+						<div class="form-group">
+							<input type="text" name="datos_medidor" value="<?php echo ""; ?>" class="form-control" id="datos_medidor" />
+						</div>
+					</div>                    
+                    
+                </div>
+                <br>
+                <br>
+
+            </div>
+            
+            <div class="modal-footer" style="text-align: center">
+                <!--<button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Enviar Paquete</button>-->
+                <button type="button" class="btn btn-default" id="boton_cerrar_recepcion" data-dismiss="modal" ><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL DATOS FACTURA ----------------------------------->
 <!------------------------------------------------------------------------------->
 
 

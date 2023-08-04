@@ -86,7 +86,7 @@ padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
 font-family: Arial narrow;
-font-size: 7pt;  
+font-size: 10pt;  
 
 td {
 border:hidden;
@@ -125,7 +125,6 @@ border-bottom : 1px solid #aaa;
 </td>
 
 <td style="padding: 0;">
-    
 
 
         <table class="table" style="width: <?php echo $ancho; ?>;" >

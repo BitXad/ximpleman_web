@@ -217,18 +217,10 @@ border-bottom : 1px solid #aaa;
                                 <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60">
                             <?php } ?>
                                 
-                            <?php 
-                                if (isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
-                                    <font size="1" face="Arial"><b>
-
-                                <?php  echo "<br> DE: ".$empresa[0]['empresa_propietario'] ; ?>
-
-                            </b></font><br>
-                            <?php } ?>
                         
                             <?php if($parametro["parametro_mostrarempresa"]==1){ ?>
                                 
-                                <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                                <font size="2" face="Arial black"><b><?php echo "<br>".$empresa[0]['empresa_nombre']; ?></b></font><br>
                                 
                             <?php } ?>
                             
@@ -241,6 +233,14 @@ border-bottom : 1px solid #aaa;
                                     </small>
                             <?php }} ?>
                                     
+                            <?php 
+                                if (isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
+                                    <font size="1" face="Arial"><b>
+
+                                <?php  echo "<br> DE: ".$empresa[0]['empresa_propietario'] ; ?>
+
+                            </b></font><br>
+                            <?php } ?>
                             <font size="1" face="Arial narrow">
                             <small style="display:inline-block;margin-top: 0px;">
                                 <b>
@@ -300,6 +300,18 @@ border-bottom : 1px solid #aaa;
             <tr style="padding: 0;">
                 <td colspan="6" style="padding: 0;">
                     <center style="margin-bottom:15px">
+                        
+                        <?php
+                                        if ($factura[0]['factura_codigodescripcion']!="VALIDADA"){ 
+                                            if ($factura[0]['factura_mensajeslist']!=""){
+                                                        
+                                                    echo "<b style='font-size: 30px;'>FACTURA NO VALIDA  NO ENVIADA</b><br>";
+                                                    
+                                                }
+                                                    
+                                        }
+                        
+                        ?>
 <!--                        NOMBRE DE LA FACTURA-->
                         <font size="4" face="arial"><b>
                             <?php

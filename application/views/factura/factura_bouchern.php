@@ -5,6 +5,8 @@
     $(document).ready(function()
     {
         window.onload = window.print();
+        
+        
         /*let base_url = document.getElementById('base_url').value;
         let venta_id = document.getElementById('venta_id').value;
         let detalle_factura = JSON.parse(document.getElementById('detalle_factura').value);
@@ -150,7 +152,7 @@
                     <td style="padding: 0;" colspan="4">
                         <table style="width:<?php echo $ancho?>" >
                             <tr>
-                                <td class="text-center" style="padding-bottom: 5px">
+                                <td class="text-center" style="padding-bottom: 5px; line-height: 11px;">
                                     <div class="col-md-12 no-print" style="padding:0;" >
                                         <?php 
                                         if ($factura[0]['factura_codigodescripcion']=="VALIDADA"){ ?>
@@ -158,7 +160,7 @@
                                         <?php
                                         }else{ ?>
                                             <button class="btn btn-danger btn-xs btn-block" style="width: <?= $ancho ?> padding: 0;"> <b style="font-size: 20pt;"> NO ENVIADA</b> <br> Ocurrio un error en el envio, debe rehacer la operación
-                                                <br> <?= $factura[0]['factura_mensajeslist'] ?>
+                                                <br> <?= $factura[0]['factura_mensajeslist']; ?>
                                             </button>
                                            
 
@@ -173,6 +175,20 @@
                                     
                                     
                                     <?php
+                                    
+                                        if ($factura[0]['factura_codigodescripcion']!="VALIDADA"){ 
+                                                if ($factura[0]['factura_mensajeslist']!=""){
+                                                        
+                                                    echo "<b style='font-size: 25px;'>FACTURA NO VALIDA <br><br> NO ENVIADA</b><br><br><br>";
+                                                    
+                                                }
+                                                    
+                                        }
+                                           
+                                                
+                                    
+                                    
+                                    
                                     $titulo1 = "FACTURA";
                                     $subtitulo_factura = "CON DERECHO A CR&Eacute;DITO FISCAL";
                                     $opc = $factura[0]['docsec_codigoclasificador'];
@@ -305,13 +321,13 @@
                         </table>           
                     </td>
                 </tr>
+                        <?php $tamanio_fuente = "10pt"; ?>
                 <tr>
-                    <td colspan="4" align="center" style="padding: 0;"><b>DETALLE</b></td>
+                    <td colspan="4" align="center" style="padding: 0; font-size: <?php echo $tamanio_fuente; ?>"><b>DETALLE</b></td>
                 </tr>
                 <tr>
                     <td colspan="4" style="padding: 0">
-                        <?php $tamanio_fuente = "8pt"; ?>
-                        <table style="width:<?php echo $ancho?>">
+                        <table style="width:<?php echo $ancho?>; line-height: 12px;">
                             <?php
                             $cont = 0;
                             $cantidad = 0;
@@ -321,26 +337,29 @@
                             $mostrarice = 0;
                             $ice = 0.00;
                             if($factura[0]['estado_id']<>3){
-                                foreach($detalle_factura as $d){;
+                                foreach($detalle_factura as $d){
                                     $cont = $cont+1;
                                     $cantidad += $d['detallefact_cantidad'];
                                     $total_descuento += $d['detallefact_descuento']; 
                                     $total_final += $d['detallefact_total']; 
                             ?>
                             <tr>
-                                <td class="text-bold" colspan="3" style="font-size: <?= $tamanio_fuente; ?>; padding: 0;">
-                                    <?php echo $d['detallefact_codigo']." - ".$d['detallefact_descripcion']; ?>
-
+                                
+                                <td class="text" colspan="3" style="font-size: <?= $tamanio_fuente; ?>; padding: 0;  ">
+                                    <b>
+                                    <?php echo "<br>".$d['detallefact_codigo']." - ".$d['detallefact_descripcion']; ?>
+                                    </b>
                                     <?php if($d['detallefact_preferencia']!='' && $d['detallefact_preferencia']!= null && $d['detallefact_preferencia']!='-' ) {
                                         echo  $d['detallefact_preferencia']; }
                                     ?>
+                                    
                                     <?php
                                     $caracteristicas = trim($d['detallefact_caracteristicas']);
                                     if($caracteristicas!='' && $caracteristicas!=null && $caracteristicas!='-' && $caracteristicas!='null') {
                                         echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
                                         //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
                                     ?>
-                                    <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo "<br><span style='font-size: 10px'>Unidad de Medida: ".$d['detallefact_unidadfactor']."</span>";?>
+                                    <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo "<br>UNIDAD DE MEDIDA: ".$d['detallefact_unidadfactor']." ";?>                                    
                                 </td>
                                 <!--<td colspan="2"></td>-->
                             </tr>
@@ -762,3 +781,14 @@
     </div>
 </div>
 <!------------------------ F I N  modal para confirmar  de factura no enviada------------------->
+
+
+<script>
+  // Función para cerrar la ventana
+  function cerrarVentana() {
+    window.close();
+  }
+
+  // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)
+  setTimeout(cerrarVentana, 2000);
+</script>

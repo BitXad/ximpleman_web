@@ -3315,6 +3315,13 @@ function registrarventa(cliente_id)
     let datos_embase = document.getElementById('datos_embase').value;
     let datos_codigopais = document.getElementById('datos_codigopais').value;
     let datos_autorizacionsc = document.getElementById('datos_autorizacionsc').value;
+
+    let datos_consumoperiodo = document.getElementById('datos_consumoperiodo').value;
+    let datos_beneficiario1886 = document.getElementById('datos_beneficiario1886').value;
+    let datos_medidor = document.getElementById('datos_medidor').value;
+    let datos_mes = document.getElementById('datos_mes').value;
+    let datos_anio = document.getElementById('datos_anio').value;
+    //let datos_ajustesnoiva = document.getElementById('datos_ajustesnoiva').value;
     
     
     if (registroeventos_codigo>0){
@@ -3401,7 +3408,9 @@ function registrarventa(cliente_id)
                 registroeventos_codigo: registroeventos_codigo, dosificacion_modalidad:dosificacion_modalidad,venta_glosa:venta_glosa,
                 parametro_tipoemision:parametro_tipoemision, mandar_enuno:mandar_enuno, select_almacen:select_almacen,cliente_id:cliente_id,
                 datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc,
-                factura_idcreditodebito: factura_idcreditodebito
+                factura_idcreditodebito: factura_idcreditodebito, 
+                datos_consumoperiodo:datos_consumoperiodo, datos_beneficiario1886:datos_beneficiario1886, datos_mes:datos_mes, datos_anio: datos_anio,
+                datos_medidor:datos_medidor
             },
             success:function(respuesta){
                 
@@ -3459,7 +3468,9 @@ function registrarventa(cliente_id)
                 dosificacion_modalidad:dosificacion_modalidad, parametro_tipoemision:parametro_tipoemision,
                 mandar_enuno:mandar_enuno, select_almacen:select_almacen, venta_glosa:venta_glosa,cliente_id:cliente_id,
                 datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc,
-                factura_idcreditodebito: factura_idcreditodebito
+                factura_idcreditodebito: factura_idcreditodebito, 
+                datos_consumoperiodo:datos_consumoperiodo,  datos_mes:datos_mes, datos_anio: datos_anio,datos_beneficiario1886:datos_beneficiario1886,
+                datos_medidor:datos_medidor
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -7386,6 +7397,8 @@ function buscar_placa(e){
                         $("#nit").val(registro[0]["cliente_nit"]);
                         validar(13,1);
                         
+                        
+                        
                     }else{
 
                         $("#datos_embase").val("");
@@ -7442,6 +7455,7 @@ function buscar_placa(e){
                         
                         
                     }
+                    
                     
 //                    alert(registro.length);
 //                    if(registro == "ok"){
@@ -7889,7 +7903,10 @@ function borrar_datos_cliente(){
     }
     
     
-     $("#span_buscar_cliente").click();   
-      $("#boton_presionado").val(0);
+    $("#span_buscar_cliente").click();   
+    $("#boton_presionado").val(0);
+    
+
+    
 
 }

@@ -168,11 +168,12 @@
         $decimales = $parametros[0]["parametro_decimales"];
         $dos_decimales = 2;
         
-        if($documento_sector == 12 ){ //12 Comercializacion de hidrocarburos
+        if($documento_sector == 12 || $documento_sector == 13  ){ //12 Comercializacion de hidrocarburos 13 Servicios basicos
             $CI2 = & get_instance();
             $CI2->load->model('Factura_datos_model');
             $factura_datos = $CI2->Factura_datos_model->get_factura_datos($factura['datos_id']);
         }
+        
         
         if($documento_sector == 24 ){ //24 Documento de debito credito
             $CI2 = & get_instance();
@@ -432,9 +433,9 @@ $salto_linea='
         
         $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_total'],$dos_decimales,".","") .'</montoTotal>';
         
-        // Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo de diésel y gasolina, 
-        // el crédito fiscal del IVA será sólo del 70% del valor de la compra, mientras que el 30% restante pasará a apoyar 
-        // al Tesoro General de la Nación
+        // Ley Financial 317 para la gestiÃ³n 2013 establece que por la presentaciÃ³n de facturas por consumo de diÃ©sel y gasolina, 
+        // el crÃ©dito fiscal del IVA serÃ¡ sÃ³lo del 70% del valor de la compra, mientras que el 30% restante pasarÃ¡ a apoyar 
+        // al Tesoro General de la NaciÃ³n
         
         if ($documento_sector == 12){//Ley 317 de hidrocarburos
             $total_creditofiscal = number_format($total_creditofiscal * 0.70,$dos_decimales,".","") ;
@@ -478,7 +479,7 @@ $salto_linea='
             $cabecera_facturaxml .= $salto_linea.'          <ajusteNoSujetoIva>0</ajusteNoSujetoIva>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteNoSujetoIva>{"Ajuste por Reclamo":0}</detalleAjusteNoSujetoIva>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <ajusteSujetoIva>0</ajusteSujetoIva>'; //cambiar por cliente_nombre
-            $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteSujetoIva>{"Cobropor Reconexión":0}</detalleAjusteSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteSujetoIva>{"Cobropor ReconexiÃ³n":0}</detalleAjusteSujetoIva>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <otrosPagosNoSujetoIva>0</otrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <detalleOtrosPagosNoSujetoIva>{"Pago Cuota Cooperativa":0}</detalleOtrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <otrasTasas>0</otrasTasas>'; //cambiar por cliente_nombre
@@ -744,10 +745,10 @@ $salto_linea='
 
     }
 
-//Aca lo meti en una funcion que está dentro de una clase
+//Aca lo meti en una funcion que estÃ¡ dentro de una clase
 //xmlFile es la ruta exacta donde esta el XML que vas a firmar
 //public y privatePath son del certificado
-//xmlpath es solo la ubicacion donde está, sin el nombre del archivo en xmlFile esta la ubicacion + el //nombre del archivo
+//xmlpath es solo la ubicacion donde estÃ¡, sin el nombre del archivo en xmlFile esta la ubicacion + el //nombre del archivo
 //xmlName es solo el nombre del archivo xml sin la ruta
 //    function signBill($xmlFile,$publicPath,$privatePath,$xmlpath,$xmlName){
     function firmarxml($dosificacion_documentosector,$factura_id){
