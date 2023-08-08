@@ -901,6 +901,43 @@ div {
                         </div>
                     </div>
                     
+                    <div class="col-md-1">
+                        <label for="parametro_redireccionusuario" class="control-label" title="Tabla sencilla en la parte derecha de ventas">TABLA<br>SENCILLA</label>
+                        <div class="form-group">
+                            <select name="parametro_redireccionusuario" class="form-control" id="parametro_redireccionusuario">
+                                <option value="1" <?php if($parametro['parametro_redireccionusuario']=="1"){ ?> selected <?php } ?>>Si</option>
+                                <option value="0" <?php if($parametro['parametro_redireccionusuario']=="0"){ ?> selected <?php } ?>>No</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label for="parametro_redireccionusuario" class="control-label">REDIRECCIONAMIENTO<br>USUARIO</label>
+                        <div class="form-group">
+                            <input type="text" step="any" name="parametro_redireccionusuario" value="<?php echo ($this->input->post('parametro_redireccionusuario') ? $this->input->post('parametro_redireccionusuario') : $parametro['parametro_redireccionusuario']); ?>" class="form-control" id="parametro_redireccionusuario" />
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-1">
+                        <label for="parametro_comprobante" class="control-label" title="Tabla sencilla en la parte derecha de ventas">TIPO<br>COMPROBANTE</label>
+                        <div class="form-group">
+                            <select name="parametro_comprobante" class="form-control" id="parametro_comprobante">
+                                <option value="1" <?php if($parametro['parametro_comprobante']=="1"){ ?> selected <?php } ?>>RECIBO</option>
+                                <option value="2" <?php if($parametro['parametro_comprobante']=="2"){ ?> selected <?php } ?>>FACTURA</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-1">
+                        <label for="parametro_verificarconexion" class="control-label" title="Tabla sencilla en la parte derecha de ventas">VERIFICAR<br>CONEXION</label>
+                        <div class="form-group">
+                            <select name="parametro_verificarconexion" class="form-control" id="parametro_verificarconexion">
+                                <option value="1" <?php if($parametro['parametro_verificarconexion']=="1"){ ?> selected <?php } ?>>VERIFICAR CONEXION</option>
+                                <option value="2" <?php if($parametro['parametro_verificarconexion']=="2"){ ?> selected <?php } ?>>NO VERIFICAR CONEXION</option>
+                            </select>
+                        </div>
+                    </div>
+                    
                 </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(214, 114, 26, 0.3);"><u><b>CLIENTES</b></u><br>
