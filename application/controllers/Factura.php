@@ -13,6 +13,7 @@ class Factura extends CI_Controller{
     private $session_data = "";
     private $configuracion;
     private $sistema;
+    private $parametros;
 
     function __construct()
     {
@@ -271,6 +272,110 @@ class Factura extends CI_Controller{
         $total         = $factura[0]['factura_total'];
         $codcontrol    = $factura[0]['factura_codigocontrol'];
         $nit           = $factura[0]['factura_nit'];
+        
+        if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
+            // Antiguo
+            $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
+        }else{
+            $ruta      = $factura[0]['factura_ruta'];
+            $cuf       = $factura[0]['factura_cuf'];
+            $tamanio   = $factura[0]['factura_tamanio'];
+            // nuevo
+            //$cadenaQR = $ruta.'nit='.$nit.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+            $cadenaQR = $ruta.'nit='.$nit_emisor.'&cuf='.$cuf.'&numero='.$num_fact.'&t='.$tamanio;
+        }
+        
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+        //Generador de Codigo QR
+                //cargamos la librería	
+         $this->load->library('ciqrcode');
+                  
+         //hacemos configuraciones
+         $params['data'] = $cadenaQR;//$this->random(30);
+         $params['level'] = 'H';
+         $params['size'] = 5;
+         //decimos el directorio a guardar el codigo qr, en este 
+         //caso una carpeta en la raíz llamada qr_code
+         $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+         //generamos el código qr
+         $this->ciqrcode->generate($params); 
+         //echo '<img src="'.base_url().'resources/images/qrcode.png" />';
+        //fin generador de codigo QR
+         
+        
+        $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
+        $data['cadenaqr'] = $cadenaQR;
+        
+        if($data['parametro']['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
+            $data['_view'] = 'factura/factura_boucher';
+        }else{
+            $dosificacion = $this->Dosificacion_model->get_dosificacion(1); 
+            $data['motivos'] = $this->Factura_model->get_all_motivos();
+            if($dosificacion['docsec_codigoclasificador'] == 1){ //FACTURA COMPRA VENTA
+                $data['_view'] = 'factura/factura_carta_new';
+            }
+            
+            if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
+                $data['_view'] = 'factura/factura_bouchern';
+            }
+            
+            if($dosificacion['docsec_codigoclasificador'] == 23){ // FACTURA PREVALORADA
+                $data['_view'] = 'factura/factura_boucher_prev';
+            }else{ // por  el momento para otro tipo de facturas 
+                $data['_view'] = 'factura/factura_bouchern';
+            }
+            
+        }
+        //$data['_view'] = 'factura/factura_bouchern';
+        $this->load->view('layouts/main',$data);
+        
+        
+        }
+        else
+        {
+            echo "<script type='text/javascript>alert('La venta no contiene una factura asociada...!'); </script>'";
+            redirect('venta');
+        }
+        		
+        //**************** fin contenido ***************
+        }
+    }
+    
+    function factura_recibo_boucher($venta_id,$tipo)
+    {
+        $data['sistema'] = $this->sistema;
+        
+        if($this->acceso(17)){
+        //**************** inicio contenido ***************           
+    
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+       // $data['venta'] = $this->Detalle_venta_model->get_venta_id($venta_id);
+        $data['detalle_factura'] = $this->Detalle_venta_model->get_detallerecibo_factura($venta_id);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Factura";
+        
+        $factura = $this->Factura_model->get_facturarecibo_venta($venta_id);
+        
+        $data['factura'] = $factura;
+        $data['parametro'] = $this->parametros;
+        $parametros = $this->parametros;
+        $data['tipo'] = $tipo;
+        
+        if(sizeof($factura)>=1){
+            $data['datos_factura'] = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
+            $data['decimales'] = $parametros["parametro_decimales"];
+            $data['dos_decimales'] = 2;
+        
+            $nit_emisor    = $factura[0]['factura_nitemisor'];
+            $num_fact      = $factura[0]['factura_numero'];
+            $autorizacion  = $factura[0]['factura_autorizacion'];
+            $fecha_factura = $factura[0]['factura_fechaventa'];
+            $total         = $factura[0]['factura_total'];
+            $codcontrol    = $factura[0]['factura_codigocontrol'];
+            $nit           = $factura[0]['factura_nit'];
         
         if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             // Antiguo
@@ -1689,21 +1794,28 @@ class Factura extends CI_Controller{
         if($this->acceso(21)){
             
         //**************** inicio contenido ***************            
-            $parametros = $this->Parametro_model->get_parametros();
+            //$parametros = $this->Parametro_model->get_parametros();
             
-            if (sizeof($parametros)>0){
+            if (sizeof($this->parametros)>0){
                 
-                if ($parametros[0]['parametro_notaentrega']==1){
+                if ($this->parametros['parametro_notaentrega']==1){
                     
-                    if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
-                        $this->recibo_boucher($venta_id);
+                    if ($this->parametros['parametro_tipoimpresora']=="FACTURADORA")
+                    {    
+                        if ($this->parametros['parametro_comprobante']==1) $this->recibo_boucher($venta_id);
+                        if ($this->parametros['parametro_comprobante']==2) $this->factura_recibo_boucher($venta_id,1);
+                        
+                    }
                     else
                         $this->recibo_carta($venta_id);
                     
-                }elseif($parametros[0]['parametro_notaentrega']==2){
+                }elseif($this->parametros['parametro_notaentrega']==2){
                     
-                    if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                    if ($this->parametros['parametro_tipoimpresora']=="FACTURADORA")
+                        
                         $this->notae_boucher($venta_id);
+                    
+                    
                     else
                         $this->notae_carta($venta_id);
                 }else{

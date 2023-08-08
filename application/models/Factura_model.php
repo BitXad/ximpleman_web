@@ -49,6 +49,112 @@ class Factura_model extends CI_Model
         
     }
     
+    function get_facturarecibo_venta($venta_id)
+    {
+        $sql = "select f.*,t.tipotrans_nombre, u.usuario_nombre, m.moneda_codigoclasificador, m.moneda_tc, moneda_descripcion, c.cliente_codigo,
+                c.cliente_complementoci, c.cliente_email
+                from factura f
+                left join venta v on v.venta_id = f.venta_id
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join moneda m on m.moneda_id = v.moneda_id
+                left join tipo_transaccion t on t.tipotrans_id = f.tipotrans_id
+                left join usuario u on u.usuario_id = f.usuario_id
+                where f.venta_id = ".$venta_id;
+        
+        $sql = "select  
+                v.venta_id as factura_id
+                ,v.estado_id
+                ,v.venta_id
+                ,v.venta_fecha as factura_fechaventa
+                ,v.venta_fecha as factura_fecha
+                ,v.venta_hora as factura_hora
+                ,v.venta_subtotal as factura_subtotal
+                ,0 as factura_ice
+                ,0 as factura_exento
+                ,v.venta_descuentoparcial as factura_descuentoparcial
+                ,v.venta_descuento as factura_descuento
+                ,v.venta_total as factura_total
+                ,v.venta_id as factura_numero
+                ,round(rand()*100000000000000) as factura_autorizacion
+                ,round(rand()*100000000000000) as factura_llave
+                ,v.venta_fecha as factura_fechalimite
+                ,'' as factura_codigocontrol
+                ,'ESTA FACTURA CONTRIBUYE AL DESARROLLO DEL PAÍS, EL USO ILÍCITO SERÁ SANCIONADO PENALMENTE DE ACUERDO A LEY.' as factura_leyenda1
+                ,'Ley N° 453: Los servicios deben suministrarse en condiciones de inocuidad, calidad y seguridad.' as factura_leyenda2
+                ,c.cliente_nit as factura_nit
+                ,c.cliente_razon as factura_razonsocial
+                ,d.dosificacion_nitemisor as factura_nitemisor
+                ,d.dosificacion_sucursal as factura_sucursal
+                ,0 as factura_sfc
+                ,d.dosificacion_actividad factura_actividad
+                ,0 as cuota_id
+                ,0 as credito_id
+                ,0 as ingreso_id
+                ,0 as servicio_id
+                ,v.usuario_id
+                ,v.tipotrans_id
+                ,v.venta_efectivo as factura_efectivo
+                ,v.venta_cambio as factura_cambio
+                ,d.dosificacion_tokendelegado as factura_tokendelegado
+                ,1 as factura_ambiente
+                ,d.dosificacion_cuis as factura_cuis
+                ,d.dosificacion_cufd as factura_cufd
+                ,1 as factura_modalidad
+                ,d.dosificacion_codsistema as factura_codsistema
+                ,0 as factura_puntoventa
+                ,d.`dosificacion_sectoreconomico` as factura_sectoreconomico
+                ,'https://pilotosiat.impuestos.gob.bo/consulta/QR?' as factura_ruta
+                ,1 as factura_tamanio
+                ,concat('1608A399D64B8E2AB7947CDE4D9846D549DEC75A1209E904C1BAABFD74',round(rand()*500)) as factura_cuf
+                ,concat(v.venta_fecha,' ',v.venta_hora) as factura_fechahora
+                ,c.`cdi_codigoclasificador` as cdi_codigoclasificador
+                ,d.`dosificacion_documentosector` as docsec_codigoclasificador
+                ,908 as factura_codigoestado
+                ,'e2be68f1-231c-11ee-8d90-1d875d469c9c' as factura_codigorecepcion
+                ,1 as factura_transaccion
+                ,'' as factura_mensajeslist
+                ,c.cliente_codigo as factura_codigocliente
+                ,'VALIDAD'  as  factura_codigodescripcion
+                ,1 as factura_enviada
+                ,'ESTE DOCUMENTO ES LA REPRESENTACIÓN GRÁFICA DE UN DOCUMENTO FISCAL DIGITAL EMITIDO EN UNA MODALIDAD DE FACTURACIÓN EN LÍNEA.' as factura_leyenda3
+                ,'' as factura_leyenda4
+                ,1 as factura_tipoemision
+                ,0 as factura_excepcion
+                ,'' as factura_cafc
+                ,0 as factura_giftcard
+                ,0 as factura_detalletransaccion
+                ,1 as forma_id
+                ,'' as factura_complementoci
+                ,0 as registroeventos_id
+                ,'' as factura_glosa
+                ,0 as datos_id
+                ,c.cliente_id as cliente_id
+                ,0 as factura_idcreditodebito
+                ,t.tipotrans_nombre
+                , u.usuario_nombre
+                , m.moneda_codigoclasificador
+                , m.moneda_tc
+                , m.moneda_descripcion
+                , c.cliente_codigo
+                , c.cliente_complementoci
+                , c.cliente_email
+
+
+                from venta v, cliente c, dosificacion d, tipo_transaccion t, moneda m, usuario u
+                where
+                v.cliente_id = c.cliente_id and
+                v.tipotrans_id = t.tipotrans_id and
+                v.moneda_id = m.moneda_id and 
+                v.usuario_id = u.usuario_id and
+
+                v.venta_id = {$venta_id}";
+        
+        
+        $factura = $this->db->query($sql)->result_array();
+        return $factura;
+        
+    }
+    
     /*
      * Get factura by factura_id
      */

@@ -789,13 +789,17 @@ div {
                         <label for="parametro_imprimirfactura" class="control-label">IMPRIMIR<br> FACTURA/RECIBO</label>
                         <div class="form-group">
                             <select name="parametro_imprimirfactura" class="form-control" id="parametro_imprimirfactura">
-                                <option value="0" <?php if($parametro['parametro_imprimirfactura']=="0"){ ?> selected <?php } ?>>NINGUNO</option>
-                                <option value="1" <?php if($parametro['parametro_imprimirfactura']=="1"){ ?> selected <?php } ?>>IMPRIMIR SOLO FACTURAS</option>
-                                <option value="2" <?php if($parametro['parametro_imprimirfactura']=="2"){ ?> selected <?php } ?>>IMPRIMIR SOLO RECIBOS</option>
-                                <option value="3" <?php if($parametro['parametro_imprimirfactura']=="3"){ ?> selected <?php } ?>>IMPRIMIR FACTURA Y RECIBO</option>
-                                <option value="4" <?php if($parametro['parametro_imprimirfactura']=="4"){ ?> selected <?php } ?>>IMPRIMIR FACTURA O RECIBO</option>
-                                <option value="5" <?php if($parametro['parametro_imprimirfactura']=="4"){ ?> selected <?php } ?>>IMPRIMIR SOLO COMANDA</option>
-                                <option value="6" <?php if($parametro['parametro_imprimirfactura']=="4"){ ?> selected <?php } ?>>IMPRIMIR FACTURA Y COMANDA</option>
+                                
+                                <option value="0" <?php if($parametro['parametro_imprimirfactura']=="0"){ echo "selected"; } ?>>NINGUNO</option>
+                                <option value="1" <?php if($parametro['parametro_imprimirfactura']=="1"){ echo "selected"; } ?>>IMPRIMIR SOLO FACTURAS</option>
+                                <option value="2" <?php if($parametro['parametro_imprimirfactura']=="2"){ echo "selected"; } ?>>IMPRIMIR SOLO RECIBOS</option>
+                                <option value="3" <?php if($parametro['parametro_imprimirfactura']=="3"){ echo "selected"; } ?>>IMPRIMIR FACTURA Y RECIBO</option>
+                                <option value="4" <?php if($parametro['parametro_imprimirfactura']=="4"){ echo "selected"; } ?>>IMPRIMIR FACTURA O RECIBO</option>
+                                <option value="5" <?php if($parametro['parametro_imprimirfactura']=="5"){ echo "selected"; } ?>>IMPRIMIR SOLO COMANDA</option>
+                                <option value="6" <?php if($parametro['parametro_imprimirfactura']=="6"){ echo "selected"; } ?>>IMPRIMIR FACTURA Y COMANDA</option>
+                                <option value="7" <?php if($parametro['parametro_imprimirfactura']=="7"){ echo "selected"; } ?>>IMPRIMIR FACTURA,RECIBO Y COMANDA</option>
+                                <option value="8" <?php if($parametro['parametro_imprimirfactura']=="8"){ echo "selected"; } ?>>IMPRIMIR FACTURA O RECIBO Y COMANDA</option>
+                                
                             </select>
                         </div>
                     </div>

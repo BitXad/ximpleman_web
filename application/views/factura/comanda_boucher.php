@@ -52,7 +52,7 @@ margin : 0 0 0px 0;
 padding : 0 0 0 0;
 
 font-family: Arial;
-font-size: 7pt;  /* tamaño texto tabla */
+font-size: 8pt;  /* tamaño texto tabla */
 
 td {
 
@@ -112,9 +112,9 @@ border-bottom : 1px solid #aaa;
 
 <table class="table" style="width: <?php echo $ancho?>;">
     <tr>
-        <td colspan="4" style="padding-bottom: 1px">
+        <td colspan="4" style="padding-bottom: 0px">
                 
-            <center>
+            <center style="padding:0px; line-height:14px;">
                                
                     <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                     <!--<font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>-->
@@ -126,16 +126,43 @@ border-bottom : 1px solid #aaa;
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font><br>-->
 
 
-                <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
+                <?php
+                    $opcion = 2;
+                if ($opcion==1){ ?>
+                            <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
+                <?php } ?>
+                            
+                <?php if ($opcion==2){ ?>
+                            <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font>
+                <?php } ?>
+                            
+                            
+                            
+                <?php 
+                
+                //var_dump(isset($venta[0]['factura_numero']));
+                
+                if ($opcion==3){
+                                       
+                            if (isset($venta[0]['factura_numero'])){ ?>
+                            
+                                <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['factura_numero']; ?></b></font>
+                                
+                            <?php }else{ ?>
+                                
+                                <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font>
+                                
+                            <?php } ?>
+                <?php } ?>
                 
                 <?php if($venta[0]['tiposerv_id']>0){ ?>
                 <br>
                 <font size="1" face="arial"><b><?php echo $venta[0]["tiposerv_descripcion"]; ?></b></font>
-                <br>
+        
                 <?php } ?>
-                _______________________________________________                
-                   
+      
                 <br> 
+                
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
@@ -156,11 +183,11 @@ border-bottom : 1px solid #aaa;
         </td>
     </tr>
 
-    <tr style="">
-        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.5cm; font-size: 7pt;"><b>CANT</b></td>
-        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 4cm; font-size: 6pt;"><b>DESCRIPCIÓN</b></td>
-        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.7cm;  font-size: 6pt;"><b>P.UNIT</b></td>
-        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.8cm; font-size: 6pt;"><b>TOTAL</b></td>               
+    <tr>
+        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.5cm;"><b>CANT</b></td>
+        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 4cm;"><b>DESCRIPCIÓN</b></td>
+        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.7cm;"><b>P.UNIT</b></td>
+        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.8cm;"><b>TOTAL</b></td>               
     </tr>
            <?php $cont = 0;
                  $cantidad = 0;
@@ -210,10 +237,14 @@ border-bottom : 1px solid #aaa;
                         </small>
                     <!--<textarea onload="autosize()"></textarea>-->
                 </td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0; padding-right:5px;"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
            </tr>
            <?php } ?>
+    <tr style="" >
+        <td colspan="2" align="left" style="padding: 0; padding: 0; border-top: dashed 1px; #000; font-weight: bold; font-size: 12px;">TOTAL Bs</td>
+        <td colspan="2" align="right" style="padding: 0; padding: 0; border-top: dashed 1px; #000;"><center style="font-weight: bold; font-size: 12px;"><?php echo number_format($total_final,2,'.',','); ?></center></td>
+    </tr>
     <tr>
         <td style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.8cm; font-size: 8pt;" colspan="4"><center><?php echo "<b>OBS.: </b>".$venta[0]['venta_glosa']; ?></center></td>
     </tr>
@@ -240,7 +271,7 @@ border-bottom : 1px solid #aaa;
 <script>
   // Función para cerrar la ventana
   function cerrarVentana() {
-    window.close();
+    //window.close();
   }
 
   // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)

@@ -43,8 +43,8 @@
         padding : 0 0 0 0;
         border-spacing : 0 0;
         border-collapse : collapse;
-        font-family: Arial narrow;
-        font-size: 8pt;
+        font-family: Arial;
+        font-size: 7pt;
         td{
             border:hidden;
         }
@@ -58,9 +58,9 @@
         font-size : 8px;
         margin : 0 0 0 0;
         padding : 0 0px 0 0px;
-        /*border-left : 1px solid #aaa;
-        border-right : 1px solid #aaa;
-        border-bottom : 1px solid #aaa;*/
+        /*border-left : 1px dashed #aaa;
+        border-right : 1px dashed #aaa;
+        border-bottom : 1px dashed #aaa;*/
     }
 </style>
 <!----------------------------- fin script buscador --------------------------------------->
@@ -185,10 +185,7 @@
                                                     
                                         }
                                            
-                                                
-                                    
-                                    
-                                    
+
                                     $titulo1 = "FACTURA";
                                     $subtitulo_factura = "CON DERECHO A CR&Eacute;DITO FISCAL";
                                     $opc = $factura[0]['docsec_codigoclasificador'];
@@ -228,7 +225,7 @@
                                     ?>
                                     
                                     <?php if(isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
-                                        <?php  echo "<br><b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
+                                        <?php  echo "<br>DE: ".$empresa[0]['empresa_propietario'] ; ?>
                                     <?php } ?>
                                         
                                     <?php 
@@ -256,7 +253,7 @@
                         </table>
                         <table style="width:<?php echo $ancho?>" >
 
-                            <tr style="border-top-style: dashed; border-top-width: 1px;">
+                            <tr style="">
                                 <td class="text-center"><b>NIT:</b> <?php echo $factura[0]['factura_nitemisor']; ?></td>
                             </tr>
   
@@ -267,7 +264,7 @@
                             <tr>
                                 <td class="text-center"><b>CÓD. AUTORIZACIÓN</b></td>
                             </tr>
-                            <tr>
+                            <tr style="">
                                 <td class="text-center"><div style="word-wrap: break-word; width:<?php echo $ancho?>" ><?php echo $factura[0]['factura_cuf'] ?></div></td>
                             </tr>
                         </table>
@@ -276,8 +273,8 @@
                 <tr>
                     <td colspan="4" style="padding: 0;">
                         <table style="width:<?php echo $ancho?>" >
-                            <tr style="border-top-style: dashed; border-top-width: 1px;">
-                                <td class="text-right text-bold" style="padding: 0; white-space: nowrap">NOMBRE/RAZ&Oacute;N SOCIAL:</td>
+                            <tr style="border-top: dashed 1px; #000;">
+                                <td class="text-right text-bold" style="padding: 0; white-space: nowrap">NOMBRE/RAZÓN SOCIAL:</td>
                                 <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_razonsocial'].""; ?></td>
                             </tr>
                             <tr>
@@ -289,13 +286,13 @@
                                 <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_codigocliente']; ?> <br></td>
                             </tr>
                             <?php
-                            $linea_recortada = "style='border-bottom-style: dashed; border-bottom-width: 1px;'";
+                            $linea_factura = "style='border-bottom-width: dashed 1px; #000;'";
                             if($opc == 12){
-                                $linea_recortada = "";
+                                $linea_factura = "";
                             }
                             ?>
-                            <tr <?php echo $linea_recortada; ?>>
-                                <td class="text-right text-bold" style="padding: 0;">FECHA DE EMISI&Oacute;N:</td>
+                            <tr <?php echo $linea_factura; ?>>
+                                <td class="text-right text-bold" style="padding: 0;">FECHA DE EMISIÓN:</td>
                                 <td style="padding: 0; padding-left: 3px">
                                     <?php $fecha = new DateTime($factura[0]['factura_fecha']); 
                                         $fecha_d_m_a = $fecha->format('d/m/Y');
@@ -311,7 +308,7 @@
                                 <td class="text-right text-bold" style="padding: 0;">PLACA/B-SISA/VIN:</td><!-- PONER CODIGO DE CLIENTE -->
                                 <td style="padding: 0; padding-left: 3px"><?php echo $datos_factura['datos_placa']; ?> <br></td>
                             </tr>
-                            <tr style="border-bottom-style: dashed; border-bottom-width: 1px;">
+                            <tr style="">
                                 <td class="text-right text-bold" style="padding: 0;">TIPO ENVASE:</td><!-- PONER CODIGO DE CLIENTE -->
                                 <td style="padding: 0; padding-left: 3px"><?php echo $datos_factura['datos_embase']; ?> <br></td>
                             </tr>
@@ -321,12 +318,12 @@
                         </table>           
                     </td>
                 </tr>
-                        <?php $tamanio_fuente = "10pt"; ?>
+                        <?php $tamanio_fuente = "8pt"; ?>
                 <tr>
-                    <td colspan="4" align="center" style="padding: 0; font-size: <?php echo $tamanio_fuente; ?>"><b>DETALLE</b></td>
+                    <td colspan="4" align="center" style="padding: 0px; border-top: dashed 1px; #000;   border-bottom: dashed 1px; #000; "; font-size: <?php echo $tamanio_fuente; ?>"><b style="font-size:12px;">DETALLE</b></td>
                 </tr>
                 <tr>
-                    <td colspan="4" style="padding: 0">
+                    <td colspan="4" style="padding: 0;">
                         <table style="width:<?php echo $ancho?>; line-height: 12px;">
                             <?php
                             $cont = 0;
@@ -359,7 +356,7 @@
                                         echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
                                         //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
                                     ?>
-                                    <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo "<br>UNIDAD DE MEDIDA: ".$d['detallefact_unidadfactor']." ";?>                                    
+                                    <?php //if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo "<br>UNIDAD DE MEDIDA: ".$d['detallefact_unidadfactor']." ";?>                                    
                                 </td>
                                 <!--<td colspan="2"></td>-->
                             </tr>
@@ -376,11 +373,21 @@
 
                                     
                                     
+                                    $vocales = array('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
                                     
 //                                    echo number_format($d['detallefact_cantidad'],$decimales,'.',',')." X ";
-                                    echo $lacantidad." X ";
+                                   // echo $lacantidad." X "; //." ".substr($d['detallefact_unidadfactor'],0,3)." X ";
+                                    $unidad_producto = $d['detallefact_unidadfactor'];
+                                    $vocal = substr($unidad_producto, 0,1);
+                                    $vocal = in_array($vocal,$vocales)?$vocal:"" ;
+                                            
+                                            
+                                    echo $lacantidad." ".$vocal.preg_replace('/[aeiouAEIOU]/', '', substr($unidad_producto,0,4))." X ";
+                                    
                                     echo number_format($d['detallefact_precio'],$decimales,'.',',')." - ";
+                                    
                                     echo number_format($d['detallefact_descuentoparcial']*$d['detallefact_cantidad'],$decimales,'.',','); //." + "; //."0.00 +  0.00";
+                                    
                                     if ($mostrarice==1){
                                         echo " + ".number_format($d['detallefact_ice'],$decimales,'.',',')." + ";
                                         echo number_format($d['detallefact_iceesp'],$decimales,'.',',');
@@ -416,9 +423,9 @@
                     }
                     
                     ?>
-                    <td colspan="4" style="padding: 0">
+                    <td colspan="4" style="padding: 0; border-top: dashed 1px; #000;">
                         <table style="width:<?php echo $ancho?>; font-size: 8pt !important" >
-                            <tr style="border-top-style: dotted; border-top-width: 1px;">
+                            <tr  >
                                 <td class="text-right">SUBTOTAL Bs</td>
                                 <td></td>
                                 <td class="text-right"><?php echo number_format($total_final_factura,$dos_decimales,'.',','); ?></td>
@@ -487,7 +494,7 @@
                             <?php } ?>
                             
                             
-                            <tr style="border-bottom-style: dashed; border-bottom-width: 1px;">
+                            <tr style="">
                                 <td colspan="3" style="padding-left: 3px; padding-bottom: 5px; font-size: 10px; font-weight: bold">
                                     <br>
                                     <?php echo "SON: ".num_to_letras($factura_total,' Bolivianos'); ?>
@@ -509,11 +516,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-center" style="padding: 0; padding-top: 5px;" colspan="4">
-                        <span style="font-size: 8pt"><p style="padding: 0;"><?php echo $factura[0]['factura_leyenda1'];?> </p></span>
-                        <span style="font-size: 8pt !important;"><p style="padding-bottom: 0px; padding: 0;"><?php echo $factura[0]['factura_leyenda2']; ?> </p></span>
-                        <span style="font-size: 6.5pt !important"><p style="padding-bottom: 0px; padding: 0;"><?php echo $factura[0]['factura_leyenda3']; ?> </p></span>
-                        <span style="font-size: 6.5pt !important"><p style="padding-bottom: 0px; padding: 0;"><?php echo $factura[0]['factura_leyenda4']; ?> </p></span>
+                    <td class="text-center" style="padding: 0; padding-top: 5px; border-top: dashed 1px; #000;" colspan="4">
+                        
+                        <span style="font-size: 7pt"><p style="padding: 0;"><?php echo $factura[0]['factura_leyenda1'];?> </p></span>
+                        <span style="font-size: 7pt !important;"><p style="padding-bottom: 0px; padding: 0;"><?php echo $factura[0]['factura_leyenda2']; ?> </p></span>
+                        <span style="font-size: 7pt !important"><p style="padding-bottom: 0px; padding: 0;"><?php echo $factura[0]['factura_leyenda3']; ?> </p></span>
+                        <span style="font-size: 7pt !important"><p style="padding-bottom: 0px; padding: 0;"><?php echo $factura[0]['factura_leyenda4']; ?> </p></span>
                         <!--<span style="font-size: 6.5pt !important"><?php //echo $factura[0]['factura_leyenda4']; ?> <br></span>-->
                         <!-- <span style="font-size: 6.5pt !important"><?php
                         /*if ($factura[0]['factura_tipoemision']==2){
@@ -533,67 +541,7 @@
                 </tr>
                 <tr><td></td></tr>
                 
-                <!--<tr>
-                    <td style="padding: 0">
-                        <?php /*$tamanio_fuente = "8pt"; ?>
-                        
-                    <?php
-                    if($factura[0]['estado_id']<>3){
-                        if($parametro['parametro_imprimirticket'] == 1){
-                            foreach($detalle_factura as $d){
-                                $cantidad = $d['detallefact_cantidad'];
-                                
-                                for ($i = 0; $i < $cantidad; $i++) {
-                                    ?>
-                                    <table style="width:<?php echo $ancho?>">
-                                        <tr style="border-top-style: dashed; border-top-width: 1px;">
-                                            <td class="text-center" colspan="2" style="font-size: <?= $tamanio_fuente; ?>; padding-right: 0; padding-left: 0; padding-top: 5px;">
-                                                <?php
-                                                echo "TICKET : ".$venta[0]['venta_numeroventa'];
-                                                ?>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-size: <?= $tamanio_fuente; ?>; padding: 0; width: 15%" >
-                                                <?php
-                                                echo "Num.  ";
-                                                ?>
-                                            </td>
-                                            <td class="text-left" style="font-size: <?= $tamanio_fuente; ?>; padding: 0; width: 75%">
-                                                <?php
-                                                echo ": &nbsp;".$factura[0]['factura_id'];
-                                                ?>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-size: <?= $tamanio_fuente; ?>; padding: 0">
-                                                <?php
-                                                echo "Fecha ";
-                                                ?>
-                                            </td>
-                                            <td class="text-left" style="font-size: <?= $tamanio_fuente; ?>; padding: 0">
-                                                <?php $fecha = new DateTime($factura[0]['factura_fechaventa']); 
-                                                    $fecha_d_m_a = $fecha->format('d/m/Y');
-                                                    echo ": &nbsp;".$fecha_d_m_a." ".$factura[0]['factura_hora'];
-                                                ?>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-left" colspan="2" style="font-size: <?= $tamanio_fuente; ?>; padding: 0">
-                                                <?php
-                                                echo $d['detallefact_descripcion'];
-                                                ?>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <?php
-                                }
-                            }
-                        }
-                    }*/
-                    ?>
-                    </td>
-                </tr>-->
+               
             </table>
         </td>
     </tr>
@@ -786,7 +734,7 @@
 <script>
   // Función para cerrar la ventana
   function cerrarVentana() {
-    window.close();
+    //window.close();
   }
 
   // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)

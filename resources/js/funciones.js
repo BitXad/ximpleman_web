@@ -7838,19 +7838,22 @@ function borrar_datos_cliente(){
 //        
 //    }
     
-    if(parametro_imprimirfactura!=0){
+   // if(parametro_imprimirfactura!=0){
 
         if(parametro_imprimirfactura==1){ // Imprimir solo factura
+            
             let boton = document.getElementById("imprimir_factura");
             if (facturado == 1){ boton.click(); }                    
         }
 
         if(parametro_imprimirfactura==2){ // Imprimir solo recibo
+            
             let boton = document.getElementById("imprimir");
             boton.click();                    
         }
 
         if(parametro_imprimirfactura==3){ // Imprimir factura y recibo
+            
             let boton1 = document.getElementById("imprimir_factura");
             let boton2 = document.getElementById("imprimir");
             if (facturado == 1){ boton1.click(); }
@@ -7874,13 +7877,36 @@ function borrar_datos_cliente(){
         }
         
         if(parametro_imprimirfactura==6){ // Imprimir factura y comanda
+            
             let boton1 = document.getElementById("imprimir_factura");
             let boton2 = document.getElementById("imprimir_comanda");
             if (facturado == 1){ boton1.click(); }
             boton2.click();
         }
+        
+        if(parametro_imprimirfactura==7){ // Imprimir factura, recibo y comanda
+            
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton = document.getElementById("imprimir");            
+            let boton2 = document.getElementById("imprimir_comanda");
+            
+            if (facturado == 1){ boton1.click(); } //Imprimir factura
+            boton.click(); //Imprimir recibo
+            boton2.click(); //imprimir comanda
+        }
+        
+        if(parametro_imprimirfactura==8){ // Imprimir factura o recibo y comanda
+            
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton = document.getElementById("imprimir");            
+            let boton2 = document.getElementById("imprimir_comanda");
+            
+            if (facturado == 1){ boton1.click(); } //Imprimir factura
+            else{ boton.click(); }//Imprimir recibo
+            boton2.click(); //imprimir comanda
+        }
 
-    }
+    //}
 
 
     

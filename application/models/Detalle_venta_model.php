@@ -238,9 +238,23 @@ function ventas_dia($estado)
     
     function get_venta_comanda($venta_id)
     {
-        $sql = "select *  from venta v, cliente c, usuario u, tipo_transaccion t, tipo_servicio s where v.cliente_id = c.cliente_id  and "
-                . " v.usuario_id = u.usuario_id and v.tipotrans_id = t.tipotrans_id and v.venta_id = ".$venta_id.
-                " and v.tiposerv_id = s.tiposerv_id";
+        $sql = "SELECT 
+                v.*,c.*,u.usuario_nombre, t.*, s.*,
+                f.factura_numero
+              FROM
+                venta v
+                LEFT OUTER JOIN factura f ON (f.venta_id = v.venta_id),
+                cliente c,
+                usuario u,
+                tipo_transaccion t,
+                tipo_servicio s
+              WHERE
+                v.cliente_id = c.cliente_id AND 
+                v.usuario_id = u.usuario_id AND 
+                v.tipotrans_id = t.tipotrans_id AND 
+                v.venta_id = {$venta_id} AND 
+                v.tiposerv_id = s.tiposerv_id";
+        //echo $sql;
         $venta = $this->db->query($sql)->result_array();        
         return $venta;
     }
@@ -269,6 +283,36 @@ function ventas_dia($estado)
                 left join producto p on p.producto_id = df.producto_id 
                 where df.venta_id = $venta_id ";
         
+        $detalle_venta = $this->db->query($sql)->result_array();        
+        return $detalle_venta;
+    }
+
+    function get_detallerecibo_factura($venta_id)
+    {
+        
+        $sql = "select 
+                d.detalleven_id as detallefact_id
+                ,d.producto_id as producto_id
+                ,d.venta_id as venta_id
+                ,d.venta_id as factura_id
+                ,d.detalleven_cantidad as detallefact_cantidad
+                ,d.detalleven_codigo as detallefact_codigo
+                ,d.detalleven_unidad as  detallefact_unidad
+                ,p.producto_nombre as detallefact_descripcion
+                ,d.detalleven_precio as detallefact_precio
+                ,d.detalleven_subtotal as detallefact_subtotal
+                ,d.detalleven_descuento as detallefact_descuento
+                ,d.detalleven_descuentoparcial as detallefact_descuentoparcial
+                ,d.detalleven_total as detallefact_total
+                ,d.detalleven_preferencia as detallefact_preferencia
+                ,d.detalleven_caracteristicas as  detallefact_caracteristicas
+                ,d.usuario_id
+                ,d.detalleven_unidadfactor as  detallefact_unidadfactor
+
+                from detalle_venta d, producto p
+                where d.producto_id = p.producto_id and
+                d.venta_id = {$venta_id}";
+        //echo $sql;
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
     }
