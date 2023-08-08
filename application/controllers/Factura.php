@@ -261,7 +261,12 @@ class Factura extends CI_Controller{
         $data['tipo'] = $tipo;
         
         if(sizeof($factura)>=1){
-            $data['datos_factura'] = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
+            
+            if (isset($factura[0]['datos_id'])){            
+            
+                $data['datos_factura'] = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
+            }
+            
             $data['decimales'] = $parametros["parametro_decimales"];
             $data['dos_decimales'] = 2;
         

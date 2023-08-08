@@ -6999,6 +6999,7 @@ function finalizarventa_sin(){
     var controlador = base_url+'dosificacion/verificarcomunicacion';
     var parametro_tipoemision = document.getElementById('elparametro_tipoemision').value;
     var parametro_tiposistema = document.getElementById('parametro_tiposistema').value;
+    var parametro_verificarconexion = document.getElementById('parametro_verificarconexion').value;
     var cliente_valido = document.getElementById('cliente_valido').value;
     var excepcion = document.getElementById('cliente_valido').value;    
     var nit = $.trim(document.getElementById('nit').value);
@@ -7104,36 +7105,45 @@ function finalizarventa_sin(){
 
                                                     //alert("entra aqui: "+forma_pago+" * "+cad);
                                                     //*********************************************************************
-                                                        $.ajax({url:controlador, //Verificar si existe comunicacion con impuestos
-                                                                type:"POST",
-                                                                data:{},
-                                                                success:function(respuesta){
-                                                                    let registros = JSON.parse(respuesta);
+                                                    
+                                                        if(parametro_verificarconexion==1){
+                                                            
+                                                            //alert("Con verificar conexion");
+                                                            $.ajax({url:controlador, //Verificar si existe comunicacion con impuestos
+                                                                    type:"POST",
+                                                                    data:{},
+                                                                    success:function(respuesta){
+                                                                        let registros = JSON.parse(respuesta);
 
-                                                                    //alert(JSON.stringify(registros));
-                                                                    //alert(registros.RespuestaComunicacion.transaccion);
-                                                                    if(registros.RespuestaComunicacion.transaccion == true){ //Si existe comunicacion con impuestos
+                                                                        //alert(JSON.stringify(registros));
+                                                                        //alert(registros.RespuestaComunicacion.transaccion);
+                                                                        if(registros.RespuestaComunicacion.transaccion == true){ //Si existe comunicacion con impuestos
 
-                                                                        //Finalizamos venta normalmente
-                                                                        finalizarventa();
+                                                                            //Finalizamos venta normalmente
+                                                                            finalizarventa();
 
 
-                                                                    }else{
+                                                                        }else{
 
-                                                                        //debe registrar como fuera de linea
-                                                                        alert("ADVERTENCIA: Se detecto una falla en la conexion al servicio de impuestos nacionales, se cambiara a emision fuera de linea...!");
-                                                                        modal_cambiartipoemision()
-                                                                        document.getElementById("elparametro_tipoemision").value = 2;
-                                                                        document.getElementById("select_eventos").value = 2;
-                                                                        $("#boton_tipoemision").click();
+                                                                            //debe registrar como fuera de linea
+                                                                            alert("ADVERTENCIA: Se detecto una falla en la conexion al servicio de impuestos nacionales, se cambiara a emision fuera de linea...!");
+                                                                            modal_cambiartipoemision()
+                                                                            document.getElementById("elparametro_tipoemision").value = 2;
+                                                                            document.getElementById("select_eventos").value = 2;
+                                                                            $("#boton_tipoemision").click();
 
+                                                                        }
+
+                                                                    },
+                                                                    error:function(respuesta){
+                                                                        alert("Error: Conexión fallida. Vuelva a intentar...!");
                                                                     }
-
-                                                                },
-                                                                error:function(respuesta){
-                                                                    alert("Error: Conexión fallida. Vuelva a intentar...!");
-                                                                }
-                                                            });  
+                                                                });  
+                                                        }else{
+                                                            //alert("Sin verificar conexion");
+                                                            finalizarventa();                                                            
+                                                        }
+                                                            
                                                         //*********************************************************************
 
 
