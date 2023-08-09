@@ -5,25 +5,8 @@
     });
 </script>
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-
-<script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-</script>
 
 <style type="text/css">
-
-
 p {
     font-family: Arial;
     font-size: 8pt;
@@ -72,9 +55,9 @@ border-bottom : 1px solid #aaa;*/
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
-<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"]."cm";
+      $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
 <!---------------------- Modal ---------------------------->
         <div id="myModalAnular" class="modal fade no-print" role="dialog">
@@ -116,7 +99,7 @@ border-bottom : 1px solid #aaa;*/
 <table class="table" style="width: <?php echo $ancho?>" >
     <tr>
 <!--        <td style="padding: 0; width: 0cm">-->
-        <td style="padding: 0;" colspan="4">
+        <td style="padding: 0; line-height: 11px;" colspan="4">
                 
             <center>
                                
@@ -130,10 +113,18 @@ border-bottom : 1px solid #aaa;*/
 
                         <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
 
-                        </b></font><br>
+                        </b></font>
                     <?php } ?>
 
-                    <font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>
+                    <font size="1" face="Arial">
+                        <?php 
+                            if($factura[0]['factura_sucursal']==0){
+                                echo "<br>CASA MATRIZ";
+                            }else{
+                                echo "<br>SUCURSAL ".$factura[0]['factura_sucursal'];
+                            }
+                        ?>
+                        <br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>
@@ -169,7 +160,6 @@ border-bottom : 1px solid #aaa;*/
                         </td>
                     </tr>
                 </table>
-                <br>    
                 <font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
             </center>
         </td>
@@ -177,7 +167,7 @@ border-bottom : 1px solid #aaa;*/
 <!--                <br>_______________________________________________
                 <br> -->
     <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
-        <td colspan="4" style="padding: 0;  font-size: 9pt;">
+        <td colspan="4" style="padding: 0;  font-size: 9pt; line-height: 11px;">
             
                 <?php $fecha = new DateTime($factura[0]['factura_fechaventa']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
@@ -212,7 +202,7 @@ border-bottom : 1px solid #aaa;*/
                         $total_final += $d['detallefact_total']; 
                         ?>
            <tr style="font-size: 8pt;">
-                <td align="center" style="padding: 0;"><?php echo $d['detallefact_cantidad']; ?></td>
+                <td align="center" style="padding: 0;"><?php echo number_format($d['detallefact_cantidad'],2,'.',','); ?></td>
                 <!--<td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php //echo $d['detallefact_descripcion']; ?></td>-->
                 
                 <td style="padding: 0; line-height: 10px;"><font style="size:5px; font-family: arial;"> 
@@ -235,7 +225,7 @@ border-bottom : 1px solid #aaa;*/
                 
                 <!--<td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></td>-->
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_subtotal'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0; padding-left: 4px"><?php echo number_format($d['detallefact_subtotal'],2,'.',','); ?></td>
            </tr>
            <?php }} ?>
 <!--       </table>
@@ -246,34 +236,34 @@ border-bottom : 1px solid #aaa;*/
     <tr style="border-top-style: solid; border-top-width: 2px;">
         
             
-        <td align="right" style="padding: 0;" colspan="4">
+        <td align="right" style="padding: 0; line-height: 11px;" colspan="4">
             
-            <font size="1">
+            <div style="font-size: 12px">
                 <b><?php echo "SUB TOTAL Bs ".number_format($factura[0]['factura_subtotal'],2,'.',','); ?></b><br>
-            </font>
+            </div>
             
 
-            <font size="1">
+            <div style="font-size: 12px">
                 <?php echo "TOTAL DESCUENTO Bs ".number_format($factura[0]['factura_descuento'],2,'.',','); ?><br>
-            </font>
+            </div>
             <font size="2">
             <b>
                 <?php echo "TOTAL FINAL Bs: ".number_format($factura[0]['factura_total'] ,2,'.',','); ?><br>
             </b>
             </font>
-            <font size="1" face="arial narrow">
+            <div style="font-size: 10px">
                 <?php echo "SON: ".num_to_letras($factura[0]['factura_total'],' Bolivianos'); ?><br>            
-            </font>
+            </div>
             
-            <font size="1">
+            <div style="font-size: 10px">
                 <?php echo "EFECTIVO Bs ".number_format($factura[0]['factura_efectivo'],2,'.',','); ?><br>
                 <?php echo "CAMBIO Bs ".number_format($factura[0]['factura_cambio'],2,'.',','); ?>
-            </font>
+            </div>
             
         </td>          
     </tr>
     <tr>
-        <td nowrap style="padding: 0;" colspan="4">
+        <td nowrap style="padding: 0; line-height: 11px;" colspan="4">
             <font size="2">
             
                 COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
@@ -295,7 +285,7 @@ border-bottom : 1px solid #aaa;*/
 
     </tr>    
     <tr >
-        <td style="padding: 0;  line-height: 12px;" colspan="4">
+        <td style="padding: 0;  line-height: 12px; line-height: 11px;" colspan="4">
                USUARIO: <b><?php echo $factura[0]['usuario_nombre']; ?></b> / TRANS: 
                <b><?php 
                     if ($factura[0]['venta_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['venta_id']."V"; 
@@ -306,7 +296,7 @@ border-bottom : 1px solid #aaa;*/
                ?></b>
                <?php
                 if ($factura[0]['venta_id']>0){
-                    if($parametro[0]['parametro_puntos'] >0){
+                    if($parametro['parametro_puntos'] >0){
                         echo " / PUNTOS: <b>".$venta[0]['cliente_puntos']."</b>";
                     }
                 }
@@ -347,7 +337,7 @@ border-bottom : 1px solid #aaa;*/
         
           
         
-<?php //if($parametro[0]['parametro_imprimircomanda']==1){  ?>
+<?php //if($parametro['parametro_imprimircomanda']==1){  ?>
 
 <!--        //aqui va la comanda-->
 <?php //} ?>

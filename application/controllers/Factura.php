@@ -162,7 +162,10 @@ class Factura extends CI_Controller{
              
         $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
         if(sizeof($factura)>=1){
-            $data['datos_factura'] = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
+            if (isset($factura[0]['datos_id'])){
+                $data['datos_factura'] = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
+            }
+            
             $data['decimales'] = $parametros["parametro_decimales"];
             $data['dos_decimales'] = 2;
         $nit_emisor    = $factura[0]['factura_nitemisor'];
@@ -280,7 +283,7 @@ class Factura extends CI_Controller{
         
         if($parametros['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             // Antiguo
-            $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.$total.'|'.$total.'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
+            $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'. number_format($total, 2,".",",").'|'.number_format($total, 2,".",",").'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
         }else{
             $ruta      = $factura[0]['factura_ruta'];
             $cuf       = $factura[0]['factura_cuf'];
