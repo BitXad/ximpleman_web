@@ -40,5 +40,14 @@
         function delete_activity($actividad_id){
             return $this->db->delete('actividad',array('actividad_id'=>$actividad_id));
         }
+        
+        /* Obtiene descrpcion de la actividad, dado el codigo CAEB */
+        function get_descripcioncaeb($codigo_actividadcaeb){
+            return $this->db->query(
+                        "SELECT a.actividad_descripcion
+                        FROM actividad a
+                        WHERE actividad_codigocaeb = ?",
+                        array($codigo_actividadcaeb))->row_array();
+        }
     }
 ?>

@@ -273,7 +273,7 @@
                 <tr>
                     <td colspan="4" style="padding: 0;">
                         <table style="width:<?php echo $ancho?>" >
-                            <tr style="border-top: dashed 1px; #000;">
+                            <tr style="border-top: dashed 1px #000;">
                                 <td class="text-right text-bold" style="padding: 0; white-space: nowrap">NOMBRE/RAZÓN SOCIAL:</td>
                                 <td style="padding: 0; padding-left: 3px"><?php echo $factura[0]['factura_razonsocial'].""; ?></td>
                             </tr>
@@ -320,7 +320,7 @@
                 </tr>
                         <?php $tamanio_fuente = "8pt"; ?>
                 <tr>
-                    <td colspan="4" align="center" style="padding: 0px; border-top: dashed 1px; #000;   border-bottom: dashed 1px; #000; "; font-size: <?php echo $tamanio_fuente; ?>"><b style="font-size:12px;">DETALLE</b></td>
+                    <td colspan="4" align="center" style="padding: 0px; border-top: dashed 1px #000;   border-bottom: dashed 1px #000; "; font-size: <?php echo $tamanio_fuente; ?>"><b style="font-size:12px;">DETALLE</b></td>
                 </tr>
                 <tr>
                     <td colspan="4" style="padding: 0;">
@@ -423,7 +423,7 @@
                     }
                     
                     ?>
-                    <td colspan="4" style="padding: 0; border-top: dashed 1px; #000;">
+                    <td colspan="4" style="padding: 0; border-top: dashed 1px #000;">
                         <table style="width:<?php echo $ancho?>; font-size: 8pt !important" >
                             <tr  >
                                 <td class="text-right">SUBTOTAL Bs</td>
@@ -516,7 +516,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-center" style="padding: 0; padding-top: 5px; border-top: dashed 1px; #000;" colspan="4">
+                    <td class="text-center" style="padding: 0; padding-top: 5px; border-top: dashed 1px #000;" colspan="4">
                         
                         <span style="font-size: 7pt"><p style="padding: 0;"><?php echo $factura[0]['factura_leyenda1'];?> </p></span>
                         <span style="font-size: 7pt !important;"><p style="padding-bottom: 0px; padding: 0;"><?php echo $factura[0]['factura_leyenda2']; ?> </p></span>

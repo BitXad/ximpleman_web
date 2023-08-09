@@ -184,10 +184,10 @@ border-bottom : 1px solid #aaa;
     </tr>
 
     <tr>
-        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.5cm;"><b>CANT</b></td>
-        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 4cm;"><b>DESCRIPCIÓN</b></td>
-        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.7cm;"><b>P.UNIT</b></td>
-        <td align="center" style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.8cm;"><b>TOTAL</b></td>               
+        <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.5cm;"><b>CANT</b></td>
+        <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 4cm;"><b>DESCRIPCIÓN</b></td>
+        <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.7cm;"><b>P.UNIT</b></td>
+        <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.8cm;"><b>TOTAL</b></td>               
     </tr>
            <?php $cont = 0;
                  $cantidad = 0;
@@ -242,15 +242,15 @@ border-bottom : 1px solid #aaa;
            </tr>
            <?php } ?>
     <tr style="" >
-        <td colspan="2" align="left" style="padding: 0; padding: 0; border-top: dashed 1px; #000; font-weight: bold; font-size: 12px;">TOTAL Bs</td>
-        <td colspan="2" align="right" style="padding: 0; padding: 0; border-top: dashed 1px; #000;"><center style="font-weight: bold; font-size: 12px;"><?php echo number_format($total_final,2,'.',','); ?></center></td>
+        <td colspan="2" align="left" style="padding: 0; padding: 0; border-top: dashed 1px #000; font-weight: bold; font-size: 12px;">TOTAL Bs</td>
+        <td colspan="2" align="right" style="padding: 0; padding: 0; border-top: dashed 1px #000;"><center style="font-weight: bold; font-size: 12px;"><?php echo number_format($total_final,2,'.',','); ?></center></td>
     </tr>
     <tr>
-        <td style="padding: 0; border-top: solid 1px; #000; border-bottom: solid 1px; #000; width: 0.8cm; font-size: 8pt;" colspan="4"><center><?php echo "<b>OBS.: </b>".$venta[0]['venta_glosa']; ?></center></td>
+        <td style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.8cm; font-size: 8pt;" colspan="4"><center><?php echo "<b>OBS.: </b>".$venta[0]['venta_glosa']; ?></center></td>
     </tr>
 
     <tr>
-          <td  colspan="4" style="border-top:solid 1px; #000;">
+          <td  colspan="4" style="border-top:solid 1px #000;">
                CAJERO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
 <!--               / TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>-->
             <center>

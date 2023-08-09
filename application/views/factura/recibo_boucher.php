@@ -167,10 +167,10 @@ border-bottom : 1px solid #aaa;
 
        <table class="table table-striped table-condensed"  style="width: <?php echo $ancho; ?>;" >-->
            <tr style="font-weight: bold;">
-                <td align="center" style="border-top: solid 1px; #000; border-bottom: solid 1px; #000; padding: 0">CN</td>
-                <td align="center" style="border-top: solid 1px; #000; border-bottom: solid 1px; #000; padding: 0">DESCRIPCIÓN</td>
-                <td align="center" style="border-top: solid 1px; #000; border-bottom: solid 1px; #000; padding: 0">P.UNIT <?php echo $parametro['moneda_descripcion']; ?></td>
-                <td align="center" style="border-top: solid 1px; #000; border-bottom: solid 1px; #000; padding: 0">TOTAL <?php echo $parametro['moneda_descripcion']; ?></td>
+                <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">CN</td>
+                <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">DESCRIPCIÓN</td>
+                <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">P.UNIT <?php echo $parametro['moneda_descripcion']; ?></td>
+                <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">TOTAL <?php echo $parametro['moneda_descripcion']; ?></td>
                 <?php
                 if($parametro["parametro_mostrarmoneda"] == 1){ ?>
                 <?php if($parametro['moneda_id']==1){  ?>
@@ -271,7 +271,7 @@ border-bottom : 1px solid #aaa;
 <table class="table" style="max-width: 7cm;">-->
     <tr align="right">
         
-        <td colspan="5"style="border-top: solid 1px; #000; padding: 0; line-height: 12px;"  >
+        <td colspan="5"style="border-top: solid 1px #000; padding: 0; line-height: 12px;"  >
             <?php if ($venta[0]['venta_descuentoparcial']>0){ ?>
             
                 <font size="1">

@@ -52,6 +52,7 @@ class Venta extends CI_Controller{
             'Emision_paquetes_model',
             'Sistema_model',
             'Factura_datos_model',
+            'Actividad_model',
         ]);
         
       
@@ -1088,6 +1089,8 @@ class Venta extends CI_Controller{
                     //********** FIN INICIO ACTUALIZAR NUMERO DE FACTURA
                         
                         if($this->parametros['parametro_tiposistema'] == 1){
+                            $codigo_actividadcaeb = $factura_actividad;
+                            $la_actividad = $this->Actividad_model->get_descripcioncaeb($codigo_actividadcaeb);
                             
                             // sistema de facturacion antiguo
                                 $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
@@ -1105,7 +1108,7 @@ class Venta extends CI_Controller{
                                 $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                                 $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."','".
                                 $factura_nit."','".$factura_razonsocial."','".$factura_nitemisor."','".$factura_sucursal."','".
-                                $factura_sfc."','".$factura_actividad."',".$usuario_id.",".$tipo_transaccion.",".
+                                $factura_sfc."','".$la_actividad['actividad_descripcion']."',".$usuario_id.",".$tipo_transaccion.",".
                                 $venta_efectivo.",".$venta_cambio.",".$factura_enviada.",'".$factura_leyenda3."','".$factura_leyenda4."',".$codigo_excepcion.",".
                                 $venta_ice.",".$venta_giftcard.",'".$venta_detalletransaccion."',".$forma_id.",'".$factura_complementoci."','".$factura_glosa."',".$factura_idcreditodebito.")";
                         

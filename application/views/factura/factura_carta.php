@@ -128,10 +128,10 @@ border-bottom : 1px solid #aaa;
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <!---------------------- Modal ---------------------------->
-<?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"];
-      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php $tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"];
+      //$margen_izquierdo = "col-xs-".$parametro["parametro_margenfactura"];;
+      $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
 
         <div id="myModalAnular" class="modal fade no-print" role="dialog">
@@ -326,7 +326,7 @@ border-bottom : 1px solid #aaa;
                                     $total_final += $d['detallefact_total']; 
                         ?>
                        <tr style="border-top-style: solid;  border-color: black;  border-top-width: 1px;">
-                           <td align="center" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo $d['detallefact_cantidad']; ?></font></td>
+                           <td align="center" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_cantidad'],2,'.',','); ?></font></td>
                             <td colspan="2" style="padding: 0; line-height: 10px;"><font style="size:7px; font-family: arial;"> 
                                 <?php echo $d['detallefact_descripcion']; ?>
                                 <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
@@ -386,7 +386,7 @@ border-bottom : 1px solid #aaa;
                             ?>
                             <?php
                             if ($factura[0]['venta_id']>0){
-                                if($parametro[0]['parametro_puntos'] >0){
+                                if($parametro['parametro_puntos'] >0){
                                     echo "<br>PUNTOS: <b>".$venta[0]['cliente_puntos']."</b>";
                                 }
                             }
