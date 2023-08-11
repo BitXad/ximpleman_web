@@ -808,7 +808,7 @@ window.onkeydown = compruebaTecla;
             
             <!--------------------- parametro de buscador por codigo --------------------->
 
-            <div class="col-md-4" <?php echo ($parametro["parametro_buscadorcodigo"]!=1)?"hidden":"" ?>>
+            <div class="col-md-5" <?php echo ($parametro["parametro_buscadorcodigo"]!=1)?"hidden":"" ?>>
                   <div class="input-group">
                       <span class="input-group-addon" style="background-color: lightgray;"> 
                         <i class="fa fa-barcode"></i>
@@ -821,7 +821,7 @@ window.onkeydown = compruebaTecla;
            <!--------------------- fin buscador por codigo --------------------->
            
 
-            <div class="col-md-8" <?php echo ($parametro["parametro_buscadortexto"]!=1)?"hidden":"" ?>>
+            <div class="col-md-7" <?php echo ($parametro["parametro_buscadortexto"]!=1)?"hidden":"" ?>>
                 
 <!--            ------------------- parametro de buscador --------------------->
                        
@@ -1602,7 +1602,7 @@ window.onkeydown = compruebaTecla;
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if( $dosificacion[0]["docsec_codigoclasificador"] == 13){ //23 prevalorada (original)
+                if( $dosificacion[0]["docsec_codigoclasificador"] == 23){ //23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }
@@ -1672,7 +1672,7 @@ window.onkeydown = compruebaTecla;
                              { $ocultar = "contents"; }?>
                 
                 <tr style="padding: 0; display: <?php echo $ocultar; ?>">
-                        <td style="padding: 0"><b>Tarjeta Gift</b></td>
+                        <td style="padding: 0"><b>Tarjeta/Gift/Otros</b></td>
                         <td align="right" style="padding: 0">
                             <input class="btn" style="padding:0; background-color:orange; font-size:20px;" id="venta_giftcard" size="<?php echo $ancho_boton; ?>" name="venta_giftcard" value="<?php echo 0.00; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(6)">
                         </td>
@@ -2838,8 +2838,85 @@ window.onkeydown = compruebaTecla;
 						<div class="form-group">
 							<input type="text" name="datos_medidor" value="<?php echo ""; ?>" class="form-control" id="datos_medidor" />
 						</div>
+					</div>
+                    
+					<div class="col-md-9">
+						<label for="datos_ajustesujetosiva" class="control-label">Ajuste sujeto a iva</label>
+						<div class="form-group">
+							<!--<input type="memo" name="datos_ajustesujetosiva" value="<?php echo ""; ?>" class="form-control" id="datos_ajustesujetosiva" />-->
+                                                    <textarea name="datos_ajustesujetosiva" class="form-control" id="datos_ajustesujetosiva" >
+Ajustes sujetos a IVA
+Cobro por reconexion 10.00</textarea>
+						</div>
+					</div>                   
+                    
+					<div class="col-md-3">
+						<label for="datos_sujetoivasubtotal" class="control-label">Sub total Bs</label>
+						<div class="form-group">
+                                                    
+							<input type="text" name="datos_sujetoivasubtotal" value="<?php echo "0.00"; ?>" class="form-control" id="datos_sujetoivasubtotal" />
+						</div>
+					</div>                    
+
+					<div class="col-md-9">
+						<label for="datos_aseourbano" class="control-label">Tasa aseo urbano</label>
+						<div class="form-group">
+							<textarea name="datos_aseourbano" class="form-control" id="datos_aseourbano" >Tasa Aseo Urbano </textarea>
+						</div>
+					</div>                   
+                    
+					<div class="col-md-3">
+						<label for="datos_aseosubtotal" class="control-label">Sub total Bs</label>
+						<div class="form-group">
+							<input type="text" name="datos_aseosubtotal" value="<?php echo "0.00"; ?>" class="form-control" id="datos_aseosubtotal" />
+						</div>
+					</div>            
+                    
+					<div class="col-md-9">
+						<label for="datos_tasaalumbrado" class="control-label">Tasa alumbrado publico</label>
+						<div class="form-group">
+                                                    <textarea type="text" name="datos_tasaalumbrado" class="form-control" id="datos_tasaalumbrado">Tasa de aseo</textarea>
+						</div>
+					</div>                   
+                    
+					<div class="col-md-3">
+						<label for="datos_alumbradosubtotal" class="control-label">Sub total Bs</label>
+						<div class="form-group">
+							<input type="text" name="datos_alumbradosubtotal" value="<?php echo "0.00"; ?>" class="form-control" id="datos_alumbradosubtotal" />
+						</div>
 					</div>                    
                     
+					<div class="col-md-9">                                                                                              
+						<label for="datos_otrastasas" class="control-label">Otras tasas</label>
+						<div class="form-group">
+                                                    <textarea name="datos_otrastasas" class="form-control" id="datos_otrastasas">Oras tasas</textarea>
+						</div>
+					</div>                   
+                    
+					<div class="col-md-3">
+						<label for="datos_tasassubtotal" class="control-label">Sub total Bs</label>
+						<div class="form-group">
+							<input type="text" name="datos_tasassubtotal" value="<?php echo "0.00"; ?>" class="form-control" id="datos_tasassubtotal" />
+						</div>
+					</div>                      
+                    
+                                        <div class="col-md-9">
+						<label for="datos_otrospagos" class="control-label">Otros pagos</label>
+						<div class="form-group">
+                                                    <textarea name="datos_otrospagos" class="form-control" id="datos_otrospagos">
+Otros Pagos (pago de cuotas etc)
+Pago cuota coperativa 7.00</textarea>
+
+						</div>
+					</div>                   
+                    
+					<div class="col-md-3">
+						<label for="datos_pagossubtotal" class="control-label">Sub total Bs</label>
+						<div class="form-group">
+							<input type="text" name="datos_pagossubtotal" value="<?php echo "0.00"; ?>" class="form-control" id="datos_pagossubtotal" />
+						</div>
+					</div>  
+		                    
                 </div>
                 <br>
                 <br>
