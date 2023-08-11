@@ -46,7 +46,7 @@ function numberFormat(numero){
     }
 }
 function tabladetalle_productos(){
-    var decimales      = document.getElementById('decimales').value;
+    var decimales      = 2; //document.getElementById('decimales').value;
     var base_url      = document.getElementById('base_url').value;
     var controlador   = base_url+"detalle_venta/getdetalle_venta/";
     $.ajax({url: controlador,
@@ -108,7 +108,7 @@ function tabladetalle_productos(){
                         if (partes2[1] == 0) {  
                             lacantidad = partes2[0];  
                         }else{  
-                            lacantidad = numberFormat(registros[i]['detalleven_cantidad']).toFixed(decimales);
+                            lacantidad = numberFormat(Number(registros[i]['detalleven_cantidad']).toFixed(decimales));
                             
                         }
 

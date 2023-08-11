@@ -23,6 +23,7 @@ function calculardesc(){
     
     var decimales = Number(document.getElementById('parametro_decimales').value);
     
+    
    /*
     var porcdesc = document.getElementById('tipocliente_porcdesc').value;
     var montodesc = document.getElementById('tipocliente_montodesc').value;
@@ -398,7 +399,7 @@ function buscarcliente(){
                                 $('#razon_social').focus();
                                 //verificarnit();
                                 //$('#razon_social').select();
-                        }                       
+                        }
                     }else{
                         document.getElementById('loader_documento').style.display = 'none';
                         $('#razon_social').focus();
@@ -990,13 +991,35 @@ function buscarporcodigojs()
         
         var identificador =  codigo.substring(0,3);
         
-        if(identificador==255){
+        if(identificador==215){
             
                 resultado = procesarCodigoBarras(codigo);
             
                 var verificador = resultado['verificador'];
                 var codigoProducto = resultado['codigoProducto'];
-                var cantidad = Number(resultado['cantidad'])/10000;
+                var cantidad = Number(resultado['cantidad'])/1000;
+                
+                codigo = codigoProducto;
+        }
+        
+        if(identificador==205){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad'])/1000;
+                
+                codigo = codigoProducto;
+        }
+        
+        if(identificador==224){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad']);
                 
                 codigo = codigoProducto;
         }
@@ -1018,7 +1041,16 @@ function buscarporcodigojs()
                
                res = JSON.parse(respuesta);
                
-               if (identificador==255){
+               if (identificador==215){
+                   cantidad_base = cantidad;
+               }
+               if (identificador==205){
+                   cantidad_base = cantidad;
+               }
+               if (identificador==204){
+                   cantidad_base = cantidad;
+               }
+               if (identificador==224){
                    cantidad_base = cantidad;
                }
 
@@ -3352,6 +3384,16 @@ function registrarventa(cliente_id)
     let datos_mes = document.getElementById('datos_mes').value;
     let datos_anio = document.getElementById('datos_anio').value;
     //let datos_ajustesnoiva = document.getElementById('datos_ajustesnoiva').value;
+    let datos_ajustesujetosiva = document.getElementById('datos_ajustesujetosiva').value;
+    let datos_sujetoivasubtotal = document.getElementById('datos_sujetoivasubtotal').value;
+    let datos_aseourbano = document.getElementById('datos_aseourbano').value;
+    let datos_aseosubtotal = document.getElementById('datos_aseosubtotal').value;
+    let datos_tasaalumbrado = document.getElementById('datos_tasaalumbrado').value;
+    let datos_alumbradosubtotal = document.getElementById('datos_alumbradosubtotal').value;
+    let datos_otrastasas = document.getElementById('datos_otrastasas').value;
+    let datos_tasassubtotal = document.getElementById('datos_tasassubtotal').value;
+    let datos_otrospagos = document.getElementById('datos_otrospagos').value;
+    let datos_pagossubtotal = document.getElementById('datos_pagossubtotal').value;
     
     
     if (registroeventos_codigo>0){
@@ -3440,7 +3482,10 @@ function registrarventa(cliente_id)
                 datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc,
                 factura_idcreditodebito: factura_idcreditodebito, 
                 datos_consumoperiodo:datos_consumoperiodo, datos_beneficiario1886:datos_beneficiario1886, datos_mes:datos_mes, datos_anio: datos_anio,
-                datos_medidor:datos_medidor
+                datos_medidor:datos_medidor, datos_ajustesujetosiva:datos_ajustesujetosiva,datos_sujetoivasubtotal:datos_sujetoivasubtotal,
+                datos_aseourbano:datos_aseourbano,datos_aseosubtotal:datos_aseosubtotal,datos_tasaalumbrado:datos_tasaalumbrado,
+                datos_alumbradosubtotal:datos_alumbradosubtotal,datos_otrastasas:datos_otrastasas,datos_tasassubtotal:datos_tasassubtotal,
+                datos_otrospagos:datos_otrospagos,datos_pagossubtotal:datos_pagossubtotal
             },
             success:function(respuesta){
                 
@@ -3500,7 +3545,10 @@ function registrarventa(cliente_id)
                 datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc,
                 factura_idcreditodebito: factura_idcreditodebito, 
                 datos_consumoperiodo:datos_consumoperiodo,  datos_mes:datos_mes, datos_anio: datos_anio,datos_beneficiario1886:datos_beneficiario1886,
-                datos_medidor:datos_medidor
+                datos_medidor:datos_medidor, datos_ajustesujetosiva:datos_ajustesujetosiva,datos_sujetoivasubtotal:datos_sujetoivasubtotal,
+                datos_aseourbano:datos_aseourbano,datos_aseosubtotal:datos_aseosubtotal,datos_tasaalumbrado:datos_tasaalumbrado,
+                datos_alumbradosubtotal:datos_alumbradosubtotal,datos_otrastasas:datos_otrastasas,datos_tasassubtotal:datos_tasassubtotal,
+                datos_otrospagos:datos_otrospagos,datos_pagossubtotal:datos_pagossubtotal
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -7770,14 +7818,17 @@ function procesarCodigoBarras(codigo) {
     
     // Dividir el código en sus componentes
     var verificador = codigo[0];
-    var codigoProducto = codigo.substring(1, 7);
-    var cantidad = codigo.substring(7);
-    
+    var codigoProducto = codigo.substring(2,7);
+    var cantidad = codigo.substring(8,codigo.length);
+    //alert("cantidad: "+cantidad);
+//   alert("verficador:"+verifiador+" * codigo: "+codigoProducto+"* cantidad: "+cantidad);
+
     return {
         verificador: verificador,
         codigoProducto: codigoProducto,
         cantidad: cantidad
     };
+    
 }
 
 function borrar_datos_cliente(){

@@ -1222,6 +1222,16 @@ class Venta extends CI_Controller{
                                 'datos_anio' => $this->input->post('datos_anio'),
                                 'datos_medidor' => $this->input->post('datos_medidor'),
                                 'datos_ajustesnoiva' => $this->input->post('datos_ajustesnoiva'),
+                                'datos_ajustesujetosiva' => 0, //$this->input->post('datos_ajustesujetosiva'),
+                                'datos_sujetoivasubtotal' => $this->input->post('datos_sujetoivasubtotal'),
+                                'datos_aseourbano' => $this->input->post('datos_aseourbano'),
+                                'datos_aseosubtotal' => $this->input->post('datos_aseosubtotal'),
+                                'datos_tasaalumbrado' => $this->input->post('datos_tasaalumbrado'),
+                                'datos_alumbradosubtotal' => $this->input->post('datos_alumbradosubtotal'),
+                                'datos_otrastasas' => $this->input->post('datos_otrastasas'),
+                                'datos_tasassubtotal' => $this->input->post('datos_tasassubtotal'),
+                                'datos_otrospagos' => $this->input->post('datos_otrospagos'),
+                                'datos_pagossubtotal' => $this->input->post('datos_pagossubtotal'),
                             );
 
                             $datos_id = $this->Factura_datos_model->add_factura_datos($params);
@@ -1234,41 +1244,58 @@ class Venta extends CI_Controller{
                             
                             if($dosificacion[0]['docsec_codigoclasificador'] == 13){
                                 
-                                    $sql = "update factura_datos
-                                            set 
-
-                                            datos_ajustesiva = 
-                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
-                                            from detalle_venta_aux d, producto p
-                                            where 
-                                            d.usuario_id = {$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 2)
-
-
-                                            ,datos_ajustesnoiva = 
-                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
-                                            from detalle_venta_aux d, producto p
-                                            where 
-                                            d.usuario_id ={$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 3)
-
-
-                                            ,datos_pagosnoiva = 
-                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
-                                            from detalle_venta_aux d, producto p
-                                            where 
-                                            d.usuario_id = {$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 4)
-
-
-                                            ,datos_tasas = 
-                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
-                                            from detalle_venta_aux d, producto p
-                                            where 
-                                            d.usuario_id = {$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 5)
-
-                                            where datos_id = {$datos_id}";
-                                    
-                                    $this->Venta_model->ejecutar($sql);
+                                $total = $this->input->post('datos_sujetoivasubtotal') + $this->input->post('datos_aseosubtotal') +
+                                        $this->input->post('datos_alumbradosubtotal') + $this->input->post('datos_tasassubtotal') +
+                                        $this->input->post('datos_pagossubtotal');
+                                
+                                $sql = "update factura set
+                                        factura_subtotal = factura_subtotal + {$total}
+                                        ,factura_total = factura_total + {$total}
+                                        ,factura_efectivo = factura_efectivo + {$total}
+                                        ,factura_cambio = factura_cambio + {$total}
+                                        where factura_id = {$factura_id}";
+                                        
+                                $this->Venta_model->ejecutar($sql);
                                 
                             }
+                            
+//                            if($dosificacion[0]['docsec_codigoclasificador'] == 13){
+//                                
+//                                    $sql = "update factura_datos
+//                                            set 
+//
+//                                            datos_ajustesiva = 
+//                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
+//                                            from detalle_venta_aux d, producto p
+//                                            where 
+//                                            d.usuario_id = {$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 2)
+//
+//
+//                                            ,datos_ajustesnoiva = 
+//                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
+//                                            from detalle_venta_aux d, producto p
+//                                            where 
+//                                            d.usuario_id ={$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 3)
+//
+//
+//                                            ,datos_pagosnoiva = 
+//                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
+//                                            from detalle_venta_aux d, producto p
+//                                            where 
+//                                            d.usuario_id = {$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 4)
+//
+//
+//                                            ,datos_tasas = 
+//                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
+//                                            from detalle_venta_aux d, producto p
+//                                            where 
+//                                            d.usuario_id = {$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 5)
+//
+//                                            where datos_id = {$datos_id}";
+//                                    
+//                                    $this->Venta_model->ejecutar($sql);
+//                                
+//                            }
                             
                             
                         }
@@ -7245,7 +7272,7 @@ function anular_venta($venta_id){
         }
         
 
-        if($factura[0]['docsec_codigoclasificador']==13){
+        if($factura[0]['docsec_codigoclasificador']==13){ //factura de servicios basicos
                 $micad .= "                            <tr>"; 
                 $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Beneficiario Ley 1886:</td>"; 
                 $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_beneficiario1886']."</td>"; 
@@ -7353,15 +7380,126 @@ function anular_venta($venta_id){
        
         //*******************************************************************************************************************
         //*******************************************************************************************************************
+        if($factura[0]['docsec_codigoclasificador']==13){
+
+            $datos_sujetoivasubtotal =  $datos_factura['datos_sujetoivasubtotal'];
+            $datos_aseosubtotal =  $datos_factura['datos_aseosubtotal'];
+            $datos_alumbradosubtotal =  $datos_factura['datos_alumbradosubtotal'];
+            $datos_tasassubtotal =  $datos_factura['datos_tasassubtotal'];
+            $datos_pagossubtotal =  $datos_factura['datos_pagossubtotal'];
+            
+            $tasas = $datos_aseosubtotal + $datos_alumbradosubtotal + $datos_tasassubtotal; 
+
+            if($datos_factura['datos_sujetoivasubtotal']>0){
+                
+                $micad .= "                        <tr style='border: 1px solid black'>"; 
+                $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td colspan='1' style='padding: 0; line-height: 10px;'>"; 
+                $micad .= "                                <font style='size:7px; font-family: arial; padding-left:3px'> "; 
+                $micad .= "                                    ".nl2br($datos_factura['datos_ajustesujetosiva']); 
+                $micad .= "                                </font>"; 
+                $micad .= "                            </td>";
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                //$micad .= "                            <td align='right' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".number_format($d['datos_sujetoivasubtotal'],$dos_decimales,'.',',')."</font></td>"; 
+                $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($datos_factura['datos_sujetoivasubtotal'],$dos_decimales,'.',',')."</td>";
+                $micad .= "                            </tr>";
+            }
+                
+    
+                
+            if($datos_factura['datos_aseosubtotal']>0){
+                
+                $micad .= "                        <tr style='border: 1px solid black'>"; 
+                $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td colspan='1' style='padding: 0; line-height: 10px;'>"; 
+                $micad .= "                                <font style='size:7px; font-family: arial; padding-left:3px'> "; 
+                $micad .= "                                    ".nl2br($datos_factura['datos_aseourbano']); 
+                $micad .= "                                </font>"; 
+                $micad .= "                            </td>";
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                //$micad .= "                            <td align='right' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".number_format($d['datos_sujetoivasubtotal'],$dos_decimales,'.',',')."</font></td>"; 
+                $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($datos_factura['datos_aseosubtotal'],$dos_decimales,'.',',')."</td>";
+                $micad .= "                            </tr>";
+            }    
+    
+                
+            if($datos_factura['datos_alumbradosubtotal']>0){
+                
+                $micad .= "                        <tr style='border: 1px solid black'>"; 
+                $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td colspan='1' style='padding: 0; line-height: 10px;'>"; 
+                $micad .= "                                <font style='size:7px; font-family: arial; padding-left:3px'> "; 
+                $micad .= "                                    ".nl2br($datos_factura['datos_tasaalumbrado']); 
+                $micad .= "                                </font>"; 
+                $micad .= "                            </td>";
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                //$micad .= "                            <td align='right' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".number_format($d['datos_sujetoivasubtotal'],$dos_decimales,'.',',')."</font></td>"; 
+                $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($datos_factura['datos_alumbradosubtotal'],$dos_decimales,'.',',')."</td>";
+                $micad .= "                            </tr>";
+            }    
+    
+                
+                
+            if($datos_factura['datos_tasassubtotal']>0){
+                
+                $micad .= "                        <tr style='border: 1px solid black'>"; 
+                $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td colspan='1' style='padding: 0; line-height: 10px;'>"; 
+                $micad .= "                                <font style='size:7px; font-family: arial; padding-left:3px'> "; 
+                $micad .= "                                    ".nl2br($datos_factura['datos_otrastasas']); 
+                $micad .= "                                </font>"; 
+                $micad .= "                            </td>";
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                //$micad .= "                            <td align='right' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".number_format($d['datos_sujetoivasubtotal'],$dos_decimales,'.',',')."</font></td>"; 
+                $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($datos_factura['datos_tasassubtotal'],$dos_decimales,'.',',')."</td>";
+                $micad .= "                            </tr>";
+            }
+    
+                
+            if($datos_factura['datos_pagossubtotal']>0){
+                
+                $micad .= "                        <tr style='border: 1px solid black'>"; 
+                $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td colspan='1' style='padding: 0; line-height: 10px;'>"; 
+                $micad .= "                                <font style='size:7px; font-family: arial; padding-left:3px'> "; 
+                $micad .= "                                    ".nl2br($datos_factura['datos_otrospagos']); 
+                $micad .= "                                </font>"; 
+                $micad .= "                            </td>";
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
+                //$micad .= "                            <td align='right' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".number_format($d['datos_sujetoivasubtotal'],$dos_decimales,'.',',')."</font></td>"; 
+                $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($datos_factura['datos_pagossubtotal'],$dos_decimales,'.',',')."</td>";
+                $micad .= "                            </tr>";
+            }
+
+        }
+        //*******************************************************************************************************************
+        //*******************************************************************************************************************
 
         if($factura[0]['docsec_codigoclasificador']!=13){
-
+            
+            
                 $micad .= "                    <!-------------- SUB TOTAL ---------->"; 
                 $micad .= "                    <tr>"; 
                 $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='6'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
                 $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>SUBTOTAL Bs</td>"; 
                 $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($total_final_factura,$dos_decimales,'.',',')."</td>"; 
-                $micad .= "                    </tr>"; 
+                $micad .= "                    </tr>";
+                
                 $micad .= "                    <!-------------- DESCUENTO ---------->"; 
                 $micad .= "                    <tr>"; 
                 $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>DESCUENTO Bs</td>"; 
@@ -7443,12 +7581,19 @@ function anular_venta($venta_id){
 //*******************************************************************************************************************        
         }else{
             
+                
+                //$total_final_factura = $total_final_factura + $datos_sujetoivasubtotal + $datos_aseosubtotal + $datos_alumbradosubtotal + 
+                  //                      $datos_tasassubtotal + $datos_pagossubtotal;
+               
+                $factura_subtotal = $factura[0]['factura_subtotal'];
+               
+
 
                 $micad .= "                    <!-------------- SUB TOTAL ---------->"; 
                 $micad .= "                    <tr>"; 
                 $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='9'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
                 $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>TOTAL Bs</td>"; 
-                $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($total_final_factura,$dos_decimales,'.',',')."</td>"; 
+                $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_subtotal,$dos_decimales,'.',',')."</td>"; 
                 $micad .= "                    </tr>"; 
                 $micad .= "                    <!-------------- DESCUENTO ---------->"; 
                 $micad .= "                    <tr>"; 
@@ -7485,7 +7630,7 @@ function anular_venta($venta_id){
                     $monto_total_pagar = $factura_total - $datos_factura['datos_ajustesnoiva'];
                     
                     $micad .= "    <tr>           ";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'><b>MONTO A PAGAR Bs</b></td>";
+                    $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";
                     $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($monto_total_pagar ,$dos_decimales,'.',',')."</td>";
                     $micad .= "    </tr>";
 
@@ -7493,7 +7638,7 @@ function anular_venta($venta_id){
 
                 $micad .= "                    <!-------------- (-) TASAS ---------->"; 
 
-                    $tasas = $datos_factura['datos_tasas'];
+                    //$tasas = $datos_factura['datos_tasas'];
                     
                     $micad .= "    <tr>           ";
                     $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)TASAS Bs</td>";
@@ -7504,7 +7649,7 @@ function anular_venta($venta_id){
 
                 $micad .= "                    <!-------------- (-) OTROS PAGOS NO SUJETOS A IVA ---------->"; 
 
-                    $otros_pagos_noiva = $datos_factura['datos_pagosnoiva'];
+                    $otros_pagos_noiva = 0;//$datos_factura['datos_otrospagos'];
                     
                     $micad .= "    <tr>           ";
                     $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)OTROS PAGOS NO SUJETOS A IVA Bs</td>";
@@ -7530,7 +7675,7 @@ function anular_venta($venta_id){
                 $micad .= "                    <!-------------- (+) IMPORTE BASE A CREDITO FISCAL ---------->"; 
 
                 
-                    $importe_base_iva = $importe_base_iva - $ajustes_noiva - $tasas - $otros_pagos_noiva + $ajustes_sujetoiva; 
+                    $importe_base_iva = $monto_total_pagar - $tasas - $otros_pagos_noiva; 
                     
                     
                     $micad .= "    <tr>           ";

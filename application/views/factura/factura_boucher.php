@@ -30,7 +30,7 @@ margin : 0 0 0px 0;
 padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
-font-family: Arial narrow;
+font-family: Arial;
 font-size: 7pt;
 td {
 border:hidden;
@@ -172,9 +172,12 @@ border-bottom : 1px solid #aaa;*/
                 <?php $fecha = new DateTime($factura[0]['factura_fechaventa']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
+                <br>
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$factura[0]['factura_hora']; ?> <br>
                     <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>            
+                <br>
+                <br>
         </td>
     </tr>
      
@@ -236,7 +239,7 @@ border-bottom : 1px solid #aaa;*/
     <tr style="border-top-style: solid; border-top-width: 2px;">
         
             
-        <td align="right" style="padding: 0; line-height: 11px;" colspan="4">
+        <td align="right" style="padding: 0; line-height: 14px;" colspan="4">
             
             <div style="font-size: 12px">
                 <b><?php echo "SUB TOTAL Bs ".number_format($factura[0]['factura_subtotal'],2,'.',','); ?></b><br>
@@ -256,7 +259,8 @@ border-bottom : 1px solid #aaa;*/
             </div>
             
             <div style="font-size: 10px">
-                <?php echo "EFECTIVO Bs ".number_format($factura[0]['factura_efectivo'],2,'.',','); ?><br>
+                <?php echo "EFECTIVO Bs ".number_format($factura[0]['factura_efectivo']-$factura[0]['factura_giftcard'],2,'.',','); ?><br>
+                <?php echo ($factura[0]['factura_giftcard']>0)? "OTRO METODO PAGO Bs ".number_format($factura[0]['factura_giftcard'],2,'.',',')."<br>":""; ?>
                 <?php echo "CAMBIO Bs ".number_format($factura[0]['factura_cambio'],2,'.',','); ?>
             </div>
             
@@ -341,3 +345,14 @@ border-bottom : 1px solid #aaa;*/
 
 <!--        //aqui va la comanda-->
 <?php //} ?>
+
+
+<script>
+  // Función para cerrar la ventana
+  function cerrarVentana() {
+   // window.close();
+  }
+
+  // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)
+  setTimeout(cerrarVentana, 2000);
+</script>
