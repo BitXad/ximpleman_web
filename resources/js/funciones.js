@@ -984,6 +984,26 @@ function buscarporcodigojs()
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
+    var codigobalanza = 1;
+    
+    if(codigobalanza==1){
+        
+        var identificador =  codigo.substring(0,3);
+        
+        if(identificador==255){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad'])/10000;
+                
+                codigo = codigoProducto;
+        }
+        
+        //alert("verificador: " +verificador+"\n"+"codigo producto: "+codigoProducto+"\n cantidad: "+cantidad);
+    }
+    
     //revisará si existe algun producto con el codigo especificado
     $.ajax({url: controlador,
         
@@ -992,10 +1012,17 @@ function buscarporcodigojs()
            success:function(respuesta){
                
                var precio = 0;
-               var factor_cantidad = 1;
+               var factor_cantidad = 0;
+               var cantidad_base = 1;
                var factor_nombre = "";
+               
                res = JSON.parse(respuesta);
+               
+               if (identificador==255){
+                   cantidad_base = cantidad;
+               }
 
+               //alert("codigo: "+codigo+" - cantidad_base: "+cantidad_base);
                 //alert("tipo: "+res[0].tipo);
                 
                     if (res.length>0){ //verifica si el producto existe
@@ -1016,7 +1043,7 @@ function buscarporcodigojs()
                              
                             //verificara si el codigo le pertenece a algun factor
                             if (res[0].producto_codigobarra == codigo){
-                                factor_cantidad = 1;
+                                factor_cantidad = cantidad_base;
                                 precio = res[0].producto_precio;
                                 factor_nombre = "precio_normal";
                             }
@@ -1069,7 +1096,7 @@ function buscarporcodigojs()
                             // Como ya se tiene idetificado el factor se procede a ingresar el producto
                             //factor es la cantidad de items que tiene la presentacion, res[0] son todos los datos del producto
 //                            ingresorapidojs(factor_cantidad, res[0]["producto_id"],factor_nombre); 
-                            ingresorapidojs(1, res[0]["producto_id"],factor_nombre); //la cantidad siempre sera 1 porque es proveniente del codigo de barras/cod producto
+                            ingresorapidojs(factor_cantidad, res[0]["producto_id"],factor_nombre); //la cantidad siempre sera 1 porque es proveniente del codigo de barras/cod producto
 
 
                          }
@@ -2254,6 +2281,9 @@ function calcular_cantidad(producto_id){
     $("#cantidad"+producto_id).val(cantidad);
     
 }
+
+
+
 
 //Tabla resultados de la busqueda
 function tablaresultados(opcion)
@@ -7736,7 +7766,19 @@ function buscar_factura(e) {
     }
 }
 
-
+function procesarCodigoBarras(codigo) {
+    
+    // Dividir el código en sus componentes
+    var verificador = codigo[0];
+    var codigoProducto = codigo.substring(1, 7);
+    var cantidad = codigo.substring(7);
+    
+    return {
+        verificador: verificador,
+        codigoProducto: codigoProducto,
+        cantidad: cantidad
+    };
+}
 
 function borrar_datos_cliente(){
     
