@@ -1617,6 +1617,33 @@ class Venta extends CI_Controller{
 
     }
     
+    function ingresarporcodigo()  
+    {   
+
+            
+            $cantidad = $this->input->post('cantidad');
+            $codigo = $this->input->post('codigo');
+            
+            //$producto = $this->Inventario_model->get_inventario_codigo($codigo);
+            $producto = $this->Inventario_model->get_producto_codigo($codigo,$cantidad);
+            
+            echo json_encode($producto);
+            
+//            if ($producto){ //si encontro el producto por el codigo de producto
+//                
+//                echo json_encode($producto);
+//           
+//            }
+//            else
+//            {
+//            
+//                $producto = $this->Inventario_model->get_inventario_codigo_factor($codigo);                
+//                echo json_encode($producto);
+//                
+//            }            
+
+    }
+    
     
  /* 
  */

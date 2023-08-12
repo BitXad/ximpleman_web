@@ -150,7 +150,7 @@ function validar(e,opcion) {
         
         if (opcion==3){   //si la tecla proviene del input codigo de barras          
             
-            $('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojs();
+            $('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojsx();
             
         } 
         
@@ -975,6 +975,92 @@ function buscarporcodigo()
 
 }
 
+function buscarporcodigojsx()
+{
+   var base_url = document.getElementById('base_url').value;
+   var controlador = base_url+'venta/ingresarporcodigo';
+   var codigo = document.getElementById('codigo').value;
+   var decimales = Number(document.getElementById('parametro_decimales').value);
+   var cantidad = 1;
+   //var parametro_sininventario = document.getElementById('parametro_sininventario').value;
+    
+    document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
+    
+    var codigobalanza = 1;
+    
+    if(codigobalanza==1){
+        
+        var identificador =  codigo.substring(0,3);
+        
+        if(identificador==215){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad'])/1000;
+                
+                codigo = codigoProducto;
+        }
+        
+        if(identificador==205){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad'])/1000;
+                
+                codigo = codigoProducto;
+        }
+        
+        if(identificador==224){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad']);
+                
+                codigo = codigoProducto;
+        }
+        
+        //alert("verificador: " +verificador+"\n"+"codigo producto: "+codigoProducto+"\n cantidad: "+cantidad);
+    }
+    
+    //revisará si existe algun producto con el codigo especificado
+    $.ajax({url: controlador,
+        
+           type:"POST",
+           data:{codigo:codigo, cantidad:cantidad},
+           success:function(respuesta){
+               
+               res = JSON.parse(respuesta);
+               
+               tablaproductos();
+
+           },
+           error:function(respuesta){
+               alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
+               
+               $("#codigo").select();
+
+           },
+            complete: function (respuesta) {
+               if (respuesta==null){
+                    alert('El producto no se encuentra registrado o se encuentra agostado en inventario..!!!');
+                }              
+             document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+              $("#codigo").select();
+              
+            }
+        });
+           
+        
+    document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+
+}
+
 function buscarporcodigojs()
 {
    var base_url = document.getElementById('base_url').value;
@@ -1031,7 +1117,7 @@ function buscarporcodigojs()
     $.ajax({url: controlador,
         
            type:"POST",
-           data:{codigo:codigo},
+           data:{codigo:codigo, cantidad:cantidad},
            success:function(respuesta){
                
                var precio = 0;
