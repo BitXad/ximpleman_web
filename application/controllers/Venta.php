@@ -228,6 +228,9 @@ class Venta extends CI_Controller{
         $data['eventos_significativos'] = $this->Eventos_significativos_model->get_all_codigos();
         $data['empresa_email'] = $this->empresa["empresa_email"];
         $data['marcas'] = $this->Venta_model->consultar("select * from marca_producto order by marca_nombre");
+        $data['ventas_guardadas'] = $this->Venta_model->consultar("select *, sum(d.detalleven_total) as totalbs from detalle_venta_temporal d group by d.codigo_venta");
+        
+        
         
         
         if($this->parametros["parametro_factura"]!=3){ // 3 NO FACTURACION HABILITADA
@@ -5520,22 +5523,22 @@ function anular_venta($venta_id){
         $sql ="select *,(TIMESTAMPDIFF(HOUR, cufd_fechavigencia, NOW()) * -1) AS horas_vigencia from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$puntoventa['puntoventa_codigo'];
         $cufd = $this->Venta_model->consultar($sql);
         
-//        if(sizeof($cufd)>0){
-//            echo json_encode(true);
-//        }
-//        else{
-//            echo json_encode(false);
-//        }
+        if(sizeof($cufd)>0){
+            echo json_encode(true);
+        }
+        else{
+            echo json_encode(false);
+        }
         
-        if(sizeof($cufd)>0){ // Si retorna algun cufd
-            
-            if($cufd["horas_vigencia"]>3){ //verifica si la vigencia es mayo a 3 horas
-                
-                echo json_encode(true); //Si hay CUFD vigente
-                
-            } else { echo json_encode(false); } //significa que no hay cufd vigente
-            
-        } else { echo json_encode(false); } //significa que no hay cufd vigente
+//        if(sizeof($cufd)>0){ // Si retorna algun cufd
+//            
+//            if($cufd["horas_vigencia"]>3){ //verifica si la vigencia es mayo a 3 horas
+//                
+//                echo json_encode(true); //Si hay CUFD vigente
+//                
+//            } else { echo json_encode(false); } //significa que no hay cufd vigente
+//            
+//        } else { echo json_encode(false); } //significa que no hay cufd vigente
 
     }
     
@@ -8423,5 +8426,62 @@ function anular_venta($venta_id){
        //**************** fin contenido ***************
         			       
     }         
+    
+   /*
+     * Buscar datos de la factura
+     */
+    function guardar_venta_temporal()
+    {
+        //**************** inicio contenido ***************   
+        
+        if ($this->input->is_ajax_request()) {
+            
+            $usuario_id = $this->session_data['usuario_id'];
+            $nombre_venta = $this->input->post('nombre_venta');
+            $codigo_venta = substr($nombre_venta,1,2).round(rand(),0);
+            
+            $sql = "insert into detalle_venta_temporal
+                    (select *,'{$nombre_venta}', '{$codigo_venta}'  from detalle_venta_aux where usuario_id = {$usuario_id})";
+            //echo $sql;
+            $result = $this->Venta_model->ejecutar($sql);
+            
+            echo json_encode(true);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }    
+       //**************** fin contenido ***************
+        			       
+    }             
+    
+   /*
+     * Buscar datos de la factura
+     */
+    function get_ventas_guardadas()
+    {
+        //**************** inicio contenido ***************   
+        
+        if ($this->input->is_ajax_request()) {
+            
+
+            $sql = "select *, sum(d.detalleven_total) as totalbs from detalle_venta_temporal d 
+                    group by d.codigo_venta
+                    order by d.detalleven_id";
+            //echo $sql;
+            $result = $this->Venta_model->consultar($sql);
+            
+            echo json_encode($result);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }    
+       //**************** fin contenido ***************
+        			       
+    }             
+    
     
 }

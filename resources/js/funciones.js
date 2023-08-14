@@ -150,7 +150,8 @@ function validar(e,opcion) {
         
         if (opcion==3){   //si la tecla proviene del input codigo de barras          
             
-            $('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojsx();
+            //$('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojsx(); realiza la busqueda e insercion mas rapido porque reduce procedimiento, falta completar las operaciones
+            $('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojs();
             
         } 
         
@@ -7520,9 +7521,11 @@ function simular_evento(){
  *  mas de un item (producto)
  *  */
 function existen_bolsa(){
+
     let base_url = document.getElementById('base_url').value;
     let controlador = base_url+'venta/verificaritem_endetalle';
     let res = 0;
+    
     $.ajax({url: controlador,
         type:"POST",
         data:{},
@@ -7540,6 +7543,7 @@ function existen_bolsa(){
         }
     });     
     return res;
+    
 }
 
 function buscar_placa(e){    
@@ -7652,6 +7656,7 @@ function anular_venta(venta_id, factura_id = null, factura_enviada=null){
     
     let base_url = document.getElementById('base_url').value;
     let tiene_factura = document.getElementById("anular_factura"+venta_id).value; 
+    
     if(tiene_factura == 1){
         let anular_factura = document.getElementById("anular_factura"+venta_id).checked;
         if(anular_factura == true){
@@ -7915,6 +7920,81 @@ function procesarCodigoBarras(codigo) {
         cantidad: cantidad
     };
     
+}
+
+function guardar_venta_temporal(){
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/guardar_venta_temporal';
+    let nombre_venta = document.getElementById('nombre_venta').value;
+    
+    
+    if(nombre_venta!=''&&nombre_venta.length>2){
+
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{nombre_venta:nombre_venta},
+                async: false, 
+                success:function(respuesta){
+
+                    let registro =  JSON.parse(respuesta);
+                    
+                    //if(registro == "true"){
+                        mostras_ventas_guardadas();
+                    //}
+                    
+                    
+
+                },
+                error:function(respuesta){
+                    res = 0;
+                }
+            });     
+        
+    }else{
+        alert("Debe registrar un nombre correcto..!!");
+    }
+    
+
+    
+}
+
+function mostras_ventas_guardadas(){
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/get_ventas_guardadas';
+
+
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{},
+                async: false, 
+                success:function(respuesta){
+
+                    let vg =  JSON.parse(respuesta);
+                    let html =  "";
+                    for(var i=0; i<vg.length;i++){
+             
+                        html += "<button class='btn btn-warning btn-xs' onclick='cargar_venta("+JSON.stringify(vg[i]["codigo_venta"])+")' title='"+vg[i]["codigo_venta"]+" "+vg[i]["nombre_venta"]+"'><fa class='fa fa-cart-arrow-down'></fa> <br>"+Number(vg[i]["totalbs"]).toFixed(2)+"<br>"+"</button>";
+                        
+                    }
+                    
+                    $("#div_ventas_guardadas").html(html);
+                    
+
+                },
+                error:function(respuesta){
+                    res = 0;
+                }
+            });     
+
+    
+}
+
+
+function cargar_venta(codigo){
+    
+    alert(codigo);
 }
 
 function borrar_datos_cliente(){

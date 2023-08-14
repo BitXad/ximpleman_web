@@ -836,6 +836,9 @@ window.onkeydown = compruebaTecla;
 <!--            ------------------- fin parametro de buscador ------------------- -->
             
             </div>
+           
+           
+
             
         </div>
 <!-------------------- CATEGORIAS------------------------------------->
@@ -1133,7 +1136,9 @@ window.onkeydown = compruebaTecla;
                         ?>
                         <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-default btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
                         <?php } ?>
-                        <button onclick='finalizarventa();' class='btn btn-default btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar <?php echo $sistema["sistema_moduloventas"]; ?></b></button> 
+                        
+<!--                        <button onclick='finalizarventa();' class='btn btn-default btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar <?php echo $sistema["sistema_moduloventas"]; ?></b></button> -->
+                        <button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalguardarventa"  title="Guarda terporalmente una venta"><span class='fa fa-floppy-o'></span><b> Guardar <?php echo $sistema["sistema_moduloventas"]; ?></b></button> 
                         <?php
                         $nomostrar = "";
                             if($tipousuario_id != 1){
@@ -1157,6 +1162,24 @@ window.onkeydown = compruebaTecla;
         
         <!----------------------------------- BOTONES ---------------------------------->
 
+        <?php if(isset($ventas_guardadas)){ ?>
+                        <font size="1"><b>VENTAS GUARDADAS</b></font>
+                <div class="box" style="border-color:black;">
+                    <div class="box-body">        
+
+                <div class="col-md-12" style="padding:0;" id="div_ventas_guardadas">
+                    <?php
+                        foreach($ventas_guardadas as$vg){ ?>
+                    
+                            <button class="btn btn-warning btn-xs" onclick="cargar_venta('<?php echo $vg["codigo_venta"]; ?>')" title="<?php echo $vg["codigo_venta"]." ".$vg["nombre_venta"] ?>"><fa class="fa fa-cart-arrow-down"></fa> <?php echo "<br>".number_format($vg["totalbs"],2,".",",")."<br>"; ?></button>
+                    
+                    <?php } ?>
+
+                </div>
+
+        <?php } ?>
+        
+        
         <font size="1"><b>OPCIONES</b></font>
         <div class="box" style="border-color:black;">
             <div class="box-body">        
@@ -2610,7 +2633,7 @@ window.onkeydown = compruebaTecla;
 
 <!--<p id="status" class="online">online</p>-->
 
-<!--<button class="btn btn-default btn-xs" onclick="verificar_conexion()"><fa class="fa fa-cloud"></fa> verificar conexion</button>-->
+<!--<button class="btn btn-default btn-xs" onclick="verificar_conexion()"><fa class="fa fa-cloud"></fa> Verificar Conexion</button>-->
 
 
 <script type="text/javascript"> 
@@ -2942,7 +2965,7 @@ Pago cuota coperativa 7.00</textarea>
 <!------------------------------------------------------------------------------->
 
 
-<div >
+<div hidden>
     <button type="button" id="boton_buscarfactura" class="btn btn-default" data-toggle="modal" data-target="#modalbuscarfactura" >
       CANTIDAD PRODUCTOS
     </button>
@@ -3079,6 +3102,99 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div hidden>
+    <button type="button" id="boton_guardarventa" class="btn btn-default" data-toggle="modal" data-target="#modalguardarventa" >
+      GUARDAR VENTA
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalguardarventa" tabindex="-1" role="dialog" aria-labelledby="modalguardarventa" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">GUARDAR VENTA</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-content">
+			<div class="modal-header">
+                            
+
+                            <!--<h4 class="modal-title" id="myModalLabel"><b>PEDIDOS/PREVENTAS</b></h4>-->
+                                
+                            <div class="input-group"> <span class="input-group-addon">Nombre</span>
+                                <input id="nombre_venta" type="text" class="form-control" placeholder="Nombre, para guardar la venta temporal" onKeyUp="this.value = this.value.toUpperCase();">
+                            </div>
+                                
+			</div>
+
+                        <div class="box-body table-responsive">
+                                <center style="font-size: 16px; font-weight: bold;">
+                                    <fa class="fa fa-cart-arrow-down"></fa> 
+                                    ADVERTENCIA                                
+                                    <fa class="fa fa-clock-o"></fa> 
+                                </center>
+                                <br>
+                                <center>
+                                Esta a punto de guardar la venta actual de forma temporal.
+                                <br>¿Desea continuar?
+                                </center>
+             
+                        </div>
+
+                        <div class="modal-footer" style="text-align: center">
+                            <button type="button" class="btn btn-success" onclick="guardar_venta_temporal()"><fa class="fa fa-floppy-o"></fa> Guardar Venta</button>
+                            <button type="button" class="btn btn-default" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+            
+		</div>
+        
+        
+<!--        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">BUSCAR FACTURA</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="loader3" style="display:none; text-align: center">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                <div class="col-md-12" style="line-height: 8px;">
+                    <label for="codigo_evento" class="control-label" id="producto_id">1</label><br>
+                    <label for="codigo_evento" class="control-label" id="producto_nombre">HUB/SWICH TP-LINK 8-PUERTOS & 10/100 MBPS TL-SF1008D</label><br>
+                    <label for="codigo_evento" class="control-label" id="producto_datos" style="font-size: 10px;">23434/TP-LINK/PIEZA/4654646546</label>  
+                    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>
+                    
+                </div>
+                <br>
+                <br>
+
+            </div>
+            
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Enviar Paquete</button>
+                <button type="button" class="btn btn-default" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+            
+        </div>-->
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
 
 
 <?php
