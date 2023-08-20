@@ -176,18 +176,11 @@
                                     
                                     <?php
                                     
-                                        if ($factura[0]['factura_codigodescripcion']!="VALIDADA"){ 
-                                                if ($factura[0]['factura_mensajeslist']!=""){
-                                                        
-                                                    echo "<b style='font-size: 25px;'>FACTURA NO VALIDA <br><br> NO ENVIADA</b><br><br><br>";
-                                                    
-                                                }
-                                                    
-                                        }
+
                                            
 
                                     $titulo1 = "FACTURA";
-                                    $subtitulo_factura = "CON DERECHO A CR&Eacute;DITO FISCAL";
+                                    $subtitulo_factura = "CON DERECHO A CRÉDITO FISCAL";
                                     $opc = $factura[0]['docsec_codigoclasificador'];
                                     switch($opc){
                                         default: $titulo1 = "FACTURA";
@@ -197,6 +190,10 @@
                                         case 8: $titulo1 = "FACTURA TASA CERO - VENTA DE LIBROS O TRANSPORTE DE CARGA INTERNACIONAL";
                                                 $subtitulo_factura = "SIN DERECHO A CR&Eacute;DITO FISCAL";
                                                 break;
+                                            
+                                            
+                                            
+                                            
                                     }
                                     
                                     /*
@@ -210,11 +207,20 @@
 
                                     <?php 
                                     
-                                        if($parametro["parametro_mostrarempresa"]==1){ 
-                                            echo "<br>".$empresa[0]['empresa_nombre']; 
-                                        
-                                        }?>
+                                    if ($factura[0]['factura_codigodescripcion']!="VALIDADA"){ 
+                                            if ($factura[0]['factura_tipoemision']!=2){
+
+                                                echo "<b style='font-size: 20px; line-height:30px;'>FACTURA NO VALIDA</b> <br><b style='background-color: #800000 !important; -webkit-print-color-adjust: exact; color:#fff !important; font-size: 20px;'>*** NO ENVIADA ***</b>";
+
+                                            }
+
+                                    }
                                     
+                                    if($parametro["parametro_mostrarempresa"]==1){ 
+                                        echo "<br>".$empresa[0]['empresa_nombre']; 
+
+                                    }?>
+
 
                                     <?php
                                         if($parametro["parametro_mostrareslogan"]==1){ 
@@ -536,7 +542,27 @@
                             <img src="<?php echo $codigoqr; ?>" width="100" height="100">
                             
                         </center>
-                        USUARIO: <?php echo $factura[0]['usuario_nombre']." /TRANS: ".$factura[0]['venta_id']; ?>
+                        USUARIO: <?php echo $factura[0]['usuario_nombre']." /TRANS: "; ?>
+                        
+                        <?php
+
+                        $opcion = $parametro["parametros_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
+                    
+                        if ($opcion==1){ ?>
+                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
+                        <?php } ?>
+
+                        <?php   if ($opcion==2){ ?>
+                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_id']; ?></b></font>
+                        <?php   } ?>
+
+                        <?php   if ($opcion==3){ ?>
+                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['factura_numero']; ?></b></font>
+                        <?php   } ?>
+
+                        <?php   if ($opcion==4){ ?>
+                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numerotransmes']; ?></b></font>
+                        <?php   } ?>
                     </td>
                 </tr>
                 <tr><td></td></tr>

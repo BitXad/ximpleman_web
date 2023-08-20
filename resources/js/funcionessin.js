@@ -1268,11 +1268,12 @@ function homologar_categoria(){
     var codigo_actividad = document.getElementById("codigo_actividad").value;
     var codigo_producto = document.getElementById("codigo_producto").value;
     var categoria_id = document.getElementById("categoria_id").value;
+    var unidad_id = document.getElementById("producto_unidad").value;
     
     $("#codigo_actividad").val(codigo_actividad);
     $("#codigo_producto").val(codigo_producto);
     
-    //alert(codigo_actividad+" * "+codigo_producto+" * "+categoria_id)
+    //alert(" unidad_id: "+unidad_id);
     
         var opcion = confirm("Esta Operación afectará a la Base de datos. \n ¿Desea Continuar?");
 
@@ -1281,7 +1282,7 @@ function homologar_categoria(){
         //document.getElementById('loader_revocado').style.display = 'block';
         $.ajax({url:controlador,
                 type:"POST",
-                data:{codigo_actividad:codigo_actividad, codigo_producto:codigo_producto, categoria_id:categoria_id},
+                data:{codigo_actividad:codigo_actividad, codigo_producto:codigo_producto, categoria_id:categoria_id,unidad_id:unidad_id},
                 success:function(respuesta){
                     
                     var registros = JSON.parse(respuesta);

@@ -608,11 +608,37 @@ class Venta extends CI_Controller{
                 //********************************************************
                 
                 
-                
-                
-                
                 $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
                 $nombre_archivo =  $dosificacion[0]["dosificacion_documentosector"];
+                
+                //****************** contador de transacicones mensuales
+                $venta_numerotransmes = 0;
+                
+                if($this->parametros["parametro_contarventasmes"]==1){// Si contador de transacciones esta activada
+                    
+                    //Verificar si es el mes correcto
+                    $numeroMes = date("n");
+                    
+                    if($numeroMes != $dosificacion[0]["dosificacion_mesactual"]){   // Si el conteo es del mes correcto, incrementa la numeracion
+                        
+                        $SQLcontador = "update dosificacion d set
+                                        d.dosificacion_numerotransmes = (SELECT COUNT(*) AS cantidad_ventas FROM venta
+                                        WHERE MONTH(venta_fecha) = MONTH(CURRENT_DATE()) AND YEAR(venta_fecha) = YEAR(CURRENT_DATE()))
+                                        ,d.dosificacion_mesactual = MONTH(now())";
+                        
+                        $contador_mes = $this->Venta_model->Consultar($SQLcontador);
+                        $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+                        
+                        
+                    }
+                    
+                    $venta_numerotransmes = $dosificacion[0]["dosificacion_numerotransmes"]+1;
+                        
+                    
+                }
+                    
+                    
+                //****************** fin contador de transacicones mensuales
                
                 if($dosificacion[0]["docsec_codigoclasificador"] == 23){
                     //$cliente_nombre = "'S/N'";
@@ -649,7 +675,7 @@ class Venta extends CI_Controller{
                        "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuentoparcial,venta_descuento,venta_total,".
                        "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,".
                        "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id,".
-                       "venta_ice, venta_giftcard, venta_detalletransaccion ) value(".$cad.")";
+                       "venta_ice, venta_giftcard, venta_detalletransaccion,venta_numerotransmes) value(".$cad.", {$venta_numerotransmes})";
                 $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
                 
 
@@ -660,6 +686,16 @@ class Venta extends CI_Controller{
                     $this->Venta_model->ejecutar($actualizarventa);
                     
                 }
+                
+                
+                //contabilidar las ventas
+                if ($this->parametros['parametro_contarventasmes']==1){
+                    
+                    $actualizarventa = "update dosificacion set dosificacion_numerotransmes = dosificacion_numerotransmes + 1";
+                    $this->Venta_model->ejecutar($actualizarventa);
+                    
+                }
+                
                 
                    
                 $sql =  "insert into detalle_venta

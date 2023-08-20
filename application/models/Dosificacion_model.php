@@ -70,17 +70,8 @@ class Dosificacion_model extends CI_Model
         
         $dosificacion = $this->db->query("
             SELECT
-                d.`dosificacion_id`, e.`estado_descripcion`,
-                em.`empresa_nombre`, d.`dosificacion_nitemisor`,
-                d.`dosificacion_autorizacion`, d.`dosificacion_llave`,
-                d.`dosificacion_numfact`, d.`dosificacion_leyenda1`,
-                d.`dosificacion_leyenda2`, d.`dosificacion_sucursal`,
-                d.`dosificacion_leyenda3`, d.`dosificacion_leyenda4`,
-                d.`dosificacion_sfc`, d.`dosificacion_actividad`,
-                d.`dosificacion_fechahora`, d.`dosificacion_leyenda5`, 
-                d.`dosificacion_fechalimite`, d.`dosificasion_actividadsec`,
-                d.dosificacion_cafc,d.dosificacion_modalidad, docsec_codigoclasificador,
-                d.dosificacion_documentosector
+                e.`estado_descripcion`,
+                em.`empresa_nombre`, d.*
 
             FROM
                 dosificacion d, estado e, empresa em

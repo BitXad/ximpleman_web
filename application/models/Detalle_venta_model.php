@@ -271,6 +271,9 @@ function ventas_dia($estado)
                 left join subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
                 
                 where d.producto_id = p.producto_id and venta_id = ".$venta_id;
+
+        
+        //echo $venta_id;
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
     }

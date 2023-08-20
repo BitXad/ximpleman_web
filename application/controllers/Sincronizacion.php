@@ -35,6 +35,7 @@ class Sincronizacion extends CI_Controller{
             'Unidad_model',
             'Usuario_model',
             'ProductosServicios_model',
+            'Producto_model',
             'Sistema_model',
         ]);
         //$this->load->library('lib_nusoap/nusoap');    
@@ -108,6 +109,7 @@ class Sincronizacion extends CI_Controller{
             case 6:
                 $data['datos'] = $this->ProductosServicios_model->get_all_productosServicios();
                 $data['categorias'] = $this->Categoria_producto_model->get_all_categoria_producto();
+                $data['unidades'] = $this->Producto_model->get_all_unidad();
                 $data['actividad_principal'] = $this->Categoria_producto_model->get_all_categoria_producto();
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
@@ -1236,13 +1238,22 @@ class Sincronizacion extends CI_Controller{
         $codigo_actividad = $this->input->post("codigo_actividad");
         $codigo_producto = $this->input->post("codigo_producto");
         $categoria_id = $this->input->post("categoria_id");
+        $unidad_id = $this->input->post("unidad_id");
         
         //Eliminamos la tabla sincronizacion
         if ($categoria_id == 0){
-            $sql = "update producto set producto_codigosin = ".$codigo_producto;            
+            $sql = "update producto set
+                    producto_codigosin = {$codigo_producto},
+                    producto_codigounidadsin = {$unidad_id},
+                    producto_unidad = (select unidad_nombre  from unidad where unidad_id = {$unidad_id})";   
             
         }else{
-            $sql = "update producto set producto_codigosin = ".$codigo_producto." where categoria_id = ".$categoria_id;            
+            $sql = "update producto set 
+                    producto_codigosin = {$codigo_producto},
+                    producto_codigounidadsin = {$unidad_id},
+                    producto_unidad = (select unidad_nombre  from unidad where unidad_id = {$unidad_id})                        
+                    where categoria_id = {$categoria_id}";
+            
         }
         $this->Venta_model->ejecutar($sql);
         

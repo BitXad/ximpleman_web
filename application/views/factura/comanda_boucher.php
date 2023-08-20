@@ -127,33 +127,27 @@ border-bottom : 1px solid #aaa;
 
 
                 <?php
-                    $opcion = 2;
-                if ($opcion==1){ ?>
+
+                    $opcion = $parametro[0]["parametros_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
+                    
+                        if ($opcion==1){ ?>
                             <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
                 <?php } ?>
                             
-                <?php if ($opcion==2){ ?>
+                <?php   if ($opcion==2){ ?>
                             <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font>
-                <?php } ?>
+                <?php   } ?>
+                            
+                <?php   if ($opcion==3){ ?>
+                            <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['factura_numero']; ?></b></font>
+                <?php   } ?>
+                            
+                <?php   if ($opcion==4){ ?>
+                            <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_numerotransmes']; ?></b></font>
+                <?php   } ?>
                             
                             
-                            
-                <?php 
-                
-                //var_dump(isset($venta[0]['factura_numero']));
-                
-                if ($opcion==3){
-                                       
-                            if (isset($venta[0]['factura_numero'])){ ?>
-                            
-                                <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['factura_numero']; ?></b></font>
-                                
-                            <?php }else{ ?>
-                                
-                                <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font>
-                                
-                            <?php } ?>
-                <?php } ?>
+               
                 
                 <?php if($venta[0]['tiposerv_id']>0){ ?>
                 <br>
@@ -166,8 +160,8 @@ border-bottom : 1px solid #aaa;
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
-                <b>FECHA: </b><span><?php echo $fecha_d_m_a." ".$venta[0]['venta_hora']; ?></span> <br>
-                    <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
+                FECHA: <b><span><?php echo $fecha_d_m_a." ".$venta[0]['venta_hora']; ?></span> </b><br>
+                SEÑOR(ES): <b><?php echo $venta[0]['cliente_razon'].""; ?></b>
                
             </center>
             <span class="text-bold" style="font-size: 12px">
@@ -193,7 +187,7 @@ border-bottom : 1px solid #aaa;
                  $cantidad = 0;
                  $total_descuento = 0;
                  $total_final = 0;
-
+                // var_dump($detalle_venta);
                  foreach($detalle_venta as $d){;
                         $cont = $cont+1;
                         $cantidad += $d['detalleven_cantidad'];
@@ -246,12 +240,12 @@ border-bottom : 1px solid #aaa;
         <td colspan="2" align="right" style="padding: 0; padding: 0; border-top: dashed 1px #000;"><center style="font-weight: bold; font-size: 12px;"><?php echo number_format($total_final,2,'.',','); ?></center></td>
     </tr>
     <tr>
-        <td style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.8cm; font-size: 8pt;" colspan="4"><center><?php echo "<b>OBS.: </b>".$venta[0]['venta_glosa']; ?></center></td>
+        <td style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.8cm; font-size: 8pt;" colspan="4"><center><?php echo "OBS.: <b>".$venta[0]['venta_glosa']."</b>"; ?></center></td>
     </tr>
 
     <tr>
           <td  colspan="4" style="border-top:solid 1px #000;">
-               CAJERO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
+               CAJERO: <?php echo $venta[0]['usuario_nombre']; ?>
 <!--               / TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>-->
             <center>
             <font size="2">

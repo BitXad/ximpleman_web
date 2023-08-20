@@ -120,19 +120,36 @@
                     </select>
                 </div>
                 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Codigo Actividad</label>
                     <div class="form-group">
-                        <input type="text" name="codigo_actividad" value="00" class="form-control" id="codigo_actividad" />
+                        <input type="text" name="codigo_actividad" value="00" class="form-control" id="codigo_actividad" readonly/>
                     </div>
                 </div>
                 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <label for="nombre_archivo" class="control-label"><span class="text-danger">*</span>Codigo Producto</label>
                     <div class="form-group">
-                        <input type="text" name="codigo_producto" value="00" class="form-control" id="codigo_producto" />
+                        <input type="text" name="codigo_producto" value="00" class="form-control" id="codigo_producto" readonly/>
                     </div>
                 </div>
+                
+                    <div class="col-md-4">
+                        <label for="producto_unidad" class="control-label">* Unidad</label>
+                        <div class="form-group">
+                            <select name="producto_unidad" id="producto_unidad" class="form-control">
+                                <option value="">- UNIDAD -</option>
+                                <?php 
+                                foreach($unidades as $unidad)
+                                {
+                                    //$selected = ($unidad['unidad_id'] == $producto['producto_unidad']) ? ' selected="selected"' : "";
+
+                                    echo '<option value="'.$unidad['unidad_id'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
 <!--                <div class="col-md-4">
                     <label for="cant_fact" class="control-label"><span class="text-danger">*</span>Cantidad Facturas</label>
                     <div class="form-group">

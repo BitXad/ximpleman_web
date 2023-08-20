@@ -599,7 +599,28 @@ border-bottom : 1px solid #aaa;
                             <?php echo $factura[0]['factura_leyenda4'];?>
 
                         </center>
-                        USUARIO: <?php echo $factura[0]['usuario_nombre']." /TRANS: ".$factura[0]['venta_id']; ?>
+                        USUARIO: <?php echo $factura[0]['usuario_nombre']." /TRANS: "; ?>
+                                                
+                        <?php
+
+                        $opcion = $parametro["parametros_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
+                    
+                        if ($opcion==1){ ?>
+                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
+                        <?php } ?>
+
+                        <?php   if ($opcion==2){ ?>
+                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_id']; ?></b></font>
+                        <?php   } ?>
+
+                        <?php   if ($opcion==3){ ?>
+                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['factura_numero']; ?></b></font>
+                        <?php   } ?>
+
+                        <?php   if ($opcion==4){ ?>
+                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numerotransmes']; ?></b></font>
+                        <?php   } ?>
+                                    
                     </div>
                     <div style="float: right;width: 80px;">
                         <center>
