@@ -938,6 +938,24 @@ div {
                         </div>
                     </div>
                     
+                    <div class="col-md-1">
+                        <label for="parametro_contarventas" class="control-label" title="Cuenta las ventas para los recibos">CONTAR<br>VENTAS</label>
+                        <div class="form-group">
+                            <select name="parametro_contarventas" class="form-control" id="parametro_contarventas">
+                                <option value="2" <?php if($parametro['parametro_contarventas']=="0"){ ?> selected <?php } ?>>NO</option>
+                                <option value="1" <?php if($parametro['parametro_contarventas']=="1"){ ?> selected <?php } ?>>SI</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-1">
+                        <label for="parametro_numeroventa" class="control-label">CONTADOR<br>VENTAS</label>
+                        <div class="form-group">
+                            <input type="text" step="any" name="parametro_numeroventa" value="<?php echo ($this->input->post('parametro_numeroventa') ? $this->input->post('parametro_numeroventa') : $parametro['parametro_numeroventa']); ?>" class="form-control" id="parametro_numeroventa" />
+                        </div>
+                    </div>
+                    
+                    
                 </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(214, 114, 26, 0.3);"><u><b>CLIENTES</b></u><br>

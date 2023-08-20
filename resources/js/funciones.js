@@ -126,6 +126,7 @@ function validar(e,opcion) {
                         $("#zona_id").val(0);                    
 
                 }else{      
+                    
                     $("#razon_social").css("background-color", "#1221");
                     $("#razon_social").removeAttr("readonly");
                     
@@ -255,6 +256,7 @@ function buscarcliente(){
     var base_url = document.getElementById('base_url').value;
     var nit = document.getElementById('nit').value;
     var parametro_factura = document.getElementById('parametro_factura').value;
+    var parametro_verificarconexion = document.getElementById('parametro_verificarconexion').value;
     
     if (nit==''){ //Si el campo Nit esta vacio, genera NIT/Codigo automaticamente
         var cod = generar_codigo();
@@ -274,9 +276,8 @@ function buscarcliente(){
             success:function(respuesta){
                 //Respuesta de la busqueda
                 var registros = eval(respuesta);
-                              
-                //Si el cliente ya esta registrado  en el sistema carga los datos
-                if (registros[0]!=null){ 
+                
+                if (registros[0]!=null){ //Si el cliente ya esta registrado  en el sistema carga los datos
                     
                     $("#razon_social").val(registros[0]["cliente_razon"]);
                     document.getElementById('telefono').focus();
@@ -370,8 +371,15 @@ function buscarcliente(){
                             
                         //if (dosificacion_modalidad == 1){ //modalidad 1= Elec.Enlinea 2=computarizada en linea
                         if (parametro_tipoemision == 1){ //tipoemision 1 = En linea 2 = Fuera de linea
-                        
-                            let result = verificar_conexion_enventas();
+                           // alert("pasa por aqui");
+                           let result;
+                           if (parametro_verificarconexion==1){ //1 si, 0 no                              
+                                result = verificar_conexion_enventas();
+                                
+                           }else{
+                                result = true;                               
+                             }
+                            
                             let res = result;
                             //alert(res);
                             if(res){ //Si existe conexion
@@ -3353,8 +3361,10 @@ function fecha_actual(){
 }
 
 function numero_venta(){
+    
     var base_url = document.getElementById('base_url').value;
-    var controlador = document.getElementById('base_url').value+"venta/numero_ventas";
+    var controlador = base_url+"venta/numero_ventas";
+    var res = 0;    
     
    $.ajax({url: controlador,
            type:"POST",
@@ -3364,11 +3374,13 @@ function numero_venta(){
                
                var resultado = eval(respuesta);
                
-                res = resultado[0]["cantidad"];
+               res = resultado[0]["cantidad"];
+                //console.log("contador: "+res["cantidad"]);
+                //alert(JSON.stringify(resultado));
+                
            },
            error:function(respuesta){
-               
-             res = 0;
+              res = 0;
            }
     });     
     
@@ -3481,6 +3493,7 @@ function registrarventa(cliente_id)
     let datos_tasassubtotal = document.getElementById('datos_tasassubtotal').value;
     let datos_otrospagos = document.getElementById('datos_otrospagos').value;
     let datos_pagossubtotal = document.getElementById('datos_pagossubtotal').value;
+    let parametro_comprobante = document.getElementById('parametro_comprobante').value;
     
     
     if (registroeventos_codigo>0){
@@ -3529,6 +3542,11 @@ function registrarventa(cliente_id)
         venta_numeroventa = numero_venta();
     }
     
+    if(parametro_comprobante == 2){ 
+        venta_numeroventa = numero_venta();
+        //alert(venta_numeroventa);
+    }
+    
     document.getElementById('boton_finalizar').style.display = 'none'; //mostrar el bloque del loader
    
     if( facturado == 1){     
@@ -3575,37 +3593,81 @@ function registrarventa(cliente_id)
                 datos_otrospagos:datos_otrospagos,datos_pagossubtotal:datos_pagossubtotal
             },
             success:function(respuesta){
-                
-                let res = JSON.parse(respuesta);
-                //alert(JSON.stringify(res));
                 if(parametro_puntos >0){
                     registrarpuntos(cliente_id, venta_total);
                 }
-                
-                let parametro_tiposistema = document.getElementById('parametro_tiposistema').value;
-
-                if(parametro_tiposistema != 1){
-                    if(facturado == 1){
-                        if(res.mensajesList.codigoDescripcion == "VALIDADA"){
-                            alert("FACTURA ENVIADA");
-                        }else{
-                            if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){
-                                alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
-
-                                if(res.mensajesList.codigo == 953){                    
-                                    //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
-                                    solicitudCufd(punto_venta);                    
-                                }
-                            }
-                        }
-                    }
+                let docsec_codigoclasificador = document.getElementById('docsec_codigoclasificador').value;
+                if(docsec_codigoclasificador != 23){
+                    eliminardetalleventa();
                 }
                 
-                eliminardetalleventa();
+                //eliminardetalleventa();
+                if (registroeventos_codigo>0){
+                    $('#evento_contingencia').prop('selectedIndex',0);
+                }
+                var res = JSON.parse(respuesta);                
+
+//                alert(res.codigoDescripcion);
+//                alert(res.mensajesList.codigo);
+              
+//                if(res.mensajesList.codigo == 953){                    
+//                    alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
+//                    solicitudCufd(punto_venta);                    
+//                }
+//                
+//                
+//                if((res.mensajesList.codigo >= 1037)||(res.mensajesList.codigo == 988)||(res.mensajesList.codigo == 993)||(res.mensajesList.codigo == 988) ){                    
+                let parametro_tiposistema = document.getElementById('parametro_tiposistema').value;
                 
-                //console.log(res.comunicacion);
-                //alert(JSON.stringify(res));
-                //if (pedido_id>0){ pedidos_pendientes(); }
+               
+                var motivo = "";
+                var html = "";
+                var mensaje = "";
+                
+                
+                
+                if(parametro_tiposistema != 1){
+                    
+                    if(res.mensajesList.codigoDescripcion == "VALIDADA"){
+                            //alert("FACTURA ENVIADA");    
+                        //html = "<span class='btn btn-info btn-block' style='font-family: Arial; line-height: 9pt;'><b style='font-family: Arial; font-size: 18pt;'>ENVIADA</b><br>"+mensaje+"</span>";
+                        
+                        document.getElementById('mensaje_enviado').style.display = 'block';
+                        document.getElementById('mensaje_no_enviado').style.display = 'none';
+                    
+                    }else{
+                        
+                          //alert("FACTURA NO ENVIADA");
+                          //alert("FACTURA NO ENVIADA CODIGO: "+JSON.stringify(res));
+
+                        if((res.mensajesList.codigo >= 900)&&(res.mensajesList.codigo <= 1100)){
+                            
+                            mensaje = "ERROR "+res.mensajesList.codigo+" * "+res.mensajesList.descripcion;
+                            //alert("FACTURA NO ENVIADA: "+res.mensajesList.descripcion);
+
+                            if(res.mensajesList.codigo == 953){                    
+                                //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
+                                solicitudCufd(punto_venta);                    
+                            }
+                            
+                        }else{
+                            mensaje = "ERROR: "+JSON.stringify(res);
+                        }
+                        
+                        
+                        document.getElementById('mensaje_error').innerHTML = mensaje;
+                                
+                        document.getElementById('mensaje_enviado').style.display = 'none';
+                        document.getElementById('mensaje_no_enviado').style.display = 'block';
+//                        html = "<span class='btn btn-danger btn-block' style='font-family: Arial; line-height: 9pt;'><b style='font-family: Arial; font-size: 18pt;'>NO ENVIADA</b><br>"+mensaje+"<br>Debe volver a emitir el documento...!</span>";
+                        
+                    }
+                    
+                }
+                //$("#div_mensaje").html(html);
+               
+                
+            
             },
             error: function(respuesta){
                 alert("Revise los datos de la venta por favor...!");   
@@ -7938,12 +8000,10 @@ function guardar_venta_temporal(){
                 success:function(respuesta){
 
                     let registro =  JSON.parse(respuesta);
-                    
-                    //if(registro == "true"){
+
+                        tablaproductos();
                         mostras_ventas_guardadas();
-                    //}
-                    
-                    
+                        $("#nombre_venta").val("");
 
                 },
                 error:function(respuesta){
@@ -7959,6 +8019,7 @@ function guardar_venta_temporal(){
     
 }
 
+//Dibuja los botones de las ventas guardadas
 function mostras_ventas_guardadas(){
     
     let base_url = document.getElementById('base_url').value;
@@ -7993,9 +8054,57 @@ function mostras_ventas_guardadas(){
 
 
 function cargar_venta(codigo){
-    
-    alert(codigo);
+
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/mostrar_ventas_guardadas';
+
+
+
+            var r = confirm("ADVERTENCIA: Esta operación eliminara la operacion de venta actual. \n ¿Desea Continuar?");
+
+            if (r == true) {
+
+
+                    $.ajax({url: controlador,
+                        type:"POST",
+                        data:{codigo:codigo},
+                        async: false, 
+                        success:function(respuesta){
+
+                           var preg = confirm("ADVERTENCIA: Desea eliminar la venta guardada. \n ");
+                            
+                            tablaproductos();
+                            mostras_ventas_guardadas();
+//                            if (preg == true) {  
+//                                
+//                                eliminar_productos(codigo);
+//                                
+//                            }
+                        },
+                        error:function(respuesta){
+                            res = 0;
+                        }
+                    });     
+                                
+            }else{                   
+                
+            }
+            
 }
+
+
+function cliente_sinnombre(){
+    
+    $("#nit").val("1234");
+    validar(13,1);
+    document.getElementById('facturado').checked = false;
+    $("#razon_social").val("SIN NOMBRE");    
+    
+   // alert("je je je je");
+    
+}
+
+
 
 function borrar_datos_cliente(){
     
@@ -8198,7 +8307,7 @@ function borrar_datos_cliente(){
     }
     
     
-    $("#span_buscar_cliente").click();   
+    //$("#span_buscar_cliente").click();   
     $("#boton_presionado").val(0);
     
 

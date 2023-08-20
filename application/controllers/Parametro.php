@@ -492,6 +492,8 @@ class Parametro extends CI_Controller{
                     'parametro_redireccionusuario' => $this->input->post('parametro_redireccionusuario'),
                     'parametro_comprobante' => $this->input->post('parametro_comprobante'),
                     'parametro_verificarconexion' => $this->input->post('parametro_verificarconexion'),
+                    'parametro_numeroventa' => $this->input->post('parametro_numeroventa'),
+                    'parametro_contarventas' => $this->input->post('parametro_contarventas'),
                 );
                 
                 

@@ -820,5 +820,26 @@ function get_busqueda($condicion)
         return $this->db->query($sql)->row_array();
         
     }
+    /**
+     * Obtener le producto en base al id
+     */
+    function cargar_productos_detalle_temporal($codigo){
+        
+        $sql = "insert into detalle_venta_aux(producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, 
+                detalleven_descuento, detalleven_descuentoparcial, detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, detalleven_tipocambio,
+                 usuario_id, existencia, producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra, detalleven_envase, detalleven_nombreenvase, 
+                 detalleven_costoenvase, detalleven_precioenvase, detalleven_cantidadenvase, detalleven_garantiaenvase, detalleven_devueltoenvase, detalleven_montodevolucion, 
+                 detalleven_prestamoenvase, promocion_id, clasificador_id, detalleven_unidadfactor, preferencia_id, detalleven_tc) 
+                 
+                (select producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, 
+                detalleven_descuento, detalleven_descuentoparcial, detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, detalleven_tipocambio,
+                 usuario_id, existencia, producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra, detalleven_envase, detalleven_nombreenvase, 
+                 detalleven_costoenvase, detalleven_precioenvase, detalleven_cantidadenvase, detalleven_garantiaenvase, detalleven_devueltoenvase, detalleven_montodevolucion, 
+                 detalleven_prestamoenvase, promocion_id, clasificador_id, detalleven_unidadfactor, preferencia_id, detalleven_tc
+                 from detalle_venta_temporal where codigo_venta = '{$codigo}')";
+                 
+        $this->db->query($sql);
+        
+    }
     
 }

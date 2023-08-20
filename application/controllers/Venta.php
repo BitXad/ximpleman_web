@@ -652,7 +652,16 @@ class Venta extends CI_Controller{
                        "venta_ice, venta_giftcard, venta_detalletransaccion ) value(".$cad.")";
                 $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
                 
+
+                //contabilidar las ventas
+                if ($this->parametros['parametro_contarventas']==1){
                     
+                    $actualizarventa = "update parametros set parametro_numeroventa = parametro_numeroventa + 1 where parametro_id = ".$this->parametros['parametro_id'];
+                    $this->Venta_model->ejecutar($actualizarventa);
+                    
+                }
+                
+                   
                 $sql =  "insert into detalle_venta
                 (producto_id,
                   venta_id,
@@ -1006,6 +1015,18 @@ class Venta extends CI_Controller{
                         $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
                         $factura_actividad     = $dosificacion[0]['dosificacion_actividad'];
                         $factura_enviada = 0;// 0 = falso
+                        
+                        
+                        
+                            if ($this->parametros["parametro_comprobante"]==2){ //si es factura trcha
+                                
+                                if ($this->parametros['parametro_contarventas']==1){
+
+                                $actualizarventa = "update parametros set parametro_numeroventa = ".$factura_numero." where parametro_id = ".$this->parametros['parametro_id'];
+                                $this->Venta_model->ejecutar($actualizarventa);
+
+                                }
+                            }
                         
                         if($this->parametros['parametro_tiposistema'] != 1){// Si es diferente a Sistema de facturacion computarizado(1)
                             // facturacion nueva
@@ -3698,7 +3719,7 @@ function anular_venta($venta_id){
             
     
     //$sql =  "delete from detalle_venta where venta_id = ".$venta_id;
-    $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_total = 0 where venta_id = ".$venta_id;
+    $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_total = 0, detalleven_caracteristicas='', detalleven_preferencia='' where venta_id = ".$venta_id;
     $this->Venta_model->ejecutar($sql);
             
     //$sql =  "delete from venta where venta_id = ".$venta_id;
@@ -4308,14 +4329,14 @@ function anular_venta($venta_id){
         //if($this->acceso(12)){
         //**************** inicio contenido ***************       
 
-            $usuario_vendedor = $this->session_data['usuario_id'];
-            $usuario_id = $this->input->post('usuario_id');
+            //$usuario_vendedor = $this->session_data['usuario_id'];
+            //$usuario_id = $this->input->post('usuario_id');
 
 
-            $sql =  "select count(*)+1 as cantidad from venta where venta_fecha = date(now())";
+            //$sql =  "select count(*)+1 as cantidad from venta where venta_fecha = date(now())";
+            $sql =  "select parametro_numeroventa + 1 as cantidad from parametros where parametro_id = ".$this->parametros['parametro_id'];
             $res = $this->Venta_model->consultar($sql);
             
-                        
             echo json_encode($res);
 
 
@@ -8443,6 +8464,40 @@ function anular_venta($venta_id){
             $sql = "insert into detalle_venta_temporal
                     (select *,'{$nombre_venta}', '{$codigo_venta}'  from detalle_venta_aux where usuario_id = {$usuario_id})";
             //echo $sql;
+            $result = $this->Venta_model->ejecutar($sql);
+            
+            $sql = "delete from detalle_venta_aux where usuario_id = {$usuario_id}";
+            //echo $sql;
+            $result = $this->Venta_model->ejecutar($sql);
+            
+            echo json_encode(true);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }    
+       //**************** fin contenido ***************
+        			       
+    }             
+    
+   /*
+     * cargar productos
+     */
+    function mostrar_ventas_guardadas()
+    {
+        //**************** inicio contenido ***************   
+        
+        if ($this->input->is_ajax_request()) {
+            
+            $codigo_venta = $this->input->post('codigo');
+            
+            $sql = "truncate detalle_venta_aux";
+            $result = $this->Venta_model->ejecutar($sql);
+            
+            $result = $this->Venta_model->cargar_productos_detalle_temporal($codigo_venta);
+            //echo $sql;
+            $sql = "delete from detalle_venta_temporal where codigo_venta = '{$codigo_venta}'";
             $result = $this->Venta_model->ejecutar($sql);
             
             echo json_encode(true);

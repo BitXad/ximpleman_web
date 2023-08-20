@@ -159,8 +159,8 @@ margin : 0 0 0px 0;
 padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
-font-family: Arial narrow;
-font-size: 9pt; /*tamaño contenido de tabla*/
+font-family: Arial;
+font-size: 7pt; /*tamaño contenido de tabla*/
 td {
 border:hidden;
 
@@ -226,25 +226,14 @@ border-bottom : 1px solid #aaa;*/
                 <font size="3" face="arial"><b><?php echo $titulo1; ?></b></font>
                 
                    
+                <!-- style="border-top: dashed 1px #000; border-bottom: dashed 1px #000;" -->
                 <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
                 <!--<table style="width:<?php echo $ancho?>" >-->
-                    <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
-                        <td style="font-family: arial; font-size: 9pt; padding: 0; align:right;" colspan="1">
-                            <!--<center>-->
-<!--                                    <span id="desde"></span> <span id="hasta"></span><br>
-                                    <div id="labusqueda"></div>
-                                    <span id="tipotrans"></span>
-                                    <span id="esteusuario"></span>
-                                    <span id="ventaprev"></span>
-                                    <b>DESDE:      </b><br>
-                                    <b>FACTURA No.:  </b><br>
-                                    <b>AUTORIZACION: </b>                        -->
-
-
-                            
-                            <!--</center>-->                        
+                    <tr >
+                        <td style="font-family: arial; font-size: 7pt; padding: 0; align:right; border-top: dashed 1px #000; border-bottom: dashed 1px #000;" colspan="1">
+                 
                         </td>
-                        <td style="font-family: Arial; font-size: 9pt; padding: 0;" colspan="4">
+                        <td style="font-family: Arial; font-size: 7pt; padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000;" colspan="4">
                             PUNTO DE VENTA: <?php echo $punto_venta["puntoventa_nombre"]; ?>
                             <br>FECHA INICIO: 
                                 <?php
@@ -278,15 +267,15 @@ border-bottom : 1px solid #aaa;*/
         </td>
     </tr>-->
      
-<!--</table>
+<!--</table>border-top: dashed 1px #000;
 
        <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
-           <tr  style="border-top-style: solid; border-bottom-style: solid; " >
+           <tr>
                
-                <td align="center" style="padding: 0;"><b>CANT</b></td>
-                <td align="center" style="padding: 0;"><b>DESCRIPCIÓN</b></td>
-                <td align="center" style="padding: 0;"><b>P.UNIT</b></td>
-                <td align="center" style="padding: 0;"><b>TOTAL</b></td>
+                <td align="center" style="padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000;"><b>CANT</b></td>
+                <td align="center" style="padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000;"><b>DESCRIPCIÓN</b></td>
+                <td align="center" style="padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000;"><b>P.UNIT</b></td>
+                <td align="center" style="padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000;"><b>TOTAL</b></td>
                 
            </tr>
            <!--<tbody class="buscar" id="reportefechadeventa"></tbody>-->
@@ -316,13 +305,13 @@ border-bottom : 1px solid #aaa;*/
                         
                         ?>
 
-                        <td align='center'><?php echo $lacantidad; ?></td>
-                        <td><?php echo $registros["producto_nombre"] ?> </td>
-                        <td align='right'><?php  echo number_format($registros["total_punitario"],2,".",","); ?> </td>
-                        <td align='right'><b><?php echo number_format($registros["total_venta"],2,".",","); ?> </b></td>
+                        <td align='center' style="padding: 0;"><?php echo $lacantidad; ?></td>
+                        <td style="padding: 0;"><?php echo $registros["producto_nombre"] ?> </td>
+                        <td align='right' style="padding: 0;"><?php  echo number_format($registros["total_punitario"],2,".",","); ?> </td>
+                        <td align='right' style="padding: 0;"><b><?php echo number_format($registros["total_venta"],2,".",","); ?> </b></td>
                         <?php
                         if($tipousuario_id == 1){?>
-                            <td align='right'> <?php number_format($registros["total_utilidad"],2,".",","); ?> </td>
+                            <td align='right' style="padding: 0;"> <?php number_format($registros["total_utilidad"],2,".",","); ?> </td>
                         <?php } ?>
                         
                         </tr>
@@ -337,10 +326,10 @@ border-bottom : 1px solid #aaa;*/
 <table class="table" style="max-width: 7cm;">
     -->
         
-    <tr style="border-top-style: solid; border-top-width: 2px;">
+    <tr style="border-top-style: dashed 1px #000;; border-top-width: 2px;">
         
             
-        <td align="right" style="padding: 0; font-family: Arial; font-size: 10pt;" colspan="4">
+        <td align="right" style="padding: 0; font-family: Arial; font-size: 10pt; border-top: dashed 1px #000;" colspan="4">
             
             <b>VENTAS AL CONTADO Bs.: <?php echo number_format($total,2,".",","); ?></b>
             <br><b>EFECTIVO INICIAL Bs: 
@@ -356,8 +345,8 @@ border-bottom : 1px solid #aaa;*/
             <br>EGRESOS Bs:<?php echo "0.00"; ?>            
         </td>          
     </tr>
-    <tr style="border-top-style: solid; border-top-width: 2px;">
-        <td nowrap style="padding: 0; font-family: Arial; font-size: 10pt;" colspan="4">
+    <tr>
+        <td nowrap style="padding: 0; font-family: Arial; font-size: 10pt; border-top: dashed 1px #000;" colspan="4">
             <?php
             $apertura_decaja = 0;
             if(isset($caja)){
@@ -374,8 +363,8 @@ border-bottom : 1px solid #aaa;*/
             <br><b>DIFERENCIA Bs: <?php echo number_format($caja_diferencia,2,".",","); ?> </b>
         </td>           
     </tr>
-     <tr style="border-top-style: solid; border-top-width: 2px;">
-        <td style="padding: 0;" colspan="4">
+     <tr>
+        <td style="padding: 0; border-top: dashed 1px #000;" colspan="4">
         RANGO NUMERACION VENTAS: <?php echo $resumen[0]["desde"]." - ".$resumen[0]["hasta"]; ?>
         <br>CANTIDAD TOTAL VENTAS: <?php echo $total_ventas[0]["total_ventas"]; ?>
         <br>VENTAS VALIDAS: <?php echo $validas[0]["ventas_validas"]; ?>
@@ -387,7 +376,7 @@ border-bottom : 1px solid #aaa;*/
 
     </tr>    
 
-    <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
+    <tr   style="border-top-style: dashed 1px #000; border-top-width: 2px; border-bottom-style: dashed 1px #000; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
         <td colspan="5" style="padding: 0; text-align: center;">
             <small>Declaro veracidad de la información de este documento.</small>
             <br><br><br><br><br>

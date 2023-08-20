@@ -105,6 +105,7 @@ input[type=number] { -moz-appearance:textfield; }
 
 <div class="row">
     <div class="col-md-12">
+        
       <font size="1"><b>DATOS DEL CLIENTE</b></font>
         <div class="box" style="border-color:black;">
             <form action="<?php echo base_url('cotizacion/finalizar/'.$cotizacion_id); ?>" id="fincotiza" name="fincotiza" method="POST" class="form">
@@ -113,7 +114,7 @@ input[type=number] { -moz-appearance:textfield; }
       		<div class="box-body">
           		<div class="row clearfix">
                             
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
 						<label for="cotizacion_cliente" class="control-label">Cliente</label>
                                                 <div class="form-group">
                                                     <input type="text" name="cotizacion_cliente" value="<?php echo ($this->input->post('cotizacion_cliente') ? $this->input->post('cotizacion_cliente') : $cotizacion['cotizacion_cliente']); ?>"  class="form-control" id="cotizacion_cliente" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -139,7 +140,7 @@ input[type=number] { -moz-appearance:textfield; }
 						</div>
 					</div>
                                 
-					<div class="col-md-3">
+					<div class="col-md-2">
 						<label for="cotizacion_tiempoentrega" class="control-label">Tiempo de Entrega</label>
 						<div class="form-group">
 							<input type="text" name="cotizacion_tiempoentrega"  value="<?php echo ($this->input->post('cotizacion_tiempoentrega') ? $this->input->post('cotizacion_tiempoentrega') : $cotizacion['cotizacion_tiempoentrega']); ?>" class="form-control" id="cotizacion_tiempoentrega" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -176,7 +177,7 @@ input[type=number] { -moz-appearance:textfield; }
                                         
                         
                           <?php } ?> 
-                  <div class="col-md-6"  >
+                  <div class="col-md-3"  >
                     <label for="cotizacion_total" class="control-label">Cotizacion Total</label>
                     <div class="form-group">
                         <input type="text" id="cotizacion_total" name="cotizacion_total" value="<?php echo number_format($totalfinal,$decimales,".",","); ?>" class="form-control"  />

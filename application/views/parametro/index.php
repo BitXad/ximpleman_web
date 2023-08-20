@@ -436,6 +436,11 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BOTONES PRODUCTO </th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ORDEN DETALLE </th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">TABLA SENCILLA </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">REDIRECCIONAMIENTO </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">TIPO COMPROB. </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">VERIF. CONEXION </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">Nº VENTA </th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CONTAR VENTAS</th>
                     </tr>
                     <tr>
                         <td><?php  if ($p['parametro_cantidadsimple']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
@@ -443,6 +448,15 @@ foreach($all_parametros as $p)
                         <td><?php  if ($p['parametro_botonesproducto']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
                         <td><?php  if ($p['parametro_ordendetalle']==1){ echo 'ASCENDENTE'; }else{ echo 'DESCENDENTE'; } ?></td>
                         <td><?php  if ($p['parametro_tablasencilla']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
+                        <td><?php  echo $p['parametro_redireccionusuario']; ?></td>
+                        <td>
+                            <?php  if ($p['parametro_comprobante']==1){ echo 'RECIBO';} 
+                                    if ($p['parametro_comprobante']==2){ echo 'FACTURA TRC'; }
+                            ?>
+                        </td>
+                        <td><?php  if ($p['parametro_verificarconexion']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
+                        <td><?php  echo $p['parametro_numeroventa']; ?></td>
+                        <td><?php  if ($p['parametro_contarventas']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
                     </tr>
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(214, 114, 26, 0.3);" rowspan="2" ><u>CLIENTES</u></th>
@@ -458,5 +472,4 @@ foreach($all_parametros as $p)
     </div>
 </div>
 <?php
-}
-?>
+} ?>

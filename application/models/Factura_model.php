@@ -74,7 +74,7 @@ class Factura_model extends CI_Model
                 ,v.venta_descuentoparcial as factura_descuentoparcial
                 ,v.venta_descuento as factura_descuento
                 ,v.venta_total as factura_total
-                ,v.venta_id as factura_numero
+                ,v.venta_numeroventa as factura_numero
                 ,round(rand()*100000000000000) as factura_autorizacion
                 ,round(rand()*100000000000000) as factura_llave
                 ,v.venta_fecha as factura_fechalimite
@@ -114,7 +114,7 @@ class Factura_model extends CI_Model
                 ,1 as factura_transaccion
                 ,'' as factura_mensajeslist
                 ,c.cliente_codigo as factura_codigocliente
-                ,'VALIDAD'  as  factura_codigodescripcion
+                ,'VALIDADA'  as  factura_codigodescripcion
                 ,1 as factura_enviada
                 ,'ESTE DOCUMENTO ES LA REPRESENTACIÓN GRÁFICA DE UN DOCUMENTO FISCAL DIGITAL EMITIDO EN UNA MODALIDAD DE FACTURACIÓN EN LÍNEA.' as factura_leyenda3
                 ,'' as factura_leyenda4

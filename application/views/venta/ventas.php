@@ -336,6 +336,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_mostrarmoneda" value="<?php echo $parametro['parametro_mostrarmoneda']; ?>" name="parametro_mostrarmoneda"  hidden>
 <input type="text" id="parametro_tablasencilla" value="<?php echo $parametro['parametro_tablasencilla']; ?>" name="parametro_tablasencilla"  hidden>
 <input type="text" id="parametro_verificarconexion" value="<?php echo $parametro['parametro_verificarconexion']; ?>" name="parametro_verificarconexion"  hidden>
+<input type="text" id="parametro_comprobante" value="<?php echo $parametro['parametro_comprobante']; ?>" name="parametro_comprobante"  hidden>
 <input type="text" id="factura_idcreditodebito" value="0" name="factura_idcreditodebito"  hidden>
 <input type="text" id="boton_presionado" value="0" hidden>
 
@@ -442,6 +443,12 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="nit" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">NUMERO DE DOCUMENTO</label>
             <div class="input-group"  <?php echo $estilo_div; ?>>
+              
+                <?php if($parametro['parametro_comprobante']==2){ //si es factura trch en vez de recibo ?>
+                    
+                        <div style="border-color: #be2626; background: #be2626 !important; color: white" class="btn btn-danger input-group-addon" onclick="cliente_sinnombre()" title="Venta CLIENTE SIN NOMBRE"><span class="fa fa-user-md" aria-hidden="true" id="span_cliente_sinnombre"></span></div>
+                                
+                <?php } ?>
                 <input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?> />
                 <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,1)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
             
@@ -638,10 +645,13 @@ window.onkeydown = compruebaTecla;
                 <fa class="fa fa-cubes"></fa>
             </button>
         
-            <button type="button" id="boton_modaldatosservicio" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modaldatosservicios" >
-                <fa class="fa fa-database"></fa>
-            </button>
-        
+            <?php if($dosificacion[0]['docsec_codigoclasificador'] == 13){ ?>
+            
+                <button type="button" id="boton_modaldatosservicio" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modaldatosservicios" >
+                    <fa class="fa fa-database"></fa>
+                </button>
+            <?php } ?><!-- comment -->
+            
             <?php 
                 }else{ ?>
                            
@@ -1135,24 +1145,26 @@ window.onkeydown = compruebaTecla;
                         if($parametro['parametro_tiposistema'] != 1){
                         ?>
                         <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-default btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
+                        <button class="btn btn-default btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa> Verificar Conexión</button>
                         <?php } ?>
                         
 <!--                        <button onclick='finalizarventa();' class='btn btn-default btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar <?php echo $sistema["sistema_moduloventas"]; ?></b></button> -->
-                        <button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalguardarventa"  title="Guarda terporalmente una venta"><span class='fa fa-floppy-o'></span><b> Guardar <?php echo $sistema["sistema_moduloventas"]; ?></b></button> 
+                        <button class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalguardarventa"  title="Guardar terporalmente una venta"><span class='fa fa-floppy-o'></span><b> Guardar <?php echo $sistema["sistema_moduloventas"]; ?></b></button> 
                         <?php
                         $nomostrar = "";
                             if($tipousuario_id != 1){
                                 $nomostrar = "display: none";
                             }
-                        if(sizeof($dosificacion)>0 && $parametro['parametro_factura'] != 3){
-                        ?>
-                            <a class="btn btn-sq-lg btn-default btn-xs" href="<?php echo site_url('factura'); ?>" style="padding-left: 2px; <?php echo $nomostrar; ?>">
+                            
+//                        if(sizeof($dosificacion)>0 && $parametro['parametro_factura'] != 3){
+//                        ?>
+<!--                            <a class="btn btn-sq-lg btn-default btn-xs" href="//<?php echo site_url('factura'); ?>" style="padding-left: 2px; <?php echo $nomostrar; ?>">
+                                <fa class="fa fa-times"> </fa>
                                 Anular Factura
-                            </a>
+                            </a>-->
                         <?php   
-                        }
-                        ?>
-                        <button class="btn btn-default btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa> Verificar Conexión</button>
+//                        }
+//                        ?>
 
             </div>
                 <!-------------------- FIN BOTONES INFERIORES ------------------------------------------->
@@ -3152,42 +3164,11 @@ $(document).ready(function() {
                         </div>
 
                         <div class="modal-footer" style="text-align: center">
-                            <button type="button" class="btn btn-success" onclick="guardar_venta_temporal()"><fa class="fa fa-floppy-o"></fa> Guardar Venta</button>
+                            <button type="button" class="btn btn-success"  data-dismiss="modal"  onclick="guardar_venta_temporal()"><fa class="fa fa-floppy-o"></fa> Guardar Venta</button>
                             <button type="button" class="btn btn-default" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
                         </div>
             
 		</div>
-        
-        
-<!--        <div class="modal-content">
-            <div class="modal-header" style="background: #3399cc">
-                <b style="color: white;">BUSCAR FACTURA</b>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row" id="loader3" style="display:none; text-align: center">
-                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-                </div>
-                <div class="col-md-12" style="line-height: 8px;">
-                    <label for="codigo_evento" class="control-label" id="producto_id">1</label><br>
-                    <label for="codigo_evento" class="control-label" id="producto_nombre">HUB/SWICH TP-LINK 8-PUERTOS & 10/100 MBPS TL-SF1008D</label><br>
-                    <label for="codigo_evento" class="control-label" id="producto_datos" style="font-size: 10px;">23434/TP-LINK/PIEZA/4654646546</label>  
-                    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>
-                    
-                </div>
-                <br>
-                <br>
-
-            </div>
-            
-            <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Enviar Paquete</button>
-                <button type="button" class="btn btn-default" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
-            </div>
-            
-        </div>-->
     </div>
 </div>
 
