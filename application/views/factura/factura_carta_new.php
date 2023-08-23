@@ -603,7 +603,7 @@ border-bottom : 1px solid #aaa;
                                                 
                         <?php
 
-                        $opcion = $parametro["parametros_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
+                        $opcion = $parametro["parametro_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
                     
                         if ($opcion==1){ ?>
                                     <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>

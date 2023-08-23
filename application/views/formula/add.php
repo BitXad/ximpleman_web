@@ -254,8 +254,20 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
 <input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
 <input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
+<input type="text" id="parametro_decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
+<input type="text" id="parametro_tamanioletras" value="<?php echo $parametro[0]['parametro_tamanioletras']; ?>" name="parametro_tamanioletras"  hidden>
+<input type="text" id="parametro_sininventario" value="<?php echo $parametro[0]['parametro_sininventario']; ?>" name="parametro_sininventario"  hidden>
+<input type="text" id="parametro_datosproducto" value="<?php echo $parametro[0]['parametro_datosproducto']; ?>" name="parametro_datosproducto"  hidden>
+<input type="text" id="parametro_cantidadsimple" value="<?php echo $parametro[0]['parametro_cantidadsimple']; ?>" name="parametro_cantidadsimple"  hidden>
+<input type="text" id="parametro_botonesproducto" value="<?php echo $parametro[0]['parametro_botonesproducto']; ?>" name="parametro_botonesproducto"  hidden>
+<input type="text" id="parametro_mostrarmoneda" value="<?php echo $parametro[0]['parametro_mostrarmoneda']; ?>" name="parametro_mostrarmoneda"  hidden>
+<input type="text" id="parametro_tablasencilla" value="<?php echo $parametro[0]['parametro_tablasencilla']; ?>" name="parametro_tablasencilla"  hidden>
+<input type="text" id="parametro_verificarconexion" value="<?php echo $parametro[0]['parametro_verificarconexion']; ?>" name="parametro_verificarconexion"  hidden>
+<input type="text" id="parametro_comprobante" value="<?php echo $parametro[0]['parametro_comprobante']; ?>" name="parametro_comprobante"  hidden>
+<input type="text" id="parametro_tamanioletrasboton" value="<?php echo $parametro[0]['parametro_tamanioletrasboton']; ?>" name="parametro_tamanioletrasboton"  hidden>
+<input type="text" id="factura_idcreditodebito" value="0" name="factura_idcreditodebito"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -270,14 +282,20 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 
 
-
+<input type="text" id="parametro_imprimirfactura" value="<?php echo $parametro[0]['parametro_imprimirfactura']; ?>" name="parametro_imprimirfactura"  hidden>
+<input type="text" id="parametro_factura" value="<?php echo $parametro[0]['parametro_factura']; ?>" name="parametro_factura"  hidden>
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" hidden>
+<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector" hidden>
 
 <!--------------------- FIN CABECERA -------------------------->
 
 
+<button class="btn btn-group btn-warning btn-xs" id="documento1" onclick="seleccionar_documento(1)" title=""><fa class="fa fa-cube"> </fa> </button>
 
-
-
+<div hidden><input type="checkbox" class="form-check-input" id="codigoexcepcion" ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label></div>
+ <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
+ 
+ <a href="" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_comanda" title="Comanda" style=""><span class="fa fa-print"></span><b> Comanda</b></a> 
 
     <div class="box-header with-border">
                 <h3 class="box-title">
@@ -451,6 +469,14 @@ window.onkeydown = compruebaTecla;
             <fa class="fa fa-cube"></fa> Promociones
         </button>
         <?php } ?>
+       
+       
+        <select class="btn btn-xs btn-warning" title="Buscar productos de acuerdo al parametro" id="select_buscador" onchange="$('#filtrar').focus();" <?php echo ($parametro["parametro_modulorestaurante"]==2)?"":"style='display:none' "; ?>">
+            <option value="0">- DESCRIPCION -</option>
+            <option value="1">PRINCIPIO ACTIVO</option>
+            <option value="2">ACCION TERAPEUTICA</option>
+            <option value="3">LINEA</option>
+        </select>
 <!--<span class="badge btn-primary">-->
         
         
@@ -1139,7 +1165,16 @@ window.onkeydown = compruebaTecla;
                                                     </center>
 						</div>
 					</div>
-                            
+                                    <div class="col-md-12" style="padding:0;" id="div_mensaje">
+            
+                                        <?php $estilo_mensaje = "font-family: Arial; line-height: 10pt; display: none; border-color:black; background: white; color: Green;"; ?>
+                                        <span id="mensaje_enviado" class="btn btn-default btn-block" style="<?php echo $estilo_mensaje; ?>"><b style="font-family: Arial; font-size: 18pt;" ><img src="<?php echo base_url("resources/images/enviado.gif"); ?>" width="150px" height="100px"> FACTURA ENVIADA</b> </span>
+
+                                        <?php $estilo_mensaje2 = "font-family: Arial; line-height: 10pt; display: none; border-color:black; background: white; color: Red;"; ?>
+                                        <span id="mensaje_no_enviado" class="btn btn-default btn-block" style="<?php echo $estilo_mensaje2; ?>"><b style="font-family: Arial; font-size: 18pt;" ><img src="<?php echo base_url("resources/images/noenviado.gif"); ?>" width="100px" height="100px"> FACTURA NO ENVIADA</b><br><a href="<?php echo base_url("venta/rehacer_ultima_venta/"); ?>" type="button" class="btn btn-facebook" style='background-color: black;'><fa class="fa fa-recycle"></fa> Rehacer Factura</a><br><span id="mensaje_error" style="font-family: Arial; font-size: 9px;">Numero de identificacion tributaria invalido</span> </span>
+                                        <br>
+
+                                    </div>
                                         <!--------------------- inicio loader ------------------------->
                                         <div class="col-md-6" id='loaderinventario'  style='display:none;'>
                                             <center>

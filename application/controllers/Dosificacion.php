@@ -291,6 +291,8 @@ class Dosificacion extends CI_Controller{
                     'dosificacion_glpelectronica' => $this->input->post('dosificacion_glpelectronica'),
                     'dosificacion_telecomunicaciones' => $this->input->post('dosificacion_telecomunicaciones'),
                     'dosificacion_entidadesfinancieras' => $this->input->post('dosificacion_entidadesfinancieras'),
+                    'dosificacion_numerotransmes' => $this->input->post('dosificacion_numerotransmes'),
+                    'dosificacion_mesactual' => $this->input->post('dosificacion_mesactual'),
                 );
                 $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);
                 

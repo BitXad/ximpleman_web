@@ -723,6 +723,28 @@ function ventas_dia($estado)
         return $detalle_venta;
     }
     
+    function get_resumenventas_fecha($usuario_id,$desde,$hasta)
+    { //aun no se reviso esto
+        $sql = "SELECT vs.producto_id, vs.producto_codigo, vs.producto_nombre, tt.tipotrans_nombre, 
+                vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad, 
+                (sum(vs.detalleven_total) / sum(vs.detalleven_cantidad)) as total_punitario, 
+                sum(vs.detalleven_descuento*vs.detalleven_cantidad) as total_descuento, 
+                sum(vs.detalleven_total) as total_venta, (sum(vs.detalleven_costo*vs.detalleven_cantidad)) as total_costo, 
+                (sum(vs.detalleven_total)-SUM(vs.detalleven_costo*vs.detalleven_cantidad)) as total_utilidad, 
+                avg(vs.detalleven_tc) as tipo_cambio 
+                FROM ventas vs 
+                LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id 
+                WHERE 
+                date(venta_fecha) >= {$desde} and 
+                date(venta_fecha) <= {$hasta} and 
+                vs.usuario_id = ".$usuario_id." 
+                group by vs.producto_id 
+                order by total_venta";
+        //echo $sql; 
+        $detalle_venta = $this->db->query($sql)->result_array();        
+        return $detalle_venta;
+    }
+    
     /* obtiene el resumen de ventas como administrador */
     function get_resumenventasadmin($filtro)
     { //aun no se reviso esto

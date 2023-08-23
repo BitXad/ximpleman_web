@@ -2163,6 +2163,28 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
     
 }
 
+function ingresorapidojsx(cantidad,producto_id,nombre_factor){       
+    
+    var base_url = document.getElementById('base_url').value;   
+    var controlador = base_url+"venta/ingresorapidojsx";    
+    
+    
+    //*****************************************
+    //alert("cantidad: "+cantidad+" * producto: "+producto_id+" * nombre_factor: "+nombre_factor);    
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{cantidad:cantidad,producto_id:producto_id,nombre_factor:nombre_factor},
+            success:function(respuesta){
+
+                tablaproductos();
+
+            }
+        });
+
+    
+}
+
 
 function cambiarcantidadjs(e,prod_id)
 {   
@@ -2697,10 +2719,10 @@ function tablaresultados(opcion)
                                   html += "<br>";
                                   html += "<div class='btn-group'>";
 //                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",1)'><b>- 1 -</b></button>";
-                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'><b>- 1 -</b></button>";                                  
-                                  html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojs(2,"+registros[i]["producto_id"]+",0)'><b>- 2 -</b></button>";
-                                  html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapidojs(5,"+registros[i]["producto_id"]+",0)'><b>- 5 -</b></button>";
-                                  html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojs(10,"+registros[i]["producto_id"]+",0)'><b>- 10 -</b></button> ";
+                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojsx(1,"+registros[i]["producto_id"]+",0)'><b>- 1 -</b></button>";                                  
+                                  html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojsx(2,"+registros[i]["producto_id"]+",0)'><b>- 2 -</b></button>";
+                                  html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapidojsx(5,"+registros[i]["producto_id"]+",0)'><b>- 5 -</b></button>";
+                                  html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojsx(10,"+registros[i]["producto_id"]+",0)'><b>- 10 -</b></button> ";
                                   html += "</div>";   
 
                             }            
@@ -2881,7 +2903,7 @@ function tablaresultados(opcion)
                                     html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub><b>"+prod+"<br>"+solo_precio+"</b></sub></span></button>";
                                 }else{                                    
 //                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;'  title='"+nombre_producto+" ' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub><b>"+prod+"</b></sub>"+precio_cantidad+"</span></button>";
-                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;'  title='"+nombre_producto+" ' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub><b>"+prod+"<br>"+solo_precio+"</b></sub></span></button>";
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;'  title='"+nombre_producto+" ' onclick='ingresorapidojsx(1,"+registros[i]["producto_id"]+",0)'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub><b>"+prod+"<br>"+solo_precio+"</b></sub></span></button>";
                                 }    
 
                             }                        
@@ -2891,7 +2913,7 @@ function tablaresultados(opcion)
                                 if (parametro_cantidadproductos != 2){ //si pasara directo a detalle
                                     html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub>"+prod+"</sub></span></button>";
                                 }else{
-                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub>"+prod+"</sub></span></button>";                                    
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' onclick='ingresorapidojsx(1,"+registros[i]["producto_id"]+",0)'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<span style='font-size:"+tamanio_fuente+"; line-height:8px;'><sub>"+prod+"</sub></span></button>";                                    
                                 }
                             }
 
@@ -2900,7 +2922,7 @@ function tablaresultados(opcion)
                                 if (parametro_cantidadproductos != 2){ //si pasara directo a detalle
                                     html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br><span style='font-size:"+tamanio_fuente+"; line-height:8px;'>"+precio_cantidad+"</span></button>";
                                 }else{
-                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br><span style='font-size:"+tamanio_fuente+"; line-height:8px;'>"+precio_cantidad+"</span></button>";
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' onclick='ingresorapidojsx(1,"+registros[i]["producto_id"]+",0)'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br><span style='font-size:"+tamanio_fuente+"; line-height:8px;'>"+precio_cantidad+"</span></button>";
                                 }                            
                                 
                             }
@@ -2910,7 +2932,7 @@ function tablaresultados(opcion)
                                 if (parametro_cantidadproductos != 2){ //si pasara directo a detalle
                                     html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'><span style='font-size:"+tamanio_fuente+"; line-height:8px;'>"+imagen_boton+"</span></button>";
                                 }else{
-                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'><span style='font-size:"+tamanio_fuente+"; line-height:8px;'>"+imagen_boton+"</span></button>";
+                                    html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' onclick='ingresorapidojsx(1,"+registros[i]["producto_id"]+",0)'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'><span style='font-size:"+tamanio_fuente+"; line-height:8px;'>"+imagen_boton+"</span></button>";
                                 }                            
                             
                             }
@@ -6937,7 +6959,6 @@ function cargar_contingencia(){
 
 function excepcion_nit(){
     
-    //alert("Pasa por aqui...!!");
     document.getElementById("codigoexcepcion").checked = true;
     $("#razon_social").focus();
     $("#razon_social").select();
@@ -6946,7 +6967,6 @@ function excepcion_nit(){
 
 function cancelar_excepcion_nit(){
     
-    //alert("Pasa por aqui...!!");
     document.getElementById("codigoexcepcion").checked = false;
     $("#razon_social").val("");
     $("#cliente_valido").val("0");

@@ -57,6 +57,19 @@ function mostrar_ocultar(){
 //$(document).ready(localize());
 
 </script>   
+
+<style type="text/css">
+    
+    .btn-group-sm>.btn, .btn-sm {
+    padding: 5px 10px;
+    font-size: 15px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+    
+</style>
+    
+    
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">

@@ -189,9 +189,7 @@
                                                 break;
                                         case 8: $titulo1 = "FACTURA TASA CERO - VENTA DE LIBROS O TRANSPORTE DE CARGA INTERNACIONAL";
                                                 $subtitulo_factura = "SIN DERECHO A CR&Eacute;DITO FISCAL";
-                                                break;
-                                            
-                                            
+                                                break;    
                                             
                                             
                                     }
@@ -546,22 +544,22 @@
                         
                         <?php
 
-                        $opcion = $parametro["parametros_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
+                        $opcion = $parametro["parametro_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
                     
                         if ($opcion==1){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
+                                    00<?php echo $venta[0]['venta_numeroventa']; ?>
                         <?php } ?>
 
                         <?php   if ($opcion==2){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_id']; ?></b></font>
+                                    00<?php echo $venta[0]['venta_id']; ?>
                         <?php   } ?>
 
                         <?php   if ($opcion==3){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['factura_numero']; ?></b></font>
+                                    00<?php echo $venta[0]['factura_numero']; ?>
                         <?php   } ?>
 
                         <?php   if ($opcion==4){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numerotransmes']; ?></b></font>
+                                    00<?php echo $venta[0]['venta_numerotransmes']; ?>
                         <?php   } ?>
                     </td>
                 </tr>
@@ -760,7 +758,7 @@
 <script>
   // Función para cerrar la ventana
   function cerrarVentana() {
-    //window.close();
+    window.close();
   }
 
   // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)

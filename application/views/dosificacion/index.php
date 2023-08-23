@@ -76,14 +76,19 @@
                 <tr>
 
                     <td <?= $estilo; ?> >Llave:</td>
-                    <td colspan="5"> <?php echo $dosificacion['dosificacion_llave']; ?>
-                    </td>
+                    <td colspan="1"> <?php echo substr($dosificacion['dosificacion_llave'],0,20)."..."; ?></td>
 
                     <td <?= $estilo; ?> >Num. Factura:</td>
                     <td><?php echo $dosificacion['dosificacion_numfact']; ?></td>
                    
                     <td <?= $estilo; ?> >Sucursal:</td>
                     <td><?php echo $dosificacion['dosificacion_sucursal']; ?></td>
+                    
+                    <td <?= $estilo; ?> >Num Trans Mes:</td>
+                    <td><?php echo $dosificacion['dosificacion_numerotransmes']; ?></td>
+                    
+                    <td <?= $estilo; ?> >Mes Actual:</td>
+                    <td><?php echo $dosificacion['dosificacion_mesactual']; ?></td>
                 </tr>
                 
                 <tr>
@@ -103,23 +108,23 @@
                     </td>
                     
                     <td <?= $estilo; ?> >Leyenda 1:</td>
-                    <td colspan="3"><?php echo $dosificacion['dosificacion_leyenda1']; ?></td>
+                    <td colspan="3"><?php echo substr($dosificacion['dosificacion_leyenda1'],0,30)."..."; ?>
 
                     <td <?= $estilo; ?> >Leyenda 2:</td>
-                    <td colspan="3"><?php echo $dosificacion['dosificacion_leyenda2']; ?></td>
+                    <td colspan="3"><?php echo substr($dosificacion['dosificacion_leyenda2'],0,30)."..."; ?></td>
                     
                 </tr>
                 
                 <tr>
                     <td <?= $estilo; ?> >Leyenda 3:</td>
-                    <td><?php echo $dosificacion['dosificacion_leyenda3']; ?></td>
+                    <td><?php echo substr($dosificacion['dosificacion_leyenda3'],0,30)."..."; ?></td>
 
                     <td <?= $estilo; ?> >Leyenda 4:</td>
                     <td colspan="3"> <?php echo $dosificacion['dosificacion_leyenda4']; ?>
                     </td>
 
                     <td <?= $estilo; ?> >Leyenda 5:</td>
-                    <td colspan="3"><?php echo $dosificacion['dosificacion_leyenda5']; ?></td>
+                    <td colspan="3"><?php echo substr($dosificacion['dosificacion_leyenda5'],0,30)."..."; ?></td>
                 </tr>
                 
                 
@@ -150,7 +155,7 @@
 
                     <td <?= $estilo; ?> >Cod. Sistema</td>
                     <td>                         
-                         <?php echo $dosificacion['dosificacion_codsistema']; ?>
+                         <?php echo substr($dosificacion['dosificacion_codsistema'],0,10)."..."; ?>
                     </td>
                     
                     <td <?= $estilo; ?> >Token Delegado:</td>

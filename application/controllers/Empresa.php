@@ -254,6 +254,7 @@ class Empresa extends CI_Controller{
                         'empresa_cargo' => $this->input->post('empresa_cargo'),
                         'empresa_latitud' => $this->input->post('empresa_latitud'),
                         'empresa_longitud' => $this->input->post('empresa_longitud'),
+                        'empresa_nombresucursal' => $this->input->post('empresa_nombresucursal'),
                 );
 
                 $this->Empresa_model->update_empresa($empresa_id,$params);            

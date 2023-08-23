@@ -13,7 +13,7 @@
             <?php echo form_open_multipart('dosificacion/edit/'.$dosificacion['dosificacion_id']); ?>
             <div class="box-body">
                 <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="empresa_id" class="control-label">Empresa</label>
                         <div class="form-group">
                             <select name="empresa_id" class="form-control">
@@ -28,7 +28,7 @@
                             </select>
                         </div>
                     </div>
-                    <!--<div class="col-md-6">
+                    <!--<div class="col-md-3">
                         <label for="dosificacion_fechahora" class="control-label">Fecha, Hora</label>
                         <?php
                         /*$fechayhora = ($this->input->post('dosificacion_fechahora') ? $this->input->post('dosificacion_fechahora') : $dosificacion['dosificacion_fechahora']);
@@ -51,7 +51,7 @@
                             <input type="text" name="dosificacion_autorizacion" value="<?php echo ($this->input->post('dosificacion_autorizacion') ? $this->input->post('dosificacion_autorizacion') : $dosificacion['dosificacion_autorizacion']); ?>" class="form-control" id="dosificacion_autorizacion" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_llave" class="control-label">Llave</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_llave" value="<?php echo ($this->input->post('dosificacion_llave') ? $this->input->post('dosificacion_llave') : $dosificacion['dosificacion_llave']); ?>" class="form-control" id="dosificacion_llave" />
@@ -69,7 +69,7 @@
                             <input type="date" name="dosificacion_fechalimite" value="<?php echo ($this->input->post('dosificacion_fechalimite') ? $this->input->post('dosificacion_fechalimite') : $dosificacion['dosificacion_fechalimite']); ?>" class="form-control" id="dosificacion_fechalimite" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_sucursal" class="control-label">Sucursal (0 Casa Matriz)</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_sucursal" value="<?php echo ($this->input->post('dosificacion_sucursal') ? $this->input->post('dosificacion_sucursal') : $dosificacion['dosificacion_sucursal']); ?>" class="form-control" id="dosificacion_sucursal" />
@@ -83,13 +83,13 @@
                             </select>-->
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_sfc" class="control-label">Sfc</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_sfc" value="<?php echo ($this->input->post('dosificacion_sfc') ? $this->input->post('dosificacion_sfc') : $dosificacion['dosificacion_sfc']); ?>" class="form-control" id="dosificacion_sfc" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_actividad" class="control-label">Actividad</label>
                         <div class="form-group">
                             <select name="dosificacion_actividad" id="dosificacion_actividad" class="form-control" onChange="set_actividad(1),get_leyendas()">
@@ -109,7 +109,7 @@
                             <!-- <input type="text" name="dosificacion_actividad" value="<?php echo ($this->input->post('dosificacion_actividad') ? $this->input->post('dosificacion_actividad') : $dosificacion['dosificacion_actividad']); ?>" class="form-control" id="dosificacion_actividad" /> -->
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificasion_actividadsec" class="control-label">Actividad Secundaria</label>
                         <div class="form-group">
                             <select name="dosificasion_actividadsec" id="dosificasion_actividadsec" class="form-control" onChange="set_actividad(2),get_leyendas()">
@@ -129,22 +129,37 @@
                             <!-- <input type="text" name="dosificasion_actividadsec" value="<?php echo ($this->input->post('dosificasion_actividadsec') ? $this->input->post('dosificasion_actividadsec') : $dosificacion['dosificasion_actividadsec']); ?>" class="form-control" id="dosificasion_actividadsec" /> -->
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                    <div class="col-md-3">
+                        <label for="dosificacion_numerotransmes" class="control-label">Num. Trans. Mensual</label>
+                        <div class="form-group">
+                            <input type="text" id="dosificacion_numerotransmes" name="dosificacion_numerotransmes" value="<?php echo ($this->input->post('dosificacion_numerotransmes') ? $this->input->post('dosificacion_numerotransmes') : $dosificacion['dosificacion_numerotransmes']); ?>" class="form-control"/>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="dosificacion_mesactual" class="control-label">Men Actual</label>
+                        <div class="form-group">
+                            <input type="text" id="dosificacion_mesactual" name="dosificacion_mesactual" value="<?php echo ($this->input->post('dosificacion_mesactual') ? $this->input->post('dosificacion_mesactual') : $dosificacion['dosificacion_mesactual']); ?>" class="form-control"/>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
                         <label for="dosificacion_leyenda1" class="control-label">Leyenda1</label>
                         <div class="form-group">
                             <input type="text" id="dosificacion_leyenda1" name="dosificacion_leyenda1" value="<?php echo ($this->input->post('dosificacion_leyenda1') ? $this->input->post('dosificacion_leyenda1') : $dosificacion['dosificacion_leyenda1']); ?>" class="form-control"/>
-                            <!--<select name="dosificacion_leyenda1" id="dosificacion_leyenda1" class="form-control" size='1'></select>-->
-                            <!--<input name="dosificacion_leyenda1" id="dosificacion_leyenda1" class="form-control" size='1'/>-->
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                    <div class="col-md-3">
                         <label for="dosificacion_leyenda2" class="control-label">Leyenda2</label>
                         <div class="form-group">
                             <input type="hidden" id="dosificacion_leyenda2_select" name="dosificacion_leyenda2_select" value="<?php echo ($this->input->post('dosificacion_leyenda2') ? $this->input->post('dosificacion_leyenda2') : $dosificacion['dosificacion_leyenda2']); ?>" class="form-control"/>
                             <select name="dosificacion_leyenda2" id="dosificacion_leyenda2" class="form-control" size='1'></select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                    <div class="col-md-3">
                         <label for="dosificacion_leyenda3" class="control-label">Leyenda3</label>
                         <div class="form-group">
                             <input type="text" id="dosificacion_leyenda3" name="dosificacion_leyenda3" value="<?php echo ($this->input->post('dosificacion_leyenda3') ? $this->input->post('dosificacion_leyenda3') : $dosificacion['dosificacion_leyenda3']); ?>" class="form-control"/>
@@ -152,7 +167,8 @@
                             <!--<input name="dosificacion_leyenda3" id="dosificacion_leyenda3" class="form-control" size='1'/>-->
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    
+                    <div class="col-md-3">
                         <label for="dosificacion_leyenda4" class="control-label">Leyenda4</label>
                         <div class="form-group">
                             <input type="text" id="dosificacion_leyenda4" name="dosificacion_leyenda4" value="<?php echo ($this->input->post('dosificacion_leyenda4') ? $this->input->post('dosificacion_leyenda4') : $dosificacion['dosificacion_leyenda4']); ?>" class="form-control"/>
@@ -160,7 +176,7 @@
                             <select name="dosificacion_leyenda4" id="dosificacion_leyenda4" class="form-control" size='1'></select>-->
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_leyenda5" class="control-label">Leyenda5</label>
                         <div class="form-group">
                             <input type="text" id="dosificacion_leyenda5" name="dosificacion_leyenda5" value="<?php echo ($this->input->post('dosificacion_leyenda5') ? $this->input->post('dosificacion_leyenda5') : $dosificacion['dosificacion_leyenda5']); ?>" class="form-control"/>
@@ -168,8 +184,8 @@
                             <select name="dosificacion_leyenda5" id="dosificacion_leyenda5" class="form-control" size='1'></select>-->
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="tipofac_codigo" class="control-label">Tipo Factura / Documento Ajuste</label>
+                    <div class="col-md-3">
+                        <label for="tipofac_codigo" class="control-label">Tipo Factura </label>
                         <div class="form-group">
                             <select name="tipofac_codigo" id="tipofac_codigo" class="form-control">
                                 <option value="">- Tipo Factura/Documento Ajuste -</option>
@@ -183,7 +199,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="docsec_codigoclasificador" class="control-label">Documento Sector</label>
                         <div class="form-group">
                             <select name="docsec_codigoclasificador" id="docsec_codigoclasificador" class="form-control" onchange="mensaje_alerta()">
@@ -198,43 +214,43 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-3">
                         <label for="dosificacion_tokendelegado" class="control-label">Token Delegado</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_tokendelegado" value="<?php echo ($this->input->post('dosificacion_tokendelegado') ? $this->input->post('dosificacion_tokendelegado') : $dosificacion['dosificacion_tokendelegado']); ?>" class="form-control" id="dosificacion_tokendelegado" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_ambiente" class="control-label">Ambiente (1 Produccion/2 Pruebas)</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_ambiente" value="<?php echo ($this->input->post('dosificacion_ambiente') ? $this->input->post('dosificacion_ambiente') : $dosificacion['dosificacion_ambiente']); ?>" class="form-control" id="dosificacion_ambiente" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_cuis" class="control-label">CUIS (Código Único de Inicio de Sistemas)</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_cuis" value="<?php echo ($this->input->post('dosificacion_cuis') ? $this->input->post('dosificacion_cuis') : $dosificacion['dosificacion_cuis']); ?>" class="form-control" id="dosificacion_cuis" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_cufd" class="control-label">CUFD (Código Único de Facturación Diaria)</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_cufd" value="<?php echo ($this->input->post('dosificacion_cufd') ? $this->input->post('dosificacion_cufd') : $dosificacion['dosificacion_cufd']); ?>" class="form-control" id="dosificacion_cufd" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_modalidad" class="control-label">Modalidad (1-Electronica E.L /2-Computarizada E.L.)</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_modalidad" value="<?php echo ($this->input->post('dosificacion_modalidad') ? $this->input->post('dosificacion_modalidad') : $dosificacion['dosificacion_modalidad']); ?>" class="form-control" id="dosificacion_modalidad" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_codsistema" class="control-label">Cod. Sistema</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_codsistema" value="<?php echo ($this->input->post('dosificacion_codsistema') ? $this->input->post('dosificacion_codsistema') : $dosificacion['dosificacion_codsistema']); ?>" class="form-control" id="dosificacion_codsistema" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_puntoventa" class="control-label">Punto de Venta</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_puntoventa" value="<?php echo ($this->input->post('dosificacion_puntoventa') ? $this->input->post('dosificacion_puntoventa') : $dosificacion['dosificacion_puntoventa']); ?>" class="form-control" id="dosificacion_puntoventa" />
@@ -275,35 +291,35 @@
                     </div>
                     
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_sincronizacion" class="control-label">Sincronizacion</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_sincronizacion" value="<?php echo ($this->input->post('dosificacion_sincronizacion') ? $this->input->post('dosificacion_sincronizacion') : $dosificacion['dosificacion_sincronizacion']); ?>" class="form-control" id="dosificacion_sincronizacion" />
                         </div>
                     </div>                                                            
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_recepcioncompras" class="control-label">Recepcion Compras</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_recepcioncompras" value="<?php echo ($this->input->post('dosificacion_recepcioncompras') ? $this->input->post('dosificacion_recepcioncompras') : $dosificacion['dosificacion_recepcioncompras']); ?>" class="form-control" id="dosificacion_recepcioncompras" />
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_operaciones" class="control-label">Operaciones</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_operaciones" value="<?php echo ($this->input->post('dosificacion_operaciones') ? $this->input->post('dosificacion_operaciones') : $dosificacion['dosificacion_operaciones']); ?>" class="form-control" id="dosificacion_operaciones" />
                         </div>
                     </div>                    
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_obtencioncodigos" class="control-label">Obtencion Códigos</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_obtencioncodigos" value="<?php echo ($this->input->post('dosificacion_obtencioncodigos') ? $this->input->post('dosificacion_obtencioncodigos') : $dosificacion['dosificacion_obtencioncodigos']); ?>" class="form-control" id="dosificacion_obtencioncodigos" />
                         </div>
                     </div>                    
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_notacredito" class="control-label">Nota de Conciliacion/Credito-Debito</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_notacredito" value="<?php echo ($this->input->post('dosificacion_notacredito') ? $this->input->post('dosificacion_notacredito') : $dosificacion['dosificacion_notacredito']); ?>" class="form-control" id="dosificacion_notacredito" />
@@ -311,7 +327,7 @@
                     </div>
                     
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_factura" class="control-label">Factura</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_factura" value="<?php echo ($this->input->post('dosificacion_factura') ? $this->input->post('dosificacion_factura') : $dosificacion['dosificacion_factura']); ?>" class="form-control" id="dosificacion_factura" />
@@ -319,7 +335,7 @@
                     </div>
                     
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                             <label for="dosificacion_facturaservicios" class="control-label">Factura Servicios</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_facturaservicios" value="<?php echo ($this->input->post('dosificacion_facturaservicios') ? $this->input->post('dosificacion_facturaservicios') : $dosificacion['dosificacion_facturaservicios']); ?>" class="form-control" id="dosificacion_facturaservicios" />
@@ -328,32 +344,32 @@
                     
                     
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_facturaglp" class="control-label">Factura Comercializacion GN/GLP/PREV/HOSP-CLIN/HOT/EDUC</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_facturaglp" value="<?php echo ($this->input->post('dosificacion_facturaglp') ? $this->input->post('dosificacion_facturaglp') : $dosificacion['dosificacion_facturaglp']); ?>" class="form-control" id="dosificacion_facturaglp" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_glpelectronica" class="control-label">Factura Comercializacion Electronica GN/GLP/PREV/HOSP-CLIN/HOT/EDUC</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_glpelectronica" value="<?php echo ($this->input->post('dosificacion_glpelectronica') ? $this->input->post('dosificacion_glpelectronica') : $dosificacion['dosificacion_glpelectronica']); ?>" class="form-control" id="dosificacion_glpelectronica" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_telecomunicaciones" class="control-label">Factura Telecomunicaciones</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_telecomunicaciones" value="<?php echo ($this->input->post('dosificacion_telecomunicaciones') ? $this->input->post('dosificacion_telecomunicaciones') : $dosificacion['dosificacion_telecomunicaciones']); ?>" class="form-control" id="dosificacion_telecomunicaciones" />
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_entidadesfinancieras" class="control-label">Factura Entidades Financieras</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_entidadesfinancieras" value="<?php echo ($this->input->post('dosificacion_entidadesfinancieras') ? $this->input->post('dosificacion_entidadesfinancieras') : $dosificacion['dosificacion_entidadesfinancieras']); ?>" class="form-control" id="dosificacion_entidadesfinancieras" />
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_ruta" class="control-label">Ruta QR</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_ruta" value="<?php echo ($this->input->post('dosificacion_ruta') ? $this->input->post('dosificacion_ruta') : $dosificacion['dosificacion_ruta']); ?>" class="form-control" id="dosificacion_ruta" />
@@ -361,7 +377,7 @@
                     </div>
                     
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                             <label for="dosificacion_contenedorp12" class="control-label">Certificado Contenedor p12</label>
                             <div class="form-group">
                                 <input style="text-align: left !important" type="file" name="dosificacion_contenedorp12" value="<?php echo ($this->input->post('dosificacion_contenedorp12') ? $this->input->post('dosificacion_contenedorp12') : $dosificacion['dosificacion_contenedorp12']); ?>" class=" btn btn-success btn-sm form-control" id="dosificacion_contenedorp12" accept=".p12" />
@@ -369,7 +385,7 @@
                             </div>
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="dosificacion_clavep12" class="control-label">Clave p12</label>
                         <div class="form-group">
                             <input type="text" name="dosificacion_clavep12" value="<?php echo ($this->input->post('dosificacion_clavep12') ? $this->input->post('dosificacion_clavep12') : $dosificacion['dosificacion_clavep12']); ?>" class="form-control" id="dosificacion_clavep12" />

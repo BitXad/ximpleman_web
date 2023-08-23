@@ -95,6 +95,7 @@ class Factura extends CI_Controller{
         $data['motivos'] = $this->Factura_model->get_all_motivos();
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
         $data['all_documentosector'] = $this->Dosificacion_model->get_documento_sector();
+        $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion(1);
         
         $data['_view'] = 'factura/index';
         $this->load->view('layouts/main',$data);

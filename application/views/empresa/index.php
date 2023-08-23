@@ -67,6 +67,7 @@
                             <th>Zona</th>
                             <th>Ubicación</th>
                             <th>Departamento</th>
+                            <th>Nombre Sucursal</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -138,6 +139,9 @@
                             <td><?php echo $e['empresa_zona']; ?></td>
                             <td><?php echo $e['empresa_ubicacion']; ?></td>
                             <td><?php echo $e['empresa_departamento']; ?></td>
+                            <td><?php echo $e['empresa_nombresucursal']; ?></td>
+                            
+                            
                             <td>
                                 <a href="<?php echo site_url('empresa/edit/'.$e['empresa_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                                 <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>-->

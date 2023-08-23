@@ -383,29 +383,32 @@ window.onkeydown = compruebaTecla;
 
 <!--------------------- fin cliente_id --------------------->
 
-        <div class="col-md-3" <?= $estilo_div ?> <?= ($parametro['parametro_documentoslista']!=1)?"":"hidden" ?>>
+        <div class="col-md-2" <?= $estilo_div ?> <?= ($parametro['parametro_documentoslista']!=1)?"":"hidden" ?>>
             <label for="tipo_doc_identidad" class="control-label" style="margin-bottom: 0; font-size: 12px; color: gray; font-weight: normal">TIPO DOCUMENTO IDENTIDAD</label>
             <br>
             <?php
                 
                 $tam = sizeof($docs_identidad);
-               foreach ($docs_identidad as $di){ 
-                    if($tam<=2){ ?>
-            
-                        <button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)"><fa class="fa fa-cube"> </fa> <?php echo $di['cdi_descripcion']; ?></button>                   
-
-                    <?php }else{?>
-                        
+               foreach ($docs_identidad as $di){?> 
+                   
                         <button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)" title="<?php echo $di['cdi_descripcion']; ?>"><fa class="fa fa-cube"> </fa> <?php echo substr($di['cdi_descripcion'],0,5); ?></button>
+               <?php    
+                    //if($tam<=2){ ?>
+            
+                        <!--<button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)"><fa class="fa fa-cube"> </fa> <?php echo $di['cdi_descripcion']; ?></button>-->                   
 
-                    <?php       }
+                    <?php //}else{?>
+                        
+                        <!--<button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)" title="<?php echo $di['cdi_descripcion']; ?>"><fa class="fa fa-cube"> </fa> <?php echo substr($di['cdi_descripcion'],0,5); ?></button>-->
+
+                    <?php       //}
                }?>
             
             
             
             
         </div>
-        <div class="col-md-3" <?= $estilo_div ?> <?= ($parametro['parametro_documentoslista']==1)?"":"hidden" ?>>
+        <div class="col-md-2" <?= $estilo_div ?> <?= ($parametro['parametro_documentoslista']==1)?"":"hidden" ?>>
             <label for="tipo_doc_identidad" class="control-label" style="margin-bottom: 0; font-size: 12px; color: gray; font-weight: normal">TIPO DOCUMENTO IDENTIDAD</label>
             <div class="form-group" <?= $estilo_div ?>>
                 <select class="form-control <?php echo $atributos; ?>" name="tipo_doc_identidad" id="tipo_doc_identidad" <?= $estilos_facturacion ?> onchange="seleccion_documento()">
@@ -440,13 +443,13 @@ window.onkeydown = compruebaTecla;
         <?php
         $sololectura = "";
         if($dosificacion[0]['docsec_codigoclasificador'] == 23){ $sololectura = "readonly"; } ?>
-        <div class="col-md-2" <?php echo $estilo_div; ?>>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="nit" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray; font-weight: normal;">NUMERO DE DOCUMENTO</label>
             <div class="input-group"  <?php echo $estilo_div; ?>>
               
                 <?php if($parametro['parametro_comprobante']==2){ //si es factura trch en vez de recibo ?>
                     
-                        <div style="border-color: #be2626; background: #be2626 !important; color: white" class="btn btn-danger input-group-addon" onclick="cliente_sinnombre()" title="Venta CLIENTE SIN NOMBRE"><span class="fa fa-user-md" aria-hidden="true" id="span_cliente_sinnombre"></span></div>
+                        <div style="border-color: #be2626; background: #be2626 !important; color: white" class="btn btn-danger input-group-addon" onclick="cliente_sinnombre()" title=""><span class="fa fa-user-md" aria-hidden="true" id="span_cliente_sinnombre"></span></div>
                                 
                 <?php } ?>
                 <input type="<?= ($parametro["parametro_tiposistema"]==1)?"number":"text"; ?>" name="nit" class="form-control  <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" onKeyUp="this.value = this.value.toUpperCase();" <?php echo $sololectura?> />
@@ -524,14 +527,14 @@ window.onkeydown = compruebaTecla;
                         </div>
                 <?php } ?>
 
-        <div class="col-md-4" <?php echo $estilo_div; ?>>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="glosay" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">PREFERENCIAS</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="glosay" class="form-control <?php echo $atributos; ?>" style="color: black; background:white; text-align: left; font-size: 18px; font-family: Arial; " id="glosay"  value="" onclick="this.select()" onkeyup="transcribir_glosa(event); this.value = this.value.toUpperCase();"/>
             </div>
         </div>
 
-        <div class="col-md-2" <?php echo $estilo_div; ?>>
+        <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="totaly" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">TOTAL</label>
             <div class="form-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="totaly" class="form-control <?php echo $atributos; ?>"  style="color: black; background: #000000; text-align: left; font-size: 18px; font-family: Arial; color: white" id="totaly"  value="0.00" onclick="this.select()" readonly/>
@@ -565,8 +568,8 @@ window.onkeydown = compruebaTecla;
 
 
 <!---------------------- collapse ----------------------------->
- 
         <h4 class="panel-title">
+            <!--<div class="col-md-12">-->
             <?php
             if(sizeof($dosificacion)>0){
                 if($parametro['parametro_factura'] == 1){ // todo facturado
@@ -661,14 +664,16 @@ window.onkeydown = compruebaTecla;
 
             
             
+         
         </h4>
+     
         <div class="row" id='loader_documento' style='display:none;'>
             <center>
                 <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
             </center>
         </div> 
     </div>
-        
+      
     <div id="collapse1" class="panel-collapse collapse">
         <!---------------------- contenido collapse ----------------------------->
         <div class="col-md-3" <?php echo $estilo_div; ?>>
@@ -998,7 +1003,76 @@ window.onkeydown = compruebaTecla;
             
         </div> <!-------- FIN BOX---------->
         
+       <div class="col-md-12">
         
+    <?php if ($parametro['parametro_factura']!=3){ ?>
+        
+        <div class="box" <?php echo ($parametro["parametro_productossinhomologar"]!=1)?"hidden":"" ?>>
+            <font size="1"><b>PRODUCTOS SIN HOMOLOGAR</b></font>
+        <div class="box" style="border-color:black;">
+            <div class="box-body">        
+        
+       
+        <div class="col-md-12" style="padding:0;" id="div_mensaje">
+                 
+        </div>
+            
+                <?php $estilo_tabla = "style='padding:0;'"; ?>
+        <div class="col-md-12" style="padding:0; font-family: Arial;">
+            <table id="mitabla">
+                <tr <?php echo $estilo_tabla; ?>>
+                    <th <?php echo $estilo_tabla; ?>>#</th>
+                    <th <?php echo $estilo_tabla; ?>>DESCRIPCION</th>
+                    <th <?php echo $estilo_tabla; ?>>CODIGO</th>
+                    <th <?php echo $estilo_tabla; ?>>PRECIO</th>
+                    <th <?php echo $estilo_tabla; ?>>UNID.</th>
+                    <th <?php echo $estilo_tabla; ?>>COD.</th>
+                    <th <?php echo $estilo_tabla; ?>>ESTADO</th>                    
+                </tr>
+                <?php $i = 0;
+                    
+                    foreach($productos_homologados as $ph){ ?>
+                    <tr <?php echo $estilo_tabla; ?>>                    
+                        <td <?php echo $estilo_tabla; ?>><?php echo ++$i; ?></td>
+                        <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_nombre"]."<sub>[".$ph["producto_id"]."]</sub>"; ?></td>
+                        <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_codigo"]; ?></td>
+                        <td style="padding:0; text-align: right;"><?php echo number_format($ph["producto_precio"],2,".",","); ?></td>
+                        <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigounidadsin"]; ?>
+                            
+                            <?php if(! $ph["producto_codigounidadsin"]>0){ ?>
+                            <span class="btn btn-xs btn-danger" title="La unidad/codigo unidad, no fueron correctamente asignados..!!" ><fa class="fa fa-chain-broken"></fa></span>
+                            <?php } ?>
+                                
+                           </center>
+                        </td>
+                        
+                        <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigosin"]; ?>
+                            
+                            <?php if(! $ph["producto_codigosin"]>0){ ?>
+                            <span class="btn btn-xs btn-danger" title="El codigo Producto SIN, no fue correctamente asignado..!!"><fa class="fa fa-chain-broken"></fa></span>
+                            <?php } ?>
+                           </center>
+                        </td>
+                        
+                        <td <?php echo $estilo_tabla; ?>>
+                            <center>
+                                <a href="<?php echo base_url("producto/edit/".$ph["producto_id"]); ?>" class="btn btn-info btn-xs" target="_BLANK"><fa class="fa fa-pen"> </fa> Modificar</a>                            
+                            </center>
+                        </td>
+                        
+                    </tr>
+                <?php } ?>
+            </table>
+            
+        </div>    
+        </div>
+            
+        </div>
+        </div>
+       
+        <?php } ?>     
+        
+    </div>
         
     </div>
     
@@ -1279,79 +1353,10 @@ window.onkeydown = compruebaTecla;
         
     </div>
     
-    <div class="col-md-6">
-        
-    <?php if ($parametro['parametro_factura']!=3){ ?>
-        
-        <div class="box" <?php echo ($parametro["parametro_productossinhomologar"]!=1)?"hidden":"" ?>>
-            <font size="1"><b>PRODUCTOS SIN HOMOLOGAR</b></font>
-        <div class="box" style="border-color:black;">
-            <div class="box-body">        
-        
-       
-        <div class="col-md-12" style="padding:0;" id="div_mensaje">
-                 
-        </div>
-            
-                <?php $estilo_tabla = "style='padding:0;'"; ?>
-        <div class="col-md-12" style="padding:0; font-family: Arial;">
-            <table id="mitabla">
-                <tr <?php echo $estilo_tabla; ?>>
-                    <th <?php echo $estilo_tabla; ?>>#</th>
-                    <th <?php echo $estilo_tabla; ?>>DESCRIPCION</th>
-                    <th <?php echo $estilo_tabla; ?>>CODIGO</th>
-                    <th <?php echo $estilo_tabla; ?>>PRECIO</th>
-                    <th <?php echo $estilo_tabla; ?>>UNID.</th>
-                    <th <?php echo $estilo_tabla; ?>>COD.</th>
-                    <th <?php echo $estilo_tabla; ?>>ESTADO</th>                    
-                </tr>
-                <?php $i = 0;
-                    
-                    foreach($productos_homologados as $ph){ ?>
-                    <tr <?php echo $estilo_tabla; ?>>                    
-                        <td <?php echo $estilo_tabla; ?>><?php echo ++$i; ?></td>
-                        <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_nombre"]."<sub>[".$ph["producto_id"]."]</sub>"; ?></td>
-                        <td <?php echo $estilo_tabla; ?>><?php echo $ph["producto_codigo"]; ?></td>
-                        <td style="padding:0; text-align: right;"><?php echo number_format($ph["producto_precio"],2,".",","); ?></td>
-                        <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigounidadsin"]; ?>
-                            
-                            <?php if(! $ph["producto_codigounidadsin"]>0){ ?>
-                            <span class="btn btn-xs btn-danger" title="La unidad/codigo unidad, no fueron correctamente asignados..!!" ><fa class="fa fa-chain-broken"></fa></span>
-                            <?php } ?>
-                                
-                           </center>
-                        </td>
-                        
-                        <td <?php echo $estilo_tabla; ?>><center><?php echo $ph["producto_codigosin"]; ?>
-                            
-                            <?php if(! $ph["producto_codigosin"]>0){ ?>
-                            <span class="btn btn-xs btn-danger" title="El codigo Producto SIN, no fue correctamente asignado..!!"><fa class="fa fa-chain-broken"></fa></span>
-                            <?php } ?>
-                           </center>
-                        </td>
-                        
-                        <td <?php echo $estilo_tabla; ?>>
-                            <center>
-                                <a href="<?php echo base_url("producto/edit/".$ph["producto_id"]); ?>" class="btn btn-info btn-xs" target="_BLANK"><fa class="fa fa-pen"> </fa> Modificar</a>                            
-                            </center>
-                        </td>
-                        
-                    </tr>
-                <?php } ?>
-            </table>
-            
-        </div>    
-        </div>
-            
-        </div>
-        </div>
-       
-        <?php } ?>     
-        
-    </div>
+    
             
             <font face="Arial" size="1">
-            <div class="col-md-3" <?php echo ($parametro["parametro_teclasacceso"]!=1)?"hidden":"" ?>>
+            <div class="col-md-6" <?php echo ($parametro["parametro_teclasacceso"]!=1)?"hidden":"" ?>>
 
                 <b>TECLAS DE ACCESO DIRECTO</b>
                 <div class="box" style="border-color:black;">
@@ -1373,7 +1378,7 @@ window.onkeydown = compruebaTecla;
                 </div>
             </div>
         
-            <div class="col-md-3" <?php echo ($parametro["parametro_informacionbasica"]!=1)?"hidden":"" ?>>
+            <div class="col-md-6" <?php echo ($parametro["parametro_informacionbasica"]!=1)?"hidden":"" ?>>
                 
                 <b>INFORMACIÓN BASICA</b>
                 <div class="box" style="border-color:black;">
@@ -1539,6 +1544,7 @@ window.onkeydown = compruebaTecla;
                                             
                                     } ?>   
                                     <div class="col-md-2" style="padding: 0; display: <?php echo $ocultar; ?>">
+                                        <span>
                                         <h5 class="modal-title" id="myModalLabel"><b>SERVICIO</b></h5>                                        
                                         <select id="tiposerv_id" name="tiposerv_id" class="btn btn-default btn-xs"  style="width: 100px;">
                                                 
@@ -1560,8 +1566,8 @@ window.onkeydown = compruebaTecla;
  
                                          </select>
                                         
+                                    </span>
                                     </div>
-                                    
                                     
                                 </div>                                    
                                                                                              

@@ -942,8 +942,32 @@ div {
                         <label for="parametro_contarventas" class="control-label" title="Cuenta las ventas para los recibos">CONTAR<br>VENTAS</label>
                         <div class="form-group">
                             <select name="parametro_contarventas" class="form-control" id="parametro_contarventas">
-                                <option value="2" <?php if($parametro['parametro_contarventas']=="0"){ ?> selected <?php } ?>>NO</option>
+                                <option value="0" <?php if($parametro['parametro_contarventas']=="0"){ ?> selected <?php } ?>>NO</option>
                                 <option value="1" <?php if($parametro['parametro_contarventas']=="1"){ ?> selected <?php } ?>>SI</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-1">
+                        <label for="parametro_contarventasmes" class="control-label" title="Cuenta las ventas para los recibos">CONTAR<br>VENTAS MES</label>
+                        <div class="form-group">
+                            <select name="parametro_contarventasmes" class="form-control" id="parametro_contarventasmes">
+                                <option value="0" <?php if($parametro['parametro_contarventasmes']=="0"){ ?> selected <?php } ?>>NO</option>
+                                <option value="1" <?php if($parametro['parametro_contarventasmes']=="1"){ ?> selected <?php } ?>>SI</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="col-md-2">
+                        <label for="parametro_mostrarnumero" class="control-label" title="Cuenta las ventas para los recibos">MOSTRAR<br>NUMEROS</label>
+                        <div class="form-group">
+                            <select name="parametro_mostrarnumero" class="form-control" id="parametros_mostrarnumero">
+                                <option value="0" <?php if($parametro['parametro_mostrarnumero']=="0"){ ?> selected <?php } ?>>NINGUNO</option>
+                                <option value="1" <?php if($parametro['parametro_mostrarnumero']=="1"){ ?> selected <?php } ?>>NUMERO DE VENTA</option>
+                                <option value="2" <?php if($parametro['parametro_mostrarnumero']=="2"){ ?> selected <?php } ?>>NUMERO DE TRANSACCION</option>
+                                <option value="3" <?php if($parametro['parametro_mostrarnumero']=="3"){ ?> selected <?php } ?>>NUMERO DE FACTURA</option>
+                                <option value="4" <?php if($parametro['parametro_mostrarnumero']=="4"){ ?> selected <?php } ?>>NUMERO DE TRANS. MENSUAL</option>
                             </select>
                         </div>
                     </div>

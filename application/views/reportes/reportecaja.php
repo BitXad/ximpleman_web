@@ -1,5 +1,6 @@
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/reporte_ventapagrupado.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/reporte_resumen.js'); ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
 //        $(document).ready(function () {
@@ -189,6 +190,64 @@ border-bottom : 1px solid #aaa;*/
       $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
 
+<div class="container no-print">  
+        <div class="box-tools" style="font-family: Arial;">
+                <div class=" col-md-11">
+                    <!-- panel panel-primary -->
+                    <!--<div class="panel panel-primary col-md-8" id='buscador_oculto' > style='display:none; padding-top: 10px;'> -->
+                    <div class="col-md-2">
+                        Usuario:
+                        <?php if($tipousuario_id == 1 || $tienepermiso == 1){ ?>
+                        <select  class="btn btn-primary btn-sm form-control" id="buscarusuario_id" required>
+                            <option value="0"> TODOS </option>
+                            <?php foreach($all_usuario as $usuario){?>
+                            <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
+                            <?php } ?>
+                        </select>
+                        <?php }else{ ?>
+                        <select  class="btn btn-primary btn-sm form-control" id="buscarusuario_id" required>
+                            <?php
+                            $ischequed = "";
+                            foreach($all_usuario as $usuario){
+                                if($usuario_id == $usuario['usuario_id']){
+                                    $ischequed = "selected";
+                            ?>
+                            <option <?php echo $ischequed; ?> value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
+                            <?php }    
+                                } ?>
+                        </select>
+                        <?php } ?>
+                    </div>
+                        <div class="col-md-2">
+                            Desde: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+                        </div>
+                        <div class="col-md-2">
+                            Hasta: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+                        </div>
+                        <div class="col-md-2">
+                            <br>
+                            <button class="btn btn-sm btn-warning btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;" id="boton_buscar">
+                                <span class="fa fa-search"></span> Buscar
+                          </button>
+                            <br>
+                        </div>
+<!--                        <div class="col-md-2">
+                            <br>
+                            <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Ing. Egr. encontrados: <span class="badge btn-primary"><input style="border-width: 0;" id="resingegr" type="text" value="0" readonly="true"> </span></span>
+                        </div>-->
+                        <div class="col-md-3">
+                            <br>
+                            <a id="imprimirestedetalle" class="btn btn-sq-lg btn-success" onclick="imprimirdetalle()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>
+                        </div>
+                </div>
+
+        </div>
+
+    </div>
+
+
+
+
 <table class="table" >
 <tr>
 <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
@@ -208,10 +267,10 @@ border-bottom : 1px solid #aaa;*/
                     
                     <!--<img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                    
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_eslogan']; ?></font><br>
 
                     <!--<font size="1" face="Arial"><?php //echo $factura[0]['factura_sucursal'];?><br>-->
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><small><?php echo $empresa[0]['empresa_direccion']; ?></small><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>
                 
@@ -234,7 +293,8 @@ border-bottom : 1px solid #aaa;*/
                  
                         </td>
                         <td style="font-family: Arial; font-size: 7pt; padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000;" colspan="4">
-                            PUNTO DE VENTA: <?php echo $punto_venta["puntoventa_nombre"]; ?>
+                            PUNTO DE VENTA: <?php echo $punto_venta["puntoventa_nombre"]; ?><br>
+                            USUARIO: <?php echo $usuario["usuario_nombre"]; ?>
                             <br>FECHA INICIO: 
                                 <?php
                                 if(isset($caja)){
@@ -272,14 +332,14 @@ border-bottom : 1px solid #aaa;*/
        <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
            <tr>
                
-                <td align="center" style="padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000;"><b>CANT</b></td>
-                <td align="center" style="padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000;"><b>DESCRIPCIÓN</b></td>
-                <td align="center" style="padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000;"><b>P.UNIT</b></td>
-                <td align="center" style="padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000;"><b>TOTAL</b></td>
+                <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>CANT</b></td>
+                <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>DESCRIPCIÓN</b></td>
+                <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>P.UNIT</b></td>
+                <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>TOTAL</b></td>
                 
            </tr>
            <!--<tbody class="buscar" id="reportefechadeventa"></tbody>-->
-           
+           <tr>
            <?php 
                     $total = 0;
                     $cantidades = 0;
@@ -314,24 +374,15 @@ border-bottom : 1px solid #aaa;*/
                             <td align='right' style="padding: 0;"> <?php number_format($registros["total_utilidad"],2,".",","); ?> </td>
                         <?php } ?>
                         
-                        </tr>
+            </tr>
             <?php } ?> 
-               
-           
-           
-           
-
-<!--       </table>
-        _____________________________________
-<table class="table" style="max-width: 7cm;">
-    -->
-        
-    <tr style="border-top-style: dashed 1px #000;; border-top-width: 2px;">
+         
+    <tr>
         
             
-        <td align="right" style="padding: 0; font-family: Arial; font-size: 10pt; border-top: dashed 1px #000;" colspan="4">
+        <td align="right" style="padding: 0; font-family: Arial; font-size: 8pt; border-top: solid 1px #000;" colspan="4">
             
-            <b>VENTAS AL CONTADO Bs.: <?php echo number_format($total,2,".",","); ?></b>
+            <b>TOTAL EN VENTAS Bs.: <?php echo number_format($total,2,".",","); ?></b>
             <br><b>EFECTIVO INICIAL Bs: 
                 <?php
                 if(isset($caja)){
@@ -345,6 +396,10 @@ border-bottom : 1px solid #aaa;*/
             <br>EGRESOS Bs:<?php echo "0.00"; ?>            
         </td>          
     </tr>
+    
+    <tbody id='tablatotalresultados'></tbody>
+    
+    
     <tr>
         <td nowrap style="padding: 0; font-family: Arial; font-size: 10pt; border-top: dashed 1px #000;" colspan="4">
             <?php

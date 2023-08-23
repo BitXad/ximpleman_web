@@ -114,18 +114,37 @@ class Reportes extends CI_Controller{
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $usuario_id = $this->session_data['usuario_id']; 
             $this->load->model('Tipo_transaccion_model');
+            
+            
+            //*******************************************************
+                $fecha1 = "date(now())"; //$this->input->post('fecha1');   
+                $fecha2 =  "date(now())"; //$this->input->post('fecha2'); 
+                //$usuario = $this->input->post('usuario_id'); 
+                $usuario = $this->session_data['usuario_id']; 
+//                $valfecha1 = "";
+//                $valfecha2 = "";
+                //$usuario_id = "";
+
+            //*******************************************************
+            
+            
             $data['page_title'] = "Reporte de ventas agrupado";
+            
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
+            
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
             $data['parametro'] = $this->parametros;
+            
             $this->load->model('Moneda_model');
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             
-            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
-            $data['caja'] = $this->Caja_model->get_cajausuario_now($usuario_id);
+//            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
+            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fecha($usuario_id,$fecha1,$fecha2);
+//            $data['caja'] = $this->Caja_model->get_cajausuario_now($usuario_id);
+            $data['caja'] = $this->Caja_model->get_cajausuario_fecha($usuario_id,$fecha1,$fecha2);
             $data['punto_venta'] = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
             
             $sql = "select MIN(factura_id) as desde, MAX(factura_id) as hasta,
@@ -155,7 +174,36 @@ class Reportes extends CI_Controller{
                     where usuario_id = ".$usuario_id." 
                     and factura_fecha = date(now()) and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
             $data['anuladas'] = $this->Venta_model->consultar($sql);
+
+            //********************************************************************
+
+
+                if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
+                    $valfecha1 = $fecha1;
+                    $valfecha2 = $fecha2;
+                }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
+                    $valfecha1 = $fecha1;
+                    $valfecha2 = $fecha1;
+                }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
+                    $valfecha1 = $fecha2;
+                    $valfecha2 = $fecha2;
+                }else{
+                    $fecha1 = null;
+                    $fecha2 = null;
+                }
+
+                if($usuario >  0){
+                    $usuario_id = $usuario;
+                }else{
+                    $usuario_id = 0;
+                }
+                
+                $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
+                $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $usuario_id);
             
+            
+            //********************************************************************
+
             
             $data['_view'] = 'reportes/reportecaja';
             $this->load->view('layouts/main',$data);
@@ -545,6 +593,7 @@ function torta3($anio,$mes)
         $data['sistema'] = $this->sistema;
         if($this->acceso(141)){
             if ($this->input->is_ajax_request()) {
+                
                 $fecha1 = $this->input->post('fecha1');   
                 $fecha2 = $this->input->post('fecha2'); 
                 $usuario = $this->input->post('usuario_id'); 

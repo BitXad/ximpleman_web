@@ -1,3 +1,15 @@
+</script>
+<style type="text/css">
+
+    table{
+
+        td{
+            border:hidden;
+            padding: 0px;
+        }
+    }
+</style>
+
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <div class="box-header">
     <font size='4' face='Arial'><b>Parametros</b></font>
@@ -441,6 +453,8 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">VERIF. CONEXION </th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">Nº VENTA </th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CONTAR VENTAS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CONTAR VENTAS MES</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOTRAR NUMERO</th>
                     </tr>
                     <tr>
                         <td><?php  if ($p['parametro_cantidadsimple']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
@@ -457,6 +471,17 @@ foreach($all_parametros as $p)
                         <td><?php  if ($p['parametro_verificarconexion']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
                         <td><?php  echo $p['parametro_numeroventa']; ?></td>
                         <td><?php  if ($p['parametro_contarventas']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_contarventasmes']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
+                        <td><?php  
+                                    if ($p['parametro_mostrarnumero']==0){ echo 'NINGUNO'; }
+                                    if ($p['parametro_mostrarnumero']==1){ echo 'NUMERO DE VENTA'; }
+                                    if ($p['parametro_mostrarnumero']==2){ echo 'NUMERO DE TRANSACCION'; }
+                                    if ($p['parametro_mostrarnumero']==3){ echo 'NUMERO DE FACTURA'; }
+                                    if ($p['parametro_mostrarnumero']==4){ echo 'NUMERO DE TRANS. MENSUAL'; }
+                                    
+                                    ?>
+                        
+                        </td>
                     </tr>
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(214, 114, 26, 0.3);" rowspan="2" ><u>CLIENTES</u></th>

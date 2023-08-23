@@ -17,6 +17,7 @@ function tabla_pedido_abierto()
     var pedido_id = document.getElementById('pedido_id').value;
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"pedido/detalle_pedido";
+    var decimales = 2;
     
 
     
@@ -73,7 +74,7 @@ function tabla_pedido_abierto()
                     html += "                              	<center>";
                     html += "                              		<img src='"+imagen+"' width='70' height='70' class='img-circle'><br>";
                     html += "                              		<span class='badge btn-warning'>";
-                    html += "                                             <font size='5' face='Arial narrow'> <b>"+d[i]['detalleped_total']+"</b></font>";
+                    html += "                                             <font size='5' face='Arial narrow'> <b>"+Number(d[i]['detalleped_total']).toFixed(decimales)+"</b></font>";
                     html += "                              		</span>";
                     html += "                                             <button class='btn btn-danger btn-sm' onclick='quitarproducto_pedido("+d[i]['detalleped_id']+")'  title='Quitar producto'><span class='fa fa-trash' ></span></button>";
                     html += "                              	</center>";
@@ -81,17 +82,17 @@ function tabla_pedido_abierto()
                     html += "                              </td>  ";                            
 
                     html += "                              <td><b>"+d[i]['detalleped_nombre']+"</b><br>";
-                    html += "                              		<b>Unidad: </b>"+d[i]['detalleped_unidad'];
-                    html += "                              		<b>Código: </b>"+d[i]['detalleped_codigo'];
+                    html += "                              		<b>Unidad: </b>"+Number(d[i]['detalleped_unidad']).toFixed(0);
+                    html += "                              		<b>Código: </b>"+Number(d[i]['detalleped_codigo']).toFixed(0);
                     html += "                              		<b>Obs.: </b>"+d[i]['detalleped_preferencia']+"<br>";
-                    html += "                              		<span class='badge btn-facebook btn-sm'> <b>Precio: </b>"+d[i]['detalleped_precio']+"</span><br>     ";                              
+                    html += "                              		<span class='badge btn-facebook btn-sm'> <b>Precio: </b>"+Number(d[i]['detalleped_precio']).toFixed(decimales)+"</span><br>     ";                              
                     html += "                              	<!--------------------------------------------------------------->";
 
                     html += "                              	<br>";
                     html += "                              	<div class='btn-group'>      ";                           
 
                     html += "                              		<button class='btn btn-success btn-sm' onclick='reducir_pedido(1,"+d[i]['detalleped_id']+")' title='Disminuir producto'><span class='fa fa-minus' ></span></button>";
-                    html += "                              		<span class='btn btn-default  btn-sm'> "+d[i]['detalleped_cantidad']+"</span>";
+                    html += "                              		<span class='btn btn-default  btn-sm'> "+Number(d[i]['detalleped_cantidad']).toFixed(decimales)+"</span>";
                     html += "                              		<button class='btn btn-success btn-sm' onclick='incrementar_pedido(1,"+d[i]['detalleped_id']+")' title='Incrementar producto'><span class='fa fa-plus' ></span></button>  ";                  
                     html += "                              	  ";
                     html += "                              	</div>";

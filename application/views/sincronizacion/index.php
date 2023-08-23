@@ -20,7 +20,7 @@
 <input type="hidden" id="dosificacion_ambiente" value="<?php echo $dosificacion['dosificacion_ambiente']; ?>" name="dosificacion_ambiente">
 
 <div class="box-header">
-    <font size='4' face='Arial'><b>Sincronizaci&oacute;n c&oacute;digos y cat&aacute;logos</b></font>
+    <font size='4' face='Arial'><b>SINCRONIZACION CÓDIGOS Y CATÁLOGOS</b></font>
     <div class="box-tools no-print">
         <button class="btn btn-facebook float-right" onclick="cargar_datos()"><i class="fa-solid fa-arrows-rotate"></i> Cargar Datos</button>
         <button class="btn btn-success float-right" onclick="sincronizar(0,1)"><i class="fa-solid fa-arrows-rotate"></i> Sincronizar Todo</button>

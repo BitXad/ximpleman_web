@@ -146,6 +146,20 @@ class Caja_model extends CI_Model
         ")->row_array();
         return $caja;
     }
+    
+    
+    function get_cajausuario_fecha($usuario_id,$desde,$hasta)
+    {
+        $caja = $this->db->query("
+            select c.*,u.* from caja c
+            left join usuario u on c.usuario_id = u.usuario_id
+            where 
+            c.usuario_id = ".$usuario_id." and
+            c.caja_fechaapertura >= {$desde} and
+            c.caja_fechaapertura <= {$hasta}
+        ")->row_array();
+        return $caja;
+    }
     /*
      * Get caja by  fecha_desde, fecha_hasta, usuario_id
      */

@@ -47,7 +47,7 @@ margin: 0px;
 
 
 table{
-width : 7cm;
+width : 8cm;
 margin : 0 0 0px 0;
 padding : 0 0 0 0;
 
@@ -128,7 +128,7 @@ border-bottom : 1px solid #aaa;
 
                 <?php
 
-                    $opcion = $parametro[0]["parametros_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
+                    $opcion = $parametro[0]["parametro_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 numero de factura , 4 - transaccion mensual 
                     
                         if ($opcion==1){ ?>
                             <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
@@ -180,7 +180,7 @@ border-bottom : 1px solid #aaa;
     <tr>
         <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.5cm;"><b>CANT</b></td>
         <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 4cm;"><b>DESCRIPCIÓN</b></td>
-        <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.7cm;"><b>P.UNIT</b></td>
+        <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.7cm;"><b>P.U.</b></td>
         <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.8cm;"><b>TOTAL</b></td>               
     </tr>
            <?php $cont = 0;
@@ -203,7 +203,7 @@ border-bottom : 1px solid #aaa;
                         
                         ?>
            <tr style="padding: 0; ">
-                <td align="center" style="padding: 0; "><?php echo $lacantidad; ?></td>
+                <td align="center" style="padding: 0; font-size: 10pt; "><?php echo $lacantidad; ?></td>
                 <td style="padding: 0; max-width: 3cm;"><?php echo $d['producto_nombre'];?> 
                     <?php 
                         
@@ -236,17 +236,18 @@ border-bottom : 1px solid #aaa;
            </tr>
            <?php } ?>
     <tr style="" >
-        <td colspan="2" align="left" style="padding: 0; padding: 0; border-top: dashed 1px #000; font-weight: bold; font-size: 12px;">TOTAL Bs</td>
-        <td colspan="2" align="right" style="padding: 0; padding: 0; border-top: dashed 1px #000;"><center style="font-weight: bold; font-size: 12px;"><?php echo number_format($total_final,2,'.',','); ?></center></td>
+        <!--<td colspan="2" align="left" style="padding: 0; padding: 0; border-top: dashed 1px #000; font-weight: bold; font-size: 12px;"></td>-->
+        <td colspan="4" align="right" style="padding: 0; padding: 0; border-top: dashed 1px #000;"><b style="font-weight: bold; font-size: 12px;"><?php echo "TOTAL Bs:  ".number_format($total_final,2,'.',','); ?></b></td>
     </tr>
     <tr>
-        <td style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.8cm; font-size: 8pt;" colspan="4"><center><?php echo "OBS.: <b>".$venta[0]['venta_glosa']."</b>"; ?></center></td>
+        <td style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.8cm; font-size: 8pt;" colspan="4"><?php echo "OBS.: <b>".$venta[0]['venta_glosa']."</b>"; ?></td>
     </tr>
 
     <tr>
-          <td  colspan="4" style="border-top:solid 1px #000;">
-               CAJERO: <?php echo $venta[0]['usuario_nombre']; ?>
-<!--               / TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>-->
+        <td  colspan="4" style="border-top:solid 1px #000;">
+                <small>
+                    CAJERO: <?php echo $venta[0]['usuario_nombre']; ?>
+               </small>
             <center>
             <font size="2">
                    

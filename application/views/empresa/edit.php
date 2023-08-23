@@ -72,13 +72,13 @@ function mostrar(a) {
                                             <input type="text" name="empresa_departamento" value="<?php echo ($this->input->post('empresa_departamento') ? $this->input->post('empresa_departamento') : $empresas['empresa_departamento']); ?>" class="form-control" id="empresa_departamento" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="empresa_propietario" class="control-label">Propietario</label>
                                         <div class="form-group">
                                             <input type="text" name="empresa_propietario" value="<?php echo ($this->input->post('empresa_propietario') ? $this->input->post('empresa_propietario') : $empresas['empresa_propietario']); ?>" class="form-control" id="empresa_propietario" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="empresa_profesion" class="control-label">Profesión</label>
                                         <div class="form-group">
                                             <input type="text" name="empresa_profesion" value="<?php echo ($this->input->post('empresa_profesion') ? $this->input->post('empresa_profesion') : $empresas['empresa_profesion']); ?>" class="form-control" id="empresa_profesion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -100,6 +100,12 @@ function mostrar(a) {
                                         <label for="empresa_email" class="control-label">Correo Electrónico</label>
                                         <div class="form-group">
                                             <input type="email" name="empresa_email" value="<?php echo ($this->input->post('empresa_email') ? $this->input->post('empresa_email') : $empresas['empresa_email']); ?>" class="form-control" id="empresa_email" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="empresa_nombresucursal" class="control-label">Nombre Sucursal</label>
+                                        <div class="form-group">
+                                            <input type="text" name="empresa_nombresucursal" value="<?php echo ($this->input->post('empresa_nombresucursal') ? $this->input->post('empresa_nombresucursal') : $empresas['empresa_nombresucursal']); ?>" class="form-control" id="empresa_nombresucursal" />
                                         </div>
                                     </div>
                                     <div class="col-md-6">

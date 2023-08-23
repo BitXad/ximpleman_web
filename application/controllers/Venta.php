@@ -1704,6 +1704,30 @@ class Venta extends CI_Controller{
 
     }
     
+    function ingresorapidojsx()  
+    {   
+    
+            $cantidad = $this->input->post('cantidad');
+            $producto_id = $this->input->post('producto_id');
+            $nombre_factor = $this->input->post('nombre_factor');
+            $usuario_id = $this->session_data["usuario_id"];
+            
+            $existe = $this->Inventario_model->si_existe($producto_id,$usuario_id);
+            
+            if(!$existe){
+                
+                $producto = $this->Inventario_model->ingresorapidojsx($cantidad,$producto_id,$nombre_factor);
+                
+            }else{
+                
+                $producto = $this->Inventario_model->incrementorapidojsx($cantidad,$producto_id,$nombre_factor);
+                
+            }
+            
+            echo json_encode($producto);
+
+    }
+    
     
  /* 
  */
@@ -5414,7 +5438,10 @@ function anular_venta($venta_id){
             
 //            var_dump($parametros);
         //}
-        
+        //
+        // Configuración de tiempo límite para la solicitud SOAP
+        $timeout = 30; // en segundos
+            
         try{
             
             $opts = array(
@@ -5429,14 +5456,28 @@ function anular_venta($venta_id){
             $cliente = new \SoapClient($wsdl, [
                 'stream_context'    => $context,
                 'cache_wsdl'        => WSDL_CACHE_NONE,
-                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,    
+                'compression'       => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+                'connection_timeout' => $timeout // Configuración del tiempo límite de conexión
             ]);
 
+            // Iniciar un temporizador
+            $start_time = time();
+            
+            
             //var_dump($parametros);    
             $resultado = $cliente->recepcionFactura($parametros);
-            //var_dump($resultado);
-            
+            //var_dump($resultado);            
             $mensaje = $resultado->RespuestaServicioFacturacion;
+            
+            // Calcular el tiempo transcurrido
+            $elapsed_time = time() - $start_time;
+            
+            // Verificar si ha pasado más tiempo del límite establecido
+             if ($elapsed_time > $timeout) {
+                 // Lanzar una excepción personalizada si el tiempo límite se ha excedido
+                 throw new Exception('La solicitud SOAP excedió el tiempo límite');
+             }            
+
             return $mensaje;
             
         }catch(Exception $e){

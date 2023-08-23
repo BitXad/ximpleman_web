@@ -172,14 +172,14 @@
                             </div>
                         </div>
                     
-                        <div class="col-md-2">
+<!--                        <div class="col-md-2">
                            <label for="desde" class="control-label"> Buscar: </label>
                            <div class="form-group">
               
                                      <button  type="submit" class="btn btn-info btn-xs form-control" onclick="anulacion_masiva()"><span class="fa fa-times"> </span> Anulación en Masa</button>
       
                             </div>
-                        </div>
+                        </div>-->
                     
                     
 
@@ -438,10 +438,10 @@
 <!------------------------ F I N  modal para forzar anulacion de factura en siat ------------------->
 
 <!-- Button trigger modal -->
-<div >
+<div <?= ($dosificacion["dosificacion_ambiente"]==2)?"":"hidden"; ?> >
     
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" >
-      Launch demo modal
+      Anulación en Masa
     </button>
 </div>
 

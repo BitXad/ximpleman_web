@@ -7,6 +7,8 @@
 class Pedido extends CI_Controller{
     
     private $sistema;
+    private $parametros;
+    
     function __construct()
     {
         parent::__construct();
@@ -40,6 +42,11 @@ class Pedido extends CI_Controller{
         
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+        $this->load->model('Parametro_model');
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        
     }
     
     private function acceso($id_rol){
@@ -254,6 +261,8 @@ class Pedido extends CI_Controller{
         $data['page_title'] = "Modificar Pedido";
         $usuario_id = $this->session_data['usuario_id'];
         
+        $data['parametros'] = $this->parametros;
+
         $pedido = $this->Pedido_model->get_cliente_id($pedido_id);
         
         if(sizeof($pedido)>0){
