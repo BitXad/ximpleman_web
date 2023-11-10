@@ -60,6 +60,9 @@
                         <th>Login</th>
                         <th>Perfil</th>
                         <th>Punto Venta</th>
+                        <th>Horario</th>
+                        <th>Inicio</th>
+                        <th>Fin</th>
                         <!--<th>Imagen</th>-->
                         <th>Estado</th>
                         <th></th>
@@ -90,6 +93,9 @@
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['usuario_login']; ?></td>
                         <td class="text-center" style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['parametro_id']; ?></td>
                         <td class="text-center" style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['puntoventa_codigo']; ?></td>
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['usuario_turno']; ?></td>
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['usuario_inicioturno']; ?></td>
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['usuario_finturno']; ?></td>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['estado_descripcion']; ?></td>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>">
                             

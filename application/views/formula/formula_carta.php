@@ -79,7 +79,7 @@ border-bottom : 1px solid #aaa;
 
 <!-------------------------------------------------------->
 <?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"];
+      $ancho = 17;//$parametro[0]["parametro_anchofactura"];
       $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 ?>
 <div class=" table-responsive" style="padding: 0;">
@@ -125,7 +125,7 @@ border-bottom : 1px solid #aaa;
 
                 <font size="3" face="arial"><b>FORMULA DE PRODUCCIÓN</b></font> <br>
                 <font size="3" face="arial"><b>Nº 00<?php echo $formula['formula_id']; ?></b></font> <br>
-                <!--<font size="1" face="arial"><b>Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?><br>T.C. <?php echo $moneda['moneda_tc']; ?></b></font> <br>-->
+                <!--<font size="1" face="arial"><b>Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?><br>T.C. <?php echo number_format($moneda['moneda_tc'],2,".",","); ?></b></font> <br>-->
                 <!--<font size="1" face="arial"><b><?php echo $formula['formula_fechacreacion']." ".$formula['formula_hora']; ?></b></font> <br>-->
             </center>
         </td>
@@ -143,8 +143,8 @@ border-bottom : 1px solid #aaa;
                     <!--<b>CODIGO: </b><?php echo $formula['cliente_codigo']." / NIT: ".$formula['cliente_nit']; ?> <br>-->
                     <b>FORMULA: </b><?php echo $formula['formula_nombre'].""; ?><br>
                     <b>PRODUCTO: </b><?php echo $formula['producto_nombre'].""; ?><br>
-                    <b>COSTO Bs: </b><?php echo $formula['formula_costounidad'].""; ?>
-                    <b>PRECIO Bs: </b><?php echo $formula['formula_preciounidad'].""; ?>
+                    <b>COSTO Bs: </b><?php echo number_format($formula['formula_costounidad'],2,".",",").""; ?><br>
+                    <b>PRECIO Bs: </b><?php echo number_format($formula['formula_preciounidad'],2,".",",").""; ?>
                     
                 <br>
                 </small>
@@ -189,7 +189,7 @@ border-bottom : 1px solid #aaa;
  
             ?>
            <tr>
-                <td align="center" style="padding: 0"><?php echo $d['detalleformula_cantidad']; ?></td>
+                <td align="center" style="padding: 0"><?php echo number_format($d['detalleformula_cantidad'],2,".",","); ?></td>
                 <td style="padding: 0"><font style="font-size:10px; font-family: arial;"> <?php echo $d['producto_nombre'];?>
                         <?php
                         

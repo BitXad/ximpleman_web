@@ -78,6 +78,29 @@ class Dosificacion extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
+    /*
+     * Listing of dosificacion
+     */
+    function configurar()
+    {
+        $data['sistema'] = $this->sistema;
+
+            
+            
+           
+            $config['total_rows'] = $this->Dosificacion_model->get_all_dosificacion_count();
+            $this->pagination->initialize($config);
+            if($config['total_rows'] > 0){
+                $data['newdosif'] = 1;
+            }else{ $data['newdosif'] =0; }
+
+            $data['dosificacion'] = $this->Dosificacion_model->get_this_dosificacion();
+            $data['all_tipopuntoventa'] = $this->Tipo_puntoventa_model->get_all_tipopuntoventa();
+
+            $data['_view'] = 'dosificacion/configurar_facturacion';
+            $this->load->view('layouts/main',$data);
+
+    }
 
     /*
      * Adding a new dosificacion
@@ -241,6 +264,8 @@ class Dosificacion extends CI_Controller{
                         
                         $this->Dosificacion_model->ejecutar($sql);
                         
+                        
+                        
                     }else{
                         $archivop12 = $archivop121;
                     }
@@ -306,6 +331,60 @@ class Dosificacion extends CI_Controller{
                         f.`dosifcacion_modalidad` = d.dosificacion_modalidad";
 
                 $this->Dosificacion_model->ejecutar($sql);
+
+                //Modificar los endpoints para PRODUCCION
+                if ($this->input->post('cambiar_endpoints')==1){
+                    
+                    $sql = "UPDATE dosificacion
+                            SET
+                              estado_id = 1,
+                             
+                              dosificacion_sincronizacion = 'https://siatrest.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl',
+                              dosificacion_recepcioncompras = 'https://siatrest.impuestos.gob.bo/v2/ServicioRecepcionCompras?wsdl',
+                              dosificacion_operaciones = 'https://siatrest.impuestos.gob.bo/v2/FacturacionOperaciones?wsdl',
+                              dosificacion_obtencioncodigos = 'https://siatrest.impuestos.gob.bo/v2/FacturacionCodigos?wsdl',
+                              dosificacion_notacredito = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionDocumentoAjuste?wsdl',
+                              dosificacion_factura = 'https://siatrest.impuestos.gob.bo/v2/ServicioFacturacionCompraVenta?wsdl',
+                              dosificacion_facturaservicios = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionServicioBasico?wsdl',
+                              dosificacion_facturaglp = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionComputarizada?wsdl',
+                              dosificacion_ruta = 'https://siat.impuestos.gob.bo/consulta/QR?',
+                              dosificacion_glpelectronica = 'https://siatrest.impuestos.gob.bo/v2/ServicioFacturacionElectronica?wsdl',
+                              dosificacion_telecomunicaciones = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionTelecomunicaciones?wsdl',
+                              dosificacion_entidadesfinancieras = ''
+                            WHERE dosificacion_id = ".$dosificacion_id;
+
+                    $this->Dosificacion_model->ejecutar($sql);
+                }
+                //FIN Modificar los endpoints para PRODUCCION
+                
+                //Modificar los endpoints para PRUEBAS
+                if ($this->input->post('cambiar_endpoints')==2){
+                    
+                    $sql = "UPDATE dosificacion
+                            SET 
+                                estado_id = 1,
+
+                                dosificacion_sincronizacion = 'https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl',
+                                dosificacion_recepcioncompras = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioRecepcionCompras?wsdl',
+                                dosificacion_operaciones = 'https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionOperaciones?wsdl',
+                                dosificacion_obtencioncodigos = 'https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl',
+                                dosificacion_notacredito = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionDocumentoAjuste?wsdl',
+                                dosificacion_factura = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionCompraVenta?wsdl',
+                                dosificacion_facturaservicios = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionServicioBasico?wsdl',
+                                dosificacion_facturaglp = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionComputarizada?wsdl',
+                                dosificacion_ruta = 'https://pilotosiat.impuestos.gob.bo/consulta/QR?',
+                                dosificacion_glpelectronica = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionElectronica?wsdl',
+                                dosificacion_telecomunicaciones = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionTelecomunicaciones?wsdl',
+                                dosificacion_entidadesfinancieras = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionEntidadFinanciera?wsdl'
+                            WHERE dosificacion_id = ".$dosificacion_id;
+
+                    $this->Dosificacion_model->ejecutar($sql);
+                }
+                
+
+                //FIN Modificar los endpoints para PRUEBAS
+                
+                
                 $documento_sector = $this->input->post('docsec_codigoclasificador');
                 
                 $parametro_id = 1;

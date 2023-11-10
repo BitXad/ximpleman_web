@@ -40,6 +40,7 @@ class Inventario_model extends CI_Model
                 group by p.categoria_id, p.producto_id order by c.categoria_nombre, p.producto_nombre asc";
 
           
+        //echo $sql;
         $producto = $this->db->query($sql)->result_array();
         return $producto;
         
@@ -56,6 +57,7 @@ class Inventario_model extends CI_Model
         return true;
         
     }
+    
     /*
      * Get inventario
      */
@@ -65,6 +67,26 @@ class Inventario_model extends CI_Model
         $this->db = $this->load->database($basededatos, TRUE);    
         return $this->db->query($sql)->result_array();
         
+    }
+    
+    /*
+     * Get inventario
+     */
+    function ejecutar_en_sucursal_producto($basededatos, $prod)
+    {
+        
+        $this->db = $this->load->database($basededatos, TRUE);    
+        $this->db->insert('producto', $prod);
+        
+        return true;
+        
+    }
+        
+    function add_producto_sucursal($basededatos, $params)
+    {
+        $this->db = $this->load->database($basededatos, TRUE);    
+        $this->db->insert('producto',$params);
+        return $this->db->insert_id();
     }
     
     /*
@@ -357,7 +379,9 @@ class Inventario_model extends CI_Model
         
         $sql = "SELECT p.*,c.categoria_nombre FROM inventario p
         left join categoria_producto c on c.categoria_id = p.categoria_id
+        
         /*left join detalle_compra dc on dc.producto_id = p.producto_id*/ 
+        
         WHERE p.estado_id=1 
         and p.producto_nombre like '%$parametro%' 
         or p.producto_codigobarra like '%$parametro%' 
@@ -567,6 +591,23 @@ class Inventario_model extends CI_Model
         $this->db->query($sql);
         return true;
     }
+    
+    
+    /*
+     * function to update inventario
+     */
+    function actualizar_en_sucursal($basededatos,$producto_id,$params)
+    {
+        //var_dump($params);
+        $this->db = $this->load->database($basededatos, TRUE);  
+        $this->db->where('producto_id',$producto_id);
+        $this->db->update('producto',$params);
+        
+        $this->db->where('producto_id',$producto_id);
+        $this->db->update('inventario',$params);
+        return true;
+    }
+    
  function rebajar_cantidad_producto($producto_id,$existencia)
     {
 
@@ -943,6 +984,22 @@ class Inventario_model extends CI_Model
         $sql = "select * from almacenes where estado_id = 1";
         $producto = $this->db->query($sql)->result_array();
         return $producto;
+    }
+
+    /* lista los almacenes  */
+    function get_all_almacenes()
+    {
+        $sql = "select * from almacenes";
+        $almacenes = $this->db->query($sql)->result_array();
+        return $almacenes;
+    }
+
+    /* lista los almacenes  */
+    function get_all_almacen($almacen_id)
+    {
+        $sql = "select * from almacenes where almacen_id = {$almacen_id}";
+        $almacen = $this->db->query($sql)->row_array();
+        return $almacen;
     }
 
     /* verificar si existe un producto en el detalle  */

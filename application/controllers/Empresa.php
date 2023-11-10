@@ -268,6 +268,7 @@ class Empresa extends CI_Controller{
                 $data['_view'] = 'empresa/edit';
                 $this->load->view('layouts/main',$data);
             }
+            
         }
         else
             show_error('The empresa you are trying to edit does not exist.');

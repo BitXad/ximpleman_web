@@ -230,7 +230,8 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
          <!--<span class="btn btn-default" style="margin-right: 50%">Agrupar Detalle <input  type="checkbox"  id="agrupar" name="agrupar" value="1" checked></span>-->  
          
-        <span style="margin-right: 40%">Buscar Productos</span>  
+        <span style="margin-right: 40%">Buscar Productos</span> <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
+        
          <label class="btn btn-default btn-xs" > <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" checked> Agrupar</label>  
                 <?php if($bandera==1) { ?>
                
@@ -303,7 +304,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     if($provi==0) { ?>
         
         
-        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn btn-xs btn-success" ><i class="fa fa-money "></i>
+        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn btn-xs btn-facebook" ><i class="fa fa-money "></i>
                Finalizar <?php echo $sistema["sistema_modulocompras"]; ?> 
             </a></label>
             
@@ -504,7 +505,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     <div class="col-md-12"> 
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title" style="padding-right: 170px;">Añadir Producto</h3>
+                <h3 class="box-title" style="padding-right: 170px;"><b>REGISTRO DE PRODUCTOS</b></h3>
                 <button type="button" class="btn btn-info btn-xs" onclick="cambiarcodproducto();" title="genera codigo de barra y codigo">
       <i class="fa fa-edit"></i> Generar Codigo Barra y Codigo
     </button>
@@ -714,11 +715,20 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
                 
             </div>
-           
-                <button type="submit" class="btn btn-success">
-                    <i class="fa fa-check"></i> Guardar
-                </button>
-          
+            <center>
+                <input type="checkbox" value="1" checked name="registrar_producto" id="registrar_producto">Registrar producto en todas las sucursales/depositos.<br>
+                
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-check"></i> Guardar
+                        </button>
+                
+                        <button class="btn btn-danger" data-dismiss="modal" >
+                            <i class="fa fa-times"></i> Cancelar
+                        </button>
+
+
+            </center>
+
                     </div>
                 </div>
     </div>
@@ -1220,6 +1230,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <?php }else{ ?>
             <span class="btn btn-default">Ajustar precios de costo <i class="fa fa-check-square"></i><input  type="checkbox"  id="actualizarprecios" name="actualizarprecios" value="1" checked="true" checked hidden></span>  
             <?php }  ?>
+            
+            <span class="btn btn-default">Actualizar precios de las sucursales <input  type="checkbox"  id="actualizarpreciossucursales" name="actualizarpreciossucursales" value="1" checked="true" checked></span>
+            
             
             <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit" onclick="final()">
                 <h4>

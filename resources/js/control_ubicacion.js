@@ -82,7 +82,7 @@
                                 <td>${control['usuario_nombre']}</td>
                                 <td>${control['estado_descripcion']}</td>
                                 <td class="no-print">
-                                    <a href="${base_url}control_inventario/edit/${control['controlu_id']}" class="btn btn-info btn-xs" title="Editar Control de inventario"><span class="fa fa-pencil"></span></a>
+                                    <a href="${base_url}control_inventario/edit/${control['controlu_id']}" class="btn btn-info btn-xs" title="Editar control de inventario"><span class="fa fa-pencil"></span> </a>
                                 </td>
                             </tr>`;
                     i+=1;
@@ -127,7 +127,7 @@
                                 <td class="text-center">${control['controli_fecha']}</td>
                                 <td class="text-center">${control['estado_descripcion']}</td>
                                 <td class="no-print">
-                                    <a href="${base_url}control_ubicacion/index/${control['controli_id']}" class="btn btn-primary btn-xs" title="Editar Control de inventario"><i class="fa fa-sign-in" aria-hidden="true"></i></a>
+                                    <a href="${base_url}control_ubicacion/index/${control['controli_id']}" class="btn btn-primary btn-xs" title="Realizar Control de inventario"><i class="fa fa-sign-in" aria-hidden="true"></i> Inventario</a>
                                     <a href="${base_url}control_inventario/edit/${control['controli_id']}" class="btn btn-info btn-xs" title="Editar Control de inventario"><span class="fa fa-pencil"></span></a>
                                     <button class="btn btn-danger btn-xs" title="Borrar Control de inventario" onclick=(delete_inventario(${control['controli_id']}))><span class="fa fa-trash"></span></button>
                                 </td>

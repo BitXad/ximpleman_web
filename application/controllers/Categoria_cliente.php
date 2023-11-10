@@ -81,7 +81,7 @@ class Categoria_cliente extends CI_Controller{
             // SMART GRID
             //********************************************
             // MySQL Query to get data
-            $sql = "select * from producto order by producto_nombre"; 
+            $sql = "select *, round(producto_precio,2) as precio from producto order by producto_nombre"; 
             
             $config = array("page_size"=> 50, 
                         "toolbar_position"=> 'top',
@@ -113,6 +113,7 @@ class Categoria_cliente extends CI_Controller{
                             "producto_factor4"=>array("header"=>"Factor4", "type"=>"label"),
                             "producto_caracteristicas"=>array("header"=>"Caracteristicas", "type"=>"label"),
                             "producto_nombreenvase"=>array("header"=>"Envase", "type"=>"label"),
+                            "precio"=>array("header"=>"Precio", "type"=>"label"),
                     );        
 
             // Set the grid 

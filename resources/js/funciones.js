@@ -1070,8 +1070,8 @@ function buscarporcodigojsx()
 
 }
 
-function buscarporcodigojs()
-{
+function buscarporcodigojs(){
+    
    var base_url = document.getElementById('base_url').value;
    var controlador = base_url+'venta/buscarcodigo';
    var codigo = document.getElementById('codigo').value;
@@ -1085,6 +1085,17 @@ function buscarporcodigojs()
     if(codigobalanza==1){
         
         var identificador =  codigo.substring(0,3);
+        
+        if(identificador==200){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad'])/10000;
+                
+                codigo = codigoProducto;
+        }
         
         if(identificador==215){
             
@@ -1119,7 +1130,7 @@ function buscarporcodigojs()
                 codigo = codigoProducto;
         }
         
-        //alert("verificador: " +verificador+"\n"+"codigo producto: "+codigoProducto+"\n cantidad: "+cantidad);
+        ///alert("verificador: " +verificador+"\n"+"codigo producto: "+codigoProducto+"\n cantidad: "+cantidad);
     }
     
     //revisará si existe algun producto con el codigo especificado
@@ -1136,6 +1147,209 @@ function buscarporcodigojs()
                
                res = JSON.parse(respuesta);
                
+               if (identificador==200){
+                   cantidad_base = cantidad;
+               }
+               if (identificador==215){
+                   cantidad_base = cantidad;
+               }
+               if (identificador==205){
+                   cantidad_base = cantidad;
+               }
+               if (identificador==204){
+                   cantidad_base = cantidad;
+               }
+               if (identificador==224){
+                   cantidad_base = cantidad;
+               }
+
+               //alert("codigo: "+codigo+" - cantidad_base: "+cantidad_base);
+                //alert("tipo: "+res[0].tipo);
+                
+                    if (res.length>0){ //verifica si el producto existe
+                        
+                        // Venta sin inventario
+                        
+//                        let condicion = false;
+//                        
+//                        if (parametro_sininventario == 1){
+//                            condicion = true;
+//                            
+//                        }else{
+//                            condicion = (res[0].existencia > 0);        
+//                        }
+//                        
+                        
+                         if (res[0].existencia){ //verifica si el producto tiene existencia > 0
+                             
+                            //verificara si el codigo le pertenece a algun factor
+                            if (res[0].producto_codigobarra == codigo){
+                                factor_cantidad = cantidad_base;
+                                precio = res[0].producto_precio;
+                                factor_nombre = "precio_normal";
+                            }
+                            
+                            if (res[0].producto_codigofactor == codigo){
+                                factor_cantidad = res[0].producto_factor;
+                                precio = res[0].producto_preciofactor;
+                                factor_nombre = "producto_factor";
+                            }
+                            
+                            if (res[0].producto_codigofactor1 == codigo){
+                                factor_cantidad = res[0].producto_factor1;
+                                precio = res[0].producto_preciofactor1;
+                                factor_nombre = "producto_factor1";
+                            }
+                            
+                            if (res[0].producto_codigofactor2 == codigo){
+                                factor_cantidad = res[0].producto_factor2;
+                                precio = res[0].producto_preciofactor2;
+                                factor_nombre = "producto_factor2";
+                            }
+                            
+                            if (res[0].producto_codigofactor3 == codigo){
+                                factor_cantidad = res[0].producto_factor3;
+                                precio = res[0].producto_preciofactor3;
+                                factor_nombre = "producto_factor3";
+                            }
+                            
+                            if (res[0].producto_codigofactor4 == codigo){
+                                factor_cantidad = res[0].producto_factor4;
+                                precio = res[0].producto_preciofactor4;
+                                factor_nombre = "producto_factor4";
+                            }
+                            
+                           
+                           //alert("factor: "+factor+" * precio: "+precio+" * factor_nombre: "+factor_nombre);
+                            //html = "<input type='text' value='"+factor+"' id='select_factor"+res[0].producto_id+"' title='select_factor"+res[0].producto_id+"'>"
+                            
+                            precio_unidad = precio; //res[0]["producto_precio"];
+                            
+                            html = "";
+                            html += "   <select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor"+res[0]["producto_id"]+"' name='select_factor"+res[0]["producto_id"]+"' onchange='mostrar_saldo("+JSON.stringify(res[0])+")'>";
+                            html += "       <option value='"+factor_nombre+"'>";                            
+                            html += "           "+res[0]["producto_unidad"]+" "+res[0]["moneda_descripcion"]+": "+Number(precio_unidad).toFixed(decimales)+"";
+                            html += "       </option>";
+                            html += "       </select>";
+
+                            $("#selector").html(html);
+                            
+                            // Como ya se tiene idetificado el factor se procede a ingresar el producto
+                            //factor es la cantidad de items que tiene la presentacion, res[0] son todos los datos del producto
+//                            ingresorapidojs(factor_cantidad, res[0]["producto_id"],factor_nombre); 
+                            ingresorapidojs(factor_cantidad, res[0]["producto_id"],factor_nombre); //la cantidad siempre sera 1 porque es proveniente del codigo de barras/cod producto
+
+
+                         }
+                         else{    
+                             alert('No existe la cantidad requerida en inventario...!');
+                         }
+                         
+                     }
+                     else {alert('El producto no se encuentra registrado con el código especificado...!!'); }
+
+           },
+           error:function(respuesta){
+               alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
+               
+               $("#codigo").select();
+
+           },
+            complete: function (respuesta) {
+               if (respuesta==null){
+                    alert('El producto no se encuentra registrado o se encuentra agostado en inventario..!!!');
+                }              
+             document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+              $("#codigo").select();
+              
+            }
+        });
+           
+        
+    document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+
+}
+
+function buscarporcodigojssss()
+{
+   var base_url = document.getElementById('base_url').value;
+   var controlador = base_url+'venta/buscarcodigo';
+   var codigo = document.getElementById('codigo').value;
+   var decimales = Number(document.getElementById('parametro_decimales').value);
+   //var parametro_sininventario = document.getElementById('parametro_sininventario').value;
+    
+    document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
+    
+    var codigobalanza = 1;
+    
+    if(codigobalanza==1){
+        
+        var identificador =  codigo.substring(0,3);
+        
+        if(identificador==200){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad'])/10000;
+                
+                codigo = codigoProducto;
+        }
+        
+        if(identificador==215){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad'])/1000;
+                
+                codigo = codigoProducto;
+        }
+        
+        if(identificador==205){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad'])/1000;
+                
+                codigo = codigoProducto;
+        }
+        
+        if(identificador==224){
+            
+                resultado = procesarCodigoBarras(codigo);
+            
+                var verificador = resultado['verificador'];
+                var codigoProducto = resultado['codigoProducto'];
+                var cantidad = Number(resultado['cantidad']);
+                
+                codigo = codigoProducto;
+        }
+        
+        ///alert("verificador: " +verificador+"\n"+"codigo producto: "+codigoProducto+"\n cantidad: "+cantidad);
+    }
+    
+    //revisará si existe algun producto con el codigo especificado
+    $.ajax({url: controlador,
+        
+           type:"POST",
+           data:{codigo:codigo, cantidad:cantidad},
+           success:function(respuesta){
+               
+               var precio = 0;
+               var factor_cantidad = 0;
+               var cantidad_base = 1;
+               var factor_nombre = "";
+               
+               res = JSON.parse(respuesta);
+               
+               if (identificador==200){
+                   cantidad_base = cantidad;
+               }
                if (identificador==215){
                    cantidad_base = cantidad;
                }
@@ -2168,6 +2382,8 @@ function ingresorapidojsx(cantidad,producto_id,nombre_factor){
     var base_url = document.getElementById('base_url').value;   
     var controlador = base_url+"venta/ingresorapidojsx";    
     
+    document.getElementById('mensaje_enviado').style.display = 'none';
+    document.getElementById('mensaje_no_enviado').style.display = 'none';
     
     //*****************************************
     //alert("cantidad: "+cantidad+" * producto: "+producto_id+" * nombre_factor: "+nombre_factor);    
@@ -2611,10 +2827,13 @@ function tablaresultados(opcion)
 //                                html += " <span class='btn btn-warning btn-xs' style='padding:0px;' title='Este producto no ha sido homologado, por lo tanto no puede incluirla en una factura...!'> Sin homologar </span>";
 //                                html += " <button class='btn btn-success btn-xs'>o</button>";
                         
+                        
+                        
                         html += mimagen;   
                         html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];                        
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
-                        html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";                        
+                        html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";  
+                        html += "<button class='btn btn-info btn-xs' style='padding:0px;' title='Verificar cantidades en sucursales'  data-toggle='modal' data-target='#modalsucursales'>- <fa class='fa fa-bar-chart' onclick='seleccionar_producto("+registros[i]["producto_id"]+","+JSON.stringify(registros[i]["producto_nombre"])+", "+JSON.stringify(registros[i]["producto_codigobarra"])+")'></fa> -</button>";
                         html += "<button class='btn btn-danger btn-xs' type='text' style='padding:0;' title='Compra rápida' id='button"+registros[i]["producto_id"]+"' onclick='registrar_ingreso_rapido("+registros[i]["producto_id"]+")'>- <fa class='fa fa-bolt'></fa> -</button>";
                         html += "<button class='btn btn-facebook btn-xs' type='text' style='padding:0;' title='Registro rápido' id='button"+registros[i]["producto_id"]+"' onclick='modificar_precios("+registros[i]["producto_id"]+")'>- <fa class='fa fa-money'></fa> -</button>";
                         
@@ -3175,7 +3394,7 @@ function eliminardetalleventa()
             tablaproductos();
         },
         error: function(respuesta){   
-            alert("no se borro");      
+            alert("Ocurrio un problema al realizar la operación...!");      
         }        
     });
     
@@ -3670,6 +3889,10 @@ function registrarventa(cliente_id)
                             if(res.mensajesList.codigo == 953){                    
                                 //alert("FACTURA NO ENVIADA: El código único de facturación diario (CUFD), NO SE ENCUENTRA VIGENTE");
                                 solicitudCufd(punto_venta);                    
+                            }else{
+                                
+                                mensaje = "ERROR: "+JSON.stringify(res);
+                                
                             }
                             
                         }else{
@@ -4603,8 +4826,8 @@ function tabla_ventas(filtro)
                     html += "                               Efectivo "+parametro_moneda_descripcion+": "+Number(v[i]['venta_efectivo']).toFixed(decimales)+"<br>";
                     html += "                               Cambio "+parametro_moneda_descripcion+": "+Number(v[i]['venta_cambio']).toFixed(decimales);
                     html += "                       </td>";
-
-                    html += "                       <td align='center' style='padding:0;' bgcolor='"+v[i]['estado_color']+"'><font size='3'><b> 00"+v[i]['venta_id']+"</b></font>";
+//alert(v[i]["venta_numerotransmes"]);
+                    html += "                       <td align='center' style='padding:0;' bgcolor='"+v[i]['estado_color']+"'><font size='3'><b> 00"+v[i]['venta_id']+((v[i]['venta_numeroventa']>0)?" / 00"+v[i]['venta_numeroventa']:"")+((v[i]['venta_numerotransmes']>0)?" / 00"+v[i]['venta_numerotransmes']:"")+"</b></font>";
                     html += "                           <br><img src='"+base_url+"resources/images/usuarios/thumb_"+v[i]['usuario_imagen']+"' class='img-circle' width='35' height='35'>";
                     html += "                           <br>Vend.: "+v[i]['usuario_nombre'];
                    
@@ -4635,12 +4858,12 @@ function tabla_ventas(filtro)
                     
                     if(v[i]['factura_enviada'] == 1){
                         
-                        html += "<span style='padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>"+v[i]['factura_numero']+" ENVIADA </small></b></span> ";
+                        html += "<span style='padding:0; font-size:14px; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>"+v[i]['factura_numero']+" ENVIADA </small></b></span> ";
                     
                     }else{
     
                         if(v[i]['factura_enviada'] == 2){
-                            html += "<span style='padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>"+v[i]['factura_numero']+" VALIDADA </small></b></span> ";
+                            html += "<span style='font-size:14px; padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>"+v[i]['factura_numero']+" VALIDADA </small></b></span> ";
                         }else{
                         
                                 if (paquete==null ){
@@ -4809,6 +5032,10 @@ function tabla_ventas(filtro)
                     // html += "                           <a href='"+base_url+"modelo_contrato/generar_contrato/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Generar contrato'><i class='fa fa-file-text-o' aria-hidden='true'></i></a>";
                     html += "                           <button type='button' class='btn btn-primary btn-xs' data-toggle='modal' data-target='#modal_contratos' title='Generar contrato' onclick='dar_venta("+v[i]['venta_id']+")'><i class='fa fa-file-text-o' aria-hidden='true'></i></button>";
                     html += "                           <button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Anular venta'><em class='fa fa-ban'></em></button>";
+                    
+                    let archivoxml = dosificacion_documentosector+v[i]['factura_id']+".xml";
+                    html += "                           <a href='"+base_url+"resources/xml/"+archivoxml+"' download='Descargar archivo "+archivoxml+"' title='Descargar archivo "+archivoxml+"' class='btn btn-xs btn-twitter'><fa class='fa fa-code'> </fa> </a>";
+                    
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
                     html += "                               <div class='modal fade' id='myModal"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['venta_id']+"' style='font-family: Arial'>";
                     html += "                                 <div class='modal-dialog' role='document'>";
@@ -5837,10 +6064,15 @@ function actualizar_precio(){
     var producto_id = document.getElementById("modificarprecios_producto_id").value;
     var producto_costo = document.getElementById("modificarprecios_producto_costo").value;
     var producto_precio = document.getElementById("modificarprecios_producto_precio").value;
+    var actualizarpreciossucursales = $('#actualizarpreciossucursales').is(':checked');
+    
+    //alert(actualizarpreciossucursales);
+    
+
     
     $.ajax({url: controlador,
             type: "POST",
-            data:{producto_id:producto_id, producto_costo:producto_costo, producto_precio:producto_precio}, 
+            data:{producto_id:producto_id, producto_costo:producto_costo, producto_precio:producto_precio, actualizarpreciossucursales:actualizarpreciossucursales}, 
             success:function(resultado){
  
                 tablaresultados(1);
@@ -6823,6 +7055,8 @@ function verificar_cufd(){
                             //alert("solicitanto cufd...!!"+punto_venta);
                             solicitudCufd(punto_venta);
                            // window.location.href = base_url+"punto_venta";
+                        }else{
+                            alert(JSON.stringify(registros));
                         }
                     }                
                 },
@@ -7015,19 +7249,20 @@ function solicitudCufd(punto_venta=0){
                         alert(JSON.stringify(registros)+"\n"+JSON.stringify(lafalla));
                        // document.getElementById('loader_revocado').style.display = 'none';
                     }else{
-                    let codigo = registros.RespuestaCufd.codigo;
-                    let codigoControl = registros.RespuestaCufd.codigoControl;
-                    let direccion = registros.RespuestaCufd.direccion;
-                    let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
-                    let transaccion = registros.RespuestaCufd.transaccion;
 
-                    //alert(registros);
-                    if(transaccion == true){
-                       // $("#modal_mensajeadvertencia").modal("show");
-                        almacenar_cufd((registros['RespuestaCufd']),punto_venta);
-                    }
+                        let codigo = registros.RespuestaCufd.codigo;
+                        let codigoControl = registros.RespuestaCufd.codigoControl;
+                        let direccion = registros.RespuestaCufd.direccion;
+                        let fechaVigencia = registros.RespuestaCufd.fechaVigencia;
+                        let transaccion = registros.RespuestaCufd.transaccion;
+
+                        //alert(registros);
+                        if(transaccion == true){
+                           // $("#modal_mensajeadvertencia").modal("show");
+                            almacenar_cufd((registros['RespuestaCufd']),punto_venta);
+                        }
                     else{
-                        alert("Algo fallo...!!");
+                        alert(JSON.stringify(registros));
                     }
                     // document.getElementById('loader_cufd').style.display = 'none';
                     //alert("hola");
@@ -7178,14 +7413,17 @@ function envio_paquetes(){
                 type:"POST",
                 data:{codigo_evento:codigo_evento},
                 success:function(respuesta){
+                    
                     var registros =  JSON.parse(respuesta);
                     $("#modalpaquetes").modal("hide");
                     alert(JSON.stringify(registros));
                     document.getElementById('loader3').style.display = 'none';
                     location.reload();
+                    
                   },
                   error:function(respuesta){
-                     alert("Algo salio mal...!!!");
+                     //alert("Algo salio mal...!!!");
+                     alert(JSON.stringify(respuesta));
                      document.getElementById('loader3').style.display = 'none';
                   },
                   complete: function (jqXHR, textStatus) {
@@ -7990,11 +8228,11 @@ function buscar_factura(e) {
 function procesarCodigoBarras(codigo) {
     
     // Dividir el código en sus componentes
-    var verificador = codigo[0];
-    var codigoProducto = codigo.substring(2,7);
-    var cantidad = codigo.substring(8,codigo.length);
+    var verificador = codigo.substring(0,3);
+    var codigoProducto = codigo.substring(0,7);
+    var cantidad = codigo.substring(7,codigo.length);
     //alert("cantidad: "+cantidad);
-//   alert("verficador:"+verifiador+" * codigo: "+codigoProducto+"* cantidad: "+cantidad);
+   ///alert("verficador:"+verificador+" * codigo: "+codigoProducto+"* cantidad: "+cantidad);
 
     return {
         verificador: verificador,
@@ -8118,10 +8356,121 @@ function cliente_sinnombre(){
     $("#nit").val("1234");
     validar(13,1);
     document.getElementById('facturado').checked = false;
-    $("#razon_social").val("SIN NOMBRE");    
+    $("#razon_social").val("SIN NOMBRE");
+    $("#tipo_doc_identidad").val(1);
+    seleccionar_documento(1);
     
-   // alert("je je je je");
+}
+
+function seleccionar_producto(producto_id, producto_nombre, producto_codigobarra){
     
+    $("#miproducto_id").val(producto_id); 
+    $("#miproducto_nombre").val(producto_nombre); 
+    $("#miproducto_codigobarra").val(producto_codigobarra); 
+    
+    verificar_producto();
+}
+
+function entre_comillas(cadena) {
+    return '"' + cadena + '"';
+}
+
+function verificar_producto(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto/verificar_producto_cantidad';
+    var sucursal_id = 0; //document.getElementById('sucursal_traspaso').value;
+    var producto_id = document.getElementById('miproducto_id').value;
+    var operacion = 0; //document.getElementById('operacion_traspaso').value;
+    var html = "";
+    
+    //let confirmacion =  confirm('Esta seguro que quiere dar de alta a este Producto?');
+    
+    //if(confirmacion == true){
+        document.getElementById('loader2').style.display = 'block'; //muestra el bloque del loader
+    
+        $.ajax({url:controlador,
+            type:"POST",
+            data:{sucursal_id:sucursal_id,producto_id:producto_id,operacion:operacion},
+            success:function(result){
+                
+                res = JSON.parse(result);
+                
+                    html = "";
+                    
+                    html += "<table id='mitabla'>";
+                    html += "<tr>";
+                        html += "<th style='padding:3px;'>#</th>";
+                        html += "<th style='padding:3px;'>SUCURSAL</th>";
+                        html += "<th style='padding:3px;'>ID</th>";
+//                        html += "<th style='padding:0px;'>PRODUCTO</th>";
+                        html += "<th style='padding:3px;'>UNIDAD</th>";
+                        html += "<th style='padding:3px;'>CODIGO</th>";
+//                        html += "<th style='padding:0px;'>COSTO</th>";
+                        html += "<th style='padding:3px;'>PRECIO</th>";
+                        html += "<th style='padding:3px;'>CANT.</th>";
+                        //html += "<th style='padding:3px;'></th>";
+                        //html += "<th style='padding:0px;'>CANT</th>";
+                    html += "</tr>";
+                    
+                    let cantidad_total = 0;
+                for (let i = 0; i < res.length; i++) {
+                    const subarreglo = res[i];
+
+                    for (let j = 0; j < subarreglo.length; j++) {
+                      const objeto = subarreglo[j];
+
+                      //alert(objeto.producto_nombre); // Ejemplo: Imprimir el nombre del producto
+                      
+                        html += "<tr>"
+
+                            html += "<td style='padding:0px;'>"+(i+1)+"</td>";
+                            html += "<td style='padding:0px;'><span class='btn btn-warning btn-xs' style='padding:0;'>"+objeto.empresa_nombresucursal+"</span>"; //+"<br>"+objeto.almacen_basedatos+"</td>";
+                            html += "<br><b style='font-size: 12px;'>"+objeto.producto_nombre+"</b>";
+                            html += "</td>";
+                            
+                            html += "<td style='padding:0px; text-align: center;'>"+objeto.producto_id+"</td>"
+                            html += "<td style='padding:0px; text-align: center;'>"+objeto.producto_unidad+"</td>"
+                            html += "<td style='padding:0px; text-align: center;'>"+objeto.producto_codigobarra+"</td>"
+//                            html += "<td style='padding:0px; text-align:right;'>"+Number(objeto.producto_costo).toFixed(2)+"</td>"
+                            html += "<td style='padding:0px; text-align:right;'>"+Number(objeto.producto_precio).toFixed(2)+"</td>"
+                            html += "<td style='padding:0px; text-align:right; font-size:12px;'><b>"+Number(objeto.existencia).toFixed(2)+"</b></td>"
+//                            html += "<td style='padding:0px;'>";
+                            //html += "<button class='btn btn-facebook btn-xs' onclick='igualar_producto("+objeto.almacen_id+","+objeto.producto_id+")'><fa class='fa fa-tasks'></fa> IGUALAR</button>";
+                            
+//                            html += "</td>";
+                            
+                            
+                           // html += "<td style='padding:0px;'>"+Number(objeto.existencia).toFixed(2)+"</td>"
+                           cantidad_total += Number(objeto.existencia);
+                        html += "<tr>"
+                      
+                    }
+                }
+                
+                    html += "<tr>";
+                        html += "<th style='padding:3px;' colspan='6'>CANTIDAD TOTAL</th>";
+//                        html += "<th style='padding:3px;'></th>";
+//                        html += "<th style='padding:3px;'></th>";
+//                        html += "<th style='padding:0px;'>PRODUCTO</th>";
+//                        html += "<th style='padding:3px;'></th>";
+//                        html += "<th style='padding:3px;'></th>";
+//                        html += "<th style='padding:0px;'>COSTO</th>";
+//                        html += "<th style='padding:3px;'></th>";
+                        html += "<th style='padding:3px; font-size: 14px;'>"+cantidad_total.toFixed(2)+"</th>";
+                        //html += "<th style='padding:3px;'></th>";
+                        //html += "<th style='padding:0px;'>CANT</th>";
+                    html += "</tr>";
+                
+                    html += "</table>"
+                    
+                $("#tabla_resultadossuc").html(html);                
+                
+                document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
+            },
+        });
+    //}
+                document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
 }
 
 
@@ -8133,7 +8482,7 @@ function borrar_datos_cliente(){
     var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
     var parametro_factura = document.getElementById("parametro_factura").value; //0 no, 1 si
     let documento_sector = document.getElementById("docsec_codigoclasificador").value;
-    
+    var base_url = document.getElementById('base_url').value;
     
     var nit = "1234";
     var razon_social = "SIN NOMBRE";
@@ -8186,7 +8535,7 @@ function borrar_datos_cliente(){
     $("#venta_ice").val("0.00");
     $("#venta_detalletransaccion").val("0");
     $("#venta_giftcard").val("0.00");
-    $("#tipo_doc_identidad").val("5");
+    $("#tipo_doc_identidad").val("1");
     $("#cliente_valido").val("1");
     $("#glosay").val("");
     
@@ -8195,9 +8544,7 @@ function borrar_datos_cliente(){
 
     
     $("#razon_social").css("background-color", "gray");
-    $("#razon_social").attr("readonly","readonly");
-    
-    
+    $("#razon_social").attr("readonly","readonly");   
     
 //    var codigo = document.getElementById("evento_contingencia").value; //0 no, 1 si
 //    var num = document.getElementById("numfact_cafc").value; //0 no, 1 si
@@ -8241,8 +8588,12 @@ function borrar_datos_cliente(){
         if(parametro_imprimirfactura==1){ // Imprimir solo factura
             
             let boton = document.getElementById("imprimir_factura");
-            if (facturado == 1){ boton.click(); }                    
+            if (facturado == 1){ boton.click(); }
+            /*else{
+             window.open(base_url+'/factura/abrir_caja', '_blank');
+            }*/
         }
+            
 
         if(parametro_imprimirfactura==2){ // Imprimir solo recibo
             
@@ -8324,8 +8675,7 @@ function borrar_datos_cliente(){
     }
     if(parametro_factura==4){
         document.getElementById('facturado').checked = true;
-    }
-    
+    }    
     
     //$("#span_buscar_cliente").click();   
     $("#boton_presionado").val(0);

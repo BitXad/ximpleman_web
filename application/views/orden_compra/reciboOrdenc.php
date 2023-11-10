@@ -128,9 +128,10 @@
  </style>
  
  <?php
-    //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-    $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-    $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+    //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+    $ancho = $parametro["parametro_anchofactura"]."cm";
+    $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
+    $decimales = $parametro["parametro_decimales"];
 ?>
  <div class=" table-responsive" style="padding: 0;">
     <table class="table">
@@ -195,7 +196,7 @@
                         <td style="text-align: center;"><?php echo $dc['detalleordencomp_codigo'];?></td>
                         <td style="text-align: left;"><?php echo $dc['producto_nombre'];?></td>                            
                         <td class="text-center"><?php echo $dc['detalleordencomp_unidad'];?></td>
-                        <td><?php echo $dc['detalleordencomp_cantidad'];?></td>
+                        <td><?php echo number_format($dc['detalleordencomp_cantidad'],'2','.',',');?></td>
                         <td><?php echo number_format($dc['detalleordencomp_costo'],'2','.',',');?></td>
                         <!--<td><?php /*echo number_format($dc['detalleordencomp_subtotal'],'2','.',',');?></td>
                         <td><?php echo number_format($dc['detalleordencomp_descuento'],'2','.',',');?></td>

@@ -60,7 +60,7 @@ class Inventario extends CI_Controller{
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             
-            $data['almacenes'] = $this->Inventario_model->get_almacenes();
+            $data['almacenes'] = $this->Inventario_model->get_all_almacenes();
             
             $data['_view'] = 'inventario/index';
             $this->load->view('layouts/main',$data);
@@ -230,17 +230,19 @@ class Inventario extends CI_Controller{
         $data['sistema'] = $this->sistema;
         
         if($this->acceso(25)){
-            //**************** inicio contenido ***************
-            $parametro = $this->input->post("parametro");
-            $select_almacen = $this->input->post("select_almacen");
-            
-            if ($parametro=="" || $parametro==null){
-                $resultado = $this->Inventario_model->get_inventario_almacen($select_almacen);
-            }else{
-                $resultado = $this->Inventario_model->get_inventario_parametro($parametro);
-            }
-            echo json_encode($resultado);            
-            //**************** fin contenido ***************
+            if($this->input->is_ajax_request()){
+                //**************** inicio contenido ***************
+                $parametro = $this->input->post("parametro");
+                $select_almacen = $this->input->post("select_almacen");
+
+                if ($parametro=="" || $parametro==null){
+                    $resultado = $this->Inventario_model->get_inventario_almacen($select_almacen);
+                }else{
+                    $resultado = $this->Inventario_model->get_inventario_parametro($parametro);
+                }
+                echo json_encode($resultado);            
+                //**************** fin contenido ***************
+            }echo false;
         }
     }
 
@@ -250,15 +252,15 @@ class Inventario extends CI_Controller{
         $data['sistema'] = $this->sistema;
         if($this->acceso(25)){
         //**************** inicio contenido ***************
-        
-            $parametro = $this->input->post("parametro");
-            if ($parametro=="" || $parametro==null)
-                $resultado = $this->Inventario_model->get_inventario_existencia();                
-            else
-                $resultado = $this->Inventario_model->get_inventario_parametro_existencia($parametro);
-            
-            echo json_encode($resultado);            
-        
+            if($this->input->is_ajax_request()){
+                $parametro = $this->input->post("parametro");
+                if ($parametro=="" || $parametro==null)
+                    $resultado = $this->Inventario_model->get_inventario_existencia();                
+                else
+                    $resultado = $this->Inventario_model->get_inventario_parametro_existencia($parametro);
+
+                echo json_encode($resultado);            
+            } echo false;
         //**************** fin contenido ***************
             }
             

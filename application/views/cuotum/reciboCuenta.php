@@ -79,7 +79,7 @@
             <td style="width: 3cm"></td>
             <td style="width: 1cm"></td>
             <td align="left" style="width: 3cm">CUOTA Nº:</td>
-            <td align="right" style="width: 3cm"><?php echo $cuota[0]['cuota_numcuota']; ?> / <?php echo $cuota[0]['credito_numpagos']; ?></td>
+            <td align="right" style="width: 3cm"><?php echo $cuota[0]['cuota_numcuota']; ?> / <?php echo number_format($cuota[0]['credito_numpagos']); ?></td>
         </tr> 
         <tr>
             <td align="left"> MONTO CUOTA: <?= $moneda['moneda_descripcion'] ?></td>
@@ -95,7 +95,7 @@
             <td align="right" style="width: 4cm">CANCELADO:....................</td>
             <td style="width: 1cm"></td>
             <td align="left">MORA DIAS:</td>
-            <td align="right"><?php echo $cuota[0]['cuota_moradias']; ?></td>
+            <td align="right"><?php echo number_format($cuota[0]['cuota_moradias']); ?></td>
         </tr> 
         <tr>
             <td colspan="2" align="left"> SON:

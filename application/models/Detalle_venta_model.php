@@ -598,6 +598,7 @@ function ventas_dia($estado)
 
         return $detalle_ventaservicio;
     }
+    
     function reporteventas_prodagrupados($filtro)
     {
             $sql = "SELECT
@@ -616,6 +617,49 @@ function ventas_dia($estado)
                 $filtro
             group by `vs`.producto_id
             order by total_venta desc";
+           // echo $sql;
+            
+        $reporte = $this->db->query($sql)->result_array();
+        return $reporte;
+    }
+    
+    function reporteventas_insumos($filtro)
+    {
+//            $sql = "SELECT
+//		vs.producto_id, vs.`producto_codigo`, vs.`producto_nombre`, tt.tipotrans_nombre,
+//                vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad,
+//                (sum(`vs`.`detalleven_total`) / sum(vs.detalleven_cantidad)) as total_punitario, 
+//                sum(`vs`.`detalleven_descuento`*`vs`.`detalleven_cantidad`) as total_descuento,
+//                sum(`vs`.`detalleven_total`) as total_venta,
+//                (sum(`vs`.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_costo,
+//                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_utilidad,
+//                avg(vs.detalleven_tc) as tipo_cambio
+//            FROM
+//                ventas vs
+//            LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id
+//            WHERE 
+//                $filtro
+//            group by `vs`.producto_id
+//            order by total_venta desc";
+//            
+            $sql = "select *
+                    from formula f, detalle_formula df, producto p,
+                    (
+                    SELECT
+                                    vs.producto_id, sum(vs.detalleven_cantidad) as detalleven_cantidad
+                                FROM
+                                    ventas vs
+                                LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id
+                                WHERE {$filtro}
+                    GROUP BY
+                      `vs`.`producto_id`
+                    ) as t1
+
+                    where 
+                    f.formula_id = df.formula_id and
+                    df.producto_id = p.producto_id and
+                    f.producto_id = `t1`.producto_id 
+                    ";
             //echo $sql;
             
         $reporte = $this->db->query($sql)->result_array();

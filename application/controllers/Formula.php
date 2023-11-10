@@ -7,6 +7,8 @@
 class Formula extends CI_Controller{
     
     private $sistema;
+    private $parametros;
+    
     function __construct()
     {
         parent::__construct();
@@ -42,6 +44,9 @@ class Formula extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
         
     } 
     
@@ -113,7 +118,7 @@ class Formula extends CI_Controller{
                 $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
                 $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
                 $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-                $data['parametro'] = $this->Parametro_model->get_parametros();
+                $data['parametro'] = $this->parametros;
                 $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
                 $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
                 $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();

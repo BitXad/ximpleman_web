@@ -14,6 +14,7 @@ class Ubicacion_producto extends CI_Controller{
         $this->load->model('Estado_model');
         $this->load->model('Categoria_producto_model');
         $this->load->model('Sistema_model');
+        $this->load->model('Venta_model');
         // $this->load->model('Control_inventario_aux_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -69,6 +70,7 @@ class Ubicacion_producto extends CI_Controller{
             'producto_id' => $this->input->post('producto'),
             'controlu_id' => $this->input->post('control_inventario'),
             'ubiprod_existencia' => $this->input->post('ubiprod_existencia'),
+            'ubiprod_existenciafisico' => $this->input->post('cantidad'),
         );
         $this->Ubicacion_producto_model->add_ubicacion_producto($params);
     }  
@@ -158,7 +160,7 @@ class Ubicacion_producto extends CI_Controller{
             //     $estado = 26; //cambiar a estado terminado
             //     $fecha = date('Y-m-d');
             //     $hora = date('H:i:s');
-            //     $params2 = array(
+            //     $params2 = array(a
             //             'estado_id' => $estado,
             //             'controli_fecha_fin' => $fecha,
             //             'controli_hora_fin' => $hora,
@@ -169,4 +171,62 @@ class Ubicacion_producto extends CI_Controller{
             // redirect('control_inventario');
         }
     }
+    
+    /** 
+     * Revisa si existe algun producto ya registrado en otra ubicacion
+    */
+    function cargar_productos(){
+        
+        $controlu_id = $this->input->post("controlu_id");
+        $controli_id = $this->input->post("controli_id");
+        
+        $sql ="insert into ubicacion_producto(
+                ubicacion_id,
+                producto_id,
+                controlu_id,
+                ubiprod_existencia,
+                ubiprod_existenciafisico,
+                ubiprod_faltante,
+                ubiprod_sobrante)
+
+                (select 1,producto_id,{$controlu_id},existencia,0,0,0
+                from inventario)";
+        $this->Venta_model->ejecutar($sql);
+        echo json_encode(true);
+    }
+    /** 
+     * Revisa si existe algun producto ya registrado en otra ubicacion
+    */
+    function buscar_productos(){
+        
+        
+        $parametro = $this->input->post("parametro");
+        
+        $sql ="select * from ubicacion_producto u, inventario i
+                where u.producto_id = i.producto_id and (i.producto_codigobarra like '%{$parametro}%' or i.producto_nombre like '%{$parametro}%' )";
+            
+        $res = $this->Venta_model->consultar($sql);
+        echo json_encode($res);
+        
+    }
+    /** 
+     * Revisa si existe algun producto ya registrado en otra ubicacion
+    */
+    function guardar_cambios(){
+        
+        
+        $producto_id = $this->input->post("producto_id");
+        $ubiprod_existenciafisico = $this->input->post("ubiprod_existenciafisico");
+        
+        $sql ="update ubicacion_producto set ubiprod_existenciafisico = {$ubiprod_existenciafisico}
+              ,ubiprod_faltante = if(ubiprod_existencia>={$ubiprod_existenciafisico},ubiprod_existencia - {$ubiprod_existenciafisico},0)
+               ,ubiprod_sobrante = if({$ubiprod_existenciafisico}>=ubiprod_existencia,{$ubiprod_existenciafisico}-ubiprod_existencia,0)
+              where ubiprod_id = {$producto_id}";
+            
+            
+        $this->Venta_model->ejecutar($sql);
+        echo json_encode($sql);
+        
+    }
 }
+

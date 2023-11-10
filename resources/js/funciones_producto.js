@@ -250,6 +250,7 @@ function tablaresultadosproducto(limite){
                                 html += "<a onclick='dardealta_producto("+registros[i]['producto_id']+")' class='btn btn-xs' style='background-color: #8e8e91; color: black;' title='Activar/habilitar el producto'><span class='fa fa-toggle-off'></span></a>";
                             }
                         }
+                        html += "<a class='btn btn-info btn-xs' data-toggle='modal' data-target='#modaltraspasos' title='Actualizar Producto' onclick='seleccionar_producto("+registros[i]['producto_id']+","+JSON.stringify(registros[i]["producto_nombre"])+","+JSON.stringify(registros[i]["producto_codigobarra"])+")'><span class='fa fa-recycle'></span></a>";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
@@ -1276,8 +1277,9 @@ function catalogoproducto_alfabetico(num_imagenes) {
 }
 /* muestra el modal para elegir lista de precios */
 function modalprecio() {
-    var precios = $('#listaprecios').is(':checked');
-    if(precios){
+    
+    var precios = 1; //$('#listaprecios').is(':checked');
+    if(precios==1){
         $('#elegir_preciofactor').prop('selectedIndex',0);
         $("#modalprecio").modal("show");
     }else{
@@ -1286,13 +1288,14 @@ function modalprecio() {
 }
 
 function listaprecios() {
+    
     var preciofactor = document.getElementById('elegir_preciofactor').value;
     //$("#escatalogo").prop("checked", false);
     $("#listcodigobarras").prop("checked", false);
     $('#titcatalogo').text("LISTA DE PRECIOS DE ");
     $("#modalprecio").modal("hide");
     
-    var catalogo = $('#listaprecios').is(':checked');
+    var catalogo = (1==1); //$('#listaprecios').is(':checked');
     var respuesta = document.getElementById('resproducto').value;
     var registros =  JSON.parse(respuesta);
     var n = registros.length; //tamaño del arreglo de la consulta
@@ -1441,86 +1444,116 @@ function listaprecios() {
     //cabcatalogo
 }
 function listacodbarras() {
+    
     //$("#escatalogo").prop("checked", false);
     $("#listaprecios").prop("checked", false);
     $('#titcatalogo').text("CODIGO DE BARRAS DE ");
     //var base_url = document.getElementById('base_url').value;
     //var checkBox = document.getElementById("myCheck");
     //var formaimagen = document.getElementById('formaimagen').value;
-    var codbarras = $('#listcodigobarras').is(':checked');
+    var codbarras = (1==1)//$('#listcodigobarras').is(':checked');
     var respuesta = document.getElementById('resproducto').value;
+    var empresa_logo = document.getElementById('empresa_logo').value;
+    var base_url = document.getElementById('base_url').value;
     var registros =  JSON.parse(respuesta);
     var n = registros.length; //tamaño del arreglo de la consulta
+    var decimales = 2; //tamaño del arreglo de la consulta
+    
     if(codbarras){
-        var numcolumna = 6;
-        var inifila = "";
-        var finfila = "";
-        var contcol = 1;
-        chtml = "";
-        chtml += "<tr role='row'  style='width: 19cm !important'>";
-        chtml += "<th colspan='"+numcolumna+"'  role='columnheader' >CODIGO DE BARRAS</th>";
-        chtml += "</tr>";
-        html = "";
-        for (var i = 0; i < n ; i++){
-            if(contcol <= numcolumna){
-                if(contcol == 1){
-                    inifila ="<tr style='width: 19cm !important'>";
-                    finfila = "";
-                    contcol++;
-                    //bandfila = false;
-                }else if(i+1== n || contcol == 6){
-                    inifila = "";
-                    finfila ="</tr>";
-                    contcol = 1;
-                }else{
-                    inifila = "";
-                    finfila = "";
-                    contcol++;
-                }
-            }else{
-                contcol = 1;
-            }
-            
-            html += inifila;
-            html += "<td style='width: 310px; height: 142px'>";
-            //html += "<div style='width: 300px; height: 300px'>";
-            html += "<div>";
-            //html += "<div style='height: 300px !important'>";
-            var mimagen = "";
-            if(registros[i]["producto_codigobarra"] != null && registros[i]["producto_codigobarra"] !=""){
-                html += "<img id='barcode"+registros[i]["producto_id"]+"' width='100%' height='100%' />";
-            }else{
-                //mimagen = "<img src='"+base_url+"resources/images/productos/producto.jpg' class='img img-"+formaimagen+"' width='100%' height='100%' />";
-            }
-            html += "<div style='padding-left: 4px'>";
-            var tamaniofont = 3;
-            if(registros[i]["producto_nombre"].length >50){
-                tamaniofont = 1;
-            }
-            html += "<b id='masgrande'><font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["producto_nombre"]+"</b></font></b><br>";
-            /*html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
-            if(registros[i]["destino_id"] > 0){
-                    html +="<br><b>DESTINO:</b> "+registros[i]['destino_nombre'];
-            }*/
-            /*if(parametro_modulo == 2){
-                html +="<br>Principio Activo: "+registros[i]['producto_principioact'];
-                html +="<br>Acción Terapeutica: "+registros[i]['producto_accionterap'];
-            }
+        
+        
+        //****************************************************
+        var numcolumna = document.getElementById('codigo_columnas').value;
+        var anchocolumna = document.getElementById('codigo_ancho').value;
+        var altofila = document.getElementById('codigo_alto').value;
+        var tamanio_fuenteprod = document.getElementById('tamanio_fuenteprod').value;
+        var tamanio_fuente = document.getElementById('tamanio_fuente').value;
+        var selector = document.getElementById('selector').value;
+        var tipolinea = document.getElementById('tipolinea').value;
+        var estilolinea = "";
+        var copias = document.getElementById('copias').value;
+        
+        if (tipolinea==0){
+            estilolinea = "";
+        } 
+        
+        if (tipolinea==1){
+            estilolinea = "border: solid 1px #000;";
+        } 
+        
+        if (tipolinea==2){
+            estilolinea = "border: dashed 1px #000;";
+        } 
+        
+        //****************************************************
 
-            html += caracteristica;*/
-            html += "";
-            html += "</div>";
-            html += "</div>";
-            html += "</td>";
-            html += finfila;
-        }
-        $("#cabcatalogo").html(chtml);
+        chtml = "";
+
+              
+        var tabla = document.getElementById("mitabla");
+            tabla.style.width = (numcolumna * anchocolumna)+"cm";      
+              
+        html += "<table class='table custom-table'>";
+        
+        //construir las celdas
+        for(var copia = 1; copia<=copias; copia++){
+            
+                for (var i = 0; i < n ; i++){ //Contar los productos
+
+                    html += "<tr style='width: "+(numcolumna * anchocolumna)+"cm'>"; 
+
+                    for (var col = 1; col <= numcolumna ; col++){//Generar las columas
+
+                        if (i < n){
+
+
+                                    html += "<td style='padding:0; width:"+anchocolumna+"cm; height:"+altofila+"cm; "+estilolinea+"'>";
+                                    html += "<br>";
+
+                                        if(registros[i]["producto_codigobarra"] != null && registros[i]["producto_codigobarra"] !=""){
+                                            html += "<center style='font-size:"+tamanio_fuenteprod+"px;'>";
+
+                                            if (selector==1){
+
+                                                html += "<img id='barcode"+registros[i]["producto_id"]+"' style='width:"+(anchocolumna*0.8)+"cm; height:"+altofila+"cm;' />";
+
+                                            }else{
+
+                                                html += "<img src='"+base_url+"resources/images/empresas/"+empresa_logo+"'  id='barcode"+registros[i]["producto_id"]+"' style='width:"+(anchocolumna*0.7)+"cm; height:"+altofila+"cm;' />";
+
+                                            }
+
+                                            html += "<br>"+registros[i]["producto_nombre"]; //+" ID: "+registros[i]["producto_id"]+" i:"+i ;
+                                            html += "<br><b style='font-size: "+tamanio_fuente+"px;'> Bs "+Number(registros[i]["producto_precio"]).toFixed(decimales)+"</b>"; //+" ID: "+registros[i]["producto_id"]+" i:"+i ;
+                                            html += "</center>";
+
+                                        }
+                                    html +="</td>";
+
+
+                                i++;
+                        }
+                    } i--;
+
+                    html += "<tr>"; 
+                }
+        
+        }//for(var copia = 1; copia<=copias; copia++){
+        
+        html += "</table>";
+        $("#cabcatalogo").html("");
         $("#tablaresultados").html(html);
-        for (var i = 0; i < n ; i++){
-            if(registros[i]["producto_codigobarra"] != null && registros[i]["producto_codigobarra"] !=""){
-                JsBarcode("#barcode"+registros[i]["producto_id"], registros[i]["producto_codigobarra"]);
+        tabla.style.width = "auto";      
+        
+        if(selector==1){
+            
+            for (var i = 0; i < n ; i++){
+                if(registros[i]["producto_codigobarra"] != null && registros[i]["producto_codigobarra"] !="" && registros[i]["producto_codigobarra"] !="-"){
+                    JsBarcode("#barcode"+registros[i]["producto_id"], registros[i]["producto_codigobarra"]);
+                }
             }
         }
+        
     }else{
         busqueda_inicial();
     }
@@ -1995,5 +2028,188 @@ function dardealta_producto(producto_id){
                 tablaresultadosproducto(2);
             },
         });
+    }
+}
+
+function actualizar_productos(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto/dar_dealtaproducto';
+    var sucursal_id = document.getElementById('sucursal_traspaso').value;
+//    var categoria_id = document.getElementById('categoria_traspaso').value;
+    var operacion = document.getElementById('operacion_traspaso').value;
+    
+    
+    let confirmacion =  confirm('Esta seguro que quiere dar de alta a este Producto?');
+    
+    if(confirmacion == true){
+        $.ajax({url:controlador,
+            type:"POST",
+            data:{sucursal_id:sucursal_id,sucursal_id:sucursal_id,operacion:operacion},
+            success:function(result){
+                
+                res = JSON.parse(result);
+                alert("producto dado de alta con exito!.");
+                tablaresultadosproducto(2);
+                
+            },
+        });
+    }
+}
+
+function seleccionar_producto(producto_id, producto_nombre, producto_codigobarra){
+    
+    $("#producto_id").val(producto_id); 
+    $("#producto_nombre").val(producto_nombre); 
+    $("#producto_codigobarra").val(producto_codigobarra); 
+    
+    verificar_producto();
+}
+
+function entre_comillas(cadena) {
+    return '"' + cadena + '"';
+}
+
+function verificar_producto(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto/verificar_producto';
+    var sucursal_id = 0; //document.getElementById('sucursal_traspaso').value;
+    var producto_id = document.getElementById('producto_id').value;
+    var operacion = document.getElementById('operacion_traspaso').value;
+    var html = "";
+    
+    //let confirmacion =  confirm('Esta seguro que quiere dar de alta a este Producto?');
+    
+    //if(confirmacion == true){
+        document.getElementById('loader2').style.display = 'block'; //muestra el bloque del loader
+    
+        $.ajax({url:controlador,
+            type:"POST",
+            data:{sucursal_id:sucursal_id,producto_id:producto_id,operacion:operacion},
+            success:function(result){
+                
+                res = JSON.parse(result);
+                
+                    html = "";
+                    
+                    html += "<table id='mitabla'>";
+                    html += "<tr>";
+                        html += "<th style='padding:0px;'>#</th>";
+                        html += "<th style='padding:0px;'>SUCURSAL</th>";
+                        html += "<th style='padding:0px;'>ID</th>";
+                        html += "<th style='padding:0px;'>PRODUCTO</th>";
+                        html += "<th style='padding:0px;'>UNIDAD</th>";
+                        html += "<th style='padding:0px;'>CODIGO</th>";
+                        html += "<th style='padding:0px;'>COSTO</th>";
+                        html += "<th style='padding:0px;'>PRECIO</th>";
+                        html += "<th style='padding:0px;'></th>";
+                        //html += "<th style='padding:0px;'>CANT</th>";
+                    html += "</tr>";
+                    
+
+                for (let i = 0; i < res.length; i++) {
+                    const subarreglo = res[i];
+
+                    for (let j = 0; j < subarreglo.length; j++) {
+                      const objeto = subarreglo[j];
+
+                      //alert(objeto.producto_nombre); // Ejemplo: Imprimir el nombre del producto
+                      
+                        html += "<tr>"
+
+                            html += "<td style='padding:0px;'>"+(i+1)+"</td>";
+                            html += "<td style='padding:0px;'>"+objeto.empresa_nombresucursal+"<br>"+objeto.almacen_basedatos+"</td>";
+                            html += "<td style='padding:0px;'>"+objeto.producto_id+"</td>"
+                            html += "<td style='padding:0px;'>"+objeto.producto_nombre+"</td>"
+                            html += "<td style='padding:0px;'>"+objeto.producto_unidad+"</td>"
+                            html += "<td style='padding:0px;'>"+objeto.producto_codigobarra+"</td>"
+                            html += "<td style='padding:0px; text-align:right;'>"+Number(objeto.producto_costo).toFixed(2)+"</td>"
+                            html += "<td style='padding:0px; text-align:right;'>"+Number(objeto.producto_precio).toFixed(2)+"</td>"
+                            html += "<td style='padding:0px;'>";
+                            html += "<button class='btn btn-facebook btn-xs' onclick='igualar_producto("+objeto.almacen_id+","+objeto.producto_id+")'><fa class='fa fa-tasks'></fa> IGUALAR</button>";
+                            
+                            html += "</td>";
+                            
+                            
+                           // html += "<td style='padding:0px;'>"+Number(objeto.existencia).toFixed(2)+"</td>"
+
+                        html += "<tr>"
+                      
+                    }
+                }
+                
+                    html += "</table>"
+                    
+                $("#tabla_resultadossuc").html(html);                
+                
+                document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
+            },
+        });
+    //}
+                document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
+}
+
+function igualar_producto(almacen_id, producto_id){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto/igualar_producto';
+//    var sucursal_id = 0; 
+//    var producto_id = document.getElementById('producto_id').value;
+//    var operacion = document.getElementById('operacion_traspaso').value;
+    var html = "";
+    
+    let confirmacion =  confirm('Esta operación igualara las características del productos seleccionado en todas las sucursales. Esta acción es irreversible. ¿DESEA CONTINUAR?');
+       
+    
+    if(confirmacion == true){
+        
+        document.getElementById('loader2').style.display = 'block'; //muestra el bloque del loader
+        $.ajax({url:controlador,
+            type:"POST",
+            data:{almacen_id:almacen_id,producto_id:producto_id},
+            success:function(result){
+                
+                let mensaje = JSON.parse(result);
+                verificar_producto();
+                alert(mensaje["mensaje"]);
+                document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
+               
+            },
+        });
+        
+        document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
+    }
+}
+
+function remplazar_productos(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto/remplazar_productos';
+//    var sucursal_id = 0; 
+    var producto_id = document.getElementById('producto_id').value;
+    var operacion = document.getElementById('operacion_traspaso').value;
+    var almacen_id = document.getElementById('sucursal_traspaso').value;
+
+    let confirmacion =  confirm('Esta operación igualara las características del productos seleccionado en todas las sucursales. Esta acción es irreversible. ¿DESEA CONTINUAR?');
+       
+    
+    if(confirmacion == true){
+        
+        document.getElementById('loader2').style.display = 'block'; //muestra el bloque del loader
+        
+        $.ajax({url:controlador,
+            type:"POST",
+            data:{operacion:operacion,almacen_id:almacen_id},
+            success:function(result){
+                
+                let mensaje = JSON.parse(result);
+                verificar_producto();
+                alert(mensaje["mensaje"]);
+                document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
+               
+            },
+        });
+        
+        //document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
     }
 }

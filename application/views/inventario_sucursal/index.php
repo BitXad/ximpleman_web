@@ -107,7 +107,7 @@
                 <?php }*/ ?>
                 
                 
-                <button class="btn btn-success btn-sm" onclick="actualizar_inventarios()" type="button"><span class="fa fa-cubes"></span> Actualizar Inventarios</button>
+                <button class="btn btn-success btn-sm" onclick="actualizar_inventarios()" type="button"><span class="fa fa-cubes"></span> Mostrar Inventarios</button>
                 <?php /*if($rolusuario[27-1]['rolusuario_asignado'] == 1){ ?>
                 <button class="btn btn-primary btn-sm" onclick="tabla_inventariosuc()" type="button"><span class="fa fa-list"></span> Mostrar todo</button>
 

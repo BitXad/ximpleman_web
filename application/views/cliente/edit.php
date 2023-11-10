@@ -1,3 +1,13 @@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    
+     <!--Styles for datatables--> 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+     <!--JQuery include--> 
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.js"></script>
+     <!--Javascrips for datatables--> 
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> 
+
 <script type="text/javascript">
 function mostrar(a) {
     obj = document.getElementById('oculto'+a);

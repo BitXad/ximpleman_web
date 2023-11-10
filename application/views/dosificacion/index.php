@@ -314,7 +314,7 @@
 
                 <tr>
                     <td <?= $estilo; ?> >Clave contenedor:</td>
-                    <td colspan="3">    <?php echo $dosificacion['dosificacion_clavep12']; ?>                      
+                    <td colspan="3">    **********                      
                     </td>
                     
                     <td <?= $estilo; ?> >Sincronización:</td>

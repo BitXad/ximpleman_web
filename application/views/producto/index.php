@@ -61,6 +61,7 @@
 <input type="hidden" name="esesteproducto" id="esesteproducto" /> <!-- usado en el modal para numero de imgs. para codigo barra -->
 <input type="hidden" name="esestecodigobarra" id="esestecodigobarra" /> <!-- usado en el modal para numero de imgs. para codigo barra -->
 <input type="hidden" name="eselnombreproducto" id="eselnombreproducto" /> <!-- valor dado cuando mostramo el modal para codigo barra -->
+<input type="hidden" name="empresa_logo" id="empresa_logo" value="<?php echo $empresa[0]['empresa_imagen']; ?>" /> <!-- valor dado cuando mostramo el modal para codigo barra -->
 <!--<input type="hidden" name="lapresentacion" id="lapresentacion" value='<?php /*echo json_encode($all_presentacion); ?>' />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($all_moneda); */ ?>' /> -->
 <input type="hidden" name="conencabezado" id="conencabezado" value="1" />
@@ -92,7 +93,7 @@
 </div>
 <br>
 <div class="row no-print">
-    <div class="col-md-5">
+    <div class="col-md-4">
         <div class="box-header" style="padding-left: 0px">
             <font size='4' face='Arial'><b>Productos</b></font>
             <br><font size='2' face='Arial' id="encontrados"></font> 
@@ -136,21 +137,24 @@
         </div>
     </div>
     
-    <div class="col-md-4">
+    <div class="col-md-5">
         <div class="box-tools" style="display: flex">
-            <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('producto/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
-            <a style="width: 75px; margin-right: 1px; margin-top: 1px" onclick="modalcatalogo()" class="btn btn-info btn-foursquarexs" title="Catalogo de Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Catálogo</small></a>
-            <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('producto/existenciaminima'); ?>" target="_blank" class="btn btn-soundcloud btn-foursquarexs" title="Productos con existencia mínima" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
-            <!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalprecio" class="btn btn-soundcloud btn-foursquarexs" title="Codigo de Barras" ><font size="5"><span class="fa fa-barcode"></span></font><br><small>Cod. Barras</small></a>-->
+            <a style="width: 70px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('producto/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
+            <a style="width: 70px; margin-right: 1px; margin-top: 1px" onclick="modalcatalogo()" class="btn btn-info btn-foursquarexs" title="Catalogo de Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Catálogo</small></a>
+            <a style="width: 70px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('producto/existenciaminima'); ?>" target="_blank" class="btn btn-soundcloud btn-foursquarexs" title="Productos con existencia mínima" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
+            <!--<a style="width: 70px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalprecio" class="btn btn-soundcloud btn-foursquarexs" title="Codigo de Barras" ><font size="5"><span class="fa fa-barcode"></span></font><br><small>Cod. Barras</small></a>-->
             <?php
             if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
-            <a style="width: 75px; margin-right: 1px; margin-top: 1px" onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <a style="width: 70px; margin-right: 1px; margin-top: 1px" onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
             <?php
             } ?>
         <!--</div>-->
+            <button style="width: 70px; margin-right: 1px; margin-top: 1px" onclick="modalprecio()" class="btn btn-warning btn-foursquarexs"><font size="5" title="Lista de productos"><span class="fa fa-cubes"></span></font><br><small>Lista Prec.</small></button>
+            <button style="width: 70px; margin-right: 1px; margin-top: 1px" class="btn btn-facebook btn-foursquarexs" data-toggle="modal" data-target="#modalgeneradoretiquetas"><font size="5" title="Codigo de barras"><span class="fa fa-barcode"></span></font><br><small>Cod.Barras</small></button>
+            <button style="width: 70px; margin-right: 1px; margin-top: 1px" class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modaltraspasos"><font size="5" title="Actualizar productos en sucursales"><span class="fa fa-code"></span></font><br><small>Sucursales</small></button>
         <?php
             if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
-            <table>
+            <table hidden="true">
                 <!--<tr>
                     <td>
                         <label style="font: normal; font-size: 10px">
@@ -171,7 +175,7 @@
                     <td>
                         <label style="font: normal; font-size: 10px; margin: 0px">
                             <input class="btn" type="checkbox" name="listcodigobarras" id="listcodigobarras" title="Lista de Codigos de Barras" onclick="listacodbarras()" >
-                            Cod. Barras
+                            Cod.Barras
                         </label>
                     </td>
                 </tr>
@@ -197,18 +201,8 @@
                <table class="table table-condensed" id="mitabla" role="table">
                <!--<table role="table">-->
                     <thead role="rowgroup" id="cabcatalogo">
-                        <!--<tr role="row">
-                            <th  role="columnheader" >#</th>
-                            <th  role="columnheader" >Nombre</th>
-                            <th  role="columnheader" >Categoria|<br>Presentación</th>
-                            <th  role="columnheader" >Envase</th>
-                            <th  role="columnheader" >Código|<br>Cód. Barra</th>
-                            <th  role="columnheader" >Precio</th>
-                            <th  role="columnheader" >Moneda</th>
-                            <th  role="columnheader" class="no-print">Estado</th>
-                            <th  role="columnheader" class="no-print"></th>
-                    
-                    </tr>-->
+
+                        
                     </thead>
                     <tbody class="buscar" id="tablaresultados" role="rowgroup">
                                          
@@ -517,3 +511,271 @@ echo '<script type="text/javascript">
     </div>
 </div>
 <!------------------------ F I N  modal para elegir # imagenes(codigo de barras de un producto) para su impresion! ------------------->
+
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div hidden>
+    <button type="button" id="boton_guardarventa" class="btn btn-default" data-toggle="modal" data-target="#modalgeneradoretiquetas" >
+      Generar Codigos
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalgeneradoretiquetas" tabindex="-1" role="dialog" aria-labelledby="modalgeneradoretiquetas" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">GENERADOR: CÓDIGO DE BARRAS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-content" style="font-family: Arial">
+<!--			<div class="modal-header">
+                            
+
+                            <h4 class="modal-title" id="myModalLabel"><b>PEDIDOS/PREVENTAS</b></h4>
+                                
+                            <div class="input-group"> <span class="input-group-addon">Nombre</span>
+                                <input id="nombre_venta" type="text" class="form-control" placeholder="Nombre, para guardar la venta temporal" onKeyUp="this.value = this.value.toUpperCase();">
+                            </div>
+                                
+			</div>-->
+
+                        <div class="box-body table-responsive">
+<!--                                <center style="font-size: 16px; font-weight: bold;">
+                                    <fa class="fa fa-cart-arrow-down"></fa> 
+                                    ADVERTENCIA                                
+                                    <fa class="fa fa-clock-o"></fa> 
+                                </center>
+                                <br>
+                                <center>
+                                Esta a punto de guardar la venta actual de forma temporal.
+                                <br>¿Desea continuar?
+                                </center>-->
+
+                            
+                            <div class="col-md-6">
+                                <center>
+                                    <div class="form-group">
+                                        <small><b>CODIGO DE BARRAS<br></b></small>
+                                        <img src="<?php echo base_url("resources/images/sistema/codigo_barras.jpg") ?>" width="240px" height="120px" >
+                                    </div>                                    
+                                    <div class="col-md-12">
+                                            <!--<label for="codigo_columnas" class="control-label">MOSTRAR</label>-->
+                                            <div class="form-group">
+                                                <select class="form-control" id="selector">
+                                                    <option value="1">CODIGO DE BARRAS</option>
+                                                    <option value="2">LOGO EMPRESA</option>
+                                                    
+                                                </select>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                            <!--<label for="codigo_columnas" class="control-label">MOSTRAR</label>-->
+                                            <div class="form-group">
+                                                <select class="form-control" id="tipolinea">
+                                                    <option value="0">SIN BORDE</option>
+                                                    <option value="1">LINEA SOLIDA</option>
+                                                    <option value="2">LINEA PUNTEADA</option>
+                                                </select>
+                                            </div>
+                                    </div>
+                                </center>
+                            </div>
+             
+                            <div class="col-md-6">
+                                
+                            <div class="row">
+                                
+                                         
+                            <div class="col-md-12">
+                                <center>
+                                    <div class="form-group">
+                                        <small><b>PÁRAMETROS<br></b></small>                                  
+                                    </div>                                    
+
+  
+                                </center>
+                            </div>    
+                                
+                            <div class="col-md-4">
+                                    <label for="codigo_columnas" class="control-label" style="font-family: Arial; font-size: 10px;">COLUMNAS</label>
+                                    <div class="form-group">
+                                            <input type="number" min="1" name="codigo_columnas" id="codigo_columnas"  value="5" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    </div>
+                            </div>
+             
+                            <div class="col-md-4">
+                                    <label for="codigo_ancho" class="control-label"style="font-family: Arial; font-size: 10px;" >ANCHO(cm)</label>
+                                    <div class="form-group">
+                                            <input type="number" min="1" name="codigo_ancho" id="codigo_ancho" value="5" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    </div>
+                            </div>
+             
+                            <div class="col-md-4">
+                                    <label for="codigo_alto" class="control-label" style="font-family: Arial; font-size: 10px;">ALTO(cm)</label>
+                                    <div class="form-group">
+                                            <input type="number" min="1" name="codigo_alto" id="codigo_alto" value="2.5" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    </div>
+                            </div>
+             
+                            <div class="col-md-6">
+                                    <label for="tamanio_fuenteprod" class="control-label" style="font-family: Arial; font-size: 10px;">TAM. PRODUCTO</label>
+                                    <div class="form-group">
+                                            <input type="number" min="1" name="tamanio_fuenteprod" id="tamanio_fuenteprod" value="8" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    </div>
+                            </div>
+             
+                            <div class="col-md-6">
+                                    <label for="tamanio_fuente" class="control-label" style="font-family: Arial; font-size: 10px;">TAM. PRECIO</label>
+                                    <div class="form-group">
+                                            <input type="number" min="1" name="tamanio_fuente" id="tamanio_fuente" value="16" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    </div>
+                            </div>
+                                
+                            <div class="col-md-6">
+                                    <label for="copias" class="control-label" style="font-family: Arial; font-size: 10px;">COPIAS</label>
+                                    <div class="form-group">
+                                            <input type="number" min="1" name="copias" id="copias" value="1" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    </div>
+                            </div>
+                                
+<!--                            
+                            <div class="col-md-6">
+                                    <label for="copias" class="control-label" style="font-family: Arial; font-size: 10px;">COPIAS</label>
+                                    <div class="form-group">
+                                            <input type="number" min="1" name="copias" id="copias" value="1" class="form-control" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    </div>
+                            </div>
+                            -->
+                            
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer" style="text-align: center">
+                            <button type="button" class="btn btn-success"  data-dismiss="modal"  onclick="listacodbarras()"><fa class="fa fa-barcode"></fa> Generar</button>
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+            
+		</div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL ACTUALIZAR PRODUCTOS ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div hidden>
+    <button type="button" id="boton_guardarventa" class="btn btn-default" data-toggle="modal" data-target="#modaltraspasos" >
+      Generar Codigos
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modaltraspasos" tabindex="-1" role="dialog" aria-labelledby="modaltraspasos" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">SUCURSALES: ACTUALIZAR LISTAS DE PRODUCTOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-content" style="font-family: Arial">
+
+                        <div class="box-body">
+                            
+                                        <input class="form-control" type="hidden" value="0" id="producto_id" name="producto_id" onchange="verificar_producto()" ><!-- producto_id -->
+                            <div class="row">
+                                
+                                
+                                        <div class="col-md-12">
+                                                <div class="form-group">
+                                                   <input id="producto_nombre" class="form-control" style="border: none; font-size: 16px; text-align: center; font-weight: bold;">
+                                                </div>
+                                        </div>
+
+                                        
+                                
+                                        <div class="col-md-5">
+                                                <label for="sucursal_objetivo" class="control-label">SUCURSAL OBJETIVO</label>
+                                                <div class="form-group">
+                                                    <select class="form-control" id="sucursal_traspaso" name="sucursal_traspaso">
+                                                            
+                                                        <option value="0">- TODOS -</option>
+                                                    <?php 
+                                                        foreach($almacenes as $almacen){?>
+                                                            
+                                                            <option value="<?php echo $almacen["almacen_id"]; ?>"><?php echo $almacen["almacen_nombre"]; ?></option>
+                                                        
+                                                    <?php } ?>
+                                                        
+
+                                                    </select>
+                                                </div>
+                                        </div>
+<!--                                        <div class="col-md-12">
+                                                <label for="codigo_columnas" class="control-label">CATEGORIA</label>
+                                                <div class="form-group">
+                                                    <select class="form-control" id="categoria_traspaso">
+                                                        <option value="0">- TODAS -</option>
+                                                    <?php 
+                                                        foreach($all_categoria as $categ){?>
+                                                            
+                                                            <option value="<?php echo $categ["categoria_id"]; ?>"><?php echo $categ["categoria_nombre"]; ?></option>
+                                                        
+                                                    <?php } ?>
+                                                           
+                                                    </select>
+                                                </div>
+                                        </div>-->
+                                        <div class="col-md-5">
+                                                <label for="codigo_columnas" class="control-label">OPERACIÓN</label>
+                                                <div class="form-group">
+                                                    <select class="form-control" id="operacion_traspaso">
+                                                        <!--<option value="1">VERIFICAR PRODUCTO</option>-->
+                                                        <!--<option value="2">REGISTRAR PRODUCTO</option>-->
+                                                        <option value="3">ACTUALIZAR DATOS DEL PRODUCTO</option>
+                                                        <!--<option value="4">COMPARAR LISTA DE PRODUCTOS</option>-->
+                                                    </select>
+                                                </div>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                                <label for="codigo_columnas" class="control-label"></label>
+                                                <button type="button" class="btn btn-info"  onclick="remplazar_productos()" id="boton_proceder"><fa class="fa fa-cubes"></fa><br>Actualizar</button>
+                                                
+                                        </div>
+                                
+                            </div>
+                            <div class="row col-md-12" id='loader2'  style='display:none; text-align: center'>
+                               <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                           </div>
+                            <div id="tabla_resultadossuc">
+                            </div>
+             
+                           
+                        </div>
+
+                        <div class="modal-footer" style="text-align: center">
+                            <button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+            
+		</div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->

@@ -1,3 +1,4 @@
+
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!----------------------------- script buscador --------------------------------------->
 <script type="text/javascript">
@@ -48,7 +49,7 @@
                 <div class="col-md-2">
                     <br>
                     <button class="btn btn-sm btn-primary btn-sm btn-block"  type="submit" onclick="buscar_inventario()" style="height: 34px;">
-                        <span class="fa fa-search"></span>Buscar
+                        <span class="fa fa-search"></span> Buscar
                     </button> 
                 </div>
                 <div class="col-md-4">
@@ -60,7 +61,7 @@
         <div><br><br><br></div>
         <!--------------------- parametro de buscador --------------------->
         <div class="input-group no-print"> 
-            <span class="input-group-addon">Buscar</span>
+            <span class="input-group-addon"> Buscar</span>
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese nombre">
         </div>
             <!--------------------- fin parametro de buscador --------------------->
@@ -77,22 +78,7 @@
                         </tr>
                     </thead>
                     <tbody class="buscar" id="tabla_inventario">
-                        <?php
-                            $i = 0;
-                            foreach($control_inventarios as $control){
-                        ?>
-                        <tr>
-                            <td><?= $i+1; ?></td>
-                            <td><?= $control['controli_descripcion']; ?></td>
-                            <td class="text-center"><?= $control['controli_fecha']; ?></td>
-                            <td><?= $control['estado_descripcion']; ?></td>
-                            <td class="no-print">
-                                <a href="<?= site_url("control_ubicacion/index/{$control['controli_id']}"); ?>" class="btn btn-primary btn-xs" title="Ingresar"><i class="fa fa-sign-in" aria-hidden="true"></i></a>
-                                <a href="<?= site_url("control_inventario/edit/{$control['controli_id']}"); ?>" class="btn btn-info btn-xs" title="Editar"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                <button onclick="delete_inventario(<?= $control['controli_id']; ?>)" class="btn btn-danger btn-xs" title="Editar"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                        <?php $i++; } ?>
+     
                     </tbody>
                 </table>
             </div>

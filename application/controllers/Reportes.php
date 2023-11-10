@@ -138,7 +138,7 @@ class Reportes extends CI_Controller{
             $data['parametro'] = $this->parametros;
             
             $this->load->model('Moneda_model');
-            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['moneda'] = $this->Moneda_model->get_moneda(1); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             
 //            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
@@ -176,35 +176,45 @@ class Reportes extends CI_Controller{
             $data['anuladas'] = $this->Venta_model->consultar($sql);
 
             //********************************************************************
-
-
-                if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
-                    $valfecha1 = $fecha1;
-                    $valfecha2 = $fecha2;
-                }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
-                    $valfecha1 = $fecha1;
-                    $valfecha2 = $fecha1;
-                }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
-                    $valfecha1 = $fecha2;
-                    $valfecha2 = $fecha2;
-                }else{
-                    $fecha1 = null;
-                    $fecha2 = null;
-                }
-
-                if($usuario >  0){
-                    $usuario_id = $usuario;
-                }else{
-                    $usuario_id = 0;
-                }
-                
-                $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
-                $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $usuario_id);
             
+            $sql = "SELECT c.operacion,c.forma,c.transaccion,c.banco,sum(ingresos) AS ingresos,sum(egresos) AS egresos
+                    FROM consreporte c
+                    WHERE
+                    c.usuario_id = {$usuario_id} and c.fecha>= date(now()) and c.fecha<= date(now())
+                    GROUP BY c.operacion,c.forma,c.transaccion,c.banco
+                    ORDER BY orden";
+            $data['transacciones'] = $this->Venta_model->consultar($sql);
+            
+            $sql = "select sum(venta_descuento) as descuentos from venta
+                    where usuario_id = {$usuario_id} and venta_fecha = date(now())";
+            $data['descuentos_globales'] = $this->Venta_model->consultar($sql);
+                    
+//
+//                if(!($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))){
+//                    $valfecha1 = $fecha1;
+//                    $valfecha2 = $fecha2;
+//                }elseif(!($fecha1 == null || empty($fecha1)) && ($fecha2 == null || empty($fecha2))){
+//                    $valfecha1 = $fecha1;
+//                    $valfecha2 = $fecha1;
+//                }elseif(($fecha1 == null || empty($fecha1)) && !($fecha2 == null || empty($fecha2))) {
+//                    $valfecha1 = $fecha2;
+//                    $valfecha2 = $fecha2;
+//                }else{
+//                    $fecha1 = null;
+//                    $fecha2 = null;
+//                }
+//
+//                if($usuario >  0){
+//                    $usuario_id = $usuario;
+//                }else{
+//                    $usuario_id = 0;
+//                }
+//                
+//                $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
+//                $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $usuario_id);
+//            
             
             //********************************************************************
-
-            
             $data['_view'] = 'reportes/reportecaja';
             $this->load->view('layouts/main',$data);
         //}
@@ -1292,6 +1302,7 @@ function torta3($anio,$mes)
             $this->load->view('layouts/main',$data);
         }
     }
+    
     function ventapagrupado()
     {
         $data['sistema'] = $this->sistema;
@@ -1308,6 +1319,26 @@ function torta3($anio,$mes)
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             $data['_view'] = 'reportes/ventapagrupado';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    
+    function insumosutilizados()
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(156)){
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $this->load->model('Tipo_transaccion_model');
+            $data['page_title'] = "Reporte de ventas agrupado";
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+            $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['parametro'] = $this->parametros;
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['_view'] = 'reportes/insumosutilizados';
             $this->load->view('layouts/main',$data);
         }
     }

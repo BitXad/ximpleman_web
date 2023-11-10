@@ -58,7 +58,7 @@ class Inventario_sucursal extends CI_Controller{
             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             
-            $data['almacenes'] = $this->Inventario_model->get_almacenes();
+            $data['almacenes'] = $this->Inventario_model->get_all_almacenes();
             
             //********************************************
             // SMART GRID
@@ -126,6 +126,8 @@ class Inventario_sucursal extends CI_Controller{
      */
     function mostrar_inventarios()
     {
+        if($this->input->is_ajax_request()){
+            
         //$data['sistema'] = $this->sistema;
         if($this->acceso(25)){
             $parametro = $this->input->post("parametro");
@@ -138,6 +140,7 @@ class Inventario_sucursal extends CI_Controller{
             }
             echo json_encode($resultado);
         }
+        }else{ show_404();}
     }
     
 }

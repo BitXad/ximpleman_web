@@ -27,6 +27,7 @@ class Producto extends CI_Controller{
             'Sincronizacion_model',
             'Dosificacion_model',
             'Bitacora_model',
+            'Almacen_model',
         ]);
         
         if ($this->session->userdata('logged_in')) {
@@ -64,6 +65,7 @@ class Producto extends CI_Controller{
             $data['a'] = $a;
             
             $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
+            $data['almacenes'] = $this->Almacen_model->get_all_almacen();
             /*
             $data['all_presentacion'] = $this->Presentacion_model->get_alls_presentacion();
             $data['all_moneda'] = $this->Moneda_model->get_alls_moneda_asc();
@@ -723,6 +725,54 @@ class Producto extends CI_Controller{
                 );
                 $producto_id = $this->Producto_model->add_producto($params);
                 
+                //*****************************************************************************
+                // Registro en sucursales
+                //*****************************************************************************
+
+                    $params = array(
+                    'producto_id' => $producto_id,
+                    'estado_id' => $estado_id,
+                    'categoria_id' => $this->input->post('categoria_id'),
+                    'presentacion_id' => 1, //$this->input->post('presentacion_id'),
+                    'moneda_id' => $this->input->post('moneda_id'),
+                    'producto_codigo' => $this->input->post('producto_codigo'),
+                    'producto_codigobarra' => $this->input->post('producto_codigobarra'),
+                    'producto_nombre' => $this->input->post('producto_nombre'),
+                    'producto_unidad' => $this->input->post('producto_unidad'),
+                    'producto_marca' => $this->input->post('producto_marca'),
+                    'producto_industria' => $this->input->post('producto_industria'),
+                    'producto_costo' => $this->input->post('producto_costo'),
+                    'producto_ultimocosto' => $this->input->post('producto_costo'),
+                    'producto_precio' => $this->input->post('producto_precio'),
+                    'producto_foto' => $foto,
+                    'producto_comision' => $this->input->post('producto_comision'),
+                    'producto_tipocambio' => $this->input->post('producto_tipocambio'),
+                    'producto_factor' => $this->input->post('producto_factor'),
+                    'producto_unidadfactor' => $this->input->post('producto_unidadfactor'),
+                    'producto_codigofactor' => $this->input->post('producto_codigofactor'),
+                    'producto_preciofactor' => $this->input->post('producto_preciofactor'),
+                    'producto_codigosin' => $this->input->post('cod_product_sin'),
+                    'producto_codigounidadsin' => $producto_codigounidadsin,
+                );
+                
+                $actualizar_productos = $this->input->post('registrar_producto');
+                
+                if ($actualizar_productos){
+                    
+                    $almacenes = $this->Inventario_model->get_almacenes();
+                    
+                    foreach($almacenes as $a){
+                            
+                            $this->Inventario_model->add_producto_sucursal($a["almacen_basedatos"],$params);
+                    }
+                    
+                }
+
+                //*****************************************************************************
+                
+                
+                
+                
                 //$this->Inventario_model->ingresar_producto_a_inventario($producto_id,0);
                 $sql = "insert into inventario (select * from consinventario where producto_id = $producto_id)";
                 $this->Compra_model->ejecutar($sql);
@@ -1055,6 +1105,7 @@ class Producto extends CI_Controller{
             }
         }
     }
+    
     /* registrar subcategoria */
     function aniadirsubcategoria()
     {
@@ -1098,6 +1149,7 @@ class Producto extends CI_Controller{
             }
         }
     }
+    
     /*
     * buscar clasificadores de un producto
     */
@@ -1114,9 +1166,11 @@ class Producto extends CI_Controller{
             }
         }
     }
+    
+    
     /*
     * buscar clasificadores de un producto
-    */
+    */    
     function agregar_clasificador()
     {
         if($this->acceso(102)) {
@@ -1332,6 +1386,7 @@ class Producto extends CI_Controller{
         }
     }
     
+    //Price Checker
     function ver_elproducto()
     {
         $data['sistema'] = $this->sistema;
@@ -1363,4 +1418,301 @@ class Producto extends CI_Controller{
             show_404();
         }
     }
+    
+    
+    function verificar_producto(){
+        
+//        if($this->input->is_ajax_request()){
+        
+            $sucursal_id = $this->input->post("sucursal_id");
+            $producto_id = $this->input->post("producto_id");
+            $operacion = $this->input->post("operacion");
+            
+            //1. buscar sucursales
+
+            $almacenes = $this->Inventario_model->get_all_almacenes();
+
+            $productos = array();
+            $i = 0;
+            foreach($almacenes as $a){
+
+                    $sql = "select '{$a["almacen_basedatos"]}' as almacen_basedatos,{$a["almacen_id"]} as almacen_id, e.empresa_nombresucursal, p.* from producto p, empresa e where p.producto_id = {$producto_id}";
+                    $resultado = $this->Inventario_model->consultar_en_sucursal($a["almacen_basedatos"],$sql);
+                    $productos[] = $resultado;
+            }
+            echo json_encode($productos);
+            
+            //var_dump($productos);
+//           echo 
+//        }else{                 
+//            show_404();
+//        }
+    }
+    
+    function verificar_producto_cantidad(){
+        
+//        if($this->input->is_ajax_request()){
+        
+            $sucursal_id = $this->input->post("sucursal_id");
+            $producto_id = $this->input->post("producto_id");
+            $operacion = $this->input->post("operacion");
+            
+            //1. buscar sucursales
+
+            $almacenes = $this->Inventario_model->get_all_almacenes();
+
+            $productos = array();
+            $i = 0;
+            foreach($almacenes as $a){
+
+                    $sql = "select '{$a["almacen_basedatos"]}' as almacen_basedatos,{$a["almacen_id"]} as almacen_id, e.empresa_nombresucursal, p.* from inventario p, empresa e where p.producto_id = {$producto_id}";
+                    $resultado = $this->Inventario_model->consultar_en_sucursal($a["almacen_basedatos"],$sql);
+                    $productos[] = $resultado;
+            }
+            echo json_encode($productos);
+            
+            //var_dump($productos);
+//           echo 
+//        }else{                 
+//            show_404();
+//        }
+    }
+    
+    function igualar_producto(){
+        
+//        if($this->input->is_ajax_request()){
+        
+            $almacen_id = $this->input->post("almacen_id");
+            $producto_id = $this->input->post("producto_id");
+            //$operacion = $this->input->post("operacion");
+            
+            //0. buscar en la sucursal origen
+                $almacen = $this->Inventario_model->get_all_almacen($almacen_id);
+              
+                //0.1 Obtener el producto
+                $sql = "select * from producto where producto_id = {$producto_id}";
+                $producto = $this->Inventario_model->consultar_en_sucursal($almacen["almacen_basedatos"],$sql);            
+                $producto = $producto[0];            
+                    
+		$el_producto = array(		
+				'producto_id' => empty($producto['producto_id']) ? 0 : $producto['producto_id'],
+                                'estado_id' => empty($producto['estado_id']) ? 0 : $producto['estado_id'],
+                                'categoria_id' => empty($producto['categoria_id']) ? 0 : $producto['categoria_id'],
+                                'presentacion_id' => empty($producto['presentacion_id']) ? 0 : $producto['presentacion_id'],
+                                'moneda_id' => empty($producto['moneda_id']) ? 0 : $producto['moneda_id'],
+                                'producto_codigo' => empty($producto['producto_codigo']) ? "" : $producto['producto_codigo'],
+                                'producto_codigobarra' => empty($producto['producto_codigobarra']) ? "" : $producto['producto_codigobarra'],
+                                'producto_foto' => empty($producto['producto_foto']) ? "" : $producto['producto_foto'],
+                                'producto_nombre' => empty($producto['producto_nombre']) ? "" : $producto['producto_nombre'],
+                                'producto_unidad' => empty($producto['producto_unidad']) ? "" : $producto['producto_unidad'],
+                                'producto_marca' => empty($producto['producto_marca']) ? "" : $producto['producto_marca'],
+                                'producto_industria' => empty($producto['producto_industria']) ? "" : $producto['producto_industria'],
+                                'producto_costo' => empty($producto['producto_costo']) ? 0 : $producto['producto_costo'],
+                                'producto_precio' => empty($producto['producto_precio']) ? 0 : $producto['producto_precio'],
+                                'producto_comision' => empty($producto['producto_comision']) ? 0 : $producto['producto_comision'],
+                                'producto_tipocambio' => empty($producto['producto_tipocambio']) ? 0 : $producto['producto_tipocambio'],
+                                'producto_cantidadminima' => empty($producto['producto_cantidadminima']) ? 0 : $producto['producto_cantidadminima'],
+                                'producto_factor' => empty($producto['producto_factor']) ? 0 : $producto['producto_factor'],
+                                'producto_unidadfactor' => empty($producto['producto_unidadfactor']) ? "" : $producto['producto_unidadfactor'],
+                                'producto_codigofactor' => empty($producto['producto_codigofactor']) ? "" : $producto['producto_codigofactor'],
+                                'producto_preciofactor' => empty($producto['producto_preciofactor']) ? 0 : $producto['producto_preciofactor'],
+                                'producto_factor1' => empty($producto['producto_factor1']) ? 0 : $producto['producto_factor1'],
+                                'producto_unidadfactor1' => empty($producto['producto_unidadfactor1']) ? "" : $producto['producto_unidadfactor1'],
+                                'producto_codigofactor1' => empty($producto['producto_codigofactor1']) ? "" : $producto['producto_codigofactor1'],
+                                'producto_preciofactor1' => empty($producto['producto_preciofactor1']) ? 0 : $producto['producto_preciofactor1'],
+                                'producto_factor2' => empty($producto['producto_factor2']) ? 0 : $producto['producto_factor2'],
+                                'producto_unidadfactor2' => empty($producto['producto_unidadfactor2']) ? "" : $producto['producto_unidadfactor2'],
+                                'producto_codigofactor2' => empty($producto['producto_codigofactor2']) ? "" : $producto['producto_codigofactor2'],
+                                'producto_preciofactor2' => empty($producto['producto_preciofactor2']) ? 0 : $producto['producto_preciofactor2'],
+                                'producto_factor3' => empty($producto['producto_factor3']) ? 0 : $producto['producto_factor3'],
+                                'producto_unidadfactor3' => empty($producto['producto_unidadfactor3']) ? "" : $producto['producto_unidadfactor3'],
+                                'producto_codigofactor3' => empty($producto['producto_codigofactor3']) ? "" : $producto['producto_codigofactor3'],
+                                'producto_preciofactor3' => empty($producto['producto_preciofactor3']) ? 0 : $producto['producto_preciofactor3'],
+                                'producto_factor4' => empty($producto['producto_factor4']) ? 0 : $producto['producto_factor4'],
+                                'producto_unidadfactor4' => empty($producto['producto_unidadfactor4']) ? "" : $producto['producto_unidadfactor4'],
+                                'producto_codigofactor4' => empty($producto['producto_codigofactor4']) ? "" : $producto['producto_codigofactor4'],
+                                'producto_preciofactor4' => empty($producto['producto_preciofactor4']) ? 0 : $producto['producto_preciofactor4'],
+                                'producto_ultimocosto' => empty($producto['producto_ultimocosto']) ? 0 : $producto['producto_ultimocosto'],
+                                'producto_caracteristicas' => empty($producto['producto_caracteristicas']) ? "" : $producto['producto_caracteristicas'],
+                                'producto_envase' => empty($producto['producto_envase']) ? 0 : $producto['producto_envase'],
+                                'producto_nombreenvase' => empty($producto['producto_nombreenvase']) ? "" : $producto['producto_nombreenvase'],
+                                'producto_costoenvase' => empty($producto['producto_costoenvase']) ? 0 : $producto['producto_costoenvase'],
+                                'producto_precioenvase' => empty($producto['producto_precioenvase']) ? 0 : $producto['producto_precioenvase'],
+                                'destino_id' => empty($producto['destino_id']) ? 0 : $producto['destino_id'],
+                                'producto_principioact' => empty($producto['producto_principioact']) ? "" : $producto['producto_principioact'],
+                                'producto_accionterap' => empty($producto['producto_accionterap']) ? "" : $producto['producto_accionterap'],
+                                'producto_cantidadenvase' => empty($producto['producto_cantidadenvase']) ? 0 : $producto['producto_cantidadenvase'],
+                                'subcategoria_id' => empty($producto['subcategoria_id']) ? 0 : $producto['subcategoria_id'],
+                                'producto_unidadentera' => empty($producto['producto_unidadentera']) ? "" : $producto['producto_unidadentera'],
+                                'producto_catalogo' => empty($producto['producto_catalogo']) ? 0 : $producto['producto_catalogo'],
+                                'producto_colsur' => empty($producto['producto_colsur']) ? "" : $producto['producto_colsur'],
+                                'producto_coleste' => empty($producto['producto_coleste']) ? "" : $producto['producto_coleste'],
+                                'producto_coloeste' => empty($producto['producto_coloeste']) ? "" : $producto['producto_coloeste'],
+                                'producto_colnorte' => empty($producto['producto_colnorte']) ? "" : $producto['producto_colnorte'],
+                                'producto_codigosin' => empty($producto['producto_codigosin']) ? 0 : $producto['producto_codigosin'],
+                                'producto_codigounidadsin' => empty($producto['producto_codigounidadsin']) ? 0 : $producto['producto_codigounidadsin'],
+                                'producto_orden' => empty($producto['producto_orden']) ? 0 : $producto['producto_orden'],
+				);
+                    
+            //1. buscar la sucursales
+
+            $sql = "select * from almacenes";
+            $almacenes = $this->Inventario_model->consultar_en_sucursal('default',$sql);  
+
+            //var_dump($almacenes);
+            $i = 0;
+            $errores = 0;
+
+            foreach($almacenes as $a){
+                
+                    //Buscar si el producto existe en la base de datos
+
+                if($a["almacen_id"]!=$almacen_id){
+              
+                    
+                    try{
+                        
+                        $sql = "select * from producto where producto_id = {$producto_id}";
+                        $miproducto = $this->Inventario_model->consultar_en_sucursal($a["almacen_basedatos"],$sql);
+
+                        if(sizeof($miproducto)>0){ //Si existe el producto...!! entonces eliminar
+                            
+                            $sql = "delete from  producto where producto_id = {$producto_id}";
+                            $this->Inventario_model->ejecutar_en_sucursal($a["almacen_basedatos"],$sql);
+                            
+                        }
+                        
+                        $this->Inventario_model->ejecutar_en_sucursal_producto($a["almacen_basedatos"],$el_producto);
+                        
+                        
+                    } catch (Exception $ex) {
+                        $errores++;
+                        echo json_encode(array('mensaje'=>"Problema al intentar sincronizar los productos en sucursal: ".$a["almacen_nombre"]." ".$ex));
+                        
+                    }
+                    
+
+
+                }
+
+                    
+            }
+            
+            echo json_encode(array('mensaje'=>"Proceso de sincronización de producto fué satisfactorio. Errores: {$errores}. "));
+            
+
+    }
+    function remplazar_productos(){
+        
+//        if($this->input->is_ajax_request()){
+        
+            $almacen_id = $this->input->post("almacen_id");
+            $operacion_id = $this->input->post("operacion");
+            //$operacion = $this->input->post("operacion");
+            
+            //0. buscar en la sucursal objetivo
+                $almacen = $this->Inventario_model->get_all_almacen($almacen_id); //retorna un rowarray
+              
+                //0.1 Obtener todos los productos de la base de datos actual
+                $sql = "select * from producto";
+                $productos = $this->Inventario_model->consultar_en_sucursal('default',$sql);            
+                //$productos = $producto[0];            
+                  
+                //Eliminar el contenido de la tabla producto
+                $sql = "truncate producto";
+                $this->Inventario_model->ejecutar_en_sucursal($almacen["almacen_basedatos"],$sql);            
+                
+                
+                //Cargar todos los productos de la central a la sucursal seleccionada
+                
+                //var_dump($almacenes);
+                $i = 0;
+                $errores = 0;
+                    
+                foreach($productos as $producto){
+                    
+         
+                
+                        $el_producto = array(		
+                                        'producto_id' => empty($producto['producto_id']) ? 0 : $producto['producto_id'],
+                                        'estado_id' => empty($producto['estado_id']) ? 0 : $producto['estado_id'],
+                                        'categoria_id' => empty($producto['categoria_id']) ? 0 : $producto['categoria_id'],
+                                        'presentacion_id' => empty($producto['presentacion_id']) ? 0 : $producto['presentacion_id'],
+                                        'moneda_id' => empty($producto['moneda_id']) ? 0 : $producto['moneda_id'],
+                                        'producto_codigo' => empty($producto['producto_codigo']) ? "" : $producto['producto_codigo'],
+                                        'producto_codigobarra' => empty($producto['producto_codigobarra']) ? "" : $producto['producto_codigobarra'],
+                                        'producto_foto' => empty($producto['producto_foto']) ? "" : $producto['producto_foto'],
+                                        'producto_nombre' => empty($producto['producto_nombre']) ? "" : $producto['producto_nombre'],
+                                        'producto_unidad' => empty($producto['producto_unidad']) ? "" : $producto['producto_unidad'],
+                                        'producto_marca' => empty($producto['producto_marca']) ? "" : $producto['producto_marca'],
+                                        'producto_industria' => empty($producto['producto_industria']) ? "" : $producto['producto_industria'],
+                                        'producto_costo' => empty($producto['producto_costo']) ? 0 : $producto['producto_costo'],
+                                        'producto_precio' => empty($producto['producto_precio']) ? 0 : $producto['producto_precio'],
+                                        'producto_comision' => empty($producto['producto_comision']) ? 0 : $producto['producto_comision'],
+                                        'producto_tipocambio' => empty($producto['producto_tipocambio']) ? 0 : $producto['producto_tipocambio'],
+                                        'producto_cantidadminima' => empty($producto['producto_cantidadminima']) ? 0 : $producto['producto_cantidadminima'],
+                                        'producto_factor' => empty($producto['producto_factor']) ? 0 : $producto['producto_factor'],
+                                        'producto_unidadfactor' => empty($producto['producto_unidadfactor']) ? "" : $producto['producto_unidadfactor'],
+                                        'producto_codigofactor' => empty($producto['producto_codigofactor']) ? "" : $producto['producto_codigofactor'],
+                                        'producto_preciofactor' => empty($producto['producto_preciofactor']) ? 0 : $producto['producto_preciofactor'],
+                                        'producto_factor1' => empty($producto['producto_factor1']) ? 0 : $producto['producto_factor1'],
+                                        'producto_unidadfactor1' => empty($producto['producto_unidadfactor1']) ? "" : $producto['producto_unidadfactor1'],
+                                        'producto_codigofactor1' => empty($producto['producto_codigofactor1']) ? "" : $producto['producto_codigofactor1'],
+                                        'producto_preciofactor1' => empty($producto['producto_preciofactor1']) ? 0 : $producto['producto_preciofactor1'],
+                                        'producto_factor2' => empty($producto['producto_factor2']) ? 0 : $producto['producto_factor2'],
+                                        'producto_unidadfactor2' => empty($producto['producto_unidadfactor2']) ? "" : $producto['producto_unidadfactor2'],
+                                        'producto_codigofactor2' => empty($producto['producto_codigofactor2']) ? "" : $producto['producto_codigofactor2'],
+                                        'producto_preciofactor2' => empty($producto['producto_preciofactor2']) ? 0 : $producto['producto_preciofactor2'],
+                                        'producto_factor3' => empty($producto['producto_factor3']) ? 0 : $producto['producto_factor3'],
+                                        'producto_unidadfactor3' => empty($producto['producto_unidadfactor3']) ? "" : $producto['producto_unidadfactor3'],
+                                        'producto_codigofactor3' => empty($producto['producto_codigofactor3']) ? "" : $producto['producto_codigofactor3'],
+                                        'producto_preciofactor3' => empty($producto['producto_preciofactor3']) ? 0 : $producto['producto_preciofactor3'],
+                                        'producto_factor4' => empty($producto['producto_factor4']) ? 0 : $producto['producto_factor4'],
+                                        'producto_unidadfactor4' => empty($producto['producto_unidadfactor4']) ? "" : $producto['producto_unidadfactor4'],
+                                        'producto_codigofactor4' => empty($producto['producto_codigofactor4']) ? "" : $producto['producto_codigofactor4'],
+                                        'producto_preciofactor4' => empty($producto['producto_preciofactor4']) ? 0 : $producto['producto_preciofactor4'],
+                                        'producto_ultimocosto' => empty($producto['producto_ultimocosto']) ? 0 : $producto['producto_ultimocosto'],
+                                        'producto_caracteristicas' => empty($producto['producto_caracteristicas']) ? "" : $producto['producto_caracteristicas'],
+                                        'producto_envase' => empty($producto['producto_envase']) ? 0 : $producto['producto_envase'],
+                                        'producto_nombreenvase' => empty($producto['producto_nombreenvase']) ? "" : $producto['producto_nombreenvase'],
+                                        'producto_costoenvase' => empty($producto['producto_costoenvase']) ? 0 : $producto['producto_costoenvase'],
+                                        'producto_precioenvase' => empty($producto['producto_precioenvase']) ? 0 : $producto['producto_precioenvase'],
+                                        'destino_id' => empty($producto['destino_id']) ? 0 : $producto['destino_id'],
+                                        'producto_principioact' => empty($producto['producto_principioact']) ? "" : $producto['producto_principioact'],
+                                        'producto_accionterap' => empty($producto['producto_accionterap']) ? "" : $producto['producto_accionterap'],
+                                        'producto_cantidadenvase' => empty($producto['producto_cantidadenvase']) ? 0 : $producto['producto_cantidadenvase'],
+                                        'subcategoria_id' => empty($producto['subcategoria_id']) ? 0 : $producto['subcategoria_id'],
+                                        'producto_unidadentera' => empty($producto['producto_unidadentera']) ? "" : $producto['producto_unidadentera'],
+                                        'producto_catalogo' => empty($producto['producto_catalogo']) ? 0 : $producto['producto_catalogo'],
+                                        'producto_colsur' => empty($producto['producto_colsur']) ? "" : $producto['producto_colsur'],
+                                        'producto_coleste' => empty($producto['producto_coleste']) ? "" : $producto['producto_coleste'],
+                                        'producto_coloeste' => empty($producto['producto_coloeste']) ? "" : $producto['producto_coloeste'],
+                                        'producto_colnorte' => empty($producto['producto_colnorte']) ? "" : $producto['producto_colnorte'],
+                                        'producto_codigosin' => empty($producto['producto_codigosin']) ? 0 : $producto['producto_codigosin'],
+                                        'producto_codigounidadsin' => empty($producto['producto_codigounidadsin']) ? 0 : $producto['producto_codigounidadsin'],
+                                        'producto_orden' => empty($producto['producto_orden']) ? 0 : $producto['producto_orden'],
+                                        );
+                
+                        
+                        try{
+                            
+                            $this->Inventario_model->ejecutar_en_sucursal_producto($almacen["almacen_basedatos"],$el_producto);
+                            
+                        } catch (Exception $ex) {
+                            
+                            $errores++;
+                            echo json_encode(array('mensaje'=>"Problema al intentar sincronizar los productos en sucursal: ".$a["almacen_nombre"]." ".$ex));
+                        }
+                        
+                        
+                        
+                }       
+                
+
+            
+            echo json_encode(array('mensaje'=>"Proceso de sincronización de producto fué satisfactorio. Errores: {$errores}. "));
+            
+
+    }
+    
 }

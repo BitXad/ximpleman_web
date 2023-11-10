@@ -17,20 +17,22 @@
             echo form_open_multipart("usuario/set", $attributes);?>
 			<div class="box-body">
 				<div class="row clearfix">
-                    <div class="col-md-5">
+                                    
+                                        <div class="col-md-5">
 						<label for="usuario_nombre" class="control-label">Nombre(s) y Apellido(s)</label>
 						<div class="form-group">
 							<input type="text" name="usuario_nombre" value="<?php echo $usuario['usuario_nombre'] ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"autocomplete="off" />
 							<span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
 						</div>
 					</div>
-                    <div class="col-md-4">
+                                        <div class="col-md-4">
 						<label for="usuario_ci" class="control-label">C.I.</label>
 						<div class="form-group">
 							<input type="text" name="usuario_ci" value="<?php echo $usuario['usuario_ci'] ?>" class="form-control" id="usuario_ci" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 							<span class="text-danger"><?php echo form_error('usuario_ci');?></span>
 						</div>
 					</div>
+                                    
 					<div class="col-md-3">
 						<label for="tipousuario_id" class="control-label">Tipo</label>
 						<div class="form-group">
@@ -89,15 +91,41 @@
                             </select>
                         </div>
                     </div>
-					<div class="col-md-6">
-						<label for="usuario_login" class="control-label">Nombre de usuario</label>
-						<div class="form-group">
-							<input type="text" name="usuario_login" value="<?php echo $usuario['usuario_login'] ?>" class="form-control" id="usuario_login" required/>
-							<span class="text-danger"><?php echo form_error('usuario_login');?></span>
-                            <div id="user-result"></div>
-						</div>
-					</div>
+                                    
                     <div class="col-md-3">
+                        <label for="usuario_login" class="control-label">Nombre de usuario</label>
+                        <div class="form-group">
+                                <input type="text" name="usuario_login" value="<?php echo $usuario['usuario_login'] ?>" class="form-control" id="usuario_login" required/>
+                                <span class="text-danger"><?php echo form_error('usuario_login');?></span>
+                            <div id="user-result"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                            <label for="usuario_turno" class="control-label">Turno</label>
+                            <div class="form-group">
+                                    <input type="text" name="usuario_turno" value="<?php echo $usuario['usuario_turno'] ?>" class="form-control" id="usuario_turno" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    <span class="text-danger"><?php echo form_error('usuario_turno');?></span>
+                            </div>
+                    </div>
+
+                    <div class="col-md-3">
+                            <label for="usuario_inicioturno" class="control-label">Inicio</label>
+                            <div class="form-group">
+                                    <input type="time" name="usuario_inicioturno" value="<?php echo $usuario['usuario_inicioturno'] ?>" class="form-control" id="usuario_inicioturno" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    <span class="text-danger"><?php echo form_error('usuario_inicioturno');?></span>
+                            </div>
+                    </div>
+                                    
+                    <div class="col-md-3">
+                            <label for="usuario_finturno" class="control-label">Fin</label>
+                            <div class="form-group">
+                                    <input type="time" name="usuario_finturno" value="<?php echo $usuario['usuario_finturno'] ?>" class="form-control" id="usuario_finturno" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    <span class="text-danger"><?php echo form_error('usuario_finturno');?></span>
+                            </div>
+                    </div>
+                                    
+                    <div class="col-md-4">
                         <label for="estado_id" class="control-label">Estado</label>
                         <div class="form-group">
                             <select name="estado_id" class="form-control">
@@ -113,7 +141,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="user_imagen" class="control-label">Imagen</label>
                         <div class="form-group">
                             <input type="file" name="usuario_imagen"  id="usuario_imagen" kl_virtual_keyboard_secure_input="on" class="form-control.input"  value="">

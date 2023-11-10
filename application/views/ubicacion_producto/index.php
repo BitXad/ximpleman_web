@@ -1,3 +1,6 @@
+<script rel="stylesheet" type="text/css" href="<?php echo base_url('resources/plugins/datatables/jquery.dataTables.css'); ?>">  </script>
+<script type="text/javascript" charset="utf8" src="<?php echo base_url('resources/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
+
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="imprimir" id="imprimir" value="<?= $imprimir ?>" />
 <input type="hidden" name="controli" id="controli" value="<?= $controli_id; ?>" />
@@ -11,6 +14,20 @@
                     var rex = new RegExp($(this).val(), 'i');
                     $('.buscar tr').hide();
                     $('.buscar tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });
+</script> 
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar_modal').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar_modal tr').hide();
+                    $('.buscar_modal tr').filter(function () {
                         return rex.test($(this).text());
                     }).show();
                 })
@@ -31,21 +48,34 @@
     <div class="box-tools no-print">
         <button class="btn btn-success btn-sm"  onclick="imprimir()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
         <?php if ($control_ubicacion['estado_id'] != 26) {?>
-            <button class="btn btn-success btn-sm"  data-toggle="modal" data-target="#modal_add_producto"><i class="fa fa-plus" aria-hidden="true"></i> Agregar producto</button> 
+            <button class="btn btn-facebook btn-sm"  data-toggle="modal" data-target="#modal_add_producto"><i class="fa fa-plus" aria-hidden="true"></i> Agregar producto</button> 
         <?php } ?> 
+        <button class="btn btn-info btn-sm"  onclick="cargar_productos(<?= $controli_id; ?>,<?= $controlu_id; ?>)" title="Cargar todos los productos"><i class="fa fa-print" aria-hidden="true"></i> Cargar Todo</button>
+        <button class="btn btn-warning btn-sm"  onclick="mostrar_productos(<?= $controli_id; ?>,<?= $controlu_id; ?>)" title="Mostrar todos los productos"><i class="fa fa-list-ol" aria-hidden="true"></i> Mostrar Todo</button>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
-        <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-        <input id="filtrar" type="text" class="form-control" placeholder="Ingrese nombre">
+<!--        <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese nombre" onkeyup="buscar_producto(event,1)">
+        </div>-->
+        
+        
+        <div class="input-group">
+            <span class="input-group-addon" onclick="ocultar_busqueda();"  style="background-color: lightgray;"> 
+              Buscar 
+            </span>           
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código, serie" onkeypress="buscar_producto(event,1)">
+            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="buscar_producto(13,1)" title="Buscar"><span class="fa fa-search" aria-hidden="true"></span></div>
         </div>
+        
+        
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
             
             <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
+                <table class="table table-striped table-condensed table-responsive" id="mitabla">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -53,6 +83,7 @@
                             <th>Codigo</th>
                             <th width="100px">Existencia</th>
                             <th width="100px">Existencia <br> fisica</th>
+                            <th width="100px"></th>
                             <th width="100px">Sobrante</th>
                             <th width="100px">Faltante</th>
                             <th width="100px">Total<br>Sobrante</th>
@@ -60,7 +91,7 @@
                             <th class="no-print" width="100px"></th>
                         </tr>
                     </thead>
-                    <tbody class="buscar">
+                    <tbody id="buscar" class="buscar">
                         <?php
                             $i = 0;
                             $total_sobrante = 0;
@@ -68,53 +99,8 @@
                             
                             foreach($ubi_productos as $ubi_producto){
                         ?>
-                        <tr>
-                            <td><?= $i+1; ?></td>
-                            <td id="nombre<?= $ubi_producto['ubiprod_id'] ?>"><?= $ubi_producto['producto_nombre']; ?></td>
-                            <td id="codigo<?= $ubi_producto['ubiprod_id'] ?>"><?= $ubi_producto['producto_codigo']; ?></td>
-                            
-                            <td>
-                                <div class="input-group input-group-sm mb-3">
-                                    <input id="existencia<?= $ubi_producto['ubiprod_id'] ?>" type="number" class="form-control" value="<?= $ubi_producto['ubiprod_existencia'] ?>" disabled>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group">
-                                    <input id="existencia_producto<?= $ubi_producto['ubiprod_id'] ?>" type="number" min="0" class="form-control" value="<?= ($ubi_producto['ubiprod_existenciafisico'] > 0 ? $ubi_producto['ubiprod_existenciafisico'] : 0) ?>" onchange="calcular(<?= $ubi_producto['ubiprod_id'] ?>)" <?= ($tipousuario_id == 1) ? '' : (($control_ubicacion['estado_id'] == 26) ? "disabled" : "") ?>>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group">
-                                    <input id="sobrante<?= $ubi_producto['ubiprod_id'] ?>" type="number" class="form-control" value="<?= ($ubi_producto['ubiprod_sobrante'] == 0 ? 0:$ubi_producto['ubiprod_sobrante']); ?>" disabled>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group">
-                                    <input id="faltante<?= $ubi_producto['ubiprod_id'] ?>" type="number" class="form-control" value="<?= ($ubi_producto['ubiprod_faltante'] == 0 ? 0:$ubi_producto['ubiprod_faltante']); ?>" disabled>
-                                </div>
-                            </td>
-                            <td >
-                                <!--<div class="input-group" style="text-align: left;">-->
-                                    <?php
-                                    
-                                        $total_sobrante += $ubi_producto['producto_costo'] * $ubi_producto['ubiprod_sobrante'];
-                                        $total_faltante += $ubi_producto['producto_costo'] * $ubi_producto['ubiprod_faltante'];
-                                        
-                                    
-                                    ?>
-                                
-                                    <input id="faltante<?= $ubi_producto['ubiprod_id'] ?>" type="number" class="form-control" value="<?= number_format($ubi_producto['producto_costo'] * $ubi_producto['ubiprod_sobrante'],2,".",","); ?>" disabled>
-                                <!--</div>-->
-                            </td>
-                            <td style="text-align: left;">
-                                <!--<div class="input-group" style="text-align: left;">-->
-                                    <input id="faltante<?= $ubi_producto['ubiprod_id'] ?>" type="number" class="form-control" value="<?= number_format($ubi_producto['producto_costo'] * $ubi_producto['ubiprod_faltante'],2,".",","); ?>" disabled>
-                                <!--</div>-->
-                            </td>
-                            <td class="no-print">
-                                <button class="btn btn-danger btn-xs" title="Eliminar producto" onclick="eliminar_producto(<?= $ubi_producto['ubiprod_id'] ?>)" style="<?= ($tipousuario_id == 1) ? '' : (($control_ubicacion['estado_id'] == 26) ? 'display: none' : '') ?>"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
+                        
+                        
                         <?php $i++; } ?>
                             <tr>
                                 <th></th>
@@ -136,17 +122,33 @@
                 <a href="<?= (base_url("control_ubicacion/index/$controli_id")) ?>" class="btn btn-danger">Cancelar</a>
             </div>
         </div>
+            
+            
         <div class="modal fade" id="modal_add_producto" tabindex="-1" role="dialog" aria-labelledby="modal_add_producto" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content"> 
                     <div class="modal-header">
-                        <h3 class="modal-title" style="display:inline;">Productos</h3>
+                        <h4 class="modal-title" style="display:inline;"><b>Productos</b></h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">                        
                         <div class="row">
+                                    <div class="col-md-12 no-print">
+                                    
+
+                                        <div class="input-group">
+                                            <span class="input-group-addon" onclick="ocultar_busqueda();"  style="background-color: lightgray;"> 
+                                              Buscar 
+                                            </span>           
+                                            <input id="filtrar_modal" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código, serie" onkeypress="validar(event,1)">
+                                            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaresultados(1)" title="Buscar"><span class="fa fa-search" aria-hidden="true"></span></div>
+                                        </div>
+           
+                                        
+                                    </div>
+
                             <div class="col-md-6">
                                 <div class="box-tools">
                                     <select name="categoria_id" class="btn-primary btn-sm btn-block" id="categoria_id" onchange="tablaresultadosproducto()">
@@ -174,15 +176,16 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <table id="table" class="table table-condensed" role="table">
+                                <table id="mitabla" class="table table-condensed" role="table">
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Nombre producto</th>
-                                            <th>Existencia</th>
+                                            <th>PRODUCTO</th>
+                                            <th>EXIST.</th>
+                                            <th>CANT.</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="tabla_productos">
+                                    <tbody id="tabla_productos" class="buscar_modal">
                                         
                                     </tbody>
                                 </table>

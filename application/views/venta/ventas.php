@@ -44,6 +44,7 @@
         });    
 
 function mostrar_ocultar(){
+        
     var x = document.getElementById('tipo_transaccion').value;
     
     if (x=='2'){ //si la transaccion es a credito
@@ -54,10 +55,16 @@ function mostrar_ocultar(){
         document.getElementById('creditooculto').style.display = 'none';}
 
     if (x=='4'){ //si la transaccion es traspaso
-        document.getElementById('div_sucursales').style.display = 'block';
+        
+            document.getElementById('div_sucursales').style.display = 'block';
+            document.getElementById('facturado').checked = false;
+       
         }
     else{
         document.getElementById('div_sucursales').style.display = 'none';}
+    
+    
+
 }
 
 function mostrar_formapago(){
@@ -391,7 +398,7 @@ window.onkeydown = compruebaTecla;
                 $tam = sizeof($docs_identidad);
                foreach ($docs_identidad as $di){?> 
                    
-                        <button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)" title="<?php echo $di['cdi_descripcion']; ?>"><fa class="fa fa-cube"> </fa> <?php echo substr($di['cdi_descripcion'],0,5); ?></button>
+            <button class="btn btn-group <?= ($di['cdi_id']==$cliente[0]['cdi_codigoclasificador'])?"btn-warning":"btn-default"; ?>  btn-xs" id="documento<?php echo $di['cdi_id']; ?>" onclick="seleccionar_documento(<?php echo $di['cdi_id']; ?>)" title="<?php echo $di['cdi_descripcion']; ?>"><fa class="fa fa-cube"> </fa><br> <?php echo substr($di['cdi_descripcion'],0,5); ?><br></button>
                <?php    
                     //if($tam<=2){ ?>
             
@@ -1499,15 +1506,15 @@ window.onkeydown = compruebaTecla;
                                             <?php $mostrar_almacenes = true;
                                                 if($mostrar_almacenes){?>
 
-                                                 <select class="btn btn-default btn-xs" id="select_almacen">
+                                                <select class="btn btn-default btn-xs" id="select_almacen">
                                                     <?php   
                                                         foreach($almacenes as $almacen){ ?>
 
-                                                                <option value="<?php echo $almacen["almacen_descripcion"]; ?>"><?php echo $almacen["almacen_nombre"] ?></option>
+                                                                <option value="<?php echo $almacen["almacen_basedatos"]; ?>"><?php echo $almacen["almacen_nombre"] ?></option>
 
                                                         <?php } ?>
 
-                                                    </select>
+                                                </select>
 
 
                                             <?php } ?>
@@ -2251,6 +2258,8 @@ window.onkeydown = compruebaTecla;
                         
                         <div class="box-body table-responsive">
                             
+       
+                                            
                                         <input type="text" id="modificarprecios_producto" value="nombre producto" class="form-control btn btn-xs btn-default" readonly>
                                         
                                         <div class="col-md-3">
@@ -2278,6 +2287,10 @@ window.onkeydown = compruebaTecla;
                                                     </button>
 						</div>
 					</div>
+                                        
+                                        <div class="col-md-12">
+                                             <input  type="checkbox"  id="actualizarpreciossucursales" name="actualizarpreciossucursales" value="1" checked="true" checked>Actualizar precios de las sucursales 
+                                        </div>
                             
                                         <!--------------------- inicio loader ------------------------->
                                         <div class="col-md-6" id='loaderinventario'  style='display: none;'>
@@ -3181,6 +3194,105 @@ $(document).ready(function() {
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
 <!------------------------------------------------------------------------------->
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL ACTUALIZAR PRODUCTOS ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div hidden>
+    <button type="button" id="boton_guardarventa" class="btn btn-default" data-toggle="modal" data-target="#modalsucursales" >
+      Generar Codigos
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalsucursales" tabindex="-1" role="dialog" aria-labelledby="modalsucursales" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">SUCURSALES: ACTUALIZAR LISTAS DE PRODUCTOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-content" style="font-family: Arial">
+
+                        <div class="box-body">
+                            
+                                        <input class="form-control" type="hidden" value="0" id="miproducto_id" name="miproducto_id" onchange="verificar_producto()" ><!-- producto_id -->
+                                        <div class="col-md-12">
+                                                <div class="form-group">
+                                                   <input id="miproducto_nombre" class="form-control" style="border: none; font-size: 16px; text-align: center; font-weight: bold;">
+                                                </div>
+                                        </div>
+<!--                            <div class="row">
+                                
+                                
+
+                                        
+                                
+                                        <div class="col-md-5">
+                                                <label for="sucursal_objetivo" class="control-label">SUCURSAL OBJETIVO</label>
+                                                <div class="form-group">
+                                                    <select class="form-control" id="sucursal_traspaso" name="sucursal_traspaso">
+                                                            
+                                                        <option value="0">- TODOS -</option>
+                                                    <?php 
+                                                        foreach($almacenes as $almacen){?>
+                                                            
+                                                            <option value="<?php echo $almacen["almacen_id"]; ?>"><?php echo $almacen["almacen_nombre"]; ?></option>
+                                                        
+                                                    <?php } ?>
+                                                        
+
+                                                    </select>
+                                                </div>
+                                        </div>
+
+                                
+                                        <div class="col-md-5">
+                                                <label for="codigo_columnas" class="control-label">OPERACIÓN</label>
+                                                <div class="form-group">
+                                                    <select class="form-control" id="operacion_traspaso">
+                                                        <option value="1">VERIFICAR PRODUCTO</option>
+                                                        <option value="2">REGISTRAR PRODUCTO</option>
+                                                        <option value="3">ACTUALIZAR DATOS DEL PRODUCTO</option>
+                                                        <option value="4">COMPARAR LISTA DE PRODUCTOS</option>
+                                                    </select>
+                                                </div>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                                <label for="codigo_columnas" class="control-label"></label>
+                                                <button type="button" class="btn btn-info"  onclick="remplazar_productos()" id="boton_proceder"><fa class="fa fa-cubes"></fa><br>Actualizar</button>
+                                                
+                                        </div>
+                                
+                            </div>-->
+                            <div class="row col-md-12" id='loader2'  style='display:none; text-align: center'>
+                               <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                           </div>
+                            <div id="tabla_resultadossuc">
+                            </div>
+             
+                           
+                        </div>
+
+                        <div class="modal-footer" style="text-align: center">
+                            <button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+            
+		</div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
 
 
 

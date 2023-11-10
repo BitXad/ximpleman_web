@@ -159,54 +159,107 @@ class Proveedor extends CI_Controller{
     function rapido()
     {   
         $data['sistema'] = $this->sistema;
-        if($this->acceso(4)){
-         $this->load->library('form_validation');
-        $this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
         
-        if($this->form_validation->run())     
-        {   
+            if($this->acceso(4)){
 
-          if ($this->input->is_ajax_request()) { 
-        $compra_id = $this->input->post('compra_id');
+                $this->load->library('form_validation');
+                   $this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
+
+            if($this->form_validation->run())     
+            {   
+
+              if ($this->input->is_ajax_request()) { 
+                    $compra_id = $this->input->post('compra_id');
+
+                    $this->load->model('Compra_model');
+                    $estado= 1;
+
+
+                        $params = array(
+                            'estado_id' => $estado,
+                            'proveedor_codigo' => $this->input->post('proveedor_codigo'),
+                            'proveedor_nombre' => $this->input->post('proveedor_nombre'),
+                            'proveedor_foto' => $this->input->post('proveedor_foto'),
+                            'proveedor_contacto' => $this->input->post('proveedor_contacto'),
+                            'proveedor_direccion' => $this->input->post('proveedor_direccion'),
+                            'proveedor_telefono2' => $this->input->post('proveedor_telefono2'),
+                            'proveedor_telefono' => $this->input->post('proveedor_telefono'),
+                            'proveedor_email' => $this->input->post('proveedor_email'),
+                            'proveedor_nit' => $this->input->post('proveedor_nit'),
+                            'proveedor_razon' => $this->input->post('proveedor_razon'),
+                            'proveedor_autorizacion' => $this->input->post('proveedor_autorizacion'),
+                        );
+
+
+                       $proveedor_id = $this->Proveedor_model->add_proveedor($params);
+
+               $this->Compra_model->cambiar_proveedor($compra_id,$proveedor_id);
+                    $datos =  $this->Compra_model->get_compra_proveedor($compra_id);
+                    if(isset($datos)){
+                                    echo json_encode($datos);
+                                }else echo json_encode(null);
+            }
+            else
+            {                 
+                        show_404();
+            }
+            }else{
+                echo json_encode(null);
+            }
+
+        }
+    }
+    function registro_rapido()
+    {   
+        $data['sistema'] = $this->sistema;
         
-        $this->load->model('Compra_model');
-        $estado= 1;
-  
-           
-            $params = array(
-                'estado_id' => $estado,
-                'proveedor_codigo' => $this->input->post('proveedor_codigo'),
-                'proveedor_nombre' => $this->input->post('proveedor_nombre'),
-                'proveedor_foto' => $this->input->post('proveedor_foto'),
-                'proveedor_contacto' => $this->input->post('proveedor_contacto'),
-                'proveedor_direccion' => $this->input->post('proveedor_direccion'),
-                'proveedor_telefono2' => $this->input->post('proveedor_telefono2'),
-                'proveedor_telefono' => $this->input->post('proveedor_telefono'),
-                'proveedor_email' => $this->input->post('proveedor_email'),
-                'proveedor_nit' => $this->input->post('proveedor_nit'),
-                'proveedor_razon' => $this->input->post('proveedor_razon'),
-                'proveedor_autorizacion' => $this->input->post('proveedor_autorizacion'),
-            );
+           // if($this->acceso(4)){
 
-             
-           $proveedor_id = $this->Proveedor_model->add_proveedor($params);
-          
-   $this->Compra_model->cambiar_proveedor($compra_id,$proveedor_id);
-        $datos =  $this->Compra_model->get_compra_proveedor($compra_id);
-        if(isset($datos)){
-                        echo json_encode($datos);
-                    }else echo json_encode(null);
-    }
-        else
-        {                 
-                    show_404();
-        }
-        }else{
-            echo json_encode(null);
-        }
+                $this->load->library('form_validation');
+                   $this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
 
+    
+
+              if ($this->input->is_ajax_request()){
+                  
+                    $compra_id = $this->input->post('compra_id');
+
+                    $this->load->model('Compra_model');
+                    $estado= 1;
+
+
+                        $params = array(
+                            'estado_id' => $estado,
+                            'proveedor_codigo' => $this->input->post('proveedor_codigo'),
+                            'proveedor_nombre' => $this->input->post('proveedor_nombre'),
+                            'proveedor_foto' => $this->input->post('proveedor_foto'),
+                            'proveedor_contacto' => $this->input->post('proveedor_contacto'),
+                            'proveedor_direccion' => $this->input->post('proveedor_direccion'),
+                            'proveedor_telefono2' => $this->input->post('proveedor_telefono2'),
+                            'proveedor_telefono' => $this->input->post('proveedor_telefono'),
+                            'proveedor_email' => $this->input->post('proveedor_email'),
+                            'proveedor_nit' => $this->input->post('proveedor_nit'),
+                            'proveedor_razon' => $this->input->post('proveedor_razon'),
+                            'proveedor_autorizacion' => $this->input->post('proveedor_autorizacion'),
+                        );
+
+
+                       $proveedor_id = $this->Proveedor_model->add_proveedor($params);
+
+               //$this->Compra_model->cambiar_proveedor($compra_id,$proveedor_id);
+                    $datos =  $this->Compra_model->get_compra_proveedor($compra_id);
+                    //if(isset($datos)){
+                                    echo json_encode($datos);
+                               //}else echo json_encode(null);
+            }
+            else
+            {                 
+                        show_404();
+            }
+    
+
+        //}
     }
-}
 
 
     function cambiarproveedor()

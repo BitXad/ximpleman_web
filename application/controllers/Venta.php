@@ -211,8 +211,10 @@ class Venta extends CI_Controller{
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
-        $data['mesas'] = $this->Mesa_model->get_all_mesa();
-        $data['usuario_id'] = $usuario_id;
+        
+        $data['mesas'] = $this->Mesa_model->get_all_mesa(); //modulo restaurantes
+        
+        $data['usuario_id'] = $usuario_id;        
         $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
         $data['docs_identidad'] = $this->Sincronizacion_model->getall_docs_ident();
         $data['tipousuario_id'] = $tipousuario_id;
@@ -244,12 +246,15 @@ class Venta extends CI_Controller{
                     //echo $sql;
                     $data['cufd'] = $this->Venta_model->consultar($sql);
 
-                    $sql = "SELECT  i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
+                    
+                    $sql = "SELECT i.producto_id, i.`producto_nombre`, i.`producto_codigo`, i.`producto_precio`, i.producto_codigosin, i.producto_codigounidadsin
                             FROM
                               inventario i
                             WHERE
                               i.producto_codigosin = 0 or  i.producto_codigosin is null or
-                              i.producto_codigounidadsin = 0 or i.producto_codigosin is null";
+                              i.producto_codigounidadsin = 0 or i.producto_codigosin is null
+                            LIMIT 10";
+                    
                     $data['productos_homologados'] = $this->Venta_model->consultar($sql);
                     
                     //Si la vigencia es menor o igual a 3 horas,atualizar el CUFD
@@ -1386,8 +1391,22 @@ class Venta extends CI_Controller{
                         $es_valido = $valXSD->validar($directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml",$directorio_esquema.$xsd);
 
                         if(!$es_valido){
-
-                                print "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
+                                //echo "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
+                                $error = "ERROR: ".$valXSD->mostrarError()." ARCHIVO: ".$directorio_factura.$nombre_archivo.$factura[0]['factura_id'].".xml  XSD: ".$directorio_esquema.$xsd;
+                                $error = str_replace("'", "", $error);
+                                
+                                $res = array("mensajesList" => json_encode($error));
+             
+                                
+                                $params = array(
+                                    'factura_transaccion'    => 0,
+                                    'factura_mensajeslist' => $error, //$valXSD->mostrarError(),
+                                    'factura_enviada' => false,//Factura enviada a impuestos, por defecto en false(No fue enviada)
+                                );
+                                    
+                                $this->Factura_model->update_factura($factura_id, $params);
+                                
+                                echo json_encode($res);
                                 
                         }else{
                             
@@ -1522,7 +1541,7 @@ class Venta extends CI_Controller{
                                     $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
                                     $this->Venta_model->ejecutar($sql);
                                 }
-                                $res = array("mensajesList" => "No Enviado por  estar en offline");
+                                $res = array("mensajesList" => "FACTURA EMITIDA FUERA DE LINEA...!!");
                                     echo json_encode($res);
                             }
                             
@@ -5205,6 +5224,38 @@ function anular_venta($venta_id){
         }              
     }
     
+    function actualizar_precios_sucursales($productos){
+        
+
+        if(sizeof($productos)>0){
+                
+            //0. Obtenermos las sucursales menos la actual
+            $almacenes = $this->Inventario_model->get_almacenes();
+            
+            if(sizeof($almacenes)){
+            
+                    //1. Cargamos los productos
+                    foreach($productos as $p){
+
+                        $producto_id = $p["producto_id"];
+                        $params = array(
+                            'producto_costo' => $p["producto_costo"],
+                            'producto_precio' => $p["producto_precio"],
+                        );
+                        
+                        //2 Recorremos los almacenes y actualizar los productos                
+                        foreach ($almacenes as $almacen){
+                            $this->Inventario_model->actualizar_en_sucursal($almacen["almacen_basedatos"],$producto_id,$params);
+                        }
+
+                    }
+            }
+ 
+        }
+        
+    }
+    
+    
     function modificar_precios()
     {
         if ($this->input->is_ajax_request()) {
@@ -5212,11 +5263,7 @@ function anular_venta($venta_id){
             $producto_id = $this->input->post('producto_id');
             $producto_costo = $this->input->post('producto_costo');
             $producto_precio = $this->input->post('producto_precio');
-            
-
-//            $sql = "update producto set producto_costo = ".$producto_costo.", producto_precio = ".$producto_precio.
-//                    " where producto_id = ".$producto_id;
-//            $this->Venta_model->ejecutar($sql);
+            $actualizarpreciossucursales = $this->input->post('actualizarpreciossucursales');
             
             $sql = "update producto set producto_costo = ".$producto_costo.", producto_precio = ".$producto_precio.
                     " where producto_id = ".$producto_id;
@@ -5225,6 +5272,23 @@ function anular_venta($venta_id){
             $sql = "update inventario set producto_costo = ".$producto_costo.", producto_precio = ".$producto_precio.
                     " where producto_id = ".$producto_id;
             $this->Venta_model->ejecutar($sql);
+            
+            //********************** ACTUALIZAR EN SUCURSALES *********
+            
+            if($actualizarpreciossucursales){
+                
+                $params[0] = array(
+                    'producto_id' => $producto_id,
+                    'producto_costo' => $producto_costo,
+                    'producto_precio' => $producto_precio,
+                );
+                
+                $this->actualizar_precios_sucursales($params);
+                
+            }
+            
+            //*********************************************************
+            
             
             echo json_encode("true");
             
@@ -8615,5 +8679,26 @@ function anular_venta($venta_id){
         			       
     }             
     
+    
+    /*
+    * buscar productos desde ventas
+    */
+    function buscarproductosinv(){
+
+        if ($this->input->is_ajax_request()) {
+
+            $parametro = $this->input->post('parametro');   
+
+            if ($parametro!=""){
+
+                $sql = "select * ";
+                $datos = $this->Venta_model->consultar($parametro);            
+                echo json_encode($datos);
+
+            }
+        }
+
+
+    }
     
 }

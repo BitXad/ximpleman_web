@@ -105,7 +105,7 @@ function solicitudCufd(punto_venta=0){
                         almacenar_cufd((registros['RespuestaCufd']),punto_venta);
                     }
                     else{
-                        alert("Algo fallo...!!");
+                        alert(JSON.stringify(registros));
                     }
                     // document.getElementById('loader_cufd').style.display = 'none';
                     //alert("hola");
@@ -218,7 +218,7 @@ function formato_numerico(numero){
      
     $("#boton_buscar").click();
     
-    var caja_apertura = Number(document.getElementById('caja_apertura').value);
+    var caja_apertura = 0; //Number(document.getElementById('caja_apertura').value); porque ya lo hace desde el reporte de movimiento
     var total_transacciones = Number(document.getElementById('saldo_caja').value);
     var saldo_caja = caja_apertura + total_transacciones;
     
@@ -262,7 +262,7 @@ function formato_numerico(numero){
     $("#buscar_por_fecha").click();
     
     if(saldo_caja == caja_cierre) $("#caja_estado").val("IGUALADA");
-    if(saldo_caja > caja_cierre) $("#caja_estado").val("FALTANTE Bs "+(saldo_caja-caja_cierre));
+    if(saldo_caja > caja_cierre) $("#caja_estado").val("FALTANTE Bs "+(Number(saldo_caja-caja_cierre).toFixed(2)));
     if(saldo_caja < caja_cierre)  $("#caja_estado").val("INCONSISTENCIA");
     
    // alert(saldo_caja+" - "+caja_cierre);

@@ -1101,6 +1101,7 @@ function buscar_por_fecha()
    var fecha2 = "Hasta: "+moment(fecha_hasta).format('DD/MM/YYYY');
    var tipotrans = $('select[name="tipo_transa"] option:selected').text();
    var tipo = "Tipo: "+tipotrans;
+   
     if (tipotrans_id==0) {
          filtro = " and date(compra_fecha) >= '"+fecha_desde+"'  and  date(compra_fecha) <='"+fecha_hasta+"' ";
          $("#busquedaavanzada").html(fecha1+" "+fecha2);
@@ -1113,6 +1114,7 @@ function buscar_por_fecha()
 
     
 }
+
 function buscar_reporte_fecha()
 {
     // var base_url    = document.getElementById('base_url').value;
@@ -1390,9 +1392,26 @@ function fechadecompra(filtro)
                         html += "<td style='text-align: center'>"+(registros[i]['banco_nombre'] == null ? '':registros[i]['banco_nombre'])+"</td>"
                         html += "<td  align='center'>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         
-                        html += "<td  align='center' style='background: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"<br>";
+                        //alert(JSON.stringify(registros[i]));
+                        if (registros[i]["elestado"]!=36){
+                            html += "<td  align='center' style='background: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"<br>";
+                        }
+                        else{
+                        
+                          
+                                  html += "<td  align='center' style='background: #"+registros[i]["estado_color"]+"'>";
+                                    html += "<button type='button' id='boton_activarcompra' class='btn btn-xs btn-warning' data-toggle='modal' data-target='#modalactivarcompra' onclick='cargar_datos_pedido("+registros[i]['compra_id']+")'>";
+                                        html += "<fa class='fa fa-clock-o'> </fa>";
+                                        html += registros[i]['estado_descripcion'];
+                                    html += "</button><br>";
+                        
+                        }
+                        
                         if (Number(registros[i]["compra_placamovil"])==1) {  
                         html += "<span class='btn-danger btn-xs'>NO FINALIZADO</span>";  }  
+                    
+                        html += "</td>";
+                    
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td><td class='no-print'>";
                         if (Number(registros[i]["compra_placamovil"])==1) {
                         //html += "<a href='#' data-toggle='modal' data-target='#cambi"+registros[i]["compra_id"]+"' class='btn btn-info btn-xs' title='Modificar Compra'><i class='fa fa-pencil '></i></a>";
@@ -2088,8 +2107,192 @@ function confirmar_traspaso(){
             success:function(respuesta){
                 
                 alert("Traspaso realizado con exito..!!");
+                location.reload();
                 //cambiarproveedores(compra_id,proveedor_id);
             }        
     });
     
 } 
+
+function actualizar_inventario()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario/actualizar_inventario/";
+    
+    document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){     
+            alert('El inventario se actualizó exitosamente...! ');
+            //redirect('inventario/index');
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            //tabla_inventario();
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+    });   
+      
+}
+
+function restablecer_backup(bitacora_codigo, compra_id)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"compra/restablecer_backup/";
+    
+    
+    var r = confirm("ADVERTENCIA: Esta operación afectara de forma permanente a la compra seleccionada. \n ¿Desea Continuar?");
+    
+    
+    if (r == true) {
+    
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{bitacora_codigo:bitacora_codigo, compra_id:compra_id},
+                success:function(respuesta){    
+
+                    res = JSON.parse(respuesta);
+
+                    alert(JSON.stringify(res));
+
+                    cargar_datosbackup(compra_id);
+                    //redirect('inventario/index');
+                    //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+                    //tabla_inventario();
+
+                },
+                complete: function (jqXHR, textStatus) {
+                    //document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader 
+                    //tabla_inventario();
+                }
+            });   
+
+    }
+}
+
+function cargar_datosbackup(compra_id){
+   
+    document.getElementById("micompra_id").value = compra_id;   
+    //alert("llega hasta aqui");
+    
+    var base_url = document.getElementById('base_url').value;
+    var decimales = document.getElementById('decimales').value;
+    var controlador = base_url+"compra/verificar_detalle/";
+    
+   // document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{compra_id:compra_id},
+        success:function(respuesta){     
+            
+            var resultado = JSON.parse(respuesta);
+            var tam1 = resultado["detalle_compra"].length;
+            var res1 = resultado["detalle_compra"];
+                    
+            
+            //alert(resultado["detalle_compra"].length);
+            
+            
+            var estilo =  "style='padding: 3px;'";
+            var html = "";
+            
+            html += "<table id='mitabla'>";
+            html += "<tr>";
+            
+                html += "<th "+estilo+">#</th>";
+                html += "<th "+estilo+">PRODUCTO</th>";
+                html += "<th "+estilo+">CODIGO</th>";
+                html += "<th "+estilo+">CANT.</th>";
+                html += "<th "+estilo+">COSTO</th>";
+                html += "<th "+estilo+">TOTAL</th>";
+
+            html += "</tr>";            
+            
+            for(var i = 0; i < res1.length; i++){
+               
+                html += "<tr>";
+
+                    html += "<td "+estilo+">"+(i+1)+"</td>";
+                    html += "<td "+estilo+">"+res1[i]["producto_nombre"]+"</td>";
+                    html += "<td "+estilo+">"+res1[i]["producto_codigobarra"]+"</td>";
+                    html += "<td "+estilo+">"+Number(res1[i]["detallecomp_cantidad"]).toFixed(decimales)+"</td>";
+                    html += "<td "+estilo+">"+Number(res1[i]["detallecomp_costo"]).toFixed(decimales)+"</td>";
+                    html += "<td "+estilo+">"+Number(res1[i]["detallecomp_total"]).toFixed(decimales)+"</td>";
+
+                html += "</tr>";
+               
+            }              
+
+            html += "</table>";
+            
+            $("#items_registrados").html(html);
+            
+            
+            var res2 = resultado["detalle_compra_bitacora"];
+            html = "";
+            html += "<table id='mitabla'>";
+            html += "<tr>";
+            
+                html += "<th "+estilo+">#</th>";
+                html += "<th "+estilo+">FECHA</th>";
+                html += "<th "+estilo+">CODIGO</th>";
+                html += "<th "+estilo+">ITEMS</th>";
+                html += "<th "+estilo+"></th>";
+//                html += "<th "+estilo+">COSTO</th>";
+//                html += "<th "+estilo+">TOTAL</th>";
+//                html += "<th "+estilo+">CODIGO</th>";
+
+            html += "</tr>";            
+            
+            for(var i = 0; i < res2.length; i++){
+               
+                html += "<tr>";
+
+                    html += "<td "+estilo+">"+(i+1)+"</td>";
+                    html += "<td "+estilo+">"+res2[i]["fecha_bitacora"]+"</td>";
+                    html += "<td "+estilo+">"+res2[i]["codigo_bitacora"]+"</td>";
+                    html += "<td "+estilo+">"+Number(res2[i]["items"]).toFixed(decimales)+"</td>";
+                    html += "<td "+estilo+">";
+                        html += "<button class='btn btn-xs btn-info' onclick='restablecer_backup("+JSON.stringify(res2[i]["codigo_bitacora"])+","+res2[i]["compra_id"]+")'><fa class='fa fa-chain'></fa>Restablecer</button>";
+                    
+                    html += "</td>";
+                    
+//                    html += "<td "+estilo+">"+Number(res2[i]["detallecomp_costo"]).toFixed(decimales)+"</td>";
+//                    html += "<td "+estilo+">"+Number(res2[i]["detallecomp_total"]).toFixed(decimales)+"</td>";
+//                    html += "<td "+estilo+">"+res2[i]["codigo_bitacora"]+"</td>";
+
+                html += "</tr>";
+               
+            }              
+
+            html += "</table>";
+            
+            $("#tabla_respaldos").html(html);
+            
+            
+            
+            
+            //$("#tabla_respaldos").html(html);
+            
+            
+            //redirect('inventario/index');
+      //      document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            //tabla_inventario();
+            
+            
+        },
+        complete: function (jqXHR, textStatus) {
+           // document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+
+        }
+    });   
+    
+    $("#boton_modalbackup").click();
+    
+    
+    
+}

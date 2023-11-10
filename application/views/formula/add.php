@@ -3,6 +3,17 @@
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
 <!--sa<script src="<?php echo base_url('resources/js/zelect.js'); ?>"></script>-->
 
+
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    
+     Styles for datatables 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+     JQuery include 
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.js"></script>
+     Javascrips for datatables 
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> -->
+
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -240,33 +251,33 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio" hidden>
 <input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id" hidden>
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
-<input type="text" id="parametro_modoventas" value="<?php echo $parametro[0]['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
-<input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
-<input type="text" id="parametro_altoboton" value="<?php echo $parametro[0]['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
-<input type="text" id="parametro_colorboton" value="<?php echo $parametro[0]['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
-<input type="text" id="parametro_altoimagen" value="<?php echo $parametro[0]['parametro_altoimagen']; ?>" name="parametro_altoimagen"  hidden>
-<input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
-<input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
-<input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
-<input type="text" id="parametro_imprimircomanda" value="<?php echo $parametro[0]['parametro_imprimircomanda']; ?>" name="parametro_imprimircomanda"  hidden>
-<input type="text" id="parametro_diasvenc" value="<?php echo $parametro[0]['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
-<input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro[0]['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>
-<input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
-<input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
-<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
-<input type="text" id="parametro_decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
+<input type="text" id="parametro_modoventas" value="<?php echo $parametro['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
+<input type="text" id="parametro_anchoboton" value="<?php echo $parametro['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
+<input type="text" id="parametro_altoboton" value="<?php echo $parametro['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
+<input type="text" id="parametro_colorboton" value="<?php echo $parametro['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
+<input type="text" id="parametro_altoimagen" value="<?php echo $parametro['parametro_altoimagen']; ?>" name="parametro_altoimagen"  hidden>
+<input type="text" id="parametro_anchoimagen" value="<?php echo $parametro['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
+<input type="text" id="parametro_formaimagen" value="<?php echo $parametro['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
+<input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+<input type="text" id="parametro_imprimircomanda" value="<?php echo $parametro['parametro_imprimircomanda']; ?>" name="parametro_imprimircomanda"  hidden>
+<input type="text" id="parametro_diasvenc" value="<?php echo $parametro['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
+<input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>
+<input type="text" id="parametro_datosboton" value="<?php echo $parametro['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="parametro_moneda_id" value="<?php echo $parametro['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
+<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
+<input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
-<input type="text" id="parametro_tamanioletras" value="<?php echo $parametro[0]['parametro_tamanioletras']; ?>" name="parametro_tamanioletras"  hidden>
-<input type="text" id="parametro_sininventario" value="<?php echo $parametro[0]['parametro_sininventario']; ?>" name="parametro_sininventario"  hidden>
-<input type="text" id="parametro_datosproducto" value="<?php echo $parametro[0]['parametro_datosproducto']; ?>" name="parametro_datosproducto"  hidden>
-<input type="text" id="parametro_cantidadsimple" value="<?php echo $parametro[0]['parametro_cantidadsimple']; ?>" name="parametro_cantidadsimple"  hidden>
-<input type="text" id="parametro_botonesproducto" value="<?php echo $parametro[0]['parametro_botonesproducto']; ?>" name="parametro_botonesproducto"  hidden>
-<input type="text" id="parametro_mostrarmoneda" value="<?php echo $parametro[0]['parametro_mostrarmoneda']; ?>" name="parametro_mostrarmoneda"  hidden>
-<input type="text" id="parametro_tablasencilla" value="<?php echo $parametro[0]['parametro_tablasencilla']; ?>" name="parametro_tablasencilla"  hidden>
-<input type="text" id="parametro_verificarconexion" value="<?php echo $parametro[0]['parametro_verificarconexion']; ?>" name="parametro_verificarconexion"  hidden>
-<input type="text" id="parametro_comprobante" value="<?php echo $parametro[0]['parametro_comprobante']; ?>" name="parametro_comprobante"  hidden>
-<input type="text" id="parametro_tamanioletrasboton" value="<?php echo $parametro[0]['parametro_tamanioletrasboton']; ?>" name="parametro_tamanioletrasboton"  hidden>
+<input type="text" id="parametro_tamanioletras" value="<?php echo $parametro['parametro_tamanioletras']; ?>" name="parametro_tamanioletras"  hidden>
+<input type="text" id="parametro_sininventario" value="<?php echo $parametro['parametro_sininventario']; ?>" name="parametro_sininventario"  hidden>
+<input type="text" id="parametro_datosproducto" value="<?php echo $parametro['parametro_datosproducto']; ?>" name="parametro_datosproducto"  hidden>
+<input type="text" id="parametro_cantidadsimple" value="<?php echo $parametro['parametro_cantidadsimple']; ?>" name="parametro_cantidadsimple"  hidden>
+<input type="text" id="parametro_botonesproducto" value="<?php echo $parametro['parametro_botonesproducto']; ?>" name="parametro_botonesproducto"  hidden>
+<input type="text" id="parametro_mostrarmoneda" value="<?php echo $parametro['parametro_mostrarmoneda']; ?>" name="parametro_mostrarmoneda"  hidden>
+<input type="text" id="parametro_tablasencilla" value="<?php echo $parametro['parametro_tablasencilla']; ?>" name="parametro_tablasencilla"  hidden>
+<input type="text" id="parametro_verificarconexion" value="<?php echo $parametro['parametro_verificarconexion']; ?>" name="parametro_verificarconexion"  hidden>
+<input type="text" id="parametro_comprobante" value="<?php echo $parametro['parametro_comprobante']; ?>" name="parametro_comprobante"  hidden>
+<input type="text" id="parametro_tamanioletrasboton" value="<?php echo $parametro['parametro_tamanioletrasboton']; ?>" name="parametro_tamanioletrasboton"  hidden>
 <input type="text" id="factura_idcreditodebito" value="0" name="factura_idcreditodebito"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
@@ -282,11 +293,12 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 
 
-<input type="text" id="parametro_imprimirfactura" value="<?php echo $parametro[0]['parametro_imprimirfactura']; ?>" name="parametro_imprimirfactura"  hidden>
-<input type="text" id="parametro_factura" value="<?php echo $parametro[0]['parametro_factura']; ?>" name="parametro_factura"  hidden>
+<input type="text" id="parametro_imprimirfactura" value="<?php echo $parametro['parametro_imprimirfactura']; ?>" name="parametro_imprimirfactura"  hidden>
+<input type="text" id="parametro_factura" value="<?php echo $parametro['parametro_factura']; ?>" name="parametro_factura"  hidden>
 <input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" hidden>
 <input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector" hidden>
 
+<?php $decimales = $parametro['parametro_decimales']; ?>
 <!--------------------- FIN CABECERA -------------------------->
 
 
@@ -365,7 +377,7 @@ window.onkeydown = compruebaTecla;
                                                     <div class="form-group">
     							<input type="text" name="formula_preciounidad" value="<?php echo $this->input->post('formula_preciounidad'); ?>" class="form-control" id="formula_preciounidad" />
                                                             <?php 
-                                                            if ($parametro[0]["parametro_agruparitems"] == 1 )
+                                                            if ($parametro["parametro_agruparitems"] == 1 )
                                                                     { $agrupar = "checked='true'";}
                                                               else {$agrupar = " ";}
                                                             ?>
@@ -434,7 +446,7 @@ window.onkeydown = compruebaTecla;
                 <option value="0" >- CATEGORIAS -</option>
         <?php 
             foreach($categoria_producto as $categ){ 
-                $selected = ($categ['categoria_id'] == $parametro[0]['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+                $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
                 ?>
                 
                 <option value="<?php echo $categ['categoria_id']; ?>" <?php echo $selected; ?>><?php echo $categ['categoria_nombre']; ?></option>
@@ -455,7 +467,7 @@ window.onkeydown = compruebaTecla;
        
 <!-------------------------- BOTON AGRUPAR --------------------------------------->    
         <?php 
-//            if ($parametro[0]["parametro_agruparitems"] == 1 )
+//            if ($parametro["parametro_agruparitems"] == 1 )
 //                    { $agrupar = "checked='true'";}
 //              else {$agrupar = " ";}
 //        ?>
@@ -567,7 +579,7 @@ window.onkeydown = compruebaTecla;
             <span class='btn btn-facebook btn-xs' style="padding: 0;"> 
                 
                         <?php 
-                            if ($parametro[0]["parametro_agruparitems"] == 1 )
+                            if ($parametro["parametro_agruparitems"] == 1 )
                             { $agrupar = "checked='true'";}
                             else {$agrupar = " ";}
                         ?>
@@ -586,7 +598,7 @@ window.onkeydown = compruebaTecla;
             <div class="col-md-4" style="background-color: black; line-height: 15px;">
                 <center>
                     
-                <font size="3" style="color:white;" face="Arial"><b>Total Final <?php echo $parametro[0]['moneda_descripcion']; ?></b></font>
+                <font size="3" style="color:white;" face="Arial"><b>Total Final <?php echo $parametro['moneda_descripcion']; ?></b></font>
                 
                 <font size="6" style="color:white;" face="Arial"><b>
                     <input type="text" id="venta_subtotal" name="venta_subtotal" values="0.00" style="width: 180px; border-color: black; border-width: 0; background-color: black; text-align: center; padding:0;" readonly> </b>                
@@ -641,7 +653,7 @@ window.onkeydown = compruebaTecla;
         <!----------------------------------- fin Botones ---------------------------------->
         <font face="Arial" size="1">
                    
-            <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro[0]["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro[0]["moneda_tc"]; ?></b></span>
+        <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro["moneda_descripcion"]; ?> / T.C. Bs: <?php echo number_format($parametro["moneda_tc"],$decimales,".",","); ?></b></span>
         
         <b>            
         <!--<br>TECLAS DE ACCESO DIRECTO <br>-->
@@ -740,7 +752,7 @@ window.onkeydown = compruebaTecla;
                                     
                                     <?php 
                                             $ocultar = "none";
-                                        if ($parametro[0]["parametro_modulorestaurante"]==1){    
+                                        if ($parametro["parametro_modulorestaurante"]==1){    
                                             $ocultar = "block";
                                             
                                     } ?>   
@@ -809,7 +821,7 @@ window.onkeydown = compruebaTecla;
             <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
                 
                 <tr>
-                        <td  style="padding: 0" >Total <?php echo $parametro[0]['moneda_descripcion']; ?></td>
+                        <td  style="padding: 0" >Total <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right">
                             <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
@@ -817,7 +829,7 @@ window.onkeydown = compruebaTecla;
                     
                 </tr>                
                 <tr style="padding: 0">
-                        <td style="padding: 0">Descuento <?php echo $parametro[0]['moneda_descripcion']; ?></td>
+                        <td style="padding: 0">Descuento <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
                             <input class="btn btn-foursquarexs" style="padding: 0" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
@@ -826,7 +838,7 @@ window.onkeydown = compruebaTecla;
 
                         
                 <tr style="padding: 0">
-                        <td align="right" style="padding: 0"><b>Sub Total <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
+                        <td align="right" style="padding: 0"><b>Sub Total <?php echo $parametro['moneda_descripcion']; ?></b></td>
                         <td align="right" style="padding: 0">                
                             
                             <input class="btn btn-foursquarexs"  style="padding: 0" id="venta_subtotal" size="<?php echo $ancho_boton; ?>"  name="venta_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
@@ -835,11 +847,11 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0">Descuento <?php echo $parametro[0]['moneda_descripcion']; ?></td>
+                        <td style="padding: 0">Descuento <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
                             <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)" readonly="true">
                             <select id="tipo_descuento" onchange="calculardesc()">
-                                <option value="1"><?php echo $parametro[0]['moneda_descripcion']; ?></option>
+                                <option value="1"><?php echo $parametro['moneda_descripcion']; ?></option>
                                 <option value="2">%</option>
                                 
                             </select>
@@ -847,7 +859,7 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0"><b>Total Final <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
+                        <td style="padding: 0"><b>Total Final <?php echo $parametro['moneda_descripcion']; ?></b></td>
                         <td align="right" style="padding: 0">
 
                               <input class="btn btn-foursquarexs" style="font-size: 20px; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">
@@ -856,14 +868,14 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0">Efectivo <?php echo $parametro[0]['moneda_descripcion']; ?></td>
+                        <td style="padding: 0">Efectivo <?php echo $parametro['moneda_descripcion']; ?></td>
                         <td align="right" style="padding: 0">
                             <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
                         </td>
                 </tr>
                 
                 <tr style="padding: 0">                      
-                    <td style="padding: 0"><b>Cambio <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
+                    <td style="padding: 0"><b>Cambio <?php echo $parametro['moneda_descripcion']; ?></b></td>
                         <td align="right" style="padding: 0;">
                             <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>
@@ -932,7 +944,7 @@ window.onkeydown = compruebaTecla;
                 </div>
 
                 <div class="col-md-4">
-                    <h5 class="modal-title" id="myModalLabel"><b>CUOTA INIC. <?php echo $parametro[0]['moneda_descripcion']; ?></b></h5>
+                    <h5 class="modal-title" id="myModalLabel"><b>CUOTA INIC. <?php echo $parametro['moneda_descripcion']; ?></b></h5>
                     <input type="text" class="form-control  input-sm"  value="0.00"name="cuota_inicial" id="cuota_inicial" >
                 </div>
 
@@ -1029,7 +1041,7 @@ window.onkeydown = compruebaTecla;
 	</div>
 </div>
             
-    <?php if($parametro[0]['parametro_mostrarcategoria']>0){ ?>
+    <?php if($parametro['parametro_mostrarcategoria']>0){ ?>
             <script type="text/javascript">   
                tablaresultados(2);
             </script>
@@ -1389,7 +1401,7 @@ window.onkeydown = compruebaTecla;
                                                         
                                                     </small>
                                                     <b>
-                                                        <?php echo $parametro[0]['moneda_descripcion']." ".number_format($prom["promocion_preciototal"],2,".",","); ?>
+                                                        <?php echo $parametro['moneda_descripcion']." ".number_format($prom["promocion_preciototal"],2,".",","); ?>
                                                     </b>
                                                 </button>
 

@@ -52,7 +52,7 @@ class Sucursales extends CI_Controller{
         $parametros = $this->Parametro_model->get_parametros();
         $data['parametro'] = $parametros[0];
         
-        $data['almacenes'] = $this->Inventario_model->get_almacenes();
+        $data['almacenes'] = $this->Inventario_model->get_all_almacenes();
         
         
         if ($producto_codigo==''){
@@ -81,6 +81,40 @@ class Sucursales extends CI_Controller{
             $data['_view'] = 'sucursales/index';
             $this->load->view('layouts/main',$data);
 //            
+        }
+	
+        //**************** fin contenido ***************
+
+        }
+			
+    }
+    
+    /*
+     * Productos de sucursales
+     */
+    function productos(){
+
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(24)){
+            
+            
+        //**************** inicio contenido ***************
+        $producto_codigo = $this->input->post('producto_codigo');
+        $parametros = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $parametros[0];
+        
+        $data['almacenes'] = $this->Inventario_model->get_all_almacenes();
+        
+        
+        if ($producto_codigo==''){
+            
+            $data['rolusuario'] = $this->session_data['rol'];
+            $empresa_id = 1;
+            $data['page_title'] = "Inventario";
+            $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            $data['_view'] = 'sucursales/productos';
+            $this->load->view('layouts/main',$data);
+            
         }
 	
         //**************** fin contenido ***************
@@ -172,15 +206,17 @@ class Sucursales extends CI_Controller{
         $data['sistema'] = $this->sistema;
         if($this->acceso(25)){
         //**************** inicio contenido ***************
-		
-            $parametro = $this->input->post("parametro");
-            if ($parametro=="" || $parametro==null)
-                $resultado = $this->Inventario_model->get_inventario();                
-            else
-                $resultado = $this->Inventario_model->get_inventario_parametro($parametro);
+            if ($this->input->is_ajax_request()){
             
-            echo json_encode($resultado);            
-		
+                $parametro = $this->input->post("parametro");
+                if ($parametro=="" || $parametro==null)
+                    $resultado = $this->Inventario_model->get_inventario();                
+                else
+                    $resultado = $this->Inventario_model->get_inventario_parametro($parametro);
+
+                echo json_encode($resultado);            
+
+            }else{ echo false; }
         //**************** fin contenido ***************
 			}
 			
@@ -192,14 +228,16 @@ class Sucursales extends CI_Controller{
         $data['sistema'] = $this->sistema;
         if($this->acceso(25)){
         //**************** inicio contenido ***************
-        
-            $parametro = $this->input->post("parametro");
-            if ($parametro=="" || $parametro==null)
-                $resultado = $this->Inventario_model->get_inventario_existencia();                
-            else
-                $resultado = $this->Inventario_model->get_inventario_parametro_existencia($parametro);
-            
-            echo json_encode($resultado);            
+            if ($this->input->is_ajax_request()){
+                
+                $parametro = $this->input->post("parametro");
+                if ($parametro=="" || $parametro==null)
+                    $resultado = $this->Inventario_model->get_inventario_existencia();                
+                else
+                    $resultado = $this->Inventario_model->get_inventario_parametro_existencia($parametro);
+
+                echo json_encode($resultado);            
+            }
         
         //**************** fin contenido ***************
             }
@@ -249,8 +287,12 @@ class Sucursales extends CI_Controller{
     }
 
     function generar_excel(){
+        
+        if ($this->input->is_ajax_request()){
+            
             $llamadas = $this->Inventario_model->get_inventario();
             echo json_encode($llamadas); 
+        }
      
     }
     
@@ -260,12 +302,15 @@ class Sucursales extends CI_Controller{
         //Paso 0 - Obtener la lista de sucursales
         $sql = "select * from almacenes where estado_id = 1";
         $almacenes =  $this->Inventario_model->consultar_en_sucursal("default",$sql);
-        //echo "Almacenes: ".sizeof($almacenes);
+        //echo "Almacenes: ".sizeof($almacenes
+        
         if(sizeof($almacenes) > 0){
+
+
             //Paso 1 - Eliminar la tabla inventario_sucursales
             $sql = "delete from inventario_sucursales";
             $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);
-
+            
             //Paso 2 - Cargamos el inventario actual de la sucursal central        
             $sql = "insert into inventario_sucursales(producto_id,suc1) (select producto_id,existencia from inventario)";
             $this->Inventario_model->ejecutar_en_sucursal($almacenes[0]["almacen_basedatos"],$sql);
@@ -307,6 +352,89 @@ class Sucursales extends CI_Controller{
             echo json_encode("no");
         }
 
+    }
+    
+        /*
+     * muestra los productos duplicados en inventario
+     */
+    function actualizar_productos()
+    {
+     
+        $data['sistema'] = $this->sistema;
+        
+        if($this->acceso(28)){
+            
+                //**************** inicio contenido ***************
+
+              //  if($this->input->is_ajax_request()){
+        
+                    $base_datos = $this->input->post("base_datos");
+                    $operacion = $this->input->post("operacion");
+                    
+                    $sql = "select * from producto where producto_id<=100";
+                    $sucproductos =  $this->Inventario_model->consultar_en_sucursal($base_datos,$sql);
+                    
+                    $sql = "select * from producto where producto_id<=100";
+                    $misproductos =  $this->Inventario_model->consultar_en_sucursal("default",$sql);
+                    
+                                
+                    print_r($misproductos);
+                    // Encontrar elementos en $arreglo1 que no están en $arreglo2
+                    $diferencias1 = array_diff(json_encode($sucproductos), json_encode($misproductos));
+//
+//                    // Encontrar elementos en $arreglo2 que no están en $arreglo1
+                    $diferencias2 = array_diff($misproductos, $sucproductos);
+//
+//                    // Combinar las diferencias de ambos arreglos
+                    $diferencias_totales = array_merge($diferencias1, $diferencias2);
+
+                    // Mostrar las diferencias totales
+                    print_r($diferencias2);
+
+                    
+                    
+                //var_dump($sucproductos);
+                
+                    $productos = array(
+                        'sucproductos' => $sucproductos,
+                        'misproductos' => $misproductos,
+                    );
+                    
+
+                    //$resultado = $this->Inventario_model->mostrar_duplicados_inventario();
+                    //var_dump($productos);
+                    
+                   // echo json_encode($productos);      
+
+              //  }
+              //  else echo false;
+
+                //**************** fin contenido ***************
+                
+        }
+
+    }
+
+    function verificar_conexion(){
+        
+        if ($this->input->is_ajax_request()){
+           
+            try{
+                
+                $base_datos = $this->input->post("base");
+                $sql = "select * from empresa";
+                $result =  $this->Inventario_model->consultar_en_sucursal($base_datos,$sql);
+                echo json_encode($result);
+                
+            } catch (Exception $ex) {
+
+                echo json_encode(false);
+                    
+            }
+            
+            
+        }
+        
     }
     
 }

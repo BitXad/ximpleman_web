@@ -36,7 +36,8 @@ function solicitudCufd(punto_venta=0){
                         almacenar_cufd((registros['RespuestaCufd']),punto_venta);
                     }
                     else{
-                        alert("Algo fallo...!!");
+                        alert(JSON.stringify(registros));
+                        //alert("Algo fallo...!!");
                     }
                     // document.getElementById('loader_cufd').style.display = 'none';
                     //alert("hola");
@@ -95,7 +96,7 @@ function solicitudCufds(punto_venta=0, cantidad){
                                 //almacenar_cufd((registros['RespuestaCufd']),punto_venta);
                             }
                             else{
-                                alert("Algo fallo...!!");
+                                alert(JSON.stringify(registros));
                             }
                             // document.getElementById('loader_cufd').style.display = 'none';
                             //alert("hola");
@@ -149,6 +150,7 @@ function almacenar_cufd(datos,punto_venta=0){
                        
                     },
                     error:function(respuesta){
+                        //alert(JSON.stringify(registros));
                         alert("Algo salio mal; por favor verificar sus datos!.");
                     }                
             }); 
@@ -186,7 +188,8 @@ function solicitudCuis(punto_venta = 0){
                     document.getElementById('loader_revocado').style.display = 'none';
                 },
                 error:function(respuesta){
-                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    alert(JSON.stringify(registros));
+                    //("Algo salio mal; por favor verificar sus datos!.");
                     document.getElementById('loader_revocado').style.display = 'none';
                 }                
         }); 
@@ -306,8 +309,10 @@ function solicitudCuisMasivo(){
                     document.getElementById('loader_cuism').style.display = 'none';
                 },
                 error:function(respuesta){
-                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    alert(JSON.stringify(registros));
+                    //alert("Algo salio mal; por favor verificar sus datos!.");
                     document.getElementById('loader_cuism').style.display = 'none';
+                    
                 }
         }); 
     }
@@ -341,7 +346,8 @@ function solicitudCufdMasivo(){
                        almacenar_cufdmasivo((registros['RespuestaCufdMasivo']));
                     }
                     else{
-                        alert("Algo fallo...!!");
+                        alert(JSON.stringify(registros));
+                        //alert("Algo fallo...!!");
                     }
 
                     //alert("hola");
@@ -351,7 +357,7 @@ function solicitudCufdMasivo(){
 
                 },
                 error:function(respuesta){
-                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    alert("Ocurrio un problema al realizar la operación; por favor verificar sus datos!.");
                 }
         }); 
     }
@@ -376,7 +382,7 @@ function almacenar_cufdmasivo(datos){
                 document.getElementById('loader_cufdm').style.display = 'none';
             },
             error:function(respuesta){
-                alert("Algo salio mal; por favor verificar sus datos!.");
+                alert("Ocurrio un problema al realizar la operación, por favor verificar los datos!");
                 document.getElementById('loader_cufdm').style.display = 'none';
             }
     });
@@ -402,7 +408,7 @@ function registroFirmaRevocada(){
                     }
                     else{
                         let mensaje = registros.RespuestaNotificaRevocado.mensajesList.descripcion;
-                        alert("Algo fallo...!! "+mensaje);
+                        alert("Ocurrio un problema al realizar la operación...! "+mensaje);
                     }
                     document.getElementById('loader_revocado').style.display = 'none';
 
@@ -438,12 +444,13 @@ function cierre_OperacionesSistema(){
                         else{
                             let codigo = registros.RespuestaCierreSistemas.mensajesList.codigo;
                             let mensaje = registros.RespuestaCierreSistemas.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operación "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
                 error:function(respuesta){
-                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    //alert("Algo salio mal; por favor verificar sus datos!.");
+                    alert(JSON.stringify(registros));
                     document.getElementById('loader_revocado').style.display = 'none';
                 }                
         }); 
@@ -475,7 +482,7 @@ function cierre_PuntoVenta(punto_venta){
                         else{
                             let codigo = registros.RespuestaCierrePuntoVenta.mensajesList.codigo;
                             let mensaje = registros.RespuestaCierrePuntoVenta.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operación..! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -610,7 +617,8 @@ function consulta_PuntoVenta(){
                     }else{
                         let codigo = registros.RespuestaConsultaPuntoVenta.mensajesList.codigo;
                         let mensaje = registros.RespuestaConsultaPuntoVenta.mensajesList.descripcion;
-                        alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        //alert("Algo fallo...!! "+codigo+" "+mensaje);
+                        alert(JSON.stringify(registros));
                     }
                     document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -645,7 +653,7 @@ function registro_EventoSignificativo(){
                             for (var i = 0; i < n; i++) {
                                 let codigo = mensajelist[i]["codigo"];
                                 let mensaje = mensajelist[i]["descripcion"];
-                                alert("Algo fallo...!! "+codigo+" "+mensaje);
+                                alert("Ocurrio un error al realizar la operacón...! "+codigo+" "+mensaje);
                             }
                             //let codigo = registros.RespuestaListaEventos.mensajesList.codigo;
                             //let mensaje = registros.RespuestaListaEventos.mensajesList.descripcion;
@@ -698,7 +706,7 @@ function registroPuntoVenta(){
                         }else{
                             let codigo = registros.RespuestaRegistroPuntoVenta.mensajesList.codigo;
                             let mensaje = registros.RespuestaRegistroPuntoVenta.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operación...! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -749,12 +757,13 @@ function registro_PuntoVentaComisionista(){
                         }else{
                             let codigo = registros.RespuestaPuntoVentaComisionista.mensajesList.codigo;
                             let mensaje = registros.RespuestaPuntoVentaComisionista.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operación...! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
                 error:function(respuesta){
-                    alert("Algo salio mal; por favor verificar sus datos!.");
+                    //alert("Algo salio mal; por favor verificar sus datos!.");
+                    alert(JSON.stringify(registros));
                     document.getElementById('loader_revocado').style.display = 'none';
                 }                
         }); 
@@ -777,12 +786,13 @@ function verificar_comunicacion_op(){
                         let descripcion = registros.return.mensajesList.descripcion;
                         alert(codigo+" "+descripcion);
                     }else{
-                        alert("Algo fallo...!! ");
+                        alert("Ocurrio un problema al realizar la operación...! ");
                     }
                     document.getElementById('loader_revocado').style.display = 'none';
             },
             error:function(respuesta){
-                alert("Algo salio mal; por favor verificar sus datos!.");
+                alert(JSON.stringify(registros));
+                //alert("Algo salio mal; por favor verificar sus datos!.");
                 document.getElementById('loader_revocado').style.display = 'none';
             }                
     }); 
@@ -803,7 +813,8 @@ function verificar_comunicacionNCD(){
                     if(transaccion == true){
                         alert("Comunicación Exitosa!.");
                     }else{
-                        alert("Algo fallo...!! ");
+                        alert(JSON.stringify(registros));
+                        //alert("Algo fallo...!! ");
                     }
                     document.getElementById('loader_revocado').style.display = 'none';
             },
@@ -850,7 +861,7 @@ function recepcion_documentoAjuste(){
                         }else{
                             let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
                             let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operación...! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -898,7 +909,7 @@ function verificacion_EstadoDocumentoAjuste(){
                         }else{
                             let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
                             let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operacón...! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -946,7 +957,7 @@ function anulacion_DocumentoAjuste(){
                         }else{
                             let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
                             let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operación...! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -977,12 +988,14 @@ function anulacion_compra(){
                         }else{
                             let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
                             let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un prolema al realizar la operación...! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
                 error:function(respuesta){
+                    
                     alert("Algo salio mal; por favor verificar sus datos!.");
+                    
                     document.getElementById('loader_revocado').style.display = 'none';
                 }                
         }); 
@@ -1008,7 +1021,7 @@ function confirmacion_Compras(){
                         }else{
                             let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
                             let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operación...! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -1040,7 +1053,7 @@ function consulta_Compras(){
                         }else{
                             let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
                             let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operación...! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -1072,7 +1085,7 @@ function recepcion_paqueteCompras(){
                         }else{
                             let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
                             let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operación...! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -1104,7 +1117,7 @@ function validacion_recepcionPaqueteCompras(){
                         }else{
                             let codigo = registros.RespuestaServicioFacturacion.mensajesList.codigo;
                             let mensaje = registros.RespuestaServicioFacturacion.mensajesList.descripcion;
-                            alert("Algo fallo...!! "+codigo+" "+mensaje);
+                            alert("Ocurrio un problema al realizar la operación...! "+codigo+" "+mensaje);
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -1134,7 +1147,7 @@ function verificar_comunicacionRecCompras(){
                         if(transaccion == true){
                             alert("Comunicación exitosa!");
                         }else{
-                            alert("Algo fallo...!!");
+                            alert(JSON.stringify(registros));
                         }
                         document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -1292,7 +1305,7 @@ function homologar_categoria(){
                             alert("Categoria homologada con exito...!");
                             $("#boton_cerrar_recepcion").click();
                         }else{
-                            alert("Algo fallo...!!");
+                            alert(JSON.stringify(registros));
                         }
                         //document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -1330,7 +1343,7 @@ function homologar_categoriaunidad(){
                             alert("Categoria homologada con exito...!");
                             $("#boton_cerrar_recepcion").click();
                         }else{
-                            alert("Algo fallo...!!");
+                            alert(JSON.stringify(registros));
                         }
                         //document.getElementById('loader_revocado').style.display = 'none';
                 },
@@ -1362,7 +1375,7 @@ function generar_llaves(){
                             alert("Llaves generadas con éxito...!");
                             
                         }else{
-                            alert("Algo fallo...!!");
+                            alert("Ocurrio un problema al realizar la operación...!"+JSON.stringify(registros));
                         }
                         //document.getElementById('loader_revocado').style.display = 'none';
                 },

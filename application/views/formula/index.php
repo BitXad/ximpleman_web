@@ -85,7 +85,7 @@
                             <td><?php echo $i++; ?></td>
                             <td><?php echo $f['formula_nombre']; ?></td>
                             <td style="text-align: center;"><?php echo $f['formula_unidad']; ?></td>
-                            <td style="text-align: center;"><?php echo $f['formula_cantidad']; ?></td>
+                            <td style="text-align: center;"><?php echo number_format($f['formula_cantidad'],2,".",","); ?></td>
                             <td style="text-align: right;"><?php echo number_format($f['formula_costounidad'],2,".",","); ?></td>
                             <td style="text-align: right;"><?php echo number_format($f['formula_preciounidad'],2,".",","); ?></td>
                             <td><?php echo $f['producto_nombre']; ?></td>

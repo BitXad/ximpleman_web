@@ -44,10 +44,10 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
 <input type="hidden" name="resproducto" id="resproducto" />
-<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
-<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
-<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro[0]['parametro_decimales']; ?>" />
+<input type="hidden" name="decimales" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" />
 <div class="cuerpo">
     <div class="columna_derecha">
         <center> 
@@ -56,7 +56,7 @@
     </div>
     <div class="columna_izquierda">
         <center> 
-            <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
+            <font size="2"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
             <?php echo $empresa[0]['empresa_zona']; ?><br>
             <?php echo $empresa[0]['empresa_direccion']; ?><br>
             <?php echo $empresa[0]['empresa_telefono']; ?>
@@ -64,15 +64,17 @@
     </div>
     <div class="columna_central">
         <center>
-            <h3 class="box-title"><u>VENTAS GENERALES POR CLIENTE</u></h3>
+            <h4 class="box-title"><b>REPORTE DE VENTAS</b></h4>
             <?php echo date('d/m/Y H:i:s'); ?><br>
             <b>VENTAS REALIZADAS</b>
         </center>
     </div>
 </div>
 <div class="row">
+    
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
-        <div class="col-md-4" style="padding-left: 0px">
+        
+        <div class="col-md-2" style="padding-left: 0px">
             <label for="expotar" class="control-label"> Cliente: </label>
             <div class="input-group">
                 <span class="input-group-addon"> Buscar </span>
@@ -80,24 +82,51 @@
                 <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="reporte1()"><span class="fa fa-search"></span></div>
             </div>
         </div>
-        <div class="col-md-4 no-print" hidden >                     
+        
+        <div class="col-md-2 no-print" hidden >                     
             <label for="expotar" class="control-label"> Cliente: </label>
             <input id="cliente_id" type="text" class="form-control" placeholder="Ingresa el nombre del cliente, nit o razon social"  onkeypress="ventacliente(event)">
         </div>
+        
+        
         <div class="col-md-2">
             <label for="expotar" class="control-label"> Desde: </label>
-            <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
+            <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-default btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
         </div> 
         <div class="col-md-2">
             <label for="expotar" class="control-label"> Hasta: </label>
-            <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
+            <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-default btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
         </div>
         <div class="col-md-1" hidden>
             TIPO:
-            <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-primary btn-sm form-control"  >
+            <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default btn-sm form-control"  >
                 <option value="0">-TODOS-</option>
             </select>
         </div>
+        
+        <div class="col-md-2">
+            <label for="expotar" class="control-label"> Usuario: </label>
+            <select  class="btn btn-default btn-sm form-control" id="usuario_id">
+                    <option value="0">-- TODOS --</option>
+                <?php foreach($usuario as $us){?>
+                    <option value="<?php echo $us['usuario_id']; ?>"><?php echo $us['usuario_nombre']; ?></option>
+                <?php } ?>
+            </select>
+
+        </div>
+
+        <div class="col-md-1">
+            <label for="expotar" class="control-label"> Tipo: </label>
+            <select  class="btn btn-default btn-sm form-control" id="tipo">
+                    <option value="0">-- TODOS --</option>
+                    <option value="1">CON FACTURA</option>
+                    <option value="2">CON RECIBO</option>
+
+            </select>
+
+        </div>
+                
+        
         <div class="col-md-1 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
             <div class="form-group">
@@ -111,7 +140,7 @@
                 <a onclick="imprimir()" class="btn btn-success btn-sm form-control"><i class="fa fa-print"> </i> Imprimir</a>
             </div>
         </div>
-        <div class="col-md-2 no-print">
+        <div class="col-md-1 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
                 <a onclick="generarexcel_vclientegeneral()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
@@ -144,9 +173,9 @@
                 <th>CLIENTE</th>
                 <th>NUM. VENTA</th>
                 <th>NUM. DOCUMENTO</th>
-                <th>MONTO(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                <th>MONTO(<?php echo $parametro['moneda_descripcion']; ?>)</th>
                 <th>MONTO(<?php
-                            if($parametro[0]["moneda_id"] == 1){
+                            if($parametro["moneda_id"] == 1){
                                 echo $lamoneda[1]['moneda_descripcion'];
                             }else{
                                 echo $lamoneda[0]['moneda_descripcion'];

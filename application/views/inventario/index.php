@@ -92,6 +92,11 @@
             <h3 class="box-title"></h3>
             <div class="box-tools no-print">
                 
+                <select class="btn btn-warning btn-sm" id="tipo_reporte">
+                    <option value="2">INVENTARIO DETALLADO</option>
+                    <option value="1">INVENTARIO POR OPERACIONES</option>
+                </select>
+                
                 <?php //$mostrar_almacenes = true;
                     $parasucursal = 0;
                     if(sizeof($almacenes)> 0){
@@ -102,11 +107,11 @@
                         <?php   
                             foreach($almacenes as $almacen){ ?>
                              
-                                    <option value="<?php echo $almacen["almacen_descripcion"]; ?>"><?php echo $almacen["almacen_nombre"] ?></option>
+                                    <option value="<?php echo $almacen["almacen_basedatos"]; ?>"><?php echo $almacen["almacen_nombre"] ?></option>
 
                             <?php } ?>
                             
-                        </select>
+                </select>
                         
                         
                 <?php }else{ ?>

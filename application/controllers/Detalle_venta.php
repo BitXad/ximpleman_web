@@ -110,12 +110,14 @@ class Detalle_venta extends CI_Controller{
         //$this->load->model('Parametro_model');
         //$data['parametro'] = $this->Parametro_model->get_parametros();
         $this->load->model('Moneda_model');
+        $data['usuario'] = $this->Venta_model->get_usuarios();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
         $data['page_title'] = "Reporte Ventas";        
         $data['_view'] = 'venta/reporte_venta';
         $this->load->view('layouts/main',$data);
     }
+    
     function recepcionhoy()
     {
         $data['sistema'] = $this->sistema;
@@ -650,6 +652,25 @@ class Detalle_venta extends CI_Controller{
             show_404();
         }
     }
+    
+    function buscarinsumos()
+    {
+        if ($this->input->is_ajax_request()) {
+            $filtro = $this->input->post('filtro');
+            $datos = $this->Detalle_venta_model->reporteventas_prodagrupados($filtro);
+            $insumos = $this->Detalle_venta_model->reporteventas_insumos($filtro);
+            
+            $datos_combinados = array(
+                'datos' => $datos,
+                'insumos' => $insumos
+            );
+
+            echo json_encode($datos_combinados);
+        }else{
+            show_404();
+        }
+    }
+    
     function getdetalle_ventaenproceso()
     {
         if ($this->input->is_ajax_request()){

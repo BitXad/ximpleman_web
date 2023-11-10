@@ -304,12 +304,20 @@
                             if ($c['elestado']==1){
                                 echo $c['estado_descripcion'];
                             }   
-                            else{?>
+                            else{
                                 
-                            <button type="button" id="boton_activarcompra" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modalactivarcompra" onclick="cargar_datos_pedido(<?php echo $c['compra_id']; ?>);">
-                                        <fa class="fa fa-clock-o"> </fa>
-                                        <?php echo $c['estado_descripcion']; ?>
-                            </button>
+                                if ($c['elestado']==36){ ?>
+                        
+                                    <button type="button" id="boton_activarcompra" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modalactivarcompra" onclick="cargar_datos_pedido(<?php echo $c['compra_id']; ?>);">
+                                                <fa class="fa fa-clock-o"> </fa>
+                                                <?php echo $c['estado_descripcion']; ?>
+                                    </button>
+                        
+                                <?php }else{ ?>
+                        
+                                                <?php echo $c['estado_descripcion']; ?>
+                        
+                                <?php } ?>
                         
                             <?php }
                                 
@@ -358,9 +366,14 @@
                 <a href="<?php echo site_url('compra/notaingreso/'.$c['compra_id']); ?>" target="_blank" class="btn btn-facebook btn-xs" title='Nota de Compra/utilidades'><span class="fa fa-print"></span></a>  
                  <?php if($rolusuario[8-1]['rolusuario_asignado'] == 1 && $c['elestado']==1){ ?> 
                    <a href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-info btn-xs" title='Modificar Compra'><span class="fa fa-pencil"></span></a>
+                   
+                <button data-toggle="modal"  class="btn btn-xs btn-github" title="Ver compras perdidas" onclick="cargar_datosbackup(<?php echo $c['compra_id']; ?>)">
+                    <i class="fa fa-paperclip"></i>
+                </button>
+                   
                 <a href="#" data-toggle="modal" data-target="#anularmodal<?php echo $c['compra_id'] ?>" class="btn btn-xs btn-warning" title="Anular Compra" >
-                <i class="fa fa-minus-circle "></i>
-            </a>
+                    <i class="fa fa-minus-circle "></i>
+                </a>
             <?php } ?>
                     <!---------------------------------MODAL DE ANULAR COMPRA------------------------->
                     <div class="modal fade" id="anularmodal<?php echo $c['compra_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -502,7 +515,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background: #3399cc">
-                <b style="color: white;">APROBAR PEDIDO PENDIENTE</b>
+                <b style="color: white;">APROBAR TRASPASO PENDIENTE</b>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -512,7 +525,7 @@
                     <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
                 </div>
                 <div class="col-md-12" style="line-height: 8px;">
-                    Esta a punto de confirmar el pedido  PEDIDO Nº: <input type='text' width="20px" id='compra_idx' name='compra_idx' value='0' readonly>
+                    Esta a punto de confirmar el TRASPASO Nº: <input type='text' style="width: 70px; background: lightgray; border: none;" id='compra_idx' name='compra_idx' value='0' readonly>
                     <label for="codigo_evento" class="control-label" id="producto_id"></label> <br>
 <!--                    <label for="codigo_evento" class="control-label" id="producto_nombre"> </label><br>
                     <label for="codigo_evento" class="control-label" id="producto_datos" style="font-size: 10px;"> </label>-->
@@ -525,7 +538,7 @@
             </div>
             
             <div class="modal-footer" style="text-align: center">
-                <button type="button" class="btn btn-success" onclick="confirmar_traspaso()"><fa class="fa fa-floppy-o"></fa> Confirmar Traspaso</button>
+                <button type="button" class="btn btn-success" onclick="confirmar_traspaso()"  data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Confirmar Traspaso</button>
                 <button type="button" class="btn btn-default" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
             </div>
             
@@ -535,4 +548,60 @@
 
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL CANTIDAD ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL BACKUP ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+<div hidden>
+    <button type="button" id="boton_modalbackup" class="btn btn-default" data-toggle="modal" data-target="#modalbackup">
+      RESPALDOS
+    </button>
+    
+</div>
+
+<!--<div class="modal fade" id="modalactivarcompra" tabindex="-1" role="dialog" aria-labelledby="modalactivarcompra" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">-->
+<div class="modal fade" id="modalbackup" tabindex="-1" role="dialog" aria-labelledby="modalbackup" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #3399cc; background: #3399cc;">
+                <b style="color: white;">RESPALDOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+            <input type="hidden" id="micompra_id" name="micompra_id"><!-- comment -->
+            
+            <div class="modal-body">
+                <div class="row" id="loader3" style="display:none; text-align: center">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+                </div>
+                
+                <b>PRODUCTOS REGISTRADOS</b>
+                <div id="items_registrados">
+                    
+                </div>
+                
+                <b>RESPALDOS REGISTRADOS</b>
+                <div id="tabla_respaldos">
+                    
+                </div>
+                
+
+            </div>
+            
+            <div class="modal-footer" style="text-align: center">
+                <!--<button type="button" class="btn btn-success" onclick="confirmar_traspaso()"  data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Confirmar Traspaso</button>-->
+                <button type="button" class="btn btn-danger" id="boton_cerrar_recepcion" data-dismiss="modal" onclick="location.reload();"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL BACKUP ----------------------------------->
 <!------------------------------------------------------------------------------->

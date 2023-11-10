@@ -349,7 +349,9 @@ class Caja extends CI_Controller{
                 );
 
                 $this->Caja_model->update_caja($caja_id, $params);
-                redirect('caja/reporte_caja/'.$caja_id);
+               
+                ////redirect('caja/reporte_caja/'.$caja_id);
+                redirect('reportes/reportecaja/');
                 
             }else{
                 /*$this->load->model('Estado_model');

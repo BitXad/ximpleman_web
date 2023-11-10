@@ -50,7 +50,25 @@ class Almacen_model extends CI_Model
                 `almacenes` a
             left join estado e on a.estado_id = e.estado_id
             WHERE
-                1 = 1
+                a.estado_id <>0
+
+            ORDER BY `almacen_nombre`
+
+        ")->result_array();
+        return $almacen;
+    }
+        
+    /*
+     * Get all almacen
+     */
+    function get_almacenes()
+    {
+        $almacen = $this->db->query("
+            SELECT
+                a.*, e.estado_color, e.estado_descripcion
+            FROM
+                `almacenes` a
+            left join estado e on a.estado_id = e.estado_id
 
             ORDER BY `almacen_nombre`
 

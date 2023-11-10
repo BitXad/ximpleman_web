@@ -15,6 +15,11 @@ function reporte1()
     var cliente  = document.getElementById('cliente_id').value;
     var tipo     = document.getElementById('tipo_transaccion').value;
     let decimales = document.getElementById('decimales').value;
+    let usuario_id = document.getElementById('usuario_id').value;
+    let tipo_emision = document.getElementById('tipo').value;
+    
+    //alert(tipo_emision);
+    
     if (tipo==0) {
       eltipo = "";
     }else{

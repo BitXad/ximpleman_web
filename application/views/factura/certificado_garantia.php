@@ -1,10 +1,10 @@
     
-<!--<script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function()
     {
         window.onload = window.print();
     });
-</script>-->
+</script>
 <!----------------------------- script buscador --------------------------------------->
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
 
@@ -64,15 +64,15 @@
 
 ?>
 
-<div class="<?php echo $margen_izquierdo; ?>" style="padding: 0; max-width:5cm;">
+<!--<div class="<?php echo $margen_izquierdo; ?>" style="padding: 0; max-width:5cm;">
     
-</div>
+</div>-->
  
 <div class="col-xs-10" style="padding: 0;">
 
     <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0; " >
         <tr>
-            <td style="max-width: 6cm; padding: 0; line-height: 9px;" >
+            <td style="max-width: 6cm; padding: 0; line-height: 10px;" colspan="2">
                 <center>
                     <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
@@ -89,7 +89,7 @@
                     </font>
                 </center>
             </td>
-            <td style="width: 55%; padding: 0; line-height: 12px; " > 
+            <td style="width: 55%; padding: 0; line-height: 12px; " colspan="2"> 
                 <center>
                     <br>
                     <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
@@ -98,21 +98,22 @@
                     <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                     ?>
-                    <font size="5" face="arial"><b>CERTIFICADO DE GARANTIA</b></font> <br>
+                    <font size="4" face="arial"><b>CERTIFICADO DE GARANTIA</b></font> <br>
                     <font size="4" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
                     <font size="1" face="arial"><b><?php echo $fecha_d_m_a." ".$venta[0]['venta_hora']; ?></b></font> <br>
                 </center>
             </td>
+
         </tr>
         <tr>
-            <td colspan="3" style="text-align: center;">
+            <td colspan="4" style="text-align: center;">
                 <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
                 <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." / NIT: ".$venta[0]['cliente_nit']; ?> <br>
                 <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?><br>
             </td>
         </tr>
         <tr style="border-top-style: solid; border-color: #000;">
-            <td colspan="3" style="text-align: justify;">
+            <td colspan="4" style="text-align: justify;">
                 <?php echo $empresa[0]['empresa_nombre']; ?>, como distribuidor de productos y servicios, hace constar que el (los) producto(s) y 
                 sus especificaciones establecidas, garantizan la calidad de componentes y mano de obra de nuestros equipos dentro de su uso normal.
                 <br><br>
@@ -124,19 +125,19 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3">
+            <td colspan="4">
                 <center>        
                     <font face="Arial" size="3"><b>INFORMACIÓN DEL PRODUCTO</b></font>
                 </center>
             </td>
         </tr>
-    </table>
-   <table class="table"  style="width: <?php echo $ancho;?>cm; border-left-style: solid; border-right-style: solid; border-top-style: solid; border-right-color: #000;   border-width: thin;" >
-        <tr  style="border-top: solid; border-bottom: solid; border-color: black; border-top-color: #000; ">
-            <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; border-left: #000; border-style: solid; border-right: solid; border-width: thin;"><b>ITEM</b></td>
-            <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; border-left: #000; border-style: solid; border-right: solid; border-width: thin;"><b>DESCRIPCIÓN</b></td>
-            <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; border-left: #000; border-style: solid; border-right: solid; border-width: thin;"><b>CANT.</b></td>
-            <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; border-left: #000; border-style: solid; border-right: solid; border-width: thin;"><b>SERIE(S)</b></td>
+<!--    </table>
+   <table class="table"  style="width: <?php echo $ancho;?>cm; border-left-style: solid; border-right-style: solid; border-top-style: solid; border-right-color: #000;   border-width: thin;" >-->
+        <tr  >
+            <td align="center" style="padding: 0; -webkit-print-color-adjust: exact; border-left: #000 solid 1px; border-top: #000 solid 1px; border-bottom: #000 solid 1px;"><b>ITEM</b></td>
+            <td align="center" style="padding: 0; -webkit-print-color-adjust: exact; border-left: #000 solid 1px; border-top: #000 solid 1px; border-bottom: #000 solid 1px;"><b>DESCRIPCIÓN</b></td>
+            <td align="center" style="padding: 0; -webkit-print-color-adjust: exact; border-left: #000 solid 1px; border-top: #000 solid 1px; border-bottom: #000 solid 1px;"><b>CANT.</b></td>
+            <td align="center" style="padding: 0; -webkit-print-color-adjust: exact; border-left: #000 solid 1px; border-top: #000 solid 1px; border-bottom: #000 solid 1px; border-right: #000 solid 1px;"><b>SERIE(S)</b></td>
         </tr>
         <?php
         $cont = 0;
@@ -178,9 +179,10 @@
             </td>
         </tr>
         <?php } ?>
-    </table>
-    <table class="table" style="width: <?php echo $ancho;?>cm;">
+<!--    </table>
+    <table class="table" style="width: <?php echo $ancho;?>cm;">-->
         <tr>
+            <!--<td align="center" style="padding: 0; border-left: #000; border-style: solid; border-width: thin;"><?php echo $cont; ?></td>-->
             <td colspan="4" style="text-align: justify;">
                 <center><b>IMPORTANTE</b></center>
                 <br>
@@ -227,3 +229,19 @@
     </table>
 
 </div>
+
+<?php 
+$opc = $parametro[0]['parametro_cerrarventanas'];
+if($opc==1){ ?>
+
+<script>
+  // Función para cerrar la ventana
+  function cerrarVentana() {
+    window.close();
+  }
+
+  // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)
+  setTimeout(cerrarVentana, 2000);
+</script>
+
+<?php } ?>

@@ -754,6 +754,9 @@
 </div>
 <!------------------------ F I N  modal para confirmar  de factura no enviada------------------->
 
+<?php 
+$opc = $parametro['parametro_cerrarventanas'];
+if($opc==1){ ?>
 
 <script>
   // Función para cerrar la ventana
@@ -764,3 +767,5 @@
   // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)
   setTimeout(cerrarVentana, 2000);
 </script>
+
+<?php } ?>

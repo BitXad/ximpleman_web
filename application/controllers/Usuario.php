@@ -234,7 +234,7 @@ class Usuario extends CI_Controller
 
             }
     }
-
+//
     /*
      * Editing a usuario
      */
@@ -342,6 +342,9 @@ class Usuario extends CI_Controller
                     'usuario_clave' => $this->input->post('usuario_clave'),
                     'usuario_imagen' => $foto,
                     'puntoventa_codigo' => $this->input->post('punto_venta'),
+                    'usuario_turno' => $this->input->post('usuario_turno'),
+                    'usuario_inicioturno' => $this->input->post('usuario_inicioturno'),
+                    'usuario_finturno' => $this->input->post('usuario_finturno'),
                 );
                 $this->Usuario_model->update_usuario($usuario_id, $params);
                 redirect('usuario/index');
@@ -579,6 +582,9 @@ class Usuario extends CI_Controller
                         'tipousuario_id' => $this->input->post('tipousuario_id'),
                         'parametro_id' => $this->input->post('parametro_id'),
                         'puntoventa_codigo' => $this->input->post('punto_venta'),
+                        'usuario_turno' => $this->input->post('usuario_turno'),
+                        'usuario_inicioturno' => $this->input->post('usuario_inicioturno'),
+                        'usuario_finturno' => $this->input->post('usuario_finturno'),
                     );
 
                     if (!$this->user_model->update_usuario($dataupdate, $usuario_id)) {

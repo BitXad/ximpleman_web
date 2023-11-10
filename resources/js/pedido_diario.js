@@ -104,7 +104,7 @@ function buscar_pedido_diario(opcion)
                                 nombre_proveedor = r[i]['proveedor_nombre'];
                     html += "<td style='line-height: 10px;' >";
                     html += "<b>"+nombre_proveedor+"</b>";
-                    html += "<a href='"+base_url+"pedido_diario/modificar_pedido/"+r[i]['pedido_id']+"'><fa class='fa fa-edit'></fa></a>";
+                    html += "<a href='"+base_url+"orden_compra/edit_ordencompra/"+r[i]['pedido_id']+"'><fa class='fa fa-edit'></fa></a>";
                     //html += "<button class='btn btn-warning' onclick='modal_anularordencompra("+r[i]['pedido_id']+")'><fa class='fa fa-floppy'> </fa></button>";
                     
                     html += "<br>";

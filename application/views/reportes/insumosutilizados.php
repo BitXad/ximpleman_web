@@ -53,7 +53,7 @@
     </div>
     <div class="columna_central">
         <center>
-            <h3 class="box-title"><b>VENTAS AGRUPADAS POR PRODUCTO</b></h3>
+            <h3 class="box-title"><b>INVENTARIO DE INSUMOS</b></h3>
             <?php echo date('d/m/Y H:i:s'); ?><br>
             <b>VENTAS REALIZADAS</b>
         </center>
@@ -98,7 +98,7 @@
         <div class="col-md-2 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
-                <a class="btn btn-facebook btn-sm form-control" onclick="tabla_reportesproducto()" title="Buscar productos agrupados"><i class="fa fa-search"> </i> Buscar</a>
+                <a class="btn btn-facebook btn-sm form-control" onclick="tabla_reportesinsumos()" title="Buscar productos agrupados"><i class="fa fa-search"> </i> Buscar</a>
             </div>
         </div>
         <div class="col-md-2 no-print">

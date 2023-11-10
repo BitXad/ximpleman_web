@@ -55,7 +55,8 @@
             </select>
         </div>
     </div>
-    <div class="col-md-3">
+    
+    <div class="col-md-2">
         <label for="forma_id" class="control-label">Forma de Pago</label>
         <div class="form-group">
             <select name="forma_id" class="form-control btn btn-facebook btn-sm" id="forma_id">
@@ -78,9 +79,11 @@
     <div class="col-md-4 text-right">
         <label for="forma_id" class="control-label">&nbsp;</label>
         <div class="box-tools" style="display: flex">
-            <a onclick="modal_buscarproducto()" class="btn btn-success btn-foursquarexs" title="Buscar y añadir Producto"><span class="fa fa-cart-plus"></span><small> Añadir Producto</small></a>
-            &nbsp;<a onclick="modal_nuevoproducto()" class="btn btn-facebook btn-foursquarexs" title="Registrar nuevo producto"><span class="fa fa-plus-circle "></span><small> Registrar Nuevo Producto</small></a>
-            <!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" onclick="modalcatalogo()" class="btn btn-info btn-foursquarexs" title="Catalogo de Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Catálogo</small></a>
+            <a onclick="modal_buscarproducto()" class="btn btn-default btn-foursquarexs" title="Buscar y añadir Producto"><span class="fa fa-cart-plus"></span><small> Añadir Producto</small></a>
+            <a onclick="modal_nuevoproducto()" class="btn btn-default btn-foursquarexs" title="Registrar nuevo producto"><span class="fa fa-plus-circle "></span><small> Producto Nuevo</small></a>
+            <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-default btn-foursquarexs" title="Registrar nuevo Proveedor"><span class="fa fa-user-plus"></span><small> Nuevo Proveedor</small></a>
+        
+<!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" onclick="modalcatalogo()" class="btn btn-info btn-foursquarexs" title="Catalogo de Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Catálogo</small></a>
             <a style="width: 75px; margin-right: 1px; margin-top: 1px" href="<?php echo site_url('producto/existenciaminima'); ?>" target="_blank" class="btn btn-soundcloud btn-foursquarexs" title="Productos con existencia mínima" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
             <!--<a style="width: 75px; margin-right: 1px; margin-top: 1px" data-toggle="modal" data-target="#modalprecio" class="btn btn-soundcloud btn-foursquarexs" title="Codigo de Barras" ><font size="5"><span class="fa fa-barcode"></span></font><br><small>Cod. Barras</small></a>-->
         </div>
@@ -679,3 +682,117 @@
 </div>
 <!------------------------ FIN modal para Registrar nueva SUB Categoria ------------------->
 
+<?php $bandera = 0; ?>
+<div class="modal fade" id="modalproveedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                    <span id="mensaje" class="text-danger"></span>
+                <div class="row">
+    <div class="col-md-12">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Añadir Proveedor</h3>
+            </div>
+
+            <div class="box-body">
+                <div class="row clearfix">
+                    
+                    <div class="col-md-6">
+                        <label for="proveedor_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                        <div class="form-group">
+                            <input type="text" name="proveedor_nombre" value="" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_nombre1" required />
+                            
+                        </div>
+                        <input id="bandera" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
+                    </div>
+                
+                    <div class="col-md-6">
+                        <label for="proveedor_contacto" class="control-label">Contacto</label>
+                        <div class="form-group">
+                            <input type="text" name="proveedor_contacto" value="<?php echo $this->input->post('proveedor_contacto'); ?>"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_contacto" />
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="proveedor_telefono" class="control-label">Teléfono</label>
+                        <div class="form-group">
+                            <input type="text" name="proveedor_telefono" value="<?php echo $this->input->post('proveedor_telefono'); ?>" class="form-control" id="proveedor_telefono" />
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="proveedor_nit" class="control-label">Nit</label>
+                        <div class="form-group">
+                            <input type="text" name="proveedor_nit" value="0" class="form-control" id="proveedor_nit" />
+                        </div>
+                    </div>
+                </div>
+           <div class="box collapsed-box">
+            <div class="box-header with-border">
+              <h3 class="box-title">Mas</h3>
+              <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-plus"></i></button>
+              </div>
+                    <div class="box-body" style="display: none;">
+                        
+                    <div class="col-md-6" >
+                        <label for="proveedor_razon" class="control-label">Razon</label>
+                        <div class="form-group">
+                            <input type="text" id="proveedor_razon" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" value="<?php echo $this->input->post('proveedor_razon'); ?>" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6" >
+                        <label for="proveedor_codigo1" class="control-label">Código</label>
+                        <div class="form-group">
+                            <input type="text" name="proveedor_codigo1" value="" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_codigo1" />                            
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="proveedor_telefono2" class="control-label">Teléfono 2</label>
+                        <div class="form-group">
+                            <input type="text" name="proveedor_telefono2" value="<?php echo $this->input->post('proveedor_telefono2'); ?>" class="form-control" id="proveedor_telefono2" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" >
+                        <label for="proveedor_autorizacion" class="control-label">Autorización</label>
+                        <div class="form-group">
+                            <input type="text" name="proveedor_autorizacion" value="1" class="form-control" id="proveedor_autorizacion" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="proveedor_direccion" class="control-label">Dirección</label>
+                        <div class="form-group">
+                            <input type="text" name="proveedor_direccion" value="" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_direccion" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6" hidden>
+                    <input id="compra_id"  name="compra_id" type="text" class="form-control" value="<?php echo $compra_id; ?>">
+                        </div>
+                    <div class="col-md-6" hidden>
+                        <label for="estado_id" class="control-label">estado_id</label>
+                        <div class="form-group">
+                            <input type="text" name="estado_id" value="1" class="form-control" id="estado_id" />
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div></div>
+            
+
+                <button type="button" class="btn btn-success" onclick="crearproveedor()" >
+
+                    <i class="fa fa-check"></i> Guardar
+                </button>           
+     
+        </div>
+    </div>
+</div>
+                      <!----------------------FIN  CREAR PROVEEDOR--------------------------------------------------->
+            </div>
+        </div>
+    </div>

@@ -76,7 +76,7 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Ubicaci&oacute;n</th>
+                            <th>Ubicación</th>
                             <th>Fecha inicio</th>
                             <th>Fecha fin</th>
                             <th width ="100px">Sobrante</th>
@@ -110,7 +110,7 @@
                                 <?php } ?>
                                 
                                 <?php if($control['estado_id'] == 25 || $tipousuario_id == 1){ ?>
-                                    <a href="<?php echo site_url("ubicacion_producto/index/{$control['controlu_id']}/{$controli['controli_id']}"); ?>" class="btn btn-primary btn-xs" title="Ir al reporte"><i class="fa fa-file-text" aria-hidden="true"></i></a>
+                                    <a href="<?php echo site_url("ubicacion_producto/index/{$control['controlu_id']}/{$controli['controli_id']}"); ?>" class="btn btn-primary btn-xs" title="Ir al reporte"><i class="fa fa-file-text" aria-hidden="true"></i> Inventario</a>
                                 <?php } ?>
                                 <?php if($control['estado_id'] == 26){ ?>
                                     <a href="<?php echo site_url("ubicacion_producto/index/{$control['controlu_id']}/{$controli['controli_id']}"); ?>" class="btn btn-warning btn-xs" title="Ver el reporte"><i class="fa fa-eye" aria-hidden="true"></i></a>

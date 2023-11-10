@@ -38,7 +38,7 @@ function formato_fecha(string){
 }
 
 function formato_numerico(numero){
-    
+    var decimales = 2;
         
     
         nStr = Number(numero).toFixed(decimales);
@@ -109,7 +109,7 @@ function tabla_inventario(){
     var decimales = document.getElementById('decimales').value;
     var base_url = document.getElementById("base_url").value;
     var parametro = document.getElementById("filtrar").value;
-        var controlador = base_url+"inventario/mostrar_inventario";
+    var controlador = base_url+"inventario/mostrar_inventario";
     
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     var nombre_moneda = document.getElementById('nombre_moneda').value;
@@ -117,17 +117,21 @@ function tabla_inventario(){
     var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
     var total_otramoneda = Number(0);
     var total_otram = Number(0);
-    var tipo_reporte = 2;
+    var tipo_reporte = document.getElementById('tipo_reporte').value;;
     
-    var select_almacenes = document.getElementById("select_almacen");
+    var select_almacen = document.getElementById("select_almacen").value;
     //select_almacen = select_almacenes.options[select_almacenes.selectedIndex].innerText;
-    select_almacen = select_almacenes.options[select_almacenes.selectedIndex].value;
+    
+    //select_almacen = select_almacenes.options[select_almacenes.selectedIndex].value;
+    
     let parasucursal = document.getElementById('parasucursal').value;
-    if(parasucursal == 1){
-        alert(select_almacen);
-    }
+    
+//    if(parasucursal == 1){
+//        alert(tipo_reporte+" * "+select_almacen);
+//    }
         
     if (tipo_reporte == 1){
+        
         $.ajax({
         url: controlador,
         type:"POST",
@@ -185,11 +189,11 @@ function tabla_inventario(){
                     html += "             	</td>";
                     html += "             	<td><center><font size='2'><b>"+inv[i]["producto_codigobarra"]+"</b><br> </font>";
                     html += "	"+ inv[i]["producto_codigo"]+"</center></td>";
-                    html += "	<td><center>"+ inv[i]["producto_costo"]+"</center></td>";
+                    html += "	<td><center>"+ Number(inv[i]["producto_costo"]).toFixed(decimales)+"</center></td>";
 
-                    html += "             	<td><center>"+ inv[i]["compras"]+"</center></td>";
-                    html += "	<td><center>"+ inv[i]["ventas"]+"</center></td>";
-                    html += "	<td><center>"+ inv[i]["pedidos"]+"</center></td>";
+                    html += "             	<td><center>"+ Number(inv[i]["compras"]).toFixed(decimales)+"</center></td>";
+                    html += "	<td><center>"+ Number(inv[i]["ventas"]).toFixed(decimales)+"</center></td>";
+                    html += "	<td><center>"+ Number(inv[i]["pedidos"]).toFixed(decimales)+"</center></td>";
                     
                     html += "             	<td><center> <font size='3'><b>"+ existencia.toFixed(decimales)+"</b></font></center></td>";
                     html += "             	<td><center> <font size='2'><b>"+ total.toFixed(decimales)+"</b></font></center></td>";
@@ -233,7 +237,7 @@ function tabla_inventario(){
    //*********************** tipo_reporte 2 ************************************** 
     if (tipo_reporte == 2){
         
-        
+        //alert("parametro:"+parametro+"* almacen: "+select_almacen);
     $.ajax({
         url: controlador,
         type:"POST",
@@ -2359,5 +2363,53 @@ function actualizar_inventarios(){
             //tabla_inventario();
         }
     });      
+    
+}
+
+
+function actualizar_productos(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"sucursales/actualizar_productos/";
+    var base_datos = document.getElementById('select_almacen').value;
+    var operacion = document.getElementById('operacion').value;
+    
+    //alert("base de datos: "+base_datos+" operacion: "+operacion)
+    
+    document.getElementById('loaderindex').style.display = 'block'; //muestra el bloque del loader
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{base_datos: base_datos, operacion: operacion},
+        success:function(respuesta){
+            
+            var productos =  JSON.parse(respuesta);
+            var sucproductos =  productos["sucproductos"];
+            var misproductos =  productos["misproductos"];
+            
+
+
+            alert(JSON.stringify(productos));
+            
+//            if (registros == "no"){
+//                
+//                alert("El Sistema no tiene Sucursales; por favor consulte con su proveedor!.");
+//                
+//            }else{
+//                
+//                alert('El inventario se actualizo exitosamente...! ');
+//                //redirect('inventario/index');
+//                document.getElementById('loaderindex').style.display = 'none'; //ocultar el bloque del loader
+//                //tabla_inventario();
+//            }
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loaderindex').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+    });      
+    
+   
+    
     
 }

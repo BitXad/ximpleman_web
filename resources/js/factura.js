@@ -151,15 +151,27 @@ function mostrar_facturas() {
                                 html += "<br>";
 
                                 if (factura[i]["factura_codigodescripcion"]=="VALIDADA"){
+                                    
                                     html += "<span class='btn btn-info btn-xs' style='padding:0; border:0;'><small>"+factura[i]["factura_codigodescripcion"]+"</small></span>";                        
+                                
                                 }else{
+                                    
                                     html += "<span class='btn btn-danger btn-xs' style='padding:0; border:0;' title='"+factura[i]["factura_mensajeslist"]+"'><small>FALLA</small></span>";
+                                
                                 }
 
                                 html += "</center></td>";
 
 
-                                html += "   <td>"+factura[i]["factura_cuf"]+"</td>";
+                                if(factura[i]["factura_cuf"]!=null){
+                                    
+                                    html += "   <td>"+factura[i]["factura_cuf"]+"</td>";
+                                }else{
+                                    
+                                    html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
+                                }
+                                
+                                
                                 let enviada = factura[i]['factura_enviada'] == 1 ? "Enviada":"No enviada";
                                 html += "   <td>"+factura[i]["factura_nit"]+"</td>";
                                 html += "   <td>"+factura[i]["factura_complementoci"]+"</td>";
@@ -408,11 +420,13 @@ function mostrar_facturas() {
 }
 
 function generarexcel(){
+    
     var base_url = document.getElementById('base_url').value;
     var opcion = document.getElementById('opcion').value;
     var controlador = base_url+'factura/mostrar_facturas';    
     var desde = document.getElementById('fecha_desde').value;
     var hasta = document.getElementById('fecha_hasta').value; 
+    var formato = document.getElementById('select_formato').value; 
 
      //parametro = document.getElementById('filtrar').value;   
      //controlador = base_url+'ingreso/buscarallingreso/';
@@ -431,79 +445,322 @@ function generarexcel(){
                 var mensaje = "";
                 
                 html = "";
-                if (opcion==1){
-                  /* **************INICIO Generar Excel JavaScript************** */
-                    var CSV = 'sep=,' + '\r\n\n';
-                    //This condition will generate the Label/Header
-                    if (showLabel) {
-                        var row = "";
+                
+                if (opcion==1){ //ventas
+                    if(formato==1){ //R.C.V.
 
-                        //This loop will extract the label from 1st index of on array
+                        /* **************INICIO Generar Excel JavaScript************** */
+                          var CSV = 'sep=,' + '\r\n\n';
+                          //This condition will generate the Label/Header
+                          if (showLabel) {
+                              var row = "";
+
+                              //This loop will extract the label from 1st index of on array
+
+
+                                  //Now convert each value to string and comma-seprated
+                                  row += 'N°' + ',';
+                                  row += 'ESPEC.' + ',';
+                                  row += 'FECHA DE LA FACTURA' + ',';
+                                  row += 'N° DE FACT.' + ',';
+                                  row += 'N° DE AUTORIZACION' + ',';
+                                  row += 'NIT/CI CLIENTE' + ',';
+                                  row += 'COMPLEMENTO' + ',';
+                                  row += 'RAZON SOCIAL' + ',';
+                                  row += 'IMPORTE TOTAL DE LA VENTA' + ',';
+                                  row += 'IMPORTE ICE' + ',';
+                                  row += 'IMPORTE IEHD' + ',';
+                                  row += 'IMPORTE IPJ' + ',';
+                                  row += 'TASAS' + ',';
+                                  row += 'OTROS NO SUJETOS AL VIA' + ',';
+                                  row += 'VENTAS GRAVADAS A TASA CERO' + ',';
+                                  row += 'SUBTOTAL' + ',';
+                                  row += 'DESC. BONIF. Y REBAJAS OTORGADAS' + ',';
+                                  row += 'IMPORTE GIFTCARD' + ',';
+                                  row += 'IMPORTE BASE PARA DEBITO FISCAL' + ',';
+                                  row += 'DEBITO FISCAL' + ',';
+                                  row += 'ESTADO' + ',';
+                                  row += 'CODIGO DE CONTROL' + ',';
+                                  row += 'TIPO DE VENTA' + ',';
+                                  row += 'TRANS' + ',';
+
+                              row = row.slice(0, -1);
+
+                              //append Label row with line break
+                              CSV += row + '\r\n';
+                          }
+
+                          //1st loop is to extract each row
+                          for (var i = 0; i < tam; i++) {
+                              var row = "";
+                              //2nd loop will extract each column and convert it in string comma-seprated
+
+                                  row += '0,';
+                                  row += '2,';
+                                  row += '"' +formato_fecha(factura[i]["factura_fecha"])+ '",';
+                                  row += '"' +factura[i]["factura_numero"]+ '",';
+                                  row += '"' +factura[i]["factura_cuf"]+ '",';
+                                  row += '"' +factura[i]["factura_nit"]+ '",';
+                                  row += '"' +factura[i]["factura_complementoci"]+ '",';
+                                  row += '"' +factura[i]["factura_razonsocial"]+ '",';
+                                  row += '"' +Number(factura[i]["factura_subtotal"]).toFixed(2)+ '",';
+                                  row += '"' +Number(factura[i]["factura_ice"]).toFixed(2)+ '",';
+                                  row += '"' +Number(factura[i]["factura_exento"]).toFixed(2)+ '",';
+                                  row += '0,';
+                                  row += '0,';
+                                  row += '0,';
+                                  row += '0,';
+                                  row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
+                                  row += '"' +Number(factura[i]["factura_descuento"]).toFixed(2)+ '",';
+                                  row += '"' +Number(factura[i]["factura_giftcard"]).toFixed(2)+ '",';
+                                  row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
+                                  row += '"' +Number(factura[i]["factura_total"]*0.13).toFixed(2)+ '",';
+                                  if(factura[i]["estado_id"]==1){
+                                      row += 'V,';
+                                  }
+                                  else{
+                                      row += 'A,';
+                                  }
+                                  row += '"' +factura[i]["factura_codigocontrol"]+ '",';                                  
+                                  row += '0,';
+                                  row += '"' +factura[i]["venta_id"]+ '",';
+
+
+
+                              row.slice(0, row.length - 1);
+
+                              //add a line break after each row
+                              CSV += row + '\r\n';
+                          }
+
+                          if (CSV == '') {        
+                              alert("Invalid data");
+                              return;
+                          }
+
+                          //Generate a file name
+                          var fileName = "Ventas_";
+                          //this will remove the blank-spaces from the title and replace it with an underscore
+                          fileName += reportitle.replace(/ /g,"_");   
+
+                          //Initialize file format you want csv or xls
+                          var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+                          // Now the little tricky part.
+                          // you can use either>> window.open(uri);
+                          // but this will not work in some browsers
+                          // or you will not get the correct file extension    
+
+                          //this trick will generate a temp <a /> tag
+                          var link = document.createElement("a");    
+                          link.href = uri;
+
+                          //set the visibility hidden so it will not effect on your web-layout
+                          link.style = "visibility:hidden";
+                          link.download = fileName + ".csv";
+
+                          //this part will append the anchor tag and remove it after automatic click
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                          /* **************F I N  Generar Excel JavaScript************** */
+
+
+
+
+                         //document.getElementById('loader').style.display = 'none';
+                        }
                         
+                    if(formato==2){ //L.C.V.
 
-                            //Now convert each value to string and comma-seprated
-                            row += 'ESPEC.' + ',';
-                            row += 'N°' + ',';
-                            row += 'FECHA DE LA FACTURA' + ',';
-                            row += 'N° DE FACT.' + ',';
-                            row += 'N° DE AUTORIZACION' + ',';
-                            row += 'ESTADO' + ',';
-                            row += 'NIT/CI CLIENTE' + ',';
-                            row += 'NOMBRE O RAZON SOCIAL' + ',';
-                            row += 'IMPORTE TOTAL DE LA VENTA' + ',';
-                            row += 'IMPORTE ICE' + ',';
-                            row += '/IEHD/TASAS    EXPORTACIONES Y OPERACIONES EXENTAS' + ',';
-                            row += 'VENTAS GRAVADAS A TASA CERO' + ',';
-                            row += 'SUBTOTAL' + ',';
-                            row += 'DESC.' + ',';
-                            row += 'BONIF. Y REBAJAS OTORGADAS' + ',';
-                            row += 'IMPORTE BASE PARA DEBITO FISCAL' + ',';
-                            row += 'DEBITO FISCAL' + ',';
-                            row += 'CODIGO DE CONTROL' + ',';
-                            row += 'TRANS' + ',';
-       
-                        row = row.slice(0, -1);
+                        /* **************INICIO Generar Excel JavaScript************** */
+                          var CSV = 'sep=,' + '\r\n\n';
+                          //This condition will generate the Label/Header
+                          if (showLabel) {
+                              var row = "";
 
-                        //append Label row with line break
-                        CSV += row + '\r\n';
-                    }
+                              //This loop will extract the label from 1st index of on array
+
+
+                                  //Now convert each value to string and comma-seprated
+                                  row += 'ESPEC.' + ',';
+                                  row += 'N°' + ',';
+                                  row += 'FECHA DE LA FACTURA' + ',';
+                                  row += 'N° DE FACT.' + ',';
+                                  row += 'N° DE AUTORIZACION' + ',';
+                                  row += 'ESTADO' + ',';
+                                  row += 'NIT/CI CLIENTE' + ',';
+                                  row += 'NOMBRE O RAZON SOCIAL' + ',';
+                                  row += 'IMPORTE TOTAL DE LA VENTA' + ',';
+                                  row += 'IMPORTE ICE' + ',';
+                                  row += '/IEHD/TASAS    EXPORTACIONES Y OPERACIONES EXENTAS' + ',';
+                                  row += 'VENTAS GRAVADAS A TASA CERO' + ',';
+                                  row += 'SUBTOTAL' + ',';
+                                  row += 'DESC.' + ',';
+                                  row += 'BONIF. Y REBAJAS OTORGADAS' + ',';
+                                  row += 'IMPORTE BASE PARA DEBITO FISCAL' + ',';
+                                  row += 'DEBITO FISCAL' + ',';
+                                  row += 'CODIGO DE CONTROL' + ',';
+                                  row += 'TRANS' + ',';
+
+                              row = row.slice(0, -1);
+
+                              //append Label row with line break
+                              CSV += row + '\r\n';
+                          }
+
+                          //1st loop is to extract each row
+                          for (var i = 0; i < tam; i++) {
+                              var row = "";
+                              //2nd loop will extract each column and convert it in string comma-seprated
+
+                                  row += '0,';
+                                  row += '1,';
+                                  row += '"' +formato_fecha(factura[i]["factura_fecha"])+ '",';
+                                  row += '"' +factura[i]["factura_numero"]+ '",';
+                                  row += '"' +factura[i]["factura_cuf"]+ '",';
+                                  if(factura[i]["estado_id"]==1){
+                                      row += 'V,';
+                                  }
+                                  else{
+                                      row += 'A,';
+                                  }
+                                  row += '"' +factura[i]["factura_nit"]+ '",';
+                                  row += '"' +factura[i]["factura_razonsocial"]+ '",';
+                                  row += '"' +Number(factura[i]["factura_subtotal"]).toFixed(2)+ '",';
+                                  row += '"' +Number(factura[i]["factura_ice"]).toFixed(2)+ '",';
+                                  row += '"' +Number(factura[i]["factura_exento"]).toFixed(2)+ '",';
+                                  row += '0,';
+                                  row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
+                                  row += '"' +Number(factura[i]["factura_descuento"]).toFixed(2)+ '",';
+                                  row += '0,';
+                                  row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
+                                  row += '"' +Number(factura[i]["factura_total"]*0.13).toFixed(2)+ '",';
+                                  row += '"' +factura[i]["factura_codigocontrol"]+ '",';
+                                  row += '"' +factura[i]["venta_id"]+ '",';
+
+
+
+                              row.slice(0, row.length - 1);
+
+                              //add a line break after each row
+                              CSV += row + '\r\n';
+                          }
+
+                          if (CSV == '') {        
+                              alert("Invalid data");
+                              return;
+                          }
+
+                          //Generate a file name
+                          var fileName = "Ventas_";
+                          //this will remove the blank-spaces from the title and replace it with an underscore
+                          fileName += reportitle.replace(/ /g,"_");   
+
+                          //Initialize file format you want csv or xls
+                          var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+                          // Now the little tricky part.
+                          // you can use either>> window.open(uri);
+                          // but this will not work in some browsers
+                          // or you will not get the correct file extension    
+
+                          //this trick will generate a temp <a /> tag
+                          var link = document.createElement("a");    
+                          link.href = uri;
+
+                          //set the visibility hidden so it will not effect on your web-layout
+                          link.style = "visibility:hidden";
+                          link.download = fileName + ".csv";
+
+                          //this part will append the anchor tag and remove it after automatic click
+                          document.body.appendChild(link);
+                          link.click();
+                          document.body.removeChild(link);
+                          /* **************F I N  Generar Excel JavaScript************** */
+
+
+
+
+                         //document.getElementById('loader').style.display = 'none';
+                      }
                     
-                    //1st loop is to extract each row
-                    for (var i = 0; i < tam; i++) {
-                        var row = "";
-                        //2nd loop will extract each column and convert it in string comma-seprated
                         
-                            row += '0,';
-                            row += '1,';
-                            row += '"' +formato_fecha(factura[i]["factura_fecha"])+ '",';
-                            row += '"' +factura[i]["factura_numero"]+ '",';
-                            row += '"' +factura[i]["factura_cuf"]+ '",';
-                            if(factura[i]["estado_id"]==1){
-                                row += 'V,';
-                            }
-                            else{
-                                row += 'A,';
-                            }
-                            row += '"' +factura[i]["factura_nit"]+ '",';
-                            row += '"' +factura[i]["factura_razonsocial"]+ '",';
-                            row += '"' +Number(factura[i]["factura_subtotal"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["factura_ice"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["factura_exento"]).toFixed(2)+ '",';
-                            row += '0,';
-                            row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["factura_descuento"]).toFixed(2)+ '",';
-                            row += '0,';
-                            row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
-                            row += '"' +Number(factura[i]["factura_total"]*0.13).toFixed(2)+ '",';
-                            row += '"' +factura[i]["factura_codigocontrol"]+ '",';
-                            row += '"' +factura[i]["venta_id"]+ '",';
-                            
+              }
+             
+                if (opcion==2){ //COMPRAS
+                    /* **************INICIO Generar Excel JavaScript************** */
+                      var CSV = 'sep=,' + '\r\n\n';
+                      //This condition will generate the Label/Header
+                      if (showLabel) {
+                          var row = "";
 
-                        
-                        row.slice(0, row.length - 1);
+                          //This loop will extract the label from 1st index of on array
 
-                        //add a line break after each row
-                        CSV += row + '\r\n';
+
+                              //Now convert each value to string and comma-seprated
+                              row += 'ESPEC.' + ',';
+                              row += 'N°' + ',';
+                              row += 'FECHA DE LA FACTURA' + ',';
+                              row += 'N° DE FACT.' + ',';
+                              row += 'N° DE AUTORIZACION' + ',';
+                              row += 'ESTADO' + ',';
+                              row += 'NIT/CI CLIENTE' + ',';
+                              row += 'NOMBRE O RAZON SOCIAL' + ',';
+                              row += 'IMPORTE TOTAL DE LA VENTA' + ',';
+                              row += 'IMPORTE ICE' + ',';
+                              row += '/IEHD/TASAS    EXPORTACIONES Y OPERACIONES EXENTAS' + ',';
+                              row += 'VENTAS GRAVADAS A TASA CERO' + ',';
+                              row += 'SUBTOTAL' + ',';
+                              row += 'DESC.' + ',';
+                              row += 'BONIF. Y REBAJAS OTORGADAS' + ',';
+                              row += 'IMPORTE BASE PARA DEBITO FISCAL' + ',';
+                              row += 'DEBITO FISCAL' + ',';
+                              row += 'CODIGO DE CONTROL' + ',';
+                              row += 'TRANS' + ',';
+
+                          row = row.slice(0, -1);
+
+                          //append Label row with line break
+                          CSV += row + '\r\n';
+                      }
+
+                      //1st loop is to extract each row
+                      for (var i = 0; i < tam; i++) {
+                          var row = "";
+                          //2nd loop will extract each column and convert it in string comma-seprated
+
+                              row += '0,';
+                              row += '1,';
+                              row += '"' +formato_fecha(factura[i]["factura_fecha"])+ '",';
+                              row += '"' +factura[i]["factura_numero"]+ '",';
+                              row += '"' +factura[i]["factura_cuf"]+ '",';
+                              if(factura[i]["estado_id"]==1){
+                                  row += 'V,';
+                              }
+                              else{
+                                  row += 'A,';
+                              }
+                              row += '"' +factura[i]["factura_nit"]+ '",';
+                              row += '"' +factura[i]["factura_razonsocial"]+ '",';
+                              row += '"' +Number(factura[i]["factura_subtotal"]).toFixed(2)+ '",';
+                              row += '"' +Number(factura[i]["factura_ice"]).toFixed(2)+ '",';
+                              row += '"' +Number(factura[i]["factura_exento"]).toFixed(2)+ '",';
+                              row += '0,';
+                              row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
+                              row += '"' +Number(factura[i]["factura_descuento"]).toFixed(2)+ '",';
+                              row += '0,';
+                              row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
+                              row += '"' +Number(factura[i]["factura_total"]*0.13).toFixed(2)+ '",';
+                              row += '"' +factura[i]["factura_codigocontrol"]+ '",';
+                              row += '"' +factura[i]["venta_id"]+ '",';
+
+
+
+                          row.slice(0, row.length - 1);
+
+                          //add a line break after each row
+                          CSV += row + '\r\n';
                     }
                     
                     if (CSV == '') {        
@@ -543,6 +800,8 @@ function generarexcel(){
                    
                    //document.getElementById('loader').style.display = 'none';
             }
+                
+            
          //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
         error:function(respuesta){

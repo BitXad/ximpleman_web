@@ -10,6 +10,8 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Editar Dosificación</h3>
             </div>
+            
+            
             <?php echo form_open_multipart('dosificacion/edit/'.$dosificacion['dosificacion_id']); ?>
             <div class="box-body">
                 <div class="row clearfix">
@@ -223,7 +225,14 @@
                     <div class="col-md-3">
                         <label for="dosificacion_ambiente" class="control-label">Ambiente (1 Produccion/2 Pruebas)</label>
                         <div class="form-group">
-                            <input type="text" name="dosificacion_ambiente" value="<?php echo ($this->input->post('dosificacion_ambiente') ? $this->input->post('dosificacion_ambiente') : $dosificacion['dosificacion_ambiente']); ?>" class="form-control" id="dosificacion_ambiente" />
+                            <!--<input type="text" name="dosificacion_ambiente" value="<?php echo ($this->input->post('dosificacion_ambiente') ? $this->input->post('dosificacion_ambiente') : $dosificacion['dosificacion_ambiente']); ?>" class="form-control" id="dosificacion_ambiente" />-->
+                            
+                            
+                            <select name="dosificacion_ambiente" id="dosificacion_ambiente" class="form-control"">
+                                <option value="0">- Ambiente -</option>
+                                <option value="1" <?= ($dosificacion['dosificacion_ambiente']==1)?"selected":"";  ?> >PRODUCCION</option>
+                                <option value="2" <?= ($dosificacion['dosificacion_ambiente']==2)?"selected":"";  ?> >PRUEBAS</option>                     
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -388,7 +397,19 @@
                     <div class="col-md-3">
                         <label for="dosificacion_clavep12" class="control-label">Clave p12</label>
                         <div class="form-group">
-                            <input type="text" name="dosificacion_clavep12" value="<?php echo ($this->input->post('dosificacion_clavep12') ? $this->input->post('dosificacion_clavep12') : $dosificacion['dosificacion_clavep12']); ?>" class="form-control" id="dosificacion_clavep12" />
+                            <input type="password" name="dosificacion_clavep12" value="<?php echo ($this->input->post('dosificacion_clavep12') ? $this->input->post('dosificacion_clavep12') : $dosificacion['dosificacion_clavep12']); ?>" class="form-control" id="dosificacion_clavep12" />
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="cambiar_endpoints" class="control-label">Ambiente (1 Produccion/2 Pruebas)</label>
+                        <div class="form-group">
+                            
+                            <select name="cambiar_endpoints" id="cambiar_endpoints" class="form-control"">
+                                <option value="0">- No Cambiar -</option>
+                                <option value="1">CAMBIAR A PRODUCCION</option>
+                                <option value="2">CAMBIAR A PRUEBAS</option>                     
+                            </select>
                         </div>
                     </div>
                     

@@ -177,7 +177,7 @@ border-bottom : 1px solid #aaa;*/
                         }else{  
                             $lacantidad = number_format($d['detallecomp_cantidad'],$decimales,'.',',');  
                         }  
-                        echo $lacantidad; 
+                        //echo $lacantidad; 
                         
                         ?>
            <tr style="font-size: 8pt;">

@@ -464,16 +464,17 @@ class Factura extends CI_Controller{
         //**************** inicio contenido ***************           
     
         $usuario_id = $this->session_data['usuario_id'];
+        $factura = $this->Factura_model->get_factura_id($factura_id);
         
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         
-//        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        $data['venta'] = $this->Detalle_venta_model->get_venta($factura[0]["venta_id"]);
+
 //        
         // se usa detalle_venta para no modifcar el detalle de factura que ya estaba echo
         $data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['page_title'] = "Factura";
-        $factura = $this->Factura_model->get_factura_id($factura_id);
         $data['factura'] = $factura;
         $data['tipo'] = $tipo;
         $data['parametro'] = $this->parametros;

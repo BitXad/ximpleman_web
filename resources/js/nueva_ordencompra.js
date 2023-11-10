@@ -478,3 +478,43 @@ function numberFormat(numero){
     }
 }
 
+function crearproveedor() {
+     
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+'proveedor/registro_rapido/';
+    var compra_id = 0;
+    var limite = 500;
+    
+    var proveedor_nombre = document.getElementById('proveedor_nombre1').value;
+
+    var proveedor_nit = document.getElementById('proveedor_nit').value;
+    var proveedor_razon = document.getElementById('proveedor_razon').value;
+    var proveedor_codigo = document.getElementById('proveedor_codigo1').value;
+    var proveedor_autorizacion = document.getElementById('proveedor_autorizacion').value;
+    var proveedor_contacto = document.getElementById('proveedor_contacto').value;
+    var proveedor_direccion = document.getElementById('proveedor_direccion').value;
+    var proveedor_telefono = document.getElementById('proveedor_telefono').value;
+    var proveedor_telefono2 = document.getElementById('proveedor_telefono2').value;
+                
+        $.ajax({url: controlador,
+           type:"POST",
+           data:{compra_id:compra_id,proveedor_nombre:proveedor_nombre,proveedor_nit:proveedor_nit,proveedor_razon:proveedor_razon,proveedor_codigo:proveedor_codigo,proveedor_autorizacion:proveedor_autorizacion,proveedor_contacto:proveedor_contacto,proveedor_direccion:proveedor_direccion,proveedor_telefono:proveedor_telefono,proveedor_telefono2:proveedor_telefono2},
+           success:function(respuesta){ 
+               
+                var registros =  JSON.parse(respuesta);
+                
+                location.reload();
+
+             },
+
+              
+ error:function(respuesta){
+           html = "";
+//           $("#provedordecompra").html(html);
+          
+} 
+            });   
+
+ 
+
+}

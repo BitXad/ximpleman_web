@@ -1,5 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
+<script src="<?php echo base_url('resources/js/almacenes.js'); ?>" type="text/javascript"></script>
+
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -15,7 +17,8 @@
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet"/>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!-------------------------------------------------------->
 <div class="box-header">
     <font size='4' face='Arial'><b>Almacenes</b></font>
@@ -62,6 +65,7 @@
                         <td class="text-center" style="background-color: #<?php echo $a['estado_color']; ?>"> <?php echo $a['estado_descripcion']; ?></td>
                         <td class="text-center no-print">
                             <a href="<?php echo site_url('almacen/edit/'.$a['almacen_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                            <button class="btn btn-facebook btn-xs" title="Verificar conexion con la sucursal/deposito" onclick="verificar_conexion('<?php echo $a['almacen_basedatos']; ?>')"><span class="fa fa-chain"></span></button>
                         </td>
 						
                     </tr>

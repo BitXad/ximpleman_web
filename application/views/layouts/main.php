@@ -653,6 +653,7 @@
                         ?>
                     </ul>
                 </li>
+                
          
                 <li>
                     <a href="#"><i class="fa fa-clipboard"></i> <span>Reportes</span></a>
@@ -730,9 +731,7 @@
                         <li>
                             <a href="<?php echo site_url('venta/inventario_envases');?>"><i class="fa fa-glass"></i> Inventario de Envases</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('inventario_sucursal');?>"><i class="fa fa-navicon"></i> Inventario Sucursales</a>
-                        </li>
+
                         <?php
                         } ?>
                         
@@ -890,6 +889,27 @@
                 </li>
                 
                 <li>
+                    <a href="#"><i class="fa fa-hospital-o"></i> <span>Depositos y Sucursales</span></a>
+                    <ul class="treeview-menu">
+                        
+                        <li>
+                            <a href="<?php echo site_url('almacen');?>"><i class="glyphicon glyphicon-list-alt"></i>Depositos/Sucursales</a>
+                        </li>
+                        
+                        <li>
+                            <a href="<?php echo site_url('inventario_sucursal');?>"><i class="fa fa-sitemap"></i> Inventario Sucursales</a>
+                        </li>
+                        
+                        <li>
+                            <a href="<?php echo site_url('sucursales');?>"><i class="fa fa-cube"></i> Inventario por producto</a>
+                        </li>
+                        
+              
+                        
+                    </ul>
+                </li>                
+                
+                <li>
                     <a href="#"><i class="fa fa-calculator"></i> <span>Contabilidad</span></a>
                     <ul class="treeview-menu">
                         <?php
@@ -941,10 +961,13 @@
                             if($rolusuario[133-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('sincronizacion');?>"><i class="fa-solid fa-arrows-rotate"></i> Sincronizar</a>
+                            <a href="<?php echo site_url('dosificacion/configurar');?>"><i class="fa fa-mercury"></i> Configurar Facturacion</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('eventos_significativos');?>"><i class="fa fa-link"></i> Eventos Significativos</a>
+                            <a href="<?php echo site_url('sincronizacion');?>"><i class="fa fa-server"></i> Sincronizar</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('eventos_significativos');?>"><i class="fa fa-calendar"></i> Eventos Significativos</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('emision_paquetes');?>"><i class="fa fa-link"></i> Envio/Emision de Paquetes</a>
@@ -956,7 +979,7 @@
                             <a href="<?php echo site_url('token');?>"><i class="fa fa-align-justify"></i> Token</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('cufd');?>"><i class="fa fa-puzzle-piece"></i> Cufd</a>
+                            <a href="<?php echo site_url('cufd');?>"><i class="fa fa-codepen"></i> Cufd</a>
                         </li>
                         <?php
                         }

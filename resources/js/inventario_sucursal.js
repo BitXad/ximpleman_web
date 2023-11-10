@@ -47,6 +47,7 @@ function actualizar_inventarios(){
 
 /* muestra la tabla inventario sucursal de inventario_sucursal */
 function tabla_inventariosuc(){
+    
     var base_url = document.getElementById("base_url").value;
     var parametro = document.getElementById("filtrar").value;
     var decimales = document.getElementById("decimales").value;
@@ -137,7 +138,7 @@ function tabla_inventariosuc(){
                         html += "	<td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(2)+"</center></td>";
                         if(1 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc1']+"</td>";
-                            html += `<td class='text-right' style='padding:0;${inv[i]["suc1"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc1"] >= 0 ? "background-color: lightgray":""}'>`;
                             
                             let partes = inv[i]['suc1'];
                             let partes1 = partes.toString();
@@ -155,7 +156,7 @@ function tabla_inventariosuc(){
                         }
                         if(2 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc2']+"</td>";
-                            html += `<td class='text-right' style='padding:0;${inv[i]["suc2"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc2"] >= 0 ? "background-color: lightgray":""}'>`;
                             if(inv[i]['suc2'] != null){
                                 let partes = inv[i]['suc2'];
                                 let partes1 = partes.toString();
@@ -174,7 +175,7 @@ function tabla_inventariosuc(){
                         }
                         if(3 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc3']+"</td>";
-                            html += `<td class='text-right' style='padding:0;${inv[i]["suc3"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc3"] >= 0 ? "background-color: lightgray":""}'>`;
                             if(inv[i]['suc3'] != null){
                                 let partes = inv[i]['suc3'];
                                 let partes1 = partes.toString();
@@ -193,7 +194,7 @@ function tabla_inventariosuc(){
                         }
                         if(4 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc4']+"</td>";
-                            html += `<td class='text-right' style='padding:0;${inv[i]["suc4"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc4"] >= 0 ? "background-color: lightgray":""}'>`;
                             if(inv[i]['suc4'] != null){
                                 let partes = inv[i]['suc4'];
                                 let partes1 = partes.toString();
@@ -212,7 +213,7 @@ function tabla_inventariosuc(){
                         }
                         if(5 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc5']+"</td>";
-                            html += `<td class='text-right' style='padding:0;${inv[i]["suc5"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc5"] >= 0 ? "background-color: lightgray":""}'>`;
                             if(inv[i]['suc5'] != null){
                                 let partes = inv[i]['suc5'];
                                 let partes1 = partes.toString();
@@ -231,7 +232,7 @@ function tabla_inventariosuc(){
                         }
                         if(6 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc6']+"</td>";
-                            html += `<td class='text-right' style='padding:0;${inv[i]["suc6"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc6"] >= 0 ? "background-color: lightgray":""}'>`;
                             if(inv[i]['suc6'] != null){
                                 let partes = inv[i]['suc6'];
                                 let partes1 = partes.toString();
@@ -250,7 +251,7 @@ function tabla_inventariosuc(){
                         }
                         if(7 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc7']+"</td>";
-                            html += `<td class='text-right' style='padding:0;${inv[i]["suc7"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc7"] >= 0 ? "background-color: lightgray":""}'>`;
                             if(inv[i]['suc7'] != null){
                                 let partes = inv[i]['suc7'];
                                 let partes1 = partes.toString();
@@ -269,7 +270,7 @@ function tabla_inventariosuc(){
                         }
                         if(8 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc8']+"</td>";
-                            html += `<td class='text-right' style='padding:0;${inv[i]["suc8"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc8"] >= 0 ? "background-color: lightgray":""}'>`;
                             if(inv[i]['suc8'] != null){
                                 let partes = inv[i]['suc8'];
                                 let partes1 = partes.toString();
@@ -288,7 +289,7 @@ function tabla_inventariosuc(){
                         }
                         if(9 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc9']+"</td>";
-                            html += `<td class='text-right' style='padding:0;${inv[i]["suc9"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc9"] >= 0 ? "background-color: lightgray":""}'>`;
                             if(inv[i]['suc9'] != null){
                                 let partes = inv[i]['suc9'];
                                 let partes1 = partes.toString();
@@ -307,7 +308,7 @@ function tabla_inventariosuc(){
                         }
                         if(10 <= totalalmacen){
                             //html += "<td "+margen+" class='text-right'>"+inv[i]['suc10']+"</td>";
-                            html += `<td class='text-right' style='padding:0;${inv[i]["suc10"] <= 0 ? "background-color: #FF8989":""}'>`;
+                            html += `<td class='text-right' style='padding:0;${inv[i]["suc10"] >= 0 ?"background: lightgray":""}'>`;
                             if(inv[i]['suc10'] != null){
                                 let partes = inv[i]['suc10'];
                                 let partes1 = partes.toString();

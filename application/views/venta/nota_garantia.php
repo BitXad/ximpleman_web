@@ -152,3 +152,19 @@
         <i class="fa fa-sign-out fa-4x"></i><br><br>
        Salir <br>
     </a>
+
+<?php 
+$opc = $parametro[0]['parametro_cerrarventanas'];
+if($opc==1){ ?>
+
+<script>
+  // Función para cerrar la ventana
+  function cerrarVentana() {
+    window.close();
+  }
+
+  // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)
+  setTimeout(cerrarVentana, 2000);
+</script>
+
+<?php } ?>

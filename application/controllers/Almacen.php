@@ -35,7 +35,7 @@ class Almacen extends CI_Controller{
         if($this->acceso(24)){
             $data['page_title'] = "Almacenes";
             
-            $data['almacen'] = $this->Almacen_model->get_all_almacen();
+            $data['almacen'] = $this->Almacen_model->get_almacenes();
 
             $data['_view'] = 'almacen/index';
             $this->load->view('layouts/main',$data);

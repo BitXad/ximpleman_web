@@ -250,7 +250,7 @@ border-bottom:1px solid black;
                              }else{  
                                  $lacantidad = number_format($dc['detallecomp_cantidad'],$decimales,'.',',');  
                              }  
-                             echo $lacantidad;                             
+                             //echo $lacantidad;                             
                             
                             ?>
                             
