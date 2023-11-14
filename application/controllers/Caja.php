@@ -241,8 +241,14 @@ class Caja extends CI_Controller{
         $monto_caja = $this->input->post("monto_caja");
         $caja_id = $this->input->post("caja_id");
         
-        $sql = "update caja set caja_apertura = ".$monto_caja.", caja_fechaapertura = date(now()), ".
-                "caja_horaapertura = time(now()) where caja_id = ".$caja_id;
+        // Obtener la fecha y hora actual en formato MySQL
+        $fecha_apertura = date("Y-m-d");
+
+        // Obtener el tiempo actual en formato Unix
+        $hora_apertura = time();
+        
+        $sql = "update caja set caja_apertura = ".$monto_caja.", caja_fechaapertura = '{$fecha_apertura}', ".
+                "caja_horaapertura = '{$fecha_apertura}' where caja_id = ".$caja_id;
         
         $this->Caja_model->ejecutar($sql);
         echo json_encode($sql);
@@ -386,9 +392,10 @@ class Caja extends CI_Controller{
         $bitacoracaja_montocaja = $this->input->post("bitacoracaja_montocaja");
         $bitacoracaja_tipo = $this->input->post("bitacoracaja_tipo");        
         
+        $now = "'".date("Y-m-d H:i:s")."'";
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
                 ",'".$bitacoracaja_evento."',".$usuario_id.",".
                 $bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
         

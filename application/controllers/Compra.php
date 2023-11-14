@@ -529,9 +529,10 @@ class Compra extends CI_Controller{
         $this->guardar_detalle_bitacora($compra_id);
 
         //**************** bitacora caja ********************
-
-            $bitacoracaja_fecha = "date(now())";
-            $bitacoracaja_hora = "time(now())";
+            $now = "'".date("Y-m-d H:i:s")."'";
+        
+            $bitacoracaja_fecha = "date({$now})";
+            $bitacoracaja_hora = "time({$now})";
             $bitacoracaja_evento = "(select concat('MODIFICAR COMPRA No: 00','".$compra_id."','| PROVEEDOR: ',c.proveedor_id, '| CANT: ',count(*),'| NUEVO TOTAL: ',round(sum(detallecomp_cantidad * detallecomp_precio),2)) from detalle_compra d, compra c where c.compra_id = ".$compra_id." and c.compra_id = d.compra_id )";
             //$usuario_id = esta mas arriba;
             $bitacoracaja_montoreg = 0;

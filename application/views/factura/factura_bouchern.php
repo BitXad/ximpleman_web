@@ -355,7 +355,13 @@
                                     ?>
                                     
                                     <?php
-                                    $caracteristicas = trim($d['detallefact_caracteristicas']);
+                                                                      
+                                    if ($d['detallefact_caracteristicas'] !== null) {
+                                        $caracteristicas = trim($d['detallefact_caracteristicas']);
+                                    }else{
+                                        $caracteristicas = "";
+                                    }
+                                    
                                     if($caracteristicas!='' && $caracteristicas!=null && $caracteristicas!='-' && $caracteristicas!='null') {
                                         echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
                                         //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }

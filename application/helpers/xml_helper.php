@@ -538,7 +538,7 @@ $salto_linea='
             $cabecera_facturaxml .= $salto_linea.'          <descuentoAdicional>'.number_format($factura['factura_descuento'],$dos_decimales,".","").'</descuentoAdicional>';
             $cabecera_facturaxml .= $salto_linea.'          <codigoExcepcion>'.$factura_excepcion.'</codigoExcepcion>';
         
-            if($factura['factura_cafc'] != 0 || $factura['factura_cafc'] != ""){            
+            if($factura['factura_cafc'] != 0 && $factura['factura_cafc'] != ""){            
                 $cabecera_facturaxml .= $salto_linea.'          <cafc xsi:nil="false">'.$factura['factura_cafc'].'</cafc>';
              }else{
                 $cabecera_facturaxml .= $salto_linea.'          <cafc xsi:nil="true">'.$valor_vacio.'</cafc>';

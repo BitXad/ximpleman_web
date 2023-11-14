@@ -117,8 +117,8 @@ class Reportes extends CI_Controller{
             
             
             //*******************************************************
-                $fecha1 = "date(now())"; //$this->input->post('fecha1');   
-                $fecha2 =  "date(now())"; //$this->input->post('fecha2'); 
+                $fecha1 = date("Y-m-d"); //$this->input->post('fecha1');   
+                $fecha2 =  date("Y-m-d"); //$this->input->post('fecha2'); 
                 //$usuario = $this->input->post('usuario_id'); 
                 $usuario = $this->session_data['usuario_id']; 
 //                $valfecha1 = "";
