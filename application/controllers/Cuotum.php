@@ -581,7 +581,7 @@ class Cuotum extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->parametros;
-        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(47)){
             $usuario_id = $this->session_data['usuario_id'];
         $data['cuota'] = $this->Cuotum_model->get_cuotum($cuota_id);
@@ -598,6 +598,7 @@ class Cuotum extends CI_Controller{
         $facturado = $this->input->post('factura');
         $banco_id = $this->input->post('forma_pago') != 1 ? $this->input->post('banco'):'0';
 
+        $now = "'".date("Y-m-d H:i:s")."'";
         /////////////////la facturaaaa//////////////////
             if($facturado=="on"){
                 $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
@@ -608,8 +609,8 @@ class Cuotum extends CI_Controller{
                 
                 $venta_efectivo    = $this->input->post('cuota_cancelado');
                 $factura_fechaventa    = date("Y-m-d");
-                $factura_fecha         = "date(now())";
-                $factura_hora          = "time(now())";
+                $factura_fecha         = "date({$now})";
+                $factura_hora          = "time({$now})";
                 $factura_subtotal      = $this->input->post('cuota_cancelado');
                 $factura_nit           = $this->input->post('cuota_nit');
                 $factura_razonsocial   = $this->input->post('cuota_razon');

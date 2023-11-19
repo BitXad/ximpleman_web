@@ -1950,7 +1950,10 @@ function ingreso_rapido($cantidad,$producto_id,$producto_costo){
     
         if($this->acceso(1)){
             $usuario_id = $this->session_data['usuario_id'];
-        $compra_fecha = "now()";
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}    
+            
+            
+        $compra_fecha = "{$now}";
         $compra_hora = "'".date('H:i:s')."'";
         $compra = array(
                     'estado_id' => 1,
@@ -2270,6 +2273,7 @@ function compra_rapida(){
     /* confirmar traspaso */
     function restablecer_backup()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         
         $bitacora_codigo = $this->input->post('bitacora_codigo');
         $compra_id = $this->input->post('compra_id');
@@ -2296,8 +2300,8 @@ function compra_rapida(){
 
             //**************** bitacora caja ********************
             // NO ES NECESARIA ESTA FUNCION PORQUE ES PARTE DE LA FINALIZACION DEL PROCESO DE VENTAS
-            $bitacoracaja_fecha = "date(now())";
-            $bitacoracaja_hora = "time(now())";
+            $bitacoracaja_fecha = "date({$now})";
+            $bitacoracaja_hora = "time({$now})";
             $cadena = str_replace("'", "", $sql);
             $bitacoracaja_evento = "concat('RESTABLECER BACKUP DE BITACORA: {$bitacora_codigo}', 'COMPRA: {$compra_id}','CONSULTA: {$cadena}')";
             //$usuario_id = esta mas arriba;

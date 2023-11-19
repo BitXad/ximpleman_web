@@ -74,9 +74,9 @@ border-bottom : 1px solid #aaa;*/
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <!-------------------------------------------------------->
-<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+<?php //$tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro["parametro_anchofactura"]."cm";
+      $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
 
 
@@ -171,7 +171,7 @@ border-bottom : 1px solid #aaa;*/
                        
                         ?>
            <tr style="font-size: 8pt;">
-                <td align="center" style="padding: 0;"><?php echo $d['detalleordencomp_cantidad']; ?></td>
+                <td align="center" style="padding: 0;"><?php echo number_format($d['detalleordencomp_cantidad'],2,'.',','); ?></td>
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <b><?php echo $d['producto_nombre']; ?></b></td>
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detalleordencomp_costo'],2,'.',','); ?></td>
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detalleordencomp_total'],2,'.',','); ?></td>

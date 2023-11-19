@@ -431,8 +431,8 @@ class Venta extends CI_Controller{
             
         //**************** bitacora caja ********************
         // NO ES NECESARIA ESTA FUNCION PORQUE ES PARTE DE LA FINALIZACION DEL PROCESO DE VENTAS
-//        $bitacoracaja_fecha = "date(now())";
-//        $bitacoracaja_hora = "time(now())";
+//        $bitacoracaja_fecha = "date(no_w())";
+//        $bitacoracaja_hora = "time(no_w())";
 //        $bitacoracaja_evento = "(select concat('ELIMINACION TOTAL PRODUCTOS EN VENTAS, CANT: ',count(*),', TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
 //        //$usuario_id = esta mas arriba;
 //        $bitacoracaja_montoreg = 0;
@@ -492,6 +492,8 @@ class Venta extends CI_Controller{
     
     function registrarventa() // registra la venta y genera la factura
     {
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(12)){
         //**************** inicio contenido ***************   
             //$factura_fecha_hora = '2022-07-03 13:17:10.000';//borrar
@@ -700,7 +702,7 @@ class Venta extends CI_Controller{
                     // $credito_interesmonto =  $venta_total * $venta_interes; //revisar
                     $credito_interesmonto =  $venta_total * 0; //revisar
                     $credito_numpagos =  $cuotas;
-                    $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                    $credito_fechalimite =  "date_add(date({$now}), INTERVAL +1 WEEK)";
                     // $credito_fecha = date('Y-m-d');
                     $credito_fecha = $fecha_venta;
                     // $time = time();
@@ -868,8 +870,8 @@ class Venta extends CI_Controller{
                     $moneda_id = 1;
                     $proveedor_id = 1; //Por defecto debe ser el 
                     //$forma_id
-                    $compra_fecha = "date(now())";
-                    $compra_hora = "time(now())";
+                    $compra_fecha = "date({$now})";
+                    $compra_hora = "time({$now})";
                     $compra_subtotal = $venta_subtotal;
                     $compra_descuento = $venta_descuentoparcial;
                     $compra_descglobal = $venta_descuento;
@@ -921,8 +923,8 @@ class Venta extends CI_Controller{
                         $estado_id = 1; 
                         
                         $factura_fechaventa    = $fecha_venta;
-                        $factura_fecha         = "date(now())";
-                        $factura_hora          =  $hora_venta; //"time(now())";
+                        $factura_fecha         = "date({$now})";
+                        $factura_hora          =  $hora_venta; //"time(no_w())";
                         $factura_subtotal = $venta_subtotal;
                         $factura_nit           = $numero_doc_identidad;
                         $factura_razonsocial   = $razon;
@@ -1393,7 +1395,7 @@ class Venta extends CI_Controller{
                     
                     $sql = "update orden_trabajo set estado_id = 18  where orden_id = ".$orden_id;
                     $this->Venta_model->ejecutar($sql);
-                    $proceso_fechaproceso = "now()";
+                    $proceso_fechaproceso = "{$now}";
                     $contador = 1;
                     $detalle = "SELECT detalleorden_id from detalle_orden where orden_id=".$orden_id." ";
                     $detalle_orden = $this->db->query($detalle)->result_array();
@@ -1538,6 +1540,7 @@ class Venta extends CI_Controller{
 
     function generar_factura() //Genera factura depues de realizar una venta
     {  
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
 
@@ -1598,8 +1601,8 @@ class Venta extends CI_Controller{
             //$venta_id = $this->input->post('venta_id');
             
             $factura_fechaventa = $fecha_venta;
-            $factura_fecha = "date(now())";
-            $factura_hora = "time(now())";
+            $factura_fecha = "date({$now})";
+            $factura_hora = "time({$now})";
             $factura_subtotal = $monto_factura;
             $factura_ice = 0;
             $factura_exento = 0;
@@ -1771,6 +1774,8 @@ class Venta extends CI_Controller{
      */
 function edit($venta_id){  
     
+    
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(19)){
             
         //**************** inicio contenido ***************      
@@ -1830,7 +1835,7 @@ function edit($venta_id){
                         $credito_interesproc =  0;
                         $credito_interesmonto =  0; //revisar
                         $credito_numpagos =  1;
-                        $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                        $credito_fechalimite =  "date_add(date({$now}), INTERVAL +1 WEEK)";
                         $credito_fecha = $venta['venta_fecha'];
                         $time = time();
                         $credito_hora =  date("H:i:s", $time);
@@ -1987,7 +1992,7 @@ function edit($venta_id){
     function modificar_venta($venta_id)
     {
         
-        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(20)){
         //**************** inicio contenido ***************      
 
@@ -2059,7 +2064,7 @@ function edit($venta_id){
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
                 ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
         
         $this->Venta_model->ejecutar($sql);
@@ -2082,6 +2087,7 @@ function edit($venta_id){
     
     function modificar_detalle()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(12)){
             //**************** inicio contenido ***************
             $usuario_id = $this->session_data['usuario_id'];
@@ -2230,8 +2236,8 @@ function edit($venta_id){
 
             //**************** bitacora caja ********************
 
-            $bitacoracaja_fecha = "date(now())";
-            $bitacoracaja_hora = "time(now())";
+            $bitacoracaja_fecha = "date({$now})";
+            $bitacoracaja_hora = "time({$now})";
             $bitacoracaja_evento = "(select concat('FINALIZAR MODIFICACION EN VENTA Nº: 00','".$venta_id."','| CLIENTE ID: ','".$cliente_id."', '| CANT: ',count(*),'| NUEVO TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
             //$usuario_id = esta mas arriba;
             $bitacoracaja_montoreg = 0;
@@ -2273,7 +2279,7 @@ function edit($venta_id){
                         $credito_interesproc =  $credito_interes;
                         $credito_interesmonto =  $venta_total * $venta_interes; //revisar
                         $credito_numpagos =  $cuotas;
-                        $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                        $credito_fechalimite =  "date_add(date({$now}), INTERVAL +1 WEEK)";
                         $credito_fecha = $venta_fecha;
                         // $time = time();
                         $credito_hora =  date("H:i:s");
@@ -2419,7 +2425,7 @@ function edit($venta_id){
                     $credito_interesproc =  $credito_interes;
                     $credito_interesmonto =  $venta_total * $venta_interes; //revisar
                     $credito_numpagos =  $cuotas;
-                    $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                    $credito_fechalimite =  "date_add(date({$now}), INTERVAL +1 WEEK)";
                     $credito_fecha = $venta_fecha;
                     // $time = time();
                     $credito_hora =  date("H:i:s");
@@ -2605,14 +2611,15 @@ function edit($venta_id){
      */
     function eliminartodo()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(12)){
         //**************** inicio contenido ***************  
             
         //************ inicio bitacora 
         $data['sistema'] = $this->sistema;   
         $usuario_id = $this->session_data['usuario_id'];        
-        $bitacoracaja_fecha = "date(now())";
-        $bitacoracaja_hora = "time(now())";
+        $bitacoracaja_fecha = "date({$now})";
+        $bitacoracaja_hora = "time({$now})";
         $bitacoracaja_evento = "(select concat('QUITAR TODOS LOS PRODUCTOS EN VENTAS CANT: ',count(*),'| TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
         $bitacoracaja_montoreg = 0;
         $bitacoracaja_montocaja = 0;
@@ -3240,6 +3247,7 @@ function ultimacomanda(){
 
 function eliminar_venta($venta_id){
 
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(12)){
             
         $data['sistema'] = $this->sistema;    
@@ -3256,7 +3264,7 @@ function eliminar_venta($venta_id){
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
                 ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
         
         $this->Venta_model->ejecutar($sql);
@@ -3293,6 +3301,8 @@ function eliminar_venta($venta_id){
 
 function anular_venta($venta_id){
 
+    $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+    
         if($this->acceso(22)){
             
         $data['sistema'] = $this->sistema;   
@@ -3311,7 +3321,7 @@ function anular_venta($venta_id){
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
                 ",'".$bitacoracaja_evento."',".$usuario_id.",0,0,".$bitacoracaja_tipo.",".$this->caja_id.")";
         
         $this->Venta_model->ejecutar($sql);
@@ -3379,7 +3389,9 @@ function anular_venta($venta_id){
     function mostrar_ventas()
     {
         //**************** inicio contenido ***************   
-
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $usuario_id = $this->session_data['usuario_id'];
 
         $data['sistema'] = $this->sistema;   
@@ -3391,7 +3403,7 @@ function anular_venta($venta_id){
                 $filtro = $this->input->post('filtro');
 
                 if ($filtro == null){
-                    $result = $this->Venta_model->get_ventas(" and v.venta_fecha = date(now())");
+                    $result = $this->Venta_model->get_ventas(" and v.venta_fecha = date({$now})");
                 }
                 else{
                     $result = $this->Venta_model->get_ventas($filtro);            
@@ -3403,7 +3415,7 @@ function anular_venta($venta_id){
                 $filtro = $this->input->post('filtro');
 
                 if ($filtro == null){
-                    $result = $this->Venta_model->get_ventas_enlinea(" and v.venta_fecha = date(now())");
+                    $result = $this->Venta_model->get_ventas_enlinea(" and v.venta_fecha = date({$now})");
                 }
                 else{
                     $result = $this->Venta_model->get_ventas_enlinea($filtro);            
@@ -3592,7 +3604,7 @@ function anular_venta($venta_id){
     function verificar_ventas()
     {
         //**************** inicio contenido ***************   
-
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $usuario_id = $this->session_data['usuario_id'];
 
         
@@ -3601,7 +3613,7 @@ function anular_venta($venta_id){
             $filtro = $this->input->post('filtro');
             
             if ($filtro == null){
-                $result = $this->Venta_model->mostrar_ventas(" and v.venta_fecha = date(now())");
+                $result = $this->Venta_model->mostrar_ventas(" and v.venta_fecha = date({$now})");
             }
             else{
                 $result = $this->Venta_model->mostrar_ventas($filtro);            
@@ -3620,15 +3632,16 @@ function anular_venta($venta_id){
 
     function costo_cero()
     {       
-         if($this->acceso(15)){
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        if($this->acceso(15)){
         //**************** inicio contenido ***************       
         
         //************ inicio bitacora 
             
         $usuario_id = $this->session_data['usuario_id'];
         
-        $bitacoracaja_fecha = "date(now())";
-        $bitacoracaja_hora = "time(now())";
+        $bitacoracaja_fecha = "date({$now})";
+        $bitacoracaja_hora = "time({$now})";
         $bitacoracaja_evento = "(select concat('COSTO CERO CANT PROD.: ',count(*),'| TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
         $bitacoracaja_montoreg = 0;
         $bitacoracaja_montocaja = 0;
@@ -3731,16 +3744,17 @@ function anular_venta($venta_id){
     }        
 
     function precio_costo()
-    {       
-         if($this->acceso(16)){
+    {     
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        if($this->acceso(16)){
         //**************** inicio contenido ***************       
         
         //************ inicio bitacora 
             
         $usuario_id = $this->session_data['usuario_id'];
         
-        $bitacoracaja_fecha = "date(now())";
-        $bitacoracaja_hora = "time(now())";
+        $bitacoracaja_fecha = "date({$now})";
+        $bitacoracaja_hora = "time({$now})";
         $bitacoracaja_evento = "(select concat('PRECIO COSTO CANT PROD.: ',count(*),'| TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
         $bitacoracaja_montoreg = 0;
         $bitacoracaja_montocaja = 0;
@@ -3909,17 +3923,18 @@ function anular_venta($venta_id){
         //if($this->acceso(12)){
         //**************** inicio contenido ***************       
 
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
             $usuario_vendedor = $this->session_data['usuario_id'];
             $usuario_id = $this->input->post('usuario_id');
             $moneda_tc = $this->input->post('moneda_tc');
 
 
-            $sql =  "delete from inventario_usuario where inventario_fecha = date(now()) and usuario_id = ".$usuario_id;
+            $sql =  "delete from inventario_usuario where inventario_fecha = date({$now}) and usuario_id = ".$usuario_id;
             $this->Venta_model->ejecutar($sql);
             
             $sql =  "insert into inventario_usuario
                     (producto_id,inventario_costo, inventario_fecha,inventario_hora,inventario_cantidad,inventario_ventas, inventario_pedidos,inventario_devoluciones,inventario_saldo,usuario_id,moneda_tc)
-                    (select producto_id,detalleven_costo, date(now()),time(now()), detalleven_cantidad , 0, 0, 0, detalleven_cantidad, ".$usuario_id.", ".$moneda_tc." 
+                    (select producto_id,detalleven_costo, date({$now}),time({$now}), detalleven_cantidad , 0, 0, 0, detalleven_cantidad, ".$usuario_id.", ".$moneda_tc." 
                     from detalle_venta_aux where usuario_id=".$usuario_vendedor.")";
             $this->Venta_model->ejecutar($sql);
             
@@ -3933,12 +3948,12 @@ function anular_venta($venta_id){
     function numero_ventas(){
         //if($this->acceso(12)){
         //**************** inicio contenido ***************       
-
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
             $usuario_vendedor = $this->session_data['usuario_id'];
             $usuario_id = $this->input->post('usuario_id');
 
 
-            $sql =  "select count(*)+1 as cantidad from venta where venta_fecha = date(now())";
+            $sql =  "select count(*)+1 as cantidad from venta where venta_fecha = date({$now})";
             $res = $this->Venta_model->consultar($sql);
             
                         
@@ -4242,6 +4257,7 @@ function anular_venta($venta_id){
 
    function registrar_devolucion(){
         
+       $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
        $data['sistema'] = $this->sistema;
         if($this->acceso(12)){
         //**************** inicio contenido ***************       
@@ -4253,8 +4269,8 @@ function anular_venta($venta_id){
             $sql = "update detalle_venta set".
                     " detalleven_devueltoenvase = ".$cantidad.
                     ",detalleven_montodevolucion = ".$garantia.
-                    ",detalleven_fechadevolucion = date(now()) ".
-                    ",detalleven_horadevolucion = time(now()) ".
+                    ",detalleven_fechadevolucion = date({$now}) ".
+                    ",detalleven_horadevolucion = time({$now}) ".
                     ",detalleven_usuario_id = ".$usuario_id.
                     " where detalleven_id = ".$detalleven_id;
             
@@ -4273,6 +4289,7 @@ function anular_venta($venta_id){
    /* genera factura desde el index de ventas  */
     function generar_factura_detalle_aux()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(12)){
             //$dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
@@ -4302,8 +4319,8 @@ function anular_venta($venta_id){
             $estado_id = 1;
             $fecha_venta = date('Y-m-d');
             $factura_fechaventa = $fecha_venta;
-            $factura_fecha = "date(now())";
-            $factura_hora = "time(now())";
+            $factura_fecha = "date({$now})";
+            $factura_hora = "time({$now})";
             $factura_subtotal = $venta[0]["venta_subtotal"];//$monto_factura;
             $tipotrans_id = $venta[0]["tipotrans_id"]; //tipo de transaccion
             $forma_id = $venta[0]["forma_id"];//Forma de pago
@@ -4590,6 +4607,7 @@ function anular_venta($venta_id){
     }
     
     function array_to_xml($array_to_xml, &$xml) {
+        
         foreach($array_to_xml as $key => $value) {
             if(is_array($value)) {
                 if(!is_numeric($key)){
@@ -4609,6 +4627,7 @@ function anular_venta($venta_id){
     /* genera factura desde el index de servicios con sus detalles */
     function generar_factura_detalle_servicio()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         if($this->acceso(12)){
             //$dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
@@ -4636,8 +4655,8 @@ function anular_venta($venta_id){
             $estado_id = 1;
             $fecha_venta = date('Y-m-d');
             $factura_fechaventa = $fecha_venta;
-            $factura_fecha = "date(now())";
-            $factura_hora = "time(now())";
+            $factura_fecha = "date({$now})";
+            $factura_hora = "time({$now})";
             $factura_subtotal = $monto_factura;
             $factura_ice = 0;
             $factura_exento = 0;
@@ -5141,9 +5160,10 @@ function anular_venta($venta_id){
     
     function verificar_cufd(){
         
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $usuario_id = $this->session_data['usuario_id'];
         $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
-        $sql ="select * from cufd where cufd_fechavigencia>=now() and cufd_puntodeventa = ".$puntoventa['puntoventa_codigo'];
+        $sql ="select * from cufd where cufd_fechavigencia>={$now} and cufd_puntodeventa = ".$puntoventa['puntoventa_codigo'];
         $cufd = $this->Venta_model->consultar($sql);
         
         if(sizeof($cufd)>0){

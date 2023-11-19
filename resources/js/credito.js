@@ -1,6 +1,28 @@
  $(document).on("ready",inicio);
+ 
+ 
+function now_sql() {
+  const fecha = new Date();
+  const year = fecha.getFullYear();
+  const month = agregarCeroSiNecesario(fecha.getMonth() + 1);
+  const day = agregarCeroSiNecesario(fecha.getDate());
+  const hours = agregarCeroSiNecesario(fecha.getHours());
+  const minutes = agregarCeroSiNecesario(fecha.getMinutes());
+  const seconds = agregarCeroSiNecesario(fecha.getSeconds());
+
+  return `'${year}-${month}-${day} ${hours}:${minutes}:${seconds}'`;
+}
+
+function agregarCeroSiNecesario(numero) {
+  return numero < 10 ? `0${numero}` : numero;
+}
+ 
+ 
 function inicio(){
-    filtro = " and date(credito_fecha) = date(now())";
+    
+    var nowsql = now_sql();
+
+    filtro = " and date(credito_fecha) = date("+nowsql+")";
     var cd = document.getElementById('cd').value;
     if(cd =="d"){
         tabladeudas(filtro);

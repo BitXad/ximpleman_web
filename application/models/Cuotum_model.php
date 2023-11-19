@@ -342,6 +342,8 @@ class Cuotum_model extends CI_Model
     }
     /* Funcion para obtener todos las ventas con mora */
     function get_moras($consulta_usuario = "",$condicion1="",$condicion2=""){
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         return $this->db->query(
             "SELECT c.credito_id,c.credito_numpagos , min(c2.cuota_numcuota),count(c2.cuota_id) as cuotas, m.dias_mora,
                 if(v.venta_id is null,s.servicio_id ,v.venta_id) as venta_id , if(v.venta_id is null,'Servicio' ,'Venta') as razon,
@@ -365,20 +367,20 @@ class Cuotum_model extends CI_Model
                     select min(cu3.cuota_numcuota) as cuotas_adeudadas, cu3.credito_id, cu3.estado_id 
                     from cuota cu3
                     where cu3.estado_id = 8
-                    and cu3.cuota_fechalimite > now() 
+                    and cu3.cuota_fechalimite > {$now} 
                     group by cu3.credito_id
                 ) as adeu on adeu.credito_id = cu.credito_id
-                where cu.cuota_fechalimite < now()
+                where cu.cuota_fechalimite < {$now}
                 and cu.estado_id = 8
                 group by cu.credito_id
             ) c2 on c2.credito_id = c.credito_id
             left join (
-                select c5.cuota_id,if(datediff(now(),c5.cuota_fechalimite) is null, 0, datediff(now(),c5.cuota_fechalimite)) as dias_mora
-                    ,if(c5.cuota_fechalimite < now(),count(c5.cuota_fechalimite),0) as cuotas_adeudadas, c5.cuota_fechalimite 
+                select c5.cuota_id,if(datediff({$now},c5.cuota_fechalimite) is null, 0, datediff({$now},c5.cuota_fechalimite)) as dias_mora
+                    ,if(c5.cuota_fechalimite < {$now},count(c5.cuota_fechalimite),0) as cuotas_adeudadas, c5.cuota_fechalimite 
                 from credito c4 
                 left join cuota c5 on c5.credito_id = c4.credito_id
                 where c5.estado_id = 8
-                and c5.cuota_fechalimite <= now()
+                and c5.cuota_fechalimite <= {$now}
                 group by c5.credito_id
             ) as m on m.cuota_id = c2.cuota_id 
             left join venta v on c.venta_id = v.venta_id 
@@ -392,7 +394,7 @@ class Cuotum_model extends CI_Model
             and c2.monto_deuda > 0
             $condicion1
             $condicion2
-            and c2.cuota_fechalimite < now()
+            and c2.cuota_fechalimite < {$now}
             $consulta_usuario
             group by c.credito_id
             order by c3.cliente_nombre, c2.cuota_numcuota, c.credito_id"

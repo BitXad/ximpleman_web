@@ -54,6 +54,17 @@
 <input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
 <input type="text" id="parametro_tiposistema" value="<?php echo $parametro['parametro_tiposistema']; ?>" name="parametro_tiposistema"  hidden>
 <input type="text" id="parametro_tipoemision" value="<?php echo $parametro['parametro_tipoemision']; ?>" name="parametro_tipoemision"  hidden>
+<input type="text" id="categoria_producto" value="0" name="categoria_producto"  hidden>
+<input type="text" id="parametro_diasvenc" value="0" name="parametro_diasvenc"  hidden>
+<input type="text" id="venta_descuento" value="0" name="venta_descuento"  hidden>
+<input type="text" id="parametro_datosproducto" value="0" name="parametro_datosproducto"  hidden>
+<input type="text" id="parametro_cantidadsimple" value="0" name="parametro_cantidadsimple"  hidden>
+<input type="text" id="parametro_botonesproducto" value="0" name="parametro_botonesproducto"  hidden>
+<input type="text" id="parametro_mostrarmoneda" value="0" name="parametro_mostrarmoneda"  hidden>
+<input type="text" id="parametro_tablasencilla" value="0" name="parametro_tablasencilla"  hidden>
+<input type="text" id="parametro_tamanioletras" value="0" name="parametro_tamanioletras"  hidden>
+<input type="text" id="nit" value="0" name="nit"  hidden>
+<input type="text" id="punto_venta" value="0" name="punto_venta"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>

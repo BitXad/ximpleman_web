@@ -386,7 +386,7 @@ class Cliente_model extends CI_Model
     */
     function get_cliente_all_asignados($usuario_id){
         $cliente = $this->db->query("
-            SELECT count(*) as total_clientes_user
+            SELECT if(count(*)>0,count(*),0) as total_clientes_user
             FROM cliente c
             WHERE c.estado_id = 1
             and c.usuario_id = ".$usuario_id.";        
@@ -517,10 +517,10 @@ class Cliente_model extends CI_Model
      */
     function activar_cliente($cliente_id)
     {
-
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $sql = "update cliente set ".
                 " estado_id = 1,".
-                " cliente_fechaactivacion = now()".
+                " cliente_fechaactivacion = {$now}".
                 " where cliente_id = ".$cliente_id;
                 
         $this->db->query($sql);

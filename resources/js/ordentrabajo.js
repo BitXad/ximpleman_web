@@ -1,11 +1,29 @@
 $(document).on("ready",inicio);
 
 function inicio(){
-    
-        detalleordeni();
+
+    var nowsql = now_sql();
+    detalleordeni();
        
-       filtro = " and date(orden_fecha) = date(now())";
+    filtro = " and date(orden_fecha) = date("+nowsql+")";
     fechaorden(filtro);
+}
+
+
+function now_sql() {
+  const fecha = new Date();
+  const year = fecha.getFullYear();
+  const month = agregarCeroSiNecesario(fecha.getMonth() + 1);
+  const day = agregarCeroSiNecesario(fecha.getDate());
+  const hours = agregarCeroSiNecesario(fecha.getHours());
+  const minutes = agregarCeroSiNecesario(fecha.getMinutes());
+  const seconds = agregarCeroSiNecesario(fecha.getSeconds());
+
+  return `'${year}-${month}-${day} ${hours}:${minutes}:${seconds}'`;
+}
+
+function agregarCeroSiNecesario(numero) {
+  return numero < 10 ? `0${numero}` : numero;
 }
 
 function detalleordeni(){
@@ -277,15 +295,9 @@ function seleccionar(opcion) {
 
 function buscarcliente(){
 
-
-
    var base_url = document.getElementById('base_url').value;
-
    var nit = document.getElementById('nit').value;
-
    var controlador = base_url+'orden_trabajo/buscarcliente';
-
- 
  
     $.ajax({url:controlador,
 
@@ -1028,10 +1040,11 @@ function busqueda_ot()
 {
     var base_url    = document.getElementById('base_url').value;
     var opcion      = document.getElementById('select_fecha').value;
+    var nowsql = now_sql();
  
     if (opcion == 1)
     {
-        filtro = " and date(orden_fecha) = date(now())";
+        filtro = " and date(orden_fecha) = date("+nowsql+")";
         mostrar_ocultar_buscador("ocultar");
         $("#busquedaavanzada").html('Del Dia');
                
@@ -1040,7 +1053,7 @@ function busqueda_ot()
     if (opcion == 2)
     {
        
-        filtro = " and date(orden_fecha) = date_add(date(now()), INTERVAL -1 DAY)";
+        filtro = " and date(orden_fecha) = date_add(date("+nowsql+"), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
         $("#busquedaavanzada").html('De Ayer');
     }//compras de ayer
@@ -1048,7 +1061,7 @@ function busqueda_ot()
     if (opcion == 3) 
     {
     
-        filtro = " and date(orden_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
+        filtro = " and date(orden_fecha) >= date_add(date("+nowsql+"), INTERVAL -1 WEEK)";//compras de la semana
         mostrar_ocultar_buscador("ocultar");
         $("#busquedaavanzada").html('De la Semana');
             }

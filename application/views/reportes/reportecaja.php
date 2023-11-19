@@ -581,26 +581,41 @@ border-bottom : 1px solid #aaa;*/
             
             <?php
             $caja_diferencia = 0;
+            
             if(isset($caja)){
                 $caja_diferencia = $caja["caja_diferencia"];?>
             
-                <!--<br><b>EFECTIVO REGISTRADO Bs: <?php echo number_format($caja["caja_cierre"],2,".",","); ?> </b>-->
+                <br><b>EFECT.REG.X CAJA Bs: <?php echo number_format($caja["caja_cierre"],2,".",","); ?> </b>
                 
                 
             <?php
             }
             ?>
-           <b>DIFERENCIA Bs: <?php echo number_format($caja_diferencia,2,".",","); ?> </b>
+           <br><b>DIFERENCIA Bs: <?php echo number_format($caja_diferencia,2,".",","); ?> </b>
         </td>           
-    </tr>
-    
-    
-    
+        <!-- BITACORA -->    
+
+        <tr   style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
+            <td colspan="5" style="padding: 0;">
+                <b>TRANSACCIONES OBSERVADAS</b>
+            </td>
+        </tr>
+        
+        <?php 
+        $cont = 0;
+        foreach($bitacora as $c){ ?>
+            <tr>
+                <td colspan="5"  style="padding: 0; border-bottom: dashed 2px #000;"><?php echo "<b>".$c["bitacoracaja_hora"]."</b> - ".$c["bitacoracaja_evento"]; ?></td>
+            </tr>
+        <?php } ?>
+
+
+        <!-- FIN BITACORA -->    
     
 
     <tr   style="border-top-style: dashed 1px #000; border-top-width: 2px; border-bottom-style: dashed 1px #000; border-bottom-width: 2px; font-size: 10pt; padding: 0;">
         <td colspan="5" style="padding: 0; text-align: center; line-height: 12px;">
-            <small>Declaro veracidad de la información de este documento.</small>
+            <small>Declaro veracidad de la información de este documento, y la total responsabilidad de las operaciones realizadas.</small>
             <br><br><br><br><br>
             <?php if(isset($caja)){ echo $caja["usuario_nombre"];} ?><br>CAJERO(A)
         </td>

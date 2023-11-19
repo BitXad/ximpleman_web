@@ -107,6 +107,7 @@ class Eventos_significativos extends CI_Controller{
      /* en servicio Facturacion de Operaciones (Registro de Evento Significativo) es la Funcion: registroEventoSignificativo */
     function registroEventoSignificativo(){
         
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         try{
             $data['sistema'] = $this->sistema;
             if ($this->input->is_ajax_request()) {
@@ -200,7 +201,7 @@ class Eventos_significativos extends CI_Controller{
                     
                     $sql = "insert into registro_eventos(registroeventos_codigo,registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha, registroeventos_puntodeventa, registroeventos_inicio,
                             registroeventos_fin,registroeventos_cufd,registroeventos_codigocontrol,estado_id ) value('".
-                            $codigo_recepcion."',".$codigo_evento.",'".$descripcion."',now(),".$puntodeventa.",'".$fecha_inicio."','".$fecha_fin."','".$registroeventos_cufd."','".$registroeventos_codigocontrol."',1)";
+                            $codigo_recepcion."',".$codigo_evento.",'".$descripcion."',{$now},".$puntodeventa.",'".$fecha_inicio."','".$fecha_fin."','".$registroeventos_cufd."','".$registroeventos_codigocontrol."',1)";
                     
                     $this->Eventos_significativos_model->ejecutar($sql);
                     $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;
@@ -329,7 +330,7 @@ class Eventos_significativos extends CI_Controller{
                         'registroeventos_codigo' => $codigo_recepcion,
                         //'registroeventos_codigoevento' => $codigo_evento,
                         //'registroeventos_detalle' => $descripcion,
-                        //'registroeventos_fecha' => "now()",
+                        //'registroeventos_fecha' => "{$now}",
                         //'registroeventos_puntodeventa' => $puntodeventa,
                         //'registroeventos_inicio' => $fecha_inicio,
                         'registroeventos_fin' => $fecha_fin,

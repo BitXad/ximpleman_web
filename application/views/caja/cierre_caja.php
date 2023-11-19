@@ -284,13 +284,32 @@
                         </button>
                     </div>-->
             
-          	<div class="box-footer" style="display: none;" id="div_botones">
-                    <button type="input" class="btn btn-success">
-            		<i class="fa fa-floppy-o"></i> Cerrar Caja
-                    </button>
-                    <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-danger">
-                    <i class="fa fa-times"></i> Cancelar</a>
-          	</div>
+<div class="box-footer" style="display: none;" id="div_botones">
+    <button type="input" class="btn btn-success" onclick="confirmarCerrarCaja()">
+        <i class="fa fa-floppy-o"></i> Cerrar Caja
+    </button>
+    <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-danger">
+        <i class="fa fa-times"></i> Cancelar
+    </a>
+</div>
+
+<script>
+    function confirmarCerrarCaja() {
+        // Mostrar un cuadro de diálogo de confirmación
+        var confirmacion = confirm("¿Estás seguro de que quieres cerrar la caja?");
+
+        // Si el usuario hace clic en "Aceptar" en el cuadro de diálogo
+        if (confirmacion) {
+            // Aquí puedes agregar la lógica para cerrar la caja
+            // Por ejemplo, puedes redirigir a la página de cierre de caja o enviar una solicitud al servidor
+            // window.location.href = "<?php echo site_url('ruta_para_cerrar_caja'); ?>";
+        } else {
+            // Si el usuario hace clic en "Cancelar" en el cuadro de diálogo
+            // Puedes no hacer nada o mostrar un mensaje de cancelación, según tus necesidades
+            // alert("Cierre de caja cancelado");
+        }
+    }
+</script>
             
             
             <?php echo form_close(); ?>

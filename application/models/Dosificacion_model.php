@@ -64,6 +64,8 @@ class Dosificacion_model extends CI_Model
      */
     function get_all_dosificacion($params = array())
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $limit_condition = "";
         if(isset($params) && !empty($params))
             $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
@@ -79,7 +81,7 @@ class Dosificacion_model extends CI_Model
             WHERE
                 d.estado_id = e.estado_id
                 and d.empresa_id = em.empresa_id and
-                d.dosificacion_fechalimite >= date(now())
+                d.dosificacion_fechalimite >= date({$now})
 
             ORDER BY `dosificacion_id` DESC
 

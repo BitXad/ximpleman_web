@@ -7,6 +7,23 @@ function inicio(){
         buscar_pedidos();
 }
 
+
+function now_sql() {
+  const fecha = new Date();
+  const year = fecha.getFullYear();
+  const month = agregarCeroSiNecesario(fecha.getMonth() + 1);
+  const day = agregarCeroSiNecesario(fecha.getDate());
+  const hours = agregarCeroSiNecesario(fecha.getHours());
+  const minutes = agregarCeroSiNecesario(fecha.getMinutes());
+  const seconds = agregarCeroSiNecesario(fecha.getSeconds());
+
+  return `'${year}-${month}-${day} ${hours}:${minutes}:${seconds}'`;
+}
+
+function agregarCeroSiNecesario(numero) {
+  return numero < 10 ? `0${numero}` : numero;
+}
+
 function mostrar_ocultar_buscador(parametro){
        
     if (parametro == "mostrar"){
@@ -630,6 +647,7 @@ function buscar_pedidos()
     var fecha = new Date();
     var fech_actual = fecha.getFullYear()+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate(); 
     document.getElementById('loader').style.display = "block";
+    var nowsql = now_sql();
     
     var por_usuario = "";
     
@@ -639,20 +657,20 @@ function buscar_pedidos()
        
     if (opcion == 1) //pedidos de hoy
     {
-        filtro = " and date(pedido_fecha) = date(now())"+por_usuario;
+        filtro = " and date(pedido_fecha) = date("+nowsql+")"+por_usuario;
         mostrar_ocultar_buscador("ocultar");        
         
     }//pedidos de hoy
     
     if (opcion == 2)
     {
-        filtro = " and date(pedido_fecha) = date_add(date(now()), INTERVAL -1 DAY)"+por_usuario;
+        filtro = " and date(pedido_fecha) = date_add(date("+nowsql+"), INTERVAL -1 DAY)"+por_usuario;
         mostrar_ocultar_buscador("ocultar");
     }//pedidos de ayer
     
     if (opcion == 3) 
     {
-        filtro = " and date(pedido_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)"+por_usuario;//pedidos de la semana
+        filtro = " and date(pedido_fecha) >= date_add(date("+nowsql+"), INTERVAL -1 WEEK)"+por_usuario;//pedidos de la semana
         mostrar_ocultar_buscador("ocultar");
     }
     
@@ -676,19 +694,19 @@ function buscar_pedidos()
 
     if (opcion == 6) //entregas
     {
-        filtro = " and pedido_fechaentrega = date(now())"+por_usuario;
+        filtro = " and pedido_fechaentrega = date("+nowsql+")"+por_usuario;
         mostrar_ocultar_buscador("ocultar");
     }//entregas para hoy
 
     if (opcion == 7)
     {
-        filtro = " and pedido_fechaentrega = date_add(date(now()), INTERVAL -1 DAY)"+por_usuario;
+        filtro = " and pedido_fechaentrega = date_add(date("+nowsql+"), INTERVAL -1 DAY)"+por_usuario;
         mostrar_ocultar_buscador("ocultar");
     }//pedidos de ayer
     
     if (opcion == 8) 
     {
-        filtro = " and pedido_fechaentrega >= date_add(date(now()), INTERVAL -1 WEEK)"+por_usuario;//pedidos de la semana
+        filtro = " and pedido_fechaentrega >= date_add(date("+nowsql+"), INTERVAL -1 WEEK)"+por_usuario;//pedidos de la semana
         mostrar_ocultar_buscador("ocultar");
     }
     

@@ -136,10 +136,19 @@ border-bottom : 1px solid #aaa;
                 <br><br> 
                 <small>
                     
-                <?php $fecha = new DateTime($formula['formula_fechacreacion']); 
+                    <?php 
+                        if ($formula['formula_fechacreacion']!==null){
+                        $fecha = new DateTime($formula['formula_fechacreacion']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
-                  ?>    
-                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
+                        
+                      ?>    
+                        <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
+                    
+                    <?php }else{ ?>
+                    
+                        <b>LUGAR Y FECHA: </b>N/A<br>
+                    <?php } ?>
+                    
                     <!--<b>CODIGO: </b><?php echo $formula['cliente_codigo']." / NIT: ".$formula['cliente_nit']; ?> <br>-->
                     <b>FORMULA: </b><?php echo $formula['formula_nombre'].""; ?><br>
                     <b>PRODUCTO: </b><?php echo $formula['producto_nombre'].""; ?><br>

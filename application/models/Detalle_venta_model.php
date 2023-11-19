@@ -38,6 +38,7 @@ function get_all_entrega()
     }
 function ventas_dia($estado)
   {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $sql = "
             SELECT
                 v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, ts.tiposerv_descripcion, m.*, u.usuario_nombre
@@ -50,7 +51,7 @@ function ventas_dia($estado)
             LEFT JOIN usuario u on u.usuario_id = v.usuario_id
 
             WHERE
-            v.venta_fecha = date(now())
+            v.venta_fecha = date({$now})
             and v.entrega_id=".$estado." 
             ORDER BY v.venta_id  
             
@@ -113,6 +114,7 @@ function ventas_dia($estado)
    * para el caso sse aumento usuario.. y  eso aun hay que ver donde se usa!!  */
   function get_dventadia($estado,$destino,$usuario)
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $result = $this->db->query(
                 
         "SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id,
@@ -125,7 +127,7 @@ function ventas_dia($estado)
         LEFT JOIN usuario u ON ud.usuario_id=u.usuario_id
         LEFT JOIN clasificador l ON l.clasificador_id = d.clasificador_id
         LEFT JOIN preferencia t ON t.preferencia_id = d.preferencia_id
-        WHERE v.venta_fecha = date(now()) 
+        WHERE v.venta_fecha = date({$now}) 
         and v.entrega_id=".$estado."
         and p.destino_id=".$destino."
         /*and u.usuario_id=".$usuario."*/
@@ -748,6 +750,9 @@ function ventas_dia($estado)
     
     function get_resumenventas($usuario_id)
     { //aun no se reviso esto
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "SELECT vs.producto_id, vs.`producto_codigo`, vs.`producto_nombre`, tt.tipotrans_nombre, 
                 vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad, 
                 (sum(`vs`.`detalleven_total`) / sum(vs.detalleven_cantidad)) as total_punitario, 
@@ -758,8 +763,8 @@ function ventas_dia($estado)
                 FROM ventas vs 
                 LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id 
                 WHERE 
-                date(venta_fecha) >= date(now()) and 
-                date(venta_fecha) <= date(now()) and 
+                date(venta_fecha) >= date({$now}) and 
+                date(venta_fecha) <= date({$now}) and 
                 vs.usuario_id = ".$usuario_id." 
                 group by `vs`.producto_id 
                 order by total_venta";

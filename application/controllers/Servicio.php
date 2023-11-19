@@ -1394,6 +1394,7 @@ class Servicio extends CI_Controller{
     /* registrar servicio entegado */
     function registrar_servicioentregado()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $data['sistema'] = $this->sistema;
         //if($this->acceso(69)){
             if ($this->input->is_ajax_request()){
@@ -1500,7 +1501,7 @@ class Servicio extends CI_Controller{
                         
                         $credito_interesmonto =  $credito_monto * $credito_interes; //revisar
                         //$credito_numpagos =  $this->input->post('cuotas');
-                        $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                        $credito_fechalimite =  "date_add(date({$now}), INTERVAL +1 WEEK)";
                         $credito_fecha = date('Y-m-d');
                         $time = time();
                         $credito_hora =  date("H:i:s", $time);
@@ -1729,6 +1730,7 @@ class Servicio extends CI_Controller{
      */
     function registrarcobrototalservicio()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $data['sistema'] = $this->sistema;
         if($this->acceso(84)){
             if ($this->input->is_ajax_request()){
@@ -1795,7 +1797,7 @@ class Servicio extends CI_Controller{
                         $credito_interesproc =  $credito_interes;
                         $credito_interesmonto =  $venta_total * $venta_interes; //revisar
                         $credito_numpagos =  $cuotas;
-                        $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                        $credito_fechalimite =  "date_add(date({$now}), INTERVAL +1 WEEK)";
                         $credito_fecha = date('Y-m-d');
                         $time = time();
                         $credito_hora =  date("H:i:s", $time);

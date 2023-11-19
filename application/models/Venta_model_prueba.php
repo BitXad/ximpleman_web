@@ -30,8 +30,10 @@ class Venta_model extends CI_Model
      */
     function get_ventas_dia()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "select if(count(*)>0, count(*), 0) as cantidad_ventas, if(sum(venta_total)>0, sum(venta_total), 0) as total_ventas
-                from venta where venta_fecha = date(now())";
+                from venta where venta_fecha = date({$now})";
         $venta = $this->db->query($sql)->result_array();
 
         return $venta;
@@ -42,10 +44,12 @@ class Venta_model extends CI_Model
      */
     function get_resumen_usuarios()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "select u.usuario_nombre, usuario_imagen, t.tipousuario_descripcion ,count(*) as cantidad_ventas, sum(v.venta_total) as total_ventas
                 from usuario u, venta v, tipo_usuario t
                 where 
-                v.venta_fecha = date(now()) and
+                v.venta_fecha = date({$now}) and
                 u.tipousuario_id = t.tipousuario_id and
                 v.usuario_id = u.usuario_id
                 group by u.usuario_id";
@@ -59,11 +63,13 @@ class Venta_model extends CI_Model
      */
     function get_ventas_semanales()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "
                     select venta_fecha,sum(venta_total) as venta_dia
                     from venta
                     where 
-                     date(venta_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)
+                     date(venta_fecha) >= date_add(date({$now}), INTERVAL -1 WEEK)
                     group by venta_fecha
                 ";
         $venta = $this->db->query($sql)->result_array();

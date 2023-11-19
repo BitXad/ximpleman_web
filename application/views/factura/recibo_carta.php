@@ -263,10 +263,10 @@ border-bottom : 1px solid #aaa;
                             $preferencia = $d['detalleven_preferencia'];
                             $caracteristicas = $d['detalleven_caracteristicas'];
 
-                            if ($preferencia !="null" && $preferencia!="-" && $preferencia!="")
+                            if ($preferencia !==null && $preferencia!="-" && $preferencia!="")
                                 echo " /".nl2br($preferencia);
 
-                            if ($caracteristicas!="null" && $caracteristicas!='-')
+                            if ($caracteristicas!==null && $caracteristicas!='-')
                                 echo "<br>".nl2br($caracteristicas);
                         
                         ?>

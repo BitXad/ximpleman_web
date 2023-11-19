@@ -1248,7 +1248,8 @@ class Factura extends CI_Controller{
                 
 //        if($factura_id>0)
 //        {
-//      $data['sistema'] = $this->sistema;            
+//      $data['sistema'] = $this->sistema;          
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $configuracion = $this->configuracion;
             
         $sql = "select * from factura where factura_id = ".$factura_id;                
@@ -1494,7 +1495,7 @@ class Factura extends CI_Controller{
                     $bitacoracaja_tipo = 2;
 
                     $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                            usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                            usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
                     ",'".$bitacoracaja_evento."',".$usuarioventa_id.",".$factura[0]["factura_total"].",0,".$bitacoracaja_tipo.",".$caja_id.")";
 
                     $this->Venta_model->ejecutar($sql);
@@ -1676,7 +1677,7 @@ class Factura extends CI_Controller{
             $bitacoracaja_tipo = 2;
 
             $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
                     ",'".$bitacoracaja_evento."',".$usuarioventa_id.",".$prec_total.",0,".$bitacoracaja_tipo.",".$caja_id.")";
 
             $this->Venta_model->ejecutar($sql);
@@ -2281,7 +2282,7 @@ class Factura extends CI_Controller{
             $bitacoracaja_tipo = 2;
             $caja_id = 0;
             $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
-                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date(now()),time(now())".
+                    usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
             ",'".$bitacoracaja_evento."',".$usuario_idanulador.",".$factura[0]["factura_total"].",0,".$bitacoracaja_tipo.",".$caja_id.")";
 
             $this->Venta_model->ejecutar($sql);

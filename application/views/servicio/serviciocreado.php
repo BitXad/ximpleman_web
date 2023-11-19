@@ -432,15 +432,15 @@ $(document).ready(function(){
                         ?>
                         <tr>
                             <td>Total Final</td>
-                            <td id="alinear"><span id="totalfinal"><?php echo number_format($servicio['servicio_total'],'2','.',','); ?></span></td>
+                            <td id="alinear"><span id="totalfinal"><?php echo number_format(($servicio['servicio_total']!==null)?$servicio['servicio_total']:0,'2','.',','); ?></span></td>
                         </tr>
                         <tr>
                             <td>A cuenta</td>
-                            <td id="alinear"><span id="totalacuenta"><?php echo number_format($servicio['servicio_acuenta'],'2','.',','); ?></span></td>
+                            <td id="alinear"><span id="totalacuenta"><?php echo number_format(($servicio['servicio_acuenta']!==null)?$servicio['servicio_acuenta']:0,'2','.',','); ?></span></td>
                         </tr>
                         <tr>
                             <th id="masgrande">Saldo</th>
-                            <th id="masgrande" style="text-align: right;"><span id="totalsaldo"><?php echo number_format($servicio['servicio_saldo'],'2','.',','); ?></span></th>
+                            <th id="masgrande" style="text-align: right;"><span id="totalsaldo"><?php echo number_format(($servicio['servicio_saldo']!==null)?$servicio['servicio_saldo']:0,'2','.',','); ?></span></th>
                         </tr>
                     </tbody>
                     
@@ -652,7 +652,7 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                 <label for="detalleserv_pesoentrada" class="control-label">Peso Entrada(Gr.)</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format($this->input->post('detalleserv_pesoentrada'),'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" onclick='this.select();' />
+                                    <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format(($this->input->post('detalleserv_pesoentrada')!==null)?$this->input->post('detalleserv_pesoentrada'):0,'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" onclick='this.select();' />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -664,19 +664,19 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                     <label for="detalleserv_total" class="control-label">Total</label>
                                     <div class="form-group">
-                                            <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_total" value="<?php echo number_format($this->input->post('detalleserv_total'),'2','.',','); ?>" class="form-control" id="detalleserv_total" onclick='this.select();' />
+                                            <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_total" value="<?php echo number_format(($this->input->post('detalleserv_total')!==null)?$this->input->post('detalleserv_total'):0,'2','.',','); ?>" class="form-control" id="detalleserv_total" onclick='this.select();' />
                                     </div>
                             </div>
                             <div class="col-md-4">
                                     <label for="detalleserv_acuenta" class="control-label">A cuenta</label>
                                     <div class="form-group">
-                                            <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_acuenta" value="<?php echo number_format($this->input->post('detalleserv_acuenta'),'2','.',','); ?>" class="form-control" id="detalleserv_acuenta" onclick='this.select();' />
+                                            <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_acuenta" value="<?php echo number_format(($this->input->post('detalleserv_acuenta')!==null)?$this->input->post('detalleserv_acuenta'):0,'2','.',','); ?>" class="form-control" id="detalleserv_acuenta" onclick='this.select();' />
                                     </div>
                             </div>
                             <div class="col-md-4">
                                     <label for="detalleserv_saldo" class="control-label">Saldo</label>
                                     <div class="form-group">
-                                        <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_saldo" value="<?php echo number_format($this->input->post('detalleserv_saldo'),'2','.',','); ?>" class="form-control" id="detalleserv_saldo" readonly onclick='this.select();' />
+                                        <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_saldo" value="<?php echo number_format(($this->input->post('detalleserv_saldo')!==null)?$this->input->post('detalleserv_saldo'):0,'2','.',','); ?>" class="form-control" id="detalleserv_saldo" readonly onclick='this.select();' />
                                     </div>
                             </div>
                             <div class="col-md-4">

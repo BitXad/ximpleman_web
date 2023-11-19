@@ -35,10 +35,12 @@ class Pedido_diario_model extends CI_Model
      */
     function get_all_pedido_diario()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
                 left join proveedor p on p.proveedor_id = d.proveedor_id
                 left join usuario u on u.usuario_id = d.usuario_id
-                where pedido_fecha = date(now())
+                where pedido_fecha = date({$now})
                 order by pedido_fecha asc";
         
         $pedido_diario = $this->db->query($sql)->result_array();
@@ -77,12 +79,12 @@ class Pedido_diario_model extends CI_Model
      */
     function pedidos_diarios()
     {
-        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         
 //        $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
 //                left join proveedor p on p.proveedor_id = d.proveedor_id
 //                left join usuario u on u.usuario_id = d.usuario_id
-//                where pedido_fecha = date(now())
+//                where pedido_fecha = date({$no_w})
 //                order by pedido_fecha asc";
         $sql = "select 
             d.`forma_id`,
@@ -102,7 +104,7 @@ class Pedido_diario_model extends CI_Model
             left join proveedor p on p.proveedor_id = d.proveedor_id
             left join usuario u on u.usuario_id = d.usuario_id
             left join forma_pago f on f.`forma_id` = d.forma_id
-            where ordencompra_fechaentrega = date(now())
+            where ordencompra_fechaentrega = date({$now})
             order by ordencompra_fechaentrega asc";
         
         

@@ -863,6 +863,8 @@ class Dosificacion extends CI_Controller{
     }
     
     function almacenarcufd(){
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         try{
             if ($this->input->is_ajax_request()) {
 
@@ -877,7 +879,7 @@ class Dosificacion extends CI_Controller{
                 // $cufd_puntodeventa = $dosificacion["dosificacion_puntoventa"];
                 
                 $sql = "insert into cufd(cufd_codigo,cufd_codigocontrol,cufd_direccion,cufd_fechavigencia,cufd_transaccion, cufd_puntodeventa, cufd_fecharegistro) value(".
-                        $cufd_codigo.",".$cufd_codigocontrol.",".$cufd_direccion.",".$cufd_fechavigencia.",".$cufd_transaccion.",".$cufd_puntodeventa.", now())";
+                        $cufd_codigo.",".$cufd_codigocontrol.",".$cufd_direccion.",".$cufd_fechavigencia.",".$cufd_transaccion.",".$cufd_puntodeventa.", {$now})";
                 $this->Dosificacion_model->ejecutar($sql);
                 
                 // $sql = "update dosificacion set dosificacion_cufd = ".$cufd_codigo;

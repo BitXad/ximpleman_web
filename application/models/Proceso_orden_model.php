@@ -121,10 +121,11 @@ GROUP BY p.proceso_id
 
     function terminar_proceso($proceso)
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $proceso_orden = $this->db->query("
             UPDATE
                 proceso_orden
-            SET estado_id=25, fecha_terminado=NOW()
+            SET estado_id=25, fecha_terminado={$now}
 
             WHERE 
                 proceso_id=".$proceso."

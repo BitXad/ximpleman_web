@@ -16,6 +16,23 @@ function inicio(){
 //        document.getElementById('nit').select();
 }
 
+
+function now_sql() {
+  const fecha = new Date();
+  const year = fecha.getFullYear();
+  const month = agregarCeroSiNecesario(fecha.getMonth() + 1);
+  const day = agregarCeroSiNecesario(fecha.getDate());
+  const hours = agregarCeroSiNecesario(fecha.getHours());
+  const minutes = agregarCeroSiNecesario(fecha.getMinutes());
+  const seconds = agregarCeroSiNecesario(fecha.getSeconds());
+
+  return `'${year}-${month}-${day} ${hours}:${minutes}:${seconds}'`;
+}
+
+function agregarCeroSiNecesario(numero) {
+  return numero < 10 ? `0${numero}` : numero;
+}
+
 function calculardesc(){
 
    var venta_subtotal = document.getElementById('venta_subtotal').value;
@@ -2377,8 +2394,8 @@ function registrarpedido(cliente_id)
     var hora = new Date();    
     var pedido_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getSeconds();
     
-    var pedido_fecha = fecha();//retorna la fecha actual  //"date(now())";
-    var pedido_fecha2 = "'"+pedido_fecha+" "+pedido_hora+"'" ;//retorna la fecha actual  //"date(now())";
+    var pedido_fecha = fecha();//retorna la fecha actual  //"date(no_w())";
+    var pedido_fecha2 = "'"+pedido_fecha+" "+pedido_hora+"'" ;//retorna la fecha actual  //"date(no_w())";
     
     var pedido_subtotal = document.getElementById('venta_subtotal').value; //     
     var pedido_descuento = document.getElementById('venta_descuento').value; //
@@ -2394,8 +2411,6 @@ function registrarpedido(cliente_id)
     var pedido_id = document.getElementById('pedido_id').value; 
     var nit = document.getElementById('nit').value;
     var razon = document.getElementById('razon_social').value;
-    
-    
     
     var moneda_id = 1; 
     
@@ -2525,11 +2540,11 @@ function buscar_ventas()
     var base_url    = document.getElementById('base_url').value;
     //var controlador = base_url+"venta";
     var opcion      = document.getElementById('select_ventas').value;
- 
+    var nowsql = now_sql();
     
     if (opcion == 1)
     {
-        filtro = " and v.venta_fecha = date(now())";
+        filtro = " and v.venta_fecha = date("+nowsql+")";
         mostrar_ocultar_buscador("ocultar");
         
         
@@ -2537,13 +2552,13 @@ function buscar_ventas()
     
     if (opcion == 2)
     {
-        filtro = " and v.venta_fecha = date_add(date(now()), INTERVAL -1 DAY)";
+        filtro = " and v.venta_fecha = date_add(date("+nowsql+"), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
     }//pedidos de ayer
     
     if (opcion == 3) 
     {
-        filtro = " and v.venta_fecha >= date_add(date(now()), INTERVAL -1 WEEK)";//pedidos de la semana
+        filtro = " and v.venta_fecha >= date_add(date("+nowsql+"), INTERVAL -1 WEEK)";//pedidos de la semana
         mostrar_ocultar_buscador("ocultar");
     }
     

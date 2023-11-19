@@ -48,14 +48,14 @@ class Caja_model extends CI_Model
      */
     function caja_pendiente($usuario_id)
     {
-        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $sql = "insert into caja( caja_apertura, caja_fechaapertura, caja_horaapertura, caja_cierre, 
                 caja_diferencia, usuario_id, caja_corte1000, caja_corte500, caja_corte200, 
                 caja_corte100, caja_corte50, caja_corte20, caja_corte10, caja_corte5, caja_corte2, 
                 caja_corte1, caja_corte050 , caja_corte020, caja_corte010, caja_corte005, estado_id, 
                 moneda_id, caja_efectivo, caja_credito, caja_transacciones) 
                 values (
-                0, date(now()), time(now()), 0, 0, ".$usuario_id.", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 1, 0, 0, 0)";
+                0, date({$now}), time({$now}), 0, 0, ".$usuario_id.", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 1, 0, 0, 0)";
 
         
         $this->db->query($sql);
@@ -137,12 +137,13 @@ class Caja_model extends CI_Model
      */
     function get_cajausuario_now($usuario_id)
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $caja = $this->db->query("
             select c.*,u.* from caja c
             left join usuario u on c.usuario_id = u.usuario_id
             where 
             c.usuario_id = ".$usuario_id." and
-            c.caja_fechaapertura = date(now())
+            c.caja_fechaapertura = date({$now})
         ")->row_array();
         return $caja;
     }
@@ -155,8 +156,8 @@ class Caja_model extends CI_Model
             left join usuario u on c.usuario_id = u.usuario_id
             where 
             c.usuario_id = ".$usuario_id." and
-            c.caja_fechaapertura >= {$desde} and
-            c.caja_fechaapertura <= {$hasta}
+            c.caja_fechaapertura >= '{$desde}' and
+            c.caja_fechaapertura <= '{$hasta}'
         ")->row_array();
         return $caja;
     }

@@ -48,11 +48,13 @@
         }
 
         function get_cuis_puntoventa($punto_venta){
+            
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
             return $this->db->query(
                 "SELECT c.cuis_codigo 
                 from cuis c
                 where c.tipopuntoventa_codigo = $punto_venta
-                    and c.cuis_fechavigencia >= now()
+                    and c.cuis_fechavigencia >= {$now}
                 order by c.cuis_id desc
                 ")->row_array();
         }

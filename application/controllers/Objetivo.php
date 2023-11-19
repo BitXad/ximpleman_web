@@ -164,7 +164,7 @@ class Objetivo extends CI_Controller{
     * Obtener el ultimo dia del mes
     */
     public function getUltimoDiaMes($elAnio,$elMes) {
-        return date("d",(mktime(0,0,0,$elMes+1,1,$elAnio)-1));
+        return date("d",(mktime(0,0,0,$elMes+1,1,intval($elAnio))-1));
     }
     /*
     * Objetivos de un mes

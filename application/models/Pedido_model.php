@@ -58,8 +58,10 @@ class Pedido_model extends CI_Model
      */
     function get_pedidos_dia()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "select if(count(*)>0, count(*), 0) as cantidad_pedidos, if(sum(pedido_total)>0, sum(pedido_total), 0) as total_pedidos
-                from pedido where date(pedido_fecha) = date(now()) and usuario_id>0";
+                from pedido where date(pedido_fecha) = date({$now}) and usuario_id>0";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }
@@ -69,9 +71,12 @@ class Pedido_model extends CI_Model
     * SUPONIENOD QUE SE ASIGNAN PRODUCTOS A UN VENDEDOR
     */
     function get_pedidos_dia_usuario($usuario_id) {
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "SELECT if(count(*)>0, count(*), 0) as cantidad_pedidos, if(sum(pedido_total)>0, sum(pedido_total), 0) as total_pedidos
                 FROM pedido 
-                WHERE date(pedido_fecha) = date(now()) 
+                WHERE date(pedido_fecha) = date({$now}) 
                 AND usuario_id = ".$usuario_id.";";
         $result = $this->db->query($sql)->result_array();
         return $result;
@@ -160,11 +165,13 @@ class Pedido_model extends CI_Model
      */
     function crear_pedido($usuario_id)
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $usuario_id = $usuario_id;
         $estado_id = 10; // pedido Abierto
         $cliente_id = 0;
         $tipotrans_id = 1;
-        $pedido_fecha = "now()";
+        $pedido_fecha = "{$now}";
         $pedido_subtotal = 0;
         $pedido_descuento = 0;
         $pedido_total = 0;
@@ -358,11 +365,13 @@ class Pedido_model extends CI_Model
     
     function get_mis_entregas($usuario_id)
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color, 
                 c.cliente_latitud, c.cliente_longitud, c.cliente_direccion, c.cliente_foto
                from pedido p, estado e, cliente c 
                where 
-                p.pedido_fechaentrega = date(now())
+                p.pedido_fechaentrega = date({$now})
                 and p.estado_id = e.estado_id
                 and p.cliente_id = c.cliente_id
                 and p.usuario_id = ".$usuario_id;

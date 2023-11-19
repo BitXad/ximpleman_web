@@ -69,7 +69,7 @@
                     
                     <?php $i = 0; foreach($caja as $c){ ?>
                     <tr>
-                        <td><?php echo ($i+1); ?></td>
+                        <td><?php echo (++$i); ?></td>
                         <td class="nowrap"><?php echo $c['usuario_nombre']; ?></td>
                         <td class="nowrap"><?php echo "00".$c['caja_id']; ?></td>
                         <td><?php echo $c['caja_fechaapertura']; echo " ".$c['caja_horaapertura']; ?></td>

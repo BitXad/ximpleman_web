@@ -253,6 +253,7 @@ class Pedido_diario extends CI_Controller{
      */
     function buscar_pedidos()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $data['sistema'] = $this->sistema;
         if($this->acceso(180)){
         //**************** inicio contenido ***************   
@@ -271,7 +272,7 @@ class Pedido_diario extends CI_Controller{
 //                    $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
 //                    left join proveedor p on p.proveedor_id = d.proveedor_id
 //                    left join usuario u on u.usuario_id = d.usuario_id
-//                    where pedido_fecha = date(now())
+//                    where pedido_fecha = date(no_w())
 //                    order by pedido_fecha asc";
                 $sql = "select 
                         d.`forma_id`,
@@ -291,7 +292,7 @@ class Pedido_diario extends CI_Controller{
                         left join proveedor p on p.proveedor_id = d.proveedor_id
                         left join usuario u on u.usuario_id = d.usuario_id
                         left join forma_pago f on f.`forma_id` = d.forma_id
-                        where ordencompra_fechaentrega = date(now())
+                        where ordencompra_fechaentrega = date({$now})
                         order by ordencompra_fechaentrega asc";
             }
 
@@ -300,7 +301,7 @@ class Pedido_diario extends CI_Controller{
 //                    $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
 //                    left join proveedor p on p.proveedor_id = d.proveedor_id
 //                    left join usuario u on u.usuario_id = d.usuario_id
-//                    where pedido_fecha = date( date_add(NOW(), INTERVAL +1 DAY))
+//                    where pedido_fecha = date( date_add(NO_W(), INTERVAL +1 DAY))
 //                    order by pedido_fecha asc";
                 $sql = "select 
                         d.`forma_id`,
@@ -320,7 +321,7 @@ class Pedido_diario extends CI_Controller{
                         left join proveedor p on p.proveedor_id = d.proveedor_id
                         left join usuario u on u.usuario_id = d.usuario_id
                         left join forma_pago f on f.`forma_id` = d.forma_id
-                        where d.`ordencompra_fechaentrega` = date( date_add(NOW(), INTERVAL +1 DAY))
+                        where d.`ordencompra_fechaentrega` = date( date_add({$now}, INTERVAL +1 DAY))
                         order by ordencompra_fechaentrega asc";
                     
             }
@@ -331,7 +332,7 @@ class Pedido_diario extends CI_Controller{
 //                    $sql = "select d.*, p.proveedor_nombre, u.* from pedido_diario d
 //                    left join proveedor p on p.proveedor_id = d.proveedor_id
 //                    left join usuario u on u.usuario_id = d.usuario_id
-//                    where pedido_fecha = date( date_add(NOW(), INTERVAL -1 DAY))
+//                    where pedido_fecha = date( date_add(NO_W(), INTERVAL -1 DAY))
 //                    order by pedido_fecha asc";
                 
                 $sql = "select 
@@ -352,7 +353,7 @@ class Pedido_diario extends CI_Controller{
                         left join usuario u on u.usuario_id = d.usuario_id
                         left join forma_pago on u.usuario_id = d.usuario_id
                         left join forma_pago f on f.`forma_id` = d.forma_id
-                        where d.`ordencompra_fechaentrega` = date( date_add(NOW(), INTERVAL -1 DAY)) 
+                        where d.`ordencompra_fechaentrega` = date( date_add({$now}, INTERVAL -1 DAY)) 
                         order by ordencompra_fechaentrega asc";
                 
             }

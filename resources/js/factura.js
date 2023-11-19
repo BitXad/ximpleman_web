@@ -1,4 +1,20 @@
 
+function now_sql() {
+  const fecha = new Date();
+  const year = fecha.getFullYear();
+  const month = agregarCeroSiNecesario(fecha.getMonth() + 1);
+  const day = agregarCeroSiNecesario(fecha.getDate());
+  const hours = agregarCeroSiNecesario(fecha.getHours());
+  const minutes = agregarCeroSiNecesario(fecha.getMinutes());
+  const seconds = agregarCeroSiNecesario(fecha.getSeconds());
+
+  return `'${year}-${month}-${day} ${hours}:${minutes}:${seconds}'`;
+}
+
+function agregarCeroSiNecesario(numero) {
+  return numero < 10 ? `0${numero}` : numero;
+}
+
 function formato_numerico(numer){
     var partdecimal = "";
     var numero = "";
@@ -431,7 +447,7 @@ function generarexcel(){
      //parametro = document.getElementById('filtrar').value;   
      //controlador = base_url+'ingreso/buscarallingreso/';
     var showLabel = true;
-    
+
     var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
     //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
 

@@ -109,6 +109,7 @@ class Reportes extends CI_Controller{
      */
     function reportecaja()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $data['sistema'] = $this->sistema;
         //if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -144,35 +145,39 @@ class Reportes extends CI_Controller{
 //            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
             $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fecha($usuario_id,$fecha1,$fecha2);
 //            $data['caja'] = $this->Caja_model->get_cajausuario_now($usuario_id);
-            $data['caja'] = $this->Caja_model->get_cajausuario_fecha($usuario_id,$fecha1,$fecha2);
+            $caja = $this->Caja_model->get_cajausuario_fecha($usuario_id,$fecha1,$fecha2);
+            $data['caja'] = $caja;
+            
+            $data['bitacora'] = $this->Caja_model->get_caja_id($caja["caja_id"]);
+            
             $data['punto_venta'] = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
             
             $sql = "select MIN(factura_id) as desde, MAX(factura_id) as hasta,
                     MAX(factura_id)-MIN(factura_id) as ventas from factura
-                    where usuario_id = $usuario_id and factura_fecha = date(now())";
+                    where usuario_id = $usuario_id and factura_fecha = date({$now})";
             $data['resumen'] = $this->Venta_model->consultar($sql);
             
             $sql = "select count(*) as total_ventas
                     from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date(now())";
+                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now})";
             $data['total_ventas'] = $this->Venta_model->consultar($sql);
             
             $sql = "select count(*) as ventas_validas
                     from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date(now()) 
+                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
                     and estado_id=1 and factura_codigodescripcion = 'VALIDADA'";
             $data['validas'] = $this->Venta_model->consultar($sql);
             
             $sql = "select count(*) as mal_emitidas
                     from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date(now()) 
+                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
                     and factura_codigodescripcion != 'VALIDADA'";
             $data['mal_emitidas'] = $this->Venta_model->consultar($sql);
             
             $sql = "select count(*) as anuladas
                     from factura
                     where usuario_id = ".$usuario_id." 
-                    and factura_fecha = date(now()) and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
+                    and factura_fecha = date({$now}) and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
             $data['anuladas'] = $this->Venta_model->consultar($sql);
 
             //********************************************************************
@@ -180,13 +185,13 @@ class Reportes extends CI_Controller{
             $sql = "SELECT c.operacion,c.forma,c.transaccion,c.banco,sum(ingresos) AS ingresos,sum(egresos) AS egresos
                     FROM consreporte c
                     WHERE
-                    c.usuario_id = {$usuario_id} and c.fecha>= date(now()) and c.fecha<= date(now())
+                    c.usuario_id = {$usuario_id} and c.fecha>= date({$now}) and c.fecha<= date({$now})
                     GROUP BY c.operacion,c.forma,c.transaccion,c.banco
                     ORDER BY orden";
             $data['transacciones'] = $this->Venta_model->consultar($sql);
             
             $sql = "select sum(venta_descuento) as descuentos from venta
-                    where usuario_id = {$usuario_id} and venta_fecha = date(now())";
+                    where usuario_id = {$usuario_id} and venta_fecha = date({$now})";
             $data['descuentos_globales'] = $this->Venta_model->consultar($sql);
                     
 //
@@ -222,6 +227,7 @@ class Reportes extends CI_Controller{
     
     function reportecajadmin()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $data['sistema'] = $this->sistema;
         //if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
@@ -243,30 +249,30 @@ class Reportes extends CI_Controller{
             
             $sql = "select MIN(factura_id) as desde, MAX(factura_id) as hasta,
                     MAX(factura_id)-MIN(factura_id) as ventas from factura
-                    where usuario_id = $usuario_id and factura_fecha = date(now())";
+                    where usuario_id = $usuario_id and factura_fecha = date({$now})";
             $data['resumen'] = $this->Venta_model->consultar($sql);
             
             $sql = "select count(*) as total_ventas
                     from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date(now())";
+                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now})";
             $data['total_ventas'] = $this->Venta_model->consultar($sql);
             
             $sql = "select count(*) as ventas_validas
                     from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date(now()) 
+                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
                     and estado_id=1 and factura_codigodescripcion = 'VALIDADA'";
             $data['validas'] = $this->Venta_model->consultar($sql);
             
             $sql = "select count(*) as mal_emitidas
                     from factura
-                    where usuario_id = ".$usuario_id." and factura_fecha = date(now()) 
+                    where usuario_id = ".$usuario_id." and factura_fecha = date({$now}) 
                     and factura_codigodescripcion != 'VALIDADA'";
             $data['mal_emitidas'] = $this->Venta_model->consultar($sql);
             
             $sql = "select count(*) as anuladas
                     from factura
                     where usuario_id = ".$usuario_id." 
-                    and factura_fecha = date(now()) and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
+                    and factura_fecha = date({$now}) and estado_id<>1 and factura_codigodescripcion = 'VALIDADA'";
             $data['anuladas'] = $this->Venta_model->consultar($sql);
             
             

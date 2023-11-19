@@ -8,6 +8,23 @@ function inicio(){
         */
 }
 
+
+function now_sql() {
+  const fecha = new Date();
+  const year = fecha.getFullYear();
+  const month = agregarCeroSiNecesario(fecha.getMonth() + 1);
+  const day = agregarCeroSiNecesario(fecha.getDate());
+  const hours = agregarCeroSiNecesario(fecha.getHours());
+  const minutes = agregarCeroSiNecesario(fecha.getMinutes());
+  const seconds = agregarCeroSiNecesario(fecha.getSeconds());
+
+  return `'${year}-${month}-${day} ${hours}:${minutes}:${seconds}'`;
+}
+
+function agregarCeroSiNecesario(numero) {
+  return numero < 10 ? `0${numero}` : numero;
+}
+
 function validar(e,opcion,tabla_id) {
   tecla = (document.all) ? e.keyCode : e.which;
   
@@ -831,22 +848,23 @@ function buscar_servicioporfechas()
     var controlador = base_url+"detalle_serv/resultadobusqueda";*/
     var opcion      = document.getElementById('select_servicio').value;
     var filtro = "";
+    var nowsql = now_sql();
 
     if (opcion == 1)
     {
-        filtro = " and date(servicio_fecharecepcion) = date(now())";
+        filtro = " and date(servicio_fecharecepcion) = date("+nowsql+")";
         mostrar_ocultar_buscador("ocultar");
     }//servicios de hoy
     
     if (opcion == 2)
     {
-        filtro = " and date(servicio_fecharecepcion) = date_add(date(now()), INTERVAL -1 DAY)";
+        filtro = " and date(servicio_fecharecepcion) = date_add(date("+nowsql+"), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
     }//servicios de ayer
     
     if (opcion == 3) 
     {
-        filtro = " and date(servicio_fecharecepcion) >= date_add(date(now()), INTERVAL -1 WEEK)";
+        filtro = " and date(servicio_fecharecepcion) >= date_add(date("+nowsql+"), INTERVAL -1 WEEK)";
         mostrar_ocultar_buscador("ocultar");
     }//servicios de la semana
 
@@ -1037,12 +1055,13 @@ function buscar_detservicioporfechas(){
     var tiempo = "";
     var f = new Date();
     var fecha = "";
+    var nowsql = now_sql();
 
     if (opcion == 1)
     {
         fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
         tiempo = "DE HOY ("+fecha+")";
-        filtro = " and date(servicio_fecharecepcion) = date(now())";
+        filtro = " and date(servicio_fecharecepcion) = date("+nowsql+")";
         //mostrar_ocultar_buscador("ocultar");
     }//servicios de hoy
     
@@ -1054,14 +1073,14 @@ function buscar_detservicioporfechas(){
         }else{
             tiempo = "(DE HAYER)";
         }
-        filtro = " and date(servicio_fecharecepcion) = date_add(date(now()), INTERVAL -1 DAY)";
+        filtro = " and date(servicio_fecharecepcion) = date_add(date("+nowsql+"), INTERVAL -1 DAY)";
         //mostrar_ocultar_buscador("ocultar");
     }//servicios de ayer
     
     if (opcion == 3) 
     {
         tiempo = "(SEMANA)";
-        filtro = " and date(servicio_fecharecepcion) >= date_add(date(now()), INTERVAL -1 WEEK)";
+        filtro = " and date(servicio_fecharecepcion) >= date_add(date("+nowsql+"), INTERVAL -1 WEEK)";
         //mostrar_ocultar_buscador("ocultar");
     }//servicios de la semana
 

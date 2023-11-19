@@ -1,4 +1,5 @@
 //var decimales = 6;
+
     
 $(document).on("ready",inicio);
 function inicio(){
@@ -17,6 +18,23 @@ function inicio(){
         
 
         
+}
+
+
+function now_sql() {
+  const fecha = new Date();
+  const year = fecha.getFullYear();
+  const month = agregarCeroSiNecesario(fecha.getMonth() + 1);
+  const day = agregarCeroSiNecesario(fecha.getDate());
+  const hours = agregarCeroSiNecesario(fecha.getHours());
+  const minutes = agregarCeroSiNecesario(fecha.getMinutes());
+  const seconds = agregarCeroSiNecesario(fecha.getSeconds());
+
+  return `'${year}-${month}-${day} ${hours}:${minutes}:${seconds}'`;
+}
+
+function agregarCeroSiNecesario(numero) {
+  return numero < 10 ? `0${numero}` : numero;
 }
 
 function calculardesc(){
@@ -151,8 +169,8 @@ function validar(e,opcion) {
         
         if (opcion==3){   //si la tecla proviene del input codigo de barras          
             
-            //$('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojsx(); realiza la busqueda e insercion mas rapido porque reduce procedimiento, falta completar las operaciones
-            $('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojs();
+            $('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojsx(); //realiza la busqueda e insercion mas rapido porque reduce procedimiento, falta completar las operaciones
+            //$('#busqueda_serie').prop('checked') ? buscarPorSerie():buscarporcodigojs();
             
         } 
         
@@ -3672,7 +3690,7 @@ function registrarventa(cliente_id)
     var moneda_id = 1; 
     var estado_id = 1; 
     
-    var venta_fecha = fecha();//retorna la fecha actual  //"date(now())";
+    var venta_fecha = fecha();//retorna la fecha actual  //"date(no_w())";
     var hora = new Date();
     
     var venta_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getSeconds();
@@ -4100,11 +4118,11 @@ function buscar_ventas()
     var base_url    = document.getElementById('base_url').value;
     //var controlador = base_url+"venta";
     var opcion      = document.getElementById('select_ventas').value;
- 
+    var nowsql = now_sql();
     
     if (opcion == 1)
     {
-        filtro = " and v.venta_fecha = date(now())";
+        filtro = " and v.venta_fecha = date("+nowsql+")";
         mostrar_ocultar_buscador("ocultar");
         
         
@@ -4112,13 +4130,13 @@ function buscar_ventas()
     
     if (opcion == 2)
     {
-        filtro = " and v.venta_fecha = date_add(date(now()), INTERVAL -1 DAY)";
+        filtro = " and v.venta_fecha = date_add(date("+nowsql+"), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
     }//pedidos de ayer
     
     if (opcion == 3) 
     {
-        filtro = " and v.venta_fecha >= date_add(date(now()), INTERVAL -1 WEEK)";//pedidos de la semana
+        filtro = " and v.venta_fecha >= date_add(date("+nowsql+"), INTERVAL -1 WEEK)";//pedidos de la semana
         mostrar_ocultar_buscador("ocultar");
     }
     
@@ -8679,8 +8697,5 @@ function borrar_datos_cliente(){
     
     //$("#span_buscar_cliente").click();   
     $("#boton_presionado").val(0);
-    
-
-    
 
 }

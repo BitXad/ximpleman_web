@@ -205,7 +205,7 @@ class Servicio_model extends CI_Model
                 and s.tiposerv_id = ts.tiposerv_id
                 and s.cliente_id = c.cliente_id
                 and s.usuario_id = i.usuario_id
-                and date(servicio_fecharecepcion) = date(now())
+                and date(servicio_fecharecepcion) = date({$now})
 
             ORDER BY `servicio_id` DESC LIMIT 50
         ")->result_array();
@@ -298,7 +298,7 @@ class Servicio_model extends CI_Model
                   (SELECT sum(dv.detalleven_total) as total_insumo, dv.detalleserv_id as estedetalleserv_id
                     FROM detalle_venta dv group by dv.detalleserv_id) as t1 on t1.estedetalleserv_id = ds.detalleserv_id
             WHERE
-                date(s.servicio_fecharecepcion) = date(now())
+                date(s.servicio_fecharecepcion) = date({$now})
 
             ORDER BY ds.servicio_id       
         ")->result_array();
@@ -383,6 +383,8 @@ class Servicio_model extends CI_Model
      */
     function get_all_servicios_dia()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $servicio = $this->db->query("
             /*SELECT
                 c.cliente_nombre, s.servicio_id, d.detalleserv_id, d.estado_id,
@@ -406,8 +408,8 @@ class Servicio_model extends CI_Model
             LEFT JOIN producto p on dv.producto_id = p.producto_id
            WHERE
                 
-                 (date(s.servicio_fecharecepcion) = date(NOW())
-                 or date(d.detalleserv_fechaentregado) = date(NOW()))
+                 (date(s.servicio_fecharecepcion) = date({$now})
+                 or date(d.detalleserv_fechaentregado) = date({$now}))
                  and (d.estado_id = 5 or d.estado_id = 7)*/
                  
             SELECT
@@ -432,13 +434,14 @@ class Servicio_model extends CI_Model
                   (SELECT sum(dv.detalleven_total) as total_insumo, dv.detalleserv_id as estedetalleserv_id
                     FROM detalle_venta dv group by dv.detalleserv_id) as t1 on t1.estedetalleserv_id = ds.detalleserv_id
                 WHERE
-                 (date(s.servicio_fecharecepcion) = date(NOW())
-                 or date(ds.detalleserv_fechaentregado) = date(NOW()))
+                 (date(s.servicio_fecharecepcion) = date({$now})
+                 or date(ds.detalleserv_fechaentregado) = date({$now}))
                  and (ds.estado_id = 5 or ds.estado_id = 7)
         ")->result_array();
         
         return $servicio;
     }
+    
     function get_busqueda_infservicio_parametro($parametro)
     {
         $servicio = $this->db->query("
@@ -490,9 +493,10 @@ class Servicio_model extends CI_Model
     /* Cantid sdde servicios */
     function get_servicios_hoy()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $servicio = $this->db->query("select if(count(*)>0,count(*),0) as cantidad_servicios
                     from servicio s
-                    where s.servicio_fecharecepcion = DATE(now())")->row_array();
+                    where s.servicio_fecharecepcion = DATE({$now})")->row_array();
 
         return $servicio;
     }

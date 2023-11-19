@@ -399,6 +399,8 @@ class Website extends CI_Controller{
 
     function venta_online(){
         //renovar datos de cliente
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $nit = $this->input->post('nit');
         $razon = $this->input->post('razon');
         $telefono = $this->input->post('telefono');
@@ -411,7 +413,7 @@ class Website extends CI_Controller{
         $total = $this->input->post('total');
         $tipo_servicio = $this->input->post('tipo_servicio');
 
-        $fecha = "now()";
+        $fecha = "{$now}";
         $hora = "'".date('H:i:s')."'";
 
         $updatecli = "UPDATE cliente SET cliente_nit='".$nit."', cliente_razon='".$razon."', cliente_telefono='".$telefono."',cliente_direccion='".$direccion."' WHERE cliente_id=".$cliente." ";

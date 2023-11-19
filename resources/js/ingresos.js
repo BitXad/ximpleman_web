@@ -1,24 +1,45 @@
 $(document).on("ready",inicio);
+
+
 function inicio(){
-    filtro = " and date(ingreso_fecha) = date(now())";
+    var nowsql = now_sql();
+    filtro = " and date(ingreso_fecha) = date("+nowsql+")";
         fechadeingreso(filtro);
 } 
+
+function now_sql() {
+  const fecha = new Date();
+  const year = fecha.getFullYear();
+  const month = agregarCeroSiNecesario(fecha.getMonth() + 1);
+  const day = agregarCeroSiNecesario(fecha.getDate());
+  const hours = agregarCeroSiNecesario(fecha.getHours());
+  const minutes = agregarCeroSiNecesario(fecha.getMinutes());
+  const seconds = agregarCeroSiNecesario(fecha.getSeconds());
+
+  return `'${year}-${month}-${day} ${hours}:${minutes}:${seconds}'`;
+}
+
+function agregarCeroSiNecesario(numero) {
+  return numero < 10 ? `0${numero}` : numero;
+}
 
 function buscar_ingresos()
 {
     //var base_url    = document.getElementById('base_url').value;
     //var controlador = base_url+"ingreso";
     var opcion      = document.getElementById('select_compra').value;
+    var nowsql = now_sql();
+    
     if(opcion == 1){
-        filtro = " and date(ingreso_fecha) = date(now())";
+        filtro = " and date(ingreso_fecha) = date("+nowsql+")";
         mostrar_ocultar_buscador("ocultar");
         fechadeingreso(filtro);
     }else if(opcion == 2){ //compras de hoy
-        filtro = " and date(ingreso_fecha) = date_add(date(now()), INTERVAL -1 DAY)";
+        filtro = " and date(ingreso_fecha) = date_add(date("+nowsql+"), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
         fechadeingreso(filtro);
     }else if(opcion == 3){//compras de hayer
-        filtro = " and date(ingreso_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
+        filtro = " and date(ingreso_fecha) >= date_add(date("+nowsql+"), INTERVAL -1 WEEK)";//compras de la semana
         mostrar_ocultar_buscador("ocultar");
         fechadeingreso(filtro);
     }else if(opcion == 4){

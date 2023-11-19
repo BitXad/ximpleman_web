@@ -333,6 +333,14 @@ actualizar tabla bitacora detalle compra
 ALTER TABLE `detalle_compra_bitacora` ADD COLUMN `codigo_bitacora` VARCHAR(30) DEFAULT NULL;
 
 
+--------------- SQL ---------------
+
+ALTER TABLE `ingresos` MODIFY COLUMN `ingreso_fecha` DATETIME DEFAULT NULL;
+
+--------------- SQL ---------------
+
+ALTER TABLE `egresos` MODIFY COLUMN `egreso_fecha` DATETIME DEFAULT NULL;
+
 
  */
 

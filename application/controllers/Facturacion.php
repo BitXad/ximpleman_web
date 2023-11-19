@@ -37,8 +37,9 @@ class Facturacion extends CI_Controller{
     }
     
     function registrar_factura(){//si la venta es facturada
-     
+        
         //Primero.- Llenar las tablas factura y detalle factura
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $sql = "insert into factura(
                 factura_id
                 ,estado_id
@@ -115,8 +116,8 @@ class Facturacion extends CI_Controller{
                 ,cliente_id
                 ,estado_id
                 ,venta_fecha
-                ,date(now())
-                ,time(now())
+                ,date({$now})
+                ,time({$now})
                 ,venta_subtotal
                 ,venta_descuentoparcial
                 ,venta_descuento
@@ -164,8 +165,8 @@ class Facturacion extends CI_Controller{
                         $estado_id = 1; 
                         
                         $factura_fechaventa    = $fecha_venta;
-                        $factura_fecha         = "date(now())";
-                        $factura_hora          =  $hora_venta; //"time(now())";
+                        $factura_fecha         = "date({$now})";
+                        $factura_hora          =  $hora_venta; //"time(no_w())";
                         $factura_subtotal = $venta_subtotal;
                         $factura_nit           = $numero_doc_identidad;
                         $factura_razonsocial   = $razon;

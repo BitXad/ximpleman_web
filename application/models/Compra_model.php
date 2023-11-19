@@ -146,6 +146,8 @@ class Compra_model extends CI_Model
      * Get all compra
      */
      function get_all_compra($params = array()){
+         
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now} 
         return $this->db->query(
             "SELECT c.*, c.estado_id as 'elestado',
                 e.estado_descripcion, e.estado_color,
@@ -161,7 +163,7 @@ class Compra_model extends CI_Model
             left join usuario u on c.usuario_id = u.usuario_id 
             left join banco b on c.banco_id = b.banco_id 
             left join forma_pago fp on c.forma_id = fp.forma_id 
-            where c.compra_fecha = date(now()) 
+            where c.compra_fecha = date({$now}) 
             ORDER BY `compra_hora` DESC 
         ")->result_array();
     }
@@ -269,13 +271,14 @@ class Compra_model extends CI_Model
 
     function crear_compra($usuario_id)
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         
         $estado_id = 1;
         $forma_id = 1;
         $tipotrans_id = 1;
         $proveedor_id = 0;
         $moneda_id = 1;
-        $compra_fecha = "now()";
+        $compra_fecha = "{$now}";
         $compra_hora = "'".date('H:i:s')."'";
         $compra_subtotal = 0;
         $compra_descuento = 0;
@@ -415,16 +418,18 @@ class Compra_model extends CI_Model
 
     function get_compras_dia()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $sql = "select if(count(*)>0, count(*), 0) as cantidad_compras, if(sum(compra_totalfinal)>0, sum(compra_totalfinal), 0) as total_compras
-                from compra where compra_fecha = date(now()) and tipotrans_id=1";
+                from compra where compra_fecha = date({$now}) and tipotrans_id=1";
         $compras = $this->db->query($sql)->result_array();
 
         return $compras;
     }
      function get_compras_dia_credito()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $sql = "select if(count(*)>0, count(*), 0) as cantidad_compras, if(sum(compra_totalfinal)>0, sum(compra_totalfinal), 0) as total_compras
-                from compra where compra_fecha = date(now()) and tipotrans_id=2";
+                from compra where compra_fecha = date({$now}) and tipotrans_id=2";
         $compras = $this->db->query($sql)->result_array();
 
         return $compras;
@@ -432,6 +437,9 @@ class Compra_model extends CI_Model
 
     function ingreso($cant, $producto_costo, $sucursal, $producto){
 
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $proveedor_id = $this->db->query("
             SELECT
                 p.proveedor_id
@@ -443,8 +451,8 @@ class Compra_model extends CI_Model
         ")->result_array();
 
         return $proveedor_id;
-        $fecha = "now()";
-        $hora = "TIME_FORMAT(NOW(), '%H:%i:%s')";
+        $fecha = "{$now}";
+        $hora = "TIME_FORMAT({$now}, '%H:%i:%s')";
         $compra = "INSERT INTO compra (proveedor_id, forma_id, tipotrans_id, compra_fecha, compra_hora) VALUES ('$proveedor_id', '1', '4', '$fecha', '$hora')";
         $this->db->query($compra);
         $compra_id = $this->db->insert_id();

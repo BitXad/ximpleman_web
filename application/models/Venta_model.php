@@ -35,8 +35,10 @@ class Venta_model extends CI_Model
      */
     function get_ventas_dia()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "select if(count(*)>0, count(*), 0) as cantidad_ventas, if(sum(venta_total)>0, sum(venta_total), 0) as total_ventas
-                from venta where venta_fecha = date(now())";
+                from venta where venta_fecha = date({$now})";
         $venta = $this->db->query($sql)->result_array();
 
         return $venta;
@@ -46,10 +48,13 @@ class Venta_model extends CI_Model
     * Get ventas del dia de un usuario (vendedor)
     */
     function get_ventas_dia_usuario($usuario_id){
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "SELECT if(count(*)>0, count(*), 0) as cantidad_ventas, if(sum(v.venta_total)>0, sum(v.venta_total), 0) as total_ventas
                 FROM venta as v
                 WHERE 
-                    venta_fecha = date(now()) AND v.`usuario_id` = ".$usuario_id.";";
+                    venta_fecha = date({$now}) AND v.`usuario_id` = ".$usuario_id.";";
         $venta = $this->db->query($sql)->result_array();
         return $venta;
     }
@@ -58,7 +63,10 @@ class Venta_model extends CI_Model
     *Get ventas credito de un usuario (vendedor)
     */
     function get_venta_credito($usuario_id){
-        $sql = "SELECT if(count(*)>0, count(*), 0) as cantidad_ventas_credito,sum(cr.`credito_monto`) as total_ventas_credito
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
+        $sql = "SELECT if(count(*)>0, count(*), 0) as cantidad_ventas_credito,if(sum(cr.`credito_monto`)>0,sum(cr.`credito_monto`),0) as total_ventas_credito
                 FROM ventas vs 
                 LEFT JOIN credito cr on vs.venta_id = cr.venta_id 
                 WHERE vs.tipotrans_id = 2
@@ -66,7 +74,7 @@ class Venta_model extends CI_Model
         // $sql = "SELECT if(count(*)>0, count(*), 0) as cantidad_ventas_credito, if(sum(v.venta_total)>0, sum(v.venta_total), 0) as total_ventas_credito
         //         FROM venta v
         //         WHERE 
-        //             v.venta_fecha = date(now()) AND v.`usuario_id` = ".$usuario_id." AND v.`tipotrans_id` = 2;";
+        //             v.venta_fecha = date({$now}) AND v.`usuario_id` = ".$usuario_id." AND v.`tipotrans_id` = 2;";
         $venta = $this->db->query($sql)->result_array();
         $creditos = $this->db->query($sql)->result_array();
         return $creditos;
@@ -78,10 +86,12 @@ class Venta_model extends CI_Model
      */
     function get_resumen_usuarios()
     {
-        $sql = "select u.usuario_nombre, usuario_imagen, t.tipousuario_descripcion ,count(*) as cantidad_ventas, sum(v.venta_total) as total_ventas
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
+        $sql = "select u.usuario_nombre, usuario_imagen, t.tipousuario_descripcion ,if(count(*)>0,count(*),0) as cantidad_ventas, if(sum(v.venta_total)>0,sum(v.venta_total),0) as total_ventas
                 from usuario u, venta v, tipo_usuario t
                 where 
-                v.venta_fecha = date(now()) and
+                v.venta_fecha = date({$now}) and
                 u.tipousuario_id = t.tipousuario_id and
                 v.usuario_id = u.usuario_id
                 group by u.usuario_id
@@ -96,11 +106,13 @@ class Venta_model extends CI_Model
      */
     function get_ventas_semanales()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        
         $sql = "
                     select venta_fecha,sum(venta_total) as venta_dia
                     from venta
                     where 
-                     date(venta_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)
+                     date(venta_fecha) >= date_add(date({$now}), INTERVAL -1 WEEK)
                     group by venta_fecha
                     order by venta_fecha desc
                 ";
@@ -774,10 +786,12 @@ function get_busqueda($condicion)
     * Cantidad de entregas en un dia de un vendedor
     */
     function get_venta_entrega_dia($usuario_id){
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $entregas = $this->db->query(
-            "SELECT IF(count(p.pedido_total)>0,count(p.pedido_total),0) AS pedido_diario
+            "SELECT if(count(p.pedido_total)>0,count(p.pedido_total),0) AS pedido_diario
             FROM pedido as p
-            WHERE DATE(p.pedido_fecha) = DATE(NOW()) 
+            WHERE DATE(p.pedido_fecha) = DATE({$now}) 
             AND p.regusuario_id = ".$usuario_id."")->row_array();
 
         return $entregas;

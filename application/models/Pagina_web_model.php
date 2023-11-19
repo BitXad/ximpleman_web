@@ -183,7 +183,8 @@ class Pagina_web_model extends CI_Model
      */
     function get_oferta_dia()
     {
-        $sql = "select * from producto p, promocion m where p.producto_id = m.producto_id and m.promocion_fecha=date(now())";
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        $sql = "select * from producto p, promocion m where p.producto_id = m.producto_id and m.promocion_fecha=date({$now})";
         $resultado = $this->db->query($sql)->result_array();
         return $resultado;        
     }

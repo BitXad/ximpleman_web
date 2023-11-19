@@ -92,8 +92,11 @@ class Ingreso extends CI_Controller{
      */
     function add()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(54)){
+            
             $usuario_id = $this->session_data['usuario_id'];
             $this->load->library('form_validation');
             $this->form_validation->set_rules('ingreso_nombre', 'ingreso_nombre', 'required');
@@ -103,6 +106,7 @@ class Ingreso extends CI_Controller{
             $this->load->model('Moneda_model');
             $all_moneda = $this->Moneda_model->getalls_monedasact_asc();
             $data['all_moneda'] = $all_moneda;
+            
             if($this->form_validation->run())
             {
                 $ingreso_monto  = $this->input->post('ingreso_monto');
@@ -131,6 +135,7 @@ class Ingreso extends CI_Controller{
                 if($this->input->post('forma_pago') != 1){
                     $el_banco = $this->input->post('banco_id');
                 }
+                
                 $params = array(
                     'usuario_id' => $usuario_id,
                     'ingreso_categoria' => $this->input->post('ingreso_categoria'),
@@ -139,16 +144,20 @@ class Ingreso extends CI_Controller{
                     'ingreso_monto' => $total_final,
                     'ingreso_moneda' => $lamoneda, //$this->input->post('ingreso_moneda'),
                     'ingreso_concepto' => $this->input->post('ingreso_concepto'),
-                    'ingreso_fecha' => $this->input->post('ingreso_fecha'),
+                    'ingreso_fecha' => date("Y-m-d H:i:s"),//$this->input->post('ingreso_fecha'),
                     'ingreso_tc' => $ingreso_tc,
                     'forma_id' => $this->input->post('forma_pago'),
                     'ingreso_glosa' => $this->input->post('ingreso_glosa'),
                     'banco_id' => $el_banco,
                 );
+                
+                var_dump($params);
+               
                 $ingreso_id = $this->Ingreso_model->add_ingreso($params);
                 $sql = "UPDATE parametros SET parametro_numrecing=parametro_numrecing+1 WHERE parametro_id = '1'"; 
                 $this->db->query($sql);
                 $facturado = $this->input->post('factura');
+                
                 if($facturado=="on"){ //si la venta es facturada
                     $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
 
@@ -159,8 +168,8 @@ class Ingreso extends CI_Controller{
                     //$venta_efectivo    = $this->input->post('ingreso_monto');
                     $venta_efectivo    = $total_final;
                     $factura_fechaventa    = date("Y-m-d");
-                    $factura_fecha         = "date(now())";
-                    $factura_hora          = "time(now())";
+                    $factura_fecha         = "date({$now})";
+                    $factura_hora          = "time({$now})";
                     $factura_subtotal      = $total_final;
                     $factura_nit           = $this->input->post('nit');
                     $factura_razonsocial   = $this->input->post('razon');
@@ -257,6 +266,7 @@ class Ingreso extends CI_Controller{
                     window.location.href="../index";
                     </script>';
             }else{
+                
                 $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion_activa();
                 $this->load->model('Categoria_ingreso_model');
                 $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
@@ -268,6 +278,7 @@ class Ingreso extends CI_Controller{
                 $data['page_title'] = "Ingreso";
                 $data['_view'] = 'ingreso/add';
                 $this->load->view('layouts/main',$data);
+                
             }
         }
     }

@@ -272,8 +272,9 @@ border-bottom:1px solid black;
                                 }
                                 echo number_format($porcentaje_utilidad,'2','.',',')."%";?></td>
                             <td><?php echo number_format($dc['detallecomp_subtotal'],$decimales,'.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_descuento'],$decimales,'.',',');?></td>
-                            <td><?php echo number_format($dc['detallecomp_descglobal'],$decimales,'.',',');?></td>
+                            <td><?php echo number_format(($dc['detallecomp_descuento']!==null)?$dc['detallecomp_descuento']:0,$decimales,'.',',');?></td>
+                            
+                            <td><?php echo number_format((($dc['detallecomp_descglobal']!==null)?$dc['detallecomp_descglobal']:0),$decimales,'.',',');?></td>
                             <td><?php echo number_format($dc['detallecomp_total'],$decimales,'.',',');?></td>
                           
         </tr> 

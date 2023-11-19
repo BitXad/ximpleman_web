@@ -93,6 +93,7 @@ class Proceso_orden extends CI_Controller{
 
     function  terminar()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $data['sistema'] = $this->sistema;
         if($this->acceso(166)){
             $usuario_id = $this->session_data['usuario_id'];
@@ -103,7 +104,7 @@ class Proceso_orden extends CI_Controller{
             $data = "
             UPDATE
                 proceso_orden
-            SET estado_id=26, proceso_fechaterminado=NOW(), usuario_id=".$usuario_id."
+            SET estado_id=26, proceso_fechaterminado={$now}, usuario_id=".$usuario_id."
 
             WHERE 
                 proceso_id=".$proceso." ";
@@ -149,7 +150,7 @@ class Proceso_orden extends CI_Controller{
            
                $sql = "UPDATE
                 proceso_orden
-            SET estado_id=25, proceso_fechaproceso=NOW()
+            SET estado_id=25, proceso_fechaproceso={$now}
 
             WHERE 
                 detalleorden_id=".$orden." and estado=".$estado." ";

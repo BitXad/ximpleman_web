@@ -72,6 +72,7 @@ function facturar(mensualidad){
             <div class="panel-heading">
                 <h4>REGISTRAR INGRESO</h4>
                 <?php echo form_open('ingreso/add/'); ?>
+                
                 <?php if(count($dosificacion) >0){ ?>
                 <button class="btn btn-info btn-xs" type="button">
               <input type="checkbox" name="factura" id="factura"  onclick="facturar()" />
@@ -196,6 +197,8 @@ function facturar(mensualidad){
         </div>
     </div>
 </div>
+
+
 <script>
     function mostrar(){
         var forma = document.getElementById('select_forma_pago').value;
@@ -218,3 +221,7 @@ function facturar(mensualidad){
         });
     });
 </script>
+<?php 
+$now = "'".date("Y-m-d H:i:s")."'"; //{$now} 
+echo $now;
+?>

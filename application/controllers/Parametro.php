@@ -539,6 +539,7 @@ class Parametro extends CI_Controller{
     function cambiar_tipoemision(){
         
         $data['sistema'] = $this->sistema;
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         
         if($this->input->is_ajax_request()){
             
@@ -656,7 +657,7 @@ class Parametro extends CI_Controller{
                             // $cufd_puntodeventa = $dosificacion["dosificacion_puntoventa"];
 
                             $sql = "insert into cufd(cufd_codigo,cufd_codigocontrol,cufd_direccion,cufd_fechavigencia,cufd_transaccion, cufd_puntodeventa, cufd_fecharegistro) value(".
-                                        $cufd_codigo.",".$cufd_codigocontrol.",".$cufd_direccion.",".$cufd_fechavigencia.",'true',".$cufd_puntodeventa.", now())";
+                                        $cufd_codigo.",".$cufd_codigocontrol.",".$cufd_direccion.",".$cufd_fechavigencia.",'true',".$cufd_puntodeventa.", {$now})";
                             $this->Dosificacion_model->ejecutar($sql);
 
                             // $sql = "update dosificacion set dosificacion_cufd = ".$cufd_codigo;
@@ -1137,7 +1138,7 @@ class Parametro extends CI_Controller{
                                     
                                 //verificamos si ya tenemos un evento de este dia asociado y activo 
                                     
-                                $sql = "select * from registro_eventos where date(registroeventos_inicio) = date(now()) and estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa['puntoventa_codigo'];
+                                $sql = "select * from registro_eventos where date(registroeventos_inicio) = date({$now}) and estado_id = 1 and registroeventos_puntodeventa = ".$puntoventa['puntoventa_codigo'];
                                 $eventos = $this->Venta_model->consultar($sql);
                                 
                                 if (sizeof($eventos)<1){ //Si NO existe un evento asociado al dia de hoy para el punto de venta, lo debe generar
@@ -1146,9 +1147,9 @@ class Parametro extends CI_Controller{
                                     $registroeventos_codigo = "''";
                                     $registroeventos_codigoevento = $evento_id;
                                     $registroeventos_detalle = "'".$evento_nombre."'";
-                                    $registroeventos_fecha = "now()";
+                                    $registroeventos_fecha = "{$now}";
                                     $registroeventos_puntodeventa = $cufds["cufd_puntodeventa"];
-                                    $registroeventos_inicio = (new DateTime())->format('Y-m-d\TH:i:s.v'); //"now()";
+                                    $registroeventos_inicio = (new DateTime())->format('Y-m-d\TH:i:s.v'); //"no_w()";
                                     $registroeventos_cufd = "'".$cufds["cufd_codigo"]."'";
                                     $registroeventos_codigocontrol = "'".$cufds["cufd_codigocontrol"]."'";
                                     $estado_id = 1;

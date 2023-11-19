@@ -1,3 +1,4 @@
+
 function facturar(cuota){
     
     var precios = $('#factura').is(':checked');

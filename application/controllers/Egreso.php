@@ -132,7 +132,7 @@ class Egreso extends CI_Controller{
                     'egreso_monto' => $total_final,
                     'egreso_moneda' => $lamoneda,
                     'egreso_concepto' => $this->input->post('egreso_concepto'),
-                    'egreso_fecha' => $this->input->post('egreso_fecha'),
+                    'egreso_fecha' => date("Y-m-d H:i:s"),//$this->input->post('egreso_fecha'),
                     'egreso_tc' => $egreso_tc,
                     'forma_id' => $this->input->post('forma_pago'),
                     'egreso_glosa' => $this->input->post('egreso_glosa'),

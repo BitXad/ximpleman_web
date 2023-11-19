@@ -91,7 +91,7 @@ class Pedido extends CI_Controller{
         /*$filtro = $this->input->post('filtro');
         
         if ($filtro == null){
-            $data['pedido'] = $this->Pedido_model->get_pedidos(" and date(p.pedido_fecha) = date(now())");
+            $data['pedido'] = $this->Pedido_model->get_pedidos(" and date(p.pedido_fecha) = date(no_w())");
         }
         else{
             $data['pedido'] = $this->Pedido_model->get_pedidos($filtro);
@@ -198,6 +198,7 @@ class Pedido extends CI_Controller{
      */
     function mostrar_pedidos()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $data['sistema'] = $this->sistema;
         if($this->acceso(30)) {
         //**************** inicio contenido ***************            
@@ -209,7 +210,7 @@ class Pedido extends CI_Controller{
             $filtro = $this->input->post('filtro');
             
             if ($filtro == null){
-                $result = $this->Pedido_model->get_pedidos(" and date(p.pedido_fecha) = date(now()) and p.usuario_id=".$usuario_id);
+                $result = $this->Pedido_model->get_pedidos(" and date(p.pedido_fecha) = date({$now}) and p.usuario_id=".$usuario_id);
             }
             else{
                 $result = $this->Pedido_model->get_pedidos($filtro);
@@ -488,6 +489,7 @@ class Pedido extends CI_Controller{
     
     function finalizarpedido()
     {
+       $now = "'".date("Y-m-d H:i:s")."'"; //{$now} 
         $data['sistema'] = $this->sistema;
        if($this->acceso(30)) {
                 //**************** inicio contenido ***************    
@@ -497,7 +499,7 @@ class Pedido extends CI_Controller{
                 $estado_id = 3;
 
                 $tipotrans_id = $this->input->post('tipo_transaccion');
-                $pedido_fecha = "now()";
+                $pedido_fecha = "{$now}";
                 $pedido_id = $this->input->post('pedido_id1');
                 $pedido_subtotal = $this->input->post('pedido_subtotal');
                 $pedido_descuento = $this->input->post('pedido_descuento');
@@ -518,7 +520,7 @@ class Pedido extends CI_Controller{
                         //."usuario_id = ".$usuario_id
                         ."estado_id = 11"
                         .",tipotrans_id = ".$tipotrans_id
-                        .",pedido_fecha = now()"
+                        .",pedido_fecha = {$now}"
                         .",pedido_subtotal = ".$pedido_subtotal
                         .",pedido_descuento = ".$pedido_descuento
                         .",pedido_total = ".$pedido_total
@@ -911,7 +913,7 @@ class Pedido extends CI_Controller{
             venta_cambio, venta_glosa, venta_comision, venta_tipocambio, detalleserv_id,entrega_estadoid, pedido_id, usuarioprev_id)
 
             (select 1 as forma_id,".$tipotrans_id.", ".$usuario_id.", cliente_id, 1 as moneda_id, 1 as estado_id, 
-            date(now()) as venta_fecha, time(now()) as venta_hora, pedido_subtotal as venta_subtotal, pedido_descuento as venta_descuento, pedido_total as venta_total, pedido_total as venta_efectivo, 
+            date({$now}) as venta_fecha, time({$now}) as venta_hora, pedido_subtotal as venta_subtotal, pedido_descuento as venta_descuento, pedido_total as venta_total, pedido_total as venta_efectivo, 
             0 as venta_cambio, pedido_glosa as venta_glosa, 0 as venta_comision,1 as venta_tipocambio,'' as  detalleserv_id, 1 as entrega_estadoid, ".$pedido_id.", usuario_id
             from pedido
             where pedido_id=".$pedido_id." ) ";            
@@ -953,7 +955,7 @@ class Pedido extends CI_Controller{
                     $credito_interesproc =  0;
                     $credito_interesmonto =  0; //revisar
                     $credito_numpagos =  $cuotas;
-                    $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                    $credito_fechalimite =  "date_add(date({$now}), INTERVAL +1 WEEK)";
                     $credito_fecha = date('Y-m-d');
                     $time = time();
                     $credito_hora =  date("H:i:s", $time);
@@ -1284,7 +1286,7 @@ class Pedido extends CI_Controller{
             if($dia_visita == 0){ $condicion = " "; } //todos
 
             $sql="select c.*,p.pedido_id from cliente c
-                  left join (select * from pedido where date(pedido_fecha) = date(now())) as p on p.cliente_id = c.cliente_id ".
+                  left join (select * from pedido where date(pedido_fecha) = date({$now})) as p on p.cliente_id = c.cliente_id ".
                  " where c.estado_id = 1 and  c.usuario_id = ".
                   $usuario_id." ".$condicion.                    
                   " order by c.cliente_ordenvisita, c.cliente_nombre";
@@ -1430,6 +1432,7 @@ class Pedido extends CI_Controller{
      */
     function buscar_clientes()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $data['sistema'] = $this->sistema;
         if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
 
@@ -1449,14 +1452,14 @@ class Pedido extends CI_Controller{
             if($dia_visita == 0){ $condicion = " "; } //todos
 
 //            $sql="select c.*,p.pedido_id from cliente c
-//                  left join (select * from pedido where date(pedido_fecha) = date(now())) as p on p.cliente_id = c.cliente_id ".
+//                  left join (select * from pedido where date(pedido_fecha) = date(no_w())) as p on p.cliente_id = c.cliente_id ".
 //                 " where c.estado_id = 1 and  c.usuario_id = ".
 //                  $usuario_id." ".$condicion.                    
 //                  " order by c.cliente_ordenvisita, c.cliente_nombre";
             
         
             $sql="select c.*,p.pedido_id,p.tiporespuesta_id from cliente c
-                  left join (select * from recorrido_usuario where recorrido_fecha = date(now())) as p on p.cliente_id = c.cliente_id ".
+                  left join (select * from recorrido_usuario where recorrido_fecha = date({$now})) as p on p.cliente_id = c.cliente_id ".
                  " where c.estado_id = 1 and  c.usuario_id = ".
                   $usuario_id." ".$condicion.                    
                   " order by c.cliente_ordenvisita, c.cliente_nombre";
@@ -1616,6 +1619,7 @@ class Pedido extends CI_Controller{
     }
     function mapapedido_a_ventas(){
         
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         $data['sistema'] = $this->sistema;
         if($this->acceso(30)){ //12 ventas o 30 pedidos
             //**************** inicio contenido ***************    
@@ -1630,7 +1634,7 @@ class Pedido extends CI_Controller{
                 venta_cambio, venta_glosa, venta_comision, venta_tipocambio, detalleserv_id,entrega_estadoid, pedido_id, usuarioprev_id)
 
                 (select 1 as forma_id,1 as tipotrans_id, ".$usuario_id.", cliente_id, 1 as moneda_id, 1 as estado_id, 
-                date(now()) as venta_fecha, time(now()) as venta_hora, pedido_subtotal as venta_subtotal, pedido_descuento as venta_descuento, pedido_total as venta_total, pedido_total as venta_efectivo, 
+                date({$now}) as venta_fecha, time({$now}) as venta_hora, pedido_subtotal as venta_subtotal, pedido_descuento as venta_descuento, pedido_total as venta_total, pedido_total as venta_efectivo, 
                 0 as venta_cambio, pedido_glosa as venta_glosa, 0 as venta_comision,1 as venta_tipocambio,'' as  detalleserv_id, 1 as entrega_estadoid, ".$pedido_id.", usuario_id
                 from pedido
                 where pedido_id=".$pedido_id." ) ";            
