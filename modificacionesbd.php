@@ -136,7 +136,7 @@ p.`producto_costo` * p.producto_orden,
 6.96
 
 
-from producto p)
+from producto p);
 
 
 insert into compra(
@@ -167,7 +167,7 @@ update compra set
 compra_subtotal = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
 ,compra_total = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
 ,compra_totalfinal = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
-where compra_id = 1
+where compra_id = 1;
 
 
 
