@@ -1009,6 +1009,12 @@ function buscarporcodigojsx()
    var codigo = document.getElementById('codigo').value;
    var decimales = Number(document.getElementById('parametro_decimales').value);
    var cantidad = 1;
+   var check_agrupar = document.getElementById('check_agrupar').checked;
+   
+    if (check_agrupar){
+        agrupado = 1; }
+    else{
+        agrupado = 0; }
    //var parametro_sininventario = document.getElementById('parametro_sininventario').value;
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
@@ -1059,10 +1065,13 @@ function buscarporcodigojsx()
     $.ajax({url: controlador,
         
            type:"POST",
-           data:{codigo:codigo, cantidad:cantidad},
+           data:{codigo:codigo, cantidad:cantidad, agrupado:agrupado},
            success:function(respuesta){
                
                res = JSON.parse(respuesta);
+               
+               if(res != true)
+                alert(JSON.stringify(res));
                
                tablaproductos();
 
@@ -1681,7 +1690,7 @@ function ingresardetalle(producto_id)
         });
 
    }
-   else alert("xxxADVERTENCIA: La cantidad excede la existencia del inventario...!!");
+   else alert("ADVERTENCIA: La cantidad excede la existencia del inventario...!!");
 
 }
 
@@ -2391,7 +2400,7 @@ function ingresorapidojs(cantidad,producto_id,nombre_factor){
             }
         });
     }
-    else { alert('cccADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+Number(producto.existencia).toFixed(decimales));}
+    else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+Number(producto.existencia).toFixed(decimales));}
     
 }
 
@@ -2415,7 +2424,6 @@ function ingresorapidojsx(cantidad,producto_id,nombre_factor){
 
             }
         });
-
     
 }
 
@@ -2956,10 +2964,10 @@ function tablaresultados(opcion)
                                   html += "<br>";
                                   html += "<div class='btn-group'>";
 //                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",1)'><b>- 1 -</b></button>";
-                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojsx(1,"+registros[i]["producto_id"]+",0)'><b>- 1 -</b></button>";                                  
-                                  html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojsx(2,"+registros[i]["producto_id"]+",0)'><b>- 2 -</b></button>";
-                                  html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapidojsx(5,"+registros[i]["producto_id"]+",0)'><b>- 5 -</b></button>";
-                                  html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojsx(10,"+registros[i]["producto_id"]+",0)'><b>- 10 -</b></button> ";
+                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojs(1,"+registros[i]["producto_id"]+",0)'><b>- 1 -</b></button>";                                  
+                                  html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojs(2,"+registros[i]["producto_id"]+",0)'><b>- 2 -</b></button>";
+                                  html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapidojs(5,"+registros[i]["producto_id"]+",0)'><b>- 5 -</b></button>";
+                                  html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojs(10,"+registros[i]["producto_id"]+",0)'><b>- 10 -</b></button> ";
                                   html += "</div>";   
 
                             }            
@@ -7198,12 +7206,7 @@ function cargar_contingencia(){
                 alert("ERROR: Debe seleccionar un evento/archivo a enviar");
             }        
         
-        
-
         //******************************************************
-        
-        
-
         
     }
     
@@ -7237,8 +7240,23 @@ function seleccion_documento(){
     $("#razon_social").focus("");
     $("#nit").focus();
     $("#nit").select();
-}
+    
+    var miSelect = document.getElementById('tipo_doc_identidad');
 
+    // Obtener el valor seleccionado
+    var valorSeleccionado = miSelect.value;
+    var miInput = document.getElementById('nit');
+    if(valorSeleccionado==1 || valorSeleccionado==5){
+        
+        miInput.type = 'number';
+        
+    }else{
+        miInput.type = 'text';        
+    }
+    
+    
+}
+//
 function solicitudCufd(punto_venta=0){
     
     var base_url = document.getElementById('base_url').value;
@@ -8092,6 +8110,16 @@ function seleccionar_documento(id){
             }
         }
         
+    }
+    
+    var miInput = document.getElementById('nit');
+
+    if(id==1 || id==5){
+        
+        miInput.type = 'number';
+        
+    }else{
+        miInput.type = 'text';        
     }
     
     $("#tipo_doc_identidad").val(id);

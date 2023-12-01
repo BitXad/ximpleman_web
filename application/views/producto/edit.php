@@ -106,6 +106,20 @@
     });
   </script>
 
+<?php 
+
+function es_null($val){
+    
+    if($val!==null){
+        return $val;
+    }else{
+        return 0;
+    }
+        
+    
+}
+  
+?>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <div class="row">
     <div class="col-md-12">
@@ -148,7 +162,7 @@
                     <div class="col-md-2">
                         <label for="producto_unidadentera" class="control-label">Unidad Entera</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" name="producto_unidadentera" value="<?php echo ($this->input->post('producto_unidadentera') ? $this->input->post('producto_unidadentera') : number_format($producto['producto_unidadentera'],$decimales,".","")); ?>" class="form-control" id="producto_unidadentera" />
+                            <input type="number" step="any" min="0" name="producto_unidadentera" value="<?php echo ($this->input->post('producto_unidadentera') ? $this->input->post('producto_unidadentera') : number_format(es_null($producto['producto_unidadentera']),$decimales,".","")); ?>" class="form-control" id="producto_unidadentera" />
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -263,7 +277,7 @@
                     <div class="col-md-2">
                         <label for="producto_costo" class="control-label">Precio de Compra</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" name="producto_costo" value="<?php echo ($this->input->post('producto_costo') ? $this->input->post('producto_costo') : number_format($producto['producto_costo'],$decimales,".","")) ?>" class="form-control" id="producto_costo" />
+                            <input type="number" step="any" min="0" name="producto_costo" value="<?php echo ($this->input->post('producto_costo') ? $this->input->post('producto_costo') : number_format(es_null($producto['producto_costo']),$decimales,".","")) ?>" class="form-control" id="producto_costo" />
                         </div>
                     </div>
                     <div class="col-md-2" style="padding-right: 30px">
@@ -285,13 +299,13 @@
                     <div class="col-md-2">
                         <label for="producto_precio" class="control-label">Precio de Venta</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" name="producto_precio" value="<?php echo ($this->input->post('producto_precio') ? $this->input->post('producto_precio') : number_format($producto['producto_precio'],$decimales,".","")) ?>" class="form-control" id="producto_precio" onchange="verificar_precio();" />
+                            <input type="number" step="any" min="0" name="producto_precio" value="<?php echo ($this->input->post('producto_precio') ? $this->input->post('producto_precio') : number_format(es_null($producto['producto_precio']),$decimales,".","")) ?>" class="form-control" id="producto_precio" onchange="verificar_precio();" />
                         </div>
                     </div>
                     <div class="col-md-2">
                         <label for="producto_comision" class="control-label">Comisión (%)</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" max="100" name="producto_comision" value="<?php echo ($this->input->post('producto_comision') ? $this->input->post('producto_comision') : number_format($producto['producto_comision'],$decimales,".","")); ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
+                            <input type="number" step="any" min="0" max="100" name="producto_comision" value="<?php echo ($this->input->post('producto_comision') ? $this->input->post('producto_comision') : number_format(es_null($producto['producto_comision']),$decimales,".","")); ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
                         </div>
                     </div>
                     
@@ -331,7 +345,7 @@
                             <div class="col-md-3">
                                 <label for="producto_factor" class="control-label">NIVEL 1: Cantidad/Unidades</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_factor" value="<?php echo ($this->input->post('producto_factor') ? $this->input->post('producto_factor') : number_format($producto['producto_factor'],$decimales,".","")); ?>" class="form-control btn-warning" id="producto_factor"  onclick="this.select();"/>
+                                    <input type="number" step="any" min="0" name="producto_factor" value="<?php echo ($this->input->post('producto_factor') ? $this->input->post('producto_factor') : number_format(es_null($producto['producto_factor']),$decimales,".","")); ?>" class="form-control btn-warning" id="producto_factor"  onclick="this.select();"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -358,7 +372,7 @@
                             <div class="col-md-3">
                                 <label for="producto_preciofactor" class="control-label">Precio Unit.</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_preciofactor" value="<?php echo ($this->input->post('producto_preciofactor') ? $this->input->post('producto_preciofactor') : number_format($producto['producto_preciofactor'],$decimales,".","")); ?>" class="form-control btn-warning" id="producto_preciofactor"  onclick="this.select();"/>
+                                    <input type="number" step="any" min="0" name="producto_preciofactor" value="<?php echo ($this->input->post('producto_preciofactor') ? $this->input->post('producto_preciofactor') : number_format(es_null($producto['producto_preciofactor']),$decimales,".","")); ?>" class="form-control btn-warning" id="producto_preciofactor"  onclick="this.select();"/>
                                 </div>
                             </div>
                    
@@ -366,7 +380,7 @@
                             <div class="col-md-3">
                                 <label for="producto_factor1" class="control-label">NIVEL 2: Cantidad/Unidades</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_factor1" value="<?php echo ($this->input->post('producto_factor1') ? $this->input->post('producto_factor1') : number_format($producto['producto_factor1'],$decimales,".","")); ?>" class="form-control btn-primary" id="producto_factor1"  onclick="this.select();"/>
+                                    <input type="number" step="any" min="0" name="producto_factor1" value="<?php echo ($this->input->post('producto_factor1') ? $this->input->post('producto_factor1') : number_format(es_null($producto['producto_factor1']),$decimales,".","")); ?>" class="form-control btn-primary" id="producto_factor1"  onclick="this.select();"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -393,13 +407,13 @@
                             <div class="col-md-3">
                                 <label for="producto_preciofactor1" class="control-label">Precio Unit.</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_preciofactor1" value="<?php echo ($this->input->post('producto_preciofactor1') ? $this->input->post('producto_preciofactor1') : number_format($producto['producto_preciofactor1'],$decimales,".","")); ?>" class="form-control btn-primary" id="producto_preciofactor1"  onclick="this.select();"/>
+                                    <input type="number" step="any" min="0" name="producto_preciofactor1" value="<?php echo ($this->input->post('producto_preciofactor1') ? $this->input->post('producto_preciofactor1') : number_format(es_null($producto['producto_preciofactor1']),$decimales,".","")); ?>" class="form-control btn-primary" id="producto_preciofactor1"  onclick="this.select();"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <label for="producto_factor2" class="control-label">NIVEL 3: Cantidad/Unidades</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_factor2" value="<?php echo ($this->input->post('producto_factor2') ? $this->input->post('producto_factor2') : number_format($producto['producto_factor2'],$decimales,".","")); ?>" class="form-control btn-info" id="producto_factor2"  onclick="this.select();"/>
+                                    <input type="number" step="any" min="0" name="producto_factor2" value="<?php echo ($this->input->post('producto_factor2') ? $this->input->post('producto_factor2') : number_format(es_null($producto['producto_factor2']),$decimales,".","")); ?>" class="form-control btn-info" id="producto_factor2"  onclick="this.select();"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -426,13 +440,13 @@
                             <div class="col-md-3">
                                 <label for="producto_preciofactor2" class="control-label">Precio Unit.</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_preciofactor2" value="<?php echo ($this->input->post('producto_preciofactor2') ? $this->input->post('producto_preciofactor2') : number_format($producto['producto_preciofactor2'],$decimales,".","")); ?>" class="form-control btn-info" id="producto_preciofactor2"  onclick="this.select();"/>
+                                    <input type="number" step="any" min="0" name="producto_preciofactor2" value="<?php echo ($this->input->post('producto_preciofactor2') ? $this->input->post('producto_preciofactor2') : number_format(es_null($producto['producto_preciofactor2']),$decimales,".","")); ?>" class="form-control btn-info" id="producto_preciofactor2"  onclick="this.select();"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <label for="producto_factor3" class="control-label">NIVEL 4: Cantidad/Unidades</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_factor3" value="<?php echo ($this->input->post('producto_factor3') ? $this->input->post('producto_factor3') : number_format($producto['producto_factor3'],$decimales,".","")); ?>" class="form-control btn-soundcloud" id="producto_factor3"  onclick="this.select();"/>
+                                    <input type="number" step="any" min="0" name="producto_factor3" value="<?php echo ($this->input->post('producto_factor3') ? $this->input->post('producto_factor3') : number_format(es_null($producto['producto_factor3']),$decimales,".","")); ?>" class="form-control btn-soundcloud" id="producto_factor3"  onclick="this.select();"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -459,13 +473,13 @@
                             <div class="col-md-3">
                                 <label for="producto_preciofactor3" class="control-label">Precio Unit.</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_preciofactor3" value="<?php echo ($this->input->post('producto_preciofactor3') ? $this->input->post('producto_preciofactor3') : number_format($producto['producto_preciofactor3'],$decimales,".","")); ?>" class="form-control btn-soundcloud" id="producto_preciofactor3"  onclick="this.select();"/>
+                                    <input type="number" step="any" min="0" name="producto_preciofactor3" value="<?php echo ($this->input->post('producto_preciofactor3') ? $this->input->post('producto_preciofactor3') : number_format(es_null($producto['producto_preciofactor3']),$decimales,".","")); ?>" class="form-control btn-soundcloud" id="producto_preciofactor3"  onclick="this.select();"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <label for="producto_factor4" class="control-label">NIVEL 5: Cantidad/Unidades</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_factor4" value="<?php echo ($this->input->post('producto_factor4') ? $this->input->post('producto_factor4') : number_format($producto['producto_factor4'],$decimales,".","")); ?>" class="form-control btn-twitter" id="producto_factor4"  onclick="this.select();"/>
+                                    <input type="number" step="any" min="0" name="producto_factor4" value="<?php echo ($this->input->post('producto_factor4') ? $this->input->post('producto_factor4') : number_format(es_null($producto['producto_factor4']),$decimales,".","")); ?>" class="form-control btn-twitter" id="producto_factor4"  onclick="this.select();"/>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -492,7 +506,7 @@
                             <div class="col-md-3">
                                 <label for="producto_preciofactor4" class="control-label">Precio Unit.</label>
                                 <div class="form-group">
-                                    <input type="number" step="any" min="0" name="producto_preciofactor4" value="<?php echo ($this->input->post('producto_preciofactor4') ? $this->input->post('producto_preciofactor4') : number_format($producto['producto_preciofactor4'],$decimales,".","")); ?>" class="form-control btn-twitter" id="producto_preciofactor4"  onclick="this.select();"/>
+                                    <input type="number" step="any" min="0" name="producto_preciofactor4" value="<?php echo ($this->input->post('producto_preciofactor4') ? $this->input->post('producto_preciofactor4') : number_format(es_null($producto['producto_preciofactor4']),$decimales,".","")); ?>" class="form-control btn-twitter" id="producto_preciofactor4"  onclick="this.select();"/>
                                 </div>
                             </div>
                         </div>
@@ -500,13 +514,13 @@
                     <div class="col-md-2">
                         <label for="producto_cantidadminima" class="control-label">Cant. Minima</label>
                         <div class="form-group">
-                            <input type="text" step="any" min="0" name="producto_cantidadminima" value="<?php echo ($this->input->post('producto_cantidadminima') ? $this->input->post('producto_cantidadminima') : number_format($producto['producto_cantidadminima'],$decimales,".","")); ?>" class="form-control" id="producto_cantidadminima"  onclick="this.select();"/>
+                            <input type="text" step="any" min="0" name="producto_cantidadminima" value="<?php echo ($this->input->post('producto_cantidadminima') ? $this->input->post('producto_cantidadminima') : number_format(es_null($producto['producto_cantidadminima']),$decimales,".","")); ?>" class="form-control" id="producto_cantidadminima"  onclick="this.select();"/>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <label for="producto_ultimocosto" class="control-label">Ultimo Costo</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" name="producto_ultimocosto" value="<?php echo ($this->input->post('producto_ultimocosto') ? $this->input->post('producto_ultimocosto') : number_format($producto['producto_ultimocosto'],$decimales,".","")); ?>" class="form-control" id="producto_ultimocosto"  onclick="this.select();"/>
+                            <input type="number" step="any" min="0" name="producto_ultimocosto" value="<?php echo ($this->input->post('producto_ultimocosto') ? $this->input->post('producto_ultimocosto') : number_format(es_null($producto['producto_ultimocosto']),$decimales,".","")); ?>" class="form-control" id="producto_ultimocosto"  onclick="this.select();"/>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -579,20 +593,20 @@
                     <div class="col-md-2">
                         <label for="producto_costoenvase" class="control-label">Costo de Envase</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" name="producto_costoenvase" value="<?php echo ($this->input->post('producto_costoenvase')) ? $this->input->post('producto_costoenvase') : number_format($producto['producto_costoenvase'],$decimales,".",""); ?>" class="form-control" id="producto_costoenvase"  onclick="this.select();"/>
+                            <input type="number" step="any" min="0" name="producto_costoenvase" value="<?php echo ($this->input->post('producto_costoenvase')) ? $this->input->post('producto_costoenvase') : number_format(es_null($producto['producto_costoenvase']),$decimales,".",""); ?>" class="form-control" id="producto_costoenvase"  onclick="this.select();"/>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <label for="producto_precioenvase" class="control-label">Precio de Envase</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" name="producto_precioenvase" value="<?php echo ($this->input->post('producto_precioenvase')) ? $this->input->post('producto_precioenvase') : number_format($producto['producto_precioenvase'],$decimales,".",""); ?>" class="form-control" id="producto_precioenvase"  onclick="this.select();"/>
+                            <input type="number" step="any" min="0" name="producto_precioenvase" value="<?php echo ($this->input->post('producto_precioenvase')) ? $this->input->post('producto_precioenvase') : number_format(es_null($producto['producto_precioenvase']),$decimales,".",""); ?>" class="form-control" id="producto_precioenvase"  onclick="this.select();"/>
                         </div>
                     </div>
                     
                     <div class="col-md-2">
                         <label for="producto_cantidadenvase" class="control-label">Existencia Envases</label>
                         <div class="form-group">
-                            <input type="number" step="any" min="0" name="producto_cantidadenvase" value="<?php echo ($this->input->post('producto_cantidadenvase')) ? $this->input->post('producto_cantidadenvase') : number_format($producto['producto_cantidadenvase'],$decimales,".",""); ?>" class="form-control" id="producto_cantidadenvase"  onclick="this.select();"/>
+                            <input type="number" step="any" min="0" name="producto_cantidadenvase" value="<?php echo ($this->input->post('producto_cantidadenvase')) ? $this->input->post('producto_cantidadenvase') : number_format(es_null($producto['producto_cantidadenvase']),$decimales,".",""); ?>" class="form-control" id="producto_cantidadenvase"  onclick="this.select();"/>
                         </div>
                     </div>
                     </div>

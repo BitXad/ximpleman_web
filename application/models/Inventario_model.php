@@ -132,18 +132,18 @@ class Inventario_model extends CI_Model
         return $producto;
     }
 
-    function get_producto_codigo($codigo,$cantidad)
+    function get_producto_codigo($codigo,$cantidad,$agrupado)
     {
         $usuario_id = $this->session_data['usuario_id'];
 
         // verificar si el producto existe
         $sql = "select *, 
                 if('{$codigo}' = producto_codigobarra, 1,
-                if('{$codigo}' = producto_codigobarra, producto_factor,
-                if('{$codigo}' = producto_codigobarra, producto_factor1,
-                if('{$codigo}' = producto_codigobarra, producto_factor2,
-                if('{$codigo}' = producto_codigobarra, producto_factor3,
-                if('{$codigo}' = producto_codigobarra, producto_factor4,0)))))) as cantidad                    
+                if('{$codigo}' = producto_codigofactor, producto_factor,
+                if('{$codigo}' = producto_codigofactor1, producto_factor1,
+                if('{$codigo}' = producto_codigofactor2, producto_factor2,
+                if('{$codigo}' = producto_codigofactor3, producto_factor3,
+                if('{$codigo}' = producto_codigofactor4, producto_factor4,0)))))) as cantidad                    
             
                 from inventario where 
                 
@@ -158,128 +158,139 @@ class Inventario_model extends CI_Model
         
         if (empty($producto)){ // Sino existe hasta aqui llega
             
-            return false;
+            return "ADVERTENCIA: No existe un producto con el código especificado...!";
             
         }else{
             
                 $producto_id = $producto[0]["producto_id"];
-                $cantidad = $producto[0]["cantidad"];
-                $existencia = $producto[0]["existencia"];
+                $cantidad = $producto[0]["cantidad"]; //la cantidad a vender
+                $existencia = $producto[0]["existencia"]; //la existencia actual
                 
                 //
 //                $sql = "select * from detalle_venta_aux where producto_id = {$producto_id} and usuario_id = {$usuario_id} and existencia >= (existencia + {$existencia})";
-                $sql = "select * from detalle_venta_aux where producto_id = {$producto_id} and usuario_id = {$usuario_id}";
+                $sql = "select *, detalleven_cantidad as cantidad_reservada from detalle_venta_aux where producto_id = {$producto_id} and usuario_id = {$usuario_id}";
                 $resultado = $this->db->query($sql)->result_array();
 
 
-                if(empty($resultado)){
-
+                if(empty($resultado))
+                    $cantidad_reservada = 0;
+                else
+                    $cantidad_reservada = $resultado[0]["cantidad_reservada"];
+    
+                if ($existencia > ($cantidad + $cantidad_reservada)){
                     
-                        $sql = "insert into detalle_venta_aux(producto_id,venta_id,moneda_id,detalleven_codigo,
-                                detalleven_unidad,detalleven_costo,
-                                detalleven_descuento,detalleven_descuentoparcial,detalleven_caracteristicas,
-                                detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,
-                                producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
-                                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,
-                                detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,
-                                detalleven_montodevolucion,detalleven_prestamoenvase,
-                                promocion_id,clasificador_id,detalleven_unidadfactor,preferencia_id,detalleven_tc,
-                                detalleven_cantidad,detalleven_precio,detalleven_subtotal,detalleven_total
-                                )
-
-
-                                ((select producto_id, 0, moneda_id, producto_codigobarra, 
-                                producto_unidad, producto_costo, 
-                                0 as descuento,0 as descuentoparcial, producto_caracteristicas,
-                                '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
-                                producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
-                                producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
-                                producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
-                                0 as detalleven_montodevolucion,0 asdetalleven_prestamoenvase,
-                                0,0,producto_factor,0,6.96, 
-                                1 as cantidad, producto_precio as precio, 1 * producto_precio,1 * producto_precio
-                                 from inventario where producto_codigobarra = '{$codigo}' or producto_codigobarra = '{$codigo}') union
-
-                                 (select producto_id, 0, moneda_id, producto_codigobarra, 
-                                producto_unidad, producto_costo, 
-                                0 as descuento,0 as descuentoparcial, producto_caracteristicas,
-                                '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
-                                producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
-                                producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
-                                producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
-                                0 as detalleven_montodevolucion,0 asdetalleven_prestamoenvase,
-                                0,0,producto_factor,0,6.96, 
-                                producto_factor as cantidad, producto_preciofactor as precio, producto_factor * producto_preciofactor,producto_factor * producto_preciofactor
-                                 from inventario where producto_codigofactor = '{$codigo}') union
-
-                                  (select producto_id, 0, moneda_id, producto_codigobarra, 
-                                producto_unidad, producto_costo, 
-                                0 as descuento,0 as descuentoparcial, producto_caracteristicas,
-                                '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
-                                producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
-                                producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
-                                producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
-                                0 as detalleven_montodevolucion,0 asdetalleven_prestamoenvase,
-                                0,0,producto_factor1,0,6.96, 
-                                producto_factor1 as cantidad, producto_preciofactor1 as precio, producto_factor1 * producto_preciofactor1,producto_factor1 * producto_preciofactor1
-                                 from inventario where producto_codigofactor1 = '{$codigo}') union
-
-                                  (select producto_id, 0, moneda_id, producto_codigobarra, 
-                                producto_unidad, producto_costo, 
-                                0 as descuento,0 as descuentoparcial, producto_caracteristicas,
-                                '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
-                                producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
-                                producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
-                                producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
-                                0 as detalleven_montodevolucion,0 asdetalleven_prestamoenvase,
-                                0,0,producto_factor2,0,6.96, 
-                                producto_factor2 as cantidad, producto_preciofactor2 as precio, producto_factor2 * producto_preciofactor2,producto_factor2 * producto_preciofactor2
-                                 from inventario where producto_codigofactor2 = '{$codigo}') union
-
-                                  (select producto_id, 0, moneda_id, producto_codigobarra, 
-                                producto_unidad, producto_costo, 
-                                0 as descuento,0 as descuentoparcial, producto_caracteristicas,
-                                '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
-                                producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
-                                producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
-                                producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
-                                0 as detalleven_montodevolucion,0 asdetalleven_prestamoenvase,
-                                0,0,producto_factor3,0,6.96, 
-                                producto_factor3 as cantidad, producto_preciofactor3 as precio, producto_factor3 * producto_preciofactor3,producto_factor3 * producto_preciofactor3
-                                 from inventario where producto_codigofactor3 = '{$codigo}') union
-
-                                  (select producto_id, 0, moneda_id, producto_codigobarra, 
-                                producto_unidad, producto_costo, 
-                                0 as descuento,0 as descuentoparcial, producto_caracteristicas,
-                                '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
-                                producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
-                                producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
-                                producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
-                                0 as detalleven_montodevolucion,0 asdetalleven_prestamoenvase,
-                                0,0,producto_factor4,0,6.96, 
-                                producto_factor4 as cantidad, producto_preciofactor4 as precio, producto_factor4 * producto_preciofactor4,producto_factor4 * producto_preciofactor4
-                                 from inventario where producto_codigofactor4 = '{$codigo}'))";
-
-                      // echo $sql;
-                        $this->db->query($sql);
-
-                }else{
-
-                        $descuento = $resultado[0]["detalleven_descuento"];
-                        $detalleven_id = $resultado[0]["detalleven_id"];
-                        $producto_id = $resultado[0]["producto_id"];
-                        
-                        $sql = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + {$cantidad}
-                                , detalleven_subtotal = detalleven_precio * (detalleven_cantidad) 
-                                , detalleven_descuento = {$descuento}
-                                , detalleven_total = (detalleven_precio - {$descuento})*(detalleven_cantidad)
-                                  where producto_id = {$producto_id} and  detalleven_id = {$detalleven_id}"; //usuario_id = "+usuario_id;
-                        
-                        //var_dump($sql);
-                        $this->db->query($sql);
-                }
                 
+                        if(empty($resultado)||$agrupado==0){
+
+
+                                $sql = "insert into detalle_venta_aux(producto_id,venta_id,moneda_id,detalleven_codigo,
+                                        detalleven_unidad,detalleven_costo,
+                                        detalleven_descuento,detalleven_descuentoparcial,detalleven_caracteristicas,
+                                        detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,
+                                        producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
+                                        detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,
+                                        detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,
+                                        detalleven_montodevolucion,detalleven_prestamoenvase,
+                                        promocion_id,clasificador_id,detalleven_unidadfactor,preferencia_id,detalleven_tc,
+                                        detalleven_cantidad,detalleven_precio,detalleven_subtotal,detalleven_total
+                                        )
+
+
+                                        ((select producto_id, 0, moneda_id, producto_codigobarra, 
+                                        producto_unidad, producto_costo, 
+                                        0 as descuento,0 as descuentoparcial, producto_caracteristicas,
+                                        '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
+                                        producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
+                                        producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
+                                        producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
+                                        0 as detalleven_montodevolucion,0 as detalleven_prestamoenvase,
+                                        0,0,producto_unidad,0,6.96, 
+                                        1 as cantidad, producto_precio as precio, 1 * producto_precio,1 * producto_precio
+                                         from inventario where producto_codigobarra = '{$codigo}' or producto_codigobarra = '{$codigo}') union
+
+                                         (select producto_id, 0, moneda_id, producto_codigobarra, 
+                                        producto_unidad, producto_costo, 
+                                        0 as descuento,0 as descuentoparcial, producto_caracteristicas,
+                                        '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
+                                        producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
+                                        producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
+                                        producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
+                                        0 as detalleven_montodevolucion,0 as detalleven_prestamoenvase,
+                                        0,0,producto_unidadfactor,0,6.96, 
+                                        producto_factor as cantidad, producto_preciofactor as precio, producto_factor * producto_preciofactor,producto_factor * producto_preciofactor
+                                         from inventario where producto_codigofactor = '{$codigo}') union
+
+                                          (select producto_id, 0, moneda_id, producto_codigobarra, 
+                                        producto_unidad, producto_costo, 
+                                        0 as descuento,0 as descuentoparcial, producto_caracteristicas,
+                                        '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
+                                        producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
+                                        producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
+                                        producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
+                                        0 as detalleven_montodevolucion,0 as detalleven_prestamoenvase,
+                                        0,0,producto_unidadfactor1,0,6.96, 
+                                        producto_factor1 as cantidad, producto_preciofactor1 as precio, producto_factor1 * producto_preciofactor1,producto_factor1 * producto_preciofactor1
+                                         from inventario where producto_codigofactor1 = '{$codigo}') union
+
+                                          (select producto_id, 0, moneda_id, producto_codigobarra, 
+                                        producto_unidad, producto_costo, 
+                                        0 as descuento,0 as descuentoparcial, producto_caracteristicas,
+                                        '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
+                                        producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
+                                        producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
+                                        producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
+                                        0 as detalleven_montodevolucion,0 as detalleven_prestamoenvase,
+                                        0,0,producto_unidadfactor2,0,6.96, 
+                                        producto_factor2 as cantidad, producto_preciofactor2 as precio, producto_factor2 * producto_preciofactor2,producto_factor2 * producto_preciofactor2
+                                         from inventario where producto_codigofactor2 = '{$codigo}') union
+
+                                          (select producto_id, 0, moneda_id, producto_codigobarra, 
+                                        producto_unidad, producto_costo, 
+                                        0 as descuento,0 as descuentoparcial, producto_caracteristicas,
+                                        '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
+                                        producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
+                                        producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
+                                        producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
+                                        0 as detalleven_montodevolucion,0 as detalleven_prestamoenvase,
+                                        0,0,producto_unidadfactor3,0,6.96, 
+                                        producto_factor3 as cantidad, producto_preciofactor3 as precio, producto_factor3 * producto_preciofactor3,producto_factor3 * producto_preciofactor3
+                                         from inventario where producto_codigofactor3 = '{$codigo}') union
+
+                                          (select producto_id, 0, moneda_id, producto_codigobarra, 
+                                        producto_unidad, producto_costo, 
+                                        0 as descuento,0 as descuentoparcial, producto_caracteristicas,
+                                        '' as detalleven_preferencia, producto_comision, producto_tipocambio, {$usuario_id}, existencia,
+                                        producto_nombre,producto_unidad,producto_marca,categoria_id,producto_codigobarra,
+                                        producto_envase,producto_nombreenvase,producto_costoenvase,producto_precioenvase,
+                                        producto_cantidadenvase,0 as producto_garantiaenvase,0 as producto_devueltoenvase,
+                                        0 as detalleven_montodevolucion,0 as detalleven_prestamoenvase,
+                                        0,0,producto_unidadfactor4,0,6.96, 
+                                        producto_factor4 as cantidad, producto_preciofactor4 as precio, producto_factor4 * producto_preciofactor4,producto_factor4 * producto_preciofactor4
+                                         from inventario where producto_codigofactor4 = '{$codigo}'))";
+
+                              // echo $sql;
+                                $this->db->query($sql);
+
+                        }else{
+
+                                $descuento = $resultado[0]["detalleven_descuento"];
+                                $detalleven_id = $resultado[0]["detalleven_id"];
+                                $producto_id = $resultado[0]["producto_id"];
+
+                                $sql = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad +{$cantidad}
+                                        , detalleven_subtotal = detalleven_precio * (detalleven_cantidad) 
+                                        , detalleven_descuento = {$descuento}
+                                        , detalleven_total = (detalleven_precio - {$descuento})*(detalleven_cantidad)
+                                          where producto_id = {$producto_id} and  detalleven_id = {$detalleven_id}"; //usuario_id = "+usuario_id;
+
+                                //var_dump($sql);
+                                $this->db->query($sql);
+                        }
+
                 return true;
+                }else{
+                    return "La cantidad es mayor a la del inventario disponible...!";
+                }
         }
     }
 

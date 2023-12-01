@@ -1703,9 +1703,10 @@ class Venta extends CI_Controller{
             
             $cantidad = $this->input->post('cantidad');
             $codigo = $this->input->post('codigo');
+            $agrupado = $this->input->post('agrupado');
             
             //$producto = $this->Inventario_model->get_inventario_codigo($codigo);
-            $producto = $this->Inventario_model->get_producto_codigo($codigo,$cantidad);
+            $producto = $this->Inventario_model->get_producto_codigo($codigo,$cantidad,$agrupado);
             
             echo json_encode($producto);
             
