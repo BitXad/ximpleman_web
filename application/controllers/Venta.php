@@ -5289,14 +5289,17 @@ function anular_venta($venta_id){
             $producto_id = $this->input->post('producto_id');
             $producto_costo = $this->input->post('producto_costo');
             $producto_precio = $this->input->post('producto_precio');
+            $producto_codigo = $this->input->post('producto_codigo');
             $actualizarpreciossucursales = $this->input->post('actualizarpreciossucursales');
             
-            $sql = "update producto set producto_costo = ".$producto_costo.", producto_precio = ".$producto_precio.
-                    " where producto_id = ".$producto_id;
+            $sql = "update producto set producto_costo = {$producto_costo}, producto_precio = {$producto_precio}, 
+                    producto_codigobarra = '{$producto_codigo}', producto_codigo = '{$producto_codigo}'
+                     where producto_id = {$producto_id}";
             $this->Venta_model->ejecutar($sql);
             
-            $sql = "update inventario set producto_costo = ".$producto_costo.", producto_precio = ".$producto_precio.
-                    " where producto_id = ".$producto_id;
+            $sql = "update inventario set producto_costo = {$producto_costo}, producto_precio = {$producto_precio}, 
+                    producto_codigobarra = '{$producto_codigo}', producto_codigo = '{$producto_codigo}'
+                     where producto_id = {$producto_id}";
             $this->Venta_model->ejecutar($sql);
             
             //********************** ACTUALIZAR EN SUCURSALES *********

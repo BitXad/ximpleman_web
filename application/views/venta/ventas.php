@@ -2274,6 +2274,15 @@ window.onkeydown = compruebaTecla;
                                             <label for="usuario_idx" class="control-label">Precio <?php echo $sistema["sistema_moduloventas"]; ?> :</label>                                            
                                             <input type="text" id="modificarprecios_producto_precio" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
 					</div>
+                                        
+                                        <div class="col-md-6">
+                                            <label for="usuario_idx" class="control-label">Cod. Barra:</label>                                            
+                                            <input type="text" id="modificarprecios_producto_codigo" value="0.00" class="form-control btn btn-xs btn-default" onkeyup="validar(event,11)"  style="font-size: 10pt;"/>
+					</div>
+                            
+                                        <div class="col-md-6">
+                                             <input  type="checkbox"  id="actualizarpreciossucursales" name="actualizarpreciossucursales" value="1" checked="true" checked>Actualizar precios de las sucursales 
+                                        </div>
                             
                                         <div class="col-md-6" id='botones'  style='display:block;'>
 						<label for="opciones" class="control-label">Opciones</label>
@@ -2289,10 +2298,6 @@ window.onkeydown = compruebaTecla;
 						</div>
 					</div>
                                         
-                                        <div class="col-md-12">
-                                             <input  type="checkbox"  id="actualizarpreciossucursales" name="actualizarpreciossucursales" value="1" checked="true" checked>Actualizar precios de las sucursales 
-                                        </div>
-                            
                                         <!--------------------- inicio loader ------------------------->
                                         <div class="col-md-6" id='loaderinventario'  style='display: none;'>
                                             <center>

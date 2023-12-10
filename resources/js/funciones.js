@@ -2625,6 +2625,7 @@ function modificar_precios(producto_id){
     $("#modificarprecios_producto_id").val(producto.producto_id);
     $("#modificarprecios_producto_costo").val(Number(producto.producto_costo).toFixed(decimales));
     $("#modificarprecios_producto_precio").val(Number(producto.producto_precio).toFixed(decimales));
+    $("#modificarprecios_producto_codigo").val(producto.producto_codigobarra);
     $("#boton_modal_actualizarprecio").click();
     
     focus_cambio_rapido();
@@ -6090,6 +6091,7 @@ function actualizar_precio(){
     var producto_id = document.getElementById("modificarprecios_producto_id").value;
     var producto_costo = document.getElementById("modificarprecios_producto_costo").value;
     var producto_precio = document.getElementById("modificarprecios_producto_precio").value;
+    var producto_codigo = document.getElementById("modificarprecios_producto_codigo").value;
     var actualizarpreciossucursales = $('#actualizarpreciossucursales').is(':checked');
     
     //alert(actualizarpreciossucursales);
@@ -6098,7 +6100,7 @@ function actualizar_precio(){
     
     $.ajax({url: controlador,
             type: "POST",
-            data:{producto_id:producto_id, producto_costo:producto_costo, producto_precio:producto_precio, actualizarpreciossucursales:actualizarpreciossucursales}, 
+            data:{producto_id:producto_id, producto_costo:producto_costo, producto_precio:producto_precio, actualizarpreciossucursales:actualizarpreciossucursales, producto_codigo:producto_codigo}, 
             success:function(resultado){
  
                 tablaresultados(1);

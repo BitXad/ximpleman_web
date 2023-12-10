@@ -1800,11 +1800,14 @@ function mostrar_kardex(producto_id){
     var controlador = base_url+"inventario/buscar_kardex";
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
+    var select_precio = document.getElementById('select_precio').value;
+    
+    //alert(select_precio);
     
     $.ajax({
         url:controlador,
         type: "POST",
-        data:{desde:fecha_desde,hasta:fecha_hasta, producto_id:producto_id},
+        data:{desde:fecha_desde,hasta:fecha_hasta, producto_id:producto_id,select_precio:select_precio},
         success:function(result){
             var k = JSON.parse(result);
             var lamoneda_id = document.getElementById('lamoneda_id').value;
@@ -1813,8 +1816,11 @@ function mostrar_kardex(producto_id){
             var html = "";
             var tam = k.length;
             var saldo = 0; 
+            var utilidades = 0; 
             var total_compras = 0; 
+            var totalbs_compras = 0; 
             var total_ventas = 0;
+            var totalbs_ventas = 0; 
             var ocultar = "";
             var saldox = 0;
             var cont = 1;
@@ -1852,29 +1858,39 @@ function mostrar_kardex(producto_id){
                     total_ventas += Number(k[i]['unidad_vend']);
                     
                     html += "    <tr align='center' "+ocultar+">";
+                    
+                    //Fecha
                     html += "            <td style='padding:0'>"+formato_fecha(k[i]['fecha'])+" - "+k[i]['hora']+"</td>";
                     html += "            <td style='padding:0'>";
                     
+                    //Nº de ingreso
                     if (k[i]['num_ingreso']!=0){ 
                         html += k[i]['num_ingreso'];
                         html += "<a href='"+base_url+"compra/nota/"+k[i]['num_ingreso']+"' target='_blank' class='btn btn-xs btn-info no-print'><fa class='fa fa-print'></fa> </a>";
                     }
+                    
                     html += "</td>";
                     
+                    //Unidad Compra
                     html += "<td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact; text-align:right; padding-right: 10px;'><b>";
                         if (k[i]['unidad_comp']!=0) 
                             html += Number(k[i]['unidad_comp']).toFixed(decimales);
                     html += "</b></td>";
                     
+                    //Costo Unitario
                     html += "            <td style='padding:0; text-align: right; padding-right: 10px;'>";                    
                         if (k[i]['costoc_unit']!=0) html += numberFormat(Number(k[i]['costoc_unit']).toFixed(decimales));
                     html += "</td>";
                     
-                    html += "            <td style='padding:0; text-align: right; padding-right: 10px;'>";
+                    //Importe Total
+                    totalbs_compras += Number(k[i]['importe_ingreso']);
                     
+                    html += "            <td style='padding:0; text-align: right; padding-right: 10px;'>";                    
                         if (k[i]['importe_ingreso']!=0) html += numberFormat(Number(k[i]['importe_ingreso']).toFixed(decimales));
+                        
                     html += "</td>";
                         
+                    //Nº Doc Venta
                     html += "            <td style='padding:0'>";
                         if (k[i]['num_salida']!=0){
                             html += Number(k[i]['num_salida']);
@@ -1882,14 +1898,20 @@ function mostrar_kardex(producto_id){
                         }  
                     html += "</td>";
                         
+                        
+                    //Unidad Vendida
                     html += "            <td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact; text-align: right; padding-right: 10px;'><b>";
                             if (k[i]['unidad_vend']!=0) html += Number(k[i]['unidad_vend']).toFixed(decimales);
                             
                     html += "</b></td>";
                             
+                    //Costo Unitario
                     html += "            <td style='padding:0; text-align: right; padding-right: 10px;'>";
                                 if (k[i]['costov_unit'] != 0) html += Number(k[i]['costov_unit']).toFixed(decimales);
                     html +="</td>";
+                    
+                    //Importe total x venta
+                    totalbs_ventas += Number(k[i]['importe_salida']);
                     
                     html +="            <td style='padding:0; text-align: right; padding-right: 10px;'>";
                                 if (k[i]['importe_salida'] != 0)  html += numberFormat(Number(k[i]['importe_salida']).toFixed(decimales));
@@ -1928,15 +1950,18 @@ function mostrar_kardex(producto_id){
                     html +="    <th style='padding:0'></th>";
                     html +="    <th style='padding:0'><small>ENTRADAS</small><br><h5><b>"+numberFormat(total_compras.toFixed(decimales))+"</b></h5></th>";
                     html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'>"+numberFormat(totalbs_compras.toFixed(decimales))+"</th>";
                     html +="    <th style='padding:0'></th>";
                     html +="    <th style='padding:0'><small>SALIDAS</small><br><h5><b>"+numberFormat(total_ventas.toFixed(decimales))+"</b></h5></th>";
                     html +="    <th style='padding:0'></th>";
-                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'>"+numberFormat(totalbs_ventas.toFixed(decimales))+"</th>";
                     html +="    <th style='padding:0'><small>SALDOS</small><br><h5><b>"+numberFormat(saldo.toFixed(decimales))+"</b></h5></th>";
                     html +="    <th style='padding:0'></th>";
                     html +="    <th style='padding:0'></th>";
-                    html +="     <th style='padding:0'></th>";
+                    
+                    utilidades = Number(totalbs_ventas) - Number(totalbs_compras);
+                    
+                    html +="     <th style='padding:0'>"+numberFormat(utilidades.toFixed(decimales))+"</th>";
                     html +="    </tr>";
                     
                     $("#tabla_kardex").html(html);

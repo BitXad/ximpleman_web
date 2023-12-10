@@ -56,7 +56,7 @@ font-size: 8pt;  /* tamaño texto tabla */
 
 td {
 
-border:1px solid black;
+border:0px solid black;
 font-size: 10px;
 padding : 0 0 0 0;
 

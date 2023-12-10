@@ -114,37 +114,41 @@ function tabladetalle_productos(){
 
                         cant_total   = Number(cant_total)  + Number(registros[i]['detalleven_cantidad']);
                         total_detalle = Number(total_detalle)   + Number(registros[i]['detalleven_total']);
+                        
                         html += "<tr>";
-                        html += "<td style='padding: 0'>";
-                        html += "<center>";
-                        html += "<font size='"+espacio+"'><br></font>";
-                        html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+lacantidad+"</b></font></h4>";
-                        html += "</center>";
-                        html += "</td>";
-                        html += "<td style='padding: 0;'>";
-                        html += "<center>";
-                        //html += "<div style='color: white; display: flex; padding-right: 3px;'><h4><img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle'></h4><div style='font-size: "+preferencia+";  padding-top: "+altoletra+" padding-left: 5px'>"+registros[i]['detalleven_preferencia']+"</div></div>";
-                        html += "<div style='display: flex;'>"
-                        html += "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle'>";
-                        html += "</div>"
-                        html += "<div style='color:white; text-align: left'>"
-                        if((registros[i]["producto_nombre"]).length >23){
-                            res = (registros[i]["producto_nombre"]).substr(0, 21)+"...";
-                        }else{
-                            res = registros[i]["producto_nombre"];
-                        }
-                        html += "<span style='font-weight: bold; font-size: 12px'>"+res+"</span>";
-                        html += "</div>"
-                        html += "</center>";
-                        html += "</td>";
-                        html += "<td style='padding: 0' align='right'>";
-                        html += "<font size='"+espacio+"'><br></font>";
-                        html += "<h4 style='color:white'><font size='"+letra+"'><b>"+numberFormat(Number(registros[i]['detalleven_precio']).toFixed(decimales))+"</b></font></h4>";
-                        html += "</td>";
-                        html += "<td style='padding: 0' align='right'>";
-                        html += "<font size='"+espacio+"'><br></font>";
-                        html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+numberFormat(Number(registros[i]["detalleven_total"]).toFixed(decimales))+"</b></font></h4>";
-                        html += "</td>";
+                            html += "<td style='padding: 0'>";
+                                html += "<center>";
+                                html += "<font size='"+espacio+"'></font>";
+                                html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+lacantidad+"</b></font></h4>";
+                                html += "</center>";
+                            html += "</td>";
+                            
+                            html += "<td style='padding: 0; color: white;'>";
+//                            html += "<center>";
+                            //html += "<div style='color: white; display: flex; padding-right: 3px;'><h4><img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle'></h4><div style='font-size: "+preferencia+";  padding-top: "+altoletra+" padding-left: 5px'>"+registros[i]['detalleven_preferencia']+"</div></div>";
+//                            html += "<div style='display: flex;'>"
+//                            html += "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle'>";
+//                            html += "</div>"
+//                            html += "<div style='color:white; text-align: left'>"
+                            if((registros[i]["producto_nombre"]).length >23){
+                                res = (registros[i]["producto_nombre"]).substr(0, 21)+"...";
+                            }else{
+                                res = registros[i]["producto_nombre"];
+                            }
+                            html += res;
+//                            html += "</div>"
+//                            html += "</center>";
+                            html += "</td>";
+                            
+                            html += "<td style='padding: 0' align='right'>";
+                            html += "<font size='"+espacio+"'></font>";
+                            html += "<h4 style='color:white'><font size='"+letra+"'><b>"+numberFormat(Number(registros[i]['detalleven_precio']).toFixed(decimales))+"</b></font></h4>";
+                            html += "</td>";
+                            
+                            html += "<td style='padding: 0' align='right'>";
+                            html += "<font size='"+espacio+"'></font>";
+                            html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+numberFormat(Number(registros[i]["detalleven_total"]).toFixed(decimales))+"</b></font></h4>";
+                            html += "</td>";
 
                         html += "</tr>";
                         }

@@ -855,7 +855,7 @@ class Inventario_model extends CI_Model
                   v.venta_id as num_salida,
                   t.detalleven_cantidad as unidad_vend,
                   t.detalleven_costo as costov_unit,
-                  t.detalleven_subtotal as importe_salida,
+                  (t.detalleven_cantidad * t.detalleven_costo) as importe_salida,
                   v.venta_hora as hora,
                   '' as detalleobs,
                   t.detalleven_tc as tipo_cambio,
@@ -880,7 +880,94 @@ class Inventario_model extends CI_Model
                   ds.detalleserv_id as num_salida,
                   t.detalleven_cantidad as unidad_vend,
                   t.detalleven_costo as costov_unit,
-                  t.detalleven_subtotal as importe_salida,
+                  (t.detalleven_cantidad * t.detalleven_costo) as importe_salida,
+                  ds.detalleserv_horaterminado as hora,
+                  concat('SERV. TECNICO N° ', ds.servicio_id) as detalleobs,
+                  t.detalleven_tc as tipo_cambio,
+                  t.detalleven_id as id
+                from
+                  detalle_serv ds,
+                  detalle_venta t
+                where
+                  t.producto_id = ".$producto_id." and 
+                  ds.detalleserv_id = t.detalleserv_id and 
+                  ds.detalleserv_fechaterminado >= '".$desde."' and 
+                  ds.detalleserv_fechaterminado <= '".$hasta."'
+                  ) as tx
+
+                  order by fecha, hora";
+ 
+        //echo $sql;
+        $kardex = $this->db->query($sql)->result_array();
+        return $kardex;
+    }    
+    
+    function mostrar_kardex_precioventa($desde, $hasta, $producto_id){
+        
+        $desde ='1900-01-01';
+        $sql = "select * from
+                (
+                select 
+                  c.compra_fecha as fecha,
+                  c.compra_id as num_ingreso,
+                  d.detallecomp_cantidad as unidad_comp,
+                  d.detallecomp_costo as costoc_unit,
+                  d.detallecomp_subtotal as importe_ingreso,
+                  0 as num_salida,
+                  0 as unidad_vend,
+                  0 as costov_unit,
+                  0 as importe_salida,
+                  c.compra_hora as hora,
+                  '' as detalleobs,
+                  d.detallecomp_tc as tipo_cambio,
+                  d.detallecomp_id as id
+                from
+                  compra c,
+                  detalle_compra d
+                where
+                  d.producto_id = ".$producto_id." and 
+                  c.compra_id = d.compra_id and 
+                  c.compra_fecha >= '".$desde."' and 
+                  c.compra_fecha <= '".$hasta."'
+                  
+
+                union
+
+                select 
+                  v.venta_fecha as fecha,
+                  0 as num_ingreso,
+                  0 as unidad_comp,
+                  0 as costoc_unit,
+                  0 as importe_ingreso,
+                  v.venta_id as num_salida,
+                  t.detalleven_cantidad as unidad_vend,
+                  t.detalleven_precio as costov_unit,
+                  (t.detalleven_cantidad * t.detalleven_precio) as importe_salida,
+                  v.venta_hora as hora,
+                  '' as detalleobs,
+                  t.detalleven_tc as tipo_cambio,
+                  t.detalleven_id as id
+                from
+                  venta v,
+                  detalle_venta t
+                where
+                  t.producto_id = ".$producto_id." and 
+                  v.venta_id = t.venta_id and 
+                  v.venta_fecha >= '".$desde."' and 
+                  v.venta_fecha <= '".$hasta."'
+                  
+                union
+                
+                select 
+                  ds.detalleserv_fechaterminado as fecha,
+                  0 as num_ingreso,
+                  0 as unidad_comp,
+                  0 as costoc_unit,
+                  0 as importe_ingreso,
+                  ds.detalleserv_id as num_salida,
+                  t.detalleven_cantidad as unidad_vend,
+                  t.detalleven_precio as costov_unit,
+                  (t.detalleven_cantidad * t.detalleven_costo) as importe_salida,
                   ds.detalleserv_horaterminado as hora,
                   concat('SERV. TECNICO N° ', ds.servicio_id) as detalleobs,
                   t.detalleven_tc as tipo_cambio,

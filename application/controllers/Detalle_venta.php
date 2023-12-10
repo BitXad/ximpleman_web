@@ -451,6 +451,7 @@ class Detalle_venta extends CI_Controller{
         //**************** inicio contenido ***************
         $this->load->model('Producto_model');
         $usuario_id = $this->session_data['usuario_id'];
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);   
         $data['productos'] = $this->Producto_model->get_productos_imagen();
         $this->load->model('Parametro_model');
         $parametro_id = 1;

@@ -72,7 +72,7 @@
                 <font size="2" face="arial"><b>KARDEX DE EXISTENCIA</b></font> <br>
                 <!--<font size="1" face="arial"><b>FISICO - VALORADO</b></font> <br>-->
                 <font size="1" face="arial"><b><?php echo $producto[0]['producto_codigobarra']." ".$producto[0]['producto_nombre']; ?></b></font>
-
+                
 
             </center>
         </td>
@@ -145,6 +145,20 @@
         </div>-->
         
         <br>
+        
+        <div class="col-md-2">
+
+            <select class="btn btn-sm btn-info btn-sm form-control" id="select_precio">
+                <option value="0">SALIDA CON PRECIO DE COSTO</option>
+                <option value="1">SALIDA CON PRECIO DE VENTA</option>
+            </select>
+          
+          
+          
+          
+            <br>
+        </div>
+        
         <div class="col-md-2">
 
             <button class="btn btn-sm btn-facebook btn-sm btn-block"  onclick="mostrar_kardex(<?php echo $producto_id;?>)">
@@ -155,7 +169,8 @@
             <br>
         </div>
         
-        <div class="col-md-2">
+<!--        Revisar porque no estaba funcionando
+            <div class="col-md-2">
 
             <button class="btn btn-sm btn-info btn-sm btn-block"  onclick="mostrar_kardex_global()">
                 <h4>
@@ -163,7 +178,7 @@
                 </h4>
           </button>
             <br>
-        </div>
+        </div>-->
         
         <div class="col-md-2">
 <!--            &nbsp;

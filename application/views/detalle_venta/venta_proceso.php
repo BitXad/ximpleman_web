@@ -28,7 +28,7 @@
 <div class="box-header">
     <center>
         <!--<h3 class="box-title">PEDIDO</h3>-->        
-        <img src="<?php echo base_url("resources/images/logo/".$logomonitor); ?>" width="260" height="130">
+        <img src="<?php echo base_url("resources/images/empresas/".$empresa[0]["empresa_imagen"]); ?>" width="260" height="130">
         <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
     </center>
 </div>
@@ -105,8 +105,16 @@
                                                     {
                                                         $producto_imagen = "producto.jpg";
                                                     }
+                                                    
+                                                    $imagen_path = base_url("resources/images/productos/".$producto_imagen);
+                                                    
+                                                    if (file_exists($imagen_path)) {
+                                                    
                                                     ?>
-                                                    <img src="<?php echo base_url("resources/images/productos/".$producto_imagen); ?>" width="250" height="187">
+                                                    
+                                                        <img src="<?php echo base_url("resources/images/productos/".$producto_imagen); ?>" width="250" height="187">
+                                                    <?php } ?>
+                                                        
                                                     <div class="carousel-inner">
                                                         <h3 style="color: #FF6501;"><font size="6"><b><?php echo "Bs. ".number_format($producto['producto_precio'],$decimales,".",",") ?></b></font></h3>
                                                         <p  style="color: #FF6501;"><font size="6"><b><?php echo $producto['producto_nombre']; ?></b></font></p>

@@ -362,7 +362,7 @@
               <div class="inner" >
 
                 <h3><b><fa class="fa fa-cubes"></fa></b></h3>
-                <h5><b><?php echo number_format($productos['total_inventario'],2,'.',',')." ".$parametro["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h5>
+                <h5><b><?php echo number_format(($productos['total_inventario']!==null)?$productos['total_inventario']:0,2,'.',',')." ".$parametro["moneda_descripcion"]; ?><sup style="font-size: 20px"></sup></b></h5>
             </div>
               
             <div class="icon">

@@ -135,7 +135,18 @@ class Inventario extends CI_Controller{
             $producto_id = $this->input->post('producto_id');
             $hasta = $this->input->post('hasta');
             $desde = $this->input->post('desde');
-            $kardex = $this->Inventario_model->mostrar_kardex($desde, $hasta, $producto_id);
+            $select_precio = $this->input->post('select_precio');
+            
+            if($select_precio==0){
+                
+                $kardex = $this->Inventario_model->mostrar_kardex($desde, $hasta, $producto_id);
+                
+            }else{
+                
+                $kardex = $this->Inventario_model->mostrar_kardex_precioventa($desde, $hasta, $producto_id);
+                
+            }
+            
             echo json_encode($kardex);
             //**************** fin contenido ***************
         }

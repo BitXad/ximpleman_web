@@ -1861,8 +1861,9 @@ function nota($compra_id){
     $data['sistema'] = $this->sistema;
     $data['parametro'] =  $this->parametros;
     
-    $num = $this->Compra_model->numero();
-    $este = $num[0]['parametro_tipoimpresora'];
+//    $num = $this->Compra_model->numero();
+//    $este = $num[0]['parametro_tipoimpresora'];
+    $este = $this->parametros['parametro_tipoimpresora'];
 
   if($this->acceso(1)){
       
@@ -1891,8 +1892,9 @@ function notaingreso($compra_id){
 
     $data['sistema'] = $this->sistema;
     $data['parametro'] =  $this->parametros;
-    $num = $this->Compra_model->numero();
-    $este = $num[0]['parametro_tipoimpresora'];
+//    $num = $this->Compra_model->numero();
+//    $este = $num[0]['parametro_tipoimpresora'];
+    $este = $this->parametros['parametro_tipoimpresora'];
 
   if($this->acceso(1)){
       
@@ -2277,10 +2279,6 @@ function compra_rapida(){
         
         $bitacora_codigo = $this->input->post('bitacora_codigo');
         $compra_id = $this->input->post('compra_id');
-        
-        
-        
-        
         
         try{
             
