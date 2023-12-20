@@ -784,12 +784,12 @@ function ventas_dia($estado)
                 FROM ventas vs 
                 LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id 
                 WHERE 
-                date(venta_fecha) >= {$desde} and 
-                date(venta_fecha) <= {$hasta} and 
+                date(venta_fecha) >= '{$desde}' and 
+                date(venta_fecha) <= '{$hasta}' and 
                 vs.usuario_id = ".$usuario_id." 
                 group by vs.producto_id 
                 order by total_venta";
-        //echo $sql; 
+       // echo $sql; 
         $detalle_venta = $this->db->query($sql)->result_array();        
         return $detalle_venta;
     }

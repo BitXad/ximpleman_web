@@ -69,15 +69,23 @@
                     
                     <?php $i = 0; foreach($caja as $c){ ?>
                     <tr>
+                        <!-- # -->
                         <td><?php echo (++$i); ?></td>
+                        <!-- Cajero -->
                         <td class="nowrap"><?php echo $c['usuario_nombre']; ?></td>
+                        <!-- Cod -->
                         <td class="nowrap"><?php echo "00".$c['caja_id']; ?></td>
+                        <!-- Fecha Apertura -->
                         <td><?php echo $c['caja_fechaapertura']; echo " ".$c['caja_horaapertura']; ?></td>
-                        <td style="text-align: right"><?php echo number_format($c['caja_apertura'],2,'.',','); ?></td>
-                        <td style="text-align: right"><?php echo number_format($c['caja_transacciones'],2,'.',','); ?></td>
+                        <!-- Monto Apertura -->
+                        <td style="text-align: right"><?php echo number_format(is_numeric($c['caja_apertura'])?$c['caja_apertura']:0,2,'.',','); ?></td>
+                        <!-- transacciones -->
+                        <td style="text-align: right"><?php echo number_format(is_numeric($c['caja_transacciones'])?$c['caja_transacciones']:0,2,'.',','); ?></td>
+                        <!-- Total Esperado -->
                         <td style="text-align: right; background:#00FF00; font-weight: bold; font-size: 10pt; "><?php echo number_format($c['caja_transacciones'] + $c['caja_apertura'],2,'.',','); ?></td>
-                        <td style="text-align: right; background:#00FF00; font-weight: bold; font-size: 10pt; "><?php echo number_format($c['caja_cierre'],2,'.',','); ?></td>
-                        <td style="text-align: right; background:#ff0; font-weight: bold; font-size: 10pt; "><?php echo number_format($c['caja_diferencia'],2,'.',','); ?></td>
+                        <!-- Diferencia -->
+                        <td style="text-align: right; background:#00FF00; font-weight: bold; font-size: 10pt; "><?php echo number_format(is_numeric($c['caja_cierre'])?$c['caja_cierre']:0,2,'.',','); ?></td>
+                        <td style="text-align: right; background:#ff0; font-weight: bold; font-size: 10pt; "><?php echo number_format(is_numeric($c['caja_diferencia'])?$c['caja_diferencia']:0,2,'.',','); ?></td>
                         
                         <td><?php echo ($c['caja_diferencia']>0) ? "SOBRANTE" : (($c['caja_diferencia']==0) ? " " : "FALTANTE"); ?></td>
                         <td><?php echo $c['caja_fechacierre']." ".$c["caja_horacierre"]; ?></td>

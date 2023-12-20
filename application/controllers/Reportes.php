@@ -148,7 +148,13 @@ class Reportes extends CI_Controller{
             $caja = $this->Caja_model->get_cajausuario_fecha($usuario_id,$fecha1,$fecha2);
             $data['caja'] = $caja;
             
-            $data['bitacora'] = $this->Caja_model->get_caja_id($caja["caja_id"]);
+            if ($caja!==null){
+                
+                $bitacora = $this->Caja_model->get_caja_id(is_numeric($caja["caja_id"])?$caja["caja_id"]:0);
+            }else
+                $bitacora = null;
+            
+            $data['bitacora'] = $bitacora;
             
             $data['punto_venta'] = $this->PuntoVenta_model->get_puntoventausuario($usuario_id);
             

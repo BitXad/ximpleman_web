@@ -219,8 +219,8 @@ $decimales = $parametro['parametro_decimales'];
                                         ?>
                                     </td>
                                         <?php
-                                        $cantidad += $lacantidad;
-                                        $existencia += $lacantidad;
+                                        $cantidad += is_numeric($lacantidad)?$lacantidad:0;
+                                        $existencia += is_numeric($lacantidad)?$lacantidad:0;;
                                     }
                                     ?>
                                     <?php
@@ -252,8 +252,8 @@ $decimales = $parametro['parametro_decimales'];
                                         ?>
                                     </td>
                                         <?php
-                                        $cantidad += $lacantidad;
-                                        $existencia += $lacantidad;
+                                        $cantidad += is_numeric($lacantidad)?$lacantidad:0;;
+                                        $existencia += is_numeric($lacantidad)?$lacantidad:0;;
                                     }
                                     ?>
                                     <?php
@@ -279,8 +279,8 @@ $decimales = $parametro['parametro_decimales'];
                                         ?>
                                     </td>
                                         <?php
-                                        $cantidad += $lacantidad;
-                                        $existencia += $lacantidad;
+                                        $cantidad += is_numeric($lacantidad)?$lacantidad:0;;
+                                        $existencia += is_numeric($lacantidad)?$lacantidad:0;;
                                     }
                                     ?>
                                     <?php
@@ -306,8 +306,8 @@ $decimales = $parametro['parametro_decimales'];
                                         ?>
                                     </td>
                                         <?php
-                                        $cantidad += $lacantidad;
-                                        $existencia += $lacantidad;
+                                        $cantidad += is_numeric($lacantidad)?$lacantidad:0;;
+                                        $existencia += is_numeric($lacantidad)?$lacantidad:0;;
                                     }
                                     ?>
                                     <?php
@@ -333,8 +333,8 @@ $decimales = $parametro['parametro_decimales'];
                                         ?>
                                     </td>
                                         <?php
-                                        $cantidad += $lacantidad;
-                                        $existencia += $lacantidad;
+                                        $cantidad += is_numeric($lacantidad)?$lacantidad:0;;
+                                        $existencia += is_numeric($lacantidad)?$lacantidad:0;;
                                     }
                                     ?>
                                     <?php
@@ -360,8 +360,8 @@ $decimales = $parametro['parametro_decimales'];
                                         ?>
                                     </td>
                                         <?php
-                                        $cantidad += $lacantidad;
-                                        $existencia += $lacantidad;
+                                        $cantidad += is_numeric($lacantidad)?$lacantidad:0;;
+                                        $existencia += is_numeric($lacantidad)?$lacantidad:0;;
                                     }
                                     ?>
                                     <?php
@@ -387,8 +387,8 @@ $decimales = $parametro['parametro_decimales'];
                                         ?>
                                     </td>
                                         <?php
-                                        $cantidad += $lacantidad;
-                                        $existencia += $lacantidad;
+                                        $cantidad += is_numeric($lacantidad)?$lacantidad:0;;
+                                        $existencia += is_numeric($lacantidad)?$lacantidad:0;;
                                     }
                                     ?>
                                     <?php
@@ -414,8 +414,8 @@ $decimales = $parametro['parametro_decimales'];
                                         ?>
                                     </td>
                                         <?php
-                                        $cantidad += $lacantidad;
-                                        $existencia += $lacantidad;
+                                        $cantidad += is_numeric($lacantidad)?$lacantidad:0;;
+                                        $existencia += is_numeric($lacantidad)?$lacantidad:0;;
                                     }
                                     ?>
                                     <?php
@@ -441,8 +441,8 @@ $decimales = $parametro['parametro_decimales'];
                                         ?>
                                     </td>
                                         <?php
-                                        $cantidad += $lacantidad;
-                                        $existencia += $lacantidad;
+                                        $cantidad += is_numeric($lacantidad)?$lacantidad:0;;
+                                        $existencia += is_numeric($lacantidad)?$lacantidad:0;;
                                     }
                                     ?>
                                     <?php
@@ -468,8 +468,8 @@ $decimales = $parametro['parametro_decimales'];
                                         ?>
                                     </td>
                                         <?php
-                                        $cantidad += $lacantidad;
-                                        $existencia += $lacantidad;
+                                        $cantidad += is_numeric($lacantidad)?$lacantidad:0;;
+                                        $existencia += is_numeric($lacantidad)?$lacantidad:0;;
                                     }
                                     
                                     /* **** inico para mostrar total parcial! **** */

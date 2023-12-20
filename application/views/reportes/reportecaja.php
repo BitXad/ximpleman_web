@@ -347,7 +347,7 @@ border-bottom : 1px solid #aaa;*/
                
                 <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>CANT</b></td>
                 <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>DESCRIPCIÓN
-                    <input type='button' value='[-]' onclick='mostrar_detalle();' id='boton_detalle' class='btn btn-xs btn-danger no-print' style="padding:0;"/>
+                    <input type='button' value='[+]' onclick='mostrar_detalle();' id='boton_detalle' class='btn btn-xs btn-danger no-print' style="padding:0;"/>
                     </b></td>
                 <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>P.UNIT</b></td>
                 <td align="center" style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000;"><b>TOTAL</b></td>
@@ -603,11 +603,14 @@ border-bottom : 1px solid #aaa;*/
         
         <?php 
         $cont = 0;
+        if($bitacora!==null){
         foreach($bitacora as $c){ ?>
             <tr>
                 <td colspan="5"  style="padding: 0; border-bottom: dashed 2px #000;"><?php echo "<b>".$c["bitacoracaja_hora"]."</b> - ".$c["bitacoracaja_evento"]; ?></td>
             </tr>
-        <?php } ?>
+        <?php } }
+        
+        ?>
 
 
         <!-- FIN BITACORA -->    

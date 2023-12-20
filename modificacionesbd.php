@@ -138,6 +138,9 @@ p.`producto_costo` * p.producto_orden,
 
 from producto p);
 
+INSERT INTO `proveedor` (`proveedor_id`, `estado_id`, `proveedor_codigo`, `proveedor_nombre`, `proveedor_foto`, `proveedor_contacto`, `proveedor_direccion`, `proveedor_telefono`, `proveedor_telefono2`, `proveedor_email`, `proveedor_nit`, `proveedor_razon`, `proveedor_autorizacion`) VALUES 
+  (1,1,'INV410','INVENTARIO INICIAL',NULL,'','','','',NULL,'0','INVENTARIO INICIAL','1');
+
 
 insert into compra(
 `compra_id`
@@ -161,7 +164,7 @@ insert into compra(
 ,`compra_chofer`
 ,`compra_placamovil`,compra_numdoc,documento_respaldo_id) 
 value(
-1,1,1,1,1,1,1,date(now()),time(now()),0,0,0,0,0,0,0,'',1,'','',0,0)
+1,1,1,1,1,1,1,date(now()),time(now()),0,0,0,0,0,0,0,'',1,'','',0,0);
 
 update compra set
 compra_subtotal = (select sum(detallecomp_total) from detalle_compra where compra_id=1)

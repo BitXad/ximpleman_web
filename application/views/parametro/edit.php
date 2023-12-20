@@ -101,13 +101,20 @@ div {
                         <input type="text" name="parametro_apikey" value="<?php echo ($this->input->post('parametro_apikey') ? $this->input->post('parametro_apikey') : $parametro['parametro_apikey']); ?>" class="form-control" id="parametro_apikey" />
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="parametro_tituldoc" class="control-label">TITULO DOC. VENTA</label>
                     <div class="form-group">
-                        <input type="text" name="parametro_tituldoc" value="<?php echo ($this->input->post('parametro_tituldoc') ? $this->input->post('parametro_tituldoc') : $parametro['parametro_tituldoc']); ?>" class="form-control" id="parametro_tituldoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                        <input type="text" name="parametro_tituldoc" value="<?php echo ($this->input->post('parametro_tituldoc') ? $this->input->post('parametro_tituldoc') : $parametro['parametro_tituldoc']); ?>" class="form-control" id="parametro_titulodoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                     </div>
                 </div>
-
+                
+                <div class="col-md-2">
+                    <label for="parametro_pedidotitulo" class="control-label">TITULO DOC. PEDIDO/PREVENTA</label>
+                    <div class="form-group">
+                        <input type="text" name="parametro_pedidotitulo" value="<?php echo ($this->input->post('parametro_pedidotitulo') ? $this->input->post('parametro_pedidotitulo') : $parametro['parametro_pedidotitulo']); ?>" class="form-control" id="parametro_pedidotitulo" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+<!--
                 <div class="col-md-2">
                     <label for="parametro_pedidotitulo" class="control-label"> TITULO DE PEDIDO</label>
                     <div class="form-group">
@@ -117,7 +124,9 @@ div {
                             <option value="Reservas" <?php if($parametro['parametro_pedidotitulo']=="Reservas"){ ?> selected <?php } ?>>Reservas</option>
                         </select>
                     </div>
-                </div>
+                </div>-->
+                
+                
                 <div class="col-md-1">
                     <label for="parametro_manejocaja" class="control-label"> APERTURA CAJA</label>
                     <div class="form-group">
@@ -127,7 +136,7 @@ div {
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="parametro_tiposistema" class="control-label"> TIPO DE SISTEMA</label>
                     <div class="form-group">
                         <select name="parametro_tiposistema" class="form-control" id="parametro_tiposistema">
@@ -191,7 +200,7 @@ div {
                         </datalist>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <label for="parametro_periododias" class="control-label">PERIODO DE PAGO (DIAS)</label>
                     <div class="form-group">
                         <input type="number" name="parametro_periododias" value="<?php echo ($this->input->post('parametro_periododias') ? $this->input->post('parametro_periododias') : $parametro['parametro_periododias']); ?>" class="form-control" id="parametro_periododias" />
@@ -345,7 +354,7 @@ div {
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <label for="parametro_datosboton" class="control-label">DATOS BOTON</label>
                         <div class="form-group">
                             <select  name="parametro_datosboton" class="form-control btn-info" id="parametro_datosboton">
@@ -358,15 +367,6 @@ div {
                     </div> 
                     
                     <div class="col-md-2">
-                        <label for="parametro_imprimircomanda" class="control-label">IMPRIMIR COMANDA</label>
-                        <div class="form-group">
-                            <select  name="parametro_imprimircomanda" class="form-control" id="parametro_imprimircomanda">
-                                <option value="0" <?php if($parametro['parametro_imprimircomanda']==0) echo 'selected'; ?> >NO</option>
-                                <option value="1" <?php if($parametro['parametro_imprimircomanda']==1) echo 'selected'; ?> >SI</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
                         <label for="parametro_modulorestaurante" class="control-label">COMPORTAMIENTO</label>
                         <div class="form-group">
                             <select  name="parametro_modulorestaurante" class="form-control" id="parametro_modulorestaurante" >
@@ -376,7 +376,17 @@ div {
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    
+                    <div class="col-md-1">
+                        <label for="parametro_imprimircomanda" class="control-label">IMPRIMIR COMANDA</label>
+                        <div class="form-group">
+                            <select  name="parametro_imprimircomanda" class="form-control" id="parametro_imprimircomanda">
+                                <option value="0" <?php if($parametro['parametro_imprimircomanda']==0) echo 'selected'; ?> >NO</option>
+                                <option value="1" <?php if($parametro['parametro_imprimircomanda']==1) echo 'selected'; ?> >SI</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
                         <label for="parametro_agruparitems" class="control-label">AGRUPAR ITEMS (DET.)</label>
                         <div class="form-group">
                             <select  name="parametro_agruparitems" class="form-control" id="parametro_agruparitems">
@@ -403,14 +413,14 @@ div {
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="parametro_logomonitor" class="control-label">LOGO(p/ Monitor) (260x130)</label>
                         <div class="form-group">
                             <input type="file" name="parametro_logomonitor" value="<?php echo ($this->input->post('parametro_logomonitor') ? $this->input->post('parametro_logomonitor') : $parametro['parametro_logomonitor']); ?>" class="form-control" id="parametro_logomonitor" accept="image/png, image/jpeg, jpg, image/gif" />
                             <input type="hidden" name="parametro_logomonitor1" value="<?php echo ($this->input->post('parametro_logomonitor') ? $this->input->post('parametro_logomonitor') : $parametro['parametro_logomonitor']); ?>" class="form-control" id="parametro_logomonitor1" />
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="parametro_fondomonitor" class="control-label">IMAGEN FONDO(p/ Monitor) (1920x1078)</label>
                         <div class="form-group">
                             <input type="file" name="parametro_fondomonitor" value="<?php echo ($this->input->post('parametro_fondomonitor') ? $this->input->post('parametro_fondomonitor') : $parametro['parametro_fondomonitor']); ?>" class="form-control" id="parametro_fondomonitor" accept="image/png, image/jpeg, jpg, image/gif" />
@@ -468,7 +478,7 @@ div {
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="parametro_imprimirticket" class="control-label" title="Imprime los detalles uno a uno(Tickets)"><span class="text-danger">*</span>IMPRESION DE TICKETES</label>
                         <div class="form-group">
                             <select name="parametro_imprimirticket" class="form-control" required id="parametro_imprimirticket">
@@ -480,7 +490,7 @@ div {
       
                     
                     
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="parametro_rangoprecios" class="control-label" title="Rango de precios 1 .- toma del rango; 2.- no toma del rango"><span class="text-danger">*</span>RANGO DE PRECIOS</label>
                         <div class="form-group">
                             <select name="parametro_rangoprecios" class="form-control" required id="parametro_rangoprecios">
@@ -493,19 +503,24 @@ div {
                     <div class="col-md-1">
                         <label for="parametro_anchobuscador" class="control-label" title="ancho del buscador"><span class="text-danger">*</span>ANCHO BUSCADOR</label>
                         <div class="form-group">
-                            <input type="number" min="0" name="parametro_anchobuscador" value="<?php echo ($this->input->post('parametro_anchobuscador') ? $this->input->post('parametro_anchobuscador') : $parametro['parametro_anchobuscador']); ?>" class="form-control" id="parametro_anchobuscador" required />
+                            <input type="number" min="0" max="12" name="parametro_anchobuscador" value="<?php echo ($this->input->post('parametro_anchobuscador') ? $this->input->post('parametro_anchobuscador') : $parametro['parametro_anchobuscador']); ?>" class="form-control" id="parametro_anchobuscador" required />
                         </div>
                     </div>
                     
+                </div>
+            </div><hr>
+                    
+            <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(210, 180, 222);"><u><b>MODULO VENTAS</b></u><br>                    
+                    
                     <div class="col-md-1">
-                        <label for="parametro_tamanioletrasboton" class="control-label" title="tamaño de letras del boton"><span class="text-danger">*</span>TAMAÑO LETRAS (BOTON)</label>
+                        <label for="parametro_tamanioletrasboton" class="control-label" title="tamaño de letras del boton"><span class="text-danger">*</span>TAM.LETRAS (BOTON)</label>
                         <div class="form-group">
                             <input type="number" min="0" name="parametro_tamanioletrasboton" value="<?php echo ($this->input->post('parametro_tamanioletrasboton') ? $this->input->post('parametro_tamanioletrasboton') : $parametro['parametro_tamanioletrasboton']); ?>" class="form-control btn-warning" id="parametro_tamanioletrasboton" required />
                         </div>
                     </div>
                     
                     <div class="col-md-1">
-                        <label for="parametro_tamanioletras" class="control-label" title="tamaño de letras del detalle"><span class="text-danger">*</span>TAMAÑO LETRAS (VENTAS)</label>
+                        <label for="parametro_tamanioletras" class="control-label" title="tamaño de letras del detalle"><span class="text-danger">*</span>TAM.LETRAS (VENTAS)</label>
                         <div class="form-group">
                             <input type="number" min="0" name="parametro_tamanioletras" value="<?php echo ($this->input->post('parametro_tamanioletras') ? $this->input->post('parametro_tamanioletras') : $parametro['parametro_tamanioletras']); ?>" class="form-control btn-warning" id="parametro_tamanioletras" required />
                         </div>
@@ -539,7 +554,7 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <label for="parametro_subcategoria" class="control-label">SUBCATEGORIA EN VENTAS</label>
+                        <label for="parametro_subcategoria" class="control-label">SUBCATEG. EN VENTAS</label>
                         <div class="form-group">
                             <select name="parametro_subcategoria" class="form-control btn-warning" id="parametro_subcategoria">
                                 <option value="1" <?php if($parametro['parametro_subcategoria']=="1"){ ?> selected <?php } ?>>Si</option>
@@ -668,7 +683,7 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <label for="parametro_productossinhomologar" class="control-label">PRODUCTOS SIN HOMOLOGAR</label>
+                        <label for="parametro_productossinhomologar" class="control-label">PROD. SIN HOMOLOGAR</label>
                         <div class="form-group">
                             <select name="parametro_productossinhomologar" class="form-control btn-success" id="parametro_productossinhomologar">
                                 <option value="1" <?php if($parametro['parametro_productossinhomologar']=="1"){ ?> selected <?php } ?>>Si</option>
@@ -678,7 +693,7 @@ div {
                     </div>
 
                     <div class="col-md-1">
-                        <label for="parametro_teclasacceso" class="control-label">PANEL TECLAS DE ACCESO</label>
+                        <label for="parametro_teclasacceso" class="control-label">PANEL TEC. DE ACCESO</label>
                         <div class="form-group">
                             <select name="parametro_teclasacceso" class="form-control btn-success" id="parametro_teclasacceso">
                                 <option value="1" <?php if($parametro['parametro_teclasacceso']=="1"){ ?> selected <?php } ?>>Si</option>
@@ -689,7 +704,7 @@ div {
                     
                     
                     <div class="col-md-1">
-                        <label for="parametro_informacionbasica" class="control-label">INFORMACION BASICA VENTAS</label>
+                        <label for="parametro_informacionbasica" class="control-label">INF. BASICA VENTAS</label>
                         <div class="form-group">
                             <select name="parametro_informacionbasica" class="form-control btn-success" id="parametro_informacionbasica">
                                 <option value="1" <?php if($parametro['parametro_informacionbasica']=="1"){ ?> selected <?php } ?>>Si</option>
@@ -698,7 +713,7 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <label for="parametro_panelventas" class="control-label">PANEL EFECTIVO SUPERIOR</label>
+                        <label for="parametro_panelventas" class="control-label">PANEL EFECTIVO</label>
                         <div class="form-group">
                             <select name="parametro_panelventas" class="form-control btn-success" id="parametro_panelventas">
                                 <option value="1" <?php if($parametro['parametro_panelventas']=="1"){ ?> selected <?php } ?>>Si</option>
@@ -785,8 +800,8 @@ div {
                         </div>
                     </div>
                     
-                    <div class="col-md-3">
-                        <label for="parametro_imprimirfactura" class="control-label">IMPRIMIR<br> FACTURA/RECIBO</label>
+                    <div class="col-md-2">
+                        <label for="parametro_imprimirfactura" class="control-label">IMPRIMIR FACTURA/RECIBO</label>
                         <div class="form-group">
                             <select name="parametro_imprimirfactura" class="form-control" id="parametro_imprimirfactura">
                                 
@@ -810,7 +825,7 @@ div {
                         </div> 
                     </div>
                     <div class="col-md-2">
-                        <label for="parametro_orden" class="control-label" title="Mostrar en orden">ORDEN<br>DETALLE</label>
+                        <label for="parametro_orden" class="control-label" title="Mostrar en orden">ORDEN DETALLE</label>
                         <div class="form-group">
                             <select name="parametro_orden" class="form-control" id="parametro_orden">
                                 <option value="1" <?php if($parametro['parametro_orden']=="1"){ ?> selected <?php } ?>>ASCENDENTE</option>
@@ -828,13 +843,13 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1"> 
-                        <label for="parametro_tamaniotextocategoria" class="control-label" title="Tamaño del texto de la Categoria"><span class="text-danger">*</span>TAMAÑO LETRAS CATEGORIA</label> 
+                        <label for="parametro_tamaniotextocategoria" class="control-label" title="Tamaño del texto de la Categoria"><span class="text-danger">*</span>TAM LETRAS CATEG.</label> 
                         <div class="form-group"> 
                             <input type="number" min="0" name="parametro_tamaniotextocategoria" value="<?php echo ($this->input->post('parametro_tamaniotextocategoria') ? $this->input->post('parametro_tamaniotextocategoria') : $parametro['parametro_tamaniotextocategoria']); ?>" class="form-control" id="parametro_tamaniotextocategoria" required /> 
                         </div> 
                     </div>
                     <div class="col-md-1">
-                        <label for="parametro_colorbotoncategoria" class="control-label" title="Color de boton en Categoria">COLOR<br>BOTON</label>
+                        <label for="parametro_colorbotoncategoria" class="control-label" title="Color de boton en Categoria">COLOR BOTON</label>
                         <div class="form-group btn-">
                             <select name="parametro_colorbotoncategoria" class="form-control" id="parametro_colorbotoncategoria">
                                 <option value="danger" class="btn-danger" <?php if($parametro['parametro_colorbotoncategoria']=="danger"){ ?> selected <?php } ?>>danger</option>
@@ -847,7 +862,7 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <label for="parametro_datosproducto" class="control-label" title="Información detallada del producto">DATOS<br>PRODUCTO</label>
+                        <label for="parametro_datosproducto" class="control-label" title="Información detallada del producto">DATOS PRODUCTO</label>
                         <div class="form-group">
                             <select name="parametro_datosproducto" class="form-control" id="parametro_datosproducto">
                                 <option value="1" <?php if($parametro['parametro_datosproducto']=="1"){ ?> selected <?php } ?>>Si</option>
@@ -856,7 +871,7 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <label for="parametro_cantidadsimple" class="control-label" title="Cantidad simple en ventas">CANTIDAD<br>SIMPLE</label>
+                        <label for="parametro_cantidadsimple" class="control-label" title="Cantidad simple en ventas">CANTIDAD SIMPLE</label>
                         <div class="form-group">
                             <select name="parametro_cantidadsimple" class="form-control" id="parametro_cantidadsimple">
                                 <option value="1" <?php if($parametro['parametro_cantidadsimple']=="1"){ ?> selected <?php } ?>>Si</option>
@@ -865,7 +880,7 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <label for="parametro_botonescontrol" class="control-label" title="Mostrar botones">BOTONES<br>CONTROL</label>
+                        <label for="parametro_botonescontrol" class="control-label" title="Mostrar botones">BOTONES CONTROL</label>
                         <div class="form-group">
                             <select name="parametro_botonescontrol" class="form-control" id="parametro_botonescontrol">
                                 <option value="1" <?php if($parametro['parametro_botonescontrol']=="1"){ ?> selected <?php } ?>>Si</option>
@@ -874,7 +889,7 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <label for="parametro_botonesproducto" class="control-label" title="Mostrar botones">BOTONES<br>PRODUCTO</label>
+                        <label for="parametro_botonesproducto" class="control-label" title="Mostrar botones">BOTONES PRODUCTO</label>
                         <div class="form-group">
                             <select name="parametro_botonesproducto" class="form-control" id="parametro_botonesproducto">
                                 <option value="1" <?php if($parametro['parametro_botonesproducto']=="1"){ ?> selected <?php } ?>>Si</option>
@@ -883,7 +898,7 @@ div {
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label for="parametro_ordendetalle" class="control-label" title="Mostrar en orden">ORDEN<br>DETALLE</label>
+                        <label for="parametro_ordendetalle" class="control-label" title="Mostrar en orden">ORDEN DETALLE</label>
                         <div class="form-group">
                             <select name="parametro_ordendetalle" class="form-control" id="parametro_ordendetalle">
                                 <option value="1" <?php if($parametro['parametro_ordendetalle']=="1"){ ?> selected <?php } ?>>ASCENDENTE</option>
@@ -892,7 +907,7 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <label for="parametro_tablasencilla" class="control-label" title="Tabla sencilla en la parte derecha de ventas">TABLA<br>SENCILLA</label>
+                        <label for="parametro_tablasencilla" class="control-label" title="Tabla sencilla en la parte derecha de ventas">TABLA SENCILLA</label>
                         <div class="form-group">
                             <select name="parametro_tablasencilla" class="form-control" id="parametro_tablasencilla">
                                 <option value="1" <?php if($parametro['parametro_tablasencilla']=="1"){ ?> selected <?php } ?>>Si</option>
@@ -901,7 +916,7 @@ div {
                         </div>
                     </div>
                     
-                    <div class="col-md-1">
+<!--                    <div class="col-md-1">
                         <label for="parametro_redireccionusuario" class="control-label" title="Tabla sencilla en la parte derecha de ventas">TABLA<br>SENCILLA</label>
                         <div class="form-group">
                             <select name="parametro_redireccionusuario" class="form-control" id="parametro_redireccionusuario">
@@ -909,17 +924,21 @@ div {
                                 <option value="0" <?php if($parametro['parametro_redireccionusuario']=="0"){ ?> selected <?php } ?>>No</option>
                             </select>
                         </div>
-                    </div>
-                    
+                    </div>-->
+<!--                    
                     <div class="col-md-2">
                         <label for="parametro_redireccionusuario" class="control-label">REDIRECCIONAMIENTO<br>USUARIO</label>
                         <div class="form-group">
                             <input type="text" step="any" name="parametro_redireccionusuario" value="<?php echo ($this->input->post('parametro_redireccionusuario') ? $this->input->post('parametro_redireccionusuario') : $parametro['parametro_redireccionusuario']); ?>" class="form-control" id="parametro_redireccionusuario" />
                         </div>
-                    </div>
+                    </div>-->
+                    
+
+
+
                     
                     <div class="col-md-1">
-                        <label for="parametro_comprobante" class="control-label" title="Tabla sencilla en la parte derecha de ventas">TIPO<br>COMPROBANTE</label>
+                        <label for="parametro_comprobante" class="control-label" title="Tabla sencilla en la parte derecha de ventas">TIPO COMPROBANTE</label>
                         <div class="form-group">
                             <select name="parametro_comprobante" class="form-control" id="parametro_comprobante">
                                 <option value="1" <?php if($parametro['parametro_comprobante']=="1"){ ?> selected <?php } ?>>RECIBO</option>
@@ -927,9 +946,9 @@ div {
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-1">
-                        <label for="parametro_verificarconexion" class="control-label" title="Tabla sencilla en la parte derecha de ventas">VERIFICAR<br>CONEXION</label>
+                        <label for="parametro_verificarconexion" class="control-label" title="Tabla sencilla en la parte derecha de ventas">VERIFICAR CONEXION</label>
                         <div class="form-group">
                             <select name="parametro_verificarconexion" class="form-control" id="parametro_verificarconexion">
                                 <option value="1" <?php if($parametro['parametro_verificarconexion']=="1"){ ?> selected <?php } ?>>VERIFICAR CONEXION</option>
@@ -939,7 +958,7 @@ div {
                     </div>
                     
                     <div class="col-md-1">
-                        <label for="parametro_contarventas" class="control-label" title="Cuenta las ventas para los recibos">CONTAR<br>VENTAS</label>
+                        <label for="parametro_contarventas" class="control-label" title="Cuenta las ventas para los recibos">CONTAR VENTAS</label>
                         <div class="form-group">
                             <select name="parametro_contarventas" class="form-control" id="parametro_contarventas">
                                 <option value="0" <?php if($parametro['parametro_contarventas']=="0"){ ?> selected <?php } ?>>NO</option>
@@ -949,7 +968,7 @@ div {
                     </div>
                     
                     <div class="col-md-1">
-                        <label for="parametro_contarventasmes" class="control-label" title="Cuenta las ventas para los recibos">CONTAR<br>VENTAS MES</label>
+                        <label for="parametro_contarventasmes" class="control-label" title="Cuenta las ventas para los recibos">CONTAR VENTAS MES</label>
                         <div class="form-group">
                             <select name="parametro_contarventasmes" class="form-control" id="parametro_contarventasmes">
                                 <option value="0" <?php if($parametro['parametro_contarventasmes']=="0"){ ?> selected <?php } ?>>NO</option>
@@ -960,7 +979,7 @@ div {
                     
                     
                     <div class="col-md-2">
-                        <label for="parametro_mostrarnumero" class="control-label" title="Cuenta las ventas para los recibos">MOSTRAR<br>NUMEROS</label>
+                        <label for="parametro_mostrarnumero" class="control-label" title="Cuenta las ventas para los recibos">MOSTRAR NUMEROS</label>
                         <div class="form-group">
                             <select name="parametro_mostrarnumero" class="form-control" id="parametros_mostrarnumero">
                                 <option value="0" <?php if($parametro['parametro_mostrarnumero']=="0"){ ?> selected <?php } ?>>NINGUNO</option>
@@ -973,9 +992,19 @@ div {
                     </div>
                     
                     <div class="col-md-1">
-                        <label for="parametro_numeroventa" class="control-label">CONTADOR<br>VENTAS</label>
+                        <label for="parametro_numeroventa" class="control-label">CONTADOR VENTAS</label>
                         <div class="form-group">
                             <input type="text" step="any" name="parametro_numeroventa" value="<?php echo ($this->input->post('parametro_numeroventa') ? $this->input->post('parametro_numeroventa') : $parametro['parametro_numeroventa']); ?>" class="form-control" id="parametro_numeroventa" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label for="parametro_cerrarventanas" class="control-label" title="Cierra las ventanas de factura/recibo/comanda luego de imprimir">CERRAR VENTANA</label>
+                        <div class="form-group">
+                            <select name="parametro_cerrarventanas" class="form-control" id="parametro_cerrarventanas">
+                                <option value="1" <?php if($parametro['parametro_cerrarventanas']=="1"){ ?> selected <?php } ?>>SI</option>
+                                <option value="2" <?php if($parametro['parametro_cerrarventanas']=="0"){ ?> selected <?php } ?>>NO</option>
+                            </select>
                         </div>
                     </div>
                     
@@ -992,6 +1021,10 @@ div {
                     </div>
                 </div>
             </div>
+            
+
+
+            
             <div class="box-footer text-center">
                 <button type="submit" class="btn btn-success">
                     <i class="fa fa-check"></i> Guardar
