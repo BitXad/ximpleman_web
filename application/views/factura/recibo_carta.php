@@ -466,3 +466,20 @@ border-bottom : 1px solid #aaa;
 </tr>    
 </table>
 </div>
+
+
+<?php 
+$opc = $parametro[0]['parametro_cerrarventanas'];
+if($opc==1){ ?>
+
+<script>
+  // Función para cerrar la ventana
+  function cerrarVentana() {
+    window.close();
+  }
+
+  // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)
+  setTimeout(cerrarVentana, 2000);
+</script>
+
+<?php } ?>

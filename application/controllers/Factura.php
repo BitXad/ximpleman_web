@@ -1813,7 +1813,7 @@ class Factura extends CI_Controller{
             
             if (sizeof($this->parametros)>0){
                 
-                if ($this->parametros['parametro_notaentrega']==1){
+                if ($this->parametros['parametro_notaentrega']==1){ // Si esta configurado para nota de entrega
                     
                     if ($this->parametros['parametro_tipoimpresora']=="FACTURADORA")
                     {    

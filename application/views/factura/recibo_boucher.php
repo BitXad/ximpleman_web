@@ -50,9 +50,7 @@ border-collapse : collapse;
 font-family: Arial;
 font-size: 7pt;  
 
-td {
-border:hidden;
-}
+
 }
 
 td#comentario {
@@ -167,10 +165,10 @@ border-bottom : 1px solid #aaa;
 
        <table class="table table-striped table-condensed"  style="width: <?php echo $ancho; ?>;" >-->
            <tr style="font-weight: bold;">
-                <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">CN</td>
+                <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">CANT.</td>
                 <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">DESCRIPCIÓN</td>
-                <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">P.UNIT <?php echo $parametro['moneda_descripcion']; ?></td>
-                <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">TOTAL <?php echo $parametro['moneda_descripcion']; ?></td>
+                <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">P.UNIT<br><?php echo $parametro['moneda_descripcion']; ?></td>
+                <td align="center" style="border-top: solid 1px #000; border-bottom: solid 1px #000; padding: 0">TOTAL<br><?php echo $parametro['moneda_descripcion']; ?></td>
                 <?php
                 if($parametro["parametro_mostrarmoneda"] == 11111){// == 1 ?> 
                 <?php if($parametro['moneda_id']==1){  ?>
@@ -236,7 +234,7 @@ border-bottom : 1px solid #aaa;
                                          if ($preferencia !==null && $preferencia!='-' && $preferencia!='')
                                              echo  " /".nl2br($preferencia);
 
-                                         if ($caracteristicas!==null && $caracteristicas!='-')
+                                         if ($caracteristicas!==null && $caracteristicas!='-' && $caracteristicas!=="null" )
                                              echo  "<br>".nl2br($caracteristicas);
 
                                          ?>
@@ -401,3 +399,20 @@ border-bottom : 1px solid #aaa;
 </td>
 </tr>
 </table>
+
+
+<?php 
+$opc = $parametro['parametro_cerrarventanas'];
+if($opc==1){ ?>
+
+<script>
+  // Función para cerrar la ventana
+  function cerrarVentana() {
+    window.close();
+  }
+
+  // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)
+  setTimeout(cerrarVentana, 2000);
+</script>
+
+<?php } ?>

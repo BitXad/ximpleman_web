@@ -1,4 +1,4 @@
-</script>
+
 <style type="text/css">
 
     table{
@@ -179,7 +179,7 @@ foreach($all_parametros as $p)
                         </td>
                     </tr>
                     <tr>
-                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="12" ><u>VENTAS</u></th>
+                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="14" ><u>VENTAS</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CATEGORIA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">BUSCADOR EN VENTAS</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRIMIR COMANDA</th>
@@ -483,6 +483,16 @@ foreach($all_parametros as $p)
                         
                         </td>
                     </tr>
+                    
+                    <tr>
+
+                    <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">CERRAR VENTANAS DE COMPROBANTES</th>
+                    </tr>
+                    <tr>
+                        <td><?php  if ($p['parametro_cerrarventanas']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>
+                        <!--<td><?php  if ($p['parametro_botonescontrol']==0){ echo 'NO'; }else{ echo 'SI'; } ?></td>-->
+                    </tr>
+                    
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(214, 114, 26, 0.3);" rowspan="2" ><u>CLIENTES</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(214, 114, 26, 0.3);">PUNTOS (Bs/PUNTO)</th>

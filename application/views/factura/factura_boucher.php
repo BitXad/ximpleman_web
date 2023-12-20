@@ -356,19 +356,19 @@ border-bottom : 1px solid #aaa;*/
 
         
           
-        
-<?php //if($parametro['parametro_imprimircomanda']==1){  ?>
 
-<!--        //aqui va la comanda-->
-<?php //} ?>
-
+<?php 
+$opc = $parametro['parametro_cerrarventanas'];
+if($opc==1){ ?>
 
 <script>
   // Función para cerrar la ventana
   function cerrarVentana() {
-   // window.close();
+    window.close();
   }
 
   // Llamamos a la función cerrarVentana() después de 2000 milisegundos (2 segundos)
   setTimeout(cerrarVentana, 2000);
 </script>
+
+<?php } ?>
