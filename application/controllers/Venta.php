@@ -1283,6 +1283,7 @@ class Venta extends CI_Controller{
                                 'datos_embase' => $this->input->post('datos_embase'),
                                 'cliente_id' => $cliente_id,
                                 'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
+                                //'datos_periodofacturado' => $this->input->post('datos_periodofacturado'),
                                 'datos_beneficiario1886' => $this->input->post('datos_beneficiario1886'),
                                 'datos_mes' => $this->input->post('datos_mes'),
                                 'datos_anio' => $this->input->post('datos_anio'),

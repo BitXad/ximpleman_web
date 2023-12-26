@@ -541,7 +541,9 @@
                 <tr>
                     <td style="padding: 0; padding-top: 10px" colspan="4">
                         <center>
-                            <img src="<?php echo $codigoqr; ?>" width="100" height="100">
+                            <!--<img src="<?php echo $codigoqr; ?>" width="100" height="100">-->
+                            
+                            <img src="<?php echo $codigoqr . '?timestamp=' . time(); ?>" width="100" height="100" alt="Código QR">
                             
                         </center>
                         USUARIO: <?php echo $factura[0]['usuario_nombre']." /TRANS: "; ?>

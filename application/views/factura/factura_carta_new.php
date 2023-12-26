@@ -366,6 +366,23 @@ border-bottom : 1px solid #aaa;
                             <?php
                             }
                             ?>
+                            
+                            <?php
+                            if($opc == 13){ //Comercializacion de hidrocarburos
+                            ?>
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Dirección:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['cliente_direccion']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Consumo:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $datos_factura['datos_consumoperiodo']; ?></td>
+                            </tr>
+
+                            <?php
+                            }
+                            ?>
+                            
                         </table>
                     </div>
     
@@ -395,7 +412,24 @@ border-bottom : 1px solid #aaa;
                             
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Periodo Facturado:</b></td>
-                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_glosa'] ?></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['datos_embase']; ?></td>
+                            </tr>
+                            <?php } ?>
+                            
+                            <?php
+                            if ($factura[0]["docsec_codigoclasificador"]==13){ ?>
+                            
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Beneficiario Ley 1886:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $datos_factura['datos_beneficiario1886']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Periodo Facturado:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $datos_factura['datos_mes']."/".$datos_factura['datos_anio']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Nro Medidor:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $datos_factura['datos_medidor']; ?></td>
                             </tr>
                             
                             <?php } ?>
@@ -625,7 +659,8 @@ border-bottom : 1px solid #aaa;
                     <div style="float: right;width: 80px;">
                         <center>
                             <figure>
-                                <img src="<?php echo $codigoqr;?>" width="80" height="80" alt="Codigo QR">
+                                <!--<img src="<?php echo $codigoqr;?>" width="80" height="80" alt="Codigo QR">-->
+                                <img src="<?php echo $codigoqr . '?timestamp=' . time(); ?>" width="80" height="80" alt="Código QR">
                             </figure>                            
                         </center>
                     </div>

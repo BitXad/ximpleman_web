@@ -192,7 +192,7 @@ class Factura extends CI_Controller{
         
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
         //Generador de Codigo QR
-                //cargamos la librerÃ­a	
+                //cargamos la libreria	
          $this->load->library('ciqrcode');
                  
          //hacemos configuraciones

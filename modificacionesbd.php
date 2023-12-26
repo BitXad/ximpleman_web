@@ -345,5 +345,37 @@ ALTER TABLE `ingresos` MODIFY COLUMN `ingreso_fecha` DATETIME DEFAULT NULL;
 ALTER TABLE `egresos` MODIFY COLUMN `egreso_fecha` DATETIME DEFAULT NULL;
 
 
+verificar espacio utilizado por la base de datos
+
+SELECT table_schema,
+       sum(data_length + index_length) / 1024 / 1024 "Size (MB)"
+FROM information_schema.tables
+GROUP BY table_schema;
+ 
+ 
+select * from venta
+where venta_id in (select max(venta_id) from venta)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ * * 
  */
 

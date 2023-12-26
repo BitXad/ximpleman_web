@@ -3762,6 +3762,7 @@ function registrarventa(cliente_id)
     let datos_otrospagos = document.getElementById('datos_otrospagos').value;
     let datos_pagossubtotal = document.getElementById('datos_pagossubtotal').value;
     let parametro_comprobante = document.getElementById('parametro_comprobante').value;
+    //let datos_periodofacturado = document.getElementById('datos_periodofacturado').value;
     
     
     if (registroeventos_codigo>0){

@@ -2949,7 +2949,7 @@ Cobro por reconexion 10.00</textarea>
 					<div class="col-md-9">                                                                                              
 						<label for="datos_otrastasas" class="control-label">Otras tasas</label>
 						<div class="form-group">
-                                                    <textarea name="datos_otrastasas" class="form-control" id="datos_otrastasas">Oras tasas</textarea>
+                                                    <textarea name="datos_otrastasas" class="form-control" id="datos_otrastasas">Otras tasas</textarea>
 						</div>
 					</div>                   
                     
