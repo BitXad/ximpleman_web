@@ -621,6 +621,7 @@ class Producto extends CI_Controller{
             $fecha_venc = $this->input->post('fecha_venc');
             $moneda_tc = $this->input->post('moneda_tc1');
             $cod_product_sin = $this->input->post('cod_product_sin');
+            $subcategoria_id = $this->input->post('subcategoria_prod');
             
             $sql = "select * from unidad where unidad_nombre = '".$this->input->post('producto_unidad')."'";
             $unidades = $this->Venta_model->consultar($sql);
@@ -702,6 +703,7 @@ class Producto extends CI_Controller{
                 $params = array(
                     'estado_id' => $estado_id,
                     'categoria_id' => $this->input->post('categoria_id'),
+                    'subcategoria_id' => $this->input->post('subcategoria_prod'),
                     'presentacion_id' => 1, //$this->input->post('presentacion_id'),
                     'moneda_id' => $this->input->post('moneda_id'),
                     'producto_codigo' => $this->input->post('producto_codigo'),
@@ -733,6 +735,7 @@ class Producto extends CI_Controller{
                     'producto_id' => $producto_id,
                     'estado_id' => $estado_id,
                     'categoria_id' => $this->input->post('categoria_id'),
+                    'subcategoria_id' => $this->input->post('subcategoria_prod'),
                     'presentacion_id' => 1, //$this->input->post('presentacion_id'),
                     'moneda_id' => $this->input->post('moneda_id'),
                     'producto_codigo' => $this->input->post('producto_codigo'),

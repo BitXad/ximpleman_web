@@ -307,17 +307,16 @@ function registrarnuevasubcategoria(){
                
                if (registros != null){
                    
-                    html = "";
-                    html += "<option value='"+registros["subcategoria_id"]+"' selected >";
-                    html += registros["subcategoria_nombre"];
-                    html += "</option>";
-                    $("#subcategoria_id").append(html);
-                    //mostrar_subcategoriaproducto(registros["categoria_id"]);
-                    $("#nueva_subcategoria").val("");
+//                    html = "";
+//                    html += "<option value='"+registros["subcategoria_id"]+"' selected >";
+//                    html += registros["subcategoria_nombre"];
+//                    html += "</option>";
+//                    $("#subcategoria_id").append(html);
+//                    //mostrar_subcategoriaproducto(registros["categoria_id"]);
+//                    $("#nueva_subcategoria").val("");
                     mostrar_subcategorias();
-                    
-                    //$("#subcategoria_prod").val(arreglo[0]);
-                    //document.getElementById("subcategoria_prod").value = arreglo[0];
+                    //alert(arreglo[0]);
+                    $("#nueva_subcategoria").val("");
                     
                     
             }
@@ -330,6 +329,7 @@ function registrarnuevasubcategoria(){
 }
 
 function mostrar_subcategorias(){
+    
     var base_url  = document.getElementById('base_url').value;
 //    var controlador = base_url+'venta/buscarcategorias/'
     var categoria_id = document.getElementById("categoria_id").value;
@@ -344,11 +344,30 @@ function mostrar_subcategorias(){
                  html = "";
                  subcat = JSON.parse(respuesta);
                  cant = subcat.length;
-                 
-                html += "<option value='0' selected>- SUB CATEGORIA -</option>"                     
-                 for(i=0;i<cant;i++){
-                     html += "<option value='"+subcat[i]["subcategoria_id"]+"'>"+subcat[i]["subcategoria_nombre"]+"</option>"                     
-                 }
+                 seleccionado = "";
+                
+                let mayor= - 111;
+                
+                for(j=0;j<cant;j++){
+                    
+                    if(subcat[j]["subcategoria_id"]>mayor){
+                        mayor = subcat[j]["subcategoria_id"];
+                    }
+                    
+                }
+                
+                html += "<option value='0'>- SUB CATEGORIA -</option>"
+                
+                for(i=0;i<cant;i++){
+                     
+                     if(subcat[i]["subcategoria_id"]==mayor){
+                        seleccionado = " selected";
+                     }else{
+                         seleccionado = "";
+                     }
+                     
+                     html += "<option value='"+subcat[i]["subcategoria_id"]+"' "+seleccionado+">"+subcat[i]["subcategoria_nombre"]+"</option>"
+                }
                  
                $("#subcategoria_prod").html(html);
                     

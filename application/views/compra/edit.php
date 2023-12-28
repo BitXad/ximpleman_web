@@ -502,15 +502,16 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <div class="modal fade" id="modalproducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background:silver;"> <b><fa class="fa fa-cubes"></fa> REGISTRO RAPIDO DE PRODUCTOS</b>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+            </div>
                 <div class="row">
     <div class="col-md-12"> 
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title" style="padding-right: 170px;"><b>REGISTRO DE PRODUCTOS</b></h3>
+                <!--<h3 class="box-title" style="padding-right: 170px;"><b>REGISTRO DE PRODUCTOS</b></h3>-->
                 <button type="button" class="btn btn-info btn-xs" onclick="cambiarcodproducto();" title="genera codigo de barra y codigo">
       <i class="fa fa-edit"></i> Generar Codigo Barra y Codigo
     </button>
@@ -545,6 +546,20 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <span class="text-danger"><?php echo form_error('producto_codigo');?></span>
                         </div>
                     </div>
+                    
+                    <div class="col-md-4">
+                        <label for="producto_" class="control-label"><span class="text-danger">*</span>Codigo Producto SIN</label>
+                        <div class="form-group">                            
+                            <select name="cod_product_sin" id="cod_product_sin" class="form-control selectpicker" title="Actividad - Codigo NIS" data-hide-disabled="true" data-live-search="true">
+                                <option value="0">- SIN CODIGO -</option>
+                                <?php foreach ($nis_codigos as $cod_nis){?>
+                                    <option value="<?= $cod_nis['prodserv_codigoproducto'] ?>"><?= "{$cod_nis['prodserv_codigoactividad']} - {$cod_nis['prodserv_codigoproducto']} {$cod_nis['prodserv_descripcion']}" ?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    
                     <div class="col-md-4">  
                             <label for="categoria_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
                             <div class="form-group" style="display: flex">
@@ -599,20 +614,20 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             </select>
                         </div>
                     </div>  
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="producto_costo" class="control-label">Costo</label>
                         <div class="form-group">
                             <input type="number" step="any" min="0" name="producto_costo" value="<?php echo $this->input->post('producto_costo'); ?>" class="form-control" id="texto1" required/>
                         </div>  
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="producto_precio" class="control-label">Precio de Venta</label>
                         <div class="form-group">
                             <input type="number" min="0" step="any" name="producto_precio" value="<?php echo $this->input->post('producto_precio'); ?>" class="form-control" id="texto2" required/>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <label for="cantidad" class="control-label">Cantidad <?php echo $sistema["sistema_modulocompras"]; ?></label>
+                    <div class="col-md-3">
+                        <label for="cantidad" class="control-label">Cant. <?php echo $sistema["sistema_modulocompras"]; ?></label>
                         <div class="form-group">
                             <input type="number" min="0" step="any" name="cantidad" autocomplete="off" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
                              <input type="hidden" name="descuento" value="0" class="form-control" id="descuento" />
@@ -620,7 +635,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <input id="banderanga" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
                         </div>
                     </div>
-                    <div class="col-md-4" id="select_unidad" hidden>
+                    <div class="col-md-3" id="select_unidad" hidden>
                         <label for="unidad_compra" class="control-label">Unidad <?php echo $sistema["sistema_modulocompras"]; ?></label>
                         <div class="form-group">
                             <select name="unidad_compra" class="form-control" id="unidad_compra" >
@@ -630,19 +645,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div>
                     </div>
                     
-                    <div class="col-md-4">
-                        <label for="producto_" class="control-label"><span class="text-danger">*</span>Codigo Producto SIN</label>
-                        <div class="form-group">                            
-                            <select name="cod_product_sin" id="cod_product_sin" class="form-control selectpicker" title="Actividad - Codigo NIS" data-hide-disabled="true" data-live-search="true">
-                                <option value="0">- SIN CODIGO -</option>
-                                <?php foreach ($nis_codigos as $cod_nis){?>
-                                    <option value="<?= $cod_nis['prodserv_codigoproducto'] ?>"><?= "{$cod_nis['prodserv_codigoactividad']} - {$cod_nis['prodserv_codigoproducto']} {$cod_nis['prodserv_descripcion']}" ?></option>
-                                <?php }?>
-                            </select>
-                        </div>
-                    </div>
                     
-                    <div class="col-md-4">
+                    
+                    <div class="col-md-3">
                         <label for="fecha_venc" class="control-label">Fecha Venc.</label>
                         <div class="form-group">
                             <input type="date" name="fecha_venc" value="" class="form-control" id="fecha_venc"/>
