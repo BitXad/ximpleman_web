@@ -133,6 +133,11 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <input type="hidden" name="modificar_detalle" id="modificar_detalle" value="<?php echo $rolusuario[6-1]['rolusuario_asignado']; ?>">
 <input type="hidden" name="eliminar_detalle" id="eliminar_detalle" value="<?php echo $rolusuario[7-1]['rolusuario_asignado']; ?>">
 <input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales"  hidden>
+<input type="hidden" id="producto_id" value="0" name="producto_id"  hidden> <!-- se añadio por un error que exisitia -->
+<div id="loaderpreciocantidad" style="display:none;">
+    
+</div>
+
 <?php $decimales = $parametro['parametro_decimales']; ?>
 
 <div class="container" style="margin-left: 0;">
@@ -543,8 +548,8 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-4">  
                             <label for="categoria_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
                             <div class="form-group" style="display: flex">
-                                <select name="categoria_id" class="form-control" required id="categoria_id">
-                                            <option value="">- CATEGORIA -</option>
+                                <select name="categoria_id" class="form-control" required id="categoria_id" onchange="mostrar_subcategorias()">
+                                            <option value="0">- CATEGORIA -</option>
                                             <?php 
                                             foreach($all_categoria_producto as $categoria_producto)
                                             {
@@ -559,7 +564,26 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             </div>
                     </div>
                     
-                              <div class="col-md-6" hidden>
+                    <div class="col-md-4">  
+                            <label for="subcategoria_id" class="control-label"><span class="text-danger">*</span>Sub Categoria</label>
+                            <div class="form-group" style="display: flex">
+                                <select name="subcategoria_prod" class="form-control" required id="subcategoria_prod">
+                                            <option value="0">- SUB CATEGORIA -</option>
+                                            <?php 
+                                            foreach($all_categoria_producto as $subcategoria_producto)
+                                            {
+                                                    $selected = ($subcategoria_producto['subcategoria_id'] == $this->input->post('subcategoria_id')) ? ' selected="selected"' : "";
+
+                                                    echo '<option value="'.$subcategoria_producto['subcategoria_id'].'" '.$selected.'>'.$subcategoria_producto['subcategoria_nombre'].'</option>';
+                                            } 
+                                            ?>
+                                    </select>
+                                <a data-toggle="modal" data-target="#modalsubcategoria" class="btn btn-default" title="Registrar Nueva sub Categoria">
+                                <i class="fa fa-plus-circle"></i></a>
+                            </div>
+                    </div>
+                    
+                    <div class="col-md-6" hidden>
                     <input id="compra_id"  name="compra_id" type="text" class="form-control" value="<?php echo $compra_id; ?>">
                         </div>
                         <div class="col-md-4">
@@ -1445,8 +1469,36 @@ $("#texto2").change(function(){
                <!------------------------------------------------------------------->
             </div>
             <div class="modal-footer aligncenter">
-                <a onclick="registrarnuevacategoria()" class="btn btn-default"><span class="fa fa-check"></span> Registrar </a>
-                <a href="#" class="btn btn-default" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                <a onclick="registrarnuevacategoria()" class="btn btn-success"><span class="fa fa-check"></span> Registrar </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Registrar nueva Categoria ------------------->
+
+<!------------------------ INICIO modal para Registrar nueva Categoria ------------------->
+<div class="modal fade" id="modalsubcategoria" tabindex="-1" role="dialog" aria-labelledby="modalsubcategoria">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+               <div class="col-md-12">
+                    <label for="nueva_subcategoria" class="control-label">Registrar Nueva Sub
+                        Categoria</label>
+                    <div class="form-group">
+                        <input type="text" name="nueva_subcategoria"  class="form-control" id="nueva_subcategoria" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+               <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a onclick="registrarnuevasubcategoria()" class="btn btn-success"><span class="fa fa-check"></span> Registrar </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar </a>
             </div>
         </div>
     </div>

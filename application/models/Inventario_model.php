@@ -177,7 +177,7 @@ class Inventario_model extends CI_Model
                 else
                     $cantidad_reservada = $resultado[0]["cantidad_reservada"];
     
-                if ($existencia > ($cantidad + $cantidad_reservada)){
+                if ($existencia >= ($cantidad + $cantidad_reservada)){
                     
                 
                         if(empty($resultado)||$agrupado==0){
@@ -289,7 +289,7 @@ class Inventario_model extends CI_Model
 
                 return true;
                 }else{
-                    return "La cantidad es mayor a la del inventario disponible...!";
+                    return "La cantidad solicitada es mayor a la del inventario disponible...!";
                 }
         }
     }

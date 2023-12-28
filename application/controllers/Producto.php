@@ -1069,6 +1069,34 @@ class Producto extends CI_Controller{
         }
     }
     
+    /* * añadir unidad en producto */
+    function aniadisubrcategoria()
+    {
+        if($this->acceso(103)) {
+            if ($this->input->is_ajax_request()) {
+                
+                $categoria_id = $this->input->post('categoria_id');
+                $parametro = $this->input->post('parametro');
+                if($parametro != ""){
+                    $params = array(
+                    'categoria_id' => $categoria_id,
+                    'categoria_nombre' => $parametro,
+
+                    );
+                    $categoria_id = $this->Categoria_producto_model->add_categoria_producto($params);
+                    $datos = $this->Categoria_producto_model->get_categoria_producto($categoria_id);
+                    echo json_encode($datos);
+                }else{
+                    echo json_encode(null);
+                }
+            }
+            else
+            {                 
+                show_404();
+            }
+        }
+    }
+    
     function buscar_insumos()
     {
         $parametro = $this->input->post('parametro');
@@ -1110,11 +1138,15 @@ class Producto extends CI_Controller{
     function aniadirsubcategoria()
     {
         if($this->acceso(103)) {
+            
             if ($this->input->is_ajax_request()) {
+                
                 $this->load->model('Subcategoria_producto_model');
                 $parametro = $this->input->post('parametro');
                 $categoria_id = $this->input->post('categoria_id');
+                
                 if($parametro != ""){
+                    
                     $params = array(
                     'subcategoria_nombre' => $parametro,
                     'categoria_id' => $categoria_id,
@@ -1122,15 +1154,24 @@ class Producto extends CI_Controller{
                     );
                     $subcategoria_id = $this->Subcategoria_producto_model->add_subcategoria_producto($params);
                     $datos = $this->Subcategoria_producto_model->get_subcategoria_producto($subcategoria_id);
-                    echo json_encode($datos);
+                    $arreglo = array(
+                                0 => $subcategoria_id,
+                                1 => $datos
+                                );
+                    echo json_encode($arreglo);
+                    
                 }else{
+                    
                     echo json_encode(null);
+                    
                 }
+                
             }
             else
             {                 
                 show_404();
             }
+            
         }
     }
     /*

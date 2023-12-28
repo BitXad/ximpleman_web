@@ -16,16 +16,10 @@ class Categoria_producto_model extends CI_Model
      */
     function get_categoria_producto($categoria_id)
     {
-        $categoria_producto = $this->db->query("
-            SELECT
-                *
-
-            FROM
-                `categoria_producto`
-
-            WHERE
-                `categoria_id` = ?
-        ",array($categoria_id))->row_array();
+        $sql = "SELECT * FROM `categoria_producto`
+                ORDER BY categoria_nombre asc";
+        
+        $categoria_producto = $this->db->query($sql,array($categoria_id))->row_array();
 
         return $categoria_producto;
     }

@@ -682,6 +682,7 @@ function tablatotales(total_detalle,descuento,subtotal)
     var globaly = Number(document.getElementById('compra_descglobal').value);
     //var totalfinal = Number(total_detalle-globaly);
     var totalfinal = Number(subtotal-globaly-descuento);
+    var decimales = document.getElementById('decimales').value;
     
     $('#compra_subtotal').val(Number(subtotal).toFixed(decimales));
 $('#compra_descuento').val(Number(descuento).toFixed(decimales));
@@ -692,17 +693,17 @@ $('#compra_descuento').val(Number(descuento).toFixed(decimales));
 
      html = "";
      html += "<table><tr><td>Sub Total Bs:</td><td></td>";
-     html += "<td style='text-align: right;'>"+subtotal.toFixed(decimales)+"</td>";
+     html += "<td style='text-align: right;'>"+Number(subtotal).toFixed(decimales)+"</td>";
      html += "</tr><tr>";
      html += "<td>Descuento:</td><td></td>";
-     html += "<td style='text-align: right;'>"+descuento.toFixed(decimales)+"</td>";
+     html += "<td style='text-align: right;'>"+Number(descuento).toFixed(decimales)+"</td>";
      html += "</tr><tr>";
      html += "<td>Descuento Global:</td><td style='width: 30px;'></td>";
-     html += "<td style='text-align: right;'>"+globaly.toFixed(decimales)+"</td>";
+     html += "<td style='text-align: right;'>"+Number(globaly).toFixed(decimales)+"</td>";
      html += "</tr>";
      html += "<tr>";
      html += "<th><b>TOTAL FINAL:</b></th><td></td>";
-     html += "<th style='text-align: right;'><font size='3'><b>"+totalfinal.toFixed(decimales)+"</b></font></th>";
+     html += "<th style='text-align: right;'><font size='3'><b>"+Number(totalfinal).toFixed(decimales)+"</b></font></th>";
      html += "</tr></table>";
  
 
@@ -1109,7 +1110,7 @@ function mostrar_radio(){
 function buscar_por_fecha()
 {
     // var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"compra";
+    //var controlador = base_url+"compra";
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
    var tipotrans_id = document.getElementById('tipotrans_id').value;
@@ -1135,7 +1136,7 @@ function buscar_por_fecha()
 function buscar_reporte_fecha()
 {
     // var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"compra";
+    //var controlador = base_url+"compra";
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var tipotrans_id = document.getElementById('tipotrans_id').value;

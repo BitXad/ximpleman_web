@@ -195,6 +195,8 @@ function registrarnuevacategoria(){
     var parametro = document.getElementById('nueva_categoria').value;
     controlador = base_url+'producto/aniadircategoria/';
     $('#modalcategoria').modal('hide');
+    
+    
     $.ajax({url: controlador,
            type:"POST",
            data:{parametro:parametro},
@@ -209,11 +211,45 @@ function registrarnuevacategoria(){
                     html += "</option>";
                     $("#categoria_id").append(html);
                     mostrar_subcategoriaproducto(registros["categoria_id"]);
+                    
             }
         },
         error:function(respuesta){
            html = "";
            $("#categoria_id").html(html);
+        }
+        
+    });   
+
+}
+
+function registrarnuevasubcategoria(){
+    var controlador = "";
+    var base_url  = document.getElementById('base_url').value;
+    var parametro = document.getElementById('nueva_subcategoria').value;
+    controlador = base_url+'producto/aniadirsubcategoria/';
+    
+    $('#modalsubcategoria').modal('hide');
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{parametro:parametro},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+                
+               if (registros != null){
+                    html = "";
+                    html += "<option value='"+registros["subcategoria_id"]+"' selected >";
+                    html += registros["subcategoria_nombre"];
+                    html += "</option>";
+                    $("#subcategoria_id").append(html);
+                    mostrar_subsubcategoriaproducto(registros["subcategoria_id"]);
+                    mostrar_subcategorias();
+            }
+        },
+        error:function(respuesta){
+           html = "";
+           $("#subcategoria_id").html(html);
         }
         
     });   
@@ -266,8 +302,11 @@ function registrarnuevasubcategoria(){
            type:"POST",
            data:{parametro:parametro, categoria_id:categoria_id},
            success:function(respuesta){
-               var registros =  JSON.parse(respuesta);
+               var arreglo =  JSON.parse(respuesta);
+               var registros = arreglo[1]; //0 es subcategoria_id, 1 el arreglo de la subcategoria
+               
                if (registros != null){
+                   
                     html = "";
                     html += "<option value='"+registros["subcategoria_id"]+"' selected >";
                     html += registros["subcategoria_nombre"];
@@ -275,6 +314,12 @@ function registrarnuevasubcategoria(){
                     $("#subcategoria_id").append(html);
                     //mostrar_subcategoriaproducto(registros["categoria_id"]);
                     $("#nueva_subcategoria").val("");
+                    mostrar_subcategorias();
+                    
+                    //$("#subcategoria_prod").val(arreglo[0]);
+                    //document.getElementById("subcategoria_prod").value = arreglo[0];
+                    
+                    
             }
         },
         error:function(respuesta){
@@ -282,4 +327,41 @@ function registrarnuevasubcategoria(){
            $("#subcategoria_id").html(html);
         }
     });
+}
+
+function mostrar_subcategorias(){
+    var base_url  = document.getElementById('base_url').value;
+//    var controlador = base_url+'venta/buscarcategorias/'
+    var categoria_id = document.getElementById("categoria_id").value;
+    
+    var controlador = base_url+'website/obtener_subcategoria/'+categoria_id;
+        
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{categoria_id:categoria_id},
+            success:function(respuesta){
+                                                        
+                 html = "";
+                 subcat = JSON.parse(respuesta);
+                 cant = subcat.length;
+                 
+                html += "<option value='0' selected>- SUB CATEGORIA -</option>"                     
+                 for(i=0;i<cant;i++){
+                     html += "<option value='"+subcat[i]["subcategoria_id"]+"'>"+subcat[i]["subcategoria_nombre"]+"</option>"                     
+                 }
+                 
+               $("#subcategoria_prod").html(html);
+                    
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "<option value='0' selected>-SUB CATEGORIA-</option>";
+               $("#subcategoria_prod").html(html);
+            },
+            complete: function (jqXHR, textStatus) {
+               
+                //tabla_inventario();
+            }
+        
+        });
 }
