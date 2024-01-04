@@ -38,6 +38,8 @@
                             <th>#</th>
                             <th>CODIGO CLASIFICADOR</th>
                             <th>DESCRIPCION</th>
+                            <th>ESTADO</th>
+                            <th>OPERACION</th>
                         </tr>
                         </thead>
                     <tbody class="buscar">
@@ -48,6 +50,38 @@
                                 <td><?= $i ?></td>
                                 <td><?= $sincronizacion['cdi_codigoclasificador'] ?></td>
                                 <td><?= $sincronizacion['cdi_descripcion'] ?></td>
+                                <td><?= $sincronizacion['estado_descripcion'] ?></td>
+                                <!--<td><button class="btn btn-xs btn-<?php echo ($sincronizacion['estado_id']==1)?"success":"default"; ?>"> <fa class="fa fa-<?php echo ($sincronizacion['estado_id']==1)?"toggle-on":"toggle-off"; ?>"></fa></button></td>-->
+                                
+                                <td>
+                                    <button class="btn btn-xs btn-<?php echo ($sincronizacion['estado_id'] == 1) ? "success" : "default"; ?>" data-toggle="modal" data-target="#confirmModal">
+                                        <fa class="fa fa-<?php echo ($sincronizacion['estado_id'] == 1) ? "toggle-on" : "toggle-off"; ?>"></fa>
+                                    </button>
+                                </td>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirmModalLabel">Confirmar acción</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                ¿Estás seguro de que deseas inactivar el documento?
+                                            </div>
+                                            <div class="modal-footer">
+                                                
+                                                
+                                                    <button type="button" class="btn btn-danger" onclick="inactivar_documento()">Inactivar</button>
+                                                
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </tr>
                         <?php
                             $i++; 

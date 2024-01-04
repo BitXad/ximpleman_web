@@ -100,4 +100,18 @@ class Mesa extends CI_Controller{
             show_error('The mesa you are trying to delete does not exist.');
     }
     
+    
+     /*
+     * Vista para mostrar mesas
+     */
+    function mesas()
+    {
+        $data['sistema'] = $this->sistema;
+        $data['mesa'] = $this->Mesa_model->get_all_mesa();
+        $data['categorias'] = $this->Mesa_model->get_all_categorias();
+        
+        $data['_view'] = 'mesa/mesas';
+        $this->load->view('layouts/main',$data);
+    }
+    
 }

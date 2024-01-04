@@ -9,7 +9,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Editar Promoción</h3>
+              	<h3 class="box-title">EDITAR PROMOCION</h3>
                 <input type="hidden" value="<?php echo $promocion['promocion_id']; ?>" id="promocion_id">
             </div>
                 <?php echo form_open('promocion/edit/'.$promocion['promocion_id']); ?>
@@ -155,7 +155,7 @@
                                 <h4 class="modal-title" id="myModalLabel"><b>BUSCAR PRODUCTOS</b></h4>
                                 <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
                                 
-                                <input type="text" id="parametro" class="form-control btn-default" onkeyup="buscar(event)">
+                                <input type="text" id="parametro" class="form-control btn-default"  onkeypress="buscar(event)"  onKeyUp="this.value = this.value.toUpperCase();">
                             </center>
                             
                     </div>

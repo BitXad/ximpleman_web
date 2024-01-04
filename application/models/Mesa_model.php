@@ -37,12 +37,24 @@ class Mesa_model extends CI_Model
     {
         $mesa = $this->db->query("
             SELECT
-                m.*, u.usuario_nombre
+                m.*, u.usuario_nombre, e.estado_descripcion
             FROM
                 `mesa` m
             left join usuario u on m.usuario_id = u.usuario_id
+            left join estado e on m.estado_id = e.estado_id
             ORDER BY `mesa_id` ASC
         ")->result_array();
+
+        return $mesa;
+    }
+        
+    /*
+     * Get all categorias
+     */
+    function get_all_categorias()
+    {
+        $sql = "select * from categoria_mesa";
+        $mesa = $this->db->query($sql)->result_array();
 
         return $mesa;
     }

@@ -18,30 +18,60 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-    <font size='4' face='Arial'><b>Mesa</b></font>
+    <font size='4' face='Arial'><b>Registro de Mesas</b></font>
     <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($mesa); ?></font>
-    <div class="box-tools no-print">
+<!--    <div class="box-tools no-print">
         <a href="<?php echo site_url('mesa/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Mesa</a> 
-    </div>
+    </div>-->
 </div>
+
 <div class="row">
     <div class="col-md-12">
-        <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese nombre de la mesa..">
-                  </div>
+        <div class="col-md-4">
+            <!--------------------- parametro de buscador --------------------->
+            
+                <select id="select_categoria" class="form-control">
+                    
+                    <option value="0">-- TODAS --</option>
+                    <?php foreach ($categorias as $c){ ?>
+                            <option value="<?php echo $c["categoriamesa_nombre"]; ?>"><?php echo $c["categoriamesa_nombre"]; ?></option>
+                    <?php } ?>
+                    
+                </select>
+            
             <!--------------------- fin parametro de buscador --------------------->
+        </div>
+        
+        <div class="col-md-8">
+            <!--------------------- parametro de buscador --------------------->
+                      <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                        <input id="filtrar" type="text" class="form-control" placeholder="Ingrese nombre de la mesa..">
+                      </div>
+                <!--------------------- fin parametro de buscador --------------------->
+        </div>
+</div>
+
+    <div class="col-md-12">
         <div class="box">
             <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
+                    <?php
+                        $cont = 0;
+                        foreach($mesa as $m){ ?>
+                
+                            <div class="col-md-2">
+                                <button class="btn btn-default"  width="50px" height="50px">                                    
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="50px" height="50px"/>
+                                </button>
+                            </div>
+                
+                    <?php  } ?>
+                
+                
+<!--                <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
                         <th>Nombre</th>
-                        <th>Descripción</th>
                         <th>Usuario</th>
-                        <th>Libre</th>
-                        <th>Ocupada</th>
-                        <th>Estado</th>
                         <th class="no-print"></th>
                     </tr>
                     <?php
@@ -50,23 +80,19 @@
                     <tr>
                         <td><?php echo $cont+1; ?></td>
                         <td><?php echo $m['mesa_nombre']; ?></td>
-                        <td><?php echo $m['mesa_descripcion']; ?></td>
                         <td><?php echo $m['usuario_nombre']; ?></td>
-                        <td style="text-align: center;"><img src="<?php echo base_url("resources/images/mesas/".$m['mesa_iconolibre']); ?>" height="30px" width="30px"></td>
-                        <td style="text-align: center;"><img src="<?php echo base_url("resources/images/mesas/".$m['mesa_iconoocupada']); ?>" height="30px" width="30px"></td>                        
-                        <td><?php echo $m['usuario_nombre']; ?></td>
-                        <td><?php echo $m['estado_descripcion']; ?></td>
                         <td>
                             <a href="<?php echo site_url('mesa/edit/'.$m['mesa_id']); ?>" class="btn btn-info btn-xs" title="Modificar nombre de la mesa"><span class="fa fa-pencil"></span></a> 
-                            <!--<a href="<?php //echo site_url('mesa/remove/'.$m['mesa_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>-->
+                            <a href="<?php //echo site_url('mesa/remove/'.$m['mesa_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
                         </td>
                     </tr>
                     <?php
                     $cont++;
                     } ?>
-                </table>
+                </table>-->
                                 
             </div>
         </div>
     </div>
+    
 </div>

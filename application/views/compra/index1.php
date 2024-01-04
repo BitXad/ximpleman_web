@@ -287,10 +287,10 @@
               <?php }  ?>
                 <?php if ($c['compra_caja']==1){  ?><span class="btn-warning btn-xs">  <?php echo "Pago con Caja"; } ?><?php if ($c['compra_caja']==2){  ?><span class="btn-warning btn-xs">  <?php echo "Orden de Pago"; } ?><?php if ($c['compra_caja']==0){  ?><span class="btn-warning btn-xs">  <?php echo "Ninguno"; } ?></span></td>
                 <td><center><font size="4"><b><?php echo $c['compra_id']; ?></b></font></center></td>
-                <td align="right" ><?php echo "Sub Total: ".number_format($c['compra_subtotal'],$decimales,'.',','); ?><br>
-                  <?php echo "Desc.: ".number_format($c['compra_descuento'],$decimales,'.',','); ?><br>
-                  <?php echo "Desc.Global: ".number_format($c['compra_descglobal'],$decimales,'.',','); ?><br>  
-                  <font size="3"><b><?php echo number_format($c['compra_totalfinal'],$decimales,'.',','); ?></b></font>
+                <td align="right" ><?php echo "Sub Total: ".number_format(is_numeric($c['compra_subtotal'])?$c['compra_subtotal']:0,$decimales,'.',','); ?><br>
+                  <?php echo "Desc.: ".number_format(is_numeric($c['compra_descuento'])?$c['compra_descuento']:0,$decimales,'.',','); ?><br>
+                  <?php echo "Desc.Global: ".number_format(is_numeric($c['compra_descglobal'])?$c['compra_descglobal']:0,$decimales,'.',','); ?><br>  
+                  <font size="3"><b><?php echo number_format(is_numeric($c['compra_totalfinal'])?$c['compra_totalfinal']:0,$decimales,'.',','); ?></b></font>
                 </td>
                 <td style="text-align:center;"><?= $c['forma_nombre'] ?></td>
                 <td style="text-align:center;"><?= $c['banco_nombre'] ?></td>

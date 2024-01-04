@@ -835,7 +835,6 @@ class Dosificacion extends CI_Controller{
                 $parametros = ["SolicitudCuis" => [
                     "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
                     "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
-                    // "codigoPuntoVenta"=>   $dosificacion['dosificacion_puntoventa'],
                     "codigoPuntoVenta"=>   $punto_venta,
                     "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
                     "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
@@ -857,8 +856,8 @@ class Dosificacion extends CI_Controller{
             }
         }catch (Exception $e){
             
-            
-            echo 'Ocurrio algo inesperado; revisar datos!'.$e;
+            echo json_encode($e);
+           // echo 'Ocurrio algo inesperado; revisar datos!'.$e;
         }
     }
     
@@ -896,8 +895,8 @@ class Dosificacion extends CI_Controller{
             }
         }catch (Exception $e){
             
-            
-                echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+                //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
 
@@ -930,9 +929,9 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
+            echo json_encode($e);
             
-            
-                echo 'Ocurrio algo inesperado; revisar datos!.';
+                //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     
@@ -975,8 +974,9 @@ class Dosificacion extends CI_Controller{
             }
         }catch (Exception $e){
             
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.<br>'.$e;
             
-            echo 'Ocurrio algo inesperado; revisar datos!.<br>'.$e;
         }
     }
     /* en servicio de obtención de códigos es la Funcion que solicita cuis masivo: cuisMasivo */
@@ -1042,7 +1042,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     
@@ -1114,7 +1115,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     function almacenarcufdmasivo(){
@@ -1136,7 +1138,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-                echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     
@@ -1194,7 +1197,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /**SINCRONIZAR ACTIVIDADES ECONOMICAS */
@@ -1256,7 +1260,8 @@ class Dosificacion extends CI_Controller{
             }
             return $resultados;
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
 
@@ -1320,7 +1325,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en servicio Facturacion de Operaciones (Cierre Punto de Venta) es la Funcion:  cierrePuntoVenta */
@@ -1373,7 +1379,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en servicio Facturacion de Operaciones (Consulta Evento Significativo) es la Funcion: consultaEventoSignificativo */
@@ -1427,7 +1434,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en servicio Facturacion de Operaciones (Consulta Puntos de Venta) es la Funcion: consultaPuntoVenta */
@@ -1504,7 +1512,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en servicio Facturacion de Operaciones (Registro de Evento Significativo) es la Funcion: registroEventoSignificativo */
@@ -1566,7 +1575,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en servicio Facturacion de Operaciones (Registro de Punto de Venta) es la Funcion: registroPuntoVenta */
@@ -1629,7 +1639,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en servicio Facturacion de Operaciones (Registro de Punto de Venta Comisionista) es la Funcion: registroPuntoVentaComisionista */
@@ -1681,7 +1692,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en servicio Facturacion de Operaciones (verificar Comunicacion) es la Funcion: verificarComunicacion */
@@ -1717,7 +1729,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     
@@ -1755,7 +1768,8 @@ class Dosificacion extends CI_Controller{
             
             return $resultados;
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado revisar datos!.';
         }
     }
 
@@ -1791,6 +1805,7 @@ class Dosificacion extends CI_Controller{
                 }
             }
         }catch(Exception $e){
+            //echo json_encode($e);
             var_dump("No se realizo la sincronizacion");
         }
     }
@@ -2511,11 +2526,13 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en servicio Facturacion documentos de Ajuste (Recepcion documentos de ajuste) es la Funcion: recepcionDocumentoAjuste */
     function recepcionDocumentoAjuste(){
+        
         try{
             if ($this->input->is_ajax_request()) {
                 $dosificacion_id = 1;
@@ -2568,7 +2585,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en servicio Facturacion documentos de Ajuste (verificación estado de los documentos de ajuste) es la Funcion: verificacionEstadoDocumentoAjuste */
@@ -2623,7 +2641,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en servicio Facturacion documentos de Ajuste (verificación estado de los documentos de ajuste) es la Funcion: verificacionEstadoDocumentoAjuste */
@@ -2679,7 +2698,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en registro de compras (Serv) Anulación de registro de compras: anulacionCompra */
@@ -2733,7 +2753,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en registro de compras (Serv) Confirmación de compras: confirmacionCompras */
@@ -2785,7 +2806,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en registro de compras (Serv) Consulta compras a Confirmar: consultaCompras */
@@ -2836,7 +2858,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     /* en registro de compras (Serv) Recepción Paquete de Compras: recepcionPaqueteCompras */
@@ -2892,7 +2915,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     
@@ -2944,7 +2968,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
     
@@ -2981,7 +3006,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
 
@@ -3019,7 +3045,8 @@ class Dosificacion extends CI_Controller{
             //var_dump($transaccion);
             echo json_encode($transaccion);
         }catch(Exception $e){
-            echo json_encode("false");
+            echo json_encode($e);
+            //echo json_encode("false");
         }
     }
     /* se registra el punto de venta cero */
@@ -3047,7 +3074,8 @@ class Dosificacion extends CI_Controller{
                 show_404();
             }
         }catch (Exception $e){
-            echo 'Ocurrio algo inesperado; revisar datos!.';
+            echo json_encode($e);
+            //echo 'Ocurrio algo inesperado; revisar datos!.';
         }
     }
 }

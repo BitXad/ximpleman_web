@@ -59,8 +59,8 @@
       var prove = $('#prove_id').val();
       if(prove == 0){
           
-   alert("Debe seleccionar un Proveedor");
-      
+            alert("Debe seleccionar un Proveedor");
+            $('#modalbuscar').modal('show');
       }
 }
 

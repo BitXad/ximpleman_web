@@ -5,10 +5,12 @@
         }
 
         function get_all_docIdentidad(){
-            return $this->db->query(
-                "SELECT * 
-                from cod_doc_identidad"
-            )->result_array();
+            
+            $sql = "select *,e.estado_descripcion from cod_doc_identidad d
+                    left join estado e on e.estado_id = d.estado_id
+                ";
+            
+            return $this->db->query($sql)->result_array();
         }
 
         function add_cod_doc_identidad($params){

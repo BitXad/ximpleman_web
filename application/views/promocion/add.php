@@ -5,7 +5,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Añadir Promoción</h3>
+              	<h3 class="box-title">AÑADIR PROMOCIÓN</h3>
             </div>
             <?php echo form_open('promocion/add'); ?>
             <div class="box-body">
@@ -34,33 +34,33 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="promocion_titulo" class="control-label">Titulo</label>
+						<label for="promocion_titulo" class="control-label">(*)Titulo</label>
 						<div class="form-group">
-							<input type="text" name="promocion_titulo" value="<?php echo $this->input->post('promocion_titulo'); ?>" class="form-control" id="promocion_titulo" />
+							<input type="text" name="promocion_titulo" value="<?php echo $this->input->post('promocion_titulo'); ?>" class="form-control" id="promocion_titulo"  onKeyUp="this.value = this.value.toUpperCase();"/>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-1">
 						<label for="promocion_cantidad" class="control-label">Cantidad</label>
 						<div class="form-group">
-							<input type="text" name="promocion_cantidad" value="<?php echo $this->input->post('promocion_cantidad'); ?>" class="form-control" id="promocion_cantidad" />
+							<input type="number" name="promocion_cantidad" value="1" class="form-control" id="promocion_cantidad" />
 						</div>
 					</div>
-					<div class="col-md-6">
+                                        <div class="col-md-1" hidden>
 						<label for="promocion_preciototal" class="control-label">Precio Total</label>
 						<div class="form-group">
-							<input type="text" name="promocion_preciototal" value="<?php echo $this->input->post('promocion_preciototal'); ?>" class="form-control" id="promocion_preciototal" />
+							<input type="text" name="promocion_preciototal" value="0.00" class="form-control" id="promocion_preciototal" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-1">
 						<label for="promocion_fecha" class="control-label">Fecha</label>
 						<div class="form-group">
 							<input type="date" name="promocion_fecha" value="<?php echo $this->input->post('promocion_fecha'); ?>" class="form-control" id="promocion_fecha" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label for="promocion_descripcion" class="control-label">Promocion Descripcion</label>
 						<div class="form-group">
-							<textarea name="promocion_descripcion" class="form-control" id="promocion_descripcion"><?php echo $this->input->post('promocion_descripcion'); ?></textarea>
+							<textarea name="promocion_descripcion" class="form-control" id="promocion_descripcion"  onKeyUp="this.value = this.value.toUpperCase();"><?php echo $this->input->post('promocion_descripcion'); ?></textarea>
 						</div>
 					</div>
                 </div>

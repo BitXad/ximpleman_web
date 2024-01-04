@@ -16,6 +16,8 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<?php $decimales = $parametro["parametro_decimales"]; ?>
+
 <!-------------------------------------------------------->
 <div class="box-header">
                 <h3 class="box-title">Promoción</h3>
@@ -53,10 +55,10 @@
                         <td><?php echo $cont ?></td>
                         <td><?php echo $p['promocion_titulo']; ?></td>
                         <td><?php echo $p['promocion_cantidad']; ?></td>
-                        <td><?php echo $p['promocion_preciototal']; ?></td>
+                        <td style="text-align: right;"><?php echo number_format($p['promocion_preciototal'],$decimales,".",","); ?></td>
                         <td><?php echo $p['promocion_descripcion']; ?></td>
                         <td><?php echo $p['producto_nombre']; ?></td>
-                        <td><?php echo date("d-m-Y", strtotime($p['promocion_fecha'])); ?></td>
+                        <td><?php echo is_null($p['promocion_fecha'])?"":date("d/m/Y", strtotime($p['promocion_fecha'])); ?></td>
                         <td><?php echo $p['estado_descripcion']; ?></td>
                         <td>
                             <a href="<?php echo site_url('promocion/edit/'.$p['promocion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 

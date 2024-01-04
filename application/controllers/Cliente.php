@@ -43,6 +43,7 @@ class Cliente extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(94)){
+            
             $data['rol'] = $this->session_data['rol'];
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['page_title'] = "Cliente";
@@ -766,11 +767,13 @@ class Cliente extends CI_Controller{
         $permiso = $num[0]['parametro_permisocredito'];
         $usuario_id = $this->session_data['usuario_id'];
         $tipo_usuario = $this->session_data['tipousuario_id'];
+        
         if ($tipo_usuario>1 && $permiso==2) {
             $condicion = " and c.usuario_id=".$usuario_id."";
         }else{
             $condicion = "";
         }
+        
         if($this->acceso(94)){
             if ($this->input->is_ajax_request()) {
 

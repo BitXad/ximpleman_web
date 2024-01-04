@@ -8,11 +8,13 @@ class Promocion extends CI_Controller{
     
     private $session_data = "";
     private $sistema;
+    private $parametros;
 
     function __construct()
     {
         parent::__construct();
         $this->load->model('Promocion_model');
+        $this->load->model('Parametro_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -20,6 +22,9 @@ class Promocion extends CI_Controller{
         }
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
         
     }
     /* *****Funcion que verifica el acceso al sistema**** */
@@ -50,6 +55,7 @@ class Promocion extends CI_Controller{
             $config['total_rows'] = $this->Promocion_model->get_all_promocion_count();
             $this->pagination->initialize($config);
 
+            $data['parametro'] = $this->parametros;
             $data['promocion'] = $this->Promocion_model->get_all_promocion($params);
             $data['page_title'] = "Promocion";
             $data['_view'] = 'promocion/index';

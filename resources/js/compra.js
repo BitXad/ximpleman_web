@@ -1684,9 +1684,9 @@ function tablaresultados(opcion)
                             html += "<div align='right'>";
 
                             html += "<div class='col-md-2' style='padding-left: 0px;'>";
-                            html += "Costo "+registros[i]["moneda_descripcion"]+": <input class='input-sm' id='producto_costodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
+                            html += "Costo "+registros[i]["moneda_descripcion"]+": <input class='input-sm' id='producto_costodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+Number(registros[i]["producto_ultimocosto"]).toFixed(decimales)+"' > </div>";
                             html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                            html += "Prec.Venta "+registros[i]["moneda_descripcion"]+": <input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+                            html += "Prec.Venta "+registros[i]["moneda_descripcion"]+": <input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+Number(registros[i]["producto_precio"]).toFixed(decimales)+"' ></div>";
                             html += "<div class='col-md-2' style='padding-left: 0px;' >";
                             html += "Desc.Unit. "+registros[i]["moneda_descripcion"]+": <input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off'  name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
                             html += "<div class='col-md-2'style='padding-left: 0px;'  >";
@@ -1715,11 +1715,11 @@ function tablaresultados(opcion)
                               
                               html += "<tr>";
                                 html += "<td "+estiloTD+">";
-                                      html += "<input style='width:"+anchoinput+"px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01'  value='"+registros[i]["producto_precio"]+"' >";
+                                      html += "<input style='width:"+anchoinput+"px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01'  value='"+Number(registros[i]["producto_precio"]).toFixed(decimales)+"' >";
                                 html += "</td>";
                                 
                                 html += "<td "+estiloTD+">";
-                                      html += "<input style='width:"+anchoinput+"px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01'  value='"+registros[i]["producto_ultimocosto"]+"' >";
+                                      html += "<input style='width:"+anchoinput+"px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01'  value='"+Number(registros[i]["producto_ultimocosto"]).toFixed(decimales)+"' >";
                                 html += "</td>";
                                 
                                 html += "<td "+estiloTD+">";

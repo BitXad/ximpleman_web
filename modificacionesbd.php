@@ -7,7 +7,14 @@
 update licencia set
 `licencia_fechaactivacion` = date(now()),
 `licencia_fechalimite` = date_add(now(), INTERVAL 1 YEAR),
-`licencia_llave` = '&%k$j%&/jkk$k%k&oyijfhf'
+`licencia_llave` = '&%k$j%&/jkk$k%k&oyijfhf';
+ 
+truncate subcategoria_producto;
+truncate categoria_producto;
+   
+INSERT INTO `categoria_producto`(`categoria_id`, `categoria_nombre`, `categoria_imagen`) VALUE 
+  (1,'PRODUCTOS VARIOS','-');
+COMMIT;
 
 #TRUNCAR TABLAS#
 truncate venta;
@@ -52,9 +59,8 @@ empresa_nombre = 'OTOGROUP SRL'
 ,empresa_email = ''
 ,empresa_profesion = ''
 ,empresa_cargo = ''
-,empresa_nombresucursal = 'SUC. PRINCIPAL'
- * 
- 
+,empresa_nombresucursal = 'SUC. PRINCIPAL';
+
  
  * --------------- SQL ---------------
 

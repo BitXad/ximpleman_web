@@ -170,7 +170,7 @@ function buscar_productos()
                         html += "<td><input type='text' value='1' style='width:50px;' id='cantidad"+registros[i].producto_id+"'/></td>" ;
                         html += "<td><input type='text' value='"+registros[i].producto_precio+"' style='width:50px;' id='precio"+registros[i].producto_id+"'/></td>" ;
                         html += "<td><button class='btn btn-facebook btn-xs' onclick='registrar_producto("+registros[i].producto_id+")' >";
-                        html += "       <fa class='fa fa-arrow-down'></fa> </button>" ;
+                        html += "       <fa class='fa fa-arrow-down'></fa> AÑADIR</button>" ;
                         html += "</td>";
                         html += "</tr>";
                 

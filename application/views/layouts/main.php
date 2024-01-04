@@ -197,6 +197,10 @@
                         </li>
                         <?php } ?>
                         
+                        <li>
+                            <a href="<?php echo site_url('promocion');?>"><i class="fa fa-minus-circle"></i>Promociones</a>
+                        </li>
+                        
                         <?php 
                             if($rolusuario[1-1]['rolusuario_asignado'] == 1){
                         ?>
@@ -1102,9 +1106,7 @@
                         <li>
                             <a href="<?php echo site_url('pagina_web');?>"><i class="fa fa-globe"></i>Página Web</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('promocion');?>"><i class="fa fa-minus-circle"></i>Promoción</a>
-                        </li>
+
                         <li>
                             <a href="<?php echo site_url('red_social');?>"><i class="fa fa-connectdevelop"></i>Redes Sociales</a>
                         </li>
