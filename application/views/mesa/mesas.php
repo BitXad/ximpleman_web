@@ -85,23 +85,33 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                     }else{ $descripcion="";} ?>
                 
                 
-                            <div class="col-md-2">
+                            <!--<div class="col-md-2">-->
                               
                                 
                                 
-                                <?php if($m["estado_id"]==1){ ?>
-                                <button class="btn btn-default"  width="{$ancho_boton}px" height="{$alto_boton}px" style="font-size:<?= $tamanio_fuente?>;">
+                                <?php if($m["estado_id"]==38){ ?>
+                                <button class="btn btn-default" width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="{$ancho_imagen}px" height="{$alto_imagen}px"/>
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>                                    
                                 </button>
                                 
                                 <?php } ?>
                                 
-                                <?php if($m["estado_id"]==2){ ?>
-                                <button class="btn btn-default"  width="{$ancho_boton}px" height="{$alto_boton}px" style="font-size:<?= $tamanio_fuente?>;">
+                                <?php if($m["estado_id"]==39){ ?>
+                                <button class="btn btn-default" width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="{$ancho_imagen}px" height="{$alto_imagen}px"/>
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
+                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
+    
+                                </button>
+                                
+                                <?php } ?>
+                                <?php if($m["estado_id"]==40){ ?>
+                                
+                                <button class="btn btn-default" width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;">
+                                    
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoreservada"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
     
                                 </button>
@@ -109,11 +119,11 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                 <?php } ?>
 
                                 
-                                <?php if(!$m["estado_id"]==3){ ?>
-                                <button class="btn btn-default"  width="{$ancho_boton}px" height="{$alto_boton}px" style="font-size:<?= $tamanio_fuente?>;">
+                                <?php if($m["estado_id"]==41){ ?>
+                                <button class="btn btn-default"  width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconomantenimiento"]); ?>" width="{$ancho_imagen}px" height="{$alto_imagen}px"/>
-                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconomantenimiento"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
+                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>
     
                                 </button>
                                 
@@ -121,18 +131,8 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                 
           
                                 
-                                <?php if(!$m["estado_id"]==37){ ?>
                                 
-                                <button class="btn btn-default"  width="{$ancho_boton}px" height="{$alto_boton}px" style="font-size:<?= $tamanio_fuente?>;">
-                                    
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoreservada"]); ?>" width="{$ancho_imagen}px" height="{$alto_imagen}px"/>
-                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
-    
-                                </button>
-                                
-                                <?php } ?>
-                                
-                            </div>
+                            <!--</div>-->
                 
                     <?php  } ?>
 
@@ -162,4 +162,59 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
     
     </div>
     
+</div>
+
+<!-- modal opciones -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOpciones">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modalOpciones" tabindex="-1" role="dialog" aria-labelledby="modalOpcionesTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"><b>OPCIONES</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+        
+                    <div class="col-md-6">
+                            <label for="estado_id" class="control-label">Estado</label>
+                            <div class="form-group">
+                                    <select name="estado_id" class="form-control">
+                                            <!--<option value="">- ESTADO -</option>-->
+                                            <?php 
+                                            foreach($all_estado as $estado)
+                                            {
+                                                    $selected = ($estado['estado_id'] == $cliente['estado_id']) ? ' selected="selected"' : "";
+
+                                                    echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
+                                            } 
+                                            ?>
+                                    </select>
+                            </div>
+                    </div>
+
+          
+                    <div class="col-md-6">
+                        <label for="usuario_clave" class="control-label">Contraseña</label>
+                        <div class="form-group">
+                            <input type="password" name="usuario_clave" value="" class="form-control" id="usuario_clave" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <span class="text-danger"><?php echo form_error('usuario_clave');?></span>
+                        </div>
+                    </div>
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>

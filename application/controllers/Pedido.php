@@ -668,13 +668,16 @@ class Pedido extends CI_Controller{
             $ingreso_tc     = $all_moneda[1]["moneda_tc"];
             $total_final = 0;
             $parametro = $this->Parametro_model->get_all_parametro();
+            
             if($parametro[0]["moneda_id"]==1){ //Si es bolivianos
+                
                 $lamoneda = $all_moneda[0]["moneda_descripcion"];
                 if($ingreso_moneda != "Bs"){
                     $total_final += $ingreso_monto*$all_moneda[1]["moneda_tc"];
                 }else{
-                    $total_final += $ingreso_monto;
+                    $total_final += (is_numeric($ingreso_monto))?$ingreso_monto:0;
                 }
+                
             }else{ // Si no se multiplica
                 $lamoneda = $all_moneda[1]["moneda_descripcion"];
                 if($ingreso_moneda != "Bs"){

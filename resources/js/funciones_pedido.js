@@ -1753,7 +1753,7 @@ function tablaresultados(opcion)
                         if (rol_precioventa==1){
                             
                             html += "       <option value='precio_normal'>";
-                            precio_unidad = registros[i]["producto_precio"];
+                            precio_unidad = Number(registros[i]["producto_precio"]).toFixed(decimales);
                             html += "           "+registros[i]["producto_unidad"]+" "+registros[i]["moneda_descripcion"]+": "+Number(precio_unidad).toFixed(decimales)+"";
                             html += "       </option>";
                         
@@ -2019,7 +2019,7 @@ function tablaresultados(opcion)
                         
                         imagen_boton = "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' class='img "+forma_imagen+"' width='"+ancho_imagen+"' height='"+alto_imagen+"' />";
                  
-                        existencia = parseFloat(registros[i]["existencia"])+" "+registros[i]["producto_unidad"]+" | Bs "+registros[i]["producto_precio"];
+                        existencia = parseFloat(registros[i]["existencia"])+" "+registros[i]["producto_unidad"]+" | Bs "+Number(registros[i]["producto_precio"]).toFixed(decimales);
                         
                         
                         html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
@@ -2068,7 +2068,7 @@ function tablaresultados(opcion)
                         html += "<br><select class='btn btn-facebook' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1'>";
                         precio_unidad = registros[i]["producto_precio"];
-                        html += "           "+registros[i]["producto_unidad"]+" Bs : "+precio_unidad.fixed(decimales)+"";
+                        html += "           "+registros[i]["producto_unidad"]+" Bs : "+Number(precio_unidad).toFixed(decimales)+"";
                         html += "       </option>";
                         
                         if(registros[i]["producto_factor"]>0){
