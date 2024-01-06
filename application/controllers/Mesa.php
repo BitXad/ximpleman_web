@@ -7,12 +7,18 @@
 class Mesa extends CI_Controller{
     
     private $sistema;
+    private $parametros;
+    
     function __construct()
     {
         parent::__construct();
         $this->load->model('Mesa_model');
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
+        
+        $this->load->model('Parametro_model');
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
     } 
 
     /*
@@ -109,6 +115,7 @@ class Mesa extends CI_Controller{
         $data['sistema'] = $this->sistema;
         $data['mesa'] = $this->Mesa_model->get_all_mesa();
         $data['categorias'] = $this->Mesa_model->get_all_categorias();
+        $data['parametros'] = $this->parametros;
         
         $data['_view'] = 'mesa/mesas';
         $this->load->view('layouts/main',$data);

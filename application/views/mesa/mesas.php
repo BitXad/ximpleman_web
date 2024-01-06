@@ -17,6 +17,18 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
+
+<?php
+
+$ancho_boton = $parametros["parametro_anchoboton"];
+$alto_boton = $parametros["parametro_altoboton"];
+$ancho_imagen = $parametros["parametro_anchoimagen"];
+$alto_imagen = $parametros["parametro_altoimagen"];
+$tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
+
+
+?>
+
 <div class="box-header">
     <font size='4' face='Arial'><b>Registro de Mesas</b></font>
     <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($mesa); ?></font>
@@ -51,48 +63,103 @@
         </div>
 </div>
 
-    <div class="col-md-12">
+    <div class="row">
+        
+    <div class="col-md-8">
         <div class="box">
             <div class="box-body table-responsive">
                     <?php
                         $cont = 0;
-                        foreach($mesa as $m){ ?>
+                        $descipcion = 0;
+                        
+                        foreach($mesa as $m){ 
+                            
+                                    if(!is_null($m["mesa_descripcion"])){
+                                    
+                                                if($m["mesa_descripcion"]!="-"){
+                                                    $descripcion =  $m["mesa_descripcion"];
+                                                }else{ 
+                                                    $descripcion = "";
+                                                }
+                                            
+                                    }else{ $descripcion="";} ?>
+                
                 
                             <div class="col-md-2">
-                                <button class="btn btn-default"  width="50px" height="50px">                                    
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="50px" height="50px"/>
+                              
+                                
+                                
+                                <?php if($m["estado_id"]==1){ ?>
+                                <button class="btn btn-default"  width="{$ancho_boton}px" height="{$alto_boton}px" style="font-size:<?= $tamanio_fuente?>;">
+                                    
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="{$ancho_imagen}px" height="{$alto_imagen}px"/>
+                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>                                    
                                 </button>
+                                
+                                <?php } ?>
+                                
+                                <?php if($m["estado_id"]==2){ ?>
+                                <button class="btn btn-default"  width="{$ancho_boton}px" height="{$alto_boton}px" style="font-size:<?= $tamanio_fuente?>;">
+                                    
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="{$ancho_imagen}px" height="{$alto_imagen}px"/>
+                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
+    
+                                </button>
+                                
+                                <?php } ?>
+
+                                
+                                <?php if(!$m["estado_id"]==3){ ?>
+                                <button class="btn btn-default"  width="{$ancho_boton}px" height="{$alto_boton}px" style="font-size:<?= $tamanio_fuente?>;">
+                                    
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconomantenimiento"]); ?>" width="{$ancho_imagen}px" height="{$alto_imagen}px"/>
+                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
+    
+                                </button>
+                                
+                                <?php } ?>
+                                
+          
+                                
+                                <?php if(!$m["estado_id"]==37){ ?>
+                                
+                                <button class="btn btn-default"  width="{$ancho_boton}px" height="{$alto_boton}px" style="font-size:<?= $tamanio_fuente?>;">
+                                    
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoreservada"]); ?>" width="{$ancho_imagen}px" height="{$alto_imagen}px"/>
+                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
+    
+                                </button>
+                                
+                                <?php } ?>
+                                
                             </div>
                 
                     <?php  } ?>
-                
-                
-<!--                <table class="table table-striped table-condensed" id="mitabla">
-                    <tr>
-                        <th>#</th>
-                        <th>Nombre</th>
-                        <th>Usuario</th>
-                        <th class="no-print"></th>
-                    </tr>
-                    <?php
-                    $cont = 0;
-                    foreach($mesa as $m){ ?>
-                    <tr>
-                        <td><?php echo $cont+1; ?></td>
-                        <td><?php echo $m['mesa_nombre']; ?></td>
-                        <td><?php echo $m['usuario_nombre']; ?></td>
-                        <td>
-                            <a href="<?php echo site_url('mesa/edit/'.$m['mesa_id']); ?>" class="btn btn-info btn-xs" title="Modificar nombre de la mesa"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php //echo site_url('mesa/remove/'.$m['mesa_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
-                        </td>
-                    </tr>
-                    <?php
-                    $cont++;
-                    } ?>
-                </table>-->
+
                                 
             </div>
         </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="col-md-12">
+            <div class="box">
+                
+                <div class="box-header">
+                    <center>
+                        <b>DETALLE DE CONSUMO</b>                        
+                    </center>
+                </div>
+                    
+                <div class="box-body table-responsive">
+
+
+
+                </div>
+            </div>
+        </div>     
+    </div>
+    
     </div>
     
 </div>
