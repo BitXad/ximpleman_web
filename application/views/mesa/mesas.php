@@ -191,9 +191,11 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                             <?php 
                                             foreach($all_estado as $estado)
                                             {
+                                             
+                                                
                                                     $selected = ($estado['estado_id'] == $cliente['estado_id']) ? ' selected="selected"' : "";
-
                                                     echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
+                                                
                                             } 
                                             ?>
                                     </select>
@@ -212,8 +214,8 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
