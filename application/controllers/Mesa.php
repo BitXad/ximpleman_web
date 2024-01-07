@@ -20,6 +20,12 @@ class Mesa extends CI_Controller{
         $this->load->model('Parametro_model');
         $parametro = $this->Parametro_model->get_parametros();
         $this->parametros = $parametro[0];
+        
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
 
     /*
