@@ -47,12 +47,8 @@ margin : 0 0 0px 0;
 padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
-font-family: Arial narrow;
 font-size: 7pt;
-td {
-border:hidden;
 
-}
 }
 
 td#comentario {

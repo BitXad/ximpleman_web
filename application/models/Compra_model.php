@@ -194,7 +194,7 @@ class Compra_model extends CI_Model
 
      function fechacompra($condicion)
     {
-       $compra = $this->db->query("
+        $sql = "
             SELECT
                 c.*, e.estado_descripcion, p.proveedor_nombre, dc.*, i.*, u.usuario_nombre, t.tipotrans_nombre
             FROM
@@ -209,7 +209,9 @@ class Compra_model extends CI_Model
                 and c.tipotrans_id = t.tipotrans_id
                 ".$condicion." 
             ORDER BY compra_fecha, compra_hora DESC 
-        ")->result_array();
+        ";
+        //echo $sql;
+       $compra = $this->db->query($sql)->result_array();
 
         return $compra;
     }

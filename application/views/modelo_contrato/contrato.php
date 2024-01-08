@@ -28,9 +28,6 @@
         font-size: 8pt;  
     }
 
-    td {
-        border:hidden;
-    }
 
     td#comentario {
         vertical-align : bottom;

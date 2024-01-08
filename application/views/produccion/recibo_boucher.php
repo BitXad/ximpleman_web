@@ -45,10 +45,7 @@
         font-family: Arial narrow;
         font-size: 7pt;  
     }
-    td{
-        border:hidden;
-    }
-
+    
     td#comentario {
         vertical-align : bottom;
         border-spacing : 0;

@@ -172,10 +172,7 @@ border-spacing : 0 0;
 border-collapse : collapse;
 font-family: <?= $fuente  ?>;
 font-size: <?= $tamanio_letra3  ?>;; /*tamaño contenido de tabla*/
-td {
-border:hidden;
 
-}
 }
 
 td#comentario {

@@ -6522,9 +6522,9 @@ function anular_venta($venta_id){
         $micad .= "      border-collapse : collapse;";
         $micad .= "      font-family: Arial;";
         $micad .= "      font-size: 8pt;";
-        $micad .= "      td{";
-        $micad .= "          border:hidden;";
-        $micad .= "      }";
+//        $micad .= "      td{";
+//        $micad .= "          border:hidden;";
+//        $micad .= "      }";
         $micad .= "  }";
         $micad .= "  td#comentario {";
         $micad .= "      vertical-align : bottom;";
@@ -6947,9 +6947,9 @@ function anular_venta($venta_id){
         $micad .= "      border-collapse : collapse;";
         $micad .= "      font-family: Arial;";
         $micad .= "      font-size: 8pt;";
-        $micad .= "      td{";
-        $micad .= "          border:hidden;";
-        $micad .= "      }";
+//        $micad .= "      td{";
+//        $micad .= "          border:hidden;";
+//        $micad .= "      }";
         $micad .= "  }";
         $micad .= "  td#comentario {";
         $micad .= "      vertical-align : bottom;";

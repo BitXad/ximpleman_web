@@ -110,6 +110,7 @@
                     <option value="2"><?php echo $sistema["sistema_modulocompras"]; ?> de Ayer</option>
                     <option value="3"><?php echo $sistema["sistema_modulocompras"]; ?> de la semana</option>
                     <option value="5"><?php echo $sistema["sistema_modulocompras"]; ?> por fecha</option>
+                    <option value="6"><?php echo $sistema["sistema_modulocompras"]; ?> Perdidas/Sin Detalle</option>
                 </select>
                 <?php }?>
             </div>

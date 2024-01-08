@@ -4,7 +4,7 @@
     table{
 
         td{
-            border:hidden;
+            
             padding: 0px;
         }
     }

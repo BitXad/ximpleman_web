@@ -130,10 +130,7 @@ border-spacing : 0 0;
 border-collapse : collapse;
 font-family: Arial narrow;
 font-size: 9pt; /*tamaño contenido de tabla*/
-td {
-border:hidden;
 
-}
 }
 
 td#comentario {

@@ -952,7 +952,7 @@ function validacompra(e,opcion) {
         if (opcion==3){   //si la tecla proviene del input codigo de barras
             buscarporcodigo();           
         } 
-        if (opcion==4){   //si la tecla proviene del
+        if (opcion==4){   //si la tecla proviene del campo buscar compra
  
             compraproveedor(1);           
         } 
@@ -1045,6 +1045,13 @@ function buscar_compras()
         mostrar_ocultar_buscador("mostrar");
         filtro = null;
     }
+    
+            
+    if (opcion == 6) {
+        //alert("llega aqui...!");
+        mostrar_ocultar_buscador("ocultar");
+        filtro = " and NOT EXISTS (SELECT 1 FROM detalle_compra dc WHERE dc.compra_id = c.compra_id) ";
+    }
 
     fechadecompra(filtro);
 }
@@ -1078,6 +1085,7 @@ function buscar_compras()
             mostrar_ocultar_buscador("mostrar");
             filtro = null;
         }
+
         reportefechadecompra(filtro);
     }
 
@@ -1230,7 +1238,7 @@ function compraproveedor(opcion)
                     var cont = 0;
                     var total = Number(0);
                     var total_detalle = 0;
-                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                    var n = registros.length; //tamaño del arreglo de la consulta
                     $("#pillados").html("Registros Encontrados: "+n+" ");
                     html = "";
                    if (n <= limite) x = n; 
@@ -1286,9 +1294,11 @@ function compraproveedor(opcion)
                         html += "<a href='"+base_url+"compra/nota/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Nota de Compra'><span class='fa fa-print'></span></a>";
                         html += "<a href='"+base_url+"compra/notaingreso/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-facebook btn-xs' title='Nota de Ingreso/utilidades'><span class='fa fa-print'></span></a>";
 
+
                         if (Number(registros[i]["elestado"])==1) {
-                        html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
-                        html += "<a href='#' data-toggle='modal' data-target='#anularmodal"+registros[i]["compra_id"]+"' class='btn btn-xs btn-warning' title='Anular Compra' ><i class='fa fa-minus-circle'></i></a>";
+                            html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
+                            html +="<button data-toggle='modal'  class='btn btn-xs btn-github' title='Ver compras perdidas' onclick='cargar_datosbackup("+registros[i]["compra_id"]+")'> <i class='fa fa-paperclip'></i> </button>";
+                            html += "<a href='#' data-toggle='modal' data-target='#anularmodal"+registros[i]["compra_id"]+"' class='btn btn-xs btn-warning' title='Anular Compra' ><i class='fa fa-minus-circle'></i></a>";
                         }
                         /*****modal anula compra ***/
                         html += "  <div class='modal fade' id='anularmodal"+registros[i]["compra_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";

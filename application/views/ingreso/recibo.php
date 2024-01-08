@@ -62,9 +62,6 @@ border-collapse : collapse;
 font-family: Arial;
 font-size: 7pt;  
 
-td {
-border:hidden;
-}
 }
 
 td#comentario {

@@ -27,9 +27,7 @@
         border-collapse : collapse;
         font-family: Arial narrow;
         font-size: 10pt;
-        td{
-            border:hidden;
-        }
+
     }
     td#comentario {
         vertical-align : bottom;

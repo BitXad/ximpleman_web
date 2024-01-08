@@ -90,7 +90,7 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                 
                                 
                                 <?php if($m["estado_id"]==38){ ?>
-                                <button class="btn btn-default" width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;">
+                                <button class="btn btn-default" width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;" >
                                     
                                     <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>                                    
