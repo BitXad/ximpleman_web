@@ -104,6 +104,7 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                     <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
     
+                            <label class="btn btn-xs btn-facebook"><?php echo "<b>".$m["mesa_nombre"]."</b>" ?></label>
                                 </button>
                                 
                                 <?php } ?>

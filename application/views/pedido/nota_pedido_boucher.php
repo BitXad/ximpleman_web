@@ -140,7 +140,7 @@ border-bottom : 1px solid #aaa;
 </script>   
 
 
-
+<?php $decimales = $parametro[0]["parametro_decimales"]; ?>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -245,7 +245,19 @@ border-bottom : 1px solid #aaa;
 
                 <td style="padding: 0">
                     <center>
-                        <?php echo $p['detalleped_cantidad']; ?>
+                        <?php
+                        
+                        $partes = explode(".",$p['detalleped_cantidad']);  
+                                            if ($partes[1] == 0) {  
+                                                $lacantidad = $partes[0];  
+                                            }else{  
+                                                $lacantidad = number_format($p['detalleped_cantidad'],$decimales,'.',',');  
+                                            }  
+                        
+                        echo $lacantidad; 
+                        ?>
+                        
+                        
                     </center>
                 </td>
                 <td style="padding: 0;">
