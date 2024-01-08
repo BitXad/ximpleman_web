@@ -527,6 +527,7 @@ class Venta_model extends CI_Model
                 ".$condicion."
                 order by v.venta_id desc";
         
+        //echo $sql;
         $ventas = $this->db->query($sql)->result_array();
 
         return $ventas;

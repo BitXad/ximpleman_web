@@ -1625,7 +1625,7 @@ function tablaresultados(opcion)
                             
                         html += "<div class='col-md-12' style='padding-left: 0px;'>";
 
-                        html += "<b><font size='2'>"+registros[i]["producto_nombre"]+"</font> ("+registros[i]["producto_codigo"]+")</b>";
+                        html += "<b><font size='2'>"+registros[i]["producto_nombre"]+"</font><sub>["+registros[i]["producto_id"]+"]</sub> ("+registros[i]["producto_codigo"]+")</b>";
                         html += "<br><span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>SALDO: "+Number(registros[i]["existencia"]).toFixed(decimales)+"</span>";
 //                        html += " <span class='btn btn-danger btn-xs' style='font-size:10px; face=arial narrow;' title='Historial de precios de compra'><i class='fa fa-book'></i> </span>";
 
@@ -2061,7 +2061,8 @@ function formato_fecha(string){
 function mostrar_historial(producto_id){
     // var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"compra/historial_compras";
-    
+    var decimales =  document.getElementById("decimales").value;
+            
     html = "";
     
     $.ajax({url:controlador,
@@ -2079,8 +2080,8 @@ function mostrar_historial(producto_id){
                 html += "<th>#</th>";
                 html += "<th>Proveedor</th>";
                 html += "<th>Costo</th>";
-                html += "<th>Transación</th>";
-                html += "<th>Banco</th>";
+//                html += "<th>Transación</th>";
+//                html += "<th>Banco</th>";
                 html += "<th>Fecha</th>";
                 html += "</tr>";
                 
@@ -2091,8 +2092,8 @@ function mostrar_historial(producto_id){
                      html += "<td>"+(i+1)+"</td>";
                      html += "<td>"+reg[i].proveedor_nombre+"</td>";
                      html += "<td><b>"+Number(reg[i].detallecomp_costo).toFixed(decimales)+"</b></td>";
-                     html += "<td style='text-center'>"+reg[i].forma_nombre+"</td>"
-                     html += "<td style='text-center'>"+reg[i].banco_nombre+"</td>"
+//                     html += "<td style='text-center'>"+reg[i].forma_nombre+"</td>"
+//                     html += "<td style='text-center'>"+reg[i].banco_nombre+"</td>"
                      html += "<td>"+formato_fecha(reg[i].compra_fecha)+"</td>";
                     html += "</tr>";
                        

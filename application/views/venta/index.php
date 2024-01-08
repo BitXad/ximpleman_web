@@ -103,6 +103,7 @@
                         <option value="3">Ventas de la semana</option>
                         <option value="4">Todos las ventas</option>
                         <option value="5">Ventas por fecha</option>
+                        <option value="6">Ventas Perdidas/Sin Detalle</option>
                     </select>
                     <?php } ?>
                     <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>

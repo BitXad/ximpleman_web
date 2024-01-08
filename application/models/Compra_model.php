@@ -478,7 +478,9 @@ class Compra_model extends CI_Model
                     d.compra_id = c.compra_id AND 
                     c.proveedor_id = p.proveedor_id
                   ORDER BY
-                    c.compra_fecha DESC";
+                    c.compra_fecha DESC
+                  LIMIT 10
+                    ";
         return $this->db->query($sql)->result_array();
         
     }

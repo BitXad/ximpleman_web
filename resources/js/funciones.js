@@ -3223,7 +3223,7 @@ function tablaresultados(opcion)
                             
                             html += "       <option value='precio_normal'>";
                             precio_unidad = registros[i]["producto_precio"];
-                            html += "           "+registros[i]["producto_unidad"]+" "+registros[i]["moneda_descripcion"]+": "+precio_unidad.fixed(2)+"";
+                            html += "           "+registros[i]["producto_unidad"]+" "+registros[i]["moneda_descripcion"]+": "+Number(precio_unidad).toFixed(decimales)+"";
                             html += "       </option>";
                         
                         }
@@ -4159,6 +4159,12 @@ function buscar_ventas()
 
         mostrar_ocultar_buscador("mostrar");
         filtro = null;
+    }
+    
+    if (opcion == 6) {
+
+        mostrar_ocultar_buscador("ocultar");
+        filtro =  " and NOT EXISTS (SELECT 1 FROM detalle_venta dv WHERE dv.venta_id = v.venta_id) ";
     }
 
     tabla_ventas(filtro);
