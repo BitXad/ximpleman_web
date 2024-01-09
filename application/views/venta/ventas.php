@@ -1082,6 +1082,52 @@ window.onkeydown = compruebaTecla;
         
     </div>
         
+
+<!---  VENTAS CON FALLAS  -->
+
+<div class="col-md-12">
+        
+
+        
+        <div class="box">
+            <font size="1"><b>VENTAS CON FALLAS</b></font> <button class="btn btn-xs btn-info" onclick="ventas_fallidas()"><fa class="fa fa-binoculars"></fa> Buscar</button>
+        <div class="box" style="border-color:black;">
+            <div class="box-body">        
+        
+       
+        <div class="col-md-12" style="padding:0;" id="div_mensaje">
+                 
+        </div>
+            
+        <?php $estilo_tabla = "style='padding:0;'"; ?>
+        <div class="col-md-12" style="padding:0; font-family: Arial;">
+            <table id="mitabla">
+                <tr <?php echo $estilo_tabla; ?>>
+                    <th <?php echo $estilo_tabla; ?>>#</th>
+                    <th <?php echo $estilo_tabla; ?>>CLIENTE</th>
+                    <th <?php echo $estilo_tabla; ?>>VENTA</th>
+                    <th <?php echo $estilo_tabla; ?>>FECHA</th>
+                    <th <?php echo $estilo_tabla; ?>>MONTO</th>
+                    <th <?php echo $estilo_tabla; ?>>ESTADO</th>                    
+                    <th <?php echo $estilo_tabla; ?>>CAJERO</th>                    
+                </tr>
+                <tbody id="ventas_fallidas">
+                    
+                </tbody>
+                    
+            </table>
+            
+        </div>    
+        </div>
+            
+        </div>
+        </div>
+
+        
+    </div>        
+        
+        
+        
     </div>
     
     

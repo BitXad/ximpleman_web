@@ -5095,7 +5095,7 @@ function tabla_ventas(filtro)
                         html += "                                          <br>-----------------------------<br>";
                         //html += "                                          La venta tiene una FACTURA ASOCIADA<br>";
                         html += "              <label><b class='btn btn-warning'><input type='checkbox' name='anular_factura"+v[i]['venta_id']+"' value='1' id='anular_factura"+v[i]['venta_id']+"' checked>";
-                        html += " Anular la factura asociada a esta venta? </b></label>" ;
+                        html += " Anular la factura electrónica asociada a esta venta? </b></label>" ;
                     }else{
                         html += "<input type='checkbox' name='anular_factura"+v[i]['venta_id']+"' value='0' id='anular_factura"+v[i]['venta_id']+"' hidden>";
                     }
@@ -8023,10 +8023,15 @@ function anular_venta(venta_id, factura_id = null, factura_enviada=null){
     let tiene_factura = document.getElementById("anular_factura"+venta_id).value; 
     
     if(tiene_factura == 1){
+        
         let anular_factura = document.getElementById("anular_factura"+venta_id).checked;
+        
         if(anular_factura == true){
+            
             let controlador = "";
+            
             if(factura_enviada == 1){ // es factura valida y debe anularse desde impuestos. Esta funcion lo usa desde factura(anulacion)
+                
                 controlador = base_url+'factura/anular_factura/'+factura_id+"/"+venta_id;
                 let motivo_id = 1;
                 let factura_correo = "";
@@ -8052,9 +8057,11 @@ function anular_venta(venta_id, factura_id = null, factura_enviada=null){
                     },
                 });
             }
+            
         }else{
             location.href = base_url+"venta/anular_venta/"+venta_id;
         }
+        
     }else{
         location.href = base_url+"venta/anular_venta/"+venta_id;
     }
@@ -8327,8 +8334,6 @@ function guardar_venta_temporal(){
     }else{
         alert("Debe registrar un nombre correcto..!!");
     }
-    
-
     
 }
 
@@ -8734,5 +8739,45 @@ function borrar_datos_cliente(){
     
     //$("#span_buscar_cliente").click();   
     $("#boton_presionado").val(0);
+
+}
+
+function ventas_fallidas(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/ventas_fallidas/";
+
+
+                    $.ajax({url: controlador,
+                        type:"POST",
+                        success:function(respuesta){
+                            
+                            let res = JSON.parse(respuesta);
+                            let html = "";
+
+                            for(var i=0;i<res.length; i++){
+                                
+                                html += "<tr>"
+                                    html += "<td>"+(i+1)+"</td>";
+                                    html += "<td>"+res[i]["cliente_nombre"]+"<sub>["+res[i]["cliente_id"]+"]</sub><br>"+((res[i]["cliente_nombre"]!=res[i]["cliente_razon"])?"<sub>"+res[i]["cliente_razon"]+"</sub>":"")+"</td>";
+                                    html += "<td><center>"+res[i]["venta_id"]+"</center></td>";
+                                    html += "<td style='text-align:center;'>"+formato_fecha(res[i]["venta_fecha"])+"</td>";
+                                    html += "<td style='text-align:right;'>"+Number(res[i]["venta_total"]).toFixed(2)+"</td>";
+                                    html += "<td style='text-align:center;'>"+res[i]["estado_descripcion"]+"</td>";
+                                    html += "<td>"+res[i]["usuario_nombre"]+"</td>";
+                                                                   
+                                html += "</tr>"
+                                    
+                            }
+                            
+                            $("#ventas_fallidas").html(html);
+                            
+
+                        },
+                        error:function(respuesta){
+                            res = 0;
+                        }
+                    });     
+                                
 
 }

@@ -1675,7 +1675,7 @@ class Factura extends CI_Controller{
                     
             $bitacoracaja_evento = "ANULAR VENTA Nº 00".$venta_id." CLIENTE: ".$cliente['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".number_format($prec_total,2,".",",");
             $bitacoracaja_tipo = 2;
-
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
             $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
                     usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(date({$now}),time({$now})".
                     ",'".$bitacoracaja_evento."',".$usuarioventa_id.",".$prec_total.",0,".$bitacoracaja_tipo.",".$caja_id.")";

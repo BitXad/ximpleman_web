@@ -3048,10 +3048,13 @@ function edit($venta_id){
             
         //************ inicio bitacora 
         $data['sistema'] = $this->sistema;   
-        $usuario_id = $this->session_data['usuario_id'];        
+        $usuario_id = $this->session_data['usuario_id']; 
+        
+        
+        
         $bitacoracaja_fecha = "date({$now})";
         $bitacoracaja_hora = "time({$now})";
-        $bitacoracaja_evento = "(select concat('QUITAR TODOS LOS PRODUCTOS EN VENTAS CANT: ',count(*),'| TOTAL: ', round(sum(detalleven_cantidad * detalleven_precio),2)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
+        $bitacoracaja_evento = "(select concat('ELIMINE VENTA SIN FINALIZAR => CANT: ',count(*),' | TOTAL: ', round(sum(detalleven_cantidad * detalleven_precio),2),'=>',(SELECT GROUP_CONCAT(round(detalleven_cantidad,2),' ',producto_nombre,' ',round(detalleven_precio,2) SEPARATOR ' *** ') FROM detalle_venta_aux WHERE usuario_id = {$usuario_id})) as productos from detalle_venta_aux where usuario_id = {$usuario_id})";
         $bitacoracaja_montoreg = 0;
         $bitacoracaja_montocaja = 0;
         $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
@@ -8727,6 +8730,30 @@ function anular_venta($venta_id){
                 echo json_encode($datos);
 
             }
+        }
+
+
+    }
+    
+    
+    /*
+    * ventas fallidas o sin detalle
+    */
+    function ventas_fallidas(){
+
+        if ($this->input->is_ajax_request()) {
+
+            $sql = "select v.*, c.cliente_nombre, c.cliente_razon, u.usuario_nombre, e.estado_descripcion 
+                    from venta v, cliente c, usuario u, estado e
+                    where 
+                    v.estado_id = 1 and
+                    v.cliente_id = c.cliente_id and
+                    v.usuario_id = u.usuario_id and
+                    v.estado_id = e.estado_id and
+                    NOT EXISTS (SELECT 1 FROM detalle_venta dv WHERE dv.venta_id = v.venta_id)";
+            
+            $res = $this->Venta_model->consultar($sql);
+            echo json_encode($res);
         }
 
 
