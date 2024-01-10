@@ -8746,6 +8746,7 @@ function ventas_fallidas(){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/ventas_fallidas/";
+    var tipousuario_id = Number(document.getElementById('tipousuario_id').value);
 
 
                     $.ajax({url: controlador,
@@ -8765,6 +8766,14 @@ function ventas_fallidas(){
                                     html += "<td style='text-align:right;'>"+Number(res[i]["venta_total"]).toFixed(2)+"</td>";
                                     html += "<td style='text-align:center;'>"+res[i]["estado_descripcion"]+"</td>";
                                     html += "<td>"+res[i]["usuario_nombre"]+"</td>";
+                                    html += "<td>";
+                                        html += "<a href='"+base_url+"venta/modificar_venta/"+res[i]["venta_id"]+"' class='btn btn-xs btn-info' target='_blank'><fa class='fa fa-pencil'></fa> </a>";
+                                        
+                                        if (tipousuario_id==1){                                            
+                                            html += "<button onclick='eliminar_transaccion("+res[i]["venta_id"]+")' class='btn btn-xs btn-danger'><fa class='fa fa-trash'></fa> </a>"; 
+                                        }
+
+                                html += "</td>";
                                                                    
                                 html += "</tr>"
                                     
@@ -8780,4 +8789,39 @@ function ventas_fallidas(){
                     });     
                                 
 
+}
+
+function eliminar_transaccion(venta_id){
+
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/eliminar_transaccion';
+
+            var r = confirm("ADVERTENCIA: Esta operación eliminara de forma definitiva la transaccion seleccionada. \n ¿Desea Continuar?");
+
+            if (r == true) {
+
+
+                    $.ajax({url: controlador,
+                        type:"POST",
+                        data:{venta_id:venta_id},
+                        success:function(respuesta){
+
+                            let res = JSON.parse(respuesta);                            
+                            
+                            if (res) {  
+                                
+                                ventas_fallidas();
+                                alert("La transacción fue eliminada con éxito...!");
+                                
+                            }
+                        },
+                        error:function(respuesta){
+                            res = 0;
+                        }
+                    });     
+                                
+            }else{                   
+                
+            }
+            
 }

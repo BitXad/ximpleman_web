@@ -8759,4 +8759,32 @@ function anular_venta($venta_id){
 
     }
     
+    /*
+    * Eliminar transaccion
+    */
+    function eliminar_transaccion(){
+
+        if ($this->input->is_ajax_request()) {
+
+            $venta_id = $this->input->post("venta_id");
+            
+            $sql = "delete from cuota where credito_id in (select credito_id from credito where venta_id = {$venta_id})";
+            $this->Venta_model->ejecutar($sql);            
+            
+            $sql = "delete from credito where venta_id = {$venta_id}";
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "delete from detalle_venta where venta_id = {$venta_id}";
+            $this->Venta_model->ejecutar($sql);
+            
+            
+            $sql = "delete from venta where venta_id = {$venta_id}";
+            $this->Venta_model->ejecutar($sql);
+
+            echo json_encode(true);
+        }
+
+
+    }
+    
 }

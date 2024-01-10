@@ -227,7 +227,7 @@
             $factura_excepcion = $factura['factura_excepcion'];            
         }
         
-        if($factura['factura_cafc'] != 0 || $factura['factura_cafc'] != ""){
+        if($factura['factura_cafc'] != 0 && $factura['factura_cafc'] != ""){
             
             $cafc = '<cafc xsi:nil="false">'.$factura['factura_cafc'].'</cafc>';
 
