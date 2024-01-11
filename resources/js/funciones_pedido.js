@@ -2192,8 +2192,8 @@ function eliminardetalleventa()
     });
 }
 
-function registrarcliente()
-{
+function registrarcliente(){
+    
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'venta/registrarcliente';
     var cliente_id = document.getElementById('cliente_id').value;
@@ -2470,18 +2470,23 @@ function registrarpedido(cliente_id)
                 eliminardetalleventa();
                 
                 var mensaje;
+                
+                /*
                 var opcion = confirm("¿Desea realizar un nuevo pedido?");
                 
                 if (opcion == true) {
                     window.open(base_url+"pedido/pedidoabierto/0","_self");
                
                 } else {
+                    
                     eliminardetalleventa();
                     window.opener.location.reload();
-                    window.close();                        
-                }
-                
-//                alert('Pedido registrado con éxito..!!');
+                    window.close();  
+                  
+                    
+                }*/
+
+                    //cerrar_ventana();
                 
                 
             },
@@ -2504,9 +2509,11 @@ function finalizarpedido()
 
         if (monto>0)
         {
+            
            document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
            document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
            registrarcliente();
+           
         }
         else
         {

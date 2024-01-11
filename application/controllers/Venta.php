@@ -6695,10 +6695,10 @@ function anular_venta($venta_id){
         $micad .= "                                <td colspan='3' style='font-size: 7pt; padding: 0;'>";
         $micad .= "                                <span style='font-weight: bold !important'>";
         $micad .=                                     $d['detallefact_codigo']." - ".$d['detallefact_descripcion'];
-                                                    if($d['detallefact_preferencia']!='' && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ){
+                                                    if($d['detallefact_preferencia']!='' && ! is_null($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='-' ){
         $micad .=                                       " ".$d['detallefact_preferencia'];
                                                     }
-                                                    $caracteristicas = trim($d['detallefact_caracteristicas']);
+                                                    $caracteristicas = trim(is_null($d['detallefact_caracteristicas'])?" ":$d['detallefact_caracteristicas']);
                                                     if($caracteristicas!='' && $caracteristicas!=null && $caracteristicas!='-' && $caracteristicas!='null') {
         $micad .= "                                        <br>".nl2br($d['detallefact_caracteristicas']);
                                                     }
@@ -8766,7 +8766,29 @@ function anular_venta($venta_id){
 
         if ($this->input->is_ajax_request()) {
 
-            $venta_id = $this->input->post("venta_id");
+            
+                //************ inicio bitacora 
+                $venta_id = $this->input->post("venta_id");
+            
+                $usuario_id = $this->session_data['usuario_id'];
+                
+                $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+                $bitacoracaja_fecha = "date({$now})";
+                $bitacoracaja_hora = "time({$now})";
+                $bitacoracaja_evento = "(select  concat('ELIMINAR VENTA FALLIDA: ID ->',venta_id,' * ',forma_id,' * ',tipotrans_id,' * ',usuario_id,' * ',cliente_id,' * ',moneda_id,' * ',estado_id,' * ',venta_fecha,' * ',venta_hora,' * ',round(venta_subtotal,2),' * ',round(venta_descuentoparcial,2),' * ',round(venta_descuento,2),' * ',round(venta_total,2),' * ',round(venta_efectivo,2),' * ',round(venta_cambio,2),' * ',venta_glosa) as ven from venta where venta_id = {$venta_id})";
+                $bitacoracaja_montoreg = 0;
+                $bitacoracaja_montocaja = 0;
+                $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
+
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                        $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                        $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                $this->Venta_model->ejecutar($sql);
+                //************ fin botacora bitacora   
+            
+            
             
             $sql = "delete from cuota where credito_id in (select credito_id from credito where venta_id = {$venta_id})";
             $this->Venta_model->ejecutar($sql);            
@@ -8786,5 +8808,33 @@ function anular_venta($venta_id){
 
 
     }
+    
+    /*
+    * Verficar usuario
+    */
+    function verificar_usuario(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $usuario_clave = md5($this->input->post("usuario_clave")); 
+            
+            $sql = "select usuario_id from usuario where estado_id = 1 and
+                     usuario_clave = '{$usuario_clave}'";
+            $resultado = $this->Venta_model->consultar($sql);            
+            
+            if(sizeof($resultado)>0){
+                echo json_encode(true);                
+            }else{
+                echo json_encode(false);
+            }
+            
+
+        }
+
+
+    }
+    
+    
+    
     
 }

@@ -1,5 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/mesa.js'); ?>" type="text/javascript"></script>
+
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -13,6 +15,9 @@
             }(jQuery));
         });
 </script>   
+
+<input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
+<input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -72,17 +77,17 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                         $cont = 0;
                         $descipcion = 0;
                         
-                        foreach($mesa as $m){ 
+                        foreach($mesa as $m){
                             
                                     if(!is_null($m["mesa_descripcion"])){
                                     
-                                                if($m["mesa_descripcion"]!="-"){
-                                                    $descripcion =  $m["mesa_descripcion"];
-                                                }else{ 
-                                                    $descripcion = "";
-                                                }
+                                            if($m["mesa_descripcion"]!="-"){
+                                                $descripcion =  $m["mesa_descripcion"];
+                                            }else{ 
+                                                $descripcion = "";
+                                            }
                                             
-                                    }else{ $descripcion="";} ?>
+//                                    }else{ $descripcion="";} ?>
                 
                 
                             <!--<div class="col-md-2">-->
@@ -90,7 +95,7 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                 
                                 
                                 <?php if($m["estado_id"]==38){ ?>
-                                <button class="btn btn-default" width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;" >
+                            <button class="btn btn-default" width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
                                     
                                     <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>                                    
@@ -104,7 +109,7 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                     <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
     
-                            <label class="btn btn-xs btn-facebook"><?php echo "<b>".$m["mesa_nombre"]."</b>" ?></label>
+                            <!--<label class="btn btn-xs btn-facebook"><?php echo "<b>".$m["mesa_nombre"]."</b>" ?></label>-->
                                 </button>
                                 
                                 <?php } ?>
@@ -135,6 +140,7 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                 
                             <!--</div>-->
                 
+                    <?php  } ?>
                     <?php  } ?>
 
                                 
@@ -167,9 +173,13 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
 
 <!-- modal opciones -->
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOpciones">
-  Launch demo modal
-</button>
+<div hidden="true">
+    
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOpciones" id="boton_opciones">
+        Opcion mesas
+    </button>
+    
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="modalOpciones" tabindex="-1" role="dialog" aria-labelledby="modalOpcionesTitle" aria-hidden="true">
@@ -184,6 +194,10 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
       <div class="modal-body">
         <div class="row">
         
+                        <div class="col-md-6" hidden="">
+                        <input type="text" id="mesa_id" value="0"/>
+                    </div>
+                        
                     <div class="col-md-6">
                             <label for="estado_id" class="control-label">Estado</label>
                             <div class="form-group">
@@ -207,7 +221,7 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                     <div class="col-md-6">
                         <label for="usuario_clave" class="control-label">Contraseña</label>
                         <div class="form-group">
-                            <input type="password" name="usuario_clave" value="" class="form-control" id="usuario_clave" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <input type="password" name="usuario_clave" value="" class="form-control" id="usuario_clave"  />
                                 <span class="text-danger"><?php echo form_error('usuario_clave');?></span>
                         </div>
                     </div>
@@ -215,7 +229,7 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Guardar</button>
+          <button type="button" class="btn btn-primary" onclick="verificar_usuario()">Aceptar</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
       </div>
     </div>

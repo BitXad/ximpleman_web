@@ -15,6 +15,7 @@ class Mesa extends CI_Controller{
         $this->load->model('Mesa_model');
         $this->load->model('Sistema_model');
         $this->load->model('Estado_model');
+        $this->load->model('Venta_model');
         $this->sistema = $this->Sistema_model->get_sistema();
         
         $this->load->model('Parametro_model');
@@ -119,6 +120,7 @@ class Mesa extends CI_Controller{
      */
     function mesas()
     {
+        $data['usuario_id'] = $this->session_data['usuario_id'];
         $data['sistema'] = $this->sistema;
         $data['mesa'] = $this->Mesa_model->get_all_mesa();
         $data['categorias'] = $this->Mesa_model->get_all_categorias();
@@ -127,6 +129,28 @@ class Mesa extends CI_Controller{
         
         $data['_view'] = 'mesa/mesas';
         $this->load->view('layouts/main',$data);
+    }
+    
+    /*
+    * Verficar usuario
+    */
+    function cambiar_estado(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $estado_id = $this->input->post("estado_id"); 
+            $mesa_id = $this->input->post("mesa_id"); 
+            
+            $sql = "update mesa set estado_id = {$estado_id} where mesa_id = {$mesa_id} ";
+            $resultado = $this->Venta_model->ejecutar($sql);            
+            
+            echo json_encode(true);                
+
+            
+
+        }
+
+
     }
     
 }
