@@ -16,6 +16,14 @@
         });
 </script>   
 
+<style type="text/css">
+button{
+  padding:0;
+  border: 0;
+}
+</style>   
+    
+
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
 <!----------------------------- fin script buscador --------------------------------------->
@@ -25,10 +33,10 @@
 
 <?php
 
-$ancho_boton = $parametros["parametro_anchoboton"];
-$alto_boton = $parametros["parametro_altoboton"];
-$ancho_imagen = $parametros["parametro_anchoimagen"];
-$alto_imagen = $parametros["parametro_altoimagen"];
+$ancho_boton = $parametros["parametro_anchoboton"]."px";
+$alto_boton = $parametros["parametro_altoboton"]."px";
+$ancho_imagen = $parametros["parametro_anchoimagen"]."px";
+$alto_imagen = $parametros["parametro_altoimagen"]."px";
 $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
 
 
@@ -76,6 +84,7 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                     <?php
                         $cont = 0;
                         $descipcion = 0;
+                        $estilo = "padding:0; border:0;";
                         
                         foreach($mesa as $m){
                             
@@ -95,18 +104,18 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                 
                                 
                                 <?php if($m["estado_id"]==38){ ?>
-                            <button class="btn btn-default" width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
+                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>; <?= $estilo ?>" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>                                    
                                 </button>
                                 
                                 <?php } ?>
                                 
                                 <?php if($m["estado_id"]==39){ ?>
-                                <button class="btn btn-default" width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;">
+                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
     
                             <!--<label class="btn btn-xs btn-facebook"><?php echo "<b>".$m["mesa_nombre"]."</b>" ?></label>-->
@@ -115,9 +124,9 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                 <?php } ?>
                                 <?php if($m["estado_id"]==40){ ?>
                                 
-                                <button class="btn btn-default" width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;">
+                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoreservada"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoreservada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
     
                                 </button>
@@ -126,9 +135,9 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
 
                                 
                                 <?php if($m["estado_id"]==41){ ?>
-                                <button class="btn btn-default"  width="<?= $ancho_boton ?>px" height="<?= $alto_boton ?>px" style="font-size:<?= $tamanio_fuente?>;">
+                                <button class="btn btn-default btn-sq-lg"  style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconomantenimiento"]); ?>" width="<?= $ancho_imagen?>px" height="<?= $alto_imagen ?>px"/>
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconomantenimiento"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>
     
                                 </button>
