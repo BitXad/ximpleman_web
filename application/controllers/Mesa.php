@@ -152,5 +152,129 @@ class Mesa extends CI_Controller{
 
 
     }
+
+    /*
+    * ocupar_mesa
+    */
+    function ocupar_mesa(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $estado_id = $this->input->post("estado_id"); 
+            
+            $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+            $usuario_id = $this->session_data['usuario_id'];;
+            $estado_id = 11; //Pendiente
+            $cliente_id = 1;
+            $tipotrans_id = 1;
+            $pedido_fecha = $now;
+            $pedido_subtotal = 0;
+            $pedido_descuento = 0;
+            $pedido_total = 0;
+            $pedido_glosa = "";
+            //$pedido_fechaentrega = ;
+            //$pedido_horaentrega = ;
+            $pedido_latitud = 0;
+            $pedido_longitud = 0; 
+            $regusuario_id = $usuario_id; 
+            $mesa_id = $this->input->post("mesa_id"); 
+            
+            
+            //Registramos el pedido/comanda
+            $sql = "insert into pedido(usuario_id, estado_id, cliente_id, tipotrans_id, pedido_fecha, 
+            pedido_subtotal, pedido_descuento, pedido_total, pedido_glosa, 
+            pedido_fechaentrega, pedido_horaentrega, pedido_latitud, 
+            pedido_longitud, regusuario_id, mesa_id) value({$usuario_id}, {$estado_id}, {$cliente_id}, {$tipotrans_id}, {$pedido_fecha},
+            {$pedido_subtotal}, {$pedido_descuento}, {$pedido_total}, '{$pedido_glosa}', date({$now}),time({$now}), {$pedido_latitud},
+            {$pedido_longitud}, {$regusuario_id}, {$mesa_id})";            
+            $pedido_id = $this->Venta_model->ejecutar($sql);
+            
+            //cambiamos de estado la mesas
+            $estado_id = 39; //Pendiente
+            $sql = "update mesa set estado_id = {$estado_id} where mesa_id = {$mesa_id} ";
+            $this->Venta_model->ejecutar($sql);
+            
+            //
+//            $sql = "select * pedido where pedido_id = {$pedido_id} ";
+//            $resultado = $this->Venta_model->consultar($sql);
+                        
+            echo json_encode($pedido_id);                
+
+            
+
+        }
+
+
+    }
+    
+    /*
+    * mostra detalle mesa
+    */
+    function mostrar_datos_pedido(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $pedido_id = $this->input->post("pedido_id"); 
+            
+            $sql = "select p.*, e.estado_descripcion, e.estado_color, c.*
+                    from pedido p
+                    left join estado e on e.estado_id = p.estado_id
+                    left join cliente c on c.cliente_id = p.cliente_id
+                    where p.pedido_id = {$pedido_id}";
+            $resultado = $this->Venta_model->consultar($sql);
+                        
+            echo json_encode($resultado);      
+
+            
+
+        }
+
+
+    }
+    
+    /*
+    * mostra detalle mesa
+    */
+    function get_pedido_asociado(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $mesa_id = $this->input->post("mesa_id"); 
+            
+            $sql = "select pedido_id from pedido where estado_id = 11 and mesa_id = {$mesa_id} ";
+            $resultado = $this->Venta_model->consultar($sql);
+                        
+            if (is_array($resultado)){
+                echo json_encode($resultado[0]["pedido_id"]);
+            }else{
+                echo json_encode(0);
+            }
+
+            
+
+        }
+
+
+    }
+    /*
+    * mostra detalle mesa
+    */
+    function mostrar_detalle_pedido(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $pedido_id = $this->input->post("pedido_id"); 
+            
+            $sql = "select * from detalle_pedido where pedido_id = {$pedido_id} ";
+            $resultado = $this->Venta_model->consultar($sql);
+                        
+            echo json_encode($resultado);                
+
+            
+
+        }
+
+
+    }
     
 }

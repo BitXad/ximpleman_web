@@ -381,6 +381,9 @@ where venta_id in (select max(venta_id) from venta)
  
  
  
+--------------- SQL MESA ---------------
+
+ALTER TABLE `pedido` ADD COLUMN `mesa_id` INTEGER DEFAULT NULL;
  
  
  

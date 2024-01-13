@@ -113,7 +113,7 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                 <?php } ?>
                                 
                                 <?php if($m["estado_id"]==39){ ?>
-                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
+                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>" onclick="mostrar_pedido(<?= $m["mesa_id"]; ?>)">
                                     
                                     <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
@@ -163,12 +163,19 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                 
                 <div class="box-header">
                     <center>
-                        <b>DETALLE DE CONSUMO</b>                        
+                        <b>DETALLE DE CONSUMO</b>
+                        <b id="numero_pedido"></b>
+                        
                     </center>
                 </div>
                     
                 <div class="box-body table-responsive">
-
+                    <div class="row">
+                        <div class="col-md-12" id="datos_pedido">
+                        
+                        
+                        </div>
+                    </div>
 
 
                 </div>
