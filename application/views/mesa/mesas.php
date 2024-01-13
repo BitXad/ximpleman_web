@@ -1,6 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/mesa.js'); ?>" type="text/javascript"></script>
+<link href="<?php echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -23,7 +24,7 @@ button{
 }
 </style>   
     
-
+<input type="text" id="decimales" value="<?php echo $parametros['parametro_decimales']; ?>" name="decimales"  hidden>
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
 <!----------------------------- fin script buscador --------------------------------------->
@@ -161,17 +162,24 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
         <div class="col-md-12">
             <div class="box">
                 
-                <div class="box-header">
+<!--                <div class="box-header">
                     <center>
                         <b>DETALLE DE CONSUMO</b>
                         <b id="numero_pedido"></b>
                         
                     </center>
-                </div>
+                </div>-->
                     
-                <div class="box-body table-responsive">
+                <div class="box-body">
                     <div class="row">
                         <div class="col-md-12" id="datos_pedido">
+                        
+                        
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12" id="detalle_pedido">
                         
                         
                         </div>

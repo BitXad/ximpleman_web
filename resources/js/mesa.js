@@ -141,29 +141,21 @@ function mostrar_datos_pedido(pedido_id){
                 let html = "";
                 
                 if(pedido.length>0){
+                    
                     pedido_id = pedido[0]["pedido_id"];
-                }
-                
-                for (let i=0; i<pedido.length; i++){
                     
-                    html += "";
-                    html += "<div class='col-md-6'>";
-                    html += "        <label for='mapa_longitud' class='control-label'>Longitud</label>";
-                    html += "        <div class='form-group'>";
-                    html += "                <input type='number' name='mapa_longitud' value='' class='form-control' id='mapa_longitud' />";
-                    html += "        </div>";
-                    html += "</div>";
-                    html += "<div class='col-md-6'>";
-                    html += "        <label for='mapa_indicador' class='control-label'>Indicador</label>";
-                    html += "        <div class='form-group'>";
-                    html += "                <input type='text' name='mapa_indicador' value='' class='form-control' id='mapa_indicador' />";
-                    html += "        </div>";
-                    html += "</div>";
+                    html += "<table class='table' style='width:100%; padding: 0; font-size: 10px;'>"
+                    html += "<tr> <td colspan=2 style='text-align: center; padding:0; font-size:15px;'><b>COMANDA 00"+pedido[0]["pedido_id"]+"</b></td></tr>";
+                    html += "<tr> <td colspan=2 style='text-align: center; padding:0;'><b>"+pedido[0]["mesa_nombre"]+"</b></td></tr>";
+                    html += "<tr> <td style='padding:0;'><b>COD./C.I.: </b></td><td style='padding:0;'>"+pedido[0]["cliente_nit"]+"</td></tr>";
+                    html += "<tr> <td style='padding:0;'><b>CLIENTE: </b></td><td style='padding:0;'>"+pedido[0]["cliente_nombre"]+"</td></tr>";
+                    
+                    html += "</tr>"                    
+                    html += "</table>"
                     
                     
                 }
                 
-                $("#numero_pedido").val("00"+pedido_id);
                 $("#datos_pedido").html(html);
 
             },
@@ -179,6 +171,7 @@ function mostrar_detalle_pedido(pedido_id){
 
     let base_url = document.getElementById('base_url').value;
     let controlador = base_url+'mesa/mostrar_detalle_pedido/';
+    let decimales = document.getElementById('decimales').value;
     
         $.ajax({url: controlador,
             type:"POST",
@@ -186,10 +179,32 @@ function mostrar_detalle_pedido(pedido_id){
             success:function(respuesta){
 
                 let pedido = JSON.parse(respuesta);                            
+                let html = "";
 
-                //alert(JSON.stringify(pedido));
 
+                html += "<table class='table' id='mitablaventassimple'>";
+                html += "<tr>";
+                    html += "<th>CANT.</th>";
+                    html += "<th>DESCRIPCION</th>";
+                    html += "<th>PREC</th>";
+                    html += "<th>TOTAL</th>";
+                html += "</tr>";
 
+                for(let i=0; i < pedido.length; i++){
+                        
+                    html +="<tr>";
+                        html +="<td style='padding:0; text-align:center;'>"+formato_cantidad(pedido[i]["detalleped_cantidad"])+"</td>";
+                        html +="<td style='padding:0;'>"+pedido[i]["detalleped_nombre"]+"</td>";
+                        html +="<td style='padding:0;'>"+Number(pedido[i]["detalleped_precio"]).toFixed(decimales)+"</td>";
+                        html +="<td style='padding:0;'>"+Number(pedido[i]["detalleped_total"]).toFixed(decimales)+"</td>";
+                    html +="</tr>";
+                        
+                }
+                
+                html +="</table>";
+                
+                $("#detalle_pedido").html(html);
+                
             },
             error:function(respuesta){
                 res = 0;
@@ -197,6 +212,24 @@ function mostrar_detalle_pedido(pedido_id){
         });     
 
     
+}
+
+function formato_cantidad(cantidad){
+    
+    var decimales = Number(document.getElementById('decimales').value);
+    
+    let partes = cantidad; 
+                let partes1 = partes.toString(); 
+                let partes2 = partes1.split('.');
+                
+                if (partes2[1] == 0) {  
+                    lacantidad = partes2[0];  
+                }else{  
+                    lacantidad = numberFormat(Number(cantidad).toFixed(decimales)) 
+                    //lacantidad = number_format(d['detalleven_cantidad'],2,'.',',');  
+                }
+  
+    return lacantidad;
 }
 
 function mostrar_pedido(mesa_id){

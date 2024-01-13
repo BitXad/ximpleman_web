@@ -216,10 +216,11 @@ class Mesa extends CI_Controller{
             
             $pedido_id = $this->input->post("pedido_id"); 
             
-            $sql = "select p.*, e.estado_descripcion, e.estado_color, c.*
+            $sql = "select p.*, e.estado_descripcion, e.estado_color, c.*, m.*
                     from pedido p
                     left join estado e on e.estado_id = p.estado_id
                     left join cliente c on c.cliente_id = p.cliente_id
+                    left join mesa m on m.mesa_id = p.mesa_id
                     where p.pedido_id = {$pedido_id}";
             $resultado = $this->Venta_model->consultar($sql);
                         
