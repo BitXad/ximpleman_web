@@ -958,8 +958,16 @@ class Venta extends CI_Controller{
                 
                 if($pedido_id > 0)
                 {
+                    $sql = "select mesa_id from pedido where pedido_id = ".$pedido_id;
+                    $resultadomesa = $this->Venta_model->consultar($sql);
+                    
+                    $sql = "update mesa set estado_id = 38  where mesa_id = ".$resultadomesa[0]["mesa_id"];
+                    $this->Venta_model->ejecutar($sql);
+                    
                     $sql = "update pedido set estado_id = 13  where pedido_id = ".$pedido_id;
                     $this->Venta_model->ejecutar($sql);
+                    
+                    
                 }
                 
 //************************************************************************************

@@ -152,13 +152,28 @@ border-bottom : 1px solid #aaa;
 
 ?>
 <?php
-    if($pedido_titulo == "Pedidos"){
+
+    /*if($pedido_titulo == "Pedidos"){
         $labelboton = "Pedido";
     }elseif($pedido_titulo == "Preventas"){
         $labelboton = "Preventa";
     }else{
         $labelboton = "Reserva";
+    }*/
+
+    $pedido_titulo = $sistema["sistema_modulopedidos"];
+
+    $caracter = substr($pedido_titulo, strlen($pedido_titulo)-1,1);
+    
+    
+    $labelboton = $pedido_titulo;
+    
+    if($caracter=='S'||$caracter=='s'){
+        $labelboton = substr($pedido_titulo,0,strlen($pedido_titulo)-1);
+        
     }
+        
+    
 ?>
 
 
@@ -199,12 +214,26 @@ border-bottom : 1px solid #aaa;
                  
                         
                     <br>
-                    <font size="3" face="Arial"><b><?php echo "NOTA DE ". strtoupper($labelboton); ?></b></font><br>
-                    <font size="3" face="Arial"><b><?php echo "Nº 000".$pedido[0]['pedido_id']; ?></b></font><br>
-                    <font size="1" face="Arial"><b><?php echo $pedido[0]['pedido_fecha']; ?></b></font><br>
+                    <font size="3" face="Arial"><b><?php echo strtoupper($labelboton); ?></b></font>
+                    <font size="3" face="Arial"><b><?php echo "Nº 00".$pedido[0]['pedido_id']; ?></b></font><br>
+                    
+                    <?php 
+                        $fecha_bd = $pedido[0]['pedido_fecha'];
+                        $fecha_formateada = date('d/m/Y', strtotime($fecha_bd));
+                    ?>
+                    
+                    <font size="1" face="Arial"><b><?php echo $fecha_formateada; ?></b></font><br>
+                    
+                    <?php if($pedido[0]['mesa_id']>0){ ?>                    
+                                <b style="font-size:12px;">
+                                    <?php echo $pedido[0]['mesa_nombre']; ?>                        
+                                </b>
+                    <?php } ?>
+                    
+                    
                     
                 </center>                
-            </td>
+            </td>   
         </tr>
         <tr style="padding: 0;">
             <td></td>
@@ -218,7 +247,7 @@ border-bottom : 1px solid #aaa;
                             <?php } ?>
                             
                             
-                            <?php if(strlen($pedido[0]['cliente_telefono']." - ".$pedido[0]['cliente_celular'])>4 ){ ?>
+                            <?php if(strlen($pedido[0]['cliente_telefono']." - ".$pedido[0]['cliente_celular'])>5 ){ ?>
                             
                                     <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']." - ".$pedido[0]['cliente_celular']; ?>
                             <?php } ?>
@@ -314,7 +343,12 @@ border-bottom : 1px solid #aaa;
             </td>
         </tr>    
         
+        <?php 
         
+            if($sistema["sistema_modulopedidos"]=="PEDIDOS"){
+                
+            
+        ?>
         <tr>    
             <td  style="padding: 0" colspan="4">
                 <center>
@@ -346,6 +380,28 @@ border-bottom : 1px solid #aaa;
                 </center>  
             </td>
         </tr>
+        
+    <?php }else{?>
+        
+        <tr>    
+            <td  style="padding: 0" colspan="4">
+            <center>DATOS PARA SU FACTURA</center>
+                    <br>
+                    <br>
+                    NIT:_______________________________________
+                    <br>
+                    <br>                    
+                    RAZON SOC.:_______________________________                    
+                    <br>
+                    <br>
+                    ___________________________________________
+              
+            </td>
+        </tr>
+        
+        
+    <?php } ?>
+        
     </table>
 
 <!--</p>-->

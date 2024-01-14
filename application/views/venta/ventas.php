@@ -1160,12 +1160,12 @@ window.onkeydown = compruebaTecla;
                 
                 
             <!--------------- botones ---------------------->
-            <?php if($parametro["parametro_modulorestaurante"]==0){ //1 es normal ?>
+            <?php //if($parametro["parametro_modulorestaurante"]==0){ //1 es normal ?>
                 <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-default btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
             <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-default btn-xs" onclick="ordenes_pendientes()" title="Ordenes de Trabajo" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-book"></span><b> OT's</b></a> 
                 <?php }
-                } ?>
+                //} ?>
                     
             <?php if($parametro["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
                     <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_comanda" title="Comanda" style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-print"></span><b> Comanda</b></a> 

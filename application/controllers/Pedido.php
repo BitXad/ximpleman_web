@@ -74,7 +74,8 @@ class Pedido extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         $usuario_nombre = $this->session_data['usuario_nombre'];
         $tipousuario_id = $this->session_data['tipousuario_id'];
-        $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
+//        $data['pedido_titulo'] = $this->session_data['pedido_titulo'];
+        $data['pedido_titulo'] = $this->sistema['sistema_modulopedidos'];
         $rolusuario = $this->session_data['rol'];
         $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
         $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];

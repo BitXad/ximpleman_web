@@ -288,33 +288,15 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
         <div class="row">
         
                         
-<!--                    <div class="col-md-6">
-                            <label for="estado_id" class="control-label">Estado</label>
-                            <div class="form-group">
-                                    <select name="estado_id" class="form-control">
-                                            <option value="">- ESTADO -</option>
-                                            <?php 
-                                            foreach($all_estado as $estado)
-                                            {
-                                             
-                                                
-                                                    $selected = ($estado['estado_id'] == $cliente['estado_id']) ? ' selected="selected"' : "";
-                                                    echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
-                                                
-                                            } 
-                                            ?>
-                                    </select>
-                            </div>
-                    </div>-->
                     <input type="hidden" name="detalleped_id" value="" class="form-control" id="detalleped_id"  />
           
-                    <div class="col-md-6">
+<!--                    <div class="col-md-6">
                         <label for="usuario_clave" class="control-label">Producto</label>
                         <div class="form-group">
                             <input type="text" name="usuario_clave" value="" class="form-control" id="usuario_clave"  />
                                 <span class="text-danger"><?php echo form_error('usuario_clave');?></span>
                         </div>
-                    </div>
+                    </div>-->
           
                     <div class="col-md-3">
                         <label for="detalleped_cantidad" class="control-label">Cantidad</label>
@@ -331,13 +313,23 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                 
                         </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <label for="detalleped_botones" class="control-label">Opciones</label>
+                        <div class="form-group">
+
+                            <button type="button" class="btn btn-primary" onclick="modificar_detalle()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Modificar</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cancelar</button>
+                                
+                        </div>
+                    </div>
           
         </div>
       </div>
-      <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="modificar_detalle()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Modificar</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cancelar</button>
-      </div>
+<!--      <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="modificar_detalle()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Modificar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cancelar</button>
+      </div>-->
     </div>
   </div>
 </div>

@@ -6201,10 +6201,14 @@ function pedidos_pendientes()
                         html += "	    <font face='Arial narrow'  size='3'><b>"+moneda_principal+" "+formato_numerico(p[i]['pedido_total'])+"</b></font>";
                         html += "     </td>";
 
-                        html += "     <td>";
+                        html += "     <td><center>";
                         //html += "         <a href='<?php echo site_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>' class='btn btn-success btn-sm'><span class='fa fa-cubes' title='Ver detalle del pedido'></span></a>";
+                        if(Number(p[i]['mesa_id'])>0){
+                            html +=  "<b style='font-size:12px;'>"+p[i]['mesa_nombre']+"</b><br>";
+                        }
+                        
                         html += "         <button  class='btn btn-warning btn-sm' data-dismiss='modal' onclick='pasaraventas("+p[i]['pedido_id']+","+p[i]['usuarioprev_id']+","+p[i]['cliente_id']+")'><span class='fa fa-arrow-down' title='Cargar pedido a ventas'></span> </button>";
-                        html += "     </td>";
+                        html += "     </center></td>";
                         html += " </tr>";
                     
                     }

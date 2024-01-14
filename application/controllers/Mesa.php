@@ -276,8 +276,8 @@ class Mesa extends CI_Controller{
                     detalleped_total = {$detalleped_cantidad} *{$detalleped_precio}
                     where detalleped_id = {$detalleped_id}";
             $this->Venta_model->ejecutar($sql);
-                        
             
+            echo json_encode(true);
         }
 
 
@@ -298,6 +298,37 @@ class Mesa extends CI_Controller{
 
             
 
+        }
+
+
+    }
+
+    /*
+    * eliminar item
+    */
+    function eliminar_item(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $detalleped_id = $this->input->post("detalleped_id"); 
+//            $detalleped_precio = $this->input->post("detalleped_precio"); 
+//            $detalleped_cantidad = $this->input->post("detalleped_cantidad"); 
+//            $detalleped_id = $this->input->post("detalleped_id"); 
+            
+            $sql = "delete from detalle_pedido where detalleped_id = {$detalleped_id} ";
+            $this->Venta_model->ejecutar($sql);
+                        
+//            $sql = "update pedido set
+//                    pedido_subtotal = {$detalleped_precio},
+//                    pedido_total = {$detalleped_cantidad},
+//                    detalleped_subtotal = {$detalleped_cantidad} * {$detalleped_precio},
+//                    detalleped_total = {$detalleped_cantidad} *{$detalleped_precio}
+//                    where detalleped_id = {$detalleped_id}";
+                    
+//            $this->Venta_model->ejecutar($sql);
+            
+            echo json_encode(true);
+            
         }
 
 

@@ -268,7 +268,8 @@ class Pedido_model extends CI_Model
                 c.cliente_razon,c.cliente_departamento,c.zona_id,
                 e.estado_color,e.estado_descripcion, e.estado_tipo,
                 u.usuario_nombre, u.usuario_email, t.tipotrans_nombre,
-                i.ingreso_monto, i.ingreso_id, i.ingreso_moneda
+                i.ingreso_monto, i.ingreso_id, i.ingreso_moneda,
+                p.mesa_id, m.mesa_nombre, m.mesa_descripcion
 
                 from pedido p
                 left join cliente c on c.cliente_id = p.cliente_id
@@ -276,6 +277,7 @@ class Pedido_model extends CI_Model
                 left join usuario u on u.usuario_id = p.usuario_id
                 left join tipo_transaccion t on t.tipotrans_id = p.tipotrans_id
                 left join ingresos i on p.ingreso_id = i.ingreso_id
+                left join mesa m on p.mesa_id = m.mesa_id
                 where 1=1 
                 $condicion 
                 order by pedido_id desc";
@@ -383,7 +385,7 @@ class Pedido_model extends CI_Model
     function get_pedido_id($pedido_id)
     {
 
-        $sql = "select *, i.ingreso_id, i.ingreso_monto, i.ingreso_moneda
+        $sql = "select *, i.ingreso_id, i.ingreso_monto, i.ingreso_moneda, m.*
                 from pedido p
                 left join detalle_pedido d on d.pedido_id = p.pedido_id
                 left join cliente c on c.cliente_id = p.cliente_id
@@ -391,6 +393,7 @@ class Pedido_model extends CI_Model
                 left join producto t on t.producto_id = d.producto_id
                 left join zona z on z.zona_id = c.zona_id
                 left join ingresos i on p.ingreso_id = i.ingreso_id
+                left join mesa m on p.mesa_id = m.mesa_id
 
                 where p.pedido_id = ".$pedido_id;
 

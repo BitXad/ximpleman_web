@@ -144,7 +144,7 @@ function mostrar_datos_pedido(pedido_id){
                     
                     pedido_id = pedido[0]["pedido_id"];
                     
-                    html += "<input type='text' id='pedido_id' value='"+pedido[0]["pedido_id"]+"'>"
+                    html += "<input type='hidden' id='pedido_id' value='"+pedido[0]["pedido_id"]+"'>"
                     html += "<table class='table' style='width:100%; padding: 0; font-size: 10px;'>"
                     html += "<tr> <td colspan=2 style='text-align: center; padding:0; font-size:15px;'><b>COMANDA 00"+pedido[0]["pedido_id"]+" <fa class='fa fa-coffee'></fa> "+pedido[0]["mesa_nombre"]+"</b></td></tr>";
                     //html += "<tr> <td colspan=2 style='text-align: center; padding:0;'><b>"+pedido[0]["mesa_nombre"]+"</b></td></tr>";
@@ -211,7 +211,7 @@ function mostrar_detalle_pedido(pedido_id){
                         html +="<td style='padding:0; text-align: right;'>"+Number(pedido[i]["detalleped_total"]).toFixed(decimales)+"</td>";
                         html +="<td style='padding:0;'>";
                         html +="<button class='btn btn-xs btn-info' onclick=activar_modificacion("+pedido[i]["detalleped_id"]+","+pedido[i]["detalleped_cantidad"]+","+pedido[i]["detalleped_precio"]+")><fa class='fa fa-pencil'></fa> </button>";
-                        html +="<button class='btn btn-xs btn-danger' onclick=eliminar_item("+pedido[i]["detalleped_id"]+")><fa class='fa fa-trash'></fa> </button>";
+                        html +="<button class='btn btn-xs btn-danger' onclick=eliminar_item("+pedido[i]["pedido_id"]+","+pedido[i]["detalleped_id"]+")><fa class='fa fa-times'></fa> </button>";
                         html += "</td>";
                     html +="</tr>";
                         
@@ -278,6 +278,35 @@ function mostrar_pedido(mesa_id){
         });     
 
     
+}
+
+function eliminar_item(pedido_id, detalleped_id){
+
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'mesa/eliminar_item/';
+
+    var mensaje;
+    var opcion = confirm("ADVERTENCIA: Esta a punto de eliminar un item, esta acción es irreversible. ¿Desea continuar? ");
+
+        if (opcion == true) {
+
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{detalleped_id:detalleped_id},     
+                success:function(respuesta){
+
+                    //let pedido_id = JSON.parse(respuesta);                            
+
+                    mostrar_datos_pedido(pedido_id);
+                    mostrar_detalle_pedido(pedido_id);
+
+                },
+                error:function(respuesta){
+                    res = 0;
+                }
+            });
+
+        }
 }
 
 
