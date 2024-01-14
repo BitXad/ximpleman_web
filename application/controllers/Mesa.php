@@ -257,6 +257,31 @@ class Mesa extends CI_Controller{
 
 
     }
+    
+    /*
+    * Modificar detalle
+    */
+    function modificar_detalle(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $detalleped_precio = $this->input->post("detalleped_precio"); 
+            $detalleped_cantidad = $this->input->post("detalleped_cantidad"); 
+            $detalleped_id = $this->input->post("detalleped_id"); 
+            
+            $sql = "update detalle_pedido set
+                    detalleped_precio = {$detalleped_precio},
+                    detalleped_cantidad = {$detalleped_cantidad},
+                    detalleped_subtotal = {$detalleped_cantidad} * {$detalleped_precio},
+                    detalleped_total = {$detalleped_cantidad} *{$detalleped_precio}
+                    where detalleped_id = {$detalleped_id}";
+            $this->Venta_model->ejecutar($sql);
+                        
+            
+        }
+
+
+    }
     /*
     * mostra detalle mesa
     */

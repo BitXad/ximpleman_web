@@ -3649,6 +3649,7 @@ function mostrar_clasificador_boton(producto_id){
             html += " name='pref0'  onclick='agregar_preferencia(0)'>";
             html += "<i class='fa fa-cube'></i> NINGUNO </button>";
             var cont = 0;
+            
         for (var j = 0; j < lista_preferencias.length; j++ ){
             
             if (lista_preferencias[j]["producto_id"] == producto_id){

@@ -259,3 +259,85 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
     </div>
   </div>
 </div>
+
+<!-- Modal cambio cantidad -->
+<div>
+    
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalmodificar" id="boton_modificar">
+        Opcion mesas
+    </button>
+    
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalmodificar" tabindex="-1" role="dialog" aria-labelledby="modalmodificar-titulo" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        
+      <div class="modal-header" style="background: lightgray;">
+          
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          <h5 class="modal-title" id="exampleModalLongTitle"><b>MODIFICAR</b></h5>
+          
+      </div>
+        
+      <div class="modal-body">
+          
+        <div class="row">
+        
+                        
+<!--                    <div class="col-md-6">
+                            <label for="estado_id" class="control-label">Estado</label>
+                            <div class="form-group">
+                                    <select name="estado_id" class="form-control">
+                                            <option value="">- ESTADO -</option>
+                                            <?php 
+                                            foreach($all_estado as $estado)
+                                            {
+                                             
+                                                
+                                                    $selected = ($estado['estado_id'] == $cliente['estado_id']) ? ' selected="selected"' : "";
+                                                    echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
+                                                
+                                            } 
+                                            ?>
+                                    </select>
+                            </div>
+                    </div>-->
+                    <input type="hidden" name="detalleped_id" value="" class="form-control" id="detalleped_id"  />
+          
+                    <div class="col-md-6">
+                        <label for="usuario_clave" class="control-label">Producto</label>
+                        <div class="form-group">
+                            <input type="text" name="usuario_clave" value="" class="form-control" id="usuario_clave"  />
+                                <span class="text-danger"><?php echo form_error('usuario_clave');?></span>
+                        </div>
+                    </div>
+          
+                    <div class="col-md-3">
+                        <label for="detalleped_cantidad" class="control-label">Cantidad</label>
+                        <div class="form-group">
+                            <input type="number" name="detalleped_cantidad" value="" class="form-control" id="detalleped_cantidad"  />
+                                
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="detalleped_precio" class="control-label">Precio</label>
+                        <div class="form-group">
+                            <input type="number" name="detalleped_precio" value="" class="form-control" id="detalleped_precio"  />
+                                
+                        </div>
+                    </div>
+          
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="modificar_detalle()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Modificar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -212,9 +212,21 @@ border-bottom : 1px solid #aaa;
                         <font size="1" face="Arial">
                             <br><b>CLIENTE: </b><?php echo $pedido[0]['cliente_nombre']; ?>
                             <br><b>CÓDIGO: </b><?php echo $pedido[0]['cliente_codigo']; ?>
-                            <br><b>DIRECCIÓN: </b><?php echo $pedido[0]['cliente_direccion']; ?>
-                            <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']." - ".$pedido[0]['cliente_celular']; ?>
-                            <br><b>ZONA: </b><?php echo $pedido[0]['zona_nombre']; ?>
+                            
+                            <?php if($pedido[0]['cliente_direccion']!=null&&$pedido[0]['cliente_direccion']!="-"){ ?>
+                                    <br><b>DIRECCIÓN: </b><?php echo $pedido[0]['cliente_direccion']; ?>
+                            <?php } ?>
+                            
+                            
+                            <?php if(strlen($pedido[0]['cliente_telefono']." - ".$pedido[0]['cliente_celular'])>4 ){ ?>
+                            
+                                    <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']." - ".$pedido[0]['cliente_celular']; ?>
+                            <?php } ?>
+                            
+                            <?php if($pedido[0]['zona_nombre']!=null && $pedido[0]['zona_nombre']!=""){ ?>
+                            
+                                <br><b>ZONA: </b><?php echo $pedido[0]['zona_nombre']; ?>
+                            <?php } ?>
                         </font>
               
             </td>
@@ -301,6 +313,8 @@ border-bottom : 1px solid #aaa;
                 ?></font>
             </td>
         </tr>    
+        
+        
         <tr>    
             <td  style="padding: 0" colspan="4">
                 <center>
