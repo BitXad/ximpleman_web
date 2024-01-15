@@ -119,10 +119,13 @@ button{
 
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
 <input type="text" value='<?php echo json_encode($preferencia); ?>' id="preferencias" hidden>
-<input type="text" id="pedido_id" value="0" name="pedido_id"  hidden>
+
+<!--<input type="text" id="pedido_id" value="0" name="pedido_id"  hidden>-->
+<!--<input type="text" id="mesa_id" value="0" name="mesa_id"  hidden>-->
+
 <input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
 <input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio"  hidden>
-<!--<input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id"  hidden>-->
+
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
 <input type="text" id="parametro_modoventas" value="<?php echo $parametro['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
 <input type="text" id="parametro_anchoboton" value="<?php echo $parametro['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>

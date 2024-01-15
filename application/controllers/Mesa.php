@@ -386,5 +386,59 @@ class Mesa extends CI_Controller{
 
 
     }
+
+    /*
+    * registrar producto
+    */
+    function registrar_producto(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $producto_id = $this->input->post("producto_id"); 
+            $cantidad = $this->input->post("cantidad"); 
+            $pedido_id = $this->input->post("pedido_id");
+            $descuento = 0;
+            $preferencia = "";
+            
+        $sql = "insert into detalle_pedido(
+                pedido_id,
+                producto_id,
+                detalleped_codigo,
+                detalleped_foto,
+                detalleped_nombre,
+                detalleped_unidad,
+                detalleped_costo,
+                detalleped_cantidad,
+                detalleped_precio,
+                detalleped_descuento,
+                detalleped_subtotal,
+                detalleped_total,
+                detalleped_preferencia
+                )
+                (
+                select
+                ".$pedido_id.",
+                producto_id,
+                producto_codigo,
+                producto_foto,
+                producto_nombre,
+                producto_unidad,
+                producto_costo,
+                ".$cantidad.",
+                ".$precio." - ".$descuento.",
+                 0,
+                ".$cantidad." * (producto_precio - ".$descuento."),
+                ".$cantidad." * (producto_precio - ".$descuento."),
+                '".$preferencia."'
+                from producto where producto_id = ".$producto_id."
+                )";
+            $this->Venta_model->ejecutar($sql);
+
+            echo json_encode(true);
+            
+        }
+
+
+    }
     
 }

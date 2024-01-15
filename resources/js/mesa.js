@@ -185,7 +185,7 @@ function tablaresultados(opcion)
     var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
 
     if(esMobil()) { tamanio = 1; }
-    else{ tamanio = 1; }
+    else{ tamanio = 2; }
     
     
     if (opcion == 1){
@@ -267,9 +267,6 @@ function tablaresultados(opcion)
                         }else{
                             mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='30' height='30' />";
                         }
-                                             
-                        
-                        
                         
                         html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
                         html += "<tr style='border-bottom-style: solid; border-color: #000; border-width: 2px;'>";
@@ -277,11 +274,12 @@ function tablaresultados(opcion)
                         html += "<td onclick='borrar_tabla()' style='padding:0; background-color:silver;'>"+(i+1)+"</td>";
                         
                         productonombre = registros[i]["producto_nombre"];
+                        
                         if (productonombre.length > 42){
                             productonombre = productonombre.substr(0,39)+"..";
                         }
                         
-                        html += "<td style='padding:0; max-width:600px;'><font size='"+tamanio+"' face='Arial Narrow'><b>"+productonombre+"</b></font>";
+                        html += "<td style='padding:0; max-width:600px;'><font size='"+tamanio+"' face='Arial'><b>"+productonombre+"</b></font>";
                         
                         
                         
@@ -392,14 +390,24 @@ function tablaresultados(opcion)
                        if(! esMobil()){
                             if (parseFloat(registros[i]["existencia"])>0){
                                 
-                                
+                                /*
                                   html += "<br>";
                                   html += "<div class='btn-group'>";
-//                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",1)'><b>- 1 -</b></button>";
+
                                   html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")'><b>- 1 -</b></button>";                                  
                                   html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojs(2,"+JSON.stringify(registros[i])+")'><b>- 2 -</b></button>";
                                   html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapidojs(5,"+JSON.stringify(registros[i])+")'><b>- 5 -</b></button>";
                                   html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojs(10,"+JSON.stringify(registros[i])+")'><b>- 10 -</b></button> ";
+                                  html += "</div>";   */
+                                  
+                                  html += "<br>";
+                                  html += "<div class='btn-group'>";
+                                  html += "<input type='number' id='producto_cant"+registros[i]["producto_id"]+"' class='btn btn-default btn-sm' style='width: 70px; font-size:12px;' value='1'>";
+                                  /*
+                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")'><b>- 1 -</b></button>";                                  
+                                  html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojs(2,"+JSON.stringify(registros[i])+")'><b>- 2 -</b></button>";
+                                  html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapidojs(5,"+JSON.stringify(registros[i])+")'><b>- 5 -</b></button>";
+                                  html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojs(10,"+JSON.stringify(registros[i])+")'><b>- 10 -</b></button> ";*/
                                   html += "</div>";   
                             }            
                         }
@@ -414,7 +422,7 @@ function tablaresultados(opcion)
                         html += "<td style='padding:0;'>";
                         }
                         
-                        html += "<div style='line-height:12px;' id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='3'><b>"+existencia+"</b></font><br>"+registros[i]["producto_unidad"]+"</center></div>";
+                        //html += "<div style='line-height:12px;' id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='3'><b>"+existencia+"</b></font><br>"+registros[i]["producto_unidad"]+"</center></div>";
                     
                        if(esMobil()){
                             html += "</td>"; //tabla movil extra
@@ -422,7 +430,8 @@ function tablaresultados(opcion)
                         }     
                         
                         if (parseFloat(registros[i]["existencia"])>0){
-                             html += "<button type='button' class='btn btn-warning btn-sm btn-block' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' onclick='focus_cantidad("+registros[i]["producto_id"]+")'><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";                             
+//                             html += "<button type='button' class='btn btn-warning btn-sm btn-block' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' onclick='focus_cantidad("+registros[i]["producto_id"]+")'><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";                             
+                             html += "<button type='button' class='btn btn-warning btn-sm btn-block'  title='Añadir al detalle' onclick='ingresar_producto("+registros[i]["producto_id"]+")'><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";
                         }
                         
                         //html += "<button class='btn btn-success'><i class='fa fa-picture-o'></i></button>";
@@ -469,7 +478,7 @@ function tablaresultados(opcion)
 //                        html += "       <div class='col-md-9'>";
                     
                         if (esMobil()) tamanio = 1;
-                        else tamanio = 3;
+                        else tamanio = 2;
                     
                         html += "        <font face='Arial' size='"+tamanio+"'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
@@ -1025,8 +1034,6 @@ function activar_modificacion(detalleped_id, detalleped_cantidad, detalleped_pre
     
 }
 
-
-
 function modificar_detalle(){
 
     let base_url = document.getElementById('base_url').value;
@@ -1051,5 +1058,48 @@ function modificar_detalle(){
             }
         });     
 
+    
+}
+
+function ingresar_producto(producto_id){
+
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'mesa/registrar_producto/';
+    let cantidad = document.getElementById('producto_cant'+producto_id).value;
+//    let detalleped_cantidad = document.getElementById('detalleped_cantidad').value;
+//    let detalleped_precio = document.getElementById('detalleped_precio').value;
+    let pedido_id = document.getElementById('pedido_id').value;
+    let mesa_id = document.getElementById('mesa_id').value;
+    
+    //alert(producto_id+" *** "+cantidad);
+    
+    //alert(mesa_id+" *** "+pedido_id);
+    
+    
+    if(mesa_id>0){
+        if(pedido_id>0){
+        
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{cantidad:cantidad, producto_id:producto_id, pedido_id:pedido_id},                
+            success:function(respuesta){
+             
+             
+                mostrar_datos_pedido(pedido_id);
+                mostrar_detalle_pedido(pedido_id);
+                
+            },
+            error:function(respuesta){
+                res = 0;
+            }
+        });     
+
+        }else{
+            alert("ERROR: Debe seleccionar una mesa...!!");}
+        
+    }else{
+            alert("ERROR: Debe seleccionar una mesa...!!");
+    }
     
 }
