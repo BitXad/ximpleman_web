@@ -1,7 +1,93 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/mesa.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php echo base_url('resources/js/funciones_pedido.js'); ?>"></script>-->
 <link href="<?php echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar tr').hide();
+                    $('.buscar tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });         
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar2').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar2 tr').hide();
+                    $('.buscar2 tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });    
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar3').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar3 tr').hide();
+                    $('.buscar3 tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });    
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar4').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar4 tr').hide();
+                    $('.buscar4 tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });    
+
+function mostrar_ocultar(){
+    var x = document.getElementById('tipo_transaccion').value;
+    
+    if (x=='2'){ //si la transaccion es a credito
+        
+        document.getElementById('creditooculto').style.display = 'block';
+//        var hoy = new Date();
+//        var dd = hoy.getDate();
+//        var mm = hoy.getMonth()+1;
+//        var yyyy = hoy.getFullYear();
+//        
+//        dd = addZero(dd);
+//        mm = addZero(mm);
+
+        }
+    else{
+            document.getElementById('creditooculto').style.display = 'none';}
+}
+
+
+
+function mostrar_buscadores(){
+    document.getElementById('buscador1').style.display = 'block';
+    document.getElementById('categoria').style.display = 'block';
+    
+    //document.getElementById('filtrar4').focus();
+
+}
+        
+function cerrar_ventana(){
+   //window.opener.location.reload();
+   window.open('', '_self', '');
+    window.close();
+}
+</script>   
+
+
+
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -23,10 +109,81 @@ button{
   border: 0;
 }
 </style>   
-    
-<input type="text" id="decimales" value="<?php echo $parametros['parametro_decimales']; ?>" name="decimales"  hidden>
+
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
+
+<?php if ($tipousuario_id != 1){ ?>
+    <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
+<?php } ?>
+
+<input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
+<input type="text" value='<?php echo json_encode($preferencia); ?>' id="preferencias" hidden>
+<input type="text" id="pedido_id" value="0" name="pedido_id"  hidden>
+<input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
+<input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio"  hidden>
+<!--<input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id"  hidden>-->
+<input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
+<input type="text" id="parametro_modoventas" value="<?php echo $parametro['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
+<input type="text" id="parametro_anchoboton" value="<?php echo $parametro['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
+<input type="text" id="parametro_altoboton" value="<?php echo $parametro['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
+<input type="text" id="parametro_colorboton" value="<?php echo $parametro['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
+<input type="text" id="parametro_altoimagen" value="<?php echo $parametro['parametro_altoimagen']; ?>" name="parametro_altoimagen"  hidden>
+<input type="text" id="parametro_anchoimagen" value="<?php echo $parametro['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
+<input type="text" id="parametro_formaimagen" value="<?php echo $parametro['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
+<input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+<!--<input type="text" id="parametro_moneda_id" value="<?php echo $parametro['moneda_id']; ?>" name="parametro_datosboton"  hidden>-->
+<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
+<input type="text" id="parametro_datosboton" value="<?php echo $parametro['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="parametro_moneda_id" value="<?php echo $parametro['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
+<input type="text" id="parametro_diasvenc" value="<?php echo $parametro['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
+<input type="hidden" id="modificar_precioventa" value="<?php echo $rolusuario[183-1]['rolusuario_asignado']; ?>" name="modificar_precioventa">
+<input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
+<input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
+<input type="text" id="cliente_id" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" hidden>
+<input type="text" id="cdi_codigoclasificador" name="cdi_codigoclasificador" value="<?php echo $cliente[0]['cdi_codigoclasificador']; ?>" hidden>
+<input type="text" id="nit" name="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>" hidden>
+<input type="text" id="razon_social" name="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" hidden>
+<input type="text" id="telefono" name="telefono" value="<?php echo $cliente[0]['cliente_telefono']; ?>" hidden>
+<input type="text" id="tipocliente_id" name="tipocliente_id" value="<?php echo $cliente[0]['tipocliente_id']; ?>" hidden>
+<input type="text" id="cliente_nombre" name="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>" hidden>
+<input type="text" id="cliente_ci" name="cliente_ci" value="<?php echo $cliente[0]['cliente_ci']; ?>" hidden>
+<input type="text" id="cliente_nombrenegocio" name="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>" hidden>
+<input type="text" id="cliente_codigo" name="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>" hidden>
+<input type="text" id="cliente_direccion" name="cliente_direccion" value="<?php echo $cliente[0]['cliente_direccion']; ?>" hidden>
+<input type="text" id="cliente_departamento" name="cliente_departamento" value="<?php echo $cliente[0]['cliente_departamento']; ?>" hidden>
+<input type="text" id="cliente_celular" name="cliente_celular" value="<?php echo $cliente[0]['cliente_celular']; ?>" hidden>
+<input type="text" id="zona_id" name="zona_id" value="<?php echo $cliente[0]['zona_id']; ?>" hidden>
+<input type="text" id="cliente_complementoci" name="cliente_complementoci" value="<?php echo $cliente[0]['cliente_complementoci']; ?>" hidden>
+<input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales"  hidden>
+<?php
+if($cliente[0]['cliente_id'] >0){
+?>
+<input type="text" id="codigoexcepcion" name="codigoexcepcion" value="<?php echo $cliente[0]['cliente_excepcion']; ?>" hidden>
+<?php
+}else{
+?>
+<input type="text" id="codigoexcepcion" name="codigoexcepcion" value="" hidden>  
+<?php
+}
+?>
+<input type="text" id="email" name="email" value="<?php echo $cliente[0]['cliente_email']; ?>" hidden>
+
+<input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_factor1" value="<?php echo $rolusuario[162-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_factor2" value="<?php echo $rolusuario[163-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_modificardetalle" value="<?php echo $rolusuario[20-1]['rolusuario_asignado']; ?>" hidden>
+
+
+<input type="text" value="<?php echo 0; ?>" id="pedido_latitud" hidden>
+<input type="text" value="<?php echo 0; ?>" id="pedido_longitud" hidden>
+<input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
+<input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
+
+
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -34,11 +191,11 @@ button{
 
 <?php
 
-$ancho_boton = $parametros["parametro_anchoboton"]."px";
-$alto_boton = $parametros["parametro_altoboton"]."px";
-$ancho_imagen = $parametros["parametro_anchoimagen"]."px";
-$alto_imagen = $parametros["parametro_altoimagen"]."px";
-$tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
+$ancho_boton = $parametro["parametro_anchoboton"]."px";
+$alto_boton = $parametro["parametro_altoboton"]."px";
+$ancho_imagen = $parametro["parametro_anchoimagen"]."px";
+$alto_imagen = $parametro["parametro_altoimagen"]."px";
+$tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
 
 
 ?>
@@ -71,7 +228,7 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
         <div class="col-md-8">
             <!--------------------- parametro de buscador --------------------->
                       <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                        <input id="filtrar" type="text" class="form-control" placeholder="Ingrese nombre de la mesa..">
+                        <input id="filtrarmesa" type="text" class="form-control" placeholder="Ingrese nombre de la mesa..">
                       </div>
                 <!--------------------- fin parametro de buscador --------------------->
         </div>
@@ -323,6 +480,126 @@ $tamanio_fuente = $parametros["parametro_tamanioletrasboton"];
                                 
                         </div>
                     </div>
+          
+        </div>
+      </div>
+<!--      <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="modificar_detalle()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Modificar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cancelar</button>
+      </div>-->
+    </div>
+  </div>
+</div>
+
+<!-- Modal buscador de productos -->
+<div>
+    
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalproductos" id="boton_productos">
+        Buscar productos
+    </button>
+    
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalproductos" tabindex="-1" role="dialog" aria-labelledby="modalproductos-titulo" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        
+      <div class="modal-header" style="background: lightgray;">
+          
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          <h5 class="modal-title" id="exampleModalLongTitle"><b>PRODUCTOS</b></h5>
+          
+      </div>
+        
+      <div class="modal-body">
+          
+        <div class="row">
+            <div class="col-md-12" >
+
+                <div class="row" id="buscador1"">
+
+                    <!--------------------- parametro de buscador por codigo --------------------->
+
+                    <div class="col-md-4">
+                          <div class="input-group">
+                              <span class="input-group-addon"> 
+                                <i class="fa fa-barcode"></i>
+                              </span>           
+                              <input type="text" name="codigo" id="codigo" class="form-control" placeholder="código" onkeyup="validar(event,3)">
+                          </div>
+                    </div>      
+                   <!--------------------- fin buscador por codigo --------------------->
+
+
+                   <div class="col-md-8">
+
+        <!--            ------------------- parametro de buscador --------------------->
+
+                          <div class="input-group">
+                              <span class="input-group-addon" onclick="ocultar_busqueda();"> 
+                                Buscar 
+                              </span>           
+                              <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,4)" autocomplete="off">
+                              <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaresultados(1)" title="Buscar"><span class="fa fa-search"></span></div>
+                          </div>
+
+        <!--            ------------------- fin parametro de buscador ------------------- -->
+
+                    </div>
+
+                </div>
+        <!-------------------- CATEGORIAS------------------------------------->
+        <div class="container" id="categoria" style="padding:0;">
+            <span class="badge btn-danger">
+                <select lect class="bange btn-danger" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod">
+                    <option value="0" >- CATEGORIAS -</option>
+                    <?php 
+                        foreach($categoria_producto as $categ){ 
+                            $selected = ($categ['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+                            ?>
+                            <option value="<?php echo $categ['categoria_id']; ?>" <?php echo $selected; ?>><?php echo $categ['categoria_nombre']; ?></option>
+                    <?php
+                        }
+                    ?>
+                </select>
+            </span>
+            <span class="badge btn-danger">
+                <select class="bange btn-danger" style="border-width: 0; width:120px;"  onchange="tablaresultados(3)" id="subcategoria_prod">
+                    <option value="0" >- SUB CATEGORIAS -</option>
+                </select>
+            </span>
+            <span class="badge btn-facebook">
+                <input style="border-width: 0; color: black;" id="encontrados" type="text"  size="3" value="0" readonly="true">
+            </span>
+            <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
+            <?php 
+            if ($parametro["parametro_agruparitems"] == 1 ){
+                $agrupar = "checked='true'";
+            }else {$agrupar = " ";}
+            ?>
+            <button class="btn btn-primary btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>
+            <span class="badge btn-default text-center">
+                <!--------------------- inicio loader ------------------------->
+                <div class="row" id='oculto'  style='display:none;'>
+                        <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
+                </div>
+                <!--------------------- fin inicio loader ------------------------->
+            </span>
+        </div>
+        <!-------------------- FIN CATEGORIAS--------------------------------->
+
+                <div class="box">
+                    <div class="box-body  table-responsive" id="tablaresultados">
+
+                        <!------------------ aqui van los resultados de la busqueda --------------->
+
+                    </div>
+
+                </div>
+    </div>
           
         </div>
       </div>

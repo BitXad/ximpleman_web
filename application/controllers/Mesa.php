@@ -16,6 +16,14 @@ class Mesa extends CI_Controller{
         $this->load->model('Sistema_model');
         $this->load->model('Estado_model');
         $this->load->model('Venta_model');
+        $this->load->model('Tipo_transaccion_model');
+        $this->load->model('Forma_pago_model');
+        $this->load->model('Tipo_cliente_model');
+        $this->load->model('Moneda_model');
+        $this->load->model('Tipo_servicio_model');
+        $this->load->model('Usuario_model');
+        $this->load->model('Preferencia_model');
+        $this->load->model('Promocion_model');
         $this->sistema = $this->Sistema_model->get_sistema();
         
         $this->load->model('Parametro_model');
@@ -125,7 +133,43 @@ class Mesa extends CI_Controller{
         $data['mesa'] = $this->Mesa_model->get_all_mesa();
         $data['categorias'] = $this->Mesa_model->get_all_categorias();
         $data['all_estado'] = $this->Estado_model->get_tipo_estado(10); //estados basicos de tipo 1
-        $data['parametros'] = $this->parametros;
+        $data['parametro'] = $this->parametros;
+        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+        
+        $data['rolusuario'] = $this->session_data['rol'];
+        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['all_moneda'] = $this->Moneda_model->getalls_monedasact_asc();
+        $this->load->model('Banco_model');
+        $data['all_banco'] = $this->Banco_model->getall_bancosact_asc();
+        $tipousuario_id = $this->session_data['tipousuario_id'];
+        $data['tipousuario_id'] = $tipousuario_id;
+        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+        $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
+        $data['tipo_respuesta'] = $this->Usuario_model->get_tipo_respuesta();
+
+        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+
+        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+        $data['promociones'] = $this->Promocion_model->get_promociones();
+
+        $cliente_id = 0;
+        if ($cliente_id>0){
+            $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+            if (sizeof($cliente)>0)
+                $data['cliente'] = $cliente;
+            else
+                $data['cliente'] = $this->Venta_model->get_cliente_inicialpreventa();
+        }        
+        else
+        {    $data['cliente'] = $this->Venta_model->get_cliente_inicialpreventa();}
+
+        
+        
+        
+        
         
         $data['_view'] = 'mesa/mesas';
         $this->load->view('layouts/main',$data);
@@ -268,6 +312,7 @@ class Mesa extends CI_Controller{
             $detalleped_precio = $this->input->post("detalleped_precio"); 
             $detalleped_cantidad = $this->input->post("detalleped_cantidad"); 
             $detalleped_id = $this->input->post("detalleped_id"); 
+            $pedido_id = $this->input->post("pedido_id"); 
             
             $sql = "update detalle_pedido set
                     detalleped_precio = {$detalleped_precio},
@@ -275,6 +320,14 @@ class Mesa extends CI_Controller{
                     detalleped_subtotal = {$detalleped_cantidad} * {$detalleped_precio},
                     detalleped_total = {$detalleped_cantidad} *{$detalleped_precio}
                     where detalleped_id = {$detalleped_id}";
+            $this->Venta_model->ejecutar($sql);
+            
+            
+            $sql = "update pedido p
+                    set
+                    p.pedido_subtotal = (select sum(d.detalleped_subtotal) as total from detalle_pedido d where d.pedido_id = {$pedido_id} group by p.pedido_id),
+                    p.pedido_total = p.pedido_subtotal
+                    where p.pedido_id = {$pedido_id}";
             $this->Venta_model->ejecutar($sql);
             
             echo json_encode(true);

@@ -33,6 +33,709 @@ function modal_mesa(mesa_id){
             
 }
 
+function esMobil(){
+    
+    var isMobile = {
+        Android: function() {
+            return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function() {
+            return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function() {
+            return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function() {
+            return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function() {
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+    };    
+
+    return isMobile.any()
+    
+}
+
+//esta funcion verifica 2 parametros: la tecla presionada y otro parametro que le indica que hacer
+function validar(e,opcion) {
+    
+  tecla = (document.all) ? e.keyCode : e.which;
+  
+  
+    if (tecla==13){ 
+    
+    
+        if (opcion==0){   //si la pulsacion proviene del telefono
+              document.getElementById('tipocliente_id').focus();
+        }
+        
+        if (opcion==1){   //si la pulsacion proviene del nit  
+            nit = document.getElementById('nit').value;            
+            if (nit==''){
+                var cod = generar_codigo();
+                $("#nit").val(cod);
+                $("#razon_social").focus();
+                $("#razon_social").select();
+                
+            }else{                
+             buscarcliente();
+            }               
+        }
+
+        if (opcion==2){
+            var codigo = document.getElementById('razon_social').value;
+            
+            codigo = codigo[0]+codigo[1] + Math.floor((Math.random()*100000)+50);
+                    
+            $("#cliente_nombre").val(document.getElementById('razon_social').value);
+            $("#telefono").val(''); //si la tecla proviene del input razon social
+            
+            $("#cliente_codigo").val(codigo);
+           document.getElementById('telefono').focus();
+        } 
+        
+        if (opcion==3){   //si la tecla proviene del input codigo de barras          
+            buscarporcodigojs();           
+        } 
+        
+        if (opcion==4){   //si la tecla proviene del input codigo de barras
+            tablaresultados(1);           
+        }        
+        
+        if (opcion==5){   //si la tecla proviene del buscador de pedido abierto
+            tablaresultadospedido(1);           
+        }        
+        
+        if (opcion==6){   //si la tecla proviene del buscador de pedido abierto
+            tablaresultadospedido(1);              
+        }        
+        
+        if (opcion==7){   //si la tecla proviene del buscador de pedido abierto
+           document.getElementById('filtrar').focus();               
+        }
+        
+    
+        
+        if (opcion==8){   //si la tecla proviene del buscador de pedido abierto
+           buscar_clientes_pedido();
+        }       
+        
+        if (opcion==9){   //si la tecla proviene del buscador de pedido abierto
+            
+           var nit = document.getElementById('nit').value;
+           if (nit=='0'){
+                buscar_clientes();      
+           }
+           else{
+            
+                var codigo = document.getElementById('razon_social').value;
+
+                codigo = codigo[0]+codigo[1] + Math.floor((Math.random()*100000)+50);
+
+                $("#cliente_nombre").val(document.getElementById('razon_social').value);
+                $("#telefono").val(''); //si la tecla proviene del input razon social
+
+                $("#cliente_codigo").val(codigo);
+                document.getElementById('telefono').focus();               
+           }
+        }  
+        if (opcion==10){   //si la tecla proviene del buscador del reporte de  ventas
+           ventas_por_parametro();
+           
+        }  
+        
+    } 
+ 
+}
+
+
+function tablaresultados(opcion)
+{   
+    var decimales = document.getElementById('decimales').value;
+    var controlador = "";
+    var parametro = "";
+    var limite = 50;
+    var precio_unidad = 0;
+    var precio_factor = 0;
+    var precio_factorcant = 0;
+    var existencia = 0;
+    var base_url = document.getElementById('base_url').value;    
+    var cantidad = 0;
+  //  var usuario_id = document.getElementById('usuario_id').value;
+
+    var modo_visualizacion = document.getElementById('parametro_modoventas').value; // modo de visualizacion 1 = modo texto , 2 = modo grafico
+    var ancho_boton = document.getElementById('parametro_anchoboton').value; //base 115
+    var alto_boton = document.getElementById('parametro_altoboton').value;
+    var color_boton = document.getElementById('parametro_colorboton').value;
+    var ancho_imagen = document.getElementById('parametro_anchoimagen').value;;//document.getElementById('parametro_anchoimagen').value;
+    var alto_imagen = document.getElementById('parametro_altoimagen').value;; //document.getElementById('parametro_altoimagen').value;
+    var forma_imagen = document.getElementById('parametro_formaimagen').value;; //document.getElementById('parametro_altoimagen').value;
+    var datosboton = document.getElementById('parametro_datosboton').value; //document.getElementById('parametro_altoimagen').value;
+    
+    var rol_precioventa = document.getElementById('rol_precioventa').value; //document.getElementById('parametro_altoimagen').value;
+    var rol_factor = document.getElementById('rol_factor').value; //document.getElementById('parametro_altoimagen').value;
+    var rol_factor1 = document.getElementById('rol_factor1').value; //document.getElementById('parametro_altoimagen').value;
+    var rol_factor2 = document.getElementById('rol_factor2').value; //document.getElementById('parametro_altoimagen').value;
+    var rol_factor3 = document.getElementById('rol_factor3').value; //document.getElementById('parametro_altoimagen').value;
+    var rol_factor4 = document.getElementById('rol_factor4').value; //document.getElementById('parametro_altoimagen').value;
+    var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
+
+    if(esMobil()) { tamanio = 1; }
+    else{ tamanio = 1; }
+    
+    
+    if (opcion == 1){
+        controlador = base_url+'venta/buscarproductos/';
+        parametro = document.getElementById('filtrar').value        
+    }
+    
+    if (opcion == 2){
+        controlador = base_url+'venta/buscarcategorias/';
+        parametro = document.getElementById('categoria_prod').value;
+        
+    }
+    
+    if (opcion == 3){
+        controlador = base_url+'venta/buscarsubcategorias/';
+        parametro = document.getElementById('subcategoria_prod').value;        
+    }
+        
+    document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{parametro:parametro},
+           success:function(respuesta){     
+               
+                                     
+                $("#encontrados").val("- 0 -");
+               var registros =  JSON.parse(respuesta);
+                
+               if (registros != null){
+                   
+                   if (modo_visualizacion == 1){ // visualziacion tipos texto, en lista
+                   
+                   /************** INICIO MODO TEXTO ***************/
+                   
+                    var cont = 0;
+                    var cant_total = 0;
+                    var total_detalle = 0;
+                    var productonombre = "";
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    $("#encontrados").val("- "+n+" -");
+                    html = "";
+                    
+                    if(! esMobil()) { //si no es dispositivo mobil
+                        html += "                <table class='table  table-condensed table-striped' id='mitabla'>";
+                    }else{
+                        html += "                <table class='table  table-condensed table-striped' style='max-width: 3cm;' id='mitabla' >";
+                    }
+                    
+                   html += "                <tr style='background-color: black; '>";
+                   html += "                <th style='padding:0; background: black;'>#</th> ";
+                   html += "                <th style='padding:0; background: black;'>PRODUCTOS</th>";
+                   
+                    if(! esMobil()) { //si no es dispositivo mobil
+                        mensajeboton = "";
+                        html += "                <th style='padding:0; background: black;'>Precio</th>";
+                        html += "                <th style='padding:0; background: black;'> </th>";
+                    }
+                    else{
+                        mensajeboton = " Añadir"; //mensaje para el boton del carrito
+                    }
+                    
+                   html += "                </tr>";
+                   html += "                <tbody class='buscar' >";
+         
+                    sql = ""; 
+                    comilla = "'";
+                   if (n <= limite) x = n; 
+                   else x = limite;
+                    
+                    for (var i = 0; i < x ; i++){ 
+                        
+                        var mimagen = "";
+                        if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"].length>2){
+                            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
+                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='30' height='30' />";
+                            mimagen += "</a>";
+                            //mimagen = nomfoto.split(".").join("_thumb.");77
+                        }else{
+                            mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='30' height='30' />";
+                        }
+                                             
+                        
+                        
+                        
+                        html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
+                        html += "<tr style='border-bottom-style: solid; border-color: #000; border-width: 2px;'>";
+                        
+                        html += "<td onclick='borrar_tabla()' style='padding:0; background-color:silver;'>"+(i+1)+"</td>";
+                        
+                        productonombre = registros[i]["producto_nombre"];
+                        if (productonombre.length > 42){
+                            productonombre = productonombre.substr(0,39)+"..";
+                        }
+                        
+                        html += "<td style='padding:0; max-width:600px;'><font size='"+tamanio+"' face='Arial Narrow'><b>"+productonombre+"</b></font>";
+                        
+                        
+                        
+//                        html += mimagen;
+                        html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
+                        html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
+                        html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
+                        
+                        if (esMobil()){
+                            
+                            html += "<table>"; //tabla movil extra
+                            html += "<tr style='padding:0;'>"; //tabla movil extra
+                            html += "<td style='padding:0;'>"; //tabla movil extra
+                            
+                        }
+                        
+                       if(! esMobil()){
+                        html += "</td>";
+                        
+                        html += "<td style='padding:0;'>"; // style='space-white:nowarp'
+                        }
+                        
+                        
+                        
+                        html += "<center> ";                        
+                        
+                                            html += "   <select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+JSON.stringify(registros[i])+")' >";
+                        
+                        if (rol_precioventa==1){
+                            
+                            html += "       <option value='precio_normal'>";
+                            precio_unidad = Number(registros[i]["producto_precio"]).toFixed(decimales);
+                            html += "           "+registros[i]["producto_unidad"]+" "+registros[i]["moneda_descripcion"]+": "+Number(precio_unidad).toFixed(decimales)+"";
+                            html += "       </option>";
+                        
+                        }
+                        
+                        if (rol_factor==1){
+                            if(registros[i]["producto_factor"]>0){
+                                precio_factor = parseFloat(registros[i]["producto_preciofactor"]);
+                                precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
+
+                                html += "       <option value='producto_factor'>";
+                                html += "           "+registros[i]["producto_unidadfactor"]+" "+registros[i]["moneda_descripcion"]+": "+precio_factor.toFixed(decimales)+" / "+precio_factorcant.toFixed(decimales);
+                                html += "       </option>";
+                            }
+                        }
+                        
+                        
+                        if (rol_factor1==1){
+                            if(registros[i]["producto_factor1"]>0){
+                                precio_factor = parseFloat(registros[i]["producto_preciofactor1"]);
+                                precio_factorcant = parseFloat(registros[i]["producto_preciofactor1"]) * parseFloat(registros[i]["producto_factor1"]);
+
+                                html += "       <option value='producto_factor1'>";
+                                html += "           "+registros[i]["producto_unidadfactor1"]+" "+registros[i]["moneda_descripcion"]+": "+precio_factor.toFixed(decimales)+" / "+precio_factorcant.toFixed(decimales);
+                                html += "       </option>";
+                            }
+                        }
+                            
+                        if (rol_factor2==1){
+                            if(registros[i]["producto_factor2"]>0){
+                                precio_factor = parseFloat(registros[i]["producto_preciofactor2"]);
+                                precio_factorcant = parseFloat(registros[i]["producto_preciofactor2"]) * parseFloat(registros[i]["producto_factor2"]);
+
+                                html += "       <option value='producto_factor2'>";
+                                html += "           "+registros[i]["producto_unidadfactor2"]+" "+registros[i]["moneda_descripcion"]+": "+precio_factor.toFixed(decimales)+" / "+precio_factorcant.toFixed(decimales);
+                                html += "       </option>";
+                            }
+                        }
+                        
+                        if (rol_factor3==1){                        
+                            if(registros[i]["producto_factor3"]>0){
+                                precio_factor = parseFloat(registros[i]["producto_preciofactor3"]);
+                                precio_factorcant = parseFloat(registros[i]["producto_preciofactor3"]) * parseFloat(registros[i]["producto_factor3"]);
+
+                                html += "       <option value='producto_factor3'>";
+                                html += "           "+registros[i]["producto_unidadfactor3"]+" "+registros[i]["moneda_descripcion"]+": "+precio_factor.toFixed(decimales)+" / "+precio_factorcant.toFixed(decimales);
+                                html += "       </option>";
+                            }
+                        }
+                        
+                        if (rol_factor4==1){                        
+                            if(registros[i]["producto_factor4"]>0){
+                                precio_factor = parseFloat(registros[i]["producto_preciofactor4"]);
+                                precio_factorcant = parseFloat(registros[i]["producto_preciofactor4"]) * parseFloat(registros[i]["producto_factor4"]);
+
+                                html += "       <option value='producto_factor4'>";
+                                html += "           "+registros[i]["producto_unidadfactor4"]+" "+registros[i]["moneda_descripcion"]+": "+precio_factor.toFixed(decimales)+" / "+precio_factorcant.toFixed(decimales);
+                                html += "       </option>";
+                            }
+                        }
+                        
+                        
+                        html += "   </select>";
+                        
+                        if (esMobil()){
+                            html += "</td>"; //tabla movil extra
+                            html += "<td style='padding:0; width:2cm; line-height:10px;'>"; //tabla movil extra                            
+                        }
+                        
+                        //html += "<br><font size='3'><b>"+registros[i]["producto_codigobarra"]+"</b></font>";                        
+                        existencia = parseFloat(registros[i]["existencia"]);
+                       
+//                       html += "<br><font size='3'><b><input type='text' class='btn btn-danger btn-xs' style='background-color: black' id='input_existencia"+registros[i]["producto_id"]+"' value='DISP: "+existencia+" "+registros[i]["producto_unidad"]+"' readonly='true'></b></font>";
+                        
+                       
+                       if(! esMobil()){
+                            if (parseFloat(registros[i]["existencia"])>0){
+                                
+                                
+                                  html += "<br>";
+                                  html += "<div class='btn-group'>";
+//                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",1)'><b>- 1 -</b></button>";
+                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")'><b>- 1 -</b></button>";                                  
+                                  html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojs(2,"+JSON.stringify(registros[i])+")'><b>- 2 -</b></button>";
+                                  html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapidojs(5,"+JSON.stringify(registros[i])+")'><b>- 5 -</b></button>";
+                                  html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojs(10,"+JSON.stringify(registros[i])+")'><b>- 10 -</b></button> ";
+                                  html += "</div>";   
+                            }            
+                        }
+                      
+                        //html += "<textarea name='textarea' rows='10' cols='50'>"+sql+"</textarea>"
+                        
+                        html += "</center>";
+                        if(! esMobil()){
+                       
+                        html += "</td>";
+                        
+                        html += "<td style='padding:0;'>";
+                        }
+                        
+                        html += "<div style='line-height:12px;' id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='3'><b>"+existencia+"</b></font><br>"+registros[i]["producto_unidad"]+"</center></div>";
+                    
+                       if(esMobil()){
+                            html += "</td>"; //tabla movil extra
+                            html += "<td style='padding:0;'>"; //tabla movil extra                            
+                        }     
+                        
+                        if (parseFloat(registros[i]["existencia"])>0){
+                             html += "<button type='button' class='btn btn-warning btn-sm btn-block' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' onclick='focus_cantidad("+registros[i]["producto_id"]+")'><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";                             
+                        }
+                        
+                        //html += "<button class='btn btn-success'><i class='fa fa-picture-o'></i></button>";
+
+                        
+                        html += "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->";
+                        html += "<div class='modal fade' id='mostrarimagen"+i+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+i+"'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "<font size='"+tamanio+"'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        html += "</div>";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' />";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";                       
+                       
+                       
+                       
+                        html += "<!---------------------- modal cantidad producto ------------------->";
+                        
+                        html += "<div class='modal fade' id='myModal"+registros[i]["producto_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModal"+registros[i]["producto_id"]+"'>";
+                        html += "  <div class='modal-dialog' role='document'>";
+//                        html += "<br>";
+                        html += "<div class='modal-content'>";
+                        html += "  <div class='modal-header' style='background:silver;'>";
+                        html += "       <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "  <font face='Arial' size='2'><b> <fa class='fa fa-cart-plus' > </fa> AÑADIR AL PEDIDO </b></font>";
+                        html += "  </div>";
+                        html += "  <div class='modal-body' >";
+                        
+                        html += "  <!----------------------------------------------------------------->";
+//                        html += "       <div class='col-md-3'>";
+//                        html += "           <img  src='"+base_url+"/"+registros[i]["producto_foto"]+" width='50' heigth='50'>";  
+//                        html += "       </div>";
+//                        html += "       <div class='col-md-9'>";
+                    
+                        if (esMobil()) tamanio = 1;
+                        else tamanio = 3;
+                    
+                        html += "        <font face='Arial' size='"+tamanio+"'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
+
+                        html += "       <table class='table-condensed'>"; // style='space-white: nowrap;'
+                        html += "           <tr style='padding:0;'>";
+                        html += "               <td style='padding:0;'>";
+                      
+//                       html += "               <b>"+registros[i]["producto_nombre"]+"</b>";
+//                        html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
+                     
+                        html += "               <b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' min='0' step='1' max='"+registros[i]["existencia"]+"' onkeyup='registrar_cantidad(event,"+registros[i]["producto_id"]+")'></b>";
+                        html += "               </td>";
+                        
+                        html += "               <td rowspan='2'>";
+//                        html += "           <img  src='"+base_url+"/"+registros[i]["producto_foto"]+" width='50' heigth='50'>";  
+                        html += mimagen;  
+                        
+                        html += "               </td>";                        
+                        html += "          </tr>";
+                        html += "          <tr>";
+                        
+                        html += "          <td>";
+                        
+                        html += "  <center'>";
+                        
+                        html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
+                        html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
+
+                        html += "     <button data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs' onkeyup='registrar_cantidad(event,"+registros[i]["producto_id"]+")'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
+
+                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
+                        html += "  </center>";
+                        
+                        html += "          </td>";
+                        html += "          </tr>";
+                        
+                        html += "       </table>";
+                        
+//                        html += "       </div>";
+                        html += "       <!------------------------------------------------------------------->";
+                        html += "  </div>";
+                        
+                        html += "  <div class='modal-footer'>";
+    
+                        html += "  </div>";                        
+                        html += "</div>";
+                        
+                        html += "  </div>";
+                        html += "</div>";
+
+                        html += "<!---------------------- fin modal cantidad ---------------------------------> ";
+                        
+                        
+
+                        if(esMobil()){
+                         
+                        html += "</td>"; //tabla movil extra                        
+                        html += "<td style='padding: 0;'>"; //tabla movil extra                        
+                        html += mimagen; //tabla movil extra                        
+                        
+                        html += "</td>"; //tabla movil extra                        
+                        html += "</tr>"; //tabla movil extra
+                        html += "</table>"; //tabla movil extra
+                        
+                     }
+                        
+
+                        html += "</td>";
+                        
+                        
+                        html += "</tr>";
+
+                   }
+                 
+                   html += " </tbody>";
+                   html += "</table>"
+                   $("#tablaresultados").html(html);
+                   
+                   /************** FIN MODO TEXTO ***************/
+               }// fin visualizacion modo texto
+ 
+                
+                if (modo_visualizacion == 2){
+                
+                       
+                   /************** INICIO MODO GRAFICO ***************/
+                   
+                   
+                    var cont = 0;
+                    var cant_total = 0;
+                    var total_detalle = 0;
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    $("#encontrados").val("- "+n+" -");
+                    html = "";
+//                    html += "<div class='container'>";
+//                    html += "<div class='row'>";
+//                    html += "<div class='col-md-12'>";
+                    html += "<center>";
+         
+                    sql = ""; 
+                    comilla = "'";
+                   if (n <= limite) x = n; 
+                   else x = limite;
+                    
+                    for (var i = 0; i < x ; i++){
+                        
+                        imagen_boton = "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' class='img "+forma_imagen+"' width='"+ancho_imagen+"' height='"+alto_imagen+"' />";
+                 
+                        existencia = parseFloat(registros[i]["existencia"])+" "+registros[i]["producto_unidad"]+" | Bs "+Number(registros[i]["producto_precio"]).toFixed(decimales);
+                        
+                        
+                        html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
+
+                        
+                        titulo = registros[i]["producto_nombre"]+" | ";
+                        titulo += registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"];
+
+                        html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
+                        html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
+
+                        precio_cantidad = "<div class='padding:0;' id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='1'><b>"+existencia+"</b></font></center></div>";
+                    
+                        nombre_producto = registros[i]['producto_nombre'];
+                        prod = nombre_producto.substr(0,20);
+                        
+                        html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" '>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
+
+                        html += "<!---------------------- modal cantidad producto ------------------->";
+                        
+                        html += "<div class='modal fade' id='myModal"+registros[i]["producto_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModal"+registros[i]["producto_id"]+"'>";
+                        html += "  <div class='modal-dialog' role='document'>";
+
+                        html += "<div class='modal-content'>";
+                        html += "  <div class='modal-header'>";
+                        html += "       <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "  </div>";                        
+                        html += "  <div class='modal-body'>";
+                        
+                        html += "  <!----------------------------------------------------------------->";                  
+                        html += "       <center>";
+                        html += "       <table style='space-white: nowrap;'>";
+                        html += "           <tr>";
+                       
+                      
+                        html += "               <td>";
+                        html += "               ";
+                      
+                      
+                        html += "               <font size='1'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
+                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+Number(registros[i]["existencia"]).toFixed(decimales)+"'></b>";
+                        
+
+                        // ******************** inicio select   
+                        html += "<br><select class='btn btn-facebook' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
+                        html += "       <option value='1'>";
+                        precio_unidad = registros[i]["producto_precio"];
+                        html += "           "+registros[i]["producto_unidad"]+" Bs : "+Number(precio_unidad).toFixed(decimales)+"";
+                        html += "       </option>";
+                        
+                        if(registros[i]["producto_factor"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor"]+"'>";
+                            html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(decimales)+" / "+precio_factorcant.toFixed(decimales);
+                            html += "       </option>";
+                        }
+                                                
+                        html += "   </select>";                                                   
+                        // ******************** fin  select   
+                        
+                        
+                        html += "               </td>";
+                        html += "          </tr>";
+                        html += "       </table>";
+                        html += "       </center>";
+                        
+//                        html += "       </div>";
+                        html += "       <!------------------------------------------------------------------->";
+                        html += "  </div>";
+                        
+                        html += "  <div class='modal-footer aligncenter'>";
+                        html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
+                        html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+Number(registros[i]["producto_precio"]).toFixed(decimales)+"' hidden>";
+
+                        html += "     <button data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs' ><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
+//                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+
+                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
+                        html += "  </div>";                        
+                        html += "</div>";
+                        
+                        html += "  </div>";
+                        html += "</div>";
+
+                        html += "<!---------------------- fin modal cantidad ---------------------------------> ";
+
+                   }
+                 
+                   html += "</center>"
+
+                   $("#tablaresultados").html(html);
+                   
+                   /************** FIN MODO GRAFICO ***************/
+               }// fin visualizacion modo grafico
+               
+            }
+            
+            //document.getElementById('buscador1').style.display = 'none';
+           // document.getElementById('categoria').style.display = 'none';
+                       
+        },
+        error:function(respuesta){
+           html = "";
+           $("#tablaresultados").html(html);            
+        },
+        complete: function (jqXHR, textStatus) {
+   
+            document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+             
+            $("#filtrar").focus();
+            $("#filtrar").select();
+        }
+        
+    });
+    
+    if(opcion==2){
+        
+        //Busca la subcategoria y la redibuja en el select
+        var controlador = base_url+'website/obtener_subcategoria/'+parametro;
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{categoria_id:parametro},
+            success:function(respuesta){
+                                                        
+                 html = "";
+                 subcat = JSON.parse(respuesta);
+                 cant = subcat.length;
+                 
+                html += "<option value='0' selected>- SUB CATEGORIA -</option>"                     
+                 for(i=0;i<cant;i++){
+                     html += "<option value='"+subcat[i]["subcategoria_id"]+"'>"+subcat[i]["subcategoria_nombre"]+"</option>"                     
+                 }
+                 
+               $("#subcategoria_prod").html(html);
+                    
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "<option value='0' selected>-SUB CATEGORIA-</option>";
+               $("#subcategoria_prod").html(html);
+            },
+            complete: function (jqXHR, textStatus) {
+               
+                //tabla_inventario();
+            }
+        
+        });
+    }
+    
+ //   $("#encontrados").focus(); //Quita el foco del buscador para que desparezca el teclado android
+} 
+
+
 function verificar_usuario(){
 
     let base_url = document.getElementById('base_url').value;
@@ -188,7 +891,7 @@ function mostrar_detalle_pedido(pedido_id){
 
 
                 html += "<a href='"+base_url+"pedido/imprimir/"+pedido_id+"' target='_blank' class='btn btn-default btn-xs' id='imprimir_comanda' title='Comanda' style=' '><span class='fa fa-print'></span><b> Comanda</b></a>"; 
-                html += "<a href='#' data-toggle='modal' data-target='#modalpedidos' class='btn btn-default btn-xs' onclick='pedidos_pendientes()' title='Pedidos Pendientes' style=''><span class='fa fa-cubes'></span><b> Pedidos</b></a>";
+                html += "<a href='#' data-toggle='modal' data-target='#modalpedidos' class='btn btn-default btn-xs' onclick='pedidos_pendientes()' title='Buscar Productos' style=''><span class='fa fa-binoculars'></span><b> Productos</b></a>";
                 html += "<a href='#' data-toggle='modal' data-target='#modalordenes' class='btn btn-default btn-xs' onclick='ordenes_pendientes()' title='Ordenes de Trabajo' style=''><span class='fa fa-book'></span><b> OT's</b></a>";
 
                 html += "<table class='table' id='mitablaventassimple'>";
@@ -336,7 +1039,7 @@ function modificar_detalle(){
     
         $.ajax({url: controlador,
             type:"POST",
-            data:{detalleped_id:detalleped_id, detalleped_cantidad:detalleped_cantidad, detalleped_precio:detalleped_precio},                
+            data:{detalleped_id:detalleped_id, detalleped_cantidad:detalleped_cantidad, detalleped_precio:detalleped_precio, pedido_id:pedido_id},                
             success:function(respuesta){
              
                 mostrar_datos_pedido(pedido_id);
