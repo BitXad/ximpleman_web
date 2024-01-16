@@ -187,6 +187,8 @@ if($cliente[0]['cliente_id'] >0){
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 
 
+<input type="text" id="pedido_id" value="0" hidden>
+<input type="text" id="mesa_id" value="0" hidden>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -204,11 +206,14 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
 ?>
 
 <div class="box-header">
-    <font size='4' face='Arial'><b>Registro de Mesas</b></font>
-    <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($mesa); ?></font>
-<!--    <div class="box-tools no-print">
-        <a href="<?php echo site_url('mesa/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Mesa</a> 
-    </div>-->
+    <center>
+        <font size='4' face='Arial'><b><?php echo $empresa[0]["empresa_nombre"]; ?></b></font>
+        <br><font size='2' face='Arial'>Mesas: <?php echo sizeof($mesa); ?></font>
+    <!--    <div class="box-tools no-print">
+            <a href="<?php echo site_url('mesa/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Mesa</a> 
+        </div>-->
+        
+    </center>
 </div>
 
 <div class="row">
@@ -274,7 +279,7 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
                                 <?php } ?>
                                 
                                 <?php if($m["estado_id"]==39){ ?>
-                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>" onclick="mostrar_pedido(<?= $m["mesa_id"]; ?>)">
+                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>" onclick="mostrar_pedido(<?= $m["mesa_id"]; ?>)" id="mesa<?= $m["mesa_id"]?>">
                                     
                                     <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"/>
                                     <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
@@ -322,13 +327,6 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
         <div class="col-md-12">
             <div class="box">
                 
-<!--                <div class="box-header">
-                    <center>
-                        <b>DETALLE DE CONSUMO</b>
-                        <b id="numero_pedido"></b>
-                        
-                    </center>
-                </div>-->
                     
                 <div class="box-body">
                     <div class="row">
@@ -357,7 +355,7 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
 
 <!-- modal opciones -->
 <!-- Button trigger modal -->
-<div hidden="true">
+<div hidden>
     
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalOpciones" id="boton_opciones">
         Opcion mesas
@@ -369,11 +367,11 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
 <div class="modal fade" id="modalOpciones" tabindex="-1" role="dialog" aria-labelledby="modalOpcionesTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle"><b>OPCIONES</b></h5>
+      <div class="modal-header" style="background: lightgray;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+          <h5 class="modal-title" id="exampleModalLongTitle"><b>OCUPAR MESA</b></h5>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -382,11 +380,11 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
                         <input type="text" id="mesa_id" value="0"/>
                     </div>
                         
-                    <div class="col-md-6">
+                    <div class="col-md-6" hidden>
                             <label for="estado_id" class="control-label">Estado</label>
                             <div class="form-group">
                                     <select name="estado_id" class="form-control">
-                                            <!--<option value="">- ESTADO -</option>-->
+                                            <option value="">- ESTADO -</option>
                                             <?php 
                                             foreach($all_estado as $estado)
                                             {
@@ -402,7 +400,7 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
                     </div>
 
           
-                    <div class="col-md-6">
+                    <div class="col-md-6" hidden>
                         <label for="usuario_clave" class="control-label">Contraseña</label>
                         <div class="form-group">
                             <input type="password" name="usuario_clave" value="" class="form-control" id="usuario_clave"  />
@@ -410,18 +408,27 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
                         </div>
                     </div>
           
+                    <div class="col-md-12">
+                        <label for="usuario_clave" class="control-label">ADVERTENCIA</label>
+                        <div class="form-group">
+<!--                            <input type="password" name="usuario_clave" value="" class="form-control" id="usuario_clave"  />-->
+                            <span class="text-warning"><b><fa class="fa fa-warning"> </fa></b></span>
+                            <span class="text-danger"><b>Esta a punto de cambiar el estado a OCUPADO, ¿desea continuar?</b></span>
+                        </div>
+                    </div>
+          
         </div>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="verificar_usuario()">Aceptar</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" onclick="verificar_usuario()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Aceptar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Modal cambio cantidad -->
-<div>
+<div hidden>
     
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalmodificar" id="boton_modificar">
         Opcion mesas
@@ -495,7 +502,7 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
 </div>
 
 <!-- Modal buscador de productos -->
-<div>
+<div hidden>
     
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalproductos" id="boton_productos">
         Buscar productos
@@ -603,6 +610,88 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
 
                 </div>
     </div>
+          
+        </div>
+      </div>
+<!--      <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="modificar_detalle()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Modificar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cancelar</button>
+      </div>-->
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--- **************************************************** -><!-- comment -->
+
+
+<!-- Modal cambio cantidad -->
+<div hidden>
+    
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalcambiomesa" id="boton_modificar">
+        cambio de mesa
+    </button>
+    
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalcambiomesa" tabindex="-1" role="dialog" aria-labelledby="modalmodificar-titulo" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        
+      <div class="modal-header" style="background: lightgray;">
+          
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          <h5 class="modal-title" id="exampleModalLongTitle"><b>CAMBIAR MESA</b></h5>
+          
+      </div>
+        
+      <div class="modal-body">
+          
+        <div class="row">
+        
+                        
+                    <input type="hidden" name="detalleped_id" value="" class="form-control" id="detalleped_id"  />
+          
+
+          
+                    <div class="col-md-6">
+                        <label for="detalleped_cantidad" class="control-label">Mesa Disponoble</label>
+                        <div class="
+                             form-group">
+                                    <select id="select_mesadisponible" class="form-control">
+
+                                        <option value="0">-- NINGUNA --</option>
+                                        <?php foreach ($mesadisponible as $md){ ?>
+                                                <option value="<?php echo $md["mesa_id"]; ?>"><?php echo $md["mesa_nombre"]; ?></option>
+                                        <?php } ?>
+
+                                    </select>
+                                
+                        </div>
+                    </div>
+<!--
+                    <div class="col-md-3">
+                        <label for="detalleped_precio" class="control-label">Precio</label>
+                        <div class="form-group">
+                            <input type="number" name="detalleped_precio" value="" class="form-control" id="detalleped_precio"  />
+                                
+                        </div>
+                    </div>-->
+
+                    <div class="col-md-6">
+                        <label for="detalleped_botones" class="control-label">Opciones</label>
+                        <div class="form-group">
+
+                            <button type="button" class="btn btn-primary" onclick="cambiar_mesa()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Cambiar</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cancelar</button>
+                                
+                        </div>
+                    </div>
           
         </div>
       </div>

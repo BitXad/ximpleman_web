@@ -24,6 +24,7 @@ class Mesa extends CI_Controller{
         $this->load->model('Usuario_model');
         $this->load->model('Preferencia_model');
         $this->load->model('Promocion_model');
+        $this->load->model('Empresa_model');
         $this->sistema = $this->Sistema_model->get_sistema();
         
         $this->load->model('Parametro_model');
@@ -135,6 +136,7 @@ class Mesa extends CI_Controller{
         $data['all_estado'] = $this->Estado_model->get_tipo_estado(10); //estados basicos de tipo 1
         $data['parametro'] = $this->parametros;
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
         
         $data['rolusuario'] = $this->session_data['rol'];
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
@@ -154,6 +156,9 @@ class Mesa extends CI_Controller{
 
         $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
+        
+        $sql = "select * from mesa where estado_id = 38";
+        $data['mesadisponible'] = $this->Venta_model->consultar($sql);
 
         $cliente_id = 0;
         if ($cliente_id>0){
@@ -425,7 +430,7 @@ class Mesa extends CI_Controller{
                 producto_unidad,
                 producto_costo,
                 ".$cantidad.",
-                ".$precio." - ".$descuento.",
+                producto_precio - ".$descuento.",
                  0,
                 ".$cantidad." * (producto_precio - ".$descuento."),
                 ".$cantidad." * (producto_precio - ".$descuento."),
@@ -433,9 +438,48 @@ class Mesa extends CI_Controller{
                 from producto where producto_id = ".$producto_id."
                 )";
             $this->Venta_model->ejecutar($sql);
+            
+            
+            $sql = "update pedido p
+                    set
+                    p.pedido_subtotal = (select sum(d.detalleped_subtotal) as total from detalle_pedido d where d.pedido_id = {$pedido_id} group by p.pedido_id),
+                    p.pedido_total = p.pedido_subtotal
+                    where p.pedido_id = {$pedido_id}";
+            $this->Venta_model->ejecutar($sql);
 
             echo json_encode(true);
             
+        }
+
+
+    }
+    
+    /*
+    * cambiar_mesa
+    */
+    function cambiar_mesa(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $mesa_disponible = $this->input->post("mesa_disponible"); 
+            $mesa_ocupada = $this->input->post("mesa_id"); 
+            $pedido_id = $this->input->post("pedido_id");
+
+            // Reasignamos pedido
+            $sql = "update pedido set mesa_id = {$mesa_disponible} where pedido_id = {$pedido_id}";
+            $this->Venta_model->ejecutar($sql);
+
+            //Ocupamos la mesa libre
+            $sql = "update mesa set estado_id = 39 where mesa_id = {$mesa_disponible}";
+            $this->Venta_model->ejecutar($sql);
+            
+            //liberamos la mesa ocupada
+            $sql = "update mesa set estado_id = 38 where mesa_id = {$mesa_ocupada}";
+            $this->Venta_model->ejecutar($sql);
+            
+            
+            echo json_encode(true);
+
         }
 
 

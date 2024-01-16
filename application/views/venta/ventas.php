@@ -1391,6 +1391,11 @@ window.onkeydown = compruebaTecla;
             <?php } ?>    
                 
 
+            <a  href="<?php echo site_url('mesa/mesas');?>" class="btn btn-sq-lg btn-warning" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;<?php echo ($parametro["parametro_modulorestaurante"]!=1)?"display:none":"" ?>">
+                <i class="fa fa-cubes fa-4x"></i><br><br>
+                Administrar <br> Mesas <br>
+            </a>    
+
             </center>
            
         </div>
