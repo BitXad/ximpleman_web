@@ -84,7 +84,7 @@ class Dashb extends CI_Controller
                 //*********** FIN Administracion de caja *********
                 
                 $data['tipousuario_id'] = $session_data['tipousuario_id'];
-                $data['_view'] = 'hola';
+                $data['_view'] = 'dashboard_admin';
                 $this->load->view('layouts/main',$data);
 
             }else{

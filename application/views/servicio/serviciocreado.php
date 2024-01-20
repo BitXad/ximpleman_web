@@ -363,25 +363,35 @@ $(document).ready(function(){
                                               
                                             <!------------------------------------------------------------------->
                                             <span class="text-danger" id="campocliente"></span>
-                                            <div class="col-md-6">
+                                            <div class="col-md-7">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
                                                     <input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autocomplete="off" />
 							<span class="text-danger"><?php echo form_error('cliente_nombre');?></span>
 						</div>
 					    </div>
+                                            
+                                            <div class="col-md-5">
+						<label for="cliente_ci" class="control-label">C.I.</label>
+						<div class="form-group">
+							<input type="text" name="cliente_ci" value="<?php if($this->input->post('cliente_ci') >0){ echo $this->input->post('cliente_ci');}else{ echo 0;} ?>" class="form-control" id="cliente_ci" />
+						</div>
+                                            </div>
+                                            
                                             <div class="col-md-6">
 						<label for="cliente_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
 						<div class="form-group">
 							<input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" required autocomplete="off" />
 						</div>
 					    </div>
-                                        <div class="col-md-6">
-                                            <label for="cliente_celular" class="control-label">Celular</label>
-                                            <div class="form-group">
-                                                <input type="text" name="cliente_celular" value="<?php if($this->input->post('cliente_celular') >0){ echo $this->input->post('cliente_celular');}else{ echo 0;} ?>" class="form-control" id="cliente_celular" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" autocomplete="off" />
+                                            
+                                            <div class="col-md-6">
+                                                <label for="cliente_celular" class="control-label">Celular</label>
+                                                <div class="form-group">
+                                                    <input type="text" name="cliente_celular" value="<?php if($this->input->post('cliente_celular') >0){ echo $this->input->post('cliente_celular');}else{ echo 0;} ?>" class="form-control" id="cliente_celular" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" autocomplete="off" />
+                                                </div>
                                             </div>
-					</div>
+                                            
                                         <div class="col-md-6">
                                             <label for="cliente_telefono" class="control-label">Teléfono</label>
                                             <div class="form-group">
@@ -389,16 +399,28 @@ $(document).ready(function(){
                                             </div>
 					</div>
                                         
-                                        <div class="col-md-6">
-						<label for="cliente_ci" class="control-label">C.I.</label>
-						<div class="form-group">
-							<input type="text" name="cliente_ci" value="<?php if($this->input->post('cliente_ci') >0){ echo $this->input->post('cliente_ci');}else{ echo 0;} ?>" class="form-control" id="cliente_ci" />
-						</div>
-					  </div>
                                           <div class="col-md-6">
-						<label for="cliente_nit" class="control-label">Nit</label>
+						<label for="cliente_nit" class="control-label">NIT</label>
 						<div class="form-group">
                                                     <input type="number" min="0" name="cliente_nit" value="<?php if($this->input->post('cliente_nit') >0){ echo $this->input->post('cliente_nit');}else{ echo 0;} ?>" class="form-control" id="cliente_nit" onclick="this.select();" />
+						</div>
+                                          </div>
+                                          <div class="col-md-6">
+						<label for="cliente_razon" class="control-label">RAZON SOC.</label>
+						<div class="form-group">
+                                                    <input type="number" min="0" name="cliente_razon" value="<?php if($this->input->post('cliente_razon') >0){ echo $this->input->post('cliente_razon');}else{ echo 0;} ?>" class="form-control" id="cliente_razon" onclick="this.select();" />
+						</div>
+                                          </div>
+                                          <div class="col-md-6">
+						<label for="cliente_direccion" class="control-label">DIRECCION</label>
+						<div class="form-group">
+                                                    <input type="number" min="0" name="cliente_direccion" value="<?php if($this->input->post('cliente_direccion') >0){ echo $this->input->post('cliente_direccion');}else{ echo 0;} ?>" class="form-control" id="cliente_direccion" onclick="this.select();" />
+						</div>
+                                          </div>
+                                          <div class="col-md-6">
+						<label for="cliente_email" class="control-label">NIT</label>
+						<div class="form-group">
+                                                    <input type="number" min="0" name="cliente_email" value="<?php if($this->input->post('cliente_email') >0){ echo $this->input->post('cliente_email');}else{ echo 0;} ?>" class="form-control" id="cliente_email" onclick="this.select();" />
 						</div>
                                           </div>
                                            <!------------------------------------------------------------------->

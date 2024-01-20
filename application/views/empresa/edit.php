@@ -61,7 +61,7 @@ function mostrar(a) {
 						</div>
 					</div>
 					<div class="col-md-4">
-						<label for="empresa_ubicacion" class="control-label">Ubicación</label>
+						<label for="empresa_ubicacion" class="control-label">Ubicación/Municipio</label>
 						<div class="form-group">
 							<input type="text" name="empresa_ubicacion" value="<?php echo ($this->input->post('empresa_ubicacion') ? $this->input->post('empresa_ubicacion') : $empresas['empresa_ubicacion']); ?>" class="form-control" id="empresa_ubicacion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>

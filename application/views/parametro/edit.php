@@ -824,7 +824,8 @@ div {
                             <input type="number" min="0" name="parametro_decimales" value="<?php echo ($this->input->post('parametro_decimales') ? $this->input->post('parametro_decimales') : $parametro['parametro_decimales']); ?>" class="form-control" id="parametro_decimales" required /> 
                         </div> 
                     </div>
-                    <div class="col-md-2">
+                
+<!--                    <div class="col-md-2">
                         <label for="parametro_orden" class="control-label" title="Mostrar en orden">ORDEN DETALLE</label>
                         <div class="form-group">
                             <select name="parametro_orden" class="form-control" id="parametro_orden">
@@ -832,7 +833,8 @@ div {
                                 <option value="2" <?php if($parametro['parametro_orden']=="2"){ ?> selected <?php } ?>>DESCENDENTE</option>
                             </select>
                         </div>
-                    </div>
+                    </div>-->
+                
                     <div class="col-md-1">
                         <label for="parametro_documentoslista" class="control-label" title="Mostrar en lista el Tipo de documento de Identidad">DOCUMENTO LISTA</label>
                         <div class="form-group">

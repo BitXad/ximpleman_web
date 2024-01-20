@@ -37,7 +37,7 @@
 
 p {
     font-family: Arial;
-    font-size: 7pt;
+    font-size: 8pt;
     line-height: 120%;   /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 10px;
@@ -58,7 +58,7 @@ margin : 0 0 0px 0;
 padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
-font-family: Arial narrow;
+font-family: Arial;
 font-size: 7pt;  
 
 }
@@ -496,7 +496,8 @@ border-bottom : 1px solid #aaa;
                             <td align="right" style="padding: 0; padding-right:3px;"><font style="size:7px; font-family: arial"><?= number_format($d['detallefact_cantidad'],$decimales,'.',','); ?></font></td>
                             <td align="left" style="padding: 0; padding-left:3px;"><font style="size:7px; font-family: arial"><center>  <?= $d['producto_unidad'] ?></center></font></td>
                             <td colspan="1" style="padding: 0; line-height: 10px;">
-                                <font style="size:7px; font-family: arial; padding-left:3px"> 
+                                <font style="size:7px; font-family: arial; padding-left:3px">
+                                
                                     <?php echo $d['detallefact_descripcion']; ?>
                                     <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
                                         echo  $d['detallefact_preferencia']; }
@@ -504,6 +505,20 @@ border-bottom : 1px solid #aaa;
                                     <?php if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
                                         echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
                                     ?>
+                                
+                                
+                                    <?php 
+                                        if ($factura[0]['docsec_codigoclasificador']==13){ 
+                                            if (sizeof($datos_factura["datos_beneficiario1886"])>2){ 
+                                            
+                                            ?>
+                                            
+                                                <br>Ley 1886
+                                                <br>Tarifa Dignidad
+
+                                            
+                                        <?php } }?>
+                                
                                 </font>
                             </td>
                             
@@ -524,12 +539,44 @@ border-bottom : 1px solid #aaa;
                     <?php
                             }
                         } 
+                        
+                        
+                        
+                        
+                        
                         $total_final_factura = $factura[0]['factura_subtotal'];
                         
                         $factura_total = $factura[0]['factura_total'] - $factura[0]['factura_giftcard'];
                         //$total_final_factura = $factura_total;
                         $span = ($mostrarice==1)? 3: 2;
                     ?>
+                        
+                    <?php
+                    
+                            if ($factura[0]['docsec_codigoclasificador']==13){ //Servicios basicos ?>
+                                
+                        
+                        
+                        <tr  style=" font-family: Arial; border: 1px solid black;">
+                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_aseourbano"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_aseosubtotal"],$decimales,".",","); ?></td>                            
+                        </tr>                        
+                        
+                        <tr  style=" font-family: Arial; border: 1px solid black;">
+                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_tasaalumbrado"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_alumbradosubtotal"],$decimales,".",","); ?></td>                            
+                        </tr>                        
+                        
+                        <tr  style=" font-family: Arial; border: 1px solid black;">
+                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_otrastasas"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_tasassubtotal"],$decimales,".",","); ?></td>
+                        </tr>                        
+                        
+                        
+                        <tr  style=" font-family: Arial; border: 1px solid black;">
+                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_otrospagos"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_pagossubtotal"],$decimales,".",","); ?></td>
+                        </tr>                        
+                                
+                    <?php        } ?>
+                        
+       
                     <!-------------- SUB TOTAL ---------->
                     <tr>
                         <?php
@@ -546,9 +593,10 @@ border-bottom : 1px solid #aaa;
                                 
                         ?>
                         
-                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="6"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($factura_total,' Bolivianos') ?></b></td>
-                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">SUBTOTAL Bs</td>
+                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="<?php echo ($factura[0]['docsec_codigoclasificador']==13)?"10":"6"; ?>"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($factura_total,' Bolivianos') ?></b></td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><?php echo ($factura[0]['docsec_codigoclasificador']==13)?"TOTAL Bs":"SUBTOTAL Bs"; ?></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_final_factura,$dos_decimales,'.',','); ?></td>
+                        
                     </tr>
                     <!-------------- DESCUENTO ---------->
                     <tr>
@@ -567,16 +615,71 @@ border-bottom : 1px solid #aaa;
                     
                     <!-------------- FACTURA TOTAL ---------->
                     <tr>
-                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>TOTAL Bs</b></td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b><?php echo ($factura[0]['docsec_codigoclasificador']==13)?"SUBTOTAL A PAGAR Bs":"TOTAL Bs"; ?></b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'],$dos_decimales,'.',',') ?></b></td>
                     </tr>
                     
+                    <!-------------- AJUSTES NO SUJETOS A IVA ---------->
+                   
+                    <?php 
+                        $ajustes_no_sujetosiva = 0;
+                        if($factura[0]['docsec_codigoclasificador']==13){ //Servicios 
+                            
+                            $ajustes_no_sujetosiva = $datos_factura['datos_ajustesnoiva'];
+                            ?>
+                        <tr>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) AJUSTES NO SUJETOS A IVA Bs</td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($datos_factura['datos_ajustesnoiva'] ,$dos_decimales,'.',',') ?></td>
+                        </tr>
+                    <?php } ?>
+                    
                     <!-------------- FACTURA GIFTA CARD ---------->
-                    <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
+                    <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=13 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO GIFT CARD Bs</b></td>
                             <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_giftcard'] ,$dos_decimales,'.',',') ?></b></td>
                         </tr>
+                    <?php } ?>
+                    
+                    <!-------------- MONTO TOTAL A PAGAR ---------->
+                    <?php if($factura[0]['docsec_codigoclasificador']==13 ){
+                        
+                            $monto_total_pagar = $total_final_factura - $total_descuento - $ajustes_no_sujetosiva;
+                        ?>
+                        <tr>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO TOTAL A PAGAR Bs</b></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($monto_total_pagar ,$dos_decimales,'.',',') ?></b></td>
+                        </tr>
+                        
+                        
+                        
+                        <tr>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) TASAS Bs</td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($monto_total_pagar ,$dos_decimales,'.',',') ?></b></td>
+                        </tr>
+                        
+                        
+                        
+                        <tr>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) OTROS PAGOS NO SUJETO IVA Bs</td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($monto_total_pagar ,$dos_decimales,'.',',') ?></b></td>
+                        </tr>
+                        
+                        
+                        <tr>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(+) AJUSTES NO SUJETOS A IVA Bs</td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($monto_total_pagar ,$dos_decimales,'.',',') ?></b></td>
+                        </tr>
+                        
+                        
+                        
+                        <tr>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>IMPORTE BASE CREDITO FISCAL</b></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($monto_total_pagar ,$dos_decimales,'.',',') ?></b></td>
+                        </tr>
+                        
+                        
+                        
                     <?php } ?>
                     
                     <!-------------- ICE / ICE ESPECIFICO ---------->
@@ -592,7 +695,7 @@ border-bottom : 1px solid #aaa;
                     <?php } ?>
                     
                     <!-------------- MONTO A PAGAR ---------->
-                    <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
+                    <?php if($factura[0]['docsec_codigoclasificador']!=2 && $factura[0]['docsec_codigoclasificador']!=39 && $factura[0]['docsec_codigoclasificador']!=12 && $factura[0]['docsec_codigoclasificador']!=13 && $factura[0]['docsec_codigoclasificador']!=51){ ?>
                     <tr>           
                         
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO A PAGAR Bs</b></td>
@@ -602,19 +705,23 @@ border-bottom : 1px solid #aaa;
                     
                     <!-------------- IMPORTE BASE CREDITO FISCAL ---------->
                     <?php
-                    if ($factura[0]['docsec_codigoclasificador'] != 8){
-                        $elimporte =  "IMPORTE BASE CR&Eacute;DITO FISCAL";
-                        if($opc == 12){ //Comercializacion de hidrocarburos
-                            $elimporte =  "IMPORTE BASE C/F MONTO LEY 317";
-                        } 
-                        
-                        ?> 
+
+                            
+                        if ($factura[0]['docsec_codigoclasificador'] != 8){
+                            $elimporte =  "IMPORTE BASE CRÉDITO FISCAL";
+                            if($opc == 12){ //Comercializacion de hidrocarburos
+                                $elimporte =  "IMPORTE BASE C/F MONTO LEY 317";
+                            } 
+
+                    if($factura[0]['docsec_codigoclasificador'] != 13){         ?> 
 
                     <tr>           
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b><?php echo $elimporte; ?></b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($importe_base_iva,$dos_decimales,'.',',')?></b></td>
                     </tr>
-                    <?php } ?>
+                    <?php } 
+                        
+                    } ?>
                 </table>
             </td>
         </tr>

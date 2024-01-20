@@ -405,50 +405,118 @@ class Mesa extends CI_Controller{
             $descuento = 0;
             $preferencia = "";
             
-        $sql = "insert into detalle_pedido(
-                pedido_id,
-                producto_id,
-                detalleped_codigo,
-                detalleped_foto,
-                detalleped_nombre,
-                detalleped_unidad,
-                detalleped_costo,
-                detalleped_cantidad,
-                detalleped_precio,
-                detalleped_descuento,
-                detalleped_subtotal,
-                detalleped_total,
-                detalleped_preferencia
-                )
-                (
-                select
-                ".$pedido_id.",
-                producto_id,
-                producto_codigo,
-                producto_foto,
-                producto_nombre,
-                producto_unidad,
-                producto_costo,
-                ".$cantidad.",
-                producto_precio - ".$descuento.",
-                 0,
-                ".$cantidad." * (producto_precio - ".$descuento."),
-                ".$cantidad." * (producto_precio - ".$descuento."),
-                '".$preferencia."'
-                from producto where producto_id = ".$producto_id."
-                )";
-            $this->Venta_model->ejecutar($sql);
             
+            //Verificar si el producto existe
+            $sql = "select * from detalle_pedido where pedido_id = {$pedido_id} and producto_id = {$producto_id}";
+            $resultado = $this->Venta_model->consultar($sql);
             
-            $sql = "update pedido p
-                    set
-                    p.pedido_subtotal = (select sum(d.detalleped_subtotal) as total from detalle_pedido d where d.pedido_id = {$pedido_id} group by p.pedido_id),
-                    p.pedido_total = p.pedido_subtotal
-                    where p.pedido_id = {$pedido_id}";
-            $this->Venta_model->ejecutar($sql);
+            if(isset($resultado)){
+            
+                if(! sizeof($resultado)>0){
+            
+                $sql = "insert into detalle_pedido(
+                        pedido_id,
+                        producto_id,
+                        detalleped_codigo,
+                        detalleped_foto,
+                        detalleped_nombre,
+                        detalleped_unidad,
+                        detalleped_costo,
+                        detalleped_cantidad,
+                        detalleped_precio,
+                        detalleped_descuento,
+                        detalleped_subtotal,
+                        detalleped_total,
+                        detalleped_preferencia
+                        )
+                        (
+                        select
+                        ".$pedido_id.",
+                        producto_id,
+                        producto_codigo,
+                        producto_foto,
+                        producto_nombre,
+                        producto_unidad,
+                        producto_costo,
+                        ".$cantidad.",
+                        producto_precio - ".$descuento.",
+                         0,
+                        ".$cantidad." * (producto_precio - ".$descuento."),
+                        ".$cantidad." * (producto_precio - ".$descuento."),
+                        '".$preferencia."'
+                        from producto where producto_id = ".$producto_id."
+                        )";
+                    $this->Venta_model->ejecutar($sql);
 
-            echo json_encode(true);
-            
+
+                    $sql = "update pedido p
+                            set
+                            p.pedido_subtotal = (select sum(d.detalleped_subtotal) as total from detalle_pedido d where d.pedido_id = {$pedido_id} group by p.pedido_id),
+                            p.pedido_total = p.pedido_subtotal
+                            where p.pedido_id = {$pedido_id}";
+                    $this->Venta_model->ejecutar($sql);
+
+                    echo json_encode(true);
+                }else{
+                    
+//            
+//                $sql = "insert into detalle_pedido(
+//                        pedido_id,
+//                        producto_id,
+//                        detalleped_codigo,
+//                        detalleped_foto,
+//                        detalleped_nombre,
+//                        detalleped_unidad,
+//                        detalleped_costo,
+//                        detalleped_cantidad,
+//                        detalleped_precio,
+//                        detalleped_descuento,
+//                        detalleped_subtotal,
+//                        detalleped_total,
+//                        detalleped_preferencia
+//                        )
+//                        (
+//                        select
+//                        ".$pedido_id.",
+//                        producto_id,
+//                        producto_codigo,
+//                        producto_foto,
+//                        producto_nombre,
+//                        producto_unidad,
+//                        producto_costo,
+//                        ".$cantidad.",
+//                        producto_precio - ".$descuento.",
+//                         0,
+//                        ".$cantidad." * (producto_precio - ".$descuento."),
+//                        ".$cantidad." * (producto_precio - ".$descuento."),
+//                        '".$preferencia."'
+//                        from producto where producto_id = ".$producto_id."
+//                        )";
+//                    $this->Venta_model->ejecutar($sql);
+
+
+                    $sql = "update detalle_pedido d
+                            set                            
+                            d.detalleped_cantidad = d.detalleped_cantidad + {$cantidad},
+                            d.detalleped_subtotal = d.detalleped_cantidad * d.detalleped_precio,
+                            d.detalleped_total = d.detalleped_cantidad * d.detalleped_precio
+                            where d.detalleped_id = {$resultado[0]["detalleped_id"]}";
+                    $this->Venta_model->ejecutar($sql);
+
+                    $sql = "update pedido p
+                            set
+                            p.pedido_subtotal = (select sum(d.detalleped_subtotal) as total from detalle_pedido d where d.pedido_id = {$pedido_id} group by p.pedido_id),
+                            p.pedido_total = p.pedido_subtotal
+                            where p.pedido_id = {$pedido_id}";
+                    $this->Venta_model->ejecutar($sql);
+
+                    echo json_encode(true);                    
+                    
+                    
+                }
+                
+                
+            }
         }
 
 

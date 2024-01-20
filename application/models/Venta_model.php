@@ -180,7 +180,7 @@ class Venta_model extends CI_Model
                 where d.usuario_id = ".$usuario_id."
                 order by d.detalleven_id ".$orden;
 
-        
+        //echo $sql;
         $detalle = $this->db->query($sql)->result_array();
         return $detalle;
     }

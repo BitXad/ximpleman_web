@@ -2368,7 +2368,7 @@ function edit($venta_id){
             $prec_total += $d['detalleven_precio'] * $d['detalleven_cantidad'];
         }
                 
-        $bitacoracaja_evento = "MODIFICAR VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
+        $bitacoracaja_evento = "MODIFIQUE VENTA Nº 00".$venta_id." CLIENTE:".$cliente[0]['cliente_nombre']."| PROD.: ".$cont." | PREC.TOT.: ".$prec_total;
         $bitacoracaja_tipo = 2;
         
         $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 

@@ -2,7 +2,8 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/mesa.js'); ?>" type="text/javascript"></script>
 <!--<script src="<?php echo base_url('resources/js/funciones_pedido.js'); ?>"></script>-->
-<link href="<?php echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
+<link href="<?php // echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitablagris.css'); ?>" rel="stylesheet">
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -104,10 +105,21 @@ function cerrar_ventana(){
 </script>   
 
 <style type="text/css">
-button{
+/*button{
   padding:0;
-  border: 0;
+  border: 5px solid black;
+}*/
+
+@font-face {
+  font-family: "Edwardian"; /* El nombre que le das a la fuente */
+  src: url(<?php  echo base_url("resources/fonts/edwardian.ttf"); ?>); /* La ruta del archivo de la fuente */
 }
+
+/* Aplica la fuente Edwardian al botón */
+titulo {
+  font-family: "Edwardian"; /* El nombre de la fuente que definiste */
+}
+
 </style>   
 
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
@@ -119,9 +131,6 @@ button{
 
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
 <input type="text" value='<?php echo json_encode($preferencia); ?>' id="preferencias" hidden>
-
-<!--<input type="text" id="pedido_id" value="0" name="pedido_id"  hidden>-->
-<!--<input type="text" id="mesa_id" value="0" name="mesa_id"  hidden>-->
 
 <input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
 <input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio"  hidden>
@@ -189,6 +198,7 @@ if($cliente[0]['cliente_id'] >0){
 
 <input type="text" id="pedido_id" value="0" hidden>
 <input type="text" id="mesa_id" value="0" hidden>
+<input type="text" id="ultimamesa_id" value="0" hidden>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -200,26 +210,33 @@ $ancho_boton = $parametro["parametro_anchoboton"]."px";
 $alto_boton = $parametro["parametro_altoboton"]."px";
 $ancho_imagen = $parametro["parametro_anchoimagen"]."px";
 $alto_imagen = $parametro["parametro_altoimagen"]."px";
-$tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
+$tamanio_fuente = $parametro["parametro_tamanioletrasboton"]."px";
+$espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
 
 
 ?>
 
+<div class="box-header" style="background: black; color: white; padding: 0px;">
+    <center>        
+        <?php $cad = $empresa[0]["empresa_nombre"]; ?>
+        <titulo style="font-size: 40px;"><?php echo strtolower($cad); ?></titulo>
+    </center>
+</div>
+    
+<!--
 <div class="box-header">
     <center>
         <font size='4' face='Arial'><b><?php echo $empresa[0]["empresa_nombre"]; ?></b></font>
         <br><font size='2' face='Arial'>Mesas: <?php echo sizeof($mesa); ?></font>
-    <!--    <div class="box-tools no-print">
+        <div class="box-tools no-print">
             <a href="<?php echo site_url('mesa/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Mesa</a> 
-        </div>-->
+        </div>
         
     </center>
-</div>
-
-<div class="row">
+    <div class="row">
     <div class="col-md-12">
         <div class="col-md-4">
-            <!--------------------- parametro de buscador --------------------->
+            ------------------- parametro de buscador -------------------
             
                 <select id="select_categoria" class="form-control">
                     
@@ -230,22 +247,27 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
                     
                 </select>
             
-            <!--------------------- fin parametro de buscador --------------------->
+            ------------------- fin parametro de buscador -------------------
         </div>
         
         <div class="col-md-8">
-            <!--------------------- parametro de buscador --------------------->
+            ------------------- parametro de buscador -------------------
                       <div class="input-group"> <span class="input-group-addon">Buscar</span>
                         <input id="filtrarmesa" type="text" class="form-control" placeholder="Ingrese nombre de la mesa..">
                       </div>
-                <!--------------------- fin parametro de buscador --------------------->
+                ------------------- fin parametro de buscador -------------------
         </div>
-</div>
+    </div>
+    </div>
+    
+</div>-->
 
-    <div class="row">
+       
+            
+    <div class="container-fluid" style="height: 100%; background-image: url(<?php echo base_url("resources/images/sistema/fondo.jpg"); ?>); background-repeat: no-repeat;background-size: cover; ">
         
-    <div class="col-md-8">
-        <div class="box">
+    <div class="col-md-<?=$espacio_mesas; ?>" style="height: 100%; background-color: rgba(255, 0, 0, 0);">
+        <div class="row" style="height: 100%; background-color: rgba(255, 0, 0, 0);">
             <div class="box-body table-responsive">
                     <?php
                         $cont = 0;
@@ -270,42 +292,46 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
                                 
                                 
                                 <?php if($m["estado_id"]==38){ ?>
-                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>; <?= $estilo ?>" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
+                            
+                                <button class="btn btn-default btn-sq-lg" style="border-bottom: #002166 dashed 2px; width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)" id="mesa<?= $m["mesa_id"]?>">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"/>
-                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>                                    
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>" id="imagen<?=$m["mesa_id"] ?>" />
+                                    <br><span class="btn btn-success btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span>
+                                    <br>
+            
                                 </button>
-                                
+                            
+                            
                                 <?php } ?>
                                 
                                 <?php if($m["estado_id"]==39){ ?>
-                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>" onclick="mostrar_pedido(<?= $m["mesa_id"]; ?>)" id="mesa<?= $m["mesa_id"]?>">
+                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="mostrar_pedido(<?= $m["mesa_id"]; ?>)" id="mesa<?= $m["mesa_id"]?>">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"/>
-                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
-    
-                            <!--<label class="btn btn-xs btn-facebook"><?php echo "<b>".$m["mesa_nombre"]."</b>" ?></label>-->
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"  id="imagen<?=$m["mesa_id"] ?>" />
+                                    <br><span class="btn btn-danger btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span>
+                                    <br>
+            
                                 </button>
                                 
                                 <?php } ?>
                                 <?php if($m["estado_id"]==40){ ?>
                                 
-                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
+                                <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoreservada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"/>
-                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>    
-    
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoreservada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>" id="imagen<?=$m["mesa_id"] ?>" />
+                                    <br><span class="btn btn-default btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span>
+                                    <br>
                                 </button>
                                 
                                 <?php } ?>
 
                                 
                                 <?php if($m["estado_id"]==41){ ?>
-                                <button class="btn btn-default btn-sq-lg"  style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
+                                <button class="btn btn-default btn-sq-lg"  style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
                                     
-                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconomantenimiento"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"/>
-                                    <br><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?>
-    
+                                    <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconomantenimiento"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>" id="imagen<?=$m["mesa_id"] ?>" />
+                                    <br><span class="btn btn-github btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span>
+                                    <br>
                                 </button>
                                 
                                 <?php } ?>
@@ -322,10 +348,20 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
             </div>
         </div>
     </div>
+
+        <!--<!-- Boton de muestra con imagen de fondo y texto al centro -->
+    <!-----------    
+        <button class="btn btn-facebook btn-xs" style="background: url(<?php echo base_url("resources/images/mesas/libre.png") ?>) center/cover; background-size:<?= $ancho_imagen ?> <?= $alto_imagen ?>; position: absolute; display: inline-block; background-color: rgba(255, 0, 0, 0);  width:<?= $ancho_imagen ?>; height:<?= $alto_imagen ?>; border: none;" >
+
+        <b style="font-size: 15px;">105</b><br>
+        <b style="font-size: 6x;">10 Pers.</b>
+
+        </button>
+    ---------->
     
-    <div class="col-md-4">
-        <div class="col-md-12">
-            <div class="box">
+    <div class="col-md-<?php echo (12 - $espacio_mesas); ?>" style="background-color: rgba(255, 0, 0, 0);">
+        <div class="col-md-12" style="background-color: rgba(255, 0, 0, 0);">
+            <div class="row" style="background-color: rgba(255, 0, 0, 0);">
                 
                     
                 <div class="box-body">
@@ -350,8 +386,9 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
     </div>
     
     </div>
-    
-</div>
+
+
+
 
 <!-- modal opciones -->
 <!-- Button trigger modal -->
@@ -420,7 +457,8 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
         </div>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-primary" onclick="verificar_usuario()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Aceptar</button>
+          <!--<button type="button" class="btn btn-primary" onclick="verificar_usuario()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Aceptar</button>-->
+          <button type="button" class="btn btn-primary" onclick="registrar_operacion()" data-dismiss="modal"><fa class="fa fa-floppy-o"></fa> Aceptar</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
       </div>
     </div>
@@ -702,3 +740,34 @@ $tamanio_fuente = $parametro["parametro_tamanioletrasboton"];
     </div>
   </div>
 </div>
+
+
+<!--  <style>
+    /* Estilo para el botón */
+    .boton-con-imagen {
+      position: relative;
+      display: inline-block;
+      padding: 10px 20px; /* Ajusta según sea necesario */
+      background: url('<?php echo base_url("resources/images/mesas/libre.png"); ?>') center/cover; /* Especifica la ruta de tu imagen y el estilo de fondo */
+      color: #fff; /* Color del texto */
+      font-size: 16px; /* Tamaño de fuente del texto */
+      text-align: center;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Estilo para el texto del botón */
+    .texto-boton {
+      position: relative;
+      z-index: 2; /* Coloca el texto sobre la imagen */
+    }
+  </style>
+</head>
+<body>
+
+   Botón con imagen y texto 
+  <button class="boton-con-imagen">
+    <span class="texto-boton">Texto del botón</span>
+  </button>
+
+</body>-->
