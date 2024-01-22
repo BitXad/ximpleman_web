@@ -97,6 +97,7 @@ ALTER TABLE `parametros` ADD COLUMN `parametro_cerrarventanas` INTEGER DEFAULT N
 ALTER TABLE `usuario` ADD COLUMN `usuario_turno` varchar(50) DEFAULT NULL;
 ALTER TABLE `usuario` ADD COLUMN `usuario_inicioturno` time DEFAULT NULL;
 ALTER TABLE `usuario` ADD COLUMN `usuario_finturno` time DEFAULT NULL;
+ALTER TABLE `pedido` ADD COLUMN `mesa_id` int(11) DEFAULT NULL;
 
 update usuario
 set 

@@ -1217,11 +1217,17 @@ function compraproveedor(opcion)
     // var base_url = document.getElementById('base_url').value;
     
     if (opcion == 1){
+    
+        let select = document.getElementById("select_compra").value;
         
-        if (isNaN(parametro))
+        if (select == 7){
             controlador = base_url+'compra/buscarporcodigo/';
-        else    
-            controlador = base_url+'compra/buscarporcodigo/';
+            $("#comprar").val("");
+            
+        }
+        else{            
+            controlador = base_url+'compra/buscarprove/';
+        }    
         
         parametro = document.getElementById('comprar').value; 
         
