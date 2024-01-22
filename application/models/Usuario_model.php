@@ -308,4 +308,20 @@ class Usuario_model extends CI_Model
             where usuario_id = $usuario_id"
         )->row_array();
     }
+    
+    function get_autorizacion($usuario_id)
+    {
+        $sql = "select usuario_autorizado from usuario where usuario_id = ".$usuario_id;        
+        $respuesta = $this->db->query($sql)->row_array();
+        return $respuesta;
+        
+    }
+
+    function anular_autorizacion($usuario_id)
+    {
+        $sql = "update usuario set usuario_autorizado = 0 where usuario_id = ".$usuario_id;        
+        $this->db->query($sql);
+        return true;
+        
+    }
 }

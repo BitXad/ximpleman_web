@@ -66,7 +66,14 @@ class Dashb extends CI_Controller
                 $data['sucursales'] = $this->Sucursales_model->get_sucursales();
                 $data['punto_venta'] = $session_data['puntoventa_codigo'];
                 $data['sistema'] = $this->Sistema_model->get_sistema();
- 
+
+/*                
+                $now = "'".date("Y-m-d H:i:s")."'";
+                $sql = "SELECT b.*, u.usuario_nombre FROM bitacora_caja b, usuario u
+                      WHERE b.bitacoracaja_fecha = date({$now}) and b.usuario_id = u.usuario_id";                
+                $data['operaciones_observadas'] = $this->Venta_model->consultar($sql);
+*/
+                
                 $usuario_id = $session_data['usuario_id'];
                 $data['usuario'] = $usuario_id;
                 

@@ -64,7 +64,9 @@ class Compra extends CI_Controller{
         $data['sistema'] = $this->sistema;
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            
             return true;
+            
         }else{
             $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
@@ -78,6 +80,8 @@ class Compra extends CI_Controller{
         
         if($this->acceso(1)){
             
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['autorizado'] = $this->Usuario_model->get_autorizacion($this->session_data['usuario_id']);
             $data['parametro'] = $this->parametros;
             $data['sistema'] = $this->sistema;
             $data['page_title'] = "Compra";
@@ -236,6 +240,27 @@ class Compra extends CI_Controller{
         }              
     }
 
+
+    function buscarporcodigo(){
+        
+        if ($this->input->is_ajax_request()) {
+            
+            $data['sistema'] = $this->sistema;
+            $parametro = $this->input->post('parametro');   
+            
+            if ($parametro!=""){
+                //$datos = $this->Compra_model->buscarporcodigo($parametro);  
+                $datos = $this->Compra_model->buscarporcodigo($parametro);
+            //$datos = $this->Inventario_model->get_inventario_bloque();
+                echo json_encode($datos);
+            }
+            else echo json_encode(null);
+        }
+        else
+        {                 
+            show_404();
+        }              
+    }
 
     function buscarprove(){
         
@@ -606,66 +631,81 @@ class Compra extends CI_Controller{
         $data['sistema'] = $this->sistema;
         $data['parametro'] = $this->parametros;
         
+        //Quitar autorizacion
+
+        if($this->session_data['tipousuario_id']!=1 && !$this->Usuario_model->get_autorizacion($this->session_data['usuario_id'])){ 
+            
+            $this->index();
+            return false;
+//            exit("No tiene autorizacion para realizar esta operación...!");
+
+        }else{
+            
+            $this->Usuario_model->anular_autorizacion($this->session_data['usuario_id']);
+        }
+        
+        //**********************
+        
         if($this->acceso(1)){
-            
-            $data['page_title'] = "Compra";
-            $usuario_id = $this->session_data['usuario_id'];
-            $data['tipo_usu'] = $this->session_data['tipousuario_id'];
-            // check if the compra exists before trying to edit it
-             $data['compra'] = $this->Compra_model->get_compra($compra_id);
-             $compra = $this->Compra_model->get_proveedor_id($compra_id);
-             $proveedor_id = $compra[0]['proveedor_id'];
-            
-             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-             $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc(); //0-->bs; 1-->USD
-             $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
-             $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis(); 
-             
-             if ($bandera==0) {
-              $this->Compra_model->volvermal($compra_id);
-             }
 
-             $data['rolusuario'] = $this->session_data['rol'];
-             if($proveedor_id==0)     
-             {   
-               $data['compra'] = $this->Compra_model->get_compra_proveedor($compra_id); 
-               /* $data['compra'] = $this->Compra_model->get_all_compra($params);*/
+                $data['page_title'] = "Compra";
+                $usuario_id = $this->session_data['usuario_id'];
+                $data['tipo_usu'] = $this->session_data['tipousuario_id'];
+                // check if the compra exists before trying to edit it
+                 $data['compra'] = $this->Compra_model->get_compra($compra_id);
+                 $compra = $this->Compra_model->get_proveedor_id($compra_id);
+                 $proveedor_id = $compra[0]['proveedor_id'];
 
-               $data['compra_id'] = $compra_id;
-               $data['compra'] = $this->Compra_model->get_compra($compra_id);
-               $data['bandera'] = $bandera;
-               /* $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);*/
+                 $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                 $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc(); //0-->bs; 1-->USD
+                 $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+                 $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis(); 
 
-               
-               $this->load->model('Tipo_transaccion_model');
-               $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+                 if ($bandera==0) {
+                  $this->Compra_model->volvermal($compra_id);
+                 }
+
+                 $data['rolusuario'] = $this->session_data['rol'];
+                 if($proveedor_id==0)     
+                 {   
+                   $data['compra'] = $this->Compra_model->get_compra_proveedor($compra_id); 
+                   /* $data['compra'] = $this->Compra_model->get_all_compra($params);*/
+
+                   $data['compra_id'] = $compra_id;
+                   $data['compra'] = $this->Compra_model->get_compra($compra_id);
+                   $data['bandera'] = $bandera;
+                   /* $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);*/
 
 
-               $this->load->model('Proveedor_model');
-               $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
-
-               $this->load->model('Forma_pago_model');
-               $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
-
-               $this->load->model('Detalle_compra_model');
-               $data['detalle_compra'] = $this->Compra_model->get_detalle_compra_aux($compra_id);
+                   $this->load->model('Tipo_transaccion_model');
+                   $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
 
 
-               $this->load->model('Producto_model');
-               $data['inventario'] = $this->Producto_model->get_all_productos();  
-               $data['unidades'] = $this->Producto_model->get_all_unidad();
-                        //$this->load->model('Inventario_model');
-                        //$data['inventario'] = $this->Inventario_model->get_all_inventario();
-               $this->load->model('Documento_respaldo_model');
-               $data['all_documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo(); 
+                   $this->load->model('Proveedor_model');
+                   $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
 
-               $this->load->model('Categoria_producto_model');
-               $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+                   $this->load->model('Forma_pago_model');
+                   $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
 
-              
+                   $this->load->model('Detalle_compra_model');
+                   $data['detalle_compra'] = $this->Compra_model->get_detalle_compra_aux($compra_id);
 
-               $data['_view'] = 'compra/edit';
-               $this->load->view('layouts/main',$data);
+
+                   $this->load->model('Producto_model');
+                   $data['inventario'] = $this->Producto_model->get_all_productos();  
+                   $data['unidades'] = $this->Producto_model->get_all_unidad();
+                            //$this->load->model('Inventario_model');
+                            //$data['inventario'] = $this->Inventario_model->get_all_inventario();
+                   $this->load->model('Documento_respaldo_model');
+                   $data['all_documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo(); 
+
+                   $this->load->model('Categoria_producto_model');
+                   $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+
+
+
+                   $data['_view'] = 'compra/edit';
+                   $this->load->view('layouts/main',$data);
 
 
             } 

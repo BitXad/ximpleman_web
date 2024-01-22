@@ -2,7 +2,7 @@
     display: flex;
     max-width: 100%;
     max-height: 5%;
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     text-align: center;
     
     /*font-family: "Arial", arial narrow;
@@ -16,7 +16,7 @@
     display: flex;
     max-width: 100%;
     max-height: 5%;
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     text-align: center;
 }
 .micontenidoInforme{
@@ -26,7 +26,7 @@
     display: flex;
     max-width: 100%;
     max-height: 5%;
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     text-align: center;
 }
 .micontenedorlineas hr{
@@ -45,7 +45,7 @@
     font-size: 12pt;
 }
 /*#cabcentro label{
-    font-family: "Arial", Arial Narrow;
+    font-family: "Arial", Arial;
     font-size: 10pt;
 }*/
 #cabderecha{
@@ -55,13 +55,13 @@
 
 #titulo{
     text-align: center;
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     font-size: 12pt;
     font-weight: bold;
     line-height: 12px;
 }
 #titulo .lahora{
-    /*font-family: "Arial Narrow", Arial;*/
+    /*font-family: "Arial", Arial;*/
     font-size: 8pt;
     /*text-align: center;*/
     font-weight: normal;
@@ -81,26 +81,26 @@
 .clientenombre{
     max-width: 100%;
     width: 100%;
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     font-size: 10pt;
 }
 .parametrosbusqueda{
     max-width: 100%;
     width: 100%;
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     font-size: 7pt;
     margin-top: 5px;
 }
 
 div center b{
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
 }
 div center div{
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     font-size: 10pt;
 }
 div b{
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     font-size: 10pt;
     margin: 0;
     padding: 0;
@@ -113,7 +113,7 @@ div b{
     max-width: 100%;
     width: 100%;
     max-height: 5%;
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     text-align: center;
 }
 #cabizquierdafirmas{
@@ -135,7 +135,7 @@ div b{
 .cabsoloderechafirmas{
     /*display: block;*/
     white-space: nowrap;
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     width: 20%;
     font-size: 8pt;
 }
@@ -143,12 +143,12 @@ div b{
 
 
 #mitablaimpresion {
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     border-collapse: collapse;
     width: 100%;
 }
 #leyenda{
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     font-size: 8pt;
 }
 #mitablaimpresion td, #mitablaimpresion th {
@@ -164,7 +164,7 @@ div b{
 #mitablaimpresion th {
     /*padding-top: 12px;
     padding-bottom: 12px; */
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     text-align: left;
     background-color: #3c8dbc;
     color: white;
@@ -173,7 +173,7 @@ div b{
     padding: 2px;
 }
 #mitablaimpresion td {
-    font-family: "Arial Narrow", Arial;
+    font-family: "Arial", Arial;
     font-size: 7pt;
     padding: 1px;
 }

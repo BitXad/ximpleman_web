@@ -49,8 +49,10 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 
 <input type="text" id="decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="decimales" hidden>
-<?php $decimales = $parametro['parametro_decimales']; 
-?>
+<?php $decimales = $parametro['parametro_decimales'];?>
+<input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
+<input type="text" id="compra_idie" value="0" name="compra_idie"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="autorizado" value="<?php echo $autorizado["usuario_autorizado"]; ?>" name="autorizado" hidden>
 
 <!-------------------------------------------------------->
 <div class="row micontenedorep" style="display: none" id="cabeceraprint">
@@ -271,9 +273,9 @@
           $total = $total + $subto;
           ?>
           <tr>
-              <td><?php echo $cont ?></td>
+              <td style='background: #<?php echo $c['estado_color']; ?>'><?php echo $cont ?></td>
               <!--<td><?php //echo $p['compra_id']; ?></td>-->
-              <td><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b></font><font size="1">[<?php echo $c['proveedor_id']; ?>]</font> <br>
+              <td style='background: #<?php echo $c['estado_color']; ?>'><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b></font><font size="1">[<?php echo $c['proveedor_id']; ?>]</font> <br>
                 <?php
                 if($c['tipotrans_nombre']=='CREDITO'){
                     
@@ -287,15 +289,15 @@
                 <span class="btn-info btn-xs"><?php echo $c['tipotrans_nombre']; ?></span><br>
               <?php }  ?>
                 <?php if ($c['compra_caja']==1){  ?><span class="btn-warning btn-xs">  <?php echo "Pago con Caja"; } ?><?php if ($c['compra_caja']==2){  ?><span class="btn-warning btn-xs">  <?php echo "Orden de Pago"; } ?><?php if ($c['compra_caja']==0){  ?><span class="btn-warning btn-xs">  <?php echo "Ninguno"; } ?></span></td>
-                <td><center><font size="4"><b><?php echo $c['compra_id']; ?></b></font></center></td>
-                <td align="right" ><?php echo "Sub Total: ".number_format(is_numeric($c['compra_subtotal'])?$c['compra_subtotal']:0,$decimales,'.',','); ?><br>
+                <td style='background: #<?php echo $c['estado_color']; ?>'><center><font size="4"><b><?php echo $c['compra_id']; ?></b></font></center></td>
+                <td align="right" style='background: #<?php echo $c['estado_color']; ?>'><?php echo "Sub Total: ".number_format(is_numeric($c['compra_subtotal'])?$c['compra_subtotal']:0,$decimales,'.',','); ?><br>
                   <?php echo "Desc.: ".number_format(is_numeric($c['compra_descuento'])?$c['compra_descuento']:0,$decimales,'.',','); ?><br>
                   <?php echo "Desc.Global: ".number_format(is_numeric($c['compra_descglobal'])?$c['compra_descglobal']:0,$decimales,'.',','); ?><br>  
                   <font size="3"><b><?php echo number_format(is_numeric($c['compra_totalfinal'])?$c['compra_totalfinal']:0,$decimales,'.',','); ?></b></font>
                 </td>
-                <td style="text-align:center;"><?= $c['forma_nombre'] ?></td>
-                <td style="text-align:center;"><?= $c['banco_nombre'] ?></td>
-                  <td align="center"><?php echo date('d/m/Y',strtotime($c['compra_fecha'])) ; ?><br>
+                <td style="text-align:center; background: #<?php echo $c['estado_color']; ?>"><?= $c['forma_nombre'] ?></td>
+                <td style="text-align:center; background: #<?php echo $c['estado_color']; ?>"><?= $c['banco_nombre'] ?></td>
+                  <td align="center" style='background: #<?php echo $c['estado_color']; ?>'><?php echo date('d/m/Y',strtotime($c['compra_fecha'])) ; ?><br>
                     <?php echo $c['compra_hora']; ?></td>
                   <!--------------------- ESTADO DE LA COMPRA  ---------------------->
                     <td align="center" style='background: #<?php echo $c['estado_color']; ?>'>
@@ -328,9 +330,9 @@
                     </td>
                     
                   <!--------------------- USUARIO ---------------------->
-                    <td align="center"> <?php echo $c['usuario_nombre']; ?></td>
+                    <td align="center" style='background: #<?php echo $c['estado_color']; ?>'> <?php echo $c['usuario_nombre']; ?></td>
                     
-                    <td class="no-print">
+                    <td class="no-print" style="text-align:center; background: #<?php echo $c['estado_color']; ?>">
                         <?php if($c['compra_placamovil']==1) { ?>
                          <a href="#" data-toggle="modal" data-target="#cambi<?php echo $c['compra_id']; ?>" class="btn btn-info btn-xs" title='Modificar Compra'>
                            <i class="fa fa-pencil "></i>

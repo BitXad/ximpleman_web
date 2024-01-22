@@ -797,4 +797,88 @@ class Usuario extends CI_Controller
             show_error('El Usuario que intentas dar de Alta no existe!....');
         }
     }
+    
+    /* Autorizar usuario*/
+    function autorizar_usuario($elusuario_id)
+    {
+        //$elusuario_id = $this->input->post('usuario_id');
+        $usuario = $this->Usuario_model->get_usuario($elusuario_id);
+        // check if the usuario exists before trying to delete it
+        if(isset($usuario['usuario_id']))
+        {
+            $bitacora_accion = "update";
+            $bitacora_objetivo = "autorizar usuario";
+            $bitacora_fecha = date("Y-m-d");
+            $bitacora_hora = date("H:i:s");
+            $bitacora_sql = "updade usuario set usuario_autorizado = 1 where usuario_id = ".$usuario['usuario_id']."; Usuario: ".$usuario["usuario_nombre"];
+            $bitacora_valoranterior = "usuario_autorizado = 0";
+            $bitacora_valornuevo = "usuario_autorizado = 1";
+            
+            $usuario_id = $this->session_data['usuario_id'];
+            
+            $params = array(
+                'bitacora_accion' => $bitacora_accion,
+                'bitacora_objetivo' => $bitacora_objetivo,
+                'bitacora_fecha' => $bitacora_fecha,
+                'bitacora_hora' => $bitacora_hora,
+                'bitacora_sql' => $bitacora_sql,
+                'bitacora_valoranterior' => $bitacora_valoranterior,
+                'bitacora_valornuevo' => $bitacora_valornuevo,
+                'usuario_id' => $usuario_id,
+            );
+            $bitacora_id = $this->Bitacora_model->add_bitacora($params);
+
+            $el_usuario_id = $usuario['usuario_id'];
+            $params = array(
+                'usuario_autorizado' => 1,
+            );
+            $this->Usuario_model->update_usuario($el_usuario_id,$params);
+            //echo json_encode("ok");
+            redirect('usuario');
+        }else{
+            show_error('El Usuario que intentas autorizar no existe!....');
+        }
+    }
+    
+    /* Desautorizar usuario*/
+    function desautorizar_usuario($elusuario_id)
+    {
+        //$elusuario_id = $this->input->post('usuario_id');
+        $usuario = $this->Usuario_model->get_usuario($elusuario_id);
+        // check if the usuario exists before trying to delete it
+        if(isset($usuario['usuario_id']))
+        {
+            $bitacora_accion = "update";
+            $bitacora_objetivo = "desautorizar usuario";
+            $bitacora_fecha = date("Y-m-d");
+            $bitacora_hora = date("H:i:s");
+            $bitacora_sql = "updade usuario set usuario_autorizado = 0 where usuario_id = ".$usuario['usuario_id']."; Usuario: ".$usuario["usuario_nombre"];
+            $bitacora_valoranterior = "usuario_autorizado = 1";
+            $bitacora_valornuevo = "usuario_autorizado = 0";
+            
+            $usuario_id = $this->session_data['usuario_id'];
+            
+            $params = array(
+                'bitacora_accion' => $bitacora_accion,
+                'bitacora_objetivo' => $bitacora_objetivo,
+                'bitacora_fecha' => $bitacora_fecha,
+                'bitacora_hora' => $bitacora_hora,
+                'bitacora_sql' => $bitacora_sql,
+                'bitacora_valoranterior' => $bitacora_valoranterior,
+                'bitacora_valornuevo' => $bitacora_valornuevo,
+                'usuario_id' => $usuario_id,
+            );
+            $bitacora_id = $this->Bitacora_model->add_bitacora($params);
+
+            $el_usuario_id = $usuario['usuario_id'];
+            $params = array(
+                'usuario_autorizado' => 0,
+            );
+            $this->Usuario_model->update_usuario($el_usuario_id,$params);
+            //echo json_encode("ok");
+            redirect('usuario');
+        }else{
+            show_error('El Usuario que intentas quitar autorización no existe!....');
+        }
+    }
 }

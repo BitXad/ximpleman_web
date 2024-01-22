@@ -55,7 +55,7 @@
                         <th>#</th>
                         <th></th>
                         <th>Nombre/Usuario</th>
-                        <!--<th>Tipo</th>-->
+                        <th>Autorizacion</th>
                         <th>Email</th>
                         <th>Login</th>
                         <th>Perfil</th>
@@ -85,10 +85,39 @@
 
                     <tr>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $cont ?></td>
+                        
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/".$thumb_default."' width='40' height='40' class='img-circle'"; ?></center></td>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font>
                             <br>
                             <?php echo $u['tipousuario_descripcion']; ?></td>
+                      	
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>">
+                            <center>
+
+                            
+                            <?php
+                            if($tipo_usuario_id == 1){
+                            ?>
+                                <?php
+                                if($u['usuario_autorizado'] == 1){
+                                ?>
+                                    <a onclick="return confirm('ADVERTENCIA: ¿Desea QUITAR AUTORIZACION al usuario para operaciones especiales?')" href="<?php echo site_url('usuario/desautorizar_usuario/'.$u['usuario_id']); ?>" class="btn btn-xs" style='background-color: #00e765; color: white;' title="Quitar autorizacion usuario"><span class="fa fa-lock-open"></span></a>
+                                <?php
+                                }else{
+                                ?>
+                                    <a onclick="return confirm('ADVERTENCIA: ¿Desea ACTIVAR AUTORIZACION al usuario para operaciones especiales?')" href="<?php echo site_url('usuario/autorizar_usuario/'.$u['usuario_id']); ?>" class="btn btn-xs" style='background-color: #8e8e91; color: black;' title="Autorizar usuario"><span class="fa fa-lock"></span></a>
+                                <?php
+                                }
+                            }else{?>
+                                
+                                    <a onclick="return alert('ADVERTENCIA: No cuenta con atributos para habilitar autorizaciones...!')" class="btn btn-xs" style='background-color: #888; color: white;' title="Autorizacion usuario"><span class="fa fa-lock"></span></a>
+                            
+                            <?php }?>
+                        
+                            </center>
+                        </td>
+                        
+                        
                       	<td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['usuario_email']; ?></td>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['usuario_login']; ?></td>
                         <td class="text-center" style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['parametro_id']; ?></td>

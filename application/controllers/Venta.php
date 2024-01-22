@@ -3055,6 +3055,7 @@ function edit($venta_id){
         //**************** inicio contenido ***************  
             
         //************ inicio bitacora 
+        //$now = "'".date("Y-m-d H:i:s")."'";
         $data['sistema'] = $this->sistema;   
         $usuario_id = $this->session_data['usuario_id']; 
         

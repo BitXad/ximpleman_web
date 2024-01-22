@@ -910,11 +910,12 @@
                     <table class="table table-condensed">
                         <tr>
                             <th style="width: 10px">#</th>
-                            <th>Producto</th>
-                            <th>Codigo</th>
-                            <th>Existencia</th>
+                            <th>Operacion <input type="date" id="calendario_bitacora" value="<?php echo date("Y-m-d"); ?>" class="btn btn-default btn-xs" onchange="operaciones_observadas(2)" style="padding:0;"></th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Responsable</th>
                         </tr>
-                        <tbody id="tabla_existenciaminima"></tbody>
+                        <tbody id="tabla_operacionesobservadas"></tbody>
                     </table>
                 </div>
             </div>
@@ -1138,3 +1139,62 @@
     </div>
 </div>
 <!------------------------ F I N  modal para confirmar ejecutar orden compra ------------------->
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div hidden>
+    <button type="button" id="boton_operaciones" class="btn btn-default" data-toggle="modal" data-target="#modaloperacionesobservadas" >
+      ver modal
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modaloperacionesobservadas" tabindex="-1" role="dialog" aria-labelledby="modaloperacionesobservadas" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">OPERACIONES OBSERVADAS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-content">
+<!--			<div class="modal-header">
+                            
+
+                            <h4 class="modal-title" id="myModalLabel"><b>PEDIDOS/PREVENTAS</b></h4>
+                                
+                            <div class="input-group"> <span class="input-group-addon">Nombre</span>
+                                <input id="nombre_venta" type="text" class="form-control" placeholder="Nombre, para guardar la venta temporal" onKeyUp="this.value = this.value.toUpperCase();">
+                            </div>
+                                
+			</div>-->
+
+                        <div class="box-body table-responsive">
+                                <center style="font-size: 16px; font-weight: bold;">
+                                    <fa class="fa fa-cart-arrow-down"></fa> 
+                                    OPERACION OBSERVADA                                
+                                    <fa class="fa fa-clock-o"></fa> 
+                                </center>
+                                <br>
+                                <center id="operacion">
+                                
+                                </center>
+             
+                        </div>
+
+                        <div class="modal-footer" style="text-align: center">
+                            <!--<button type="button" class="btn btn-success"  data-dismiss="modal"  onclick="guardar_venta_temporal()"><fa class="fa fa-floppy-o"></fa> Guardar Venta</button>-->
+                            <button type="button" class="btn btn-default" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+            
+		</div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->

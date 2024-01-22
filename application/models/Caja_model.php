@@ -119,6 +119,13 @@ class Caja_model extends CI_Model
        
         return true;
     }
+    
+    function consultar($sql)
+    {
+       $res = $this->db->query($sql)->result_array();
+       
+        return $res;
+    }
 
     function get_caja_id($caja_id)
     {

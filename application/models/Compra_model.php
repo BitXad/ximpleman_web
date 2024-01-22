@@ -87,6 +87,31 @@ class Compra_model extends CI_Model
         return $compra;
     }
     
+    function buscarporcodigo($parametro)
+    {
+        $compra = $this->db->query("
+            SELECT
+               c.*,p.*, t.*, u.*, c.estado_id as 'elestado'
+
+            FROM
+                compra c, estado e, proveedor p, tipo_transaccion t, usuario u, detalle_compra dc, producto s
+
+            WHERE
+                s.producto_codigobarra = '{$parametro}'
+                and dc.producto_id = s.producto_id
+                and c.compra_id = dc.compra_id
+                and c.estado_id = e.estado_id
+                and c.proveedor_id = p.proveedor_id
+                and c.tipotrans_id = t.tipotrans_id
+                and c.usuario_id=u.usuario_id
+            ORDER BY c.compra_id DESC
+
+            
+        ")->result_array();
+
+        return $compra;
+    }
+    
     function buscarprovedo($parametro)
     {
         $compra = $this->db->query("
@@ -167,7 +192,8 @@ class Compra_model extends CI_Model
             ORDER BY `compra_hora` DESC 
         ")->result_array();
     }
-     function fechacompras($condicion)
+    
+    function fechacompras($condicion)
     {
        $compra = $this->db->query(
             "SELECT c.*, c.estado_id as 'elestado',

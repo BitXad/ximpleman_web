@@ -2,7 +2,10 @@
 
 
 /*
- 
+ --------------- SQL ---------------
+
+ALTER TABLE `usuario` ADD COLUMN `usuario_autorizado` INTEGER DEFAULT 0;
+
   
 update licencia set
 `licencia_fechaactivacion` = date(now()),

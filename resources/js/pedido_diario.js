@@ -502,3 +502,4 @@ function abrir_caja()
         }
     });
 }
+

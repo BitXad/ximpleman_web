@@ -505,4 +505,18 @@ class Caja extends CI_Controller{
                 redirect('admin/dashb');
         }
     }
+    
+    
+    function bitacora(){
+        
+        $condicion = $this->input->post("condicion");
+        
+       $sql = "SELECT b.*, u.usuario_nombre FROM bitacora_caja b, usuario u
+            WHERE {$condicion} and b.usuario_id = u.usuario_id";
+        $resultado = $this->Caja_model->consultar($sql);
+        
+        echo json_encode($resultado);
+        
+        
+    }
 }
