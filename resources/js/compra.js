@@ -1006,6 +1006,7 @@ function buscar_compras()
     // var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"compra";
     var opcion      = document.getElementById('select_compra').value;
+    let filtro      = "";
     
  
     var nowsql = now_sql();
@@ -1032,27 +1033,27 @@ function buscar_compras()
         filtro = " and date(compra_fecha) >= date_add(date("+nowsql+"), INTERVAL -1 WEEK)";//compras de la semana
         mostrar_ocultar_buscador("ocultar");
         $("#busquedaavanzada").html('De la Semana');
-            }
+    } //Compras por semana
 
     
     if (opcion == 4) 
     {   filtro = " ";//todos los compras
         mostrar_ocultar_buscador("ocultar");
 
-    }
+    } //Todas las compras
     
     if (opcion == 5) {
 
         mostrar_ocultar_buscador("mostrar");
         filtro = null;
-    }
+    } //Compras por fecha
     
             
     if (opcion == 6) {
         //alert("llega aqui...!");
         mostrar_ocultar_buscador("ocultar");
         filtro = " and NOT EXISTS (SELECT 1 FROM detalle_compra dc WHERE dc.compra_id = c.compra_id) ";
-    }
+    }  //Compras proveedor / codigo
 
     fechadecompra(filtro);
 }
@@ -1222,7 +1223,7 @@ function compraproveedor(opcion)
         
         if (select == 7){
             controlador = base_url+'compra/buscarporcodigo/';
-            $("#comprar").val("");
+            //$("#comprar").val("");
             
         }
         else{            
@@ -1364,7 +1365,7 @@ function compraproveedor(opcion)
                         html += "</tr>";
                    
                    $("#fechadecompra").html(html);
-                   
+                   $("#comprar").val("");
             }
                 
         },
@@ -1386,6 +1387,7 @@ function fechadecompra(filtro)
     var controlador = base_url+"compra/buscarfecha";
     var limite = 500000;
     var autorizado = document.getElementById('autorizado').value;
+    var select_compra = document.getElementById('select_compra').value;
 
     $.ajax({url: controlador,
            type:"POST",
@@ -1489,6 +1491,10 @@ function fechadecompra(filtro)
                                 html +="<button data-toggle='modal'  class='btn btn-xs btn-github' title='Ver compras perdidas' onclick='cargar_datosbackup("+registros[i]["compra_id"]+")'> <i class='fa fa-paperclip'></i> </button>";
 
                                 html += "<a href='#' data-toggle='modal' data-target='#anularmodal"+registros[i]["compra_id"]+"' class='btn btn-xs btn-warning' title='Anular Compra' ><i class='fa fa-minus-circle'></i></a>";
+                                
+                              if(select_compra==6)
+                                html +="<button class='btn btn-xs btn-danger' title='Eliminar compra Perdida' onclick='eliminar_compra_fallida("+registros[i]["compra_id"]+")'> <i class='fa fa-trash'></i> </button>";
+0                           
                             }else{
                                 html += "<br><span class='btn btn-info' style='line-height: 10px; font-size: 10px; padding:0;'><fa class='fa fa-lock'> </fa> Algunas operaciones<br>requieren autorización <span>";
                             }
@@ -2357,3 +2363,30 @@ function cargar_datosbackup(compra_id){
     
     
 }
+
+
+function eliminar_compra_fallida(compra_id){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'compra/eliminar_compra_fallida/';
+    
+    var r = confirm("ADVERTENCIA: Esta operación eliminara la operacion de compra actual. \n ¿Desea Continuar?");
+
+    if (r == true) {    
+
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{compra_id:compra_id},
+            success:function(respuesta){
+                
+                if(respuesta){
+                    alert("La Compra Nº "+compra_id+" fue eliminada cone éxito...!");
+                    buscar_compras()
+                }
+    
+    
+            }        
+        });
+    }
+    
+} 

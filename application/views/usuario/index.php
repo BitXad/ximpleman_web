@@ -26,7 +26,7 @@
 <!-- ---------------------------------------------------- -->
 <div class="box-header">
 <!--                <h3 class="box-title">Usuarios</h3>-->
-            	<div class="box-tools">
+            	<div class="box-tools no-print">
                     <a href="<?php echo site_url('usuario/add'); ?>" class="btn btn-success btn-sm"><fa class="fa fa-user-plus"> </fa> Nuevo Usuario</a> 
                 </div>
         
@@ -41,7 +41,7 @@
     <!--<p style="margin-left: 20px;" class="text-danger">      <?php //echo $mensaje; ?></p>-->
     <div class="col-md-12">
         <!---- ----------------- parametro de buscador ------------------- -->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, login, email">
                   </div>
             <!-- ------------------- fin parametro de buscador ------------------- -->
@@ -53,9 +53,9 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
-                        <th></th>
+                        <th class="no-print"></th>
                         <th>Nombre/Usuario</th>
-                        <th>Autorizacion</th>
+                        <th class="no-print">Autorizacion</th>
                         <th>Email</th>
                         <th>Login</th>
                         <th>Perfil</th>
@@ -65,7 +65,7 @@
                         <th>Fin</th>
                         <!--<th>Imagen</th>-->
                         <th>Estado</th>
-                        <th></th>
+                        <th class="no-print"></th>
                     </tr>
                     <tbody class="buscar">
                   <?php
@@ -86,12 +86,12 @@
                     <tr>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $cont ?></td>
                         
-                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/".$thumb_default."' width='40' height='40' class='img-circle'"; ?></center></td>
-                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font>
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>" class="no-print"><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/".$thumb_default."' width='40' height='40' class='img-circle'"; ?></center></td>
+                <td style="background-color: #<?php echo $u['estado_color']; ?>"><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font><sub class="no-print">[<?php echo $u['usuario_id']; ?>]</sub>
                             <br>
                             <?php echo $u['tipousuario_descripcion']; ?></td>
                       	
-                        <td style="background-color: #<?php echo $u['estado_color']; ?>">
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>" class="no-print">
                             <center>
 
                             
@@ -126,7 +126,7 @@
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['usuario_inicioturno']; ?></td>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['usuario_finturno']; ?></td>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['estado_descripcion']; ?></td>
-                        <td style="background-color: #<?php echo $u['estado_color']; ?>">
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>" class="no-print">
                             
                             <a href="<?php echo site_url('usuario/editar/'. $u['usuario_id']); ?>" class="btn btn-info btn-xs" title="Modificar datos de usuario"><span class="fa fa-pencil"></span></a>
                             <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><em class="fa fa-trash"></em></a>-->

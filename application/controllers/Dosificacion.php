@@ -420,6 +420,280 @@ class Dosificacion extends CI_Controller{
     } 
 
     /*
+     * En una modificacion de la vista edit
+     */
+    function cambiar_emision($dosificacion_id)
+    {
+        $data['sistema'] = $this->sistema;
+        
+        if($this->acceso(151)){
+            $data['page_title'] = "Dosificación";
+        // check if the dosificacion exists before trying to edit it
+        $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+//        
+//        echo 
+//        "<br>LEYENDAS-1: ".$this->input->post('dosificacion_leyenda1').
+//        "<br>LEYENDAs-2: ".$this->input->post('dosificacion_leyenda2').
+//        "<br>LEYENDAs-3: ".$this->input->post('dosificacion_leyenda3');
+        
+        if(isset($data['dosificacion']['dosificacion_id']))
+        {
+            if(isset($_POST) && count($_POST) > 0)     
+            {
+                /* *********************INICIO ARCHIVO***************************** */
+                    $archivop12="";
+                        $archivop121= $this->input->post('dosificacion_contenedorp121');
+                    if (!empty($_FILES['dosificacion_contenedorp12']['name']))
+                    {
+                        $borrar1 = $_FILES['dosificacion_contenedorp12']['name'];
+                        
+                        $borrar = str_replace(" ", "_", $borrar1);
+                        $base_url = explode('/', base_url());
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/certificados/';
+                        if(isset($borrar) && !empty($borrar)){
+                            if(file_exists($directorio.$borrar)){
+                                unlink($directorio.$borrar);
+                            }
+                        }
+                      
+                        $this->load->library('image_lib');
+                        $config['upload_path'] = './resources/xml/certificados/';
+                        //$config['allowed_types'] = 'gif|jpeg|jpg|png';
+                        $config['allowed_types'] = '*';
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 0;
+                        $config['max_height'] = 0;
+
+                        $new_name = $_FILES["dosificacion_contenedorp12"]["name"];
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
+
+                        
+                        $this->load->library('upload', $config);
+                        $this->upload->do_upload('dosificacion_contenedorp12');
+
+                        $img_data = $this->upload->data();
+                        $extension = $img_data['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/xml/certificados/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 800;
+                            $conf['height'] = 600;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+
+                            $confi['image_library'] = 'gd2';
+                            $confi['source_image'] = './resources/xml/certificados/'.$new_name.$extension;
+                            $confi['new_image'] = './resources/xml/certificados/'."thumb_".$new_name.$extension;
+                            $confi['create_thumb'] = FALSE;
+                            $confi['maintain_ratio'] = TRUE;
+                            $confi['width'] = 100;
+                            $confi['height'] = 100;
+
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($confi);
+                            $this->image_lib->resize();
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        //$directorio = base_url().'resources/imagenes/';
+                        /*$directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/firmaDigital/';
+                        if(isset($archivop121) && !empty($archivop121)){
+                          if(file_exists($directorio.$archivop121)){
+                              unlink($directorio.$archivop121);
+                          }
+                      }*/
+                        $archivop12 = str_replace(" ", "_", $new_name);
+                        
+                        //Actualizamos el nombre del documento sector
+                        $sql = "update dosificacion d, documentos_fiscales f
+                                set 
+                                d.`dosificacion_documentosector` = f.`documento_nombre`
+
+                                where
+                                f.`dosificacion_sectoreconomico` = d.`docsec_codigoclasificador` and
+                                f.`dosifcacion_modalidad` = d.dosificacion_modalidad";
+                        
+                        $this->Dosificacion_model->ejecutar($sql);
+                        
+                        
+                        
+                    }else{
+                        $archivop12 = $archivop121;
+                    }
+                /* *********************F I N  ARCHIVO***************************** */
+                $params = array(
+                    'estado_id' => $this->input->post('estado_id'),
+                    'empresa_id' => $this->input->post('empresa_id'),
+                    //'dosificacion_fechahora' => $this->input->post('dosificacion_fechahora'),
+                    'dosificacion_nitemisor' => $this->input->post('dosificacion_nitemisor'),
+                    'dosificacion_autorizacion' => $this->input->post('dosificacion_autorizacion'),
+                    'dosificacion_llave' => $this->input->post('dosificacion_llave'),
+                    'dosificacion_numfact' => $this->input->post('dosificacion_numfact'),
+                    'dosificacion_leyenda1' => $this->input->post('dosificacion_leyenda1'),
+                    'dosificacion_leyenda2' => $this->input->post('dosificacion_leyenda2'),
+                    'dosificacion_leyenda3' => $this->input->post('dosificacion_leyenda3'),
+                    'dosificacion_leyenda4' => $this->input->post('dosificacion_leyenda4'),
+                    'dosificacion_leyenda5' => $this->input->post('dosificacion_leyenda5'),
+                    'dosificacion_sucursal' => $this->input->post('dosificacion_sucursal'),
+                    'dosificacion_codsucursal' => $this->input->post('dosificacion_sucursal'),
+                    'dosificacion_sfc' => $this->input->post('dosificacion_sfc'),
+                    'dosificacion_actividad' => $this->input->post('dosificacion_actividad'),
+                    'dosificacion_fechalimite' => $this->input->post('dosificacion_fechalimite'),
+                    'dosificasion_actividadsec' => $this->input->post('dosificasion_actividadsec'),
+                    'dosificacion_tokendelegado' => $this->input->post('dosificacion_tokendelegado'),
+                    'dosificacion_ambiente' => $this->input->post('dosificacion_ambiente'),
+                    'dosificacion_cuis' => $this->input->post('dosificacion_cuis'),
+                    'dosificacion_cufd' => $this->input->post('dosificacion_cufd'),
+                    'dosificacion_modalidad' => $this->input->post('dosificacion_modalidad'),
+                    'dosificacion_codsistema' => $this->input->post('dosificacion_codsistema'),
+                    'dosificacion_puntoventa' => $this->input->post('dosificacion_puntoventa'),
+                    'dosificacion_sectoreconomico' => $this->input->post('dosificacion_sectoreconomico'),
+                    'dosificacion_email' => $this->input->post('dosificacion_email'),
+                    'docsec_codigoclasificador' => $this->input->post('docsec_codigoclasificador'),
+                    'tipofac_codigo' => $this->input->post('tipofac_codigo'),
+                    'dosificacion_cafc' => $this->input->post('dosificacion_cafc'),
+                    
+                    'dosificacion_sincronizacion' => $this->input->post('dosificacion_sincronizacion'),
+                    'dosificacion_recepcioncompras' => $this->input->post('dosificacion_recepcioncompras'),
+                    'dosificacion_operaciones' => $this->input->post('dosificacion_operaciones'),
+                    'dosificacion_obtencioncodigos' => $this->input->post('dosificacion_obtencioncodigos'),
+                    'dosificacion_notacredito' => $this->input->post('dosificacion_notacredito'),
+                    'dosificacion_factura' => $this->input->post('dosificacion_factura'),
+                    'dosificacion_facturaservicios' => $this->input->post('dosificacion_facturaservicios'),
+                    'dosificacion_facturaglp' => $this->input->post('dosificacion_facturaglp'),
+                    'dosificacion_ruta' => $this->input->post('dosificacion_ruta'),
+                    'dosificacion_contenedorp12' => $archivop12,
+                    'dosificacion_clavep12' => $this->input->post('dosificacion_clavep12'),
+                    'dosificacion_glpelectronica' => $this->input->post('dosificacion_glpelectronica'),
+                    'dosificacion_telecomunicaciones' => $this->input->post('dosificacion_telecomunicaciones'),
+                    'dosificacion_entidadesfinancieras' => $this->input->post('dosificacion_entidadesfinancieras'),
+                    'dosificacion_numerotransmes' => $this->input->post('dosificacion_numerotransmes'),
+                    'dosificacion_mesactual' => $this->input->post('dosificacion_mesactual'),
+                );
+                $this->Dosificacion_model->update_dosificacion($dosificacion_id,$params);
+                
+                //Actualizamos el nombre del documento sector
+                $sql = "update dosificacion d, documentos_fiscales f
+                        set 
+                        d.`dosificacion_documentosector` = f.`documento_nombre`
+
+                        where
+                        f.`dosificacion_sectoreconomico` = d.`docsec_codigoclasificador` and
+                        f.`dosifcacion_modalidad` = d.dosificacion_modalidad";
+
+                $this->Dosificacion_model->ejecutar($sql);
+
+                //Modificar los endpoints para PRODUCCION
+                if ($this->input->post('cambiar_endpoints')==1){
+                    
+                    $sql = "UPDATE dosificacion
+                            SET
+                              estado_id = 1,
+                             
+                              dosificacion_sincronizacion = 'https://siatrest.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl',
+                              dosificacion_recepcioncompras = 'https://siatrest.impuestos.gob.bo/v2/ServicioRecepcionCompras?wsdl',
+                              dosificacion_operaciones = 'https://siatrest.impuestos.gob.bo/v2/FacturacionOperaciones?wsdl',
+                              dosificacion_obtencioncodigos = 'https://siatrest.impuestos.gob.bo/v2/FacturacionCodigos?wsdl',
+                              dosificacion_notacredito = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionDocumentoAjuste?wsdl',
+                              dosificacion_factura = 'https://siatrest.impuestos.gob.bo/v2/ServicioFacturacionCompraVenta?wsdl',
+                              dosificacion_facturaservicios = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionServicioBasico?wsdl',
+                              dosificacion_facturaglp = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionComputarizada?wsdl',
+                              dosificacion_ruta = 'https://siat.impuestos.gob.bo/consulta/QR?',
+                              dosificacion_glpelectronica = 'https://siatrest.impuestos.gob.bo/v2/ServicioFacturacionElectronica?wsdl',
+                              dosificacion_telecomunicaciones = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionTelecomunicaciones?wsdl',
+                              dosificacion_entidadesfinancieras = ''
+                            WHERE dosificacion_id = ".$dosificacion_id;
+
+                    $this->Dosificacion_model->ejecutar($sql);
+                }
+                //FIN Modificar los endpoints para PRODUCCION
+                
+                //Modificar los endpoints para PRUEBAS
+                if ($this->input->post('cambiar_endpoints')==2){
+                    
+                    $sql = "UPDATE dosificacion
+                            SET 
+                                estado_id = 1,
+
+                                dosificacion_sincronizacion = 'https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl',
+                                dosificacion_recepcioncompras = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioRecepcionCompras?wsdl',
+                                dosificacion_operaciones = 'https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionOperaciones?wsdl',
+                                dosificacion_obtencioncodigos = 'https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl',
+                                dosificacion_notacredito = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionDocumentoAjuste?wsdl',
+                                dosificacion_factura = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionCompraVenta?wsdl',
+                                dosificacion_facturaservicios = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionServicioBasico?wsdl',
+                                dosificacion_facturaglp = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionComputarizada?wsdl',
+                                dosificacion_ruta = 'https://pilotosiat.impuestos.gob.bo/consulta/QR?',
+                                dosificacion_glpelectronica = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionElectronica?wsdl',
+                                dosificacion_telecomunicaciones = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionTelecomunicaciones?wsdl',
+                                dosificacion_entidadesfinancieras = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionEntidadFinanciera?wsdl'
+                            WHERE dosificacion_id = ".$dosificacion_id;
+
+                    $this->Dosificacion_model->ejecutar($sql);
+                }
+                
+
+                //FIN Modificar los endpoints para PRUEBAS
+                
+                
+                $documento_sector = $this->input->post('docsec_codigoclasificador');
+                
+                $parametro_id = 1;
+                $parametro = $this->Parametro_model->get_parametro($parametro_id);
+                
+                $cantidad_decimales = $parametro['parametro_decimales'];
+                if($documento_sector == 51){
+                    $cantidad_decimales = 5;
+                    $paramsp = array(
+                        'parametro_decimales' => $cantidad_decimales,
+                    );
+                    $parametro_id = $parametro['parametro_id'];
+                    $this->Parametro_model->update_parametro($parametro_id,$paramsp);
+                }
+                
+                //************************************************ modificacion especial para la liberia
+                
+                if($documento_sector==8){
+                    $sql = "update parametros set parametro_mostrarcategoria = 2";
+                }else{
+                    $sql = "update parametros set parametro_mostrarcategoria = 1";
+                }
+                $this->Dosificacion_model->ejecutar($sql);
+                
+                //************************************************ modificacion especial para la liberia
+                
+                
+                
+//                redirect('venta/ventas');
+                echo '<script>window.opener.location.reload();</script>';
+                echo '<script>window.close();</script>';
+            }
+            else
+            {
+                $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                $data['actividades'] = $this->Actividad_model->get_all_activities();
+                $data['leyendas'] = $this->Leyenda_model->get_all_leyendas();
+                $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+                $data['all_documentosector'] = $this->Dosificacion_model->get_documento_sector();
+                $data['all_tipoFact'] = $this->TipoFactura_model->get_all_tipoFactura();
+                $data['_view'] = 'dosificacion/cambiar_emision';
+                $this->load->view('layouts/main',$data);
+                
+            }
+        }
+        else
+            show_error('The dosificacion you are trying to edit does not exist.');
+        }
+    } 
+
+    /*
      * Deleting dosificacion
      */
     function remove($dosificacion_id)

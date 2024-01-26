@@ -1462,7 +1462,11 @@ window.onkeydown = compruebaTecla;
 
                         }else{ echo " NO EXISTE CUFD";} ?>
                     <!--</button>-->
-
+                    <br>
+                    <button type="button" id="boton_guardarventa" class="btn btn-info btn-xs" onclick="abrirVentanaEmergente()">
+                        <fa class="fa fa-recycle"></fa> Cambiar Doc. Sector
+                  </button>
+                    
                     <?php } ?>
                     </div>
                 </div>
@@ -3283,50 +3287,7 @@ $(document).ready(function() {
                                                    <input id="miproducto_nombre" class="form-control" style="border: none; font-size: 16px; text-align: center; font-weight: bold;">
                                                 </div>
                                         </div>
-<!--                            <div class="row">
-                                
-                                
 
-                                        
-                                
-                                        <div class="col-md-5">
-                                                <label for="sucursal_objetivo" class="control-label">SUCURSAL OBJETIVO</label>
-                                                <div class="form-group">
-                                                    <select class="form-control" id="sucursal_traspaso" name="sucursal_traspaso">
-                                                            
-                                                        <option value="0">- TODOS -</option>
-                                                    <?php 
-                                                        foreach($almacenes as $almacen){?>
-                                                            
-                                                            <option value="<?php echo $almacen["almacen_id"]; ?>"><?php echo $almacen["almacen_nombre"]; ?></option>
-                                                        
-                                                    <?php } ?>
-                                                        
-
-                                                    </select>
-                                                </div>
-                                        </div>
-
-                                
-                                        <div class="col-md-5">
-                                                <label for="codigo_columnas" class="control-label">OPERACIÓN</label>
-                                                <div class="form-group">
-                                                    <select class="form-control" id="operacion_traspaso">
-                                                        <option value="1">VERIFICAR PRODUCTO</option>
-                                                        <option value="2">REGISTRAR PRODUCTO</option>
-                                                        <option value="3">ACTUALIZAR DATOS DEL PRODUCTO</option>
-                                                        <option value="4">COMPARAR LISTA DE PRODUCTOS</option>
-                                                    </select>
-                                                </div>
-                                        </div>
-
-                                        <div class="col-md-1">
-                                                <label for="codigo_columnas" class="control-label"></label>
-                                                <button type="button" class="btn btn-info"  onclick="remplazar_productos()" id="boton_proceder"><fa class="fa fa-cubes"></fa><br>Actualizar</button>
-                                                
-                                        </div>
-                                
-                            </div>-->
                             <div class="row col-md-12" id='loader2'  style='display:none; text-align: center'>
                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
                            </div>
@@ -3366,3 +3327,34 @@ $(document).ready(function() {
 //    echo "Se produjo un error al ejecutar el archivo.";
 //}
 ?>
+
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL ACTUALIZAR PRODUCTOS ----------------------------------->
+<!------------------------------------------------------------------------------->
+<script>
+    function abrirVentanaEmergente() {
+        // Utiliza la función base_url() para obtener la URL del controlador y método
+        var url = "<?php echo base_url('dosificacion/cambiar_emision/1'); ?>";
+        window.close;
+//        window.open(url, "VentanaEmergente", "width=600, height=400");
+
+           // Calcula el centro de la pantalla
+    var screenWidth = window.screen.width;
+    var screenHeight = window.screen.height;
+
+    var windowWidth = 600; // Ancho de la ventana emergente
+    var windowHeight = 400; // Altura de la ventana emergente
+    
+    var left = (screenWidth - windowWidth) / 2;
+    var top = (screenHeight - windowHeight) / 2;
+
+     // Abre la ventana emergente centrada
+    window.open(url, "VentanaEmergente", "width=600, height=400, left=" + left + ", top=" + top);
+
+    }
+</script>
+
+
+

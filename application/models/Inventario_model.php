@@ -289,7 +289,9 @@ class Inventario_model extends CI_Model
 
                 return true;
                 }else{
+                    
                     return "La cantidad solicitada es mayor a la del inventario disponible...!";
+                    
                 }
         }
     }
@@ -436,6 +438,18 @@ class Inventario_model extends CI_Model
         return $producto;
     }
     
+    
+    function get_todo_inventario()
+    {               
+        $sql = "SELECT p.*,c.categoria_nombre FROM inventario p
+        left join categoria_producto c on c.categoria_id = p.categoria_id
+        WHERE p.estado_id=1         
+        GROUP BY p.categoria_id, p.producto_id ".$this->orden;
+        
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+    }
+        
     
     function get_inventario_parametro($parametro)
     {

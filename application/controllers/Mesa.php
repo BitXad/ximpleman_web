@@ -427,7 +427,11 @@ class Mesa extends CI_Controller{
                         detalleped_descuento,
                         detalleped_subtotal,
                         detalleped_total,
-                        detalleped_preferencia
+                        detalleped_preferencia,
+                        detalleped_comision,
+                        detalleped_tc,
+                        detalleped_descuentoparcial
+
                         )
                         (
                         select
@@ -443,7 +447,8 @@ class Mesa extends CI_Controller{
                          0,
                         ".$cantidad." * (producto_precio - ".$descuento."),
                         ".$cantidad." * (producto_precio - ".$descuento."),
-                        '".$preferencia."'
+                        '".$preferencia."',
+                        0,1,0
                         from producto where producto_id = ".$producto_id."
                         )";
                     $this->Venta_model->ejecutar($sql);
@@ -458,43 +463,7 @@ class Mesa extends CI_Controller{
 
                     echo json_encode(true);
                 }else{
-                    
-//            
-//                $sql = "insert into detalle_pedido(
-//                        pedido_id,
-//                        producto_id,
-//                        detalleped_codigo,
-//                        detalleped_foto,
-//                        detalleped_nombre,
-//                        detalleped_unidad,
-//                        detalleped_costo,
-//                        detalleped_cantidad,
-//                        detalleped_precio,
-//                        detalleped_descuento,
-//                        detalleped_subtotal,
-//                        detalleped_total,
-//                        detalleped_preferencia
-//                        )
-//                        (
-//                        select
-//                        ".$pedido_id.",
-//                        producto_id,
-//                        producto_codigo,
-//                        producto_foto,
-//                        producto_nombre,
-//                        producto_unidad,
-//                        producto_costo,
-//                        ".$cantidad.",
-//                        producto_precio - ".$descuento.",
-//                         0,
-//                        ".$cantidad." * (producto_precio - ".$descuento."),
-//                        ".$cantidad." * (producto_precio - ".$descuento."),
-//                        '".$preferencia."'
-//                        from producto where producto_id = ".$producto_id."
-//                        )";
-//                    $this->Venta_model->ejecutar($sql);
-
-
+                   
                     $sql = "update detalle_pedido d
                             set                            
                             d.detalleped_cantidad = d.detalleped_cantidad + {$cantidad},

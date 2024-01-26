@@ -52,6 +52,10 @@
 <?php $decimales = $parametro['parametro_decimales'];?>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="compra_idie" value="0" name="compra_idie"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="bandera" value="0" name="bandera"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="modificar_detalle" value="0" name="modificar_detalle"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="eliminar_detalle" value="0" name="eliminar_detalle"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
+<input type="text" id="monedaparam_id" value="0" name="monedaparam_id"  hidden> <!<!-- se creo porque generaba error no tenerlo -->
 <input type="text" id="autorizado" value="<?php echo $autorizado["usuario_autorizado"]; ?>" name="autorizado" hidden>
 
 <!-------------------------------------------------------->
@@ -111,6 +115,7 @@
                     <option value="1"><?php echo $sistema["sistema_modulocompras"]; ?> de Hoy</option>
                     <option value="2"><?php echo $sistema["sistema_modulocompras"]; ?> de Ayer</option>
                     <option value="3"><?php echo $sistema["sistema_modulocompras"]; ?> de la semana</option>
+                    <option value="4"><?php echo $sistema["sistema_modulocompras"]; ?> todas las compras</option>
                     <option value="5"><?php echo $sistema["sistema_modulocompras"]; ?> por fecha</option>
                     <option value="6"><?php echo $sistema["sistema_modulocompras"]; ?> Perdidas/Sin Detalle</option>
                     <option value="7"><?php echo $sistema["sistema_modulocompras"]; ?> Por codigo producto</option>

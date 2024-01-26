@@ -214,6 +214,7 @@ function tablaresultadospedido(opcion)
         controlador = base_url+'venta/buscarcategorias/';
         parametro = document.getElementById('categoria_prod').value;
     }
+    
     var modificar_precioventa   = document.getElementById('modificar_precioventa').value;
     
     $.ajax({url: controlador,

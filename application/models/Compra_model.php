@@ -89,7 +89,7 @@ class Compra_model extends CI_Model
     
     function buscarporcodigo($parametro)
     {
-        $compra = $this->db->query("
+        $sql = "
             SELECT
                c.*,p.*, t.*, u.*, c.estado_id as 'elestado'
 
@@ -104,11 +104,10 @@ class Compra_model extends CI_Model
                 and c.proveedor_id = p.proveedor_id
                 and c.tipotrans_id = t.tipotrans_id
                 and c.usuario_id=u.usuario_id
-            ORDER BY c.compra_id DESC
+            ORDER BY c.compra_id DESC";
+        $compra = $this->db->query($sql)->result_array();
 
-            
-        ")->result_array();
-
+        //echo $sql;
         return $compra;
     }
     

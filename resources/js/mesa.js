@@ -1,9 +1,9 @@
 function modal_mesa(mesa_id){
+    
     var base_url = document.getElementById('base_url').value;    
     
     let ultimamesa_id = document.getElementById("ultimamesa_id").value;
     
-    $("#")
     
     if(ultimamesa_id != mesa_id){
         
@@ -15,10 +15,31 @@ function modal_mesa(mesa_id){
         $("#mesa_id").val(mesa_id);
         registrar_operacion();
         
+        var boton = document.getElementById('mesa'+mesa_id);
         var imagen = document.getElementById('imagen'+mesa_id);
-        var espan = document.getElementById('span'+mesa_id);
-        imagen.src = base_url+"resources/images/mesas/ocupada.png";
-        espan.className = "btn btn-danger btn-xs"
+        imagen.src = base_url+"resources/images/mesas/ocupada"+mesa_id+".png";
+        
+        boton.onclick = function(){ mostrar_pedido(mesa_id); };
+        //boton.addEventListener('click',mostrar_pedido(mesa_id));
+        
+        try{
+            
+            var espan = document.getElementById('span'+mesa_id);
+            espan.className = "btn btn-danger btn-xs";
+            
+        } catch (error) {}
+        
+        $("#boton_productos").click();
+        $("#mostrar_todo").click();
+        
+        $('#modalproductos').on('shown.bs.modal', function() {
+
+            $("#filtrar").focus();
+            $("#filtrar").select();
+
+        });
+        
+        
     }
         
 }
@@ -142,13 +163,23 @@ function validar(e,opcion) {
  
 }
 
+function registrar_producto(e,producto_id){
+
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==13){
+        
+        ingresar_producto(producto_id);
+        
+    }
+    
+}
 
 function tablaresultados(opcion)
 {   
     var decimales = document.getElementById('decimales').value;
     var controlador = "";
     var parametro = "";
-    var limite = 50;
+    var limite = 500;
     var precio_unidad = 0;
     var precio_factor = 0;
     var precio_factorcant = 0;
@@ -192,6 +223,12 @@ function tablaresultados(opcion)
     if (opcion == 3){
         controlador = base_url+'venta/buscarsubcategorias/';
         parametro = document.getElementById('subcategoria_prod').value;        
+    }
+        
+    
+    if (opcion == 4){
+        controlador = base_url+'venta/mostrartodo/';
+        parametro = 'todo';        
     }
         
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
@@ -392,7 +429,7 @@ function tablaresultados(opcion)
                                   
                                   html += "<br>";
                                   html += "<div class='btn-group'>";
-                                  html += "<input type='number' id='producto_cant"+registros[i]["producto_id"]+"' class='btn btn-default btn-sm' style='width: 70px; font-size:12px;' value='1'>";
+                                  html += "<input type='number' id='producto_cant"+registros[i]["producto_id"]+"' class='btn btn-default btn-sm' style='width: 70px; font-size:12px;' value='1' onkeypress='registrar_producto(event,"+registros[i]["producto_id"]+")'>";
                                   /*
                                   html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")'><b>- 1 -</b></button>";                                  
                                   html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojs(2,"+JSON.stringify(registros[i])+")'><b>- 2 -</b></button>";
@@ -421,7 +458,7 @@ function tablaresultados(opcion)
                         
                         if (parseFloat(registros[i]["existencia"])>0){
 //                             html += "<button type='button' class='btn btn-warning btn-sm btn-block' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' onclick='focus_cantidad("+registros[i]["producto_id"]+")'><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";                             
-                             html += "<button type='button' class='btn btn-warning btn-sm btn-block'  title='Añadir al detalle' onclick='ingresar_producto("+registros[i]["producto_id"]+")'><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";
+                             html += "<button type='button' id='botondetalle"+registros[i]["producto_id"]+"' class='btn btn-warning btn-sm btn-block'  title='Añadir al detalle' onclick='ingresar_producto("+registros[i]["producto_id"]+")'><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";
                         }
                         
                         //html += "<button class='btn btn-success'><i class='fa fa-picture-o'></i></button>";
@@ -900,12 +937,12 @@ function mostrar_detalle_pedido(pedido_id){
                 let pedido = JSON.parse(respuesta);                            
                 let html = "";
                 let total_final = 0;
+                let tamanio_letra = '12px' //Tamaño de letra botones
 
-
-                html += "<button type='button' class='btn btn-facebook btn-xs' data-toggle='modal' data-target='#modalproductos' id='boton_productos'><span class='fa fa-binoculars'></span> Productos</button>";
-                html += "<a href='"+base_url+"pedido/imprimir/"+pedido_id+"' target='_blank' class='btn btn-warning btn-xs' id='imprimir_comanda' title='Comanda' style=' '><span class='fa fa-print'></span><b> Comanda</b></a>"; 
-                html += "<button type='button' class='btn btn-info btn-xs' data-toggle='modal' data-target='#modalcambiomesa' id='boton_cambiomesa'><span class='fa fa-refresh'></span> Cambio de Mesa</button>";
-                html += "<a href='"+base_url+"venta/ventas' class='btn btn-success btn-xs' id='boton_ventas' title='Ventas y facturacion' style=' '><span class='fa fa-cubes'></span><b> Facturar</b></a>"; 
+                html += "<button type='button' class='btn btn-facebook btn-sm' data-toggle='modal' data-target='#modalproductos' id='boton_productos' style='font-size:"+tamanio_letra+";' onclick='tablaresultados(4)'><span class='fa fa-binoculars'></span><b> Productos</b></button>";
+                html += "<a href='"+base_url+"pedido/imprimir/"+pedido_id+"' target='_blank' class='btn btn-warning btn-sm' id='imprimir_comanda' title='Comanda' style='font-size:"+tamanio_letra+";'><span class='fa fa-print'></span><b> Comanda</b></a>"; 
+                html += "<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#modalcambiomesa' id='boton_cambiomesa' style='font-size:"+tamanio_letra+";'><span class='fa fa-refresh'></span> <b> Cambio de Mesa</b></button>";
+                html += "<a href='"+base_url+"venta/ventas' class='btn btn-success btn-sm' id='boton_ventas' title='Ventas y facturacion' style='font-size:"+tamanio_letra+";'><span class='fa fa-cubes'></span><b> Facturar</b></a>"; 
 
 
                 html += "<table class='table' id='mitablagris' >";
@@ -926,10 +963,10 @@ function mostrar_detalle_pedido(pedido_id){
                         html +="<td style='padding:0;'>"+pedido[i]["detalleped_nombre"]+"</td>";
                         html +="<td style='padding:0; text-align: right;'>"+Number(pedido[i]["detalleped_precio"]).toFixed(decimales)+"</td>";
                         html +="<td style='padding:0; text-align: right;'>"+Number(pedido[i]["detalleped_total"]).toFixed(decimales)+"</td>";
-                        html +="<td style='padding:0;'>";
+                        html +="<td style='padding:0;'><center>";
                         html +="<button class='btn btn-xs btn-info' onclick=activar_modificacion("+pedido[i]["detalleped_id"]+","+pedido[i]["detalleped_cantidad"]+","+pedido[i]["detalleped_precio"]+")><fa class='fa fa-pencil'></fa> </button>";
                         html +="<button class='btn btn-xs btn-danger' onclick=eliminar_item("+pedido[i]["pedido_id"]+","+pedido[i]["detalleped_id"]+")><fa class='fa fa-times'></fa> </button>";
-                        html += "</td>";
+                        html += "</center></td>";
                     html +="</tr>";
                         
                 }

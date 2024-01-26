@@ -296,7 +296,7 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
                                 <button class="btn btn-default btn-sq-lg" style="border-bottom: #002166 dashed 2px; width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)" id="mesa<?= $m["mesa_id"]?>">
                                     
                                     <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconolibre"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>" id="imagen<?=$m["mesa_id"] ?>" />
-                                    <br><span class="btn btn-success btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span>
+                                    <!---- <br><span class="btn btn-success btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span ----->
                                     <br>
             
                                 </button>
@@ -308,7 +308,7 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
                                 <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="mostrar_pedido(<?= $m["mesa_id"]; ?>)" id="mesa<?= $m["mesa_id"]?>">
                                     
                                     <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoocupada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>"  id="imagen<?=$m["mesa_id"] ?>" />
-                                    <br><span class="btn btn-danger btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span>
+                                    <!---- <br><span class="btn btn-danger btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span ----->
                                     <br>
             
                                 </button>
@@ -319,7 +319,7 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
                                 <button class="btn btn-default btn-sq-lg" style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
                                     
                                     <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconoreservada"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>" id="imagen<?=$m["mesa_id"] ?>" />
-                                    <br><span class="btn btn-default btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span>
+                                    <!---- <br><span class="btn btn-default btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span ----->
                                     <br>
                                 </button>
                                 
@@ -330,7 +330,7 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
                                 <button class="btn btn-default btn-sq-lg"  style="width:<?= $ancho_boton ?>;  !important;  height:<?= $alto_boton ?>; font-size:<?= $tamanio_fuente?>;  <?= $estilo ?>; background-color: rgba(255, 0, 0, 0);" onclick="modal_mesa(<?= $m["mesa_id"]; ?>)">
                                     
                                     <img src="<?php echo base_url("resources/images/mesas/".$m["mesa_iconomantenimiento"]); ?>" width="<?= $ancho_imagen?>" height="<?= $alto_imagen ?>" id="imagen<?=$m["mesa_id"] ?>" />
-                                    <br><span class="btn btn-github btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span>
+                                    <!---- <br><span class="btn btn-github btn-xs" id="span<?=$m["mesa_id"] ?>"><?php echo "<b>".$m["mesa_nombre"]."</b>"; echo ($descripcion=="")?"":"<br>{$descripcion}"; ?></span ----->
                                     <br>
                                 </button>
                                 
@@ -628,7 +628,8 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
                 $agrupar = "checked='true'";
             }else {$agrupar = " ";}
             ?>
-            <button class="btn btn-primary btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>
+            <!--<button class="btn btn-primary btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>-->
+            <button class="btn btn-primary btn-xs" id="mostrar_todo" onclick="tablaresultados(4)"><fa class="fa fa-cubes"></fa> Mostrar Todo</button>
             <span class="badge btn-default text-center">
                 <!--------------------- inicio loader ------------------------->
                 <div class="row" id='oculto'  style='display:none;'>
@@ -640,8 +641,8 @@ $espacio_mesas = 7; //de 1 - 12 Maximo... 13 ya no funciona
         <!-------------------- FIN CATEGORIAS--------------------------------->
 
                 <div class="box">
-                    <div class="box-body  table-responsive" id="tablaresultados">
-
+                    
+                    <div class="box-body  table-responsive scrollable-div" id="tablaresultados" >  
                         <!------------------ aqui van los resultados de la busqueda --------------->
 
                     </div>

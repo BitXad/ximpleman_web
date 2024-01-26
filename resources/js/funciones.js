@@ -2640,18 +2640,24 @@ function guardar_ingreso_rapido(){
     var cantidad = document.getElementById("ingresorapido_cantidad").value;
     var moneda_tc = document.getElementById("moneda_tc").value;
    
-    $.ajax({url: controlador,
-        type:"POST",
-        data:{producto_id:producto_id, cantidad:cantidad, moneda_tc:moneda_tc },
-        success:function(respuesta){     
-                        
-            tablaresultados(1);
-            
-            //tablaresultados()();
-        },
-        error: function(respuesta){         
-        }        
-    });               
+    if(Number(cantidad)>0){
+        
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{producto_id:producto_id, cantidad:cantidad, moneda_tc:moneda_tc },
+            success:function(respuesta){     
+
+                tablaresultados(1);
+
+                //tablaresultados()();
+            },
+            error: function(respuesta){         
+            }        
+        });               
+    }else{
+        alert("ADVERTENCIA: No especifico una cantidad para realizar el INGRESO RAPIDO...!");
+    }
+    
     
 }
 
@@ -8759,32 +8765,38 @@ function ventas_fallidas(){
                             
                             let res = JSON.parse(respuesta);
                             let html = "";
+                            
+                            if(res.length>0){
 
-                            for(var i=0;i<res.length; i++){
-                                
-                                html += "<tr>"
-                                    html += "<td>"+(i+1)+"</td>";
-                                    html += "<td>"+res[i]["cliente_nombre"]+"<sub>["+res[i]["cliente_id"]+"]</sub><br>"+((res[i]["cliente_nombre"]!=res[i]["cliente_razon"])?"<sub>"+res[i]["cliente_razon"]+"</sub>":"")+"</td>";
-                                    html += "<td><center>"+res[i]["venta_id"]+"</center></td>";
-                                    html += "<td style='text-align:center;'>"+formato_fecha(res[i]["venta_fecha"])+"</td>";
-                                    html += "<td style='text-align:right;'>"+Number(res[i]["venta_total"]).toFixed(2)+"</td>";
-                                    html += "<td style='text-align:center;'>"+res[i]["estado_descripcion"]+"</td>";
-                                    html += "<td>"+res[i]["usuario_nombre"]+"</td>";
-                                    html += "<td>";
-                                        html += "<a href='"+base_url+"venta/modificar_venta/"+res[i]["venta_id"]+"' class='btn btn-xs btn-info' target='_blank'><fa class='fa fa-pencil'></fa> </a>";
-                                        
-                                        if (tipousuario_id==1){                                            
-                                            html += "<button onclick='eliminar_transaccion("+res[i]["venta_id"]+")' class='btn btn-xs btn-danger'><fa class='fa fa-trash'></fa> </a>"; 
-                                        }
+                                    for(var i=0;i<res.length; i++){
 
-                                html += "</td>";
-                                                                   
-                                html += "</tr>"
+                                        html += "<tr>"
+                                            html += "<td>"+(i+1)+"</td>";
+                                            html += "<td>"+res[i]["cliente_nombre"]+"<sub>["+res[i]["cliente_id"]+"]</sub><br>"+((res[i]["cliente_nombre"]!=res[i]["cliente_razon"])?"<sub>"+res[i]["cliente_razon"]+"</sub>":"")+"</td>";
+                                            html += "<td><center>"+res[i]["venta_id"]+"</center></td>";
+                                            html += "<td style='text-align:center;'>"+formato_fecha(res[i]["venta_fecha"])+"</td>";
+                                            html += "<td style='text-align:right;'>"+Number(res[i]["venta_total"]).toFixed(2)+"</td>";
+                                            html += "<td style='text-align:center;'>"+res[i]["estado_descripcion"]+"</td>";
+                                            html += "<td>"+res[i]["usuario_nombre"]+"</td>";
+                                            html += "<td>";
+                                                    html += "<a href='"+base_url+"factura/imprimir_recibo/"+res[i]["venta_id"]+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta' id='imprimir'><span class='fa fa-print' aria-hidden='true'></span></a>";
+                                                    html += "<a href='"+base_url+"venta/modificar_venta/"+res[i]["venta_id"]+"' class='btn btn-xs btn-info' target='_blank'><fa class='fa fa-pencil'></fa> </a>";
+
+                                                if (tipousuario_id==1){                                            
+                                                    html += "<button onclick='eliminar_transaccion("+res[i]["venta_id"]+")' class='btn btn-xs btn-danger'><fa class='fa fa-trash'></fa> </a>"; 
+                                                }
+
+                                        html += "</td>";
+
+                                        html += "</tr>"
+
+                                    }
+
+                                    $("#ventas_fallidas").html(html);
+                                }else{
+                                    alert("No se encontraron ventas con fallas/sin detalle...!!")
+                                }
                                     
-                            }
-                            
-                            $("#ventas_fallidas").html(html);
-                            
 
                         },
                         error:function(respuesta){
