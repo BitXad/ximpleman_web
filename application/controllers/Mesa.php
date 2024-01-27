@@ -354,8 +354,6 @@ class Mesa extends CI_Controller{
                         
             echo json_encode($resultado);                
 
-            
-
         }
 
 
@@ -368,23 +366,37 @@ class Mesa extends CI_Controller{
 
         if ($this->input->is_ajax_request()) {
             
-            $detalleped_id = $this->input->post("detalleped_id"); 
-//            $detalleped_precio = $this->input->post("detalleped_precio"); 
-//            $detalleped_cantidad = $this->input->post("detalleped_cantidad"); 
-//            $detalleped_id = $this->input->post("detalleped_id"); 
-            
+            $detalleped_id = $this->input->post("detalleped_id");             
             $sql = "delete from detalle_pedido where detalleped_id = {$detalleped_id} ";
             $this->Venta_model->ejecutar($sql);
                         
-//            $sql = "update pedido set
-//                    pedido_subtotal = {$detalleped_precio},
-//                    pedido_total = {$detalleped_cantidad},
-//                    detalleped_subtotal = {$detalleped_cantidad} * {$detalleped_precio},
-//                    detalleped_total = {$detalleped_cantidad} *{$detalleped_precio}
-//                    where detalleped_id = {$detalleped_id}";
-                    
-//            $this->Venta_model->ejecutar($sql);
+
+            echo json_encode(true);
             
+        }
+
+
+    }
+
+    /*
+    * Anular seleccion de mesa
+    */
+    function anular_seleccion(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $pedido_id = $this->input->post("pedido_id"); 
+
+            
+            $sql = "update mesa set estado_id = 38 where mesa_id = (select mesa_id from pedido where pedido_id = {$pedido_id})";
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "delete from detalle_pedido where pedido_id = {$pedido_id} ";
+            $this->Venta_model->ejecutar($sql);
+
+            $sql = "delete from pedido where pedido_id = {$pedido_id} ";
+            $this->Venta_model->ejecutar($sql);
+                 
             echo json_encode(true);
             
         }

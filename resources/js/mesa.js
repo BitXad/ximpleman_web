@@ -943,6 +943,12 @@ function mostrar_detalle_pedido(pedido_id){
                 html += "<a href='"+base_url+"pedido/imprimir/"+pedido_id+"' target='_blank' class='btn btn-warning btn-sm' id='imprimir_comanda' title='Comanda' style='font-size:"+tamanio_letra+";'><span class='fa fa-print'></span><b> Comanda</b></a>"; 
                 html += "<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#modalcambiomesa' id='boton_cambiomesa' style='font-size:"+tamanio_letra+";'><span class='fa fa-refresh'></span> <b> Cambio de Mesa</b></button>";
                 html += "<a href='"+base_url+"venta/ventas' class='btn btn-success btn-sm' id='boton_ventas' title='Ventas y facturacion' style='font-size:"+tamanio_letra+";'><span class='fa fa-cubes'></span><b> Facturar</b></a>"; 
+                
+                if(pedido.length<=0){ //Si ya tiene productos, no se podra dar de baja
+                    
+                        html += "<button type='button' class='btn btn-danger btn-sm' id='boton_eliminar' style='font-size:"+tamanio_letra+";' onclick='anular_seleccion("+pedido_id+")'><span class='fa fa-refresh'></span> <b> Anular Seleccion</b></button>";
+                    
+                }
 
 
                 html += "<table class='table' id='mitablagris' >";
@@ -1006,6 +1012,33 @@ function formato_cantidad(cantidad){
                 }
   
     return lacantidad;
+}
+
+function anular_seleccion(pedido_id){
+
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'mesa/anular_seleccion/';
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{pedido_id:pedido_id},                
+            success:function(respuesta){
+
+                let res = JSON.parse(respuesta);                            
+                
+                if(res){
+                    alert("La anulacion fue exitosa...!!");
+                }
+                
+                location.reload();
+                
+            },
+            error:function(respuesta){
+                res = 0;
+            }
+        });     
+
+    
 }
 
 function mostrar_pedido(mesa_id){
