@@ -1424,7 +1424,7 @@ class Venta extends CI_Controller{
                                 'datos_anio' => $this->input->post('datos_anio'),
                                 'datos_medidor' => $this->input->post('datos_medidor'),
                                 'datos_ajustesnoiva' => $this->input->post('datos_ajustesnoiva'),
-                                'datos_ajustesujetosiva' => 0, //$this->input->post('datos_ajustesujetosiva'),
+                                'datos_ajustesujetosiva' => $this->input->post('datos_ajustesujetosiva'),
                                 'datos_sujetoivasubtotal' => $this->input->post('datos_sujetoivasubtotal'),
                                 'datos_aseourbano' => $this->input->post('datos_aseourbano'),
                                 'datos_aseosubtotal' => $this->input->post('datos_aseosubtotal'),
@@ -2827,7 +2827,7 @@ function edit($venta_id){
             
             $bitacoracaja_fecha = "date({$now})";
             $bitacoracaja_hora = "time({$now})";
-            $bitacoracaja_evento = "(select concat('FINALIZAR MODIFICACION EN VENTA Nº: 00','".$venta_id."','| CLIENTE ID: ','".$cliente_id."', '| CANT: ',count(*),'| NUEVO TOTAL: ',sum(detalleven_cantidad * detalleven_precio)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
+            $bitacoracaja_evento = "(select concat('FINALIZAR MODIFICACION EN VENTA Nº: 00','".$venta_id."','| CLIENTE ID: ','".$cliente_id."', '| CANT: ',count(*),'| NUEVO TOTAL: ',round(sum(detalleven_cantidad * detalleven_precio),2)) from detalle_venta_aux where usuario_id = ".$usuario_id.")";
             //$usuario_id = esta mas arriba;
             $bitacoracaja_montoreg = 0;
             $bitacoracaja_montocaja = 0;

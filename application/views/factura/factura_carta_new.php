@@ -509,7 +509,7 @@ border-bottom : 1px solid #aaa;
                                 
                                     <?php 
                                         if ($factura[0]['docsec_codigoclasificador']==13){ 
-                                            if (sizeof($datos_factura["datos_beneficiario1886"])>2){ 
+                                            if (isset($datos_factura["datos_beneficiario1886"])){ 
                                             
                                             ?>
                                             
@@ -554,6 +554,12 @@ border-bottom : 1px solid #aaa;
                     <?php
                     
                             if ($factura[0]['docsec_codigoclasificador']==13){ //Servicios basicos ?>
+                                
+                        
+                        
+                        <tr  style=" font-family: Arial; border: 1px solid black;">
+                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_ajustesujetosiva"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_sujetoivasubtotal"],$decimales,".",","); ?></td>                            
+                        </tr>                        
                                 
                         
                         

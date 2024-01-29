@@ -198,7 +198,7 @@ compra_subtotal = (select sum(detallecomp_total) from detalle_compra where compr
 ,compra_totalfinal = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
 where compra_id = 1;
 
-
+drop table motivo_anulacion_borrar;
 
 
 

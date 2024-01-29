@@ -293,9 +293,12 @@ class Mesa extends CI_Controller{
             
             $sql = "select pedido_id from pedido where estado_id = 11 and mesa_id = {$mesa_id} ";
             $resultado = $this->Venta_model->consultar($sql);
-                        
-            if (is_array($resultado)){
-                echo json_encode($resultado[0]["pedido_id"]);
+            //var_dump($resultado);            
+            if (sizeof($resultado)>0){
+             
+                    echo json_encode($resultado[0]["pedido_id"]);                    
+
+                
             }else{
                 echo json_encode(0);
             }

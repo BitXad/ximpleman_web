@@ -936,6 +936,8 @@ function mostrar_detalle_pedido(pedido_id){
 
                 let pedido = JSON.parse(respuesta);                            
                 let html = "";
+                $("#detalle_pedido").html(html);
+                
                 let total_final = 0;
                 let tamanio_letra = '12px' //Tamaño de letra botones
 
@@ -990,6 +992,8 @@ function mostrar_detalle_pedido(pedido_id){
             },
             error:function(respuesta){
                 res = 0;
+                let html = "";
+                $("#detalle_pedido").html(html);
             }
         });     
 
@@ -1046,6 +1050,8 @@ function mostrar_pedido(mesa_id){
     let base_url = document.getElementById('base_url').value;
     let controlador = base_url+'mesa/get_pedido_asociado/';
     
+    //alert("mesa_id: "+mesa_id);
+    
     $("#mesa_id").val(mesa_id);
     
         $.ajax({url: controlador,
@@ -1053,16 +1059,23 @@ function mostrar_pedido(mesa_id){
             data:{mesa_id:mesa_id},                
             success:function(respuesta){
 
-                let pedido_id = JSON.parse(respuesta);                            
-//
-//                alert(JSON.stringify(pedido));
+                let pedido_id = JSON.parse(respuesta);
+                
+                if(pedido_id>0){
 
-                mostrar_datos_pedido(pedido_id);
-                mostrar_detalle_pedido(pedido_id);
+                    mostrar_datos_pedido(pedido_id);
+                    mostrar_detalle_pedido(pedido_id);                    
+                }else{
+                    let op = confirm("ERROR INESPERADO: La Mesa "+mesa_id+" no tiene una comanda generada.  ¿Desea generar una comanda?");
+                    if(op){
+                        modal_mesa(mesa_id);
+                    }
+                }
                 
             },
             error:function(respuesta){
                 res = 0;
+                alert("No encontro nada");
             }
         });     
 

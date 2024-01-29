@@ -243,6 +243,7 @@ function formato_numerico(numero){
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"caja/registrar_bitacora";
     
+    
     var bitacoracaja_evento = "VERIFICACION EFECTIVO: "+
             "| BILLETE 200 X "+billete200+
             "| BILLETE 100 X "+billete100+
@@ -256,6 +257,9 @@ function formato_numerico(numero){
             "| MODENA 0.20 X "+moneda020+
             "| MODENA 0.10 X "+moneda010+
             "| MODENA 0.05 X "+moneda005;
+    
+    bitacoracaja_evento += " *** TOTAL Bs: "+caja_cierre;
+    
             
     
     

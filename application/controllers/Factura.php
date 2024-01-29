@@ -2291,7 +2291,7 @@ class Factura extends CI_Controller{
             
             $mensaje_anular = "";
             //****************** inicio bitacora caja
-            $bitacoracaja_evento = "ANULAR FACTURA N°".$factura[0]["factura_numero"];
+            $bitacoracaja_evento = "ANULAR FACTURA N°: ".$factura[0]["factura_numero"];
             $bitacoracaja_tipo = 2;
             $caja_id = 0;
             $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
