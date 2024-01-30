@@ -307,6 +307,7 @@ class Venta extends CI_Controller{
             
         //**************** inicio contenido ***************   
             
+        $data['pedido'] = $this->Venta_model->Consultar("select * from pedido where pedido_id = {$pedido_id}");
         $data['sistema'] = $this->sistema;
         $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
@@ -1418,22 +1419,26 @@ class Venta extends CI_Controller{
                                 'datos_embase' => $this->input->post('datos_embase'),
                                 'cliente_id' => $cliente_id,
                                 'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
-                                //'datos_periodofacturado' => $this->input->post('datos_periodofacturado'),
-                                'datos_beneficiario1886' => $this->input->post('datos_beneficiario1886'),
+                                //'datos_periodofacturado' => $this->input->post('datos_periodofacturado'),                                
+                                'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
+                                'datos_beneficiarioley1886' => $this->input->post('datos_beneficiarioley1886'),
+                                'datos_montodescuentoley1886' => $this->input->post('datos_montodescuentoley1886'),
+                                'datos_montodescuentotarifadignidad' => $this->input->post('datos_montodescuentotarifadignidad'),
+                                'datos_periodofacturado' => $this->input->post('datos_periodofacturado'),
+                                'datos_medidor' => $this->input->post('datos_medidor'),
                                 'datos_mes' => $this->input->post('datos_mes'),
                                 'datos_anio' => $this->input->post('datos_anio'),
-                                'datos_medidor' => $this->input->post('datos_medidor'),
-                                'datos_ajustesnoiva' => $this->input->post('datos_ajustesnoiva'),
-                                'datos_ajustesujetosiva' => $this->input->post('datos_ajustesujetosiva'),
-                                'datos_sujetoivasubtotal' => $this->input->post('datos_sujetoivasubtotal'),
-                                'datos_aseourbano' => $this->input->post('datos_aseourbano'),
-                                'datos_aseosubtotal' => $this->input->post('datos_aseosubtotal'),
                                 'datos_tasaalumbrado' => $this->input->post('datos_tasaalumbrado'),
-                                'datos_alumbradosubtotal' => $this->input->post('datos_alumbradosubtotal'),
+                                'datos_tasaaseo' => $this->input->post('datos_tasaaseo'),
+                                'datos_detalleajustenosujetoiva' => $this->input->post('datos_detalleajustenosujetoiva'),
+                                'datos_ajutesnosujetoiva' => $this->input->post('datos_ajutesnosujetoiva'),
+                                'datos_detalleajustesujetoiva' => $this->input->post('datos_detalleajustesujetoiva'),
+                                'datos_ajustesujetoiva' => $this->input->post('datos_ajustesujetoiva'),
+                                'datos_detalleotrospagosnosujetoiva' => $this->input->post('datos_detalleotrospagosnosujetoiva'),
+                                'datos_otrospagosnosujetoiva' => $this->input->post('datos_otrospagosnosujetoiva'),
+                                'datos_detalleotrastasas' => $this->input->post('datos_detalleotrastasas'),
                                 'datos_otrastasas' => $this->input->post('datos_otrastasas'),
-                                'datos_tasassubtotal' => $this->input->post('datos_tasassubtotal'),
-                                'datos_otrospagos' => $this->input->post('datos_otrospagos'),
-                                'datos_pagossubtotal' => $this->input->post('datos_pagossubtotal'),
+                                //'parametro_comprobante' => $this->input->post('parametro_comprobante'),
                             );
 
                             $datos_id = $this->Factura_datos_model->add_factura_datos($params);

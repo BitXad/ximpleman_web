@@ -944,7 +944,9 @@ function mostrar_detalle_pedido(pedido_id){
                 html += "<button type='button' class='btn btn-facebook btn-sm' data-toggle='modal' data-target='#modalproductos' id='boton_productos' style='font-size:"+tamanio_letra+";' onclick='tablaresultados(4)'><span class='fa fa-binoculars'></span><b> Productos</b></button>";
                 html += "<a href='"+base_url+"pedido/imprimir/"+pedido_id+"' target='_blank' class='btn btn-warning btn-sm' id='imprimir_comanda' title='Comanda' style='font-size:"+tamanio_letra+";'><span class='fa fa-print'></span><b> Comanda</b></a>"; 
                 html += "<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#modalcambiomesa' id='boton_cambiomesa' style='font-size:"+tamanio_letra+";'><span class='fa fa-refresh'></span> <b> Cambio de Mesa</b></button>";
-                html += "<a href='"+base_url+"venta/ventas' class='btn btn-success btn-sm' id='boton_ventas' title='Ventas y facturacion' style='font-size:"+tamanio_letra+";'><span class='fa fa-cubes'></span><b> Facturar</b></a>"; 
+                html += "<button type='button' class='btn btn-success btn-sm' id='boton_ventas' style='font-size:"+tamanio_letra+";' onclick='pasaraventas("+pedido_id+",1)'><span class='fa fa-refresh'></span> <b> Facturar</b></button>";
+                
+                //html += "<a href='"+base_url+"venta/ventas' class='btn btn-success btn-sm' id='boton_ventas' title='Ventas y facturacion' style='font-size:"+tamanio_letra+";'><span class='fa fa-cubes'></span><b> Facturar</b></a>"; 
                 
                 if(pedido.length<=0){ //Si ya tiene productos, no se podra dar de baja
                     
@@ -1232,4 +1234,24 @@ function cambiar_mesa(){
     
 
     
+}
+
+function pasaraventas(pedido_id,cliente_id)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"pedido/pasaraventas/"+pedido_id+"/"+cliente_id;
+   
+   //alert(controlador);
+   
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){       
+            window.location.href = base_url+"venta/ventas_pedido/"+pedido_id;
+            //$("#pedido_id").val(pedido_id);
+        },
+        error: function(respuesta){
+                alert("ADVERTENCIA: Ocurrio un error, vuelva a realizar la operación por favor...!!");
+        }
+    }); 
 }

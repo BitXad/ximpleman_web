@@ -282,12 +282,12 @@ window.onkeydown = compruebaTecla;
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
 <input type="text" value='<?php echo json_encode($preferencia); ?>' id="preferencias" hidden>
-<input type="text" id="pedido_id" value="0" name="pedido_id" hidden>
+<input type="text" id="pedido_id" value="<?php echo isset($pedido[0]["pedido_id"])?$pedido[0]["pedido_id"]:0;  ?>" name="pedido_id" hidden>
 <input type="text" id="orden_id" value="0" name="orden_id" hidden>
 <input type="text" id="usuarioprev_id" value="0" name="usuarioprev_id" hidden>
 <input type="text" id="venta_comision" value="0" name="venta_comision" hidden>
 <input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio" hidden>
-<input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id" hidden>
+<input type="text" id="usuariopedido_id" value="<?php echo isset($pedido[0]["usuario_id"])?$pedido[0]["usuario_id"]:0;  ?>" name="usuariopedido_id" hidden>
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
 <input type="text" id="parametro_modoventas" value="<?php echo $parametro['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
 <input type="text" id="parametro_anchoboton" value="<?php echo $parametro['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
@@ -1466,8 +1466,14 @@ window.onkeydown = compruebaTecla;
                     <button type="button" id="boton_guardarventa" class="btn btn-info btn-xs" onclick="abrirVentanaEmergente()">
                         <fa class="fa fa-recycle"></fa> Cambiar Doc. Sector
                   </button>
+                    <br>
                     
                     <?php } ?>
+                    
+                    <button type="button" id="boton_cargarservicios" class="btn btn-facebook btn-xs" onclick="cargar_servicios()">
+                        <fa class="fa fa-recycle"></fa> Cargas Servicios
+                    </button>
+                    
                     </div>
                 </div>
             </div>
@@ -2921,28 +2927,43 @@ window.onkeydown = compruebaTecla;
                 <div class="col-md-12" style="line-height: 8px;">
                     
 					<div class="col-md-6">
-						<label for="datos_consumoperiodo" class="control-label">Consumo</label>
+						<label for="datos_consumoperiodo" class="control-label">Consumo MT3</label>
 						<div class="form-group">
-							<input type="text" name="datos_consumoperiodo" value="<?php echo ""; ?>" class="form-control" id="datos_consumoperiodo" />
+							<input type="number" name="datos_consumoperiodo" value="<?php echo ""; ?>" class="form-control" id="datos_consumoperiodo" />
 						</div>
 					</div>
                     
 					<div class="col-md-6">
-						<label for="datos_beneficiario1886" class="control-label">Beneficiario1886</label>
+						<label for="datos_beneficiarioley1886" class="control-label">Beneficiario 1886</label>
 						<div class="form-group">
-							<input type="text" name="datosbeneficiario1886" value="<?php echo ""; ?>" class="form-control" id="datos_beneficiario1886" />
+							<input type="text" name="datos_beneficiarioley1886" value="<?php echo ""; ?>" class="form-control" id="datos_beneficiarioley1886" />
+						</div>
+					</div>        
+                    
+					<div class="col-md-6">
+						<label for="datos_montodescuentoley1886" class="control-label">Monto Desc Ley 1886</label>
+						<div class="form-group">
+							<input type="text" name="datos_montodescuentoley1886" value="<?php echo ""; ?>" class="form-control" id="datos_montodescuentoley1886" />
+						</div>
+					</div>        
+                    
+                    
+					<div class="col-md-6">
+						<label for="datos_montodescuentotarifadignidad" class="control-label">Monto Desc. Tarifa dignidad</label>
+						<div class="form-group">
+							<input type="text" name="datos_montodescuentotarifadignidad" value="<?php echo ""; ?>" class="form-control" id="datos_montodescuentotarifadignidad" />
 						</div>
 					</div>        
                     
 					<div class="col-md-3">
-						<label for="datos_periodofacturado" class="control-label">Periodo</label>
+						<label for="datos_mes" class="control-label">Mes</label>
 						<div class="form-group">
 							<input type="text" name="datos_mes" value="<?php echo ""; ?>" class="form-control" id="datos_mes" />
 						</div>
 					</div>
                     
 					<div class="col-md-3">
-						<label for="datos_periodofacturado" class="control-label">Año</label>
+						<label for="datos_anio" class="control-label">Año</label>
 						<div class="form-group">
 							<input type="text" name="datos_anio" value="<?php echo ""; ?>" class="form-control" id="datos_anio" />
 						</div>
@@ -2955,35 +2976,19 @@ window.onkeydown = compruebaTecla;
 						</div>
 					</div>
                     
-					<div class="col-md-9">
-						<label for="datos_ajustesujetosiva" class="control-label">Ajuste sujeto a iva</label>
-						<div class="form-group">
-							<!--<input type="memo" name="datos_ajustesujetosiva" value="<?php echo ""; ?>" class="form-control" id="datos_ajustesujetosiva" />-->
-                                                    <textarea name="datos_ajustesujetosiva" class="form-control" id="datos_ajustesujetosiva" >
-Ajustes sujetos a IVA
-Cobro por reconexion 10.00</textarea>
-						</div>
-					</div>                   
                     
-					<div class="col-md-3">
-						<label for="datos_sujetoivasubtotal" class="control-label">Sub total Bs</label>
-						<div class="form-group">
-                                                    
-							<input type="text" name="datos_sujetoivasubtotal" value="<?php echo "0.00"; ?>" class="form-control" id="datos_sujetoivasubtotal" />
-						</div>
-					</div>                    
-
 					<div class="col-md-9">
 						<label for="datos_aseourbano" class="control-label">Tasa aseo urbano</label>
 						<div class="form-group">
 							<textarea name="datos_aseourbano" class="form-control" id="datos_aseourbano" >Tasa Aseo Urbano </textarea>
 						</div>
-					</div>                   
+					</div>
+                    
                     
 					<div class="col-md-3">
-						<label for="datos_aseosubtotal" class="control-label">Sub total Bs</label>
+						<label for="datos_tasaaseo" class="control-label">Sub total Bs</label>
 						<div class="form-group">
-							<input type="text" name="datos_aseosubtotal" value="<?php echo "0.00"; ?>" class="form-control" id="datos_aseosubtotal" />
+							<input type="text" name="datos_tasaaseo" value="<?php echo "0.00"; ?>" class="form-control" id="datos_tasaaseo" />
 						</div>
 					</div>            
                     
@@ -2992,43 +2997,90 @@ Cobro por reconexion 10.00</textarea>
 						<div class="form-group">
                                                     <textarea type="text" name="datos_tasaalumbrado" class="form-control" id="datos_tasaalumbrado">Tasa de aseo</textarea>
 						</div>
+					</div>                        
+                    
+					<div class="col-md-3">
+						<label for="datos_tasaalumbrado" class="control-label">Sub total Bs</label>
+						<div class="form-group">
+							<input type="text" name="datos_tasaalumbrado" value="<?php echo "0.00"; ?>" class="form-control" id="datos_tasaalumbrado" />
+						</div>
+					</div>            
+                    
+                    
+                    
+                    
+					<div class="col-md-9">
+						<label for="datos_detalleajustenosujetoiva" class="control-label">Ajuste NO sujeto a iva</label>
+						<div class="form-group">
+							<!--<input type="memo" name="datos_ajustesujetosiva" value="<?php echo ""; ?>" class="form-control" id="datos_ajustesujetosiva" />-->
+                                                    <textarea name="datos_detalleajustenosujetoiva" class="form-control" id="datos_detalleajustenosujetoiva" >
+Ajustes sujetos a IVA
+Cobro por reconexion 10.00</textarea>
+						</div>
+					</div>                   
+                    
+                    
+					<div class="col-md-3">
+						<label for="datos_ajutesnosujetoiva" class="control-label">Sub total Bs</label>
+						<div class="form-group">
+                                                    
+							<input type="text" name="datos_ajutesnosujetoiva" value="<?php echo "0.00"; ?>" class="form-control" id="datos_ajutesnosujetoiva" />
+						</div>
+					</div>        
+                    
+					<div class="col-md-9">
+						<label for="datos_detalleajustesujetoiva" class="control-label">Ajuste sujeto a iva</label>
+						<div class="form-group">
+							<!--<input type="memo" name="datos_ajustesujetosiva" value="<?php echo ""; ?>" class="form-control" id="datos_ajustesujetosiva" />-->
+                                                    <textarea name="datos_detalleajustesujetoiva" class="form-control" id="datos_detalleajustesujetoiva" >
+Ajustes NO sujetos a IVA
+Cobro por reconexion 10.00</textarea>
+						</div>
 					</div>                   
                     
 					<div class="col-md-3">
-						<label for="datos_alumbradosubtotal" class="control-label">Sub total Bs</label>
+						<label for="datos_ajustesujetoiva" class="control-label">Sub total Bs</label>
 						<div class="form-group">
-							<input type="text" name="datos_alumbradosubtotal" value="<?php echo "0.00"; ?>" class="form-control" id="datos_alumbradosubtotal" />
+                                                    
+							<input type="text" name="datos_ajustesujetoiva" value="<?php echo "0.00"; ?>" class="form-control" id="datos_ajustesujetoiva" />
 						</div>
 					</div>                    
+
+                
+                    
+	
                     
 					<div class="col-md-9">                                                                                              
-						<label for="datos_otrastasas" class="control-label">Otras tasas</label>
+						<label for="datos_detalleotrastasas" class="control-label">Otras tasas</label>
 						<div class="form-group">
-                                                    <textarea name="datos_otrastasas" class="form-control" id="datos_otrastasas">Otras tasas</textarea>
+                                                    <textarea name="datos_detalleotrastasas" class="form-control" id="datos_detalleotrastasas">Otras tasas</textarea>
 						</div>
 					</div>                   
                     
-					<div class="col-md-3">
-						<label for="datos_tasassubtotal" class="control-label">Sub total Bs</label>
-						<div class="form-group">
-							<input type="text" name="datos_tasassubtotal" value="<?php echo "0.00"; ?>" class="form-control" id="datos_tasassubtotal" />
-						</div>
-					</div>                      
                     
-                                        <div class="col-md-9">
-						<label for="datos_otrospagos" class="control-label">Otros pagos</label>
+                                         <div class="col-md-9">
+						<label for="datos_detalleotrospagosnosujetoiva" class="control-label">Otras Tasas</label>
 						<div class="form-group">
-                                                    <textarea name="datos_otrospagos" class="form-control" id="datos_otrospagos">
-Otros Pagos (pago de cuotas etc)
+                                                    <textarea name="datos_detalleotrospagosnosujetoiva" class="form-control" id="datos_detalleotrospagosnosujetoiva">
+Otras tasas
 Pago cuota coperativa 7.00</textarea>
 
 						</div>
-					</div>                   
+					</div>                        
                     
 					<div class="col-md-3">
-						<label for="datos_pagossubtotal" class="control-label">Sub total Bs</label>
+						<label for="datos_otrospagosnosujetoiva" class="control-label">Sub total Bs</label>
 						<div class="form-group">
-							<input type="text" name="datos_pagossubtotal" value="<?php echo "0.00"; ?>" class="form-control" id="datos_pagossubtotal" />
+							<input type="text" name="datos_otrospagosnosujetoiva" value="<?php echo "0.00"; ?>" class="form-control" id="datos_otrospagosnosujetoiva" />
+						</div>
+					</div>                      
+                    
+              
+                    
+					<div class="col-md-3">
+						<label for="datos_otrastasas" class="control-label">Sub total Bs</label>
+						<div class="form-group">
+							<input type="text" name="datos_otrastasas" value="<?php echo "0.00"; ?>" class="form-control" id="datos_otrastasas" />
 						</div>
 					</div>  
 		                    

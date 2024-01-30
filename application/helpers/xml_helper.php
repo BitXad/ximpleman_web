@@ -517,12 +517,15 @@ $salto_linea='
             $cabecera_facturaxml .= $salto_linea.'          <tasaAlumbrado>'.number_format($factura_datos['datos_alumbradosubtotal'],$dos_decimales,".","").'</tasaAlumbrado>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <ajusteNoSujetoIva>'.number_format($factura_datos['datos_ajustesnoiva'],$dos_decimales,".","").'</ajusteNoSujetoIva>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteNoSujetoIva>{"'.$factura_datos['datos_pagosnoiva'].'":0}</detalleAjusteNoSujetoIva>'; //cambiar por cliente_nombre
-            $cabecera_facturaxml .= $salto_linea.'          <ajusteSujetoIva>'.number_format($factura_datos['datos_sujetoivasubtotal'],$dos_decimales,".","").'</ajusteSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <ajusteSujetoIva>'.number_format($factura_datos['datos_sujetoivasubtotal'],0,".","").'</ajusteSujetoIva>'; //cambiar por cliente_nombre
            
             
-            $datos_sujetoivasubtotal = number_format($factura_datos['datos_sujetoivasubtotal'],$dos_decimales,".","");
+            $datos_sujetoivasubtotal = number_format($factura_datos['datos_sujetoivasubtotal'],0,".","");
             $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteSujetoIva>{"'.$factura_datos['datos_ajustesujetosiva'].'":'.$datos_sujetoivasubtotal.'}</detalleAjusteSujetoIva>'; //cambiar por cliente_nombre
+
+            $datos_sujetoivasubtotal = number_format($factura_datos['datos_sujetoivasubtotal'],0,".","");
             $cabecera_facturaxml .= $salto_linea.'          <otrosPagosNoSujetoIva>'.$factura_datos['datos_ajustesujetosiva'].'</otrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
+
             $cabecera_facturaxml .= $salto_linea.'          <detalleOtrosPagosNoSujetoIva>{"'.$factura_datos['datos_otrospagos'].'":0}</detalleOtrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <otrasTasas>'.number_format($factura_datos['datos_tasassubtotal'],$dos_decimales,".","").'</otrasTasas>'; //cambiar por cliente_nombre
         }

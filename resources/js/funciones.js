@@ -3752,21 +3752,24 @@ function registrarventa(cliente_id)
     let datos_autorizacionsc = document.getElementById('datos_autorizacionsc').value;
 
     let datos_consumoperiodo = document.getElementById('datos_consumoperiodo').value;
-    let datos_beneficiario1886 = document.getElementById('datos_beneficiario1886').value;
+    let datos_beneficiarioley1886 = document.getElementById('datos_beneficiarioley1886').value;
+    let datos_montodescuentoley1886 = document.getElementById('datos_montodescuentoley1886').value;
+    let datos_montodescuentotarifadignidad = document.getElementById('datos_montodescuentotarifadignidad').value;
+//    let datos_periodofacturado = document.getElementById('datos_periodofacturado').value;
     let datos_medidor = document.getElementById('datos_medidor').value;
     let datos_mes = document.getElementById('datos_mes').value;
     let datos_anio = document.getElementById('datos_anio').value;
-    //let datos_ajustesnoiva = document.getElementById('datos_ajustesnoiva').value;
-    let datos_ajustesujetosiva = document.getElementById('datos_ajustesujetosiva').value;
-    let datos_sujetoivasubtotal = document.getElementById('datos_sujetoivasubtotal').value;
-    let datos_aseourbano = document.getElementById('datos_aseourbano').value;
-    let datos_aseosubtotal = document.getElementById('datos_aseosubtotal').value;
+//    let datos_ajustesnoiva = document.getElementById('datos_ajustesnoiva').value;
     let datos_tasaalumbrado = document.getElementById('datos_tasaalumbrado').value;
-    let datos_alumbradosubtotal = document.getElementById('datos_alumbradosubtotal').value;
+    let datos_tasaaseo = document.getElementById('datos_tasaaseo').value;
+    let datos_detalleajustenosujetoiva = document.getElementById('datos_detalleajustenosujetoiva').value;
+    let datos_ajutesnosujetoiva = document.getElementById('datos_ajutesnosujetoiva').value;
+    let datos_detalleajustesujetoiva = document.getElementById('datos_detalleajustesujetoiva').value;
+    let datos_ajustesujetoiva = document.getElementById('datos_ajustesujetoiva').value;    
+    let datos_detalleotrospagosnosujetoiva = document.getElementById('datos_detalleotrospagosnosujetoiva').value;
+    let datos_otrospagosnosujetoiva = document.getElementById('datos_otrospagosnosujetoiva').value;
+    let datos_detalleotrastasas = document.getElementById('datos_detalleotrastasas').value;
     let datos_otrastasas = document.getElementById('datos_otrastasas').value;
-    let datos_tasassubtotal = document.getElementById('datos_tasassubtotal').value;
-    let datos_otrospagos = document.getElementById('datos_otrospagos').value;
-    let datos_pagossubtotal = document.getElementById('datos_pagossubtotal').value;
     let parametro_comprobante = document.getElementById('parametro_comprobante').value;
     //let datos_periodofacturado = document.getElementById('datos_periodofacturado').value;
     
@@ -3861,11 +3864,15 @@ function registrarventa(cliente_id)
                 parametro_tipoemision:parametro_tipoemision, mandar_enuno:mandar_enuno, select_almacen:select_almacen,cliente_id:cliente_id,
                 datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc,
                 factura_idcreditodebito: factura_idcreditodebito, 
-                datos_consumoperiodo:datos_consumoperiodo, datos_beneficiario1886:datos_beneficiario1886, datos_mes:datos_mes, datos_anio: datos_anio,
-                datos_medidor:datos_medidor, datos_ajustesujetosiva:datos_ajustesujetosiva,datos_sujetoivasubtotal:datos_sujetoivasubtotal,
-                datos_aseourbano:datos_aseourbano,datos_aseosubtotal:datos_aseosubtotal,datos_tasaalumbrado:datos_tasaalumbrado,
-                datos_alumbradosubtotal:datos_alumbradosubtotal,datos_otrastasas:datos_otrastasas,datos_tasassubtotal:datos_tasassubtotal,
-                datos_otrospagos:datos_otrospagos,datos_pagossubtotal:datos_pagossubtotal
+                datos_consumoperiodo:datos_consumoperiodo,datos_mes:datos_mes, datos_anio: datos_anio,
+                datos_medidor:datos_medidor,datos_tasaalumbrado:datos_tasaalumbrado,datos_otrastasas:datos_otrastasas,datos_consumoperiodo:datos_consumoperiodo, 
+                datos_beneficiarioley1886:datos_beneficiarioley1886, datos_montodescuentoley1886:datos_montodescuentoley1886, 
+                datos_montodescuentotarifadignidad:datos_montodescuentotarifadignidad,  
+                datos_medidor:datos_medidor, datos_mes:datos_mes, datos_anio:datos_anio, datos_tasaalumbrado:datos_tasaalumbrado, 
+                datos_tasaaseo:datos_tasaaseo, datos_detalleajustenosujetoiva:datos_detalleajustenosujetoiva, 
+                datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
+                datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
+                datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -3972,11 +3979,15 @@ function registrarventa(cliente_id)
                 mandar_enuno:mandar_enuno, select_almacen:select_almacen, venta_glosa:venta_glosa,cliente_id:cliente_id,
                 datos_placa:datos_placa, datos_embase:datos_embase, datos_codigopais:datos_codigopais, datos_autorizacionsc:datos_autorizacionsc,
                 factura_idcreditodebito: factura_idcreditodebito, 
-                datos_consumoperiodo:datos_consumoperiodo,  datos_mes:datos_mes, datos_anio: datos_anio,datos_beneficiario1886:datos_beneficiario1886,
-                datos_medidor:datos_medidor, datos_ajustesujetosiva:datos_ajustesujetosiva,datos_sujetoivasubtotal:datos_sujetoivasubtotal,
-                datos_aseourbano:datos_aseourbano,datos_aseosubtotal:datos_aseosubtotal,datos_tasaalumbrado:datos_tasaalumbrado,
-                datos_alumbradosubtotal:datos_alumbradosubtotal,datos_otrastasas:datos_otrastasas,datos_tasassubtotal:datos_tasassubtotal,
-                datos_otrospagos:datos_otrospagos,datos_pagossubtotal:datos_pagossubtotal
+                datos_consumoperiodo:datos_consumoperiodo,datos_mes:datos_mes, datos_anio: datos_anio,
+                datos_medidor:datos_medidor,datos_tasaalumbrado:datos_tasaalumbrado,datos_otrastasas:datos_otrastasas,datos_consumoperiodo:datos_consumoperiodo, 
+                datos_beneficiarioley1886:datos_beneficiarioley1886, datos_montodescuentoley1886:datos_montodescuentoley1886, 
+                datos_montodescuentotarifadignidad:datos_montodescuentotarifadignidad,  
+                datos_medidor:datos_medidor, datos_mes:datos_mes, datos_anio:datos_anio, datos_tasaalumbrado:datos_tasaalumbrado, 
+                datos_tasaaseo:datos_tasaaseo, datos_detalleajustenosujetoiva:datos_detalleajustenosujetoiva, 
+                datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
+                datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
+                datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
