@@ -421,7 +421,7 @@ border-bottom : 1px solid #aaa;
                             
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Beneficiario Ley 1886:</b></td>
-                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $datos_factura['datos_beneficiario1886']; ?></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $datos_factura['datos_beneficiarioley1886']; ?></td>
                             </tr>
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Periodo Facturado:</b></td>
@@ -558,26 +558,26 @@ border-bottom : 1px solid #aaa;
                         
                         
                         <tr  style=" font-family: Arial; border: 1px solid black;">
-                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_ajustesujetosiva"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_sujetoivasubtotal"],$decimales,".",","); ?></td>                            
+                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_detalleajustesujetoiva"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_ajustesujetoiva"],$decimales,".",","); ?></td>
                         </tr>                        
                                 
                         
                         
                         <tr  style=" font-family: Arial; border: 1px solid black;">
-                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_aseourbano"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_aseosubtotal"],$decimales,".",","); ?></td>                            
+                            <td></td> <td></td> <td></td> <td><?php echo "TASA DE ASEO"; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_tasaaseo"],$decimales,".",","); ?></td>
                         </tr>                        
                         
                         <tr  style=" font-family: Arial; border: 1px solid black;">
-                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_tasaalumbrado"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_alumbradosubtotal"],$decimales,".",","); ?></td>                            
+                            <td></td> <td></td> <td></td> <td><?php echo "TASA DE ALUMBRADO"; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_tasaalumbrado"],$decimales,".",","); ?></td>                            
                         </tr>                        
                         
                         <tr  style=" font-family: Arial; border: 1px solid black;">
-                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_otrastasas"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_tasassubtotal"],$decimales,".",","); ?></td>
+                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_detalleotrastasas"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_otrastasas"],$decimales,".",","); ?></td>
                         </tr>                        
                         
                         
                         <tr  style=" font-family: Arial; border: 1px solid black;">
-                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_otrospagos"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_pagossubtotal"],$decimales,".",","); ?></td>
+                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_detalleotrospagosnosujetoiva"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_otrospagosnosujetoiva"],$decimales,".",","); ?></td>
                         </tr>                        
                                 
                     <?php        } ?>
@@ -631,11 +631,11 @@ border-bottom : 1px solid #aaa;
                         $ajustes_no_sujetosiva = 0;
                         if($factura[0]['docsec_codigoclasificador']==13){ //Servicios 
                             
-                            $ajustes_no_sujetosiva = $datos_factura['datos_ajustesnoiva'];
+                            $ajustes_no_sujetosiva = $datos_factura['datos_ajutesnosujetoiva'];
                             ?>
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) AJUSTES NO SUJETOS A IVA Bs</td>
-                            <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($datos_factura['datos_ajustesnoiva'] ,$dos_decimales,'.',',') ?></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($datos_factura['datos_ajutesnosujetoiva'] ,$dos_decimales,'.',',') ?></td>
                         </tr>
                     <?php } ?>
                     

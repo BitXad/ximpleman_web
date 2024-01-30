@@ -463,14 +463,14 @@ $salto_linea='
             }else{
              
                 
-                $datos_sujetoivasubtotal =  $factura_datos['datos_sujetoivasubtotal'];
-                $datos_aseosubtotal =  $factura_datos['datos_aseosubtotal'];
-                $datos_alumbradosubtotal =  $factura_datos['datos_alumbradosubtotal'];
-                $datos_tasassubtotal =  $factura_datos['datos_tasassubtotal'];
-                $datos_pagossubtotal =  $factura_datos['datos_pagossubtotal'];
+                $datos_sujetoivasubtotal =  $factura_datos['datos_ajustesujetoiva'];
+                $datos_aseosubtotal =  $factura_datos['datos_tasaaseo'];
+                $datos_alumbradosubtotal =  $factura_datos['datos_tasaalumbrado'];
+                $datos_tasassubtotal =  $factura_datos['datos_otrastasas'];
+                $datos_pagossubtotal =  $factura_datos['datos_otrospagosnosujetoiva'];
 
                 $tasas = $datos_aseosubtotal + $datos_alumbradosubtotal + $datos_tasassubtotal; 
-                $monto_total_pagar = $factura['factura_total'] - $factura_datos['datos_ajustesnoiva'];
+                $monto_total_pagar = $factura['factura_total'] - $factura_datos['datos_ajutesnosujetoiva'];
                 
                 $otros_pagos_noiva = 0;
                 $importe_base_iva = $monto_total_pagar - $tasas - $otros_pagos_noiva;
@@ -501,7 +501,7 @@ $salto_linea='
             if ($factura_datos['datos_beneficiario1886']!='' && $factura_datos['datos_beneficiario1886']!='null' ){
                 
                 $cabecera_facturaxml .= $salto_linea.'          <beneficiarioLey1886>'.$factura_datos['datos_beneficiario1886'].'</beneficiarioLey1886>'; //cambiar por cliente_nombre
-                $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoLey1886>'.$factura_datos['datos_beneficiario1886'].'</montoDescuentoLey1886>'; //cambiar por cliente_nombre
+                $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoLey1886>'.$factura_datos['montoDescuentoley1886'].'</montoDescuentoLey1886>'; //cambiar por cliente_nombre
                 
             }else{
                 
@@ -513,20 +513,20 @@ $salto_linea='
             
             
             $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoTarifaDignidad xsi:nil="true"></montoDescuentoTarifaDignidad>'; //cambiar por cliente_nombre
-            $cabecera_facturaxml .= $salto_linea.'          <tasaAseo>'.number_format($factura_datos['datos_aseosubtotal'],$dos_decimales,".","").'</tasaAseo>'; //cambiar por cliente_nombre
-            $cabecera_facturaxml .= $salto_linea.'          <tasaAlumbrado>'.number_format($factura_datos['datos_alumbradosubtotal'],$dos_decimales,".","").'</tasaAlumbrado>'; //cambiar por cliente_nombre
-            $cabecera_facturaxml .= $salto_linea.'          <ajusteNoSujetoIva>'.number_format($factura_datos['datos_ajustesnoiva'],$dos_decimales,".","").'</ajusteNoSujetoIva>'; //cambiar por cliente_nombre
-            $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteNoSujetoIva>{"'.$factura_datos['datos_pagosnoiva'].'":0}</detalleAjusteNoSujetoIva>'; //cambiar por cliente_nombre
-            $cabecera_facturaxml .= $salto_linea.'          <ajusteSujetoIva>'.number_format($factura_datos['datos_sujetoivasubtotal'],0,".","").'</ajusteSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <tasaAseo>'.number_format($factura_datos['datos_tasaaseo'],$dos_decimales,".","").'</tasaAseo>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <tasaAlumbrado>'.number_format($factura_datos['datos_tasaalumbrado'],$dos_decimales,".","").'</tasaAlumbrado>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <ajusteNoSujetoIva>'.number_format($factura_datos['datos_ajustenosujetoiva'],$dos_decimales,".","").'</ajusteNoSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteNoSujetoIva>{"'.$factura_datos['datos_detalleajustenosujetoiva'].'":0}</detalleAjusteNoSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <ajusteSujetoIva>'.number_format($factura_datos['datos_ajustesujetoiva'],0,".","").'</ajusteSujetoIva>'; //cambiar por cliente_nombre
            
             
-            $datos_sujetoivasubtotal = number_format($factura_datos['datos_sujetoivasubtotal'],0,".","");
-            $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteSujetoIva>{"'.$factura_datos['datos_ajustesujetosiva'].'":'.$datos_sujetoivasubtotal.'}</detalleAjusteSujetoIva>'; //cambiar por cliente_nombre
+            $datos_ajustesujetoiva = number_format($factura_datos['datos_ajustesujetoiva'],0,".","");
+            $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteSujetoIva>{"'.$factura_datos['datos_detalleajustesujetoiva'].'":'.$datos_ajustesujetoiva.'}</detalleAjusteSujetoIva>'; //cambiar por cliente_nombre
 
             $datos_sujetoivasubtotal = number_format($factura_datos['datos_sujetoivasubtotal'],0,".","");
-            $cabecera_facturaxml .= $salto_linea.'          <otrosPagosNoSujetoIva>'.$factura_datos['datos_ajustesujetosiva'].'</otrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <otrosPagosNoSujetoIva>'.$factura_datos['datos_otrospagosnosujetoiva'].'</otrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
 
-            $cabecera_facturaxml .= $salto_linea.'          <detalleOtrosPagosNoSujetoIva>{"'.$factura_datos['datos_otrospagos'].'":0}</detalleOtrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
+            $cabecera_facturaxml .= $salto_linea.'          <detalleOtrosPagosNoSujetoIva>{"'.$factura_datos['datos_detalleotrospagosnosujetoiva'].'":0}</detalleOtrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
             $cabecera_facturaxml .= $salto_linea.'          <otrasTasas>'.number_format($factura_datos['datos_tasassubtotal'],$dos_decimales,".","").'</otrasTasas>'; //cambiar por cliente_nombre
         }
         
@@ -563,11 +563,6 @@ $salto_linea='
             $cabecera_facturaxml .= $salto_linea.'          <codigoExcepcion>'.$factura_original['factura_excepcion'].'</codigoExcepcion>';
             
         }
-        
-        
-        
-        
-
         
         $cabecera_facturaxml .= $salto_linea.'          <leyenda>'.$factura['factura_leyenda2'].'</leyenda>';
         $cabecera_facturaxml .= $salto_linea.'          <usuario>'.$factura['usuario_nombre'].'</usuario>';
