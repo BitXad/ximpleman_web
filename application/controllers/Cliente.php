@@ -686,7 +686,9 @@ class Cliente extends CI_Controller{
     function add_new()
     {
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(69)){
+            
             $this->load->model('Servicio_model');
             $servicio_id = $this->input->post('servicio_id');
             $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -718,11 +720,11 @@ class Cliente extends CI_Controller{
                                     'cliente_codigo' => $this->input->post('cliente_codigo'),
                                     'cliente_nombre' => $this->input->post('cliente_nombre'),
                                     'cliente_ci' => $this->input->post('cliente_ci'),
-                                    'cliente_direccion' => "",
+                                    'cliente_direccion' => $this->input->post('cliente_direccion'),
                                     'cliente_telefono' => $this->input->post('cliente_telefono'),
                                     'cliente_celular' => $this->input->post('cliente_celular'),
                                     'cliente_foto' => "",
-                                    'cliente_email' => "",
+                                    'cliente_email' => $this->input->post('cliente_email'),
                                     'cliente_nombrenegocio' => "",
                                     'cliente_aniversario' => $mifecha,
                                     'cliente_latitud' => "",

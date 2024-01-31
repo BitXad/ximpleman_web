@@ -765,9 +765,11 @@ html += "  </div>";
 /////////////////// Precio
                         html += "<input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
                         
-/////////////////// Desc                        
+/////////////////// Desc           
+
                         html += "<input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
                         html += "<br><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(decimales)+"</b></font><br>"+total_equivalente;
+                        
                         html += "</td>";
                         html += "			<td "+color+">";
                         html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
@@ -808,7 +810,15 @@ html += "  </div>";
                         html += "<td align='right' "+color+"><input size='5' class='btn btn-default btn-xs' style='font-size:"+tamanio_fuente+" ' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")' autocomplete='off'></td>";
                         
 /////////////////// Descuento
-                        html += "<td align='right' "+color+"><input size='5' class='btn btn-default btn-xs' style='font-size:"+tamanio_fuente+"' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")' autocomplete='off'></td>";
+
+                        html += "<td align='right' "+color+">";
+                        
+                        html += "<div class='btn-group'>      "; 
+                        html += "<input size='3' class='btn btn-default btn-xs ' style='font-size:"+tamanio_fuente+"' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")' autocomplete='off'>";
+                        html += "<button style='font-size:"+tamanio_fuente+"' onclick='porcentaje_descuento("+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs btn-group-addon'><span class='fa fa-percent'></span></button>";
+                        html += "</div>";
+                        
+                        html += "</td>";
                         
 /////////////////// Precio Total
 
@@ -879,6 +889,23 @@ html += "  </div>";
         
     });
 }
+
+function porcentaje_descuento(detalleven_id){
+    
+    //var decimales = Number(document.getElementById('parametro_decimales').value);
+    var precio = Number(document.getElementById('precio'+detalleven_id).value);
+    var descuento = Number(document.getElementById('descuento'+detalleven_id).value);
+    
+    var montodescuento = Number(precio) * Number(descuento)/100;
+    
+    $("#descuento"+detalleven_id).val(montodescuento);
+    actualizar_losprecios(detalleven_id);
+    
+    //alert(montodescuento);
+    
+    
+}
+
 
 //muestra la tabla detalle de venta auxiliar
 function tabladetalle(subtotal,descuento,totalfinal)
@@ -1830,13 +1857,16 @@ function actualizarprecios(e,detalleven_id)
 {    
     var precio = document.getElementById('precio'+detalleven_id).value;
     var descuentoparcial = document.getElementById('descuento'+detalleven_id).value;
-    
+
+
     //alert(descuentoparcial);
     tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13){
     
-        if (Number(descuentoparcial) < Number(precio)){
+    if (tecla==13){
         
+             
+        if (Number(descuentoparcial)< Number(precio)){        
+              
                actualizar_losprecios(detalleven_id);
                
         }else{
@@ -1849,6 +1879,7 @@ function actualizarprecios(e,detalleven_id)
         
     }
 }
+
 function actualizar_losprecios(detalleven_id)
 {
     /*tecla = (document.all) ? e.keyCode : e.which;
@@ -8851,4 +8882,35 @@ function eliminar_transaccion(venta_id){
                 
             }
             
+}
+
+function cargar_servicios(){
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/cargar_servicios';
+
+                    $.ajax({url: controlador,
+                        type:"POST",
+                        data:{},
+                        success:function(respuesta){
+                            
+                             let res = JSON.parse(respuesta);                            
+
+                             if(res.length>0){
+                                 $("#nit").val(res[0]["nit_fact"]);
+                                 $("#span_buscar_cliente").click();
+                             }
+//                            if (res) {  
+//                                
+//                                ventas_fallidas();
+//                                alert("La transacción fue eliminada con éxito...!");
+//                                
+//                            }
+                        },
+                        error:function(respuesta){
+                            res = 0;
+                        }
+                    });     
+                                
+    
 }

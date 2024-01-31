@@ -1424,51 +1424,57 @@ function registrarnuevocliente(servicio_id){
     var cliente_nit = document.getElementById('cliente_nit').value;
     var cliente_telefono = document.getElementById('cliente_telefono').value;
     var cliente_celular  = document.getElementById('cliente_celular').value;
+    var cliente_direccion  = document.getElementById('cliente_direccion').value;
+    var cliente_email  = document.getElementById('cliente_email').value;
     //var codigo_seg = getgenerarsegservicio(servicio_id, cliente_nombre);
     var controlador = base_url+'cliente/add_new/';
+    
     $.ajax({url: controlador,
            type:"POST",
            data:{servicio_id:servicio_id, cliente_nombre:cliente_nombre, cliente_codigo:cliente_codigo,
                  cliente_telefono:cliente_telefono, cliente_celular:cliente_celular,
-                 cliente_ci:cliente_ci, cliente_nit:cliente_nit},
+                 cliente_ci:cliente_ci, cliente_nit:cliente_nit, cliente_direccion:cliente_direccion,cliente_email:cliente_email},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);
+               
                if (registros != null){
+                   
                    if(registros == "faltadatos"){
                        $('#mensajenew_cliente').html("<br>Debe llenar los campos: Nombre, Código y Teléfono");
                    }else if(registros[0] == "sonduplicados"){
                        $('#mensajenew_cliente').html("<br>El Cliente "+registros[1]+" ya se encuentra registrado, por favor revise sus datos");
                    }else{
-                   var mires = "";
-                   var mirestel = "";
-                   var mirescod = "";
-                   var cliente_id = registros["cliente_id"];
-                   var cliente_nombre = registros["cliente_nombre"];
-                   var cliente_telefono = registros["cliente_telefono"];
-                   var cliente_celular = registros["cliente_celular"];
-                   var cliente_codigo = registros["cliente_codigo"];
-               
-                if(cliente_id == null || cliente_id == 0){
-                    mires += "NO DEFINIDO";
-                }else{
-                    $('#concliente').val(cliente_id);
-                    mires += cliente_nombre;
-                    mirestel += cliente_telefono;
-                }
-                /*if(tiposerv_id == 2){
-                    mires += "<br><b>Dirección: </b>"+servicio_direccion;
-                }*/
-                if(cliente_codigo == null){
-                    mirescod += "NO DEFINIDO";
-                }else{
-                    mirescod += cliente_codigo;
-                }
-               $('#cliente-nombre').html(mires);
-               $('#cliente-telefono').html(mirestel+" - "+cliente_celular);
-               $('#cliente-codigo').html(mirescod);
-               $('#'+nombremodal).modal('hide');
-               resetearcamposdeinputcliente();
+
+                            var mires = "";
+                            var mirestel = "";
+                            var mirescod = "";
+                            var cliente_id = registros["cliente_id"];
+                            var cliente_nombre = registros["cliente_nombre"];
+                            var cliente_telefono = registros["cliente_telefono"];
+                            var cliente_celular = registros["cliente_celular"];
+                            var cliente_codigo = registros["cliente_codigo"];
+
+                         if(cliente_id == null || cliente_id == 0){
+                             mires += "NO DEFINIDO";
+                         }else{
+                             $('#concliente').val(cliente_id);
+                             mires += cliente_nombre;
+                             mirestel += cliente_telefono;
+                         }
+                         /*if(tiposerv_id == 2){
+                             mires += "<br><b>Dirección: </b>"+servicio_direccion;
+                         }*/
+                         if(cliente_codigo == null){
+                             mirescod += "NO DEFINIDO";
+                         }else{
+                             mirescod += cliente_codigo;
+                         }
+                        $('#cliente-nombre').html(mires);
+                        $('#cliente-telefono').html(mirestel+" - "+cliente_celular);
+                        $('#cliente-codigo').html(mirescod);
+                        $('#'+nombremodal).modal('hide');
+                        resetearcamposdeinputcliente();
                }
            }
         }

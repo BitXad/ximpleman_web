@@ -1471,7 +1471,7 @@ window.onkeydown = compruebaTecla;
                     <?php } ?>
                     
                     <button type="button" id="boton_cargarservicios" class="btn btn-facebook btn-xs" onclick="cargar_servicios()">
-                        <fa class="fa fa-recycle"></fa> Cargas Servicios
+                        <fa class="fa fa-recycle"></fa> Cargar Servicios
                     </button>
                     
                     </div>

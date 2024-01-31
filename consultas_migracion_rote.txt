@@ -120,6 +120,57 @@ CREATE TABLE `factura_datos` (
 
 update empresa set empresa_nombresucursal = concat(empresa_nombre,' * ',empresa_direccion);
 
+CREATE TABLE `detalle_factura_servicios` (
+  `id_detfact` int(11) NOT NULL AUTO_INCREMENT,
+  `id_fact` int(11) DEFAULT 0,
+  `cant_detfact` int(11) DEFAULT 0,
+  `descip_detfact` varchar(250) DEFAULT '-',
+  `punit_detfact` float(10,3) DEFAULT 0.000,
+  `desc_detfact` float(10,2) DEFAULT 0.00,
+  `total_detfact` float(10,3) DEFAULT 0.000,
+  `tipo_detfact` int(11) DEFAULT 0,
+  `exento_detfact` varchar(20) DEFAULT 'NO',
+  `ice_detfact` varchar(20) DEFAULT 'NO',
+  `codigo_detfact` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id_detfact`) USING BTREE,
+  UNIQUE KEY `id_detfact` (`id_detfact`) USING BTREE,
+  KEY `fk_tiene_varios` (`id_fact`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=368145 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
 
 
 
+CREATE TABLE `factura_servicios` (
+  `id_fact` int(11) NOT NULL AUTO_INCREMENT,
+  `id_lec` int(11) DEFAULT 0,
+  `num_fact` int(11) DEFAULT 0,
+  `nit_fact` varchar(30) DEFAULT '0',
+  `razon_fact` varchar(100) DEFAULT 'SIN NOMBRE',
+  `orden_fact` varchar(30) DEFAULT '0',
+  `nitemisor_fact` varchar(30) DEFAULT '0',
+  `llave_fact` varchar(250) DEFAULT '0',
+  `fecha_fact` date DEFAULT NULL,
+  `hora_fact` time DEFAULT '00:00:00',
+  `fechaemision_fact` date DEFAULT NULL,
+  `montoparc_fact` float(10,3) DEFAULT 0.000,
+  `desc_fact` float(10,3) DEFAULT 0.000,
+  `cadenaqr_fact` varchar(250) DEFAULT '-',
+  `codcontrol_fact` varchar(250) DEFAULT '-',
+  `literal_fact` varchar(250) DEFAULT '-',
+  `fechahora_fact` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `tipo_fact` int(11) DEFAULT 0,
+  `fechavenc_fact` date DEFAULT NULL,
+  `totalconsumo_fact` float(9,3) DEFAULT 0.000,
+  `totalaportes_fact` float(9,3) DEFAULT 0.000,
+  `totalrecargos_fact` float(9,3) DEFAULT 0.000,
+  `montototal_fact` float(10,3) DEFAULT 0.000,
+  `estado_fact` varchar(30) DEFAULT 'PENDIENTE',
+  `id_usu` int(11) DEFAULT 0,
+  `exento_fact` float(9,3) DEFAULT 0.000,
+  `ice_fact` float(9,3) DEFAULT 0.000,
+  `id_ing` int(11) DEFAULT NULL,
+  `factura_leyenda1` varchar(250) DEFAULT NULL,
+  `factura_leyenda2` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id_fact`) USING BTREE,
+  KEY `fk_contiene` (`id_lec`) USING BTREE,
+  KEY `fk_se_aplica__a_` (`estado_fact`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=78085 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;

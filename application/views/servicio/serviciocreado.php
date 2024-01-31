@@ -187,11 +187,12 @@ $(document).ready(function(){
         <div class="panel panel-primary col-md-5">
             <h5>
                 <b>Cliente: </b><span id="cliente-nombre"><?php if(is_null($servicio['cliente_id'])|| ($servicio['cliente_id'] ==0)){ echo "NO DEFINIDO";} else{ echo $cliente['cliente_nombre']; ?>
-                    </span><br>
+                </span> <b>Código: </b><span id="cliente-codigo"><?php if(isset($cliente['cliente_codigo'])){ echo $cliente['cliente_codigo']; } else{ echo "NO DEFINIDO"; } ?></span><br>
+                
+                <b>Dirección: </b><span id="cliente-direccion"><?php echo $cliente['cliente_direccion']; ?><br>
                 <b>Telef.: </b><span id="cliente-telefono"><?php echo $cliente['cliente_telefono']." - ".$cliente['cliente_celular']; } ?>
                     </span><br>
-                <b>Código Cliente: </b><span id="cliente-codigo"><?php if(isset($cliente['cliente_codigo'])){ echo $cliente['cliente_codigo']; } else{ echo "NO DEFINIDO"; } ?>
-                    </span><br>
+                
                 <b>Fecha/Hora: </b><?php if(is_null($servicio['servicio_fecharecepcion'])){ echo "NO DEFINIDO";} else{ echo date('d/m/Y', strtotime($servicio['servicio_fecharecepcion'])); echo '|'.$servicio['servicio_horarecepcion']; } ?><br>
                 <b>Registrado por: </b><?php if(is_null($usuario['usuario_id'])){ echo "NO DEFINIDO";} else{ echo $usuario['usuario_nombre']; } ?><br>
                 <b>Tipo Servicio: </b>
@@ -363,6 +364,7 @@ $(document).ready(function(){
                                               
                                             <!------------------------------------------------------------------->
                                             <span class="text-danger" id="campocliente"></span>
+                                            
                                             <div class="col-md-7">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
@@ -377,27 +379,28 @@ $(document).ready(function(){
 							<input type="text" name="cliente_ci" value="<?php if($this->input->post('cliente_ci') >0){ echo $this->input->post('cliente_ci');}else{ echo 0;} ?>" class="form-control" id="cliente_ci" />
 						</div>
                                             </div>
-                                            
-                                            <div class="col-md-6">
-						<label for="cliente_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
-						<div class="form-group">
-							<input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" required autocomplete="off" />
-						</div>
-					    </div>
-                                            
-                                            <div class="col-md-6">
+
+                                            <div class="col-md-4">
                                                 <label for="cliente_celular" class="control-label">Celular</label>
                                                 <div class="form-group">
                                                     <input type="text" name="cliente_celular" value="<?php if($this->input->post('cliente_celular') >0){ echo $this->input->post('cliente_celular');}else{ echo 0;} ?>" class="form-control" id="cliente_celular" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" autocomplete="off" />
                                                 </div>
                                             </div>
                                             
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="cliente_telefono" class="control-label">Teléfono</label>
                                             <div class="form-group">
                                                 <input type="text" name="cliente_telefono" value="<?php if($this->input->post('cliente_telefono') >0){ echo $this->input->post('cliente_telefono');}else{ echo 0;} ?>" class="form-control" id="cliente_telefono" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" autocomplete="off" />
                                             </div>
 					</div>
+                                                                                        
+                                            <div class="col-md-4">
+						<label for="cliente_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
+						<div class="form-group">
+							<input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" required autocomplete="off" />
+						</div>
+					    </div>
+                                            
                                         
                                           <div class="col-md-6">
 						<label for="cliente_nit" class="control-label">NIT</label>
@@ -406,31 +409,36 @@ $(document).ready(function(){
 						</div>
                                           </div>
                                           <div class="col-md-6">
-						<label for="cliente_razon" class="control-label">RAZON SOC.</label>
+						<label for="cliente_razon" class="control-label">Razón Social</label>
 						<div class="form-group">
-                                                    <input type="number" min="0" name="cliente_razon" value="<?php if($this->input->post('cliente_razon') >0){ echo $this->input->post('cliente_razon');}else{ echo 0;} ?>" class="form-control" id="cliente_razon" onclick="this.select();" />
+                                                    <input type="text"  name="cliente_razon" value="<?php if($this->input->post('cliente_razon') >0){ echo $this->input->post('cliente_razon');}else{ echo 0;} ?>" class="form-control" id="cliente_razon" onclick="this.select();" />
 						</div>
                                           </div>
                                           <div class="col-md-6">
-						<label for="cliente_direccion" class="control-label">DIRECCION</label>
+						<label for="cliente_direccion" class="control-label">Dirección</label>
 						<div class="form-group">
-                                                    <input type="number" min="0" name="cliente_direccion" value="<?php if($this->input->post('cliente_direccion') >0){ echo $this->input->post('cliente_direccion');}else{ echo 0;} ?>" class="form-control" id="cliente_direccion" onclick="this.select();" />
+                                                    <input type="text" name="cliente_direccion" value="<?php if($this->input->post('cliente_direccion') >0){ echo $this->input->post('cliente_direccion');}else{ echo 0;} ?>" class="form-control" id="cliente_direccion" onclick="this.select();" />
 						</div>
                                           </div>
                                           <div class="col-md-6">
-						<label for="cliente_email" class="control-label">NIT</label>
+						<label for="cliente_email" class="control-label">Correo Electrónico</label>
 						<div class="form-group">
-                                                    <input type="number" min="0" name="cliente_email" value="<?php if($this->input->post('cliente_email') >0){ echo $this->input->post('cliente_email');}else{ echo 0;} ?>" class="form-control" id="cliente_email" onclick="this.select();" />
+                                                    <input type="email" name="cliente_email" value="<?php if($this->input->post('cliente_email') >0){ echo $this->input->post('cliente_email');}else{ echo 0;} ?>" class="form-control" id="cliente_email" onclick="this.select();" />
 						</div>
                                           </div>
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
+                                              <center>
+                                                  
+                                              
+                                              
                                               <button class="btn btn-success" onclick="registrarnuevocliente(<?php echo $servicio['servicio_id']; ?>)">
                                                     <i class="fa fa-check"></i> Guardar
                                               </button>
                                               <a href="#" class="btn btn-danger" data-dismiss="modal">
                                                     <i class="fa fa-times"></i> Cancelar</a>
+                                              </center><!-- comment -->
                                           </div>
                                             <?php //echo form_close(); ?>
                                         </div>

@@ -102,19 +102,27 @@ function quitardetalle()
 function quitartodo()
 {
     var base_url   = document.getElementById('base_url').value;
-    var controlador = base_url+"venta/eliminartodo/";
-    $.ajax({url: controlador,
-            type:"POST",
-            data:{},
-            success:function(respuesta){
-                $('#modalconfirmar').modal('hide');
-                $('#modalconfirmar').on('hidden.bs.modal', function () {
-                $('#titulomodal').val('');
-                $('#eldetalle_id').val('');
-                });
-                tabladetalle_venta();
-            }        
-    });
+    //var controlador = base_url+"venta/eliminartodo/";
+    var controlador = base_url+"venta/eliminardetodos/";
+    
+    opc = confirm("ADVENTENCIA: Esta operación eliminará el detalle de venta de todos los usuarios..!! ¿Desea Continuar?");
+    
+    if(opc){
+        
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+                    $('#modalconfirmar').modal('hide');
+                    $('#modalconfirmar').on('hidden.bs.modal', function () {
+                    $('#titulomodal').val('');
+                    $('#eldetalle_id').val('');
+                    });
+                    tabladetalle_venta();
+                }        
+        });
+        
+    }
 }
 
 function numberFormat(numero){

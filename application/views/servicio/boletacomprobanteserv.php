@@ -129,9 +129,11 @@
             <hr style="border-color: black; margin: 0px;">
             <div style=" display: flex;">
                 <div  style="width: 70%; margin-left: 60px;">
-                    <b>FECHA: </b><?php echo date("d/m/Y", strtotime($servicio['servicio_fecharecepcion']))."&nbsp; - &nbsp;".$servicio['servicio_horarecepcion'];;?><br>
+                    <b>FECHA: </b><?php echo date("d/m/Y", strtotime($servicio['servicio_fecharecepcion']))."&nbsp; - &nbsp;".$servicio['servicio_horarecepcion'];?> *** 
                     <b>CODIGO: </b><?php echo $cliente['cliente_codigo'];?><br>
-                    <b>CLIENTE: </b><?php echo $cliente['cliente_nombre'];?>
+                    <b>CLIENTE: </b><?php echo $cliente['cliente_nombre'];?> *** 
+                    <b>E-MAIL: </b><?php echo $cliente['cliente_email'];?><br>
+                    <b>DIRECCIÓN: </b><?php echo $cliente['cliente_direccion'];?>
                 </div>
                 <div style="width: 30%; display: flex-end">
                     <table id="derechatabla" style="font-weight: bold;">
@@ -221,13 +223,12 @@
                 </div>
             </div>
             <div style="display: flex; font-size: 9px; width: 100%">
-                <div style="width: 30%">
-                </div>
-                <div style="width: 30%">
-                    <?php if(isset($dosificacion3['dosificacion_leyenda3'])){ echo $dosificacion3['dosificacion_leyenda3'];} ?>
-                </div>
-                <div style="width: 60%">
+
+                <div style="width: 100%">
+                    <center>
+                    <?php if(isset($dosificacion3['dosificacion_leyenda3'])){ echo $dosificacion3['dosificacion_leyenda3'];} ?><br>
                     CCA: SIS.INF.<?php echo $empresa[0]['empresa_nombre']; ?> | <?php echo date("d/m/Y - h:i:s a"); ?>
+                    </center>
                 </div>
             </div>
         </td>

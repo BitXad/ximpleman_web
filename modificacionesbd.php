@@ -1,7 +1,10 @@
 <?php
-
-
 /*
+ 
+select * 
+from venta
+where venta_id = (select MAX(venta_id) from venta)
+
  --------------- SQL ---------------
 
 ALTER TABLE `usuario` ADD COLUMN `usuario_autorizado` INTEGER DEFAULT 0;

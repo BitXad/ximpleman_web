@@ -3245,6 +3245,49 @@ function edit($venta_id){
         			
         
     }
+    /*
+     * Eliminar todos los items
+     */
+    function eliminardetodos()
+    {
+        
+        $now = "'".date("Y-m-d H:i:s")."'";
+        
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************  
+            
+        //************ inicio bitacora 
+        //$now = "'".date("Y-m-d H:i:s")."'";
+        $data['sistema'] = $this->sistema;   
+        $usuario_id = $this->session_data['usuario_id']; 
+        
+        
+        
+        $bitacoracaja_fecha = "date({$now})";
+        $bitacoracaja_hora = "time({$now})";
+        $bitacoracaja_evento = "(select concat('ELIMINE TODOS LOS DETALLES DE VENTA => ITEMS: ',count(*),' | TOTAL: ', round(sum(detalleven_cantidad * detalleven_precio),2),' => ',(SELECT GROUP_CONCAT(round(detalleven_cantidad,2),' ',producto_nombre,' X ',round(detalleven_precio,2) SEPARATOR ' *** ') FROM detalle_venta_aux WHERE usuario_id = {$usuario_id})) as productos from detalle_venta_aux where usuario_id = {$usuario_id})";
+        $bitacoracaja_montoreg = 0;
+        $bitacoracaja_montocaja = 0;
+        $bitacoracaja_tipo = 2; //2 operaciones sobre ventas
+        
+        
+        $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo, caja_id) value(".
+                $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+        $this->Venta_model->ejecutar($sql);
+        //************ fin botacora bitacora     
+        
+        
+        $sql = "delete from detalle_venta_aux";
+        $this->Venta_model->ejecutar($sql);
+        return true;
+            		
+        //**************** fin contenido ***************
+        }
+        			
+        
+    }
 
     /*
      * Eliminar todos los items
@@ -9024,6 +9067,23 @@ function anular_venta($venta_id){
         }
 
 
+    }
+    
+    /*
+    * Funcion para cargar servicios basicos
+    */
+    function cargar_servicios(){
+
+        if ($this->input->is_ajax_request()) {
+         
+            $factura = $this->Venta_model->cargar_ultimo_servicio();      
+            
+            if(sizeof($factura)>0){
+                echo json_encode($factura);                
+            }else{
+                echo json_encode(false);
+            }
+        }
     }
     
     

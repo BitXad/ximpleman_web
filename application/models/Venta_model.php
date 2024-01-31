@@ -856,5 +856,100 @@ function get_busqueda($condicion)
         $this->db->query($sql);
         
     }
+
+    /**
+     * Obtener le producto en base al id
+     */
+    function cargar_ultimo_servicio(){
+        
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $sql = "delete from detalle_venta_aux where usuario_id = {$usuario_id}";
+        $this->db->query($sql);
+        
+        $sql = "select * from factura_servicios where id_fact = (select max(id_fact) from factura_servicios)";
+        $factura = $this->db->query($sql)->result_array();
+        
+        $id_fact = $factura[0]["id_fact"];
+        $sql = "insert into detalle_venta_aux(producto_id
+                ,venta_id
+                ,moneda_id
+
+                ,detalleven_codigo
+                ,detalleven_cantidad
+                ,detalleven_unidad
+                ,detalleven_costo
+                ,detalleven_precio
+                ,detalleven_subtotal
+                ,detalleven_descuento
+                ,detalleven_descuentoparcial
+                ,detalleven_total
+
+                ,detalleven_comision
+                ,detalleven_tipocambio
+                ,usuario_id
+                ,existencia
+                ,producto_nombre
+                ,producto_unidad
+                ,producto_marca
+                ,categoria_id
+                ,producto_codigobarra
+                ,detalleven_envase
+                ,detalleven_nombreenvase
+                ,detalleven_costoenvase
+                ,detalleven_precioenvase
+                ,detalleven_cantidadenvase
+                ,detalleven_garantiaenvase
+                ,detalleven_devueltoenvase
+
+                ,detalleven_tc)
+
+                (select 
+                t.producto_id
+                ,0 as venta_id
+                ,1 as moneda_id
+
+                ,d.codigo_detfact as detalleven_codigo
+                ,d.cant_detfact as detalleven_cantidad
+                ,'SERVICIO' as detalleven_unidad
+                ,d.punit_detfact as detalleven_costo
+                ,d.punit_detfact as detalleven_precio
+                ,d.total_detfact as detalleven_subtotal
+                ,0 as detalleven_descuento
+                ,0 as detalleven_descuentoparcial
+                ,d.total_detfact as detalleven_total
+
+                ,0 as detalleven_comision
+                ,1 as detalleven_tipocambio
+                ,{$usuario_id} as usuario_id
+                ,1 as existencia
+                ,d.descip_detfact as producto_nombre
+                ,'SERVICIO' as producto_unidad
+                ,'' as producto_marca
+                ,t.categoria_id
+                ,d.codigo_detfact as producto_codigobarra
+                ,t.producto_envase
+                ,t.producto_nombreenvase
+                ,t.producto_costoenvase
+                ,t.producto_precioenvase
+                ,t.producto_cantidadenvase
+                ,0 as producto_garantiaenvase
+                ,0 as producto_devueltoenvase
+
+                ,1 as detalleven_tc
+
+                from 
+                detalle_factura_servicios d,
+                inventario t
+                where  
+                d.id_fact = {$id_fact} and
+                t.producto_codigobarra = d.codigo_detfact)";       
+                
+        //echo $sql;
+        $this->db->query($sql);
+        
+        return $factura;
+        
+    }
     
 }
