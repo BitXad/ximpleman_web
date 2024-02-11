@@ -112,6 +112,8 @@ $(document).ready(function(){
       dos = $("#cuota_cancelado<?php echo $c['cuota_id']; ?>");
       tres = $("#cuota_saldo<?php echo $c['cuota_id']; ?>");
       
+      
+      
       operacion = parseFloat(uno.val()) - parseFloat(dos.val());
       tres.val(Number(operacion).toFixed(2));
     
@@ -232,8 +234,8 @@ $(document).ready(function(){
               <div class="modal-body" align="center">
                 <form action="<?php echo base_url('cuotum/pagar/'.$c['cuota_id']); ?>"  method="POST" class="form" id="saldar">
 
-               <h1><b> <span class="mail-box" >Cancelar Cuota<br><i class="fa fa-money"></i>
-                    <?php echo $c['cuota_total']; ?></span>
+               <h1><b> <span class="mail-box" >Pagar Cuota<br><i class="fa fa-money"></i>
+                    <?php echo number_format($c['cuota_total'],$decimales,".",",",); ?></span>
               </b></h1>
      <span class="btn btn-xs" style="border-color: orange;">
     <input type="radio" id="cuota_orde" name="cuota_ordenpago" value="0" checked/>
@@ -252,7 +254,7 @@ $(document).ready(function(){
                         <label for="cuota_cancelado" class="control-label">Cancelado</label>
                         <div class="form-group">
                             <input type="number" step="any" name="cuota_cancelado" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" max="<?php echo $c['cuota_total']; ?>"/>
-                            <input type="hidden"  name="cuota_total" value="<?php echo number_format($c['cuota_total'],$decimales,".",","); ?>" class="form-control" id="cuota_total<?php echo $c['cuota_id']; ?>" />
+                            <input type="hidden"  name="cuota_total" value="<?php echo $c['cuota_total'] ?>" class="form-control" id="cuota_total<?php echo $c['cuota_id']; ?>" />
                             <input type="hidden"  name="credito_id" value="<?php echo $c['credito_id']; ?>" class="form-control" id="credito_id" />
                         </div>
                     </div>

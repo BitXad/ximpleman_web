@@ -21,6 +21,20 @@ function buscar_por_fecha(){
     buscarporfecha(fecha_desde, fecha_hasta, usuario);
 }
 
+function buscar_por_fechahora(){
+
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var hora_desde = document.getElementById('hora_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+    var hora_hasta = document.getElementById('hora_hasta').value;
+    var usuario = document.getElementById('buscarusuario_id').value;
+    
+    fechadesde = fecha_desde+" "+hora_desde;
+    fechahasta = fecha_hasta+" "+hora_hasta;
+    
+    buscarporfechahora(fechadesde, fechahasta, usuario);
+}
+
 function numberFormat(numero){
         // Variable que contendra el resultado final
         var resultado = "";
@@ -421,6 +435,84 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
            $("#tablacompraresultados").html(html);
            $("#tablapagoresultados").html(html);
            $("#tablatotalresultados").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        }
+        
+    });   
+    
+
+
+}
+
+function buscarporfechahora(fecha_desde, fecha_hasta, usuario){
+
+    var base_url    = document.getElementById('base_url').value;
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var nombre_moneda  = document.getElementById('nombre_moneda').value;
+    var controlador = base_url+"reportes/buscarporfechahora";
+    //var decimales = document.getElementById('decimales').value;;
+    var decimales = 2;
+    
+    
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    
+    //Mostramos las transacciones
+    $.ajax({
+        url: controlador,
+        type:"POST",
+        data:{fecha1:fecha_desde, fecha2:fecha_hasta, usuario_id:usuario},
+        success:function(resul){
+            
+            var registros =  JSON.parse(resul);
+            var html =  "";
+//            let registros = data['registros'];
+//            let totales = data['totales'];
+            
+            if (registros != null){
+                
+                for(let i=0;i<registros.length;i++){
+                    html += "<tr>"
+                    html += "<td>"+(i+1)+"</td>"
+                    html += "<td style='text-align:center;'>"+registros[i]["venta_fecha"]+" "+registros[i]["venta_hora"]+"</td>"
+                    html += "<td style='text-align:center;'>"+registros[i]["venta_id"]+"</td>";
+                    html += "<td style='text-align:center;'>"+registros[i]["pedido_id"]+"</td>";
+                    html += "<td>"+registros[i]["cliente_nombre"]+"</td>";                    
+                    html += "<td style='text-align:center;'>"+((Number(registros[i]["mesa_id"])>0)?registros[i]["mesa_id"]:"SIN MESA")+"</td>";
+                    
+                    html += "<td style='text-align:right;'>"+Number(registros[i]["pedido_total"]).toFixed(decimales)+"</td>";
+                    html += "<td style='text-align:right;'>"+Number(registros[i]["venta_total"]).toFixed(decimales)+"</td>";
+                    
+                    html += "<td style='text-align:right;'>";
+                    
+                        html += "<a href='"+base_url+"pedido/imprimir/"+registros[i]["pedido_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Imprimir comanda'><fa class='fa fa-print'></fa></a>";
+                        html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]["venta_id"]+"' target='_blank' class='btn btn-warning btn-xs' title='Imprimir recibo'><fa class='fa fa-print'></fa></a>";
+                        
+                        if(Number(registros[i]["pedido_total"]).toFixed(decimales) != Number(registros[i]["pedido_id"]).toFixed(decimales)){
+                            html += "<span class='btn btn-xs btn-danger'> <fa class='fa fa-chain'></fa> INCONSISTENCIA</span>";
+                            
+                        }
+                     
+                    html += "</td>";
+                            
+                    html += "</tr>";
+                    
+                }
+            }
+            $("#tablatotalresultados").html(html);
+               document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        },
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
+           html = "";
+//           $("#tablaingresoresultados").html(html);
+//           $("#tablaventaresultados").html(html);
+//           $("#tablacobroresultados").html(html);
+//           $("#tablaegresoresultados").html(html);
+//           $("#tablacompraresultados").html(html);
+//           $("#tablapagoresultados").html(html);
+//           $("#tablatotalresultados").html(html);
         },
         complete: function (jqXHR, textStatus) {
             document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader

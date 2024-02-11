@@ -293,9 +293,11 @@ border-bottom : 1px solid #aaa;*/
                         <td style="font-family: <?= $fuente  ?>; font-size: 8pt; padding: 0; border-top: dashed 1px #000; border-bottom: dashed 1px #000; line-height: 12px;" colspan="4">
                             <br>
                             <b>PUNTO DE VENTA:</b> <?php echo $punto_venta["puntoventa_nombre"]; ?><br>
-                            <b>CAJERO:</b> <?php echo $usuario["usuario_nombre"]; ?>
+                            <b>CAJERO:</b> <?php echo $usuario_caja["usuario_nombre"]; ?>
                             <br><b>FECHA INICIO:</b> 
                                 <?php
+                                
+                                
                                 if(isset($caja)){
                                     echo $caja["caja_fechaapertura"]." ".$caja["caja_horaapertura"];
                                 }else{echo "SIN APERTURA DE CAJA"; }

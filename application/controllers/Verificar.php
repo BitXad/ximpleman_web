@@ -26,11 +26,14 @@ class Verificar extends CI_Controller
         //var_dump($result);
 
         if ($result) {
-            if ($result->tipousuario_id >= 1 && $result->tipousuario_id <= 10) {
+            
+            if ($result->tipousuario_id >= 1 && $result->tipousuario_id <= 100) {
+                
                 $this->load->model('Rol_usuario_model');
                 $this->load->model('Tipo_usuario_model');
                 $thumb = "thumb_default.jpg";
                 $usuario_imagen = "default.jpg";
+                
                 if ($result->usuario_imagen <> null && $result->usuario_imagen <> "") {
                     $thumb = "thumb_".$result->usuario_imagen;
                     $usuario_imagen = $result->usuario_imagen;
@@ -40,6 +43,7 @@ class Verificar extends CI_Controller
                 $tipousuario_nombre = $this->Tipo_usuario_model->get_tipousuario_nombre($result->tipousuario_id);
                 $this->load->model('Parametro_model');
                 $parametro = $this->Parametro_model->get_parametros();
+                
                 $sess_array = array(
                     'usuario_login' => $result->usuario_login,
                     'usuario_id' => $result->usuario_id,
@@ -61,9 +65,12 @@ class Verificar extends CI_Controller
                 $session_data = $this->session->userdata('logged_in');
                 $dosif="SELECT DATEDIFF(dosificacion_fechalimite, CURDATE()) as dias FROM dosificacion WHERE dosificacion_id = 1";
                 $dosificacion = $this->db->query($dosif)->row_array();
+                
                 //print "<pre>"; print_r( $session_data); print "</pre>";
                 if($parametro[0]["parametro_tiposistema"] == 1){
+                    
                     if ($session_data['tipousuario_id'] == 1) {// admin page
+                        
                         if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
                             redirect('alerta/dosificacion'); 
                         }
@@ -74,6 +81,7 @@ class Verificar extends CI_Controller
                         }
                         
                     }elseif($session_data['tipousuario_id'] == 7){ // usuario tipo Cocina
+                        
                         if($parametro[0]["parametro_redireccionusuario"] != "" && $parametro[0]["parametro_redireccionusuario"] != null) {
                             redirect($parametro[0]["parametro_redireccionusuario"]);
                         }else{

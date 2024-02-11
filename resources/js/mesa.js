@@ -890,19 +890,10 @@ function mostrar_datos_pedido(pedido_id){
                     
                     html += "<table class='table' style='width:100%; padding: 0; border:0px;'>"
                     
-//                    html += "<tr class='btn btn-facebook'> <td colspan=2 style='text-align: center; padding:0; font-size:15px;'><b>COMANDA 00"+pedido[0]["pedido_id"]+" <fa class='fa fa-coffee'></fa> "+pedido[0]["mesa_nombre"]+"</b></td></tr>";
-//                    html += "<br>";
-//                    html += "<tr class='btn btn-facebook'> <td style='padding:0;'><b>COD./C.I.: </b></td><td style='padding:0;'>"+pedido[0]["cliente_nit"]+"</td></tr>";
-//                    html += "<tr class='btn btn-facebook'> <td style='padding:0;'><b>CLIENTE: </b></td><td style='padding:0;'>"+pedido[0]["cliente_nombre"]+"</td></tr>";
-//                    
-                    
                     html += "<tr> <td colspan=2 style='text-align: center; padding:0; border-top: 0px solid #f4f4f4;'><span class='btn btn-danger' style='font-size:20px;'> <b>COMANDA 00"+pedido[0]["pedido_id"]+" <fa class='fa fa-coffee'></fa> "+pedido[0]["mesa_nombre"]+"</b></span></td></tr>";
                     html += "<tr> <td colspan=2 style='text-align: center; padding:0; border-top: 0px solid #f4f4f4;'><span class='btn btn-danger' style='font-size:12px; background: purple; border-color: black;'> <b>COD./CI.: </b>"+pedido[0]["cliente_nit"]+"</span><span class='btn btn-info' style='font-size:12px; background: purple; border-color: black;'> <b>CLIENTE:</b> "+pedido[0]["cliente_nombre"]+"</span></td></tr>";
-//                    html += "<tr> <td colspan=2 style='text-align: center; padding:0; font-size:16px;'><span class='btn btn-danger'> <b>CLIENTE: "+pedido[0]["cliente_nombre"]+"</b></span></td></tr>";
-//                    html += "<br>";
-//                    html += "<tr> <td style='padding:0;'><b>COD./C.I.: </b></td><td style='padding:0;'>"+pedido[0]["cliente_nit"]+"</td></tr>";
-//                    html += "<tr> <td style='padding:0;'><b>CLIENTE: </b></td><td style='padding:0;'>"+pedido[0]["cliente_nombre"]+"</td></tr>";
                     
+
                     html += "</tr>"                    
                     html += "</table>"
                     
@@ -928,6 +919,14 @@ function mostrar_detalle_pedido(pedido_id){
     let base_url = document.getElementById('base_url').value;
     let controlador = base_url+'mesa/mostrar_detalle_pedido/';
     let decimales = document.getElementById('decimales').value;
+    let rol_productos = document.getElementById('rol_productos').value;
+    let rol_comandas = document.getElementById('rol_comandas').value;
+    let rol_cambiomesa = document.getElementById('rol_cambiomesa').value;
+    let rol_facturar = document.getElementById('rol_facturar').value;
+    let rol_modificaritem = document.getElementById('rol_modificaritem').value;
+    let rol_eliminaritem = document.getElementById('rol_eliminaritem').value;    
+    let rol_eliminarmesa = document.getElementById('rol_eliminarmesa').value;
+    
     
         $.ajax({url: controlador,
             type:"POST",
@@ -940,19 +939,32 @@ function mostrar_detalle_pedido(pedido_id){
                 
                 let total_final = 0;
                 let tamanio_letra = '12px' //Tamaño de letra botones
-
-                html += "<button type='button' class='btn btn-facebook btn-sm' data-toggle='modal' data-target='#modalproductos' id='boton_productos' style='font-size:"+tamanio_letra+";' onclick='tablaresultados(4)'><span class='fa fa-binoculars'></span><b> Productos</b></button>";
-                html += "<a href='"+base_url+"pedido/imprimir/"+pedido_id+"' target='_blank' class='btn btn-warning btn-sm' id='imprimir_comanda' title='Comanda' style='font-size:"+tamanio_letra+";'><span class='fa fa-print'></span><b> Comanda</b></a>"; 
-                html += "<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#modalcambiomesa' id='boton_cambiomesa' style='font-size:"+tamanio_letra+";'><span class='fa fa-refresh'></span> <b> Cambio de Mesa</b></button>";
-                html += "<button type='button' class='btn btn-success btn-sm' id='boton_ventas' style='font-size:"+tamanio_letra+";' onclick='pasaraventas("+pedido_id+",1)'><span class='fa fa-refresh'></span> <b> Facturar</b></button>";
                 
+                if (rol_productos==1){
+                    html += "<button type='button' class='btn btn-facebook btn-sm' data-toggle='modal' data-target='#modalproductos' id='boton_productos' style='font-size:"+tamanio_letra+";' onclick='tablaresultados(4)'><span class='fa fa-binoculars'></span><b> Productos</b></button>";                
+                }
+                
+                if (rol_comandas==1){
+                    html += "<a href='"+base_url+"pedido/imprimir/"+pedido_id+"' target='_blank' class='btn btn-warning btn-sm' id='imprimir_comanda' title='Comanda' style='font-size:"+tamanio_letra+";'><span class='fa fa-print'></span><b> Comanda</b></a>";                 
+                }
+                
+                if (rol_cambiomesa==1){
+                    html += "<button type='button' class='btn btn-info btn-sm' data-toggle='modal' data-target='#modalcambiomesa' id='boton_cambiomesa' style='font-size:"+tamanio_letra+";'><span class='fa fa-refresh'></span> <b> Cambio de Mesa</b></button>";
+                }
+                
+                if (rol_facturar==1){
+                    html += "<button type='button' class='btn btn-success btn-sm' id='boton_ventas' style='font-size:"+tamanio_letra+";' onclick='pasaraventas("+pedido_id+",1)'><span class='fa fa-refresh'></span> <b> Facturar</b></button>";
+                }
                 //html += "<a href='"+base_url+"venta/ventas' class='btn btn-success btn-sm' id='boton_ventas' title='Ventas y facturacion' style='font-size:"+tamanio_letra+";'><span class='fa fa-cubes'></span><b> Facturar</b></a>"; 
                 
-                if(pedido.length<=0){ //Si ya tiene productos, no se podra dar de baja
-                    
-                        html += "<button type='button' class='btn btn-danger btn-sm' id='boton_eliminar' style='font-size:"+tamanio_letra+";' onclick='anular_seleccion("+pedido_id+")'><span class='fa fa-refresh'></span> <b> Anular Seleccion</b></button>";
-                    
+                if (rol_eliminarmesa==1){
+                    if(pedido.length<=0){ //Si ya tiene productos, no se podra dar de baja
+
+                            html += "<button type='button' class='btn btn-danger btn-sm' id='boton_eliminar' style='font-size:"+tamanio_letra+";' onclick='anular_seleccion("+pedido_id+")'><span class='fa fa-refresh'></span> <b> Anular Seleccion</b></button>";
+
+                    }
                 }
+                    
 
 
                 html += "<table class='table' id='mitablagris' >";
@@ -974,8 +986,15 @@ function mostrar_detalle_pedido(pedido_id){
                         html +="<td style='padding:0; text-align: right;'>"+Number(pedido[i]["detalleped_precio"]).toFixed(decimales)+"</td>";
                         html +="<td style='padding:0; text-align: right;'>"+Number(pedido[i]["detalleped_total"]).toFixed(decimales)+"</td>";
                         html +="<td style='padding:0;'><center>";
-                        html +="<button class='btn btn-xs btn-info' onclick=activar_modificacion("+pedido[i]["detalleped_id"]+","+pedido[i]["detalleped_cantidad"]+","+pedido[i]["detalleped_precio"]+")><fa class='fa fa-pencil'></fa> </button>";
-                        html +="<button class='btn btn-xs btn-danger' onclick=eliminar_item("+pedido[i]["pedido_id"]+","+pedido[i]["detalleped_id"]+")><fa class='fa fa-times'></fa> </button>";
+                        
+                        if (rol_modificaritem==1){                            
+                            html +="<button class='btn btn-xs btn-info' onclick=activar_modificacion("+pedido[i]["detalleped_id"]+","+pedido[i]["detalleped_cantidad"]+","+pedido[i]["detalleped_precio"]+")><fa class='fa fa-pencil'></fa> </button>";
+                        }
+                        
+                        if (rol_eliminaritem==1){                            
+                            html +="<button class='btn btn-xs btn-danger' onclick=eliminar_item("+pedido[i]["pedido_id"]+","+pedido[i]["detalleped_id"]+")><fa class='fa fa-times'></fa> </button>";
+                        }
+                        
                         html += "</center></td>";
                     html +="</tr>";
                         
@@ -1154,12 +1173,14 @@ function modificar_detalle(){
 }
 
 function ingresar_producto(producto_id){
+    
 
     let base_url = document.getElementById('base_url').value;
     let controlador = base_url+'mesa/registrar_producto/';
     let cantidad = document.getElementById('producto_cant'+producto_id).value;
 //    let detalleped_cantidad = document.getElementById('detalleped_cantidad').value;
 //    let detalleped_precio = document.getElementById('detalleped_precio').value;
+    let rol_asignado = document.getElementById('rol_productos').value;
     let pedido_id = document.getElementById('pedido_id').value;
     let mesa_id = document.getElementById('mesa_id').value;
     
@@ -1167,34 +1188,38 @@ function ingresar_producto(producto_id){
     
     //alert(mesa_id+" *** "+pedido_id);
     
-    
-    if(mesa_id>0){
+    if(rol_asignado==1){
         
-        if(pedido_id>0){
-        
-            $.ajax({url: controlador,
-                type:"POST",
-                data:{cantidad:cantidad, producto_id:producto_id, pedido_id:pedido_id},                
-                success:function(respuesta){
+            if(mesa_id>0){
+
+                if(pedido_id>0){
+
+                    $.ajax({url: controlador,
+                        type:"POST",
+                        data:{cantidad:cantidad, producto_id:producto_id, pedido_id:pedido_id},                
+                        success:function(respuesta){
 
 
-                    mostrar_datos_pedido(pedido_id);
-                    mostrar_detalle_pedido(pedido_id);
+                            mostrar_datos_pedido(pedido_id);
+                            mostrar_detalle_pedido(pedido_id);
 
-                },
-                error:function(respuesta){
-                    res = 0;
-                }
-            });     
+                        },
+                        error:function(respuesta){
+                            res = 0;
+                        }
+                    });     
 
-        }else{
-            alert("ERROR: Debe seleccionar una mesa...!!");}
-        
+                }else{
+                    alert("ERROR: Debe seleccionar una mesa...!!");}
+
+            }else{
+                    alert("ERROR: Debe seleccionar una mesa...!!");
+            }
+
+            $('#producto_cant'+producto_id).val(1);
     }else{
-            alert("ERROR: Debe seleccionar una mesa...!!");
+        alert("No tiene roles asignados para realizar esta operación...!");
     }
-    
-    $('#producto_cant'+producto_id).val(1);
 }
 
 function cambiar_mesa(){

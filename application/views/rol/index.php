@@ -40,13 +40,14 @@
                         $i = 0;
                     ?>
                     <tr>
-                        <th colspan="5"><b><?php echo $rolpadre['rol_nombre']; ?>
+                        <th colspan="5"><b><?php echo $rolpadre['rol_nombre']; ?><sub>[<?php echo $rolpadre['rol_id']; ?>]</sub>
                             <a href="<?php echo site_url('rol/edit/'.$rolpadre['rol_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
                         </th>
                     </tr>
                     <?php
                     $band = true;
                     foreach($all_rolhijo as $rolhijo){
+                        
                         if($rolhijo['rol_idfk'] ==$rolpadre['rol_id']){
                         $colorbaja = "style='background-color:".$rolhijo['estado_color']."'";
                         if($band == true){
@@ -65,7 +66,7 @@
                     ?>
                     <tr <?php echo $colorbaja; ?>>
                         <td><?php echo $i+1; ?></td>
-                        <td><b><?php echo $rolhijo['rol_nombre']; ?></td>
+                        <td><b><?php echo $rolhijo['rol_nombre']; ?></b><sub>[<?php echo $rolhijo['rol_id']; ?>]</sub></td>
                         <td><b><?php echo $rolhijo['rol_descripcion']; ?></td>
                         <td class="text-center"><?php echo $rolhijo['estado_descripcion']; ?></td>
                         <td>

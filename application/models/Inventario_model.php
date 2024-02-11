@@ -137,23 +137,30 @@ class Inventario_model extends CI_Model
         $usuario_id = $this->session_data['usuario_id'];
 
         // verificar si el producto existe
-        $sql = "select *, 
-                if('{$codigo}' = producto_codigobarra, 1,
-                if('{$codigo}' = producto_codigofactor, producto_factor,
-                if('{$codigo}' = producto_codigofactor1, producto_factor1,
-                if('{$codigo}' = producto_codigofactor2, producto_factor2,
-                if('{$codigo}' = producto_codigofactor3, producto_factor3,
-                if('{$codigo}' = producto_codigofactor4, producto_factor4,0)))))) as cantidad                    
+        if($codigo!=''){
             
-                from inventario where 
-                
-                producto_codigobarra = '{$codigo}' or
-                producto_codigofactor = '{$codigo}' or
-                producto_codigofactor1 = '{$codigo}' or
-                producto_codigofactor2 = '{$codigo}' or
-                producto_codigofactor3 = '{$codigo}' or
-                producto_codigofactor4 = '{$codigo}'";
-                
+            //Esta consulta genera un error cuando se envia vacio carga todos los items al detalle de venta
+            $sql = "select *, 
+                    if('{$codigo}' = producto_codigobarra, 1,
+                    if('{$codigo}' = producto_codigofactor, producto_factor,
+                    if('{$codigo}' = producto_codigofactor1, producto_factor1,
+                    if('{$codigo}' = producto_codigofactor2, producto_factor2,
+                    if('{$codigo}' = producto_codigofactor3, producto_factor3,
+                    if('{$codigo}' = producto_codigofactor4, producto_factor4,0)))))) as cantidad                    
+
+                    from inventario where 
+
+                    producto_codigobarra = '{$codigo}' or
+                    producto_codigofactor = '{$codigo}' or
+                    producto_codigofactor1 = '{$codigo}' or
+                    producto_codigofactor2 = '{$codigo}' or
+                    producto_codigofactor3 = '{$codigo}' or
+                    producto_codigofactor4 = '{$codigo}'";
+        }else{
+            $sql = "select * from producto where producto_codigobarra = '{$codigo}' and producto_codigobarra<>''";
+        }
+        
+        
         $producto = $this->db->query($sql)->result_array();
         
         if (empty($producto)){ // Sino existe hasta aqui llega

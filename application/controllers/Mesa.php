@@ -36,18 +36,47 @@ class Mesa extends CI_Controller{
         }else {
             redirect('', 'refresh');
         }
+        
+        
     } 
-
+   /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+//            $data['_view'] = 'login/mensajeacceso';
+//            $this->load->view('layouts/main',$data);
+            return false;
+        }
+    } 
     /*
      * Listing of mesa
      */
     function index()
     {
-        $data['sistema'] = $this->sistema;
-        $data['mesa'] = $this->Mesa_model->get_all_mesa();
         
-        $data['_view'] = 'mesa/index';
-        $this->load->view('layouts/main',$data);
+        $data['sistema'] = $this->sistema;
+        $data['rolusuario'] = $this->session_data['rol'];
+        
+        if ($this->acceso(197)){
+            
+            $usuario_id = $this->session_data['usuario_id'];
+            $tipousuario_id = $this->session_data['tipousuario_id'];        
+            $punto_venta = $this->session_data['puntoventa_codigo'];  
+
+            $data['sistema'] = $this->sistema;
+            $data['mesa'] = $this->Mesa_model->get_all_mesa();
+
+            $data['_view'] = 'mesa/index';
+            $this->load->view('layouts/main',$data);
+
+            
+        }else{
+            
+        }
+        
     }
 
     /*
@@ -129,55 +158,65 @@ class Mesa extends CI_Controller{
      */
     function mesas()
     {
-        $data['usuario_id'] = $this->session_data['usuario_id'];
-        $data['sistema'] = $this->sistema;
-        $data['mesa'] = $this->Mesa_model->get_all_mesa();
-        $data['categorias'] = $this->Mesa_model->get_all_categorias();
-        $data['all_estado'] = $this->Estado_model->get_tipo_estado(10); //estados basicos de tipo 1
-        $data['parametro'] = $this->parametros;
-        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
         
-        $data['rolusuario'] = $this->session_data['rol'];
-        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
-        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['all_moneda'] = $this->Moneda_model->getalls_monedasact_asc();
-        $this->load->model('Banco_model');
-        $data['all_banco'] = $this->Banco_model->getall_bancosact_asc();
-        $tipousuario_id = $this->session_data['tipousuario_id'];
-        $data['tipousuario_id'] = $tipousuario_id;
-        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-        $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
-        $data['tipo_respuesta'] = $this->Usuario_model->get_tipo_respuesta();
+        
+        if ($this->acceso(197)){        
+        
+                $data['usuario_id'] = $this->session_data['usuario_id'];
+                $data['sistema'] = $this->sistema;
+                $data['mesa'] = $this->Mesa_model->get_all_mesa();
+                $data['categorias'] = $this->Mesa_model->get_all_categorias();
+                $data['all_estado'] = $this->Estado_model->get_tipo_estado(10); //estados basicos de tipo 1
+                $data['parametro'] = $this->parametros;
+                $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+                $data['empresa'] = $this->Empresa_model->get_empresa(1);
 
-        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                $data['rolusuario'] = $this->session_data['rol'];
+                $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+                $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+                $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+                $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                $data['all_moneda'] = $this->Moneda_model->getalls_monedasact_asc();
+                $this->load->model('Banco_model');
+                $data['all_banco'] = $this->Banco_model->getall_bancosact_asc();
+                $tipousuario_id = $this->session_data['tipousuario_id'];
+                $data['tipousuario_id'] = $tipousuario_id;
+                $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+                $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
+                $data['tipo_respuesta'] = $this->Usuario_model->get_tipo_respuesta();
 
-        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
-        $data['promociones'] = $this->Promocion_model->get_promociones();
-        
-        $sql = "select * from mesa where estado_id = 38";
-        $data['mesadisponible'] = $this->Venta_model->consultar($sql);
+                $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
 
-        $cliente_id = 0;
-        if ($cliente_id>0){
-            $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
-            if (sizeof($cliente)>0)
-                $data['cliente'] = $cliente;
-            else
-                $data['cliente'] = $this->Venta_model->get_cliente_inicialpreventa();
-        }        
-        else
-        {    $data['cliente'] = $this->Venta_model->get_cliente_inicialpreventa();}
+                $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+                $data['promociones'] = $this->Promocion_model->get_promociones();
 
-        
-        
-        
-        
-        
-        $data['_view'] = 'mesa/mesas';
-        $this->load->view('layouts/main',$data);
+                $sql = "select * from mesa where estado_id = 38";
+                $data['mesadisponible'] = $this->Venta_model->consultar($sql);
+
+                $cliente_id = 0;
+                if ($cliente_id>0){
+                    $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+                    if (sizeof($cliente)>0)
+                        $data['cliente'] = $cliente;
+                    else
+                        $data['cliente'] = $this->Venta_model->get_cliente_inicialpreventa();
+                }        
+                else
+                {    $data['cliente'] = $this->Venta_model->get_cliente_inicialpreventa();}
+
+
+
+
+
+
+                $data['_view'] = 'mesa/mesas';
+                $this->load->view('layouts/main',$data);
+                
+        }else{ 
+            echo "<script> alert('ADVERTENCIA: No tiene privilegios para realizar esta accción...!');</script>";  
+            
+            redirect('venta/ventas');
+        }
     }
     
     /*

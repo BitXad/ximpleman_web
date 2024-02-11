@@ -67,6 +67,9 @@ empresa_nombre = 'OTOGROUP SRL'
 ,empresa_cargo = ''
 ,empresa_nombresucursal = 'SUC. PRINCIPAL';
 
+update sistema
+set 
+sistema_version = '2.5'
  
  * --------------- SQL ---------------
 
@@ -110,6 +113,7 @@ usuario_turno = 'DIARIO'
 
 
 
+
 INSERT INTO parametros (parametro_id, parametro_numrecegr, parametro_numrecing, parametro_copiasfact, parametro_tipoimpresora, parametro_numcuotas, parametro_montomax, parametro_diasgracia, parametro_diapago, parametro_periododias, parametro_interes, parametro_tituldoc, parametro_mostrarcategoria, parametro_diagnostico, parametro_solucion, parametro_modoventas, parametro_imprimircomanda, parametro_anchoboton, parametro_altoboton, parametro_colorboton, parametro_anchoimagen, parametro_altoimagen, parametro_formaimagen, parametro_modulorestaurante, parametro_permisocredito, parametro_agruparitems, parametro_diasvenc, parametro_anchofactura, parametro_altofactura, parametro_margenfactura, parametro_imagenreal, parametro_diasentrega, parametro_notaentrega, parametro_segservicio, parametro_apikey, parametro_serviciofact, parametro_sucursales, parametro_logomonitor, parametro_fondomonitor, parametro_cantidadproductos, parametro_datosboton, moneda_id, parametro_numordenproduccion, parametro_factura, parametro_puntos, parametro_mostrarmoneda, parametro_pedidotitulo, parametro_manejocaja, parametro_codcatsubcat, parametro_tiposistema, parametro_tipoemision, parametro_imprimirticket, parametro_decimales, parametro_rangoprecios, parametro_mostrarlogo, parametro_mostrarempresa, parametro_mostrareslogan, parametro_mostrardireccion, parametro_anchobuscador, parametro_tamanioletrasboton, parametro_tamanioletras, parametro_buscadorcodigo, parametro_buscadortexto, parametro_categoria, parametro_subcategoria, parametro_botoninventario, parametro_promociones, parametro_categoriabotones, parametro_buscadordetalle, parametro_herramientassuperior, parametro_herramientasinferior, parametro_preciototal, parametro_asignarinventario, parametro_finalizarventas, parametro_resumenventas, parametro_cierrecaja, parametro_ventasdiarias, parametro_productossinhomologar, parametro_teclasacceso, parametro_informacionbasica, parametro_panelventas, parametro_inventariobuscador, parametro_promocionesbuscador, parametro_logoenfactura, parametro_sininventario, parametro_movimientodiario, parametro_imprimirfactura, parametro_orden, parametro_documentoslista, parametro_tamaniotextocategoria, parametro_colorbotoncategoria, parametro_datosproducto, parametro_cantidadsimple, parametro_botonescontrol, parametro_botonesproducto, parametro_ordendetalle, parametro_tablasencilla, parametro_redireccionusuario, parametro_comprobante, parametro_verificarconexion, parametro_contarventasmes, parametro_numeroventa, parametro_contarventas, parametro_mostrarnumero, parametro_cerrarventanas) VALUES
 
   (1, 3, 7, 3, 'FACTURADORA', 1, 0, 14, 2, 7, 0, 'PROFORMA', 1, 'REVISION', 'REVISION', 1, 0, 125, 180, 'warning', 123, 140, '', 1, 1, 1, 15, 6.5, 4, 0, 0, 0, 1, 0, 'AIzaSyClNsJugfWI4xOf1Or9Wdg5lD_qUqaik58', 1, NULL, '1662238995.jpg', '', 1, 1, 1, 0, 4, 0, 2, 'Pedidos', 'Si', 0, 2, 1, 0, 2, 2, 1, 1, 1, 1, 6, 12, 12, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 8, 1, 0, 1, 'danger', 1, 0, 1, 1, 1, 1, '', 2, 2, 1, 89, 0, 4, 1),
@@ -123,8 +127,6 @@ from ubicacion_producto u, producto p
 where 
 p.producto_id = u.producto_id and
 (u.`ubiprod_faltante` + u.`ubiprod_sobrante`) >0
-
-
 
 
 
@@ -397,7 +399,47 @@ ALTER TABLE `pedido` ADD COLUMN `mesa_id` INTEGER DEFAULT NULL;
  
 
  
- 
+ truncate venta;
+truncate detalle_venta;
+truncate factura;
+truncate detalle_factura;
+truncate pedido;
+truncate detalle_pedido;
+truncate cliente;
+truncate cotizacion;
+truncate detalle_cotizacion;
+truncate registro_eventos;
+truncate recepcion_paquetes;
+truncate cufd;
+truncate cuis;
+truncate punto_venta;
+truncate ingresos;
+truncate egresos;
+truncate servicio;
+truncate detalle_serv;
+truncate credito;
+truncate cuota;
+
+update dosificacion 
+set 
+dosificacion_sucursal = 11,
+dosificacion_numfact = 0,
+dosificacion_numerotransmes = 0,
+dosificacion_mesactual = 0;
+
+update `empresa`
+set
+
+empresa_direccion = 'CALLE NERY ESQ. FOURNIER Nº 3134',
+empresa_departamento = 'EL ALTO',
+empresa_ubicacion = 'AL ALTO - BOLIVIA',
+empresa_nombresucursal = 'LIBRERIA LA ULTIMA LLAMADA *** SUC. 11';
+
+update sucursales set
+sucursal_nombre	= 'CAMBIAR A COMERCIAL',
+sucursal_url =	'https://www.ximplemanweb.com/ultimallamadacom_suc11/venta/ventas';
+
+
  
  
  

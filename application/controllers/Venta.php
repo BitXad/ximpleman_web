@@ -212,6 +212,7 @@ class Venta extends CI_Controller{
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
+        $data['sucursales'] = $this->Venta_model->Consultar("select * from sucursales");
         
         $data['mesas'] = $this->Mesa_model->get_all_mesa(); //modulo restaurantes
         
@@ -1320,6 +1321,8 @@ class Venta extends CI_Controller{
                                 //Sistema de facturacion nuevo
                                 $leyendas = $this->Venta_model->consultar("select * from leyenda order by leyenda_codigoactividad");
                                 $valor = rand(0,7);
+                                $valor = ($valor>=7)?6:$valor;
+                                
                                 $factura_leyenda2 = $leyendas[$valor]["leyenda_descripcion"];
                         
                                 $registroeventos_id = 0;

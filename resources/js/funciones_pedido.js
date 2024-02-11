@@ -235,6 +235,23 @@ function borrar_tabla(){
     
 }
 
+
+function porcentaje_descuento(detalleven_id){
+    
+    //var decimales = Number(document.getElementById('parametro_decimales').value);
+    var precio = Number(document.getElementById('precio'+detalleven_id).value);
+    var descuento = Number(document.getElementById('descuento'+detalleven_id).value);
+    
+    var montodescuento = Number(precio) * Number(descuento)/100;
+    
+    $("#descuento"+detalleven_id).val(montodescuento);
+    actualizar_losprecios(detalleven_id);
+    
+    //alert(montodescuento);
+    
+    
+}
+
 //muestra la tabla de productos del detalle de la venta
 function tablaproductos()
 {   
@@ -477,7 +494,19 @@ function tablaproductos()
                         html += "                    </div>";
                         
                         html += "<input "+sololect+" size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
-                        html += "<input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
+
+                        
+                           
+                            //html += "<input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";  esta funcion era la anterior                        
+                            html += "<div class='btn-group'>"; 
+                            html += "<input size='3' class='btn btn-default btn-xs ' style='font-size:"+tamanio_fuente+"' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")' autocomplete='off'>";
+                            html += "<button style='font-size:"+tamanio_fuente+"' onclick='porcentaje_descuento("+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs btn-group-addon'><span class='fa fa-percent'></span></button>";
+                            html += "</div>";
+
+
+
+
+                           
                         html += "<br><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(decimales)+"</b></font><br>"+total_equivalente;
                         html += "</td>";
                         html += "			<td "+color+">";
@@ -500,10 +529,23 @@ function tablaproductos()
                         html += "                    </div>";
 
                     
-
+                        let tamanio_fuente = "12px";
                         html += "</td>";
                         html += "<td align='right' "+color+"><input "+sololect+" size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
-                        html += "<td align='right' "+color+"><input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        
+                        html += "<td align='right' "+color+">";
+                        
+                            html += "<div class='btn-group'>"; 
+                            html += "<input size='3' class='btn btn-default btn-xs ' style='font-size:"+tamanio_fuente+"' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")' autocomplete='off'>";
+                            html += "<button style='font-size:"+tamanio_fuente+"' onclick='porcentaje_descuento("+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs btn-group-addon'><span class='fa fa-percent'></span></button>";
+                            html += "</div>";
+
+                           //html += "<input size='5' name='descuento' id='descuento"+registros[i]["detalleven_id"]+"' value='"+parseFloat(descuento_parcial).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
+                        html += "</td>";
+                        
+
+                        html += "</td>";
+                        
                         
                         
                         html += "                       <td align='right' "+color+"><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(decimales)+"</b></font><br>"+total_equivalente;

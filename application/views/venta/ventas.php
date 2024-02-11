@@ -282,7 +282,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
 <input type="text" value='<?php echo json_encode($preferencia); ?>' id="preferencias" hidden>
-<input type="text" id="pedido_id" value="<?php echo isset($pedido[0]["pedido_id"])?$pedido[0]["pedido_id"]:0;  ?>" name="pedido_id" hidden>
+
 <input type="text" id="orden_id" value="0" name="orden_id" hidden>
 <input type="text" id="usuarioprev_id" value="0" name="usuarioprev_id" hidden>
 <input type="text" id="venta_comision" value="0" name="venta_comision" hidden>
@@ -344,6 +344,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_tablasencilla" value="<?php echo $parametro['parametro_tablasencilla']; ?>" name="parametro_tablasencilla"  hidden>
 <input type="text" id="parametro_verificarconexion" value="<?php echo $parametro['parametro_verificarconexion']; ?>" name="parametro_verificarconexion"  hidden>
 <input type="text" id="parametro_comprobante" value="<?php echo $parametro['parametro_comprobante']; ?>" name="parametro_comprobante"  hidden>
+<input type="text" id="parametro_botonescontrol" value="<?php echo $parametro['parametro_botonescontrol']; ?>" name="parametro_botonescontrol"  hidden>
 <input type="text" id="factura_idcreditodebito" value="0" name="factura_idcreditodebito"  hidden>
 <input type="text" id="boton_presionado" value="0" hidden>
 
@@ -1143,6 +1144,13 @@ window.onkeydown = compruebaTecla;
     
     <div class="col-md-<?php echo (12 - $parametro['parametro_anchobuscador']); ?>" id="divventas0" style="display:block;">
         <font size="1"><b>DETALLE DE <?php echo strtoupper($sistema["sistema_moduloventas"]); ?> </b></font>
+
+        <?php if($parametro['parametro_modulorestaurante']==1){ ?>
+        ** <b style="color: red">COMANDA Nº </b><input type="text" style="border: none; color: red; font-weight: bolder; font-size: 16px ;" id="pedido_id" size="2" value="<?php echo isset($pedido[0]["pedido_id"])?$pedido[0]["pedido_id"]:0;  ?>" name="pedido_id" disabled="true">
+        
+        <?php }else{ ?>
+        <input type="hidden" style="border: none; color: red; font-weight: bolder; font-size: 16px ;" id="pedido_id" size="2" value="0" name="pedido_id" disabled="true">
+        <?php } ?>
         <div class="box" style="border-color:black;">
             <div class="box-body">
         <div class="row">
@@ -1462,17 +1470,38 @@ window.onkeydown = compruebaTecla;
 
                         }else{ echo " NO EXISTE CUFD";} ?>
                     <!--</button>-->
+                    <div hidden>
                     <br>
-                    <button type="button" id="boton_guardarventa" class="btn btn-info btn-xs" onclick="abrirVentanaEmergente()">
+                    <button type="hidden" id="boton_guardarventa" class="btn btn-info btn-xs" onclick="abrirVentanaEmergente()">
                         <fa class="fa fa-recycle"></fa> Cambiar Doc. Sector
                   </button>
                     <br>
+                        
+                    </div>
                     
                     <?php } ?>
-                    
-                    <button type="button" id="boton_cargarservicios" class="btn btn-facebook btn-xs" onclick="cargar_servicios()">
+                    <br>
+<!--                    <button type="button" id="boton_cargarservicios" class="btn btn-facebook btn-sm" onclick="cargar_servicios()">
+                        <br> comment 
                         <fa class="fa fa-recycle"></fa> Cargar Servicios
-                    </button>
+                        <br> comment 
+                        <br> comment 
+                    </button>-->
+                    
+                    <?php if(isset($sucursales)){
+                                
+                                foreach ($sucursales as $s){?>
+                                    
+                                    <a href="<?php echo $s["sucursal_url"] ?>"  class="btn btn-dropbox btn-block btn-sm">
+                                        <fa class="fa fa-server"></fa>   <b> <?php echo $s["sucursal_nombre"] ?></b>
+                                    </a>
+                                    
+                    <?php
+                                }
+                        
+                        
+                    } ?>
+                    
                     
                     </div>
                 </div>
@@ -2936,14 +2965,14 @@ window.onkeydown = compruebaTecla;
 					<div class="col-md-6">
 						<label for="datos_beneficiarioley1886" class="control-label">Beneficiario 1886</label>
 						<div class="form-group">
-							<input type="text" name="datos_beneficiarioley1886" value="<?php echo ""; ?>" class="form-control" id="datos_beneficiarioley1886" />
+							<input type="text" name="datos_beneficiarioley1886" value="<?php echo "0"; ?>" class="form-control" id="datos_beneficiarioley1886" />
 						</div>
 					</div>        
                     
 					<div class="col-md-6">
 						<label for="datos_montodescuentoley1886" class="control-label">Monto Desc Ley 1886</label>
 						<div class="form-group">
-							<input type="text" name="datos_montodescuentoley1886" value="<?php echo ""; ?>" class="form-control" id="datos_montodescuentoley1886" />
+							<input type="text" name="datos_montodescuentoley1886" value="<?php echo "0"; ?>" class="form-control" id="datos_montodescuentoley1886" />
 						</div>
 					</div>        
                     

@@ -293,18 +293,11 @@
                         <li>
                             <a href="<?php echo site_url('proceso_orden/terminados');?>"><i class="fa fa-indent"></i> Recepcionar Proceso</a>
                         </li>
-                        <?php
-                        }
-                        if($rolusuario[174-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Despacho</a>
-                        </li>
-                        <?php
-                        }
-                        ?>
+                        
                         
                         <?php
+                        }
+                        
                         if($rolusuario[181-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -339,6 +332,48 @@
                         <?php
                         }
                         ?>
+                    </ul>
+                </li>
+                <li <?php  echo( (isset($parametro["parametro_modulorestaurante"])?$parametro["parametro_modulorestaurante"]:0) == 1)?"":"hidden"; ?>>
+                    
+                    <a href="#"><i class="fa fa-pie-chart"></i> <span>Administración</span></a>
+                    <ul class="treeview-menu">
+
+                        
+                        <?php
+                        if($rolusuario[197-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('mesa/mesas');?>"><i class="fa fa-braille"></i> Administrar mesas</a>
+                        </li>
+                        <?php } ?>
+                        
+                        <li>
+                            <a href="<?php echo site_url('promocion');?>"><i class="fa fa-minus-circle"></i>Promociones</a>
+                        </li>
+                        
+                        <?php
+                        if($rolusuario[30-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i> <?php echo $sistema["sistema_modulopedidos"]; ?></a>
+                        </li>
+                        
+                        <?php } ?>
+                        
+                        <?php
+                        
+                        if($rolusuario[174-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Despacho</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                        
+                        
+                        
                     </ul>
                 </li>
                 <li>

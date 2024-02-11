@@ -1,176 +1,187 @@
 
+    INSERT INTO rol (rol_id, estado_id, rol_nombre, rol_descripcion, rol_idfk) VALUES
 
-drop table mesa;
-
-CREATE TABLE `mesa` (
-  `mesa_id` int(11) NOT NULL AUTO_INCREMENT,
-  `mesa_nombre` varchar(250) DEFAULT NULL,
-  `mesa_descripcion` varchar(250) DEFAULT NULL,
-  `usuario_id` int(11) DEFAULT NULL,
-  `categoriamesa_id` int(11) DEFAULT NULL,
-  `estado_id` int(11) DEFAULT NULL,
-  `mesa_iconolibre` varchar(150) DEFAULT NULL,
-  `mesa_iconoocupada` varchar(150) DEFAULT NULL,
-  `mesa_iconomantenimiento` varchar(150) DEFAULT NULL,
-  `mesa_iconoreservada` varchar(150) DEFAULT NULL,
-  PRIMARY KEY (`mesa_id`),
-  UNIQUE KEY `mesa_id` (`mesa_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
-INSERT INTO `mesa` (`mesa_id`, `mesa_nombre`, `usuario_id`) VALUES 
-  (1,'1',NULL),
-  (2,'2',NULL),
-  (3,'3',NULL),
-  (4,'4',NULL),
-  (5,'5',NULL),
-  (6,'6',NULL),
-  (7,'7',NULL),
-  (8,'8',NULL),
-  (9,'9',NULL),
-  (10,'10',NULL);
-COMMIT;
-
-ALTER TABLE `usuario` ADD COLUMN `usuario_autorizado` INTEGER DEFAULT 0;
-
-truncate estado;
+      (197, 1, 'ADMINISTRAR MESAS', '', 0),
+      (198, 1, 'ASIGNAR PRODUCTOS  A UNA MESA', NULL, 197),
+      (199, 1, 'IMPRIMIR COMANDA', NULL, 197),
+      (200, 1, 'REALIZAR CAMBIOS DE MESA', NULL, 197),
+      (201, 1, 'FACTURAR', NULL, 197),
+      (202, 1, 'MODIFICAR EL ITEM DE CONSUMO DE UNA MESA', NULL, 197),
+      (203, 1, 'ELIMINAR EL ITEM DE CONSUMO DE UNA MESA', NULL, 197),
+      (204, 1, 'ELIMINAR MESA', NULL, 197);
 
 
-INSERT INTO `estado` (`estado_id`, `estado_descripcion`, `estado_tipo`, `estado_color`) VALUES 
-  (1,'ACTIVO',1,'ffffff'),
-  (2,'INACTIVO',1,'b08292'),
-  (3,'ANULADO',1,'cccccc'),
-  (4,'ANULADO',3,'cccccc'),
-  (5,'PENDIENTE',3,'ffea00'),
-  (6,'TERMINADO',3,'a781ee'),
-  (7,'ENTREGADO',3,'3e98f9'),
-  (8,'PENDIENTE',4,'ffea00'),
-  (9,'CANCELADO',4,'b2babb'),
-  (10,'ABIERTO',5,'36fa00'),
-  (11,'PENDIENTE',5,'ffea00'),
-  (12,'APROBADO',5,'29AF01'),
-  (13,'ENTREGADO',5,'3e98f9'),
-  (14,'REBOTADO',5,'FF2E00'),
-  (15,'CANCELADO',5,'C06402'),
-  (16,'CREDITO',3,'1fc4ae'),
-  (17,'PENDIENTE',6,'ffea00'),
-  (18,'CORTE',6,'DDF456'),
-  (19,'PULIDO',6,'DEFR45'),
-  (20,'ENTRANTE',6,'BA4356'),
-  (21,'TEMPLADO',6,'BF3415'),
-  (22,'PARA ENTREGA',6,'00ffff'),
-  (23,'ENTREGADO',6,'3e98f9'),
-  (24,'PENDIENTE',7,'ffea00'),
-  (25,'EN PROCESO',7,'BA4356'),
-  (26,'TERMINADO',7,'a781ee'),
-  (27,'ANULADO',4,'cccccc'),
-  (28,'EN PROCESO',3,'ffff00'),
-  (29,'PENDIENTE',8,'ffea00'),
-  (30,'ABIERTA',8,'36fa00'),
-  (31,'CERRADA',8,'00ff00'),
-  (32,'ANULADA',8,'cccccc'),
-  (33,'PENDIENTE',9,'ffea00'),
-  (34,'ADQUIRIDO',9,'6ed17a'),
-  (35,'ANULADO',9,'cccccc'),
-  (36,'PENDIENTE',1,'ffea00'),
-  (37,'RESERVADO',1,'6ed17a'),
-  (38,'LIBRE',10,'a781ee'),
-  (39,'OCUPADA',10,'ffea00'),
-  (40,'RESERVADA',10,'a781ee'),
-  (41,'MANTENIMIENTO',10,'BF3415');
-COMMIT;
+    drop table mesa;
 
-ALTER TABLE `detalle_compra_bitacora` ADD COLUMN `codigo_bitacora` varchar(30) DEFAULT NULL;
-ALTER TABLE `detalle_compra_bitacora` ADD COLUMN `fecha_bitacora` timestamp NULL DEFAULT current_timestamp();
-ALTER TABLE `detalle_compra_bitacora` ADD COLUMN `detallecomp_numerolote` varchar(30) DEFAULT NULL;
+    CREATE TABLE `mesa` (
+      `mesa_id` int(11) NOT NULL AUTO_INCREMENT,
+      `mesa_nombre` varchar(250) DEFAULT NULL,
+      `mesa_descripcion` varchar(250) DEFAULT NULL,
+      `usuario_id` int(11) DEFAULT NULL,
+      `categoriamesa_id` int(11) DEFAULT NULL,
+      `estado_id` int(11) DEFAULT NULL,
+      `mesa_iconolibre` varchar(150) DEFAULT NULL,
+      `mesa_iconoocupada` varchar(150) DEFAULT NULL,
+      `mesa_iconomantenimiento` varchar(150) DEFAULT NULL,
+      `mesa_iconoreservada` varchar(150) DEFAULT NULL,
+      PRIMARY KEY (`mesa_id`),
+      UNIQUE KEY `mesa_id` (`mesa_id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
-drop table factura_datos;
+    INSERT INTO `mesa` (`mesa_id`, `mesa_nombre`, `usuario_id`) VALUES 
+      (1,'1',NULL),
+      (2,'2',NULL),
+      (3,'3',NULL),
+      (4,'4',NULL),
+      (5,'5',NULL),
+      (6,'6',NULL),
+      (7,'7',NULL),
+      (8,'8',NULL),
+      (9,'9',NULL),
+      (10,'10',NULL);
+    COMMIT;
 
-CREATE TABLE `factura_datos` (
-  `datos_id` int(11) NOT NULL AUTO_INCREMENT,
-  `datos_codigopais` int(11) DEFAULT NULL,
-  `datos_autorizacionsc` varchar(50) DEFAULT NULL,
-  `datos_placa` varchar(50) DEFAULT NULL,
-  `datos_embase` varchar(50) DEFAULT NULL,
-  `cliente_id` int(11) DEFAULT NULL,
-  `datos_consumoperiodo` int(11) DEFAULT NULL,
-  `datos_beneficiario1886` varchar(50) DEFAULT NULL,
-  `datos_periodofacturado` varchar(30) DEFAULT NULL,
-  `datos_medidor` varchar(20) DEFAULT NULL,
-  `datos_ajustesiva` decimal(40,16) DEFAULT NULL,
-  `datos_ajustesnoiva` decimal(40,20) DEFAULT NULL,
-  `datos_pagosnoiva` decimal(40,16) DEFAULT NULL,
-  `datos_tasas` decimal(40,16) DEFAULT NULL,
-  `datos_ciudad` varchar(50) DEFAULT 'COCHABAMBA',
-  `datos_zona` varchar(50) DEFAULT 'CENTRAL',
-  `datos_mes` varchar(20) DEFAULT NULL,
-  `datos_anio` varchar(20) DEFAULT NULL,
-  `datos_ajustesujetosiva` text DEFAULT NULL,
-  `datos_sujetoivasubtotal` decimal(40,16) DEFAULT NULL,
-  `datos_aseourbano` text DEFAULT NULL,
-  `datos_aseosubtotal` decimal(40,16) DEFAULT NULL,
-  `datos_tasaalumbrado` text DEFAULT NULL,
-  `datos_alumbradosubtotal` decimal(40,16) DEFAULT NULL,
-  `datos_otrastasas` text DEFAULT NULL,
-  `datos_tasassubtotal` decimal(40,16) DEFAULT NULL,
-  `datos_otrospagos` text DEFAULT NULL,
-  `datos_pagossubtotal` decimal(40,16) DEFAULT NULL,
-  PRIMARY KEY (`datos_id`),
-  UNIQUE KEY `datos_id` (`datos_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+    ALTER TABLE `usuario` ADD COLUMN `usuario_autorizado` INTEGER DEFAULT 0;
 
-update empresa set empresa_nombresucursal = concat(empresa_nombre,' * ',empresa_direccion);
-
-CREATE TABLE `detalle_factura_servicios` (
-  `id_detfact` int(11) NOT NULL AUTO_INCREMENT,
-  `id_fact` int(11) DEFAULT 0,
-  `cant_detfact` int(11) DEFAULT 0,
-  `descip_detfact` varchar(250) DEFAULT '-',
-  `punit_detfact` float(10,3) DEFAULT 0.000,
-  `desc_detfact` float(10,2) DEFAULT 0.00,
-  `total_detfact` float(10,3) DEFAULT 0.000,
-  `tipo_detfact` int(11) DEFAULT 0,
-  `exento_detfact` varchar(20) DEFAULT 'NO',
-  `ice_detfact` varchar(20) DEFAULT 'NO',
-  `codigo_detfact` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id_detfact`) USING BTREE,
-  UNIQUE KEY `id_detfact` (`id_detfact`) USING BTREE,
-  KEY `fk_tiene_varios` (`id_fact`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=368145 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
+    truncate estado;
 
 
+    INSERT INTO `estado` (`estado_id`, `estado_descripcion`, `estado_tipo`, `estado_color`) VALUES 
+      (1,'ACTIVO',1,'ffffff'),
+      (2,'INACTIVO',1,'b08292'),
+      (3,'ANULADO',1,'cccccc'),
+      (4,'ANULADO',3,'cccccc'),
+      (5,'PENDIENTE',3,'ffea00'),
+      (6,'TERMINADO',3,'a781ee'),
+      (7,'ENTREGADO',3,'3e98f9'),
+      (8,'PENDIENTE',4,'ffea00'),
+      (9,'CANCELADO',4,'b2babb'),
+      (10,'ABIERTO',5,'36fa00'),
+      (11,'PENDIENTE',5,'ffea00'),
+      (12,'APROBADO',5,'29AF01'),
+      (13,'ENTREGADO',5,'3e98f9'),
+      (14,'REBOTADO',5,'FF2E00'),
+      (15,'CANCELADO',5,'C06402'),
+      (16,'CREDITO',3,'1fc4ae'),
+      (17,'PENDIENTE',6,'ffea00'),
+      (18,'CORTE',6,'DDF456'),
+      (19,'PULIDO',6,'DEFR45'),
+      (20,'ENTRANTE',6,'BA4356'),
+      (21,'TEMPLADO',6,'BF3415'),
+      (22,'PARA ENTREGA',6,'00ffff'),
+      (23,'ENTREGADO',6,'3e98f9'),
+      (24,'PENDIENTE',7,'ffea00'),
+      (25,'EN PROCESO',7,'BA4356'),
+      (26,'TERMINADO',7,'a781ee'),
+      (27,'ANULADO',4,'cccccc'),
+      (28,'EN PROCESO',3,'ffff00'),
+      (29,'PENDIENTE',8,'ffea00'),
+      (30,'ABIERTA',8,'36fa00'),
+      (31,'CERRADA',8,'00ff00'),
+      (32,'ANULADA',8,'cccccc'),
+      (33,'PENDIENTE',9,'ffea00'),
+      (34,'ADQUIRIDO',9,'6ed17a'),
+      (35,'ANULADO',9,'cccccc'),
+      (36,'PENDIENTE',1,'ffea00'),
+      (37,'RESERVADO',1,'6ed17a'),
+      (38,'LIBRE',10,'a781ee'),
+      (39,'OCUPADA',10,'ffea00'),
+      (40,'RESERVADA',10,'a781ee'),
+      (41,'MANTENIMIENTO',10,'BF3415');
+    COMMIT;
 
-CREATE TABLE `factura_servicios` (
-  `id_fact` int(11) NOT NULL AUTO_INCREMENT,
-  `id_lec` int(11) DEFAULT 0,
-  `num_fact` int(11) DEFAULT 0,
-  `nit_fact` varchar(30) DEFAULT '0',
-  `razon_fact` varchar(100) DEFAULT 'SIN NOMBRE',
-  `orden_fact` varchar(30) DEFAULT '0',
-  `nitemisor_fact` varchar(30) DEFAULT '0',
-  `llave_fact` varchar(250) DEFAULT '0',
-  `fecha_fact` date DEFAULT NULL,
-  `hora_fact` time DEFAULT '00:00:00',
-  `fechaemision_fact` date DEFAULT NULL,
-  `montoparc_fact` float(10,3) DEFAULT 0.000,
-  `desc_fact` float(10,3) DEFAULT 0.000,
-  `cadenaqr_fact` varchar(250) DEFAULT '-',
-  `codcontrol_fact` varchar(250) DEFAULT '-',
-  `literal_fact` varchar(250) DEFAULT '-',
-  `fechahora_fact` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `tipo_fact` int(11) DEFAULT 0,
-  `fechavenc_fact` date DEFAULT NULL,
-  `totalconsumo_fact` float(9,3) DEFAULT 0.000,
-  `totalaportes_fact` float(9,3) DEFAULT 0.000,
-  `totalrecargos_fact` float(9,3) DEFAULT 0.000,
-  `montototal_fact` float(10,3) DEFAULT 0.000,
-  `estado_fact` varchar(30) DEFAULT 'PENDIENTE',
-  `id_usu` int(11) DEFAULT 0,
-  `exento_fact` float(9,3) DEFAULT 0.000,
-  `ice_fact` float(9,3) DEFAULT 0.000,
-  `id_ing` int(11) DEFAULT NULL,
-  `factura_leyenda1` varchar(250) DEFAULT NULL,
-  `factura_leyenda2` varchar(250) DEFAULT NULL,
-  PRIMARY KEY (`id_fact`) USING BTREE,
-  KEY `fk_contiene` (`id_lec`) USING BTREE,
-  KEY `fk_se_aplica__a_` (`estado_fact`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=78085 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
+    ALTER TABLE `detalle_compra_bitacora` ADD COLUMN `codigo_bitacora` varchar(30) DEFAULT NULL;
+    ALTER TABLE `detalle_compra_bitacora` ADD COLUMN `fecha_bitacora` timestamp NULL DEFAULT current_timestamp();
+    ALTER TABLE `detalle_compra_bitacora` ADD COLUMN `detallecomp_numerolote` varchar(30) DEFAULT NULL;
+
+    drop table factura_datos;
+
+    CREATE TABLE `factura_datos` (
+      `datos_id` int(11) NOT NULL AUTO_INCREMENT,
+      `datos_codigopais` int(11) DEFAULT NULL,
+      `datos_autorizacionsc` varchar(50) DEFAULT NULL,
+      `datos_placa` varchar(50) DEFAULT NULL,
+      `datos_embase` varchar(50) DEFAULT NULL,
+      `cliente_id` int(11) DEFAULT NULL,
+      `datos_consumoperiodo` int(11) DEFAULT NULL,
+      `datos_beneficiario1886` varchar(50) DEFAULT NULL,
+      `datos_periodofacturado` varchar(30) DEFAULT NULL,
+      `datos_medidor` varchar(20) DEFAULT NULL,
+      `datos_ajustesiva` decimal(40,16) DEFAULT NULL,
+      `datos_ajustesnoiva` decimal(40,20) DEFAULT NULL,
+      `datos_pagosnoiva` decimal(40,16) DEFAULT NULL,
+      `datos_tasas` decimal(40,16) DEFAULT NULL,
+      `datos_ciudad` varchar(50) DEFAULT 'COCHABAMBA',
+      `datos_zona` varchar(50) DEFAULT 'CENTRAL',
+      `datos_mes` varchar(20) DEFAULT NULL,
+      `datos_anio` varchar(20) DEFAULT NULL,
+      `datos_ajustesujetosiva` text DEFAULT NULL,
+      `datos_sujetoivasubtotal` decimal(40,16) DEFAULT NULL,
+      `datos_aseourbano` text DEFAULT NULL,
+      `datos_aseosubtotal` decimal(40,16) DEFAULT NULL,
+      `datos_tasaalumbrado` text DEFAULT NULL,
+      `datos_alumbradosubtotal` decimal(40,16) DEFAULT NULL,
+      `datos_otrastasas` text DEFAULT NULL,
+      `datos_tasassubtotal` decimal(40,16) DEFAULT NULL,
+      `datos_otrospagos` text DEFAULT NULL,
+      `datos_pagossubtotal` decimal(40,16) DEFAULT NULL,
+      PRIMARY KEY (`datos_id`),
+      UNIQUE KEY `datos_id` (`datos_id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+    update empresa set empresa_nombresucursal = concat(empresa_nombre,' * ',empresa_direccion);
+
+    CREATE TABLE `detalle_factura_servicios` (
+      `id_detfact` int(11) NOT NULL AUTO_INCREMENT,
+      `id_fact` int(11) DEFAULT 0,
+      `cant_detfact` int(11) DEFAULT 0,
+      `descip_detfact` varchar(250) DEFAULT '-',
+      `punit_detfact` float(10,3) DEFAULT 0.000,
+      `desc_detfact` float(10,2) DEFAULT 0.00,
+      `total_detfact` float(10,3) DEFAULT 0.000,
+      `tipo_detfact` int(11) DEFAULT 0,
+      `exento_detfact` varchar(20) DEFAULT 'NO',
+      `ice_detfact` varchar(20) DEFAULT 'NO',
+      `codigo_detfact` varchar(20) DEFAULT NULL,
+      PRIMARY KEY (`id_detfact`) USING BTREE,
+      UNIQUE KEY `id_detfact` (`id_detfact`) USING BTREE,
+      KEY `fk_tiene_varios` (`id_fact`) USING BTREE
+    ) ENGINE=InnoDB AUTO_INCREMENT=368145 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;
+
+
+
+    CREATE TABLE `factura_servicios` (
+      `id_fact` int(11) NOT NULL AUTO_INCREMENT,
+      `id_lec` int(11) DEFAULT 0,
+      `num_fact` int(11) DEFAULT 0,
+      `nit_fact` varchar(30) DEFAULT '0',
+      `razon_fact` varchar(100) DEFAULT 'SIN NOMBRE',
+      `orden_fact` varchar(30) DEFAULT '0',
+      `nitemisor_fact` varchar(30) DEFAULT '0',
+      `llave_fact` varchar(250) DEFAULT '0',
+      `fecha_fact` date DEFAULT NULL,
+      `hora_fact` time DEFAULT '00:00:00',
+      `fechaemision_fact` date DEFAULT NULL,
+      `montoparc_fact` float(10,3) DEFAULT 0.000,
+      `desc_fact` float(10,3) DEFAULT 0.000,
+      `cadenaqr_fact` varchar(250) DEFAULT '-',
+      `codcontrol_fact` varchar(250) DEFAULT '-',
+      `literal_fact` varchar(250) DEFAULT '-',
+      `fechahora_fact` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+      `tipo_fact` int(11) DEFAULT 0,
+      `fechavenc_fact` date DEFAULT NULL,
+      `totalconsumo_fact` float(9,3) DEFAULT 0.000,
+      `totalaportes_fact` float(9,3) DEFAULT 0.000,
+      `totalrecargos_fact` float(9,3) DEFAULT 0.000,
+      `montototal_fact` float(10,3) DEFAULT 0.000,
+      `estado_fact` varchar(30) DEFAULT 'PENDIENTE',
+      `id_usu` int(11) DEFAULT 0,
+      `exento_fact` float(9,3) DEFAULT 0.000,
+      `ice_fact` float(9,3) DEFAULT 0.000,
+      `id_ing` int(11) DEFAULT NULL,
+      `factura_leyenda1` varchar(250) DEFAULT NULL,
+      `factura_leyenda2` varchar(250) DEFAULT NULL,
+      PRIMARY KEY (`id_fact`) USING BTREE,
+      KEY `fk_contiene` (`id_lec`) USING BTREE,
+      KEY `fk_se_aplica__a_` (`estado_fact`) USING BTREE
+    ) ENGINE=InnoDB AUTO_INCREMENT=78085 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci ROW_FORMAT=DYNAMIC;

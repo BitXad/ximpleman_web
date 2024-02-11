@@ -479,6 +479,7 @@ function tablaproductos(){
     var parametro_datosproducto = Number(document.getElementById('parametro_datosproducto').value);
     var parametro_cantidadsimple = Number(document.getElementById('parametro_cantidadsimple').value);
     var parametro_botonesproducto = Number(document.getElementById('parametro_botonesproducto').value);
+    var parametro_botonescontrol = Number(document.getElementById('parametro_botonescontrol').value);
     var parametro_mostrarmoneda = Number(document.getElementById('parametro_mostrarmoneda').value);
     var parametro_tablasencilla = Number(document.getElementById('parametro_tablasencilla').value);
     var clasificador = "";
@@ -526,7 +527,12 @@ function tablaproductos(){
                             html += "                            <th style='padding:0'>DESC.<br>"+parametro_moneda_descripcion+"</th>";
                             html += "                            <th style='padding:0'>PRECIO<br>TOTAL "+parametro_moneda_descripcion+"</th>";
                         } 
-                        html += "                            <th style='padding:0'><button onclick='quitartodo()' class='btn btn-danger btn-sm' title='Vaciar el detalle de la venta'><span class='fa fa-trash'></span><b></b></button></th>";
+                        html += "   <th style='padding:0'>";
+                        if(parametro_botonescontrol==1){
+                            
+                        html += "   <button onclick='quitartodo()' class='btn btn-danger btn-sm' title='Vaciar el detalle de la venta'><span class='fa fa-trash'></span><b></b></button>";
+                        }
+                        html += "   </th>";
                         html += "                    </tr>";                
                         html += "                    <tbody class='buscar2'>";
 
@@ -583,7 +589,7 @@ function tablaproductos(){
 //                        html += "<td "+color+"><b><font size='"+fuente+"'>"+registros[i]["producto_nombre"];
 
 /////////////////// Descripcion
-                        html += "<td "+color+"><b style='font-size:"+tamanio_fuente+"'>"+registros[i]["producto_nombre"];
+                        html += "<td "+color+"><b style='font-size:"+tamanio_fuente+"'>"+registros[i]["productonombre"];
                        
                        //html += " <button id='boton_composicion"+registros[i]["detalleven_id"]+"' class='btn btn-xs' style='padding:0;' onclick='mostrar_composicion("+registros[i]["detalleven_id"]+")'>[+]</button>";
                         
@@ -773,7 +779,10 @@ html += "  </div>";
                         html += "</td>";
                         html += "			<td "+color+">";
                         html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
-                        html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
+                       
+                        if(parametro_botonescontrol==1){
+                           html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
+                        }
                         html += "                        </td>";    
                         
                     }
@@ -830,8 +839,11 @@ html += "  </div>";
                         html += "</td>";
 
                         html += "			<td "+color+">";
-                        html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
-                        html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
+
+                        if(parametro_botonescontrol==1){   
+                            html += "<div style='border-color: #008d4c; background: #008D4C !important; color: white' class='btn btn-success btn-xs' onclick='actualizar_losprecios("+registros[i]["detalleven_id"]+")' title='Actualizar precios'><span class='fa fa-save' aria-hidden='true'></span></div>";
+                            html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
+                        }
                         html += "                        </td>";
                         html += "                    </tr>";  
                         
@@ -8899,7 +8911,22 @@ function cargar_servicios(){
                              if(res.length>0){
                                  $("#nit").val(res[0]["nit_fact"]);
                                  $("#span_buscar_cliente").click();
+                                 
+                                 $("#datos_consumoperiodo").val(res[0]["consumo_lec"]);
+                                 $("#datos_beneficiarioley1886").val("");
+                                 $("#datos_montodescuentotarifadignidad").val(0);
+                                 $("#datos_mes").val(res[0]["mes_lec"]);
+                                 $("#datos_anio").val(res[0]["gestion_lec"]);
+                                 $("#datos_medidor").val("000434");
+                          
+                                
+                                $("#venta_descuento").val("1.50");                                 
+                          
+                                 tablaproductos();
+                                 
                              }
+                             
+                             
 //                            if (res) {  
 //                                
 //                                ventas_fallidas();

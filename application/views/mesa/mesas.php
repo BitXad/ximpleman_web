@@ -178,6 +178,8 @@ if($cliente[0]['cliente_id'] >0){
 <input type="text" id="codigoexcepcion" name="codigoexcepcion" value="" hidden>  
 <?php
 }
+//var_dump($rolusuario);
+//echo $rolusuario;
 ?>
 <input type="text" id="email" name="email" value="<?php echo $cliente[0]['cliente_email']; ?>" hidden>
 
@@ -189,6 +191,13 @@ if($cliente[0]['cliente_id'] >0){
 <input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_modificardetalle" value="<?php echo $rolusuario[20-1]['rolusuario_asignado']; ?>" hidden>
 
+<input type="text" id="rol_productos" value="<?php echo $rolusuario[198-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_comandas" value="<?php echo $rolusuario[199-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_cambiomesa" value="<?php echo $rolusuario[200-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_facturar" value="<?php echo $rolusuario[201-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_modificaritem" value="<?php echo $rolusuario[202-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_eliminaritem" value="<?php echo $rolusuario[203-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_eliminarmesa" value="<?php echo $rolusuario[204-1]['rolusuario_asignado']; ?>" hidden>
 
 <input type="text" value="<?php echo 0; ?>" id="pedido_latitud" hidden>
 <input type="text" value="<?php echo 0; ?>" id="pedido_longitud" hidden>

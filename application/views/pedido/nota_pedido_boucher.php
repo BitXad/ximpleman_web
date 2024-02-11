@@ -2,7 +2,7 @@
 
 p {
     font-family: Arial;
-    font-size: 8pt;
+    font-size: 10pt;
     line-height: 80%;   /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 5px;
@@ -67,7 +67,7 @@ td {
   /* Alto de las celdas */
   height: 10px;
 font-family: Arial;
-font-size: 8pt;   
+font-size: 12px;   
 margin: 0;
 margin-bottom: 0;
 margin-top: 0;
@@ -95,7 +95,7 @@ td {
   /* Alto de las celdas */
   height: 10px;
 font-family: Arial;
-font-size: 7pt;   
+font-size: 8pt;   
 margin: 0;
 margin-bottom: 0;
 margin-top: 0;

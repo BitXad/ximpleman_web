@@ -740,7 +740,7 @@ div {
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <label for="parametro_mostrarlogo" class="control-label">MOSTRAR LOGO EN FACT.</label>
+                        <label for="parametro_mostrarlogo" class="control-label">LOGO EN COMPROBANTES</label>
                         <div class="form-group">
                             <select name="parametro_mostrarlogo" class="form-control" id="parametro_mostrarlogo">
                                 <option value="1" <?php if($parametro['parametro_mostrarlogo']=="1"){ ?> selected <?php } ?>>Si</option>

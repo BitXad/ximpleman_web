@@ -107,6 +107,35 @@ class Reportes extends CI_Controller{
     /*
      * Listing of cliente
      */
+    function reporteingresos()
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(141)){
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        
+        $data['tipousuario_id']  = $this->session_data['tipousuario_id'];
+        $data['usuario_id']  = $this->session_data['usuario_id'];
+        $data['usuario_nombre']  = $this->session_data['usuario_nombre'];
+        $this->load->model('Usuario_model');
+        
+        $rolusuario = $this->session_data['rol'];
+        $data['tienepermiso'] = $rolusuario[171-1]['rolusuario_asignado'];        
+        
+        $data['parametro'] = $this->parametros;
+        $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $data['page_title'] = "Reportes";
+        $data['_view'] = 'reportes/reporteingresos';
+
+        $this->load->view('layouts/main',$data);
+        }
+    }
+    /*
+     * Listing of cliente
+     */
     function reportecaja()
     {
         $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
@@ -136,6 +165,7 @@ class Reportes extends CI_Controller{
             $this->load->model('Usuario_model');
             
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['usuario_caja'] = $this->Usuario_model->get_usuario($usuario_id);
             $data['parametro'] = $this->parametros;
             
             $this->load->model('Moneda_model');
@@ -662,6 +692,38 @@ function torta3($anio,$mes)
                 show_404();
             }
         }
+    }
+    
+    function buscarporfechahora(){
+        
+        $data['sistema'] = $this->sistema;
+//        if($this->acceso(141)){
+            
+            if ($this->input->is_ajax_request()) {
+                
+                $fechadesde = $this->input->post('fecha1');   
+                $fechahasta = $this->input->post('fecha2');
+                
+                $sql = "SELECT v.venta_fecha, v.venta_hora, v.venta_id, v.pedido_id, v.venta_total, c.cliente_nombre, c.cliente_razon, c.cliente_nit, p.mesa_id, p.pedido_total
+                        FROM venta v
+
+                        left join cliente c on c.cliente_id = v.cliente_id 
+                        left join pedido p on p.pedido_id = v.pedido_id   
+
+                        WHERE
+
+                        CONCAT(venta_fecha, ' ', venta_hora) >= '{$fechadesde}' AND 
+                        CONCAT(venta_fecha, ' ', venta_hora) <= '{$fechahasta}'";
+                //echo $sql;
+                
+                $resultado = $this->Venta_model->Consultar($sql);                
+               
+                echo json_encode($resultado);
+                
+            }else{                 
+                show_404();
+            }
+//        }
     }
     
     

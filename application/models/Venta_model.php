@@ -172,7 +172,7 @@ class Venta_model extends CI_Model
 //                where d.usuario_id = ".$usuario_id."
 //                order by d.detalleven_id desc";
 
-        $sql = "select d.*, p.*, c.clasificador_nombre, t.producto_nombre as preferencia_descripcion, t.producto_foto as preferencia_foto
+        $sql = "select d.*, d.producto_nombre as productonombre , p.*, c.clasificador_nombre, t.producto_nombre as preferencia_descripcion, t.producto_foto as preferencia_foto
                 from detalle_venta_aux d
                 left join inventario p on p.producto_id = d.producto_id
                 left join clasificador c on c.clasificador_id = d.clasificador_id
@@ -860,14 +860,14 @@ function get_busqueda($condicion)
     /**
      * Obtener le producto en base al id
      */
-    function cargar_ultimo_servicio(){
+ function cargar_ultimo_servicio(){
         
         $usuario_id = $this->session_data['usuario_id'];
         
         $sql = "delete from detalle_venta_aux where usuario_id = {$usuario_id}";
         $this->db->query($sql);
         
-        $sql = "select * from factura_servicios where id_fact = (select max(id_fact) from factura_servicios)";
+        $sql = "select f.*, l.mes_lec, l.gestion_lec, l.consumo_lec from factura_servicios f, lectura l where num_fact = (select max(num_fact) from factura_servicios) and f.id_lec = l.id_lec";
         $factura = $this->db->query($sql)->result_array();
         
         $id_fact = $factura[0]["id_fact"];
@@ -909,7 +909,7 @@ function get_busqueda($condicion)
                 ,0 as venta_id
                 ,1 as moneda_id
 
-                ,d.codigo_detfact as detalleven_codigo
+                ,t.producto_codigobarra as detalleven_codigo
                 ,d.cant_detfact as detalleven_cantidad
                 ,'SERVICIO' as detalleven_unidad
                 ,d.punit_detfact as detalleven_costo
@@ -927,7 +927,7 @@ function get_busqueda($condicion)
                 ,'SERVICIO' as producto_unidad
                 ,'' as producto_marca
                 ,t.categoria_id
-                ,d.codigo_detfact as producto_codigobarra
+                ,t.producto_codigobarra
                 ,t.producto_envase
                 ,t.producto_nombreenvase
                 ,t.producto_costoenvase
@@ -942,10 +942,9 @@ function get_busqueda($condicion)
                 detalle_factura_servicios d,
                 inventario t
                 where  
-                d.id_fact = {$id_fact} and
-                t.producto_codigobarra = d.codigo_detfact)";       
+                d.id_fact = {$id_fact} and d.descip_detfact = t.producto_nombre)";       
                 
-        //echo $sql;
+        echo $sql;
         $this->db->query($sql);
         
         return $factura;

@@ -558,7 +558,7 @@ border-bottom : 1px solid #aaa;
                         
                         
                         <tr  style=" font-family: Arial; border: 1px solid black;">
-                            <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_ajustesujetosiva"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_sujetoivasubtotal"],$decimales,".",","); ?></td>                            
+                            <td></td> <td></td> <td></td> <td><?php echo isset($datos_factura["datos_ajustesujetosiva"])?$datos_factura["datos_ajustesujetosiva"]:0; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format(isset($datos_factura["datos_sujetoivasubtotal"])?$datos_factura["datos_sujetoivasubtotal"]:0,$decimales,".",","); ?></td>                            
                         </tr>                        
                                 
                         
@@ -631,7 +631,7 @@ border-bottom : 1px solid #aaa;
                         $ajustes_no_sujetosiva = 0;
                         if($factura[0]['docsec_codigoclasificador']==13){ //Servicios 
                             
-                            $ajustes_no_sujetosiva = $datos_factura['datos_ajustesnoiva'];
+                            $ajustes_no_sujetosiva = isset($datos_factura['datos_ajustesnoiva'])?$datos_factura['datos_ajustesnoiva']:0;
                             ?>
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) AJUSTES NO SUJETOS A IVA Bs</td>

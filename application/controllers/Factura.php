@@ -1550,9 +1550,11 @@ class Factura extends CI_Controller{
                                 where venta_id = ".$venta_id;
                         $this->Venta_model->ejecutar($sql);
 
+                        
                         $sql =  "update pedido set estado_id = 11 where pedido_id = (select v.pedido_id from venta v where v.venta_id = ".$venta_id.")";
                         $this->Venta_model->ejecutar($sql);
 
+                        
                         $this->Inventario_model->actualizar_inventario(); 
                         //**************** fin contenido ***************
                     }
@@ -2356,5 +2358,56 @@ class Factura extends CI_Controller{
         
     }
 
+     function factura_servicios($tipo, $factura_id){
+         
+         $session_data = $this->session->userdata('logged_in');
+         $usuario_id = $session_data['id_usu'];
+         $this->load->model('Empresa_model');
+         $data['empresa'] = $this->Empresa_model->get_empresa(1);
+         
+         $data['factura'] = $this->Factura_model->get_factura_completa($factura_id);
+         
+         $data['tipo'] = $tipo;
+         $detalle_factura = $this->Factura_model->get_pendiente_detalle($factura_id);
+         $totalexento = 0;
+         foreach ($detalle_factura as $detalle) {
+             if($detalle["exento_detfact"] == "SI"){
+                 $totalexento += $detalle['total_detfact']; 
+             }
+         }
+         $data['detalle_factura'] = $detalle_factura;
+         $factura = $this->Factura_model->get_factura($factura_id);
+
+        $nit_emisor    = $factura['nitemisor_fact'];
+        $num_fact      = $factura['num_fact'];
+        $autorizacion  = $factura['orden_fact'];
+        $fecha_factura = $factura['fecha_fact'];
+        $total         = $factura['montototal_fact'];
+        $codcontrol    = $factura['codcontrol_fact'];
+        $nit           = $factura['nit_fact'];
+         $cadenaQR = $nit_emisor.'|'.$num_fact.'|'.$autorizacion.'|'.$fecha_factura.'|'.($total-$totalexento).'|'.($total-$totalexento).'|'.$codcontrol.'|'.$nit.'|0|0|0|0';
+               
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+        //Generador de Codigo QR
+                //cargamos la librería  
+         $this->load->library('ciqrcode');
+                  
+         //hacemos configuraciones
+         $params['data'] = $cadenaQR;//$this->random(30);
+         $params['level'] = 'H';
+         $params['size'] = 5;
+         //decimos el directorio a guardar el codigo qr, en este 
+         //caso una carpeta en la raíz llamada qr_code
+         $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+         //generamos el código qr
+         $this->ciqrcode->generate($params); 
+         //echo '<img src="'.base_url().'resources/images/qrcode.png" />';
+        //fin generador de codigo QR
+         
+        
+        $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');         
+         $data['_view'] = 'factura/factura_servicios';
+         $this->load->view('layouts/main',$data);
+     }
     
 }
