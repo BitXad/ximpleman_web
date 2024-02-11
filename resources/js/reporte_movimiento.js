@@ -446,6 +446,32 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 
 }
 
+function formato_fecha(string){
+    var info = "";
+    if(string != null){
+       info = string.split('-').reverse().join('/');
+   }
+    return info;
+}
+
+//
+//function formato_numerico(numero){
+//    
+//    var decimales = Number(document.getElementById('parametro_decimales').value);
+//    
+//        nStr = Number(numero).toFixed(decimales);
+//        nStr += '';
+//	x = nStr.split('.');
+//	x1 = x[0];
+//	x2 = x.length > 1 ? '.' + x[1] : '';
+//	var rgx = /(\d+)(\d{3})/;
+//	while (rgx.test(x1)) {
+//		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+//	}
+//	
+//	return x1 + x2;
+//}
+
 function buscarporfechahora(fecha_desde, fecha_hasta, usuario){
 
     var base_url    = document.getElementById('base_url').value;
@@ -467,40 +493,54 @@ function buscarporfechahora(fecha_desde, fecha_hasta, usuario){
             
             var registros =  JSON.parse(resul);
             var html =  "";
+            var totalventa =  0;
+            var totalpedido =  0;
 //            let registros = data['registros'];
 //            let totales = data['totales'];
             
             if (registros != null){
                 
                 for(let i=0;i<registros.length;i++){
+                    
+                    totalventa += Number(registros[i]["venta_total"]);
+                    totalpedido += Number(registros[i]["pedido_total"]);
                     html += "<tr>"
                     html += "<td>"+(i+1)+"</td>"
-                    html += "<td style='text-align:center;'>"+registros[i]["venta_fecha"]+" "+registros[i]["venta_hora"]+"</td>"
+                    html += "<td style='text-align:center;'>"+formato_fecha(registros[i]["venta_fecha"])+" "+registros[i]["venta_hora"]+"</td>"
                     html += "<td style='text-align:center;'>"+registros[i]["venta_id"]+"</td>";
                     html += "<td style='text-align:center;'>"+registros[i]["pedido_id"]+"</td>";
                     html += "<td>"+registros[i]["cliente_nombre"]+"</td>";                    
                     html += "<td style='text-align:center;'>"+((Number(registros[i]["mesa_id"])>0)?registros[i]["mesa_id"]:"SIN MESA")+"</td>";
                     
                     html += "<td style='text-align:right;'>"+Number(registros[i]["pedido_total"]).toFixed(decimales)+"</td>";
-                    html += "<td style='text-align:right;'>"+Number(registros[i]["venta_total"]).toFixed(decimales)+"</td>";
+                    html += "<td style='text-align:right; background:yellow;'><b style='font-size:12px;'>"+Number(registros[i]["venta_total"]).toFixed(decimales)+"</b></td>";
                     
                     html += "<td style='text-align:right;'>";
                     
-                        html += "<a href='"+base_url+"pedido/imprimir/"+registros[i]["pedido_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Imprimir comanda'><fa class='fa fa-print'></fa></a>";
-                        html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]["venta_id"]+"' target='_blank' class='btn btn-warning btn-xs' title='Imprimir recibo'><fa class='fa fa-print'></fa></a>";
                         
-                        if(Number(registros[i]["pedido_total"]).toFixed(decimales) != Number(registros[i]["pedido_id"]).toFixed(decimales)){
-                            html += "<span class='btn btn-xs btn-danger'> <fa class='fa fa-chain'></fa> INCONSISTENCIA</span>";
+                        if(Number(registros[i]["pedido_total"]).toFixed(decimales) === Number(registros[i]["pedido_id"]).toFixed(decimales)){
+                            html += "<span class='btn btn-xs btn-danger no-print' title='La venta fue finalizada sin tener una mesa relacionada'> <fa class='fa fa-chain'></fa> INCONSISTENCIA</span>";
                             
                         }
+                        html += "<a href='"+base_url+"pedido/imprimir/"+registros[i]["pedido_id"]+"' target='_blank' class='btn btn-success btn-xs no-print' title='Imprimir comanda'><fa class='fa fa-print'></fa></a>";
+                        html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]["venta_id"]+"' target='_blank' class='btn btn-warning btn-xs no-print' title='Imprimir recibo'><fa class='fa fa-print'></fa></a>";
                      
                     html += "</td>";
                             
                     html += "</tr>";
                     
                 }
+                
+                html += "<tr style='background: gray;'>";
+                html += "<th colspan='5'><b>TOTALES</b></th>";
+                html += "<th></th>";
+                html += "<th><b>"+formato_numerico(Number(totalpedido).toFixed(decimales))+"<b></th>";
+                html += "<th><b  style='font-size: 14px;'>"+formato_numerico(Number(totalventa).toFixed(decimales))+"<b></th>";
+                html += "<th></th>";
+                html += "</tr>";
+                
             }
-            $("#tablatotalresultados").html(html);
+            $("#tablatotalresultados2").html(html);
                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
         error:function(resul){

@@ -186,21 +186,23 @@
                     
             </div>
         <div class="table table-responsive">
-            <table class='table table-striped table-condensed table-responsive' id='mitabladetimpresion' style='width:<?php echo $ancho; ?>cm;'>
+            <table class='table table-striped table-condensed table-responsive' id='mitabladetimpresion' style='width:<?php echo $ancho; ?>cm; border:#000 '>
                 <tr style='background-color: #aaaaaa;' class='fondoprint'>
                     <th id='fondoprint' class='fondoprint' style='width: 2%' class='text-center'>N°</th>
                     <th id='fondoprint' style='width: 20%' class='text-center'>FECHA</th>
                     <th id='fondoprint' style='' class='text-center'>TRANS.</th>
-                    <th id='fondoprint' style='' class='text-center'>PEDIDO</th>
+                    <th id='fondoprint' style='' class='text-center'>COMANDA</th>
 <!--                    <th id='fondoprint' style='width: 10%' class='text-center'>OPE.</th>-->
                     <th id='fondoprint' style='' class='text-center'>CLIENTE</th>
                     <!--<th id='fondoprint' style='width: 48%' class='text-center'>DETALLE <input type='button' value='[-]' onclick='mostrar_detalle();' id='boton_detalle' class='btn btn-xs' style="padding:0;"/></th>-->
                     <th id='fondoprint' style='' class='text-center'>MESA</th>
-                    <th id='fondoprint' style='' class='text-center'>TOTAL</th>
+                    <th id='fondoprint' style='' class='text-center'>TOTAL<br>COMANDA</th>
+                    <th id='fondoprint' style='' class='text-center'>TOTAL<br>VENTA</th>
+                    <th id='fondoprint' style='' class='text-center'> </th>
 <!--                    <th id='fondoprint' style='width: 10%' class='text-center'>TRANS.</th>
                     <th id='fondoprint' style='width: 10%' class='text-center'>UTILD</th>-->
                 </tr>
-                <tbody id='tablatotalresultados'>
+                <tbody id='tablatotalresultados2'>
                     
                     
                 </tbody>

@@ -368,11 +368,19 @@
                         <li>
                             <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Despacho</a>
                         </li>
+                        
+                        
                         <?php
                         }
+                        
+                        if($tipousuario_id==1){
                         ?>
                         
+                        <li>
+                            <a href="<?php echo site_url('reportes/reporteingresos');?>"><i class="fa fa-list-ol"></i> Reporte de ingresos</a>
+                        </li>
                         
+                        <?php } ?>
                         
                     </ul>
                 </li>
