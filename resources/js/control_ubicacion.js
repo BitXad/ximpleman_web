@@ -164,6 +164,7 @@
     }
 
     function cudrar_inventario(controli_id, cuadrar_inventario){
+        
         var base_url = document.getElementById("base_url").value
         var controlador= `${base_url}control_inventario/cuadrar_inventario`
         $.ajax({

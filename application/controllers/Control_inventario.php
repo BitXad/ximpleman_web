@@ -185,13 +185,16 @@ class Control_inventario extends CI_Controller{
     }
 
     function cuadrar_inventario(){
+        
         $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
+            
             $sobrante = [];
             $faltante = [];
             $controli_id = $this->input->post("controli_id");
             $cuadrar_inventario = $this->input->post("cuadrar_inventario");
             $inventarios = $this->Control_ubicacion_model->get_productos_inventario($controli_id);
+            
             foreach ($inventarios as $inventario) {
                 if($inventario['sobrante'] > 0){
                     array_push($sobrante, $inventario);
@@ -200,6 +203,8 @@ class Control_inventario extends CI_Controller{
                 }
             }
 
+            //var_dump($faltante);
+            
             if ($cuadrar_inventario == 2) {
                 // SOBRA va a COMPRAS
                 $this->cuadrar_inventario_compra($sobrante);
@@ -277,8 +282,11 @@ class Control_inventario extends CI_Controller{
     function cuadrar_inventario_venta($faltante){
         $data['sistema'] = $this->sistema;
         /*****************************ADD DETALLE VENTA AUX***************************** */
+        
         foreach ($faltante as $falt) {
+            
             $total_producto = $falt['faltante']*$falt['producto_precio'];
+            
             $params = array(
                 'producto_id' => $falt['producto_id'],
                 'venta_id' => 0,
@@ -315,6 +323,10 @@ class Control_inventario extends CI_Controller{
                 'preferencia_id'=> 0,
                 'detalleven_tc'=> 6.96,
             );
+            
+//            var_dump($params);
+//            echo "<br><br><br>";
+            
             $this->Venta_model->add_detalle_venta_aux($params);
         }
         /*****************************ADD DETALLE VENTA AUX***************************** */

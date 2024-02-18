@@ -867,6 +867,7 @@ function get_busqueda($condicion)
         $sql = "delete from detalle_venta_aux where usuario_id = {$usuario_id}";
         $this->db->query($sql);
         
+        
         $sql = "select f.*, l.mes_lec, l.gestion_lec, l.consumo_lec from factura_servicios f, lectura l where num_fact = (select max(num_fact) from factura_servicios) and f.id_lec = l.id_lec";
         $factura = $this->db->query($sql)->result_array();
         
@@ -941,13 +942,20 @@ function get_busqueda($condicion)
                 from 
                 detalle_factura_servicios d,
                 inventario t
-                where  
+                where  exento_detfact = 'NO' and
                 d.id_fact = {$id_fact} and d.descip_detfact = t.producto_nombre)";       
                 
-        echo $sql;
+        //echo $sql;
         $this->db->query($sql);
         
-        return $factura;
+        $sql = "select * from detalle_factura_servicios where exento_detfact <> 'NO'";
+        $exentos = $this->db->query($sql)->result_array();
+        
+        $resultados = array(
+                            'exentos' => $exentos,
+                            'factura' => $factura
+                        );
+        return $resultados;
         
     }
     

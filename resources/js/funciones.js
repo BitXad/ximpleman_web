@@ -88,7 +88,7 @@ function calcularcambio(e){
     
    var decimales = Number(document.getElementById('parametro_decimales').value);
    
-   tecla = (document.all) ? e.keyCode : e.which; 
+   let tecla = (document.all) ? e.keyCode : e.which; 
    
    var venta_efectivo = document.getElementById('venta_efectivo').value;
    var venta_totalfinal = document.getElementById('venta_totalfinal').value;
@@ -99,10 +99,11 @@ function calcularcambio(e){
    
     $("#cambioy").val(venta_cambio.toFixed(decimales));
    
-   
+//    alert(venta_cambio.toFixed(venta_efectivo));
+//   
    
    if (tecla==13){ 
-        $("#boton_finalizar").click();
+            $("#boton_finalizar").click();
    }
 }
 
@@ -3911,7 +3912,7 @@ function registrarventa(cliente_id)
                 datos_medidor:datos_medidor,datos_tasaalumbrado:datos_tasaalumbrado,datos_otrastasas:datos_otrastasas,datos_consumoperiodo:datos_consumoperiodo, 
                 datos_beneficiarioley1886:datos_beneficiarioley1886, datos_montodescuentoley1886:datos_montodescuentoley1886, 
                 datos_montodescuentotarifadignidad:datos_montodescuentotarifadignidad,  
-                datos_medidor:datos_medidor, datos_mes:datos_mes, datos_anio:datos_anio, datos_tasaalumbrado:datos_tasaalumbrado, 
+                datos_medidor:datos_medidor, datos_mes:datos_mes, datos_anio:datos_anio,
                 datos_tasaaseo:datos_tasaaseo, datos_detalleajustenosujetoiva:datos_detalleajustenosujetoiva, 
                 datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
                 datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
@@ -4026,7 +4027,7 @@ function registrarventa(cliente_id)
                 datos_medidor:datos_medidor,datos_tasaalumbrado:datos_tasaalumbrado,datos_otrastasas:datos_otrastasas,datos_consumoperiodo:datos_consumoperiodo, 
                 datos_beneficiarioley1886:datos_beneficiarioley1886, datos_montodescuentoley1886:datos_montodescuentoley1886, 
                 datos_montodescuentotarifadignidad:datos_montodescuentotarifadignidad,  
-                datos_medidor:datos_medidor, datos_mes:datos_mes, datos_anio:datos_anio, datos_tasaalumbrado:datos_tasaalumbrado, 
+                datos_medidor:datos_medidor, datos_mes:datos_mes, datos_anio:datos_anio,
                 datos_tasaaseo:datos_tasaaseo, datos_detalleajustenosujetoiva:datos_detalleajustenosujetoiva, 
                 datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
                 datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
@@ -6059,12 +6060,13 @@ function iniciar_preferencia(detalleven_id)
 function agregar_preferencia(preferencia_id)
 {
     
+    var preferencia = document.getElementById('pref'+preferencia_id).innerText;
     var input = document.getElementById('inputcaract').value;
-    //var cadena = input+preferencia+"|";
+    var cadena = input+preferencia+" - ";
     
 
-    $("#preferencia_id").val(preferencia_id);
-    //$("#inputcaract").val(cadena);
+    //$("#preferencia_id").val(preferencia_id);
+    $("#inputcaract").val(cadena);
     //alert(preferencia);
     
 }
@@ -8158,13 +8160,13 @@ function transcribir_glosa(e){
 }
 
 function transcribir(){
-        
+     var decimales = Number(document.getElementById('parametro_decimales').value);   
     //var glosay = document.getElementById("glosay").value;
     var cobrado = document.getElementById("cobradoy").value;
    // alert(glosay+" : "+cobrado);
    
         //$("#venta_glosa").val(glosay);
-        $("#venta_efectivo").val(cobrado);
+        $("#venta_efectivo").val(Number(cobrado).toFixed(decimales));
        calcularcambio(event);
    
 }
@@ -8906,26 +8908,37 @@ function cargar_servicios(){
                         data:{},
                         success:function(respuesta){
                             
-                             let res = JSON.parse(respuesta);                            
+                             let resultado = JSON.parse(respuesta);                            
+                             let factura = resultado['factura'];                            
+                             let exento = resultado['exentos'];                            
 
-                             if(res.length>0){
-                                 $("#nit").val(res[0]["nit_fact"]);
+                             if(factura.length>0){
+                                 $("#nit").val(factura[0]["nit_fact"]);
                                  $("#span_buscar_cliente").click();
                                  
-                                 $("#datos_consumoperiodo").val(res[0]["consumo_lec"]);
+                                 $("#datos_consumoperiodo").val(factura[0]["consumo_lec"]);
                                  $("#datos_beneficiarioley1886").val("");
                                  $("#datos_montodescuentotarifadignidad").val(0);
-                                 $("#datos_mes").val(res[0]["mes_lec"]);
-                                 $("#datos_anio").val(res[0]["gestion_lec"]);
+                                 $("#datos_mes").val(factura[0]["mes_lec"]);
+                                 $("#datos_anio").val(factura[0]["gestion_lec"]);
                                  $("#datos_medidor").val("000434");
+                                 
                           
-                                
                                 $("#venta_descuento").val("1.50");                                 
                           
                                  tablaproductos();
                                  
                              }
                              
+                             if(exento.length>0){
+                                 
+                                 $("#datos_detalleotrastasas").val(exento[0]["descip_detfact"]);
+                                 $("#datos_otrastasas").val(exento[0]["total_detfact"]);
+                                 $("#datos_detalleotrospagosnosujetoiva").val(exento[1]["descip_detfact"]);               
+                                 $("#datos_otrospagosnosujetoiva").val(exento[1]["total_detfact"]);               
+                                 
+                             }
+//                             
                              
 //                            if (res) {  
 //                                
