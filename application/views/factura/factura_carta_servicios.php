@@ -108,7 +108,7 @@ border-bottom : 1px solid #aaa;
 
 <input type="hidden" name="decimales" id="decimales" value="<?php echo $decimales; ?>" />
 <!------------------------ INICIO modal para confirmar anulacion de factura ------------------->
-<div class="modal fade" id="myModalAnular" tabindex="-1" role="dialog" aria-labelledby="myModalAnularlabel" style="font-family: Arial; font-size: 10pt;">
+<div class="modal fade" id="myModalAnular" tabindex="-1" role="dialog" aria-labelledby="myModalAnularlabel" style="font-family: Arial; font-size: 10pt; padding: 0; margin: 0;">
     <div class="modal-dialog" role="document">
         <br><br>
         <div class="modal-content">
@@ -176,7 +176,7 @@ border-bottom : 1px solid #aaa;
 <!------------------------ F I N  modal para confirmar anulacion de factura ------------------->
 
 
-    <table class="table" style="margin-top: 20px;">
+    <table class="table" style="margin-top: 20px; margin-top: 0px;margin-bottom: 0px;">
         <tr>
         <!-- <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" ></td> -->
         <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" ></td>
@@ -268,37 +268,7 @@ border-bottom : 1px solid #aaa;
                     </center>                      
                 </td>
                 <td style="width: <?php echo round($ancho/3,2);?>cm; padding:0;line-height: 9px;">
-                </td>
-                
-                <td style="word-wrap: break-word; width: <?php echo round($ancho/3,2);?>cm;  padding: 0; line-height: 10px;">
-                    <table style="word-wrap: break-word; max-width: 6cm; padding:0; border-bottom: #0000eb">
-                        <tr>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>NIT: </b></td>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= " ".$factura[0]['factura_nitemisor'] ?></td>
-                        </tr>
-                        <tr>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>FACTURA Nº: </b></td>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= $factura[0]['factura_numero'] ?></td>
-                        </tr>
-                        <tr>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>CÓD AUTORIZACIÓN: </b></td>
-                            <td style="font-family: arial; font-size: 8pt; padding-left: 5px; white-space: intial; max-width: 3cm"><span class="width:100%"><?= $factura[0]['factura_cuf'] ?></span></td>
-                        </tr>
-<!--                        <tr>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>ACTIVIDAD: </b></td>
-                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= $factura[0]['factura_actividad']?></td>
-                        </tr>-->
-                    </table>     
-                </td>
-            </tr>
-            
-            <?php 
-                $fecha = new DateTime($factura[0]['factura_fechaventa']); 
-                $fecha_d_m_a = $fecha->format('d/m/Y');
-            ?> 
-            
-            <tr style="padding: 0;">
-                <td colspan="6" style="padding: 0;">
+          
                     <center style="margin-bottom:15px">
                         
                         <?php
@@ -336,8 +306,77 @@ border-bottom : 1px solid #aaa;
                         
                         <font size="1" face="arial">(<?php echo $subtitulo_factura; ?>)</font> <br>
                     </center>
-                </td>  
+ 
+                </td>
+                
+                <td style="word-wrap: break-word; width: <?php echo round($ancho/3,2);?>cm;  padding: 0; line-height: 10px;">
+                    <table style="word-wrap: break-word; max-width: 6cm; padding:0; border-bottom: #0000eb">
+                        <tr>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>NIT: </b></td>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= " ".$factura[0]['factura_nitemisor'] ?></td>
+                        </tr>
+                        <tr>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>FACTURA Nº: </b></td>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= $factura[0]['factura_numero'] ?></td>
+                        </tr>
+                        <tr>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>CÓD AUTORIZACIÓN: </b></td>
+                            <td style="font-family: arial; font-size: 8pt; padding-left: 5px; white-space: intial; max-width: 3cm"><span class="width:100%"><?= $factura[0]['factura_cuf'] ?></span></td>
+                        </tr>
+<!--                        <tr>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align: text-top;"  class="autoColor"><b>ACTIVIDAD: </b></td>
+                            <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 5px;white-space: normal;"><?= $factura[0]['factura_actividad']?></td>
+                        </tr>-->
+                    </table>     
+                </td>
             </tr>
+            
+            <?php 
+                $fecha = new DateTime($factura[0]['factura_fechaventa']); 
+                $fecha_d_m_a = $fecha->format('d/m/Y');
+            ?> 
+            
+<!--            <tr style="padding: 0;">
+                <td colspan="6" style="padding: 0;">
+                    <center style="margin-bottom:15px">
+                        
+                        <?php
+                                        if ($factura[0]['factura_codigodescripcion']!="VALIDADA"){ 
+                                            if ($factura[0]['factura_mensajeslist']!=""){
+                                                        
+                                                    echo "<b style='font-size: 30px;'>FACTURA NO VALIDA  NO ENVIADA</b><br>";
+                                                    
+                                                }
+                                                    
+                                        }
+                        
+                        ?>
+                        NOMBRE DE LA FACTURA
+                        <font size="4" face="arial"><b>
+                            <?php
+                            $subtitulo_factura = "Con Derecho a Cr&eacute;dito Fiscal";
+                            $opc = $factura[0]['docsec_codigoclasificador'];
+                            switch($opc){
+
+                                default: echo "FACTURA";
+                                        break;
+
+                                case 2: echo "FACTURA DE ALQUILER";
+                                        break;
+
+                                case 8: echo "FACTURA TASA CERO - TRANSPORTE DE CARGA INTERNACIONAL";
+                                        $subtitulo_factura = "Sin Derecho a Cr&eacute;dito Fiscal";
+                                        break;
+
+                            }
+                            ?>
+                            
+                        </b></font> <br>
+                        
+                        <font size="1" face="arial">(<?php echo $subtitulo_factura; ?>)</font> <br>
+                    </center>
+                </td>  
+            </tr>-->
             
             <tr>
                 <td colspan="6">
@@ -559,19 +598,19 @@ border-bottom : 1px solid #aaa;
                                 
                         
                         
-                                <tr  style=" font-family: Arial; border: 1px solid black;">
+<!--                                <tr  style=" font-family: Arial; border: 1px solid black;">
                                     <td></td> <td></td> <td></td> <td>Ajustes sujetos a IVA<br><?php echo isset($datos_factura["datos_detalleajustesujetoiva"])?$datos_factura["datos_detalleajustesujetoiva"]:""; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format(isset($datos_factura["datos_ajustesujetoiva"])?$datos_factura["datos_ajustesujetoiva"]:0,$decimales,".",","); ?></td>                            
-                                </tr>                        
+                                </tr>                        -->
 
 
-
+<!--
                                 <tr  style=" font-family: Arial; border: 1px solid black;">
                                     <td></td> <td></td> <td></td> <td><?php echo "Tasa Aseo Urbano" ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_tasaaseo"],$decimales,".",","); ?></td>                            
-                                </tr>                        
-
+                                </tr>                        -->
+<!--
                                 <tr  style=" font-family: Arial; border: 1px solid black;">
                                     <td></td> <td></td> <td></td> <td><?php echo "Tasa Alumbrado"; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_tasaalumbrado"],$decimales,".",","); ?></td>                            
-                                </tr>                        
+                                </tr>                        -->
 
                                 <tr  style=" font-family: Arial; border: 1px solid black;">
                                     <td></td> <td></td> <td></td> <td><?php echo $datos_factura["datos_detalleotrastasas"]; ?></td> <td></td>  <td></td> <td style="text-align:right;"><?php echo number_format($datos_factura["datos_otrastasas"],$decimales,".",","); ?></td>
@@ -607,10 +646,10 @@ border-bottom : 1px solid #aaa;
                         
                     </tr>
                     <!-------------- DESCUENTO ---------->
-                    <tr>
+<!--                    <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO Bs</td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($factura[0]['factura_descuento'],$dos_decimales,'.',','); ?></td>
-                    </tr>
+                    </tr>-->
                     
                     <!-------------- DECUENTO GLOBAL ---------->
                     <?php //if($factura[0]['factura_descuento']>0){ ?>
@@ -633,7 +672,7 @@ border-bottom : 1px solid #aaa;
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b><?php echo "SUBTOTAL A PAGAR Bs"; ?></b></td>
                             <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_subtotal'],$dos_decimales,'.',',') ?></b></td>
                         </tr>
-                        <tr>
+<!--                        <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) AJUSTES NO SUJETOS A IVA Bs</td>
                             <td style="padding:0; padding-right: 3px;" align="right"><?= number_format(is_numeric($datos_factura['datos_detalleajustenosujetoiva'])?$datos_factura['datos_detalleajustenosujetoiva']:0 ,$dos_decimales,'.',',') ?></td>
                         </tr>
@@ -660,7 +699,7 @@ border-bottom : 1px solid #aaa;
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(+) AJUSTES NO SUJETOS A IVA Bs</td>
                             <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($ajustes_no_iva ,$dos_decimales,'.',',') ?></b></td>
-                        </tr>
+                        </tr>-->
                         
                         
                         
@@ -731,15 +770,15 @@ border-bottom : 1px solid #aaa;
         </tr>
         <tr>
             <td style="padding-top: 0px; padding-bottom: 0px;">
-                <div style="width: 100%; margin-top: 25px;">
+                <div style="width: 100%; margin-top: 0px;">
                     <div style="float: left;width: 78%;">
-                        <center style="width:100%;">
-                            <?php echo $factura[0]['factura_leyenda1'];?> <br><br>
+                        <center style="width:100%; padding:0; font-size: 8px;">
+                            <?php echo $factura[0]['factura_leyenda1'];?> <br>
                             
                             <font face="Arial" size="1"><?php echo $factura[0]['factura_leyenda2']; ?> 
                             </font><br><br>
                             
-                            <?php echo $factura[0]['factura_leyenda3'];?> <br><br>     
+                            <?php echo $factura[0]['factura_leyenda3'];?> <br>    
                             
                             <?php echo $factura[0]['factura_leyenda4'];?>
 

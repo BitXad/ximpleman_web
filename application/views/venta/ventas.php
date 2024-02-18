@@ -545,16 +545,20 @@ window.onkeydown = compruebaTecla;
 
         <div class="col-md-3" <?php echo $estilo_div; ?>>
             <label for="totaly" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">TOTAL</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
+            <div class="input-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="totaly" class="form-control <?php echo $atributos; ?>"  style="color: black; background: #000000; text-align: left; font-size: 18px; font-family: Arial; color: white" id="totaly"  value="0.00" onclick="this.select()" readonly/>
+                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="iniciarteclado()" title="Habilitar teclado numerico"><span class="fa fa-keyboard-o" aria-hidden="true" id="span_buscar_cliente"></span></div>
             </div>
         </div>
 
         <div class="col-md-2" <?php echo $estilo_div; ?>>
             <label for="cobradoy" class="control-label" style="margin-bottom: 0; font-size: 10px; color: gray;  font-weight: normal;">COBRADO</label>
-            <div class="form-group" <?php echo $estilo_div; ?>>
+            <div class="input-group" <?php echo $estilo_div; ?>>
                 <input type="text" name="cobradoy" class="form-control <?php echo $atributos; ?>" style="color: black; background:white ; text-align: left; font-size: 18px; font-family: Arial; " id="cobradoy"  value="0.00" onclick="this.select()" onkeyup="transcribir()"/>
+                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="finalizarmiventa()" title="Finalizar Venta"><span class="fa fa-money" aria-hidden="true" id="span_buscar_cliente"></span></div>
             </div>
+            
+            
         </div>
 
         <div class="col-md-2" <?php echo $estilo_div; ?>>
@@ -1481,12 +1485,12 @@ window.onkeydown = compruebaTecla;
                     
                     <?php } ?>
                     <br>
-<!--                    <button type="button" id="boton_cargarservicios" class="btn btn-facebook btn-sm" onclick="cargar_servicios()">
-                        <br> comment 
+                    <button type="button" id="boton_cargarservicios" class="btn btn-facebook btn-sm" onclick="cargar_servicios()">
+                        <br>  
                         <fa class="fa fa-recycle"></fa> Cargar Servicios
-                        <br> comment 
-                        <br> comment 
-                    </button>-->
+                        <br>  
+                        <br>  
+                    </button>
                     
                     <?php if(isset($sucursales)){
                                 
@@ -2213,11 +2217,12 @@ window.onkeydown = compruebaTecla;
                                             <div class="form-group">
 							
                                                 <?php 
-                                                //foreach($preferencia as $p)
-                                                //{?>
+                                                foreach($preferencia as $p){?>
+                                                
                                                     <!--<button class="btn btn-xs btn-default" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>-->
+                                                    <button class="btn btn-sm btn-facebook" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i> <?php echo $p["preferencia_descripcion"]; ?></button>
                                                     <!--<br>-->
-                                                <?php //} 
+                                                <?php } 
                                                 ?>
                                             </div>
                                             <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-default" onKeyUp="this.value = this.value.toUpperCase();">
@@ -2226,17 +2231,17 @@ window.onkeydown = compruebaTecla;
 						<label for="opciones" class="control-label">Opciones</label>
 						<div class="form-group">
                                                         
-                                                    <button class="btn btn-default" id="boton_asignar" onclick="guardar_preferencia()" data-dismiss="modal" >
+                                                    <button class="btn btn-success" id="boton_asignar" onclick="guardar_preferencia()" data-dismiss="modal" >
                                                             <span class="fa fa-floppy-o"></span> Guadar
                                                     </button>
                                                     
-                                                    <button class="btn btn-default" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
+                                                    <button class="btn btn-danger" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
                                                         <span class="fa fa-close"></span>   Cancelar                                                          
                                                     </button>
 						</div>
 					</div>
                             
-                                        <!--------------------- inicio loader ------------------------->
+                                        <!--------------------- inicio loader -----------------------
                                         <div class="col-md-6" id='loaderinventario'  style='display:none;'>
                                             <center>
                                                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
@@ -3022,9 +3027,9 @@ window.onkeydown = compruebaTecla;
 					</div>            
                     
 					<div class="col-md-9">
-						<label for="datos_tasaalumbrado" class="control-label">Tasa alumbrado publico</label>
+						<label for="datos_alumbrado" class="control-label">Tasa alumbrado publico</label>
 						<div class="form-group">
-                                                    <textarea type="text" name="datos_tasaalumbrado" class="form-control" id="datos_tasaalumbrado">Tasa de aseo</textarea>
+                                                    <textarea type="text" name="datos_alumbrado" class="form-control" id="datos_alumbrado">Tasa de Alumbrado</textarea>
 						</div>
 					</div>                        
                     
@@ -3043,8 +3048,8 @@ window.onkeydown = compruebaTecla;
 						<div class="form-group">
 							<!--<input type="memo" name="datos_ajustesujetosiva" value="<?php echo ""; ?>" class="form-control" id="datos_ajustesujetosiva" />-->
                                                     <textarea name="datos_detalleajustenosujetoiva" class="form-control" id="datos_detalleajustenosujetoiva" >
-Ajustes sujetos a IVA
-Cobro por reconexion 10.00</textarea>
+AJUSTE NO SUJETOS A IVA
+</textarea>
 						</div>
 					</div>                   
                     
@@ -3062,8 +3067,7 @@ Cobro por reconexion 10.00</textarea>
 						<div class="form-group">
 							<!--<input type="memo" name="datos_ajustesujetosiva" value="<?php echo ""; ?>" class="form-control" id="datos_ajustesujetosiva" />-->
                                                     <textarea name="datos_detalleajustesujetoiva" class="form-control" id="datos_detalleajustesujetoiva" >
-Ajustes NO sujetos a IVA
-Cobro por reconexion 10.00</textarea>
+Cobro por reconexion</textarea>
 						</div>
 					</div>                   
                     
@@ -3086,13 +3090,18 @@ Cobro por reconexion 10.00</textarea>
 						</div>
 					</div>                   
                     
+					<div class="col-md-3">
+						<label for="datos_otrastasas" class="control-label">Sub total Bs</label>
+						<div class="form-group">
+							<input type="text" name="datos_otrastasas" value="<?php echo "0.00"; ?>" class="form-control" id="datos_otrastasas" />
+						</div>
+					</div>  
                     
                                          <div class="col-md-9">
-						<label for="datos_detalleotrospagosnosujetoiva" class="control-label">Otras Tasas</label>
+						<label for="datos_detalleotrospagosnosujetoiva" class="control-label">Otros Pagos</label>
 						<div class="form-group">
                                                     <textarea name="datos_detalleotrospagosnosujetoiva" class="form-control" id="datos_detalleotrospagosnosujetoiva">
-Otras tasas
-Pago cuota coperativa 7.00</textarea>
+Otros Pagos</textarea>
 
 						</div>
 					</div>                        
@@ -3106,12 +3115,6 @@ Pago cuota coperativa 7.00</textarea>
                     
               
                     
-					<div class="col-md-3">
-						<label for="datos_otrastasas" class="control-label">Sub total Bs</label>
-						<div class="form-group">
-							<input type="text" name="datos_otrastasas" value="<?php echo "0.00"; ?>" class="form-control" id="datos_otrastasas" />
-						</div>
-					</div>  
 		                    
                 </div>
                 <br>
@@ -3436,6 +3439,169 @@ $(document).ready(function() {
 
     }
 </script>
+
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL TECLADO ----------------------------------->
+<!------------------------------------------------------------------------------->
+  <style>
+    .keyboard-button {
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+      font-size: 30px;
+      font-weight: bolder;
+      padding: 0px;
+
+      
+    }
+    
+  </style>
+
+<div hidden>
+    <button type="button" id="boton_teclado" class="btn btn-default" data-toggle="modal" data-target="#modalteclado" >
+      Teclado
+    </button>
+    
+</div>
+
+  <div class="modal fade" id="modalteclado" tabindex="-1" role="dialog" aria-labelledby="modalteclado" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">REGISTRO DE FECTIVO</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-content" style="font-family: Arial">
+
+                        <div class="box-body">
+
+                            <div class="container">
+                              <div class="row">
+                                  
+                                  <div><b> - TECLADO -</b></div> 
+                                <div class="col-md-12">
+                                    
+                                  <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-facebook keyboard-button" onclick="addText('1')">1</button>
+                                    <button type="button" class="btn btn-facebook keyboard-button" onclick="addText('2')">2</button>
+                                    <button type="button" class="btn btn-facebook keyboard-button" onclick="addText('3')">3</button>
+                                  </div>
+                                  <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-facebook keyboard-button" onclick="addText('4')">4</button>
+                                    <button type="button" class="btn btn-facebook keyboard-button" onclick="addText('5')">5</button>
+                                    <button type="button" class="btn btn-facebook keyboard-button" onclick="addText('6')">6</button>
+                                  </div>
+                                  <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-facebook keyboard-button" onclick="addText('7')">7</button>
+                                    <button type="button" class="btn btn-facebook keyboard-button" onclick="addText('8')">8</button>
+                                    <button type="button" class="btn btn-facebook keyboard-button" onclick="addText('9')">9</button>
+                                  </div>
+                                  <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-facebook keyboard-button" onclick="addText('0')">0</button>
+
+                                  </div>
+                                    
+                                </div>
+                              
+                                <div><b>- EFECTIVO -</b></div> 
+                                <div class="col-md-12">
+
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('200')" style="width: 100px;"><img src="<?= base_url("resources/images/caja/200bs.jpg") ?>" width="100px" height="50px"></button>
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('100')" style="width: 100px;"><img src="<?= base_url("resources/images/caja/100bs.jpeg") ?>" width="100px" height="50px"></button>
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('50')" style="width: 100px;"><img src="<?= base_url("resources/images/caja/50bs.jpg") ?>" width="100px" height="50px"></button>
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('20')" style="width: 100px;"><img src="<?= base_url("resources/images/caja/20bs.jpg") ?>" width="100px" height="50px"></button>
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('10')" style="width: 100px;"><img src="<?= base_url("resources/images/caja/10bs.jpg") ?>" width="100px" height="50px"></button>
+                                    </div>
+                                      <br>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('5')" style="width: 91px;"><img src="<?= base_url("resources/images/caja/5bs.jpg") ?>" width="90px" height="50px"></button>
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('2')" style="width: 91px;"><img src="<?= base_url("resources/images/caja/2bs.jpg") ?>" width="90px" height="50px"></button>
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('1')" style="width: 91px;"><img src="<?= base_url("resources/images/caja/1bs.jpg") ?>" width="90px" height="50px"></button>
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('0.5')" style="width: 91px;"><img src="<?= base_url("resources/images/caja/050bs.jpg") ?>" width="90px" height="50px"></button>
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('0.2')" style="width: 91px;"><img src="<?= base_url("resources/images/caja/020bs.jpg") ?>" width="90px" height="50px"></button>
+                                        <button type="button" class="btn btn-secondary keyboard-button" onclick="addMoney('0.1')" style="width: 91px;"><img src="<?= base_url("resources/images/caja/010bs.jpg") ?>" width="90px" height="50px"></button>
+
+                                    </div>
+                                      
+
+
+                                </div>
+                                  
+                                </div>
+                              </div>
+                        </div>
+
+                            <script>
+                                
+                              function clearText(char) {
+                                document.getElementById('cobradoy').value = '';
+                                transcribir();
+                              }
+                              function addText(char) {
+                                //var decimales = Number(document.getElementById('parametro_decimales').value);
+                                document.getElementById('cobradoy').value += char;
+                                transcribir();
+                              }
+                              function addMoney(char) {
+                                let monto = document.getElementById('cobradoy').value;
+                                monto =  Number(monto) + Number(char);
+                                document.getElementById('cobradoy').value = monto;
+                                transcribir();
+                                
+                              }
+                              function delText() {
+                                document.getElementById('cobradoy').value = '';
+                                transcribir();
+                              }
+                              
+                              function finalizarmiventa(){
+                                  $("#boton_finalizar").click();
+                              }
+                              
+                              function iniciarteclado(){
+                                  
+                                    $("#cobradoy").val('');
+                                    $("#boton_teclado").click();
+                              }
+                              
+                              function calcText() {
+                                  
+                                    var decimales = Number(document.getElementById('parametro_decimales').value);
+                                  
+                                    var venta_efectivo = document.getElementById('venta_efectivo').value;
+                                    var venta_totalfinal = document.getElementById('venta_totalfinal').value;
+                                    alert(venta_efectivo);
+                                    var venta_cambio = Number(venta_efectivo) - Number(venta_totalfinal);
+                                    //alert(venta_cambio);
+                                    $("#venta_cambio").val(venta_cambio.toFixed(decimales));
+
+                                     $("#cambioy").val(venta_cambio.toFixed(decimales));
+                              }
+                              
+                              
+                              
+                            </script>                            
+                            
+                        <div class="modal-footer" style="text-align: center">
+                            <button type="button" class="btn btn-default"  onclick="delText()" id="boton_proceder"><fa class="fa fa-arrow-left"></fa> Borrar</button>
+                            <button type="button" class="btn btn-success"  onclick="finalizarmiventa()" id="boton_finalizarventa" data-dismiss="modal"><fa class="fa fa-money"></fa> Finalizar Venta</button>
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>
+                           
+                        </div>
+
+            
+		</div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL TECLADO ----------------------------------->
+<!------------------------------------------------------------------------------->
 
 
 

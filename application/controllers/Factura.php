@@ -217,17 +217,17 @@ class Factura extends CI_Controller{
         }else{
             $data['motivos'] = $this->Factura_model->get_all_motivos();
             if($dosificacion['docsec_codigoclasificador'] == 1){ //FACTURA COMPRA VENTA
-                $data['_view'] = 'factura/factura_carta_new';
+                $data['_view'] = 'factura/factura_carta_servicios';
             }
             
             if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
-                $data['_view'] = 'factura/factura_carta_new';
+                $data['_view'] = 'factura/factura_carta_servicios';
             }
             
             if($dosificacion['docsec_codigoclasificador'] == 23){ // FACTURA PREVALORADA
                 $data['_view'] = 'factura/factura_carta_prev';
             }else{ // por  el momento para otro tipo de facturas 
-                $data['_view'] = 'factura/factura_carta_new';
+                $data['_view'] = 'factura/factura_carta_servicios';
             }
             
             
@@ -333,21 +333,21 @@ class Factura extends CI_Controller{
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
             $data['motivos'] = $this->Factura_model->get_all_motivos();
             if($dosificacion['docsec_codigoclasificador'] == 1){ //FACTURA COMPRA VENTA
-                $data['_view'] = 'factura/factura_carta_new';
+                $data['_view'] = 'factura/factura_carta_servicios';
             }
             
             if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
-                $data['_view'] = 'factura/factura_carta_new';
+                $data['_view'] = 'factura/factura_carta_servicios';
             }
             
             if($dosificacion['docsec_codigoclasificador'] == 23){ // FACTURA PREVALORADA
                 $data['_view'] = 'factura/factura_carta_prev';
             }else{ // por  el momento para otro tipo de facturas 
-                $data['_view'] = 'factura/factura_carta_new';
+                $data['_view'] = 'factura/factura_carta_servicios';
             }
             
             /*$data['motivos'] = $this->Factura_model->get_all_motivos();
-            $data['_view'] = 'factura/factura_carta_new'; */
+            $data['_view'] = 'factura/factura_carta_servicios'; */
         }
         $this->load->view('layouts/main',$data);
         
@@ -440,7 +440,7 @@ class Factura extends CI_Controller{
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1); 
             $data['motivos'] = $this->Factura_model->get_all_motivos();
             if($dosificacion['docsec_codigoclasificador'] == 1){ //FACTURA COMPRA VENTA
-                $data['_view'] = 'factura/factura_carta_new';
+                $data['_view'] = 'factura/factura_carta_servicios';
             }
             
             if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
@@ -544,7 +544,7 @@ class Factura extends CI_Controller{
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1); 
             $data['motivos'] = $this->Factura_model->get_all_motivos();
             if($dosificacion['docsec_codigoclasificador'] == 1){ //FACTURA COMPRA VENTA
-                $data['_view'] = 'factura/factura_carta_new';
+                $data['_view'] = 'factura/factura_carta_servicios';
             }
             
             if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
@@ -646,7 +646,7 @@ class Factura extends CI_Controller{
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1); 
             $data['motivos'] = $this->Factura_model->get_all_motivos();
             if($dosificacion['docsec_codigoclasificador'] == 1){ //FACTURA COMPRA VENTA
-                $data['_view'] = 'factura/factura_carta_new';
+                $data['_view'] = 'factura/factura_carta_servicios';
             }
             
             if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO

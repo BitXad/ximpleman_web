@@ -199,7 +199,7 @@ value(
 
 update compra set
 compra_subtotal = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
-,compra_total = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
+,compra_total = (select sum(detallecomp_total) from detalle_compra where compra_id=1)   
 ,compra_totalfinal = (select sum(detallecomp_total) from detalle_compra where compra_id=1)
 where compra_id = 1;
 
@@ -399,7 +399,7 @@ ALTER TABLE `pedido` ADD COLUMN `mesa_id` INTEGER DEFAULT NULL;
  
 
  
- truncate venta;
+truncate venta;
 truncate detalle_venta;
 truncate factura;
 truncate detalle_factura;

@@ -61,7 +61,9 @@ font-size: 10px;
 padding : 0 0 0 0;
 
 }
-
+td {
+border-left:hidden;
+}
 }
 
 th {

@@ -210,7 +210,8 @@ class Venta extends CI_Controller{
         $data['parametro'] =  $this->parametros;//$this->Parametro_model->get_parametros();
         $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+        //$data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
         $data['sucursales'] = $this->Venta_model->Consultar("select * from sucursales");
         
@@ -1415,6 +1416,8 @@ class Venta extends CI_Controller{
                         //*******************************************
                         if($dosificacion[0]['docsec_codigoclasificador'] == 12 || $dosificacion[0]['docsec_codigoclasificador'] == 13){
                             
+                            $datos_periodofacturado = $this->input->post('datos_mes')."/".$this->input->post('datos_anio');
+                                    
                             $params = array(
                                 'datos_codigopais' => $this->input->post('datos_codigopais'),
                                 'datos_autorizacionsc' => $this->input->post('datos_autorizacionsc'),
@@ -1422,12 +1425,11 @@ class Venta extends CI_Controller{
                                 'datos_embase' => $this->input->post('datos_embase'),
                                 'cliente_id' => $cliente_id,
                                 'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
-                                //'datos_periodofacturado' => $this->input->post('datos_periodofacturado'),                                
+                                'datos_periodofacturado' => $datos_periodofacturado,                                
                                 'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
                                 'datos_beneficiarioley1886' => $this->input->post('datos_beneficiarioley1886'),
                                 'datos_montodescuentoley1886' => $this->input->post('datos_montodescuentoley1886'),
                                 'datos_montodescuentotarifadignidad' => $this->input->post('datos_montodescuentotarifadignidad'),
-                                'datos_periodofacturado' => $this->input->post('datos_periodofacturado'),
                                 'datos_medidor' => $this->input->post('datos_medidor'),
                                 'datos_mes' => $this->input->post('datos_mes'),
                                 'datos_anio' => $this->input->post('datos_anio'),
@@ -1444,6 +1446,8 @@ class Venta extends CI_Controller{
                                 //'parametro_comprobante' => $this->input->post('parametro_comprobante'),
                             );
 
+                            //var_dump($params);
+                            
                             $datos_id = $this->Factura_datos_model->add_factura_datos($params);
                             
                             $params = array(
@@ -1454,15 +1458,18 @@ class Venta extends CI_Controller{
                             
                             if($dosificacion[0]['docsec_codigoclasificador'] == 13){
                                 
-                                $total = $this->input->post('datos_sujetoivasubtotal') + $this->input->post('datos_aseosubtotal') +
+                                /*$total = $this->input->post('datos_sujetoivasubtotal') + $this->input->post('datos_aseosubtotal') +
                                         $this->input->post('datos_alumbradosubtotal') + $this->input->post('datos_tasassubtotal') +
-                                        $this->input->post('datos_pagossubtotal');
+                                        $this->input->post('datos_pagossubtotal');*/
+                                
+                                $totalajustes = $this->input->post('datos_ajustesujetoiva');
+                                $tasas = floatval($this->input->post('datos_tasaaseo')) + floatval($this->input->post('datos_tasaalumbrado')) + floatval($this->input->post('datos_otrastasas')) + floatval($this->input->post('datos_otrospagosnosujetoiva'));
                                 
                                 $sql = "update factura set
-                                        factura_subtotal = factura_subtotal + {$total}
-                                        ,factura_total = factura_total + {$total}
-                                        ,factura_efectivo = factura_efectivo + {$total}
-                                        ,factura_cambio = factura_cambio + {$total}
+                                        factura_subtotal = factura_subtotal + {$totalajustes} + {$tasas}
+                                        ,factura_total = factura_total + {$totalajustes}
+                                        ,factura_efectivo = factura_efectivo + {$totalajustes}
+                                        ,factura_cambio = factura_cambio + {$totalajustes}
                                         where factura_id = {$factura_id}";
                                         
                                 $this->Venta_model->ejecutar($sql);
@@ -4658,7 +4665,7 @@ function anular_venta($venta_id){
             
             $sql =  "insert into inventario_usuario
                     (producto_id,inventario_costo, inventario_fecha,inventario_hora,inventario_cantidad,inventario_ventas, inventario_pedidos,inventario_devoluciones,inventario_saldo,usuario_id,moneda_tc)
-                    (select producto_id,detalleven_costo, date({$now}),time({$now})), detalleven_cantidad , 0, 0, 0, detalleven_cantidad, ".$usuario_id.", ".$moneda_tc." 
+                    (select producto_id,detalleven_costo, date({$now}),time({$now}), detalleven_cantidad , 0, 0, 0, detalleven_cantidad, ".$usuario_id.", ".$moneda_tc." 
                     from detalle_venta_aux where usuario_id=".$usuario_vendedor.")";
             $this->Venta_model->ejecutar($sql);
             
@@ -7739,7 +7746,7 @@ function anular_venta($venta_id){
         if($factura[0]['docsec_codigoclasificador']==13){ //factura de servicios basicos
                 $micad .= "                            <tr>"; 
                 $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Beneficiario Ley 1886:</td>"; 
-                $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_beneficiario1886']."</td>"; 
+                $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_beneficiarioley1886']."</td>"; 
                 $micad .= "                            </tr>";
                 $micad .= "                            <tr>"; 
                 $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Periodo Facturado:</td>"; 
