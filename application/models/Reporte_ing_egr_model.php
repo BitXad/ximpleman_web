@@ -342,24 +342,7 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
 
     }
     
-    function get_reportemovimiento($fecha1, $fecha2, $usuario_id){
-
-          if($usuario_id == 0){
-                $cadusuario1 = "";
-          }else{
-                $cadusuario1 = " and usuario_id = ".$usuario_id." ";
-          }
-          $sql = "SELECT c.*
-                from consreporte c
-                where c.fecha >='$fecha1' 
-                and c.fecha<='$fecha2'  
-                $cadusuario1";
-
-          $ingresos = $this->db->query($sql)->result_array();
-          return $ingresos;
-    }
-    
-    function get_totalesmovimiento($fecha1, $fecha2, $usuario_id){
+    function get_reportemovimiento($fecha1, $fecha2, $hora1, $hora2, $usuario_id){
 
           if($usuario_id == 0){
                 $cadusuario1 = "";
@@ -367,6 +350,32 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
                 $cadusuario1 = " and usuario_id = ".$usuario_id." ";
           }
           
+          /* reporte antiguo sin tomar en cuenta la hora
+           * $sql = "SELECT c.* from consreporte c
+                where 
+                c.fecha >='$fecha1' 
+                and c.fecha<='$fecha2' $cadusuario1";*/
+                  
+          $sql = "SELECT c.* from consreporte c
+                where 
+                concat(c.fecha, ' ', c.hora) >= concat('{$fecha1}',' ','{$hora1}') AND 
+                concat(c.fecha, ' ', c.hora) <= concat('{$fecha2}',' ','{$hora2}') 
+                $cadusuario1";
+           //     echo $sql ;
+          $ingresos = $this->db->query($sql)->result_array();
+          return $ingresos;
+    }
+    
+    function get_totalesmovimiento($fecha1, $fecha2, $hora1, $hora2, $usuario_id){
+
+          if($usuario_id == 0){
+                $cadusuario1 = "";
+          }else{
+                $cadusuario1 = " and usuario_id = ".$usuario_id." ";
+          }
+          
+          /*
+           * Reporte antiguo sin tomar en cuenta la hora
           $sql = "select * from
                     ((select c.forma,c.transaccion, c.banco, sum(c.`ingresos`) as ingresos, 0 as egresos,c.forma_id,c.tipotrans_id, 1 as tipo
 
@@ -385,9 +394,29 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
                     group by c.tipotrans_id, c.forma_id, c.banco_id
                     order by c.forma_id)) as t1
 
+                    order by tipo,forma_id, tipotrans_id asc";        */
+
+          
+          $sql = "select * from
+                    ((select c.forma,c.transaccion, c.banco, sum(c.`ingresos`) as ingresos, 0 as egresos,c.forma_id,c.tipotrans_id, 1 as tipo
+
+                    from consreporte c
+                    where concat(c.fecha,' ',c.hora) >= concat('{$fecha1}',' ','{$hora1}') and concat(c.fecha,' ',c.hora)<=concat('{$fecha2}',' ','{$hora2}') and c.ingresos>0 $cadusuario1
+
+                    group by c.tipotrans_id, c.forma_id, c.banco_id
+                    order by forma_id)
+
+                    UNION
+
+                    (select c.forma,c.transaccion, c.banco, 0 as ingresos, sum(c.`egresos`) as egresos,c.forma_id,c.tipotrans_id, 2 as tipo
+                    from consreporte c
+                    where concat(c.fecha,' ',c.hora) >= concat('{$fecha1}',' ','{$hora1}') and concat(c.fecha,' ',c.hora)<=concat('{$fecha2}',' ','{$hora2}') and c.egresos>0 $cadusuario1
+
+                    group by c.tipotrans_id, c.forma_id, c.banco_id
+                    order by c.forma_id)) as t1
+
                     order by tipo,forma_id, tipotrans_id asc";        
 
-          //echo $sql;
           
           $totales = $this->db->query($sql)->result_array();
           

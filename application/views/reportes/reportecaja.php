@@ -580,8 +580,11 @@ border-bottom : 1px solid #aaa;*/
             
             <?php
             $caja_diferencia = 0;
+            //var_dump($caja);
             
             if(isset($caja)){
+                
+                
                 $caja_diferencia = $caja["caja_diferencia"];?>
             
                 <br><b>EFECT.REG.X CAJA Bs: <?php echo number_format($caja["caja_cierre"],2,".",","); ?> </b>

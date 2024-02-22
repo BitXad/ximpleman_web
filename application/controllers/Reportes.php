@@ -175,7 +175,10 @@ class Reportes extends CI_Controller{
 //            $data['reporte'] = $this->Detalle_venta_model->get_resumenventas($usuario_id);
             $data['reporte'] = $this->Detalle_venta_model->get_resumenventas_fecha($usuario_id,$fecha1,$fecha2);
 //            $data['caja'] = $this->Caja_model->get_cajausuario_now($usuario_id);
-            $caja = $this->Caja_model->get_cajausuario_fecha($usuario_id,$fecha1,$fecha2);
+            
+            //$caja = $this->Caja_model->get_cajausuario_fecha($usuario_id,$fecha1,$fecha2);
+            $caja = $this->Caja_model->get_ultima_caja($usuario_id);
+            
             $data['caja'] = $caja;
             
             if ($caja!==null){
@@ -644,10 +647,15 @@ function torta3($anio,$mes)
         
         $data['sistema'] = $this->sistema;
         if($this->acceso(141)){
+            
             if ($this->input->is_ajax_request()) {
                 
                 $fecha1 = $this->input->post('fecha1');   
                 $fecha2 = $this->input->post('fecha2'); 
+                
+                $hora1 = $this->input->post('hora_desde');   
+                $hora2 = $this->input->post('hora_hasta'); 
+                
                 $usuario = $this->input->post('usuario_id'); 
                 $valfecha1 = "";
                 $valfecha2 = "";
@@ -673,8 +681,8 @@ function torta3($anio,$mes)
                     $usuario_id = 0;
                 }
                 
-                $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $usuario_id);
-                $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $usuario_id);
+                $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $hora1, $hora2, $usuario_id);
+                $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $hora1, $hora2, $usuario_id);
                 //$data['bancos'] = $this->Banco_model->getall_bancosact_asc();
                 
                 /*if ($fecha1 == 0){

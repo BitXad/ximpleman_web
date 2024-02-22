@@ -336,22 +336,6 @@ class Caja extends CI_Controller{
                     'caja_corte005' => $this->input->post('caja_corte005'),
                     'caja_efectivo' => $this->input->post('caja_efectivo'),
                     'caja_credito' => $this->input->post('caja_credito'),
-
-
-                    /*'caja_imagen1000' => $this->input->post('caja_imagen1000'),
-                    'caja_imagen500' => $this->input->post('caja_imagen500'),
-                    'caja_imagen200' => $this->input->post('caja_imagen200'),
-                    'caja_imagen100' => $this->input->post('caja_imagen100'),
-                    'caja_imagen50' => $this->input->post('caja_imagen50'),
-                    'caja_imagen20' => $this->input->post('caja_imagen20'),
-                    'caja_imagen10' => $this->input->post('caja_imagen10'),
-                    'caja_imagen5' => $this->input->post('caja_imagen5'),
-                    'caja_imagen2' => $this->input->post('caja_imagen2'),
-                    'caja_imagen1' => $this->input->post('caja_imagen1'),
-                    'caja_imagen020' => $this->input->post('caja_imagen020'),
-                    'caja_imagen050' => $this->input->post('caja_imagen050'),
-                    'caja_imagen010' => $this->input->post('caja_imagen010'),
-                    'caja_imagen005' => $this->input->post('caja_imagen005'),*/
                 );
 
                 $this->Caja_model->update_caja($caja_id, $params);

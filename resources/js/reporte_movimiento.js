@@ -29,8 +29,8 @@ function buscar_por_fechahora(){
     var hora_hasta = document.getElementById('hora_hasta').value;
     var usuario = document.getElementById('buscarusuario_id').value;
     
-    fechadesde = fecha_desde+" "+hora_desde;
-    fechahasta = fecha_hasta+" "+hora_hasta;
+    var fechadesde = fecha_desde+" "+hora_desde;
+    var fechahasta = fecha_hasta+" "+hora_hasta;
     
     buscarporfechahora(fechadesde, fechahasta, usuario);
 }
@@ -141,9 +141,11 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
     var tipousuario_id = document.getElementById('tipousuario_id').value;
     var nombre_moneda  = document.getElementById('nombre_moneda').value;
     var controlador = base_url+"reportes/buscarporfecha";
-    //var decimales = document.getElementById('decimales').value;;
+    //var decimales = document.getElementById('decimales').value;
     var decimales = 2;
     
+    var hora_desde = document.getElementById('hora_desde').value;    
+    var hora_hasta = document.getElementById('hora_hasta').value;
     
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
@@ -151,7 +153,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
     $.ajax({
         url: controlador,
         type:"POST",
-        data:{fecha1:fecha_desde, fecha2:fecha_hasta, usuario_id:usuario},
+        data:{fecha1:fecha_desde, fecha2:fecha_hasta, usuario_id:usuario, hora_desde:hora_desde, hora_hasta:hora_hasta},
         success:function(resul){
             // $("#resingegr").val("- 0 -");
             // alert(registros.length);
@@ -166,8 +168,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     // var fecha1 = fecha_desde;
                     // var fecha2 = fecha_hasta;
                     var esusuario =  $('#buscarusuario_id option:selected').text();
-                    var fecha1 = "<span class='text-bold'>Desde: </span>"+moment(fecha_desde).format("DD/MM/YYYY");
-                    var fecha2 = "<br><span class='text-bold'>Hasta: </span>"+moment(fecha_hasta).format("DD/MM/YYYY");
+                    var fecha1 = "<span class='text-bold'>Desde: </span>"+moment(fecha_desde).format("DD/MM/YYYY")+" "+hora_desde;
+                    var fecha2 = "<br><span class='text-bold'>Hasta: </span>"+moment(fecha_hasta).format("DD/MM/YYYY")+" "+hora_hasta;
                     
                     var totalingresos = 0;
                     var totalegresos = 0;
@@ -208,7 +210,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             //  Nº
                             html += "<td "+estilo+">"+(++i)+"</td>";
                             //  FECHA
-                            html += "<td "+estilo+">"+moment(registro["fecha"]).format("DD/MM/YYYY");+"</td>";
+                            html += "<td "+estilo+">"+moment(registro["fecha"]).format("DD/MM/YYYY")+"-"+registro["hora"]+"</td>";
                             //  REC.
                             html += "<td style='text-align: right; padding:0;'>"+registro["recibo"];
                             //  FACT.

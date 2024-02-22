@@ -49,15 +49,23 @@
 </style>
 
 <?php $tipo_factura = $parametro["parametro_altofactura"]; //15 tamaño carta 
-      $ancho = $parametro["parametro_anchofactura"];
+      $ancho = "18";  //$parametro["parametro_anchofactura"];
       //$margen_izquierdo = "col-xs-".$parametro["parametro_margenfactura"];;
       $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
+      
+      $fecha_desde = date('Y-m-d');
+      $hora_desde = '00:00';
+      //$fecha_hasta =  date('Y-m-d', strtotime('+1 day')); +1 dia
+      //$fecha_hasta =  date('Y-m-d', strtotime('+1 day')); -1 dia
+      
+      $fecha_hasta = date('Y-m-d');
+      $hora_hasta = '23:59';
 ?>
 
 <input type="hidden" value="<?php echo $tipousuario_id; ?>" id="tipousuario_id" name="tipousuario_id" />
 <input type="hidden" value="<?php echo $parametro['moneda_descripcion']; ?>" id="nombre_moneda" name="nombre_moneda" />
 
-<table class="table" >
+<table class="table table-responsive" >
 <tr>
 <td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
     
@@ -97,10 +105,21 @@
                         <?php } ?>
                     </div>
                         <div class="col-md-2">
-                            Desde: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+                            Fecha: <input type="date" value="<?php echo $fecha_desde; ?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
                         </div>
+                    
                         <div class="col-md-2">
-                            Hasta: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+                            Hora:<input type="time" value="<?php echo $hora_desde; ?>" class="btn btn-primary btn-sm form-control" id="hora_desde" name="hora_desde" required="true">
+                        </div>
+                    
+                    
+                    
+                        <div class="col-md-2">
+                            Fecha: <input type="date" value="<?php echo $fecha_hasta; ?>" class="btn btn-primary btn-sm form-control datepicker" id="fecha_hasta" name="fecha_hasta" required="true">
+                        </div>
+                    
+                        <div class="col-md-2">
+                            Hora: <input type="time" value="<?php echo $hora_hasta; ?>" class="btn btn-primary btn-sm form-control datepicker" id="hora_hasta" name="hora_hasta" required="true">
                         </div>
                         <div class="col-md-2">
                             <br>
@@ -132,7 +151,7 @@
         <div>
         <!-- ********************************INICIO Cabecera******************************* -->
 <div class="row micontenedorep table-responsive" id="cabeceraprint">
-    <table style="width: <?php echo $ancho; ?>cm; font-family: Arial;">
+    <table style="width: <?php echo $ancho; ?>cm; font-family: Arial;" class="table table-responsive">
     <!--<table class="table" style="width: 100%; padding: 0;" >-->
     <tr>
         <td width="300" style="line-height: 10px; ">
@@ -180,7 +199,7 @@
             <table class='table table-striped table-condensed table-responsive' id='mitabladetimpresion' style='width:<?php echo $ancho; ?>cm;'>
                 <tr style='background-color: #aaaaaa;' class='fondoprint'>
                     <th id='fondoprint' class='fondoprint' style='width: 2%' class='text-center'>N°</th>
-                    <th id='fondoprint' style='width: 4%' class='text-center'>FECHA</th>
+                    <th id='fondoprint' style='width: 20%' class='text-center'>FECHA</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>REC.</th>
                     <th id='fondoprint' style='width: 8%' class='text-center'>FACT.</th>
                     <th id='fondoprint' style='width: 48%' class='text-center'>DETALLE <input type='button' value='[-]' onclick='mostrar_detalle();' id='boton_detalle' class='btn btn-xs' style="padding:0;"/></th>

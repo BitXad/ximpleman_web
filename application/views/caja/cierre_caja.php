@@ -24,7 +24,19 @@
     input {color:blue; font-size:14px;}
 </style>
 
-<?php  $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'"; ?>
+<?php  
+
+    $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'";
+    $fecha_desde = date('Y-m-d');
+    $hora_desde = '00:00';
+      //$fecha_hasta =  date('Y-m-d', strtotime('+1 day')); +1 dia
+      //$fecha_hasta =  date('Y-m-d', strtotime('+1 day')); -1 dia
+      
+    $fecha_hasta = date('Y-m-d');
+    $hora_hasta = '23:59';
+
+
+?>
 <!-------------------- inicio collapse ---------------------->
 <div hidden>
 
@@ -46,9 +58,9 @@
         <br>CAJERO(A): <?php echo $usuario_nombre; ?>
     </div>
 
-    <div class="container" hidden>  
+    <div class="container" >  
         <div class="box-tools" style="font-family: Arial;">
-                <div class=" col-md-11">
+                <div class=" col-md-11" hidden>
 
                         <div class="col-md-2">
                             <input  class="btn btn-primary btn-sm form-control" id="buscarusuario_id" value="<?php echo $usuario_id; ?>"/>
@@ -57,10 +69,21 @@
                     
                     </div>
                         <div class="col-md-2">
-                            Desde: <input type="date" value="<?php echo date($caja["caja_fechaapertura"]) ;//date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+                            Fecha: <input type="date" value="<?php echo $fecha_desde; ?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
                         </div>
+                    
                         <div class="col-md-2">
-                            Hasta: <input type="date" value="<?php echo date('Y-m-d'); //date($caja["caja_fechaapertura"]);  ?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+                            Hora:<input type="time" value="<?php echo $hora_desde; ?>" class="btn btn-primary btn-sm form-control" id="hora_desde" name="hora_desde" required="true">
+                        </div>
+                    
+                    
+                    
+                        <div class="col-md-2">
+                            Fecha: <input type="date" value="<?php echo $fecha_hasta; ?>" class="btn btn-primary btn-sm form-control datepicker" id="fecha_hasta" name="fecha_hasta" required="true">
+                        </div>
+                    
+                        <div class="col-md-2">
+                            Hora: <input type="time" value="<?php echo $hora_hasta; ?>" class="btn btn-primary btn-sm form-control datepicker" id="hora_hasta" name="hora_hasta" required="true">
                         </div>
                         <div class="col-md-2">
                             <br>
@@ -70,7 +93,7 @@
                             <br>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3" hidden>
                             <br>
                             <a id="imprimirestedetalle" class="btn btn-sq-lg btn-success" onclick="imprimirdetalle()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>
                         </div>

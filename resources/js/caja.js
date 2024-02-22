@@ -271,7 +271,7 @@ function formato_numerico(numero){
     
    // alert(saldo_caja+" - "+caja_cierre);
 
-    $('#caja_diferencia').val(Number(caja_cierre - saldo_caja).toFixed(2));
+    $('#caja_diferencia').val((Number(caja_cierre) - Number(saldo_caja)).toFixed(2));
 
     $.ajax({url: controlador,
                type:"POST",
