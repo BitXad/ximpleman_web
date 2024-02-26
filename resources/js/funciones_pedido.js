@@ -477,7 +477,7 @@ function tablaproductos()
                        
                        
                        html += "                       </td>";
-
+                       let tamanio_fuente = "12px";
                     if (esMobil()){    
                         
                         html += " <td align='center'"+color+"> ";
@@ -529,7 +529,7 @@ function tablaproductos()
                         html += "                    </div>";
 
                     
-                        let tamanio_fuente = "12px";
+                        
                         html += "</td>";
                         html += "<td align='right' "+color+"><input "+sololect+" size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(decimales)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         

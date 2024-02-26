@@ -112,39 +112,41 @@ function validar(e,opcion) {
   
     var tecla = (document.all) ? e.keyCode : e.which;
     
-  if (e==13){
-        
-        var tecla = e;
-    
-  }else{
+    if (e==13){
+
+          var tecla = e;
+
+    }else{
       
     var tecla = (document.all) ? e.keyCode : e.which;
     
-  }
+    }
     
   
   
-    if (tecla==13){
-    
+    if (tecla==13){    
     
         if (opcion==0){   //si la pulsacion proviene del telefono
             document.getElementById('tipocliente_id').focus();
         }
         
         if (opcion==1){   //si la pulsacion proviene del nit  
-
                 
-                if (nit==''){
+                nit = document.getElementById('nit').value;     
+                
+                if (nit==''){ //Si el nit esta vacio
                     
-                        var cod = generar_codigo();
+                        var cod = generar_codigo(); //Generamos codigo para el cliente
                         //Si el nit es diferente de vacio
                         
                         $("#nit").val(cod);
                         $("#razon_social").focus();
                         $("#razon_social").select();
-                        $("#zona_id").val(0);                    
+                        $("#zona_id").val(0);
 
-                }else{      
+                }else{
+                    
+                    seleccionar_documento(clasificarDocumento(nit));
                     
                     $("#razon_social").css("background-color", "#1221");
                     $("#razon_social").removeAttr("readonly");
@@ -267,6 +269,34 @@ function seleccionar(opcion) {
             document.getElementById('venta_giftcard').select();
         }
 }
+
+function clasificarDocumento(cadena) {
+    // Expresión regular para verificar si la cadena contiene solo números
+    var regexNumeros = /^[0-9]+$/;
+
+    // Expresión regular para buscar los números del 010 al 029 al final de la cadena
+    var regexNIT = /(010|011|012|013|014|015|016|017|018|019|020|021|022|023|024|025|026|027|028|029)$/;
+    
+    var cad = cadena;
+    var tamanio = cad.length;
+    
+    var ultimosTres = cad.substr(tamanio-3,3);
+
+        if (regexNumeros.test(cadena)){
+            
+            if (regexNIT.test(ultimosTres)) {
+                return 5; // Si termina en los números del 010 al 029, es un NIT
+            } else {
+                return 1; // Si la cadena contiene solo números pero no termina en los números del 010 al 029, es una CI
+            }
+            
+        }else{
+            return 3;
+        }
+
+}
+
+
 // esta funcion busca la cliente mediante su nit e inserta los datos 
 // en cada input corresponiente si es que existe
 // sino existe.. deja abierta la posibilidad de ingresar datos de nuevos de clientes
@@ -381,6 +411,10 @@ function buscarcliente(){
                     $("#zona_id").val(0);
                     $("#tipocliente_id").val(1);
                     $("#venta_descuento").val(0);
+                    
+                    
+                    
+                    
                     let tipo_sistema = document.getElementById('parametro_tiposistema').value;
                     //let dosificacion_modalidad = document.getElementById('dosificacion_modalidad').value;
                     let parametro_tipoemision = document.getElementById('parametro_tipoemision').value;
@@ -399,6 +433,7 @@ function buscarcliente(){
                                 result = true;                               
                              }
                             
+                    
                             let res = result;
                             //alert(res);
                             if(res){ //Si existe conexion
@@ -8902,10 +8937,13 @@ function cargar_servicios(){
     
     let base_url = document.getElementById('base_url').value;
     let controlador = base_url+'venta/cargar_servicios';
+    let num_fact = document.getElementById('selector_factura').value;
 
-                    $.ajax({url: controlador,
+    if (Number(num_fact)>0){
+        
+            $.ajax({url: controlador,
                         type:"POST",
-                        data:{},
+                        data:{num_fact:num_fact},
                         success:function(respuesta){
                             
                              let resultado = JSON.parse(respuesta);                            
@@ -8913,6 +8951,7 @@ function cargar_servicios(){
                              let exento = resultado['exentos'];                            
 
                              if(factura.length>0){
+                                 
                                  $("#nit").val(factura[0]["nit_fact"]);
                                  $("#span_buscar_cliente").click();
                                  
@@ -8924,7 +8963,7 @@ function cargar_servicios(){
                                  $("#datos_medidor").val("000434");
                                  
                           
-                                $("#venta_descuento").val("1.50");                                 
+                                $("#venta_descuento").val("0.00");                                 
                           
                                  tablaproductos();
                                  
@@ -8938,7 +8977,9 @@ function cargar_servicios(){
                                  $("#datos_otrospagosnosujetoiva").val(exento[1]["total_detfact"]);               
                                  
                              }
-//                             
+                             calcular_servicios();
+                             
+//                           calcular_servicios()  
                              
 //                            if (res) {  
 //                                
@@ -8952,5 +8993,24 @@ function cargar_servicios(){
                         }
                     });     
                                 
+    }else{
+        alert("ADVERTENCIA: Debe seleccionar una factura...!");
+    }
     
+}
+function calcular_servicios(){
+    let datos_montodescuentotarifadignidad = document.getElementById('datos_montodescuentotarifadignidad').value;
+    let datos_tasaaseo = document.getElementById('datos_tasaaseo').value;
+    let datos_tasaalumbrado = document.getElementById('datos_tasaalumbrado').value;
+    let datos_ajutesnosujetoiva = document.getElementById('datos_ajutesnosujetoiva').value;
+    let datos_ajustesujetoiva = document.getElementById('datos_ajustesujetoiva').value;
+    let datos_otrastasas = document.getElementById('datos_otrastasas').value;
+    let datos_otrospagosnosujetoiva = document.getElementById('datos_otrospagosnosujetoiva').value;
+    let venta_subtotal = document.getElementById('venta_subtotal').value;
+    let decimales = 2; //document.getElementById('decimales').value;
+    
+    let total_por_cobrar = Number(datos_montodescuentotarifadignidad) + Number(datos_tasaaseo) + Number(datos_tasaalumbrado) + Number(datos_ajutesnosujetoiva); 
+        total_por_cobrar += Number(datos_ajustesujetoiva) + Number(datos_ajustesujetoiva) + Number(datos_otrastasas) + Number(datos_otrospagosnosujetoiva) + Number(venta_subtotal);
+    
+    $("#total_por_cobrar").val(Number(total_por_cobrar).toFixed(decimales));
 }

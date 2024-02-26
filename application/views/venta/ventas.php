@@ -1309,7 +1309,137 @@ window.onkeydown = compruebaTecla;
             </div>
                 <!-------------------- FIN BOTONES INFERIORES ------------------------------------------->
             </div>
-          
+            <?php
+                $estilo1 = "style='font-size:10px;'";
+                $estilo2 = "style='width:90px;'";
+            ?>
+            
+            <div class="col-md-12" <?php echo ($dosificacion[0]['docsec_codigoclasificador'] != 13)?"hidden":""; ?>>
+                
+            <font size="1"><b>SERVICIOS BASICOS</b></font>                
+            
+                <select id="selector_factura" class="btn btn-warning btn-xs" style="text-align: left;">
+        
+                    <?php foreach($factura_servicios as $fact){ ?>
+                            
+                        <option value="<?= $fact["num_fact"];  ?>"><?php echo "FACTURA Nº: ".$fact["num_fact"]." NIT: ".$fact["nit_fact"]." RAZON SOC.: ".$fact["razon_fact"];  ?></option>
+                                        
+                    <?php } ?>
+                </select>   
+            
+            <div class="box" style="border-color:black;">
+            <div class="box-body"> 
+                
+
+                <div class="col-md-12" style="line-height: 8px;">
+                    
+                    <table class="table" id="mitabla">
+                        <tr>
+                            <th style="padding:0;">Consumo MT3</th>
+                            <th style="padding:0;">Benef. 1886</th>
+                            <th style="padding:0;">Monto Desc Ley 1886</th>
+                            <th style="padding:0;">Monto Desc. Tarifa Dig</th>
+                            <th style="padding:0;">Mes</th>
+                            <th style="padding:0;">Año</th>
+                        </tr>
+                        
+                        <tr>
+                            <td><input type="number" name="datos_consumoperiodo" value="<?php echo ""; ?>" class="btn btn-info btn-sm" id="datos_consumoperiodo" <?php echo $estilo2; ?>/></td>
+                            <td><input type="text" name="datos_beneficiarioley1886" value="<?php echo "0"; ?>" class="btn btn-info btn-sm" id="datos_beneficiarioley1886"  <?php echo $estilo2; ?>/></td>
+                            <td><input type="text" name="datos_montodescuentoley1886" value="<?php echo "0"; ?>" class="btn btn-info btn-sm" id="datos_montodescuentoley1886"  <?php echo $estilo2; ?>/></td>
+                            <td><input type="text" name="datos_montodescuentotarifadignidad" value="<?php echo ""; ?>" class="btn btn-info btn-sm" id="datos_montodescuentotarifadignidad"  <?php echo $estilo2; ?>/></td>
+                            <td><input type="text" name="datos_mes" value="<?php echo ""; ?>" class="btn btn-warning btn-sm" id="datos_mes"  <?php echo $estilo2; ?>/></td>
+                            <td><input type="text" name="datos_anio" value="<?php echo ""; ?>" class="btn btn-warning btn-sm" id="datos_anio"  <?php echo $estilo2; ?>/></td>
+                        </tr>
+                        
+                        <tr>
+                            <th style="padding:0;">Datos Medidor</th>
+                            <th style="padding:0;">Tasa aseo urbano</th>
+                            <th style="padding:0;">Sub total Bs</th>
+                            <th style="padding:0;">Tasa alumbrado publico</th>
+                            <th style="padding:0;">Sub total Bs</th>
+                            <th style="padding:0;"></th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="datos_medidor" value="<?php echo ""; ?>" class="btn btn-info btn-sm" id="datos_medidor"  <?php echo $estilo2; ?>/></td>
+                            <td><input name="datos_aseourbano" class="btn btn-facebook btn-sm" id="datos_aseourbano"   <?php echo $estilo2; ?>> </input></td>                            
+                            <td><input type="text" name="datos_tasaaseo" value="<?php echo "0.00"; ?>" class="btn btn-facebook btn-sm" id="datos_tasaaseo" <?php echo $estilo2; ?>/></td>
+                            <td><input type="text" name="datos_alumbrado" class="btn btn-flickr btn-sm" id="datos_alumbrado" <?php echo $estilo2; ?> value="Tasa de Alumbrado"></input></td>
+                            <td><input type="text" name="datos_tasaalumbrado" value="<?php echo "0.00"; ?>" class="btn btn-flickr btn-sm" id="datos_tasaalumbrado" <?php echo $estilo2; ?>/></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th style="padding:0;">Ajuste NO sujeto a iva</th>
+                            <th style="padding:0;">Sub total Bs</th>
+                            <th style="padding:0;">Ajuste sujeto a iva</th>
+                            <th style="padding:0;">Sub total Bs</th>
+                            <th style="padding:0;">Otras tasas</th>
+                            <th style="padding:0;">Sub total Bs</th>
+                        </tr>
+                        <tr>
+                            <td><input name="datos_detalleajustenosujetoiva" class="btn btn-microsoft btn-sm" id="datos_detalleajustenosujetoiva"  <?php echo $estilo2; ?> value="AJUSTE NO SUJETOS A IVA"></input></td>
+                            <td><input type="text" name="datos_ajutesnosujetoiva" value="<?php echo "0.00"; ?>" class="btn btn-microsoft btn-sm" id="datos_ajutesnosujetoiva"  <?php echo $estilo2; ?>/></td>
+                            <td><input name="datos_detalleajustesujetoiva" class="btn btn-pinterest btn-sm" id="datos_detalleajustesujetoiva"   <?php echo $estilo2; ?> value="Cobro por reconexion"></input></td>
+                            <td><input type="text" name="datos_ajustesujetoiva" value="<?php echo "0.00"; ?>" class="btn btn-pinterest btn-sm" id="datos_ajustesujetoiva"  <?php echo $estilo2; ?>/></td>
+                            <td><input name="datos_detalleotrastasas" class="btn btn-yahoo btn-sm" id="datos_detalleotrastasas"  <?php echo $estilo2; ?> value="Otras tasas"></input></td>
+                            <td><input type="text" name="datos_otrastasas" value="<?php echo "0.00"; ?>" class="btn btn-yahoo btn-sm" id="datos_otrastasas"  <?php echo $estilo2; ?>/></td>
+                        </tr>
+                        
+                        <tr>
+                            <th style="padding:0;">Otros Pagos</th>
+                            <th style="padding:0;">Sub total Bs</th>
+                            <th style="padding:0;"></th>
+                            <th style="padding:0;"></th>
+                            <th style="padding:0;"></th>
+                            <th style="padding:0;"></th>
+                        </tr>
+                        <tr>
+                            <td><input name="datos_detalleotrospagosnosujetoiva" class="btn btn-soundcloud btn-sm" id="datos_detalleotrospagosnosujetoiva"  <?php echo $estilo2; ?> value="Otros Pagos"></input></td>
+                            <td><input type="text" name="datos_otrospagosnosujetoiva" value="<?php echo "0.00"; ?>" class="btn btn-soundcloud btn-sm" id="datos_otrospagosnosujetoiva"  <?php echo $estilo2; ?>/></td>
+                            <td colspan="3" style="font-size: 15px; background:darkgray;"><b>TOTALES POR COBRAR Bs</b></td>
+                            <td><input type="text" name="total_por_cobrar" value="<?php echo "0.00"; ?>" class="btn btn-default btn-sm" id="total_por_cobrar"  style="width:90px; font-size: 15px; font-weight: bold; background:darkgray; "/><b></b></td>
+
+                        </tr>
+                        
+                        
+
+                        
+                    </table>
+                    
+                     
+
+        
+                    
+				
+                    
+                                         <div class="col-md-2">
+						<label for="datos_detalleotrospagosnosujetoiva" class="control-label" <?php echo $estilo1; ?>></label>
+<!--						<div class="form-group">-->
+                                                    
+
+<!--						</div>-->
+					</div>                        
+                    
+					<div class="col-md-2">
+						<label for="datos_otrospagosnosujetoiva" class="control-label" <?php echo $estilo1; ?>></label>
+<!--						<div class="form-group">-->
+							
+<!--						</div>-->
+					</div>                      
+                    
+              
+                    
+		                    
+                </div>
+                
+            <!--</div>-->
+            </div>
+
+            </div>
+            
+        </div>
+            
+         
         </div>
         
         <!----------------------------------- BOTONES ---------------------------------->
@@ -1330,7 +1460,9 @@ window.onkeydown = compruebaTecla;
                 </div>
 
         <?php } ?>
-        
+                        
+ 
+                        
         
         <font size="1"><b>OPCIONES</b></font>
         <div class="box" style="border-color:black;">
@@ -1360,6 +1492,10 @@ window.onkeydown = compruebaTecla;
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar Venta <br>
             </a>-->
 
+            <button href="#" onclick="cargar_servicios()" data-target="#modalfinalizar" class="btn btn-facebook btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_finalizarventas"]!=1)?'display:none':'' ?>" id="boton_finventa">
+                <i class="fa fa-download fa-4x"></i><br><br>Cargar<br>Servicios <br>
+            </button>
+                
             <button href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_finalizarventas"]!=1)?'display:none':'' ?>" id="boton_finventa">
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar<br><?php echo $sistema["sistema_moduloventas"]; ?> <br>
             </button>
@@ -1484,13 +1620,13 @@ window.onkeydown = compruebaTecla;
                     </div>
                     
                     <?php } ?>
-                    <br>
+<!--                    <br>
                     <button type="button" id="boton_cargarservicios" class="btn btn-facebook btn-sm" onclick="cargar_servicios()">
                         <br>  
                         <fa class="fa fa-recycle"></fa> Cargar Servicios
                         <br>  
                         <br>  
-                    </button>
+                    </button>-->
                     
                     <?php if(isset($sucursales)){
                                 
@@ -2944,7 +3080,7 @@ window.onkeydown = compruebaTecla;
     
 </div>
 
-<div class="modal fade" id="modaldatosservicios" tabindex="-1" role="dialog" aria-labelledby="modaldatosservicios" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+<!--<div class="modal fade" id="modaldatosservicios" tabindex="-1" role="dialog" aria-labelledby="modaldatosservicios" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background: #3399cc">
@@ -3046,7 +3182,7 @@ window.onkeydown = compruebaTecla;
 					<div class="col-md-9">
 						<label for="datos_detalleajustenosujetoiva" class="control-label">Ajuste NO sujeto a iva</label>
 						<div class="form-group">
-							<!--<input type="memo" name="datos_ajustesujetosiva" value="<?php echo ""; ?>" class="form-control" id="datos_ajustesujetosiva" />-->
+							<input type="memo" name="datos_ajustesujetosiva" value="<?php echo ""; ?>" class="form-control" id="datos_ajustesujetosiva" />
                                                     <textarea name="datos_detalleajustenosujetoiva" class="form-control" id="datos_detalleajustenosujetoiva" >
 AJUSTE NO SUJETOS A IVA
 </textarea>
@@ -3065,7 +3201,7 @@ AJUSTE NO SUJETOS A IVA
 					<div class="col-md-9">
 						<label for="datos_detalleajustesujetoiva" class="control-label">Ajuste sujeto a iva</label>
 						<div class="form-group">
-							<!--<input type="memo" name="datos_ajustesujetosiva" value="<?php echo ""; ?>" class="form-control" id="datos_ajustesujetosiva" />-->
+							<input type="memo" name="datos_ajustesujetosiva" value="<?php echo ""; ?>" class="form-control" id="datos_ajustesujetosiva" />
                                                     <textarea name="datos_detalleajustesujetoiva" class="form-control" id="datos_detalleajustesujetoiva" >
 Cobro por reconexion</textarea>
 						</div>
@@ -3123,13 +3259,13 @@ Otros Pagos</textarea>
             </div>
             
             <div class="modal-footer" style="text-align: center">
-                <!--<button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Enviar Paquete</button>-->
+                <button type="button" class="btn btn-success" onclick="envio_paquetes()"><fa class="fa fa-floppy-o"></fa> Enviar Paquete</button>
                 <button type="button" class="btn btn-default" id="boton_cerrar_recepcion" data-dismiss="modal" ><fa class="fa fa-times"></fa> Cerrar</button>
             </div>
             
         </div>
     </div>
-</div>
+</div>-->
 
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL DATOS FACTURA ----------------------------------->
@@ -3605,3 +3741,83 @@ $(document).ready(function() {
 
 
 
+
+<?php //echo form_open('venta/importar_excel/'); ?>
+<!--                    <div class="col-md-3">
+                            <label for="archivo_ventas" class="control-label">Archivos de ventas</label>
+                            <div class="form-group">
+                                <input style="text-align: left !important" type="file" name="archivo_ventas" value="" class=" btn btn-success btn-sm form-control" id="archivo_ventas" accept=".p12" />
+                                    <input type="hidden" name="archivo_ventas1" value="" class="form-control" id="archivo_ventas1" />
+                            </div>
+                    </div>
+
+
+            <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-check"></i> Guardar
+            </button>
+            <a href="<?php echo site_url('rol'); ?>" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
+            </div>				-->
+<?php echo form_close(); ?>
+
+
+<div class="row">
+    
+<h3>Subir archivo Excel</h3>
+    <?php echo form_open_multipart('venta/subir_excel'); ?>
+        <input type="file" name="archivo_excel" accept=".xlsx, .xls">
+        <br><br>
+        <input type="submit" value="Subir archivo">
+    <?php echo form_close(); ?>
+</div>
+
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL ACTUALIZAR PRODUCTOS ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div>
+    <button type="button" id="boton_modalexcel" class="btn btn-default" data-toggle="modal" data-target="#modalexcel" >
+      Subir Excel
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalexcel" tabindex="-1" role="dialog" aria-labelledby="modalexcel" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">VENTAS MASICAS: CARGAR ARCHIVO EXCEL</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-content" style="font-family: Arial">
+
+                        <div class="box-body">
+
+                            <h3>Subir archivo Excel</h3>
+                            <?php echo form_open_multipart('venta/subir_excel'); ?>
+                                <input type="file" class="btn btn-facebook"  name="archivo_excel" accept=".xlsx, .xls">
+                                <br><br>
+                                <!--<input type="submit"  class="btn btn-success"  value="Subir archivo">-->
+                                <button type="submit"  class="btn btn-success"  value="Subir archivo"><fa class="fa fa-upload"></fa> Subir Archivo</button>
+                            <?php echo form_close(); ?>
+             
+                           
+                        </div>
+
+<!--                        <div class="modal-footer" style="text-align: center">
+                            <button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
+                        </div>-->
+            
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->

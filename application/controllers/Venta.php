@@ -201,6 +201,11 @@ class Venta extends CI_Controller{
             $data['paises'] = $this->Venta_model->consultar($sql);
         }
         
+        if($data['dosificacion'][0]['docsec_codigoclasificador'] == 13){
+            $sql = "select * from factura_servicios where factura_id = 0";
+            $data['factura_servicios'] = $this->Venta_model->consultar($sql);
+        }
+        
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
@@ -7853,15 +7858,15 @@ function anular_venta($venta_id){
         //*******************************************************************************************************************
         if($factura[0]['docsec_codigoclasificador']==13){
 
-            $datos_sujetoivasubtotal =  $datos_factura['datos_sujetoivasubtotal'];
-            $datos_aseosubtotal =  $datos_factura['datos_aseosubtotal'];
-            $datos_alumbradosubtotal =  $datos_factura['datos_alumbradosubtotal'];
-            $datos_tasassubtotal =  $datos_factura['datos_tasassubtotal'];
-            $datos_pagossubtotal =  $datos_factura['datos_pagossubtotal'];
+            $datos_sujetoivasubtotal =  $datos_factura['datos_ajustesujetoiva'];
+            $datos_aseosubtotal =  $datos_factura['datos_tasaaseo'];
+            $datos_alumbradosubtotal =  $datos_factura['datos_tasaalumbrado'];
+            $datos_tasassubtotal =  $datos_factura['datos_otrastasas'];
+            $datos_pagossubtotal =  $datos_factura['datos_otrospagosnosujetoiva'];
             
             $tasas = $datos_aseosubtotal + $datos_alumbradosubtotal + $datos_tasassubtotal; 
 
-            if($datos_factura['datos_sujetoivasubtotal']>0){
+            if($datos_factura['datos_ajustesujetoiva']>0){
                 
                 $micad .= "                        <tr style='border: 1px solid black'>"; 
                 $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'></td>"; 
@@ -7881,7 +7886,7 @@ function anular_venta($venta_id){
                 
     
                 
-            if($datos_factura['datos_aseosubtotal']>0){
+            if($datos_factura['datos_tasaaseo']>0){
                 
                 $micad .= "                        <tr style='border: 1px solid black'>"; 
                 $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'></td>"; 
@@ -7900,7 +7905,7 @@ function anular_venta($venta_id){
             }    
     
                 
-            if($datos_factura['datos_alumbradosubtotal']>0){
+            if($datos_factura['datos_tasaalumbrado']>0){
                 
                 $micad .= "                        <tr style='border: 1px solid black'>"; 
                 $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'></td>"; 
@@ -7920,7 +7925,7 @@ function anular_venta($venta_id){
     
                 
                 
-            if($datos_factura['datos_tasassubtotal']>0){
+            if($datos_factura['datos_otrastasas']>0){
                 
                 $micad .= "                        <tr style='border: 1px solid black'>"; 
                 $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'></td>"; 
@@ -7934,12 +7939,12 @@ function anular_venta($venta_id){
                 $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
                 $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
                 //$micad .= "                            <td align='right' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".number_format($d['datos_sujetoivasubtotal'],$dos_decimales,'.',',')."</font></td>"; 
-                $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($datos_factura['datos_tasassubtotal'],$dos_decimales,'.',',')."</td>";
+                $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($datos_factura['datos_otrastasas'],$dos_decimales,'.',',')."</td>";
                 $micad .= "                            </tr>";
             }
     
                 
-            if($datos_factura['datos_pagossubtotal']>0){
+            if($datos_factura['datos_otrospagosnosujetoiva']>0){
                 
                 $micad .= "                        <tr style='border: 1px solid black'>"; 
                 $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'></td>"; 
@@ -7947,13 +7952,13 @@ function anular_venta($venta_id){
                 $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
                 $micad .= "                            <td colspan='1' style='padding: 0; line-height: 10px;'>"; 
                 $micad .= "                                <font style='size:7px; font-family: arial; padding-left:3px'> "; 
-                $micad .= "                                    ".nl2br($datos_factura['datos_otrospagos']); 
+                $micad .= "                                    ".nl2br($datos_factura['datos_otrospagosnosujetoiva']); 
                 $micad .= "                                </font>"; 
                 $micad .= "                            </td>";
                 $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
                 $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'></font></td>"; 
                 //$micad .= "                            <td align='right' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".number_format($d['datos_sujetoivasubtotal'],$dos_decimales,'.',',')."</font></td>"; 
-                $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($datos_factura['datos_pagossubtotal'],$dos_decimales,'.',',')."</td>";
+                $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($datos_factura['datos_otrospagosnosujetoiva'],$dos_decimales,'.',',')."</td>";
                 $micad .= "                            </tr>";
             }
 
@@ -8088,7 +8093,7 @@ function anular_venta($venta_id){
 
                   $micad .= "                          <!-------------- AJUSTES NO SUJETOS A IVA ---------->";
 
-                  $ajustes_noiva = $datos_factura['datos_ajustesnoiva'];
+                  $ajustes_noiva = $datos_factura['datos_ajutesnosujetoiva'];
                   $micad .= "      <tr>";
                   $micad .= "          <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)AJUSTES NO SUJETOS A IVA Bs</td>";
                   $micad .= "          <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ajustes_noiva ,$dos_decimales,'.',',')."</td>";
@@ -8098,7 +8103,7 @@ function anular_venta($venta_id){
 
                 $micad .= "                    <!-------------- MONTO TOTAL A PAGAR ---------->"; 
 
-                    $monto_total_pagar = $factura_total - $datos_factura['datos_ajustesnoiva'];
+                    $monto_total_pagar = $factura_total - $datos_factura['datos_ajutesnosujetoiva'];
                     
                     $micad .= "    <tr>           ";
                     $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";
@@ -8132,7 +8137,7 @@ function anular_venta($venta_id){
 
                 $micad .= "                    <!-------------- (+) AJUSTES SUJETOS A IVA ---------->"; 
 
-                    $ajustes_sujetoiva = $datos_factura['datos_ajustesiva'];
+                    $ajustes_sujetoiva = $datos_factura['datos_ajustesujetoiva'];
                     
                     $micad .= "    <tr>           ";
                     $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)OTROS PAGOS NO SUJETOS A IVA Bs</td>";
@@ -9085,8 +9090,10 @@ function anular_venta($venta_id){
     function cargar_servicios(){
 
         if ($this->input->is_ajax_request()) {
+            
+            $num_fact = $this->input->post("num_fact");
          
-            $factura = $this->Venta_model->cargar_ultimo_servicio();      
+            $factura = $this->Venta_model->cargar_servicios($num_fact);      
             
             if(sizeof($factura)>0){
                 echo json_encode($factura);                
@@ -9096,6 +9103,149 @@ function anular_venta($venta_id){
         }
     }
     
+    
+    /*
+    * Funcion para importar el contenido de un archivo excel
+    */
+    function importar_excel(){
+        
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $this->load->library('excel'); 
+        // Ruta al archivo Excel
+        $archivo_excel = 'c://xampp/htdocs/ximpleman_web/resources/files/ventas.xlsx';
+
+        // Cargamos la librería PHPExcel
+        $objPHPExcel = PHPExcel_IOFactory::load($archivo_excel);
+
+        // Seleccionamos la primera hoja del archivo Excel
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Obtenemos la cantidad de filas y columnas del archivo Excel
+        $filas = $objPHPExcel->getActiveSheet()->getHighestRow();
+        $columnas = $objPHPExcel->getActiveSheet()->getHighestColumn();
+
+        // Array para almacenar los datos del Excel
+        $datos_excel = array();
+
+        // Recorremos las filas y columnas para obtener los datos
+        for ($row = 1; $row <= $filas; $row++) {
+            $rowData = array();
+            for ($col = 'A'; $col <= $columnas; $col++) {
+                $cell = $objPHPExcel->getActiveSheet()->getCell($col.$row);
+                $rowData[] = $cell->getValue();
+            }
+            $datos_excel[] = $rowData;
+        }
+        
+        
+        $cont = 0;
+        $sql = "delete from detalle_venta_aux where usuario_id = {$usuario_id}";
+        $this->Venta_model->ejecutar($sql);
+        
+        foreach ($datos_excel as $datos){
+            
+            if($cont>0){
+            
+                $codigo = $datos[2];
+                $cantidad = $datos[5];
+                $descuento = 0;
+                $costo = $datos[3];
+                $precio = $datos[4];
+
+                $sql = "insert into detalle_venta_aux(venta_id, moneda_id, producto_id, 
+                        producto_nombre ,
+                        detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, 
+                        detalleven_precio, detalleven_subtotal, detalleven_descuento, 
+                        detalleven_total, detalleven_caracteristicas, detalleven_preferencia, 
+                        detalleven_comision, detalleven_tipocambio, usuario_id )
+
+                        ( select 
+                        0,
+                        1,
+                        producto_id,
+                        producto_nombre,
+                        producto_codigo,
+                        ".$cantidad.",
+                        producto_unidad,
+                        {$costo},
+                        producto_precio,
+                        {$precio} * {$cantidad},
+                        {$descuento},
+                        {$precio}*{$cantidad},
+                        "."'-'".",
+                        "."'-'".",
+                        0,
+                        1,
+                        {$usuario_id}
+                        from inventario
+                        where producto_codigobarra = '{$codigo}')";
+                        
+                        
+                        
+//                $sql = "insert into detalle_venta_aux(producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, 
+//                detalleven_descuento, detalleven_descuentoparcial, detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, detalleven_tipocambio,
+//                 usuario_id, existencia, producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra, detalleven_envase, detalleven_nombreenvase, 
+//                 detalleven_costoenvase, detalleven_precioenvase, detalleven_cantidadenvase, detalleven_garantiaenvase, detalleven_devueltoenvase, detalleven_montodevolucion, 
+//                 detalleven_prestamoenvase, promocion_id, clasificador_id, detalleven_unidadfactor, preferencia_id, detalleven_tc) 
+//                 
+//                (select producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, 
+//                detalleven_descuento, detalleven_descuentoparcial, detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, detalleven_tipocambio,
+//                 usuario_id, existencia, producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra, detalleven_envase, detalleven_nombreenvase, 
+//                 detalleven_costoenvase, detalleven_precioenvase, detalleven_cantidadenvase, detalleven_garantiaenvase, detalleven_devueltoenvase, detalleven_montodevolucion, 
+//                 detalleven_prestamoenvase, promocion_id, clasificador_id, detalleven_unidadfactor, preferencia_id, detalleven_tc
+//                 from detalle_venta_temporal where codigo_venta = '{$codigo}')";
+//                        
+                        
+                $this->Venta_model->ejecutar($sql);
+                        
+                //echo $sql."<br>";
+                
+            }
+            $cont++;
+        }
+        
+        // Ahora $datos_excel contiene los datos del Excel
+        //var_dump($datos_excel);
+        // Puedes hacer lo que quieras con los datos, por ejemplo, pasarlos a la vista
+        //$this->load->view('vista_datos_excel', array('datos' => $datos_excel));
+    }
+
+//    public function subir_excel() {
+//        // Configuración para cargar el archivo
+//        $config['upload_path'] = './resources/files/';
+//        $config['allowed_types'] = 'xlsx|xls';
+//        $config['file_name'] = 'venta.xlsx'; // Nombre del archivo de destino
+//
+//        $this->load->library('upload', $config);
+//
+//        // Intentar cargar el archivo
+//        if (!$this->upload->do_upload('archivo_excel')) {
+//            $error = $this->upload->display_errors();
+//            echo $error;
+//        } else {
+//            echo "El archivo se ha subido correctamente.";
+//            
+//        }
+//    } 
+    
+    public function subir_excel() {
+        // Configuración para cargar el archivo
+        $config['upload_path'] = './resources/files/';
+        $config['allowed_types'] = 'xlsx|xls';
+        $config['file_name'] = 'ventas.xlsx'; // Nombre del archivo de destino
+        $config['overwrite'] = TRUE; // Permitir la sobrescritura del archivo existente
+
+        $this->load->library('upload', $config);
+
+        // Intentar cargar el archivo
+        if (!$this->upload->do_upload('archivo_excel')) {
+            $error = $this->upload->display_errors();
+            echo $error;
+        } else {
+            echo "El archivo se ha subido correctamente.";
+        }
+    }
     
     
     

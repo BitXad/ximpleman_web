@@ -330,7 +330,7 @@ class Mesa extends CI_Controller{
             
             $mesa_id = $this->input->post("mesa_id"); 
             
-            $sql = "select pedido_id from pedido where estado_id = 11 and mesa_id = {$mesa_id} ";
+            $sql = "select (pedido_id) as pedido_id from pedido where estado_id = 11 and mesa_id = {$mesa_id} ";
             $resultado = $this->Venta_model->consultar($sql);
             //var_dump($resultado);            
             if (sizeof($resultado)>0){

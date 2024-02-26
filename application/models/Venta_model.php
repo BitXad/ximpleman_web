@@ -860,7 +860,7 @@ function get_busqueda($condicion)
     /**
      * Obtener le producto en base al id
      */
- function cargar_ultimo_servicio(){
+ function cargar_servicios($num_fact){
         
         $usuario_id = $this->session_data['usuario_id'];
         
@@ -868,14 +868,16 @@ function get_busqueda($condicion)
         $this->db->query($sql);
         
         
-        $sql = "select f.*, l.mes_lec, l.gestion_lec, l.consumo_lec from factura_servicios f, lectura l where num_fact = (select max(num_fact) from factura_servicios) and f.id_lec = l.id_lec";
+        $sql = "select f.*, l.mes_lec, l.gestion_lec, l.consumo_lec from factura_servicios f, lectura l where num_fact = {$num_fact} and f.id_lec = l.id_lec";
+        
+        
         $factura = $this->db->query($sql)->result_array();
         
         $id_fact = $factura[0]["id_fact"];
+        
         $sql = "insert into detalle_venta_aux(producto_id
                 ,venta_id
                 ,moneda_id
-
                 ,detalleven_codigo
                 ,detalleven_cantidad
                 ,detalleven_unidad

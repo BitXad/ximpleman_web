@@ -1,7 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
-<script src="<?php // echo base_url('resources/js/cotizacion.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/mitabla.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/cotizacion.js'); ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
     $(document).ready(function()
@@ -12,7 +11,7 @@
         window.print(); 
     }  
 </script>  
-<!--<style type="text/css">
+<style type="text/css">
     input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
@@ -30,7 +29,7 @@ pre {
   white-space: -o-pre-wrap;    /* Opera 7 */
   word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
-</style> -->
+</style> 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">

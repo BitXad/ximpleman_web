@@ -955,7 +955,8 @@ class Factura extends CI_Controller{
     $llamadas = $this->Factura_model->get_factura_ventas($fecha_desde, $fecha_hasta);
     if(count($llamadas) > 0){
         //Cargamos la librería de excel.
-        $this->load->library('excel'); $this->excel->setActiveSheetIndex(0);
+        $this->load->library('excel'); 
+        $this->excel->setActiveSheetIndex(0);
         $this->excel->getActiveSheet()->setTitle('ventas');
         //Contador de filas
         $contador = 1;
