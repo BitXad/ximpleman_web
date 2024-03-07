@@ -736,6 +736,7 @@ class Venta extends CI_Controller{
                 $parametro_tipoemision    = $this->input->post('parametro_tipoemision');
                 $venta_glosa    = $this->input->post('venta_glosa');
                 $cliente_id    = $this->input->post('cliente_id');
+                $factura_servicio    = $this->input->post('factura_servicio');
                 $factura_glosa    = $venta_glosa;
                 
                 //  DATOS  ADICIONALES FACTURA
@@ -1093,15 +1094,18 @@ class Venta extends CI_Controller{
                 
                 if($pedido_id > 0)
                 {
-                    $sql = "select mesa_id from pedido where pedido_id = ".$pedido_id;
-                    $resultadomesa = $this->Venta_model->consultar($sql);
+                    if($parametro['parametro_modulorestaurante']==1){ 
                     
-                    $sql = "update mesa set estado_id = 38  where mesa_id = ".$resultadomesa[0]["mesa_id"];
-                    $this->Venta_model->ejecutar($sql);
-                    
-                    $sql = "update pedido set estado_id = 13  where pedido_id = ".$pedido_id;
-                    $this->Venta_model->ejecutar($sql);
-                    
+                        $sql = "select mesa_id from pedido where pedido_id = ".$pedido_id;
+                        $resultadomesa = $this->Venta_model->consultar($sql);
+
+                        $sql = "update mesa set estado_id = 38  where mesa_id = ".$resultadomesa[0]["mesa_id"];
+                        $this->Venta_model->ejecutar($sql);
+
+                    }
+                        $sql = "update pedido set estado_id = 13  where pedido_id = ".$pedido_id;
+                        $this->Venta_model->ejecutar($sql);
+                        
                     
                 }
                 
@@ -1617,7 +1621,8 @@ class Venta extends CI_Controller{
   
                                 $enviada = $this->mandarFactura($contents, $xml_comprimido);
                                 //var_dump($enviada);
-                                if($enviada->transaccion){ // Si la factura fue enviada                                    
+                                if($enviada->transaccion){ // Si la factura fue enviada
+                                    
                                     
                                     $params = array(
                                         'factura_codigodescripcion' => $enviada->codigoDescripcion,
@@ -1632,6 +1637,22 @@ class Venta extends CI_Controller{
                                     $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
                                     $this->Venta_model->ejecutar($sql);
                                     $res  = array("mensajesList" => $enviada);
+                                    
+                                    //************************************
+                                    // Si es factura externa se debe dar de baja esa factura
+                                    //************************************
+                                    
+
+                                        if ($factura_servicio>0){
+                                            
+                                            $sql = "update factura_servicios set factura_id = {$factura_id} where num_fact = {$factura_servicio}";
+                                            $this->Venta_model->ejecutar($sql);
+
+                                        }
+                                    //*************************************
+                                    
+                                    
+                                    
                                     echo json_encode($res);
                                     
                                 }else{
@@ -9103,131 +9124,112 @@ function anular_venta($venta_id){
         }
     }
     
+
+    
     
     /*
     * Funcion para importar el contenido de un archivo excel
     */
     function importar_excel(){
         
-        $usuario_id = $this->session_data['usuario_id'];
-        
-        $this->load->library('excel'); 
-        // Ruta al archivo Excel
-        $archivo_excel = 'c://xampp/htdocs/ximpleman_web/resources/files/ventas.xlsx';
-
-        // Cargamos la librería PHPExcel
-        $objPHPExcel = PHPExcel_IOFactory::load($archivo_excel);
-
-        // Seleccionamos la primera hoja del archivo Excel
-        $objPHPExcel->setActiveSheetIndex(0);
-
-        // Obtenemos la cantidad de filas y columnas del archivo Excel
-        $filas = $objPHPExcel->getActiveSheet()->getHighestRow();
-        $columnas = $objPHPExcel->getActiveSheet()->getHighestColumn();
-
-        // Array para almacenar los datos del Excel
-        $datos_excel = array();
-
-        // Recorremos las filas y columnas para obtener los datos
-        for ($row = 1; $row <= $filas; $row++) {
-            $rowData = array();
-            for ($col = 'A'; $col <= $columnas; $col++) {
-                $cell = $objPHPExcel->getActiveSheet()->getCell($col.$row);
-                $rowData[] = $cell->getValue();
-            }
-            $datos_excel[] = $rowData;
-        }
-        
-        
-        $cont = 0;
-        $sql = "delete from detalle_venta_aux where usuario_id = {$usuario_id}";
-        $this->Venta_model->ejecutar($sql);
-        
-        foreach ($datos_excel as $datos){
+        if ($this->input->is_ajax_request()) {
             
-            if($cont>0){
-            
-                $codigo = $datos[2];
-                $cantidad = $datos[5];
-                $descuento = 0;
-                $costo = $datos[3];
-                $precio = $datos[4];
-
-                $sql = "insert into detalle_venta_aux(venta_id, moneda_id, producto_id, 
-                        producto_nombre ,
-                        detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, 
-                        detalleven_precio, detalleven_subtotal, detalleven_descuento, 
-                        detalleven_total, detalleven_caracteristicas, detalleven_preferencia, 
-                        detalleven_comision, detalleven_tipocambio, usuario_id )
-
-                        ( select 
-                        0,
-                        1,
-                        producto_id,
-                        producto_nombre,
-                        producto_codigo,
-                        ".$cantidad.",
-                        producto_unidad,
-                        {$costo},
-                        producto_precio,
-                        {$precio} * {$cantidad},
-                        {$descuento},
-                        {$precio}*{$cantidad},
-                        "."'-'".",
-                        "."'-'".",
-                        0,
-                        1,
-                        {$usuario_id}
-                        from inventario
-                        where producto_codigobarra = '{$codigo}')";
-                        
-                        
-                        
-//                $sql = "insert into detalle_venta_aux(producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, 
-//                detalleven_descuento, detalleven_descuentoparcial, detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, detalleven_tipocambio,
-//                 usuario_id, existencia, producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra, detalleven_envase, detalleven_nombreenvase, 
-//                 detalleven_costoenvase, detalleven_precioenvase, detalleven_cantidadenvase, detalleven_garantiaenvase, detalleven_devueltoenvase, detalleven_montodevolucion, 
-//                 detalleven_prestamoenvase, promocion_id, clasificador_id, detalleven_unidadfactor, preferencia_id, detalleven_tc) 
-//                 
-//                (select producto_id, venta_id, moneda_id, detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, detalleven_precio, detalleven_subtotal, 
-//                detalleven_descuento, detalleven_descuentoparcial, detalleven_total, detalleven_caracteristicas, detalleven_preferencia, detalleven_comision, detalleven_tipocambio,
-//                 usuario_id, existencia, producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra, detalleven_envase, detalleven_nombreenvase, 
-//                 detalleven_costoenvase, detalleven_precioenvase, detalleven_cantidadenvase, detalleven_garantiaenvase, detalleven_devueltoenvase, detalleven_montodevolucion, 
-//                 detalleven_prestamoenvase, promocion_id, clasificador_id, detalleven_unidadfactor, preferencia_id, detalleven_tc
-//                 from detalle_venta_temporal where codigo_venta = '{$codigo}')";
-//                        
-                        
-                $this->Venta_model->ejecutar($sql);
-                        
-                //echo $sql."<br>";
+            try {
                 
+
+
+
+            $usuario_id = $this->session_data['usuario_id'];
+
+                $this->load->library('excel'); 
+                // Ruta al archivo Excel
+                
+                //$archivo_excel = 'c://xampp/htdocs/ximpleman_web/resources/files/ventas.xlsx';
+                //$config['upload_path'] = './resources/files/';
+                $archivo_excel = './resources/files/ventas.xlsx';
+
+                // Cargamos la librería PHPExcel
+                $objPHPExcel = PHPExcel_IOFactory::load($archivo_excel);
+
+                // Seleccionamos la primera hoja del archivo Excel
+                $objPHPExcel->setActiveSheetIndex(0);
+
+                // Obtenemos la cantidad de filas y columnas del archivo Excel
+                $filas = $objPHPExcel->getActiveSheet()->getHighestRow();
+                $columnas = $objPHPExcel->getActiveSheet()->getHighestColumn();
+
+                // Array para almacenar los datos del Excel
+                $datos_excel = array();
+
+                // Recorremos las filas y columnas para obtener los datos
+                for ($row = 1; $row <= $filas; $row++) {
+                    $rowData = array();
+                    for ($col = 'A'; $col <= $columnas; $col++) {
+                        $cell = $objPHPExcel->getActiveSheet()->getCell($col.$row);
+                        $rowData[] = $cell->getValue();
+                    }
+                    $datos_excel[] = $rowData;
+                }
+
+
+                $cont = 0;
+                $sql = "delete from detalle_venta_aux where usuario_id = {$usuario_id}";
+                $this->Venta_model->ejecutar($sql);
+
+                foreach ($datos_excel as $datos){
+
+                    if($cont>0){
+
+                        $codigo = $datos[2];
+                        $cantidad = $datos[5];
+                        $descuento = 0;
+                        $costo = $datos[3];
+                        $precio = $datos[4];
+
+                        $sql = "insert into detalle_venta_aux(venta_id, moneda_id, producto_id, 
+                                producto_nombre ,
+                                detalleven_codigo, detalleven_cantidad, detalleven_unidad, detalleven_costo, 
+                                detalleven_precio, detalleven_subtotal, detalleven_descuento, 
+                                detalleven_total, detalleven_caracteristicas, detalleven_preferencia, 
+                                detalleven_comision, detalleven_tipocambio, usuario_id )
+
+                                ( select 
+                                0,
+                                1,
+                                producto_id,
+                                producto_nombre,
+                                producto_codigo,
+                                ".$cantidad.",
+                                producto_unidad,
+                                {$costo},
+                                producto_precio,
+                                {$precio} * {$cantidad},
+                                {$descuento},
+                                {$precio}*{$cantidad},
+                                "."'-'".",
+                                "."'-'".",
+                                0,
+                                1,
+                                {$usuario_id}
+                                from inventario
+                                where producto_codigobarra = '{$codigo}')";
+
+                        $this->Venta_model->ejecutar($sql);
+
+
+                    }
+                    $cont++;
+                }
+
+                echo true; 
+                
+            }catch (Exception $exc) {
+                echo $exc->getTraceAsString();
             }
-            $cont++;
         }
         
-        // Ahora $datos_excel contiene los datos del Excel
-        //var_dump($datos_excel);
-        // Puedes hacer lo que quieras con los datos, por ejemplo, pasarlos a la vista
-        //$this->load->view('vista_datos_excel', array('datos' => $datos_excel));
     }
 
-//    public function subir_excel() {
-//        // Configuración para cargar el archivo
-//        $config['upload_path'] = './resources/files/';
-//        $config['allowed_types'] = 'xlsx|xls';
-//        $config['file_name'] = 'venta.xlsx'; // Nombre del archivo de destino
-//
-//        $this->load->library('upload', $config);
-//
-//        // Intentar cargar el archivo
-//        if (!$this->upload->do_upload('archivo_excel')) {
-//            $error = $this->upload->display_errors();
-//            echo $error;
-//        } else {
-//            echo "El archivo se ha subido correctamente.";
-//            
-//        }
-//    } 
     
     public function subir_excel() {
         // Configuración para cargar el archivo
@@ -9242,8 +9244,10 @@ function anular_venta($venta_id){
         if (!$this->upload->do_upload('archivo_excel')) {
             $error = $this->upload->display_errors();
             echo $error;
-        } else {
-            echo "El archivo se ha subido correctamente.";
+        }else {
+            
+            redirect('venta/ventas  ');
+            //echo "<script>alert('El archivo se ha subido correctamente');</scritp>";
         }
     }
     

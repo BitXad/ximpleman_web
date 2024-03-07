@@ -176,6 +176,9 @@ function tabla_productos(){
                         html += "<input type='text' style='width:70px; !important' id='adetalleprecio"+registros[i]["producto_id"]+"' name='adetalleprecio"+registros[i]["producto_id"]+"' value='"+Number(registros[i]["producto_precio"]).toFixed(decimales)+"' onclick='this.select();' required >";
                         html += "</td>";
                         html += "<td style='font-size:10px;'>";
+                        html += "<input type='text' style='text-align:right; background:yellow; width:70px; !important ' id='existencia"+registros[i]["producto_id"]+"' name='existencia"+registros[i]["producto_id"]+"' value='"+Number(registros[i]["existencia"]).toFixed(2)+"' onclick='this.select();' disabled>";
+                        html += "</td>";
+                        html += "<td style='font-size:10px;'>";
                         html += "<input type='text' style='width:70px; !important' id='adetallecantidad"+registros[i]["producto_id"]+"' name='adetallecantidad"+registros[i]["producto_id"]+"' value='0' onclick='this.select();' onkeyup='calcular_total("+registros[i]["producto_id"]+", event)' required >";
                         html += "</td>";
                         html += "<td style='font-size:10px;'>";

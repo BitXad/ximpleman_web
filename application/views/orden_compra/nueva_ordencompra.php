@@ -156,6 +156,7 @@
                             <th>Codigo</th>
                             <th>P. Costo</th>
                             <th>P. Venta</th>
+                            <th>Saldo</th>
                             <th>Cantidad</th>
                             <th>Total</th>
                             <th></th>

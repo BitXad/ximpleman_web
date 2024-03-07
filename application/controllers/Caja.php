@@ -307,6 +307,9 @@ class Caja extends CI_Controller{
 
             if($this->form_validation->run())     
             {
+                $caja_diferencia = $this->input->post('caja_cierre') - $this->input->post('saldo_caja');
+                $caja_transacciones = $this->input->post('saldo_caja') - $this->input->post('caja_apertura');
+                
                 $estado = 31;
                 $params = array(
                     'estado_id' => $estado,
@@ -315,11 +318,11 @@ class Caja extends CI_Controller{
                     'caja_apertura' => $this->input->post('caja_apertura'),
                     'caja_fechaapertura' => $this->input->post('caja_fechaapertura'),
                     'caja_horaapertura' => $this->input->post('caja_horaapertura'),*/
-                    'caja_transacciones' => $this->input->post('saldo_caja'),
+                    'caja_transacciones' => $caja_transacciones,
                     'caja_cierre' => $this->input->post('caja_cierre'),
                     'caja_horacierre' => $this->input->post('caja_horacierre'),
                     'caja_fechacierre' => $this->input->post('caja_fechacierre'),
-                    'caja_diferencia' => $this->input->post('caja_diferencia'),
+                    'caja_diferencia' => $caja_diferencia, //$this->input->post('caja_diferencia'),
                     'caja_corte1000' => $this->input->post('caja_corte1000'),
                     'caja_corte500' => $this->input->post('caja_corte500'),
                     'caja_corte200' => $this->input->post('caja_corte200'),

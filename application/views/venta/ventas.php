@@ -1275,17 +1275,20 @@ window.onkeydown = compruebaTecla;
                                 $nomostrar = "display: none";
                             }
                             ?>
-                        <select   id="select_imprimir_factura" style="font-weight: bold; <?php echo $nomostrar?>" onclick="imprimir_factura()" class='btn btn-default btn-xs' title="Imprimir factura">
+<!--                        <select   id="select_imprimir_factura" style="font-weight: bold; <?php echo $nomostrar?>" onclick="imprimir_factura()" class='btn btn-default btn-xs' title="Imprimir factura">
                             <option value="0">Imprimir</option>
                             <option value="1">Factura</option>
                             <option value="2">Copia</option>
-                        </select>
+                        </select>-->
+                        
+                        <button type="button" id="boton_modalexcel" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalexcel" ><fa class="fa fa-file-excel-o"></fa><b> Subir Ventas</b></button>
+                        <button type="button" id="cargar_ventas" class="btn btn-default btn-xs" onclick="cargar_ventas_excel()"><fa class="fa fa-send"></fa><b> Cargar Ventas</b></button>
                         <?php
                         }
                         if($parametro['parametro_tiposistema'] != 1){
                         ?>
                         <button onclick='solicitudCufd(<?php echo $puntoventa_codigo; ?>);' class='btn btn-default btn-xs'><span class='fa fa-download' title="Actualizar Codigo Unico de Facturacion Diaria CUFD"></span><b> CUFD</b></button> 
-                        <button class="btn btn-default btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa> Verificar Conexión</button>
+                        <button class="btn btn-default btn-xs" onclick="verificarComunicacion()"><fa class="fa fa-chain"></fa><b> Verificar Conexión</b></button>
                         <?php } ?>
                         
 <!--                        <button onclick='finalizarventa();' class='btn btn-default btn-xs' id="pruebas"><span class='fa fa-download' title="Finalizar"></span><b> Finalizar <?php echo $sistema["sistema_moduloventas"]; ?></b></button> -->
@@ -1320,13 +1323,20 @@ window.onkeydown = compruebaTecla;
             
                 <select id="selector_factura" class="btn btn-warning btn-xs" style="text-align: left;">
         
+                    <option value="0" selected>- SELECCIONAR PAGO -</option>
                     <?php foreach($factura_servicios as $fact){ ?>
                             
-                        <option value="<?= $fact["num_fact"];  ?>"><?php echo "FACTURA Nº: ".$fact["num_fact"]." NIT: ".$fact["nit_fact"]." RAZON SOC.: ".$fact["razon_fact"];  ?></option>
+                    <option value="<?= $fact["num_fact"];  ?>"><?php echo substr("FACTURA Nº: ".$fact["num_fact"]." NIT: ".$fact["nit_fact"]." RAZON SOC.: ".$fact["razon_fact"],0,70);  ?></option>
                                         
                     <?php } ?>
-                </select>   
+                </select> 
             
+            <button type="button" id="cargar_ventas" class="btn btn-default btn-xs" onclick="cargar_servicios()"><fa class="fa fa-send"></fa><b> Cargar Servicios</b></button>
+            
+<!--                            <button href="#" onclick="cargar_servicios()" data-target="#modalfinalizar" class="btn btn-facebook btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_finalizarventas"]!=1)?'display:none':'' ?>" id="boton_finventa">
+                    <i class="fa fa-download fa-4x"></i><br><br>Cargar<br>Servicios <br>
+                </button>
+            -->
             <div class="box" style="border-color:black;">
             <div class="box-body"> 
                 
@@ -1344,12 +1354,12 @@ window.onkeydown = compruebaTecla;
                         </tr>
                         
                         <tr>
-                            <td><input type="number" name="datos_consumoperiodo" value="<?php echo ""; ?>" class="btn btn-info btn-sm" id="datos_consumoperiodo" <?php echo $estilo2; ?>/></td>
+                            <td><input type="number" name="datos_consumoperiodo" value="<?php echo "0"; ?>" class="btn btn-info btn-sm" id="datos_consumoperiodo" <?php echo $estilo2; ?>/></td>
                             <td><input type="text" name="datos_beneficiarioley1886" value="<?php echo "0"; ?>" class="btn btn-info btn-sm" id="datos_beneficiarioley1886"  <?php echo $estilo2; ?>/></td>
                             <td><input type="text" name="datos_montodescuentoley1886" value="<?php echo "0"; ?>" class="btn btn-info btn-sm" id="datos_montodescuentoley1886"  <?php echo $estilo2; ?>/></td>
-                            <td><input type="text" name="datos_montodescuentotarifadignidad" value="<?php echo ""; ?>" class="btn btn-info btn-sm" id="datos_montodescuentotarifadignidad"  <?php echo $estilo2; ?>/></td>
-                            <td><input type="text" name="datos_mes" value="<?php echo ""; ?>" class="btn btn-warning btn-sm" id="datos_mes"  <?php echo $estilo2; ?>/></td>
-                            <td><input type="text" name="datos_anio" value="<?php echo ""; ?>" class="btn btn-warning btn-sm" id="datos_anio"  <?php echo $estilo2; ?>/></td>
+                            <td><input type="text" name="datos_montodescuentotarifadignidad" value="<?php echo "0"; ?>" class="btn btn-info btn-sm" id="datos_montodescuentotarifadignidad"  <?php echo $estilo2; ?>/></td>
+                            <td><input type="text" name="datos_mes" value="<?php echo "ENERO"; ?>" class="btn btn-warning btn-sm" id="datos_mes"  <?php echo $estilo2; ?>/></td>
+                            <td><input type="text" name="datos_anio" value="<?php echo "2020"; ?>" class="btn btn-warning btn-sm" id="datos_anio"  <?php echo $estilo2; ?>/></td>
                         </tr>
                         
                         <tr>
@@ -1361,10 +1371,10 @@ window.onkeydown = compruebaTecla;
                             <th style="padding:0;"></th>
                         </tr>
                         <tr>
-                            <td><input type="text" name="datos_medidor" value="<?php echo ""; ?>" class="btn btn-info btn-sm" id="datos_medidor"  <?php echo $estilo2; ?>/></td>
-                            <td><input name="datos_aseourbano" class="btn btn-facebook btn-sm" id="datos_aseourbano"   <?php echo $estilo2; ?>> </input></td>                            
+                            <td><input type="text" name="datos_medidor" value="<?php echo "MD001"; ?>" class="btn btn-info btn-sm" id="datos_medidor"  <?php echo $estilo2; ?>/></td>
+                            <td><input name="datos_aseourbano" class="btn btn-facebook btn-sm" id="datos_aseourbano"   <?php echo $estilo2; ?> value="ASEO URBANO"> </input></td>                            
                             <td><input type="text" name="datos_tasaaseo" value="<?php echo "0.00"; ?>" class="btn btn-facebook btn-sm" id="datos_tasaaseo" <?php echo $estilo2; ?>/></td>
-                            <td><input type="text" name="datos_alumbrado" class="btn btn-flickr btn-sm" id="datos_alumbrado" <?php echo $estilo2; ?> value="Tasa de Alumbrado"></input></td>
+                            <td><input type="text" name="datos_alumbrado" class="btn btn-flickr btn-sm" id="datos_alumbrado" <?php echo $estilo2; ?> value="ALUMBRADO PUBLICO"></input></td>
                             <td><input type="text" name="datos_tasaalumbrado" value="<?php echo "0.00"; ?>" class="btn btn-flickr btn-sm" id="datos_tasaalumbrado" <?php echo $estilo2; ?>/></td>
                             <td></td>
                         </tr>
@@ -1379,22 +1389,22 @@ window.onkeydown = compruebaTecla;
                         <tr>
                             <td><input name="datos_detalleajustenosujetoiva" class="btn btn-microsoft btn-sm" id="datos_detalleajustenosujetoiva"  <?php echo $estilo2; ?> value="AJUSTE NO SUJETOS A IVA"></input></td>
                             <td><input type="text" name="datos_ajutesnosujetoiva" value="<?php echo "0.00"; ?>" class="btn btn-microsoft btn-sm" id="datos_ajutesnosujetoiva"  <?php echo $estilo2; ?>/></td>
-                            <td><input name="datos_detalleajustesujetoiva" class="btn btn-pinterest btn-sm" id="datos_detalleajustesujetoiva"   <?php echo $estilo2; ?> value="Cobro por reconexion"></input></td>
+                            <td><input name="datos_detalleajustesujetoiva" class="btn btn-pinterest btn-sm" id="datos_detalleajustesujetoiva"   <?php echo $estilo2; ?> value="COBRO POR RECONEXION"></input></td>
                             <td><input type="text" name="datos_ajustesujetoiva" value="<?php echo "0.00"; ?>" class="btn btn-pinterest btn-sm" id="datos_ajustesujetoiva"  <?php echo $estilo2; ?>/></td>
-                            <td><input name="datos_detalleotrastasas" class="btn btn-yahoo btn-sm" id="datos_detalleotrastasas"  <?php echo $estilo2; ?> value="Otras tasas"></input></td>
+                            <td><input name="datos_detalleotrastasas" class="btn btn-yahoo btn-sm" id="datos_detalleotrastasas"  <?php echo $estilo2; ?> value="OTRAS TASAS"></input></td>
                             <td><input type="text" name="datos_otrastasas" value="<?php echo "0.00"; ?>" class="btn btn-yahoo btn-sm" id="datos_otrastasas"  <?php echo $estilo2; ?>/></td>
                         </tr>
                         
                         <tr>
-                            <th style="padding:0;">Otros Pagos</th>
-                            <th style="padding:0;">Sub total Bs</th>
+                            <th style="padding:0;">OTROS PAGOS</th>
+                            <th style="padding:0;">SUB TOTAL Bs</th>
                             <th style="padding:0;"></th>
                             <th style="padding:0;"></th>
                             <th style="padding:0;"></th>
                             <th style="padding:0;"></th>
                         </tr>
                         <tr>
-                            <td><input name="datos_detalleotrospagosnosujetoiva" class="btn btn-soundcloud btn-sm" id="datos_detalleotrospagosnosujetoiva"  <?php echo $estilo2; ?> value="Otros Pagos"></input></td>
+                            <td><input name="datos_detalleotrospagosnosujetoiva" class="btn btn-soundcloud btn-sm" id="datos_detalleotrospagosnosujetoiva"  <?php echo $estilo2; ?> value="OTROS PAGOS"></input></td>
                             <td><input type="text" name="datos_otrospagosnosujetoiva" value="<?php echo "0.00"; ?>" class="btn btn-soundcloud btn-sm" id="datos_otrospagosnosujetoiva"  <?php echo $estilo2; ?>/></td>
                             <td colspan="3" style="font-size: 15px; background:darkgray;"><b>TOTALES POR COBRAR Bs</b></td>
                             <td><input type="text" name="total_por_cobrar" value="<?php echo "0.00"; ?>" class="btn btn-default btn-sm" id="total_por_cobrar"  style="width:90px; font-size: 15px; font-weight: bold; background:darkgray; "/><b></b></td>
@@ -1491,10 +1501,13 @@ window.onkeydown = compruebaTecla;
 <!--            <a href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;" id="boton_finaventa">
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar Venta <br>
             </a>-->
-
-            <button href="#" onclick="cargar_servicios()" data-target="#modalfinalizar" class="btn btn-facebook btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_finalizarventas"]!=1)?'display:none':'' ?>" id="boton_finventa">
-                <i class="fa fa-download fa-4x"></i><br><br>Cargar<br>Servicios <br>
-            </button>
+            <?php //if($dosificacion[0]['docsec_codigoclasificador'] == 13){ ?>
+                
+<!--                <button href="#" onclick="cargar_servicios()" data-target="#modalfinalizar" class="btn btn-facebook btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_finalizarventas"]!=1)?'display:none':'' ?>" id="boton_finventa">
+                    <i class="fa fa-download fa-4x"></i><br><br>Cargar<br>Servicios <br>
+                </button>-->
+                
+            <?php //} ?>
                 
             <button href="#" data-toggle="modal" onclick="focus_efectivo(),mostrar('forma_pago','glosa_banco')" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_finalizarventas"]!=1)?'display:none':'' ?>" id="boton_finventa">
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar<br><?php echo $sistema["sistema_moduloventas"]; ?> <br>
@@ -1978,10 +1991,7 @@ window.onkeydown = compruebaTecla;
                         </td>
                 </tr>
                 
-                
             </table>
-            
-            
 
           
             <div class="col-md-12">
@@ -3742,44 +3752,12 @@ $(document).ready(function() {
 
 
 
-<?php //echo form_open('venta/importar_excel/'); ?>
-<!--                    <div class="col-md-3">
-                            <label for="archivo_ventas" class="control-label">Archivos de ventas</label>
-                            <div class="form-group">
-                                <input style="text-align: left !important" type="file" name="archivo_ventas" value="" class=" btn btn-success btn-sm form-control" id="archivo_ventas" accept=".p12" />
-                                    <input type="hidden" name="archivo_ventas1" value="" class="form-control" id="archivo_ventas1" />
-                            </div>
-                    </div>
-
-
-            <div class="box-footer">
-            <button type="submit" class="btn btn-success">
-                <i class="fa fa-check"></i> Guardar
-            </button>
-            <a href="<?php echo site_url('rol'); ?>" class="btn btn-danger">
-                    <i class="fa fa-times"></i> Cancelar</a>
-            </div>				-->
-<?php echo form_close(); ?>
-
-
-<div class="row">
-    
-<h3>Subir archivo Excel</h3>
-    <?php echo form_open_multipart('venta/subir_excel'); ?>
-        <input type="file" name="archivo_excel" accept=".xlsx, .xls">
-        <br><br>
-        <input type="submit" value="Subir archivo">
-    <?php echo form_close(); ?>
-</div>
-
-
-
 <!------------------------------------------------------------------------------->
 <!----------------------- INICIO MODAL ACTUALIZAR PRODUCTOS ----------------------------------->
 <!------------------------------------------------------------------------------->
 
 
-<div>
+<div hidden>
     <button type="button" id="boton_modalexcel" class="btn btn-default" data-toggle="modal" data-target="#modalexcel" >
       Subir Excel
     </button>
@@ -3794,27 +3772,43 @@ $(document).ready(function() {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-        <div class="modal-content" style="font-family: Arial">
+        
+            <div class="modal-content" style="font-family: Arial">
 
-                        <div class="box-body">
+                <?php echo form_open_multipart('venta/subir_excel'); ?>
+                
+                    <div class="box-body">
+                        <div class="col-md-8">
+                            <center>
+                                
 
-                            <h3>Subir archivo Excel</h3>
-                            <?php echo form_open_multipart('venta/subir_excel'); ?>
-                                <input type="file" class="btn btn-facebook"  name="archivo_excel" accept=".xlsx, .xls">
+                                <h4 style="font-weight: bold;">Seleccione el archivo con las ventas (.xlsx):</h4>
+                                    <input type="file" class="btn btn-facebook btn-lg"  name="archivo_excel" accept=".xlsx, .xls">
                                 <br><br>
                                 <!--<input type="submit"  class="btn btn-success"  value="Subir archivo">-->
-                                <button type="submit"  class="btn btn-success"  value="Subir archivo"><fa class="fa fa-upload"></fa> Subir Archivo</button>
-                            <?php echo form_close(); ?>
-             
-                           
-                        </div>
 
-<!--                        <div class="modal-footer" style="text-align: center">
-                            <button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>
+                            </center>
+                        </div>
+                        <div class="col-md-4">
+                            <center>
+                                <b>Descargar formato<br><br></b>
+                                
+                                <a href="<?php echo base_url("resources/files/formato_ventas.xlsx"); ?>" class="btn btn-info" style="font-size: 30px;" title="El archivo ventas.xlsx, contiene el formato para el llenado y registro de ventas masivas "><fa class="fa fa-file-excel-o"></fa></a>
+                                
+                            </center>
+                                
+                        </div>
+                    </div>
+
+                        <div class="modal-footer" style="text-align: center">
+                            <!--<button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>-->
                             <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
-                        </div>-->
+                            <button type="submit"  class="btn btn-success"  value="Subir archivo"><fa class="fa fa-file-excel-o"></fa> Subir Archivo</button>
+                        </div>
+                
+                <?php echo form_close(); ?>
             
-        </div>
+            </div>
     </div>
 </div>
 

@@ -257,6 +257,7 @@ class Servicio_model extends CI_Model
      */
     function get_all_repservicios()
     {
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
         /*SELECT
                 c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
                 ds.detalleserv_id, s.servicio_total, s.servicio_acuenta, s.servicio_saldo,

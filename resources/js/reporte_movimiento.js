@@ -32,6 +32,9 @@ function buscar_por_fechahora(){
     var fechadesde = fecha_desde+" "+hora_desde;
     var fechahasta = fecha_hasta+" "+hora_hasta;
     
+    $("#fecha1impresion").text('Desde: '+formato_fecha(fecha_desde)+' '+hora_desde);
+    $("#fecha2impresion").text('Hasta: '+formato_fecha(fecha_hasta)+' '+hora_hasta);
+    
     buscarporfechahora(fechadesde, fechahasta, usuario);
 }
 
@@ -483,7 +486,7 @@ function buscarporfechahora(fecha_desde, fecha_hasta, usuario){
     //var decimales = document.getElementById('decimales').value;;
     var decimales = 2;
     
-    
+   
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
     //Mostramos las transacciones

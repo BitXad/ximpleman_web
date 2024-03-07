@@ -3851,7 +3851,7 @@ function registrarventa(cliente_id)
     let datos_otrastasas = document.getElementById('datos_otrastasas').value;
     let parametro_comprobante = document.getElementById('parametro_comprobante').value;
     //let datos_periodofacturado = document.getElementById('datos_periodofacturado').value;
-    
+    let factura_servicio = document.getElementById("selector_factura").value;
     
     if (registroeventos_codigo>0){
         
@@ -3951,7 +3951,7 @@ function registrarventa(cliente_id)
                 datos_tasaaseo:datos_tasaaseo, datos_detalleajustenosujetoiva:datos_detalleajustenosujetoiva, 
                 datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
                 datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
-                datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante
+                datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante, factura_servicio:factura_servicio
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -4066,7 +4066,7 @@ function registrarventa(cliente_id)
                 datos_tasaaseo:datos_tasaaseo, datos_detalleajustenosujetoiva:datos_detalleajustenosujetoiva, 
                 datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
                 datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
-                datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante
+                datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante, factura_servicio:factura_servicio
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -8634,6 +8634,32 @@ function verificar_producto(){
                 document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
 }
 
+function actualziar_pago_servicio(num_fact){
+
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/actualizar_pago_servicio';
+
+
+
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{num_fact:num_fact},
+            success:function(respuesta){
+
+                let res = JSON.parse(respuesta);                            
+
+                if (res) {  
+
+
+                }
+            },
+            error:function(respuesta){
+                res = 0;
+            }
+        });     
+
+
+}
 
 
 function borrar_datos_cliente(){
@@ -8644,6 +8670,7 @@ function borrar_datos_cliente(){
     var parametro_factura = document.getElementById("parametro_factura").value; //0 no, 1 si
     let documento_sector = document.getElementById("docsec_codigoclasificador").value;
     var base_url = document.getElementById('base_url').value;
+    //var docsec_codigoclasificador = document.getElementById("docsec_codigoclasificador").value;
     
     var nit = "1234";
     var razon_social = "SIN NOMBRE";
@@ -8838,10 +8865,14 @@ function borrar_datos_cliente(){
         document.getElementById('facturado').checked = true;
     }    
     
+
+    
     //$("#span_buscar_cliente").click();   
     $("#boton_presionado").val(0);
 
 }
+
+
 
 function ventas_fallidas(){
     
@@ -8960,7 +8991,7 @@ function cargar_servicios(){
                                  $("#datos_montodescuentotarifadignidad").val(0);
                                  $("#datos_mes").val(factura[0]["mes_lec"]);
                                  $("#datos_anio").val(factura[0]["gestion_lec"]);
-                                 $("#datos_medidor").val("000434");
+                                 $("#datos_medidor").val(factura[0]["nit_fact"]);
                                  
                           
                                 $("#venta_descuento").val("0.00");                                 
@@ -8973,8 +9004,11 @@ function cargar_servicios(){
                                  
                                  $("#datos_detalleotrastasas").val(exento[0]["descip_detfact"]);
                                  $("#datos_otrastasas").val(exento[0]["total_detfact"]);
-                                 $("#datos_detalleotrospagosnosujetoiva").val(exento[1]["descip_detfact"]);               
-                                 $("#datos_otrospagosnosujetoiva").val(exento[1]["total_detfact"]);               
+                                 
+                                 if  (exento.length>=2){
+                                    $("#datos_detalleotrospagosnosujetoiva").val(exento[1]["descip_detfact"]);               
+                                    $("#datos_otrospagosnosujetoiva").val(exento[1]["total_detfact"]);                                                    
+                                 }
                                  
                              }
                              calcular_servicios();
@@ -8998,6 +9032,42 @@ function cargar_servicios(){
     }
     
 }
+
+function cargar_ventas_excel(){
+    
+    let base_url = document.getElementById('base_url').value;
+    let controlador = base_url+'venta/importar_excel';
+    
+    var r = confirm("ADVERTENCIA: Esta operación eliminara la operacion de venta actual y la reemplazara el contenido del excel. \n ¿Desea Continuar?");
+
+    if (r == true) {
+
+
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{},
+                success:function(respuesta){
+
+                    let res = JSON.parse(respuesta);                            
+
+                    if (res) {  
+                        alert("Los datos fueron cargados con éxito...!");
+                        tablaproductos();
+                    }else{
+                        alert("ADVERTENCIA: Ocurrio un problema al cargar los datos, verifique el arhivo de datos y vuelva a intentar;");
+                    }
+                },
+                error:function(respuesta){
+                    res = 0;
+                }
+            });     
+
+    }else{                   
+
+    }   
+    
+}
+
 function calcular_servicios(){
     let datos_montodescuentotarifadignidad = document.getElementById('datos_montodescuentotarifadignidad').value;
     let datos_tasaaseo = document.getElementById('datos_tasaaseo').value;

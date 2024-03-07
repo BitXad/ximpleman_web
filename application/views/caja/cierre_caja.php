@@ -29,8 +29,6 @@
     $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'";
     $fecha_desde = date('Y-m-d');
     $hora_desde = '00:00';
-      //$fecha_hasta =  date('Y-m-d', strtotime('+1 day')); +1 dia
-      //$fecha_hasta =  date('Y-m-d', strtotime('+1 day')); -1 dia
       
     $fecha_hasta = date('Y-m-d');
     $hora_hasta = '23:59';
@@ -38,16 +36,6 @@
 
 ?>
 <!-------------------- inicio collapse ---------------------->
-<div hidden>
-
-    <input  type="text" id="buscarusuario_id" value="<?php echo $usuario_id; ?>">
-    <input  type="text" id="base_url" value="<?php echo base_url(""); ?>">
-    <input  type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
-    <input  type="text" id="nombre_moneda" value="<?php echo $moneda["moneda_descripcion"]; ?>">
-    <input  type="text" id="estado_id" value="1">
-    <input type="text" id="caja_apertura" value="<?php echo $caja["caja_apertura"]; ?>">
-   
-</div>
 
 
 
@@ -119,7 +107,20 @@
       	<div class="box box-info">
             <?php echo form_open('caja/cierre_caja/'.$caja['caja_id']); ?>
             
-               
+            <div hidden>
+
+                <input  type="text" id="buscarusuario_id" name="buscarusuario_id" value="<?php echo $usuario_id; ?>">
+                <input  type="text" id="base_url" name="base_url"  value="<?php echo base_url(""); ?>">
+                <input  type="text" id="tipousuario_id" name="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
+                <input  type="text" id="nombre_moneda" name="nombre_moneda" value="<?php echo $moneda["moneda_descripcion"]; ?>">
+                <input  type="text" id="estado_id" name="estado_id" value="1">
+                <input type="text" id="caja_apertura" name="caja_apertura"  value="<?php echo $caja["caja_apertura"]; ?>">
+
+            </div>
+
+            
+            
+            
                  
           	<div class="box-body">
                     

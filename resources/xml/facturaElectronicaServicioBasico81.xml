@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaElectronicaServicioBasico xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaServicioBasico.xsd">
+      <cabecera>
+          <nitEmisor>5152377019</nitEmisor>
+          <razonSocialEmisor>GROVER ALEJANDRO ZARATE ALMENDRAS</razonSocialEmisor>
+          <municipio>COCHABAMBA</municipio>
+          <telefono>4511518 *(591)79999097</telefono>
+          <numeroFactura>227</numeroFactura>
+          <cuf>1608A399D64C00A32A97D417A210A3E497DB444DFE36BAA680AA068E74</cuf>
+          <cufd>BQXxCKlhQRkE=NzkQ5NzdBQjdEMjc=QnxobmtWYUNZVUFc0ODlERENBMTM2N</cufd>
+          <codigoSucursal>0</codigoSucursal>
+          <direccion>URUGUAY N° 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <mes/>
+          <gestion/>
+          <ciudad>COCHABAMBA</ciudad>
+          <zona>CENTRAL</zona>
+          <numeroMedidor/>
+          <fechaEmision>2024-02-26T01:17:20.966</fechaEmision>
+          <nombreRazonSocial>SIN NOMBRE</nombreRazonSocial>
+          <domicilioCliente>-</domicilioCliente>
+          <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>1234</numeroDocumento>
+          <complemento/>
+          <codigoCliente>1234</codigoCliente>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta>0</numeroTarjeta>
+          <montoTotal>628.50</montoTotal>
+          <montoTotalSujetoIva>628.50</montoTotalSujetoIva>
+          <consumoPeriodo>0</consumoPeriodo>
+          <beneficiarioLey1886 xsi:nil="true"/>
+          <montoDescuentoLey1886 xsi:nil="true"/>
+          <montoDescuentoTarifaDignidad xsi:nil="true"/>
+          <tasaAseo xsi:nil="true"/>
+          <tasaAlumbrado xsi:nil="true"/>
+          <ajusteNoSujetoIva xsi:nil="true"/>
+          <detalleAjusteNoSujetoIva xsi:nil="true"/>
+          <ajusteSujetoIva xsi:nil="true"/>
+          <detalleAjusteSujetoIva xsi:nil="true"/>
+          <otrosPagosNoSujetoIva xsi:nil="true"/>
+          <detalleOtrosPagosNoSujetoIva xsi:nil="true"/>
+          <otrasTasas>0.00</otrasTasas>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1.00</tipoCambio>
+          <montoTotalMoneda>628.50</montoTotalMoneda>
+          <descuentoAdicional>0.00</descuentoAdicional>
+          <codigoExcepcion>0</codigoExcepcion>
+          <cafc xsi:nil="true"/>
+          <leyenda>Ley N° 453: En caso de incumplimiento a lo ofertado o convenido, el proveedor debe reparar o sustituir el producto..</leyenda>
+          <usuario>Administrador</usuario>
+          <codigoDocumentoSector>13</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7779970670324</codigoProducto>
+           <descripcion>OMO VERDE 160G</descripcion>
+           <cantidad>5.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>4.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>20.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7779970670362</codigoProducto>
+           <descripcion>OMO ROJO 160 G</descripcion>
+           <cantidad>3.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>4.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>12.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7775000009126</codigoProducto>
+           <descripcion>OLA DETERGENTE PODER ACTIVO FLORAL 850 G</descripcion>
+           <cantidad>5.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>17.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>85.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7775000008006</codigoProducto>
+           <descripcion>OLA CLORITO 250 ML</descripcion>
+           <cantidad>5.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>4.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>20.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7891150078673</codigoProducto>
+           <descripcion>OLA CLORITO 1 LITRO</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>11.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>11.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7891035040702</codigoProducto>
+           <descripcion>VANISH PODER O 450 G</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>45.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>45.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7751851004923</codigoProducto>
+           <descripcion>SAPOLIO LAVAVAJILLA 360 G</descripcion>
+           <cantidad>4.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>8.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>32.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7791293009155</codigoProducto>
+           <descripcion>FECOAPAC</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>19.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>19.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7790740505523</codigoProducto>
+           <descripcion>AFCOOP</descripcion>
+           <cantidad>3.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>16.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>48.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7790740502393</codigoProducto>
+           <descripcion>PLUSBELLE ACONDICIONADOR EXTRA BRILLO CERAMIDAS ACTIVAS</descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>15.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>30.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7790990586716</codigoProducto>
+           <descripcion>PLUSBELLE JABONCILLO ENERGIZANTE</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>6.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>6.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7775000011907</codigoProducto>
+           <descripcion>OLA SUAVECITO CELESTE BRISA CELESTIAL 2 LT</descripcion>
+           <cantidad>4.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>27.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>108.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>9002490100070</codigoProducto>
+           <descripcion>RED BULL 250 ML</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>12.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>12.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7776507000760</codigoProducto>
+           <descripcion>NACIONAL SERVILLETAS 500 UNIDADES</descripcion>
+           <cantidad>4.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>10.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>40.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7776501002357</codigoProducto>
+           <descripcion>SCOTT SERVILLETAS 300 UNIDADES</descripcion>
+           <cantidad>3.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>12.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>36.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7776501001770</codigoProducto>
+           <descripcion>SCOTT VERDE</descripcion>
+           <cantidad>5.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>5.50</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>27.50</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>77716064</codigoProducto>
+           <descripcion>COCA COLA 500 ML</descripcion>
+           <cantidad>5.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>5.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>25.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7776501000414</codigoProducto>
+           <descripcion>SCOTT SERVILLETAS PEQUEÑA DIA A DIA</descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>2.50</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>5.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7771224002387</codigoProducto>
+           <descripcion>DELIZIA HELADO BROWNIE</descripcion>
+           <cantidad>5.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>6.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>30.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99794</codigoProductoSin>
+           <codigoProducto>7771223000728</codigoProducto>
+           <descripcion>FERRARI GALLETAS COQUETA</descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>47</unidadMedida>
+           <precioUnitario>8.50</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>17.00</subTotal>
+      </detalle>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+  <Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>kUEbqkwFFCnCtArW71/yX7kIKL9lYs/48ciQUhlt9jc=</DigestValue></Reference></SignedInfo><SignatureValue>IglYyjCzd81kNtT3uXIcOwWyb9l6t58g+IO0jCH9gof7pW7huROYgtDe9wNdT+NIxmIOe6f49LYHtyHU5n6xpV4xKAIn5vDVILvRbg3u0NlHcT+f6L7+jT3y+Ly1d6GwZJtc+AoH+gdTXuuuHVrgVIDKEBtgg8wDyYeZCYdjtCnttQCThi46+p3cjFfyYlvYl2yIwzqGzR5zxdXhlsBwDZqgiYmiGAR7GbC/Ccfh9wK6VlH6VEFvtcYDW7ya4cLYqpUokWCGnQSxFKBISc+sQMfOslYevsorHV4SYKsHLxzh00UKBxLeYOsH/6juyD0Wkl+L1J0/inD6aB+40S9lbQ==</SignatureValue>
+<KeyInfo><X509Data><X509Certificate>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</X509Certificate></X509Data></KeyInfo></Signature></facturaElectronicaServicioBasico>

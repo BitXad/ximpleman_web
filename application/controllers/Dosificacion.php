@@ -332,9 +332,12 @@ class Dosificacion extends CI_Controller{
 
                 $this->Dosificacion_model->ejecutar($sql);
 
+                $dosificacion_modalidad = $this->input->post('dosificacion_modalidad');
                 //Modificar los endpoints para PRODUCCION
-                if ($this->input->post('cambiar_endpoints')==1){
+                if ($this->input->post('cambiar_endpoints')==1){ //Produccion
                     
+                    if($dosificacion_modalidad==1){ // si la modalidad es electronica en linea
+                        
                     $sql = "UPDATE dosificacion
                             SET
                               estado_id = 1,
@@ -352,7 +355,29 @@ class Dosificacion extends CI_Controller{
                               dosificacion_telecomunicaciones = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionTelecomunicaciones?wsdl',
                               dosificacion_entidadesfinancieras = ''
                             WHERE dosificacion_id = ".$dosificacion_id;
-
+                    
+                    }
+                    
+                    if($dosificacion_modalidad==2){ // si la modalidad es computarizada en linea
+                        
+                    $sql = "UPDATE dosificacion
+                            SET
+                              estado_id = 1,
+                             
+                              dosificacion_sincronizacion = 'https://siatrest.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl',
+                              dosificacion_recepcioncompras = 'https://siatrest.impuestos.gob.bo/v2/ServicioRecepcionCompras?wsdl',
+                              dosificacion_operaciones = 'https://siatrest.impuestos.gob.bo/v2/FacturacionOperaciones?wsdl',
+                              dosificacion_obtencioncodigos = 'https://siatrest.impuestos.gob.bo/v2/FacturacionCodigos?wsdl',
+                              dosificacion_notacredito = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionDocumentoAjuste?wsdl',
+                              dosificacion_factura = 'https://siatrest.impuestos.gob.bo/v2/ServicioFacturacionCompraVenta?wsdl',
+                              dosificacion_facturaservicios = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionServicioBasico?wsdl',
+                              dosificacion_facturaglp = 'https://siatrest.impuestos.gob.bo/v2/ServicioFacturacionComputarizada?wsdl',
+                              dosificacion_ruta = 'https://siat.impuestos.gob.bo/consulta/QR?',
+                              dosificacion_glpelectronica = 'https://siatrest.impuestos.gob.bo/v2/ServicioFacturacionComputarizada?wsdl',
+                              dosificacion_telecomunicaciones = 'https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionTelecomunicaciones?wsdl',
+                              dosificacion_entidadesfinancieras = ''
+                            WHERE dosificacion_id = ".$dosificacion_id;
+                    }
                     $this->Dosificacion_model->ejecutar($sql);
                 }
                 //FIN Modificar los endpoints para PRODUCCION

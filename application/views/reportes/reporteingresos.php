@@ -173,8 +173,8 @@
     </tr>
     <tr>
         <td width="300" style="text-align: center;">
-            <span style="font-size: 10px; font-family: Arial" id="fecha1impresion"></span>
-            <span style="font-size: 10px; font-family: Arial" id="fecha2impresion"></span><br>
+            <span style="font-size: 10px; font-family: Arial" id="fecha1impresion"></span><br>
+            <span style="font-size: 10px; font-family: Arial" id="fecha2impresion"></span>
         
         </td>
     </tr>

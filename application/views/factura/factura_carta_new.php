@@ -412,7 +412,7 @@ border-bottom : 1px solid #aaa;
                             
                             <tr>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;"  class="autoColor"><b>Periodo Facturado:</b></td>
-                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['datos_embase']; ?></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $factura[0]['factura_glosa']; ?></td>
                             </tr>
                             <?php } ?>
                             
@@ -676,7 +676,7 @@ border-bottom : 1px solid #aaa;
                         -->
                     <?php } else{ ?>
                     <tr>
-                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b><?php "TOTAL Bs"; ?></b></td>
+                        <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b><?php echo "TOTAL Bs"; ?></b></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'],$dos_decimales,'.',',') ?></b></td>
                     </tr>
                     

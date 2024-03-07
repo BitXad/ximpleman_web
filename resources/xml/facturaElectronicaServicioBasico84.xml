@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaElectronicaServicioBasico xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaServicioBasico.xsd">
+      <cabecera>
+          <nitEmisor>5152377019</nitEmisor>
+          <razonSocialEmisor>GROVER ALEJANDRO ZARATE ALMENDRAS</razonSocialEmisor>
+          <municipio>COCHABAMBA</municipio>
+          <telefono>4511518 *(591)79999097</telefono>
+          <numeroFactura>229</numeroFactura>
+          <cuf>1608A399D64C00A339BAC6276380448D1E2AD47ED266BAA680AA068E74</cuf>
+          <cufd>BQXxCKlhQRkE=NzkQ5NzdBQjdEMjc=QnxobmtWYUNZVUFc0ODlERENBMTM2N</cufd>
+          <codigoSucursal>0</codigoSucursal>
+          <direccion>URUGUAY N° 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <mes>ENERO</mes>
+          <gestion>2020</gestion>
+          <ciudad>COCHABAMBA</ciudad>
+          <zona>CENTRAL</zona>
+          <numeroMedidor>MD001</numeroMedidor>
+          <fechaEmision>2024-02-26T03:09:08.767</fechaEmision>
+          <nombreRazonSocial>SIN NOMBRE</nombreRazonSocial>
+          <domicilioCliente>-</domicilioCliente>
+          <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>1234</numeroDocumento>
+          <complemento/>
+          <codigoCliente>1234</codigoCliente>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta>0</numeroTarjeta>
+          <montoTotal>150.00</montoTotal>
+          <montoTotalSujetoIva>150.00</montoTotalSujetoIva>
+          <consumoPeriodo>0</consumoPeriodo>
+          <beneficiarioLey1886 xsi:nil="true"/>
+          <montoDescuentoLey1886 xsi:nil="true"/>
+          <montoDescuentoTarifaDignidad xsi:nil="true"/>
+          <tasaAseo xsi:nil="true"/>
+          <tasaAlumbrado xsi:nil="true"/>
+          <ajusteNoSujetoIva xsi:nil="true"/>
+          <detalleAjusteNoSujetoIva xsi:nil="true"/>
+          <ajusteSujetoIva xsi:nil="true"/>
+          <detalleAjusteSujetoIva xsi:nil="true"/>
+          <otrosPagosNoSujetoIva xsi:nil="true"/>
+          <detalleOtrosPagosNoSujetoIva xsi:nil="true"/>
+          <otrasTasas>0.00</otrasTasas>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1.00</tipoCambio>
+          <montoTotalMoneda>150.00</montoTotalMoneda>
+          <descuentoAdicional>0.00</descuentoAdicional>
+          <codigoExcepcion>0</codigoExcepcion>
+          <cafc xsi:nil="true"/>
+          <leyenda>Ley N° 453: Los alimentos declarados de primera necesidad deben ser suministrados de manera adecuada, oportuna, continua y a precio justo.</leyenda>
+          <usuario>Administrador</usuario>
+          <codigoDocumentoSector>13</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99100</codigoProductoSin>
+           <codigoProducto>240202150237</codigoProducto>
+           <descripcion>AGUA POTABLE</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>32</unidadMedida>
+           <precioUnitario>150.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>150.00</subTotal>
+      </detalle>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+  <Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>PV52lf4TuwvxAGRXmBed3wDGUew5Nvi+Y/6jjdGRSj8=</DigestValue></Reference></SignedInfo><SignatureValue>BqLhtebKBGtWa3wDwarsY0VJegcVi+EPhhxxCP/ckETyGezL7BFOwUl4Web8lTWBA/5y2cm/VNWcEM+Y+RD77PQZxkFMhoRhbEFTKsInr8p0usmCVmKQVmCOl3FI2Yn4gi7gZlVRzeooYN+WvAysDUfCM4pE+F+oToS7XlfF1Gk/g5JOgJhY4ov9C5VdR81a63aPNXvaf6SS/j3qWt1xbejlEf3DzqQbPPJBZj7K3ch0+uZjjIpJ3+ZLx2NJKh5x4fPpuijq0AnFXQi6eVESJsHcgDOOaMscDpsx4wZ3gQxYtOJn4ogDGu83A4D7AJp6bvZQpIINjkRxkSC9o0rRcA==</SignatureValue>
+<KeyInfo><X509Data><X509Certificate>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</X509Certificate></X509Data></KeyInfo></Signature></facturaElectronicaServicioBasico>

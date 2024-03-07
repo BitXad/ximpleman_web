@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaElectronicaServicioBasico xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaServicioBasico.xsd">
+      <cabecera>
+          <nitEmisor>5152377019</nitEmisor>
+          <razonSocialEmisor>GROVER ALEJANDRO ZARATE ALMENDRAS</razonSocialEmisor>
+          <municipio>COCHABAMBA</municipio>
+          <telefono>4511518 *(591)79999097</telefono>
+          <numeroFactura>253</numeroFactura>
+          <cuf>1608A399D64C019D2DE1B485A0E98B0D701466C8C284E81618DB378E74</cuf>
+          <cufd>BQXxCKlhQRkE=NzkQ5NzdBQjdEMjc=QkE4TXZPSURZVUFc0ODlERENBMTM2N</cufd>
+          <codigoSucursal>0</codigoSucursal>
+          <direccion>URUGUAY N° 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <mes>DICIEMBRE</mes>
+          <gestion>2024</gestion>
+          <ciudad>COCHABAMBA</ciudad>
+          <zona>CENTRAL</zona>
+          <numeroMedidor>804496</numeroMedidor>
+          <fechaEmision>2024-03-07T14:55:28.152</fechaEmision>
+          <nombreRazonSocial>ENRIQUE UREÑA PAREDES</nombreRazonSocial>
+          <domicilioCliente>AV. COLCAPIRHUA</domicilioCliente>
+          <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>804496</numeroDocumento>
+          <complemento/>
+          <codigoCliente>U 526</codigoCliente>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta>0</numeroTarjeta>
+          <montoTotal>177.96</montoTotal>
+          <montoTotalSujetoIva>159.96</montoTotalSujetoIva>
+          <consumoPeriodo>0</consumoPeriodo>
+          <beneficiarioLey1886 xsi:nil="true"/>
+          <montoDescuentoLey1886 xsi:nil="true"/>
+          <montoDescuentoTarifaDignidad xsi:nil="true"/>
+          <tasaAseo xsi:nil="true"/>
+          <tasaAlumbrado xsi:nil="true"/>
+          <ajusteNoSujetoIva>12.00</ajusteNoSujetoIva>
+          <detalleAjusteNoSujetoIva>{"AFCOOP":12.00}</detalleAjusteNoSujetoIva>
+          <ajusteSujetoIva xsi:nil="true"/>
+          <detalleAjusteSujetoIva xsi:nil="true"/>
+          <otrosPagosNoSujetoIva>12.0000000000000000</otrosPagosNoSujetoIva>
+          <detalleOtrosPagosNoSujetoIva>{"AFCOOP":12.00}</detalleOtrosPagosNoSujetoIva>
+          <otrasTasas>6.00</otrasTasas>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1.00</tipoCambio>
+          <montoTotalMoneda>177.96</montoTotalMoneda>
+          <descuentoAdicional>0.00</descuentoAdicional>
+          <codigoExcepcion>0</codigoExcepcion>
+          <cafc xsi:nil="true"/>
+          <leyenda>Ley N° 453: En caso de incumplimiento a lo ofertado o convenido, el proveedor debe reparar o sustituir el producto..</leyenda>
+          <usuario>Administrador</usuario>
+          <codigoDocumentoSector>13</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON2393</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO ENERO GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON3294</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO FEBRERO GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON1788</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO MARZO GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON167</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO ABRIL GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON5514</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO MAYO GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON7141</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO JUNIO GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON5157</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO JULIO GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON9331</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO AGOSTO GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON7589</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO SEPTIEMBRE GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON1408</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO OCTUBRE GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON4200</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO NOVIEMBRE GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>86330</codigoProductoSin>
+           <codigoProducto>CON9099</codigoProducto>
+           <descripcion>CONSUMO DE ALCANTARILLADO DICIEMBRE GESTIÓN 2024</descripcion>
+           <cantidad>1.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.33</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>13.33</subTotal>
+      </detalle>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+  <SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+  <Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><DigestValue>FNoKYHZ3856nEFMhY952Fx5IqT87UPl166kHSn8tJ4M=</DigestValue></Reference></SignedInfo><SignatureValue>IehnvRzrJNgwkh+hI4ibwqJcSYL1x/wIKo8DkG5aHUL5arf8isZ+RVZ9sw0UOwCZuDkkF41OVSIAjjTZTiLqIPi3zApspj1FhzrJbMYEasyK5zGxoAyAn4BnzhY1RQnf1IXZsh6QQqu5ExxF8oHFEhgK5uU1rwVJluuYs1g1gLG+VRAA2/hf0Ig2sUE2jddNA8ZsYw2LrNX3GdCAwP8gANGOAXfz9J7G5SxgD7xRM18ZjnvQauueQQ14kDa7hIj5BkfMrUcja+uNnaPmsofs6RlJyMq5ngoai6T8V0/tCpnK4NjqnOKFL922rgKLkUfQnw+94IXUPhQrUMlX0zkwAw==</SignatureValue>
+<KeyInfo><X509Data><X509Certificate>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</X509Certificate></X509Data></KeyInfo></Signature></facturaElectronicaServicioBasico>

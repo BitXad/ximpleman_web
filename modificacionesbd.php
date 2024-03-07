@@ -30,6 +30,7 @@ truncate detalle_factura;
 truncate pedido;
 truncate detalle_pedido;
 truncate cliente;
+truncate almacenes;
 truncate proveedor;
 truncate compra;
 truncate detalle_compra;
@@ -40,6 +41,7 @@ truncate recepcion_paquetes;
 truncate cufd;
 truncate cuis;
 truncate punto_venta;
+truncate sucursales;
 truncate ingresos;
 truncate egresos;
 truncate servicio;
@@ -48,6 +50,14 @@ truncate credito;
 truncate cuota;
 truncate producto;
 truncate inventario;
+truncate ci_session;
+truncate bitacora_caja;
+truncate bitacora;
+truncate factura_servicios;
+truncate detalle_factura_servicios;
+truncate lectura;
+
+ * 
 
 
 
