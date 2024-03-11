@@ -198,7 +198,7 @@ class Inventario extends CI_Controller{
         
         if ($this->parametros["parametro_sininventario"]==1){
             
-            $sql = "update inventario set existencia = 10000";
+            $sql = "update inventario set existencia = 100000000";
             $this->Venta_model->ejecutar($sql);   
             
         }

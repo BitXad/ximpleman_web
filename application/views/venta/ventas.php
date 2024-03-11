@@ -1319,19 +1319,19 @@ window.onkeydown = compruebaTecla;
             
             <div class="col-md-12" <?php echo ($dosificacion[0]['docsec_codigoclasificador'] != 13)?"hidden":""; ?>>
                 
-            <font size="1"><b>SERVICIOS BASICOS</b></font>                
+            <font size="1"><b>SERVICIOS BASICOS</b></font>      
             
                 <select id="selector_factura" class="btn btn-warning btn-xs" style="text-align: left;">
         
-                    <option value="0" selected>- SELECCIONAR PAGO -</option>
+                    <option value="0" selected>- SELECCIONAR FACTURA -</option>
                     <?php foreach($factura_servicios as $fact){ ?>
                             
-                    <option value="<?= $fact["num_fact"];  ?>"><?php echo substr("FACTURA Nº: ".$fact["num_fact"]." NIT: ".$fact["nit_fact"]." RAZON SOC.: ".$fact["razon_fact"],0,70);  ?></option>
+                    <option value="<?= $fact["num_fact"];  ?>"><?php echo substr("FACTURA Nº: ".$fact["num_fact"].", Bs ".number_format($fact["montototal_fact"],2,".",",").", NIT: ".$fact["nit_fact"]." RAZON SOC.: ".$fact["razon_fact"],0,70);  ?></option>
                                         
                     <?php } ?>
                 </select> 
             
-            <button type="button" id="cargar_ventas" class="btn btn-default btn-xs" onclick="cargar_servicios()"><fa class="fa fa-send"></fa><b> Cargar Servicios</b></button>
+            <button type="button" id="cargar_ventas" class="btn btn-facebook btn-xs" onclick="cargar_servicios()"><fa class="fa fa-recycle"></fa><b> Cargar Servicios</b></button>
             
 <!--                            <button href="#" onclick="cargar_servicios()" data-target="#modalfinalizar" class="btn btn-facebook btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important; <?php echo ($parametro["parametro_finalizarventas"]!=1)?'display:none':'' ?>" id="boton_finventa">
                     <i class="fa fa-download fa-4x"></i><br><br>Cargar<br>Servicios <br>

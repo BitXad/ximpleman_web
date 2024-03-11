@@ -5996,7 +5996,7 @@ function seleccionar_cantidad(parametro)
 function actualizar_inventario()
 {
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"inventario/actualizar_inventario/";
+        var controlador = base_url+"inventario/actualizar_inventario/";
     
     document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
@@ -8662,217 +8662,6 @@ function actualziar_pago_servicio(num_fact){
 }
 
 
-function borrar_datos_cliente(){
-    
-    var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
-    var parametro_imprimirfactura = document.getElementById("parametro_imprimirfactura").value;
-    var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
-    var parametro_factura = document.getElementById("parametro_factura").value; //0 no, 1 si
-    let documento_sector = document.getElementById("docsec_codigoclasificador").value;
-    var base_url = document.getElementById('base_url').value;
-    //var docsec_codigoclasificador = document.getElementById("docsec_codigoclasificador").value;
-    
-    var nit = "1234";
-    var razon_social = "SIN NOMBRE";
-    var cliente_id = "1";
-
-    
-    seleccionar_documento(1); // CI
-    seleccionar_servicio(1); // CI
-    
-    $("#razon_social").val(razon_social);
-    $("#cliente_nombre").val(razon_social);
-    $("#cliente_codigo").val(nit);
-    
-    
-    $("#email").val("");
-    
-    if(documento_sector == 23){ // si es prevalorada
-        
-        $("#razon_social").val("S/N");
-        $("#cliente_nombre").val("S/N");
-        $("#cliente_codigo").val("N/A");
-        
-    }
-    
-    $("#nit").val(nit);
-    $("#cliente_id").val(cliente_id);
-    $("#cliente_ci").val(nit);
-    $("#cliente_nombrenegocio").val("-");
-    
-    $("#pedido_id").val("0");
-    $("#usuarioprev_id").val("0");
-    
-    $("#cliente_direccion").val("-");
-    $("#cliente_departamento").val("-");
-    $("#cliente_celular").val("-");
-    $("#tipocliente_id").val("1");
-    $("#cliente_telefono").val("-");
-    
-    $("#tiposerv_id").val("1");
-    $("#venta_numeromesa").val("0");
-    $("#venta_glosa").val("");  
-    
-    $("#venta_efectivo").val("0");
-    $("#venta_cambio").val("0");
-    $("#zona_id").val("0");
-    $("#venta_descuentoparc").val("0");
-    $("#venta_descuento").val("0");
-    $("#preferencia_id").val("0");
-    $("#cliente_complementoci").val("");
-    $("#venta_ice").val("0.00");
-    $("#venta_detalletransaccion").val("0");
-    $("#venta_giftcard").val("0.00");
-    $("#tipo_doc_identidad").val("1");
-    $("#cliente_valido").val("1");
-    $("#glosay").val("");
-    
-    
-    document.getElementById("codigoexcepcion").checked = false;
-
-    
-    $("#razon_social").css("background-color", "gray");
-    $("#razon_social").attr("readonly","readonly");   
-    
-//    var codigo = document.getElementById("evento_contingencia").value; //0 no, 1 si
-//    var num = document.getElementById("numfact_cafc").value; //0 no, 1 si
-//    
-//    if (codig>0){
-//        $("#numfact_cafc").val(Num(num+1))
-//    }
-     
-    //document.getElementById("codigoexcepcion").checked = false;
-    document.getElementById("forma_pago").selectedIndex = 0
-    document.getElementById("tipo_transaccion").selectedIndex = 0
-    document.getElementById('creditooculto').style.display = 'none';
-    
-    try{
-        
-        document.getElementById('imagenqr').style.display = 'none';
-    
-    }
-    catch (error){}
-    
-            
-    //document.getElementById('creditooculto').style.display = 'none';
-    
-    $("#filtrar").focus();
-    
-    var facturado = document.getElementById('facturado').checked;  
-    
-    //alert("holaaaaaaaaaa");
-    //Si esta activo el modulo para restaurante
-//    if (modulo_restaurante == 1){
-//        
-//        if (parametro_imprimircomanda==1){
-//            boton = document.getElementById("imprimir_comanda");
-//            boton.click();
-//        }
-//        
-//    }
-    
-   // if(parametro_imprimirfactura!=0){
-
-        if(parametro_imprimirfactura==1){ // Imprimir solo factura
-            
-            let boton = document.getElementById("imprimir_factura");
-            if (facturado == 1){ boton.click(); }
-            /*else{
-             window.open(base_url+'/factura/abrir_caja', '_blank');
-            }*/
-        }
-            
-
-        if(parametro_imprimirfactura==2){ // Imprimir solo recibo
-            
-            let boton = document.getElementById("imprimir");
-            boton.click();                    
-        }
-
-        if(parametro_imprimirfactura==3){ // Imprimir factura y recibo
-            
-            let boton1 = document.getElementById("imprimir_factura");
-            let boton2 = document.getElementById("imprimir");
-            if (facturado == 1){ boton1.click(); }
-            boton2.click();
-        }
-
-        if(parametro_imprimirfactura==4){ // Imprimir factura o recibo
-
-            let boton1 = document.getElementById("imprimir_factura");
-            let boton2 = document.getElementById("imprimir");
-
-            if (facturado == 1){ boton1.click(); }
-            else { boton2.click(); }
-        }
-
-        if(parametro_imprimirfactura==5){ // Imprimir solo comanda
-
-            boton = document.getElementById("imprimir_comanda");
-            boton.click();
-            
-        }
-        
-        if(parametro_imprimirfactura==6){ // Imprimir factura y comanda
-            
-            let boton1 = document.getElementById("imprimir_factura");
-            let boton2 = document.getElementById("imprimir_comanda");
-            if (facturado == 1){ boton1.click(); }
-            boton2.click();
-        }
-        
-        if(parametro_imprimirfactura==7){ // Imprimir factura, recibo y comanda
-            
-            let boton1 = document.getElementById("imprimir_factura");
-            let boton = document.getElementById("imprimir");            
-            let boton2 = document.getElementById("imprimir_comanda");
-            
-            if (facturado == 1){ boton1.click(); } //Imprimir factura
-            boton.click(); //Imprimir recibo
-            boton2.click(); //imprimir comanda
-        }
-        
-        if(parametro_imprimirfactura==8){ // Imprimir factura o recibo y comanda
-            
-            let boton1 = document.getElementById("imprimir_factura");
-            let boton = document.getElementById("imprimir");            
-            let boton2 = document.getElementById("imprimir_comanda");
-            
-            if (facturado == 1){ boton1.click(); } //Imprimir factura
-            else{ boton.click(); }//Imprimir recibo
-            boton2.click(); //imprimir comanda
-        }
-
-    //}
-
-
-    
-    document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
-    tablaproductos();
-    
-    tablaresultados(1); //redibuja la tabla de busqueda de productos      
-    // var parametro_factura = document.getElementById('parametro_factura').value;
-    // if(parametro_factura == 2){
-    //     $("#facturado").prop("checked", false);
-    // }
-    document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
-    document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
-    
-    if(parametro_factura==2){
-        document.getElementById('facturado').checked = false;
-    }
-    if(parametro_factura==4){
-        document.getElementById('facturado').checked = true;
-    }    
-    
-
-    
-    //$("#span_buscar_cliente").click();   
-    $("#boton_presionado").val(0);
-
-}
-
-
 
 function ventas_fallidas(){
     
@@ -9083,4 +8872,230 @@ function calcular_servicios(){
         total_por_cobrar += Number(datos_ajustesujetoiva) + Number(datos_ajustesujetoiva) + Number(datos_otrastasas) + Number(datos_otrospagosnosujetoiva) + Number(venta_subtotal);
     
     $("#total_por_cobrar").val(Number(total_por_cobrar).toFixed(decimales));
+}
+
+
+function borrar_datos_cliente(){
+    
+    var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
+    var parametro_imprimirfactura = document.getElementById("parametro_imprimirfactura").value;
+    var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
+    var parametro_factura = document.getElementById("parametro_factura").value; //0 no, 1 si
+    let documento_sector = document.getElementById("docsec_codigoclasificador").value;
+    var base_url = document.getElementById('base_url').value;
+    //var docsec_codigoclasificador = document.getElementById("docsec_codigoclasificador").value;
+    
+    var nit = "1234";
+    var razon_social = "SIN NOMBRE";
+    var cliente_id = "1";
+
+    
+    seleccionar_documento(1); // CI
+    seleccionar_servicio(1); // CI
+    
+    $("#razon_social").val(razon_social);
+    $("#cliente_nombre").val(razon_social);
+    $("#cliente_codigo").val(nit);
+    
+    
+    $("#email").val("");
+    
+    if(documento_sector == 23){ // si es prevalorada
+        
+        $("#razon_social").val("S/N");
+        $("#cliente_nombre").val("S/N");
+        $("#cliente_codigo").val("N/A");
+        
+    }
+    
+    $("#nit").val(nit);
+    $("#cliente_id").val(cliente_id);
+    $("#cliente_ci").val(nit);
+    $("#cliente_nombrenegocio").val("-");
+    
+    $("#pedido_id").val("0");
+    $("#usuarioprev_id").val("0");
+    
+    $("#cliente_direccion").val("-");
+    $("#cliente_departamento").val("-");
+    $("#cliente_celular").val("-");
+    $("#tipocliente_id").val("1");
+    $("#cliente_telefono").val("-");
+    
+    $("#tiposerv_id").val("1");
+    $("#venta_numeromesa").val("0");
+    $("#venta_glosa").val("");  
+    
+    $("#venta_efectivo").val("0");
+    $("#venta_cambio").val("0");
+    $("#zona_id").val("0");
+    $("#venta_descuentoparc").val("0");
+    $("#venta_descuento").val("0");
+    $("#preferencia_id").val("0");
+    $("#cliente_complementoci").val("");
+    $("#venta_ice").val("0.00");
+    $("#venta_detalletransaccion").val("0");
+    $("#venta_giftcard").val("0.00");
+    $("#tipo_doc_identidad").val("1");
+    $("#cliente_valido").val("1");
+    $("#glosay").val("");
+    
+    
+    document.getElementById("codigoexcepcion").checked = false;
+
+    
+    $("#razon_social").css("background-color", "gray");
+    $("#razon_social").attr("readonly","readonly");   
+    
+//    var codigo = document.getElementById("evento_contingencia").value; //0 no, 1 si
+//    var num = document.getElementById("numfact_cafc").value; //0 no, 1 si
+//    
+//    if (codig>0){
+//        $("#numfact_cafc").val(Num(num+1))
+//    }
+     
+    //document.getElementById("codigoexcepcion").checked = false;
+    document.getElementById("forma_pago").selectedIndex = 0
+    document.getElementById("tipo_transaccion").selectedIndex = 0
+    document.getElementById('creditooculto').style.display = 'none';
+    
+    try{
+        
+        document.getElementById('imagenqr').style.display = 'none';
+    
+    }
+    catch (error){}
+    
+            
+    //document.getElementById('creditooculto').style.display = 'none';
+    
+    $("#filtrar").focus();
+    
+    var facturado = document.getElementById('facturado').checked;  
+    
+    //alert("holaaaaaaaaaa");
+    //Si esta activo el modulo para restaurante
+//    if (modulo_restaurante == 1){
+//        
+//        if (parametro_imprimircomanda==1){
+//            boton = document.getElementById("imprimir_comanda");
+//            boton.click();
+//        }
+//        
+//    }
+    
+   // if(parametro_imprimirfactura!=0){
+
+        if(parametro_imprimirfactura==1){ // Imprimir solo factura
+            
+            let boton = document.getElementById("imprimir_factura");
+            if (facturado == 1){ boton.click(); }
+            /*else{
+             window.open(base_url+'/factura/abrir_caja', '_blank');
+            }*/
+        }
+            
+
+        if(parametro_imprimirfactura==2){ // Imprimir solo recibo
+            
+            let boton = document.getElementById("imprimir");
+            boton.click();                    
+        }
+
+        if(parametro_imprimirfactura==3){ // Imprimir factura y recibo
+            
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton2 = document.getElementById("imprimir");
+            if (facturado == 1){ boton1.click(); }
+            boton2.click();
+        }
+
+        if(parametro_imprimirfactura==4){ // Imprimir factura o recibo
+
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton2 = document.getElementById("imprimir");
+
+            if (facturado == 1){ boton1.click(); }
+            else { boton2.click(); }
+        }
+
+        if(parametro_imprimirfactura==5){ // Imprimir solo comanda
+
+            boton = document.getElementById("imprimir_comanda");
+            boton.click();
+            
+        }
+        
+        if(parametro_imprimirfactura==6){ // Imprimir factura y comanda
+            
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton2 = document.getElementById("imprimir_comanda");
+            if (facturado == 1){ boton1.click(); }
+            boton2.click();
+        }
+        
+        if(parametro_imprimirfactura==7){ // Imprimir factura, recibo y comanda
+            
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton = document.getElementById("imprimir");            
+            let boton2 = document.getElementById("imprimir_comanda");
+            
+            if (facturado == 1){ boton1.click(); } //Imprimir factura
+            boton.click(); //Imprimir recibo
+            boton2.click(); //imprimir comanda
+        }
+        
+        if(parametro_imprimirfactura==8){ // Imprimir factura o recibo y comanda
+            
+            let boton1 = document.getElementById("imprimir_factura");
+            let boton = document.getElementById("imprimir");            
+            let boton2 = document.getElementById("imprimir_comanda");
+            
+            if (facturado == 1){ boton1.click(); } //Imprimir factura
+            else{ boton.click(); }//Imprimir recibo
+            boton2.click(); //imprimir comanda
+        }
+
+    //}
+
+
+    
+    document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
+    tablaproductos();
+    
+    tablaresultados(1); //redibuja la tabla de busqueda de productos      
+    // var parametro_factura = document.getElementById('parametro_factura').value;
+    // if(parametro_factura == 2){
+    //     $("#facturado").prop("checked", false);
+    // }
+    document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+    document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+    
+    if(parametro_factura==2){
+        document.getElementById('facturado').checked = false;
+    }
+    if(parametro_factura==4){
+        document.getElementById('facturado').checked = true;
+    }    
+    
+    //****************************************************
+    // FACTURA PARA ENVIAR
+        let selector_factura = document.getElementById("selector_factura").value;
+        
+        if (selector_factura >0){
+                    
+            var select = document.getElementById("selector_factura");
+            var selectedOption = select.selectedIndex;
+            if (selectedOption >= 0) {
+                select.remove(selectedOption);
+            }
+        }
+            
+    //****************************************************
+
+
+    
+    //$("#span_buscar_cliente").click();   
+    $("#boton_presionado").val(0);
+
 }

@@ -33,11 +33,39 @@
     $fecha_hasta = date('Y-m-d');
     $hora_hasta = '23:59';
 
+    // Obtener la fecha y hora actual
+    $fecha_actual = date('Y-m-d');
+    $hora_actual = date('H:i');
 
+    // Fecha y hora de apertura de la caja (ejemplo)
+    $caja_fechaapertura = $caja["caja_fechaapertura"]; // Esto debería ser la fecha de apertura de la caja
+    $caja_horaapertura = $caja["caja_horaapertura"]; // Esto debería ser la hora de apertura de la caja
+
+    // Si la fecha actual es la misma que la fecha de apertura de la caja y antes de la medianoche
+    if ($fecha_actual == $caja_fechaapertura && $hora_actual < '23:59') {
+        $fecha_desde = $fecha_actual;
+        $hora_desde = '16:00';
+        $fecha_hasta = $fecha_actual;
+        $hora_hasta = '23:59';
+    } 
+    // Si la fecha actual es un día después de la fecha de apertura de la caja
+    elseif ($fecha_actual > $caja_fechaapertura) {
+        $fecha_desde = date('Y-m-d', strtotime('-1 day', strtotime($fecha_actual))); // Resta un día a la fecha actual
+        $hora_desde = '16:00';
+        $fecha_hasta = $fecha_actual;
+        $hora_hasta = '02:00';
+    }
+    // En otro caso, si la fecha actual es el mismo día de la apertura de la caja, pero ya es pasada la medianoche
+    else {
+        // Aquí puedes manejar otra lógica si es necesario
+        echo "Lógica adicional para este caso";
+    }
+    
+    
 ?>
 <!-------------------- inicio collapse ---------------------->
 
-
+<input type="text" value="<?php echo $caja["caja_fechaapertura"]." - ".$caja["caja_horaapertura"]; ?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
 
 
     <div class="text-center" style='font-family: Arial; margin: 0;' >
@@ -46,7 +74,7 @@
         <br>CAJERO(A): <?php echo $usuario_nombre; ?>
     </div>
 
-    <div class="container" >  
+    <div class="container" hidden>  
         <div class="box-tools" style="font-family: Arial;">
                 <div class=" col-md-11" hidden>
 

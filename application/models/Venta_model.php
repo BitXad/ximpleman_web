@@ -864,13 +864,19 @@ function get_busqueda($condicion)
         
         $usuario_id = $this->session_data['usuario_id'];
         
+        
+        $sql = "select f.*, l.mes_lec, l.gestion_lec, l.consumo_lec from factura_servicios f, lectura l where num_fact = {$num_fact} and f.id_lec = l.id_lec";
+        $factura = $this->db->query($sql)->result_array();
+        $id_fact = $factura[0]["id_fact"];        
+        
+        
         //Insertar y homoogar productos inexistentes
        
         //primero.- verificamos que items no existen en la base de datos actual
         $sql = "select *
                 from detalle_factura_servicios dfs
                 where 
-                dfs.id_fact =  78119 and
+                dfs.id_fact =  {$id_fact} and
                 dfs.exento_detfact = 'NO' 
                 AND NOT EXISTS (
                     SELECT 1
@@ -893,11 +899,12 @@ function get_busqueda($condicion)
                 $this->db->query($sql);
                 
                 
-                $sql = "INSERT INTO inventario (estado_id, categoria_id, presentacion_id, moneda_id, producto_codigo, producto_codigobarra, producto_foto, producto_nombre, producto_unidad, producto_marca, producto_industria, producto_costo, producto_precio, producto_comision, producto_tipocambio, producto_cantidadminima, producto_factor, producto_unidadfactor, producto_codigofactor, producto_preciofactor, producto_factor1, producto_unidadfactor1, producto_codigofactor1, producto_preciofactor1, producto_factor2, producto_unidadfactor2, producto_codigofactor2, producto_preciofactor2, producto_factor3, producto_unidadfactor3, producto_codigofactor3, producto_preciofactor3, producto_factor4, producto_unidadfactor4, producto_codigofactor4, producto_preciofactor4, producto_ultimocosto, producto_caracteristicas, producto_envase, producto_nombreenvase, producto_costoenvase, producto_precioenvase, destino_id, producto_principioact, producto_accionterap, producto_cantidadenvase, subcategoria_id, producto_unidadentera, producto_catalogo, producto_colsur, producto_coleste, producto_coloeste, producto_colnorte, producto_codigosin, producto_codigounidadsin, producto_orden, existencia) VALUES 
-                    (1,1,1,1,'{$codigo}','{$codigo}','foto.jpg','{$producto_nombre}','UNIDAD (SERVICIOS)','S/N','BOLIVIANA',0.0000000000000000,10.0000000000000000,0.0000000000000000,1.0000000000000000,0.0000000000000000,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0.0000000000000000,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0.0000000000000000,1,1.0000000000000000,NULL,NULL,NULL,NULL,NULL,'99794',58,0,1000)"; //86330 SERVICIOS
-                $this->db->query($sql);
+//                $sql = "INSERT INTO inventario (estado_id, categoria_id, presentacion_id, moneda_id, producto_codigo, producto_codigobarra, producto_foto, producto_nombre, producto_unidad, producto_marca, producto_industria, producto_costo, producto_precio, producto_comision, producto_tipocambio, producto_cantidadminima, producto_factor, producto_unidadfactor, producto_codigofactor, producto_preciofactor, producto_factor1, producto_unidadfactor1, producto_codigofactor1, producto_preciofactor1, producto_factor2, producto_unidadfactor2, producto_codigofactor2, producto_preciofactor2, producto_factor3, producto_unidadfactor3, producto_codigofactor3, producto_preciofactor3, producto_factor4, producto_unidadfactor4, producto_codigofactor4, producto_preciofactor4, producto_ultimocosto, producto_caracteristicas, producto_envase, producto_nombreenvase, producto_costoenvase, producto_precioenvase, destino_id, producto_principioact, producto_accionterap, producto_cantidadenvase, subcategoria_id, producto_unidadentera, producto_catalogo, producto_colsur, producto_coleste, producto_coloeste, producto_colnorte, producto_codigosin, producto_codigounidadsin, producto_orden, existencia) VALUES 
+//                    (1,1,1,1,'{$codigo}','{$codigo}','foto.jpg','{$producto_nombre}','UNIDAD (SERVICIOS)','S/N','BOLIVIANA',0.0000000000000000,10.0000000000000000,0.0000000000000000,1.0000000000000000,0.0000000000000000,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0.0000000000000000,'0',NULL,NULL,NULL,NULL,NULL,NULL,NULL,0.0000000000000000,1,1.0000000000000000,NULL,NULL,NULL,NULL,NULL,'99794',58,0,1000)"; //86330 SERVICIOS
+//                $this->db->query($sql);
                 
             }
+            $this->Inventario_model->actualizar_inventario();
             
             
         }
@@ -909,13 +916,6 @@ function get_busqueda($condicion)
         $sql = "delete from detalle_venta_aux where usuario_id = {$usuario_id}";
         $this->db->query($sql);
         
-        
-        $sql = "select f.*, l.mes_lec, l.gestion_lec, l.consumo_lec from factura_servicios f, lectura l where num_fact = {$num_fact} and f.id_lec = l.id_lec";
-       
-        
-        $factura = $this->db->query($sql)->result_array();
-        
-        $id_fact = $factura[0]["id_fact"];
         
         $sql = "insert into detalle_venta_aux(producto_id
                 ,venta_id
