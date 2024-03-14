@@ -196,7 +196,7 @@ window.onkeydown = compruebaTecla;
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-<link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitablaventassimple.css'); ?>" rel="stylesheet">
  <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
 <!-------------------------------------------------------->
 <div id="selector" hidden>
@@ -244,17 +244,16 @@ window.onkeydown = compruebaTecla;
  
 
 <!--------------------- CABECERA -------------------------->
-
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
 <input type="text" value='<?php echo json_encode($preferencia); ?>' id="preferencias" hidden>
-<input type="text" id="pedido_id" value="0" name="pedido_id" hidden>
+
 <input type="text" id="orden_id" value="0" name="orden_id" hidden>
 <input type="text" id="usuarioprev_id" value="0" name="usuarioprev_id" hidden>
 <input type="text" id="venta_comision" value="0" name="venta_comision" hidden>
 <input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio" hidden>
-<input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id" hidden>
+<input type="text" id="usuariopedido_id" value="<?php echo isset($pedido[0]["usuario_id"])?$pedido[0]["usuario_id"]:0;  ?>" name="usuariopedido_id" hidden>
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
 <input type="text" id="parametro_modoventas" value="<?php echo $parametro['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
 <input type="text" id="parametro_anchoboton" value="<?php echo $parametro['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
@@ -277,11 +276,12 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="elparametro_id" value="<?php echo $parametro['parametro_id']; ?>" name="elparametro_id"  hidden>
 <input type="text" id="parametro_decimales" value="<?php echo $parametro['parametro_decimales']; ?>" name="parametro_decimales"  hidden>
 <input type="text" id="parametro_puntos" value="<?php echo $parametro['parametro_puntos']; ?>" name="parametro_puntos"  hidden>
+<input type="text" id="parametro_imprimirfactura" value="<?php echo $parametro['parametro_imprimirfactura']; ?>" name="parametro_imprimirfactura"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
-<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador"  hidden>
-<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector"  hidden>
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" hidden>
+<input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector" hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -297,6 +297,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 <input type="text" id="cliente_valido" value="1" hidden>
+<input type="text" id="credito_id" value="0" name="credito_id" hidden>
 
 <input type="text" id="venta_id" value="<?php echo $venta[0]['venta_id']; ?>" hidden>
 <input type="text" id="credito_id" value="<?php if(isset($credito['credito_id'])){if($credito['credito_id']>0){ echo $credito['credito_id'];}else{ echo 0;} }else{ echo 0;}?>" hidden>
@@ -310,6 +311,9 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_botonesproducto" value="<?php echo $parametro['parametro_botonesproducto']; ?>" name="parametro_botonesproducto"  hidden>
 <input type="text" id="parametro_mostrarmoneda" value="<?php echo $parametro['parametro_mostrarmoneda']; ?>" name="parametro_mostrarmoneda"  hidden>
 <input type="text" id="parametro_tablasencilla" value="<?php echo $parametro['parametro_tablasencilla']; ?>" name="parametro_tablasencilla"  hidden>
+<input type="text" id="parametro_verificarconexion" value="<?php echo $parametro['parametro_verificarconexion']; ?>" name="parametro_verificarconexion"  hidden>
+<input type="text" id="parametro_comprobante" value="<?php echo $parametro['parametro_comprobante']; ?>" name="parametro_comprobante"  hidden>
+<input type="text" id="parametro_botonescontrol" value="<?php echo $parametro['parametro_botonescontrol']; ?>" name="parametro_botonescontrol"  hidden>
 <input type="text" id="factura_idcreditodebito" value="0" name="factura_idcreditodebito"  hidden>
 <input type="text" id="boton_presionado" value="0" hidden>
 
@@ -424,24 +428,9 @@ if(isset($credito)){
 <!---------------------- collapse ----------------------------->
  
         <h4 class="panel-title">
-            <?php
-            if(sizeof($dosificacion)>0){
-                if($parametro['parametro_factura'] == 1){
-                    $eschecked = "checked disabled";
-                }elseif($parametro['parametro_factura'] == 2){
-                    $eschecked = "";
-                }elseif($parametro['parametro_factura'] == 3){
-                    $eschecked = "hidden";
-                }elseif($parametro['parametro_factura'] == 4){
-                    $eschecked = "checked";
-                }
-            ?>
-            <input type="checkbox" id="facturado" value="1" name="facturado" <?php echo $eschecked; ?>>
-          <?php } else{ ?>
-            <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
-            <font color="red" size="2"> Dosificación no activada</font>
-          <?php } ?> 
-          <a data-toggle="collapse" href="#collapse1" style="padding: 0;" class="btn btn-default btn-sm"> 
+
+            <input type="checkbox" id="facturado" value="0" name="facturado" readonly disabled>
+            <a data-toggle="collapse" href="#collapse1" style="padding: 0;" class="btn btn-default btn-sm"> 
             Más información</a>
             
             

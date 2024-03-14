@@ -454,7 +454,14 @@ sucursal_url =	'https://www.ximplemanweb.com/ultimallamadacom_suc11/venta/ventas
  
  
  
- 
+update detalle_factura set
+descip_detfact = 'TASA DE REGULACION AFCOOP',
+exento_detfact = 'SI'
+
+where 
+descip_detfact = 'AFCOOP' and
+id_fact in (select id_fact from factura
+where estado_fact = 'PENDIENTE') 
  
  
  

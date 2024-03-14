@@ -95,8 +95,8 @@ function mostrar() {
                         <?php foreach($menu_cabecera as $cabecera) { ?>
                         <li><a href="<?php echo base_url().$cabecera['menu_enlace']; ?>"><?php echo $cabecera['menu_nombre']; ?></a></li>
                         <?php } ?>
-                        
-                        <!--<li><select class="selectpicker" data-width="fit">
+<!--                        
+                        <li><select class="selectpicker" data-width="fit">
                     <option data-content='<span class="flag-icon flag-icon-us"></span> English'><span class="flag-icon flag-icon-us"></span>English</option>
                     <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
                     </select></li>-->
