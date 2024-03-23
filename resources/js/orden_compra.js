@@ -18,6 +18,7 @@ function tablaresultadosordencompra(limite)
     }else if(limite == 3){
         parametro = "";
     }
+    
     //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     $.ajax({url: controlador,
             type:"POST",

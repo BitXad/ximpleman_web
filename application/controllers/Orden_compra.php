@@ -72,7 +72,7 @@ class Orden_compra extends CI_Controller{
      * Productos con existencia minima
      */
     function existenciaminima()
-    {
+    { 
         $data['sistema'] = $this->sistema;
         if($this->acceso(1)) {
             $usuario_id = $this->session_data['usuario_id'];

@@ -1,3 +1,9 @@
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        window.onload = window.print();
+    });
+</script>
 <style type="text/css">
 
 p {

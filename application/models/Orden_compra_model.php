@@ -180,7 +180,8 @@ class Orden_compra_model extends CI_Model
             $el_parametro = "and (oc.ordencompra_id = '".$parametro."' or p.proveedor_nombre like '%".$parametro."%'
                              or u.usuario_nombre like '%".$parametro."%')";
         }
-        $compra = $this->db->query("
+        
+        $sql = "
             SELECT
                 oc.*, p.proveedor_nombre, u.usuario_nombre, m. moneda_descripcion,
                 e.estado_color, e.estado_descripcion
@@ -194,8 +195,13 @@ class Orden_compra_model extends CI_Model
                 1= 1
                 ".$el_parametro."
             order by oc.ordencompra_id DESC
-         ")->result_array();
-
+         ";
+        
+        echo $sql;
+        
+        $compra = $this->db->query($sql)->result_array();
+        
+        //echo $compra;
         return $compra;
     }
     

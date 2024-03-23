@@ -663,7 +663,7 @@ class Compra extends CI_Controller{
                  $data['bancos'] = $this->Banco_model->getall_bancosact_asc();
                  $data['nis_codigos'] = $this->Sincronizacion_model->getCodigosNis(); 
 
-                 if ($bandera==0) {
+                 if ($bandera==0) { //Crear compra nueva
                   $this->Compra_model->volvermal($compra_id);
                  }
 
@@ -978,29 +978,29 @@ class Compra extends CI_Controller{
         
         if($this->acceso(1)){
            
-            $data['parametro'] = $this->parametros;
-            $data['sistema'] = $this->sistema;
-            $usuario_id = $this->session_data['usuario_id'];
-            //$this->load->model('Compra_model');
-            $null = NULL;
-            $num = $this->Compra_model->numero();
-            $maximo = $num[0]['parametro_montomax'];
-            $diasgra = $num[0]['parametro_diasgracia'];
-            $diapago = $num[0]['parametro_diapago'];
-            $periodo = $num[0]['parametro_periododias'];
-            $numcuota =$this->input->post('credito_numpagos');
-            $interes = $num[0]['parametro_interes'];
-            $nroDia = date('N');
-            $proxima_semana = time() + (7 * 24 * 60 * 60); 
-            $proximo_martes = time() + ( ($diasgra-($nroDia-$diapago)) * 24 * 60 * 60 );
-            $proximo_martes2 = time() + ( ($diasgra+$periodo-($nroDia-$diapago)) * 24 * 60 * 60 );
-            $patron = ($numcuota*0.5) + 0.5;
-            $totalcompra=$this->input->post('compra_total');
-            $descglobal=$this->input->post('compra_descglobal');
-            $banderafin=$this->input->post('banderafin');
-            $nueva_fecha = date("Y-m-d"); 
-            $nueva_hora = date("H:i:s"); 
-            $banco_id = $this->input->post('forma_id') != 1 ? $this->input->post('banco') : "";
+//            $data['parametro'] = $this->parametros;
+//            $data['sistema'] = $this->sistema;
+//            $usuario_id = $this->session_data['usuario_id'];
+//            //$this->load->model('Compra_model');
+//            $null = NULL;
+//            $num = $this->Compra_model->numero();
+//            $maximo = $num[0]['parametro_montomax'];
+//            $diasgra = $num[0]['parametro_diasgracia'];
+//            $diapago = $num[0]['parametro_diapago'];
+//            $periodo = $num[0]['parametro_periododias'];
+//            $numcuota =$this->input->post('credito_numpagos');
+//            $interes = $num[0]['parametro_interes'];
+//            $nroDia = date('N');
+//            $proxima_semana = time() + (7 * 24 * 60 * 60); 
+//            $proximo_martes = time() + ( ($diasgra-($nroDia-$diapago)) * 24 * 60 * 60 );
+//            $proximo_martes2 = time() + ( ($diasgra+$periodo-($nroDia-$diapago)) * 24 * 60 * 60 );
+//            $patron = ($numcuota*0.5) + 0.5;
+//            $totalcompra=$this->input->post('compra_total');
+//            $descglobal=$this->input->post('compra_descglobal');
+//            $banderafin=$this->input->post('banderafin');
+//            $nueva_fecha = date("Y-m-d"); 
+//            $nueva_hora = date("H:i:s"); 
+//            $banco_id = $this->input->post('forma_id') != 1 ? $this->input->post('banco') : "";
             
             if ($descglobal>0) {
                 $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";
@@ -1241,84 +1241,7 @@ class Compra extends CI_Controller{
               
             //detalle producto compra actual
             
-            
-            
-            
-             //detalle producto compra actual
-//            $producto_mana = "SELECT i.existencia as 'saldom', dc.producto_id as 'productm', dc.detallecomp_total as 'nuevo_totalm', dc.detallecomp_cantidad as 'nueva_cantidadm' from detalle_compra_aux dc, inventario i WHERE dc.compra_id=".$compra_id." and i.producto_id=dc.producto_id and i.existencia <= 0";
-//            $pr_mana = $this->db->query($producto_mana)->result_array();
-//            
-//            foreach ($pr_mana as $pr_identmana) {
-//                
-//                $nuevomana = $pr_identmana['nuevo_totalm'];
-//                $cantidadmana = $pr_identmana['nueva_cantidadm'];
-//                
-//                $costo_promediom = $nuevomana/$cantidadmana; //promedio costo del producto nuevo
-//                
-//                $sqlm = "update inventario i, producto p set i.producto_costo=".$costo_promediom.", p.producto_costo=".$costo_promediom." where i.producto_id=".$pr_identmana['productm']." and p.producto_id=".$pr_identmana['productm']." ";
-//
-//                $this->db->query($sqlm);
-//            }
-//            
-//            
-//
-//            $producto_ide = "SELECT i.existencia as 'saldo', dc.producto_id as 'product', dc.detallecomp_total as 'nuevo_total', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc, inventario i WHERE dc.compra_id=".$compra_id." and i.producto_id=dc.producto_id and i.existencia > 0";
-//            $pr_id = $this->db->query($producto_ide)->result_array(); 
-//            $viejos = 0;
-//            $cantiviejas = 0;
-//            $cantidades = 0;
-//            $sumas = 0;
-//            
-//            foreach ($pr_id as $pr_ident) {
-//
-//                $nuevo = $pr_ident['nuevo_total'];
-//                $cantidad = $pr_ident['nueva_cantidad'];
-//
-//                  //sumatoria de ventas//
-//                $existe = "SELECT   i.existencia as 'existencia' from consinventario i WHERE  i.producto_id= ".$pr_ident['product']." ";
-//                $existir=$this->db->query($existe)->result_array();  
-//
-//                ////
-//
-//                  $detalle_costo = "SELECT   i.detallecomp_total as 'viejo_total', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE i.producto_id= ".$pr_ident['product']." and i.compra_id <> ".$compra_id." order by i.detallecomp_id desc";
-//                  $det_costo=$this->db->query($detalle_costo)->result_array(); 
-//
-//                $almacen = $existir[0]["existencia"];
-//                //$almacen4 = $existir[0]["existencia"];
-//
-//                  foreach ($det_costo as $costo_cantidad) {
-//                  if ($almacen>0 ) {
-//                         
-//                        if($almacen > $costo_cantidad['vieja_cantidad']){
-//                            
-//                          $viejo = $costo_cantidad['viejo_total'];
-//                          $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
-//                          $cantidades = $cantiviejas+$cantidad;
-//                          $viejos = $viejos + $viejo;
-//                          $sumas =  $nuevo+$viejos;
-//                          $almacen =  $almacen-$cantidades;
-//                          
-//                        }else{
-//                            
-//                          $prom =  $costo_cantidad['viejo_total']/$costo_cantidad['vieja_cantidad'];
-//                          $viejo = $prom*$almacen;
-//                          $cantiviejas = $cantiviejas+$almacen;
-//                          $cantidades = $cantiviejas+$cantidad;
-//                          $viejos = $viejos + $viejo;
-//                          $sumas =  $nuevo+$viejos;
-//                          $almacen =  0;
-//                        
-//                        }
-//
-//                     } 
-//
-//                   }
-//                   
-//                    $costo_promedio = $sumas/$cantidades;
-//                    $sql = "update inventario i, producto p set i.producto_costo=".$costo_promedio.", p.producto_costo=".$costo_promedio." where i.producto_id=".$pr_ident['product']." and p.producto_id=".$pr_ident['product']." ";
-//
-//                    $this->db->query($sql);
-//            }  
+
           
         } // FIN ACTUALIZAR COSTOS
 
@@ -2312,12 +2235,33 @@ function compra_rapida(){
     }
 
     /* confirmar traspaso */
-    function confirmar_traspaso()
-    {
+    function confirmar_traspaso(){
         
         $compra_id = $this->input->post('compra_id');
         $sql = "update compra set estado_id = 1 where compra_id = ".$compra_id;
         $this->Compra_model->ejecutar($sql);
+        
+        //************ inicio bitacora 
+                $venta_id = $this->input->post("venta_id");
+            
+                $usuario_id = $this->session_data['usuario_id'];
+                
+                $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+                $bitacoracaja_fecha = "date({$now})";
+                $bitacoracaja_hora = "time({$now})";
+//                $bitacoracaja_evento = "(select  concat('ELIMINE VENTA FALLIDA: ID ->',venta_id,' * FORMA PAGO: ',forma_id,' * TRANSAC.: ',tipotrans_id,' * USUARIO: ',usuario_id,' * CLIENTE: ',cliente_id,' * MONEDA: ',moneda_id,' * ESTADO: ',estado_id,' * FECHA:',venta_fecha,' * ',venta_hora,' * SUBTOTAL: ',round(venta_subtotal,2),' * DESC.: ',round(venta_descuentoparcial,2),' * DESC.TOT.: ',round(venta_descuento,2),' * TOTAL: ',round(venta_total,2),' * EFECT.: ',round(venta_efectivo,2),' * CAMBIO: ',round(venta_cambio,2),' * GLOSA: ',venta_glosa) as ven from venta where venta_id = {$venta_id})";
+                $bitacoracaja_evento =  "concat('CONSOLIDE UN TRASPASO: ID ->',{$compra_id},' OPERACION: ','{$sql}')" ;
+                $bitacoracaja_montoreg = 0;
+                $bitacoracaja_montocaja = 0;
+                $bitacoracaja_tipo = 3; //2 operaciones sobre traspasos
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                        $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                        $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                $this->Venta_model->ejecutar($sql);
+        //************ fin botacora bitacora           
+        
         echo json_encode(true);
             
     }

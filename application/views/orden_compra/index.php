@@ -49,6 +49,7 @@
     <font size='4' face='Arial'><b>Ordenes de Compra</b></font>
     <br><font size='2' face='Arial'>Registros Encontrados: <span id="encontrados">0</span></font>
 </div>
+
 <div class="row no-print">
     <div class="col-md-5">
         <div class="input-group">
@@ -57,6 +58,15 @@
             <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaresultadosordencompra(2)" title="Buscar"><span class="fa fa-search"></span></div>
             <div style="border-color: #d58512; background: #e08e0b !important; color: white" class="btn btn-warning input-group-addon" onclick="tablaresultadosordencompra(3)" title="Mostrar todas las ordenes de pedido"><span class="fa fa-globe"></span></div>
         </div>
+    </div>
+    
+    <div class="col-md-2">
+             
+        <select  class="btn btn-warning btn-sm form-control" id="estado_id" required="true">
+            <?php foreach($estado as $es){?>
+                <option value="<?php echo $es['estado_id']; ?>"><?php echo $es['estado_descripcion']; ?></option>
+            <?php } ?>
+        </select>
     </div>
     
     <div class="col-md-4 text-right">

@@ -1289,6 +1289,7 @@ function modalprecio() {
 
 function listaprecios() {
     
+    var decimales = document.getElementById('parametro_decimales').value;
     var preciofactor = document.getElementById('elegir_preciofactor').value;
     //$("#escatalogo").prop("checked", false);
     $("#listcodigobarras").prop("checked", false);
@@ -1298,6 +1299,8 @@ function listaprecios() {
     var catalogo = (1==1); //$('#listaprecios').is(':checked');
     var respuesta = document.getElementById('resproducto').value;
     var registros =  JSON.parse(respuesta);
+    var precio_cero = Number(0).toFixed(decimales)
+    
     var n = registros.length; //tamaño del arreglo de la consulta
     if(catalogo){
         chtml = "";
@@ -1341,7 +1344,7 @@ function listaprecios() {
                 html += registros[i]["producto_codigobarra"];
                 html += "</td>";
                 html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
-                html += registros[i]["producto_precio"];
+                html += Number(registros[i]["producto_precio"]).toFixed(decimales);
                 html += "</td>";
             }else if(preciofactor == 1){
                 html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
@@ -1356,9 +1359,9 @@ function listaprecios() {
                 html += "</td>";
                 html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
                 if(registros[i]["producto_preciofactor"] != null){
-                    html += registros[i]["producto_preciofactor"];
+                    html += Number(registros[i]["producto_preciofactor"]).toFixed(decimales);
                 }else{
-                    html += "0";
+                    html += precio_cero;
                 }
                 html += "</td>";
             }else if(preciofactor == 2){
@@ -1374,9 +1377,9 @@ function listaprecios() {
                 html += "</td>";
                 html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
                 if(registros[i]["producto_preciofactor1"] != null){
-                    html += registros[i]["producto_preciofactor1"];
+                    html += Number(registros[i]["producto_preciofactor1"]).toFixed(decimales);
                 }else{
-                    html += "0";
+                    html += precio_cero;
                 }
                 html += "</td>";
             }else if(preciofactor == 3){
@@ -1392,9 +1395,9 @@ function listaprecios() {
                 html += "</td>";
                 html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
                 if(registros[i]["producto_preciofactor2"] != null){
-                    html += registros[i]["producto_preciofactor2"];
+                    html += Number(registros[i]["producto_preciofactor2"]).toFixed(decimales);
                 }else{
-                    html += "0";
+                    html += precio_cero;
                 }
                 html += "</td>";
             }else if(preciofactor == 4){
@@ -1410,9 +1413,9 @@ function listaprecios() {
                 html += "</td>";
                 html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
                 if(registros[i]["producto_preciofactor3"] != null){
-                    html += registros[i]["producto_preciofactor3"];
+                    html += Number(registros[i]["producto_preciofactor3"]).toFixed(decimales);
                 }else{
-                    html += "0";
+                    html += precio_cero;
                 }
                 html += "</td>";
             }else if(preciofactor == 5){
@@ -1428,9 +1431,9 @@ function listaprecios() {
                 html += "</td>";
                 html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
                 if(registros[i]["producto_preciofactor4"] != null){
-                    html += registros[i]["producto_preciofactor4"];
+                    html += Number(registros[i]["producto_preciofactor4"]).toFixed(decimales);
                 }else{
-                    html += "0";
+                    html += precio_cero;
                 }
                 html += "</td>";
             }
