@@ -7583,10 +7583,6 @@ function envio_paquetes(){
 }
 
 
-//function generar_cufd(){
-//    alert("Generando CUFD");
-//}
-
 function ofuscar_tarjeta(){
     
     $cadena = document.getElementById("venta_detalletransaccion").value;

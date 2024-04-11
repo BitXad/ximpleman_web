@@ -5,7 +5,7 @@ p {
     font-size: 8pt;
     line-height: 80%;   /*esta es la propiedad para el interlineado*/
     color: #000;
-    padding: 5px;
+    padding: 0px;
 }
 
 interlineado {
@@ -13,7 +13,7 @@ interlineado {
     font-size: 8pt;
     line-height: 50%;   /*esta es la propiedad para el interlineado*/
     color: #000;
-    padding: 5px;
+    padding: 0px;
 }
 /*
 
@@ -65,7 +65,7 @@ td {
   text-align: center;*/
   padding: 0px;
   /* Alto de las celdas */
-  height: 10px;
+
 font-family: Arial;
 font-size: 8pt;   
 margin: 0;
@@ -80,7 +80,7 @@ tr {
   text-align: center;*/
   padding: 0px;
   /* Alto de las celdas */
-  height: 10px;
+
 font-family: Arial;
 font-size: 8pt;   
 margin: 0;
@@ -231,6 +231,7 @@ border-bottom : 1px solid #aaa;
             <th style="padding: 0"><center>DESCRIPCIÓN</center></th>
             <th style="padding: 0"><center>UNIDAD</center></th>
             <th style="padding: 0"><center>PREC.UNIT<br><?php echo $parametro[0]["moneda_descripcion"]; ?></center></th>
+            <th style="padding: 0"><center>DESC.<br><?php echo $parametro[0]["moneda_descripcion"]; ?></center></th>
             <th style="padding: 0"><center>TOTAL<br><?php echo $parametro[0]["moneda_descripcion"]; ?></center></th>
             <?php if($parametro[0]["parametro_mostrarmoneda"] == 1){ ?>
             <th style="padding: 0"><center>TOTAL<br>            
@@ -245,8 +246,12 @@ border-bottom : 1px solid #aaa;
         <?php 
         
             $i = 1;
+            $subtotal_final = 0;
+            $descuento = 0;
             $total_final = 0;
             foreach($pedido as $p){
+                $subtotal_final += ($p['detalleped_precio'] * $p['detalleped_cantidad']);
+                $descuento += $p['detalleped_descuentoparcial'] * $p['detalleped_cantidad'];
                 $total_final += $p['detalleped_total'];
         ?>
             <tr style="padding: 0;">
@@ -263,6 +268,9 @@ border-bottom : 1px solid #aaa;
                 </td>
                 <td align="right"  style="padding: 0">
                     <?php echo number_format($p['detalleped_precio'],$decimales,".",","); ?>
+                </td>
+                <td align="right"  style="padding: 0">
+                        <?php echo number_format($p['detalleped_descuentoparcial']*$p['detalleped_cantidad'],$decimales,".",","); ?>
                 </td>
                 <td align="right"  style="padding: 0">
                     <?php echo number_format($p['detalleped_total'],$decimales,".",","); ?>
@@ -304,9 +312,28 @@ border-bottom : 1px solid #aaa;
         <?php 
             }
         ?>
-        <tr align="right" style="border-top: solid; border-bottom: solid;">
+        <tr style="border-top: solid; padding: 0; margin: 0;">
+            <td style="padding: 0; margin: 0;"></td>
+            <td style="padding: 0; margin: 0;"></td>
+            <td style="padding: 0; margin: 0;"></td>
+            <td colspan="2" style="padding: 0; margin: 0;"><b>SUB TOTAL:</b></td>
+            <td style="padding: 0; margin: 0; text-align: right;"><b><?php echo number_format($subtotal_final,$decimales,".",","); ?></b></td>
+        <tr>
+            
+        <tr style="padding: 0;">
+            <td style="padding: 0;"></td>
+            <td style="padding: 0;"></td>
+            <td style="padding: 0;"></td>
+            <td colspan="2" style="padding: 0;"><b>DESCUENTO:</b></td>
+            <td style="padding: 0; text-align: right;"><b><?php echo number_format($descuento,$decimales,".",","); ?></b></td>
+        <tr>
+            
+        <tr style="border-bottom: solid;">
 <!--            <th></th>-->
-            <td colspan="3"  style="padding: 0"><font size="3"><b>Total <?php echo $parametro[0]["moneda_descripcion"]; ?></b></font></td>
+            <td style="padding: 0;"></td>
+            <td style="padding: 0;"></td>
+            <td style="padding: 0;"></td>
+            <td colspan="2"  style="padding: 0"><font size="2"><b>TOTAL <?php echo $parametro[0]["moneda_descripcion"]; ?></b></font></td>
 <!--            <th></th>
             <th></th>-->
             <td align="right"  style="padding: 0" colspan="2"><font size="3">

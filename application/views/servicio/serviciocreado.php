@@ -183,6 +183,9 @@ $(document).ready(function(){
 
 <div class="box-header with-border">
     <h3 class="box-title"><b>Detalle del Servicio N°: <?php echo $servicio['servicio_id'] ?></b></h3>
+    <h3 class="box-title"><b>Código / N° O.T.: <?php echo $servicio['servicio_codigo'] ?></b></h3>
+    <!--<button type="button" class="btn-info btn-xs">ASIGNAR O.T.</button>-->
+    <button type="button" id="boton_modalot" class="btn btn-info btn-xs" data-toggle="modal" data-target="#modalot" ><fa class="fa fa-renren"></fa> Registrar O.T.</button>
     <div class="container">
         <div class="panel panel-primary col-md-5">
             <h5>
@@ -568,7 +571,7 @@ $(document).ready(function(){
             <br><br>
         <div class="modal-content">
           <div class="modal-header">
-              <label>Nuevo Detalle del Servicio N° <?php echo $servicio['servicio_id'] ?></label>
+              <label>Nuevo Detalle del Servicio N° <?php echo $servicio['servicio_id'] ?></label>              
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
             <span id="mensajenew_detalleserv" class="text-danger"></span>
           </div>
@@ -1112,3 +1115,64 @@ $(document).ready(function(){
 <!--</form>-->
 
 <!----------------------Fin Modal Cobrar--------------------------------------------------->
+
+
+<!------------------------------------------------------------------------------->
+<!----------------------- INICIO MODAL ACTUALIZAR PRODUCTOS ----------------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div>
+    <button type="button" id="boton_modalot" class="btn btn-default" data-toggle="modal" data-target="#modalot" >
+      Subir Excel
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalot" tabindex="-1" role="dialog" aria-labelledby="modalot" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">REGISTRO: ORDEN DE TRABAJO </b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-content" style="font-family: Arial">
+
+                    <div class="box-body">
+
+                        <div class="col-md-12">
+                                <label for="servicio_codigo" class="control-label">CODIGO SERVICIO/NUMERO ORDEN DE TRABAJO (O.T.):</label>
+<!--                                <div class="form-group">
+                                        <input type="text" name="servicio_codigo" value="0" class="form-control" id="servicio_codigo" />
+                                </div>-->
+                        </div>
+                        
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4">
+                            
+                                <!--<label for="servicio_codigo" class="control-label">CODIGO SERVICIO/NUMERO ORDEN DE TRABAJO (O.T.)</label>-->
+                                <div class="form-group">
+                                        <input type="text" name="servicio_codigo" value="0" class="form-control" id="servicio_codigo" />
+                                </div>
+                                
+                        </div>
+                        
+                    </div>
+
+                        <div class="modal-footer" style="text-align: center">
+                            <!--<button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>-->
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
+                            <button type="button"  class="btn btn-success"  id="boton_registrarcodigo" onclick="registrar_codigoservicio(<?php echo $servicio['servicio_id']; ?>)"><fa class="fa fa-floppy-o"></fa> Registrar</button>
+                        </div>
+
+            
+            </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL GUARDAR VENTA ----------------------------------->
+<!------------------------------------------------------------------------------->

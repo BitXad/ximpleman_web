@@ -7616,10 +7616,15 @@ function anular_venta($venta_id){
         $micad .= "            <table style='width: 100%; margin: 0;' >"; 
         $micad .= "            <tr>"; 
         $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
-        $micad .= "                    <center>"; 
+        $micad .= "                    <center>";
+          //if($parametro["parametro_logoenfactura"]==1){ 
+        $micad .= "                    <img src='".base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']."' width='100' height='60'>";
+           //} 
+        
+        
         $micad .= "                            <div><font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font></div>"; 
                                                 if ($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
-        $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font></div><br>"; 
+        $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font></div>"; 
                                                 }
         $micad .= "                            <div>"; 
         $micad .= "                            <font size='1' face='Arial'>"; 
@@ -8106,7 +8111,7 @@ function anular_venta($venta_id){
                                      //} 
                 $micad .= "                    <!-------------- FACTURA TOTAL ---------->"; 
                 $micad .= "                    <tr>"; 
-                $micad .= "                        <td class='text-bold' style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'><b>SUBTOTAL A PAGAR Bs</b></td>"; 
+                $micad .= "                        <td class='text-bold' style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>SUBTOTAL A PAGAR Bs</td>"; 
                 $micad .= "                        <td class='text-bold' style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_total'] ,$dos_decimales,'.',',')."</td>"; 
                 $micad .= "                    </tr>"; 
 

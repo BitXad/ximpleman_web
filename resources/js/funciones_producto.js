@@ -2202,7 +2202,7 @@ function remplazar_productos(){
         
         $.ajax({url:controlador,
             type:"POST",
-            data:{operacion:operacion,almacen_id:almacen_id},
+            data:{operacion:operacion,almacen_id:almacen_id, producto_id: producto_id},
             success:function(result){
                 
                 let mensaje = JSON.parse(result);

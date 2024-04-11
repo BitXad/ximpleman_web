@@ -68,7 +68,7 @@
 
                             <br>
                         <font size="3" face="arial"><b>ORDEN DE SERVICIO</b></font> <br>
-                        <font size="1" face="arial"><b>Nº 00<?php echo $servicio['servicio_id']; ?></b></font> <br>
+                        <font size="1" face="arial"><b>Nº 00<?php echo $servicio['servicio_id']; ?><?php echo ($servicio['servicio_codigo']!=null && $servicio['servicio_codigo']>0)?" - O.T. Nº: ".$servicio['servicio_codigo']:""; ?></b></font> <br>
                         <br> 
                         <?php $fecha = new DateTime($servicio['servicio_fecharecepcion']); 
                                 $fecha_d_m_a = $fecha->format('d/m/Y');

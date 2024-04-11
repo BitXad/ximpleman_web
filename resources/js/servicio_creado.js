@@ -2160,6 +2160,7 @@ function calcularcambio(e){
         $("#boton_finalizar").click();
    }
 }
+
 /* Funcion que se sale del servicio previa verificacion de que haya cliente.*/
 function salirdeservicio(){
     var base_url     = document.getElementById('base_url').value;
@@ -2178,4 +2179,38 @@ function salirdeservicio(){
     }else{
         alert("El Servicio no tiene Cliente, debe asignar un cliente");
     }
+}
+
+/* Registrar codigo de servicio.*/
+function registrar_codigoservicio(servicio_id){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"servicio/registrar_codigoservicio";    
+    var servicio_codigo = document.getElementById('servicio_codigo').value; 
+
+    if(servicio_codigo != ''){
+        
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{servicio_codigo : servicio_codigo, servicio_id : servicio_id},
+            success:function(respuesta){
+                
+                resultado = JSON.parse(respuesta);
+                                
+                if (resultado){
+//                    
+//                    $("#subcatserv_id").val(resultado[0]["subcatserv_descripcion"]);
+//                    $("#estesubcatserv_id").val(resultado[0]["subcatserv_id"]);
+                    location.reload();
+                }
+                
+            },
+            error: function(respuesta){
+            }
+        });
+        
+    }else{
+        alert("ADVERTENCIA: El numero de Código de Servicio / O.T. no es correcto...!");
+    }
+    
 }

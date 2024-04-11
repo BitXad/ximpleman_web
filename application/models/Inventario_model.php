@@ -1192,4 +1192,33 @@ class Inventario_model extends CI_Model
         $result = $this->db->query($sql);
         return ($result->num_rows() > 0);
     }
+    
+    /* inventario saldosa a la fecha  */
+    function get_inventario_saldos($fecha)
+    {
+        $sql = "select t.producto_id, t.producto_nombre, t.producto_codigobarra, t.producto_costo, t.producto_precio , if(c1.compras is null, 0,c1.compras) as compras , if(v1.ventas is null, 0, v1.ventas) as ventas
+                from producto t
+
+                left join 
+
+                (select d.producto_id, sum(detallecomp_cantidad) as compras
+                from compra c, detalle_compra d
+                where 
+                c.compra_id = d.compra_id and
+                c.compra_fecha <= '{$fecha}'
+                group by d.producto_id) as c1 on c1.producto_id = t.producto_id
+
+                left join
+                (select d.producto_id, sum(detalleven_cantidad) as ventas
+                from venta c, detalle_venta d
+                where 
+                c.venta_id = d.venta_id and 
+
+                c.venta_fecha <= '{$fecha}'
+
+                group by d.producto_id) as v1 on v1.producto_id = t.producto_id";
+        $result = $this->db->query($sql);
+        
+        return ($result->num_rows() > 0);
+    }
 }

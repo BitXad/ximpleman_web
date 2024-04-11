@@ -569,7 +569,7 @@ class Pedido extends CI_Controller{
         $sql = "insert into pedido(usuario_id, estado_id, cliente_id, tipotrans_id, pedido_fecha, 
             pedido_subtotal, pedido_descuento, pedido_total, pedido_glosa, 
             pedido_fechaentrega, pedido_horaentrega, pedido_latitud, 
-            pedido_longitud, regusuario_id) value(".$cad.")";
+            pedido_longitud, regusuario_id, mesa_id) value(".$cad.",0)";
         
         $pedido_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
         
@@ -598,7 +598,7 @@ class Pedido extends CI_Controller{
             detalleped_total,
             detalleped_preferencia,
             detalleped_comision,          
-            detalleped_tc        
+            detalleped_tc
         )
         (SELECT           
           ".$pedido_id." as pedido_id,

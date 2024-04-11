@@ -177,8 +177,8 @@ class Pedido_model extends CI_Model
         $pedido_total = 0;
         $pedido_glosa = "''";
         //estado 3 -> Abierto
-        $sql = "insert into pedido(usuario_id,estado_id,cliente_id,tipotrans_id,pedido_fecha,pedido_subtotal,pedido_descuento,pedido_total,pedido_glosa) ".
-                "value(".$usuario_id.",".$estado_id.",".$cliente_id.",".$tipotrans_id.",".$pedido_fecha.",".$pedido_subtotal.",".$pedido_descuento.",".$pedido_total.",".$pedido_glosa.")";
+        $sql = "insert into pedido(usuario_id,estado_id,cliente_id,tipotrans_id,pedido_fecha,pedido_subtotal,pedido_descuento,pedido_total,pedido_glosa, mesa_id) ".
+                "value(".$usuario_id.",".$estado_id.",".$cliente_id.",".$tipotrans_id.",".$pedido_fecha.",".$pedido_subtotal.",".$pedido_descuento.",".$pedido_total.",".$pedido_glosa.", 0)";
         $pedido = $this->db->query($sql);
         $pedido_id = $this->db->insert_id();
         return $pedido_id;        

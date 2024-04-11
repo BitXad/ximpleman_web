@@ -712,7 +712,7 @@ echo '<script type="text/javascript">
                                                 <div class="form-group">
                                                     <select class="form-control" id="sucursal_traspaso" name="sucursal_traspaso">
                                                             
-                                                        <option value="0">- TODOS -</option>
+                                                        <option value="0">- NINGUNA -</option>
                                                     <?php 
                                                         foreach($almacenes as $almacen){?>
                                                             
@@ -745,7 +745,7 @@ echo '<script type="text/javascript">
                                                     <select class="form-control" id="operacion_traspaso">
                                                         <!--<option value="1">VERIFICAR PRODUCTO</option>-->
                                                         <!--<option value="2">REGISTRAR PRODUCTO</option>-->
-                                                        <option value="3">ACTUALIZAR DATOS DEL PRODUCTO</option>
+                                                        <option value="3">REGISTRAR/ACTUALIZAR PRODUCTO</option>
                                                         <!--<option value="4">COMPARAR LISTA DE PRODUCTOS</option>-->
                                                     </select>
                                                 </div>

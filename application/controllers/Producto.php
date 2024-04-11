@@ -1652,18 +1652,20 @@ class Producto extends CI_Controller{
         
             $almacen_id = $this->input->post("almacen_id");
             $operacion_id = $this->input->post("operacion");
+            $producto_id = $this->input->post("producto_id");
             //$operacion = $this->input->post("operacion");
             
             //0. buscar en la sucursal objetivo
                 $almacen = $this->Inventario_model->get_all_almacen($almacen_id); //retorna un rowarray
               
                 //0.1 Obtener todos los productos de la base de datos actual
-                $sql = "select * from producto";
+                $sql = "select * from producto where producto_id = {$producto_id}";
                 $productos = $this->Inventario_model->consultar_en_sucursal('default',$sql);            
                 //$productos = $producto[0];            
                   
                 //Eliminar el contenido de la tabla producto
-                $sql = "truncate producto";
+                //$sql = "truncate producto";
+                $sql = "delete from producto where producto_id = {$producto_id}";
                 $this->Inventario_model->ejecutar_en_sucursal($almacen["almacen_basedatos"],$sql);            
                 
                 

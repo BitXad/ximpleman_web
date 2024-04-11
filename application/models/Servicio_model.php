@@ -74,6 +74,7 @@ class Servicio_model extends CI_Model
         $this->db->insert('servicio',$params);
         return $this->db->insert_id();
     }
+
     
     /*
      * function to update servicio
@@ -527,4 +528,24 @@ class Servicio_model extends CI_Model
         
         return $servicio;
     }
+    
+            
+    /*
+     * Ejecutar Consulta SQL
+     */
+    function ejecutar($sql){
+         
+        $this->db->query($sql);
+        return $this->db->insert_id();
+    }
+    
+    /*
+     * Consulta SQL
+     */
+    function consultar($sql){
+                 
+        $resultado = $this->db->query($sql)->result_array();        
+        return $resultado;
+    }    
+    
 }

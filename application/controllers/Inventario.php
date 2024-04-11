@@ -345,4 +345,35 @@ class Inventario extends CI_Controller{
             echo   json_encode($data);
         }else{ show_404();}
     }
+    
+    /* Inventario a la fecha */
+    function inventario_saldos()
+    {
+        $data['parametro'] =  $this->parametros;
+        $data['sistema'] = $this->sistema;
+        $fecha = date("Y-m-d");
+        
+        if($this->acceso(24)){
+            //**************** inicio contenido ***************
+            $data['rolusuario'] = $this->session_data['rol'];
+            $empresa_id = 1;
+            $data['page_title'] = "Inventario";
+            $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+            //$data['almacenes'] = $this->Inventario_model->get_all_almacenes();
+            $data['almacenes'] = $this->Inventario_model->get_inventario_saldos($fecha);
+            
+            $data['_view'] = 'inventario/inventario_saldos';
+            $this->load->view('layouts/main',$data);
+
+            //**************** fin contenido ***************
+        }
+		
+    }
+    
+    
 }

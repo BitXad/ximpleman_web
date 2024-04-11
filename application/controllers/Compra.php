@@ -978,29 +978,29 @@ class Compra extends CI_Controller{
         
         if($this->acceso(1)){
            
-//            $data['parametro'] = $this->parametros;
-//            $data['sistema'] = $this->sistema;
-//            $usuario_id = $this->session_data['usuario_id'];
-//            //$this->load->model('Compra_model');
-//            $null = NULL;
-//            $num = $this->Compra_model->numero();
-//            $maximo = $num[0]['parametro_montomax'];
-//            $diasgra = $num[0]['parametro_diasgracia'];
-//            $diapago = $num[0]['parametro_diapago'];
-//            $periodo = $num[0]['parametro_periododias'];
-//            $numcuota =$this->input->post('credito_numpagos');
-//            $interes = $num[0]['parametro_interes'];
-//            $nroDia = date('N');
-//            $proxima_semana = time() + (7 * 24 * 60 * 60); 
-//            $proximo_martes = time() + ( ($diasgra-($nroDia-$diapago)) * 24 * 60 * 60 );
-//            $proximo_martes2 = time() + ( ($diasgra+$periodo-($nroDia-$diapago)) * 24 * 60 * 60 );
-//            $patron = ($numcuota*0.5) + 0.5;
-//            $totalcompra=$this->input->post('compra_total');
-//            $descglobal=$this->input->post('compra_descglobal');
-//            $banderafin=$this->input->post('banderafin');
-//            $nueva_fecha = date("Y-m-d"); 
-//            $nueva_hora = date("H:i:s"); 
-//            $banco_id = $this->input->post('forma_id') != 1 ? $this->input->post('banco') : "";
+            $data['parametro'] = $this->parametros;
+            $data['sistema'] = $this->sistema;
+            $usuario_id = $this->session_data['usuario_id'];
+            //$this->load->model('Compra_model');
+            $null = NULL;
+            $num = $this->Compra_model->numero();
+            $maximo = $num[0]['parametro_montomax'];
+            $diasgra = $num[0]['parametro_diasgracia'];
+            $diapago = $num[0]['parametro_diapago'];
+            $periodo = $num[0]['parametro_periododias'];
+            $numcuota =$this->input->post('credito_numpagos');
+            $interes = $num[0]['parametro_interes'];
+            $nroDia = date('N');
+            $proxima_semana = time() + (7 * 24 * 60 * 60); 
+            $proximo_martes = time() + ( ($diasgra-($nroDia-$diapago)) * 24 * 60 * 60 );
+            $proximo_martes2 = time() + ( ($diasgra+$periodo-($nroDia-$diapago)) * 24 * 60 * 60 );
+            $patron = ($numcuota*0.5) + 0.5;
+            $totalcompra=$this->input->post('compra_total');
+            $descglobal=$this->input->post('compra_descglobal');
+            $banderafin=$this->input->post('banderafin');
+            $nueva_fecha = date("Y-m-d"); 
+            $nueva_hora = date("H:i:s"); 
+            $banco_id = $this->input->post('forma_id') != 1 ? $this->input->post('banco') : "";
             
             if ($descglobal>0) {
                 $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";

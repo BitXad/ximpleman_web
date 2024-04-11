@@ -2416,4 +2416,21 @@ class Servicio extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
+    /*
+     * Registrar O.T.
+     */
+    function registrar_codigoservicio(){
+
+        if ($this->input->is_ajax_request()) {
+            
+            $servicio_codigo = $this->input->post("servicio_codigo");
+            $servicio_id = $this->input->post("servicio_id");
+            
+            $sql = "update servicio set servicio_codigo = '{$servicio_codigo}' where servicio_id = {$servicio_id}";         
+            $this->Servicio_model->ejecutar($sql);
+            echo json_encode(true);                
+
+        }
+    }
+    
 }

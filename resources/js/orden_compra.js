@@ -124,6 +124,7 @@ function ejecutarordencompra()
                 window.open(dir_url, '_blank');
                 
                 document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+                //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
             },
             error:function(respuesta){
                // alert("Algo salio mal...!!!");

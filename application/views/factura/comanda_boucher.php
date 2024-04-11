@@ -244,6 +244,31 @@ border-bottom : 1px solid #aaa;
     <tr>
         <td style="padding: 0; border-top: solid 1px #000; border-bottom: solid 1px #000; width: 0.8cm; font-size: 8pt;" colspan="4"><?php echo "OBS.: <b>".$venta[0]['venta_glosa']."</b>"; ?></td>
     </tr>
+    
+        <tr align="right">
+    
+            <?php 
+            $moneda_descripcion = "Bs";
+            $decimales = 2;
+            $moneda_id = 1;
+            $parametro_mostrarmoneda = 0;
+            ?>
+        <td colspan="5"style="border-top: solid 1px #000; padding: 0; line-height: 12px;"  >
+            
+            <font size="1">
+                <?php echo "EFECTIVO ".$moneda_descripcion." ".number_format($venta[0]['venta_efectivo'],$decimales,'.',','); ?><br>
+                <?php echo "CAMBIO ".$moneda_descripcion." ".number_format($venta[0]['venta_cambio'],$decimales,'.',','); ?>            
+            </font>
+            
+            <?php if($venta[0]['tipotrans_id']==2){ ?>
+            <font size="1">
+                <br>CUOTA INIC. <?php echo $moneda_descripcion; ?>: <?php echo number_format($venta[0]['credito_cuotainicial'],$decimales,'.',','); ?>
+                <br>SALDO <?php echo $moneda_descripcion; ?>: <?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],$decimales,'.',','); ?><br>
+            </font>
+            <?php } ?>
+            
+        </td>          
+    </tr>
 
     <tr>
         <td  colspan="4" style="border-top:solid 1px #000;">

@@ -1,0 +1,42 @@
+ El volumen de la unidad C no tiene etiqueta.
+ El n£mero de serie del volumen es: 6ABF-553E
+
+ Directorio de C:\xampp\htdocs\ximpleman_web\resources\xml\esquemas
+
+25/03/2024  13:29    <DIR>          .
+25/03/2024  13:29    <DIR>          ..
+25/03/2024  13:29                 0 esquemas.txt
+29/07/2023  11:25            19,385 facturaComputarizadaAlquilerBienInmueble.xsd
+29/07/2023  11:25            18,907 facturaComputarizadaComercializacionGnGlp.xsd
+29/07/2023  11:25            21,215 facturaComputarizadaComercializacionHidrocarburo.xsd
+29/07/2023  11:25            20,389 facturaComputarizadaCompraVenta.xsd
+29/07/2023  11:25            18,900 facturaComputarizadaEngarrafadoras.xsd
+29/07/2023  11:25            19,395 facturaComputarizadaEntidadFinanciera.xsd
+29/07/2023  11:25            23,421 facturaComputarizadaHospitalClinica.xsd
+29/07/2023  11:25            22,077 facturaComputarizadaHotel.xsd
+29/07/2023  11:25            15,395 facturaComputarizadaPrevalorada.xsd
+29/07/2023  11:25            19,966 facturaComputarizadaSectorEducativo.xsd
+29/07/2023  11:25            28,255 facturaComputarizadaServicioBasico.xsd
+29/07/2023  11:25            22,129 facturaComputarizadaServicioTuristicoHospedaje.xsd
+29/07/2023  11:25            18,913 facturaComputarizadaTasaCero.xsd
+29/07/2023  11:25            20,893 facturaComputarizadaTelecomunicacion.xsd
+29/07/2023  11:25            19,523 facturaElectronicaAlquilerBienInmueble.xsd
+29/07/2023  11:25            18,978 facturaElectronicaComercializacionGnGlp.xsd
+29/07/2023  11:25            21,398 facturaElectronicaComercializacionHidrocarburo.xsd
+29/07/2023  11:25            20,184 facturaElectronicaCompraVenta.xsd
+29/07/2023  11:25            18,971 facturaElectronicaEngarrafadoras.xsd
+29/07/2023  11:25            19,591 facturaElectronicaEntidadFinanciera.xsd
+29/07/2023  11:25            23,617 facturaElectronicaHospitalClinica.xsd
+29/07/2023  11:25            22,271 facturaElectronicaHotel.xsd
+29/07/2023  11:25            15,545 facturaElectronicaPrevalorada.xsd
+29/07/2023  11:25            20,160 facturaElectronicaSectorEducativo.xsd
+29/07/2023  11:25            28,449 facturaElectronicaServicioBasico.xsd
+29/07/2023  11:25            22,311 facturaElectronicaServicioTuristicoHospedaje.xsd
+29/07/2023  11:25            19,109 facturaElectronicaTasaCero.xsd
+29/07/2023  11:25            21,031 facturaElectronicaTelecomunicacion.xsd
+29/07/2023  11:25                 0 mi.phar
+29/07/2023  11:25            18,028 notaComputarizadaCreditoDebito.xsd
+29/07/2023  11:25            18,236 notaElectronicaCreditoDebito.xsd
+29/07/2023  11:25             3,724 SignatureSchema.xsd
+              33 archivos        620,366 bytes
+               2 dirs  270,082,531,328 bytes libres

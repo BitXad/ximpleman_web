@@ -2415,18 +2415,7 @@ function actualizar_productos(){
 
 
             alert(JSON.stringify(productos));
-            
-//            if (registros == "no"){
-//                
-//                alert("El Sistema no tiene Sucursales; por favor consulte con su proveedor!.");
-//                
-//            }else{
-//                
-//                alert('El inventario se actualizo exitosamente...! ');
-//                //redirect('inventario/index');
-//                document.getElementById('loaderindex').style.display = 'none'; //ocultar el bloque del loader
-//                //tabla_inventario();
-//            }
+
         },
         complete: function (jqXHR, textStatus) {
             document.getElementById('loaderindex').style.display = 'none'; //ocultar el bloque del loader 

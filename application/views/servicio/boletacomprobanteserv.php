@@ -36,7 +36,7 @@
         <td style="width: 4.3cm; vertical-align: top;">
             <div style="font-family: Arial; font-size: 9pt; text-align: center;"> 
                 <div>
-                    <b>SERVICIO TÉCNICO<br>Nro.: <?php echo "00".$servicio['servicio_id']; ?></b>
+                    <b>SERVICIO TÉCNICO<br>Nº: <?php echo "00".$servicio['servicio_id']; ?><?php echo ($servicio['servicio_codigo']!=null && $servicio['servicio_codigo']>0)?" - O.T. Nº: ".$servicio['servicio_codigo']:""; ?></b>
                 </div>
             </div>
             <hr style="border-color: black; margin-top: 0px; margin-bottom: 3px">
@@ -118,7 +118,7 @@
                 </div>
                 <div style="text-align: center; width: 45%">
                     <div class="text-bold" style="font-size: 15px; margin-top: 0px; margin-bottom: 0px;">
-                        <b>ORDEN DE SERVICIO TÉCNICO<br>Nro.:  <?php echo "00".$servicio['servicio_id']; ?></b></div>
+                        <b>ORDEN DE SERVICIO TÉCNICO<br>Nº:  <?php echo "00".$servicio['servicio_id']; ?><?php echo ($servicio['servicio_codigo']!=null && $servicio['servicio_codigo']>0)?" - O.T. Nº: ".$servicio['servicio_codigo']:""; ?></b></div>
                     <!--<font size="2"><b>Nro.:  <?php //echo "00".$servicio['servicio_id']; ?></b></font>-->
                     <span style="font-size: 9px"><?php echo date("d/m/Y h:i:s a"); ?></span><br>
                 </div>

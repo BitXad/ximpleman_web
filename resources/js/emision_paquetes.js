@@ -56,7 +56,7 @@ function tablaresultados()
                         }
                         html += "</td>";
                         html += "<td>";
-                        if(registros[i]['recpaquete_codigodescripcion'] == "PENDIENTE"){
+                        if(registros[i]['recpaquete_codigodescripcion'] == "PENDIENTE" ||registros[i]['recpaquete_codigodescripcion'] == "OBSERVADA"){
                             html += "<a class='btn btn-success btn-xs' onclick='ejecutar_emisionpaquetes_vacio("+JSON.stringify(registros[i]['recpaquete_codigorecepcion'])+")' title='Ejecutar validacion servicio Recepcion'><fa class='fa fa-bolt'></fa> Validar</a>&nbsp;";
                             html += "<a class='btn btn-danger btn-xs' onclick='eliminar_emisionpaquete("+registros[i]['recpaquete_id']+")' title='Eliminar recepción paquete'><span class='fa fa-trash'></span></a>";
                         }/*else if(registros[i]['estado_id'] == 35){
