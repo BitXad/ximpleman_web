@@ -439,8 +439,9 @@ $salto_linea='
         
 //****************************************************************************************
         
-        if ($documento_sector == 13){// 13 - Servicios Basicos
-            $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_subtotal'],$dos_decimales,".","") .'</montoTotal>'; //Em monto total a cobrar sin descuentos
+        if ($documento_sector == 13){// 13 - Servicios Basicos      
+            $monto_total_pagar = $factura['factura_subtotal'] - $factura['factura_descuento'] - $factura_datos['datos_ajutesnosujetoiva'];                   
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($monto_total_pagar,$dos_decimales,".","") .'</montoTotal>'; //Em monto total a cobrar sin descuentos
         }else{
             $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_total'],$dos_decimales,".","") .'</montoTotal>';
             
@@ -509,9 +510,9 @@ $salto_linea='
             
             if ($factura_datos['datos_montodescuentoley1886']>0){
                 
-                $cabecera_facturaxml .= $salto_linea.'          <beneficiarioLey1886>'.$factura_datos['datos_beneficiario1886'].'</beneficiarioLey1886>'; //cambiar por cliente_nombre
-                $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoLey1886>'.$factura_datos['datos_montodescuentoley1886'].'</montoDescuentoLey1886>'; //cambiar por cliente_nombre
-                $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoTarifaDignidad xsi:nil="true">'.$factura_datos['datos_montodescuentotarifadignidad'].'</montoDescuentoTarifaDignidad>'; //cambiar por cliente_nombre
+                $cabecera_facturaxml .= $salto_linea.'          <beneficiarioLey1886>'.$factura_datos['datos_beneficiarioley1886'].'</beneficiarioLey1886>'; //cambiar por cliente_nombre
+                $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoLey1886>'.number_format($factura_datos['datos_montodescuentoley1886'],$dos_decimales,".","").'</montoDescuentoLey1886>'; //cambiar por cliente_nombre
+                $cabecera_facturaxml .= $salto_linea.'          <montoDescuentoTarifaDignidad>'.number_format($factura_datos['datos_montodescuentotarifadignidad'],$dos_decimales,".","").'</montoDescuentoTarifaDignidad>'; //cambiar por cliente_nombre
                 
             }else{
                 
@@ -566,7 +567,7 @@ $salto_linea='
             if ($factura_datos['datos_otrospagosnosujetoiva']>0){
                 
                 $datos_otrospagosnosujetoiva = number_format($factura_datos['datos_otrospagosnosujetoiva'],$dos_decimales,".","");
-                $cabecera_facturaxml .= $salto_linea.'          <otrosPagosNoSujetoIva>'.$factura_datos['datos_otrospagosnosujetoiva'].'</otrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
+                $cabecera_facturaxml .= $salto_linea.'          <otrosPagosNoSujetoIva>'.number_format($factura_datos['datos_otrospagosnosujetoiva'],$dos_decimales,".","").'</otrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
                 $cabecera_facturaxml .= $salto_linea.'          <detalleOtrosPagosNoSujetoIva>{"'.$factura_datos['datos_detalleotrospagosnosujetoiva'].'":'.$datos_otrospagosnosujetoiva.'}</detalleOtrosPagosNoSujetoIva>'; //cambiar por cliente_nombre
                 
             }else{
@@ -580,10 +581,11 @@ $salto_linea='
             
             $cabecera_facturaxml .= $salto_linea.'          <otrasTasas>'.number_format($factura_datos['datos_otrastasas'],$dos_decimales,".","").'</otrasTasas>'; //cambiar por cliente_nombre
         
+            $monto_total_moneda = $factura['factura_subtotal'] - $factura['factura_descuento'] - $factura_datos['datos_ajutesnosujetoiva'];
             
             $cabecera_facturaxml .= $salto_linea.'          <codigoMoneda>'.$factura['moneda_codigoclasificador'].'</codigoMoneda>';
             $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.number_format($factura['moneda_tc'],$dos_decimales,".","").'</tipoCambio>';
-            $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.number_format($factura['factura_subtotal'],$dos_decimales,".","").'</montoTotalMoneda>';
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotalMoneda>'.number_format($monto_total_moneda,$dos_decimales,".","").'</montoTotalMoneda>';
             
         }else{
             

@@ -1882,7 +1882,7 @@ window.onkeydown = compruebaTecla;
             
             <div class="col-md-12">
             <!--<form action="<?php echo base_url('hotel/checkout/'.$pedido_id."/".$habitacion_id); ?>"  method="POST" class="form">-->
-                <div class="box" style="margin-bottom: 2px">
+            <div class="box" style="margin-bottom: 2px">
 
             <div class="box-body table-responsive table-condensed">
             <!--<form method="post" name="descuento">-->                
@@ -1993,9 +1993,10 @@ window.onkeydown = compruebaTecla;
                 
             </table>
 
-          
+            
             <div class="col-md-12">
-                <input type="checkbox" style="padding: 0;" id="mandar_enuno" value="1" name="mandar_enuno" checked disabled >
+               
+                <input type="checkbox" style="padding: 0;" id="mandar_enuno" value="1" name="mandar_enuno" checked> Validar factura con CAFC
                 
                <?php if ($dosificacion[0]['docsec_codigoclasificador']==2){ ?>
                     <b>PERIODO:</b>

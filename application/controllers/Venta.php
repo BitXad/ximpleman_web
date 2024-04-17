@@ -1741,9 +1741,10 @@ class Venta extends CI_Controller{
                         
                         $mandar_enuno = $this->input->post('mandar_enuno');
                         // si esta destiqueado ingresa aqui!; manda factura por factura!......
-                        if($mandar_enuno == 0){
+                        if($mandar_enuno == 1){
                             //Funcion en eventos con cafc
                             if ($registroeventos_codigo > 0){ //$registroeventos_codigo > 0 para que ingrese y envie los archivos con cafc
+                                
                                 $sqlx = "update factura_contingencia set facturacontingencia_numero =  facturacontingencia_numero + 1";
                                 $this->Venta_model->ejecutar($sqlx);
 
@@ -6107,7 +6108,11 @@ function anular_venta($venta_id){
     /** registra emision de paquetes (solicitud de recepcion de paquetes) fuera de linea con CAFC
      * esto para un solo archivo al momento de fianalizar la venta e indicar que es con CAFC */
     function registroEmisionPaquetes($factura_id,$codigo_evento){
-            if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
+        
+       // $dosificacion_id = 1;
+       // $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+            
+       // if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
                 
         try{
             if ($this->input->is_ajax_request()) {
@@ -6116,25 +6121,78 @@ function anular_venta($venta_id){
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                //$wsdl = $dosificacion['dosificacion_factura'];
-                if ($dosificacion['docsec_codigoclasificador']==1)
-                   $wsdl = $dosificacion['dosificacion_factura'];
+//                //$wsdl = $dosificacion['dosificacion_factura'];
+//                if ($dosificacion['docsec_codigoclasificador']==1)
+//                   $wsdl = $dosificacion['dosificacion_factura'];
+//
+//                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+//                    
+//                    $documentos_sector = array(23,39,11);
+//                    
+//                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))
+//                        $wsdl = $dosificacion['dosificacion_glpelectronica'];
+//                }
+//                
+//                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+//                                        
+//                    $documentos_sector = array(23,39,11);
+//                    
+//                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))
+//                        $wsdl = $dosificacion['dosificacion_facturaglp'];
+//                }
+                
+                $documentos_sector = array(2,6,8,11,12,16,17,23,39,51);
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-                    
-                    $documentos_sector = array(23,39,11);
-                    
-                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))
+
+
+
+                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
                         $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+
+                    if ($dosificacion['docsec_codigoclasificador']==13)
+                            $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+
+                    if ($dosificacion['docsec_codigoclasificador']==15)
+                        $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==22)
+                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==24)
+                        $wsdl = $dosificacion['dosificacion_notacredito'];
+
+
                 }
-                
+        
+                //*************************************************************************
+                //       SERVICIOS FACTURACION COMPUTARIZADA
+                //*************************************************************************        
                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-                                        
-                    $documentos_sector = array(23,39,11);
-                    
-                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))
+
+                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
                         $wsdl = $dosificacion['dosificacion_facturaglp'];
-                }
+
+                    if ($dosificacion['docsec_codigoclasificador']==13)
+                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==15)
+                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==22 )
+                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==24 )
+                        $wsdl = $dosificacion['dosificacion_notacredito'];
+
+                }                
+                
+                
+                
+                
+                
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
@@ -6249,6 +6307,7 @@ function anular_venta($venta_id){
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
+                /*
                 //$wsdl = $dosificacion['dosificacion_factura'];
                 if ($dosificacion['docsec_codigoclasificador']==1)
                     $wsdl = $dosificacion['dosificacion_factura'];
@@ -6267,7 +6326,57 @@ function anular_venta($venta_id){
                     
                     if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))
                         $wsdl = $dosificacion['dosificacion_facturaglp'];
+                } */
+                
+                
+                $documentos_sector = array(2,6,8,11,12,16,17,23,39,51);
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+
+
+
+                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
+                        $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+
+                    if ($dosificacion['docsec_codigoclasificador']==13)
+                            $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+
+                    if ($dosificacion['docsec_codigoclasificador']==15)
+                        $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==22)
+                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==24)
+                        $wsdl = $dosificacion['dosificacion_notacredito'];
+
+
                 }
+        
+                //*************************************************************************
+                //       SERVICIOS FACTURACION COMPUTARIZADA
+                //*************************************************************************        
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+
+                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
+                        $wsdl = $dosificacion['dosificacion_facturaglp'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==13)
+                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==15)
+                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==22 )
+                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==24 )
+                        $wsdl = $dosificacion['dosificacion_notacredito'];
+
+                }  
+                
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(
@@ -6317,6 +6426,7 @@ function anular_venta($venta_id){
                 $res = $resultado->RespuestaServicioFacturacion;
                 //var_dump($res);
                 $recepcion_paquete = $this->Emision_paquetes_model->getcod_recepcionpaquetes($res->codigoRecepcion);
+                echo "RESULTADOOOOOOOOOO:".$res->codigoDescripcion == "VALIDADA";
                 if($res->codigoDescripcion == "VALIDADA"){
                     $params = array(
                         'recpaquete_codigodescripcion' => $res->codigoDescripcion,
@@ -7617,9 +7727,10 @@ function anular_venta($venta_id){
         $micad .= "            <tr>"; 
         $micad .= "                <td  style='width: ".round($ancho/3,2)."cm; padding: 0; line-height: 9px;'>"; 
         $micad .= "                    <center>";
-          //if($parametro["parametro_logoenfactura"]==1){ 
-        $micad .= "                    <img src='".base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']."' width='100' height='60'>";
-           //} 
+        
+        if($this->parametros["parametro_logoenfactura"]==1){ 
+            $micad .= "                    <img src='".base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']."' width='100' height='60'>";
+         } 
         
         
         $micad .= "                            <div><font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font></div>"; 
@@ -7789,6 +7900,8 @@ function anular_venta($venta_id){
                 $micad .= "                            </tr>";
         }
         
+         
+        
         $micad .= "                        </table>"; 
         //$micad .= "                    </div>"; 
         $micad .= "                </td>"; 
@@ -7839,6 +7952,8 @@ function anular_venta($venta_id){
                                             $total_descuentoparcial += $d['detallefact_descuentoparcial'] * $d['detallefact_cantidad'];  
                                             $total_descuento += $d['detallefact_descuento'];  
                                             $total_final += $d['detallefact_total'];  
+                                            
+                                            
         $micad .= "                        <tr style='border: 1px solid black'>"; 
         $micad .= "                            <td align='left' style='padding: 0; padding-left:3px;'><font style='size:7px; font-family: arial'>".$d['detallefact_codigo']."</font></td>"; 
         $micad .= "                            <td align='right' style='padding: 0; padding-right:3px;'><font style='size:7px; font-family: arial'>".number_format($d['detallefact_cantidad'],$decimales,'.',',')."</font></td>"; 
@@ -7883,7 +7998,31 @@ function anular_venta($venta_id){
         //*******************************************************************************************************************
         //*******************************************************************************************************************
         if($factura[0]['docsec_codigoclasificador']==13){
+            
 
+
+                $micad .= "    <tr  style=' font-family: Arial; border: 1px solid black;'>";
+                $micad .= "        <td></td> <td></td> <td></td> <td>Ajustes sujetos a IVA<br>".(isset($datos_factura['datos_detalleajustesujetoiva']))?$datos_factura['datos_detalleajustesujetoiva']:""."</td> <td></td>  <td></td> <td style='text-align:right;'>".number_format(isset($datos_factura['datos_ajustesujetoiva'])?$datos_factura['datos_ajustesujetoiva']:0,$decimales,'.',',')."</td>";
+                $micad .= "    </tr>    ";                    
+
+                $micad .= "    <tr  style=' font-family: Arial; border: 1px solid black;'>";
+                $micad .= "        <td></td> <td></td> <td></td> <td>Tasa Aseo Urbano</td> <td></td>  <td></td> <td style='text-align:right;'>".number_format($datos_factura['datos_tasaaseo'],$decimales,'.',',')."</td>";
+                $micad .= "    </tr>   ";                     
+
+                $micad .= "    <tr  style=' font-family: Arial; border: 1px solid black;'>";
+                $micad .= "        <td></td> <td></td> <td></td> <td>Tasa Alumbrado</td> <td></td>  <td></td> <td style='text-align:right;'>".number_format($datos_factura['datos_tasaalumbrado'],$decimales,'.',',')."</td>";
+                $micad .= "    </tr> ";                       
+
+                $micad .= "    <tr  style=' font-family: Arial; border: 1px solid black;'>";
+                $micad .= "        <td></td> <td></td> <td></td> <td>".$datos_factura['datos_detalleotrastasas']."</td> <td></td>  <td></td> <td style='text-align:right;'>".number_format($datos_factura['datos_otrastasas'],$decimales,'.',',')."</td>";
+                $micad .= "    </tr>  ";                      
+
+                $micad .= "    <tr  style=' font-family: Arial; border: 1px solid black;'>";
+                $micad .= "        <td></td> <td></td> <td></td> <td>".$datos_factura['datos_detalleotrospagosnosujetoiva']."</td> <td></td>  <td></td> <td style='text-align:right;'>".number_format($datos_factura['datos_otrospagosnosujetoiva'],$decimales,'.',',')."</td>";
+                $micad .= "    </tr>";
+
+       
+            /*
             $datos_sujetoivasubtotal =  $datos_factura['datos_ajustesujetoiva'];
             $datos_aseosubtotal =  $datos_factura['datos_tasaaseo'];
             $datos_alumbradosubtotal =  $datos_factura['datos_tasaalumbrado'];
@@ -7987,7 +8126,7 @@ function anular_venta($venta_id){
                 $micad .= "                            <td align='right' style='padding-right: 3px;'>".number_format($datos_factura['datos_otrospagosnosujetoiva'],$dos_decimales,'.',',')."</td>";
                 $micad .= "                            </tr>";
             }
-
+*/
         }
         //*******************************************************************************************************************
         //*******************************************************************************************************************
@@ -8083,132 +8222,60 @@ function anular_venta($venta_id){
 //*******************************************************************************************************************        
         }else{
             
+
+
+                $tasas = $datos_factura['datos_tasaaseo']+$datos_factura['datos_tasaalumbrado'];
+                $pagos_no_iva = 0;
+                $ajustes_no_iva = 0;
+                $sub_total = $factura[0]['factura_subtotal'] - $factura[0]['factura_descuento'];
+                $monto_total_pagar = $factura[0]['factura_subtotal'] - $factura[0]['factura_descuento'] - $datos_factura['datos_ajutesnosujetoiva'];
+
+                $micad .= "    <tr>";
+                $micad .= "        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='8'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>SUBTOTAL A PAGAR Bs</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($sub_total,$dos_decimales,'.',',')."</td>";
+                $micad .= "    </tr>";
                 
-                //$total_final_factura = $total_final_factura + $datos_sujetoivasubtotal + $datos_aseosubtotal + $datos_alumbradosubtotal + 
-                  //                      $datos_tasassubtotal + $datos_pagossubtotal;
-               
-                $factura_subtotal = $factura[0]['factura_subtotal'];
-               
-
-
-                $micad .= "                    <!-------------- SUB TOTAL ---------->"; 
-                $micad .= "                    <tr>"; 
-                $micad .= "                        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='9'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>"; 
-                $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>TOTAL Bs</td>"; 
-                $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura_subtotal,$dos_decimales,'.',',')."</td>"; 
-                $micad .= "                    </tr>"; 
                 $micad .= "                    <!-------------- DESCUENTO ---------->"; 
                 $micad .= "                    <tr>"; 
                 $micad .= "                        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>DESCUENTO Bs</td>"; 
                 $micad .= "                        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],$dos_decimales,'.',',')."</td>"; 
                 $micad .= "                    </tr>"; 
                 $micad .= "                    <!-------------- DECUENTO GLOBAL ---------->"; 
-                                     //if($factura[0]['factura_descuento']>0){ 
-                /*$micad .= "                        <!--<tr>"; 
-                $micad .= "                            <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)DESCUENTO GLOBAL Bs</td>"; 
-                $micad .= "                            <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_descuento'],$dos_decimales,'.',',')."</td>";
-                $micad .= "                        </tr>--> */ 
-                                     //} 
-                $micad .= "                    <!-------------- FACTURA TOTAL ---------->"; 
-                $micad .= "                    <tr>"; 
-                $micad .= "                        <td class='text-bold' style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>SUBTOTAL A PAGAR Bs</td>"; 
-                $micad .= "                        <td class='text-bold' style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_total'] ,$dos_decimales,'.',',')."</td>"; 
-                $micad .= "                    </tr>"; 
-
-
-
-                  $micad .= "                          <!-------------- AJUSTES NO SUJETOS A IVA ---------->";
-
-                  $ajustes_noiva = $datos_factura['datos_ajutesnosujetoiva'];
-                  $micad .= "      <tr>";
-                  $micad .= "          <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)AJUSTES NO SUJETOS A IVA Bs</td>";
-                  $micad .= "          <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ajustes_noiva ,$dos_decimales,'.',',')."</td>";
-                  $micad .= "      </tr>";
-
-
-
-                $micad .= "                    <!-------------- MONTO TOTAL A PAGAR ---------->"; 
-
-                    $monto_total_pagar = $factura_total - $datos_factura['datos_ajutesnosujetoiva'];
-                    
-                    $micad .= "    <tr>           ";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($monto_total_pagar ,$dos_decimales,'.',',')."</td>";
-                    $micad .= "    </tr>";
-
-                    
-
-                $micad .= "                    <!-------------- (-) TASAS ---------->"; 
-
-                    //$tasas = $datos_factura['datos_tasas'];
-                    
-                    $micad .= "    <tr>           ";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)TASAS Bs</td>";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($tasas ,$dos_decimales,'.',',')."</td>";
-                    $micad .= "    </tr>";
-
-                    
-
-                $micad .= "                    <!-------------- (-) OTROS PAGOS NO SUJETOS A IVA ---------->"; 
-
-                    $otros_pagos_noiva = 0;//$datos_factura['datos_otrospagos'];
-                    
-                    $micad .= "    <tr>           ";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)OTROS PAGOS NO SUJETOS A IVA Bs</td>";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($otros_pagos_noiva ,$dos_decimales,'.',',')."</td>";
-                    $micad .= "    </tr>";
-
-                    
-                    
-
-                $micad .= "                    <!-------------- (+) AJUSTES SUJETOS A IVA ---------->"; 
-
-                    $ajustes_sujetoiva = $datos_factura['datos_ajustesujetoiva'];
-                    
-                    $micad .= "    <tr>           ";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>(-)OTROS PAGOS NO SUJETOS A IVA Bs</td>";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ajustes_sujetoiva,$dos_decimales,'.',',')."</td>";
-                    $micad .= "    </tr>";
-
-                    
-                    
-                    
-
-                $micad .= "                    <!-------------- (+) IMPORTE BASE A CREDITO FISCAL ---------->"; 
-
                 
-                    $importe_base_iva = $monto_total_pagar - $tasas - $otros_pagos_noiva; 
-                    
-                    
-                    $micad .= "    <tr>           ";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>IMPORTE BASE CREDITO FISCAL Bs</td>";
-                    $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($importe_base_iva ,$dos_decimales,'.',',')."</td>";
-                    $micad .= "    </tr>";
+                
+                $micad .= "    <tr>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>(-) AJUSTES NO SUJETOS A IVA Bs</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format(is_numeric($datos_factura['datos_detalleajustenosujetoiva'])?$datos_factura['datos_detalleajustenosujetoiva']:0 ,$dos_decimales,'.',',')."</td>";
+                $micad .= "    </tr>";
 
-                    
-                    
-//                    
-//                if($factura[0]['docsec_codigoclasificador']!=8){ //Mostrar si no es Factura tasa cero
-//
-//                    $micad .= "                    <!-------------- IMPORTE BASE CREDITO FISCAL ---------->"; 
-//                    $micad .= "                    <tr>"; 
-//
-//
-//                    //Un artículo de la Ley Financial 317 para la gestión 2013 establece que por la presentación de facturas por consumo 
-//                    //de diésel y gasolina, el crédito fiscal del IVA será sólo del 70% del valor de la compra, 
-//                    //mientras que el 30% restante pasará a apoyar al Tesoro General de la Nación (TGN) 
-//                    if($factura[0]['docsec_codigoclasificador'] == 12){
-//                        $factura_total = $factura_total * 0.70;
-//                    }
-//                    //******************************************************
-//                    $elimporte =  "IMPORTE BASE CR&Eacute;DITO FISCAL";
-//                    if($opc == 12){ //Comercializacion de hidrocarburos
-//                        $elimporte =  "IMPORTE BASE C/F MONTO LEY 317";
-//                    }        
-//                    $micad .= "                        <td class='text-bold' style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>".$elimporte."</td>"; 
-//                    $micad .= "                        <td class='text-bold' style='padding:0; padding-right: 3px;' align='right'>".number_format($importe_base_iva ,$dos_decimales,'.',',')."</td>"; 
-//                    $micad .= "                    </tr>";
+                $micad .= "    <tr>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>MONTO TOTAL A PAGAR Bs</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($monto_total_pagar ,$dos_decimales,'.',',')."</td>";
+                $micad .= "    </tr>";
 
+                $micad .= "    <tr>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>(-) TASAS Bs</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($tasas ,$dos_decimales,'.',',')."</td>";
+                $micad .= "    </tr>";
+
+                $micad .= "    <tr>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>(-) OTROS PAGOS NO SUJETO IVA Bs</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($pagos_no_iva ,$dos_decimales,'.',',')."</td>";
+                $micad .= "    </tr>";
+
+                $micad .= "    <tr>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>(+) AJUSTES NO SUJETOS A IVA Bs</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ajustes_no_iva ,$dos_decimales,'.',',')."</td>";
+                $micad .= "    </tr>";
+
+                $micad .= "    <tr>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>IMPORTE BASE CREDITO FISCAL</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($factura[0]['factura_total'] ,$dos_decimales,'.',',')."</td>";
+                $micad .= "    </tr>";
+
+        
+          
                 
         }
         
@@ -8224,8 +8291,7 @@ function anular_venta($venta_id){
         $micad .= "                <table style='width: 100%; margin-top: 25px;'>"; 
         $micad .= "                    <tr>"; 
         $micad .= "                       <td style='float: left;width: 78%;'>"; 
-        //$micad .= "                <div style='width: 100%; margin-top: 25px;'>"; 
-        //$micad .= "                    <div style='float: left;width: 78%;'>"; 
+
         $micad .= "                        <center style='width:100%;'>"; 
         $micad .=                             $factura[0]['factura_leyenda1']."<br><br>"; 
         $micad .= "                            <font face='Arial' size='1'>".$factura[0]['factura_leyenda2']; 
@@ -8234,11 +8300,8 @@ function anular_venta($venta_id){
         $micad .=                                 $factura[0]['factura_leyenda4']; 
 
         $micad .= "                        </center>"; 
-        //$micad .= "                    </div>"; 
         $micad .= "                        </td>";
         $micad .= "                        <td style='float: right;width: 80px;'>"; 
-        //$micad .= "                    <div style='float: right;width: 80px;'>"; 
-        //$micad .= "                        <figure>";
 
 
              //generamos el código qr

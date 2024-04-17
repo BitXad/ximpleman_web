@@ -42,11 +42,13 @@
     $caja_horaapertura = $caja["caja_horaapertura"]; // Esto debería ser la hora de apertura de la caja
 
     // Si la fecha actual es la misma que la fecha de apertura de la caja y antes de la medianoche
-    if ($fecha_actual == $caja_fechaapertura && $hora_actual < '23:59') {
-        $fecha_desde = $fecha_actual;
-        $hora_desde = '16:00';
-        $fecha_hasta = $fecha_actual;
-        $hora_hasta = '23:59';
+    if ($fecha_actual == $caja_fechaapertura && $hora_actual > '02:00'&&$hora_actual < '23:59') {
+        
+                $fecha_desde = $fecha_actual;
+                $hora_desde = '16:00';
+                $fecha_hasta = $fecha_actual;
+                $hora_hasta = '23:59';
+             
     } 
     // Si la fecha actual es un día después de la fecha de apertura de la caja
     elseif ($fecha_actual > $caja_fechaapertura) {
@@ -74,9 +76,9 @@
         <br>CAJERO(A): <?php echo $usuario_nombre; ?>
     </div>
 
-    <div class="container" hidden>  
+    <div class="container" >  
         <div class="box-tools" style="font-family: Arial;">
-                <div class=" col-md-11" hidden>
+                <div class=" col-md-11">
 
                         <div class="col-md-2">
                             <input  class="btn btn-primary btn-sm form-control" id="buscarusuario_id" value="<?php echo $usuario_id; ?>"/>

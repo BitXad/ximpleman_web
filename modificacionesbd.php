@@ -67,10 +67,10 @@ parametro_numrecegr = 0;
 
  truncate cliente;
 INSERT INTO `cliente` (`cliente_id`, `estado_id`, `tipocliente_id`, `categoriaclie_id`, `usuario_id`, `cliente_codigo`, `cliente_nombre`, `cliente_ci`, `cliente_direccion`, `cliente_telefono`, `cliente_celular`, `cliente_foto`, `cliente_email`, `cliente_nombrenegocio`, `cliente_aniversario`, `cliente_latitud`, `cliente_longitud`, `cliente_nit`, `cliente_razon`, `cliente_departamento`, `zona_id`, `lun`, `mar`, `mie`, `jue`, `vie`, `sab`, `dom`, `cliente_ordenvisita`, `cliente_clave`, `cliente_codactivacion`, `cliente_fechaactivacion`, `cliente_puntos`, `cdi_codigoclasificador`, `cliente_complementoci`, `cliente_excepcion`, `id_facebook`) VALUES 
-  (1,1,1,1,0,'EN45770','ENTIDAD CON PERSONERIA JURIDICA','99001','-','','',NULL,'','-',NULL,NULL,NULL,'99001','ENTIDAD CON PERSONERIA JURIDICA','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
-  (2,1,1,1,0,'CO91862','CONTROL TRIBUTARIO','99002','-','','',NULL,'','-',NULL,NULL,NULL,'99002','CONTROL TRIBUTARIO','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
-  (3,1,1,1,0,'VE33623','VENTAS MENORES DEL DIA','99003','-','','',NULL,'','-',NULL,NULL,NULL,'99003','VENTAS MENORES DEL DIA','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
-  (4,1,1,1,0,'SN84613','SIN NOMBRE','1234','-','','',NULL,'','-',NULL,NULL,NULL,'1234','SIN NOMBRE','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'',0,NULL);
+  (1500,1,1,1,0,'EN45770','ENTIDAD CON PERSONERIA JURIDICA','99001','-','','',NULL,'','-',NULL,NULL,NULL,'99001','ENTIDAD CON PERSONERIA JURIDICA','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
+  (1501,1,1,1,0,'CO91862','CONTROL TRIBUTARIO','99002','-','','',NULL,'','-',NULL,NULL,NULL,'99002','CONTROL TRIBUTARIO','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
+  (1502,1,1,1,0,'VE33623','VENTAS MENORES DEL DIA','99003','-','','',NULL,'','-',NULL,NULL,NULL,'99003','VENTAS MENORES DEL DIA','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
+  (1503,1,1,1,0,'SN84613','SIN NOMBRE','1234','-','','',NULL,'','-',NULL,NULL,NULL,'1234','SIN NOMBRE','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'',0,NULL);
 COMMIT;
  
 truncate usuario;

@@ -623,22 +623,24 @@ border-bottom : 1px solid #aaa;
                     
                     <!-------------- FACTURA TOTAL ---------->
                     <?php if($factura[0]['docsec_codigoclasificador']==13){ 
+                        
                         $tasas = $datos_factura["datos_tasaaseo"]+$datos_factura["datos_tasaalumbrado"];
                         $pagos_no_iva = 0;
                         $ajustes_no_iva = 0;
-                        $monto_total_pagar = $factura[0]['factura_subtotal'];
+                        $sub_total = $factura[0]['factura_subtotal'] - $factura[0]['factura_descuento'];
+                        $monto_total_pagar = $factura[0]['factura_subtotal'] - $factura[0]['factura_descuento'] - $datos_factura['datos_ajutesnosujetoiva'];
                         ?>
                         
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b><?php echo "SUBTOTAL A PAGAR Bs"; ?></b></td>
-                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_subtotal'],$dos_decimales,'.',',') ?></b></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($sub_total,$dos_decimales,'.',',') ?></b></td>
                         </tr>
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) AJUSTES NO SUJETOS A IVA Bs</td>
                             <td style="padding:0; padding-right: 3px;" align="right"><?= number_format(is_numeric($datos_factura['datos_detalleajustenosujetoiva'])?$datos_factura['datos_detalleajustenosujetoiva']:0 ,$dos_decimales,'.',',') ?></td>
                         </tr>
 
-                                                    <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO TOTAL A PAGAR Bs</b></td>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO TOTAL A PAGAR Bs</b></td>
                             <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($monto_total_pagar ,$dos_decimales,'.',',') ?></b></td>
                         </tr>
                         

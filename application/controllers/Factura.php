@@ -237,7 +237,8 @@ class Factura extends CI_Controller{
             
             if($dosificacion['docsec_codigoclasificador'] == 13){ // FACTURA SERVICIOS
             
-                $data['_view'] = 'factura/factura_carta_servicios';
+                $data['_view'] = 'factura/factura_carta_new';
+                //$data['_view'] = 'factura/factura_carta_servicios';
             }
             
             
