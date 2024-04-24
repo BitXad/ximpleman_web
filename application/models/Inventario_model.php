@@ -137,6 +137,8 @@ class Inventario_model extends CI_Model
         $usuario_id = $this->session_data['usuario_id'];
 
         // verificar si el producto existe
+        $codigo = trim($codigo);
+        
         if($codigo!=''){
             
             //Esta consulta genera un error cuando se envia vacio carga todos los items al detalle de venta

@@ -4988,12 +4988,12 @@ function tabla_ventas(filtro)
                     
                     if(v[i]['factura_enviada'] == 1){
                         
-                        html += "<span style='padding:0; font-size:14px; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>"+v[i]['factura_numero']+" ENVIADA </small></b></span> ";
+                        html += "<span style='padding:0; font-size:14px; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>FACT.Nº: "+v[i]['factura_numero']+" ENVIADA</small></b></span> ";
                     
                     }else{
     
                         if(v[i]['factura_enviada'] == 2){
-                            html += "<span style='font-size:14px; padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>"+v[i]['factura_numero']+" VALIDADA </small></b></span> ";
+                            html += "<span style='font-size:14px; padding:0; border:0' class='btn btn-info btn-xs' title='COD. RECEP.: "+v[i]['factura_codigorecepcion']+"'><b><small>FACT.Nº: "+v[i]['factura_numero']+" VALIDADA </small></b></span> ";
                         }else{
                         
                                 if (paquete==null ){
@@ -5003,8 +5003,8 @@ function tabla_ventas(filtro)
                                       
                                         if (v[i]['venta_tipodoc']==1){
                                             
-                                            html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['factura_id']+");'>";
-                                            html += "<fa class='fa fa-chain-broken'> </fa> <small>"+v[i]['factura_numero']+" NO ENVIADA</small> </button>";                           
+                                            html += "<button type='button' class='btn btn-danger btn-xs' style='padding:0; font-size:14px;' data-toggle='modal' data-target='#modalpaquetes' title='"+v[i]['factura_mensajeslist']+"' onclick='cargar_eventos("+v[i]['factura_id']+");'>";
+                                            html += "<fa class='fa fa-chain-broken'> </fa> <small>FACT.Nº: "+v[i]['factura_numero']+" NO ENVIADA</small> </button>";                           
                                         
                                         }
 //                                        else{
@@ -5021,8 +5021,8 @@ function tabla_ventas(filtro)
 
                                 }else{
 
-                                      html += "<button type='button' class='btn btn-warning btn-xs' style='padding:0;' data-toggle='modal' data-target='#modalvalidacion' onclick='cargar_codigovalidacion("+JSON.stringify(paquete)+","+v[i]['factura_id']+");'>";
-                                      html += "<fa class='fa fa-chain'> </fa> VALID. PENDIENTE </button>";
+                                      html += "<button type='button' class='btn btn-warning btn-xs' style='padding:0; font-size:14px;' data-toggle='modal' data-target='#modalvalidacion' onclick='cargar_codigovalidacion("+JSON.stringify(paquete)+","+v[i]['factura_id']+");'>";
+                                      html += "<fa class='fa fa-chain'> </fa>FACT.Nº: "+v[i]['factura_numero']+" VALID. PENDIENTE </button>";
 
                                  }
                         }     
@@ -5165,6 +5165,8 @@ function tabla_ventas(filtro)
                     
                     let archivoxml = dosificacion_documentosector+v[i]['factura_id']+".xml";
                     html += "                           <a href='"+base_url+"resources/xml/"+archivoxml+"' download='Descargar archivo "+archivoxml+"' title='Descargar archivo "+archivoxml+"' class='btn btn-xs btn-twitter'><fa class='fa fa-code'> </fa> </a>";
+                    
+                    html += "                           <a href='"+base_url+"/venta/rehacer_venta/"+v[i]['venta_id']+"' type='button' class='btn btn-facebook btn-xs'  style='background-color: black;' title='Rehacer Factura'><fa class='fa fa-recycle' aria-hidden='true'></fa></a>";
                     
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
                     html += "                               <div class='modal fade' id='myModal"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['venta_id']+"' style='font-family: Arial'>";

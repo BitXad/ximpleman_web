@@ -1727,7 +1727,8 @@ class Venta extends CI_Controller{
                             
                             //if( $this->parametros["parametro_tipoemision"] == 1){ // solo cuando esta en linea manda correo
                             $email = $this->input->post('cliente_email'); 
-                            if($email !=""){
+                            
+                            if($email !=""){ // Si el cliente tiene email
                                 $this->enviarcorreo($venta_id, $factura_id, $email,$nombre_archivo);
                             }
                                 //}
@@ -5888,6 +5889,9 @@ function anular_venta($venta_id){
         $this->email->set_newline("\r\n");
         $this->load->model('Configuracion_email_model');
         $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
+        $factura = $this->Factura_model->get_factura($factura_id);
+        
+        $cliente = $factura["factura_razonsocial"];
 
         $config['protocol'] = $configuracion['email_protocolo'];
         $config['smtp_host'] = $configuracion['email_host'];
@@ -5914,9 +5918,10 @@ function anular_venta($venta_id){
         $directorio_factura = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
         $this->email->attach($directorio_factura.$nombre_archivo.$factura_id.".xml");
         $this->email->attach($directorio_factura.$nombre_archivo.$factura_id.".pdf");
+        
         $html = "<html>";
         $html = "<head>";
-        $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
+        //$html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
         $html = "</head>";
         $html = "<body>";
 
@@ -5926,14 +5931,14 @@ function anular_venta($venta_id){
         $html .= "<div class='col-md-10'>";
         $html .= "<center>";
         $html .= "<h3>Facturacion Electronica</h3>";
-        $html .= " ";
-        $html .= "<h4>Estimado Usuario</h4>";
+        $html .= "<br>";
+        $html .= "Estimado Usuario";
         $html .= "<br>";
         //$html .= $configuracion['email_cabecera'];
-        $html .= "Le informamos que su factura electronica se encuentra disponible en formato digital adjunto en este correo <br>";
+        $html .= "Le informamos que su factura electronica se encuentra disponible en formato digital adjunto en este correo ";
             //$direccion = base_url("tufactura/verfactura/".md5($venta_id));
             //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
-            $html .= "<br>en formato PDF y XML.";
+            $html .= "en formato PDF y XML.";
         $html .= "<br>";
         //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
 //            $html .= "<form method='get' action='/".$direccion."'>";
@@ -5957,7 +5962,96 @@ function anular_venta($venta_id){
         $html .= "</body>";
         $html .= "</html>";
 
+        $imagen = base_url('resources/images/empresas/').$this->empresa['empresa_imagen'];
+        
+        if($this->dosificacion["dosificacion_ambiente"]==1){ //Produccion
+            
+            $base_url = base_url();
+            $directorio = "resources/images/empresas/";
+            $imagen = $this->empresa['empresa_imagen'];
+            
+        }else{
+            
+            $base_url = "https://www.kinetixdigitalmedia.com/facturacion/";
+            $directorio = "resources/images/empresas/";
+            $imagen = "1692569983.jpg";
+            
+        }
+//                <img src="https://www.kinetixdigitalmedia.com/facturacion/resources/images/empresas/1692569983.jpg" width="100" height="60"><br>
+                
+                
+        $html = '
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Mensaje de correo electrónico</title>
+            <!-- Bootstrap CSS -->
+            <link href="https://cdn.jsdelivr.net/npm/
+            bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
+            rel="stylesheet">
+        </head>
+        <body>
+            <center>
+                <table class="table table-bordered"> 
+                    <tr>
+                        <td style="background: #D35400; color:white; 
+                        font-family:Arial;">
+                            <center>
+                                
+                                
+                                <p><b>'.$this->empresa["empresa_nombre"].'</b></p>
+                                <p>'.$this->empresa["empresa_eslogan"].'</p>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: gray; font-family:Arial;">
+                            <h2>Agradecemos su preferencia!</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: lightgray; font-family:Arial;">
+                            <p>Señor(es): '.$cliente.'</p>
+                            <p>Mediante este mensaje le informamos que adjunto a este correo</p>
+                            <p> encontrará su factura en formato PDF y XML.</p>
+                            <p></p>
+                            <p>¡Gracias por su compra!</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: black; 
+                        color: white; 
+                        font-family:Arial; font-size:10pt; 
+                        line-height: 10px">
+                            <center><br>
+                            
+                               <a href="https://www.facebook.com/sisximpleman/" 
+                               style="color: white; text-decoration: none;"
 
+                                <p><b>XIMPLEMAN</b>
+                                </a>
+
+                               es un producto de 
+                                
+                               <a href="https://www.passwordbolivia.com" 
+                               style="color: white; text-decoration: none;"
+                                target="_blank"><b>PASSWORD IHS</b></a></p>
+                              
+            
+                            </center>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+  
+            <script src="https://cdn.jsdelivr.net/
+            npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+            </script>
+        </body>
+        </html>';
+                
         $this->email->message($html);
 
         if($this->email->send()) {

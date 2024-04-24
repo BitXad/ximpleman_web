@@ -195,8 +195,6 @@ p.`producto_costo` * p.producto_orden,
 1,
 1,
 6.96
-
-
 from producto p);
 
 INSERT INTO `proveedor` (`proveedor_id`, `estado_id`, `proveedor_codigo`, `proveedor_nombre`, `proveedor_foto`, `proveedor_contacto`, `proveedor_direccion`, `proveedor_telefono`, `proveedor_telefono2`, `proveedor_email`, `proveedor_nit`, `proveedor_razon`, `proveedor_autorizacion`) VALUES 
@@ -234,10 +232,6 @@ compra_subtotal = (select sum(detallecomp_total) from detalle_compra where compr
 where compra_id = 1;
 
 drop table motivo_anulacion_borrar;
-
-
-
-
 
 
 CREATE OR REPLACE  ALGORITHM=UNDEFINED DEFINER='root'@'localhost' SQL SECURITY DEFINER VIEW `consventastotales`
@@ -309,17 +303,6 @@ from
   left join `factura` `fa` on (`fa`.`venta_id` = `v`.`venta_id`))
 order by
   `v`.`venta_id` desc;
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -490,10 +473,7 @@ SET producto_nombre = REPLACE(producto_nombre, '"', '``');
  update producto_almacen p, categoria_producto c
 set p.categoria_id = c.categoria_id
 where p.producto_marca = c.categoria_nombre
-
  
- 
-  
   
 update factura
 set 
