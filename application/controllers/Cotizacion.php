@@ -167,6 +167,7 @@ class Cotizacion extends CI_Controller{
         $este = $num[0]['parametro_tipoimpresora'];
         
         if($this->acceso(36)){
+            
             $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
             $data['cotizacion_id'] = $cotizacion_id;
@@ -177,14 +178,17 @@ class Cotizacion extends CI_Controller{
             $data['usuario'] = $this->Cotizacion_model->get_cotizacion_usuario($usuario_id);  
             $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
 
-        if ($este == 'NORMAL') {
-        $data['_view'] = 'cotizacion/recibo';
-        $this->load->view('layouts/main',$data);
-        }else{
-        $data['_view'] = 'cotizacion/boucher';
-        $this->load->view('layouts/main',$data);
- 
-        }
+                if ($este == 'NORMAL') {
+                    
+                    $data['_view'] = 'cotizacion/recibo';
+                    $this->load->view('layouts/main',$data);
+                    
+                }else{
+                    
+                    $data['_view'] = 'cotizacion/boucher';
+                    $this->load->view('layouts/main',$data);
+
+                }
      
        
         }
@@ -373,7 +377,9 @@ class Cotizacion extends CI_Controller{
     function finalizar($cotizacion_id)
     {
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(36)){
+            
             $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
             // check if the cotizacion exists before trying to edit it

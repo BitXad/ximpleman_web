@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaServicioBasico xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaServicioBasico.xsd">
+      <cabecera>
+          <nitEmisor>5152377019</nitEmisor>
+          <razonSocialEmisor>GROVER ALEJANDRO ZARATE ALMENDRAS</razonSocialEmisor>
+          <municipio>COCHABAMBA</municipio>
+          <telefono>4511518 *(591)79999097</telefono>
+          <numeroFactura>304</numeroFactura>
+          <cuf>1608A399D64C0308B75C84327456F65790C9AA25E019F80A3253F88E74</cuf>
+          <cufd>BQUF8QipYUEZBNzkQ5NzdBQjdEMjc=Q8KhWXo4TGFFWVVc0ODlERENBMTM2N</cufd>
+          <codigoSucursal>0</codigoSucursal>
+          <direccion>URUGUAY N° 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <mes>ENERO</mes>
+          <gestion>2020</gestion>
+          <ciudad>COCHABAMBA</ciudad>
+          <zona>CENTRAL</zona>
+          <numeroMedidor>MD001</numeroMedidor>
+          <fechaEmision>2024-04-25T12:00:39.394</fechaEmision>
+          <nombreRazonSocial>JUANA MENDEZ</nombreRazonSocial>
+          <domicilioCliente>-</domicilioCliente>
+          <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>3555601</numeroDocumento>
+          <complemento></complemento>
+          <codigoCliente>JU72523</codigoCliente>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta>0</numeroTarjeta>
+          <montoTotal>50.00</montoTotal>
+          <montoTotalSujetoIva>50.00</montoTotalSujetoIva>
+          <consumoPeriodo>0</consumoPeriodo>
+          <beneficiarioLey1886 xsi:nil="true"></beneficiarioLey1886>
+          <montoDescuentoLey1886 xsi:nil="true"></montoDescuentoLey1886>
+          <montoDescuentoTarifaDignidad xsi:nil="true"></montoDescuentoTarifaDignidad>
+          <tasaAseo xsi:nil="true"></tasaAseo>
+          <tasaAlumbrado xsi:nil="true"></tasaAlumbrado>
+          <ajusteNoSujetoIva xsi:nil="true"></ajusteNoSujetoIva>
+          <detalleAjusteNoSujetoIva xsi:nil="true"></detalleAjusteNoSujetoIva>
+          <ajusteSujetoIva xsi:nil="true"></ajusteSujetoIva>
+          <detalleAjusteSujetoIva xsi:nil="true"></detalleAjusteSujetoIva>
+          <otrosPagosNoSujetoIva xsi:nil="true"></otrosPagosNoSujetoIva>
+          <detalleOtrosPagosNoSujetoIva  xsi:nil="true"></detalleOtrosPagosNoSujetoIva>
+          <otrasTasas>0.00</otrasTasas>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1.00</tipoCambio>
+          <montoTotalMoneda>50.00</montoTotalMoneda>
+          <descuentoAdicional>0.00</descuentoAdicional>
+          <codigoExcepcion>0</codigoExcepcion>
+          <cafc xsi:nil="true"></cafc>
+          <leyenda>Ley N° 453: Tienes derecho a recibir información sobre las características y contenidos de los productos que consumes.</leyenda>
+          <usuario>Administrador</usuario>
+          <codigoDocumentoSector>13</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99100</codigoProductoSin>
+           <codigoProducto>7501056330330</codigoProducto>
+           <descripcion>PONDS CREMA BIO HYDRATANTA 100G </descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>25.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>50.00</subTotal>
+      </detalle>
+</facturaComputarizadaServicioBasico>

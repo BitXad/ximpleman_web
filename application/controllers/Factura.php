@@ -218,7 +218,7 @@ class Factura extends CI_Controller{
             $data['motivos'] = $this->Factura_model->get_all_motivos();
             
             $documentos_sector = array(1,2);            
-            if(in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector)){ //FACTURA COMPRA VENTA
+            if(in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector)){ //FACTURA COMPRA VENTA/ ALQUILERES
 //                $data['_view'] = 'factura/factura_carta_servicios';
                 $data['_view'] = 'factura/factura_carta_new';
             }
@@ -456,9 +456,10 @@ class Factura extends CI_Controller{
         if($data['parametro']['parametro_tiposistema'] == 1){// 1 = Sistema de facturacion computarizado
             $data['_view'] = 'factura/factura_boucher';
         }else{
+            
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1); 
             $data['motivos'] = $this->Factura_model->get_all_motivos();
-            if($dosificacion['docsec_codigoclasificador'] == 1){ //FACTURA COMPRA VENTA
+            if($dosificacion['docsec_codigoclasificador'] <= 2){ //FACTURA COMPRA VENTA
 //                $data['_view'] = 'factura/factura_carta_servicios';
                 $data['_view'] = 'factura/factura_bouchern';
             }

@@ -717,12 +717,12 @@ if (registros[i]["detalleven_envase"] == 1){
     html += "<tr style='padding: 0;'>";
         if(registros[i]["detalleven_prestamoenvase"]==1){ valorcheck = "checked"} else{ valorcheck = "";}
 
-        html += "<td style='padding: 0;' bgcolor='gray'><b>"+registros[i]["detalleven_nombreenvase"]+": "+registros[i]["detalleven_precioenvase"]+" "+registros[i]["moneda_descripcion"]+"</b></td>";
+        html += "<td style='padding: 0;' bgcolor='lightgray'><b>"+registros[i]["detalleven_nombreenvase"]+": "+ Number(registros[i]["detalleven_precioenvase"]).toFixed(decimales)+" "+registros[i]["moneda_descripcion"]+"</b></td>";
         html += "<td style='padding: 0;'><center><input type='checkbox' id='check"+registros[i]["detalleven_id"]+"' value='1' "+valorcheck+" ></center></td>";
         
-        html += "<td style='padding: 0;'><center><input type='text' style='width:30px' id='cantidadenvase"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidadenvase"]+"' ></center></td>";
+        html += "<td style='padding: 0;'><center><input type='text' style='width:60px' id='cantidadenvase"+registros[i]["detalleven_id"]+"' value='"+Number(registros[i]["detalleven_cantidadenvase"]).toFixed(decimales)+"' ></center></td>";
 //        html += "<td style='padding: 0;'><center><input type='text' style='width:40px' value='"+registros[i]["detalleven_precioenvase"]+"' ></center></td>";
-        html += "<td style='padding: 0;'><center><input type='text' style='width:30px'  id='garantia"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_garantiaenvase"]+"' ></center></td>";
+        html += "<td style='padding: 0;'><center><input type='text' style='width:60px'  id='garantia"+registros[i]["detalleven_id"]+"' value='"+Number(registros[i]["detalleven_garantiaenvase"]).toFixed(decimales)+"' ></center></td>";
     html += "</tr>";
     
     html += "</table>";

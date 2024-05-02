@@ -322,7 +322,8 @@ border-bottom:1px solid black;
                         <td><b>UTILIDAD TOTAL: </b></td> <td><b> <?php echo number_format($utilidad_total,$decimales,'.',',');?></b></td>
                     </tr>
                     <tr>
-                        <td><b>MARGEN UTILIDAD PROM.: </b></td> <td><b> <?php echo number_format($utilidad_total/$compra[0]['compra_totalfinal'] * 100,'2','.',',')." %";?></b></td>
+                        <?php  $compra_totalfinal = ($compra[0]['compra_totalfinal']==0)?1:$compra[0]['compra_totalfinal']; ?>
+                        <td><b>MARGEN UTILIDAD PROM.: </b></td> <td><b> <?php echo number_format($utilidad_total/$compra_totalfinal * 100,'2','.',',')." %";?></b></td>
                     </tr>
                     <?php if ($compra[0]['tipotrans_id']==2) { ?>
                     <tr>

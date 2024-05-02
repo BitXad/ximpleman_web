@@ -13,15 +13,16 @@ function formato_fecha(string){
 }
 
 function cargar_parametros(prestamo){
+    var decimales = document.getElementById('decimales').value; //document.getElementById('decimales').value;
     
     $("#detalleven_id").val(prestamo.detalleven_id);
     $("#cliente_nombre").val(prestamo.cliente_nombre);
     $("#cliente_id").val(prestamo.cliente_id);
     
-    $("#monto_garantia").val(prestamo.detalleven_garantiaenvase);
-    $("#cantidad_prestamo").val(prestamo.detalleven_cantidadenvase);
-    $("#prestamo").val(prestamo.detalleven_cantidadenvase);
-    $("#garantia").val(prestamo.detalleven_garantiaenvase);
+    $("#monto_garantia").val(Number(prestamo.detalleven_garantiaenvase).toFixed(decimales));
+    $("#cantidad_prestamo").val(Number(prestamo.detalleven_cantidadenvase).toFixed(decimales));
+    $("#prestamo").val(Number(prestamo.detalleven_cantidadenvase).toFixed(decimales));
+    $("#garantia").val(Number(prestamo.detalleven_garantiaenvase).toFixed(decimales));
     $("#boton_modal").click();
     
 }
@@ -59,6 +60,7 @@ function buscar_prestamos(kardex,producto_id){
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var usuario_id = document.getElementById('select_usuario').value;
     var tipo_prestamo = document.getElementById('tipo_prestamo').value;
+    var decimales = document.getElementById('decimales').value; //document.getElementById('decimales').value;
     //alert(usuario_id);
     
     $.ajax({url: controlador,
@@ -86,12 +88,12 @@ function buscar_prestamos(kardex,producto_id){
                    html += "<td style='padding:0'>"+prestamo[i].cliente_nombre+"</td>";
                    html += "<td style='padding:0'>"+formato_fecha(prestamo[i].venta_fecha)+"</td>";
                    html += "<td align='center'style='padding:0'>"+prestamo[i].detalleven_nombreenvase+" / "+prestamo[i].producto_nombre+"</td>";
-                   html += "<td style='padding:0' align='center'>"+prestamo[i].detalleven_cantidadenvase+"</font></b></td>";
-                   html += "<td style='padding:0' align='center'>"+prestamo[i].detalleven_devueltoenvase+"</font></b></td>";
-                   html += "<td style='padding:0' align='center'>"+Number(prestamo[i].detalleven_garantiaenvase).toFixed(2)+"</td>";
+                   html += "<td style='padding:0' align='center'>"+Number(prestamo[i].detalleven_cantidadenvase).toFixed(decimales)+"</font></b></td>";
+                   html += "<td style='padding:0' align='center'>"+Number(prestamo[i].detalleven_devueltoenvase).toFixed(decimales)+"</font></b></td>";
+                   html += "<td style='padding:0' align='center'>"+Number(prestamo[i].detalleven_garantiaenvase).toFixed(decimales)+"</td>";
                    html += "<td style='padding:0' align='center'>"+prestamo[i].usuario_nombre+"</td>";
                    
-                   html += "<td style='padding:0' align='center'>"+Number(prestamo[i].detalleven_montodevolucion).toFixed(2)+"</td>";
+                   html += "<td style='padding:0' align='center'>"+Number(prestamo[i].detalleven_montodevolucion).toFixed(decimales)+"</td>";
                    html += "<td style='padding:0' align='center'>"+formato_fecha(prestamo[i].detalleven_fechadevolucion)+"</td>";
                    html += "<td style='padding:0' align='center'>"+prestamo[i].cobrador+"</td>";
 
@@ -102,9 +104,9 @@ function buscar_prestamos(kardex,producto_id){
                    
                    html += "<td style='padding:0' class='no-print'>";
                    html += "<button class='btn btn-warning btn-xs'  onclick='buscar_prestamos(1,"+prestamo[i].producto_id+")' title='Muestra el historial de prestamos de envases'><fa class='fa fa-list'></fa> Historial</button>";
-                   if(! Number(prestamo[i].detalleven_usuario_id)>0){                   
+                   //if(! Number(prestamo[i].detalleven_usuario_id)>0){                   
                        html += "<button class='btn btn-success btn-xs'  onclick='cargar_parametros("+JSON.stringify(prestamo[i])+")' title='Realizar devolución'><fa class='fa fa-money'></fa> Devolución</button>";
-                    }
+                    //}
                     
                    html += "</td>";
                    html += "</tr>";
@@ -115,13 +117,13 @@ function buscar_prestamos(kardex,producto_id){
                html+= "<th></th>";
                html+= "<th></th>";
                html+= "<th></th>";
-               html+= "<th>"+cantidad_prestados.toFixed(2)+"</th>";
-               html+= "<th>"+cantidad_devueltos.toFixed(2)+"</th>";
-               html+= "<th>"+total_garantia.toFixed(2)+"</th>";
+               html+= "<th>"+cantidad_prestados.toFixed(decimales)+"</th>";
+               html+= "<th>"+cantidad_devueltos.toFixed(decimales)+"</th>";
+               html+= "<th>"+total_garantia.toFixed(decimales)+"</th>";
                html+= "<th></th>";
-               html+= "<th>"+total_devuelto.toFixed(2)+"</th>";
-               html+= "<th colspan='2'><b>GARATIA POR DEVOLVER ("+nombre_moneda+"):"+(total_garantia - total_devuelto).toFixed(2)+
-                       "<br>ENVASES EN PRESTAMO: "+(cantidad_prestados - cantidad_devueltos).toFixed(2)+"</b></th>";
+               html+= "<th>"+total_devuelto.toFixed(decimales)+"</th>";
+               html+= "<th colspan='2'><b>GARATIA POR DEVOLVER ("+nombre_moneda+"):"+(total_garantia - total_devuelto).toFixed(decimales)+
+                       "<br>ENVASES EN PRESTAMO: "+(cantidad_prestados - cantidad_devueltos).toFixed(decimales)+"</b></th>";
                html+= "</tr>";
                
                $("#tabla_prestamos").html(html);
@@ -142,28 +144,28 @@ function buscar_prestamos(kardex,producto_id){
                     html += "<td style='padding:0;'>1</td>";
                     html += "<td style='padding:0;'>TOTAL INVENTARIO "+prestamo[0].producto_nombre+"</td>";
                     html += "<td style='padding:0;'>"+prestamo[0].detalleven_nombreenvase+"</td>";
-                    html += "<td style='padding:0;'>"+Number(prestamo[0].producto_cantidadenvase).toFixed(2)+"</td>";
+                    html += "<td style='padding:0; text-align: right;'>"+Number(prestamo[0].producto_cantidadenvase).toFixed(decimales)+"</td>";
                     html += "</tr>";
                     
                     html += "<tr>";
                     html += "<td style='padding:0;'>2</td>";
                     html += "<td style='padding:0;'>TOTAL PRESTAMOS VIGENTES "+prestamo[0].producto_nombre+"</td>";
                     html += "<td style='padding:0;'>"+prestamo[0].detalleven_nombreenvase +"</td>";
-                    html += "<td style='padding:0;'>"+Number(cantidad_prestados - cantidad_devueltos).toFixed(2)+"</td>";
+                    html += "<td style='padding:0; text-align: right;'>"+Number(cantidad_prestados - cantidad_devueltos).toFixed(decimales)+"</td>";
                     html += "</tr>";
                     
                     html += "<tr>";
                     html += "<td style='padding:0;'>3</td>";
                     html += "<td style='padding:0;'>TOTAL ENVASES EN TIENDA </td>";
                     html += "<td style='padding:0;'>"+prestamo[0].detalleven_nombreenvase+"</td>";
-                    html += "<td style='padding:0;'>"+Number(prestamo[0].producto_cantidadenvase - cantidad_prestados + cantidad_devueltos).toFixed(2)+"</td>";
+                    html += "<td style='padding:0; text-align: right;'>"+Number(prestamo[0].producto_cantidadenvase - cantidad_prestados + cantidad_devueltos).toFixed(decimales)+"</td>";
                     html += "</tr>";
                     
                     html += "<tr>";
                     html += "<td style='padding:0;'>4</td>";
                     html += "<td style='padding:0;'>TOTAL GARANTIAS POR DEVOLVER </td>";
                     html += "<td style='padding:0;'>"+nombre_moneda+"</td>";
-                    html += "<td style='padding:0;'>"+Number(total_garantia - total_devuelto).toFixed(2)+"</td>";
+                    html += "<td style='padding:0; text-align: right;'>"+Number(total_garantia - total_devuelto).toFixed(decimales)+"</td>";
                     html += "</tr>";
                     
                    html += "</table>";
@@ -186,6 +188,7 @@ function inventario_envases(){
     
     var base_url =  document.getElementById('base_url').value;
     var controlador = base_url+"venta/buscar_inventarioenvases";
+    var decimales = document.getElementById('decimales').value; //document.getElementById('decimales').value;
 //    var fecha_desde = document.getElementById('fecha_desde').value;
 //    var fecha_hasta = document.getElementById('fecha_hasta').value;
 //    var usuario_id = document.getElementById('select_usuario').value;
@@ -229,7 +232,7 @@ function inventario_envases(){
                             total_otram = Number(prestamo[i].total)*Number(lamoneda[1]["moneda_tc"]);
                             total_otramoneda += total_otram;
                         }
-                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += numberFormat(Number(total_otram).toFixed(decimales));
                         html += "</td>";
                    if (prestamo[i].prestados>0){
                        html += "<td style='padding:0' class='no-print'><center><a href='"+base_url+"venta/envases_prestados/"+prestamo[i].producto_id+"' target='_BLANK' class='btn btn-warning btn-xs no-print' ><fa class='fa fa-list'></fa> Prestamos</a></center></td>";                       
@@ -262,7 +265,7 @@ function inventario_envases(){
                html+= "<th>"+formato_numerico(cantidad_prestados)+"</th>";
                html+= "<th>"+formato_numerico(cantidad_saldos)+"</th>";
                html+= "<th>"+formato_numerico(monto_inventario)+"</th>";
-               html+= "<th>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
+               html+= "<th>"+numberFormat(Number(total_otramoneda).toFixed(decimales))+"</th>";
                html+= "</tr>";
                
                $("#tabla_inventario").html(html);              
@@ -276,10 +279,10 @@ function inventario_envases(){
 }
 
 function formato_numerico(numero){
-    
+        var decimales = document.getElementById('decimales').value; //document.getElementById('decimales').value;
         
     
-        nStr = Number(numero).toFixed(2);
+        nStr = Number(numero).toFixed(decimales);
         nStr += '';
 	x = nStr.split('.');
 	x1 = x[0];

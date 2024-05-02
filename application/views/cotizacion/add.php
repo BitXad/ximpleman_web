@@ -278,7 +278,21 @@ input[type=number] { -moz-appearance:textfield; }
                 
             </div>
     
+            <div class="col-md-12" align="right"> 
+             <center>
+                       <a type="button" onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+                           <i class="fa fa-money fa-4x"></i><br>
+                          Finalizar<br>Cotización<br>
+                       </a>
 
+
+                       <a  href="<?php echo site_url('cotizacion/index'); ?>" class="btn btn-sq-lg btn-default" style="width: 120px !important; height: 120px !important;">
+                           <i class="fa fa-sign-out fa-4x"></i><br><br>
+                          Cancelar<br>
+                       </a>    
+
+                       </center>
+            </div> 
 					
 
         </div>
@@ -289,7 +303,7 @@ input[type=number] { -moz-appearance:textfield; }
 
     </div>
                         
- <div class="col-md-12" align="right"> 
+<!-- <div class="col-md-12" align="right"> 
   <center>
             <a type="button" onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br>
@@ -303,7 +317,7 @@ input[type=number] { -moz-appearance:textfield; }
             </a>    
               
             </center>
- </div>   
+ </div>   -->
 </div>
 
 <!---------------------------------------FIN TABLA DE DETALLE VENTAAA------------------------------------>

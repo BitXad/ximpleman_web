@@ -302,6 +302,16 @@
                                     ?>
                                 </td>
                             </tr>
+                            
+                            <?php
+                            if ($factura[0]["docsec_codigoclasificador"]==2){ ?>
+                            
+                            <tr>
+                                <td class="text-right text-bold" style="padding: 0;">PERIODO FACTURADO:</td>                                
+                                <td style=" -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $factura[0]['factura_glosa']; ?></td>
+                            </tr>
+                            <?php } ?>
+                            
                             <?php
                             if($opc == 12){
 

@@ -34,7 +34,7 @@
     $hora_hasta = '23:59';
 
     // Obtener la fecha y hora actual
-    $fecha_actual = date('Y-m-d');
+    $fecha_actual = $ultima_venta["venta_fecha"]; //date('Y-m-d');
     $hora_actual = date('H:i');
 
     // Fecha y hora de apertura de la caja (ejemplo)
@@ -42,7 +42,7 @@
     $caja_horaapertura = $caja["caja_horaapertura"]; // Esto debería ser la hora de apertura de la caja
 
     // Si la fecha actual es la misma que la fecha de apertura de la caja y antes de la medianoche
-    if ($fecha_actual == $caja_fechaapertura && $hora_actual > '02:00'&&$hora_actual < '23:59') {
+    if ($fecha_actual == $caja_fechaapertura){// && $hora_actual > '02:00'&&$hora_actual < '23:59') {
         
                 $fecha_desde = $fecha_actual;
                 $hora_desde = '16:00';
@@ -51,17 +51,17 @@
              
     } 
     // Si la fecha actual es un día después de la fecha de apertura de la caja
-    elseif ($fecha_actual > $caja_fechaapertura) {
+    else{
         $fecha_desde = date('Y-m-d', strtotime('-1 day', strtotime($fecha_actual))); // Resta un día a la fecha actual
         $hora_desde = '16:00';
         $fecha_hasta = $fecha_actual;
         $hora_hasta = '02:00';
     }
     // En otro caso, si la fecha actual es el mismo día de la apertura de la caja, pero ya es pasada la medianoche
-    else {
+   /* else {
         // Aquí puedes manejar otra lógica si es necesario
         echo "Lógica adicional para este caso";
-    }
+    }*/
     
     
 ?>
@@ -77,7 +77,7 @@
     </div>
 
     <div class="container" >  
-        <div class="box-tools" style="font-family: Arial;">
+        <div class="box-tools" style="font-family: Arial;" hidden>
                 <div class=" col-md-11">
 
                         <div class="col-md-2">
@@ -115,7 +115,7 @@
                             <br>
                             <a id="imprimirestedetalle" class="btn btn-sq-lg btn-success" onclick="imprimirdetalle()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>
                         </div>
-                </div>
+        </div>
 
         </div>
 

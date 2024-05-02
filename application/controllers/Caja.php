@@ -356,6 +356,8 @@ class Caja extends CI_Controller{
                 $this->load->model('Usuario_model');
                 $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
                 */
+                $ultima_venta = $this->Venta_model->consultar("select * from venta where venta_id = (select max(venta_id) from venta)");
+                $data['ultima_venta'] =  $ultima_venta[0];
                 $data['_view'] = 'caja/cierre_caja';
                 $this->load->view('layouts/main',$data);
             }

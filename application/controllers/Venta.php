@@ -7824,13 +7824,24 @@ function anular_venta($venta_id){
         
         if($this->parametros["parametro_logoenfactura"]==1){ 
             $micad .= "                    <img src='".base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']."' width='100' height='60'>";
-         } 
+        } 
         
+        if($this->parametros["parametro_mostrarempresa"]==1){
+            $micad .= "                            <div><font size='1' face='Arial'>".$empresa[0]['empresa_nombre']."</font></div>"; 
+        }
         
-        $micad .= "                            <div><font size='2' face='Arial'>".$empresa[0]['empresa_nombre']."</font></div>"; 
-                                                if ($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
-        $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font></div>"; 
-                                                }
+        if($this->parametros["parametro_mostrareslogan"]==1){
+            if ($empresa[0]['empresa_eslogan'] != "" && $empresa[0]['empresa_eslogan'] != null){
+                
+                $micad .= "                                 <div><font size='1' face='Arial'><small>".$empresa[0]['empresa_eslogan']."</small></font></div>"; 
+                
+            }
+        }
+                                                
+        if (isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){
+            $micad .= "                                 <div><font size='1' face='Arial'>".$empresa[0]['empresa_propietario']."</font></div>";    
+        }
+                                                
         $micad .= "                            <div>"; 
         $micad .= "                            <font size='1' face='Arial'>"; 
         $micad .= "                            <small style='display:inline-block;margin-top: 0px;'>"; 

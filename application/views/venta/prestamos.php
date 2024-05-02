@@ -36,6 +36,7 @@
 <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
 <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
+<input type="hidden" name="decimales" id="decimales" value='2' />
 
 <table class="table" style="width: 20cm; padding: 0;" >
     <tr>
@@ -185,10 +186,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-          <h4 class="modal-title" id="exampleModalLabel"><b>DEVOLUCION DE GARANTIAS</b></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
+          <h4 class="modal-title" id="exampleModalLabel"><b>DEVOLUCION DE GARANTIAS</b></h4>
       </div>
       <div class="modal-body">
       

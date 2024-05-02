@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<facturaComputarizadaServicioBasico xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaServicioBasico.xsd">
+      <cabecera>
+          <nitEmisor>5152377019</nitEmisor>
+          <razonSocialEmisor>GROVER ALEJANDRO ZARATE ALMENDRAS</razonSocialEmisor>
+          <municipio>COCHABAMBA</municipio>
+          <telefono>4511518 *(591)79999097</telefono>
+          <numeroFactura>308</numeroFactura>
+          <cuf>1608A399D64C030F2B3800D1CD49A6C1DD6FDA8788088397132BF88E74</cuf>
+          <cufd>BQXxCKlhQRkE=NzkQ5NzdBQjdEMjc=Q0E/S29WY0VZVUFc0ODlERENBMTM2N</cufd>
+          <codigoSucursal>0</codigoSucursal>
+          <direccion>URUGUAY N° 454, ENTRE SAN MARTIN Y 25 DE MAYO</direccion>
+          <codigoPuntoVenta>0</codigoPuntoVenta>
+          <mes>ENERO</mes>
+          <gestion>2020</gestion>
+          <ciudad>COCHABAMBA</ciudad>
+          <zona>CENTRAL</zona>
+          <numeroMedidor>MD001</numeroMedidor>
+          <fechaEmision>2024-04-27T21:40:17.381</fechaEmision>
+          <nombreRazonSocial>SIN NOMBRE</nombreRazonSocial>
+          <domicilioCliente>-</domicilioCliente>
+          <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+          <numeroDocumento>1234</numeroDocumento>
+          <complemento></complemento>
+          <codigoCliente>1234</codigoCliente>
+          <codigoMetodoPago>1</codigoMetodoPago>
+          <numeroTarjeta>0</numeroTarjeta>
+          <montoTotal>700.00</montoTotal>
+          <montoTotalSujetoIva>700.00</montoTotalSujetoIva>
+          <consumoPeriodo>0</consumoPeriodo>
+          <beneficiarioLey1886 xsi:nil="true"></beneficiarioLey1886>
+          <montoDescuentoLey1886 xsi:nil="true"></montoDescuentoLey1886>
+          <montoDescuentoTarifaDignidad xsi:nil="true"></montoDescuentoTarifaDignidad>
+          <tasaAseo xsi:nil="true"></tasaAseo>
+          <tasaAlumbrado xsi:nil="true"></tasaAlumbrado>
+          <ajusteNoSujetoIva xsi:nil="true"></ajusteNoSujetoIva>
+          <detalleAjusteNoSujetoIva xsi:nil="true"></detalleAjusteNoSujetoIva>
+          <ajusteSujetoIva xsi:nil="true"></ajusteSujetoIva>
+          <detalleAjusteSujetoIva xsi:nil="true"></detalleAjusteSujetoIva>
+          <otrosPagosNoSujetoIva xsi:nil="true"></otrosPagosNoSujetoIva>
+          <detalleOtrosPagosNoSujetoIva  xsi:nil="true"></detalleOtrosPagosNoSujetoIva>
+          <otrasTasas>0.00</otrasTasas>
+          <codigoMoneda>1</codigoMoneda>
+          <tipoCambio>1.00</tipoCambio>
+          <montoTotalMoneda>700.00</montoTotalMoneda>
+          <descuentoAdicional>0.00</descuentoAdicional>
+          <codigoExcepcion>0</codigoExcepcion>
+          <cafc xsi:nil="true"></cafc>
+          <leyenda>Ley N° 453: Los alimentos declarados de primera necesidad deben ser suministrados de manera adecuada, oportuna, continua y a precio justo.</leyenda>
+          <usuario>Administrador</usuario>
+          <codigoDocumentoSector>13</codigoDocumentoSector>
+      </cabecera>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99100</codigoProductoSin>
+           <codigoProducto>076150601336</codigoProducto>
+           <descripcion>ACT II SABOR MANTEQUILLA </descripcion>
+           <cantidad>15.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>8.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>120.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99100</codigoProductoSin>
+           <codigoProducto>7896002110457</codigoProducto>
+           <descripcion>51 ICE MARACUYA 275ML 500 GB Transferencia por mes
+20 GB de Espacio Web SSD
+Ilimitado Direcciones E-mail
+WordPress, Drupal, Joomla y más...
+Instalación gratuita
+
+WordPress  Drupal  Joomla  Magento  Prestashop  Opencart 
+Constructor de sitios (7 pag.)
+Plantillas pre-instaladas
+Sitio Seguro
+Copias de seguridad y restauración</descripcion>
+           <cantidad>10.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>13.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>130.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99100</codigoProductoSin>
+           <codigoProducto>7896002110471</codigoProducto>
+           <descripcion>51 ICE MANDARINA 275ML </descripcion>
+           <cantidad>10.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>15.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>150.00</subTotal>
+      </detalle>
+      <detalle>
+           <actividadEconomica>465000</actividadEconomica>
+           <codigoProductoSin>99100</codigoProductoSin>
+           <codigoProducto>240202150237</codigoProducto>
+           <descripcion>AGUA POTABLE</descripcion>
+           <cantidad>2.00</cantidad>
+           <unidadMedida>58</unidadMedida>
+           <precioUnitario>150.00</precioUnitario>
+           <montoDescuento>0.00</montoDescuento>
+           <subTotal>300.00</subTotal>
+      </detalle>
+</facturaComputarizadaServicioBasico>

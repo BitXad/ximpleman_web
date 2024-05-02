@@ -1,6 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <!--<script src="<?php //echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>-->
-<script src="<?php // echo base_url('resources/js/cotizacion.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/cotizacion.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/mitabla.js'); ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -39,7 +39,7 @@ pre {
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
  <?php $decimales = $parametro['parametro_decimales']; ?>
  <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
-<table class="table" style="width: 20cm; padding: 0; margin-bottom: 13px" >
+<table class="table" style="width: 20cm; padding: 0; margin-bottom: 13px; border-collapse: collapse;">
     <tr>
         <td style="width: 6cm; padding: 0; line-height:13px;" >
             <center>
@@ -121,14 +121,14 @@ pre {
         <div class="box-body table-responsive" style="padding: 0px;">
             <table class="table table-striped " id="mitabla" style="padding: 0px;">
                 <tr>
-                    <th>Item</th>
-                    <th>Producto<br>Descripcion</th>
-                    <th>Unidad</th>
-                    <th>Precio<br>Unit.</th>
-                    <th>Cant.</th>
-                    <th>Sub Total.</th>
-                    <th>Desc.</th>
-                    <th>Precio<br>Total</th>
+                    <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Item</th>
+                    <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Producto<br>Descripcion</th>
+                    <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Unidad</th>
+                    <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Precio<br>Unit.</th>
+                    <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Cant.</th>
+                    <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Sub Total.</th>
+                    <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Desc.</th>
+                    <th style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact; color: black;">Precio<br>Total</th>
                 </tr>
                 <tbody class="">
                     <?php
@@ -151,10 +151,14 @@ pre {
                         <?php if ($d['producto_industria']!=''){ ?>                            
                         - Industria: <b><?php echo $d['producto_industria']; }?></b><br>
                         <?php if ($d['detallecot_caracteristica']!="" && $d['detallecot_caracteristica']!= null && $d['detallecot_caracteristica']!= "null"){ ?>
+                        <p style="font-size: 8px;">
                         <?php //}else{ ?>
-                        <pre style='margin-bottom: 0px; padding-top: 2px; padding-bottom: 3px'>
-                            <?php echo  $d['detallecot_caracteristica']; } ?>
-                        </pre>
+                        <!--<pre style='margin-bottom: 0px; padding-top: 2px; padding-bottom: 3px; font-family: Arial; font-size:9px;'>-->
+                            <?php  echo  nl2br($d['detallecot_caracteristica']); 
+                            
+                        } ?>
+                        </p>
+                        <!--</pre>-->
                     </td>
                     <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?></td>
                     <td  style="text-align: right;"><?php echo number_format($d['detallecot_precio'],$decimales,".",","); ?></td>  
@@ -184,19 +188,32 @@ pre {
             </div>  
           </div>-->
                 </tr>
-            </table>
-            <table class="table table-striped table-condensed" id="mitabla">
+<!--            </table>
+            <table class="table table-striped table-condensed" id="mitabla">-->
+
+                
                 <tr>
-                <td>
-                    <center>  
-                        <b>LITERAL: <?php echo num_to_letras($totalfinal); ?></b>
-                    </center>
-                    <div class="col-md-12" style="text-align: right;">
-                        <b>Sub Total <font size="3"><b><?php echo number_format($totalfinal + $descuento,$decimales,".",","); ?></b></font></b><br>
-                        <b>Toltal Desc. <font size="3"><b><?php echo number_format($descuento,$decimales,".",","); ?></b></font></b><br>
-                        <b>TOTAL<font size="3"><b><?php echo number_format($totalfinal,$decimales,".",","); ?></b></font></b>
-                    </div>    
-                </td>    
+                    <td colspan="4" rowspan="3" style="background-color: lightgray !important; -webkit-print-color-adjust: exact;">
+                        <center>  
+                            <b><br>LITERAL: <?php echo num_to_letras($totalfinal); ?></b>
+                        </center>
+                    </td>
+
+                    <td colspan="2" style="text-align: right; background-color: #aaa !important; -webkit-print-color-adjust: exact;">Sub Total:</td>                                
+                    <td style="text-align: right; background-color: lightgray !important; -webkit-print-color-adjust: exact;" colspan="2" ><b><font size="3"><b><?php echo number_format($totalfinal + $descuento,$decimales,".",","); ?></b></font></b></td>
+                </tr>
+                
+                <tr>
+
+                    <td colspan="2" style="text-align: right; background-color: #aaa !important; -webkit-print-color-adjust: exact;">Total Desc.:</td>                                
+                    <td style="text-align: right; background-color: lightgray !important; -webkit-print-color-adjust: exact;" colspan="2" ><b><font size="3"><b><font size="3"><b><?php echo number_format($descuento,$decimales,".",","); ?></b></font></b></td>
+                </tr>
+                <tr>
+
+                    <td colspan="2" style="text-align: right; background-color: #aaa !important; -webkit-print-color-adjust: exact;">Total Final:</td>                                
+                    <td style="text-align: right; background-color: lightgray !important; -webkit-print-color-adjust: exact;" colspan="2" ><b><font size="3"><?php echo number_format($totalfinal,$decimales,".",","); ?></font></b></td>
+                </tr>
+
                 </tr>    
             </table>
         </div>
@@ -204,9 +221,9 @@ pre {
             <div class="col-md-6" >
               <font size="1" face="Arial">Nota: <?php echo  $cotizacion['cotizacion_glosa']; ?></font>
             </div>
-            <div class="col-md-6" style="text-align: right;">
+<!--            <div class="col-md-6" style="text-align: right;">
                 <font size="1" face="Arial"><?php echo date("d/m/Y   H:i:s"); ?></font>
-            </div>
+            </div>-->
         </div>
     </div>
     <center style="padding-top: 5%;">
