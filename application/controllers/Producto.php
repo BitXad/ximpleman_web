@@ -1396,7 +1396,7 @@ class Producto extends CI_Controller{
             if(isset($producto['producto_id']))
             {
                 $bitacora_accion = "update";
-                $bitacora_objetivo = "dar de alta el producto";
+                $bitacora_objetivo = "Alta de producto";
                 $bitacora_fecha = date("Y-m-d");
                 $bitacora_hora = date("H:i:s");
                 $bitacora_sql = "updade producto set estado_id = 1 where producto_id =".$producto['producto_id']." Producto: ".$producto["producto_nombre"]."; Codigo: ".$producto["producto_codigo"];
