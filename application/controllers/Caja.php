@@ -343,8 +343,8 @@ class Caja extends CI_Controller{
 
                 $this->Caja_model->update_caja($caja_id, $params);
                
-                redirect('caja/reporte_caja/'.$caja_id);
-                ///redirect('reportes/reportecaja/');
+                //redirect('caja/reporte_caja/'.$caja_id);
+                redirect('reportes/reportecaja/');
                 
             }else{
                 /*$this->load->model('Estado_model');
@@ -409,7 +409,6 @@ class Caja extends CI_Controller{
         $data['moneda'] = $this->Moneda_model->get_moneda($data['parametro']['moneda_id']);
    
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
-
         
                 $data['_view'] = 'caja/reportecaja_boucher';
                 $this->load->view('layouts/main',$data);

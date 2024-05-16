@@ -4589,7 +4589,7 @@ function anular_venta($venta_id){
                     from cliente c
                     left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id
                     where 
-                    c.cliente_id = '$cliente_id'";
+                    c.cliente_id = $cliente_id";
 
             //echo "revisar: ".$sql;
             $resultado = $this->Venta_model->consultar($sql);
@@ -5918,49 +5918,7 @@ function anular_venta($venta_id){
         $directorio_factura = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
         $this->email->attach($directorio_factura.$nombre_archivo.$factura_id.".xml");
         $this->email->attach($directorio_factura.$nombre_archivo.$factura_id.".pdf");
-        
-        $html = "<html>";
-        $html = "<head>";
-        //$html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
-        $html = "</head>";
-        $html = "<body>";
 
-        $html .= "<div class='container' style='font-family: Arial'>";
-        $html .= "<div class='col-md-2' style='background:gray;'></div>";
-
-        $html .= "<div class='col-md-10'>";
-        $html .= "<center>";
-        $html .= "<h3>Facturacion Electronica</h3>";
-        $html .= "<br>";
-        $html .= "Estimado Usuario";
-        $html .= "<br>";
-        //$html .= $configuracion['email_cabecera'];
-        $html .= "Le informamos que su factura electronica se encuentra disponible en formato digital adjunto en este correo ";
-            //$direccion = base_url("tufactura/verfactura/".md5($venta_id));
-            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
-            $html .= "en formato PDF y XML.";
-        $html .= "<br>";
-        //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
-//            $html .= "<form method='get' action='/".$direccion."'>";
-//            $html .= "<button type='submit'>Activar mi Cuenta</button>";
-//            $html .= "</form>";
-
-        //$html .= "<br>";
-        //$html .= "<br>";
-
-        //$html .= $configuracion['email_pie'];
-        //$html .= "<br>";
-        //$html .= "<br>";
-        //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm'>".$direccion."</a>";
-
-        $html .= "</center>";
-        $html .= "</div>";
-
-        $html .= "<div class='col-md-2'></div>";            
-        $html .= "</div>";
-
-        $html .= "</body>";
-        $html .= "</html>";
 
         $imagen = base_url('resources/images/empresas/').$this->empresa['empresa_imagen'];
         
@@ -6129,6 +6087,9 @@ function anular_venta($venta_id){
             $config['newline'] = "\r\n";
             $config['mailtype'] = $configuracion['email_tipo'];
             $email_copia = '';
+            
+            $factura = $this->Factura_model->get_factura($factura_id);        
+            $cliente = $factura["factura_razonsocial"];
 
             $this->email->initialize($config);
 
@@ -6141,48 +6102,80 @@ function anular_venta($venta_id){
             $directorio_factura = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
             $this->email->attach($directorio_factura.$this->nombre_archivo.$factura_id.".xml");
             $this->email->attach($directorio_factura.$this->nombre_archivo.$factura_id.".pdf");
-            $html = "<html>";
-            $html = "<head>";
-            $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
-            $html = "</head>";
-            $html = "<body>";
+            
+            
+                
+            $html = '
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Mensaje de correo electrónico</title>
+                <!-- Bootstrap CSS -->
+                <link href="https://cdn.jsdelivr.net/npm/
+                bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
+                rel="stylesheet">
+            </head>
+            <body>
+                <center>
+                    <table class="table table-bordered"> 
+                        <tr>
+                            <td style="background: #D35400; color:white; 
+                            font-family:Arial;">
+                                <center>
 
-            $html .= "<div class='container' style='font-family: Arial'>";
-            $html .= "<div class='col-md-2' style='background:gray;'></div>";
 
-            $html .= "<div class='col-md-10'>";
-            $html .= "<center>";
-            $html .= "<h3>Facturacion Electronica</h3>";
-            $html .= " ";
-            $html .= "<h4>Estimado Usuario</h4>";
-            $html .= "<br>";
-            //$html .= $configuracion['email_cabecera'];
-            $html .= "Le informamos que su factura electronica se encuentra disponible en formato digital adjunto en este correo <br>";
-            //$direccion = base_url("tufactura/verfactura/".md5($venta_id));
-            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
-            $html .= "<br>en formato PDF y XML.";
-            $html .= "<br>";
-            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
-    //            $html .= "<form method='get' action='/".$direccion."'>";
-    //            $html .= "<button type='submit'>Activar mi Cuenta</button>";
-    //            $html .= "</form>";
+                                    <p><b>'.$this->empresa["empresa_nombre"].'</b></p>
+                                    <p>'.$this->empresa["empresa_eslogan"].'</p>
+                                </center>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background: gray; font-family:Arial;">
+                                <h2>Agradecemos su preferencia!</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background: lightgray; font-family:Arial;">
+                                <p>Señor(es): '.$cliente.'</p>
+                                <p>Mediante este mensaje le informamos que adjunto a este correo</p>
+                                <p> encontrará su factura en formato PDF y XML.</p>
+                                <p></p>
+                                <p>¡Gracias por su compra!</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background: black; 
+                            color: white; 
+                            font-family:Arial; font-size:10pt; 
+                            line-height: 10px">
+                                <center><br>
 
-            //$html .= "<br>";
-            //$html .= "<br>";
+                                   <a href="https://www.facebook.com/sisximpleman/" 
+                                   style="color: white; text-decoration: none;"
 
-            //$html .= $configuracion['email_pie'];
-            //$html .= "<br>";
-            //$html .= "<br>";
-            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm'>".$direccion."</a>";
+                                    <p><b>XIMPLEMAN</b>
+                                    </a>
 
-            $html .= "</center>";
-            $html .= "</div>";
+                                   es un producto de 
 
-            $html .= "<div class='col-md-2'></div>";            
-            $html .= "</div>";
+                                   <a href="https://www.passwordbolivia.com" 
+                                   style="color: white; text-decoration: none;"
+                                    target="_blank"><b>PASSWORD IHS</b></a></p>
 
-            $html .= "</body>";
-            $html .= "</html>";
+
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+
+                <script src="https://cdn.jsdelivr.net/
+                npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+                </script>
+            </body>
+            </html>';
 
 
             $this->email->message($html);
