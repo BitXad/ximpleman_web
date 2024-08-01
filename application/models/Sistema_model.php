@@ -16,7 +16,9 @@ class Sistema_model extends CI_Model
      */
     function get_sistema()
     {
-        return $this->db->get_where('sistema',array('sistema_id'=>1))->row_array();
+        $sql = "select * from sistema";
+        
+        return $this->db->query($sql)->row_array();
     }
         
     /*

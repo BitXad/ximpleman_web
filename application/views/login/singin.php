@@ -84,7 +84,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="login-head">
           <!--<h2 class="text-center"><?php echo $empresa[0]["empresa_nombre"] ?></h2>-->
           <center>
-              <font size="5" face="Arial black"><b><?php echo $empresa[0]["empresa_nombre"] ?></b></font><br>              
+              <font size="5" face="Arial black"><b><?php echo $empresa[0]["empresa_nombre"]; ?> </b></font><br>
+                <?php // echo ($empresa[0]["empresa_nombre"]!='')? "<small>".$empresa[0]["empresa_propietario"]."</small><br>":""; ?>
                 <img src="<?php echo base_url('resources/images/empresas/'.$empresa[0]["empresa_imagen"].''); ?>"  style="width:100px;height:50px">
                 <br><font size="4" face="Arial black"><b><?php echo $sistema["sistema_nombre"]." ".$sistema["sistema_version"]; ?></b></font>
           </center>

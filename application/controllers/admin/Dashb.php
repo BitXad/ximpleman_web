@@ -4,6 +4,7 @@ class Dashb extends CI_Controller
 {
     private $parametros;
     private $sistema;
+    
     public function __construct()
     {
         parent::__construct();
@@ -29,7 +30,7 @@ class Dashb extends CI_Controller
         $this->load->model('Tipo_usuario_model');
         $this->load->model('Sucursales_model');
         $this->load->model('Sistema_model');
-        // $this->load->model('Dashb_model');
+        //$this->load->model('Dashb_model');
         
         $parametros = $this->Parametro_model->get_parametros();
         $this->parametros = $parametros[0];
@@ -181,7 +182,8 @@ class Dashb extends CI_Controller
     public function cuenta()
     {
         $this->acceso();
-        $data['sistema'] = $this->sistema;
+        
+        
         $session_data = $this->session->userdata('logged_in');
         $rolusuario = $this->Rol_usuario_model->getall_rolusuario($session_data['tipousuario_id']);
             $data = array(
@@ -196,6 +198,7 @@ class Dashb extends CI_Controller
                 'thumb'=> $session_data['thumb']
             );
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['sistema'] = $this->Sistema_model->get_sistema();
             $data['user'] = $this->user_model->get_usuario($session_data['usuario_id']);
             $data['usuario_imagen'] = $session_data['usuario_imagen'];
 

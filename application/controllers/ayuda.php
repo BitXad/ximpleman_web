@@ -35,106 +35,106 @@ class Ayuda extends CI_Controller{
 //        if($this->acceso(24)){
             $data['page_title'] = "Ayuda";
             
-            $data['ayudas'] = $this->Ayuda_model->get_videos();
+            $data['ayudas'] = $this->Ayuda_model->get_ultimos_videos();
 
             $data['_view'] = 'ayuda/index';
             $this->load->view('layouts/main',$data);
 //        }
     }
 
-    /*
-     * Adding a new almacen
-     */
-//    function add()
-//    {
-//        $data['sistema'] = $this->sistema;
-//        if($this->acceso(24)){
-//            $data['page_title'] = "Ayuda";
-//            $this->load->library('form_validation');
-//            $this->form_validation->set_rules('almacen_nombre','Ayuda nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-//            $this->form_validation->set_rules('almacen_basedatos','Ayuda base de datos','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-//            $this->form_validation->set_rules('almacen_url','Ayuda url','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-//            if($this->form_validation->run())     
-//            {
-//                $estado_id = 1; // 1 = ACTIVO
-//                $params = array(
-//                    'estado_id' => $estado_id,
-//                    'almacen_nombre' => $this->input->post('almacen_nombre'),
-//                    'almacen_descripcion' => $this->input->post('almacen_descripcion'),
-//                    'almacen_basedatos' => $this->input->post('almacen_basedatos'),
-//                    'almacen_url' => $this->input->post('almacen_url'),
-//                );
-//
-//                $almacen_id = $this->Ayuda_model->add_almacen($params);
-//                redirect('almacen/index');
-//            }
-//            else
-//            {            
-//                $data['_view'] = 'almacen/add';
-//                $this->load->view('layouts/main',$data);
-//            }
-//        }
-//    }  
-//
-//    /*
-//     * Editing a almacen
-//     */
-//    function edit($almacen_id)
-//    {
-//        $data['sistema'] = $this->sistema;
-//        if($this->acceso(24)){
-//            $data['page_title'] = "Ayuda";
-//            // check if the almacen exists before trying to edit it
-//            $data['almacen'] = $this->Ayuda_model->get_almacen($almacen_id);
-//            if(isset($data['almacen']['almacen_id']))
-//            {
-//                $this->load->library('form_validation');
-//                $this->form_validation->set_rules('almacen_nombre','Ayuda nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-//                $this->form_validation->set_rules('almacen_basedatos','Ayuda base de datos','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-//                $this->form_validation->set_rules('almacen_url','Ayuda url','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-//                if($this->form_validation->run())     
-//                {
-//                    $params = array(
-//                        'estado_id' => $this->input->post('estado_id'),
-//                        'almacen_nombre' => $this->input->post('almacen_nombre'),
-//                        'almacen_descripcion' => $this->input->post('almacen_descripcion'),
-//                        'almacen_basedatos' => $this->input->post('almacen_basedatos'),
-//                        'almacen_url' => $this->input->post('almacen_url'),
-//                    );
-//                    $this->Ayuda_model->update_almacen($almacen_id,$params);            
-//                    redirect('almacen/index');
-//                }
-//                else
-//                {
-//                    $this->load->model('Estado_model');
-//                    $tipo = 1;
-//                    $data['all_estado'] = $this->Estado_model->get_estado_tipo($tipo);
-//                    $data['_view'] = 'almacen/edit';
-//                    $this->load->view('layouts/main',$data);
-//                }
-//            }
-//            else
-//                show_error('The almacen you are trying to edit does not exist.');
-//        }
-//    } 
-//
-//    /*
-//     * Deleting almacen
-//     */
-//    function remove($almacen_id)
-//    {
-//        $data['sistema'] = $this->sistema;
-//        if($this->acceso(24)){
-//        $almacen = $this->Ayuda_model->get_almacen($almacen_id);
-//        // check if the almacen exists before trying to delete it
-//        if(isset($almacen['almacen_id']))
-//        {
-//            $this->Ayuda_model->delete_almacen($almacen_id);
-//            redirect('almacen/index');
-//        }
-//        else
-//            show_error('The almacen you are trying to delete does not exist.');
-//        }
-//    }
+
+    // Mostrar formulario para crear un nuevo registro
+    public function create() {
+        
+        $data['sistema'] = $this->sistema;
+        
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('ayuda_formato', 'Formato', 'required');
+        $this->form_validation->set_rules('ayuda_enlace', 'Enlace', 'required');
+        // Añadir más reglas según sea necesario
+        $data['page_title'] = "Registrar nuevo video";
+
+        if ($this->form_validation->run() === FALSE) {
+            
+            
+            //$this->load->view('ayuda/create');
+            
+            $data['_view'] = 'ayuda/create';
+            $this->load->view('layouts/main',$data);
+            
+        } else {
+            $data = array(
+                'ayuda_formato' => $this->input->post('ayuda_formato'),
+                'ayuda_enlace' => $this->input->post('ayuda_enlace'),
+                'ayuda_tipo' => $this->input->post('ayuda_tipo'),
+                'ayuda_titulo' => $this->input->post('ayuda_titulo'),
+                'ayuda_subtitulo' => $this->input->post('ayuda_subtitulo'),
+                'ayuda_texto' => $this->input->post('ayuda_texto'),
+                'ayuda_mensaje' => $this->input->post('ayuda_mensaje')
+            );
+            $this->Ayuda_model->set_ayuda($data);
+            redirect('ayuda');
+            
+            
+            
+        }
+    }
+
+    // Mostrar formulario para editar un registro
+    public function edit($id) {
+        $this->load->helper('form');
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('ayuda_formato', 'Formato', 'required');
+        $this->form_validation->set_rules('ayuda_enlace', 'Enlace', 'required');
+        // Añadir más reglas según sea necesario
+
+        $data['ayuda'] = $this->Ayuda_model->get_ayuda($id);
+        if (empty($data['ayuda'])) {
+            show_404();
+        }
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('ayuda/edit', $data);
+        } else {
+            $data = array(
+                'ayuda_formato' => $this->input->post('ayuda_formato'),
+                'ayuda_enlace' => $this->input->post('ayuda_enlace'),
+                'ayuda_tipo' => $this->input->post('ayuda_tipo'),
+                'ayuda_titulo' => $this->input->post('ayuda_titulo'),
+                'ayuda_subtitulo' => $this->input->post('ayuda_subtitulo'),
+                'ayuda_texto' => $this->input->post('ayuda_texto'),
+                'ayuda_mensaje' => $this->input->post('ayuda_mensaje')
+            );
+            $this->Ayuda_model->update_ayuda($id, $data);
+            redirect('ayuda');
+        }
+    }
+
+    // Eliminar un registro
+    public function delete($id) {
+        $this->Ayuda_model->delete_ayuda($id);
+        redirect('ayuda');
+    }
+    
+    function actualizarvideos()
+    {
+        
+        $this->index();
+    }
+    
+    function buscador()
+    {
+        
+        $parametro = $this->input->post('parametro');
+        $origen = $this->input->post('origen');
+        
+            
+        $resultado = $this->Ayuda_model->get_ayuda($parametro,$origen);
+        
+        echo json_encode($resultado);
+    }
     
 }

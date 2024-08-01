@@ -386,7 +386,7 @@
             <div class="icon">
               <i class="fa fa-question-circle"></i>              
             </div>
-                <a href="<?php echo base_url('soporte_tecnico'); ?>" class="small-box-footer">Opciones de ayuda <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('ayuda'); ?>" class="small-box-footer">Opciones de ayuda <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         

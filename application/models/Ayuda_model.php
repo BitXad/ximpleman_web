@@ -76,35 +76,58 @@ class Ayuda_model extends CI_Model
         return $almacen;
     }
         
-    /*
-     * function to add new almacen
-     */
-    function add_almacen($params)
-    {
-        $this->db->insert('almacenes',$params);
-        return $this->db->insert_id();
+//
+//    // Obtener todos los registros
+//    public function get_ayuda($id = FALSE) {
+//        if ($id === FALSE) {
+//            $query = $this->db->get('ayuda');
+//            return $query->result_array();
+//        }
+//
+//        $query = $this->db->get_where('ayuda', array('ayuda_id' => $id));
+//        return $query->row_array();
+//    }
+
+    // Insertar un nuevo registro
+    public function set_ayuda($data) {
+        return $this->db->insert('ayuda', $data);
+    }
+
+    // Actualizar un registro existente
+    public function update_ayuda($id, $data) {
+        $this->db->where('ayuda_id', $id);
+        return $this->db->update('ayuda', $data);
+    }
+
+    // Eliminar un registro
+    public function delete_ayuda($id) {
+        return $this->db->delete('ayuda', array('ayuda_id' => $id));
     }
     
-    /*
-     * function to update almacen
-     */
-    function update_almacen($almacen_id,$params)
-    {
-        $this->db->where('almacen_id',$almacen_id);
-        return $this->db->update('almacenes',$params);
-    }
     
-    /*
-     * function to delete almacen
-     */
-    function delete_almacen($almacen_id)
+    
+    
+    function get_ultimos_videos()
     {
-        return $this->db->delete('almacenes',array('almacen_id'=>$almacen_id));
+        $sql = "select * from ayuda order by ayuda_id limit 4";
+        $resultado = $this->db->query($sql)->result_array();
+        return $resultado;
     }
     
     function get_videos()
     {
         $sql = "select * from ayuda";
+        $resultado = $this->db->query($sql)->result_array();
+        return $resultado;
+    }
+    
+    function get_ayuda($parametro, $origen)
+    {
+        if($origen==1)
+            $sql = "select * from ayuda
+                    where ayuda_titulo like '%{$parametro}%' or ayuda_subtitulo like '%{$parametro}%' or ayuda_texto like '%{$parametro}%'";
+            
+        
         $resultado = $this->db->query($sql)->result_array();
         return $resultado;
     }

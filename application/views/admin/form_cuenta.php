@@ -15,36 +15,22 @@
 
             <div class="box-body">
                 <div class="row clearfix">
-                    <div class="col-md-6">
-                        <label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                    <div class="col-md-4">
+                        <label for="cliente_nombre" class="control-label"><span class="text-danger" >*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="nombre" value="<?php echo $user['usuario_nombre']; ?>" class="form-control" id="nombre" required />
+                            <input type="text" name="nombre" value="<?php echo $user['usuario_nombre']; ?>" class="form-control" id="nombre" required readonly/>
                             <span class="text-danger"><?php echo form_error('nombre');?></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="user_email" class="control-label">Email</label>
                         <div class="form-group">
-                            <input type="email" name="email" value="<?php echo $user['usuario_email']; ?>" class="form-control" id="email" />
+                            <input type="email" name="email" value="<?php echo $user['usuario_email']; ?>" class="form-control" id="email"  readonly/>
                             <span class="text-danger"><?php echo form_error('email');?></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="user_clave" class="control-label"><span class="text-danger">*</span>Nuevo Password</label>
-                        <div class="form-group">
-                            <input type="password" name="clave" value="" class="form-control" id="clave" required />
-                            <span class="text-danger"><?php echo form_error('clave');?></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="user_rclave" class="control-label">Repetir Password</label>
-                        <div class="form-group">
-                            <input type="password" name="rclave" value="" class="form-control" id="rclave" />
-                            <span class="text-danger"><?php echo form_error('email');?></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="user_login class="control-label">login</label>
+                    <div class="col-md-4">
+                        <label for="user_login class="control-label" >login</label>
                         <div class="form-group">
                             <?php
                             $read_only = '';
@@ -52,12 +38,26 @@
                                 $read_only = 'readonly';
                             }
                             ?>
-                            <input type="text" <?php echo $read_only?> name="login" value="<?php echo $user['usuario_login']; ?>" class="form-control" id="login"  autocomplete="off" />
+                            <input type="text" <?php echo $read_only?> name="login" value="<?php echo $user['usuario_login']; ?>" class="form-control" id="login"  autocomplete="off"  readonly/>
                             <span class="text-danger"><?php echo form_error('login');?></span>
                             <div id="user-result"></div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label for="user_clave" class="control-label"><span class="text-danger">*</span>Nuevo Password</label>
+                        <div class="form-group">
+                            <input type="password" name="clave" value="" class="form-control" id="clave" required />
+                            <span class="text-danger"><?php echo form_error('clave');?></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="user_rclave" class="control-label">Repetir Password</label>
+                        <div class="form-group">
+                            <input type="password" name="rclave" value="" class="form-control" id="rclave" />
+                            <span class="text-danger"><?php echo form_error('email');?></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <label for="user_imagen" class="control-label">Actualizar Imagen</label>
                         <div class="form-group">
                             <input type="file" name="chivo"  id="chivox" kl_virtual_keyboard_secure_input="on">
@@ -66,11 +66,11 @@
                             <div id="message"></div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <img src="<?php echo site_url('resources/images/usuarios/'.$usuario_imagen)?>" id="previewing" class="img-responsive center-block">
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <input type="hidden" name="foto" value="<?php echo $user['usuario_imagen'] ?>">
                         <input type="hidden" id="userid" name="userid" value="<?php echo $user['usuario_id']?>">
                     </div>
