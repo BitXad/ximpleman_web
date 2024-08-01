@@ -168,6 +168,50 @@ function registrar_evento(){
         document.getElementById('loader2').style.display = 'none';
     }
     
+function registrar_5eventos(){
+        
+        let base_url = $("#base_url").val();
+        let controlador = `${base_url}eventos_significativos/registro5EventoSignificativo`;
+        let fecha_inicio =  document.getElementById('ces_fechainicio').value;
+        let fecha_fin =  document.getElementById('ces_fechafin').value;
+        let cufd_evento =  document.getElementById('select_cufd').value;
+        let codigo_evento =  document.getElementById('select_eventos').value;
+        let combo = document.getElementById('select_eventos');
+        let texto_evento = combo.options[combo.selectedIndex].text;
+        
+        //alert(fecha_inicio+" ** "+fecha_fin+" ** "+codigo_evento+" ** "+texto_evento);
+        fecha_inicio =  fecha_inicio+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
+        fecha_fin =  fecha_fin+":"+Math.floor(10+Math.random() * 49)+"."+ Math.floor(Math.random() * 1000);
+        document.getElementById('loader2').style.display = 'block';
+        
+        
+        //alert(fecha_inicio+" **** "+fecha_fin);
+        
+        $.ajax({
+            url: controlador,
+            type:"POST",
+            data:{
+                fecha_inicio: fecha_inicio, fecha_fin:fecha_fin, cufd_evento:cufd_evento,
+                codigo_evento:codigo_evento, texto_evento:texto_evento,
+            },
+            // async: false,
+            success: (respuesta)=>{
+                
+                alert(respuesta);
+                tablaresultadoseventos();
+                document.getElementById('loader2').style.display = 'none';
+                $("#modaleventos").modal("hide");
+                
+            },
+            error: ()=>{
+                alert("Ocurrio un error al realizar la verificación del evento, por favor intente en unos minutos")
+                document.getElementById('loader').style.display = 'none';
+            }
+        });
+        
+        document.getElementById('loader2').style.display = 'none';
+    }
+    
     function seleccionar_cufd(){
         
         let base_url = $("#base_url").val();

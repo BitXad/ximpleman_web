@@ -14,6 +14,8 @@ class Factura extends CI_Controller{
     private $configuracion;
     private $sistema;
     private $parametros;
+    private $caja_id = 0;
+    private $empresa;
 
     function __construct()
     {
@@ -57,6 +59,24 @@ class Factura extends CI_Controller{
         $this->sistema = $this->Sistema_model->get_sistema();
         
         $this->configuracion = $parametro[0];
+        
+        $empresa = $this->Empresa_model->get_empresa(1);
+        $this->empresa = $empresa[0];
+                
+        //*********** Administracion de caja *********
+                $usuario_id = $this->session_data['usuario_id'];
+                $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+                
+                if (!sizeof($caja)>0){ // si la caja no esta iniciada
+                    //iniciar caja y dejarla en pendiente
+                    $this->caja_id = 0;
+                }else{
+                    $this->caja_id = $caja[0]["caja_id"];
+                    
+                }
+                
+                
+        //*********** FIN Administracion de caja *********
         
     }
     /* *****Funcion que verifica el acceso al sistema**** */
@@ -217,29 +237,38 @@ class Factura extends CI_Controller{
         }else{
             $data['motivos'] = $this->Factura_model->get_all_motivos();
             
-            $documentos_sector = array(1,2);            
-            if(in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector)){ //FACTURA COMPRA VENTA/ ALQUILERES
+            // 1 FACTURA COMPRA-VENTA, 2 FACTURA DE ALQUILER DE BIENES INMUEBLES, 8 FACTURA DE TASA CERO POR VENTA DE LIBROS Y TRANSPORTE INTERNACIONAL DE CARGA
+            // 12 FACTURA DE COMERCIALIZACIÓN DE HIDROCARBUROS 13 FACTURA DE SERVICIOS BASICOS
+            // 22 FACTURA TELECOMUNICACIONES
+            
+            $documentos_sector1 = array(1,2,8,12,13,16,17,22);
+            
+            if(in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector1 )){ //FACTURA COMPRA VENTA/ ALQUILERES
 //                $data['_view'] = 'factura/factura_carta_servicios';
                 $data['_view'] = 'factura/factura_carta_new';
             }
-            if($dosificacion['docsec_codigoclasificador'] == 8){ //FACTURA COMPRA VENTA
-//                $data['_view'] = 'factura/factura_carta_servicios';
-                $data['_view'] = 'factura/factura_carta_new';
-            }
+//            if($dosificacion['docsec_codigoclasificador'] == 8){ //FACTURA COMPRA VENTA
+////                $data['_view'] = 'factura/factura_carta_servicios';
+//                $data['_view'] = 'factura/factura_carta_new';
+//            }
+//            if($dosificacion['docsec_codigoclasificador'] == 12){ // FACTURA SECTOR EDUCATIVO
+//                $data['_view'] = 'factura/factura_carta_new';
+//            }
+//            if($dosificacion['docsec_codigoclasificador'] == 13){ // FACTURA SERVICIOS
+//            
+//                $data['_view'] = 'factura/factura_carta_new';
+//                //$data['_view'] = 'factura/factura_carta_servicios';
+//            }
+//            
             
             if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
                 $data['_view'] = 'factura/factura_carta_servicios';
             }
-            
+                       
             if($dosificacion['docsec_codigoclasificador'] == 23){ // FACTURA PREVALORADA
                 $data['_view'] = 'factura/factura_carta_prev';
             }
             
-            if($dosificacion['docsec_codigoclasificador'] == 13){ // FACTURA SERVICIOS
-            
-                $data['_view'] = 'factura/factura_carta_new';
-                //$data['_view'] = 'factura/factura_carta_servicios';
-            }
             
             
         }
@@ -357,6 +386,10 @@ class Factura extends CI_Controller{
                 $data['_view'] = 'factura/factura_carta_new';
             }
             
+            if($dosificacion['docsec_codigoclasificador'] == 22){ // FACTURA SECTOR EDUCATIVO
+                $data['_view'] = 'factura/factura_carta_new';
+            }
+            
             if($dosificacion['docsec_codigoclasificador'] == 23){ // FACTURA PREVALORADA
                 $data['_view'] = 'factura/factura_carta_prev';
             }
@@ -469,6 +502,10 @@ class Factura extends CI_Controller{
             }
             
             if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
+                $data['_view'] = 'factura/factura_bouchern';
+            }
+            
+            if($dosificacion['docsec_codigoclasificador'] == 12){ // FACTURA SECTOR EDUCATIVO
                 $data['_view'] = 'factura/factura_bouchern';
             }
             
@@ -1358,18 +1395,7 @@ class Factura extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
                 //$modalidad = $dosificacion["dosificacion_modalidad"];
-                               
-//                if ($dosificacion['docsec_codigoclasificador']==1)
-//                    $wsdl = $dosificacion['dosificacion_factura'];
-//
-//                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
-//                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-//                    $wsdl = $dosificacion['dosificacion_glpelectronica'];
-//                }
-//                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
-//                    if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
-//                    $wsdl = $dosificacion['dosificacion_facturaglp'];
-//                }
+
 
                     if ($dosificacion['docsec_codigoclasificador']==1)
                             $wsdl = $dosificacion['dosificacion_factura'];
@@ -1457,23 +1483,6 @@ class Factura extends CI_Controller{
                 $codigoMotivo = $codigo_motivo;
                 $cuf = $factura[0]['factura_cuf'];
                 
-                
-//                echo 
-//                "<br>codigoAmbiente: ".$codigoAmbiente.
-//                "<br>codigoDocumentoSector: ".$codigoDocumentoSector.
-//                "<br>codigoEmision: ".$codigoEmision.
-//                "<br>codigoModalidad: ".$codigoModalidad.
-//                "<br>codigoPuntoVenta: ".$codigoPuntoVenta.
-//                "<br>codigoSistema: ".$codigoSistema.
-//                "<br>codigoSucursal: ".$codigoSucursal.
-//                "<br>cufd: ".$cufd.
-//                "<br>cuis: ".$cuis. 
-//                "<br>nit: ".$nit.
-//                "<br>tipoFacturaDocumento: ".$tipoFacturaDocumento. 
-//                "<br>codigoMotivo: ".$codigoMotivo.
-//                "<br>cuf: ".$cuf;
-                
-                
                 /* ordenado segun SoapUI */
                 
                 $parametros = ["SolicitudServicioAnulacionFactura" => [
@@ -1502,6 +1511,18 @@ class Factura extends CI_Controller{
                 if ($res){
                     //$codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;                    
                     //$mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;
+                    
+                    
+                    //******************************************************
+                    //      Backup de las facturas a anular
+                        $sql = "insert into factura_bitacora (select * from factura where factura_id = {$factura_id})";
+                        $this->Venta_model->ejecutar($sql);
+                        
+                        $sql = "insert into detalle_factura_bitacora (select * from detalle_factura where factura_id = {$factura_id})";
+                        $this->Venta_model->ejecutar($sql);
+                    
+                    //******************************************************                        
+                    
                     $factura_cuf = $factura[0]["factura_cuf"];
                     $factura_total           = $factura[0]["factura_total"];
 
@@ -1561,6 +1582,7 @@ class Factura extends CI_Controller{
                     
                     if($borrar_venta == 1){
                         //**************** inicio contenido ***************
+                        
                         $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_subtotal = 0, detalleven_total = 0 where venta_id = ".$venta_id;
                         $this->Venta_model->ejecutar($sql);
 
@@ -1605,7 +1627,7 @@ class Factura extends CI_Controller{
                     }
                     
                     $correo = $this->input->post("factura_correo");
-                    $res = $this->enviar_correoanulacion($venta_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf);
+                    $res = $this->enviar_correoanulacion($factura_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf);
                     
                 }else{
                         
@@ -1647,24 +1669,37 @@ class Factura extends CI_Controller{
         
         $fecha_facturas = $this->input->post('factura_fecha');
         $documento_sector = $this->input->post('docsec_codigoclasificador');
+        $operacion = $this->input->post('operacion'); //1 anular, 2 revertir
         
         $fecha_parametro = $fecha_facturas;
         
-        
-        $sql = "select * from factura where estado_id = 1 and factura_fecha = '".$fecha_parametro."' and factura_codigodescripcion = 'VALIDADA' and ".
-                " docsec_codigoclasificador = ".$documento_sector;
-        $facturas =  $this->Venta_model->consultar($sql);
-        //echo $sql;
-       //var_dump($facturas);
-       
-        foreach ($facturas as $f){
-
+        if($operacion==1){ //Anulacion de facturas 
+            $sql = "select * from factura where estado_id = 1 and factura_fecha = '".$fecha_parametro."' and factura_codigodescripcion = 'VALIDADA' and ".
+                   " docsec_codigoclasificador = ".$documento_sector;
+            $facturas =  $this->Venta_model->consultar($sql);
             
-            $factura_id = $f["factura_id"];
-            $factura_numero = $f["factura_numero"];
-            $this->anular_factura($factura_id, $factura_numero);
-                
+            foreach ($facturas as $f){
 
+                $factura_id = $f["factura_id"];
+                $factura_numero = $f["factura_numero"];
+                $this->anular_factura($factura_id, $factura_numero);
+
+            }
+        }
+        
+        if($operacion==2){//Reversion de anulaciones
+            
+            $sql = "select * from factura where estado_id = 3 and factura_fecha = '".$fecha_parametro."' and ".
+                   " docsec_codigoclasificador = ".$documento_sector;
+            $facturas =  $this->Venta_model->consultar($sql);
+            
+            foreach ($facturas as $f){
+
+                $factura_id = $f["factura_id"];
+                $this->revertir_anulacion_masiva($factura_id);
+
+            }
+            
         }
                 //$this->index();
 
@@ -1681,6 +1716,17 @@ class Factura extends CI_Controller{
         
         $venta_id = $factura[0]["venta_id"];
          
+        
+        //******************************************************
+        //      Backup de las facturas a anular
+            $sql = "insert into factura_bitacora (select * from factura where factura_id = {$factura_id})";
+            $this->Venta_model->ejecutar($sql);
+
+            $sql = "insert into detalle_factura_bitacora (select * from detalle_factura where factura_id = {$factura_id})";
+            $this->Venta_model->ejecutar($sql);
+
+        //******************************************************      
+                    
         //if($configuracion["parametro_tiposistema"]==1){
         
             //************** ANULACION FACTURA COMPUTARIZADA 
@@ -1848,15 +1894,17 @@ class Factura extends CI_Controller{
         if($this->acceso(17)){
         //**************** inicio contenido ***************            
 
-                if ($this->parametros['parametro_tipoimpresora']=="FACTURADORA"){
+            
+            if ($this->parametros['parametro_tipoimpresora']=="FACTURADORA"){
 
-                    $this->factura_boucher_id($factura_id,$tipo);
-                }
-                else{
+                        $this->factura_boucher_id($factura_id,$tipo);
+                    }
+                    else{
 
-                    $this->factura_carta_id($factura_id,$tipo);
-                }
-  
+                        $this->factura_carta_id($factura_id,$tipo);
+                    }
+
+           
 
         //**************** fin contenido ***************
         } 
@@ -2078,7 +2126,7 @@ class Factura extends CI_Controller{
         }
     }
     //monto, codigo de recepcion
-    function enviar_correoanulacion($venta_id, $correo,$factura_numero, $factura_fecha, $total, $cod_autorizacion)
+    function enviar_correoanulacion($factura_id, $correo,$factura_numero, $factura_fecha, $total, $cod_autorizacion)
     {
         
         if($correo != null || $correo != ""){
@@ -2087,6 +2135,12 @@ class Factura extends CI_Controller{
             $this->email->set_newline("\r\n");
             $this->load->model('Configuracion_email_model');
             $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
+            $factura = $this->Factura_model->get_factura_anulada($factura_id);
+            
+            //var_dump($factura);
+            $cliente = $factura["factura_razonsocial"];
+            $cuf = $factura["factura_cuf"];
+            
             
             $config['protocol'] = $configuracion['email_protocolo'];
             $config['smtp_host'] = $configuracion['email_host'];
@@ -2109,60 +2163,154 @@ class Factura extends CI_Controller{
             $this->email->cc($configuracion['email_copia']);
     //            $this->email->bcc($attributes['cc']);
             $this->email->subject("Factura Digital, Anulación de su factura");
-            /*$base_url = explode('/', base_url());
-            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
-            $this->email->attach($directorio."compra_venta".$factura_id.".xml");
-            $this->email->attach($directorio."compra_venta".$factura_id.".pdf");*/
-            $html = "<html>";
-            $html = "<head>";
-            $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
-            $html = "</head>";
-            $html = "<body>";
 
-            $html .= "<div class='container' style='font-family: Arial'>";
-            $html .= "<div class='col-md-2' style='background:gray;'></div>";
-
-            $html .= "<div class='col-md-10'>";
-            $html .= "<center>";
-            $html .= "<h3>Facturacion Electronica</h3>";
-            $html .= " ";
-            $html .= "<h4>Estimado Usuario</h4>";
-            $html .= "<br>";
-            //$html .= $configuracion['email_cabecera'];
             $la_fecha = date("d/m/Y", strtotime($factura_fecha));
             
             $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
             $literal =  num_to_letras($total,' Bolivianos');
             
-            $html .= "Le informamos que su factura electrónica numero <b>".$factura_numero."</b> de fecha <b>".$la_fecha."</b> ";
-            $html .= "con un moto total de Bs <b>".$total."</b> (".$literal.") y el código de autorización <b>".$cod_autorizacion."</b> fue anulada.<br>";
-            //$direccion = base_url("tufactura/verfactura/".md5($venta_id));
-            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Ver factura electronica</a>";
-            //$html .= "<br>Tambien le enviamos los archivos en formato PDF y XML adjuntos";
-            $html .= "<br>";
-            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
-    //            $html .= "<form method='get' action='/".$direccion."'>";
-    //            $html .= "<button type='submit'>Activar mi Cuenta</button>";
-    //            $html .= "</form>";
+            
 
-            $html .= "<br>";
-            $html .= "<br>";
+            
+            
+            
+            $html = '
+            <!DOCTYPE html>
+            <html lang="es">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Mensaje de correo electrónico</title>
+                <!-- Bootstrap CSS -->
+                <link href="https://cdn.jsdelivr.net/npm/
+                bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
+                rel="stylesheet">
+            </head>
+            <body>
+                <center>
+                    <table class="table table-bordered"> 
+                        <tr>
+                            <td style="background: #D35400; color:white; 
+                            font-family:Arial;">
+                                <center>
+                                    <p><b>'.$this->empresa["empresa_nombre"].'</b></p>
+                                    <p>'.$this->empresa["empresa_eslogan"].'</p>
+                                </center>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background: gray; font-family:Arial;">
+                                <h2>Confirmación de Anulación!</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="background: lightgray; font-family:Arial;">
+                                <p>Señor(es): '.$cliente.'</p>
+                                <p>Mediante este mensaje le informamos 
+                                 que su factura fue ANULADA.</p>
+                                <h3>Datos de la factura</h3>
+                                <p>FACTURA Nº: '.$factura_numero.'
+                                MONTO Bs: '.number_format($total,2,".",",").'</p>
+                                <p>¡Gracias por su preferencia!</p>
+                            </td>
+                        </tr>
 
-            //$html .= $configuracion['email_pie'];
-            $html .= "<br>";
-            $html .= "<br>";
-            //$html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm'>".$direccion."</a>";
+                        <tr>
+                            <td style="background: black; 
+                            color: white; 
+                            font-family:Arial; font-size:10pt; 
+                            line-height: 10px">
+                                <center><br>
+                                   <a href="https://www.facebook.com/sisximpleman/" 
+                                   style="color: white; text-decoration: none;"
+                                    <p><b>XIMPLEMAN</b>
+                                    </a>
+                                   es un producto de 
+                                   <a href="https://www.passwordbolivia.com" 
+                                   style="color: white; text-decoration: none;"
+                                    target="_blank"><b>PASSWORD IHS</b></a></p>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
 
-            $html .= "</center>";
-            $html .= "</div>";
+                <script src="https://cdn.jsdelivr.net/
+                npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+                </script>
+            </body>
+            </html>';
+            
+            
+            $html = "
+            <!DOCTYPE html>
+            <html lang='es'>
+            <head>
+                <meta charset='UTF-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <title>Mensaje de correo electrónico</title>
+                <!-- Bootstrap CSS -->
+                <link href='https://cdn.jsdelivr.net/npm/
+                bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css' 
+                rel='stylesheet'>
+            </head>
+            <body>
+                <center>
+                    <table class='table table-bordered'> 
+                        <tr>
+                            <td style='background: #D35400; color:white; 
+                            font-family:Arial;'>
+                                <center>
+                                    <p><b>".$this->empresa['empresa_nombre']."</b></p>
+                                    <p>".$this->empresa['empresa_eslogan']."</p>
+                                </center>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='background: gray; font-family:Arial;'>
+                                <h2>Confirmación de Anulación!</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='background: lightgray; font-family:Arial;'>
+                                <p>Señor(es): ".$cliente."</p>
+                                <p>Mediante este mensaje le informamos 
+                                 que su factura fue ANULADA.</p>
+                                <h3>Datos de la factura</h3>
+                                <p>FACTURA Nº: ".$factura_numero."
+                                <br>MONTO Bs: ".number_format($total,2,'.',',')."<br>FECHA: ".$la_fecha."</p>
+                                {$cuf}
+                                <p>¡Gracias por su preferencia!</p>
+                            </td>
+                        </tr>
 
-            $html .= "<div class='col-md-2'></div>";            
-            $html .= "</div>";
+                        <tr>
+                            <td style='background: black; 
+                            color: white; 
+                            font-family:Arial; font-size:10pt; 
+                            line-height: 10px'>
+                                <center><br>
+                                   <a href='https://www.facebook.com/sisximpleman/' 
+                                   style='color: white; text-decoration: none;'
+                                    <p><b>XIMPLEMAN</b>
+                                    </a>
+                                   es un producto de 
+                                   <a href='https://www.passwordbolivia.com' 
+                                   style='color: white; text-decoration: none;'
+                                    target='_blank'><b>PASSWORD IHS</b></a></p>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
 
-            $html .= "</body>";
-            $html .= "</html>";
+                <script src='https://cdn.jsdelivr.net/
+                npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js'>
+                </script>
+            </body>
+            </html>";
 
-
+            //echo $html;
             $this->email->message($html);
 
             if($this->email->send()) {
@@ -2177,6 +2325,278 @@ class Factura extends CI_Controller{
         }*/              
         }
     }
+    
+    //monto, codigo de recepcion
+    function enviar_correoreversion($factura_id, $correo,$factura_numero, $factura_fecha, $total, $cod_autorizacion)
+    {
+        
+        if($correo != null || $correo != ""){
+        //if ($this->input->is_ajax_request()) {
+            $this->load->library('email');
+            $this->email->set_newline("\r\n");
+            $this->load->model('Configuracion_email_model');
+            $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
+            $factura = $this->Factura_model->get_factura_anulada($factura_id);
+            
+            //var_dump($factura);
+            $cliente = $factura["factura_razonsocial"];
+            $cuf = $factura["factura_cuf"];
+            $total = $factura["factura_total"];
+            
+            
+            $config['protocol'] = $configuracion['email_protocolo'];
+            $config['smtp_host'] = $configuracion['email_host'];
+            $config['smtp_port'] = $configuracion['email_puerto'];
+            $config['smtp_user'] = $configuracion['email_usuario'];
+            $config['smtp_pass'] = $configuracion['email_clave'];
+            $config['smtp_from_name'] = $configuracion['email_nombre'];
+            $config['priority'] = $configuracion['email_prioridad'];
+            $config['charset'] = $configuracion['email_charset'];
+            $config['smtp_crypto'] = $configuracion['email_encriptacion'];
+            $config['wordwrap'] = TRUE;
+            $config['newline'] = "\r\n";
+            $config['mailtype'] = $configuracion['email_tipo'];
+            $email_copia = '';
+
+            $this->email->initialize($config);
+
+            $this->email->from($config['smtp_user'], $config['smtp_from_name']);
+            $this->email->to($correo);
+            $this->email->cc($configuracion['email_copia']);
+    //            $this->email->bcc($attributes['cc']);
+            $this->email->subject("Factura Digital, Anulación de su factura");
+
+            $la_fecha = date("d/m/Y", strtotime($factura_fecha));
+            
+            $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+            $literal =  num_to_letras($total,' Bolivianos');
+            
+            
+            $html = "
+            <!DOCTYPE html>
+            <html lang='es'>
+            <head>
+                <meta charset='UTF-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <title>Mensaje de correo electrónico</title>
+                <!-- Bootstrap CSS -->
+                <link href='https://cdn.jsdelivr.net/npm/
+                bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css' 
+                rel='stylesheet'>
+            </head>
+            <body>
+                <center>
+                    <table class='table table-bordered'> 
+                        <tr>
+                            <td style='background: #D35400; color:white; 
+                            font-family:Arial;'>
+                                <center>
+                                    <p><b>".$this->empresa['empresa_nombre']."</b></p>
+                                    <p>".$this->empresa['empresa_eslogan']."</p>
+                                </center>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='background: gray; font-family:Arial;'>
+                                <h2>Reversión Confirmada</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style='background: lightgray; font-family:Arial;'>
+                                <p>Señor(es): ".$cliente."</p>
+                                <p>Mediante este mensaje le informamos 
+                                 que su factura anulada fué REVERTIDA.</p>
+                                <h3>Datos de la factura</h3>
+                                <p>FACTURA Nº: ".$factura_numero."
+                                <br>MONTO Bs: ".number_format($total,2,'.',',')."<br>FECHA: ".$la_fecha."</p>
+                                {$cuf}
+                                <p>¡Gracias por su preferencia!</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style='background: black; 
+                            color: white; 
+                            font-family:Arial; font-size:10pt; 
+                            line-height: 10px'>
+                                <center><br>
+                                   <a href='https://www.facebook.com/sisximpleman/' 
+                                   style='color: white; text-decoration: none;'
+                                    <p><b>XIMPLEMAN</b>
+                                    </a>
+                                   es un producto de 
+                                   <a href='https://www.passwordbolivia.com' 
+                                   style='color: white; text-decoration: none;'
+                                    target='_blank'><b>PASSWORD IHS</b></a></p>
+                                </center>
+                            </td>
+                        </tr>
+                    </table>
+                </center>
+
+                <script src='https://cdn.jsdelivr.net/
+                npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js'>
+                </script>
+            </body>
+            </html>";
+
+            //echo $html;
+            $this->email->message($html);
+
+            if($this->email->send()) {
+                $resultado = true;        
+            } else {
+                $resultado = false;
+            }
+            return $resultado;
+            //echo json_encode($resultado);
+        /*}else{                 
+            show_404();
+        }*/              
+        }
+    }
+    
+    
+        /* envia correo  a cliente */
+    //function enviarcorreo($venta_id, $factura_id, $email_destino, $nombre_archivo){
+    function enviar_correoanulacioncccc($venta_id, $email_destino, $factura_numero, $factura_fecha, $total, $cod_autorizacion){
+        
+        $this->load->library('email');
+        $this->email->set_newline("\r\n");
+        $this->load->model('Configuracion_email_model');
+        $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
+        $factura = $this->Factura_model->get_factura_ventaid($venta_id);
+        $factura_id = $factura["factura_id"];
+        
+        
+        $cliente = $factura["factura_razonsocial"];
+
+        $config['protocol'] = $configuracion['email_protocolo'];
+        $config['smtp_host'] = $configuracion['email_host'];
+        $config['smtp_port'] = $configuracion['email_puerto'];
+        $config['smtp_user'] = $configuracion['email_usuario'];
+        $config['smtp_pass'] = $configuracion['email_clave'];
+        $config['smtp_from_name'] = $configuracion['email_nombre'];
+        $config['priority'] = $configuracion['email_prioridad'];
+        $config['charset'] = $configuracion['email_charset'];
+        $config['smtp_crypto'] = $configuracion['email_encriptacion'];
+        $config['wordwrap'] = TRUE;
+        $config['newline'] = "\r\n";
+        $config['mailtype'] = $configuracion['email_tipo'];
+        $email_copia = '';
+
+        $this->email->initialize($config);
+
+        $this->email->from($config['smtp_user'], $config['smtp_from_name']);
+        $this->email->to($email_destino);
+        $this->email->cc($configuracion['email_copia']);
+//            $this->email->bcc($attributes['cc']);
+        $this->email->subject("Factura Digital, gracias por comprar, vuelva pronto");
+        $base_url = explode('/', base_url());
+        $directorio_factura = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/xml/';
+        $this->email->attach($directorio_factura.$nombre_archivo.$factura_id.".xml");
+        $this->email->attach($directorio_factura.$nombre_archivo.$factura_id.".pdf");
+
+
+        $imagen = base_url('resources/images/empresas/').$this->empresa['empresa_imagen'];
+        
+        if($this->dosificacion["dosificacion_ambiente"]==1){ //Produccion
+            
+            $base_url = base_url();
+            $directorio = "resources/images/empresas/";
+            $imagen = $this->empresa['empresa_imagen'];
+            
+        }else{
+            
+            $base_url = "https://www.kinetixdigitalmedia.com/facturacion/";
+            $directorio = "resources/images/empresas/";
+            $imagen = "1692569983.jpg";
+            
+        }
+//                <img src="https://www.kinetixdigitalmedia.com/facturacion/resources/images/empresas/1692569983.jpg" width="100" height="60"><br>
+                
+                
+        $html = '
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Mensaje de correo electrónico</title>
+            <!-- Bootstrap CSS -->
+            <link href="https://cdn.jsdelivr.net/npm/
+            bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
+            rel="stylesheet">
+        </head>
+        <body>
+            <center>
+                <table class="table table-bordered"> 
+                    <tr>
+                        <td style="background: #D35400; color:white; 
+                        font-family:Arial;">
+                            <center>
+                                
+                                
+                                <p><b>'.$this->empresa["empresa_nombre"].'</b></p>
+                                <p>'.$this->empresa["empresa_eslogan"].'</p>
+                            </center>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: gray; font-family:Arial;">
+                            <h2>Agradecemos su preferencia!</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: lightgray; font-family:Arial;">
+                            <p>Señor(es): '.$cliente.'</p>
+                            <p>Mediante este mensaje le informamos que adjunto a este correo</p>
+                            <p> encontrará su factura en formato PDF y XML.</p>
+                            <p></p>
+                            <p>¡Gracias por su compra!</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: black; 
+                        color: white; 
+                        font-family:Arial; font-size:10pt; 
+                        line-height: 10px">
+                            <center><br>
+                            
+                               <a href="https://www.facebook.com/sisximpleman/" 
+                               style="color: white; text-decoration: none;"
+
+                                <p><b>XIMPLEMAN</b>
+                                </a>
+
+                               es un producto de 
+                                
+                               <a href="https://www.passwordbolivia.com" 
+                               style="color: white; text-decoration: none;"
+                                target="_blank"><b>PASSWORD IHS</b></a></p>
+                              
+            
+                            </center>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+  
+            <script src="https://cdn.jsdelivr.net/
+            npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+            </script>
+        </body>
+        </html>';
+                
+        $this->email->message($html);
+
+        if($this->email->send()) {
+            return true;        
+        } else {
+            return false;
+        }
+    }
+    
     
     function ticket($venta_id, $descripcion)
     {
@@ -2328,6 +2748,8 @@ class Factura extends CI_Controller{
             "cuf" => $cuf
         ]];
         
+        //var_dump($parametros);
+        
         $resultado = $cliente->anulacionFactura($parametros);
         $res = $resultado->RespuestaServicioFacturacion->transaccion;
         $mensaje = "";
@@ -2353,6 +2775,418 @@ class Factura extends CI_Controller{
                 $correo = $this->input->post("factura_correo");
             $resu = $this->enviar_correoanulacion($venta_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf);
             }
+        }
+        echo json_encode($resultado->RespuestaServicioFacturacion);
+    }
+    /* Revierte la anulacion de una factura*/
+    function revertir_anulacion(){
+        
+        $usuario_idanulador = $this->session_data['usuario_id'];
+        $factura_id =  $this->input->post("factura_id");            
+        
+        $sql = "select * from factura where factura_id = ".$factura_id;                
+        $factura = $this->Factura_model->consultar($sql);
+        
+        //$venta_id = $factura[0]["venta_id"];
+        $codigo_motivo =  $this->input->post("motivo_id");
+        if($codigo_motivo==""){
+            $codigo_motivo =  1;
+        }
+        
+        $dosificacion_id = 1;
+        $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+        
+        if ($dosificacion['docsec_codigoclasificador']==1)
+                $wsdl = $dosificacion['dosificacion_factura'];
+
+        if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+            if ($dosificacion['docsec_codigoclasificador']==13)
+                $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+            if ($dosificacion['docsec_codigoclasificador']==15)
+                $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+            if ($dosificacion['docsec_codigoclasificador']==22)
+                $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+        }
+        
+        if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                $wsdl = $dosificacion['dosificacion_facturaglp'];
+
+            if ($dosificacion['docsec_codigoclasificador']==13)
+                $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+            if ($dosificacion['docsec_codigoclasificador']==15)
+                $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+            if ($dosificacion['docsec_codigoclasificador']==22)
+                $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+        }
+        
+        $token = $dosificacion['dosificacion_tokendelegado'];
+
+        $opts = array(
+              'http' => array(
+                   'header' => "apiKey: TokenApi $token",
+              )
+        );
+        $context = stream_context_create($opts);
+
+        $cliente = new \SoapClient($wsdl, [
+              'stream_context' => $context,
+              'cache_wsdl' => WSDL_CACHE_NONE,
+              'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+              // other options
+        ]);
+        
+        //$venta = $this->Detalle_venta_model->get_venta($venta_id);
+        $usuarioventa_id = $factura[0]['usuario_id'];
+
+        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuarioventa_id);
+        $this->load->model('PuntoVenta_model');
+        $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+
+        $tipoFacturaDoc = 1;
+        if ($factura[0]['docsec_codigoclasificador'] == 8 ||$factura[0]['docsec_codigoclasificador'] == 6){
+            $tipoFacturaDoc = 2;
+        }
+                
+                
+        $codigoAmbiente = $dosificacion['dosificacion_ambiente'];
+        $codigoDocumentoSector = $factura[0]["docsec_codigoclasificador"];
+        $codigoEmision = 1; //Describe si la emisión se realizó en línea. El valor permitido es: Online: 1
+        $codigoModalidad = $factura[0]['factura_modalidad'];
+        $codigoPuntoVenta = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
+        $codigoSistema = $dosificacion['dosificacion_codsistema'];
+        $codigoSucursal = $dosificacion['dosificacion_codsucursal'];
+        $cufd = $punto_venta['cufd_codigo']; //$dosificacion['dosificacion_cufd'];
+        $cuis = $punto_venta['cuis_codigo']; //$dosificacion['dosificacion_cuis']; 
+        $nit =  $dosificacion['dosificacion_nitemisor'];
+        $tipoFacturaDocumento = $tipoFacturaDoc; //1 con derecho a credito fiscal / 2 Sin derecho a credito fiscal //1 para facturas comerciales * 2 para facturas tasas cero
+        $codigoMotivo = $codigo_motivo;
+        $cuf = $factura[0]['factura_cuf'];
+                
+        /* ordenado segun SoapUI */
+
+        $parametros = ["SolicitudServicioReversionAnulacionFactura" => [
+            "codigoAmbiente" => $codigoAmbiente,
+            "codigoDocumentoSector" => $codigoDocumentoSector,
+            "codigoEmision" => $codigoEmision,
+            "codigoModalidad" => $codigoModalidad,
+            "codigoPuntoVenta" => $codigoPuntoVenta,
+            "codigoSistema" => $codigoSistema,
+            "codigoSucursal" => $codigoSucursal,
+            "cufd" => $cufd,
+            "cuis" => $cuis, 
+            "nit" =>  $nit,
+            "tipoFacturaDocumento" => $tipoFacturaDocumento, //averiguar donde se almacena esto
+            "cuf" => $cuf
+        ]];
+        
+        //var_dump($parametros);
+        
+        $resultado = $cliente->reversionAnulacionFactura($parametros);
+        $res = $resultado->RespuestaServicioFacturacion->transaccion;
+        
+        
+        $mensaje = "";
+        
+        if ($res){ // Si la factura fue revertida correctamente
+            
+            $factura_cuf = $factura[0]["factura_cuf"];
+            $factura_total           = $factura[0]["factura_total"];
+            
+            $mensaje_anular = "";
+
+            //************ inicio bitacora 
+                $venta_id = $this->input->post("venta_id");
+            
+                $usuario_id = $this->session_data['usuario_id'];
+                
+                $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+                $bitacoracaja_fecha = "date({$now})";
+                $bitacoracaja_hora = "time({$now})";
+                $bitacoracaja_evento = "(select  concat('REVERTI FACTURA ANULADA: FACT. ID ->',{$factura_id},' * CUF: {$cuf}'))";
+                $bitacoracaja_montoreg = 0;
+                $bitacoracaja_montocaja = 0;
+                $bitacoracaja_tipo = 2; //5 operaciones sobre FACTURAS
+
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                        $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                        $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                $this->Venta_model->ejecutar($sql);
+                //************ fin botacora bitacora   
+            
+                         //*************** RESTABLECER FACTURA ********************************
+            
+            // PRIMERO.- Quitamos la factura
+            $sql = "delete from detalle_factura where factura_id = {$factura_id}";
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "delete from factura where factura_id = {$factura_id}";
+            $this->Venta_model->ejecutar($sql);
+            
+            // SEGUNDO.- Insertamos la factura del contenedor
+            
+            $sql = "insert into factura (select * from factura_bitacora where factura_id = {$factura_id})";
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "insert into detalle_factura (select * from detalle_factura_bitacora where factura_id = {$factura_id})";
+            $this->Venta_model->ejecutar($sql);
+            
+            //TERCERO.- Reactivamos la compra si la tiene
+  
+            $sql = "update detalle_venta v, detalle_factura f
+                    set 
+                    v.detalleven_cantidad = f.detallefact_cantidad,
+                    v.detalleven_precio = f.detallefact_precio,
+                    v.detalleven_subtotal = f.detallefact_subtotal,                    
+                    v.detalleven_total = f.detallefact_total,
+                    v.detalleven_caracteristicas= f.detallefact_caracteristicas,
+                    v.detalleven_preferencia= f.detallefact_preferencia
+                    where 
+                    f.factura_id = {$factura_id} and
+                    f.venta_id  = v.venta_id";
+            $this->Venta_model->ejecutar($sql);
+            
+  
+            $sql = "update venta v, factura f 
+                    set 
+                    v.venta_subtotal = f.factura_subtotal, 
+                    v.venta_descuento = f.factura_descuento, 
+                    v.venta_total = f.factura_total, 
+                    v.venta_efectivo = f.factura_efectivo, 
+                    v.venta_cambio = f.factura_cambio, 
+                    v.estado_id = 1 
+                    where f.factura_id = {$factura_id} and f.venta_id = v.venta_id";
+            $this->Venta_model->ejecutar($sql);
+            
+            
+            
+            //*************** FIN RESTABLECER FACTURA ****************************   
+                
+            $escorreo = $this->input->post("escorreo");
+            if($escorreo == 1){
+                
+                $correo = $this->input->post("factura_correo");
+                $resu = $this->enviar_correoreversion($factura_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf);
+            
+            }
+            
+        }
+        echo json_encode($resultado->RespuestaServicioFacturacion);
+    }
+    
+    //Revierte las facturas anuladas
+    function revertir_anulacion_masiva($factura_id){
+        
+        $usuario_idanulador = $this->session_data['usuario_id'];
+        //$factura_id =  $this->input->post("factura_id");            
+        
+        $sql = "select * from factura where factura_id = ".$factura_id;                
+        $factura = $this->Factura_model->consultar($sql);
+        
+        $dosificacion_id = 1;
+        $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
+        
+        if ($dosificacion['docsec_codigoclasificador']==1)
+                $wsdl = $dosificacion['dosificacion_factura'];
+
+        if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+            if ($dosificacion['docsec_codigoclasificador']==13)
+                $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+            if ($dosificacion['docsec_codigoclasificador']==15)
+                $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+            if ($dosificacion['docsec_codigoclasificador']==22)
+                $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+        }
+        
+        if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+            if ($dosificacion['docsec_codigoclasificador']==2 || $dosificacion['docsec_codigoclasificador']==6 || $dosificacion['docsec_codigoclasificador']==16 || $dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11  || $dosificacion['docsec_codigoclasificador']==17
+                    || $dosificacion['docsec_codigoclasificador']==8 || $dosificacion['docsec_codigoclasificador']==12 || $dosificacion['docsec_codigoclasificador']==51)
+                $wsdl = $dosificacion['dosificacion_facturaglp'];
+
+            if ($dosificacion['docsec_codigoclasificador']==13)
+                $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+            if ($dosificacion['docsec_codigoclasificador']==15)
+                $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+            if ($dosificacion['docsec_codigoclasificador']==22)
+                $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+        }
+        
+        $token = $dosificacion['dosificacion_tokendelegado'];
+
+        $opts = array(
+              'http' => array(
+                   'header' => "apiKey: TokenApi $token",
+              )
+        );
+        $context = stream_context_create($opts);
+
+        $cliente = new \SoapClient($wsdl, [
+              'stream_context' => $context,
+              'cache_wsdl' => WSDL_CACHE_NONE,
+              'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+              // other options
+        ]);
+        
+        //$venta = $this->Detalle_venta_model->get_venta($venta_id);
+        $usuarioventa_id = $factura[0]['usuario_id'];
+
+        $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuarioventa_id);
+        $this->load->model('PuntoVenta_model');
+        $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+
+        $tipoFacturaDoc = 1;
+        if ($factura[0]['docsec_codigoclasificador'] == 8 ||$factura[0]['docsec_codigoclasificador'] == 6){
+            $tipoFacturaDoc = 2;
+        }
+                
+                
+        $codigoAmbiente = $dosificacion['dosificacion_ambiente'];
+        $codigoDocumentoSector = $factura[0]["docsec_codigoclasificador"];
+        $codigoEmision = 1; //Describe si la emisión se realizó en línea. El valor permitido es: Online: 1
+        $codigoModalidad = $factura[0]['factura_modalidad'];
+        $codigoPuntoVenta = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
+        $codigoSistema = $dosificacion['dosificacion_codsistema'];
+        $codigoSucursal = $dosificacion['dosificacion_codsucursal'];
+        $cufd = $punto_venta['cufd_codigo']; //$dosificacion['dosificacion_cufd'];
+        $cuis = $punto_venta['cuis_codigo']; //$dosificacion['dosificacion_cuis']; 
+        $nit =  $dosificacion['dosificacion_nitemisor'];
+        $tipoFacturaDocumento = $tipoFacturaDoc; //1 con derecho a credito fiscal / 2 Sin derecho a credito fiscal //1 para facturas comerciales * 2 para facturas tasas cero
+        $cuf = $factura[0]['factura_cuf'];
+                
+        /* ordenado segun SoapUI */
+
+        $parametros = ["SolicitudServicioReversionAnulacionFactura" => [
+            "codigoAmbiente" => $codigoAmbiente,
+            "codigoDocumentoSector" => $codigoDocumentoSector,
+            "codigoEmision" => $codigoEmision,
+            "codigoModalidad" => $codigoModalidad,
+            "codigoPuntoVenta" => $codigoPuntoVenta,
+            "codigoSistema" => $codigoSistema,
+            "codigoSucursal" => $codigoSucursal,
+            "cufd" => $cufd,
+            "cuis" => $cuis, 
+            "nit" =>  $nit,
+            "tipoFacturaDocumento" => $tipoFacturaDocumento, //averiguar donde se almacena esto
+            "cuf" => $cuf
+        ]];
+        
+        //var_dump($parametros);
+        
+        $resultado = $cliente->reversionAnulacionFactura($parametros);
+        $res = $resultado->RespuestaServicioFacturacion->transaccion;
+        
+        
+        $mensaje = "";
+        
+        if ($res){ // Si la factura fue revertida correctamente
+            
+            $factura_cuf = $factura[0]["factura_cuf"];
+            $factura_total           = $factura[0]["factura_total"];
+            
+            $mensaje_anular = "";
+
+            //************ inicio bitacora 
+                $venta_id = $this->input->post("venta_id");
+            
+                $usuario_id = $this->session_data['usuario_id'];
+                
+                $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+                $bitacoracaja_fecha = "date({$now})";
+                $bitacoracaja_hora = "time({$now})";
+                $bitacoracaja_evento = "(select  concat('REVERTI FACTURA ANULADA: FACT. ID ->',{$factura_id},' * CUF: {$cuf}'))";
+                $bitacoracaja_montoreg = 0;
+                $bitacoracaja_montocaja = 0;
+                $bitacoracaja_tipo = 2; //5 operaciones sobre FACTURAS
+
+
+                $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                        usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                        $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                        $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                $this->Venta_model->ejecutar($sql);
+                //************ fin botacora bitacora   
+            
+                         //*************** RESTABLECER FACTURA ********************************
+            
+            // PRIMERO.- Quitamos la factura
+            $sql = "delete from detalle_factura where factura_id = {$factura_id}";
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "delete from factura where factura_id = {$factura_id}";
+            $this->Venta_model->ejecutar($sql);
+            
+            // SEGUNDO.- Insertamos la factura del contenedor
+            
+            $sql = "insert into factura (select * from factura_bitacora where factura_id = {$factura_id})";
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "insert into detalle_factura (select * from detalle_factura_bitacora where factura_id = {$factura_id})";
+            $this->Venta_model->ejecutar($sql);
+            
+            //TERCERO.- Reactivamos la compra si la tiene
+            /*
+            $sql = "update detalle_venta v, detalle_factura f
+                    set 
+                    v.detalleven_cantidad = f.detallefact_cantidad,
+                    v.detalleven_precio = f.detallefact_precio,
+                    v.detalleven_subtotal = f.detallefact_subtotal,                    
+                    v.detalleven_total = f.detallefact_total,
+                    v.detalleven_caracteristicas= f.detallefact_caracteristicas,
+                    v.detalleven_preferencia= f.detallefact_preferencia
+                    where 
+                    f.factura_id = {$factura_id} and
+                    f.venta_id  = v.venta_id";
+            $this->Venta_model->ejecutar($sql);
+            
+  
+            $sql = "update venta v, factura f 
+                    set 
+                    v.venta_subtotal = f.factura_subtotal, 
+                    v.venta_descuento = f.factura_descuento, 
+                    v.venta_total = f.factura_total, 
+                    v.venta_efectivo = f.factura_efectivo, 
+                    v.venta_cambio = f.factura_cambio, 
+                    v.estado_id = 1 
+                    where f.factura_id = {$factura_id} and f.venta_id = v.venta_id";
+            $this->Venta_model->ejecutar($sql);
+            
+            */
+            
+            //*************** FIN RESTABLECER FACTURA ****************************   
+            /*   no es necesario el envio por correo
+            $escorreo = $this->input->post("escorreo");
+            if($escorreo == 1){
+                
+                $correo = $this->input->post("factura_correo");
+                $resu = $this->enviar_correoreversion($factura_id, $correo, $factura[0]["factura_numero"], $factura[0]["factura_fecha"], $factura_total, $factura_cuf);
+            
+            }
+            */
         }
         echo json_encode($resultado->RespuestaServicioFacturacion);
     }
@@ -2454,5 +3288,61 @@ class Factura extends CI_Controller{
          $data['_view'] = 'factura/factura_servicios';
          $this->load->view('layouts/main',$data);
      }
+
+    /*
+     * Realizado por: Roberto Carlos Soto Sierra
+     * Fecha: 05.03.2019
+     */
+    //function recibo_mediooficio($venta_id,$factura_numero)
+    /* nota de entrega con logo empresa y direccion de cliente.. */
+    function recibo_mediooficio($venta_id,$pagina_actual)
+    {
+        $data['sistema'] = $this->sistema;
+        if($this->acceso(21)){
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $bloque = 20;
+        $salto = ($pagina_actual-1)*$bloque;
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        
+        //$detalle = $this->Detalle_venta_model->get_detalle_venta($venta_id);
+        
+                $sql = "select d.*,  r.producto_nombre as preferencia_descripcion, r.producto_foto as preferencia_foto, 
+                clasificador_codigo, clasificador_nombre,p.*, cp.categoria_nombre, scp.subcategoria_nombre
+                from detalle_venta d
+                left join producto p on p.producto_id = d.producto_id
+                left join producto r on r.producto_id = d.preferencia_id
+                left join clasificador c on c.clasificador_id = d.clasificador_id
+                left join categoria_producto cp on p.categoria_id = cp.categoria_id
+                left join subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id                
+                where d.producto_id = p.producto_id and venta_id = {$venta_id}
+                limit {$bloque} offset {$salto}";
+        $detalle = $this->Venta_model->consultar($sql);
+        
+        
+        $data['detalle_venta'] = $detalle;
+        
+        $sql = "select count(*) as cantidad from detalle_venta where venta_id = {$venta_id}";
+        $res = $this->Venta_model->consultar($sql);
+        $cantidad = $res[0]['cantidad'];
+        
+        $paginas = ceil($cantidad / $bloque);
+        $data['paginas'] = $paginas;
+        $data['pagina_actual'] = $pagina_actual;
+        
+        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Recibo";
+
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'factura/recibo_mediooficio';
+        $this->load->view('layouts/main',$data);
+        }
+    }
     
 }

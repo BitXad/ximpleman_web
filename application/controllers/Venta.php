@@ -756,6 +756,11 @@ class Venta extends CI_Controller{
                 //****************** contador de transacicones mensuales
                 $venta_numerotransmes = 0;
                 
+                $venta_numeroventa = 0;
+                if($this->parametros["parametro_contarventas"]==1){// Si contador de transacciones esta activada                   
+                    $venta_numeroventa = $this->numero_venta();
+                }
+                
                 if($this->parametros["parametro_contarventasmes"]==1){// Si contador de transacciones esta activada
                     
                     //Verificar si es el mes correcto
@@ -816,8 +821,8 @@ class Venta extends CI_Controller{
                 $sql = "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
                        "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuentoparcial,venta_descuento,venta_total,".
                        "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,".
-                       "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id,".
-                       "venta_ice, venta_giftcard, venta_detalletransaccion,venta_numerotransmes) value(".$cad.", {$venta_numerotransmes})";
+                       "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, usuarioprev_id,pedido_id, orden_id, entrega_estadoid,banco_id,".
+                       "venta_ice, venta_giftcard, venta_detalletransaccion,venta_numeroventa,venta_numerotransmes) value(".$cad.",{$venta_numeroventa},{$venta_numerotransmes})";
                 $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
                 
 
@@ -1094,7 +1099,7 @@ class Venta extends CI_Controller{
                 
                 if($pedido_id > 0)
                 {
-                    if($parametro['parametro_modulorestaurante']==1){ 
+                    if($this->parametros['parametro_modulorestaurante']==1){ 
                     
                         $sql = "select mesa_id from pedido where pedido_id = ".$pedido_id;
                         $resultadomesa = $this->Venta_model->consultar($sql);
@@ -1961,7 +1966,8 @@ class Venta extends CI_Controller{
     function buscar_placa()  
     {   
 
-      
+        if($this->input->is_ajax_request()){
+            
             $numeroplaca = $this->input->post('numeroplaca');
             $sql = "select * from cliente c, factura_datos f
                     WHERE c.cliente_id = f.cliente_id and f.datos_placa =  '{$numeroplaca}'";
@@ -1979,6 +1985,7 @@ class Venta extends CI_Controller{
                 echo json_encode(false);
                 
             }            
+        }
 
     }
 
@@ -3485,7 +3492,8 @@ function edit($venta_id){
         
                 if ($this->input->is_ajax_request()) {       
                     
-                    $nit = $this->input->post('nit');                    
+                    $nit = $this->input->post('nit');  
+                    /** @var Venta_model $this->Venta_model */
                     $datos = $this->Venta_model->buscar_cliente($nit);
                     echo json_encode($datos);                        
 
@@ -4721,6 +4729,16 @@ function anular_venta($venta_id){
 
         //**************** fin contenido ***************        
     }   
+
+    function numero_venta(){
+
+            //$sql =  "select count(*)+1 as cantidad from venta where venta_fecha = date(no_w())";
+            $sql =  "select parametro_numeroventa + 1 as numeroventa from parametros where parametro_id = ".$this->parametros['parametro_id'];
+            $res = $this->Venta_model->consultar($sql);
+            
+            return $res[0]["numeroventa"];
+
+    }   
     
 
     function ejecutar_consulta(){
@@ -4841,8 +4859,7 @@ function anular_venta($venta_id){
             $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
             $data['empresa'] = $this->Empresa_model->get_empresa(1); 
 
-            $data['page_title'] = "Envases y Prestamos"
-                    . "";
+            $data['page_title'] = "Envases y Prestamos";
             $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
             //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
             $data['usuario_id'] = $usuario_id; //el usuario logueado
@@ -8041,7 +8058,8 @@ function anular_venta($venta_id){
                                     $total_final = 0; 
                                     $total_subtotal = 0; 
                                     $ice = 0.00; 
-                                    if ($factura[0]['estado_id']<>3){  
+                                    if ($factura[0]['estado_id']<>3){
+                                        
                                         foreach($detalle_factura as $d){ 
                                             $cont = $cont+1; 
                                             $cantidad += $d['detallefact_cantidad']; 
@@ -8322,14 +8340,14 @@ function anular_venta($venta_id){
             
 
 
-                $tasas = $datos_factura['datos_tasaaseo']+$datos_factura['datos_tasaalumbrado'];
-                $pagos_no_iva = 0;
-                $ajustes_no_iva = 0;
+                $tasas = $datos_factura['datos_tasaaseo']+$datos_factura['datos_tasaalumbrado']+$datos_factura["datos_otrastasas"];
+                $datos_otrospagosnosujetoiva = $datos_factura["datos_otrospagosnosujetoiva"];
+                $datos_ajutesnosujetoiva = $datos_factura["datos_ajutesnosujetoiva"];
                 $sub_total = $factura[0]['factura_subtotal'] - $factura[0]['factura_descuento'];
                 $monto_total_pagar = $factura[0]['factura_subtotal'] - $factura[0]['factura_descuento'] - $datos_factura['datos_ajutesnosujetoiva'];
 
                 $micad .= "    <tr>";
-                $micad .= "        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='8'>SON: ".num_to_letras($factura_total,' Bolivianos')."</td>";
+                $micad .= "        <td style='padding:0; border-left: none !important;border-bottom: none !important;' colspan='4' rowspan='8'>SON: ".num_to_letras($monto_total_pagar,' Bolivianos')."</td>";
                 $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>SUBTOTAL A PAGAR Bs</td>";
                 $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($sub_total,$dos_decimales,'.',',')."</td>";
                 $micad .= "    </tr>";
@@ -8344,7 +8362,7 @@ function anular_venta($venta_id){
                 
                 $micad .= "    <tr>";
                 $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>(-) AJUSTES NO SUJETOS A IVA Bs</td>";
-                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format(is_numeric($datos_factura['datos_detalleajustenosujetoiva'])?$datos_factura['datos_detalleajustenosujetoiva']:0 ,$dos_decimales,'.',',')."</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format(is_numeric($datos_factura['datos_ajutesnosujetoiva'])?$datos_factura['datos_ajutesnosujetoiva']:0 ,$dos_decimales,'.',',')."</td>";
                 $micad .= "    </tr>";
 
                 $micad .= "    <tr>";
@@ -8359,12 +8377,12 @@ function anular_venta($venta_id){
 
                 $micad .= "    <tr>";
                 $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>(-) OTROS PAGOS NO SUJETO IVA Bs</td>";
-                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($pagos_no_iva ,$dos_decimales,'.',',')."</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($datos_otrospagosnosujetoiva ,$dos_decimales,'.',',')."</td>";
                 $micad .= "    </tr>";
 
                 $micad .= "    <tr>";
                 $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='{$span}' align='right'>(+) AJUSTES NO SUJETOS A IVA Bs</td>";
-                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($ajustes_no_iva ,$dos_decimales,'.',',')."</td>";
+                $micad .= "        <td style='padding:0; padding-right: 3px;' align='right'>".number_format($datos_ajutesnosujetoiva ,$dos_decimales,'.',',')."</td>";
                 $micad .= "    </tr>";
 
                 $micad .= "    <tr>";

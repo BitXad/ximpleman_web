@@ -97,8 +97,18 @@ class Token extends CI_Controller{
                         'token_fechadesde' => $this->input->post('token_fechadesde'),
                         'token_fechahasta' => $this->input->post('token_fechahasta'),
                     );
-                    $this->Token_model->update_token($token_id,$params);            
+                    
+                    //Actualizar tabla token
+                    $this->Token_model->update_token($token_id,$params);
+                    
+                    //Actualizar tabla dosificacion
+                    $token = $this->input->post('token_delegado');
+                    $sql = "update dosificacion set dosificacion_tokendelegado = '{$token}' where dosificacion_id = 1";
+                    $this->Token_model->Ejecutar($sql);
+                    
+                    //Redireccionar vista                    
                     redirect('token/index');
+                    
                 }else{
                     $tipo = 1;
                     $data['all_estado'] = $this->Estado_model->get_estado_tipo($tipo);    

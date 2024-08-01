@@ -486,6 +486,32 @@ class Inventario_model extends CI_Model
         or p.producto_codigo like '%$parametro%'         
         GROUP BY p.categoria_id, p.producto_id ".$this->orden;
         
+        //============================================================
+            $categoriaestado= "";
+                $sql = "SELECT
+                     p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
+                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion, m.moneda_tc,
+                     dp.destino_nombre, scp.subcategoria_nombre
+                      FROM
+                      inventario p
+                      LEFT JOIN estado e on p.estado_id = e.estado_id
+                      LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+                      LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
+                      LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
+                      LEFT JOIN moneda m on p.moneda_id = m.moneda_id
+                      LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
+                      WHERE 
+                           p.estado_id = e.estado_id
+                           and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
+                           or p.producto_codigo like '%".$parametro."%' or p.producto_marca like '%".$parametro."%'
+                           or p.producto_industria like '%".$parametro."%' or p.producto_caracteristicas like '%".$parametro."%'
+                           or p.producto_principioact like '%".$parametro."%' or p.producto_accionterap like '%".$parametro."%')
+                           ".$categoriaestado."
+
+                      GROUP by cp.categoria_id, p.producto_id 
+                      ORDER By cp.categoria_nombre, p.producto_orden asc";
+        
+        //echo $sql;
         $producto = $this->db->query($sql)->result_array();
         return $producto;
     }

@@ -25,6 +25,8 @@
 </style>
 
 <?php  
+    
+    $oculto = "hidden"; //hidden para oculto, vacio para mostrar
 
     $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;'";
     $fecha_desde = date('Y-m-d');
@@ -45,7 +47,7 @@
     if ($fecha_actual == $caja_fechaapertura){// && $hora_actual > '02:00'&&$hora_actual < '23:59') {
         
                 $fecha_desde = $fecha_actual;
-                $hora_desde = '16:00';
+                $hora_desde = '00:00'; //'16:00';
                 $fecha_hasta = $fecha_actual;
                 $hora_hasta = '23:59';
              
@@ -53,9 +55,9 @@
     // Si la fecha actual es un día después de la fecha de apertura de la caja
     else{
         $fecha_desde = date('Y-m-d', strtotime('-1 day', strtotime($fecha_actual))); // Resta un día a la fecha actual
-        $hora_desde = '16:00';
+        $hora_desde = '00:00';//'16:00';
         $fecha_hasta = $fecha_actual;
-        $hora_hasta = '02:00';
+        $hora_hasta = '23:59'; //02:00';
     }
     // En otro caso, si la fecha actual es el mismo día de la apertura de la caja, pero ya es pasada la medianoche
    /* else {
@@ -67,7 +69,7 @@
 ?>
 <!-------------------- inicio collapse ---------------------->
 
-<input type="text" value="<?php echo $caja["caja_fechaapertura"]." - ".$caja["caja_horaapertura"]; ?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+<!--<input type="<?= $oculto; ?>" value="<?php echo $caja["caja_fechaapertura"]." - ".$caja["caja_horaapertura"]; ?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">-->
 
 
     <div class="text-center" style='font-family: Arial; margin: 0;' >
@@ -76,32 +78,33 @@
         <br>CAJERO(A): <?php echo $usuario_nombre; ?>
     </div>
 
+    <?php $oculto2 = ""; ?>
     <div class="container" >  
-        <div class="box-tools" style="font-family: Arial;" hidden>
+        <div class="box-tools" style="font-family: Arial;" <?= $oculto2; ?>>
                 <div class=" col-md-11">
 
-                        <div class="col-md-2">
+                        <div class="col-md-2" hidden>
                             <input  class="btn btn-primary btn-sm form-control" id="buscarusuario_id" value="<?php echo $usuario_id; ?>"/>
                     
                         </div>
                     
                     </div>
                         <div class="col-md-2">
-                            Fecha: <input type="date" value="<?php echo $fecha_desde; ?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+                            Fecha Inicio: <input type="date" value="<?php echo $fecha_desde; ?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
                         </div>
                     
                         <div class="col-md-2">
-                            Hora:<input type="time" value="<?php echo $hora_desde; ?>" class="btn btn-primary btn-sm form-control" id="hora_desde" name="hora_desde" required="true">
+                            Hora Inicio:<input type="time" value="<?php echo $hora_desde; ?>" class="btn btn-primary btn-sm form-control" id="hora_desde" name="hora_desde" required="true">
                         </div>
                     
                     
                     
                         <div class="col-md-2">
-                            Fecha: <input type="date" value="<?php echo $fecha_hasta; ?>" class="btn btn-primary btn-sm form-control datepicker" id="fecha_hasta" name="fecha_hasta" required="true">
+                            Fecha Fin: <input type="date" value="<?php echo $fecha_hasta; ?>" class="btn btn-primary btn-sm form-control datepicker" id="fecha_hasta" name="fecha_hasta" required="true">
                         </div>
                     
                         <div class="col-md-2">
-                            Hora: <input type="time" value="<?php echo $hora_hasta; ?>" class="btn btn-primary btn-sm form-control datepicker" id="hora_hasta" name="hora_hasta" required="true">
+                            Hora Fin: <input type="time" value="<?php echo $hora_hasta; ?>" class="btn btn-primary btn-sm form-control datepicker" id="hora_hasta" name="hora_hasta" required="true">
                         </div>
                         <div class="col-md-2">
                             <br>
@@ -111,7 +114,7 @@
                             <br>
                         </div>
 
-                        <div class="col-md-3" hidden>
+                        <div class="col-md-3" <?= $oculto; ?>>
                             <br>
                             <a id="imprimirestedetalle" class="btn btn-sq-lg btn-success" onclick="imprimirdetalle()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>
                         </div>
@@ -137,7 +140,7 @@
       	<div class="box box-info">
             <?php echo form_open('caja/cierre_caja/'.$caja['caja_id']); ?>
             
-            <div hidden>
+            <div <?= $oculto; ?>>
 
                 <input  type="text" id="buscarusuario_id" name="buscarusuario_id" value="<?php echo $usuario_id; ?>">
                 <input  type="text" id="base_url" name="base_url"  value="<?php echo base_url(""); ?>">
@@ -152,32 +155,32 @@
             
             
                  
-          	<div class="box-body">
+          	<div class="box-body" id="registro_moneda" style="display: none;">
                     
                     <div class="row clearfix">
 
                         
-                        <div class="col-md-6" hidden>
+                        <div class="col-md-6" <?= $oculto; ?>>
                             <label for="saldo_caja" class="control-label">Caja Transacciones</label>
                             <div class="form-group">
                                 <input type="text" name="saldo_caja" value="0.00" class="form-control" id="saldo_caja" />
                             </div>
                         </div>
-                        <div class="col-md-6" hidden>
+                        <div class="col-md-6" <?= $oculto; ?>>
                             <label for="caja_diferencia" class="control-label">Caja Diferencia</label>
                             <div class="form-group">
                                 <input type="text" name="caja_diferencia" value="0.00" class="form-control" id="caja_diferencia" />
                             </div>
                         </div>
                         
-                        <div class="col-md-2" hidden>
+                        <div class="col-md-2" <?= $oculto; ?>>
                             <label for="caja_corte1000" class="control-label">Cortes de 1000</label>
                             <div class="form-group">
                                 <input type="number" min="0" name="caja_corte1000" value="<?php echo ($this->input->post('caja_corte1000') ? $this->input->post('caja_corte1000') : 0); ?>" class="form-control" id="caja_corte1000"  onkeyup="calcular_caja()"/>
                             </div>
                         </div>
                         
-                        <div class="col-md-2" hidden>
+                        <div class="col-md-2" <?= $oculto; ?>>
                             <label for="caja_corte500" class="control-label">Cortes de 500</label>
                             <div class="form-group">
                                 <input type="number" min="0" name="caja_corte500" value="<?php echo ($this->input->post('caja_corte500') ? $this->input->post('caja_corte500') : 0); ?>" class="form-control" id="caja_corte500"  onkeyup="calcular_caja()"/>
@@ -302,7 +305,7 @@
                             </div>
                         </div>
 
-                    <div class="col-md-6" hidden>
+                    <div class="col-md-6" <?= $oculto; ?>>
                             <label for="caja_estado" class="control-label"><span class="text-danger">*</span>Estado</label>
                             <div class="form-group">
      
@@ -311,20 +314,20 @@
                             </div>
                         </div>
                         
-                        <div class="col-md-3" hidden>
+                        <div class="col-md-3" <?= $oculto; ?>>
                             <label for="caja_fechacierre" class="control-label"><span class="text-danger">*</span>Fecha Cierre</label>
                             <div class="form-group">
                                 <input type="date" name="caja_fechacierre" value="<?php echo ($this->input->post('caja_fechacierre') ? $this->input->post('caja_fechacierre') : date('Y-m-d')); ?>" class="form-control" id="caja_fechacierre" required />
                             </div>
                         </div>
                         
-                        <div class="col-md-2" hidden>
+                        <div class="col-md-2" <?= $oculto; ?>>
                             <label for="caja_fechacierre" class="control-label"><span class="text-danger">*</span>Fecha Cierre</label>
                             <div class="form-group">
                                 <input type="date" name="caja_fechacierre" value="<?php echo ($this->input->post('caja_fechacierre') ? $this->input->post('caja_fechacierre') : date('Y-m-d')); ?>" class="form-control" id="caja_fechacierre" required />
                             </div>
                         </div>
-                        <div class="col-md-2" hidden>
+                        <div class="col-md-2" <?= $oculto; ?>>
                             <label for="caja_horacierre" class="control-label"><span class="text-danger">*</span>Hora Cierre</label>
                             <div class="form-group">
                                 <input type="time" step="any" name="caja_horacierre" value="<?php echo ($this->input->post('caja_horacierre') ? $this->input->post('caja_horacierre') : date('H:i:s')); ?>" class="form-control" id="caja_horacierre" required />

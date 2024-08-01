@@ -314,7 +314,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 <input type="text" id="dosificacion_modalidad" value="<?php echo $dosificacion[0]['dosificacion_modalidad']; ?>" name="dosificacion_modalidad"  hidden>
-<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" hidden>
+<input type="text" id="docsec_codigoclasificador" value="<?php echo $dosificacion[0]['docsec_codigoclasificador']; ?>" name="docsec_codigoclasificador" > <!-- mostrar para etapas de certificacion     -->
 <input type="text" id="dosificacion_documentosector" value="<?php echo $dosificacion[0]['dosificacion_documentosector']; ?>" name="dosificacion_documentosector" hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
@@ -634,9 +634,9 @@ window.onkeydown = compruebaTecla;
                         
                     <?php }
                     ?>
-            <div hidden>                
-                <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?= ($cliente[0]['cliente_excepcion']==1)?"checked":"";  //($parametro["parametro_tipoemision"]>1)?"checked":"";?> ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
-            </div>
+                <div hidden>                
+                    <input type="checkbox" class="form-check-input" id="codigoexcepcion" <?php echo ($cliente[0]['cliente_excepcion']==1)?"checked":""; ?>  > <label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label>
+                </div>
             
                 <?php }else{ ?>
             <div hidden><input type="checkbox" class="form-check-input" id="codigoexcepcion" ><label class="btn btn-default btn-xs" for="codigoexcepcion">Código Excepción</label></div>
@@ -1387,11 +1387,11 @@ window.onkeydown = compruebaTecla;
                             <th style="padding:0;">Sub total Bs</th>
                         </tr>
                         <tr>
-                            <td><input name="datos_detalleajustenosujetoiva" class="btn btn-microsoft btn-sm" id="datos_detalleajustenosujetoiva"  <?php echo $estilo2; ?> value="AJUSTE NO SUJETOS A IVA"></input></td>
+                            <td><input name="datos_detalleajustenosujetoiva" class="btn btn-microsoft btn-sm" id="datos_detalleajustenosujetoiva"  <?php echo $estilo2; ?> value="Ajuste por reclamo"></input></td>
                             <td><input type="text" name="datos_ajutesnosujetoiva" value="<?php echo "0.00"; ?>" class="btn btn-microsoft btn-sm" id="datos_ajutesnosujetoiva"  <?php echo $estilo2; ?>/></td>
-                            <td><input name="datos_detalleajustesujetoiva" class="btn btn-pinterest btn-sm" id="datos_detalleajustesujetoiva"   <?php echo $estilo2; ?> value="COBRO POR RECONEXION"></input></td>
+                            <td><input name="datos_detalleajustesujetoiva" class="btn btn-pinterest btn-sm" id="datos_detalleajustesujetoiva"   <?php echo $estilo2; ?> value="Cobro por Reconexion"></input></td>
                             <td><input type="text" name="datos_ajustesujetoiva" value="<?php echo "0.00"; ?>" class="btn btn-pinterest btn-sm" id="datos_ajustesujetoiva"  <?php echo $estilo2; ?>/></td>
-                            <td><input name="datos_detalleotrastasas" class="btn btn-yahoo btn-sm" id="datos_detalleotrastasas"  <?php echo $estilo2; ?> value="OTRAS TASAS"></input></td>
+                            <td><input name="datos_detalleotrastasas" class="btn btn-yahoo btn-sm" id="datos_detalleotrastasas"  <?php echo $estilo2; ?> value="Otras Tasas"></input></td>
                             <td><input type="text" name="datos_otrastasas" value="<?php echo "0.00"; ?>" class="btn btn-yahoo btn-sm" id="datos_otrastasas"  <?php echo $estilo2; ?>/></td>
                         </tr>
                         
@@ -1404,7 +1404,7 @@ window.onkeydown = compruebaTecla;
                             <th style="padding:0;"></th>
                         </tr>
                         <tr>
-                            <td><input name="datos_detalleotrospagosnosujetoiva" class="btn btn-soundcloud btn-sm" id="datos_detalleotrospagosnosujetoiva"  <?php echo $estilo2; ?> value="OTROS PAGOS"></input></td>
+                            <td><input name="datos_detalleotrospagosnosujetoiva" class="btn btn-soundcloud btn-sm" id="datos_detalleotrospagosnosujetoiva"  <?php echo $estilo2; ?> value="Pago Cuota Cooperativa"></input></td>
                             <td><input type="text" name="datos_otrospagosnosujetoiva" value="<?php echo "0.00"; ?>" class="btn btn-soundcloud btn-sm" id="datos_otrospagosnosujetoiva"  <?php echo $estilo2; ?>/></td>
                             <td colspan="3" style="font-size: 15px; background:darkgray;"><b>TOTALES POR COBRAR Bs</b></td>
                             <td><input type="text" name="total_por_cobrar" value="<?php echo "0.00"; ?>" class="btn btn-default btn-sm" id="total_por_cobrar"  style="width:90px; font-size: 15px; font-weight: bold; background:darkgray; "/><b></b></td>
@@ -1894,7 +1894,7 @@ window.onkeydown = compruebaTecla;
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if( $dosificacion[0]["docsec_codigoclasificador"] == 23){ //23 prevalorada (original)
+                if( $dosificacion[0]["docsec_codigoclasificador"] == 1){ //en esta linea debe ser == 23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }
@@ -2733,6 +2733,7 @@ window.onkeydown = compruebaTecla;
             <!--<button class="btn btn-default btn-block" onclick="codigo_excepcion()"><fa class="fa fa-arrow-right"></fa> Continuar</button>-->
             <button class="btn btn-success btn-block" data-dismiss="modal" onclick="excepcion_nit()" id="boton_advertencia" style="line-height: 10px;"><fa class="fa fa-save"></fa> <b>FORZAR FACTURA</b><br><small>CON COD. DE EXCEPCIÓN</small></button>
             <button class="btn btn-danger btn-block" data-dismiss="modal" onclick="cancelar_excepcion_nit()"  style="line-height: 10px;"><fa class="fa fa-times"></fa> <b>CORREGIR NIT</b><br><small>CAMBIAR TIPO DOC.</small></button>
+            <button class="btn btn-info btn-block" data-dismiss="modal" onclick="seleccionar_ci()"  style="line-height: 10px;"><fa class="fa fa-recycle"></fa> <b>EL DOC. ES C.I.</b><br><small>CAMBIAR A C.I.</small></button>
         </div>  
       
       </div>

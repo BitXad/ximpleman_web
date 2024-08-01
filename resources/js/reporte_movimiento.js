@@ -1,6 +1,14 @@
 $(document).on("ready",inicio);
 function inicio(){
     buscar_por_fecha();
+    
+    try {
+        document.getElementById('registro_moneda').style.display = 'none';
+        
+    } catch (e) {
+        
+    }
+
 }
    
 function reporte_diario(){
@@ -18,7 +26,14 @@ function buscar_por_fecha(){
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var usuario = document.getElementById('buscarusuario_id').value;
     
+    try {
+        document.getElementById('registro_moneda').style.display = 'block';        
+    } catch (e) {
+        
+    }
+    
     buscarporfecha(fecha_desde, fecha_hasta, usuario);
+
 }
 
 function buscar_por_fechahora(){
@@ -152,6 +167,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
     
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
+
     //Mostramos las transacciones
     $.ajax({
         url: controlador,
@@ -426,6 +442,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                 document.getElementById('loader').style.display = 'none';
                 
                 $("#saldo_caja").val(Number(efectivo_caja).toFixed(2));
+//                alert(fecha_desde+' ***** '+fecha2+' ***** '+usuario+' ***** '+hora_desde+' ***** '+hora_hasta);
+//                alert(efectivo_caja);
                 
             }
                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader

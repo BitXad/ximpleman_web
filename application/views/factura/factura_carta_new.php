@@ -586,7 +586,7 @@ border-bottom : 1px solid #aaa;
                         
        
                     <!-------------- SUB TOTAL ---------->
-                    <tr>
+                    
                         <?php
                                 if ($factura[0]['docsec_codigoclasificador']==12){ 
                                     
@@ -597,15 +597,20 @@ border-bottom : 1px solid #aaa;
                                     $importe_base_iva = $factura_total;
                                 }
                                  
-                                
-                                
+
+                                if ($factura[0]['docsec_codigoclasificador']==13){
+                                    $monto_total_pagar = $factura[0]['factura_subtotal'] - $factura[0]['factura_descuento'] - $datos_factura['datos_ajutesnosujetoiva'];
                         ?>
                         
-                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="<?php echo ($factura[0]['docsec_codigoclasificador']==13)?"10":"6"; ?>"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($factura_total,' Bolivianos') ?></b></td>
+                                    <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="<?php echo ($factura[0]['docsec_codigoclasificador']==13)?"10":"6"; ?>"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($monto_total_pagar ,' Bolivianos') ?></b></td>
+                                <?php }else{ ?>
+                                    <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="<?php echo ($factura[0]['docsec_codigoclasificador']==13)?"10":"6"; ?>"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($factura_total,' Bolivianos') ?></b></td>
+                                <?php } ?>
+                        
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><?php echo ($factura[0]['docsec_codigoclasificador']==13)?"TOTAL Bs":"SUBTOTAL Bs"; ?></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_final_factura,$dos_decimales,'.',','); ?></td>
                         
-                    </tr>
+                    
                     <!-------------- DESCUENTO ---------->
                     <tr>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-)DESCUENTO Bs</td>
@@ -624,9 +629,9 @@ border-bottom : 1px solid #aaa;
                     <!-------------- FACTURA TOTAL ---------->
                     <?php if($factura[0]['docsec_codigoclasificador']==13){ 
                         
-                        $tasas = $datos_factura["datos_tasaaseo"]+$datos_factura["datos_tasaalumbrado"];
-                        $pagos_no_iva = 0;
-                        $ajustes_no_iva = 0;
+                        $tasas = $datos_factura["datos_tasaaseo"]+$datos_factura["datos_tasaalumbrado"]+$datos_factura["datos_otrastasas"];
+                        $datos_otrospagosnosujetoiva = $datos_factura["datos_otrospagosnosujetoiva"];
+                        $datos_ajutesnosujetoiva = $datos_factura["datos_ajutesnosujetoiva"];
                         $sub_total = $factura[0]['factura_subtotal'] - $factura[0]['factura_descuento'];
                         $monto_total_pagar = $factura[0]['factura_subtotal'] - $factura[0]['factura_descuento'] - $datos_factura['datos_ajutesnosujetoiva'];
                         ?>
@@ -637,7 +642,7 @@ border-bottom : 1px solid #aaa;
                         </tr>
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) AJUSTES NO SUJETOS A IVA Bs</td>
-                            <td style="padding:0; padding-right: 3px;" align="right"><?= number_format(is_numeric($datos_factura['datos_detalleajustenosujetoiva'])?$datos_factura['datos_detalleajustenosujetoiva']:0 ,$dos_decimales,'.',',') ?></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><?= number_format(is_numeric($datos_factura['datos_ajutesnosujetoiva'])?$datos_factura['datos_ajutesnosujetoiva']:0 ,$dos_decimales,'.',',') ?></td>
                         </tr>
 
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>MONTO TOTAL A PAGAR Bs</b></td>
@@ -655,13 +660,13 @@ border-bottom : 1px solid #aaa;
                         
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(-) OTROS PAGOS NO SUJETO IVA Bs</td>
-                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($pagos_no_iva ,$dos_decimales,'.',',') ?></b></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($datos_otrospagosnosujetoiva ,$dos_decimales,'.',',') ?></b></td>
                         </tr>
                         
                         
                         <tr>
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(+) AJUSTES NO SUJETOS A IVA Bs</td>
-                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($ajustes_no_iva ,$dos_decimales,'.',',') ?></b></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($datos_ajutesnosujetoiva ,$dos_decimales,'.',',') ?></b></td>
                         </tr>
                         
                         
@@ -753,19 +758,19 @@ border-bottom : 1px solid #aaa;
                         $opcion = $parametro["parametro_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
                     
                         if ($opcion==1){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
+                                    <font size="2" face="arial"><b>00<?php echo (isset($venta[0]['venta_numeroventa'])?$venta[0]['venta_numeroventa']:""); ?></b></font>
                         <?php } ?>
 
                         <?php   if ($opcion==2){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_id']; ?></b></font>
+                                    <font size="2" face="arial"><b>00<?php echo (isset($venta[0]['venta_id'])?$venta[0]['venta_id']:""); ?></b></font>
                         <?php   } ?>
 
                         <?php   if ($opcion==3){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['factura_numero']; ?></b></font>
+                                    <font size="2" face="arial"><b>00<?php echo (isset($venta[0]['factura_numero'])?$venta[0]['factura_numero']:""); ?></b></font>
                         <?php   } ?>
 
                         <?php   if ($opcion==4){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numerotransmes']; ?></b></font>
+                                    <font size="2" face="arial"><b>00<?php echo (isset($venta[0]['venta_numerotransmes'])?$venta[0]['venta_numerotransmes']:""); ?></b></font>
                         <?php   } ?>
                                     
                     </div>

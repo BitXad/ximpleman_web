@@ -21,7 +21,7 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!-------------------------------------------------------->
 <div class="box-header">
-    <font size='4' face='Arial'><b>Almacenes</b></font>
+    <font size='4' face='Arial'><b>Ayuda</b></font>
     <br><font size='2' face='Arial'>Registros Encontrados: </font>
     <div class="box-tools no-print">
         <a href="<?php echo site_url('almacen/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Almacen</a>
@@ -35,13 +35,25 @@
         </div>
         <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
-            <div class="box-body table-responsive">
+            <div class="box-body table-responsive">    
                 
-                  <video width="320" height="240" controls>
-                    <source src="https://www.ximplemanweb.com/videos/ventas.mp4" type="video/mp4">
-                    <source src="movie.ogg" type="video/ogg">
-                        Your browser does not support the video tag.
-                  </video>              
+                <?php foreach($ayudas as $ayuda){ ?>
+
+                    <div class="col-md-3">
+
+                      <video width="320" height="240" controls>
+                        <source src="<?php echo $ayuda["ayuda_enlace"]; ?>" type="<?php echo $ayuda["ayuda_formato"]; ?>">
+                        <source src="movie.ogg" type="video/ogg">
+                            <?php echo $ayuda["ayuda_mensaje"]; ?>
+                      </video>
+                        
+                      <br><b><?php echo $ayuda["ayuda_titulo"]; ?></b>
+                      <br><small><?php echo $ayuda["ayuda_subtitulo"]; ?></small>                          
+                      <?php echo "<br>".$ayuda["ayuda_texto"]; ?>
+                    </div>
+                
+                <?php } ?>
+                
             </div>
         </div>
     </div>

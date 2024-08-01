@@ -619,4 +619,20 @@ class Producto_model extends CI_Model
         $producto = $this->db->query($sql)->row_array();
         return $producto;
     }
+    
+    /* obtener nombre, unidad, marca, industria, imagen y precio de un producto activo */
+    function Consultar($sql)
+    {
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+    }
+    
+    /* obtener nombre, unidad, marca, industria, imagen y precio de un producto activo */
+    function Ejecutar($sql)
+    {
+
+        $producto = $this->db->query($sql);
+        return true;
+    }
 }

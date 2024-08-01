@@ -121,8 +121,6 @@ function validar(e,opcion) {
     var tecla = (document.all) ? e.keyCode : e.which;
     
     }
-    
-  
   
     if (tecla==13){    
     
@@ -143,6 +141,10 @@ function validar(e,opcion) {
                         $("#razon_social").focus();
                         $("#razon_social").select();
                         $("#zona_id").val(0);
+                        
+                        $("#razon_social").css("background-color", "#1221");
+                        $("#razon_social").removeAttr("readonly");
+                        buscarcliente();
 
                 }else{
                     
@@ -346,7 +348,8 @@ function buscarcliente(){
                     $("#tipocliente_montodesc").val(0);
                     $("#tipo_doc_identidad").val(registros[0]["cdi_codigoclasificador"]);
                     $("#cliente_valido").val(1);
-                                                        
+                    
+
                     document.getElementById("codigoexcepcion").checked = (registros[0]["cliente_excepcion"] == 1); 
                     
                     if (registros[0]["tipocliente_id"] != null && registros[0]["tipocliente_id"] >=0)
@@ -798,7 +801,7 @@ html += "  </div>";
                                
                        
 //
-                            html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='ssss"+detalle_cantidad+"'   onKeyUp ='cambiarcantidadjs(event,"+registros[i]["producto_id"]+")' autocomplete='off'>";
+                            html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+detalle_cantidad+"'   onKeyUp ='cambiarcantidadjs(event,"+registros[i]["producto_id"]+")' autocomplete='off'>";
                             //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
                             html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
                                
@@ -3891,10 +3894,11 @@ function registrarventa(cliente_id)
     var entrega_id = 1;
     var entregaestado_id = 1;
 
-
+/*
     if (parametro_modulorestaurante==1){
         venta_numeroventa = numero_venta();
     }
+    
     if(parametro_imprimirticket == 1){
         venta_numeroventa = numero_venta();
     }
@@ -3903,7 +3907,8 @@ function registrarventa(cliente_id)
         venta_numeroventa = numero_venta();
         //alert(venta_numeroventa);
     }
-    
+    */
+   
     document.getElementById('boton_finalizar').style.display = 'none'; //mostrar el bloque del loader
    
     if( facturado == 1){     
@@ -3916,7 +3921,7 @@ function registrarventa(cliente_id)
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuentoparcial+","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+",'"+venta_glosa+"'"
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
-                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id+","+banco_id
+                +","+entrega_id+",'"+venta_numeromesa+"',"+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id+","+banco_id
                 +","+venta_ice+","+venta_giftcard+",'"+venta_detalletransaccion+"'";
                 
     //alert(cad);
@@ -7344,6 +7349,15 @@ function cancelar_excepcion_nit(){
     $("#razon_social").attr("readonly","readonly");
 }
 
+function seleccionar_ci(){
+    
+    document.getElementById("codigoexcepcion").checked = false;
+    $("#tipo_doc_identidad").val(1);
+    $("#razon_social").focus();
+    $("#razon_social").select();
+    
+}
+
 function seleccion_documento(){
     
     $("#razon_social").css("background-color", "gray");
@@ -8043,9 +8057,9 @@ function buscar_placa(e){
                         
                     }else{
 
-                        $("#datos_embase").val("");
-                        $("#datos_codigopais").val("");
-                        $("#datos_autorizacionsc").val("");
+                        $("#datos_embase").val("TANQUE");
+                        $("#datos_codigopais").val(22);
+                        $("#datos_autorizacionsc").val("0");
 //                        $("#datos_placa").val("");
 
                         //Eliminar datos del cliente
@@ -8904,6 +8918,14 @@ function borrar_datos_cliente(){
         $("#cliente_nombre").val("S/N");
         $("#cliente_codigo").val("N/A");
         
+    }
+    
+    if(documento_sector == 12){ // si es prevalorada
+        
+        $("#datos_embase").val("");
+        $("#datos_codigopais").val(0);
+        $("#datos_autorizacionsc").val("0");
+        $("#datos_placa").val("");
     }
     
     $("#nit").val(nit);

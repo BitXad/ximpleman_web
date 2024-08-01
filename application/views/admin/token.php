@@ -40,7 +40,19 @@
                   </span>
                 </div><!-- /.info-box-content -->
         </div> 
+        
     </td>
     </table> 
 </div>
+
+
 <?php } ?>
+<center>
+    
+    <a href="<?php echo base_url("venta/ventas"); ?>" class="btn btn-info btn-sm" style="font-family: Arial; font-size: 12px;"><span class="fa fa-cart-arrow-down" aria-hidden="true" ></span> 
+    <br><!-- comment -->
+    Ir a Ventas
+    <br><!-- comment -->
+</a>
+
+</center>

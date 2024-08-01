@@ -101,8 +101,10 @@ class Verificar extends CI_Controller
                         }
                     }
                 }else{
+                    
                     $tok="SELECT DATEDIFF(token_fechahasta, CURDATE()) as dias FROM token WHERE estado_id = 1 order by token_id desc limit 1";
                     $token = $this->db->query($tok)->row_array();
+                    
                     if ($session_data['tipousuario_id'] == 1) {// admin page
                         if ($token['dias']<=10 && $token['dias']!=null) {
                             redirect('alerta/token'); 

@@ -441,7 +441,7 @@
 <div <?= ($dosificacion["dosificacion_ambiente"]==2)?"":"hidden"; ?> >
     
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" >
-      Anulación en Masa
+      Anulación/Reversión en Masa
     </button>
 </div>
 
@@ -453,20 +453,31 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"><b>ANULACION EN MASA</b></h5>
+          <h5 class="modal-title" id="exampleModalLabel"><b>ANULACION/REVERSION EN MASA</b></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
           
-            <div class="col-md-6">
+            <div class="col-md-12">
                     <div class="form-group">
-                        <b>ADVERTENCIA:</b> Se ANULARAN de forma definitiva las facturas generadas por el punto de venta en uso, en la fecha seleccionada.
+                        <b>ADVERTENCIA:</b> Se ANULARAN/REVERTIRAN de forma definitiva las facturas generadas por el punto de venta en uso, en la fecha seleccionada.
                     </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-4">
+                <label for="operacion" class="control-label">Operación</label>
+                <div class="form-group">
+                    <select name="operacion" id="operacion" class="form-control" onchange="mensaje_alerta()">
+                        <option value="1">ANULAR FACTURAS</option>
+                        <option value="2">REVERTIR ANULACION </option>
+                        
+                    </select>
+                </div>
+            </div>          
+          
+            <div class="col-md-4">
                 <label for="docsec_codigoclasificador" class="control-label">Documento Sector</label>
                 <div class="form-group">
                     <select name="docsec_codigoclasificador" id="docsec_codigoclasificador" class="form-control" onchange="mensaje_alerta()">
@@ -482,21 +493,113 @@
                 </div>
             </div>          
           
-            <div class="col-md-6">
+            <div class="col-md-4">
                     <label for="factura_fecha" class="control-label">Fecha</label>
                     <div class="form-group">
-                        <input type="date" name="factura_fecha" value="<?php //echo ($this->input->post('factura_fecha') ? $this->input->post('factura_fecha') : $factura['factura_fecha']); ?>" class="form-control" id="factura_fecha" />
+                        <input type="date" name="factura_fecha" value="<?php echo date("Y-m-d"); ?>" class="form-control" id="factura_fecha" />
                     </div>
             </div>
+          
 
           
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Anular las facturas</button>
+        <button type="submit" class="btn btn-primary">Iniciar Proceso</button>
       </div>
     </div>
   </div>
 </div>
 
 <?php echo form_close(); ?>
+
+
+<!------------------------ INICIO REVERTIR ANULACION ------------------->
+<div class="modal fade" id="modalrevertir_factura" tabindex="-1" role="dialog" aria-labelledby="modalanularforzadolabel" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+        
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center" style="background: #f05b32">
+                <b style="color: white;">REVERTIR ANULACION</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <label for="factura_numeroforz" class="control-label">ADVERTENCIA: Esta a punto de anular la factura en impuestos!.</label>
+                </div>
+                <div class="col-md-12 text-center" id="loaderforz" style="display:none;">
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" />
+                </div>
+                  <input type="hidden" name="facturafoorz_id2" value="00" class="form-control" id="facturaforz_id2" readonly="true" />
+                  <input type="hidden" name="ventaforz_id2" value="00" class="form-control" id="ventaforz_id2" readonly="true" />
+
+                <div class="col-md-4">
+                    <label for="facturaforz_numero" class="control-label">Factura Nº</label>
+                    <div class="form-group">
+                        <input type="input" name="facturaforz_numero2" value="00" class="form-control" id="facturaforz_numero2" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="facturaforz_monto" class="control-label">Monto</label>
+                    <div class="form-group">
+                        <input type="input" name="facturaforz_monto2" value="0.00" class="form-control" id="facturaforz_monto2" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="facturaforz_fecha" class="control-label">Fecha</label>
+                    <div class="form-group">
+                        <input type="input" name="facturaforz_fecha2" value="0.00" class="form-control" id="facturaforz_fecha2" readonly="true"/>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label for="facturaforz_cliente" class="control-label">Cliente</label>
+                    <div class="form-group">
+                        <input type="input" name="facturaforz_cliente2" value="-" class="form-control" id="facturaforz_cliente2" readonly="true"  />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="facturaforz_correo" class="control-label">Correo Electrónico</label>
+                    <div class="form-group">
+                        <span class="text-red" id="mensaje_correo"></span>
+                        <input type="email" name="facturaforz_correo2" class="form-control" id="facturaforz_correo2" />
+                    </div>
+                </div>
+
+                  <div class="col-md-12">
+                    <label for="facturaforz_estado2" class="control-label">ESTADO</label>
+                    <div class="form-group">
+                        <span class="text-red" id="mensaje_correo"></span>
+                        <input type="email" name="facturaforz_estado2" class="form-control" id="facturaforz_estado2" />
+                    </div>
+                </div>
+
+
+<!--                <div class="col-md-12">
+                    <label for="motivoforz_anulacion2" class="control-label">Motivo Anulación2</label>
+                    <div class="form-group">
+
+                        <select id="motivoforz_anulacion" class="form-control">
+
+                            <?php  foreach ($motivos as $motivo) {?>
+
+                                <option value="<?= $motivo['cma_id']; ?>"><?= $motivo['cma_descripcion']; ?></option>
+
+                            <?php }  ?>
+
+                        </select>
+
+                    </div>
+                </div>-->
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="validar_correo2()"><fa class="fa fa-floppy-o"></fa> Revertir Anulación</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="boton_cerrarforz"><fa class="fa fa-times"></fa> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ F I N  REVERTIR ANULACION ------------------->

@@ -21,9 +21,9 @@ function elegirformula(){
     for (var i = 0; i < n ; i++){
         if(laformula[i]["formula_id"] == formula_id){
             $("#formula_unidad").val(laformula[i]["formula_unidad"]);
-            $("#formula_cantidad").val(laformula[i]["formula_cantidad"]);
-            $("#formula_costounidad").val(laformula[i]["formula_costounidad"]);
-            $("#formula_preciounidad").val(laformula[i]["formula_preciounidad"]);
+            $("#formula_cantidad").val(Number(laformula[i]["formula_cantidad"]).toFixed(2));
+            $("#formula_costounidad").val(Number(laformula[i]["formula_costounidad"]).toFixed(2));
+            $("#formula_preciounidad").val(Number(laformula[i]["formula_preciounidad"]).toFixed(2));
             document.getElementById('loader').style.display = 'block';
             var base_url    = document.getElementById('base_url').value;
             var controlador = base_url+'produccion/obtener_existencia';
@@ -129,10 +129,10 @@ function calcularformula(){
                         html += Number(registros[i]["detalleven_precio"]).toFixed(2);
                         html += "</td>";
                         html += "<td class='text-center'>";
-                        html += registros[i]["detalleven_cantidad"];
+                        html += Number(registros[i]["detalleven_cantidad"]).toFixed(2);
                         html += "</td>";
                         html += "<td class='text-right'>";
-                        html += registros[i]["detalleven_total"];
+                        html += Number(registros[i]["detalleven_total"]).toFixed(2);
                         html += "</td>";
                         html += "</tr>";
                    }

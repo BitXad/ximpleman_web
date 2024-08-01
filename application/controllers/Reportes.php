@@ -38,6 +38,19 @@ class Reportes extends CI_Controller{
         
         $parametro = $this->Parametro_model->get_parametros();
         $this->parametros = $parametro[0];
+        
+        //*********** Administracion de caja *********
+            $usuario_id = $this->session_data['usuario_id'];
+            $caja = $this->Caja_model->get_caja_usuario($usuario_id);
+
+            if (!sizeof($caja)>0){ // si la caja no esta iniciada
+                //iniciar caja y dejarla en pendiente
+                $this->caja_id = 0;
+            }else{
+                $this->caja_id = $caja[0]["caja_id"];
+
+            }   
+        //*********** FIN Administracion de caja *********
 
     } 
     private function acceso($id_rol){
@@ -682,19 +695,30 @@ function torta3($anio,$mes)
                 }
                 
                 $data['registros'] = $this->Reporte_ing_egr_model->get_reportemovimiento($valfecha1, $valfecha2, $hora1, $hora2, $usuario_id);
-                $data['totales'] = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $hora1, $hora2, $usuario_id);
-                //$data['bancos'] = $this->Banco_model->getall_bancosact_asc();
+                $totales = $this->Reporte_ing_egr_model->get_totalesmovimiento($valfecha1, $valfecha2, $hora1, $hora2, $usuario_id);
+                $data['totales'] = $totales;
                 
-                /*if ($fecha1 == 0){
-                    
-                }else{
-                    $datos = $this->Reporte_ing_egr_model->get_reportemovimientodia();
-                    
-                }*/
+                //************ inicio bitacora 
+                    $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+
+                    $venta_id = 0;//$this->input->post("venta_id");            
+                    $usuario_id = $this->session_data['usuario_id'];
+
+                    $bitacoracaja_fecha = "date({$now})";
+                    $bitacoracaja_hora = "time({$now})";
+                    $bitacoracaja_evento = "(concat('MOSTRAR REPORTE DE MOVIMIENTO => DESDE: ','{$fecha1} {$hora1}',' *** HASTA: ','{$fecha2} {$hora2}'))";
+                    $bitacoracaja_montoreg = 0;
+                    $bitacoracaja_montocaja = 0;
+                    $bitacoracaja_tipo = 3; //2 operaciones sobre ventas
+
+
+                    $sql = "insert into bitacora_caja(bitacoracaja_fecha, bitacoracaja_hora, bitacoracaja_evento, 
+                            usuario_id, bitacoracaja_montoreg, bitacoracaja_montocaja, bitacoracaja_tipo,caja_id) value(".
+                            $bitacoracaja_fecha.",".$bitacoracaja_hora.",".$bitacoracaja_evento.",".
+                            $usuario_id.",".$bitacoracaja_montoreg.",".$bitacoracaja_montocaja.",".$bitacoracaja_tipo.",".$this->caja_id.")";
+                    $this->Venta_model->ejecutar($sql);
+                //************ fin botacora bitacora        
                 
-                /*$detalles = $this->Reporte_ing_egr_model->get_detalleventas_reporte($valfecha1, $valfecha2, $usuario_id);
-                $ventas   = $this->Reporte_ing_egr_model->get_reportes($valfecha1, $valfecha2, $usuario_id);
-                $datos=array("ventas" => $ventas, "detalles" => $detalles);*/
                 echo json_encode($data);
             }else{                 
                 show_404();

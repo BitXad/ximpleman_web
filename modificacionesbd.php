@@ -27,6 +27,8 @@ truncate venta;
 truncate detalle_venta;
 truncate factura;
 truncate factura_datos;
+truncate factura_bitacora;
+truncate detalle_factura_bitacora;
 truncate detalle_factura;
 truncate pedido;
 truncate detalle_pedido;
@@ -67,10 +69,10 @@ parametro_numrecegr = 0;
 
  truncate cliente;
 INSERT INTO `cliente` (`cliente_id`, `estado_id`, `tipocliente_id`, `categoriaclie_id`, `usuario_id`, `cliente_codigo`, `cliente_nombre`, `cliente_ci`, `cliente_direccion`, `cliente_telefono`, `cliente_celular`, `cliente_foto`, `cliente_email`, `cliente_nombrenegocio`, `cliente_aniversario`, `cliente_latitud`, `cliente_longitud`, `cliente_nit`, `cliente_razon`, `cliente_departamento`, `zona_id`, `lun`, `mar`, `mie`, `jue`, `vie`, `sab`, `dom`, `cliente_ordenvisita`, `cliente_clave`, `cliente_codactivacion`, `cliente_fechaactivacion`, `cliente_puntos`, `cdi_codigoclasificador`, `cliente_complementoci`, `cliente_excepcion`, `id_facebook`) VALUES 
-  (1500,1,1,1,0,'EN45770','ENTIDAD CON PERSONERIA JURIDICA','99001','-','','',NULL,'','-',NULL,NULL,NULL,'99001','ENTIDAD CON PERSONERIA JURIDICA','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
-  (1501,1,1,1,0,'CO91862','CONTROL TRIBUTARIO','99002','-','','',NULL,'','-',NULL,NULL,NULL,'99002','CONTROL TRIBUTARIO','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
-  (1502,1,1,1,0,'VE33623','VENTAS MENORES DEL DIA','99003','-','','',NULL,'','-',NULL,NULL,NULL,'99003','VENTAS MENORES DEL DIA','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
-  (1503,1,1,1,0,'SN84613','SIN NOMBRE','1234','-','','',NULL,'','-',NULL,NULL,NULL,'1234','SIN NOMBRE','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'',0,NULL);
+  (2,1,1,1,0,'EN45770','ENTIDAD CON PERSONERIA JURIDICA','99001','-','','',NULL,'','-',NULL,NULL,NULL,'99001','ENTIDAD CON PERSONERIA JURIDICA','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
+  (3,1,1,1,0,'CO91862','CONTROL TRIBUTARIO','99002','-','','',NULL,'','-',NULL,NULL,NULL,'99002','CONTROL TRIBUTARIO','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
+  (4,1,1,1,0,'VE33623','VENTAS MENORES DEL DIA','99003','-','','',NULL,'','-',NULL,NULL,NULL,'99003','VENTAS MENORES DEL DIA','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,5,'',0,NULL),
+  (1,1,1,1,0,'SN84613','SIN NOMBRE','1234','-','','',NULL,'','-',NULL,NULL,NULL,'1234','SIN NOMBRE','-',0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,1,'',0,NULL);
 COMMIT;
  
 truncate usuario;
@@ -81,15 +83,27 @@ INSERT INTO `usuario` (`usuario_id`, `estado_id`, `tipousuario_id`, `usuario_nom
 COMMIT;
 
 
+update dosificacion
+set 
+dosificacion_nitemisor = '5152377019',
+dosificacion_numfact = '0',
+dosificacion_clavep12 = '',
+dosificacion_contenedorp12 = '',
+dosificacion_numerotransmes = 0,
+dosificacion_tokendelegado = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXN0ZXJiaXQwOCIsImNvZGlnb1Npc3RlbWEiOiI3MjM1REVDMkU1N0ZDNzQ5MjM2MUQyNyIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTFORFV5TmpjM01MUUVBRjZuNi1jS0FBQUEiLCJpZCI6NTY5MTkxLCJleHAiOjE3NDk3NDU4MTcsImlhdCI6MTcxODIyNDE4Nywibml0RGVsZWdhZG8iOjUxNTIzNzcwMTksInN1YnNpc3RlbWEiOiJTRkUifQ.pcYbO3hNeIqA0zVuP2-DN7nE_btZVhUgAEpMwGGCsigHn_qc_Jnw2LFH2IcL-f0c_EORqNkq7ve7iX1ydejduA',
+dosificacion_email = 'mail@mail.com',
+dosificacion_codsistema = '7235DEC2E57FC7492361D27',
+dosificacion_sucursal = '0';
+
 update empresa set
 
 empresa_nombre = 'OTOGROUP SRL'
 ,empresa_eslogan = 'COMPRE MAS, COMPRE MEJOR'
-,empresa_direccion = '-'
+,empresa_direccion = 'AV. AMERICA Nº 452'
 ,empresa_telefono = '4511518'
 ,empresa_imagen = ''
 ,empresa_zona = 'CENTRAL'
-,empresa_ubicacion = 'AV. AMERICA Nº 452'
+,empresa_ubicacion = 'CERCADO'
 ,empresa_departamento = 'COCHABAMBA'
 ,empresa_propietario = ''
 ,empresa_email = ''
@@ -99,7 +113,7 @@ empresa_nombre = 'OTOGROUP SRL'
 
 update sistema
 set 
-sistema_version = '2.5'
+sistema_version = '2.5';
  
  * --------------- SQL ---------------
 
@@ -539,7 +553,8 @@ INSERT INTO `estado` (`estado_id`, `estado_descripcion`, `estado_tipo`, `estado_
 COMMIT;
 
 
-
+TRUNCATE rol;
+ 
 INSERT INTO `rol` (`rol_id`, `estado_id`, `rol_nombre`, `rol_descripcion`, `rol_idfk`) VALUES 
   (1,1,'ADMINISTRAR COMPRAS',NULL,0),
   (2,1,'REGISTRAR COMPRAS',NULL,1),

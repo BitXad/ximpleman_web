@@ -263,7 +263,9 @@ class Cuotum extends CI_Controller{
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
         $data['moneda'] = $this->Moneda_model->get_moneda($data['parametro']['moneda_id']);
+        
          if($this->acceso(47)){
+             
             $data['page_title'] = "Comprobante";
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);

@@ -136,13 +136,13 @@
                         <div class="col-md-2">
                             <label for="caja_efectivo" class="control-label">Efectivo</label>
                             <div class="form-group">
-                                <input type="number" min="0" name="caja_efectivo" value="<?php echo ($this->input->post('caja_efectivo') ? $this->input->post('caja_efectivo') : number_format($caja['caja_efectivo'], 0, '.', ',')); ?>" class="form-control" id="caja_efectivo" />
+                                <input type="number" min="0" name="caja_efectivo" value="<?php $caja_efectivo = $this->input->post('caja_efectivo') ? $this->input->post('caja_efectivo') : ($caja['caja_efectivo'] !== null ? number_format($caja['caja_efectivo'], 0, '.', ',') : 0); echo $caja_efectivo; ?>" class="form-control" id="caja_efectivo" />
                             </div>
                         </div>
                         <div class="col-md-2">
                             <label for="caja_credito" class="control-label">Credito</label>
                             <div class="form-group">
-                                <input type="number" min="0" name="caja_credito" value="<?php echo ($this->input->post('caja_credito') ? $this->input->post('caja_credito') : number_format($caja['caja_credito'], 0, '.', ',')); ?>" class="form-control" id="caja_credito" />
+                                <input type="number" min="0" name="caja_credito" value="<?php $caja_credito = $this->input->post('caja_credito') ? $this->input->post('caja_credito') : ($caja['caja_credito'] !== null ? number_format($caja['caja_credito'], 0, '.', ',') : 0); echo $caja_credito; ?>" class="form-control" id="caja_credito" />
                             </div>
                         </div>
                         <div class="col-md-2">

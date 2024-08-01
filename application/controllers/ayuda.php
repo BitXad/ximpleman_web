@@ -35,7 +35,7 @@ class Ayuda extends CI_Controller{
 //        if($this->acceso(24)){
             $data['page_title'] = "Ayuda";
             
-            //$data['almacen'] = $this->Ayuda_model->get_almacenes();
+            $data['ayudas'] = $this->Ayuda_model->get_videos();
 
             $data['_view'] = 'ayuda/index';
             $this->load->view('layouts/main',$data);

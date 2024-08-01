@@ -45,18 +45,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     
     
 function mostrar() {
-       // $('#map').css({ 'width':'100%', 'height':'400px' });
+        $('#map').css({ 'width':'100%', 'height':'400px' });
    
-//    obj = document.getElementById('oculto'+a);
-//    //obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
-//    //objm = document.getElementById('map');
-//    if(obj.style.visibility == 'hidden'){
-//        $('#map').css({ 'width':'0px', 'height':'0px' });
-//        $('#mosmapa').text("Modificar Ubicación del negocio");
-//    }else{
-//        $('#map').css({ 'width':'100%', 'height':'400px' });
-//        $('#mosmapa').text("Cerrar mapa");
-//    }
+    obj = document.getElementById('oculto'+a);
+    //obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
+    //objm = document.getElementById('map');
+    if(obj.style.visibility == 'hidden'){
+        $('#map').css({ 'width':'0px', 'height':'0px' });
+        $('#mosmapa').text("Modificar Ubicación del negocio");
+    }else{
+        $('#map').css({ 'width':'100%', 'height':'400px' });
+        $('#mosmapa').text("Cerrar mapa");
+    }
 
 }
     
@@ -1539,8 +1539,9 @@ function mostrar() {
     }
 </script>
 <!-- main slider-banner -->
-<script src="<?php echo $raiz;?>js/skdslider.min.js"></script>
-<link href="<?php echo $raiz;?>css/skdslider.css" rel="stylesheet">
+<?php $raiz = base_url('resources/web/'); ?>
+<script src="<?php echo $raiz.'js/skdslider.min.js'; ?>"> </script>
+<link href="<?php echo $raiz.'css/skdslider.css'; ?>" rel="stylesheet">
 <script type="text/javascript">
         jQuery(document).ready(function(){
             jQuery('#demo1').skdslider({'delay':5000, 'animationSpeed': 2000,'showNextPrev':true,'showPlayButton':true,'autoSlide':true,'animationType':'fading'});

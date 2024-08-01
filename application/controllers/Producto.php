@@ -1761,4 +1761,47 @@ class Producto extends CI_Controller{
 
     }
     
+    function generar_codigo($code) {
+    // Generar un hash del código usando crc32
+    $hash = crc32($code);
+    
+    // Asegurar que el hash sea positivo
+    if ($hash < 0) {
+        $hash = -$hash;
+    }
+    
+    // Reducir el hash a un número de menos de 7 dígitos
+    // Aquí usamos módulo para asegurar que el número tenga menos de 7 dígitos
+    $shortNumeric = $hash % 1000000; // 10^7 = 10000000, asegurando un número menor a 7 dígitos
+    
+    return $shortNumeric;
+    }
+    
+    /* busca un Producto popr codiigo ded barras "price checker" */
+    function generar_id()
+    {
+        if($this->input->is_ajax_request()){
+            
+            $tabla = "producto_santacruz";
+            $sql = "select * from {$tabla}";
+            $resultado =  $this->Producto_model->Consultar($sql);
+            $cantidad = sizeof($resultado);
+            
+            foreach($resultado as $r){
+                
+                $codigo = $this->generar_codigo($r["producto_codigobarra"]);
+                $producto_id = $r["producto_id"];
+                
+                $sql = "update {$tabla} set producto_orden = {$codigo} where producto_id = {$producto_id}";
+                $this->Producto_model->Ejecutar($sql);
+                
+                
+            }
+                echo json_encode(array('mensaje'=>"Proceso finalizado con éxito. {$cantidad} Productos procesados...!"));
+        }else{                 
+            show_404();
+        }
+    }
+    
+    
 }

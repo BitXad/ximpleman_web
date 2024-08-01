@@ -91,6 +91,7 @@ body {
                     <div class="columna_derecha" style="text-align: right;">
                         <?php if ($cuota[0]['venta_id']>0) { ?>
                         <b>VENTA No.: </b><?php echo $cuota[0]['venta_id']; ?><br>
+                        <b>FACTURA No.: </b><?php echo $credito[0]['factura_venta']; ?><br>
                         <?php } else { ?>
                         <b>SERVICIO No.: </b><?php echo $cuota[0]['servicio_id']; ?><br>
                         <?php } ?>

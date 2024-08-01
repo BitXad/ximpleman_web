@@ -1260,7 +1260,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <span class="btn btn-default">Ajustar precios de costo <i class="fa fa-check-square"></i><input  type="checkbox"  id="actualizarprecios" name="actualizarprecios" value="1" checked="true" checked hidden></span>  
             <?php }  ?>
             
-            <span class="btn btn-default">Actualizar precios de las sucursales <input  type="checkbox"  id="actualizarpreciossucursales" name="actualizarpreciossucursales" value="1" checked="true" checked></span>
+            <span class="btn btn-default">Actualizar precios de las sucursales <input  type="checkbox"  id="actualizarpreciossucursales" name="actualizarpreciossucursales" value="0"></span>
             
             
             <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit" onclick="final()">

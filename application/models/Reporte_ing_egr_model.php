@@ -20,6 +20,7 @@ class Reporte_ing_egr_model extends CI_Model
 
         parent::__construct();
 
+
     }
 
 function get_reportes($fecha1, $fecha2, $usuario_id)
@@ -363,6 +364,7 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
                 $cadusuario1";
            //     echo $sql ;
           $ingresos = $this->db->query($sql)->result_array();
+
           return $ingresos;
     }
     

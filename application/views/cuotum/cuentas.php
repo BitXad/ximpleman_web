@@ -330,7 +330,7 @@ $(document).ready(function(){
                     <input type="hidden" name="cuota_id" value="<?php echo $c['cuota_id']; ?>" class="form-control" id="cuota_id" />
                     <input type="hidden" name="estado_id" value="9" class="form-control" id="estado_id" />
                     <div class="col-md-3">
-                        <!--<label for="cuota_cancelado" class="control-label">Cobrar <?= $moneda['moneda_descripcion'] ?></label>-->
+                        <label for="cuota_cancelado" class="control-label">Cobrar <?= $moneda['moneda_descripcion'] ?></label>
                         <div class="form-group">
                             <input type="number" step="any" name="cuota_cancelado" value="<?php echo number_format($c['cuota_total'],$decimales,".",""); ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" max="<?php echo $c['cuota_total']; ?>" />
                             <input type="hidden"  name="cuota_total" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_total<?php echo $c['cuota_id']; ?>" />

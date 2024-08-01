@@ -411,7 +411,16 @@ $salto_linea='
         if ($documento_sector != 23 && $documento_sector != 24){  //23- factura prevalorada 
             $cabecera_facturaxml .= $salto_linea.'          <codigoMetodoPago>'.$factura['forma_id'].'</codigoMetodoPago>';
         }
-
+            
+            
+        if ($documento_sector == 23){  //23- factura prevalorada 
+            $cabecera_facturaxml .= $salto_linea.'          <codigoMetodoPago>'.$factura['forma_id'].'</codigoMetodoPago>';
+            
+            if ($num_tarjeta==0)
+                    $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta xsi:nil="true"/>';
+                else
+                    $cabecera_facturaxml .= $salto_linea.'          <numeroTarjeta>'.$num_tarjeta.'</numeroTarjeta>';
+        }
         
         if ($documento_sector != 23 && $documento_sector != 24){  //23- factura prevalorada //12 Comercializacion hidrocarburos
            
@@ -430,6 +439,7 @@ $salto_linea='
             }    
         }
         
+        
         if ($documento_sector == 15 ){  //15- Entidad fiananciera 
             $cabecera_facturaxml .= $salto_linea.'          <montoTotalArrendamientoFinanciero xsi:nil="true"/>';
         }
@@ -440,8 +450,12 @@ $salto_linea='
 //****************************************************************************************
         
         if ($documento_sector == 13){// 13 - Servicios Basicos      
-            $monto_total_pagar = $factura['factura_subtotal'] - $factura['factura_descuento'] - $factura_datos['datos_ajutesnosujetoiva'];                   
-            $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($monto_total_pagar,$dos_decimales,".","") .'</montoTotal>'; //Em monto total a cobrar sin descuentos
+            
+            $monto_total_pagar = $factura['factura_subtotal'] - $factura['factura_descuento'];// - $factura_datos['datos_ajutesnosujetoiva'];
+            $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($monto_total_pagar,$dos_decimales,".","") .'</montoTotal>'; //Em monto total a cobrar sin descuentos 
+            //datos_ajutesnosujetoiva
+        
+            
         }else{
             $cabecera_facturaxml .= $salto_linea.'          <montoTotal>'.number_format($factura['factura_total'],$dos_decimales,".","") .'</montoTotal>';
             
@@ -470,21 +484,7 @@ $salto_linea='
             }else{ // Si es 13
                 
                 $total_creditofiscal = number_format($factura['factura_total'],$dos_decimales,".","");
-                
-//                $datos_sujetoivasubtotal =  $factura_datos['datos_sujetoivasubtotal'];
-//                $datos_aseosubtotal =  $factura_datos['datos_aseosubtotal'];
-//                $datos_alumbradosubtotal =  $factura_datos['datos_alumbradosubtotal'];
-//                $datos_tasassubtotal =  $factura_datos['datos_tasassubtotal'];
-//                $datos_pagossubtotal =  $factura_datos['datos_pagossubtotal'];
-//
-//                $tasas = $datos_aseosubtotal + $datos_alumbradosubtotal + $datos_tasassubtotal; 
-//                $monto_total_pagar = $factura['factura_total'] - $factura_datos['datos_ajustesnoiva'];
-//                
-//                $otros_pagos_noiva = 0;
-//                $importe_base_iva = $monto_total_pagar - $tasas - $otros_pagos_noiva;
-//                $total_creditofiscal = number_format($importe_base_iva ,$dos_decimales,".","") ;
-                
-                
+
                 $cabecera_facturaxml .= $salto_linea.'          <montoTotalSujetoIva>'.$total_creditofiscal.'</montoTotalSujetoIva>';
             }
                 
@@ -536,10 +536,11 @@ $salto_linea='
             }
             
             
-            if($factura_datos['datos_otrospagosnosujetoiva']>0){
-                $datos_ajustesujetoiva = number_format($factura_datos['datos_otrospagosnosujetoiva'],$dos_decimales,".","");     
-                $cabecera_facturaxml .= $salto_linea.'          <ajusteNoSujetoIva>'.number_format($factura_datos['datos_otrospagosnosujetoiva'],$dos_decimales,".","").'</ajusteNoSujetoIva>'; //cambiar por cliente_nombre
-                $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteNoSujetoIva>{"'.$factura_datos['datos_detalleotrospagosnosujetoiva'].'":'.$datos_ajustesujetoiva.'}</detalleAjusteNoSujetoIva>'; //cambiar por cliente_nombre
+            if($factura_datos['datos_ajutesnosujetoiva']>0){
+                
+                $datos_ajutesnosujetoiva = number_format($factura_datos['datos_ajutesnosujetoiva'],$dos_decimales,".","");     
+                $cabecera_facturaxml .= $salto_linea.'          <ajusteNoSujetoIva>'.number_format($factura_datos['datos_ajutesnosujetoiva'],$dos_decimales,".","").'</ajusteNoSujetoIva>'; //cambiar por cliente_nombre
+                $cabecera_facturaxml .= $salto_linea.'          <detalleAjusteNoSujetoIva>{"'.$factura_datos['datos_detalleajustenosujetoiva'].'":'.$datos_ajutesnosujetoiva.'}</detalleAjusteNoSujetoIva>'; //cambiar por cliente_nombre
                 
             }else{
                 
@@ -581,7 +582,7 @@ $salto_linea='
             
             $cabecera_facturaxml .= $salto_linea.'          <otrasTasas>'.number_format($factura_datos['datos_otrastasas'],$dos_decimales,".","").'</otrasTasas>'; //cambiar por cliente_nombre
         
-            $monto_total_moneda = $factura['factura_subtotal'] - $factura['factura_descuento'] - $factura_datos['datos_ajutesnosujetoiva'];
+            $monto_total_moneda = $factura['factura_subtotal'] - $factura['factura_descuento'];
             
             $cabecera_facturaxml .= $salto_linea.'          <codigoMoneda>'.$factura['moneda_codigoclasificador'].'</codigoMoneda>';
             $cabecera_facturaxml .= $salto_linea.'          <tipoCambio>'.number_format($factura['moneda_tc'],$dos_decimales,".","").'</tipoCambio>';

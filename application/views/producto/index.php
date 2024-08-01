@@ -152,6 +152,7 @@
             <button style="width: 70px; margin-right: 1px; margin-top: 1px" onclick="modalprecio()" class="btn btn-warning btn-foursquarexs"><font size="5" title="Lista de productos"><span class="fa fa-cubes"></span></font><br><small>Lista Prec.</small></button>
             <button style="width: 70px; margin-right: 1px; margin-top: 1px" class="btn btn-facebook btn-foursquarexs" data-toggle="modal" data-target="#modalgeneradoretiquetas"><font size="5" title="Codigo de barras"><span class="fa fa-barcode"></span></font><br><small>Cod.Barras</small></button>
             <button style="width: 70px; margin-right: 1px; margin-top: 1px" class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modaltraspasos"><font size="5" title="Actualizar productos en sucursales"><span class="fa fa-code"></span></font><br><small>Sucursales</small></button>
+            <button style="width: 70px; margin-right: 1px; margin-top: 1px" class="btn btn-primary btn-flickr" data-toggle="modal" onclick="generar_id()"><font size="5" title="Generar nuevos Id"><span class="fa fa-chrome"></span></font><br><small>Generar ID</small></button>
         <?php
             if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
             <table hidden="true">

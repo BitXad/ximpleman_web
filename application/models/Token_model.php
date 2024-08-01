@@ -28,6 +28,18 @@ class Token_model extends CI_Model
         $this->db->where('token_id',$token_id);
         return $this->db->update('token',$params);
     }
+    
+    function consultar($sql)
+    {
+        $resultado = $this->db->query($sql)->result_array();
+        return $resultado;
+    }
+    
+    function ejecutar($sql)
+    {
+        $this->db->query($sql);
+        return true;
+    }
     /* muestra todos los tokens */
     function get_alltokens($parametro)
     {

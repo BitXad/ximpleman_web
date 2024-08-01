@@ -53,7 +53,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   </span>
                 </div><!-- /.info-box-content -->
               </div>
-<?php } else if($diaslic == 5000){ ?>
+<?php } else if($diaslic >10){ ?>
   <?php }  else { ?>  
     <div class="info-box bg-red">
                 <span class="info-box-icon"><i class="ion-alert-circled"></i></span>
@@ -67,7 +67,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <div class="progress-bar" style="width: 100%"></div>
                   </div>
                   <span class="progress-description">
-                    No podra ingresar al Sistema.
+                    No podra ingresar al Sistema. 
                   </span>
                 </div><!-- /.info-box-content -->
               </div>  

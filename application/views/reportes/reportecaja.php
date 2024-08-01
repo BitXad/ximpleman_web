@@ -197,7 +197,7 @@ border-bottom : 1px solid #aaa;*/
       $margen_izquierdo = $parametro["parametro_margenfactura"]."cm";
 ?>
 
-<div class="container no-print">  
+<div class="container no-print" hidden>  
     <div class="box-tools" style="font-family: <?= $fuente  ?>;" <?php echo ($tipousuario_id == 1)?"":"hidden"; ?>>
                 <div class=" col-md-11">
                     <!-- panel panel-primary -->

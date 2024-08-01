@@ -178,6 +178,9 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
             <button type="button" class="btn btn-success" onclick="registrar_evento()"><fa class="fa fa-floppy-o"></fa> Registrar Evento</button>
+            
+            <button type="button" class="btn btn-facebook" onclick="registrar_5eventos()"><fa class="fa fa-floppy-o"></fa> Registrar 5 Eventos </button>
+            
         </div>
         
     </div>

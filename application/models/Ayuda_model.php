@@ -102,4 +102,13 @@ class Ayuda_model extends CI_Model
         return $this->db->delete('almacenes',array('almacen_id'=>$almacen_id));
     }
     
+    function get_videos()
+    {
+        $sql = "select * from ayuda";
+        $resultado = $this->db->query($sql)->result_array();
+        return $resultado;
+    }
+            
+    
+    
 }

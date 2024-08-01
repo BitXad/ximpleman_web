@@ -227,6 +227,164 @@ class Eventos_significativos extends CI_Controller{
     }
     
      /* en servicio Facturacion de Operaciones (Registro de Evento Significativo) es la Funcion: registroEventoSignificativo */
+    function registro5EventoSignificativo(){
+        
+        $now = "'".date("Y-m-d H:i:s")."'"; //{$now}
+        try{
+            $data['sistema'] = $this->sistema;
+            
+            if ($this->input->is_ajax_request()) {
+                
+                $fecha_inicio =  $this->input->post("fecha_inicio");
+                $fecha_fin =  $this->input->post("fecha_fin");
+                $cufd_evento =  $this->input->post("cufd_evento");
+                $codigo_evento =  $this->input->post("codigo_evento");
+                $texto_evento = $this->input->post("texto_evento");
+                
+                $sql = 'select * from cod_eventos_significativos';
+                $eventos = $this->Venta_model->consultar($sql);                
+                
+                $dosificacion_id = 1;
+                $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+                
+                $wsdl = $dosificacion['dosificacion_operaciones'];
+                
+                $token = $dosificacion['dosificacion_tokendelegado'];
+                $opts = array(
+                      'http' => array(
+                           'header' => "apiKey: TokenApi $token",
+                      )
+                );
+                $context = stream_context_create($opts);
+
+                $cliente = new \SoapClient($wsdl, [
+                      'stream_context' => $context,
+                      'cache_wsdl' => WSDL_CACHE_NONE,
+                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                      // other options
+                ]);
+                
+                
+                $usuario_id = $this->session_data['usuario_id'];
+                $puntoventa = $this->Usuario_model->get_punto_venta_usuario($usuario_id);
+                $this->load->model('PuntoVenta_model');
+                $punto_venta = $this->PuntoVenta_model->get_puntoventa($puntoventa['puntoventa_codigo']);
+                $puntodeventa = $punto_venta['puntoventa_codigo']; //$dosificacion['dosificacion_puntoventa'];
+
+
+       
+                foreach($eventos as $evento){ //por cada tipo de evento
+                   
+                    
+                    $j = 0;
+                    while ($j<5){
+                
+                        //este codigo se recupera de consultaEventoSignificativo()
+                        //$codigomotivoambiente = $this->ambiente;
+                        //Recuperar un cfd antiguo o del cual queremos hacer el registro del evento significativo
+                        $cufdEvento = $cufd_evento;
+                        $descripcion = $evento["ces_descripcion"];
+                        $fechaHoraFinEvento = $fecha_fin; //date('Y-m-d\TH:i:s.v');
+                        $fechaHoraInicioEvento = $fecha_inicio; //date('Y-m-d\TH:i:s.v');
+                        /* ordenado segun SoapUI */
+                        /*echo                     
+                            "<br>codigoAmbiente"    ." : ". $dosificacion['dosificacion_ambiente']."  ".
+                            "<br>codigoMotivoEvento"." : ". $codigo_evento." ". 
+                            "<br>codigoPuntoVenta"  ." : ". $dosificacion['dosificacion_puntoventa']."  ".
+                            "<br>codigoSistema"     ." : ". $dosificacion['dosificacion_codsistema']."  ".
+                            "<br>codigoSucursal"    ." : ". $dosificacion['dosificacion_codsucursal']."  ".
+                            "<br>cufd"              ." : ". $dosificacion['dosificacion_cufd']."  ".
+                            "<br>cufdEvento"        ." : ". $cufdEvento."  ". 
+                            "<br>cuis"              ." : ". $dosificacion['dosificacion_cuis']."  ".
+                            "<br>descripcion"       ." : ". $descripcion."  ". 
+                            "<br>fechaHoraFinEvento"." : ". $fechaHoraFinEvento."  ". 
+                            "<br>fechaHoraInicioEvento"." : ".$fechaHoraInicioEvento."  ". 
+                            "<br>nit"               ." : ". $dosificacion['dosificacion_nitemisor'];
+
+                        */
+
+                        $parametros = ["SolicitudEventoSignificativo" => [
+                            "codigoAmbiente"    => $dosificacion['dosificacion_ambiente'],
+                            "codigoMotivoEvento"=> $evento["ces_codigoclasificador"], //$codigo_evento, //$dosificacion['dosificacion_codsistema'],
+                            "codigoPuntoVenta"  => $punto_venta['puntoventa_codigo'], //$dosificacion['dosificacion_puntoventa'],
+                            "codigoSistema"     => $dosificacion['dosificacion_codsistema'],
+                            "codigoSucursal"    => $dosificacion['dosificacion_codsucursal'],
+                            "cufd"              => $punto_venta['cufd_codigo'], //$dosificacion['dosificacion_cufd'],
+                            "cufdEvento"        => $cufdEvento, //$dosificacion['dosificacion_cuis'],
+                            "cuis"              => $punto_venta['cuis_codigo'], //$dosificacion['dosificacion_cuis'],
+                            "descripcion"       => $evento["ces_descripcion"], //$descripcion, //$dosificacion['dosificacion_cuis'],
+                            "fechaHoraFinEvento"=> $fechaHoraFinEvento, //$dosificacion['dosificacion_cuis'],
+                            "fechaHoraInicioEvento"=>$fechaHoraInicioEvento, //$dosificacion['dosificacion_cuis'],
+                            "nit"               => $dosificacion['dosificacion_nitemisor']
+                        ]];
+
+                        //var_dump($parametros);
+                        
+                        $resultado = $cliente->registroEventoSignificativo($parametros);
+                        $res = $resultado->RespuestaListaEventos->transaccion;
+                        $mensaje = "";
+
+                        $cufdes = $this->Venta_model->consultar("select * from cufd where cufd_codigo = '".$cufd_evento."'");
+                        $registroeventos_cufd = $cufdes[0]["cufd_codigo"];
+                        $registroeventos_codigocontrol = $cufdes[0]["cufd_codigocontrol"];
+
+
+                        if ($res){
+        //                    
+        //                    
+        //                    var_dump($resultado);
+        //                    var_dump($res);
+
+                            $codigo_recepcion = $resultado->RespuestaListaEventos->codigoRecepcionEventoSignificativo;
+
+                            $sql = "insert into registro_eventos(registroeventos_codigo,registroeventos_codigoevento, registroeventos_detalle, registroeventos_fecha, registroeventos_puntodeventa, registroeventos_inicio,
+                                    registroeventos_fin,registroeventos_cufd,registroeventos_codigocontrol,estado_id ) value('".
+                                    $codigo_recepcion."',".$codigo_evento.",'".$descripcion."',{$now},".$puntodeventa.",'".$fecha_inicio."','".$fecha_fin."','".$registroeventos_cufd."','".$registroeventos_codigocontrol."',1)";
+
+                            $this->Eventos_significativos_model->ejecutar($sql);
+                            $mensaje = "EVENTO REGISTRADO CON ÉXITO, CODIGO RECEPCION: ".$codigo_recepcion.",".$descripcion;
+                            
+                            
+                            //sumamos 2 minutos a la fecha de inicio
+                            $date = new DateTime($fecha_inicio);
+                            $fecha_fin = $date->modify('+3 minutes');
+                            $fecha_inicio = $date->modify('+2 minutes');
+                            
+                            
+                            //$j++;
+
+                        }else{
+
+                            $mensajeresultado = $resultado->RespuestaListaEventos->mensajesList;
+                            $mensaje = "OCURRIO UN ERROR, CODIGO: ".$mensajeresultado->codigo.", ".$mensajeresultado->descripcion;
+                            
+                            //$i=8;
+                            //$j=5;
+                            
+                        }
+                        //var_dump($mensaje);
+                
+                        $j++;
+                        
+                    }//fin while $j
+                    
+                   
+                }//fin while $i
+                
+                echo json_encode($mensaje);
+                //echo $mensaje;
+                //print_r($resultado);
+                //$lresptransaccion = $resultado->RespuestaListaEventos->transaccion;
+            }else{                 
+                show_404();
+            }
+        }catch (Exception $e){
+            echo 'Ocurrio algo inesperado; revisar datos!.';
+        }
+    }
+    
+     /* en servicio Facturacion de Operaciones (Registro de Evento Significativo) es la Funcion: registroEventoSignificativo */
     function actualizarEventoSignificativo(){
         
         try{

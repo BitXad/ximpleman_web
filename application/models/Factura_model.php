@@ -29,6 +29,32 @@ class Factura_model extends CI_Model
 
         return $factura;
     }
+    function get_factura_anulada($factura_id)
+    {
+        $factura = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `factura_bitacora`
+
+            WHERE
+                `factura_id` = ?
+        ",array($factura_id))->row_array();
+
+        return $factura;
+    }
+    /*
+     * Get factura by factura_id
+     */
+    function get_factura_ventaid($venta_id)
+    {
+        $sql = "select * from factura where venta_id = {$venta_id}";
+        echo $sql;
+        $factura = $this->db->query($sql)->row_array();
+
+        return $factura;
+    }
     
     /*
      * Get factura by factura_id

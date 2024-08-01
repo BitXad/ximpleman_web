@@ -109,8 +109,11 @@ class Dashb extends CI_Controller
     public function index_user(){
         
         $data['sistema'] = $this->sistema;
+        
         if ($this->session->userdata('logged_in')) {
+            
             $session_data = $this->session->userdata('logged_in');
+            
             if($session_data['tipousuario_id'] > 1){
 
                 $data['page_title'] = 'Principal';

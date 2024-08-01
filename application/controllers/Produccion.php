@@ -293,9 +293,12 @@ class Produccion extends CI_Controller{
     {
         //if($this->acceso(118)){
             if ($this->input->is_ajax_request()) {
+                
                 $formula_id = $this->input->post('formula_id');
+                
                 $this->load->model('Formula_model');
                 $formula = $this->Formula_model->get_formula($formula_id);
+                
                 $this->load->model('Inventario_model');
                 $productoinv = $this->Inventario_model->get_productoinventario($formula["producto_id"]);
                 

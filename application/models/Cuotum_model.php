@@ -148,10 +148,11 @@ class Cuotum_model extends CI_Model
     function get_all_cuentas($credito_id){
         $credito = $this->db->query(
             "SELECT
-                m.moneda_tc ,c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id, fp.forma_nombre, b.banco_nombre
+                m.moneda_tc ,c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id, fp.forma_nombre, b.banco_nombre, fv.factura_numero as factura_venta
             FROM cuota k
             LEFT JOIN credito c on k.credito_id = c.credito_id 
             LEFT JOIN venta ve on c.venta_id = ve.venta_id
+            LEFT JOIN factura fv on c.venta_id = fv.venta_id
             LEFT JOIN cliente p on p.cliente_id = ve.cliente_id
             LEFT JOIN estado e on k.estado_id = e.estado_id
             LEFT JOIN usuario u on k.usuario_id = u.usuario_id
@@ -219,10 +220,12 @@ class Cuotum_model extends CI_Model
         
         $cuota_id = $this->db->query("
             SELECT
-                c.*, p.*, co.*, k.*, e.*
+                c.*, p.*, co.*, k.*, e.*, fv.factura_numero
 
             FROM
                 credito c, cliente p, venta co, cuota k, estado e
+                
+            left join factura fv on fv.venta_id = c.venta_id
 
             WHERE
                 k.credito_id = c.credito_id 
@@ -247,10 +250,12 @@ class Cuotum_model extends CI_Model
         
         $cuota_id = $this->db->query("
             SELECT
-                c.*, p.*, co.*, k.*, e.*
+                c.*, p.*, co.*, k.*, e.*, fv.factura_numero
 
             FROM
                 credito c, cliente p, servicio co, cuota k, estado e
+            
+            left join factura fv on fv.venta_id = c.venta_id
 
             WHERE
                 k.credito_id = c.credito_id 

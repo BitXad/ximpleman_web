@@ -47,6 +47,7 @@
                 <br><br><br><br><br>
        <?php if ($cuota[0]['venta_id']>0) { ?>
     <font face="Arial" size="1"><b>VENTA No.: </b><?php echo $cuota[0]['venta_id']; ?></font><br>
+    <b>FACTURA No.: </b><?php echo $cuota[0]['factura_numero']; ?><br>
     <?php } else { ?>
     <font face="Arial" size="1"><b>SERVICIO No.: </b><?php echo $cuota[0]['servicio_id']; ?></font><br>
     <?php } ?>

@@ -640,7 +640,7 @@ border-bottom : 1px solid #aaa;
                                 
                         ?>
                         
-                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="<?php echo ($factura[0]['docsec_codigoclasificador']==13)?"10":"6"; ?>"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($factura_total,' Bolivianos') ?></b></td>
+                        <td style="padding:0; border-left: none !important;border-bottom: none !important;" colspan="4" rowspan="<?php echo ($factura[0]['docsec_codigoclasificador']==13)?"10":"6"; ?>"><b style="font-family: Arial; size:9px;">SON: <?= num_to_letras($total_final_factura,' Bolivianos') ?></b></td>
                         <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><?php echo ($factura[0]['docsec_codigoclasificador']==13)?"TOTAL Bs":"SUBTOTAL Bs"; ?></td>
                         <td style="padding:0; padding-right: 3px;" align="right"><?= number_format($total_final_factura,$dos_decimales,'.',','); ?></td>
                         
@@ -790,19 +790,19 @@ border-bottom : 1px solid #aaa;
                         $opcion = $parametro["parametro_mostrarnumero"]; //0 Ninguno, 1 - numeroventa, 2 - numerodetransacciones, 3 - transaccion mensual 
                     
                         if ($opcion==1){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
+                                    <font size="2" face="arial"><b>00<?php echo (isset($venta[0]['venta_numeroventa'])?$venta[0]['venta_numeroventa']:""); ?></b></font>
                         <?php } ?>
 
                         <?php   if ($opcion==2){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_id']; ?></b></font>
+                                    <font size="2" face="arial"><b>00<?php echo (isset($venta[0]['venta_id'])?$venta[0]['venta_id']:""); ?></b></font>
                         <?php   } ?>
 
                         <?php   if ($opcion==3){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['factura_numero']; ?></b></font>
+                                    <font size="2" face="arial"><b>00<?php echo (isset($venta[0]['factura_numero'])?$venta[0]['factura_numero']:""); ?></b></font>
                         <?php   } ?>
 
                         <?php   if ($opcion==4){ ?>
-                                    <font size="2" face="arial"><b>00<?php echo $venta[0]['venta_numerotransmes']; ?></b></font>
+                                    <font size="2" face="arial"><b>00<?php echo (isset($venta[0]['venta_numerotransmes'])?$venta[0]['venta_numerotransmes']:""); ?></b></font>
                         <?php   } ?>
                                     
                     </div>

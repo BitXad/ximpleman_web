@@ -221,7 +221,7 @@ class Venta_model extends CI_Model
         $sql = "select 0 as cliente_id, 0 as cliente_nit, 'S/N' as cliente_razon,'-' as cliente_telefono
                 ,'S/N' as cliente_nombre, 0 as cliente_ci, '-' as cliente_nombrenegocio, 0 as tipocliente_id,'N/A' as cliente_codigo 
                 ,'' as cliente_direccion,  '' as cliente_celular, '' as cliente_departamento,'NO DEFINIDO' zona_nombre
-                ,'' as cliente_foto, '' as cliente_email, 'NO DEFINIDO' as tipocliente_descripcion 
+                ,'' as cliente_foto, '' as cliente_email, 'NO DEFINIDO' as tipocliente_descripcion, 0 as cliente_excepcion  
                 ,'NO DEFINIDO' as categoriaclie_descripcion, 0 as zona_id, 1 as cdi_codigoclasificador, '' as cliente_complementoci";
         
         $cliente = $this->db->query($sql)->result_array();
@@ -431,7 +431,7 @@ class Venta_model extends CI_Model
         $sql = "select c.*,t.tipocliente_descripcion, t.tipocliente_montodesc,t.tipocliente_porcdesc from cliente c
                 left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id
                 where 
-                c.cliente_nit = '".$nit."'";
+                c.cliente_nit = '{$nit}'";
        // echo $sql;
        $resultado = $this->db->query($sql)->result_array();
         

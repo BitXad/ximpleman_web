@@ -2216,3 +2216,36 @@ function remplazar_productos(){
         //document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
     }
 }
+
+function generar_id(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto/generar_id';
+//    var sucursal_id = 0; 
+//    var producto_id = document.getElementById('producto_id').value;
+//    var operacion = document.getElementById('operacion_traspaso').value;
+//    var almacen_id = document.getElementById('sucursal_traspaso').value;
+
+    let confirmacion =  confirm('Esta operación remplazara el campo orden por nuevos ID. ¿DESEA CONTINUAR?');
+       
+    
+    if(confirmacion == true){
+        
+        document.getElementById('loader2').style.display = 'block'; //muestra el bloque del loader
+        
+        $.ajax({url:controlador,
+            type:"POST",
+            data:{},
+            success:function(result){
+                
+                let mensaje = JSON.parse(result);
+                verificar_producto();
+                alert(mensaje["mensaje"]);
+                document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
+               
+            },
+        });
+        
+        document.getElementById('loader2').style.display = 'none'; //ocultar el bloque del loader
+    }
+}
