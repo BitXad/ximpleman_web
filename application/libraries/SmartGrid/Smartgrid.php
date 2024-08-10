@@ -30,7 +30,7 @@ class Smartgrid {
 	# CONFIGURATIONS 
     
     // Autogenerate columns based on result set
-	private $_config_auto_generate_columns  = false;
+    private $_config_auto_generate_columns  = false;
     // Enable/Disable paging
     private $_config_paging_enabled         = true;
     // Grid rows per pages
@@ -208,7 +208,7 @@ class Smartgrid {
         }
         else
         {
-            $html .= '<div class="panel panel-default"><div class="panel-body">No data to display</div></div>';    
+            $html .= '<div class="panel panel-default"><div class="panel-body">No hay datos que mostrar</div></div>';    
         }
         
         if($this->_config_debug_mode === true){
@@ -485,12 +485,12 @@ class Smartgrid {
         $paging_html .= '<div class="sg-toolbar pull-left"><b>Mostrar: </b>'.($this->_page_row_start + 1).' hasta '.($this->_page_row_start + $this->_page_row_count).' de '.$this->_total_rows.'</div>';   
          
         $paging_html .= '<div class="btn-group pull-right" role="group">'; 
-        $paging_html .= '<button type="'.$prev_button_type.'" name="'.$this->_config_grid_name.'page" value="1" class="btn btn-default btn-sm '.$css_btn_prev.'" title="Go to first page"><i class="glyphicon glyphicon-fast-backward"></i></button>'; 
+        $paging_html .= '<button type="'.$prev_button_type.'" name="'.$this->_config_grid_name.'page" value="1" class="btn btn-default btn-sm '.$css_btn_prev.'" title="Primera Página"><i class="glyphicon glyphicon-fast-backward"></i></button>'; 
         $paging_html .= '<button type="'.$prev_button_type.'" name="'.$this->_config_grid_name.'page" value="'.$previous_page_number.'" class="btn btn-default btn-sm '.$css_btn_prev.'" title="Go to previous page"><i class="glyphicon glyphicon-backward"></i></button>'; 
         $paging_html .= '<button type="button" class="btn btn-default btn-sm dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Page '.$this->_page_number.' of '.$this->_total_page.'</button>';
         
-        $paging_html .= '<button type="'.$next_button_type.'" name="'.$this->_config_grid_name.'page" value="'.$next_page_number.'" class="btn btn-default btn-sm '.$css_btn_next.'" title="Go to next page"><i class="glyphicon glyphicon-forward"></i></button>'; 
-        $paging_html .= '<button type="'.$next_button_type.'" name="'.$this->_config_grid_name.'page" value="'.$this->_total_page.'" class="btn btn-default btn-sm '.$css_btn_next.'" title="Go to last page"><i class="glyphicon glyphicon-fast-forward"></i></button>'; 
+        $paging_html .= '<button type="'.$next_button_type.'" name="'.$this->_config_grid_name.'page" value="'.$next_page_number.'" class="btn btn-default btn-sm '.$css_btn_next.'" title="Siguiente Página"><i class="glyphicon glyphicon-forward"></i></button>'; 
+        $paging_html .= '<button type="'.$next_button_type.'" name="'.$this->_config_grid_name.'page" value="'.$this->_total_page.'" class="btn btn-default btn-sm '.$css_btn_next.'" title="Página Anterior"><i class="glyphicon glyphicon-fast-forward"></i></button>'; 
         $paging_html .= '</div>';
         $paging_html .= '</form>';
         return $paging_html;

@@ -28,9 +28,9 @@ class Alerta extends CI_Controller{
     public function token()
     {
         $dosif="SELECT DATEDIFF(token_fechahasta, CURDATE()) as dias FROM token WHERE estado_id = 1 order by token_id desc limit 1";
-                $token = $this->db->query($dosif)->row_array();
+        $token = $this->db->query($dosif)->row_array();
 
-		$data['sistema'] = $this->sistema;
+        $data['sistema'] = $this->sistema;
         $data['diasdo'] = $token;
         $data['_view'] = 'admin/token';
         $this->load->view('layouts/main',$data);

@@ -103,7 +103,6 @@ class Categoria_cliente extends CI_Controller{
                             "producto_precio"=>array("header"=>"Precio", "type"=>"label"),
                             "producto_codigo"=>array("header"=>"Codigo", "type"=>"label"),
                             "producto_costo"=>array("header"=>"Niveles", "type"=>"progressbar", "align"=>"center", "width"=>"100px"),
-                            //"producto_codigobarra"=>array("type"=>"custom", "header"=>"Buttons", "field_data"=>$buttons_html, "align"=>"center", "width"=>"130px"),
                             "producto_industria"=>array("header"=>"Industria", "type"=>"label"),
                             "producto_foto"=>array("header"=>"Foto", "type"=>"image", "align"=>"center", "image_width"=>"50px", "image_height"=>"50px"),
                             "producto_comision"=>array("header"=>"Comision", "type"=>"label"),
@@ -114,6 +113,7 @@ class Categoria_cliente extends CI_Controller{
                             "producto_caracteristicas"=>array("header"=>"Caracteristicas", "type"=>"label"),
                             "producto_nombreenvase"=>array("header"=>"Envase", "type"=>"label"),
                             "precio"=>array("header"=>"Precio", "type"=>"label"),
+                            "producto_codigobarra"=>array("type"=>"custom", "header"=>"Buttons", "field_data"=>$buttons_html, "align"=>"center", "width"=>"130px"),
                     );        
 
             // Set the grid 
