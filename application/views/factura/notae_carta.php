@@ -76,7 +76,7 @@ border-bottom : 1px solid #aaa;
 <!-------------------------------------------------------->
 <?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"];
-      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];
 ?>
 
 <div class="<?php echo $margen_izquierdo; ?>" style="padding: 0; max-width:5cm;">
@@ -110,7 +110,8 @@ border-bottom : 1px solid #aaa;
 
                 <font size="3" face="arial"><b><?php echo $parametro[0]["parametro_tituldoc"]; ?></b></font> <br>
                 <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
-                <font size="1" face="arial"><b><?php echo $venta[0]['venta_fecha']." ".$venta[0]['venta_hora']; ?></b></font> <br>
+                Expresado en <?php echo $parametro[0]['moneda_descripcion']; ?> *** T.C.: <?php echo number_format($parametro[0]['moneda_tc'],2,".",","); ?>
+                <!--- font size="1" face="arial"><b><?php echo $venta[0]['venta_fecha']." ".$venta[0]['venta_hora']; ?></b></font> <br --->
             </center>
         </td>
         <td style="width: 6cm; padding: 0" >
@@ -140,7 +141,7 @@ border-bottom : 1px solid #aaa;
     <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
        <!--<table class="table table-striped table-condensed"  style="width: 20cm;" >-->
            <tr  style="border-top-style: solid; border-bottom-style: solid">
-                <td align="center" style="padding: 0"><b>CANT</b></td>
+                <td align="center" style="padding: 0"><b>CANT.</b></td>
                 <td align="center" style="padding: 0"><b>DESCRIPCIÓN</b></td>
                 <td align="center" style="padding: 0"><b>P.UNIT <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
                 <td align="center" style="padding: 0"><b>DESC. <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>               
@@ -280,8 +281,8 @@ border-bottom : 1px solid #aaa;
                 <?php
                 if($venta[0]['tipotrans_id'] == 2){
                 ?>
-                CUOTA INIC. Bs: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
-                SALDO Bs: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
+                CUOTA INIC. <?php echo $parametro[0]['moneda_descripcion']; ?>: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
+                SALDO <?php echo $parametro[0]['moneda_descripcion']; ?>: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
                 <?php
                 }
                 ?>

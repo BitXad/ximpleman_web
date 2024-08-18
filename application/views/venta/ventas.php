@@ -474,6 +474,7 @@ window.onkeydown = compruebaTecla;
                 
                 <input type="search" name="razon_social" list="listaclientes" class="form-control <?php echo $atributos; ?>" <?php //echo $estilos_facturacion; ?> " style="color: black; background: gray; text-align: left; font-size: 18px; font-family: Arial;" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" readonly />
                 <datalist id="listaclientes"></datalist>
+                <div style="border-color: orange; background: orange !important; color: white" class="btn btn-facebook input-group-addon" title="Buscar por nombre de cliente"><span class="fa fa-unlock" aria-hidden="true" id="bucar_cliente" onclick="buscar_nombre();"></span></div>
                 <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="validar(13,9)" title="Buscar por número de documento"><span class="fa fa-search" aria-hidden="true" id="span_buscar_cliente"></span></div>
                 
             </div>
@@ -1894,7 +1895,7 @@ window.onkeydown = compruebaTecla;
             <?php 
                 $prev_ocultar = "";
                 $prev_mostrar = "none";
-                if( $dosificacion[0]["docsec_codigoclasificador"] == 1){ //en esta linea debe ser == 23 prevalorada (original)
+                if( $dosificacion[0]["docsec_codigoclasificador"] == 17){ //en esta linea debe ser == 23 prevalorada (original)
                     $prev_ocultar = "none";
                     $prev_mostrar = "";
                 }

@@ -199,12 +199,22 @@ function validar(e,opcion) {
         if (opcion==9){   //si la tecla proviene del buscador de pedido abierto
             
            var nit = document.getElementById('nit').value;
-           if (nit=='0'){
-                buscar_clientes();
+           if (nit=='0'||nit==''){
+               
+                let razon_social = document.getElementById('razon_social').value;
+
+                if(razon_social.length>2){
+                    
+                    buscar_clientes();
+                    
+                }
+                else{
+                    alert("ERROR: Debe ingresar un parámetro mayor a 2 letras..!");
+                }
            }
            else{
             
-                var codigo = document.getElementById('razon_social').value;
+                let codigo = document.getElementById('razon_social').value;
 
                 codigo = codigo[0]+codigo[1] + Math.floor((Math.random()*100000)+50);
 
@@ -215,6 +225,7 @@ function validar(e,opcion) {
                 $("#cliente_codigo").val(codigo);
                 document.getElementById('cliente_celular').focus();               
            }
+           
         }  
         if (opcion==10){   //si la tecla proviene del buscador del reporte de  ventas
            ventas_por_parametro();
@@ -7151,6 +7162,7 @@ function cargar_eventos(factura_id){
     var base_url = document.getElementById('base_url').value;
     var nombre_archivo = document.getElementById('dosificacion_documentosector').value;
     var ubicacion = base_url+'resources/xml/';
+        
     var archivo = nombre_archivo+factura_id+".tar.gz";
     
     $("#nombre_archivo").val(archivo);
@@ -8884,6 +8896,15 @@ function calcular_servicios(){
         total_por_cobrar += Number(datos_ajustesujetoiva) + Number(datos_ajustesujetoiva) + Number(datos_otrastasas) + Number(datos_otrospagosnosujetoiva) + Number(venta_subtotal);
     
     $("#total_por_cobrar").val(Number(total_por_cobrar).toFixed(decimales));
+}
+
+function buscar_nombre(){
+    
+    $("#nit").val(0);
+    $("#razon_social").val("");
+    $("#razon_social").css("background-color", "#1221");
+    $("#razon_social").removeAttr("readonly");
+    $("#razon_social").focus();
 }
 
 

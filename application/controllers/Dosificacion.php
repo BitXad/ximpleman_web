@@ -943,80 +943,70 @@ class Dosificacion extends CI_Controller{
     function cufd(){
         try{
             if ($this->input->is_ajax_request()) {
+                
                 $dosificacion_id = 1;
                 
                 $punto_venta = $this->input->post('punto_venta');
                 
                 $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
                 $cuis_puntoventa = $this->PuntoVenta_model->get_cuis_puntoventa($punto_venta);
-                $cuis_puntoventa = $cuis_puntoventa['cuis_codigo'];
-                // $cuis_puntoventa = $this->Dosificacion_model->get_cuis_puntoventa($punto_venta); 
-                /* ---------------------INICIO segun EJEMPLO ---------------------- */
-                /*fuente:
-                 * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/autenticacion/token-de-autenticacion
-                 * Nota.- hubo unos pequeños cambios......
-                 */
-                //la ruta para el servicio de obtencion de codigos, ejm:
-                //$wsdl = "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl";
-                $wsdl = $dosificacion['dosificacion_obtencioncodigos']; //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
-                $token = $dosificacion['dosificacion_tokendelegado'];
                 
-                $opts = array(
-                      'http' => array(
-                           'header' => "apiKey: TokenApi $token",
-                      )
-                );
-
-
-                $context = stream_context_create($opts);
-
-                $cliente = new \SoapClient($wsdl, [
-                      'stream_context' => $context,
-                      'cache_wsdl' => WSDL_CACHE_NONE,
-                      'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
-
-                      // other options
-                ]);
+                if(is_array($cuis_puntoventa)){
                 
-                /* ---------------------F I N  segun EJEMPLO ---------------------- */
-                /* ordenado segun SoapUI */
+                    $cuis_puntoventa = $cuis_puntoventa['cuis_codigo'];
+                    // $cuis_puntoventa = $this->Dosificacion_model->get_cuis_puntoventa($punto_venta); 
+                    /* ---------------------INICIO segun EJEMPLO ---------------------- */
+                    /*fuente:
+                     * https://siatanexo.impuestos.gob.bo/index.php/implementacion-servicios-facturacion/autenticacion/token-de-autenticacion
+                     * Nota.- hubo unos pequeños cambios......
+                     */
+                    //la ruta para el servicio de obtencion de codigos, ejm:
+                    //$wsdl = "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl";
 
-//                echo
-//                    "codigoAmbiente: ".$dosificacion['dosificacion_ambiente']."<br>".
-//                    "codigoModalidad: ".$dosificacion['dosificacion_modalidad']."<br>".
-//                    "codigoPuntoVenta: ".$punto_venta."<br>".
-//                    "codigoSistema: ".$dosificacion['dosificacion_codsistema']."<br>".
-//                    "codigoSucursal: ".$dosificacion['dosificacion_codsucursal']."<br>".
-//                    "cuis: ".$cuis_puntoventa."<br>".
-//                    "nit: ".$dosificacion['dosificacion_nitemisor'];
-//                
-                $parametros = ["SolicitudCufd" => [
-                    "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
-                    "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
-                    "codigoPuntoVenta"=>   $punto_venta, //$dosificacion['dosificacion_puntoventa'],
-                    "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
-                    "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
-                    "cuis"=>            $cuis_puntoventa, //$dosificacion['dosificacion_cuis'],
-                    "nit"=>             $dosificacion['dosificacion_nitemisor']
-                        ]];
+                    $wsdl = $dosificacion['dosificacion_obtencioncodigos']; //obtenemos y asignamos el apiKey con el nombre de TokenApi, ejm:
+                    $token = $dosificacion['dosificacion_tokendelegado'];
 
-//            $resultado = $cliente->cufd($parametros);
-            //var_dump($resultado);
-//            echo json_encode($resultado);
+                    $opts = array(
+                          'http' => array(
+                               'header' => "apiKey: TokenApi $token",
+                          )
+                    );
 
-            $resultado = $cliente->cufd($parametros);
-            //var_dump($resultado);
-            $datos['respuesta'] = $resultado;
-                $datos['falla'] = "";
-                echo json_encode($datos);
-            
-                //print_r($resultado);
-                //print_r($resultado);
-                /*$elres = $resultado->RespuestaVerificarNit->mensajesList;
-                $elres2 = $resultado->RespuestaVerificarNit->transaccion;
-                echo "Codigo: ".$elres->codigo."<br>";
-                echo "Descripción: ".$elres->descripcion."<br>";
-                echo "Transacción: ".$elres2;*/
+
+                    $context = stream_context_create($opts);
+
+                    $cliente = new \SoapClient($wsdl, [
+                          'stream_context' => $context,
+                          'cache_wsdl' => WSDL_CACHE_NONE,
+                          'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE,
+
+                          // other options
+                    ]);
+
+                    /* ---------------------F I N  segun EJEMPLO ---------------------- */
+                    /* ordenado segun SoapUI */
+
+                    $parametros = ["SolicitudCufd" => [
+                        "codigoAmbiente"=>  $dosificacion['dosificacion_ambiente'],
+                        "codigoModalidad"=> $dosificacion['dosificacion_modalidad'],
+                        "codigoPuntoVenta"=>   $punto_venta, //$dosificacion['dosificacion_puntoventa'],
+                        "codigoSistema"=>   $dosificacion['dosificacion_codsistema'],
+                        "codigoSucursal"=>  $dosificacion['dosificacion_codsucursal'],
+                        "cuis"=>            $cuis_puntoventa, //$dosificacion['dosificacion_cuis'],
+                        "nit"=>             $dosificacion['dosificacion_nitemisor']
+                            ]];
+
+                    $resultado = $cliente->cufd($parametros);
+                    $datos['respuesta'] = $resultado;
+                    $datos['falla'] = "";
+                    echo json_encode($datos);
+                    
+                } else {
+                     $datos['respuesta'] = "No existe C.U.I.S. (Codigo Unico de Inicio de Sistema) VIGENTE.";
+                     $datos['falla'] = "'Debe generar un C.U.I.S. nuevo...!!'";
+                     echo json_encode($datos);
+                }
+                
             }else{                 
                 show_404();
             }

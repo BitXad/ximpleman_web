@@ -635,7 +635,62 @@ class Emision_paquetes extends CI_Controller{
                 $dosificacion_id = 1;
                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                 
-                if ($dosificacion['docsec_codigoclasificador']==1)
+                if ($dosificacion['docsec_codigoclasificador']==1 )
+                       $wsdl = $dosificacion['dosificacion_factura'];
+
+                //*************************************************************************
+                //       SERVICIOS FACTURACION ELECTRONICA
+                //*************************************************************************
+                $documentos_sector = array(2,6,8,11,12,16,17,23,39,51);
+
+                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+
+
+
+                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
+                        $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+
+                    if ($dosificacion['docsec_codigoclasificador']==13)
+                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+
+                    if ($dosificacion['docsec_codigoclasificador']==15)
+                        $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==22)
+                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==24)
+                        $wsdl = $dosificacion['dosificacion_notacredito'];
+
+
+                }
+
+                //*************************************************************************
+                //       SERVICIOS FACTURACION COMPUTARIZADA
+                //*************************************************************************        
+                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+
+                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
+                        $wsdl = $dosificacion['dosificacion_facturaglp'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==13)
+                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==15)
+                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==22 )
+                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+                    if ($dosificacion['docsec_codigoclasificador']==24 )
+                        $wsdl = $dosificacion['dosificacion_notacredito'];
+
+                }                
+                
+                
+                /*if ($dosificacion['docsec_codigoclasificador']==1)
                     $wsdl = $dosificacion['dosificacion_factura'];
 
                 if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
@@ -668,7 +723,7 @@ class Emision_paquetes extends CI_Controller{
                          
                         if ($dosificacion['docsec_codigoclasificador']==22)
                             $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
-                }
+                }*/
                 
                 $token = $dosificacion['dosificacion_tokendelegado'];
                 $opts = array(

@@ -166,6 +166,7 @@ class Factura extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(17)){
+            
         //**************** inicio contenido ***************
             //$parametros = $this->Parametro_model->get_parametros();
         $parametros = $this->parametros;

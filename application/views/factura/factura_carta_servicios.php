@@ -237,7 +237,7 @@ border-bottom : 1px solid #aaa;
                                 if (isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
                                     <font size="1" face="Arial"><b>
 
-                                <?php  echo "<br> DE: ".$empresa[0]['empresa_propietario'] ; ?>
+                                <?php  echo "<br>".$empresa[0]['empresa_propietario'] ; ?>
 
                             </b></font><br>
                             <?php } ?>

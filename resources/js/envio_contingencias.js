@@ -404,3 +404,16 @@ function validacion_paquetes(){
         }); 
     //}
 }
+/*
+function cargar_eventos(factura_id){
+    
+    var base_url = document.getElementById('base_url').value;
+    var nombre_archivo = document.getElementById('dosificacion_documentosector').value;
+    var ubicacion = base_url+'resources/xml/';
+        
+    var archivo = nombre_archivo+factura_id+".tar.gz";
+    
+    $("#nombre_archivo").val(archivo);
+    $("#lafactura_id").val(factura_id);
+   
+}*/

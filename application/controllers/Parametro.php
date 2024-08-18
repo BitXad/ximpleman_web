@@ -830,6 +830,7 @@ class Parametro extends CI_Controller{
                                 //PASO 7: Enviar los archivos generados en el .tar.gz
                                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
                                 
+                                /*
                                 if ($dosificacion['docsec_codigoclasificador']==1)
                                     $wsdl = $dosificacion['dosificacion_factura'];
 
@@ -850,7 +851,62 @@ class Parametro extends CI_Controller{
                                     if ($dosificacion['docsec_codigoclasificador']==22)
                                         $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
                                     
+                                }*/
+                                
+                                if ($dosificacion['docsec_codigoclasificador']==1 )
+                                       $wsdl = $dosificacion['dosificacion_factura'];
+
+                                //*************************************************************************
+                                //       SERVICIOS FACTURACION ELECTRONICA
+                                //*************************************************************************
+                                $documentos_sector = array(2,6,8,11,12,16,17,23,39,51);
+
+                                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+
+
+
+                                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
+                                        $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+
+                                    if ($dosificacion['docsec_codigoclasificador']==13)
+                                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+
+                                    if ($dosificacion['docsec_codigoclasificador']==15)
+                                        $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==22)
+                                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==24)
+                                        $wsdl = $dosificacion['dosificacion_notacredito'];
+
+
                                 }
+
+                                //*************************************************************************
+                                //       SERVICIOS FACTURACION COMPUTARIZADA
+                                //*************************************************************************        
+                                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+
+                                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
+                                        $wsdl = $dosificacion['dosificacion_facturaglp'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==13)
+                                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==15)
+                                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==22 )
+                                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==24 )
+                                        $wsdl = $dosificacion['dosificacion_notacredito'];
+
+                                }
+
                                 
                                 
                                 $token = $dosificacion['dosificacion_tokendelegado'];
@@ -959,7 +1015,7 @@ class Parametro extends CI_Controller{
 
                                 //PASO 8: Envio de los archivos
                                 $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
-                                
+                                /*
                                 if ($dosificacion['docsec_codigoclasificador']==1)
                                     $wsdl = $dosificacion['dosificacion_factura'];
 
@@ -970,7 +1026,62 @@ class Parametro extends CI_Controller{
                                 if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
                                     if ($dosificacion['docsec_codigoclasificador']==23 || $dosificacion['docsec_codigoclasificador']==39 || $dosificacion['docsec_codigoclasificador']==11)
                                     $wsdl = $dosificacion['dosificacion_facturaglp'];
+                                }*/
+
+                                if ($dosificacion['docsec_codigoclasificador']==1 )
+                                       $wsdl = $dosificacion['dosificacion_factura'];
+
+                                //*************************************************************************
+                                //       SERVICIOS FACTURACION ELECTRONICA
+                                //*************************************************************************
+                                $documentos_sector = array(2,6,8,11,12,16,17,23,39,51);
+
+                                if ($dosificacion['dosificacion_modalidad']==1){ //Electronica en linea
+
+
+
+                                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
+                                        $wsdl = $dosificacion['dosificacion_glpelectronica'];
+
+
+                                    if ($dosificacion['docsec_codigoclasificador']==13)
+                                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+
+                                    if ($dosificacion['docsec_codigoclasificador']==15)
+                                        $wsdl = $dosificacion['dosificacion_entidadesfinancieras'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==22)
+                                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==24)
+                                        $wsdl = $dosificacion['dosificacion_notacredito'];
+
+
                                 }
+
+                                //*************************************************************************
+                                //       SERVICIOS FACTURACION COMPUTARIZADA
+                                //*************************************************************************        
+                                if ($dosificacion['dosificacion_modalidad']==2){ // Computarizada en linea
+
+                                    if (in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector))  
+                                        $wsdl = $dosificacion['dosificacion_facturaglp'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==13)
+                                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==15)
+                                        $wsdl = $dosificacion['dosificacion_facturaservicios'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==22 )
+                                        $wsdl = $dosificacion['dosificacion_telecomunicaciones'];
+
+                                    if ($dosificacion['docsec_codigoclasificador']==24 )
+                                        $wsdl = $dosificacion['dosificacion_notacredito'];
+
+                                }
+
                                 
                                 $token = $dosificacion['dosificacion_tokendelegado'];
 
