@@ -6,12 +6,18 @@
  
 class Producto_precios extends CI_Controller{
     
+    private $parametros;
     private $sistema;
+    private $empresa;
     
     function __construct(){
         
         parent::__construct();
         $this->load->model('Producto_precios_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Venta_model');
+        $this->load->model('Empresa_model');
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -20,6 +26,11 @@ class Producto_precios extends CI_Controller{
         $this->load->model('Sistema_model');
         $this->sistema = $this->Sistema_model->get_sistema();
         $data['sistema'] = $this->sistema;
+        $parametro = $this->Parametro_model->get_parametros();
+        $this->parametros = $parametro[0];
+        $empresa = $this->Empresa_model->get_empresa(1);
+        $this->empresa = $empresa[0];
+
         
     }
     
@@ -40,16 +51,38 @@ class Producto_precios extends CI_Controller{
     function index()
     {
         $data['sistema'] = $this->sistema;
+        
         if($this->acceso(136)){
-            $data['unidad'] = $this->Producto_precios_model->get_all_unidad();
+            
+            $data['parametro'] = $this->parametros;
+            $data['Empresa'] = $this->empresa;
+            
+            $moneda_id = $this->parametros['moneda_id'];
+            $sql = "select * from moneda where moneda_id <> {$moneda_id}";
+            $moneda = $this->Venta_model->Consultar($sql);
+            $data['moneda'] = $moneda[0];
+            
+            $sql = "select * from moneda where moneda_id = {$moneda_id}";
+            $moneda = $this->Venta_model->Consultar($sql);
+            $data['lamoneda'] = $moneda[0];
+            
+            $data['productos'] = $this->Producto_precios_model->get_all_productos();
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-            $data['page_title'] = "Producto_precios";
-            $data['_view'] = 'unidad/index';
+            $data['page_title'] = "Lista de Precios";
+            $data['_view'] = 'producto_precios/index';
             $this->load->view('layouts/main',$data);
+            
         }
           
     }
 
+    
+    public function cargar_producto_precios()
+    {
+        $this->Producto_model->cargar_producto_precios();
+        echo "Datos copiados de 'producto' a 'producto_precios'.";
+    }    
+    
     /*
      * Adding a new unidad
      */
@@ -66,7 +99,7 @@ class Producto_precios extends CI_Controller{
 				'unidad_nombre' => $this->input->post('unidad_nombre'),
             );
             
-            $unidad_id = $this->Producto_precios_model->add_unidad($params);
+            $unidad_id = $this->Producto_precios_model->add_productos($params);
             redirect('unidad/index');
         }
         else
@@ -87,7 +120,7 @@ class Producto_precios extends CI_Controller{
         $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
         // check if the tipo_servicio exists before trying to edit it
-        $data['unidad'] = $this->Producto_precios_model->get_unidad($unidad_id);
+        $data['unidad'] = $this->Producto_precios_model->get_productos($unidad_id);
         
         if(isset($data['unidad']['unidad_id']))
         {
@@ -99,7 +132,7 @@ class Producto_precios extends CI_Controller{
                             'unidad_nombre' => $this->input->post('unidad_nombre'),
                 );
 
-                $this->Producto_precios_model->update_unidad($unidad_id,$params);            
+                $this->Producto_precios_model->update_productos($unidad_id,$params);            
                 redirect('unidad/index');
             }
             else
@@ -122,9 +155,9 @@ class Producto_precios extends CI_Controller{
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(136)){
-            $data['unidad'] = $this->Producto_precios_model->get_unidad($unidad_id);
+            $data['unidad'] = $this->Producto_precios_model->get_productos($unidad_id);
             if(isset($data['unidad']['unidad_id'])){
-                $this->Producto_precios_model->delete_unidad($unidad_id);
+                $this->Producto_precios_model->delete_productos($unidad_id);
                 redirect('unidad/index');
             }else{
                 show_error('La unidad que estas intentando eliminar no existe.');
@@ -138,8 +171,8 @@ class Producto_precios extends CI_Controller{
     { 
         $data['sistema'] = $this->sistema;
         if($this->input->is_ajax_request()){
-            $nombre_unidad = $this->input->post('nombre_unidad');
-            $datos = $this->Producto_precios_model->get_unidad_usada($nombre_unidad);
+            $nombre_productos = $this->input->post('nombre_productos');
+            $datos = $this->Producto_precios_model->get_productos_usada($nombre_productos);
             echo json_encode($datos);
         }
         else

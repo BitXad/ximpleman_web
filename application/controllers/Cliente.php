@@ -39,7 +39,7 @@ class Cliente extends CI_Controller{
     /*
      * Listing of cliente
      */
-    function index($a = null)
+function index($a = null)
     {
         $data['sistema'] = $this->sistema;
         if($this->acceso(94)){
@@ -82,7 +82,52 @@ class Cliente extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }   
+    
+    /* con data table 
+    public function index($a = null)
+    {
+        $data['sistema'] = $this->sistema;
+        if ($this->acceso(94)) {
 
+            $data['rol'] = $this->session_data['rol'];
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['page_title'] = "Clientes";
+            $data['a'] = $a;
+            $data['err'] = "";
+
+            // Cargar modelos necesarios
+            $this->load->model('Categoria_cliente_model');
+            $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_cat_cliente();
+
+            $this->load->model('Categoria_clientezona_model');
+            $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_asc();
+
+            $this->load->model('Tipo_cliente_model');
+            $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente_asc();
+
+            $this->load->model('Usuario_model');
+            $data['all_prevendedor'] = $this->Usuario_model->get_all_usuario_prev_activo();
+
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametro(1);
+
+            // Obtener datos de clientes y pasarlos en formato JSON
+            $this->load->model('Cliente_model');
+            $client = $this->Cliente_model->get_cliente_index();
+            $data['all_clientes'] = $client;
+
+            $data['_view'] = 'cliente/index';
+            $this->load->view('layouts/main', $data);
+        }
+    }
+
+    */
 
     /*
     * obtener clientes de cada usuario
