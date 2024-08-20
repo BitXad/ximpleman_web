@@ -18,7 +18,8 @@
     <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($productos); ?></font>
     <br><font size='2' face='Arial'>Expresado en <?php echo $lamoneda['moneda_descripcion']; ?></font>
     <div class="box-tools no-print">
-        <a href="<?php echo site_url('tipo_cliente/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Tipo Cliente</a>
+
+        <button type="button" id="boton_cambiarprecios"  class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal_cambiarprecios" ><fa class='fa fa-money'></fa>  Ajustar Precios</button>
         <button class="btn btn-info btn-sm" onclick="cargar_precios()"><fa class='fa fa-list'></fa> Cargar lista de precios</button>
     </div>
 </div>
@@ -156,9 +157,9 @@
 <!------------------------------------------------------------------------------->
 
 
-<div>
+<div hidden>
     <button type="button" id="boton_cambiarprecios" class="btn btn-default" data-toggle="modal" data-target="#modal_cambiarprecios" >
-      Subir Excel
+      Ajustar precios
     </button>
     
 </div>
@@ -174,21 +175,21 @@
         
             <div class="modal-content" style="font-family: Arial">
 
-                <?php echo form_open_multipart('producto_precios/cambiarprecios'); ?>
+                <?php // echo form_open_multipart('producto_precios/cambiarprecios'); ?>
                 
                     <div class="box-body">
                         
                         <div class="col-md-3">
                                 <label for="moneda_tc" class="control-label">T.C. Actual</label>
                                 <div class="form-group">
-                                    <input type="text" name="moneda_tc" value="<?php echo number_format($moneda['moneda_tc'],2,".",","); ?>" class="form-control" id="moneda_tc" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"autocomplete="off" />
+                                    <input type="number" id="moneda_tc" value="<?php echo number_format($moneda['moneda_tc'],2,".",","); ?>" class="form-control" id="moneda_tc" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"autocomplete="off" disabled="false"/>
                                         <span class="text-danger"><?php echo form_error('moneda_tc');?></span>
                                 </div>
                         </div>
                         <div class="col-md-3">
                                 <label for="moneda_tc_nuevo" class="control-label">T.C. Nuevo</label>
                                 <div class="form-group">
-                                        <input type="text" name="moneda_tc_nuevo" value="<?php echo number_format($moneda['moneda_tc'],2,".",","); ?>" class="form-control" id="moneda_tc_nuevo" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                        <input type="number" id="moneda_tc_nuevo" value="<?php echo number_format($moneda['moneda_tc'],2,".",","); ?>" class="form-control" id="moneda_tc_nuevo" required onkeyup="calcular_razon();" />
                                         <span class="text-danger"><?php echo form_error('moneda_tc_nuevo');?></span>
                                 </div>
                         </div>
@@ -203,7 +204,7 @@
                         
                         <div class="col-md-4">
                                 <label for="moneda_tc_nuevo" class="control-label">Operacion</label>
-                                <div class="form-group" >
+                                <div class="form-group" id="operacion">
                                     <select class="form-group form-control" >
                                         <option value="0">- OPERACION -</option>
                                         <option value="1">ACTUALIZACION DE VALOR</option>
@@ -216,7 +217,7 @@
                         <div class="col-md-4">
                                 <label for="moneda_tc_nuevo" class="control-label">Afectar</label>
                                 <div class="form-group">
-                                    <select class="form-group form-control" >
+                                    <select class="form-group form-control" id="afectar">
                                         <option value="0">- NINGUNO -</option>
                                         <option value="1">AL PRECIO DE VENTA</option>
                                         <option value="2">AL PRECIO VENTA Y FACTORES</option>
@@ -228,7 +229,7 @@
                         <div class="col-md-4">
                                 <label for="moneda_tc_nuevo" class="control-label">Redondear</label>
                                 <div class="form-group">
-                                    <select class="form-group form-control" >
+                                    <select class="form-group form-control" id="redondear">
                                         <option value="0">- NO REDONDEAR -</option>
                                         <option value="1">CONVERTIR LOS DECIMALES EN 0.50 CTVS</option>
                                         <option value="2">REDONDEAR AL SUPERIOR</option>
@@ -243,10 +244,10 @@
                         <div class="modal-footer" style="text-align: center">
                             <!--<button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>-->
                             <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
-                            <button type="submit"  class="btn btn-success"  value="Subir archivo"><fa class="fa fa-file-excel-o"></fa> Subir Archivo</button>
+                            <button type="submit"  class="btn btn-success"  value="Calcular Precios" onclick="cargar_precios()"><fa class="fa fa-file-excel-o"></fa> Calcular Precios</button>
                         </div>
                 
-                <?php echo form_close(); ?>
+                <?php // echo form_close(); ?>
             
             </div>
     </div>
@@ -255,3 +256,41 @@
 <!------------------------------------------------------------------------------->
 <!----------------------- FIN MODAL CAMBIAR ----------------------------------->
 <!------------------------------------------------------------------------------->
+
+
+<!-- Overlay de bloqueo -->
+<div id="overlay" style="display: none;">
+    <div class="spinner"></div>
+    <p>Cargando...</p>
+</div>
+
+<style>
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        text-align: center;
+        color: white;
+        font-size: 20px;
+        font-family: Arial, sans-serif;
+    }
+    
+    #overlay .spinner {
+        margin-top: 20%;
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
+        width: 60px;
+        height: 60px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
