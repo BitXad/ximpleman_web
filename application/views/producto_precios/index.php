@@ -1,8 +1,10 @@
+<script src="<?php echo base_url('resources/js/producto_precios.js'); ?>"></script>
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
 <?php $decimales = $parametro['parametro_decimales']; ?>
 <input type="text" id="decimales" value="<?php echo $decimales; ?>" name="decimales" hidden>
+<input type="text" id="base_url" value="<?php base_url(); ?>" name="base_url" hidden>
 <!----------------------------- fin script buscador --------------------------------------->
 
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -17,6 +19,7 @@
     <br><font size='2' face='Arial'>Expresado en <?php echo $lamoneda['moneda_descripcion']; ?></font>
     <div class="box-tools no-print">
         <a href="<?php echo site_url('tipo_cliente/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Tipo Cliente</a>
+        <button class="btn btn-info btn-sm" onclick="cargar_precios()"><fa class='fa fa-list'></fa> Cargar lista de precios</button>
     </div>
 </div>
 
@@ -38,6 +41,7 @@
                             <th>Descripción</th>
                             <th>Costo.<br><?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Ultimo<br>Costo <?php echo $lamoneda['moneda_descripcion'] ?></th>
+                            <th>Codigo</th>
                             <th>Precio<br><?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Precio<br>Factor1 <?php echo $lamoneda['moneda_descripcion'] ?></th>
                             <th>Precio<br>Factor2 <?php echo $lamoneda['moneda_descripcion'] ?></th>
@@ -52,16 +56,17 @@
                             foreach($productos as $t){;
                                 $cont = $cont+1; ?>
                         <tr>
-                            <td><?php echo $cont ?></td>
+                            <td style="text-align: right;"><?php echo $cont ?></td>
                             <td><?php echo $t['producto_nombre']."<sub>[".$t['producto_id']."]</sub>"; ?></td>
-                            <td><?php echo number_format($t['producto_costo'],$decimales,".",","); ?></td>
-                            <td><?php echo number_format($t['producto_ultimocosto'],$decimales,".",","); ?></td>
-                            <td><?php echo number_format($t['producto_precio'],$decimales,".",","); ?></td>
-                            <td><?php echo number_format($t['producto_preciofactor'],$decimales,".",","); ?></td>
-                            <td><?php echo number_format($t['producto_preciofactor1'],$decimales,".",","); ?></td>
-                            <td><?php echo number_format($t['producto_preciofactor2'],$decimales,".",","); ?></td>
-                            <td><?php echo number_format($t['producto_preciofactor3'],$decimales,".",","); ?></td>
-                            <td><?php echo number_format($t['producto_preciofactor4'],$decimales,".",","); ?></td>
+                            <td><?php echo $t['producto_codigobarra']; ?></td>
+                            <td style="text-align: right;"><?php echo number_format($t['producto_costo'],$decimales,".",","); ?></td>
+                            <td style="text-align: right;"><?php echo number_format($t['producto_ultimocosto'],$decimales,".",","); ?></td>
+                            <td style="text-align: right;"><?php echo number_format($t['producto_precio'],$decimales,".",","); ?></td>
+                            <td style="text-align: right;"><?php echo number_format($t['producto_preciofactor'],$decimales,".",","); ?></td>
+                            <td style="text-align: right;"><?php echo number_format($t['producto_preciofactor1'],$decimales,".",","); ?></td>
+                            <td style="text-align: right;"><?php echo number_format($t['producto_preciofactor2'],$decimales,".",","); ?></td>
+                            <td style="text-align: right;"><?php echo number_format($t['producto_preciofactor3'],$decimales,".",","); ?></td>
+                            <td style="text-align: right;"><?php echo number_format($t['producto_preciofactor4'],$decimales,".",","); ?></td>
 <!--                            <td class="no-print">
                                 <a href="<?php echo site_url('tipo_cliente/edit/'.$t['producto_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
                             </td>-->
@@ -187,7 +192,16 @@
                                         <span class="text-danger"><?php echo form_error('moneda_tc_nuevo');?></span>
                                 </div>
                         </div>
-                        <div class="col-md-3">
+                        
+                        <div class="col-md-4">
+                                <label for="moneda_razon" class="control-label">Razón de Conversión </label>
+                                <div class="form-group">
+                                    <input type="text" name="moneda_razon" value="0.00" class="form-control" id="moneda_razon" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" disabled="true"/>
+                                        <!--<span class="text-danger"><?php echo form_error('moneda_razon');?></span>-->
+                                </div>
+                        </div>
+                        
+                        <div class="col-md-4">
                                 <label for="moneda_tc_nuevo" class="control-label">Operacion</label>
                                 <div class="form-group" >
                                     <select class="form-group form-control" >
@@ -199,19 +213,19 @@
                                 </div>
                         </div>
                         
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                                 <label for="moneda_tc_nuevo" class="control-label">Afectar</label>
                                 <div class="form-group">
                                     <select class="form-group form-control" >
                                         <option value="0">- NINGUNO -</option>
-                                        <option value="1">AL PRECIO UNITARIO</option>
-                                        <option value="2">AL PRECIO UNITARIO Y FACTORES</option>
-                                        <option value="3">LLENAR LOS FACTORES</option>
+                                        <option value="1">AL PRECIO DE VENTA</option>
+                                        <option value="2">AL PRECIO VENTA Y FACTORES</option>
+                                        <option value="3">SOLO FACTORES LOS FACTORES</option>                                       
                                     </select>
                                 </div>
                         </div>
                         
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                                 <label for="moneda_tc_nuevo" class="control-label">Redondear</label>
                                 <div class="form-group">
                                     <select class="form-group form-control" >

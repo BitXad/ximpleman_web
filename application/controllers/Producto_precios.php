@@ -182,4 +182,34 @@ class Producto_precios extends CI_Controller{
            
     }
     
+    function cargar_precios()
+    { 
+        $data['sistema'] = $this->sistema;
+        if($this->input->is_ajax_request()){
+            
+            $sql = "truncate producto_precios";
+            $this->Venta_model->Ejecutar($sql);
+            
+            $sql = "INSERT INTO producto_precios 
+                    (producto_id, producto_nombre, producto_codigobarra, producto_costo, producto_precio, producto_tipocambio, 
+                    producto_preciofactor, producto_preciofactor1, producto_preciofactor2, 
+                    producto_preciofactor3, producto_preciofactor4, producto_ultimocosto, 
+                    producto_costoenvase, producto_precioenvase)
+                    SELECT p.producto_id, p.producto_nombre, p.producto_codigobarra, p.producto_costo, p.producto_precio, 
+                    p.producto_tipocambio, p.producto_preciofactor, p.producto_preciofactor1, 
+                    p.producto_preciofactor2, p.producto_preciofactor3, p.producto_preciofactor4, 
+                    p.producto_ultimocosto, p.producto_costoenvase, p.producto_precioenvase
+                    FROM producto p";
+            $this->Venta_model->Ejecutar($sql);
+
+           
+            echo json_encode(true);
+        }
+        else
+        {                 
+            show_404();
+        }
+           
+    }
+    
 }
