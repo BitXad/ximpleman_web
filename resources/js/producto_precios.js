@@ -47,20 +47,25 @@ function calcular_razon() {
     
 }
 
-function cargar_precios(){
+function actualizar_precios(){
     
     let base_url = document.getElementById('base_url').value;
-    let controlador = base_url + 'producto_precios/cargar_precios';
+    let controlador = base_url + 'producto_precios/actualizar_precios';
     let operacion = document.getElementById('operacion').value;
     let afectar = document.getElementById('afectar').value;
     let redondear = document.getElementById('redondear').value;
+    let tc = document.getElementById('moneda_tc').value;
+    let tc_nuevo = document.getElementById('moneda_tc_nuevo').value;    
+    let razon = tc_nuevo / tc ;
     
+    
+    alert(operacion +' *** '+afectar+' *** '+redondear)
     var r = confirm("ADVERTENCIA: Esta operación eliminará y reemplazará la lista actual. \n ¿Desea Continuar?");    
     if (r == true) {
         
-        if(operacion>0){
-            if(afectar>0){
-                if(redondear>0){
+        if(Number(operacion)>0){
+            if(Number(afectar)>0){
+                if(Number(redondear)>0){
                 
                         // Mostrar el overlay de bloqueo
                         document.getElementById("overlay").style.display = "block";

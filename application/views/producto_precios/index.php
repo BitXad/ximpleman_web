@@ -167,7 +167,7 @@
 <div class="modal fade" id="modal_cambiarprecios" tabindex="-1" role="dialog" aria-labelledby="modalexcel" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
     <div class="modal-dialog" role="document">
             <div class="modal-header" style="background: #3399cc">
-                <b style="color: white;">CAMBIAR/ACTUALIZAR PRECIOS</b>
+                <b style="color: white;">ACTUALIZAR PRECIOS</b>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -204,8 +204,8 @@
                         
                         <div class="col-md-4">
                                 <label for="moneda_tc_nuevo" class="control-label">Operacion</label>
-                                <div class="form-group" id="operacion">
-                                    <select class="form-group form-control" >
+                                <div class="form-group">
+                                    <select class="form-group form-control" id="operacion">
                                         <option value="0">- OPERACION -</option>
                                         <option value="1">ACTUALIZACION DE VALOR</option>
                                         <option value="2">MODIFICAR EL PRECIO</option>
@@ -244,7 +244,7 @@
                         <div class="modal-footer" style="text-align: center">
                             <!--<button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>-->
                             <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal""><fa class="fa fa-times"></fa> Cerrar</button>
-                            <button type="submit"  class="btn btn-success"  value="Calcular Precios" onclick="cargar_precios()"><fa class="fa fa-file-excel-o"></fa> Calcular Precios</button>
+                            <button type="submit"  class="btn btn-success"  value="Calcular Precios" onclick="actualizar_precios()"><fa class="fa fa-file-excel-o"></fa> Actualizar Precios</button>
                         </div>
                 
                 <?php // echo form_close(); ?>
@@ -260,8 +260,11 @@
 
 <!-- Overlay de bloqueo -->
 <div id="overlay" style="display: none;">
+    <center>
+        
     <div class="spinner"></div>
     <p>Cargando...</p>
+    </center>
 </div>
 
 <style>
@@ -287,6 +290,7 @@
         width: 60px;
         height: 60px;
         animation: spin 2s linear infinite;
+        text-align: center;
     }
 
     @keyframes spin {
