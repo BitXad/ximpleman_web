@@ -223,6 +223,12 @@ window.onkeydown = compruebaTecla;
 
  <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
 <!-------------------------------------------------------->
+<?php 
+$verificar_cantidades = 0;
+$compra_rapida = 0;
+$actualizar_precios = 0;
+
+?>
 <div id="selector" hidden>
     <!--  Aqui inserta in input temporal que sirve para almacenar el factor de conversion del producto -->
     
@@ -346,6 +352,9 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_comprobante" value="<?php echo $parametro['parametro_comprobante']; ?>" name="parametro_comprobante"  hidden>
 <input type="text" id="parametro_botonescontrol" value="<?php echo $parametro['parametro_botonescontrol']; ?>" name="parametro_botonescontrol"  hidden>
 <input type="text" id="factura_idcreditodebito" value="0" name="factura_idcreditodebito"  hidden>
+<input type="text" id="verificar_cantidades" value="<?php echo $verificar_cantidades; ?>" hidden>
+<input type="text" id="compra_rapida" value="<?php echo $compra_rapida; ?>" hidden>
+<input type="text" id="actualizar_precios" value="<?php echo $actualizar_precios; ?>" hidden>
 <input type="text" id="boton_presionado" value="0" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->

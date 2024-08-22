@@ -1641,3 +1641,98 @@ $("#texto2").change(function(){
 	</div>
 </div>
 <!----------------- fin modal clasificador ---------------------------------------------->
+
+
+<!------------------------------------------------------------------------------->
+<!------------------ INICIO MODAL ACTUALIZAR PRECIOS ---------------------------->
+<!------------------------------------------------------------------------------->
+
+
+<div >
+    <button type="button" id="boton_precios" class="btn btn-default" data-toggle="modal" data-target="#modalprecios" >
+      Actualizar Precios
+    </button>
+    
+</div>
+
+<div class="modal fade" id="modalprecios" tabindex="-1" role="dialog" aria-labelledby="modalprecios" aria-hidden="true" style="font-family: Arial; font-size: 10pt;">
+    <div class="modal-dialog" role="document">
+            <div class="modal-header" style="background: #3399cc">
+                <b style="color: white;">CALCULAR COSTOS</b>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-content" style="font-family: Arial">
+
+                    <div class="box-body">
+
+                        <div class="col-md-3"  disabled="true" hidden="true">
+                            <input type="number" name="origen" value="0.00" class="form-control" id="origen" disabled="true"/>
+                            <input type="number" name="productoidx" value="0.00" class="form-control" id="productoidx" disabled="true"/>
+
+                        </div>
+                        
+                        <div class="col-md-3"  disabled="true">
+                                <label for="costoant_ant" class="control-label">Costo</label>
+                                <div class="form-group">
+                                    <input type="number" name="costo_anterior" value="0.00" class="form-control" id="costo_anterior" disabled="true"/>
+                                </div>
+                        </div>
+                        
+                        <div class="col-md-3"  disabled="true">
+                                <label for="precioant_ant" class="control-label">Precio</label>
+                                <div class="form-group">
+                                    <input type="number" name="precio_anterior" value="0.00" class="form-control" id="precio_anterior" disabled="true"/>
+                                </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                                <label for="costo_caja_id" class="control-label">Costo Caja</label>
+                                <div class="form-group">
+                                    <input type="number" name="costo_caja" value="0.00" class="form-control" id="costo_caja" onkeyup="calcular_costo_nuevo()"/>
+                                </div>
+                        </div>
+                        <div class="col-md-3">
+                                <label for="cantidad_id" class="control-label">Contiene</label>
+                                <div class="form-group">
+                                    <input type="number" name="cantidad_unidades" value="0.00" class="form-control" id="cantidad_unidades" onkeyup="calcular_costo_nuevo()"/>
+                                </div>
+                        </div>
+                        <div class="col-md-4">
+                                <label for="costo_nuevo_id" class="control-label">Costo Nuevo</label>
+                                <div class="form-group">
+                                        <input type="number" name="costo_nuevo" value="0.00" class="form-control" id="costo_nuevo" />
+                                </div>
+                        </div>
+                        <div class="col-md-4">
+                                <label for="precio_nuevo_id" class="control-label">Precio Nuevo</label>
+                                <div class="form-group">
+                                        <input type="number" name="precio_nuevo" value="0.00" class="form-control" id="precio_nuevo" />
+                                </div>
+                        </div>
+                        <div class="col-md-4">
+                                <label for="cantidad_compra_id" class="control-label">Cantidad Compra (Cajas)</label>
+                                <div class="form-group">
+                                        <input type="number" name="cantidad_compra" value="1" class="form-control" id="cantidad_compra" />
+                                </div>
+                        </div>
+                        
+                        
+                    </div>
+
+                        <div class="modal-footer" style="text-align: center">
+                            <!--<button type="button" class="btn btn-success"  onclick="verificar_producto()" id="boton_proceder"><fa class="fa fa-chain"></fa> Actualizar</button>-->
+                            <button type="button" class="btn btn-danger" id="boton_cerrar_ventatemporal" data-dismiss="modal"><fa class="fa fa-times"></fa> Cerrar</button>
+                            <button type="button"  class="btn btn-success"  onclick="registrar_precios()" data-dismiss="modal"><fa class="fa fa-file-excel-o"></fa> Registrar</button>
+                        </div>
+                
+            
+            </div>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------->
+<!----------------------- FIN MODAL CALCULAR PRECIOS --------------------------->
+<!------------------------------------------------------------------------------->

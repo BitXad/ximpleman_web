@@ -261,10 +261,11 @@
 <!-- Overlay de bloqueo -->
 <div id="overlay" style="display: none;">
     <center>
-        
-    <div class="spinner"></div>
-    <p>Cargando...</p>
-    </center>
+
+        <div class="spinner"></div>
+        <p>Cargando...</p>        
+        <img src="<?php echo base_url("resources/images/success.gif"); ?>" width="120px" height="100px">
+
 </div>
 
 <style>

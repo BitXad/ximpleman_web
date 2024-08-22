@@ -2815,6 +2815,10 @@ function tablaresultados(opcion)
         
     let tamanio_fuente = document.getElementById('parametro_tamanioletrasboton').value+"px";
     
+    let verificar_cantidades = document.getElementById('verificar_cantidades').value;
+    let compra_rapida = document.getElementById('compra_rapida').value;
+    let actualizar_precios = document.getElementById('actualizar_precios').value;
+    
     
     // var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
     
@@ -2959,9 +2963,18 @@ function tablaresultados(opcion)
                         html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];                        
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";  
-                        html += "<button class='btn btn-info btn-xs' style='padding:0px;' title='Verificar cantidades en sucursales'  data-toggle='modal' data-target='#modalsucursales'>- <fa class='fa fa-bar-chart' onclick='seleccionar_producto("+registros[i]["producto_id"]+","+JSON.stringify(registros[i]["producto_nombre"])+", "+JSON.stringify(registros[i]["producto_codigobarra"])+")'></fa> -</button>";
-                        html += "<button class='btn btn-danger btn-xs' type='text' style='padding:0;' title='Compra rápida' id='button"+registros[i]["producto_id"]+"' onclick='registrar_ingreso_rapido("+registros[i]["producto_id"]+")'>- <fa class='fa fa-bolt'></fa> -</button>";
-                        html += "<button class='btn btn-facebook btn-xs' type='text' style='padding:0;' title='Registro rápido' id='button"+registros[i]["producto_id"]+"' onclick='modificar_precios("+registros[i]["producto_id"]+")'>- <fa class='fa fa-money'></fa> -</button>";
+                        
+                        if(verificar_cantidades>0){
+                            html += "<button class='btn btn-info btn-xs' style='padding:0px;' title='Verificar cantidades en sucursales'  data-toggle='modal' data-target='#modalsucursales'>- <fa class='fa fa-bar-chart' onclick='seleccionar_producto("+registros[i]["producto_id"]+","+JSON.stringify(registros[i]["producto_nombre"])+", "+JSON.stringify(registros[i]["producto_codigobarra"])+")'></fa> -</button>";
+                        }
+                        
+                        if(compra_rapida>0){
+                            html += "<button class='btn btn-danger btn-xs' type='text' style='padding:0;' title='Compra rápida' id='button"+registros[i]["producto_id"]+"' onclick='registrar_ingreso_rapido("+registros[i]["producto_id"]+")'>- <fa class='fa fa-bolt'></fa> -</button>";
+                        }
+
+                        if(actualizar_precios>0){
+                            html += "<button class='btn btn-facebook btn-xs' type='text' style='padding:0;' title='Actualizador de precios' id='button"+registros[i]["producto_id"]+"' onclick='modificar_precios("+registros[i]["producto_id"]+")'>- <fa class='fa fa-money'></fa> -</button>";
+                        }
                         
                         if (parametro_modulorestaurante==2){ //si es farmacia
                             
