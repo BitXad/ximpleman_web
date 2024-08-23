@@ -9115,6 +9115,17 @@ function borrar_datos_cliente(){
             else{ boton.click(); }//Imprimir recibo
             boton2.click(); //imprimir comanda
         }
+        
+        if(parametro_imprimirfactura==9){ // Imprimir factura o recibo y comanda
+            
+            let boton1 = document.getElementById("imprimir_factura_pdf");
+//            let boton = document.getElementById("imprimir");            
+//            let boton2 = document.getElementById("imprimir_comanda");
+            
+            if (facturado == 1){ boton1.click(); } //Imprimir factura
+//            else{ boton.click(); }//Imprimir recibo
+//            boton2.click(); //imprimir comanda
+        }
 
     //}
 

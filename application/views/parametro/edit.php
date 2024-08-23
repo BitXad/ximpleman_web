@@ -814,6 +814,7 @@ div {
                                 <option value="6" <?php if($parametro['parametro_imprimirfactura']=="6"){ echo "selected"; } ?>>IMPRIMIR FACTURA Y COMANDA</option>
                                 <option value="7" <?php if($parametro['parametro_imprimirfactura']=="7"){ echo "selected"; } ?>>IMPRIMIR FACTURA,RECIBO Y COMANDA</option>
                                 <option value="8" <?php if($parametro['parametro_imprimirfactura']=="8"){ echo "selected"; } ?>>IMPRIMIR FACTURA O RECIBO Y COMANDA</option>
+                                <option value="9" <?php if($parametro['parametro_imprimirfactura']=="9"){ echo "selected"; } ?>>IMPRIMIR FACTURA PDF</option>
                                 
                             </select>
                         </div>

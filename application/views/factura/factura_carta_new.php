@@ -657,7 +657,7 @@ border-bottom : 1px solid #aaa;
 
                     
                     <!-------------- FACTURA TOTAL ---------->
-                    <?php if($factura[0]['docsec_codigoclasificador']==13){ 
+                    <?php if($factura[0]['docsec_codigoclasificador']==13){ //Si es factura de servicios basicos
                         
                         $tasas = $datos_factura["datos_tasaaseo"]+$datos_factura["datos_tasaalumbrado"]+$datos_factura["datos_otrastasas"];
                         $datos_otrospagosnosujetoiva = $datos_factura["datos_otrospagosnosujetoiva"];
@@ -698,7 +698,6 @@ border-bottom : 1px solid #aaa;
                             <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right">(+) AJUSTES NO SUJETOS A IVA Bs</td>
                             <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($datos_ajutesnosujetoiva ,$dos_decimales,'.',',') ?></b></td>
                         </tr>
-                        
                         
                         
                         <tr>
@@ -763,6 +762,14 @@ border-bottom : 1px solid #aaa;
 
                         
                     } ?>
+                    
+                    
+                        <tr>
+                            <td style="padding:0; padding-right: 3px;" colspan="<?= $span; ?>" align="right"><b>IMPORTE BASE CREDITO FISCAL</b></td>
+                            <td style="padding:0; padding-right: 3px;" align="right"><b><?= number_format($factura[0]['factura_total'] ,$dos_decimales,'.',',') ?></b></td>
+                        </tr>
+                    
+                    
                 </table>
             </td>
         </tr>

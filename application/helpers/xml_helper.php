@@ -168,7 +168,7 @@
         $decimales = $parametros[0]["parametro_decimales"];
         $dos_decimales = 2;
         
-        if($documento_sector == 12 || $documento_sector == 13  ){ //12 Comercializacion de hidrocarburos 13 Servicios basicos
+        if($documento_sector == 11 || $documento_sector == 12 || $documento_sector == 13  ){ //12 Comercializacion de hidrocarburos 13 Servicios basicos
             $CI2 = & get_instance();
             $CI2->load->model('Factura_datos_model');
             
@@ -384,13 +384,98 @@ $salto_linea='
         
         
         
-        if($documento_sector==16){ //16-Hoteles
-        
-            $cabecera_facturaxml .= $salto_linea.'          <cantidadHuespedes>5</cantidadHuespedes>';
-            $cabecera_facturaxml .= $salto_linea.'          <cantidadHabitaciones>3</cantidadHabitaciones>';
-            $cabecera_facturaxml .= $salto_linea.'          <cantidadMayores>4</cantidadMayores>';
-            $cabecera_facturaxml .= $salto_linea.'          <cantidadMenores>1</cantidadMenores>';
-            $cabecera_facturaxml .= $salto_linea.'          <fechaIngresoHospedaje>2021-10-06T16:03:48.885</fechaIngresoHospedaje>';
+        if($documento_sector == 16){ //16-Hoteles
+            
+                        //***************************************************************
+                    //ESTRAER DATOS EN VARIABLES
+                    //***************************************************************
+                    
+                        // Cadena de datos
+                        $data = $detalle_factura[0]['detallefact_caracteristicas'];
+                        //var_dump($data);
+                        // Separar cada línea en un array
+                        $lines = explode("\n", $data);
+
+                        // Crear variables para almacenar los datos
+                        
+                        $cantidadHuespedes = '';
+                        $cantidadHabitaciones = '';
+                        $cantidadMayores = '';
+                        $cantidadMenores = '';
+                        $fechaIngresoHospedaje = '';
+                        $horaIngresoHospedaje = '';
+
+
+                        // Iterar a través de cada línea para asignar valores
+                        foreach ($lines as $line) {
+                            // Separar cada línea en clave y valor
+                            $parts = explode(":", $line, 2);
+                            $key = trim($parts[0]);
+                            $value = trim($parts[1]);
+
+                            // Verificar si existe tanto la clave como el valor
+                                if (count($parts) < 2) {
+                                    continue; // Si no hay datos después de ":", saltar la línea
+                                }
+                                
+
+                            // Asignar los valores a las variables correspondientes
+                            switch ($key) {
+                                case 'CANTIDAD HUESPEDES':
+                                    $cantidadHuespedes = $value;
+                                    break;
+                                case 'CANTIDAD HABITACIONES':
+                                    $cantidadHabitaciones = $value;
+                                    break;
+                                case 'CANTIDAD MAYORES':
+                                    $cantidadMayores = $value;
+                                    break;
+                                case 'CANTIDAD MENORES':
+                                    $cantidadMenores = $value;
+                                    break;
+                                case 'FECHA INGRESO':
+                                    $fechaIngresoHospedaje = $value;
+                                    break;
+                                
+                                case 'HORA INGRESO':
+                                    $horaIngresoHospedaje = $value;
+                                    break;
+                                
+                            }
+                        }
+//
+//                        // Mostrar los valores obtenidos
+//                        echo "Especialidad: $especialidad\n";
+//                        echo "Detalle de Especialidad: $especialidadDetalle\n";
+//                        echo "Número de Quirófano/Sala: $nroQuirofanoSalaOperaciones\n";
+//                        echo "Especialidad del Médico: $especialidadMedico\n";
+//                        echo "Nombre del Médico: $nombreApellidoMedico\n";
+//                        echo "NIT del Médico: $nitDocumentoMedico\n";
+//                        echo "Número de Matrícula del Médico: $nroMatriculaMedico\n";
+//                        echo "Número de Factura del Médico: $nroFacturaMedico\n";
+//                    
+                    
+                    //***************************************************************
+                    //***************************************************************
+            
+            
+            if($cantidadHuespedes!='') $cabecera_facturaxml .= $salto_linea.'          <cantidadHuespedes>'.$cantidadHuespedes.'</cantidadHuespedes>';
+            else $cabecera_facturaxml .= $salto_linea.'          <cantidadHuespedes>'.$cantidadHuespedes.'</cantidadHuespedes>';
+            
+            $cabecera_facturaxml .= $salto_linea.'          <cantidadHabitaciones>'.$cantidadHabitaciones.'</cantidadHabitaciones>';
+
+            $cabecera_facturaxml .= $salto_linea.'          <cantidadMayores>'.$cantidadMayores.'</cantidadMayores>';
+
+            $cabecera_facturaxml .= $salto_linea.'          <cantidadMenores>'.$cantidadMenores.'</cantidadMenores>';
+            
+            
+            
+            $fechaPartes = explode("/", $fechaIngresoHospedaje);
+            $fecha =  $fechaPartes[0]. '-' . $fechaPartes[1] . '-' . $fechaPartes[2];
+             
+            $hora = $horaIngresoHospedaje.":00.01";
+            
+            $cabecera_facturaxml .= $salto_linea.'          <fechaIngresoHospedaje>'.$fecha.'T'.$hora.'</fechaIngresoHospedaje>';
         }
         
         
@@ -401,8 +486,9 @@ $salto_linea='
         
             
         if ($documento_sector == 11){
-            $cabecera_facturaxml .= $salto_linea.'          <nombreEstudiante>'.$razonSocial.'</nombreEstudiante>'; //cambiar por cliente_nombre
-            $periodoFacturado = "ENERO/2022"; //cambiar por factura_glosa
+            $estudiante = $factura_datos["datos_beneficiarioley1886"];
+            $cabecera_facturaxml .= $salto_linea.'          <nombreEstudiante>'.$estudiante.'</nombreEstudiante>'; //cambiar por cliente_nombre
+            $periodoFacturado =  $factura_datos["datos_periodofacturado"]; //cambiar por factura_glosa
             $cabecera_facturaxml .= $salto_linea.'          <periodoFacturado>'.$periodoFacturado.'</periodoFacturado>'; //cambiar por cliente_nombre
             
         }
@@ -653,10 +739,13 @@ $salto_linea='
                 $descuentoparcial = $df['detallefact_descuentoparcial'] * $df['detallefact_cantidad'];
                 $numero_serie = $df['detallefact_preferencia'];
                 $valor_imei = $df['detallefact_caracteristicas'];
-                
-                if(isset($df['detallefact_caracteristicas']) && $df['detallefact_caracteristicas']!='null' && $df['detallefact_caracteristicas']!='-' ) {
-                    $detallefact_descripcion .= " ".$valor_imei;
-                }    
+
+                if($documento_sector != 16 && $documento_sector != 17){ //Si no es clinica u hospital
+                    
+                    if(isset($df['detallefact_caracteristicas']) && $df['detallefact_caracteristicas']!='null' && $df['detallefact_caracteristicas']!='-' ) {
+                        $detallefact_descripcion .= " ".$valor_imei;
+                    }    
+                }
                   //  echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
                 /*
                 if($documento_sector == 8){ // unir el nombre del producto con las caracteristicas del producto
@@ -682,14 +771,105 @@ $salto_linea='
                 
                 if($documento_sector == 17){ //17 Clinicas u Hospitales
                     
-                    $detalle_facturaxml .= $salto_linea.'           <especialidad>Traumatologia</especialidad>';
-                    $detalle_facturaxml .= $salto_linea.'           <especialidadDetalle>Reduccion de fractura</especialidadDetalle>';
-                    $detalle_facturaxml .= $salto_linea.'           <nroQuirofanoSalaOperaciones>2</nroQuirofanoSalaOperaciones>';
-                    $detalle_facturaxml .= $salto_linea.'           <especialidadMedico>Traumatologia</especialidadMedico>';
-                    $detalle_facturaxml .= $salto_linea.'           <nombreApellidoMedico>Juan Perez</nombreApellidoMedico>';
-                    $detalle_facturaxml .= $salto_linea.'           <nitDocumentoMedico>1020703023</nitDocumentoMedico>';
-                    $detalle_facturaxml .= $salto_linea.'           <nroMatriculaMedico>312312ASDAS</nroMatriculaMedico>';
-                    $detalle_facturaxml .= $salto_linea.'           <nroFacturaMedico>32132132</nroFacturaMedico>';
+                    //***************************************************************
+                    //ESTRAER DATOS EN VARIABLES
+                    //***************************************************************
+                    
+                        // Cadena de datos
+                        $data = $df['detallefact_caracteristicas'];
+
+                        // Separar cada línea en un array
+                        $lines = explode("\n", $data);
+
+                        // Crear variables para almacenar los datos
+                        $especialidad = '';
+                        $especialidadDetalle = '';
+                        $nroQuirofanoSalaOperaciones = '';
+                        $especialidadMedico = '';
+                        $nombreApellidoMedico = '';
+                        $nitDocumentoMedico = '';
+                        $nroMatriculaMedico = '';
+                        $nroFacturaMedico = '';
+
+                        // Iterar a través de cada línea para asignar valores
+                        foreach ($lines as $line) {
+                            // Separar cada línea en clave y valor
+                            $parts = explode(":", $line, 2);
+                            $key = trim($parts[0]);
+                            $value = trim($parts[1]);
+
+                            // Verificar si existe tanto la clave como el valor
+                                if (count($parts) < 2) {
+                                    continue; // Si no hay datos después de ":", saltar la línea
+                                }
+                            
+                            // Asignar los valores a las variables correspondientes
+                            switch ($key) {
+                                case 'ESPECIALIDAD':
+                                    $especialidad = $value;
+                                    break;
+                                case 'ESPECIALIDAD DETALLE':
+                                    $especialidadDetalle = $value;
+                                    break;
+                                case 'QUIROFANO':
+                                    $nroQuirofanoSalaOperaciones = $value;
+                                    break;
+                                case 'MEDICO':
+                                    $especialidadMedico = $value;
+                                    break;
+                                case 'ESPECIALIDAD MEDICO':
+                                    $nombreApellidoMedico = $value;
+                                    break;
+                                case 'NIT MEDICO':
+                                    $nitDocumentoMedico = $value;
+                                    break;
+                                case 'MATRICULA':
+                                    $nroMatriculaMedico = $value;
+                                    break;
+                                case 'NRO FACTURA':
+                                    $nroFacturaMedico = $value;
+                                    break;
+                            }
+                        }
+//
+//                        // Mostrar los valores obtenidos
+//                        echo "Especialidad: $especialidad\n";
+//                        echo "Detalle de Especialidad: $especialidadDetalle\n";
+//                        echo "Número de Quirófano/Sala: $nroQuirofanoSalaOperaciones\n";
+//                        echo "Especialidad del Médico: $especialidadMedico\n";
+//                        echo "Nombre del Médico: $nombreApellidoMedico\n";
+//                        echo "NIT del Médico: $nitDocumentoMedico\n";
+//                        echo "Número de Matrícula del Médico: $nroMatriculaMedico\n";
+//                        echo "Número de Factura del Médico: $nroFacturaMedico\n";
+//                    
+                    
+                    //***************************************************************
+                    //***************************************************************
+                    
+                    if($especialidad!=''){  $detalle_facturaxml .= $salto_linea.'           <especialidad>'.$especialidad.'</especialidad>';                        
+                    }else{ $detalle_facturaxml .= $salto_linea.'           <especialidad xsi:nil="true"></especialidad>';}
+                    
+                    if($especialidadDetalle!=''){ $detalle_facturaxml .= $salto_linea.'           <especialidadDetalle>'.$especialidadDetalle.'</especialidadDetalle>';
+                    }else{ $detalle_facturaxml .= $salto_linea.'           <especialidadDetalle xsi:nil="true"></especialidadDetalle>';}
+                    
+                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <nroQuirofanoSalaOperaciones>'.$nroQuirofanoSalaOperaciones.'</nroQuirofanoSalaOperaciones>';
+                    }else{ $detalle_facturaxml .= $salto_linea.'           <nroQuirofanoSalaOperaciones xsi:nil="true"></nroQuirofanoSalaOperaciones>';}
+                    
+                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <especialidadMedico>'.$especialidadMedico.'</especialidadMedico>';
+                    }else{ $detalle_facturaxml .= $salto_linea.'           <especialidadMedico xsi:nil="true"></especialidadMedico>';}
+                    
+                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <nombreApellidoMedico>'.$nombreApellidoMedico.'</nombreApellidoMedico>';
+                    }else{ $detalle_facturaxml .= $salto_linea.'           <nombreApellidoMedico xsi:nil="true"></nombreApellidoMedico>';}
+                    
+                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <nitDocumentoMedico>'.$nitDocumentoMedico.'</nitDocumentoMedico>';
+                    }else{ $detalle_facturaxml .= $salto_linea.'           <nitDocumentoMedico xsi:nil="true"></nitDocumentoMedico>';}
+                    
+                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <nroMatriculaMedico>'.$nroMatriculaMedico.'</nroMatriculaMedico>';
+                    }else{ $detalle_facturaxml .= $salto_linea.'           <nroMatriculaMedico xsi:nil="true"></nroMatriculaMedico>';} 
+                    
+                    if($nroQuirofanoSalaOperaciones!=''){ $detalle_facturaxml .= $salto_linea.'           <nroFacturaMedico>'.$nroFacturaMedico.'</nroFacturaMedico>';
+                    }else{ $detalle_facturaxml .= $salto_linea.'           <nroFacturaMedico xsi:nil="true"></nroFacturaMedico>';}
+                    
                 }
                 
                 if($documento_sector == 6){ //6 Servicio Turistico Hospedaje

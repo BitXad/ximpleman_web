@@ -1213,7 +1213,7 @@ $actualizar_precios = 1;
                 }
                 ?>
             <a href="<?php echo base_url('venta/ultimaventa/1');?>" <?php //echo $nomostrar; ?> data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura" title="Imprimir factura"  style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-list-alt"></span><b> Factura</b></a> 
-            <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura" title="Imprimir factura en PDF"  style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-file-pdf"></span> <b>PDF</b></a>
+            <a href="<?php echo base_url('venta/ultimaventapdf');?>" data-toggle="modal" target="_blank" class="btn btn-default btn-xs" id="imprimir_factura_pdf" title="Imprimir factura en PDF"  style="<?php echo ($parametro["parametro_herramientassuperior"]!=1)?"display:none":"" ?>"><span class="fa fa-file-pdf"></span> <b>PDF</b></a>
             
             <?php } 
             ?>
