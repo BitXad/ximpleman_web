@@ -3879,6 +3879,9 @@ function registrarventa(cliente_id)
     let parametro_comprobante = document.getElementById('parametro_comprobante').value;
     //let datos_periodofacturado = document.getElementById('datos_periodofacturado').value;
     let factura_servicio = document.getElementById("selector_factura").value;
+    let cliente_nombre = document.getElementById('cliente_nombre').value;
+    let cliente_nombrenegocio = document.getElementById('cliente_nombrenegocio').value;
+    //alert(cliente_nombre+" *** "+ cliente_nombrenegocio);
     
     if (registroeventos_codigo>0){
         
@@ -3905,6 +3908,7 @@ function registrarventa(cliente_id)
 //          " * codigo_cafc: "+codigo_cafc);
     //alert(venta_efectivo);
     //alert(venta_descuento);
+    
     if(codigoexcepcion==true){
         codigo_excepcion = 1;
     }else{
@@ -3980,7 +3984,8 @@ function registrarventa(cliente_id)
                 datos_tasaaseo:datos_tasaaseo, datos_detalleajustenosujetoiva:datos_detalleajustenosujetoiva, 
                 datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
                 datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
-                datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante, factura_servicio:factura_servicio
+                datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante, factura_servicio:factura_servicio,
+                cliente_nombre:cliente_nombre,cliente_nombrenegocio:cliente_nombrenegocio
             },
             success:function(respuesta){
                 if(parametro_puntos >0){
@@ -4095,7 +4100,8 @@ function registrarventa(cliente_id)
                 datos_tasaaseo:datos_tasaaseo, datos_detalleajustenosujetoiva:datos_detalleajustenosujetoiva, 
                 datos_ajutesnosujetoiva:datos_ajutesnosujetoiva, datos_detalleajustesujetoiva:datos_detalleajustesujetoiva, datos_ajustesujetoiva:datos_ajustesujetoiva, 
                 datos_detalleotrospagosnosujetoiva:datos_detalleotrospagosnosujetoiva, datos_otrospagosnosujetoiva:datos_otrospagosnosujetoiva, 
-                datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante, factura_servicio:factura_servicio
+                datos_detalleotrastasas:datos_detalleotrastasas, datos_otrastasas:datos_otrastasas, parametro_comprobante:parametro_comprobante, factura_servicio:factura_servicio,
+                cliente_nombre:cliente_nombre,cliente_nombrenegocio:cliente_nombrenegocio
             },
             success:function(respuesta){
                 if(parametro_puntos >0){

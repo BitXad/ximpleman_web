@@ -224,9 +224,9 @@ window.onkeydown = compruebaTecla;
  <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
 <!-------------------------------------------------------->
 <?php 
-$verificar_cantidades = 0;
-$compra_rapida = 0;
-$actualizar_precios = 0;
+$verificar_cantidades = 1;
+$compra_rapida = 1;
+$actualizar_precios = 1;
 
 ?>
 <div id="selector" hidden>
@@ -718,9 +718,9 @@ $actualizar_precios = 0;
         </div>  
         
         <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="nombre" class="control-label" style="margin-bottom: 0;">CLIENTE</label>
+            <label for="nombre" class="control-label" style="margin-bottom: 0;"><?php echo ($dosificacion[0]["docsec_codigoclasificador"] != 11)?"CLIENTE":"ESTUDIANTE"; ?></label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cliente_nombre" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+                <input type="text" style="background:yellow; font-size: 10pt;" id="cliente_nombre" name="cliente_nombre" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();" />
             </div>
         </div>
         <div class="col-md-2" <?php echo $estilo_div; ?>>
@@ -736,9 +736,9 @@ $actualizar_precios = 0;
             </div>
         </div>
         <div class="col-md-3" <?php echo $estilo_div; ?>>
-            <label for="cliente_nombrenegocio" class="control-label" style="margin-bottom: 0;">NEGOCIO</label>
+            <label for="cliente_nombrenegocio" class="control-label" style="margin-bottom: 0;"><?php echo ($dosificacion[0]["docsec_codigoclasificador"] != 11)?"NEGOCIO":"PERIODO FACTURADO"; ?></label>
             <div class="form-group" <?php echo $estilo_div; ?>>
-                <input type="text" name="cliente_nombrenegocio" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+                <input type="text" style="background:yellow; font-size: 10pt;" id="cliente_nombrenegocio"  name="cliente_nombrenegocio" class="form-control <?php echo $atributos; ?>" <?php echo $estilos; ?> id="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
         </div>
         <div class="col-md-3" <?php echo $estilo_div; ?>>
@@ -1327,8 +1327,8 @@ $actualizar_precios = 0;
                 $estilo2 = "style='width:90px;'";
             ?>
             
-            <div class="col-md-12" <?php echo ($dosificacion[0]['docsec_codigoclasificador'] != 13)?"hidden":""; ?>>
-                
+            <div class="col-md-12" <?php echo ($dosificacion[0]['docsec_codigoclasificador']!= 13)?"hidden":""; ?>>
+            
             <font size="1"><b>SERVICIOS BASICOS</b></font>      
             
                 <select id="selector_factura" class="btn btn-warning btn-xs" style="text-align: left;">
@@ -1458,6 +1458,8 @@ $actualizar_precios = 0;
             </div>
             
         </div>
+            
+            
             
          
         </div>

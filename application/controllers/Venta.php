@@ -1307,6 +1307,7 @@ class Venta extends CI_Controller{
                     //********** FIN INICIO ACTUALIZAR NUMERO DE FACTURA
                         
                         if($this->parametros['parametro_tiposistema'] == 1){
+                            
                             $codigo_actividadcaeb = $factura_actividad;
                             $la_actividad = $this->Actividad_model->get_descripcioncaeb($codigo_actividadcaeb);
                             
@@ -1428,40 +1429,55 @@ class Venta extends CI_Controller{
                         
                         //  REGISTRO DE DATO DE FACTURA
                         //*******************************************
-                        if($dosificacion[0]['docsec_codigoclasificador'] == 12 || $dosificacion[0]['docsec_codigoclasificador'] == 13){
+                        if($dosificacion[0]['docsec_codigoclasificador'] == 11 || $dosificacion[0]['docsec_codigoclasificador'] == 12 || $dosificacion[0]['docsec_codigoclasificador'] == 13){
                             
                             $datos_periodofacturado = $this->input->post('datos_mes')."/".$this->input->post('datos_anio');
                                     
-                            $params = array(
-                                'datos_codigopais' => $this->input->post('datos_codigopais'),
-                                'datos_autorizacionsc' => $this->input->post('datos_autorizacionsc'),
-                                'datos_placa' => $this->input->post('datos_placa'),
-                                'datos_embase' => $this->input->post('datos_embase'),
-                                'cliente_id' => $cliente_id,
-                                'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
-                                'datos_periodofacturado' => $datos_periodofacturado,                                
-                                'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
-                                'datos_beneficiarioley1886' => $this->input->post('datos_beneficiarioley1886'),
-                                'datos_montodescuentoley1886' => $this->input->post('datos_montodescuentoley1886'),
-                                'datos_montodescuentotarifadignidad' => $this->input->post('datos_montodescuentotarifadignidad'),
-                                'datos_medidor' => $this->input->post('datos_medidor'),
-                                'datos_mes' => $this->input->post('datos_mes'),
-                                'datos_anio' => $this->input->post('datos_anio'),
-                                'datos_tasaalumbrado' => $this->input->post('datos_tasaalumbrado'),
-                                'datos_tasaaseo' => $this->input->post('datos_tasaaseo'),
-                                'datos_detalleajustenosujetoiva' => $this->input->post('datos_detalleajustenosujetoiva'),
-                                'datos_ajutesnosujetoiva' => $this->input->post('datos_ajutesnosujetoiva'),
-                                'datos_detalleajustesujetoiva' => $this->input->post('datos_detalleajustesujetoiva'),
-                                'datos_ajustesujetoiva' => $this->input->post('datos_ajustesujetoiva'),
-                                'datos_detalleotrospagosnosujetoiva' => $this->input->post('datos_detalleotrospagosnosujetoiva'),
-                                'datos_otrospagosnosujetoiva' => $this->input->post('datos_otrospagosnosujetoiva'),
-                                'datos_detalleotrastasas' => $this->input->post('datos_detalleotrastasas'),
-                                'datos_otrastasas' => $this->input->post('datos_otrastasas'),
-                                //'parametro_comprobante' => $this->input->post('parametro_comprobante'),
-                            );
+                            if($dosificacion[0]['docsec_codigoclasificador'] == 11){
+                                
+                                $params = array(
 
-                            //var_dump($params);
-                            
+                                    'cliente_id' => $cliente_id,
+                                    'datos_periodofacturado' => $this->input->post('cliente_nombrenegocio'),
+                                    'datos_beneficiarioley1886' => $this->input->post('cliente_nombre'),
+
+                                );
+                                
+                            }else{
+
+                                $params = array(
+                                    'datos_codigopais' => $this->input->post('datos_codigopais'),
+                                    'datos_autorizacionsc' => $this->input->post('datos_autorizacionsc'),
+                                    'datos_placa' => $this->input->post('datos_placa'),
+                                    'datos_embase' => $this->input->post('datos_embase'),
+                                    'cliente_id' => $cliente_id,
+                                    'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
+                                    'datos_periodofacturado' => $datos_periodofacturado,                                
+                                    'datos_consumoperiodo' => $this->input->post('datos_consumoperiodo'),
+                                    'datos_beneficiarioley1886' => $this->input->post('datos_beneficiarioley1886'),
+                                    'datos_montodescuentoley1886' => $this->input->post('datos_montodescuentoley1886'),
+                                    'datos_montodescuentotarifadignidad' => $this->input->post('datos_montodescuentotarifadignidad'),
+                                    'datos_medidor' => $this->input->post('datos_medidor'),
+                                    'datos_mes' => $this->input->post('datos_mes'),
+                                    'datos_anio' => $this->input->post('datos_anio'),
+                                    'datos_tasaalumbrado' => $this->input->post('datos_tasaalumbrado'),
+                                    'datos_tasaaseo' => $this->input->post('datos_tasaaseo'),
+                                    'datos_detalleajustenosujetoiva' => $this->input->post('datos_detalleajustenosujetoiva'),
+                                    'datos_ajutesnosujetoiva' => $this->input->post('datos_ajutesnosujetoiva'),
+                                    'datos_detalleajustesujetoiva' => $this->input->post('datos_detalleajustesujetoiva'),
+                                    'datos_ajustesujetoiva' => $this->input->post('datos_ajustesujetoiva'),
+                                    'datos_detalleotrospagosnosujetoiva' => $this->input->post('datos_detalleotrospagosnosujetoiva'),
+                                    'datos_otrospagosnosujetoiva' => $this->input->post('datos_otrospagosnosujetoiva'),
+                                    'datos_detalleotrastasas' => $this->input->post('datos_detalleotrastasas'),
+                                    'datos_otrastasas' => $this->input->post('datos_otrastasas'),
+                                    //'parametro_comprobante' => $this->input->post('parametro_comprobante'),
+                                );
+
+                            }
+
+                            var_dump($params);
+                            //
+                            // Insertamos el arreglo de datos en la tabla factura_datos
                             $datos_id = $this->Factura_datos_model->add_factura_datos($params);
                             
                             $params = array(
@@ -1476,6 +1492,7 @@ class Venta extends CI_Controller{
                                         $this->input->post('datos_alumbradosubtotal') + $this->input->post('datos_tasassubtotal') +
                                         $this->input->post('datos_pagossubtotal');*/
                                 
+                                // Calculando los totales para añadirlos a la factura
                                 $totalajustes = $this->input->post('datos_ajustesujetoiva');
                                 $tasas = floatval($this->input->post('datos_tasaaseo')) + floatval($this->input->post('datos_tasaalumbrado')) + floatval($this->input->post('datos_otrastasas')) + floatval($this->input->post('datos_otrospagosnosujetoiva'));
                                 
@@ -1489,45 +1506,6 @@ class Venta extends CI_Controller{
                                 $this->Venta_model->ejecutar($sql);
                                 
                             }
-                            
-//                            if($dosificacion[0]['docsec_codigoclasificador'] == 13){
-//                                
-//                                    $sql = "update factura_datos
-//                                            set 
-//
-//                                            datos_ajustesiva = 
-//                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
-//                                            from detalle_venta_aux d, producto p
-//                                            where 
-//                                            d.usuario_id = {$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 2)
-//
-//
-//                                            ,datos_ajustesnoiva = 
-//                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
-//                                            from detalle_venta_aux d, producto p
-//                                            where 
-//                                            d.usuario_id ={$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 3)
-//
-//
-//                                            ,datos_pagosnoiva = 
-//                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
-//                                            from detalle_venta_aux d, producto p
-//                                            where 
-//                                            d.usuario_id = {$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 4)
-//
-//
-//                                            ,datos_tasas = 
-//                                            (select if(sum(d.`detalleven_total`)>0,sum(d.`detalleven_total`),0) as total
-//                                            from detalle_venta_aux d, producto p
-//                                            where 
-//                                            d.usuario_id = {$usuario_id} and  p.producto_id = d.producto_id and p.subcategoria_id = 5)
-//
-//                                            where datos_id = {$datos_id}";
-//                                    
-//                                    $this->Venta_model->ejecutar($sql);
-//                                
-//                            }
-                            
                             
                         }
                         //*******************************************
@@ -7897,7 +7875,7 @@ function anular_venta($venta_id){
         
         
         $opc = $this->dosificacion["docsec_codigoclasificador"];
-        if($opc == 12 || $opc == 13){ //Comercializacion de hidrocarburos
+        if($opc == 11 || $opc == 12 || $opc == 13){ //Comercializacion de hidrocarburos
             $datos_factura = $this->Factura_datos_model->get_factura_datos($factura[0]['datos_id']);
         }
        // echo "opc: ".$opc;
@@ -7946,6 +7924,13 @@ function anular_venta($venta_id){
         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_razonsocial']."</td>"; 
         $micad .= "                            </tr>";
         
+        if($opc == 11){ //Sector Educativo
+            $micad .= " <tr>";
+            $micad .= "     <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; ' >Nombre Estudiante:</td>";
+            $micad .= "     <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_beneficiarioley1886']."</td>";
+            $micad .= " </tr>";
+        }
+
         
         if($opc == 12){ //Comercializacion de hidrocarburos
             $micad .= "                        <tr>"; 
@@ -7985,6 +7970,16 @@ function anular_venta($venta_id){
         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Cod. Cliente:</td>"; 
         $micad .= "                                <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$factura[0]['factura_codigocliente']."</td>"; 
         $micad .= "                            </tr>";
+
+        if($opc == 11){ //Sector Educativo
+
+            $micad .= "<tr>";
+            $micad .= "    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; '  class='autoColor'>Periodo Facturado:</td>";
+            $micad .= "    <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;'>".$datos_factura['datos_periodofacturado']."</td>";
+            $micad .= "</tr>";      
+        }
+        
+        
         if($opc == 12){ //Comercializacion de hidrocarburos
             $micad .= "                        <tr>"; 
             $micad .= "                            <td style='font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top;'  class='autoColor'>Tipo Envase:</td>"; 
@@ -8303,7 +8298,7 @@ function anular_venta($venta_id){
 
                 $micad .= "                                             <!-------------- MONTO A PAGAR ---------->";
 
-                if($mostrarice==1 || $factura[0]['docsec_codigoclasificador']==8 || $factura[0]['docsec_codigoclasificador']==17 || $factura[0]['docsec_codigoclasificador']==22){ // Mostrar si es factura con ICE o Tasa Cero
+                if($mostrarice==1 || $factura[0]['docsec_codigoclasificador']==8 ||  $factura[0]['docsec_codigoclasificador']==11 || $factura[0]['docsec_codigoclasificador']==17 || $factura[0]['docsec_codigoclasificador']==22){ // Mostrar si es factura con ICE o Tasa Cero
 
                     $micad .= "    <tr>           ";
                     $micad .= "        <td style='padding:0; padding-right: 3px;' colspan='".$span."' align='right'>MONTO A PAGAR Bs</td>";

@@ -356,6 +356,20 @@ border-bottom : 1px solid #aaa;
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Nombre/Razón Social:</b></td>
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $factura[0]['factura_razonsocial'] ?></td>
                             </tr>
+                                                        
+                            <?php
+                            if($opc == 11){ //Sector Educativo
+                            ?>
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Nombre Estudiante:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $datos_factura['datos_beneficiarioley1886']; ?></td>
+                            </tr>
+
+                            <?php
+                            }
+                            ?>
+                            
+                            
                             <?php
                             if($opc == 12){ //Comercializacion de hidrocarburos
                             ?>
@@ -366,6 +380,7 @@ border-bottom : 1px solid #aaa;
                             <?php
                             }
                             ?>
+                            
                             
                             <?php
                             if($opc == 13){ //Comercializacion de hidrocarburos
@@ -415,6 +430,21 @@ border-bottom : 1px solid #aaa;
                                 <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?php echo $factura[0]['factura_glosa']; ?></td>
                             </tr>
                             <?php } ?>
+                            
+                            
+                                                                                    
+                            <?php
+                            if($opc == 11){ //Sector Educativo
+                            ?>
+
+                            <tr>
+                                <td style="font-family: arial; font-size: 8pt;  -webkit-print-color-adjust: exact; white-space: nowrap; vertical-align:text-top; "  class="autoColor"><b>Periodo Facturado:</b></td>
+                                <td style="font-family: arial; font-size: 8pt; -webkit-print-color-adjust: exact; padding-left: 3px;white-space: normal;"><?= $datos_factura['datos_periodofacturado']; ?></td>
+                            </tr>
+
+                            <?php
+                            }
+                            ?>
                             
                             <?php
                             if ($factura[0]["docsec_codigoclasificador"]==13){ 

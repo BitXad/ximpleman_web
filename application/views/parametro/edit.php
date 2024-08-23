@@ -1005,7 +1005,7 @@ div {
                         <div class="form-group">
                             <select name="parametro_cerrarventanas" class="form-control" id="parametro_cerrarventanas">
                                 <option value="1" <?php if($parametro['parametro_cerrarventanas']=="1"){ ?> selected <?php } ?>>SI</option>
-                                <option value="2" <?php if($parametro['parametro_cerrarventanas']=="0"){ ?> selected <?php } ?>>NO</option>
+                                <option value="2" <?php if($parametro['parametro_cerrarventanas']=="2"){ ?> selected <?php } ?>>NO</option>
                             </select>
                         </div>
                     </div>

@@ -242,7 +242,7 @@ class Factura extends CI_Controller{
             // 12 FACTURA DE COMERCIALIZACIÓN DE HIDROCARBUROS 13 FACTURA DE SERVICIOS BASICOS
             // 22 FACTURA TELECOMUNICACIONES
             
-            $documentos_sector1 = array(1,2,8,12,13,16,17,22);
+            $documentos_sector1 = array(1,2,8,11,12,13,16,17,22);
             
             if(in_array($dosificacion['docsec_codigoclasificador'], $documentos_sector1 )){ //FACTURA COMPRA VENTA/ ALQUILERES
 //                $data['_view'] = 'factura/factura_carta_servicios';
@@ -261,10 +261,10 @@ class Factura extends CI_Controller{
 //                //$data['_view'] = 'factura/factura_carta_servicios';
 //            }
 //            
-            
-            if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
-                $data['_view'] = 'factura/factura_carta_servicios';
-            }
+//            
+//            if($dosificacion['docsec_codigoclasificador'] == 11){ // FACTURA SECTOR EDUCATIVO
+//                $data['_view'] = 'factura/factura_carta_servicios';
+//            }
                        
             if($dosificacion['docsec_codigoclasificador'] == 23){ // FACTURA PREVALORADA
                 $data['_view'] = 'factura/factura_carta_prev';
